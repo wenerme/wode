@@ -1,0 +1,37 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "target": "es5",
+    "module": "es2015",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "es5",
+      "es2015.collection",
+      "es2015.iterable"
+    ],
+    "strict": true,
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "declaration": true,
+    "esModuleInterop": true,
+    "importHelpers": true,
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "noImplicitAny": false,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "pretty": true,
+    "removeComments": false,
+    "stripInternal": true
+  },
+  "exclude": [
+    "node_modules",
+    "**/__tests__/*"
+  ],
+  "include": [
+    "src"
+  ]
+}
