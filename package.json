@@ -1,0 +1,21 @@
+{
+  "name": "wode",
+  "version": "1.0.0",
+  "description": "Wener Node Monorepo",
+  "private": true,
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wenerme/wode.git"
+  },
+  "keywords": [],
+  "author": "wener",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wenerme/wode/issues"
+  },
+  "homepage": "https://github.com/wenerme/wode#readme",
+  "workspaces": [
+    "./packages/*"
+  ]
+}
