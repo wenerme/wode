@@ -1,14 +1,15 @@
 {
   "compilerOptions": {
     "moduleResolution": "node",
-    "target": "es5",
-    "module": "es2015",
+    "target": "esnext",
+    "module": "esnext",
     "lib": [
       "dom",
       "dom.iterable",
       "es5",
       "es2015.collection",
-      "es2015.iterable"
+      "es2015.iterable",
+      "esnext"
     ],
     "strict": true,
     "sourceMap": true,

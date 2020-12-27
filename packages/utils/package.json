@@ -9,7 +9,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/wener/apis.git"
+    "url": "git+https://github.com/wener/wode.git"
   },
   "license": "MIT",
   "author": "wener",
@@ -27,7 +27,7 @@
       "require": "./dist/wener-utils.cjs"
     }
   },
-  "homepage": "https://github.com/wenerme/apis#readme",
+  "homepage": "https://github.com/wenerme/wode#readme",
   "files": [
     "index.js",
     "index.d.ts",
@@ -48,25 +48,15 @@
     "test": "jest"
   },
   "devDependencies": {
-    "@babel/core": "^7",
-    "@babel/preset-env": "^7.12.11",
-    "@babel/preset-typescript": "^7.10.4",
-    "@rollup/plugin-babel": "^5",
-    "@rollup/plugin-node-resolve": "^11.0.1",
-    "@rollup/plugin-typescript": "^8.1.0",
-    "@types/babel__core": "^7",
-    "@types/babel__preset-env": "^7",
-    "@types/jest": "^26.0.19",
+    "@types/jest": "^26",
     "@types/lodash": "^4",
-    "@types/node": "^14.14.16",
+    "@types/node": "^14",
     "dotenv": "^8",
+    "esbuild": "^0.8.26",
     "jest": "^26",
     "lodash": "^4",
-    "rollup": "^2",
-    "rollup-plugin-terser": "^6",
     "ts-jest": "^26",
     "tslib": "^2",
-    "typedoc": "^0",
     "typescript": "^4"
   },
   "publishConfig": {
