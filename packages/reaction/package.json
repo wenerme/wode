@@ -22,14 +22,20 @@
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
   "typings": "lib/esm/index.d.ts",
+  "umd:main": "dist/wener-utils.js",
+  "unpkg": "dist/wener-utils.js",
+  "jsdelivr": "dist/wener-utils.js",
+  "jsnext:main": "dist/wener-utils.esm.js",
   "files": [
     "src",
     "lib",
+    "dist",
     "tsconfig.json",
     "Makefile"
   ],
   "devDependencies": {
     "@types/react": "^17",
+    "esbuild": "^0.8.26",
     "react": "^17",
     "typescript": "^4"
   },

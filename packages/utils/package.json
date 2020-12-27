@@ -17,9 +17,9 @@
   "module": "lib/esm/index.js",
   "typings": "lib/esm/index.d.ts",
   "esnext": "lib/esnext/index.js",
-  "umd:main": "dist/wener-utils.umd.js",
-  "unpkg": "dist/wener-utils.umd.js",
-  "jsdelivr": "dist/wener-utils.umd.js",
+  "umd:main": "dist/wener-utils.js",
+  "unpkg": "dist/wener-utils.js",
+  "jsdelivr": "dist/wener-utils.js",
   "jsnext:main": "dist/wener-utils.esm.js",
   "exports": {
     ".": {
