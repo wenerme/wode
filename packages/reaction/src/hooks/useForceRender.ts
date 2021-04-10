@@ -1,5 +1,8 @@
-import { useReducer } from 'react';
+import {useReducer} from 'react';
 
+/**
+ * useForceRender return a forceRender function to fore rerender current component
+ */
 export function useForceRender() {
   // const [, set] = useState();
   // return () => set({});

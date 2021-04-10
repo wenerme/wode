@@ -2,6 +2,10 @@ export const manifest = {
   title: 'Calculator',
   description: 'A Calculator like iOS',
   name: 'Calculator',
+  see: [
+    'https://codepen.io/mjijackson/pen/xOzyGX'
+  ],
+  ssr: false,
   icon: (
     <svg
       xmlns="http://www.w3.org/2000/svg"
