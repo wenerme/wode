@@ -85,7 +85,6 @@ const CalculatorOperations = {
   '=': (prevValue, nextValue) => nextValue,
 };
 
-// https://codepen.io/mjijackson/pen/xOzyGX
 export class Calculator extends React.Component {
   state = {
     value: null,
@@ -258,7 +257,6 @@ export class Calculator extends React.Component {
                   ±
                 </CalculatorKey>
                 <CalculatorKey
-                  className="key-percent"
                   onPress={() => this.inputPercent()}
                 >
                   %
@@ -277,60 +275,13 @@ export class Calculator extends React.Component {
                 >
                   ●
                 </CalculatorKey>
-                <CalculatorKey
-                  className="key-1"
-                  onPress={() => this.inputDigit(1)}
+                {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((v) => (<CalculatorKey
+                  className={`key-${v}`}
+                  key={v}
+                  onPress={() => this.inputDigit(v)}
                 >
-                  1
-                </CalculatorKey>
-                <CalculatorKey
-                  className="key-2"
-                  onPress={() => this.inputDigit(2)}
-                >
-                  2
-                </CalculatorKey>
-                <CalculatorKey
-                  className="key-3"
-                  onPress={() => this.inputDigit(3)}
-                >
-                  3
-                </CalculatorKey>
-                <CalculatorKey
-                  className="key-4"
-                  onPress={() => this.inputDigit(4)}
-                >
-                  4
-                </CalculatorKey>
-                <CalculatorKey
-                  className="key-5"
-                  onPress={() => this.inputDigit(5)}
-                >
-                  5
-                </CalculatorKey>
-                <CalculatorKey
-                  className="key-6"
-                  onPress={() => this.inputDigit(6)}
-                >
-                  6
-                </CalculatorKey>
-                <CalculatorKey
-                  className="key-7"
-                  onPress={() => this.inputDigit(7)}
-                >
-                  7
-                </CalculatorKey>
-                <CalculatorKey
-                  className="key-8"
-                  onPress={() => this.inputDigit(8)}
-                >
-                  8
-                </CalculatorKey>
-                <CalculatorKey
-                  className="key-9"
-                  onPress={() => this.inputDigit(9)}
-                >
-                  9
-                </CalculatorKey>
+                  {v}
+                </CalculatorKey>))}
               </div>
             </div>
             <div className="operator-keys">

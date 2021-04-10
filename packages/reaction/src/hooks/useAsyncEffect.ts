@@ -1,5 +1,10 @@
 import { DependencyList, useEffect, useRef } from 'react';
 
+/**
+ * useAsyncEffect accept a async function call, which can accept an AbortController and return a Promise
+ * @param effect Effect function
+ * @param deps DependencyList
+ */
 export function useAsyncEffect(
   effect: (o: { controller: AbortController }) => Promise<void | (() => void | undefined)>,
   deps?: DependencyList,
