@@ -9,3 +9,5 @@ export { useForceRender } from './hooks/useForceRender';
 export { useInterval } from './hooks/useInterval';
 export { useMounted } from './hooks/useMounted';
 export { useRenderCount } from './hooks/useRenderCount';
+
+export { flexRender, FlexRenderer } from './render/flexRender'

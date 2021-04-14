@@ -52,7 +52,7 @@
     "@types/lodash": "^4",
     "@types/node": "^14",
     "dotenv": "^8",
-    "esbuild": "^0.8.26",
+    "esbuild": "^0.11.10",
     "jest": "^26",
     "lodash": "^4",
     "ts-jest": "^26",
