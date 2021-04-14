@@ -11,7 +11,7 @@ clean:
 	rm -rf src/**/*.{js,d.ts,js.map} dist/* && rm -rf lib/*
 
 publish: clean compile
-	npm publish
+	npm publish --registry https://registry.npmjs.org
 
 bundle:
 	npx esbuild src/index.ts --format=iife --outfile=dist/wener-reaction.js --bundle --minify --sourcemap --target=chrome80 --define:process.env.NODE_ENV=production --external:react
