@@ -13,6 +13,6 @@ clean:
 	rm -rf dist/* && rm -rf lib/*
 
 bundle:
-	npx esbuild src/index.ts --format=iife --outfile=dist/wener-utils.js --bundle --minify --sourcemap --target=chrome80 --define:process.env.NODE_ENV='\"production\"'
-	npx esbuild src/index.ts --format=cjs --outfile=dist/wener-utils.cjs --bundle --minify --sourcemap --target=chrome80 --define:process.env.NODE_ENV='\"production\"'
-	npx esbuild src/index.ts --format=esm --outfile=dist/wener-utils.esm.js --bundle --minify --sourcemap --target=chrome80 --define:process.env.NODE_ENV='\"production\"'
+	npx esbuild src/index.ts --format=iife --outfile=dist/wener-utils.js --bundle --minify --sourcemap --target=chrome80 --define:process.env.NODE_ENV=production
+	npx esbuild src/index.ts --format=cjs --outfile=dist/wener-utils.cjs --bundle --minify --sourcemap --target=chrome80 --define:process.env.NODE_ENV=production
+	npx esbuild src/index.ts --format=esm --outfile=dist/wener-utils.esm.js --bundle --minify --sourcemap --target=chrome80 --define:process.env.NODE_ENV=production
