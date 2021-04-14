@@ -15,6 +15,7 @@
     "skipLibCheck": true,
     "declaration": true,
     "esModuleInterop": true,
+    "jsx": "react",
     "importHelpers": true,
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,

@@ -2,9 +2,9 @@ import {Dispatch, SetStateAction, useState} from 'react';
 
 /**
  * useControlled like useState, but accept bypass state and setState to props
- * @param value
- * @param onChange
- * @param initial
+ * @param value bypass state
+ * @param onChange bypass steState
+ * @param initial initializer for useState
  */
 export function useControlled<T>(
   value: T,

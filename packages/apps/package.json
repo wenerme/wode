@@ -37,13 +37,9 @@
     "styled-components": "^5.2.1"
   },
   "devDependencies": {
-    "@storybook/addon-actions": "^6.1.11",
-    "@storybook/addon-essentials": "^6.1.11",
-    "@storybook/addon-links": "^6.1.11",
-    "@storybook/react": "^6.1.11",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
-    "esbuild": "^0.8.26",
+    "esbuild": "^0.11.9",
     "typescript": "^4.1.3"
   }
 }
