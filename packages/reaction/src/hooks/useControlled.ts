@@ -1,4 +1,4 @@
-import {Dispatch, SetStateAction, useState} from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 
 /**
  * useControlled like useState, but accept bypass state and setState to props

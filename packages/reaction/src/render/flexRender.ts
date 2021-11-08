@@ -1,4 +1,4 @@
-import React, {ComponentClass, FunctionComponent, ReactElement} from 'react';
+import React, { ComponentClass, FunctionComponent, ReactElement } from 'react';
 
 // flexible renderer
 export interface FlexRenderer<P = any, A extends any[] = any[]> {
@@ -15,15 +15,15 @@ export interface FlexRenderer<P = any, A extends any[] = any[]> {
  * @param args function render args
  */
 export function flexRender<P = any, A extends any[] = any[]>(
-  {as, render, props: presetProps}: FlexRenderer<P, A>,
+  { as, render, props: presetProps }: FlexRenderer<P, A>,
   props: P,
   ...args: A
 ): null | ReactElement {
   return as
     ? React.isValidElement(as)
-      ? React.cloneElement(as, {...presetProps, ...props})
-      : React.createElement(as, {...presetProps, ...props} as any)
+      ? React.cloneElement(as, { ...presetProps, ...props })
+      : React.createElement(as, { ...presetProps, ...props } as any)
     : render
-      ? render(...args)
-      : null;
+    ? render(...args)
+    : null;
 }

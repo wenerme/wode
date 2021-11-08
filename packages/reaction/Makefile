@@ -17,3 +17,6 @@ bundle:
 	npx esbuild src/index.ts --format=iife --outfile=dist/wener-reaction.js --bundle --minify --sourcemap --target=chrome80 --define:process.env.NODE_ENV=production --external:react
 	npx esbuild src/index.ts --format=cjs --outfile=dist/wener-reaction.cjs --bundle --minify --sourcemap --target=chrome80 --define:process.env.NODE_ENV=production --external:react
 	npx esbuild src/index.ts --format=esm --outfile=dist/wener-reaction.esm.js --bundle --minify --sourcemap --target=chrome80 --define:process.env.NODE_ENV=production --external:react
+
+fmt:
+	npx prettier src -w
