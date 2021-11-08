@@ -1,4 +1,4 @@
-import {DependencyList, useEffect, useRef} from 'react';
+import { DependencyList, useEffect, useRef } from 'react';
 
 /**
  * useAsyncEffect accept a async function call, which can accept an AbortController and return a Promise
@@ -12,11 +12,10 @@ export function useAsyncEffect(
   const ref = useRef<AbortController>();
   useEffect(() => {
     ref.current = new AbortController();
-    effect({signal: ref.current?.signal})
-      .catch((e) => {
-        console.trace(`uncaught useAsyncEffect error`, deps, e);
-      });
+    effect({ signal: ref.current?.signal }).catch((e) => {
+      console.trace(`uncaught useAsyncEffect error`, deps, e);
+    });
     return () => ref.current?.abort();
   }, deps);
-  return {getAbortController: () => ref.current};
+  return { getAbortController: () => ref.current };
 }

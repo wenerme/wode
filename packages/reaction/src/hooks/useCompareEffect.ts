@@ -1,4 +1,4 @@
-import React, {DependencyList, EffectCallback, useEffect} from 'react';
+import React, { DependencyList, EffectCallback, useEffect } from 'react';
 
 // import isEqual from 'react-fast-compare';
 
@@ -8,7 +8,11 @@ import React, {DependencyList, EffectCallback, useEffect} from 'react';
  * @param deps compare target
  * @param eq comparator - e.g. react-fast-compare
  */
-export function useCompareEffect(f: EffectCallback, deps: DependencyList, eq: (a, b) => boolean = useCompareEffect.defaultComparator) {
+export function useCompareEffect(
+  f: EffectCallback,
+  deps: DependencyList,
+  eq: (a, b) => boolean = useCompareEffect.defaultComparator,
+) {
   const counter = React.useRef(0);
   const prev = React.useRef(deps);
   if (!eq(deps, prev.current)) {
@@ -18,4 +22,4 @@ export function useCompareEffect(f: EffectCallback, deps: DependencyList, eq: (a
   useEffect(f, [counter.current]);
 }
 
-useCompareEffect.defaultComparator = (a, b) => a === b
+useCompareEffect.defaultComparator = (a, b) => a === b;

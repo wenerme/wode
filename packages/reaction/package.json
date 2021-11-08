@@ -1,6 +1,6 @@
 {
   "name": "@wener/reaction",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "React hooks & reaction",
   "keywords": [
     "components",
@@ -45,5 +45,21 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "prettier": {
+    "trailingComma": "all",
+    "printWidth": 120,
+    "singleQuote": true,
+    "overrides": [
+      {
+        "files": [
+          "*.html",
+          "*.css"
+        ],
+        "options": {
+          "singleQuote": false
+        }
+      }
+    ]
   }
 }
