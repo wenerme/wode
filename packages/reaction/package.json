@@ -1,7 +1,7 @@
 {
   "name": "@wener/reaction",
-  "version": "1.0.5",
-  "description": "React hooks & utils",
+  "version": "1.0.6",
+  "description": "React hooks & reaction",
   "keywords": [
     "components",
     "react",
@@ -22,10 +22,11 @@
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
   "typings": "lib/esm/index.d.ts",
-  "umd:main": "dist/wener-utils.js",
-  "unpkg": "dist/wener-utils.js",
-  "jsdelivr": "dist/wener-utils.js",
-  "jsnext:main": "dist/wener-utils.esm.js",
+  "umd:main": "dist/wener-reaction.js",
+  "unpkg": "dist/wener-reaction.js",
+  "jsdelivr": "dist/wener-reaction.js",
+  "jsnext:main": "dist/wener-reaction.esm.js",
+  "esnext": "lib/esnext/index.js",
   "files": [
     "src",
     "lib",
@@ -35,7 +36,7 @@
   ],
   "devDependencies": {
     "@types/react": "^17",
-    "esbuild": "^0.11.9",
+    "esbuild": "^0.13.12",
     "react": "^17",
     "typescript": "^4"
   },
@@ -44,6 +45,5 @@
   },
   "publishConfig": {
     "access": "public"
-  },
-  "esnext": "lib/esnext/index.js"
+  }
 }
