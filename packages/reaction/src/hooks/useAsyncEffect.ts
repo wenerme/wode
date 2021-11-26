@@ -8,14 +8,15 @@ import { DependencyList, useEffect, useRef } from 'react';
 export function useAsyncEffect(
   effect: (o: { signal: AbortSignal }) => Promise<void | (() => void | undefined)>,
   deps?: DependencyList,
-): { getAbortController: () => AbortController | undefined } {
-  const ref = useRef<AbortController>();
+): { abort: () => void } {
+  const abortRef = useRef<() => void>();
   useEffect(() => {
-    ref.current = new AbortController();
-    effect({ signal: ref.current?.signal }).catch((e) => {
+    let abortController = new AbortController();
+    abortRef.current = () => abortController.abort();
+    effect({ signal: abortController.signal }).catch((e) => {
       console.trace(`uncaught useAsyncEffect error`, deps, e);
     });
-    return () => ref.current?.abort();
+    return () => abortController.abort();
   }, deps);
-  return { getAbortController: () => ref.current };
+  return { abort: abortRef.current ?? (() => void 0) };
 }
