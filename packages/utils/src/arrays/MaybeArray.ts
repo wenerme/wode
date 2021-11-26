@@ -3,13 +3,16 @@ export type MaybeArray<T> = T | T[];
 export function objectOfMaybeArray<T = any>(
   o: Record<string, MaybeArray<T>>,
   keys: string[] | null = null,
-  picker = firstOfMaybeArray,
+  picker = firstOfMaybeArray
 ): Record<string, T> {
   if (keys === null) {
-    return Object.fromEntries(Object.entries(o).map(([k, v]) => [k, picker(v)]));
+    return Object.fromEntries(
+      Object.entries(o).map(([k, v]) => [k, picker(v)])
+    );
   }
   return Object.fromEntries(keys.map((v) => [v, picker(v)])) as any;
 }
+
 export function firstOfMaybeArray<T>(v: MaybeArray<T>): T {
   if (Array.isArray(v)) {
     return v[0];

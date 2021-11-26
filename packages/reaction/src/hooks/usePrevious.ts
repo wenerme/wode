@@ -3,6 +3,7 @@ import { Equivalence } from '../typing';
 
 /**
  * usePrevious will return previous value without state change
+ * @deprecated prefer createDeepCompareHooks useDeepCompareMemoize
  * @param val
  * @param equal
  */
