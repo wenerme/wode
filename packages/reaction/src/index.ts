@@ -13,4 +13,6 @@ export { usePrevious } from './hooks/usePrevious';
 
 export { flexRender, FlexRenderer } from './render/flexRender';
 
+export { createDeepCompareHooks } from './utils/createDeepCompareHooks';
+
 export type { Equivalence, Selector } from './typing';

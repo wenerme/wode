@@ -5,24 +5,26 @@ export interface FlexRenderer<P = any, A extends any[] = any[]> {
   // render as Component
   as?: string | FunctionComponent<P> | ComponentClass<P> | ReactElement<P>;
   // render by function
-  render?: (...args: A) => ReactElement;
+  render?: (...args: A) => ReactElement | null;
   // preset props
-  props?: P;
+  originProps?: Partial<P>;
 }
 
 /**
+ * @param renderer renderer to invoke
  * @param props props overrides
  * @param args function render args
  */
 export function flexRender<P = any, A extends any[] = any[]>(
-  { as, render, props: presetProps }: FlexRenderer<P, A>,
+  renderer: FlexRenderer<P, A>,
   props: P,
   ...args: A
 ): null | ReactElement {
+  const { as, render, originProps } = renderer;
   return as
     ? React.isValidElement(as)
-      ? React.cloneElement(as, { ...presetProps, ...props })
-      : React.createElement(as, { ...presetProps, ...props } as any)
+      ? React.cloneElement(as, { ...originProps, ...props })
+      : React.createElement(as, { ...originProps, ...props } as any)
     : render
     ? render(...args)
     : null;
