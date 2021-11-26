@@ -7,7 +7,7 @@ export interface FlexRenderer<P = any, A extends any[] = any[]> {
   // render by function
   render?: (...args: A) => ReactElement | null;
   // preset props
-  originProps?: Partial<P>;
+  props?: Partial<P>;
 }
 
 /**
@@ -20,7 +20,7 @@ export function flexRender<P = any, A extends any[] = any[]>(
   props: P,
   ...args: A
 ): null | ReactElement {
-  const { as, render, originProps } = renderer;
+  const { as, render, props: originProps } = renderer;
   return as
     ? React.isValidElement(as)
       ? React.cloneElement(as, { ...originProps, ...props })
