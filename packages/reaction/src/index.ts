@@ -11,6 +11,8 @@ export { useMounted } from './hooks/useMounted';
 export { useRenderCount } from './hooks/useRenderCount';
 export { usePrevious } from './hooks/usePrevious';
 
+export { ErrorBoundary } from './components/ErrorBoundary';
+
 export { flexRender, FlexRenderer } from './render/flexRender';
 
 export { createDeepCompareHooks } from './utils/createDeepCompareHooks';
