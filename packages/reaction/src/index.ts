@@ -16,5 +16,7 @@ export { ErrorBoundary } from './components/ErrorBoundary';
 export { flexRender, FlexRenderer } from './render/flexRender';
 
 export { createDeepCompareHooks } from './utils/createDeepCompareHooks';
+export { mergeRefs } from './utils/mergeRefs';
+export { shallow } from './utils/shallow';
 
-export type { Equivalence, Selector } from './typing';
+export type { Equivalence, Selector, UseSelector } from './typing';
