@@ -9,9 +9,13 @@ export { useForceRender } from './hooks/useForceRender';
 export { useInterval } from './hooks/useInterval';
 export { useMounted } from './hooks/useMounted';
 export { useRenderCount } from './hooks/useRenderCount';
+export { useEventListener, createEventListenerHook } from './hooks/useEventListener';
+export { useWindowEventListener, useDocumentEventListener, useBodyEventListener } from './hooks/useDomEventListener';
+export type { HandlersOfEventMap } from './hooks/useEventListener';
 export { usePrevious } from './hooks/usePrevious';
 
 export { ErrorBoundary } from './components/ErrorBoundary';
+export { ReactShadowRoot } from './components/ReactShadowRoot';
 
 export { flexRender, FlexRenderer } from './render/flexRender';
 
