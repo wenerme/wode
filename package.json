@@ -17,5 +17,8 @@
   "homepage": "https://github.com/wenerme/wode#readme",
   "workspaces": [
     "./packages/*"
-  ]
+  ],
+  "devDependencies": {
+    "turbo": "^1.2.9"
+  }
 }
