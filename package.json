@@ -3,7 +3,16 @@
   "version": "1.0.0",
   "description": "Wener Node Monorepo",
   "private": true,
-  "scripts": {},
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev --parallel",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/wenerme/wode.git"
@@ -15,10 +24,39 @@
     "url": "https://github.com/wenerme/wode/issues"
   },
   "homepage": "https://github.com/wenerme/wode#readme",
-  "workspaces": [
-    "./packages/*"
-  ],
   "devDependencies": {
-    "turbo": "^1.2.9"
+    "turbo": "^1.2.9",
+    "prettier": "latest"
+  },
+  "engines": {
+    "npm": ">=7.0.0",
+    "node": ">=14.0.0"
+  },
+  "prettier": {
+    "bracketSameLine": false,
+    "importOrder": [
+      "^(?!@src/)",
+      "^[^.]",
+      "^[.][.]",
+      "^[.][/]"
+    ],
+    "importOrderSeparation": false,
+    "trailingComma": "all",
+    "printWidth": 120,
+    "singleQuote": true,
+    "overrides": [
+      {
+        "files": [
+          "*.html",
+          "*.css"
+        ],
+        "options": {
+          "singleQuote": false
+        }
+      }
+    ]
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
   }
 }
