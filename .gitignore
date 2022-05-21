@@ -103,6 +103,11 @@ dist
 # TernJS port file
 .tern-port
 
+.turbo
+build/**
+dist/**
+.next/**
+
 packages/*/lib
 packages/*/out
 packages/*/.next
