@@ -4,14 +4,14 @@ import PropTypes from 'prop-types';
 
 /// <reference path="shadow-dom.d.ts" />
 
+const hasWindow = typeof window !== 'undefined';
 const constructableStylesheetsSupported =
-  window &&
+  hasWindow &&
   window.ShadowRoot &&
   window.ShadowRoot.prototype.hasOwnProperty('adoptedStyleSheets') &&
   window.CSSStyleSheet &&
   window.CSSStyleSheet.prototype.hasOwnProperty('replace');
-
-const shadowRootSupported = window && window.Element && window.Element.prototype.hasOwnProperty('attachShadow');
+const shadowRootSupported = hasWindow && window.Element && window.Element.prototype.hasOwnProperty('attachShadow');
 
 export interface ReactShadowRootProps {
   delegatesFocus?: boolean;
@@ -33,7 +33,7 @@ export class ReactShadowRoot extends React.PureComponent<ReactShadowRootProps> {
   static propTypes = {
     delegatesFocus: PropTypes.bool,
     mode: PropTypes.oneOf(['open', 'closed']),
-    stylesheets: PropTypes.arrayOf(PropTypes.instanceOf(window.CSSStyleSheet)),
+    // stylesheets: PropTypes.arrayOf(PropTypes.instanceOf(window.CSSStyleSheet)),
   };
   static shadowRootSupported = shadowRootSupported;
   private shadowRoot?: ShadowRoot;
