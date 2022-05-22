@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@floating-ui/react-dom-interactions": "^0.6.1",
     "@headlessui/react": "^1.6.2",
     "@tailwindcss/typography": "^0.5.2",
     "@tiptap/extension-character-count": "^2.0.0-beta.26",
@@ -43,12 +44,14 @@
     "react-icons": "^4.3.1",
     "styled-components": "^5.3.5",
     "tailwindcss": "^3.0.24",
+    "use-immer": "^0.7.0",
     "zustand": "^4.0.0-rc.1"
   },
   "devDependencies": {
     "@types/node": "17.0.35",
     "@types/react": "18.0.9",
     "@types/react-dom": "18.0.4",
+    "@types/styled-components": "^5.1.25",
     "eslint": "8.15.0",
     "eslint-config-next": "12.1.6",
     "next-transpile-modules": "^9.0.0",

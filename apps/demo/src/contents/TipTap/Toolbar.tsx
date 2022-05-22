@@ -1,8 +1,10 @@
 import {
   MdArrowDropDown,
+  MdAutoAwesome,
   MdBrush,
   MdChecklist,
   MdCode,
+  MdDesktopMac,
   MdFormatAlignCenter,
   MdFormatAlignJustify,
   MdFormatAlignLeft,
@@ -23,10 +25,13 @@ import {
   MdLink,
   MdOutlineModeEdit,
   MdOutlineRemoveRedEye,
+  MdPhone,
   MdPrint,
   MdRedo,
+  MdScreenshot,
   MdSettings,
   MdTableChart,
+  MdTablet,
   MdUndo,
   MdVideoLibrary,
 } from 'react-icons/md';
@@ -40,6 +45,7 @@ import { CgQuote } from 'react-icons/cg';
 import { ColorPlates } from '@src/contents/TipTap/ColorPlates';
 import { ImTextColor } from 'react-icons/im';
 import { BsLayoutSplit, BsLayoutThreeColumns } from 'react-icons/bs';
+import { Menu, MenuItem } from '@src/components/DropdownMenu';
 
 const FontFamilySet: OptionItem[] = [
   { label: '默认字体', value: '' },
@@ -486,7 +492,17 @@ const tools: Array<ToolItem> = [
   {
     icon: <MdFormatClear />,
     tooltip: '清除格式',
-    onClick: ({ editor }) => editor.chain().focus().unsetHighlight().unsetMark('textStyle').run(),
+    onClick: ({ editor }) =>
+      editor
+        .chain()
+        .focus()
+        .unsetBold()
+        .unsetItalic()
+        .unsetCode()
+        .unsetStrike()
+        .unsetHighlight()
+        .unsetMark('textStyle')
+        .run(),
   },
 ];
 
@@ -534,16 +550,124 @@ const EditModeSelect: React.FC<{ editor: Editor }> = ({ editor }) => {
   );
 };
 
+const MenuContainer = styled.div`
+  &.Menu:not(.RootMenu) {
+    background-color: white;
+    padding: 2px 0;
+    border: 1px solid #dadce0;
+    border-radius: 4px;
+    display: flex;
+    flex-flow: column;
+    gap: 2px;
+    align-items: stretch;
+
+    min-width: 120px;
+
+    & > button {
+      text-align: left;
+      padding: 4px 6px;
+      border-radius: 2px;
+
+      display: flex;
+      align-items: center;
+      gap: 4px;
+
+      .MenuItem__icon {
+        width: 16px;
+        height: 16px;
+      }
+
+      .MenuItem__label {
+        flex: 1;
+      }
+
+      .MenuItem__more {
+        color: gray;
+      }
+
+      &:hover {
+        background-color: #f1f3f4;
+      }
+
+      &.active {
+        color: #1a73e8;
+        background-color: #e8f0fe;
+      }
+    }
+  }
+`;
+
+const MenuWrap = ({ className, ...props }: any) => {
+  return <div className={classNames('bg-white p-2 border shadow rounded', className)} {...props} />;
+};
+
+const SettingMenu = [
+  {
+    label: '屏幕',
+    icon: <MdScreenshot />,
+    name: 'screen',
+    children: [
+      { label: '自动', value: '' },
+      { label: '桌面', icon: <MdDesktopMac />, value: 'desktop' },
+      { label: '平板', icon: <MdTablet />, value: 'tablet' },
+      { label: '手机', icon: <MdPhone />, value: 'phone' },
+    ],
+  },
+  {
+    label: '预设样式',
+    icon: <MdAutoAwesome />,
+    name: 'preset',
+    children: [
+      { label: '无', value: '' },
+      {
+        label: 'Prose',
+        value: 'prose',
+        name: 'prose',
+        icon: <MdTablet />,
+        children: [
+          { label: 'Gray', value: 'gray' },
+          { label: 'Slate', value: 'slate' },
+          { label: 'Zinc', value: 'zinc' },
+          { label: 'Neutral', value: 'neutral' },
+          { label: 'Stone', value: 'stone' },
+        ],
+      },
+    ],
+  },
+];
+
+const SettingToolItem = () => {
+  return (
+    <Menu as={MenuContainer} label={<MdSettings />}>
+      <Menu
+        label={
+          <>
+            <MdScreenshot className={'MenuItem__icon'} />
+            <span className={'MenuItem__label'}>屏幕</span>
+          </>
+        }
+        as={MenuContainer}
+      >
+        {SettingMenu[0].children.map((v, i) => {
+          return <MenuItem key={i} icon={v.icon} label={v.label} />;
+        })}
+      </Menu>
+    </Menu>
+  );
+  return <MdSettings />;
+};
+
 const settings: Array<ToolItem> = [
   {
-    content: <EditModeSelect />,
+    content: <EditModeSelect editor={undefined as any} />,
     tooltip: '编辑模式',
   },
   {
-    icon: <MdSettings />,
+    content: <SettingToolItem />,
     tooltip: '设置',
   },
 ];
+
 const Container = styled.div`
   color: rgba(0, 0, 0, 0.7);
 
@@ -556,7 +680,7 @@ const Container = styled.div`
     & > hr {
       height: 20px;
       border-top: none;
-      border-left: 1px solid rgb(218, 220, 224);
+      border-left: 1px solid #dadce0;
       margin: 0 4px;
 
       user-select: none;
