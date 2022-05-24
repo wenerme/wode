@@ -7,14 +7,18 @@ export const HomePageContent = () => {
       <div className={'inline-flex gap-12 self-center pt-12'}>
         {NavLinks.map((v, i) => (
           <div key={i}>
-            <header className={'font-semibold text-2xl'}>{v.label}</header>
-            <div className={'flex flex-col gap-2 text-lg'}>
-              {v.children.map((vv, i) => (
-                <MaybeLink className={'hover:text-primary'} href={vv.href}>
-                  {vv.label}
-                </MaybeLink>
-              ))}
-            </div>
+            <MaybeLink href={v.href} className={'font-semibold text-2xl'}>
+              {v.label}
+            </MaybeLink>
+            {Boolean(v.children?.length) && (
+              <div className={'flex flex-col gap-2 text-lg'}>
+                {v.children.map((vv, i) => (
+                  <MaybeLink className={'hover:text-primary'} href={vv.href}>
+                    {vv.label}
+                  </MaybeLink>
+                ))}
+              </div>
+            )}
           </div>
         ))}
       </div>

@@ -11,4 +11,5 @@ export const NavLinks = [
       { label: 'Menu', href: '/menu' },
     ],
   },
+  { label: 'Github', href: 'https://github.com/wenerme/wode', children: [] },
 ];
