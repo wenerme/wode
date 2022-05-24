@@ -9,6 +9,10 @@
     "util",
     "tool"
   ],
+  "scripts": {
+    "build": "make compile",
+    "clean": "make clean"
+  },
   "bugs": {
     "url": "https://github.com/wenerme/wode/issues"
   },
@@ -35,9 +39,9 @@
     "Makefile"
   ],
   "devDependencies": {
-    "@types/react": "^17",
-    "esbuild": "^0.13.12",
-    "react": "^17",
+    "@types/react": "^18",
+    "esbuild": "^0.14",
+    "react": "^18",
     "typescript": "^4"
   },
   "peerDependencies": {

@@ -6,17 +6,23 @@ compile: bundle
 	npx tsc -m commonjs --outDir lib/cjs
 	# esnext
 	npx tsc -m esnext --outDir lib/esnext
+	npx esbuild index.ts --outdir=.
 
 clean:
-	rm -rf src/**/*.{js,d.ts,js.map} dist/* && rm -rf lib/*
+	rm -rf src/**/*.{js,d.ts,js.map} dist/* lib/* index.js
 
 publish: clean compile
 	npm publish --registry https://registry.npmjs.org
 
+
+# --minify
+FLAGS:=src/index.ts --external:{react,react-dom,prop-types} --define:process.env.NODE_ENV=\"production\" --target=chrome80 --sourcemap --bundle
 bundle:
-	npx esbuild src/index.ts --format=iife --outfile=dist/wener-reaction.js --bundle --minify --sourcemap --target=chrome80 --define:process.env.NODE_ENV=production --external:react
-	npx esbuild src/index.ts --format=cjs --outfile=dist/wener-reaction.cjs --bundle --minify --sourcemap --target=chrome80 --define:process.env.NODE_ENV=production --external:react
-	npx esbuild src/index.ts --format=esm --outfile=dist/wener-reaction.esm.js --bundle --minify --sourcemap --target=chrome80 --define:process.env.NODE_ENV=production --external:react
+	npx esbuild --format=iife --outfile=dist/wener-reaction.js $(FLAGS)
+	npx esbuild --format=cjs --outfile=dist/wener-reaction.cjs $(FLAGS)
+	npx esbuild --format=esm --outfile=dist/wener-reaction.esm.js $(FLAGS)
+# Check bundle
+#-grep '^// ' dist/wener-reaction.esm.js | grep node_modules
 
 fmt:
 	npx prettier src -w

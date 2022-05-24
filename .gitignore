@@ -112,3 +112,4 @@ packages/*/lib
 packages/*/out
 packages/*/.next
 packages/*/storybook
+packages/*/index.js
