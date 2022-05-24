@@ -39,15 +39,15 @@ import {
 import React, { cloneElement, HTMLProps, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Listbox, Popover } from '@headlessui/react';
-import { FakeInput } from '@src/contents/TipTap/FakeInput';
+import { FakeInput } from '@src/contents/TipTap/TipTapWord/Toolbar/FakeInput';
 import { ChainedCommands, Editor } from '@tiptap/react';
 import classNames, { Argument } from 'classnames';
 import { CgQuote } from 'react-icons/cg';
-import { ColorPlates } from '@src/contents/TipTap/ColorPlates';
+import { ColorPlates } from '@src/contents/TipTap/TipTapWord/Toolbar/ColorPlates';
 import { ImTextColor } from 'react-icons/im';
 import { BsLayoutSplit, BsLayoutThreeColumns } from 'react-icons/bs';
-import { MenuSpec, MenuToolItem } from '@src/contents/TipTap/MenuToolItem';
-import { useEditorStore, useEditorStoreApi } from '@src/contents/TipTap/useEditorState';
+import { MenuSpec, MenuToolItem } from '@src/contents/TipTap/TipTapWord/Toolbar/MenuToolItem';
+import { useEditorStore, useEditorStoreApi } from '@src/contents/TipTap/TipTapWord/useEditorState';
 
 const FontFamilySet: OptionItem[] = [
   { label: '默认字体', value: '' },
@@ -552,7 +552,7 @@ const EditModeSelect: React.FC<{ editor: Editor }> = ({ editor }) => {
   );
 };
 
-const SettingMenuItems: MenuSpec[] = [
+export const SettingMenuItems: MenuSpec[] = [
   {
     label: '预览屏宽',
     icon: <MdScreenshot />,

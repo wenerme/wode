@@ -1,6 +1,6 @@
-import { Editor, EditorContent, useEditor } from '@tiptap/react';
+import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import React, { memo, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import UnderlineExtension from '@tiptap/extension-underline';
 import LinkExtension from '@tiptap/extension-link';
 import ImageExtension from '@tiptap/extension-image';
@@ -20,17 +20,11 @@ import FontFamilyExtension from '@tiptap/extension-font-family';
 import { FontSize as FontSizeExtension, TextStyles as LineHeightExtension } from './extensions/text-styles';
 import CSSColumnsExtension from './extensions/css-columns';
 import VideExtension from './extensions/video';
-import { Toolbar } from '@src/contents/TipTap/Toolbar';
-import {
-  createEditorStore,
-  EditorStore,
-  EditorStoreProvider,
-  useEditorStore,
-  useEditorStoreApi,
-} from './useEditorState';
-import { Viewer } from '@src/contents/TipTap/Viewer';
-import { Updater, useImmer } from 'use-immer';
-import { Draft } from 'immer';
+import { Toolbar } from '@src/contents/TipTap/TipTapWord/Toolbar/Toolbar';
+import { createEditorStore, EditorStore, EditorStoreProvider, useEditorStoreApi } from './useEditorState';
+import { Viewer } from '@src/contents/TipTap/TipTapWord/Viewer';
+import { Statusbar } from '@src/contents/TipTap/TipTapWord/Statusbar/Statusbar';
+import { Menubar } from '@src/contents/TipTap/TipTapWord/Menubar/Menubar';
 // import { Document as DocumentExtension } from './extensions/document';
 
 const TipTapWordExtensions = [
@@ -107,6 +101,7 @@ export const TipTapWord: React.FC<React.PropsWithChildren<{}>> = ({ children }) 
     <EditorStoreProvider createStore={() => createEditorStore({ editor, editorDomRef })}>
       <EditorStoreConnector editor={editor} editorDomRef={editorDomRef} />
       <div ref={editorDomRef} className={'flex-1 relative bg-[#f8f9fa] flex flex-col min-h-[400px]'}>
+        <Menubar className={'border-b bg-white'} editor={editor} />
         <Toolbar className={'border-b shadow bg-white'} editor={editor} />
         <div className={'flex-1 min-h-0 relative'}>
           <div className={'absolute inset-0 p-4 overflow-auto'}>
@@ -121,7 +116,7 @@ export const TipTapWord: React.FC<React.PropsWithChildren<{}>> = ({ children }) 
             </Viewer>
           </div>
         </div>
-        <StatusBar />
+        <Statusbar />
         {children}
       </div>
     </EditorStoreProvider>
@@ -143,54 +138,3 @@ const EditorStoreConnector: React.FC<Partial<EditorStore>> = ({ editor, editorDo
   }, [editor]);
   return <></>;
 };
-const StatusBar = memo(() => {
-  return (
-    <div className={'bg-white border-t text-xs h-6 flex items-center px-1'}>
-      <CharacterCount />
-    </div>
-  );
-});
-
-StatusBar.displayName = 'StatusBar';
-
-function useEditorState<S = any>(o: {
-  initialState: S;
-  onUpdate: (o: { state: Draft<S>; editor: Editor }) => void;
-}): [S, Updater<S>] {
-  const editor: Editor = useEditorStore((s) => s.editor);
-  const [state, update] = useImmer(o.initialState);
-  useEffect(() => {
-    const e = editor;
-    let handleUpdate = () => {
-      update((state) => {
-        o.onUpdate({ state, editor });
-      });
-    };
-    e.on('update', handleUpdate);
-    return () => {
-      e.off('update', handleUpdate);
-    };
-  }, [editor]);
-  return [state, update];
-}
-
-const CharacterCount = memo(() => {
-  const [state] = useEditorState({
-    initialState: { characters: 0, words: 0 },
-    onUpdate({ state: s, editor }) {
-      s.characters = editor.storage.characterCount.characters();
-      s.words = editor.storage.characterCount.words();
-    },
-  });
-
-  return (
-    <span className={'flex gap-2'}>
-      <span>
-        字数 <span className={'w-[3ch] inline-block'}>{state.characters}</span>
-      </span>
-      <span>
-        词数 <span className={'w-[3ch] inline-block'}>{state.words}</span>
-      </span>
-    </span>
-  );
-});
