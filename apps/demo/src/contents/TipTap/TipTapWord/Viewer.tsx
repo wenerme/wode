@@ -1,4 +1,4 @@
-import { useEditorStore } from '@src/contents/TipTap/useEditorState';
+import { useEditorStore } from '@src/contents/TipTap/TipTapWord/useEditorState';
 import classNames from 'classnames';
 import styled from 'styled-components';
 

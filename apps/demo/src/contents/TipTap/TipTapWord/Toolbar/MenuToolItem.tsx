@@ -5,6 +5,9 @@ import React, { MouseEvent, MouseEventHandler, useMemo, useRef } from 'react';
 import classNames from 'classnames';
 
 const MenuContainer = styled.div`
+  &.Menu {
+    z-index: 20;
+  }
   &.Menu:not(.RootMenu) {
     background-color: white;
     padding: 2px 0;
