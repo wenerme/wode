@@ -68,17 +68,11 @@ const Content = styled.div`
     }
   }
 `;
+
 export const EditorHere: React.FC<{ editor: Editor }> = ({ editor }) => {
   return (
     <Content>
-      <EditorContent
-        spellCheck="false"
-        autoComplete="off"
-        autoCorrect="off"
-        autoCapitalize="off"
-        className={'prose max-w-none'}
-        editor={editor}
-      />
+      <EditorContent spellCheck="false" autoComplete="off" autoCorrect="off" autoCapitalize="off" editor={editor} />
     </Content>
   );
 };

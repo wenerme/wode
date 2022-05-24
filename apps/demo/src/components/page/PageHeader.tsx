@@ -92,9 +92,7 @@ export const PageHeader = () => {
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal p-0">{renderMenu(menu, { icon: <Down /> })}</ul>
         </div>
-        <div className="navbar-end">
-          <a className="btn">Get started</a>
-        </div>
+        <div className="navbar-end">{/*<a className="btn">Get started</a>*/}</div>
       </div>
     </header>
   );

@@ -1,7 +1,7 @@
 import createContext from 'zustand/context';
 import create from 'zustand';
 import { Editor } from '@tiptap/react';
-import { MutableRefObject, RefObject } from 'react';
+import { RefObject } from 'react';
 
 export const {
   Provider: EditorStoreProvider,
@@ -9,9 +9,10 @@ export const {
   useStoreApi: useEditorStoreApi,
 } = createContext<ReturnType<typeof createEditorStore>>();
 
-export const createEditorStore = (init: EditorStore) =>
+export const createEditorStore = (init: Omit<EditorStore, 'settings'> & Partial<Pick<EditorStore, 'settings'>>) =>
   create<EditorStore>(() => {
     return {
+      settings: {},
       ...init,
     };
   });
@@ -19,4 +20,5 @@ export const createEditorStore = (init: EditorStore) =>
 export interface EditorStore {
   editor: Editor;
   editorDomRef: RefObject<HTMLDivElement>;
+  settings: Record<string, any>;
 }

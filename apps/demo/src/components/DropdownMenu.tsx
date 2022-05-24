@@ -53,13 +53,9 @@ export const MenuItem = forwardRef<
       </>
     );
   }
-  return (
-    <As {...props} ref={ref} role="menuitem" disabled={disabled}>
-      {children}
-    </As>
-  );
+  return React.createElement(As, { ...props, ref, role: 'menuitem', disabled }, children);
 });
-
+MenuItem.displayName = 'MenuItem';
 export const Menu: React.FC<MenuProps> = forwardRef((props, ref) => {
   const parentId = useFloatingParentNodeId();
 
@@ -73,6 +69,7 @@ export const Menu: React.FC<MenuProps> = forwardRef((props, ref) => {
 
   return <MenuComponent {...props} ref={ref} />;
 });
+Menu.displayName = 'Menu';
 
 export interface MenuProps {
   icon?: React.ReactNode;
@@ -80,11 +77,12 @@ export interface MenuProps {
   nested?: boolean;
   children?: React.ReactNode;
   as?: React.ComponentType;
+  className?: string;
   onItemClick?: MouseEventHandler<HTMLButtonElement>;
 }
 
-export const MenuComponent = forwardRef<any, MenuProps & React.HTMLProps<HTMLButtonElement>>(
-  ({ children, icon, label, onItemClick, as: As = 'div', ...props }, ref) => {
+export const MenuComponent = forwardRef<any, MenuProps & Omit<React.HTMLProps<HTMLButtonElement>, 'label' | 'as'>>(
+  ({ children, icon, label, onItemClick, className, as: As = 'div', ...props }, ref) => {
     const [open, setOpen] = useState(false);
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
     const [allowHover, setAllowHover] = useState(false);
@@ -294,3 +292,4 @@ export const MenuComponent = forwardRef<any, MenuProps & React.HTMLProps<HTMLBut
     );
   },
 );
+MenuComponent.displayName = 'MenuComponent';
