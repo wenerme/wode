@@ -8,9 +8,10 @@ compile: bundle
 	npx tsc -m esnext --outDir lib/esnext
 	# dist
 	# npx rollup -c rollup.config.ts
+	npx tsc index.ts
 
 clean:
-	rm -rf dist/* && rm -rf lib/*
+	rm -rf dist/* lib/* index.js
 
 bundle:
 	npx esbuild src/index.ts --format=iife --outfile=dist/wener-utils.js --bundle --minify --sourcemap --target=chrome80 --define:process.env.NODE_ENV=production
