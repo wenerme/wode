@@ -18,7 +18,7 @@ export interface ErrorBoundaryProps {
  * ErrorBoundary will catch the error and invoke the renderError to render the content
  */
 export class ErrorBoundary extends React.Component<ErrorBoundaryProps, { error?: any }> {
-  static defaultProps = {
+  static defaultProps: ErrorBoundaryProps = {
     onError: ({ error, errorInfo }) => console.error(`ErrorBoundary catch:`, error, errorInfo),
   };
 
