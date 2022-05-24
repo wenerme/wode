@@ -11,6 +11,7 @@ export interface ErrorBoundaryProps {
    * @param e error context
    */
   onError?: (e: { error: Error; errorInfo: ErrorInfo }) => void;
+  children?: React.ReactNode;
 }
 
 /**

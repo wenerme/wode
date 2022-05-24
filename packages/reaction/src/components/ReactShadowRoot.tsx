@@ -17,6 +17,7 @@ export interface ReactShadowRootProps {
   delegatesFocus?: boolean;
   mode?: ShadowRootMode;
   stylesheets?: CSSStyleSheet[];
+  children?: React.ReactNode;
 }
 
 /**
