@@ -18,7 +18,7 @@ const ActiveLink: React.FC<
     if (active instanceof Function) {
       set(active(isActive));
     } else if (isActive) {
-      set((activeClassName = active || 'active'));
+      set(active || 'active');
     }
   }, [router.asPath]);
 
