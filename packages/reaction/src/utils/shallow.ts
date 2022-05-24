@@ -1,7 +1,7 @@
 /**
  * shallow compare - support object, array
  *
- * @see https://github.com/pmndrs/zustand/blob/main/src/shallow.ts
+ * @see {@link https://github.com/pmndrs/zustand/blob/main/src/shallow.ts zustand/src/shallow.ts}
  */
 export function shallow<T, U>(objA: T, objB: U) {
   if (Object.is(objA, objB)) {

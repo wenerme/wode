@@ -1,17 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import classNames from 'classnames';
-
-const menu = [
-  {
-    label: 'Editor',
-    children: [{ label: 'Tiptap', href: '/tiptap' }],
-  },
-  {
-    label: 'Demo',
-    children: [{ label: 'Menu', href: '/menu' }],
-  },
-];
+import { NavLinks } from '@src/components/page/const';
 
 interface MenuSpec {
   label: React.ReactNode;
@@ -84,13 +74,15 @@ export const PageHeader = () => {
               tabIndex={0}
               className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
             >
-              {renderMenu(menu, { icon: <Right /> })}
+              {renderMenu(NavLinks, { icon: <Right /> })}
             </ul>
           </div>
-          <a className="btn btn-ghost normal-case text-xl">Wener Web Demo</a>
+          <Link href={'/'}>
+            <a className="btn btn-ghost normal-case text-xl">Wener Web Demo</a>
+          </Link>
         </div>
         <div className="navbar-center hidden lg:flex">
-          <ul className="menu menu-horizontal p-0">{renderMenu(menu, { icon: <Down /> })}</ul>
+          <ul className="menu menu-horizontal p-0">{renderMenu(NavLinks, { icon: <Down /> })}</ul>
         </div>
         <div className="navbar-end">{/*<a className="btn">Get started</a>*/}</div>
       </div>
