@@ -22,6 +22,7 @@ import {
   MdFormatUnderlined,
   MdHorizontalRule,
   MdImage,
+  MdLaptop,
   MdLink,
   MdOutlineModeEdit,
   MdOutlineRemoveRedEye,
@@ -45,7 +46,8 @@ import { CgQuote } from 'react-icons/cg';
 import { ColorPlates } from '@src/contents/TipTap/ColorPlates';
 import { ImTextColor } from 'react-icons/im';
 import { BsLayoutSplit, BsLayoutThreeColumns } from 'react-icons/bs';
-import { Menu, MenuItem } from '@src/components/DropdownMenu';
+import { MenuSpec, MenuToolItem } from '@src/contents/TipTap/MenuToolItem';
+import { useEditorStore, useEditorStoreApi } from '@src/contents/TipTap/useEditorState';
 
 const FontFamilySet: OptionItem[] = [
   { label: '默认字体', value: '' },
@@ -359,11 +361,11 @@ const tools: Array<ToolItem> = [
     active: 'code',
   },
   {
-    content: <TextColorSelect />,
+    content: <TextColorSelect editor={undefined as any} />,
     tooltip: '文本颜色',
   },
   {
-    content: <MarkColorSelect />,
+    content: <MarkColorSelect editor={undefined as any} />,
     tooltip: '突出显示颜色',
     active: 'highlight',
   },
@@ -401,7 +403,7 @@ const tools: Array<ToolItem> = [
     icon: <MdTableChart />,
     tooltip: '插入表格',
     active: 'table',
-    command: ({ chain }) => chain.insertTable({ cols: 3, row: 3, withHeaderRow: true }),
+    command: ({ chain }) => chain.insertTable({ cols: 3, rows: 3, withHeaderRow: true }),
   },
   {
     icon: <MdHorizontalRule />,
@@ -550,111 +552,74 @@ const EditModeSelect: React.FC<{ editor: Editor }> = ({ editor }) => {
   );
 };
 
-const MenuContainer = styled.div`
-  &.Menu:not(.RootMenu) {
-    background-color: white;
-    padding: 2px 0;
-    border: 1px solid #dadce0;
-    border-radius: 4px;
-    display: flex;
-    flex-flow: column;
-    gap: 2px;
-    align-items: stretch;
-
-    min-width: 120px;
-
-    & > button {
-      text-align: left;
-      padding: 4px 6px;
-      border-radius: 2px;
-
-      display: flex;
-      align-items: center;
-      gap: 4px;
-
-      .MenuItem__icon {
-        width: 16px;
-        height: 16px;
-      }
-
-      .MenuItem__label {
-        flex: 1;
-      }
-
-      .MenuItem__more {
-        color: gray;
-      }
-
-      &:hover {
-        background-color: #f1f3f4;
-      }
-
-      &.active {
-        color: #1a73e8;
-        background-color: #e8f0fe;
-      }
-    }
-  }
-`;
-
-const MenuWrap = ({ className, ...props }: any) => {
-  return <div className={classNames('bg-white p-2 border shadow rounded', className)} {...props} />;
-};
-
-const SettingMenu = [
+const SettingMenuItems: MenuSpec[] = [
   {
-    label: '屏幕',
+    label: '预览屏宽',
     icon: <MdScreenshot />,
-    name: 'screen',
+    name: 'viewSize',
     children: [
       { label: '自动', value: '' },
       { label: '桌面', icon: <MdDesktopMac />, value: 'desktop' },
       { label: '平板', icon: <MdTablet />, value: 'tablet' },
+      { label: '笔记本', icon: <MdLaptop />, value: 'laptop' },
       { label: '手机', icon: <MdPhone />, value: 'phone' },
     ],
   },
   {
     label: '预设样式',
     icon: <MdAutoAwesome />,
-    name: 'preset',
+    name: 'presetStyleName',
     children: [
       { label: '无', value: '' },
       {
         label: 'Prose',
-        value: 'prose',
-        name: 'prose',
         icon: <MdTablet />,
         children: [
-          { label: 'Gray', value: 'gray' },
-          { label: 'Slate', value: 'slate' },
-          { label: 'Zinc', value: 'zinc' },
-          { label: 'Neutral', value: 'neutral' },
-          { label: 'Stone', value: 'stone' },
+          { label: 'Gray', value: 'prose-gray' },
+          { label: 'Slate', value: 'prose-slate' },
+          { label: 'Zinc', value: 'prose-zinc' },
+          { label: 'Neutral', value: 'prose-neutral' },
+          { label: 'Stone', value: 'prose-stone' },
         ],
       },
     ],
   },
+  { type: 'divider' },
+  {
+    label: 'v1.0',
+    disabled: true,
+  },
 ];
 
 const SettingToolItem = () => {
+  let settings = useEditorStore((s) => s.settings);
+  let api = useEditorStoreApi();
   return (
-    <Menu as={MenuContainer} label={<MdSettings />}>
-      <Menu
-        label={
-          <>
-            <MdScreenshot className={'MenuItem__icon'} />
-            <span className={'MenuItem__label'}>屏幕</span>
-          </>
+    <MenuToolItem
+      items={SettingMenuItems}
+      label={
+        <span className={'__tool p-0.5'}>
+          <MdSettings className={'w-5 h-5'} />
+        </span>
+      }
+      getItemProps={(v) => {
+        let active = !v.disabled && v.value !== undefined && v.name && settings[v.name] === v.value;
+        let props: Record<string, any> = {};
+        if (active) {
+          props['data-active'] = true;
         }
-        as={MenuContainer}
-      >
-        {SettingMenu[0].children.map((v, i) => {
-          return <MenuItem key={i} icon={v.icon} label={v.label} />;
-        })}
-      </Menu>
-    </Menu>
+        return props;
+      }}
+      onItemClick={(e, { name, value }) => {
+        if (value !== undefined && name) {
+          api.setState((s) => {
+            s.settings[name] = value;
+            return { ...s, settings: { ...s.settings } };
+          });
+        }
+      }}
+    />
   );
-  return <MdSettings />;
 };
 
 const settings: Array<ToolItem> = [
@@ -670,6 +635,7 @@ const settings: Array<ToolItem> = [
 
 const Container = styled.div`
   color: rgba(0, 0, 0, 0.7);
+  z-index: 1;
 
   .__tools {
     display: flex;
@@ -714,6 +680,7 @@ const Container = styled.div`
     }
 
     &.active,
+    &.open,
     button.active {
       color: #1a73e8;
       background-color: #e8f0fe;
@@ -738,7 +705,11 @@ function renderToolItem({ item, key, editor }: { item: ToolItem; key: any; edito
   if (item.type === 'divider') {
     return <hr key={key} />;
   }
-  const props: Omit<HTMLProps<HTMLButtonElement>, 'type'> = { key: key, editor, title: item.tooltip };
+  const props: Omit<HTMLProps<HTMLButtonElement>, 'type'> & { editor: Editor } = {
+    key: key,
+    editor,
+    title: item.tooltip,
+  };
   const param = { item, editor, props };
   if (item.command) {
     if (item.disabled === undefined) {
@@ -776,12 +747,16 @@ function renderToolItem({ item, key, editor }: { item: ToolItem; key: any; edito
   return undefined;
 }
 
-export const Toolbar: React.FC<{ editor: Editor } & HTMLProps<HTMLDivElement>> = ({ editor, ...rest }) => {
+export const Toolbar: React.FC<{ editor: Editor } & Omit<HTMLProps<HTMLDivElement>, 'ref' | 'as'>> = ({
+  editor,
+  children,
+  ...rest
+}) => {
   const countRef = useRef(0);
   console.log(`Render Toolbar ${countRef.current++}`);
   return (
     <Container {...rest}>
-      <div className={'flex'}>
+      <div className={'flex px-4'}>
         <div className={'flex-1 __tools'}>{tools.map((item, key) => renderToolItem({ item, editor, key }))}</div>
         <div className={'__tools self-start'}>{settings.map((item, key) => renderToolItem({ item, editor, key }))}</div>
       </div>

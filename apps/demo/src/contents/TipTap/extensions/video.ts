@@ -77,6 +77,6 @@ export default Node.create<VideoOptions>({
             attrs: options,
           });
         },
-    } as any;
+    };
   },
 });

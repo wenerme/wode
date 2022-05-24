@@ -1,9 +1,15 @@
-import { Editor, EditorContent } from '@tiptap/react';
-import React from 'react';
-
+import { useEditorStore } from '@src/contents/TipTap/useEditorState';
+import classNames from 'classnames';
 import styled from 'styled-components';
 
-const Content = styled.div`
+const DeviceSize: Record<string, string> = {
+  mobile: 'max-w-screen-sm',
+  tablet: 'max-w-screen-md',
+  laptop: 'max-w-screen-lg',
+  desktop: 'max-w-screen-xl',
+};
+
+const ViewerContainer = styled.div`
   .ProseMirror {
     outline: none;
     //line-height: 1.25rem;
@@ -68,11 +74,17 @@ const Content = styled.div`
     }
   }
 `;
-
-export const EditorHere: React.FC<{ editor: Editor }> = ({ editor }) => {
-  return (
-    <Content>
-      <EditorContent spellCheck="false" autoComplete="off" autoCorrect="off" autoCapitalize="off" editor={editor} />
-    </Content>
+export const Viewer: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
+  const { viewSize, presetStyleName } = useEditorStore(({ settings: { viewSize, presetStyleName } }) => ({
+    viewSize,
+    presetStyleName,
+  }));
+  let cx = classNames(
+    'p-4 shadow border bg-white mx-auto h-fit min-h-full',
+    presetStyleName?.startsWith('prose') && 'prose',
+    presetStyleName,
+    !viewSize && 'max-w-none',
+    DeviceSize[viewSize || ''],
   );
+  return <ViewerContainer className={cx}>{children}</ViewerContainer>;
 };

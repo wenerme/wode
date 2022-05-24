@@ -74,7 +74,9 @@ const Container = styled.div`
   }
 `;
 
-export const FakeInput: React.FC<FakeInputProps & Omit<HTMLProps<HTMLDivElement>, 'onChange'>> = (props) => {
+export const FakeInput: React.FC<
+  FakeInputProps & Omit<HTMLProps<HTMLDivElement>, 'onChange' | 'children' | 'ref' | 'as'>
+> = (props) => {
   const { value, min, max, options = [], onChange, pattern, placeholder, step = 1, ...rest } = props;
   const [edit, setEdit] = React.useState(value ?? '');
   React.useLayoutEffect(() => {

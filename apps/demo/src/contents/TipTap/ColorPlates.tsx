@@ -134,7 +134,7 @@ export const ColorPlates: React.FC<{ value?: string; onChange?: (v: string) => v
           <ColorButton
             key={i}
             value={v[1]}
-            onClick={(e: MouseEvent<HTMLButtonElement>) => onChange?.(e.target?.value)}
+            onClick={(e: MouseEvent<HTMLButtonElement>) => onChange?.(e.currentTarget?.value)}
             style={{ backgroundColor: v[1], color: v[2] ? 'white' : 'black' }}
           />
         ))}
@@ -165,7 +165,7 @@ export const ColorPlates: React.FC<{ value?: string; onChange?: (v: string) => v
           <ColorButton
             key={i}
             className={classNames(v[1] === value && 'checked')}
-            onClick={(e: MouseEvent<HTMLButtonElement>) => onChange?.(e.target?.value)}
+            onClick={(e: MouseEvent<HTMLButtonElement>) => onChange?.(e.currentTarget?.value)}
             title={v[0]}
             value={v[1]}
             style={{ backgroundColor: v[1], color: v[2] ? 'white' : 'black' }}
