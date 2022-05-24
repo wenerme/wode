@@ -3,13 +3,13 @@ import StarterKit from '@tiptap/starter-kit';
 import React, { useEffect, useRef, useState } from 'react';
 import UnderlineExtension from '@tiptap/extension-underline';
 import LinkExtension from '@tiptap/extension-link';
-import ImageExtension from '@tiptap/extension-image';
+import { Image as ImageExtension } from './extensions/image';
 import TextAlignExtension from '@tiptap/extension-text-align';
 import TableExtension from '@tiptap/extension-table';
 import TableRowExtension from '@tiptap/extension-table-row';
 import TableCellExtension from '@tiptap/extension-table-cell';
 import TableHeaderExtension from '@tiptap/extension-table-header';
-import TextStyleExtension from '@tiptap/extension-text-style';
+import { TextStyle as TextStyleExtension } from './extensions/text-style';
 import TaskItemExtension from '@tiptap/extension-task-item';
 import TaskListExtension from '@tiptap/extension-task-list';
 import CharacterCountExtension from '@tiptap/extension-character-count';
@@ -25,6 +25,8 @@ import { createEditorStore, EditorStore, EditorStoreProvider, useEditorStoreApi 
 import { Viewer } from '@src/contents/TipTap/TipTapWord/Viewer';
 import { Statusbar } from '@src/contents/TipTap/TipTapWord/Statusbar/Statusbar';
 import { Menubar } from '@src/contents/TipTap/TipTapWord/Menubar/Menubar';
+import { ClassNamesExtension } from '@src/contents/TipTap/TipTapWord/extensions/class-names';
+import { TextStyle } from '@src/contents/TipTap/TipTapWord/extensions/text-style';
 // import { Document as DocumentExtension } from './extensions/document';
 
 const TipTapWordExtensions = [
@@ -48,6 +50,7 @@ const TipTapWordExtensions = [
   // IndentExtension,
   ColorExtension,
   HighlightExtension.configure({ multicolor: true }),
+  ClassNamesExtension,
   //
   LinkExtension.configure({
     autolink: true,
