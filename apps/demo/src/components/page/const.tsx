@@ -1,15 +1,23 @@
+import { VscGithubInverted } from 'react-icons/vsc';
+import { MdEditNote, MdInsertDriveFile, MdMenu } from 'react-icons/md';
+import { IoCalculator } from 'react-icons/io5';
+import { GrAppsRounded } from 'react-icons/gr';
+import { ImLab } from 'react-icons/im';
+
 export const NavLinks = [
   {
+    icon: <GrAppsRounded />,
     label: 'Apps',
-    children: [{ label: 'Calculator', href: '/apps/calculator' }],
+    children: [{ icon: <IoCalculator />, label: 'Calculator', href: '/apps/calculator' }],
   },
-
   {
+    icon: <ImLab />,
     label: 'Demo',
     children: [
-      { label: 'Tiptap', href: '/tiptap' },
-      { label: 'Menu', href: '/menu' },
+      { icon: <MdEditNote />, label: 'Tiptap', href: '/tiptap' },
+      { icon: <MdMenu />, label: 'Menu', href: '/demo/menu' },
+      { icon: <MdInsertDriveFile />, label: 'File Input', href: '/demo/file-input' },
     ],
   },
-  { label: 'Github', href: 'https://github.com/wenerme/wode', children: [] },
+  { icon: <VscGithubInverted />, label: 'Github', href: 'https://github.com/wenerme/wode', children: [] },
 ];
