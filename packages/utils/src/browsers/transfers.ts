@@ -1,7 +1,11 @@
-export function getFile(dataTransfer: DataTransfer): { file: File; filename: string } | null {
+export function getFile(dataTransfer: DataTransfer | null): { file: File; filename: string } | null {
+  if (dataTransfer === null) {
+    return null;
+  }
   const items: DataTransferItemList = dataTransfer?.items ?? ([] as any);
 
   if (items.length >= 2 && items[0].kind === 'string' && items[1].kind === 'file') {
+    // name, file
     const text = dataTransfer.getData('text');
     const file = items[1].getAsFile() ?? dataTransfer.files?.item(0);
     if (!file) {

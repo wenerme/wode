@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { NavLinks } from '@src/components/page/const';
 
 interface MenuSpec {
+  icon?: React.ReactNode;
   label: React.ReactNode;
   href?: string;
   children?: MenuSpec[];
@@ -13,6 +14,7 @@ function renderItem(v: MenuSpec, key: number) {
   return (
     <li key={key}>
       <Link href={v.href || ''} legacyBehavior={false}>
+        {v.icon}
         {v.label}
       </Link>
     </li>
@@ -41,6 +43,7 @@ function renderMenu(menu: MenuSpec[], { icon = <Down />, listClassName = 'z-20 b
       return (
         <li tabIndex={0}>
           <a className="justify-between">
+            {v.icon}
             {v.label}
             {icon}
           </a>
