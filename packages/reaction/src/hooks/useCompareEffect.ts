@@ -11,7 +11,7 @@ import React, { DependencyList, EffectCallback, useEffect } from 'react';
 export function useCompareEffect(
   f: EffectCallback,
   deps: DependencyList,
-  eq: (a, b) => boolean = useCompareEffect.defaultComparator,
+  eq: (a: any, b: any) => boolean = useCompareEffect.defaultComparator,
 ) {
   const counter = React.useRef(0);
   const prev = React.useRef(deps);
@@ -22,4 +22,4 @@ export function useCompareEffect(
   useEffect(f, [counter.current]);
 }
 
-useCompareEffect.defaultComparator = (a, b) => a === b;
+useCompareEffect.defaultComparator = (a: any, b: any) => a === b;
