@@ -17,8 +17,8 @@ import HighlightExtension from '@tiptap/extension-highlight';
 // import { Highlight as HighlightExtension } from './extensions/highlight';
 import { Color as ColorExtension } from '@tiptap/extension-color';
 import FontFamilyExtension from '@tiptap/extension-font-family';
-import { FontSize as FontSizeExtension, TextStyles as LineHeightExtension } from './extensions/text-styles';
-import CSSColumnsExtension from './extensions/css-columns';
+import CssColumnsExtension from './extensions/css-columns';
+import { BlockStyles, TextFormats, TextIndent } from './extensions/text-styles';
 import VideExtension from './extensions/video';
 import { Toolbar } from '@src/contents/TipTap/TipTapWord/Toolbar/Toolbar';
 import { createEditorStore, EditorStore, EditorStoreProvider, useEditorStoreApi } from './useEditorState';
@@ -26,7 +26,7 @@ import { Viewer } from '@src/contents/TipTap/TipTapWord/Viewer';
 import { Statusbar } from '@src/contents/TipTap/TipTapWord/Statusbar/Statusbar';
 import { Menubar } from '@src/contents/TipTap/TipTapWord/Menubar/Menubar';
 import { ClassNamesExtension } from '@src/contents/TipTap/TipTapWord/extensions/class-names';
-import { TextStyle } from '@src/contents/TipTap/TipTapWord/extensions/text-style';
+import { IndentExtension } from '@src/contents/TipTap/TipTapWord/extensions/indent';
 // import { Document as DocumentExtension } from './extensions/document';
 
 const TipTapWordExtensions = [
@@ -43,14 +43,17 @@ const TipTapWordExtensions = [
   }),
   TextStyleExtension,
   FontFamilyExtension,
-  FontSizeExtension,
-  LineHeightExtension,
+  ...TextFormats,
+  ...BlockStyles.map((v) => v.configure({ types: ['listItem', 'heading', 'paragraph'] })),
+  TextIndent.configure({
+    types: ['paragraph'],
+  }),
+  ClassNamesExtension,
   // FontWeightExtension,
   // LineHeightExtension,
-  // IndentExtension,
+  IndentExtension,
   ColorExtension,
   HighlightExtension.configure({ multicolor: true }),
-  ClassNamesExtension,
   //
   LinkExtension.configure({
     autolink: true,
@@ -77,7 +80,7 @@ const TipTapWordExtensions = [
 
   CharacterCountExtension.configure(),
 
-  CSSColumnsExtension.configure({
+  CssColumnsExtension.configure({
     types: ['paragraph'],
   }),
 ];

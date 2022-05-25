@@ -32,12 +32,12 @@ export const ClassNamesExtension = Extension.create<ClassNameOptions>({
             default: {},
             parseHTML: (element) => {
               const ele = element as HTMLElement;
-              const hasClass = ele.hasAttribute('class');
-              if (!hasClass) {
+              let names = Array.from(ele.classList).map((v) => [v, true]);
+              if (!names.length) {
                 return {};
               }
 
-              return Object.fromEntries(Array.from(ele.classList).map((v) => [v, true]));
+              return Object.fromEntries(names);
             },
             renderHTML: (attributes) => {
               const className = classNames(attributes[this.name]);

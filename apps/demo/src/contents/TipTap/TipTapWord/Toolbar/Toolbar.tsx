@@ -482,10 +482,12 @@ const tools: Array<ToolItem> = [
   },
   {
     icon: <MdFormatIndentDecrease />,
+    command: ({ chain }) => chain.decreaseIndent(),
     tooltip: '减少缩进',
   },
   {
     icon: <MdFormatIndentIncrease />,
+    command: ({ chain }) => chain.increaseIndent(),
     tooltip: '增加缩进',
   },
   {
