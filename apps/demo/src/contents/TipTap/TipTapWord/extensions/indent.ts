@@ -63,14 +63,13 @@ function update({ step = 1, min = 0, max = Number.POSITIVE_INFINITY, unit = '' }
   delta?: number,
 ) => string {
   return (last, delta = step) => {
-    if (!last) {
-      return `${delta}${unit}`;
-    }
     let n;
 
     // TODO CSSNumericValue.parse Chrome only 66+
     //  polyfill https://github.com/csstools/css-typed-om
-    if (typeof last === 'number') {
+    if (last === undefined || last === null) {
+      n = 0;
+    } else if (typeof last === 'number') {
       n = last;
     } else {
       // will 16rem -> 16

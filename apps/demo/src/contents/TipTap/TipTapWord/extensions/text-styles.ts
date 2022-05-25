@@ -233,8 +233,13 @@ function createStyle(o: CreateStyleOptions) {
               .filter((v) => editor.isActive(v))
               .some((type) => {
                 let next = value;
+                let last = editor.getAttributes(type)?.[name];
                 if (typeof value === 'function') {
-                  next = value(editor.getAttributes(type)?.[name]);
+                  next = value(last);
+                }
+                if (last === next) {
+                  // may overflow or underflow
+                  return false;
                 }
                 return commands.updateAttributes(type, { [name]: next });
               });

@@ -22,7 +22,7 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, { error?:
     onError: ({ error, errorInfo }) => console.error(`ErrorBoundary catch:`, error, errorInfo),
   };
 
-  constructor(props) {
+  constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = {};
   }
