@@ -42,12 +42,12 @@ export class ReactShadowRoot extends React.PureComponent<ReactShadowRootProps> {
   state = { initialized: false };
 
   /**
-   * @param {object} props Properties passed to the component
+   * @param {ReactShadowRootProps} props Properties passed to the component
    * @param {boolean} props.delegatesFocus  Expands the focus behavior of elements within the shadow DOM.
    * @param {string} props.mode Sets the mode of the shadow root. (open or closed)
    * @param {CSSStyleSheet[]} props.stylesheets Takes an array of CSSStyleSheet objects for constructable stylesheets.
    */
-  constructor(props) {
+  constructor(props: ReactShadowRootProps) {
     super(props);
     this.placeholder = React.createRef();
   }

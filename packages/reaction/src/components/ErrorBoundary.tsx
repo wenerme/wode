@@ -27,11 +27,11 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, { error?:
     this.state = {};
   }
 
-  static getDerivedStateFromError(error) {
+  static getDerivedStateFromError(error: any) {
     return { error };
   }
 
-  componentDidCatch(error, errorInfo) {
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     this.props.onError?.({ error, errorInfo });
   }
 
