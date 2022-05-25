@@ -12,13 +12,20 @@ export const {
 export const createEditorStore = (init: Omit<EditorStore, 'settings'> & Partial<Pick<EditorStore, 'settings'>>) =>
   create<EditorStore>(() => {
     return {
-      settings: {},
       ...init,
+      settings: { presetStyleName: 'prose-gray', ...init.settings },
     };
   });
 
 export interface EditorStore {
   editor: Editor;
   editorDomRef: RefObject<HTMLDivElement>;
-  settings: Record<string, any>;
+  settings: EditorSettings;
+}
+
+export interface EditorSettings {
+  viewSize?: string;
+  presetStyleName?: 'prose-gray' | string;
+
+  [key: string]: any;
 }
