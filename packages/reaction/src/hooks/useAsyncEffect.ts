@@ -1,7 +1,7 @@
 import { DependencyList, useEffect, useRef } from 'react';
 
 /**
- * useAsyncEffect accept a async function call, which can accept an AbortController and return a Promise
+ * useAsyncEffect accept async function call, which can accept an AbortController and return a Promise
  * @param effect Effect function
  * @param deps DependencyList
  */

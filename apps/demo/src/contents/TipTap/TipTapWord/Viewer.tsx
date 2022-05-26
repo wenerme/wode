@@ -16,7 +16,7 @@ const ViewerContainer = styled.div`
     min-height: 80px;
 
     .ProseMirror-selectednode {
-      border: 2px solid #1a73e8;
+      outline: 2px solid #1a73e8;
       box-sizing: border-box;
     }
 

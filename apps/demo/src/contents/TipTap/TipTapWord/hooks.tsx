@@ -1,7 +1,7 @@
 import { Draft } from 'immer';
 import { Editor } from '@tiptap/react';
 import { Updater, useImmer } from 'use-immer';
-import { useEditorStore } from '@src/contents/TipTap/TipTapWord/useEditorState';
+import { EditorStore, useEditorStore } from '@src/contents/TipTap/TipTapWord/useEditorState';
 import { useEffect } from 'react';
 
 export function useEditorState<S = any>(o: {
@@ -23,4 +23,10 @@ export function useEditorState<S = any>(o: {
     };
   }, [editor]);
   return [state, update];
+}
+
+let selectEditor = (s: EditorStore) => s.editor;
+
+export function useCurrentEditor() {
+  return useEditorStore(selectEditor);
 }
