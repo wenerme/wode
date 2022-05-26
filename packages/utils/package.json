@@ -43,8 +43,9 @@
     "tsconfig.json"
   ],
   "scripts": {
-    "build": "make compile",
+    "build": "make build",
     "clean": "make clean",
+    "dev": "make dev",
     "test": "jest"
   },
   "devDependencies": {
