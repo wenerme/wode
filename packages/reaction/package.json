@@ -25,12 +25,16 @@
   },
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
-  "typings": "lib/esm/index.d.ts",
+  "types": "src/index.ts",
   "umd:main": "dist/wener-reaction.js",
   "unpkg": "dist/wener-reaction.js",
   "jsdelivr": "dist/wener-reaction.js",
   "jsnext:main": "dist/wener-reaction.esm.js",
   "esnext": "lib/esnext/index.js",
+  "exports": {
+    "import": "./lib/esm/index.js",
+    "require": "./lib/cjs/index.js"
+  },
   "files": [
     "src",
     "lib",

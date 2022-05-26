@@ -5,7 +5,7 @@ import { useImmer } from 'use-immer';
 import { MdUploadFile } from 'react-icons/md';
 import { getFile } from '@wener/utils';
 import classNames from 'classnames';
-import { useBodyEventListener } from '@wener/reaction/src';
+import { useBodyEventListener } from '@wener/reaction';
 
 // https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Image_types
 const fileTypes = [
