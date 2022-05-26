@@ -17,7 +17,8 @@ export { usePrevious } from './hooks/usePrevious';
 export { ErrorBoundary } from './components/ErrorBoundary';
 export { ReactShadowRoot } from './components/ReactShadowRoot';
 
-export { flexRender, FlexRenderer } from './render/flexRender';
+export { flexRender } from './render/flexRender';
+export type { FlexRenderer } from './render/flexRender';
 
 export { createDeepCompareHooks } from './utils/createDeepCompareHooks';
 export { mergeRefs } from './utils/mergeRefs';

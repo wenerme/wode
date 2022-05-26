@@ -2,8 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 
-/// <reference path="shadow-dom.d.ts" />
-
 const hasWindow = typeof window !== 'undefined';
 const constructableStylesheetsSupported =
   hasWindow &&
@@ -55,7 +53,7 @@ export class ReactShadowRoot extends React.PureComponent<ReactShadowRootProps> {
   componentDidMount() {
     const { delegatesFocus, mode = 'open', stylesheets } = this.props;
 
-    this.shadowRoot = this.placeholder.current?.parentNode?.attachShadow({
+    this.shadowRoot = (this.placeholder.current?.parentNode as Element)?.attachShadow({
       delegatesFocus,
       mode,
     });
@@ -74,5 +72,13 @@ export class ReactShadowRoot extends React.PureComponent<ReactShadowRootProps> {
       return <span ref={this.placeholder} />;
     }
     return ReactDOM.createPortal(this.props.children, this.shadowRoot!);
+  }
+}
+
+declare global {
+  interface ShadowRoot {
+    // Chrome 73+
+    // @see {@link https://wicg.github.io/construct-stylesheets/#using-constructed-stylesheets }
+    adoptedStyleSheets?: ReadonlyArray<CSSStyleSheet>;
   }
 }
