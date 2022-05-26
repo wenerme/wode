@@ -4,7 +4,7 @@ import React from 'react';
 import { useImmer } from 'use-immer';
 import parse, { attributesToProps, domToReact, HTMLReactParserOptions } from 'html-react-parser';
 import { Element, Text } from 'domhandler';
-import { MdAnchor } from 'react-icons/all';
+import { MdAnchor } from 'react-icons/md';
 import classNames from 'classnames';
 
 let initialHtml = `

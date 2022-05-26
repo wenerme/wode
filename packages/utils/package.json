@@ -15,12 +15,12 @@
   "author": "wener",
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
-  "typings": "lib/esm/index.d.ts",
+  "types": "src/index.ts",
   "esnext": "lib/esnext/index.js",
-  "umd:main": "dist/wener-utils.js",
-  "unpkg": "dist/wener-utils.js",
-  "jsdelivr": "dist/wener-utils.js",
-  "jsnext:main": "dist/wener-utils.esm.js",
+  "umd:main": "dist/utils.js",
+  "unpkg": "dist/utils.js",
+  "jsdelivr": "dist/utils.js",
+  "jsnext:main": "dist/utils.esm.js",
   "exports": {
     ".": {
       "import": "./lib/esm/index.js",
