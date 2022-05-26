@@ -33,8 +33,11 @@
   "jsnext:main": "dist/wener-reaction.mjs",
   "esnext": "lib/esnext/index.js",
   "exports": {
-    "import": "./lib/esm/index.js",
-    "require": "./lib/cjs/index.js"
+    ".": {
+      "import": "./lib/esm/index.js",
+      "types": "./src/index.ts",
+      "require": "./lib/cjs/index.js"
+    }
   },
   "files": [
     "src",
