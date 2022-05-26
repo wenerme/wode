@@ -3,6 +3,7 @@ import {
   MdAutoAwesome,
   MdBrush,
   MdChecklist,
+  MdClose,
   MdCode,
   MdDesktopMac,
   MdFormatAlignCenter,
@@ -36,9 +37,9 @@ import {
   MdUndo,
   MdVideoLibrary,
 } from 'react-icons/md';
-import React, { cloneElement, HTMLProps, useRef, useState } from 'react';
+import React, { cloneElement, HTMLProps, useEffect, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { Listbox, Popover } from '@headlessui/react';
+import { Dialog, Listbox, Popover, Transition } from '@headlessui/react';
 import { FakeInput } from '@src/contents/TipTap/TipTapWord/Toolbar/FakeInput';
 import { ChainedCommands, Editor } from '@tiptap/react';
 import classNames, { Argument } from 'classnames';
@@ -48,6 +49,10 @@ import { ImTextColor } from 'react-icons/im';
 import { BsLayoutSplit, BsLayoutThreeColumns } from 'react-icons/bs';
 import { MenuSpec, MenuToolItem } from '@src/contents/TipTap/TipTapWord/Toolbar/MenuToolItem';
 import { useEditorStore, useEditorStoreApi } from '@src/contents/TipTap/TipTapWord/useEditorState';
+import create from 'zustand';
+import { createPortal } from 'react-dom';
+import { SimpleFileInput } from '@src/components/form/SimpleFileInput';
+import { useCurrentEditor } from '@src/contents/TipTap/TipTapWord/hooks';
 
 const FontFamilySet: OptionItem[] = [
   { label: '默认字体', value: '' },
@@ -297,6 +302,189 @@ const ColorSelect: React.FC<{
   );
 };
 
+const usePortal = create<{ el?: HTMLDivElement; getContainer: () => HTMLDivElement }>((set, get) => {
+  return {
+    getContainer() {
+      let el = get().el;
+      if (el) {
+        return el;
+      }
+      if (!el) {
+        el = document.body.querySelector('#TipTapWordModal') as HTMLDivElement;
+      }
+      if (!el) {
+        el = document.createElement('div');
+        el.id = 'TipTapWordModal';
+        el.className = 'absolute z-20 inset-0 isolate pointer-events-none [&>*]:pointer-events-auto';
+        document.body.appendChild(el);
+      }
+      set({ el });
+      return el;
+    },
+  };
+});
+const Portal: React.FC<React.PropsWithChildren<{}>> = (props) => {
+  let root = usePortal((s) => s.getContainer());
+  let el = useMemo(() => document.createElement('div'), []);
+  useEffect(() => {
+    root.appendChild(el);
+    return () => {
+      root.removeChild(el);
+    };
+  }, [el, root]);
+  return createPortal(props.children, el);
+};
+
+const SimpleDialog: React.FC<{
+  title?: React.ReactNode;
+  description?: React.ReactNode;
+  action?: React.ReactNode;
+  children?: React.ReactNode;
+  visible: boolean;
+  onVisibleChange: (v: boolean) => void;
+}> = ({ title, description, action, children, visible, onVisibleChange }) => {
+  const onClose = () => {
+    onVisibleChange(false);
+  };
+  return (
+    <Transition appear show={visible} as={React.Fragment}>
+      <Dialog className={'relative z-50'} onClose={onClose}>
+        <Transition.Child
+          as={React.Fragment}
+          enter="ease-out duration-300"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="ease-in duration-200"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          <div className="fixed inset-0 bg-black/25" />
+        </Transition.Child>
+
+        <div className="fixed inset-0 overflow-y-auto">
+          <div className="flex min-h-full items-center justify-center p-4 text-center">
+            <Transition.Child
+              as={React.Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0 scale-95"
+              enterTo="opacity-100 scale-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100 scale-100"
+              leaveTo="opacity-0 scale-95"
+            >
+              <Dialog.Panel className="relative w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <div className={'absolute right-6 top-6'}>
+                  <button
+                    onClick={onClose}
+                    className={'transition bg-transparent hover:bg-gray-200 text-gray-600 rounded-full'}
+                  >
+                    <MdClose className={'w-6 h-6'} />
+                  </button>
+                </div>
+                {title && (
+                  <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
+                    {title}
+                  </Dialog.Title>
+                )}
+                {description && <Dialog.Description>{description}</Dialog.Description>}
+                {children}
+                {action && <div className="mt-4 flex gap-2">{action}</div>}
+              </Dialog.Panel>
+            </Transition.Child>
+          </div>
+        </div>
+      </Dialog>
+    </Transition>
+  );
+};
+
+const ImageToolItem: React.FC<{}> = (props) => {
+  let [open, setOpen] = useState(false);
+  let editor = useCurrentEditor();
+  const [state, setState] = useState<{ file?: File }>({});
+  const doInsert = () => {
+    let file = state.file;
+    if (!file) {
+      return;
+    }
+    editor
+      .chain()
+      .setImage({
+        src: URL.createObjectURL(file),
+        title: file.name,
+        alt: file.name,
+      })
+      .run();
+    setOpen(false);
+  };
+  return (
+    <>
+      <button {...props} onClick={() => setOpen(true)}>
+        <MdImage />
+      </button>
+      <SimpleDialog
+        visible={open}
+        onVisibleChange={setOpen}
+        title={'选择图片'}
+        action={
+          <>
+            <button disabled={!state.file} type="button" className="btn btn-primary btn-sm" onClick={doInsert}>
+              确定
+            </button>
+          </>
+        }
+      >
+        <div className="mt-2 text-center">
+          <SimpleFileInput accept={['image/*']} onFile={(file) => setState({ file })} />
+        </div>
+      </SimpleDialog>
+    </>
+  );
+};
+const VideoToolItem: React.FC<{}> = (props) => {
+  let [open, setOpen] = useState(false);
+  let editor = useCurrentEditor();
+  const [state, setState] = useState<{ file?: File }>({});
+  const doInsert = () => {
+    let file = state.file;
+    if (!file) {
+      return;
+    }
+    editor
+      .chain()
+      .setVideo({
+        src: URL.createObjectURL(file),
+        title: file.name,
+        alt: file.name,
+      })
+      .run();
+    setOpen(false);
+  };
+  return (
+    <>
+      <button {...props} onClick={() => setOpen(true)}>
+        <MdVideoLibrary />
+      </button>
+      <SimpleDialog
+        visible={open}
+        onVisibleChange={setOpen}
+        title={'选择视频'}
+        action={
+          <>
+            <button disabled={!state.file} type="button" className="btn btn-primary btn-sm" onClick={doInsert}>
+              确定
+            </button>
+          </>
+        }
+      >
+        <div className="mt-2 text-center">
+          <SimpleFileInput accept={['video/*']} onFile={(file) => setState({ file })} />
+        </div>
+      </SimpleDialog>
+    </>
+  );
+};
+
 const tools: Array<ToolItem> = [
   {
     icon: <MdUndo />,
@@ -378,12 +566,12 @@ const tools: Array<ToolItem> = [
     active: 'link',
   },
   {
-    icon: <MdImage />,
+    content: <ImageToolItem />,
     tooltip: '插入图片',
     active: 'image',
   },
   {
-    icon: <MdVideoLibrary />,
+    content: <VideoToolItem />,
     tooltip: '插入视频',
     active: 'video',
   },

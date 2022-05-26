@@ -11,7 +11,7 @@ export function useControlled<T>(
   onChange: (v: T) => void,
   initial: T | (() => T),
 ): [T, Dispatch<SetStateAction<T>>] {
-  // do not expected change from controlled to uncontrolled
+  // do not expect change from controlled to uncontrolled
   const [state, setState] = useState<T>(initial);
   if (value === undefined) {
     if (onChange) {

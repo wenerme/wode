@@ -10,8 +10,9 @@
     "tool"
   ],
   "scripts": {
-    "build": "make compile",
-    "clean": "make clean"
+    "build": "make build",
+    "clean": "make clean",
+    "dev": "make dev"
   },
   "bugs": {
     "url": "https://github.com/wenerme/wode/issues"

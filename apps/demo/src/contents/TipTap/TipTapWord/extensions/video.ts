@@ -10,6 +10,7 @@ export interface SetVideoOptions {
   src: string;
   alt?: string;
   title?: string;
+  controls?: boolean;
 }
 
 declare module '@tiptap/core' {
@@ -51,6 +52,9 @@ export default Node.create<VideoOptions>({
       },
       title: {
         default: null,
+      },
+      controls: {
+        default: true,
       },
     };
   },
