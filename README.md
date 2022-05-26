@@ -5,6 +5,9 @@ Wener Node Monorepo
 - apps
   - demo https://wode.vercel.app/
     - TipTap based Google Doc
+      - Extensions
+        - classNames, column-count, margin-{left,right,top,bottom}, line-height, font-size, text-indent, letter-spacing
+        - video, indent
 - packages
   - reaction - [@wener/reaction](https://www.npmjs.com/package/@wener/reaction)
     - React hooks & utils
