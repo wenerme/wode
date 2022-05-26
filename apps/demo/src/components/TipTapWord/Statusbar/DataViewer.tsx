@@ -1,14 +1,50 @@
-import React, { memo, useEffect, useRef, useState } from 'react';
+import React, { ButtonHTMLAttributes, memo, useEffect, useRef, useState } from 'react';
 import { useEditorStore } from '@src/components/TipTapWord/useEditorStore';
 import { useImmer } from 'use-immer';
 import { createPortal } from 'react-dom';
 import { Editor } from '@tiptap/react';
 
-const modes: Record<string, { title: string; get: (e: Editor) => string; set?: (e: Editor, v: string) => void }> = {
+const modes: Record<
+  string,
+  {
+    title: string;
+    get: (e: Editor) => string;
+    set?: (e: Editor, v: string) => void;
+    format?: (v: string) => string;
+    minify?: (v: string) => string;
+  }
+> = {
   json: {
     title: 'JSON',
     get: (e) => JSON.stringify(e.getJSON(), null, 2),
     set: (e, v) => e.commands.setContent(JSON.parse(v)),
+    format: (v) => {
+      return JSON.stringify(JSON.parse(v), null, 2);
+    },
+    minify: (v) => {
+      return JSON.stringify(JSON.parse(v), (key, value) => {
+        // empty
+        switch (value) {
+          case null:
+          case '':
+            return;
+        }
+        if (typeof value === 'object' && Object.values(value).length === 0) {
+          return;
+        }
+        // default
+        if (key.startsWith('margin') && value === '0rem') {
+          return;
+        }
+        if (key === 'cssColumns' && value === '1') {
+          return;
+        }
+        if (key === 'textAlign' && value === 'left') {
+          return;
+        }
+        return value;
+      });
+    },
   },
   html: {
     title: 'HTML',
@@ -52,6 +88,8 @@ export const DataViewer = memo(() => {
               value={mode?.get?.(editor) || ''}
               onSet={mode.set ? (v) => mode.set?.(editor, v) : undefined}
               title={mode.title}
+              onFormat={mode.format}
+              onMinify={mode.minify}
             />
             <hr />
             <form method="dialog">
@@ -78,11 +116,13 @@ export const DataViewer = memo(() => {
 });
 DataViewer.displayName = 'DataViewer';
 
-const DisplayValue: React.FC<{ title: string; value: string; onSet?: (v: string) => void }> = ({
-  title,
-  value,
-  onSet,
-}) => {
+const DisplayValue: React.FC<{
+  title: string;
+  value: string;
+  onSet?: (v: string) => void;
+  onMinify?: (v: string) => string;
+  onFormat?: (v: string) => string;
+}> = ({ title, value, onSet, onMinify, onFormat }) => {
   const [edit, setEdit] = useState(value);
   const lastRef = useRef(value);
 
@@ -92,34 +132,48 @@ const DisplayValue: React.FC<{ title: string; value: string; onSet?: (v: string)
       lastRef.current = value;
     }
   }, [value]);
+  const actions: Array<Partial<ButtonHTMLAttributes<HTMLButtonElement>> | false> = [
+    {
+      disabled: !onMinify,
+      onClick: () => {
+        setEdit(onMinify?.(edit) || '');
+      },
+      children: 'Minify',
+    },
+    {
+      disabled: !onFormat,
+      onClick: () => {
+        setEdit(onFormat?.(edit) || '');
+      },
+      children: 'Format',
+    },
+    {
+      disabled: edit === value,
+      onClick: () => {
+        lastRef.current = value;
+        setEdit(value);
+      },
+      children: 'Reset',
+    },
+    {
+      disabled: edit === value || !onSet,
+      onClick: () => {
+        lastRef.current = edit;
+        onSet?.(edit);
+      },
+      children: 'Set',
+    },
+  ];
   return (
     <div className={'flex flex-col gap-2'}>
       <h3 className={'border-b flex justify-between items-center p-2'}>
         <span className={'font-bold'}>{title}</span>
 
         <div className={'flex gap-2'}>
-          <button
-            type={'button'}
-            className={'btn btn-xs btn-outline'}
-            disabled={edit === value}
-            onClick={() => {
-              lastRef.current = value;
-              setEdit(value);
-            }}
-          >
-            Reset
-          </button>
-          <button
-            type={'button'}
-            className={'btn btn-xs btn-outline'}
-            disabled={edit === value || !onSet}
-            onClick={() => {
-              lastRef.current = edit;
-              onSet?.(edit);
-            }}
-          >
-            Set
-          </button>
+          <small>size {edit.length}</small>
+          {actions.filter(Boolean).map((v, i) => {
+            return <button key={i} type={'button'} className={'btn btn-xs btn-outline'} {...v} />;
+          })}
         </div>
       </h3>
       <textarea

@@ -23,8 +23,8 @@
   "jsnext:main": "dist/wener-utils.esm.js",
   "exports": {
     ".": {
-      "import": "./dist/wener-utils.esm.js",
-      "require": "./dist/wener-utils.cjs"
+      "import": "./lib/esm/index.js",
+      "require": "./lib/cjs/index.js"
     }
   },
   "homepage": "https://github.com/wenerme/wode#readme",

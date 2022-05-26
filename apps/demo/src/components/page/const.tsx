@@ -15,6 +15,7 @@ export const NavLinks = [
     label: 'Demo',
     children: [
       { icon: <MdEditNote />, label: 'Tiptap', href: '/tiptap' },
+      { icon: <MdEditNote />, label: 'Lexical Editor', href: '/demo/lexical' },
       { icon: <MdMenu />, label: 'Menu', href: '/demo/menu' },
       { icon: <MdInsertDriveFile />, label: 'File Input', href: '/demo/file-input' },
     ],

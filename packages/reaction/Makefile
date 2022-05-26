@@ -1,3 +1,9 @@
+PKG_NAME:=$(shell basename $(PWD))
+
+info:
+	@echo $(PKG_NAME)
+	@echo $(shell jq -r '.name' package.json) v$(shell jq -r '.version' package.json)
+
 clean:
 	rm -rf src/**/*.{js,js.map} dist/* lib/* index.js
 
@@ -19,12 +25,12 @@ prepublish: build bundle
 FLAGS:=src/index.ts --external:{react,react-dom,prop-types} --define:process.env.NODE_ENV=\"production\" --target=chrome80 --sourcemap --bundle
 bundle:
 	rm -rf dist/*
-	npx esbuild --format=iife --outfile=dist/wener-reaction.js $(FLAGS)
-	npx esbuild --format=cjs --outfile=dist/wener-reaction.cjs $(FLAGS)
-	npx esbuild --format=esm --outfile=dist/wener-reaction.mjs $(FLAGS)
+	npx esbuild --format=iife --outfile=dist/$(PKG_NAME).js $(FLAGS)
+	npx esbuild --format=cjs --outfile=dist/$(PKG_NAME).cjs $(FLAGS)
+	npx esbuild --format=esm --outfile=dist/$(PKG_NAME).mjs $(FLAGS)
 
 # Check bundle
-#-grep '^// ' dist/wener-reaction.esm.js | grep node_modules
+#-grep '^// ' dist/$(PKG_NAME).esm.js | grep node_modules
 
 fmt:
 	npx prettier src -w

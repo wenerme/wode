@@ -1,0 +1,9 @@
+
+.Container {
+  @apply prose-gray;
+
+
+  & :global([data-lexical-editor]) {
+    @apply p-2 border rounded;
+  }
+}

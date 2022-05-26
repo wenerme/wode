@@ -1,10 +1,10 @@
 /// javascript pseudo random
-export function createRandom({ seed = 0 } = {}) {
-  if (typeof seed === 'string') {
-    const s: string = seed;
+export function createRandom(o: { seed?: string | number } = {}) {
+  let seed = typeof o.seed === 'string' ? 0 : o.seed ?? 0;
+  if (typeof o.seed === 'string') {
     let sum = 0;
-    for (let i = 0; i < s.length; i++) {
-      sum += s.charCodeAt(i);
+    for (let i = 0; i < o.seed.length; i++) {
+      sum += o.seed.charCodeAt(i);
     }
     seed = sum;
   }

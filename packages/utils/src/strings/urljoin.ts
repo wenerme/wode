@@ -1,4 +1,6 @@
-/// see https://github.com/jfromaniello/url-join
+/**
+ * @see {@link https://github.com/jfromaniello/url-join}
+ */
 export function urljoin(...strArray: string[]) {
   const resultArray: string[] = [];
   if (strArray.length === 0) {
