@@ -1,7 +1,7 @@
 import createContext from 'zustand/context';
 import create from 'zustand';
 import { Editor } from '@tiptap/react';
-import { RefObject } from 'react';
+import React, { RefObject } from 'react';
 
 export const {
   Provider: EditorStoreProvider,
@@ -9,9 +9,11 @@ export const {
   useStoreApi: useEditorStoreApi,
 } = createContext<ReturnType<typeof createEditorStore>>();
 
-export const createEditorStore = (init: Omit<EditorStore, 'settings'> & Partial<Pick<EditorStore, 'settings'>>) =>
+type Optional<T, K extends keyof T> = Omit<T, K> & Partial<T>;
+export const createEditorStore = (init: Optional<EditorStore, 'settings' | 'slots'>) =>
   create<EditorStore>(() => {
     return {
+      slots: {},
       ...init,
       settings: { presetStyleName: 'prose-gray', ...init.settings },
     };
@@ -21,6 +23,7 @@ export interface EditorStore {
   editor: Editor;
   editorDomRef: RefObject<HTMLDivElement>;
   settings: EditorSettings;
+  slots: Record<string, SlotState[]>;
 }
 
 export interface EditorSettings {
@@ -28,4 +31,12 @@ export interface EditorSettings {
   presetStyleName?: 'prose-gray' | string;
 
   [key: string]: any;
+}
+
+export interface SlotState {
+  id: string;
+  name: string;
+  placement?: string;
+  order: number;
+  children?: React.ReactNode;
 }

@@ -1,6 +1,7 @@
-import { useEditorStore } from '@src/contents/TipTap/TipTapWord/useEditorState';
+import { useEditorStore } from '@src/components/TipTapWord/useEditorStore';
 import classNames from 'classnames';
 import styled from 'styled-components';
+import React from 'react';
 
 const DeviceSize: Record<string, string> = {
   mobile: 'max-w-screen-sm',

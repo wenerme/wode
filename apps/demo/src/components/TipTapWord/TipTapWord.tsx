@@ -1,6 +1,6 @@
-import { Editor, EditorContent, useEditor } from '@tiptap/react';
+import { useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import UnderlineExtension from '@tiptap/extension-underline';
 import LinkExtension from '@tiptap/extension-link';
 import { Image as ImageExtension } from './extensions/image';
@@ -14,20 +14,15 @@ import TaskItemExtension from '@tiptap/extension-task-item';
 import TaskListExtension from '@tiptap/extension-task-list';
 import CharacterCountExtension from '@tiptap/extension-character-count';
 import HighlightExtension from '@tiptap/extension-highlight';
-// import { Highlight as HighlightExtension } from './extensions/highlight';
 import { Color as ColorExtension } from '@tiptap/extension-color';
 import FontFamilyExtension from '@tiptap/extension-font-family';
 import CssColumnsExtension from './extensions/css-columns';
 import { BlockStyles, TextFormats, TextIndent } from './extensions/text-styles';
 import VideExtension from './extensions/video';
-import { Toolbar } from '@src/contents/TipTap/TipTapWord/Toolbar/Toolbar';
-import { createEditorStore, EditorStore, EditorStoreProvider, useEditorStoreApi } from './useEditorState';
-import { Viewer } from '@src/contents/TipTap/TipTapWord/Viewer';
-import { Statusbar } from '@src/contents/TipTap/TipTapWord/Statusbar/Statusbar';
-import { Menubar } from '@src/contents/TipTap/TipTapWord/Menubar/Menubar';
-import { ClassNamesExtension } from '@src/contents/TipTap/TipTapWord/extensions/class-names';
-import { IndentExtension } from '@src/contents/TipTap/TipTapWord/extensions/indent';
-// import { Document as DocumentExtension } from './extensions/document';
+import { ClassNamesExtension } from '@src/components/TipTapWord/extensions/class-names';
+import { IndentExtension } from '@src/components/TipTapWord/extensions/indent';
+import { TipTapWordContent } from '@src/components/TipTapWord/TipTapWordContent';
+import { Slot, SlotProps } from '@src/components/TipTapWord/components/Slot';
 
 const TipTapWordExtensions = [
   // Text
@@ -85,9 +80,14 @@ const TipTapWordExtensions = [
   }),
 ];
 
-export const TipTapWord: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
+export type TipTapWord = React.FC<React.PropsWithChildren<{}>> & {
+  Status: React.ComponentType<Omit<SlotProps, 'name'>>;
+  Tool: React.ComponentType<Omit<SlotProps, 'name'>>;
+  Menu: React.ComponentType<Omit<SlotProps, 'name'>>;
+};
+
+export const TipTapWord: TipTapWord = ({ children }) => {
   const [value, setValue] = useState({ html: '', json: {} });
-  const editorDomRef = useRef<HTMLDivElement>(null);
   const editor = useEditor({
     extensions: TipTapWordExtensions,
     content: value.html,
@@ -102,45 +102,11 @@ export const TipTapWord: React.FC<React.PropsWithChildren<{}>> = ({ children }) 
   // if (editor.getHTML() !== value.html) {
   //   editor.commands.setContent(value.html);
   // }
-
-  return (
-    <EditorStoreProvider createStore={() => createEditorStore({ editor, editorDomRef })}>
-      <EditorStoreConnector editor={editor} editorDomRef={editorDomRef} />
-      <div ref={editorDomRef} className={'flex-1 relative bg-[#f8f9fa] flex flex-col min-h-[400px]'}>
-        <Menubar className={'border-b bg-white'} editor={editor} />
-        <Toolbar className={'border-b shadow bg-white'} editor={editor} />
-        <div className={'flex-1 min-h-0 relative'}>
-          <div className={'absolute inset-0 p-4 overflow-auto'}>
-            <Viewer>
-              <EditorContent
-                spellCheck="false"
-                autoComplete="off"
-                autoCorrect="off"
-                autoCapitalize="off"
-                editor={editor}
-              />
-            </Viewer>
-          </div>
-        </div>
-        <Statusbar />
-        {children}
-      </div>
-    </EditorStoreProvider>
-  );
+  return <TipTapWordContent editor={editor}>{children}</TipTapWordContent>;
 };
 
-const EditorStoreConnector: React.FC<Partial<EditorStore>> = ({ editor, editorDomRef }) => {
-  let api = useEditorStoreApi();
-  useEffect(() => {
-    api.setState((s) => {
-      let change = s.editor !== editor || s.editorDomRef !== editorDomRef;
-      s.editor = editor ?? s.editor;
-      s.editorDomRef = editorDomRef ?? s.editorDomRef;
-      if (change) {
-        return { ...s };
-      }
-      return s;
-    });
-  }, [editor]);
-  return <></>;
-};
+Slot.displayName = 'Place';
+
+TipTapWord.Status = (props) => <Slot placement={'left'} {...props} name={'Status'} />;
+TipTapWord.Tool = (props) => <Slot {...props} name={'Tool'} />;
+TipTapWord.Menu = (props) => <Slot {...props} name={'Menu'} />;

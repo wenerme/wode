@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
-import { useEditorState } from '@src/contents/TipTap/TipTapWord/hooks';
+import { useEditorState } from '@src/components/TipTapWord/hooks';
 
-export const CharacterCount = memo(() => {
+export const CharacterCounter = memo(() => {
   const [state] = useEditorState({
     initialState: { characters: 0, words: 0 },
     onUpdate({ state: s, editor }) {

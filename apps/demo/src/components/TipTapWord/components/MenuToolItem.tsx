@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import { MdSettings } from 'react-icons/md';
-import { Menu, MenuItem } from '@src/components/DropdownMenu';
 import React, { MouseEvent, MouseEventHandler, useMemo, useRef } from 'react';
 import classNames from 'classnames';
+import { Menu, MenuItem } from '@src/components/TipTapWord/components/Menu';
 
 const MenuContainer = styled.div`
   &.Menu {

@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useRef, useState } from 'react';
-import { useEditorStore } from '@src/contents/TipTap/TipTapWord/useEditorState';
+import { useEditorStore } from '@src/components/TipTapWord/useEditorStore';
 import { useImmer } from 'use-immer';
 import { createPortal } from 'react-dom';
 import { Editor } from '@tiptap/react';

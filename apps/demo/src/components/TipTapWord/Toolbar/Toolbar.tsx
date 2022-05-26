@@ -3,7 +3,6 @@ import {
   MdAutoAwesome,
   MdBrush,
   MdChecklist,
-  MdClose,
   MdCode,
   MdDesktopMac,
   MdFormatAlignCenter,
@@ -39,20 +38,21 @@ import {
 } from 'react-icons/md';
 import React, { cloneElement, HTMLProps, useEffect, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { Dialog, Listbox, Popover, Transition } from '@headlessui/react';
-import { FakeInput } from '@src/contents/TipTap/TipTapWord/Toolbar/FakeInput';
+import { Listbox, Popover } from '@headlessui/react';
+import { FakeInput } from '@src/components/TipTapWord/components/FakeInput';
 import { ChainedCommands, Editor } from '@tiptap/react';
 import classNames, { Argument } from 'classnames';
 import { CgQuote } from 'react-icons/cg';
-import { ColorPlates } from '@src/contents/TipTap/TipTapWord/Toolbar/ColorPlates';
+import { ColorPlates } from '@src/components/TipTapWord/components/ColorPlates';
 import { ImTextColor } from 'react-icons/im';
 import { BsLayoutSplit, BsLayoutThreeColumns } from 'react-icons/bs';
-import { MenuSpec, MenuToolItem } from '@src/contents/TipTap/TipTapWord/Toolbar/MenuToolItem';
-import { useEditorStore, useEditorStoreApi } from '@src/contents/TipTap/TipTapWord/useEditorState';
+import { MenuSpec, MenuToolItem } from '@src/components/TipTapWord/components/MenuToolItem';
+import { useEditorStore, useEditorStoreApi } from '@src/components/TipTapWord/useEditorStore';
 import create from 'zustand';
 import { createPortal } from 'react-dom';
-import { SimpleFileInput } from '@src/components/form/SimpleFileInput';
-import { useCurrentEditor } from '@src/contents/TipTap/TipTapWord/hooks';
+import { SimpleFileInput } from '@src/components/TipTapWord/components/SimpleFileInput';
+import { useCurrentEditor } from '@src/components/TipTapWord/hooks';
+import { SimpleDialog } from '@src/components/TipTapWord/components/SimpleDialog';
 
 const FontFamilySet: OptionItem[] = [
   { label: '默认字体', value: '' },
@@ -333,69 +333,6 @@ const Portal: React.FC<React.PropsWithChildren<{}>> = (props) => {
     };
   }, [el, root]);
   return createPortal(props.children, el);
-};
-
-const SimpleDialog: React.FC<{
-  title?: React.ReactNode;
-  description?: React.ReactNode;
-  action?: React.ReactNode;
-  children?: React.ReactNode;
-  visible: boolean;
-  onVisibleChange: (v: boolean) => void;
-}> = ({ title, description, action, children, visible, onVisibleChange }) => {
-  const onClose = () => {
-    onVisibleChange(false);
-  };
-  return (
-    <Transition appear show={visible} as={React.Fragment}>
-      <Dialog className={'relative z-50'} onClose={onClose}>
-        <Transition.Child
-          as={React.Fragment}
-          enter="ease-out duration-300"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="ease-in duration-200"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-        >
-          <div className="fixed inset-0 bg-black/25" />
-        </Transition.Child>
-
-        <div className="fixed inset-0 overflow-y-auto">
-          <div className="flex min-h-full items-center justify-center p-4 text-center">
-            <Transition.Child
-              as={React.Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0 scale-95"
-              enterTo="opacity-100 scale-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100 scale-100"
-              leaveTo="opacity-0 scale-95"
-            >
-              <Dialog.Panel className="relative w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                <div className={'absolute right-6 top-6'}>
-                  <button
-                    onClick={onClose}
-                    className={'transition bg-transparent hover:bg-gray-200 text-gray-600 rounded-full'}
-                  >
-                    <MdClose className={'w-6 h-6'} />
-                  </button>
-                </div>
-                {title && (
-                  <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
-                    {title}
-                  </Dialog.Title>
-                )}
-                {description && <Dialog.Description>{description}</Dialog.Description>}
-                {children}
-                {action && <div className="mt-4 flex gap-2">{action}</div>}
-              </Dialog.Panel>
-            </Transition.Child>
-          </div>
-        </div>
-      </Dialog>
-    </Transition>
-  );
 };
 
 const ImageToolItem: React.FC<{}> = (props) => {
