@@ -1,4 +1,4 @@
-export * from './clipboard';
+export * from './copy';
 export * from './download';
 export * from './loaders';
-export * from './transfers';
+export * from './getFileFromDataTransfer';

@@ -1,7 +1,22 @@
+export function urljoin(...strArray: string[]);
+export function urljoin(strArray: string[]);
+
 /**
  * @see {@link https://github.com/jfromaniello/url-join}
  */
-export function urljoin(...strArray: string[]) {
+export function urljoin(...args) {
+  let input;
+
+  if (typeof args[0] === 'object') {
+    input = args[0];
+  } else {
+    input = args;
+  }
+
+  return normalize(input);
+}
+
+function normalize(strArray: string[]) {
   const resultArray: string[] = [];
   if (strArray.length === 0) {
     return '';
@@ -37,14 +52,14 @@ export function urljoin(...strArray: string[]) {
 
     if (i > 0) {
       // Removing the starting slashes for each component but the first.
-      component = component.replace(/^[/]+/, '');
+      component = component.replace(/^[\/]+/, '');
     }
     if (i < strArray.length - 1) {
       // Removing the ending slashes for each component but the last.
-      component = component.replace(/[/]+$/, '');
+      component = component.replace(/[\/]+$/, '');
     } else {
       // For the last component we will combine multiple slashes to a single one.
-      component = component.replace(/[/]+$/, '/');
+      component = component.replace(/[\/]+$/, '/');
     }
 
     resultArray.push(component);

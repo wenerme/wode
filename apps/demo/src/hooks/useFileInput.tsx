@@ -1,7 +1,7 @@
 import { useImmer } from 'use-immer';
 import { HTMLProps, useRef } from 'react';
 import { useBodyEventListener } from '@wener/reaction';
-import { getFile } from '@wener/utils';
+import { getFileFromDataTransfer } from '@wener/utils';
 
 interface UseFileInputOptions {
   onFile?: (file: File) => void;
@@ -50,7 +50,7 @@ export function useFileInput(o: UseFileInputOptions = {}) {
           return;
         }
         e.preventDefault();
-        const { file } = getFile(e.clipboardData) || {};
+        const { file } = getFileFromDataTransfer(e.clipboardData);
         file && onFileRef.current(file);
       },
     },
@@ -88,7 +88,7 @@ export function useFileInput(o: UseFileInputOptions = {}) {
           e.preventDefault();
           e.stopPropagation();
 
-          const { file } = getFile(e.dataTransfer) || {};
+          const { file } = getFileFromDataTransfer(e.dataTransfer);
           update({ ...state, acceptable: undefined, isDragOver: false });
           file && onFile(file);
 

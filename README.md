@@ -8,6 +8,7 @@ Wener Node Monorepo
       - Extensions
         - classNames, column-count, margin-{left,right,top,bottom}, line-height, font-size, text-indent, letter-spacing
         - video, indent
+    - [ ] WindowManager
 - packages
   - reaction - [@wener/reaction](https://www.npmjs.com/package/@wener/reaction)
     - React hooks & utils
@@ -25,3 +26,14 @@ Wener Node Monorepo
 ```bash
 npx turbo run build --filter=@wener/demo
 ```
+
+## TODO
+
+- TipTapWord
+  - [ ] 媒体资源选中编辑时回显
+  - [ ] 媒体资源允许配置 URL
+  - [ ] TOC
+  - [ ] 属性编辑器
+  - [ ] LineHeight 菜单
+  - [ ] Markdown 输出
+  - [ ] print

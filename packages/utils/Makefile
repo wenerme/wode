@@ -10,13 +10,13 @@ clean:
 dev: build
 	esbuild --format=esm --outdir=lib/esm --target=chrome80 src/index.ts src/**/*.ts --watch
 
-publish: clean prepublish
+publish:  prepublish
 	npm publish --registry https://registry.npmjs.org
 
 build:
 	npx esbuild --format=esm --outdir=lib/esm --target=chrome80 src/index.ts src/**/*.ts
 
-prepublish: build bundle
+prepublish: clean test build bundle
 	npx tsc -m es2015 --outDir lib/esm --emitDeclarationOnly
 	npx tsc -m commonjs --outDir lib/cjs
 	npx tsc -m esnext --outDir lib/esnext
@@ -37,3 +37,6 @@ fmt:
 
 lint:
 	tsc --pretty --noEmit
+
+test:
+	[ -e jest.config.js ] && npx jest

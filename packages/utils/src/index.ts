@@ -6,3 +6,5 @@ export * from './maths';
 export * from './io';
 export * from './browsers';
 export * from './isomorphics';
+
+export { formatBytes } from './formats/formatBytes';
