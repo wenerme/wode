@@ -1,7 +1,6 @@
 import {
   MdArrowDropDown,
   MdAutoAwesome,
-  MdBrush,
   MdChecklist,
   MdCode,
   MdDesktopMac,
@@ -21,7 +20,6 @@ import {
   MdFormatStrikethrough,
   MdFormatUnderlined,
   MdHorizontalRule,
-  MdImage,
   MdLaptop,
   MdLink,
   MdOutlineModeEdit,
@@ -34,25 +32,23 @@ import {
   MdTableChart,
   MdTablet,
   MdUndo,
-  MdVideoLibrary,
 } from 'react-icons/md';
-import React, { cloneElement, HTMLProps, useEffect, useMemo, useRef, useState } from 'react';
+import React, { cloneElement, HTMLProps, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { Listbox, Popover } from '@headlessui/react';
+import { Listbox } from '@headlessui/react';
 import { FakeInput } from '@src/components/TipTapWord/components/FakeInput';
 import { ChainedCommands, Editor } from '@tiptap/react';
 import classNames, { Argument } from 'classnames';
 import { CgQuote } from 'react-icons/cg';
-import { ColorPlates } from '@src/components/TipTapWord/components/ColorPlates';
-import { ImTextColor } from 'react-icons/im';
 import { BsLayoutSplit, BsLayoutThreeColumns } from 'react-icons/bs';
 import { MenuSpec, MenuToolItem } from '@src/components/TipTapWord/components/MenuToolItem';
 import { useEditorStore, useEditorStoreApi } from '@src/components/TipTapWord/useEditorStore';
-import create from 'zustand';
-import { createPortal } from 'react-dom';
-import { SimpleFileInput } from '@src/components/TipTapWord/components/SimpleFileInput';
-import { useCurrentEditor } from '@src/components/TipTapWord/hooks';
-import { SimpleDialog } from '@src/components/TipTapWord/components/SimpleDialog';
+import { isActive } from '@src/components/TipTapWord/Toolbar/IsActive';
+import { MarkColorToolbarItem } from '@src/components/TipTapWord/Toolbar/MarkColorToolbarItem';
+import { TextColorToolbarItem } from '@src/components/TipTapWord/Toolbar/TextColorToolbarItem';
+import { ImageToolbarItem } from '@src/components/TipTapWord/Toolbar/ImageToolbarItem';
+import { VideoToolbarItem } from '@src/components/TipTapWord/Toolbar/VideoToolbarItem';
+import { useEditorDerivedState } from '@src/components/TipTapWord/hooks';
 
 const FontFamilySet: OptionItem[] = [
   { label: '默认字体', value: '' },
@@ -78,10 +74,17 @@ const FontFamilySet: OptionItem[] = [
   { value: 'Zapf Chancery' },
   { value: 'Zapfino' },
 ];
-const FontFamilySelect: React.FC<{ editor: Editor }> = ({ editor }) => {
-  let ff = editor.getAttributes('textStyle')?.fontFamily || '';
-  const value = FontFamilySet.find((v) => v.value === ff) || FontFamilySet[0];
-  // const [value, setValue] = useState(FontFamilySet[0]);
+const FontFamilySelect: React.FC = () => {
+  const {
+    state: { value },
+    editor,
+  } = useEditorDerivedState<{ value: OptionItem & EditorCommandOptions }>({
+    initialState: { value: TypographySet[0] },
+    onUpdate: ({ editor, state }) => {
+      let ff = editor.getAttributes('textStyle')?.fontFamily || '';
+      state.value = FontFamilySet.find((v) => v.value === ff) || FontFamilySet[0];
+    },
+  });
   return (
     <Dropdown
       value={value}
@@ -101,14 +104,22 @@ const FontSizeSet = [8, 12, 16, 18, 20, 24, 30, 32, 36, 40, 50, 60, 72, 80].map(
   label: String(value),
   value: String(value),
 }));
-const FontSizeSelect: React.FC<{ editor: Editor }> = ({ editor }) => {
-  const [value, setValue] = useState('');
+const FontSizeToolbarItem: React.FC = () => {
+  const {
+    editor,
+    state: { value },
+  } = useEditorDerivedState({
+    initialState: { value: '' },
+    onUpdate: ({ editor, state }) => {
+      state.value = editor.getAttributes('textStyle')?.fontSize || '';
+    },
+  });
   return (
     <FakeInput
       className={'mx-[5px]'}
       options={FontSizeSet}
       placeholder={'默认'}
-      value={editor.getAttributes('textStyle')?.fontSize || ''}
+      value={value}
       onChange={(v) => {
         if (!v) {
           editor.chain().focus().unsetFontSize().run();
@@ -128,8 +139,16 @@ const TypographySet: Array<OptionItem & EditorCommandOptions> = [
   { label: <h3>三级标题</h3>, value: 'h3', active: ({ editor }) => editor.isActive('heading', { level: 3 }) },
   { label: <h4>四级标题</h4>, value: 'h4', active: ({ editor }) => editor.isActive('heading', { level: 4 }) },
 ];
-const TypographySelect: React.FC<{ editor: Editor }> = ({ editor }) => {
-  const value = TypographySet.find((v) => isActive(editor!, v.active)) || TypographySet[0];
+const TypographyToolbarItem: React.FC = () => {
+  const {
+    state: { value },
+    editor,
+  } = useEditorDerivedState<{ value: OptionItem & EditorCommandOptions }>({
+    initialState: { value: TypographySet[0] },
+    onUpdate: ({ editor, state }) => {
+      state.value = TypographySet.find((v) => isActive(editor!, v.active)) || TypographySet[0];
+    },
+  });
   return (
     <Dropdown
       value={value}
@@ -221,204 +240,12 @@ interface EditorCommandOptions<Params = EditorCommandParams> {
   command?: (o: { chain: ChainedCommands }) => ChainedCommands;
 }
 
-function isActive(editor: Editor, a?: ((o: { editor: Editor }) => boolean) | string | object) {
-  if (a === undefined) {
-    return undefined;
-  }
-  if (typeof a === 'function') {
-    return a({ editor });
-  }
-  return editor.isActive(a);
-}
-
 const lineHeights = [0.8, 1, 1.1, 1.2, 1.5, 1.8, 2.0, 2.5, 3.0];
 const LineSpacingSelect = () => {
   return (
     <button className={'__tool'}>
       <MdFormatLineSpacing className={'w-5 h-5'} />
     </button>
-  );
-};
-
-const TextColorSelect: React.FC<{ editor: Editor }> = ({ editor }) => {
-  const value = editor.getAttributes('textStyle')?.color || '';
-  const onChange = (v: string) => {
-    editor.chain().focus().setColor(v).run();
-  };
-  return (
-    <ColorSelect
-      icon={<ImTextColor />}
-      value={value}
-      onChange={onChange}
-      onReset={() => editor.chain().focus().unsetColor().run()}
-    />
-  );
-};
-const MarkColorSelect: React.FC<{ editor: Editor; className?: string }> = ({ editor, className }) => {
-  const value = editor.getAttributes('highlight')?.color || '';
-  const onChange = (v: string) => {
-    editor.chain().focus().setHighlight({ color: v }).run();
-  };
-  return (
-    <ColorSelect
-      className={className}
-      icon={<MdBrush />}
-      value={value}
-      onChange={onChange}
-      onReset={() => editor.chain().focus().unsetHighlight().run()}
-    />
-  );
-};
-const ColorSelect: React.FC<{
-  value: string;
-  onChange?: (v: string) => void;
-  icon?: React.ReactNode;
-  onReset?: () => void;
-  className?: string;
-}> = ({ value, onChange, icon, onReset, className }) => {
-  return (
-    <Popover className="relative">
-      {({ open, close }) => {
-        return (
-          <>
-            <Popover.Button className={classNames('__tool flex flex-col', className)}>
-              {icon}
-              <div style={{ height: 3, width: 14, backgroundColor: value || '' }}></div>
-            </Popover.Button>
-            <Popover.Panel className="absolute z-10 p-2 border rounded shadow bg-white" style={{ width: 250 }}>
-              <ColorPlates
-                value={value}
-                onChange={(v) => {
-                  onChange?.(v);
-                  close();
-                }}
-                onReset={onReset}
-              />
-            </Popover.Panel>
-          </>
-        );
-      }}
-    </Popover>
-  );
-};
-
-const usePortal = create<{ el?: HTMLDivElement; getContainer: () => HTMLDivElement }>((set, get) => {
-  return {
-    getContainer() {
-      let el = get().el;
-      if (el) {
-        return el;
-      }
-      if (!el) {
-        el = document.body.querySelector('#TipTapWordModal') as HTMLDivElement;
-      }
-      if (!el) {
-        el = document.createElement('div');
-        el.id = 'TipTapWordModal';
-        el.className = 'absolute z-20 inset-0 isolate pointer-events-none [&>*]:pointer-events-auto';
-        document.body.appendChild(el);
-      }
-      set({ el });
-      return el;
-    },
-  };
-});
-const Portal: React.FC<React.PropsWithChildren<{}>> = (props) => {
-  let root = usePortal((s) => s.getContainer());
-  let el = useMemo(() => document.createElement('div'), []);
-  useEffect(() => {
-    root.appendChild(el);
-    return () => {
-      root.removeChild(el);
-    };
-  }, [el, root]);
-  return createPortal(props.children, el);
-};
-
-const ImageToolItem: React.FC<{}> = (props) => {
-  let [open, setOpen] = useState(false);
-  let editor = useCurrentEditor();
-  const [state, setState] = useState<{ file?: File }>({});
-  const doInsert = () => {
-    let file = state.file;
-    if (!file) {
-      return;
-    }
-    editor
-      .chain()
-      .setImage({
-        src: URL.createObjectURL(file),
-        title: file.name,
-        alt: file.name,
-      })
-      .run();
-    setOpen(false);
-  };
-  return (
-    <>
-      <button {...props} onClick={() => setOpen(true)}>
-        <MdImage />
-      </button>
-      <SimpleDialog
-        visible={open}
-        onVisibleChange={setOpen}
-        title={'选择图片'}
-        action={
-          <>
-            <button disabled={!state.file} type="button" className="btn btn-primary btn-sm" onClick={doInsert}>
-              确定
-            </button>
-          </>
-        }
-      >
-        <div className="mt-2 text-center">
-          <SimpleFileInput accept={['image/*']} onFile={(file) => setState({ file })} />
-        </div>
-      </SimpleDialog>
-    </>
-  );
-};
-const VideoToolItem: React.FC<{}> = (props) => {
-  let [open, setOpen] = useState(false);
-  let editor = useCurrentEditor();
-  const [state, setState] = useState<{ file?: File }>({});
-  const doInsert = () => {
-    let file = state.file;
-    if (!file) {
-      return;
-    }
-    editor
-      .chain()
-      .setVideo({
-        src: URL.createObjectURL(file),
-        title: file.name,
-        alt: file.name,
-      })
-      .run();
-    setOpen(false);
-  };
-  return (
-    <>
-      <button {...props} onClick={() => setOpen(true)}>
-        <MdVideoLibrary />
-      </button>
-      <SimpleDialog
-        visible={open}
-        onVisibleChange={setOpen}
-        title={'选择视频'}
-        action={
-          <>
-            <button disabled={!state.file} type="button" className="btn btn-primary btn-sm" onClick={doInsert}>
-              确定
-            </button>
-          </>
-        }
-      >
-        <div className="mt-2 text-center">
-          <SimpleFileInput accept={['video/*']} onFile={(file) => setState({ file })} />
-        </div>
-      </SimpleDialog>
-    </>
   );
 };
 
@@ -441,18 +268,18 @@ const tools: Array<ToolItem> = [
     type: 'divider',
   },
   {
-    content: <TypographySelect editor={undefined as any} />,
+    content: <TypographyToolbarItem />,
     tooltip: '样式',
   },
   {
     type: 'divider',
   },
   {
-    content: <FontFamilySelect editor={undefined as any} />,
+    content: <FontFamilySelect />,
     tooltip: '字体',
   },
   {
-    content: <FontSizeSelect editor={undefined as any} />,
+    content: <FontSizeToolbarItem />,
     tooltip: '字号',
   },
   {
@@ -486,11 +313,11 @@ const tools: Array<ToolItem> = [
     active: 'code',
   },
   {
-    content: <TextColorSelect editor={undefined as any} />,
+    content: <TextColorToolbarItem editor={undefined as any} />,
     tooltip: '文本颜色',
   },
   {
-    content: <MarkColorSelect editor={undefined as any} />,
+    content: <MarkColorToolbarItem editor={undefined as any} />,
     tooltip: '突出显示颜色',
     active: 'highlight',
   },
@@ -503,12 +330,12 @@ const tools: Array<ToolItem> = [
     active: 'link',
   },
   {
-    content: <ImageToolItem />,
+    content: <ImageToolbarItem />,
     tooltip: '插入图片',
     active: 'image',
   },
   {
-    content: <VideoToolItem />,
+    content: <VideoToolbarItem />,
     tooltip: '插入视频',
     active: 'video',
   },
@@ -644,7 +471,7 @@ const EditModeSet = [
     description: '查看或打印最终文档',
   },
 ];
-const EditModeSelect: React.FC<{ editor: Editor }> = ({ editor }) => {
+const EditModeToolbarItem: React.FC<{ editor: Editor }> = ({ editor }) => {
   const value = editor.isEditable ? EditModeSet[0] : EditModeSet[1];
   const [, setValue] = useState(value.value);
   return (
@@ -751,7 +578,7 @@ const SettingToolItem = () => {
 
 const settings: Array<ToolItem> = [
   {
-    content: <EditModeSelect editor={undefined as any} />,
+    content: <EditModeToolbarItem editor={undefined as any} />,
     tooltip: '编辑模式',
   },
   {

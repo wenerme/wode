@@ -1,19 +1,15 @@
-export function urljoin(...strArray: string[]);
-export function urljoin(strArray: string[]);
+export function urljoin(...strArray: string[]): string;
+export function urljoin(strArray: string[]): string;
 
 /**
  * @see {@link https://github.com/jfromaniello/url-join}
  */
-export function urljoin(...args) {
-  let input;
-
-  if (typeof args[0] === 'object') {
-    input = args[0];
+export function urljoin(...args: string[] | [string[]]): string {
+  if (Array.isArray(args[0])) {
+    return normalize(args[0]);
   } else {
-    input = args;
+    return normalize(args as any);
   }
-
-  return normalize(input);
 }
 
 function normalize(strArray: string[]) {

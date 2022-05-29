@@ -13,9 +13,11 @@ interface MenuSpec {
 function renderItem(v: MenuSpec, key: number) {
   return (
     <li key={key}>
-      <Link href={v.href || ''} legacyBehavior={false}>
-        {v.icon}
-        {v.label}
+      <Link href={v.href || ''}>
+        <a>
+          {v.icon}
+          {v.label}
+        </a>
       </Link>
     </li>
   );
@@ -41,7 +43,7 @@ function renderMenu(menu: MenuSpec[], { icon = <Down />, listClassName = 'z-20 b
   return menu.map((v, i) => {
     if (v.children?.length) {
       return (
-        <li tabIndex={0}>
+        <li tabIndex={0} key={i}>
           <a className="justify-between">
             {v.icon}
             {v.label}
