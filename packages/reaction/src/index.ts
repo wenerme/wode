@@ -24,4 +24,4 @@ export { createDeepCompareHooks } from './utils/createDeepCompareHooks';
 export { mergeRefs } from './utils/mergeRefs';
 export { shallow } from './utils/shallow';
 
-export type { Equivalence, Selector, UseSelector } from './typing';
+export type { Equivalence, Selector, UseSelector, Optional } from './typing';
