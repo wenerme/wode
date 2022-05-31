@@ -5,7 +5,7 @@ import {
   MarkdownSerializerState,
   MarkSerializerConfig,
 } from 'prosemirror-markdown';
-import { MarkType, Node as ProsemirrorNode, NodeType } from 'prosemirror-model';
+import { MarkType, Node as ProsemirrorNode, NodeType, Schema } from 'prosemirror-model';
 import { NodeConfig } from '@tiptap/react';
 
 // https://github.com/nextcloud/text/blob/master/src/extensions/Markdown.js
@@ -19,6 +19,11 @@ declare module '@tiptap/core' {
 
   interface NodeConfig<Options = any, Storage = any> {
     renderMarkdown?: (
+      this: {
+        name: string;
+        options: Options;
+        storage: Storage;
+      },
       state: MarkdownSerializerState,
       node: ProsemirrorNode,
       parent: ProsemirrorNode,
@@ -32,7 +37,7 @@ export interface MarkdownOptions {
   marks: Record<string, MarkConfig['renderMarkdown']>;
 }
 
-const Markdown = Extension.create<MarkdownOptions>({
+export const MarkdownExtension = Extension.create<MarkdownOptions>({
   name: 'markdown',
   addOptions() {
     return {
@@ -64,20 +69,18 @@ const Markdown = Extension.create<MarkdownOptions>({
   },
 });
 
-export const createMarkdownSerializer = ({
-  nodes,
-  marks,
-}: {
-  nodes: Record<string, NodeType>;
-  marks: Record<string, MarkType>;
-}) => {
-  // snake_case to camelCase
-  const defaultNodes = convertNames(defaultMarkdownSerializer.nodes);
-  const defaultMarks = convertNames(defaultMarkdownSerializer.marks);
-  let serializer = new MarkdownSerializer(
-    { ...defaultNodes, ...(extractRenderMarkdown(nodes) as any) },
-    { ...defaultMarks, ...(extractRenderMarkdown(marks) as any) },
-  );
+export const createMarkdownSerializer = (schema: Schema) => {
+  const { nodes, marks } = schema;
+  const create = () => {
+    // snake_case to camelCase
+    const defaultNodes = convertNames(defaultMarkdownSerializer.nodes);
+    const defaultMarks = convertNames(defaultMarkdownSerializer.marks);
+    return new MarkdownSerializer(
+      { ...defaultNodes, ...(extractRenderMarkdown(nodes) as any) },
+      { ...defaultMarks, ...(extractRenderMarkdown(marks) as any) },
+    );
+  };
+  let serializer = (schema.cached.markdownSerializer ??= create());
 
   return {
     serializer,
@@ -112,4 +115,4 @@ const convertNames = (object: Record<string, any>) => {
   return Object.fromEntries(Object.entries(object).map(([name, value]) => [convert(name), value]));
 };
 
-export default Markdown;
+export default MarkdownExtension;

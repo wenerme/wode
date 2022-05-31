@@ -3,16 +3,18 @@ import { useEditorStore } from '@src/components/TipTapWord/useEditorStore';
 import { useImmer } from 'use-immer';
 import { createPortal } from 'react-dom';
 import { Editor } from '@tiptap/react';
-import { createMarkdownSerializer } from '@src/components/TipTapWord/extensions/markdown';
+import { createMarkdownSerializer } from '@src/components/TipTapWord/extensions/MarkdownExtension';
 
-const modes: Record<string,
+const modes: Record<
+  string,
   {
     title: string;
     get: (e: Editor) => string;
     set?: (e: Editor, v: string) => void;
     format?: (v: string) => string;
     minify?: (v: string) => string;
-  }> = {
+  }
+> = {
   html: {
     title: 'HTML',
     get: (e) => e.getHTML(),
@@ -95,7 +97,7 @@ export const DataViewer = memo(() => {
               onMinify={mode.minify}
             />
             <hr />
-            <form method='dialog'>
+            <form method="dialog">
               <button onClick={() => setMode('')}>Close</button>
             </form>
           </dialog>
@@ -104,11 +106,15 @@ export const DataViewer = memo(() => {
       )}
 
       <div className={'flex gap-2'}>
-        {Object.entries(modes).map(([name, v]) => <button key={name}
-                                                          className={'hover:bg-gray-300 active:bg-gray-400 rounded p-0.5'}
-                                                          onClick={() => setMode(name)}>
-          {v.title}
-        </button>)}
+        {Object.entries(modes).map(([name, v]) => (
+          <button
+            key={name}
+            className={'hover:bg-gray-300 active:bg-gray-400 rounded p-0.5'}
+            onClick={() => setMode(name)}
+          >
+            {v.title}
+          </button>
+        ))}
       </div>
     </>
   );
@@ -176,7 +182,7 @@ const DisplayValue: React.FC<{
         </div>
       </h3>
       <textarea
-        spellCheck='false'
+        spellCheck="false"
         rows={10}
         className={'border rounded font-mono'}
         value={edit}
