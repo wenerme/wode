@@ -7,6 +7,7 @@ import {
 } from 'prosemirror-markdown';
 import { MarkType, Node as ProsemirrorNode, NodeType, Schema } from 'prosemirror-model';
 import { NodeConfig } from '@tiptap/react';
+import { createMarkdownParser } from '@src/components/TipTapWord/extensions/parseMarkdown';
 
 // https://github.com/nextcloud/text/blob/master/src/extensions/Markdown.js
 // https://github.com/ProseMirror/prosemirror-model/blob/master/src/to_dom.ts
@@ -29,6 +30,12 @@ declare module '@tiptap/core' {
       parent: ProsemirrorNode,
       index: number,
     ) => void;
+  }
+
+  interface Commands<ReturnType> {
+    markdown: {
+      setMarkdownContent: (content: string) => ReturnType;
+    };
   }
 }
 
@@ -71,6 +78,20 @@ export const MarkdownExtension = Extension.create<MarkdownOptions>({
     return {
       renderMarkdown: getExtensionField(extension, 'renderMarkdown', context),
       parseMarkdown: getExtensionField(extension, 'parseMarkdown', context),
+    };
+  },
+
+  addCommands() {
+    return {
+      setMarkdownContent: (v) => {
+        return ({ tr, editor, dispatch }) => {
+          if (dispatch) {
+            let node = createMarkdownParser(editor.schema).parse(v);
+            tr.replaceSelectionWith(node, false).setMeta('preventUpdate', true);
+          }
+          return true;
+        };
+      },
     };
   },
 });
