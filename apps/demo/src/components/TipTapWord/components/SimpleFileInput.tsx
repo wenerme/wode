@@ -7,7 +7,8 @@ import { formatBytes } from '@src/utils/formatBytes';
 export const SimpleFileInput: React.FC<{
   src?: string;
   type?: string;
-  onFile?: (file: File) => void;
+  onFile?: (file: File, o?: { width: number; height: number }) => void;
+  // onNatureSize?: (o: { width: number; height: number }) => void;
   accept?: string[];
 }> = ({ src: initialSrc, type: initialType, onFile, accept = ['image/*', 'video/*'] }) => {
   const { state, getLabelProps, getInputProps } = useFileInput({
@@ -29,8 +30,24 @@ export const SimpleFileInput: React.FC<{
       {src && (
         <>
           <div className={'flex items-center justify-center'}>
-            {isImage && <img src={src} alt={'preview'} />}
-            {isVideo && <video controls src={src} />}
+            {isImage && (
+              <img
+                src={src}
+                alt={'preview'}
+                onLoad={(e) => {
+                  onFile?.(state.file!, { width: e.currentTarget.naturalWidth, height: e.currentTarget.naturalHeight });
+                }}
+              />
+            )}
+            {isVideo && (
+              <video
+                controls
+                src={src}
+                onLoad={(e) => {
+                  onFile?.(state.file!, { width: e.currentTarget.videoWidth, height: e.currentTarget.videoHeight });
+                }}
+              />
+            )}
             {!isImage && !isVideo && <MdUploadFile className={'w-20 h-20'} />}
           </div>
           <div className={'flex flex-col items-center'}>

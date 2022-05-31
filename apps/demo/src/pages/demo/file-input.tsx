@@ -1,5 +1,4 @@
 import type { NextPage } from 'next';
-import Head from 'next/head';
 import React from 'react';
 import { SimpleFileInput } from '@src/components/TipTapWord/components/SimpleFileInput';
 
@@ -31,9 +30,6 @@ const Demo = () => {
 const CurrentPage: NextPage = () => {
   return (
     <>
-      <Head>
-        <title>Demo Page</title>
-      </Head>
       <Demo />
     </>
   );

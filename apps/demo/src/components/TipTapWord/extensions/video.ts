@@ -8,9 +8,10 @@ export interface VideoOptions {
 
 export interface SetVideoOptions {
   src: string;
-  alt?: string;
   title?: string;
   controls?: boolean;
+
+  [key: string]: any;
 }
 
 declare module '@tiptap/core' {
@@ -56,6 +57,21 @@ export default Node.create<VideoOptions>({
       controls: {
         default: true,
       },
+      autoplay: {
+        default: false,
+        renderHTML: (attrs) => {
+          if (attrs['autoplay'] === false) {
+            return {};
+          }
+          return { autoplay: attrs['autoplay'] };
+        },
+      },
+      'data-width': {
+        default: null,
+      },
+      'data-height': {
+        default: null,
+      },
     };
   },
 
@@ -69,6 +85,14 @@ export default Node.create<VideoOptions>({
 
   renderHTML({ HTMLAttributes }) {
     return ['video', mergeAttributes(this.options.HTMLAttributes, HTMLAttributes)];
+  },
+
+  renderMarkdown(state, node) {
+    let ele = document.createElement('video');
+    Object.entries(node.attrs)
+      .filter(([, v]) => v !== null && v !== undefined)
+      .map(([k, v]) => ele.setAttribute(k, v));
+    state.write(ele.outerHTML);
   },
 
   addCommands() {

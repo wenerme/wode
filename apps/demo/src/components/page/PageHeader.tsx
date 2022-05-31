@@ -44,11 +44,13 @@ function renderMenu(menu: MenuSpec[], { icon = <Down />, listClassName = 'z-20 b
     if (v.children?.length) {
       return (
         <li tabIndex={0} key={i}>
-          <a className="justify-between">
-            {v.icon}
-            {v.label}
-            {icon}
-          </a>
+          <Link href={v.href || '/'}>
+            <a className="justify-between">
+              {v.icon}
+              {v.label}
+              {icon}
+            </a>
+          </Link>
           <ul className={classNames('p-2', listClassName)}>{v.children.map(renderItem)}</ul>
         </li>
       );
