@@ -23,8 +23,10 @@ import { ClassNamesExtension } from '@src/components/TipTapWord/extensions/class
 import { IndentExtension } from '@src/components/TipTapWord/extensions/indent';
 import { TipTapWordContent } from '@src/components/TipTapWord/TipTapWordContent';
 import { Slot, SlotProps } from '@src/components/TipTapWord/components/Slot';
+import MarkdownExtension from '@src/components/TipTapWord/extensions/markdown';
 
 const TipTapWordExtensions = [
+  MarkdownExtension,
   // Text
   // DocumentExtension,
   StarterKit.configure({
@@ -110,3 +112,6 @@ Slot.displayName = 'Place';
 TipTapWord.Status = (props) => <Slot placement={'left'} {...props} name={'Status'} />;
 TipTapWord.Tool = (props) => <Slot {...props} name={'Tool'} />;
 TipTapWord.Menu = (props) => <Slot {...props} name={'Menu'} />;
+TipTapWord.Status.displayName = 'TipTapWord.Status';
+TipTapWord.Tool.displayName = 'TipTapWord.Tool';
+TipTapWord.Menu.displayName = 'TipTapWord.Menu';

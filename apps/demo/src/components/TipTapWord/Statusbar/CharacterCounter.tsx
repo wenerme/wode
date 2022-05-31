@@ -21,3 +21,5 @@ export const CharacterCounter = memo(() => {
     </span>
   );
 });
+
+CharacterCounter.displayName = 'CharacterCounter';

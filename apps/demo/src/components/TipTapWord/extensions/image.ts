@@ -12,7 +12,7 @@ declare module '@tiptap/core' {
       /**
        * Add an image
        */
-      setImage: (options: { src: string; alt?: string; title?: string }) => ReturnType;
+      setImage: (options: { src: string; alt?: string; title?: string } & Record<string, any>) => ReturnType;
     };
   }
 }
@@ -52,6 +52,12 @@ export const Image = Node.create<ImageOptions>({
       title: {
         default: null,
       },
+      'data-width': {
+        default: null,
+      },
+      'data-height': {
+        default: null,
+      },
     };
   },
 
@@ -66,7 +72,13 @@ export const Image = Node.create<ImageOptions>({
   renderHTML({ HTMLAttributes }) {
     return ['img', mergeAttributes(this.options.HTMLAttributes, HTMLAttributes)];
   },
-
+  renderMarkdown(state, node) {
+    let ele = document.createElement('img');
+    Object.entries(node.attrs)
+      .filter(([, v]) => v !== null && v !== undefined)
+      .map(([k, v]) => ele.setAttribute(k, v));
+    state.write(ele.outerHTML);
+  },
   addCommands() {
     return {
       setImage:

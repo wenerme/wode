@@ -4,9 +4,17 @@ import type { AppProps } from 'next/app';
 import NextNProgress from 'nextjs-progressbar';
 import React from 'react';
 import { PageLayout } from '@src/components/page/PageLayout';
+import { PageHead } from '@src/components/page/PageHead';
 
 function App({ Component, pageProps }: AppPropsWithLayout) {
-  const getLayout = Component.getLayout || ((page: any) => <PageLayout>{page}</PageLayout>);
+  const getLayout =
+    Component.getLayout ||
+    ((page: any) => (
+      <PageLayout>
+        <PageHead />
+        {page}
+      </PageLayout>
+    ));
 
   return (
     <>
