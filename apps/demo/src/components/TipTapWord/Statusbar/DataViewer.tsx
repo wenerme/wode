@@ -54,7 +54,7 @@ const modes: Record<
   },
   markdown: {
     title: 'Markdown',
-    get: (e) => createMarkdownSerializer(e.schema).serialize(e.state.doc.content, {}),
+    get: (e) => createMarkdownSerializer(e.schema).serialize(e.state.doc, {}),
   },
   text: {
     title: 'Text',

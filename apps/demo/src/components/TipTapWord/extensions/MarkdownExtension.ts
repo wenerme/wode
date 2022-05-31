@@ -33,16 +33,20 @@ declare module '@tiptap/core' {
 }
 
 export interface MarkdownOptions {
-  nodes: Record<string, NodeConfig['renderMarkdown']>;
-  marks: Record<string, MarkConfig['renderMarkdown']>;
+  serializers: {
+    nodes: Record<string, NodeConfig['renderMarkdown']>;
+    marks: Record<string, MarkConfig['renderMarkdown']>;
+  };
 }
 
 export const MarkdownExtension = Extension.create<MarkdownOptions>({
   name: 'markdown',
   addOptions() {
     return {
-      nodes: {},
-      marks: {},
+      serializers: {
+        nodes: {},
+        marks: {},
+      },
     };
   },
   extendMarkSchema(extension: Mark) {
@@ -54,6 +58,7 @@ export const MarkdownExtension = Extension.create<MarkdownOptions>({
     };
     return {
       renderMarkdown: getExtensionField(extension, 'renderMarkdown', context),
+      parseMarkdown: getExtensionField(extension, 'parseMarkdown', context),
     };
   },
 
@@ -65,6 +70,7 @@ export const MarkdownExtension = Extension.create<MarkdownOptions>({
     };
     return {
       renderMarkdown: getExtensionField(extension, 'renderMarkdown', context),
+      parseMarkdown: getExtensionField(extension, 'parseMarkdown', context),
     };
   },
 });
