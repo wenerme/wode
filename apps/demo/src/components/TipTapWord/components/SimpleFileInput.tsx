@@ -43,7 +43,7 @@ export const SimpleFileInput: React.FC<{
               <video
                 controls
                 src={src}
-                onLoad={(e) => {
+                onLoadedMetadata={(e) => {
                   onFile?.(state.file!, { width: e.currentTarget.videoWidth, height: e.currentTarget.videoHeight });
                 }}
               />

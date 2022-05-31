@@ -248,13 +248,13 @@ function createStyle(o: CreateStyleOptions) {
           (value: any) =>
           ({ editor, commands }: any) => {
             if (!editor.isActive({ [name]: value }))
-              return this.options.types.every((type) => commands.updateAttributes(type, { [name]: value }));
-            return this.options.types.every((type) => commands.resetAttributes(type, name));
+              return this.options.types.some((type) => commands.updateAttributes(type, { [name]: value }));
+            return this.options.types.some((type) => commands.resetAttributes(type, name));
           },
         [`unset${fn}`]:
           () =>
           ({ commands }: any) => {
-            return this.options.types.every((type) => commands.resetAttributes(type, name));
+            return this.options.types.some((type) => commands.resetAttributes(type, name));
           },
       } as any;
     },

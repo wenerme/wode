@@ -18,7 +18,7 @@ declare module '@tiptap/core' {
  * Based on strapi-tiptap-editor
  * @see {@link https://github.com/dasmikko/strapi-tiptap-editor/blob/aa8d98eb5e30ab4e26d19a18f4bd05ead8317ce5/admin/src/components/Wysiwyg/index.js#L52-L91 | strapi-tiptap-editor}
  */
-export default Extension.create<CSSColumnsOptions>({
+export const CssColumnsExtension = Extension.create<CSSColumnsOptions>({
   name: 'cssColumns',
   addOptions() {
     return {
