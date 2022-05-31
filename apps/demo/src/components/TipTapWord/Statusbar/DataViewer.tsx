@@ -4,6 +4,7 @@ import { useImmer } from 'use-immer';
 import { createPortal } from 'react-dom';
 import { Editor } from '@tiptap/react';
 import { createMarkdownSerializer } from '@src/components/TipTapWord/extensions/MarkdownExtension';
+import { createMarkdownParser } from '@src/components/TipTapWord/extensions/parseMarkdown';
 
 const modes: Record<
   string,
@@ -55,6 +56,7 @@ const modes: Record<
   markdown: {
     title: 'Markdown',
     get: (e) => createMarkdownSerializer(e.schema).serialize(e.state.doc, {}),
+    set: (e, v) => e.commands.setMarkdownContent(v),
   },
   text: {
     title: 'Text',
