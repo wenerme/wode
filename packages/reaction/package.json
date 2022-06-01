@@ -10,7 +10,7 @@
     "tool"
   ],
   "scripts": {
-    "build": "make build",
+    "build": "make prepublish",
     "clean": "make clean",
     "dev": "make dev"
   },
