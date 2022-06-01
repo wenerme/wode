@@ -8,5 +8,5 @@ const nextConfig = {
   },
 };
 
-module.exports = withTM(nextConfig);
-// module.exports = nextConfig;
+// module.exports = withTM(nextConfig);
+module.exports = nextConfig;
