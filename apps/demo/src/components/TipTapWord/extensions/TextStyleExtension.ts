@@ -1,4 +1,4 @@
-import { Mark, getMarkAttributes, mergeAttributes } from '@tiptap/core';
+import { getMarkAttributes, Mark, mergeAttributes } from '@tiptap/core';
 
 export interface TextStyleOptions {
   HTMLAttributes: Record<string, any>;
