@@ -43,7 +43,7 @@
     "tsconfig.json"
   ],
   "scripts": {
-    "build": "make build",
+    "build": "make prepublish",
     "clean": "make clean",
     "dev": "make dev",
     "test": "jest"
