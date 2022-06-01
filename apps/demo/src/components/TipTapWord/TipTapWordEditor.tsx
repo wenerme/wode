@@ -27,7 +27,7 @@ const EditorStoreConnector: React.FC<Partial<EditorStore>> = ({ editor, editorDo
   return <></>;
 };
 
-export const TipTapWordContent: React.FC<{ children: React.ReactNode; editor: Editor }> = ({ children, editor }) => {
+export const TipTapWordEditor: React.FC<{ children: React.ReactNode; editor: Editor }> = ({ children, editor }) => {
   const editorDomRef = useRef<HTMLDivElement>(null);
   return (
     <EditorStoreProvider createStore={() => createEditorStore({ editor, editorDomRef })}>

@@ -11,7 +11,7 @@ export interface SlotProps {
   children?: React.ReactNode;
 }
 
-export const Slot:React.FC<SlotProps> = memo<SlotProps>((props) => {
+export const Slot: React.FC<SlotProps> = memo<SlotProps>((props) => {
   let api = useEditorStoreApi();
   const updateSlots = (f: DraftFunction<EditorStore['slots']>) => {
     api.setState((s) => {
@@ -49,4 +49,4 @@ export const Slot:React.FC<SlotProps> = memo<SlotProps>((props) => {
   });
   return <></>;
 });
-Slot.displayName = 'Slot'
+Slot.displayName = 'Slot';

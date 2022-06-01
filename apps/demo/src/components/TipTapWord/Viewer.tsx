@@ -21,6 +21,22 @@ const ViewerContainer = styled.div`
       box-sizing: border-box;
     }
 
+    p:is(.is-editor-empty, .is-empty):first-child::before {
+      color: #adb5bd;
+      content: attr(data-placeholder);
+      float: left;
+      height: 0;
+      pointer-events: none;
+    }
+
+    .is-empty:is(h1, h2, h3, h4, h5, h6):first-child::before {
+      color: #adb5bd;
+      content: attr(data-placeholder);
+      float: left;
+      height: 0;
+      pointer-events: none;
+    }
+
     .selectedCell:after {
       background: rgba(200, 200, 255, 0.4);
       //background: #e8f0fe;
