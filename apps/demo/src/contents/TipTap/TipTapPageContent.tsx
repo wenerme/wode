@@ -26,10 +26,12 @@ import {
   MdToc,
 } from 'react-icons/md';
 import { IoText } from 'react-icons/io5';
+import { ColorHighlighter } from '@src/components/TipTapWord/extensions/ColorHighlighter';
 
 function useExtensions() {
   return [
     TipTapWordStarterKit.configure({}),
+    ColorHighlighter,
     CommandExtension.configure({
       suggestion: {
         items: ({ query }) => {
