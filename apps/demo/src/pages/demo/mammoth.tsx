@@ -19,6 +19,7 @@ const DemoMenu = () => {
     let rel = await convertToHtml({ arrayBuffer });
     let html = rel.value;
     console.log(`toHTML messages`, rel.messages);
+
     rel = await extractRawText({ arrayBuffer });
     let text = rel.value;
     console.log(`toText messages`, rel.messages);
@@ -42,17 +43,18 @@ const DemoMenu = () => {
           <Link href={{ query: { tab: 'html' } }}>
             <a className={classNames('tab tab-lifted', tab === 'html')}>HTML</a>
           </Link>
-          <Link href={{ query: { tab: 'json' } }}>
-            <a className={classNames('tab tab-lifted', tab === 'json')}>JSON</a>
+          <Link href={{ query: { tab: 'text' } }}>
+            <a className={classNames('tab tab-lifted', tab === 'json')}>Text</a>
           </Link>
         </div>
         <div>
           {tab === 'render' && (
-            <div>
+            <div className={'unreset'}>
               <article dangerouslySetInnerHTML={{ __html: state.html }} />
             </div>
           )}
           {tab === 'html' && <textarea readOnly className={'resize-none w-full h-full'} value={state.html} />}
+          {tab === 'text' && <textarea readOnly className={'resize-none w-full h-full'} value={state.text} />}
         </div>
       </div>
     </div>
