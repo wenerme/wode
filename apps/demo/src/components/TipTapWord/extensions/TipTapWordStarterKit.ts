@@ -23,26 +23,35 @@ import TableCellExtension from '@tiptap/extension-table-cell';
 import TableHeaderExtension from '@tiptap/extension-table-header';
 import CharacterCountExtension from '@tiptap/extension-character-count';
 import { CssColumnsExtension } from '@src/components/TipTapWord/extensions/CssColumnsExtension';
+import { AnyExtension } from '@tiptap/react';
+import { Extensions } from '@tiptap/core/dist/packages/core/src/types';
 
-export const TipTapWordStarterKit = Extension.create<StarterKitOptions>({
+export interface TipTapWordStarterKitOptions extends StarterKitOptions {
+  underline?: false;
+  image?: false;
+  video?: false;
+}
+
+export const TipTapWordStarterKit = Extension.create<TipTapWordStarterKitOptions>({
   name: 'wordStarterKit',
 
   addExtensions() {
-    const extensions = [
+    const { strike, italic, bold, underline, image, video, ...rest } = this.options;
+    const extensions: Array<AnyExtension | boolean> = [
       MarkdownExtension,
       // Text
       // DocumentExtension,
       StarterKit.configure({
         // document: false,
-        ...this.options,
+        ...rest,
         strike: false,
         italic: false,
         bold: false,
       }),
-      BoldExtension,
-      ItalicExtension,
-      StrikeExtension,
-      UnderlineExtension,
+      bold === false || BoldExtension,
+      italic === false || ItalicExtension,
+      strike === false || StrikeExtension,
+      underline === false || UnderlineExtension,
       TaskListExtension,
       TaskItemExtension,
       TextAlignExtension.configure({
@@ -69,14 +78,16 @@ export const TipTapWordStarterKit = Extension.create<StarterKitOptions>({
         linkOnPaste: true,
       }),
       // Notes
-      ImageExtension.configure({
-        inline: false,
-        allowBase64: true,
-      }),
-      VideExtension.configure({
-        inline: false,
-        allowBase64: true,
-      }),
+      image === false ||
+        ImageExtension.configure({
+          inline: false,
+          allowBase64: true,
+        }),
+      video === false ||
+        VideExtension.configure({
+          inline: false,
+          allowBase64: true,
+        }),
       // Table
       TableExtension.configure({
         resizable: true,
@@ -92,6 +103,6 @@ export const TipTapWordStarterKit = Extension.create<StarterKitOptions>({
         types: ['paragraph'],
       }),
     ];
-    return extensions;
+    return extensions.filter((v) => typeof v !== 'boolean') as Extensions;
   },
 });

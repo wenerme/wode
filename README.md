@@ -10,6 +10,7 @@ Wener Node Monorepo
         - video, indent
         - renderMarkdown
         - parseMarkdown
+        - slash command
     - [ ] WindowManager
 - packages
   - reaction - [@wener/reaction](https://www.npmjs.com/package/@wener/reaction)

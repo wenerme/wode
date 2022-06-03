@@ -10,7 +10,8 @@ export const SimpleFileInput: React.FC<{
   onFile?: (file: File, o?: { width: number; height: number }) => void;
   // onNatureSize?: (o: { width: number; height: number }) => void;
   accept?: string[];
-}> = ({ src: initialSrc, type: initialType, onFile, accept = ['image/*', 'video/*'] }) => {
+  preview?: boolean;
+}> = ({ src: initialSrc, preview = true, type: initialType, onFile, accept = ['image/*', 'video/*'] }) => {
   const { state, getLabelProps, getInputProps } = useFileInput({
     onFile,
     accept,
@@ -29,27 +30,32 @@ export const SimpleFileInput: React.FC<{
     >
       {src && (
         <>
-          <div className={'flex items-center justify-center'}>
-            {isImage && (
-              <img
-                src={src}
-                alt={'preview'}
-                onLoad={(e) => {
-                  onFile?.(state.file!, { width: e.currentTarget.naturalWidth, height: e.currentTarget.naturalHeight });
-                }}
-              />
-            )}
-            {isVideo && (
-              <video
-                controls
-                src={src}
-                onLoadedMetadata={(e) => {
-                  onFile?.(state.file!, { width: e.currentTarget.videoWidth, height: e.currentTarget.videoHeight });
-                }}
-              />
-            )}
-            {!isImage && !isVideo && <MdUploadFile className={'w-20 h-20'} />}
-          </div>
+          {preview && (
+            <div className={'flex items-center justify-center'}>
+              {isImage && (
+                <img
+                  src={src}
+                  alt={'preview'}
+                  onLoad={(e) => {
+                    onFile?.(state.file!, {
+                      width: e.currentTarget.naturalWidth,
+                      height: e.currentTarget.naturalHeight,
+                    });
+                  }}
+                />
+              )}
+              {isVideo && (
+                <video
+                  controls
+                  src={src}
+                  onLoadedMetadata={(e) => {
+                    onFile?.(state.file!, { width: e.currentTarget.videoWidth, height: e.currentTarget.videoHeight });
+                  }}
+                />
+              )}
+              {!isImage && !isVideo && <MdUploadFile className={'w-20 h-20'} />}
+            </div>
+          )}
           <div className={'flex flex-col items-center'}>
             <span className={'text-center text-sm'}>{state.name}</span>
             <span className={'text-gray-300 text-xs flex items-center gap-1'}>
@@ -61,7 +67,7 @@ export const SimpleFileInput: React.FC<{
       )}
       {!src && (
         <div className={'p-4'}>
-          <MdUploadFile className={'w-20 h-20'} />
+          {preview && <MdUploadFile className={'w-20 h-20'} />}
           {!state.isDragOver && <span className={'text-gray-400'}>Choose file</span>}
           {state.isDragOver && (
             <span className={'text-gray-600'}>{state.acceptable ? 'Drop file' : 'Invalid file'}</span>

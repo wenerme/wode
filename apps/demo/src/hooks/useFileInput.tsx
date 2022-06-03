@@ -116,14 +116,18 @@ function isAcceptable(file: File | string | undefined, accept: string[]): boolea
     return true;
   }
   let type: string;
+  let name = '';
   if (typeof file === 'string') {
     type = file;
   } else {
     type = file.type;
+    name = file.name;
   }
 
   return accept.some((v) => {
-    if (v.includes('*')) {
+    if (v.startsWith('.')) {
+      return name.toLowerCase().endsWith(v.toLowerCase());
+    } else if (v.includes('*')) {
       return type.match(v);
     } else {
       return type === v;
