@@ -1,10 +1,5 @@
 import { Extension, getExtensionField, Mark, MarkConfig, Node } from '@tiptap/core';
-import {
-  defaultMarkdownSerializer,
-  MarkdownSerializer,
-  MarkdownSerializerState,
-  MarkSerializerConfig,
-} from 'prosemirror-markdown';
+import { defaultMarkdownSerializer, MarkdownSerializer, MarkdownSerializerState } from 'prosemirror-markdown';
 import { MarkType, Node as ProsemirrorNode, NodeType, Schema } from 'prosemirror-model';
 import { NodeConfig } from '@tiptap/react';
 import { createMarkdownParser } from '@src/components/TipTapWord/extensions/parseMarkdown';
@@ -13,9 +8,34 @@ import { createMarkdownParser } from '@src/components/TipTapWord/extensions/pars
 // https://github.com/ProseMirror/prosemirror-model/blob/master/src/to_dom.ts
 // https://github.com/ProseMirror/prosemirror-markdown/blob/master/src/to_markdown.ts
 
+export type MarkSerializerSpec = {
+  /// The string that should appear before a piece of content marked
+  /// by this mark, either directly or as a function that returns an
+  /// appropriate string.
+  open: string | ((state: MarkdownSerializerState, mark: Mark, parent: Node, index: number) => string);
+  /// The string that should appear after a piece of content marked by
+  /// this mark.
+  close: string | ((state: MarkdownSerializerState, mark: Mark, parent: Node, index: number) => string);
+  /// When `true`, this indicates that the order in which the mark's
+  /// opening and closing syntax appears relative to other mixable
+  /// marks can be varied. (For example, you can say `**a *b***` and
+  /// `*a **b***`, but not `` `a *b*` ``.)
+  mixable?: boolean;
+  /// When enabled, causes the serializer to move enclosing whitespace
+  /// from inside the marks to outside the marks. This is necessary
+  /// for emphasis marks as CommonMark does not permit enclosing
+  /// whitespace inside emphasis marks, see:
+  /// http:///spec.commonmark.org/0.26/#example-330
+  expelEnclosingWhitespace?: boolean;
+  /// Can be set to `false` to disable character escaping in a mark. A
+  /// non-escaping mark has to have the highest precedence (must
+  /// always be the innermost mark).
+  escape?: boolean;
+};
+
 declare module '@tiptap/core' {
   interface MarkConfig<Options = any, Storage = any> {
-    renderMarkdown?: MarkSerializerConfig;
+    renderMarkdown?: MarkSerializerSpec;
   }
 
   interface NodeConfig<Options = any, Storage = any> {

@@ -2,7 +2,7 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import React from 'react';
 import { useImmer } from 'use-immer';
-import parse, { attributesToProps, domToReact, HTMLReactParserOptions } from 'html-react-parser';
+import parse, { attributesToProps, DOMNode, domToReact, HTMLReactParserOptions } from 'html-react-parser';
 import { Element, Text } from 'domhandler';
 import { MdAnchor } from 'react-icons/md';
 import classNames from 'classnames';
@@ -32,7 +32,7 @@ const Demo = () => {
           case 'h4':
             return (
               <dom.name {...props}>
-                {domToReact(dom.children, options)}
+                {domToReact(dom.children as DOMNode[], options)}
                 {props.id && (
                   <a href={`#${props.id}`} className={'opacity-0 group-hover:opacity-50 ml-2'}>
                     <MdAnchor className={'inline h-5'} />

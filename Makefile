@@ -1,6 +1,6 @@
 build:
-	npx turbo run build --filter=@wener/demo
+	pnpm exec turbo run build --filter=@wener/demo
 dev:
-	npx turbo run dev --parallel
+	pnpm exec turbo run dev --parallel
 clean:
-	npx turbo run clean --parallel
+	pnpm exec turbo run clean --parallel
