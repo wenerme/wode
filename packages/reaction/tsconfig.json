@@ -1,14 +1,12 @@
 {
   "compilerOptions": {
     "moduleResolution": "node",
-    "target": "es5",
+    "target": "es6",
     "module": "es2015",
     "lib": [
       "dom",
       "dom.iterable",
-      "es5",
-      "es2015.collection",
-      "es2015.iterable"
+      "es6"
     ],
     "strict": true,
     "sourceMap": true,

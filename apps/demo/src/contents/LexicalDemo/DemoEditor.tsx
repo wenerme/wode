@@ -119,11 +119,12 @@ export const DemoEditor = () => {
   );
 };
 const DemoEditorContent = () => {
-  const initialConfig: Parameters<typeof LexicalComposer>[0]['initialConfig'] = {
+  // const initialConfig: Parameters<typeof LexicalComposer>[0]['initialConfig'] = {
+  const initialConfig: any = {
     namespace: 'WenerDemoEditor',
     theme,
     nodes,
-    onError: (error, editor) => {
+    onError: (error: any, editor: any) => {
       console.log(`Editor Error`, error);
     },
   };

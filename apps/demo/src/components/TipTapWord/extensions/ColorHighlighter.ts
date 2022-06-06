@@ -19,7 +19,8 @@ export const ColorHighlighter = Extension.create({
         },
         props: {
           decorations(state) {
-            return this.getState(state);
+            // fixme
+            return (this as Plugin).getState(state);
           },
         },
       }),

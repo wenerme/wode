@@ -11,7 +11,14 @@
       ],
       "outputs": [
         "dist/**",
+        "lib/**",
         ".next/**"
+      ],
+      "inputs": [
+        "src/**/*.tsx",
+        "src/**/*.ts",
+        "src/**/*.js",
+        "src/**/*.css"
       ]
     },
     "test": {
