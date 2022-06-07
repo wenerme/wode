@@ -177,6 +177,7 @@ export const ColorNameContent = () => {
     system: systemColors,
   }));
   const [settings, updateSettings] = useImmer<{ display: 'named' | 'system' }>({ display: 'named' });
+
   const colors: Array<{ name: string; hex?: string; zh?: string }> = colorSet[settings.display];
   return (
     <div className={'flex justify-center flex flex-col'}>
