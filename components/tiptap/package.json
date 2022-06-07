@@ -5,6 +5,7 @@
   "main": "lib/esm/index.js",
   "types": "src/index.ts",
   "publishConfig": {
+    "access": "public",
     "main": "dist/wener-tiptap.cjs.js",
     "umd": "dist/wener-tiptap.umd.js",
     "module": "dist/wener-tiptap.esm.js",
