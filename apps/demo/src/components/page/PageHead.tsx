@@ -4,6 +4,7 @@ export const PageHead = () => {
   return (
     <Head>
       <title>Demo Page</title>
+      <meta name="color-scheme" content="light dark" />
       <meta name="description" content="Wener's demo web app for various web tech, react libs" />
       <link rel="icon" href="/favicon.ico" type="image/ico" />
       <link rel="icon" href="/assets/images/svg/logo.svg" type="image/svg+xml" />

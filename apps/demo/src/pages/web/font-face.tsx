@@ -116,6 +116,14 @@ const Container = styled.div`
   }
 `;
 
+const fontCategories = [
+  { value: 'serif', label: 'Serif' },
+  { value: 'sans-serif', label: 'Sans Serif' },
+  { value: 'display', label: 'Display' },
+  { value: 'script', label: 'Handwriting' },
+  { value: 'monospace', label: 'Monospace' },
+];
+
 const weights = [100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
 const sizes = [8, 12, 14, 20, 24, 32, 40, 64, 96, 120, 184, 280];
 const Demo = () => {
@@ -133,7 +141,7 @@ const Demo = () => {
   const [settings, updateSettings] = useImmer<{ weights: number[]; text: string; size: number; previewText: boolean }>({
     weights: [],
     text: '',
-    size: 16,
+    size: 24,
     previewText: true,
   });
   const text = useDeferredValue(settings.text);
@@ -162,7 +170,7 @@ const Demo = () => {
             }),
             name,
             title: title || name,
-            available: document.fonts.check(`16px ${name}`, text || title || name),
+            available: document.fonts.check(`16px ${name}`),
           };
         })
         .sort((a, b) => {
@@ -172,9 +180,9 @@ const Demo = () => {
           return a.available ? -1 : 1;
         });
     });
-  }, [fontFace, counter, ready, text]);
+  }, [fontFace, counter, ready]);
   return (
-    <div className={'container mx-auto'}>
+    <div className={'container mx-auto'} style={{ contain: 'content' }}>
       <Container className={'flex mx-auto justify-center flex flex-col'}>
         <div className={'prose'}>
           <h3>Web字体检测</h3>
@@ -186,11 +194,11 @@ const Demo = () => {
                 FontFaceSet
               </a>
               。
-              <ul>
-                <li>Chrome 35+</li>
-                <li>Safari 12+ 禁止访问白名单外字体，检测结果不准确。</li>
-              </ul>
             </p>
+            <ul>
+              <li>Chrome 35+</li>
+              <li>Safari 12+ 禁止访问白名单外字体，检测结果不准确。</li>
+            </ul>
           </details>
         </div>
         <div className={'p-2 flex gap-2'}>

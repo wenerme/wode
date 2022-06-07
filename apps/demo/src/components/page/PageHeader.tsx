@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import classNames from 'classnames';
 import { NavLinks } from '@src/components/page/const';
+import { ThemeSelector } from '@src/components/page/ThemeSelector';
 
 interface MenuSpec {
   icon?: React.ReactNode;
@@ -91,7 +92,9 @@ export const PageHeader = () => {
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal p-0">{renderMenu(NavLinks, { icon: <Down /> })}</ul>
         </div>
-        <div className="navbar-end">{/*<a className="btn">Get started</a>*/}</div>
+        <div className="navbar-end">
+          <ThemeSelector />
+        </div>
       </div>
     </header>
   );
