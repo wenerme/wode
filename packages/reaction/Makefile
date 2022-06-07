@@ -5,7 +5,7 @@ info:
 	@echo $(shell jq -r '.name' package.json) v$(shell jq -r '.version' package.json)
 
 clean:
-	rm -vrf src/**/*.{js,js.map} dist/* lib/* index.js
+	rm -rf src/**/*.{js,js.map} dist/* lib/* index.js
 
 dev: build
 	esbuild --format=esm --outdir=lib/esm --target=chrome80 src/index.ts src/**/*.{ts,tsx} --watch

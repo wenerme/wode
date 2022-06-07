@@ -15,7 +15,7 @@ import { IndentExtension } from './indent';
 import { Color as ColorExtension } from '@tiptap/extension-color';
 import HighlightExtension from '@tiptap/extension-highlight';
 import LinkExtension from '@tiptap/extension-link';
-import { Image as ImageExtension } from './image';
+import { ImageNode as ImageExtension } from './ImageNode';
 import { VideoNode } from './VideoNode';
 import TableExtension from '@tiptap/extension-table';
 import TableRowExtension from '@tiptap/extension-table-row';
