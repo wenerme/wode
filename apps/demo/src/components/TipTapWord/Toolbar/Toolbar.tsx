@@ -49,6 +49,9 @@ import { TextColorToolbarItem } from '@src/components/TipTapWord/Toolbar/TextCol
 import { ImageToolbarItem } from '@src/components/TipTapWord/Toolbar/ImageToolbarItem';
 import { VideoToolbarItem } from '@src/components/TipTapWord/Toolbar/VideoToolbarItem';
 import { useEditorDerivedState } from '@src/components/TipTapWord/hooks';
+import type {} from '@tiptap/extension-font-family';
+import type {} from '@tiptap/extension-text-align';
+import type {} from '@tiptap/extension-table';
 
 const FontFamilySet: OptionItem[] = [
   { label: '默认字体', value: '' },
