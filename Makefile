@@ -1,6 +1,8 @@
+EXEC:=npx
+
 build:
-	pnpm exec turbo run build --filter=@wener/demo
+	$(EXEC) turbo run build --filter=@wener/demo
 dev:
-	pnpm exec turbo run dev --parallel
+	$(EXEC) turbo run dev --parallel
 clean:
-	pnpm exec turbo run clean --parallel
+	$(EXEC) turbo run clean --parallel

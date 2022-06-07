@@ -25,6 +25,7 @@ import CharacterCountExtension from '@tiptap/extension-character-count';
 import { CssColumnsExtension } from './CssColumnsExtension';
 import type { AnyExtension } from '@tiptap/react';
 import type { Extensions } from '@tiptap/core/dist/packages/core/src/types';
+import { Paragraph } from '@tiptap/extension-paragraph';
 
 export interface TipTapWordStarterKitOptions extends StarterKitOptions {
   underline?: false;
@@ -36,7 +37,7 @@ export const TipTapWordStarterKit = Extension.create<TipTapWordStarterKitOptions
   name: 'wordStarterKit',
 
   addExtensions() {
-    const { strike, italic, bold, underline, image, video, ...rest } = this.options;
+    const { strike, italic, bold, underline, image, video, paragraph, ...rest } = this.options;
     const extensions: Array<AnyExtension | boolean> = [
       MarkdownExtension,
       // Text
@@ -47,11 +48,13 @@ export const TipTapWordStarterKit = Extension.create<TipTapWordStarterKitOptions
         strike: false,
         italic: false,
         bold: false,
+        paragraph: false,
       }),
       bold === false || BoldExtension,
       italic === false || ItalicExtension,
       strike === false || StrikeExtension,
       underline === false || UnderlineExtension,
+      paragraph === false || Paragraph,
       TaskListExtension,
       TaskItemExtension,
       TextAlignExtension.configure({

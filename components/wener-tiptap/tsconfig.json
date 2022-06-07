@@ -28,7 +28,6 @@
     "declaration": false,
     "checkJs": true,
     "allowJs": true,
-    "preserveSymlinks": true,
     "jsx": "react",
     "incremental": true
   },

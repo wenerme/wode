@@ -13,3 +13,5 @@ export type { VideoNodeOptions, SetVideoOptions } from './extensions/VideoNode';
 
 export { ImageNode } from './extensions/ImageNode';
 export type { ImageNodeOptions } from './extensions/ImageNode';
+
+export { ColorHighlighterExtension } from './extensions/ColorHighlighterExtension';
