@@ -2,7 +2,7 @@ import { Editor, useEditor } from '@tiptap/react';
 import React, { useEffect, useState } from 'react';
 import { TipTapWordEditor } from '@src/components/TipTapWord/TipTapWordEditor';
 import { Slot, SlotProps } from '@src/components/TipTapWord/components/Slot';
-import { TipTapWordStarterKit } from '@src/components/TipTapWord/extensions/TipTapWordStarterKit';
+import { TipTapWordStarterKit } from '@wener/tiptap';
 import { Extensions } from '@tiptap/core/dist/packages/core/src/types';
 
 export type TipTapWord = React.FC<

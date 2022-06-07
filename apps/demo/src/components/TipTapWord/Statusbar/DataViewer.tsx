@@ -3,7 +3,7 @@ import { useEditorStore } from '@src/components/TipTapWord/useEditorStore';
 import { useImmer } from 'use-immer';
 import { createPortal } from 'react-dom';
 import { Editor } from '@tiptap/react';
-import { createMarkdownSerializer } from '@src/components/TipTapWord/extensions/MarkdownExtension';
+import { createMarkdownSerializer } from '@wener/tiptap';
 
 const modes: Record<
   string,
