@@ -92,6 +92,7 @@ const Container = styled.div`
 
 const weights = [100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
 const Demo = () => {
+  // trigger font load
   const [state, update] = useImmer<{
     items: Array<{
       name: string;
@@ -99,17 +100,17 @@ const Demo = () => {
       available: boolean;
       weights: Array<{ weight: number; available: boolean }>;
     }>;
-  }>({ items: [] });
+  }>({ items: fontFace.map(({ name, title }) => ({ name, title: title || name, available: false, weights: [] })) });
   const [counter, forceRender] = useReducer((s) => s + 1, 0);
   const [text, setText] = useState('');
-  const [ready, setReady] = useState(false);
+  const [ready, setReady] = useState({ fontSet: false });
   useEffect(() => {
     document.fonts.ready.then(() => {
-      setReady(true);
+      setReady((s) => ({ ...s, fontSet: true }));
     });
   }, []);
   useEffect(() => {
-    if (!ready) {
+    if (!ready.fontSet) {
       return;
     }
     update((s) => {
@@ -126,7 +127,7 @@ const Demo = () => {
             }),
             name,
             title: title || name,
-            available: document.fonts.check(`16px ${name}`, text || title || name),
+            available: document.fonts.check(`16px '${name}'`, text || title || name),
           };
         })
         .sort((a, b) => {
