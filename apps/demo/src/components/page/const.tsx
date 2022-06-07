@@ -23,7 +23,13 @@ export const NavLinks = [
       { icon: <SiReact />, label: 'html-react-parser', href: '/demo/html-react-parser' },
       { icon: <FaMarkdown />, label: 'markdown-it', href: '/demo/markdown-it' },
       { icon: <FaHtml5 />, label: '.docx to HTML', href: '/demo/mammoth' },
+      { icon: <FaHtml5 />, label: 'Font Face', href: '/web/font-face' },
     ],
+  },
+  {
+    icon: <FaHtml5 />,
+    label: 'Web',
+    children: [{ icon: <FaHtml5 />, label: 'Font Face', href: '/web/font-face' }],
   },
   { icon: <VscGithubInverted />, label: 'Github', href: 'https://github.com/wenerme/wode', children: [] },
 ];
