@@ -1,3 +1,6 @@
+REPO_ROOT ?= $(shell git rev-parse --show-toplevel)
+-include $(REPO_ROOT)/module.Makefile
+
 gen:
 	npx graphql-codegen --config codegen.yml
 
@@ -22,6 +25,10 @@ favicon:
 	npx -y svgo public/assets/images/svg/logo.svg --config svgo.config.json --pretty
 	rsvg-convert -h 128 public/assets/images/svg/logo.svg > public/favicon.png
 	convert -resize 16x16 public/favicon.png public/favicon.ico
+
+vercel-install:
+	npm install -g $(PM)
+	$(PM) install --prefix ../..
 
 ci:
 	echo $(date --rfc-3339=seconds) NPM Installing
