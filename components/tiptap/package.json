@@ -3,10 +3,9 @@
   "version": "1.0.0",
   "description": "Collection of useful tiptap extensions",
   "main": "lib/esm/index.js",
-  "types": "src/index.ts",
   "scripts": {
     "test": "jest",
-    "build": "esbuild --format=esm --outdir=lib/esm --target=chrome90 src/index.ts src/**/*.ts",
+    "build": "make build",
     "dev": "esbuild --watch --format=esm --outdir=lib/esm --target=chrome90 src/index.ts src/**/*.ts",
     "lint": "tsc --noEmit"
   },
