@@ -134,7 +134,7 @@ importers:
       '@trpc/react': registry.npmmirror.com/@trpc/react/9.24.0_6u3gonn2tqf6n2b4ttstdly334
       '@trpc/server': registry.npmmirror.com/@trpc/server/9.24.0
       '@wener/reaction': link:../../packages/reaction
-      '@wener/tiptap': link:../../components/tiptap
+      '@wener/tiptap': link:../../components/wener-tiptap
       '@wener/utils': link:../../packages/utils
       autoprefixer: registry.npmmirror.com/autoprefixer/10.4.7_postcss@8.4.14
       classnames: registry.npmmirror.com/classnames/2.3.1
@@ -175,7 +175,7 @@ importers:
       next-transpile-modules: registry.npmmirror.com/next-transpile-modules/9.0.0
       typescript: registry.npmmirror.com/typescript/4.7.3
 
-  components/tiptap:
+  components/wener-tiptap:
     specifiers:
       '@tiptap/extension-bold': 2.0.0-beta.26
       '@tiptap/extension-character-count': ^2.0.0-beta.26

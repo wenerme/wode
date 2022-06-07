@@ -1,4 +1,5 @@
-PKG_NAME:=$(shell jq -r '.name' package.json | tr -d '@' | tr '/' '-')
+#PKG_NAME:=$(shell jq -r '.name' package.json | tr -d '@' | tr '/' '-')
+PKG_NAME:=$(shell basename $(PWD))
 
 info:
 	@echo $(PKG_NAME)
