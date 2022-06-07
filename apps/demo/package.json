@@ -50,6 +50,7 @@
     "@trpc/react": "^9.23.6",
     "@trpc/server": "^9.23.6",
     "@wener/reaction": "*",
+    "@wener/tiptap": "*",
     "@wener/utils": "*",
     "autoprefixer": "^10.4.7",
     "classnames": "^2.3.1",
