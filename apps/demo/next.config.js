@@ -6,12 +6,15 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  webpack: (config, { isServer }) => {
-    if (!isServer) {
-      config.resolve.fallback.fs = false;
-    }
-    return config;
+  compiler: {
+    styledComponents: true,
   },
+  // webpack: (config, { isServer }) => {
+  //   if (!isServer) {
+  //     config.resolve.fallback.fs = false;
+  //   }
+  //   return config;
+  // },
   i18n: {
     locales: ['default', 'zh', 'en'],
     defaultLocale: 'default',
