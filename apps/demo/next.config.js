@@ -11,7 +11,8 @@ const nextConfig = {
   },
   swcMinify: true,
   experimental: {
-    outputStandalone: true,
+    // https://github.com/pnpm/pnpm/issues/4663
+    // outputStandalone: true,
   },
   // webpack: (config, { isServer }) => {
   //   if (!isServer) {
