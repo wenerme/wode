@@ -3,8 +3,7 @@ import { TipTapWord } from '@src/components/TipTapWord/TipTapWord';
 import { CharacterCounter } from '@src/components/TipTapWord/Statusbar/CharacterCounter';
 import { useImmer } from 'use-immer';
 import { DataViewer } from '@src/components/TipTapWord/Statusbar/DataViewer';
-// import { TipTapWordStarterKit } from '@src/components/TipTapWord/extensions/TipTapWordStarterKit';
-import { TipTapWordStarterKit } from '@wener/tiptap';
+import { ColorHighlighterExtension, TipTapWordStarterKit } from '@wener/tiptap';
 import { Placeholder } from '@tiptap/extension-placeholder';
 import { CommandExtension, CommandSuggestionItem } from '@src/components/TipTapWord/extensions/commands';
 import { ReactRenderer } from '@tiptap/react';
@@ -27,12 +26,13 @@ import {
   MdToc,
 } from 'react-icons/md';
 import { IoText } from 'react-icons/io5';
-import { ColorHighlighter } from '@src/components/TipTapWord/extensions/ColorHighlighter';
+import type {} from '@tiptap/starter-kit';
+import type {} from '@tiptap/extension-paragraph';
 
 function useExtensions() {
   return [
     TipTapWordStarterKit.configure({}),
-    ColorHighlighter,
+    ColorHighlighterExtension,
     CommandExtension.configure({
       suggestion: {
         items: ({ query }) => {

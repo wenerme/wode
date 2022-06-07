@@ -1,9 +1,9 @@
 import { Extension } from '@tiptap/core';
 import { Plugin } from 'prosemirror-state';
 import { Decoration, DecorationSet } from 'prosemirror-view';
-import { Node } from 'prosemirror-model';
+import type { Node } from 'prosemirror-model';
 
-export const ColorHighlighter = Extension.create({
+export const ColorHighlighterExtension = Extension.create({
   name: 'colorHighlighter',
 
   addProseMirrorPlugins() {
@@ -41,7 +41,7 @@ function findColors(doc: Node): DecorationSet {
       const color = match[0];
       const index = match.index || 0;
       const from = position + index;
-      const to = from + color.length;
+      const to = from + color!.length;
       const decoration = Decoration.inline(from, to, {
         class: 'color',
         style: `--color: ${color}`,

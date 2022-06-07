@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@floating-ui/dom": "^0.5.2",
     "@floating-ui/react-dom-interactions": "^0.6.1",
     "@headlessui/react": "^1.6.2",
     "@lexical/code": "^0.2.9",

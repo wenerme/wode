@@ -9,16 +9,13 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import { autoUpdate, flip, offset, shift } from '@floating-ui/dom';
 import {
-  autoUpdate,
-  flip,
   FloatingFocusManager,
   FloatingNode,
   FloatingPortal,
   FloatingTree,
-  offset,
   safePolygon,
-  shift,
   useClick,
   useDismiss,
   useFloating,
