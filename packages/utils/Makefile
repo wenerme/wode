@@ -1,4 +1,13 @@
-PKG_NAME:=$(shell basename $(PWD))
+PKG_NAME=$(shell jq -r '.name' package.json | tr -d '@' | tr '/' '-')
+REPO_ROOT ?= $(shell git rev-parse --show-toplevel)
+
+ifneq ("$(wildcard $(REPO_ROOT)/pnpm-lock.yaml)","")
+    EXEC=pnpm exec
+	PM=pnpm
+else
+	EXEC=$(EXEC)
+	PM=npm
+endif
 
 info:
 	@echo $(PKG_NAME)
@@ -11,32 +20,32 @@ dev: build
 	esbuild --format=esm --outdir=lib/esm --target=chrome80 src/index.ts src/**/*.ts --watch
 
 publish:  prepublish
-	npm publish --registry https://registry.npmjs.org
+	$(PM) publish --registry https://registry.npmjs.org
 
 build:
-	npx esbuild --format=esm --outdir=lib/esm --target=chrome80 src/index.ts src/**/*.ts
+	$(EXEC) esbuild --format=esm --outdir=lib/esm --target=chrome80 src/index.ts src/**/*.ts
 
 prepublish: clean test build bundle
-	npx tsc -m es2015 --outDir lib/esm --emitDeclarationOnly
-	npx tsc -m commonjs --outDir lib/cjs
-	npx tsc -m esnext --outDir lib/esnext
+	$(EXEC) tsc -m es2015 --outDir lib/esm --emitDeclarationOnly
+	$(EXEC) tsc -m commonjs --outDir lib/cjs
+	$(EXEC) tsc -m esnext --outDir lib/esnext
 
 # --minify
 FLAGS:=src/index.ts --external:{react,react-dom,prop-types} --define:process.env.NODE_ENV=\"production\" --target=chrome80 --sourcemap --bundle
 bundle:
 	rm -rf dist/*
-	npx esbuild --format=iife --outfile=dist/$(PKG_NAME).js $(FLAGS)
-	npx esbuild --format=cjs --outfile=dist/$(PKG_NAME).cjs $(FLAGS)
-	npx esbuild --format=esm --outfile=dist/$(PKG_NAME).mjs $(FLAGS)
+	$(EXEC) esbuild --format=iife --outfile=dist/$(PKG_NAME).js $(FLAGS)
+	$(EXEC) esbuild --format=cjs --outfile=dist/$(PKG_NAME).cjs $(FLAGS)
+	$(EXEC) esbuild --format=esm --outfile=dist/$(PKG_NAME).mjs $(FLAGS)
 
 # Check bundle
 #-grep '^// ' dist/$(PKG_NAME).esm.js | grep node_modules
 
 fmt:
-	npx prettier src -w
+	$(EXEC) prettier src -w
 
 lint:
 	tsc --pretty --noEmit
 
 test:
-	[ -e jest.config.js ] && npx jest
+	[ -e jest.config.js ] && $(EXEC) jest

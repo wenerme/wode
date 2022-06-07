@@ -1,9 +1,19 @@
 PKG_NAME:=$(shell basename $(PWD))
-EXEC=npx
+REPO_ROOT ?= $(shell git rev-parse --show-toplevel)
+
+ifneq ("$(wildcard $(REPO_ROOT)/pnpm-lock.yaml)","")
+    EXEC=pnpm exec
+	PM=pnpm
+else
+	EXEC=npx
+	PM=npm
+endif
+
 
 info:
 	@echo $(PKG_NAME)
 	@echo $(shell jq -r '.name' package.json) v$(shell jq -r '.version' package.json)
+	@echo PM: $(PM)
 
 clean:
 	rm -rf src/**/*.{js,js.map} dist/* lib/* index.js
