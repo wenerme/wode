@@ -3,11 +3,19 @@
   "version": "1.0.0",
   "description": "Collection of useful tiptap extensions",
   "main": "lib/esm/index.js",
+  "types": "src/index.ts",
+  "publishConfig": {
+    "main": "dist/wener-tiptap.cjs.js",
+    "umd": "dist/wener-tiptap.umd.js",
+    "module": "dist/wener-tiptap.esm.js",
+    "types": "lib/esm/index.d.ts"
+  },
   "scripts": {
     "test": "jest",
     "build": "make build",
     "dev": "esbuild --watch --format=esm --outdir=lib/esm --target=chrome90 src/index.ts src/**/*.ts",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit",
+    "clean": "rm -rf lib/*"
   },
   "keywords": [
     "tiptap",
@@ -31,15 +39,6 @@
     "jest.setup.js",
     "tsconfig.json"
   ],
-  "publishConfig": {
-    "main": "lib/esm/index.js",
-    "typings": "src/index.ts",
-    "exports": {
-      ".": {
-        "import": "./lib/esm/index.js"
-      }
-    }
-  },
   "dependencies": {
     "@tiptap/extension-bold": "2.0.0-beta.26",
     "@tiptap/extension-character-count": "^2.0.0-beta.26",

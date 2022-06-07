@@ -269,6 +269,9 @@ function useExtensions() {
         if (node.type.name === 'heading') {
           return `Heading ${node.attrs.level || ''}`;
         }
+        if (node.type.name === 'taskItem') {
+          return `To-do`;
+        }
 
         return `Type '/' for commands`;
       },

@@ -1,6 +1,6 @@
 import { mergeAttributes, Node } from '@tiptap/core';
 
-export interface VideoOptions {
+export interface VideoNodeOptions {
   inline: boolean;
   allowBase64: boolean;
   HTMLAttributes: Record<string, any>;
@@ -22,7 +22,7 @@ declare module '@tiptap/core' {
   }
 }
 
-export const VideoNode = Node.create<VideoOptions>({
+export const VideoNode = Node.create<VideoNodeOptions>({
   name: 'video',
 
   addOptions() {
