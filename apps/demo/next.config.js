@@ -12,6 +12,11 @@ const nextConfig = {
     }
     return config;
   },
+  i18n: {
+    locales: ['default', 'zh', 'en'],
+    defaultLocale: 'default',
+    localeDetection: false,
+  },
 };
 
 module.exports = withTM(nextConfig);

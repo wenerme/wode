@@ -4,7 +4,7 @@ import { IoCalculator } from 'react-icons/io5';
 import { GrAppsRounded } from 'react-icons/gr';
 import { ImLab } from 'react-icons/im';
 import { SiReact } from 'react-icons/si';
-import { FaHtml5, FaMarkdown } from 'react-icons/fa';
+import { FaHtml5, FaMarkdown, FaUserSecret } from 'react-icons/fa';
 
 export const NavLinks = [
   {
@@ -24,12 +24,16 @@ export const NavLinks = [
       { icon: <FaMarkdown />, label: 'markdown-it', href: '/demo/markdown-it' },
       { icon: <FaHtml5 />, label: '.docx to HTML', href: '/demo/mammoth' },
       { icon: <FaHtml5 />, label: 'Font Face', href: '/web/font-face' },
+      { icon: <FaHtml5 />, label: 'Color Names', href: '/web/color-name' },
     ],
   },
   {
-    icon: <FaHtml5 />,
-    label: 'Web',
-    children: [{ icon: <FaHtml5 />, label: 'Font Face', href: '/web/font-face' }],
+    icon: <VscGithubInverted />,
+    label: 'Github',
+    href: 'https://github.com/wenerme/wode',
+    children: [
+      { icon: <FaUserSecret />, label: 'Wener', href: 'https://wener.me' },
+      { icon: <VscGithubInverted />, label: 'Github', href: 'https://github.com/wenerme/wode' },
+    ],
   },
-  { icon: <VscGithubInverted />, label: 'Github', href: 'https://github.com/wenerme/wode', children: [] },
 ];
