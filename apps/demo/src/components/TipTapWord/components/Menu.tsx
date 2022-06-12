@@ -38,7 +38,7 @@ export const MenuItem = forwardRef<
       label?: React.ReactNode;
       icon?: React.ReactNode;
       disabled?: boolean;
-      as?: React.ComponentType;
+      as?: React.ComponentType<any>;
     } & Omit<React.HTMLProps<HTMLButtonElement>, 'label'>
   >
 >(({ label, icon, disabled, as: As = 'button', children, ...props }, ref) => {
@@ -73,7 +73,7 @@ export interface MenuProps {
   label?: React.ReactNode;
   nested?: boolean;
   children?: React.ReactNode;
-  as?: React.ComponentType;
+  as?: React.ComponentType<any>;
   className?: string;
   onItemClick?: MouseEventHandler<HTMLButtonElement>;
 }
