@@ -11,13 +11,17 @@ endif
 
 PKG_NAME=$(shell jq -r '.name' package.json | tr -d '@' | tr '/' '-')
 
+OSPM	:=$(shell for i in apk brew yum apt-get apt; do command -v $$i > /dev/null && break ; done; echo $$i)
+
 info:
 	@echo $(PKG_NAME)
 	@echo $(shell jq -r '.name' package.json) v$(shell jq -r '.version' package.json)
 	@echo $(PM) $(shell $(PM) -v)
+	@echo OS : `uname -a`
+	@echo OS Package Manager: $(OSPM)
 
 clean:
-	rm -rf dist/* lib/*
+	rm -rf dist/* lib/* .next/*
 
 build:
 	$(EXEC) esbuild --format=esm --outdir=lib/esm --target=chrome90 src/index.ts src/**/*.ts

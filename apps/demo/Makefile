@@ -26,7 +26,7 @@ favicon:
 	rsvg-convert -h 128 public/assets/images/svg/logo.svg > public/favicon.png
 	convert -resize 16x16 public/favicon.png public/favicon.ico
 
-vercel-install:
+vercel-install: info
 	npm install -g $(PM)
 	$(PM) install --prefix ../..
 
