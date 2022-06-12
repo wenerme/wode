@@ -1,8 +1,8 @@
-import { Listbox, Menu, Transition } from '@headlessui/react';
+import { Listbox } from '@headlessui/react';
 import classNames from 'classnames';
-import React, { Fragment } from 'react';
+import React from 'react';
 import { HiChevronDown, HiColorSwatch } from 'react-icons/hi';
-import { MdDarkMode, MdLightMode, MdOutlineDarkMode, MdOutlineLightMode, MdSettings } from 'react-icons/md';
+import { MdSettings } from 'react-icons/md';
 import { useTheme } from '@src/hooks/useTheme';
 
 export const ThemeSelector = () => {

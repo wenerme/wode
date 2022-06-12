@@ -25,6 +25,7 @@ export const NavLinks = [
       { icon: <FaHtml5 />, label: '.docx to HTML', href: '/demo/mammoth' },
       { icon: <FaHtml5 />, label: 'Font Face', href: '/web/font-face' },
       { icon: <FaHtml5 />, label: 'Color Names', href: '/web/color-name' },
+      { icon: <FaHtml5 />, label: 'UserAgent', href: '/web/ua' },
     ],
   },
   {

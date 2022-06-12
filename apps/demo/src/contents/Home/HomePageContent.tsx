@@ -13,7 +13,7 @@ export const HomePageContent = () => {
             {Boolean(v.children?.length) && (
               <div className={'flex flex-col gap-2 text-lg'}>
                 {v.children.map((vv, i) => (
-                  <MaybeLink className={'hover:text-primary'} href={vv.href}>
+                  <MaybeLink key={i} className={'hover:text-primary'} href={vv.href}>
                     {vv.label}
                   </MaybeLink>
                 ))}
