@@ -27,6 +27,7 @@ favicon:
 	convert -resize 16x16 public/favicon.png public/favicon.ico
 
 vercel-install: info
+	command -v jq > /dev/null || yum install jq -y
 	npm install -g $(PM)
 	$(PM) install --prefix ../..
 
