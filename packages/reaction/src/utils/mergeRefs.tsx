@@ -2,7 +2,7 @@ import React from 'react';
 
 /**
  * mergeRefs help handling multi refs
- * @see https://github.com/gregberge/react-merge-refs/blob/main/src/index.tsx
+ * @see {@link https://github.com/gregberge/react-merge-refs/blob/main/src/index.tsx gregberge/react-merge-refs}
  */
 export function mergeRefs<T = any>(refs: Array<React.MutableRefObject<T> | React.LegacyRef<T>>): React.RefCallback<T> {
   return (value) => {
