@@ -4,7 +4,7 @@ import { Equivalence } from '../typing';
 /**
  * create deep compare hooks based on eq
  * @param eq equality check function - e.g. react-fast-compare, dequal
- * @see https://github.com/sandiiarov/use-deep-compare
+ * @see {@link https://github.com/sandiiarov/use-deep-compare sandiiarov/use-deep-compare}
  */
 export function createDeepCompareHooks(eq: Equivalence<any | undefined>) {
   function useDeepCompareMemoize(value: React.DependencyList) {

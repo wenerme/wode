@@ -25,3 +25,5 @@ export { mergeRefs } from './utils/mergeRefs';
 export { shallow } from './utils/shallow';
 
 export type { Equivalence, Selector, UseSelector, Optional } from './typing';
+
+export { withStyleProps } from './hoc/withStyleProps';
