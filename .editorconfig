@@ -9,6 +9,6 @@ charset = utf-8
 [*.svg]
 insert_final_newline = false
 
-[{Makefile,*.Makefile}]
+[{Makefile,*.mk}]
 indent_style = tab
 indent_size = 4
