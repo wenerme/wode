@@ -3,9 +3,9 @@ import { createEventListenerHook } from './useEventListener';
 /**
  * useDocumentEventListener listen on {@link window}
  */
-export const useWindowEventListener = createEventListenerHook<WindowEventHandlersEventMap>(
-  typeof window === 'undefined' ? undefined : window,
-);
+export const useWindowEventListener = createEventListenerHook<
+  WindowEventHandlersEventMap & GlobalEventHandlersEventMap
+>(typeof window === 'undefined' ? undefined : window);
 /**
  * useDocumentEventListener listen on {@link document}
  */
