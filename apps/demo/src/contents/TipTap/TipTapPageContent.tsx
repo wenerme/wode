@@ -26,8 +26,6 @@ import {
   MdToc,
 } from 'react-icons/md';
 import { IoText } from 'react-icons/io5';
-import type {} from '@tiptap/starter-kit';
-import type {} from '@tiptap/extension-paragraph';
 
 function useExtensions() {
   return [
@@ -228,7 +226,7 @@ function useExtensions() {
                 // interactive: true,
                 // trigger: 'manual',
                 // placement: 'bottom-start',
-                getReferenceClientRect: props.clientRect,
+                getReferenceClientRect: props.clientRect as any, // fixme
                 appendTo: () => document.body,
                 content: reactRenderer.element,
                 showOnCreate: true,
@@ -242,7 +240,7 @@ function useExtensions() {
               reactRenderer.updateProps(props);
 
               popup[0].setProps({
-                getReferenceClientRect: props.clientRect,
+                getReferenceClientRect: props.clientRect as any, // fixme
               });
             },
 
