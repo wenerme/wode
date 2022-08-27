@@ -13,6 +13,9 @@ const nextConfig = {
   experimental: {
     // https://github.com/pnpm/pnpm/issues/4663
     // outputStandalone: true,
+
+    legacyBrowsers: false,
+    browsersListForSwc: true,
   },
   // webpack: (config, { isServer }) => {
   //   if (!isServer) {

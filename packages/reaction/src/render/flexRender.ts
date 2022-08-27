@@ -1,7 +1,7 @@
 import React, { ComponentClass, FunctionComponent, ReactElement } from 'react';
 
 // flexible renderer
-export interface FlexRenderer<P = any, A extends any[] = any[]> {
+export interface FlexRenderer<P extends React.Attributes = any, A extends any[] = any[]> {
   // render as Component
   as?: string | FunctionComponent<P> | ComponentClass<P> | ReactElement<P>;
   // render by function
@@ -15,7 +15,7 @@ export interface FlexRenderer<P = any, A extends any[] = any[]> {
  * @param props props overrides
  * @param args function render args
  */
-export function flexRender<P = any, A extends any[] = any[]>(
+export function flexRender<P extends React.Attributes = any, A extends any[] = any[]>(
   renderer: FlexRenderer<P, A>,
   props: P,
   ...args: A

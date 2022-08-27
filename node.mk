@@ -1,5 +1,5 @@
 REPO_ROOT ?= $(shell git rev-parse --show-toplevel)
-# -include $(REPO_ROOT)/mod.mk
+# -include $(REPO_ROOT)/node.mk
 
 # globstar match all files
 # extglob can exclude file
@@ -9,16 +9,18 @@ COLOR_INFO 	:= "\e[1;36m%s\e[0m\n"
 COLOR_WARN 	:= "\e[1;31m%s\e[0m\n"
 
 ifneq ("$(wildcard $(REPO_ROOT)/pnpm-lock.yaml)","")
-EXEC=pnpm exec
-PM=pnpm
+PM	:=pnpm
+EXEC:=pnpm dlx
+NPX :=pnpm dlx
 else
-EXEC=npx -y
-PM=npm
+PM	:=npm
+EXEC:=npx
+NPX :=npx -y
 endif
 
 PKG_NAME?=$(shell jq -r '.name' package.json)
 OUT_NAME?=$(shell jq -r '.name' package.json | tr -d '@' | tr '/' '-')
-OSPM	:=$(shell for i in apk brew yum apt-get apt; do command -v $$i > /dev/null && break ; done; echo $$i)
+OSPM	?=$(shell for i in apk brew yum apt-get apt; do command -v $$i > /dev/null && break ; done; echo $$i)
 
 info:
 	@echo $(PKG_NAME)
@@ -38,19 +40,19 @@ dev:
 	$(EXEC) next dev
 else
 # Library
-SOURCE_FILES?=$(shell ls src/**/*.ts src/**/*.tsx)
+SOURCE_FILES?=$(shell ls src/**/*.js src/**/*.ts src/**/*.tsx | egrep -v '[.]test[.]tsx?')
 build:
-	$(EXEC) esbuild --format=cjs --outdir=lib/cjs --target=chrome90 $(SOURCE_FILES)
-	$(EXEC) esbuild --format=esm --outdir=lib --target=chrome90 $(SOURCE_FILES)
+	@$(EXEC) esbuild --charset=utf8 --format=cjs --outdir=lib/cjs --target=chrome90 $(SOURCE_FILES)
+	@$(EXEC) esbuild --charset=utf8 --format=esm --outdir=lib --target=chrome90 $(SOURCE_FILES)
 dev: build
-	$(EXEC) esbuild --format=esm --outdir=lib --target=chrome90 --watch $(SOURCE_FILES)
+	@$(EXEC) esbuild --charset=utf8 --format=esm --outdir=lib --target=chrome90 --watch $(SOURCE_FILES)
 
 ESBUILD_BUNDLE_FLAGS?= \
 	--external:{react,react-dom,prop-types,classnames,@*,markdown-it,prosemirror*} \
 	--define:process.env.NODE_ENV=\"production\" --charset=utf8 --target=chrome90 --sourcemap --bundle
 bundle:
-	$(EXEC) esbuild --format=cjs --outfile=dist/$(OUT_NAME).cjs.js $(ESBUILD_BUNDLE_FLAGS)
-	$(EXEC) esbuild --format=esm --outfile=dist/$(OUT_NAME).esm.js $(ESBUILD_BUNDLE_FLAGS)
+	@$(EXEC) esbuild --charset=utf8 --format=cjs --outfile=dist/$(OUT_NAME).cjs.js $(ESBUILD_BUNDLE_FLAGS)
+	@$(EXEC) esbuild --charset=utf8 --format=esm --outfile=dist/$(OUT_NAME).esm.js $(ESBUILD_BUNDLE_FLAGS)
 	-grep '^// ' dist/$(OUT_NAME).esm.js | grep node_modules
 
 prepublish: build bundle
@@ -64,12 +66,16 @@ endif
 fmt:
 	$(EXEC) prettier src -w
 
+fix: LINT_FIX=1
+fix: lint
+
+LINT_FIX=
 lint:
 	@printf $(COLOR_INFO) "Linting..."
 ifneq ($(wildcard next.config.js),)
-	$(EXEC) next lint
-else ifneq ($(wildcard .eslintrc.js),)
-	$(EXEC) eslint src
+	$(EXEC) next lint $(if $(filter 1,$(LINT_FIX)),--fix)
+else ifneq ($(wildcard .eslintrc.js $(REPO_ROOT)/.eslintrc.js),)
+	$(EXEC) eslint src $(if $(filter 1,$(LINT_FIX)),--fix)
 else ifneq ($(wildcard tsconfig.json),)
 	$(EXEC) tsc --pretty --noEmit
 else
@@ -77,8 +83,18 @@ else
 endif
 
 test:
-	@! [ -e jest.config.js ] || $(EXEC) jest
+	@printf $(COLOR_INFO) "Testing..."
+ifneq ($(wildcard jest.config.*),)
+	$(EXEC) jest
+else ifneq ($(wildcard ava.config.*),)
+	$(EXEC) ava
+else ifeq ($(shell jq 'has("ava")' package.json),true)
+	$(EXEC) ava
+else
+	@printf $(COLOR_WARN) "No test setup"
+endif
 
 install:
+	@printf $(COLOR_INFO) "Installing..."
 	npm i -g $(PM)
 	$(PM) install

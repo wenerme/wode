@@ -47,8 +47,5 @@ image-verify:
 	#docker build --cache-from type=local,src=.cache/docker --cache-to type=local,dest=.cache/docker -f Dockerfile.build -t `basename $(PWD)` .
 	docker build -f build.Dockerfile -t $(shell basename $(PWD)) .
 
-build:
-	npm run build
-
 check-tokens:
 	npx ts-node -r tsconfig-paths/register ./src/scripts/check-tokens.ts
