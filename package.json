@@ -26,10 +26,13 @@
   },
   "homepage": "https://github.com/wenerme/wode#readme",
   "devDependencies": {
-    "turbo": "^1.2.9",
-    "prettier": "latest"
+    "ava": "^4.3.3",
+    "prettier": "latest",
+    "tsx": "^3.8.2",
+    "turbo": "^1.2.9"
   },
   "engines": {
+    "pnpm": ">=7.0.0",
     "npm": ">=7.0.0",
     "node": ">=14.0.0"
   },
@@ -59,5 +62,13 @@
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
+  },
+  "ava": {
+    "extensions": {
+      "ts": "module"
+    },
+    "nodeArguments": [
+      "--loader=tsx"
+    ]
   }
 }

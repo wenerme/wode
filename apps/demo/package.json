@@ -9,19 +9,20 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@floating-ui/dom": "^0.5.2",
-    "@floating-ui/react-dom-interactions": "^0.6.1",
+    "@floating-ui/dom": "^1",
+    "@floating-ui/react-dom-interactions": "^0.9",
     "@headlessui/react": "^1.6.2",
-    "@lexical/code": "^0.2.9",
-    "@lexical/hashtag": "^0.2.9",
-    "@lexical/link": "^0.2.9",
-    "@lexical/list": "^0.2.9",
-    "@lexical/mark": "^0.2.9",
-    "@lexical/overflow": "^0.2.9",
-    "@lexical/react": "^0.2.9",
-    "@lexical/rich-text": "^0.2.9",
-    "@lexical/table": "^0.2.9",
+    "@lexical/code": "^0.3.11",
+    "@lexical/hashtag": "^0.3.11",
+    "@lexical/link": "^0.3.11",
+    "@lexical/list": "^0.3.11",
+    "@lexical/mark": "^0.3.11",
+    "@lexical/overflow": "^0.3.11",
+    "@lexical/react": "^0.3.11",
+    "@lexical/rich-text": "^0.3.11",
+    "@lexical/table": "^0.3.11",
     "@tailwindcss/typography": "^0.5.2",
+    "@tiptap/core": "2.0.0-beta.182",
     "@tiptap/extension-bold": "^2.0.0-beta.26",
     "@tiptap/extension-character-count": "^2.0.0-beta.26",
     "@tiptap/extension-color": "^2.0.0-beta.9",
@@ -63,9 +64,10 @@
     "classnames": "^2.3.1",
     "daisyui": "^2.15.0",
     "domhandler": "^5.0.3",
-    "html-react-parser": "^2",
+    "html-react-parser": "^3",
+    "immer": "^9.0.15",
     "json5": "^2.2.1",
-    "lexical": "^0.2.9",
+    "lexical": "^0.3.11",
     "mammoth": "^1.4.21",
     "markdown-it": "^13.0.1",
     "next": "^12",
@@ -106,5 +108,8 @@
   "engines": {
     "node": "16",
     "pnpm": ">=7"
-  }
+  },
+  "browserslist": [
+    "last 10 chrome version"
+  ]
 }
