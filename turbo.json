@@ -2,7 +2,11 @@
   "$schema": "https://turborepo.org/schema.json",
   "baseBranch": "origin/main",
   "globalDependencies": [
-    "tsconfig.json"
+    "tsconfig.json",
+    "Makefile",
+    "package.json",
+    "tsconfig.json",
+    ".env"
   ],
   "pipeline": {
     "build": {

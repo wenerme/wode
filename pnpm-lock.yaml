@@ -76,9 +76,9 @@ importers:
       '@types/react-dom': ^18
       '@types/styled-components': ^5
       '@types/ua-parser-js': ^0.7.36
-      '@wener/reaction': '*'
-      '@wener/tiptap': '*'
-      '@wener/utils': '*'
+      '@wener/reaction': link:../../packages/reaction
+      '@wener/tiptap': link:../../components/wener-tiptap
+      '@wener/utils': link:../../packages/utils
       ajv: ^8.11.0
       ajv-errors: ^3.0.0
       ajv-formats: ^2.1.1

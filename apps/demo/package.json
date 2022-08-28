@@ -3,12 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
   "dependencies": {
     "@floating-ui/dom": "^1",
     "@floating-ui/react-dom-interactions": "^0.9",
@@ -63,9 +57,9 @@
     "@trpc/react": "^9.23.6",
     "@trpc/server": "^9.23.6",
     "@types/ua-parser-js": "^0.7.36",
-    "@wener/reaction": "*",
-    "@wener/tiptap": "*",
-    "@wener/utils": "*",
+    "@wener/reaction": "link:../../packages/reaction",
+    "@wener/tiptap": "link:../../components/wener-tiptap",
+    "@wener/utils": "link:../../packages/utils",
     "ajv": "^8.11.0",
     "ajv-errors": "^3.0.0",
     "ajv-formats": "^2.1.1",
