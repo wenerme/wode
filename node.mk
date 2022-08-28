@@ -10,7 +10,7 @@ COLOR_WARN 	:= "\e[1;31m%s\e[0m\n"
 
 ifneq ("$(wildcard $(REPO_ROOT)/pnpm-lock.yaml)","")
 PM	:=pnpm
-EXEC:=pnpm dlx
+EXEC:=pnpm exec
 NPX :=pnpm dlx
 else
 PM	:=npm

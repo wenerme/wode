@@ -2,6 +2,8 @@
   "name": "@wener/utils",
   "version": "1.1.1",
   "description": "Utils for daily use",
+  "type": "module",
+  "sideEffects": false,
   "keywords": [
     "utils",
     "core library",
@@ -25,7 +27,8 @@
     ".": {
       "import": "./lib/esm/index.js",
       "require": "./lib/cjs/index.js"
-    }
+    },
+    "./package.json": "./package.json"
   },
   "homepage": "https://github.com/wenerme/wode#readme",
   "files": [
@@ -49,14 +52,12 @@
     "test": "jest"
   },
   "devDependencies": {
-    "@types/jest": "^28",
     "@types/lodash": "^4",
     "@types/node": "^16",
     "dotenv": "^16",
     "esbuild": "^0.14",
     "jest": "^28",
     "lodash": "^4",
-    "ts-jest": "^28",
     "tslib": "^2",
     "typescript": "^4"
   },
