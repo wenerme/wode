@@ -1,6 +1,6 @@
-// const withTM = require('next-transpile-modules')(['@wener/reaction', '@wener/utils']);
-import createTranspile from 'next-transpile-modules';
-const withTM = createTranspile(['@wener/reaction', '@wener/utils', '@wener/tiptap']);
+const withTM = require('next-transpile-modules')(['@wener/reaction', '@wener/utils', '@wener/tiptap']);
+// import createTranspile from 'next-transpile-modules';
+// const withTM = createTranspile(['@wener/reaction', '@wener/utils', '@wener/tiptap']);
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -32,7 +32,7 @@ const nextConfig = {
   },
 };
 
-// module.exports = withTM(nextConfig);
+module.exports = withTM(nextConfig);
 // module.exports = nextConfig;
-export default withTM(nextConfig);
+// export default withTM(nextConfig);
 // export default nextConfig;
