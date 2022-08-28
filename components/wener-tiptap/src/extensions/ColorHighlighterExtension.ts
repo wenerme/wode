@@ -1,7 +1,8 @@
 import { Extension } from '@tiptap/core';
-import { Plugin } from 'prosemirror-state';
+import { Plugin, Transaction } from 'prosemirror-state';
 import { Decoration, DecorationSet } from 'prosemirror-view';
 import type { Node } from 'prosemirror-model';
+import type { Transform } from 'prosemirror-transform';
 
 export const ColorHighlighterExtension = Extension.create({
   name: 'colorHighlighter',
@@ -13,7 +14,9 @@ export const ColorHighlighterExtension = Extension.create({
           init(_, { doc }) {
             return findColors(doc);
           },
-          apply(transaction, oldState) {
+          apply(tr, oldState) {
+            // fixme build failed - type error
+            const transaction = tr as Transaction & Transform;
             return transaction.docChanged ? findColors(transaction.doc) : oldState;
           },
         },

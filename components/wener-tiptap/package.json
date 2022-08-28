@@ -2,8 +2,15 @@
   "name": "@wener/tiptap",
   "version": "1.0.0",
   "description": "Collection of useful tiptap extensions",
-  "main": "lib/esm/index.js",
-  "types": "src/index.ts",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "import": "./lib/index.js",
+      "types": "./src/index.ts"
+    },
+    "./package.json": "./package.json"
+  },
   "publishConfig": {
     "access": "public",
     "main": "dist/wener-tiptap.cjs.js",
@@ -36,8 +43,6 @@
     "src",
     "README.md",
     "rollup.config.ts",
-    "jest.config.js",
-    "jest.setup.js",
     "tsconfig.json"
   ],
   "dependencies": {
@@ -83,7 +88,9 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "esbuild": "^0.14",
-    "typescript": "^4"
+    "typescript": "^4",
+    "react": ">=18",
+    "react-dom": ">=18"
   },
   "optionalDependencies": {
     "markdown-it": "*"

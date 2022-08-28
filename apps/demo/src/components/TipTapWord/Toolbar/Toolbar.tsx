@@ -52,6 +52,14 @@ import { useEditorDerivedState } from '@src/components/TipTapWord/hooks';
 import type {} from '@tiptap/extension-font-family';
 import type {} from '@tiptap/extension-text-align';
 import type {} from '@tiptap/extension-table';
+import type {} from '@tiptap/extension-heading';
+import type {} from '@tiptap/extension-code-block';
+import type {} from '@tiptap/extension-blockquote';
+import type {} from '@tiptap/extension-ordered-list';
+import type {} from '@tiptap/extension-bullet-list';
+import type {} from '@tiptap/extension-code';
+import type {} from '@tiptap/extension-history';
+import type {} from '@tiptap/core';
 
 const FontFamilySet: OptionItem[] = [
   { label: '默认字体', value: '' },
