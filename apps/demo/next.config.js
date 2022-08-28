@@ -34,5 +34,5 @@ const nextConfig = {
 
 // module.exports = withTM(nextConfig);
 // module.exports = nextConfig;
-// export default withTM(nextConfig);
-export default nextConfig;
+export default withTM(nextConfig);
+// export default nextConfig;
