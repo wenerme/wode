@@ -56,7 +56,7 @@ bundle:
 	-grep '^// ' dist/$(OUT_NAME).esm.js | grep node_modules
 
 prepublish: build bundle
-	$(EXEC) tsc --outDir lib/esm --emitDeclarationOnly --declaration
+	$(EXEC) tsc --outDir lib --emitDeclarationOnly --declaration
 
 publish: clean prepublish
 	$(PM) publish --registry https://registry.npmjs.org --access public
