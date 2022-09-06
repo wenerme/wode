@@ -1,7 +1,8 @@
 {
   "name": "@wener/reaction",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "React hooks & reaction",
+  "type": "module",
   "keywords": [
     "components",
     "react",
@@ -24,20 +25,14 @@
     "url": "git+ssh://git@github.com/wenerme/wode.git",
     "directory": "packages/reaction"
   },
-  "main": "lib/cjs/index.js",
-  "module": "lib/esm/index.js",
-  "types": "src/index.ts",
-  "umd:main": "dist/wener-reaction.js",
-  "unpkg": "dist/wener-reaction.js",
-  "jsdelivr": "dist/wener-reaction.js",
-  "jsnext:main": "dist/wener-reaction.mjs",
-  "esnext": "lib/esnext/index.js",
   "exports": {
     ".": {
-      "import": "./lib/esm/index.js",
       "types": "./src/index.ts",
+      "development": "./src/index.ts",
+      "import": "./lib/index.js",
       "require": "./lib/cjs/index.js"
-    }
+    },
+    "./package.json": "./package.json"
   },
   "files": [
     "src",

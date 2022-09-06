@@ -1,3 +1,10 @@
+/**
+ * Trigger browser download
+ * @param filename download as filename
+ * @param data data or url to download
+ * @param type content type
+ * @param raw if true, data is treated as raw data, not url
+ */
 export function download(filename: string, data: any, { type = 'application/octet-stream', raw = false } = {}) {
   const a = document.createElement('a');
   let closer: () => void = () => null;

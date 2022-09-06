@@ -1,4 +1,4 @@
-export * from './copy';
-export * from './download';
-export * from './loaders';
-export * from './getFileFromDataTransfer';
+export { copy } from './copy';
+export { download } from './download';
+export { loadScripts, loadStyles } from './loaders';
+export { getFileFromDataTransfer } from './getFileFromDataTransfer';
