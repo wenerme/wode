@@ -4,11 +4,13 @@ export { useCompareEffect } from './hooks/useCompareEffect';
 export { useConstant } from './hooks/useConstant';
 export { useControlled } from './hooks/useControlled';
 export { useDebounce } from './hooks/useDebounce';
+export { useDebugRender } from './hooks/useDebugRender';
 export { useEffectOnce } from './hooks/useEffectOnce';
 export { useForceRender } from './hooks/useForceRender';
 export { useInterval } from './hooks/useInterval';
 export { useMounted } from './hooks/useMounted';
 export { useRenderCount } from './hooks/useRenderCount';
+export { useTimeout } from './hooks/useTimeout';
 export { useEventListener, createEventListenerHook } from './hooks/useEventListener';
 export { useWindowEventListener, useDocumentEventListener, useBodyEventListener } from './hooks/useDomEventListener';
 export type { HandlersOfEventMap } from './hooks/useEventListener';
@@ -24,6 +26,6 @@ export { createDeepCompareHooks } from './utils/createDeepCompareHooks';
 export { mergeRefs } from './utils/mergeRefs';
 export { shallow } from './utils/shallow';
 
-export type { Equivalence, Selector, UseSelector, Optional } from './typing';
+export type { Equivalence, Selector, UseSelector, Optional, PartialRequired } from './typing';
 
 export { withStyleProps } from './hoc/withStyleProps';

@@ -4,7 +4,7 @@ function load(
   reject: (v: any) => void,
   options: { attributes: Record<string, string> } | undefined,
 ) {
-  el.onload = resolve;
+  el.onload = () => resolve(el);
   el.onerror = (e) => {
     el.remove();
     reject(e);
@@ -15,10 +15,34 @@ function load(
   document.head.appendChild(el);
 }
 
-export function loadScripts(src: string, options?: { attributes: Record<string, string> }) {
+export function loadScripts(
+  src: string[],
+  options?: { attributes: Record<string, string> },
+): Promise<HTMLScriptElement[]>;
+export function loadScripts(src: string, options?: { attributes: Record<string, string> }): Promise<HTMLScriptElement>;
+
+export function loadScripts(
+  src: string | string[],
+  options?: { attributes: Record<string, string> },
+): Promise<HTMLScriptElement | HTMLScriptElement[]> {
+  if (Array.isArray(src)) {
+    return new Promise(async (resolve, reject) => {
+      const all = [];
+      try {
+        for (let s of src) {
+          all.push(await loadScripts(s));
+        }
+      } catch (e) {
+        reject(e);
+        return;
+      }
+      resolve(all);
+    });
+  }
   // todo quote ?
-  if (document.querySelector(`script[src="${src}"]`)) {
-    return Promise.resolve();
+  let $ele = document.querySelector(`script[src="${src}"]`) as HTMLScriptElement;
+  if ($ele) {
+    return Promise.resolve($ele);
   }
   return new Promise((resolve, reject) => {
     const el = document.createElement('script');
@@ -27,9 +51,10 @@ export function loadScripts(src: string, options?: { attributes: Record<string, 
   });
 }
 
-export function loadStyles(href: string, options?: { attributes: Record<string, string> }) {
-  if (document.querySelector(`link[href="${href}"]`)) {
-    return Promise.resolve();
+export function loadStyles(href: string, options?: { attributes: Record<string, string> }): Promise<HTMLLinkElement> {
+  let $ele = document.querySelector(`link[href="${href}"]`) as HTMLLinkElement;
+  if ($ele) {
+    return Promise.resolve($ele);
   }
 
   return new Promise((resolve, reject) => {

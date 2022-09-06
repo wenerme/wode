@@ -22,6 +22,9 @@ PKG_NAME?=$(shell jq -r '.name' package.json)
 OUT_NAME?=$(shell jq -r '.name' package.json | tr -d '@' | tr '/' '-')
 OSPM	?=$(shell for i in apk brew yum apt-get apt; do command -v $$i > /dev/null && break ; done; echo $$i)
 
+# for reproducible build
+SOURCE_DATE_EPOCH?=$(shell git log -1 --pretty=%ct)
+
 info:
 	@echo $(PKG_NAME)
 	@echo -e "\t" $(shell jq -r '.name' package.json) v$(shell jq -r '.version' package.json)
@@ -29,8 +32,10 @@ info:
 	@echo -e "\t" OS : `uname -mispr`
 	@echo -e "\t" OS Package Manager: $(OSPM)
 
-clean:
-	rm -rf dist/* lib/* .next/*
+clean: distclean
+	rm -rf .next/* .turbo/* node_modules/.cache/*
+distclean:
+	rm -rf dist/* lib/*
 
 ifneq ($(wildcard next.config.js),)
 # Next.JS
@@ -40,25 +45,46 @@ dev:
 	$(EXEC) next dev
 else
 # Library
-SOURCE_FILES?=$(shell ls src/**/*.js src/**/*.ts src/**/*.tsx | egrep -v '[.]test[.]tsx?')
+SOURCE_FILES?=$(shell ls 2>/dev/null src/**/*.js src/**/*.ts src/**/*.tsx | egrep -v '[.]test[.]tsx?')
+ESBUILD_BUILD_FLAGS?= \
+	--define:process.env.NODE_ENV=\"production\" --charset=utf8 --target=chrome90 --minify-syntax --sourcemap
 build:
-	@$(EXEC) esbuild --charset=utf8 --format=cjs --outdir=lib/cjs --target=chrome90 $(SOURCE_FILES)
-	@$(EXEC) esbuild --charset=utf8 --format=esm --outdir=lib --target=chrome90 $(SOURCE_FILES)
+	@$(EXEC) esbuild --format=cjs --outdir=lib/cjs $(SOURCE_FILES) $(ESBUILD_BUILD_FLAGS)
+	@$(EXEC) esbuild --format=esm --outdir=lib $(SOURCE_FILES) $(ESBUILD_BUILD_FLAGS)
+
+libsum:
+	@printf $(COLOR_INFO) "lib size"
+	-@du --apparent-size -sh lib --exclude lib/cjs
+	-@du --apparent-size -sh lib/cjs
+	@printf $(COLOR_INFO) "lib checsum"
+	-@tar --mtime="@0" --owner=0 --group=0 --numeric-owne --sort=name -cf - lib | sha1sum
+	@printf $(COLOR_INFO) "dist size"
+	-@du --apparent-size -sh dist/*.js
+	@printf $(COLOR_INFO) "dist checsum"
+	-@tar --mtime="@0" --owner=0 --group=0 --numeric-owne --sort=name -cf - dist | sha1sum
+	@printf $(COLOR_INFO) "dist bundle node_modules?"
+	-@grep '^// ' dist/$(OUT_NAME).esm.js | grep node_modules || echo none
+
+ESBUILD_DEV_FLAGS?= \
+	--define:process.env.NODE_ENV=\"development\" --charset=utf8 --target=chrome90 --sourcemap=external
+dev: ESBUILD_BUILD_FLAGS=$(ESBUILD_DEV_FLAGS)
 dev: build
-	@$(EXEC) esbuild --charset=utf8 --format=esm --outdir=lib --target=chrome90 --watch $(SOURCE_FILES)
+	@$(EXEC) esbuild --format=esm --outdir=lib --watch $(SOURCE_FILES) $(ESBUILD_DEV_FLAGS)
 
 ESBUILD_BUNDLE_FLAGS?= \
 	--external:{react,react-dom,prop-types,classnames,@*,markdown-it,prosemirror*} \
-	--define:process.env.NODE_ENV=\"production\" --charset=utf8 --target=chrome90 --sourcemap --bundle
+	--define:process.env.NODE_ENV=\"production\" --charset=utf8 --target=chrome90 --sourcemap=external --legal-comments=external --bundle
 bundle:
-	@$(EXEC) esbuild --charset=utf8 --format=cjs --outfile=dist/$(OUT_NAME).cjs.js $(ESBUILD_BUNDLE_FLAGS)
-	@$(EXEC) esbuild --charset=utf8 --format=esm --outfile=dist/$(OUT_NAME).esm.js $(ESBUILD_BUNDLE_FLAGS)
-	-grep '^// ' dist/$(OUT_NAME).esm.js | grep node_modules
+	@$(EXEC) esbuild --format=cjs --outfile=dist/$(OUT_NAME).cjs.js --minify-syntax $(ESBUILD_BUNDLE_FLAGS) src/index.ts
+	@$(EXEC) esbuild --format=esm --outfile=dist/$(OUT_NAME).esm.js --minify-syntax $(ESBUILD_BUNDLE_FLAGS) src/index.ts
+	@$(EXEC) esbuild --format=cjs --outfile=dist/$(OUT_NAME).cjs.min.js --minify $(ESBUILD_BUNDLE_FLAGS) src/index.ts
+	@$(EXEC) esbuild --format=esm --outfile=dist/$(OUT_NAME).esm.min.js --minify $(ESBUILD_BUNDLE_FLAGS) src/index.ts
 
-prepublish: build bundle
-	$(EXEC) tsc --outDir lib --emitDeclarationOnly --declaration
 
-publish: clean prepublish
+prepublish: build bundle libsum
+#	$(EXEC) tsc --outDir lib/esm --emitDeclarationOnly --declaration
+
+publish: distclean prepublish
 	$(PM) publish --registry https://registry.npmjs.org --access public
 
 endif

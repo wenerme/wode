@@ -45,13 +45,17 @@ function initCopy() {
   };
 }
 
-export function copy(text: string) {
+/**
+ * Write text to clipboard
+ * @param content content
+ */
+export function copy(content: string) {
   if (window.navigator?.clipboard?.writeText) {
-    window.navigator.clipboard.writeText(text);
+    window.navigator.clipboard.writeText(content);
     return;
   }
   if (!_copy) {
     initCopy();
   }
-  _copy(text);
+  _copy(content);
 }
