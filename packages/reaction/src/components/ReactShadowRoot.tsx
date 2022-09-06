@@ -71,7 +71,7 @@ export class ReactShadowRoot extends React.PureComponent<ReactShadowRootProps> {
   }
 }
 
-if (__DEV__) {
+if (process.env.NODE_ENV !== 'production') {
   ReactShadowRoot.propTypes = {
     delegatesFocus: PropTypes.bool,
     mode: PropTypes.oneOf(['open', 'closed']),
