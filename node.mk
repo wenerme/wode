@@ -110,6 +110,9 @@ prepublish: distclean build bundle libsum
 publish: prepublish
 	$(PM) publish --registry https://registry.npmjs.org --access public
 
+sync-mirror:
+	curl -sf -X PUT "https://registry-direct.npmmirror.com/$(PKG_NAME)/sync?sync_upstream=true" | jq
+
 endif
 
 fmt:
