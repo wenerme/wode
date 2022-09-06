@@ -11,7 +11,7 @@
     "strict": true,
     "sourceMap": true,
     "skipLibCheck": true,
-    "declaration": true,
+    "declaration": false,
     "esModuleInterop": true,
     "jsx": "react",
     "importHelpers": true,
