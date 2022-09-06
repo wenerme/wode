@@ -22,7 +22,7 @@ export function useDebugRender(o: any, ...rest: any[]): DebugRenderLogger {
       if (typeof args[0] === 'string') {
         message = args.shift();
       }
-      console.debug(`[${name}]#${counterRef.current}${message ? `: ${message}` : ''}`, ...rest);
+      console.debug(`[${name}]#${counterRef.current}${message ? `: ${message}` : ''}`, ...args);
     },
     [name],
   );
