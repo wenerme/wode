@@ -29,11 +29,7 @@ export class ReactShadowRoot extends React.PureComponent<ReactShadowRootProps> {
     mode: 'open',
   };
   static displayName = 'ReactShadowRoot';
-  static propTypes = {
-    delegatesFocus: PropTypes.bool,
-    mode: PropTypes.oneOf(['open', 'closed']),
-    // stylesheets: PropTypes.arrayOf(PropTypes.instanceOf(window.CSSStyleSheet)),
-  };
+  static propTypes = {};
   static shadowRootSupported = shadowRootSupported;
   private shadowRoot?: ShadowRoot;
   private placeholder: React.RefObject<HTMLElement>;
@@ -73,6 +69,14 @@ export class ReactShadowRoot extends React.PureComponent<ReactShadowRootProps> {
     }
     return ReactDOM.createPortal(this.props.children, this.shadowRoot!);
   }
+}
+
+if (__DEV__) {
+  ReactShadowRoot.propTypes = {
+    delegatesFocus: PropTypes.bool,
+    mode: PropTypes.oneOf(['open', 'closed']),
+    // stylesheets: PropTypes.arrayOf(PropTypes.instanceOf(window.CSSStyleSheet)),
+  };
 }
 
 declare global {
