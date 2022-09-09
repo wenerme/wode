@@ -3,17 +3,18 @@ import replace from '@rollup/plugin-replace';
 import { terser } from 'rollup-plugin-terser';
 import { readFile } from 'node:fs/promises';
 
-const { name } = JSON.parse(await readFile(new URL('./package.json', import.meta.url)));
-const outputName = name.replaceAll('@', '').replaceAll('/', '-');
+const pkg = JSON.parse(await readFile(new URL('./package.json', import.meta.url)));
+const outputName = pkg.name.replaceAll('@', '').replaceAll('/', '-');
+const external = [...Object.keys(pkg.dependencies || {}), ...Object.keys(pkg.peerDependencies || {})];
 
 const env = process.env.NODE_ENV ?? 'production';
 const isProduction = env === 'production';
-const ReplaceProd = replace({
+const replaceProd = replace({
   'process.env.NODE_ENV': JSON.stringify(env),
   __DEV__: String(!isProduction),
   preventAssignment: true,
 });
-const ReplaceDev = replace({
+const replaceDev = replace({
   'process.env.NODE_ENV': JSON.stringify('development'),
   __DEV__: String(true),
   preventAssignment: true,
@@ -27,9 +28,14 @@ export default [
         format: 'system',
         sourcemap: true,
       },
+      {
+        file: `dist/esm/${outputName}.min.js`,
+        format: 'esm',
+        sourcemap: true,
+      },
     ],
-    plugins: [ReplaceProd, typescript(), terser()],
-    external: ['react', 'react-dom', 'prop-types'],
+    plugins: [replaceProd, typescript(), terser()],
+    external,
   },
   {
     input: 'src/index.ts',
@@ -39,8 +45,33 @@ export default [
         format: 'system',
         sourcemap: true,
       },
+      {
+        file: `dist/esm/${outputName}.development.js`,
+        format: 'esm',
+        sourcemap: true,
+      },
     ],
-    plugins: [ReplaceDev, typescript()],
-    external: ['react', 'react-dom', 'prop-types'],
+    plugins: [replaceDev, typescript()],
+    external,
+  },
+  {
+    input: 'src/index.ts',
+    output: [
+      {
+        entryFileNames: '[name].mjs',
+        exports: 'named',
+        preserveModules: true,
+        dir: 'lib/esm',
+        format: 'esm',
+        sourcemap: true,
+      },
+      {
+        file: `dist/cjs/${outputName}.js`,
+        format: 'cjs',
+        sourcemap: true,
+      },
+    ],
+    plugins: [typescript()],
+    external,
   },
 ];

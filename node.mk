@@ -64,9 +64,15 @@ SOURCE_FILES?=$(shell ls 2>/dev/null src/**/*.js src/**/*.ts src/**/*.tsx | egre
 # will not minify
 ESBUILD_BUILD_FLAGS?=--charset=utf8 --target=chrome90 --sourcemap --platform=neutral
 build:
+ifneq ($(wildcard rollup.config.*),)
+	$(EXEC) rollup -c
+else ifneq ($(wildcard esbuild.build.*),)
+	$(EXEC) $(wildcard esbuild.build.*)
+else
 	@$(EXEC) esbuild --format=esm --outdir=lib/esm --out-extension:.js=.mjs $(SOURCE_FILES) $(ESBUILD_BUILD_FLAGS)
 ifeq ($(WANT_CJS),true)
 	@$(EXEC) esbuild --format=cjs --outdir=lib/cjs $(SOURCE_FILES) $(ESBUILD_BUILD_FLAGS)
+endif
 endif
 
 build-declaration:
@@ -94,10 +100,13 @@ ESBUILD_BUNDLE_FLAGS?= \
 	--external:{react,react-dom,prop-types,classnames,@*,markdown-it,prosemirror*} \
 	--charset=utf8 --target=chrome90 --sourcemap=external --legal-comments=external --bundle
 bundle:
+ifneq ($(wildcard rollup.config.*),)
+	@printf $(COLOR_INFO) "rollup bundled in build phase"
+else ifneq ($(wildcard esbuild.bundle.*),)
+	$(EXEC) $(wildcard esbuild.bundle.*)
+else
 	@$(EXEC) esbuild --format=esm --outfile=dist/esm/$(OUT_NAME).development.js $(ESBUILD_DEVELOPMENT_FLAGS) $(ESBUILD_BUNDLE_FLAGS) src/index.ts
 	@$(EXEC) esbuild --format=esm --outfile=dist/esm/$(OUT_NAME).min.js $(ESBUILD_PRODUCTION_FLAGS) $(ESBUILD_BUNDLE_FLAGS) src/index.ts
-ifneq ($(wildcard rollup.config.js),)
-	$(EXEC) rollup -c
 endif
 
 ifneq ($(wildcard rollup.config.js),)
