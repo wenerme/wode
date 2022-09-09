@@ -1,20 +1,17 @@
 {
   "compilerOptions": {
     "moduleResolution": "node",
-    "target": "esnext",
-    "module": "esnext",
+    "target": "ESNext",
+    "module": "ESNext",
     "lib": [
       "dom",
       "dom.iterable",
-      "es5",
-      "es2015.collection",
-      "es2015.iterable",
-      "esnext"
+      "ES2018"
     ],
     "strict": true,
     "sourceMap": true,
     "skipLibCheck": true,
-    "declaration": true,
+    "declaration": false,
     "esModuleInterop": true,
     "importHelpers": true,
     "allowSyntheticDefaultImports": true,
@@ -29,8 +26,7 @@
     "stripInternal": true
   },
   "exclude": [
-    "node_modules",
-    "**/__tests__/*"
+    "node_modules"
   ],
   "include": [
     "src"

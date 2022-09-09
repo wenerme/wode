@@ -1,6 +1,6 @@
 {
   "name": "@wener/utils",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Utils for daily use",
   "type": "module",
   "sideEffects": false,
@@ -15,21 +15,25 @@
   },
   "license": "MIT",
   "author": "wener",
-  "main": "lib/cjs/index.js",
-  "module": "lib/esm/index.js",
-  "types": "src/index.ts",
-  "esnext": "lib/esnext/index.js",
-  "umd:main": "dist/utils.js",
-  "unpkg": "dist/utils.js",
-  "jsdelivr": "dist/utils.js",
-  "jsnext:main": "dist/utils.esm.js",
   "exports": {
     ".": {
-      "import": "./lib/esm/index.js",
-      "require": "./lib/cjs/index.js"
+      "types": "./src/index.ts",
+      "import": "./lib/esm/index.mjs",
+      "system": {
+        "development": "./dist/system/index.development.js",
+        "default": "./dist/system/index.min.js"
+      },
+      "require": "./dist/cjs/index.js"
     },
+    "./types": {
+      "types": "./src/types.d.ts"
+    },
+    "./src/*": "./src/*",
     "./package.json": "./package.json"
   },
+  "main": "dist/cjs/index.js",
+  "import": "lib/esm/index.mjs",
+  "types": "src/index.ts",
   "homepage": "https://github.com/wenerme/wode#readme",
   "files": [
     "index.js",
