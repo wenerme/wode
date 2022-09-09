@@ -23,6 +23,7 @@ export { flexRender, type FlexRenderable } from './render/flexRender';
 
 export { createDeepCompareHooks } from './utils/createDeepCompareHooks';
 export { mergeRefs } from './utils/mergeRefs';
+export { mergeProps } from './utils/mergeProps';
 export { shallow } from './utils/shallow';
 
 export type { Equivalence, Selector, UseSelector, Optional, PartialRequired } from './typing';

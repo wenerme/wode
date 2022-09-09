@@ -4,7 +4,10 @@ import { terser } from 'rollup-plugin-terser';
 import { readFile } from 'node:fs/promises';
 
 const pkg = JSON.parse(await readFile(new URL('./package.json', import.meta.url)));
-const outputName = pkg.name.replaceAll('@', '').replaceAll('/', '-');
+// const outputName = pkg.name.replaceAll('@', '').replaceAll('/', '-');
+
+// more consistent & intuitive output name
+const outputName = 'index';
 const external = [...Object.keys(pkg.dependencies || {}), ...Object.keys(pkg.peerDependencies || {})];
 
 const env = process.env.NODE_ENV ?? 'production';
