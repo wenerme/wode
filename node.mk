@@ -62,7 +62,7 @@ ESBUILD_PRODUCTION_FLAGS?	=--define:process.env.NODE_ENV=\"production\" --define
 
 SOURCE_FILES?=$(shell ls 2>/dev/null src/**/*.js src/**/*.ts src/**/*.tsx | egrep -v '[.]test[.]tsx?')
 # will not minify
-ESBUILD_BUILD_FLAGS?=--charset=utf8 --target=chrome90 --sourcemap
+ESBUILD_BUILD_FLAGS?=--charset=utf8 --target=chrome90 --sourcemap --platform=neutral
 build:
 	@$(EXEC) esbuild --format=esm --outdir=lib/esm $(SOURCE_FILES) $(ESBUILD_BUILD_FLAGS)
 ifeq ($(WANT_CJS),true)

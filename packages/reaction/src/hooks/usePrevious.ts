@@ -1,16 +1,12 @@
-import { useRef } from 'react';
-import { Equivalence } from '../typing';
+import React from 'react';
 
 /**
  * usePrevious will return previous value without state change
- * @deprecated prefer {@link createDeepCompareHooks} {@link useDeepCompareMemoize} {@link useCompareEffect}
- * @param val
- * @param equal
  */
-export function usePrevious<T = any>(val: T, equal: Equivalence<T | undefined> = (a, b) => a === b) {
-  const ref = useRef<T>();
-  if (!equal(ref.current, val)) {
-    ref.current = val;
-  }
+export function usePrevious<T>(value: T) {
+  const ref = React.useRef<T>();
+  React.useEffect(() => {
+    ref.current = value;
+  }, [value]);
   return ref.current;
 }

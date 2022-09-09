@@ -1,12 +1,9 @@
 {
   "name": "@wener/reaction",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "description": "React hooks, utils & reaction",
   "type": "module",
   "sideEffects": false,
-  "main": "dist/esm/wener-reaction.development.js",
-  "module": "dist/esm/wener-reaction.development.js",
-  "types": "src/index.ts",
   "keywords": [
     "components",
     "react",
@@ -33,13 +30,13 @@
     ".": {
       "types": "./src/index.ts",
       "development": "./dist/esm/wener-reaction.development.js",
-      "default": "./lib/esm/index.js",
       "import": "./lib/esm/index.js",
       "system": {
-        "default": "./disk/system/wener-reaction.min.js",
-        "development": "./disk/system/wener-reaction.development.js"
+        "development": "./disk/system/wener-reaction.development.js",
+        "default": "./disk/system/wener-reaction.min.js"
       },
-      "require": "./lib/cjs/index.js"
+      "require": "./lib/cjs/index.js",
+      "default": "./lib/esm/index.js"
     },
     "./types": {
       "types": "./src/types.d.ts"
