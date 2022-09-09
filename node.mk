@@ -85,7 +85,7 @@ libsum:
 	@printf $(COLOR_INFO) "dist size"
 	-@du --apparent-size -sh dist/**/*.js
 	@printf $(COLOR_INFO) "dist bundle node_modules?"
-	-@grep '^// ' dist/esm/$(OUT_NAME).development.js | grep node_modules || echo none
+	-@grep '^// ' dist/esm/index.development.js | grep node_modules || echo none
 	@printf $(COLOR_INFO) "checksum"
 	-@tar --mtime="@0" --owner=0 --group=0 --numeric-owne --sort=name -cf - lib | sha256sum | sed 's/-/lib/'
 	-@tar --mtime="@0" --owner=0 --group=0 --numeric-owne --sort=name -cf - dist | sha256sum | sed 's/-/dist/'
