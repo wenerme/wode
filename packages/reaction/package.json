@@ -1,6 +1,6 @@
 {
   "name": "@wener/reaction",
-  "version": "1.2.8",
+  "version": "1.2.9",
   "description": "React hooks, utils & reaction",
   "keywords": [
     "components",
@@ -25,7 +25,7 @@
     ".": {
       "types": "./src/index.ts",
       "development": "./src/index.ts",
-      "import": "./lib/esm/index.js",
+      "import": "./lib/esm/index.mjs",
       "system": {
         "development": "./disk/system/wener-reaction.development.js",
         "default": "./disk/system/wener-reaction.min.js"
@@ -39,7 +39,7 @@
     "./package.json": "./package.json"
   },
   "main": "lib/cjs/index.js",
-  "import": "lib/esm/index.js",
+  "import": "lib/esm/index.mjs",
   "types": "src/index.ts",
   "files": [
     "src",

@@ -64,7 +64,7 @@ SOURCE_FILES?=$(shell ls 2>/dev/null src/**/*.js src/**/*.ts src/**/*.tsx | egre
 # will not minify
 ESBUILD_BUILD_FLAGS?=--charset=utf8 --target=chrome90 --sourcemap --platform=neutral
 build:
-	@$(EXEC) esbuild --format=esm --outdir=lib/esm $(SOURCE_FILES) $(ESBUILD_BUILD_FLAGS)
+	@$(EXEC) esbuild --format=esm --outdir=lib/esm --out-extension:.js=.mjs $(SOURCE_FILES) $(ESBUILD_BUILD_FLAGS)
 ifeq ($(WANT_CJS),true)
 	@$(EXEC) esbuild --format=cjs --outdir=lib/cjs $(SOURCE_FILES) $(ESBUILD_BUILD_FLAGS)
 endif
