@@ -1,9 +1,7 @@
 {
   "name": "@wener/reaction",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "description": "React hooks, utils & reaction",
-  "type": "module",
-  "sideEffects": false,
   "keywords": [
     "components",
     "react",
@@ -11,21 +9,18 @@
     "util",
     "tool"
   ],
-  "scripts": {
-    "build": "make prepublish",
-    "clean": "make clean",
-    "dev": "make dev"
-  },
+  "homepage": "https://github.com/wenerme/wode#readme",
   "bugs": {
     "url": "https://github.com/wenerme/wode/issues"
   },
-  "homepage": "https://github.com/wenerme/wode#readme",
-  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/wenerme/wode.git",
     "directory": "packages/reaction"
   },
+  "license": "MIT",
+  "sideEffects": false,
+  "type": "module",
   "exports": {
     ".": {
       "types": "./src/index.ts",
@@ -44,6 +39,7 @@
     "./src/*": "./src/*",
     "./package.json": "./package.json"
   },
+  "types": "src/index.ts",
   "files": [
     "src",
     "lib",
@@ -51,27 +47,15 @@
     "tsconfig.json",
     "Makefile"
   ],
-  "devDependencies": {
-    "@types/node": "^16",
-    "@types/prop-types": "^15",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "esbuild": "^0.14",
-    "react": "^18",
-    "typescript": "^4"
-  },
-  "peerDependencies": {
-    "react": ">=16",
-    "react-dom": ">=16",
-    "prop-types": ">=16"
-  },
-  "publishConfig": {
-    "access": "public"
+  "scripts": {
+    "build": "make prepublish",
+    "clean": "make clean",
+    "dev": "make dev"
   },
   "prettier": {
-    "trailingComma": "all",
     "printWidth": 120,
     "singleQuote": true,
+    "trailingComma": "all",
     "overrides": [
       {
         "files": [
@@ -87,5 +71,22 @@
   "dependencies": {
     "prop-types": ">=15",
     "react-dom": ">=18"
+  },
+  "devDependencies": {
+    "@types/node": "^16",
+    "@types/prop-types": "^15",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "esbuild": "^0.14",
+    "react": "^18",
+    "typescript": "^4"
+  },
+  "peerDependencies": {
+    "prop-types": ">=16",
+    "react": ">=16",
+    "react-dom": ">=16"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
