@@ -1,6 +1,6 @@
 {
   "name": "@wener/reaction",
-  "version": "1.2.9",
+  "version": "1.2.10",
   "description": "React hooks, utils & reaction",
   "keywords": [
     "components",
@@ -27,10 +27,10 @@
       "development": "./src/index.ts",
       "import": "./lib/esm/index.mjs",
       "system": {
-        "development": "./disk/system/wener-reaction.development.js",
-        "default": "./disk/system/wener-reaction.min.js"
+        "development": "./dist/system/wener-reaction.development.js",
+        "default": "./dist/system/wener-reaction.min.js"
       },
-      "require": "./lib/cjs/index.js"
+      "require": "./dist/cjs/wener-reaction.js"
     },
     "./types": {
       "types": "./src/types.d.ts"
@@ -38,7 +38,7 @@
     "./src/*": "./src/*",
     "./package.json": "./package.json"
   },
-  "main": "lib/cjs/index.js",
+  "main": "dist/cjs/wener-reaction.js",
   "import": "lib/esm/index.mjs",
   "types": "src/index.ts",
   "files": [
