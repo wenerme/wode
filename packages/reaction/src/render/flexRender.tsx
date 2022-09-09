@@ -1,4 +1,5 @@
 import React from 'react';
+import { mergeProps as defaultMergeProps } from '../utils/mergeProps';
 
 export type FlexRenderable<TProps> = React.ReactNode | React.ComponentType<TProps>;
 
@@ -12,7 +13,7 @@ export type FlexRenderable<TProps> = React.ReactNode | React.ComponentType<TProp
 export function flexRender<TProps extends object>(
   Comp: FlexRenderable<TProps>,
   props: TProps,
-  mergeProps?: (a: TProps, b: TProps) => TProps,
+  mergeProps?: (a: TProps, b: TProps) => TProps | true,
 ): React.ReactNode | JSX.Element {
   if (!Comp) {
     return null;
@@ -20,11 +21,16 @@ export function flexRender<TProps extends object>(
   if (isReactComponent<TProps>(Comp)) {
     return <Comp {...props} />;
   }
-  if (mergeProps && typeof Comp === 'object' && 'props' in Comp) {
-    return React.cloneElement(Comp, mergeProps(Comp.props, props));
+  if (typeof mergeProps === 'boolean' && mergeProps === true) {
+    mergeProps = flexRender.mergeProps;
+  }
+  if (typeof mergeProps === 'function' && typeof Comp === 'object' && 'props' in Comp) {
+    return React.cloneElement(Comp, (mergeProps as any)(Comp.props, props));
   }
   return Comp;
 }
+
+flexRender.mergeProps = defaultMergeProps;
 
 function isReactComponent<TProps>(component: unknown): component is React.ComponentType<TProps> {
   return isClassComponent(component) || typeof component === 'function' || isExoticComponent(component);
