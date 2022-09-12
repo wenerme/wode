@@ -1,5 +1,8 @@
 # React utils
 
+- References
+  - https://github.com/streamich/react-use/tree/master/src
+  - https://github.com/tailwindlabs/headlessui/tree/main/packages/@headlessui-react/src/hooks
 
 <!-- LINK:BEGIN -->
 
