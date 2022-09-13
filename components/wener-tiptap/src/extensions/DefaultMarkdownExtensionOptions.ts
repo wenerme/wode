@@ -3,6 +3,7 @@ import { markInputRule, markPasteRule } from '@tiptap/core';
 import { Bold, underscoreInputRegex, underscorePasteRegex } from '@tiptap/extension-bold';
 import { Italic } from '@tiptap/extension-italic';
 import type { ExtensionOptions } from './Extensions';
+import { DefaultExtensionBundleOptions } from './Extensions';
 import { Strike } from '@tiptap/extension-strike';
 import { TaskItem } from '@tiptap/extension-task-item';
 import { TaskList } from '@tiptap/extension-task-list';
@@ -11,6 +12,7 @@ import { TableHeader } from '@tiptap/extension-table-header';
 import { TableRow } from '@tiptap/extension-table-row';
 
 export const DefaultMarkdownExtensionOptions: ExtensionOptions = {
+  ...DefaultExtensionBundleOptions,
   Image: ImageNode,
   Markdown: true,
   TableHeader: TableHeader.extend({
@@ -20,6 +22,7 @@ export const DefaultMarkdownExtensionOptions: ExtensionOptions = {
       state.write(' |');
     },
   }),
+  TableCell: true,
   TableRow: TableRow.extend({
     renderMarkdown(state, node) {
       state.write('|');

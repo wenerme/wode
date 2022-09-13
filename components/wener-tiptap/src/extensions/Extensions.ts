@@ -9,6 +9,8 @@ import { Link } from '@tiptap/extension-link';
 import { Code } from '@tiptap/extension-code';
 import { Blockquote } from '@tiptap/extension-blockquote';
 import { Dropcursor } from '@tiptap/extension-dropcursor';
+import { Gapcursor } from '@tiptap/extension-gapcursor';
+import { ListItem } from '@tiptap/extension-list-item';
 import { FontFamily } from '@tiptap/extension-font-family';
 import { CharacterCount } from '@tiptap/extension-character-count';
 import { HorizontalRule } from '@tiptap/extension-horizontal-rule';
@@ -33,6 +35,7 @@ import { HardBreak } from '@tiptap/extension-hard-break';
 import { Heading } from '@tiptap/extension-heading';
 import { History } from '@tiptap/extension-history';
 import { VideoNode } from './VideoNode';
+import { Text } from '@tiptap/extension-text';
 
 export type ExtensionOptions = {
   [key in Extract<keyof typeof Extensions, string>]?: ExtensionOptionOf<typeof Extensions[key]>;
@@ -74,11 +77,12 @@ export function addExtensions(o: ExtensionOptions): AnyExtension[] {
 
 export const Extensions = {
   Markdown: MarkdownExtension,
-  Video: VideoNode,
 
   // Node - Block
   Document,
   Paragraph,
+  Text,
+
   Table,
   TableCell,
   TableHeader,
@@ -103,11 +107,15 @@ export const Extensions = {
       return [{ tag: 'tr', priority: 70 }];
     },
   }),
+
   TaskItem,
   TaskList,
-  Blockquote,
   BulletList,
+  ListItem,
+
   Image,
+  Video: VideoNode,
+  Blockquote,
   CodeBlock,
   HardBreak,
   Heading,
@@ -132,10 +140,35 @@ export const Extensions = {
   History,
   Dropcursor,
   CharacterCount,
+  Gapcursor,
 } as const;
+
+export const DefaultExtensionBundleOptions: ExtensionOptions = {
+  Document: true,
+  Strike: true,
+  Text: true,
+  Blockquote: true,
+  Bold: true,
+  BulletList: true,
+  Code: true,
+  CodeBlock: true,
+  Dropcursor: true,
+  Gapcursor: true,
+  HardBreak: true,
+  Heading: true,
+  History: true,
+  HorizontalRule: true,
+  Italic: true,
+  ListItem: true,
+  OrderedList: true,
+  Paragraph: true,
+};
 
 export const ExtensionBundle = Extension.create<ExtensionOptions>({
   name: 'extensionBundle',
+  addOptions() {
+    return DefaultExtensionBundleOptions;
+  },
   addExtensions() {
     return addExtensions(this.options);
   },
