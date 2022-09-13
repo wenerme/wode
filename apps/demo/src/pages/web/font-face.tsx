@@ -190,7 +190,11 @@ const Demo = () => {
             <summary>检测说明</summary>
             <p>
               接口基于{' '}
-              <a href="https://developer.mozilla.org/en-US/docs/Web/API/FontFaceSet" target={'_blank'} rel={'noopener'}>
+              <a
+                href="https://developer.mozilla.org/en-US/docs/Web/API/FontFaceSet"
+                target={'_blank'}
+                rel={'noreferrer'}
+              >
                 FontFaceSet
               </a>
               。

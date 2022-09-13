@@ -2,10 +2,11 @@
   "$schema": "https://turborepo.org/schema.json",
   "baseBranch": "origin/main",
   "globalDependencies": [
-    "tsconfig.json",
     "Makefile",
     "package.json",
     "tsconfig.json",
+    "rollup.config.ts",
+    "rollup.config.js",
     ".env"
   ],
   "pipeline": {

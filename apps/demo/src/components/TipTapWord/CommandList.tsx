@@ -98,3 +98,4 @@ export const CommandList = forwardRef<CommandListRef, CommandListProps>((props, 
     </div>
   );
 });
+CommandList.displayName = 'CommandList';

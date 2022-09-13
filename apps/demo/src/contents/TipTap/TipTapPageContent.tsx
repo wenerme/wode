@@ -309,3 +309,4 @@ export const TipTapPageContent = () => {
     </TipTapWord>
   );
 };
+export default TipTapPageContent;

@@ -59,8 +59,6 @@
     "@types/lodash": "^4",
     "@types/node": "^16",
     "ava": "^4.3.3",
-    "dotenv": "^16",
-    "esbuild": "^0.14",
     "lodash": "^4",
     "tslib": "^2",
     "typescript": "^4"

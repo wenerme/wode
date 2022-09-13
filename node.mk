@@ -41,13 +41,13 @@ clean: distclean ## clean up built files and caches
 distclean: ## clean up built files
 	rm -rf dist/* lib/*
 
-ifneq ($(wildcard next.config.js),)
+ifneq ($(wildcard next.config.*),)
 # Next.JS
 build:
 	$(EXEC) next build
 dev:
 	$(EXEC) next dev
-else ifneq ($(wildcard vite.config.js),)
+else ifneq ($(wildcard vite.config.*),)
 # Vite
 build:
 	$(EXEC) vite build
@@ -109,12 +109,12 @@ else
 	@$(EXEC) esbuild --format=esm --outfile=dist/esm/$(OUT_NAME).min.js $(ESBUILD_PRODUCTION_FLAGS) $(ESBUILD_BUNDLE_FLAGS) src/index.ts
 endif
 
-ifneq ($(wildcard rollup.config.ts),)
-rollup:
-	$(EXEC) rollup -c --configPlugin @rollup/plugin-typescript
-else ifneq ($(wildcard rollup.config.js),)
+ifneq ($(wildcard rollup.config.js),)
 rollup:
 	$(EXEC) rollup -c
+else ifneq ($(wildcard rollup.config.ts),)
+rollup:
+	$(EXEC) rollup -c --configPlugin @rollup/plugin-typescript
 endif
 
 prepublish: distclean build bundle libsum
@@ -136,7 +136,7 @@ fix: lint
 LINT_FIX=
 lint:
 	@printf $(COLOR_INFO) "Linting..."
-ifneq ($(wildcard next.config.js),)
+ifneq ($(wildcard next.config.*),)
 	$(EXEC) next lint $(if $(filter 1,$(LINT_FIX)),--fix)
 else ifneq ($(wildcard .eslintrc.js $(REPO_ROOT)/.eslintrc.js),)
 	$(EXEC) eslint src $(if $(filter 1,$(LINT_FIX)),--fix)
