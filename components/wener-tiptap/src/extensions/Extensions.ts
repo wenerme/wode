@@ -1,41 +1,50 @@
-import { Bold } from '@tiptap/extension-bold';
-import { Italic } from '@tiptap/extension-italic';
-import { Strike } from '@tiptap/extension-strike';
-import { TaskList } from '@tiptap/extension-task-list';
-import { TaskItem } from '@tiptap/extension-task-item';
-import { Color } from '@tiptap/extension-color';
-import { Highlight } from '@tiptap/extension-highlight';
-import { Link } from '@tiptap/extension-link';
-import { Code } from '@tiptap/extension-code';
+import { Extension, Mark, Node } from '@tiptap/core';
 import { Blockquote } from '@tiptap/extension-blockquote';
-import { Dropcursor } from '@tiptap/extension-dropcursor';
-import { Gapcursor } from '@tiptap/extension-gapcursor';
-import { ListItem } from '@tiptap/extension-list-item';
-import { FontFamily } from '@tiptap/extension-font-family';
+import { Bold } from '@tiptap/extension-bold';
+import { BubbleMenu } from '@tiptap/extension-bubble-menu';
+import { BulletList } from '@tiptap/extension-bullet-list';
 import { CharacterCount } from '@tiptap/extension-character-count';
+import { Code } from '@tiptap/extension-code';
+import { CodeBlock } from '@tiptap/extension-code-block';
+import { Collaboration } from '@tiptap/extension-collaboration';
+import { CollaborationCursor } from '@tiptap/extension-collaboration-cursor';
+import { Color } from '@tiptap/extension-color';
+import { Document } from '@tiptap/extension-document';
+import { Dropcursor } from '@tiptap/extension-dropcursor';
+import { FloatingMenu } from '@tiptap/extension-floating-menu';
+import { FocusClasses } from '@tiptap/extension-focus';
+import { FontFamily } from '@tiptap/extension-font-family';
+import { Gapcursor } from '@tiptap/extension-gapcursor';
+import { HardBreak } from '@tiptap/extension-hard-break';
+import { Heading } from '@tiptap/extension-heading';
+import { Highlight } from '@tiptap/extension-highlight';
+import { History } from '@tiptap/extension-history';
 import { HorizontalRule } from '@tiptap/extension-horizontal-rule';
 import { Image } from '@tiptap/extension-image';
-import { Document } from '@tiptap/extension-document';
+import { Italic } from '@tiptap/extension-italic';
+import { Link } from '@tiptap/extension-link';
+import { ListItem } from '@tiptap/extension-list-item';
+import { Mention } from '@tiptap/extension-mention';
+import { OrderedList } from '@tiptap/extension-ordered-list';
 import { Paragraph } from '@tiptap/extension-paragraph';
 import { Placeholder } from '@tiptap/extension-placeholder';
+import { Strike } from '@tiptap/extension-strike';
+import { Subscript } from '@tiptap/extension-subscript';
+import { Superscript } from '@tiptap/extension-superscript';
 import { Table } from '@tiptap/extension-table';
 import { TableCell } from '@tiptap/extension-table-cell';
 import { TableHeader } from '@tiptap/extension-table-header';
 import { TableRow } from '@tiptap/extension-table-row';
+import { TaskItem } from '@tiptap/extension-task-item';
+import { TaskList } from '@tiptap/extension-task-list';
+import { Text } from '@tiptap/extension-text';
 import { TextAlign } from '@tiptap/extension-text-align';
 import { TextStyle } from '@tiptap/extension-text-style';
+import { Typography } from '@tiptap/extension-typography';
 import { Underline } from '@tiptap/extension-underline';
-import { Extension, Mark, Node } from '@tiptap/core';
 import type { AnyExtension } from '@tiptap/react';
 import { MarkdownExtension } from './MarkdownExtension';
-import { OrderedList } from '@tiptap/extension-ordered-list';
-import { BulletList } from '@tiptap/extension-bullet-list';
-import { CodeBlock } from '@tiptap/extension-code-block';
-import { HardBreak } from '@tiptap/extension-hard-break';
-import { Heading } from '@tiptap/extension-heading';
-import { History } from '@tiptap/extension-history';
 import { VideoNode } from './VideoNode';
-import { Text } from '@tiptap/extension-text';
 
 export type ExtensionOptions = {
   [key in Extract<keyof typeof Extensions, string>]?: ExtensionOptionOf<typeof Extensions[key]>;
@@ -70,7 +79,7 @@ export function addExtensions(o: ExtensionOptions): AnyExtension[] {
       out.push(ext);
       continue;
     }
-    out.push(ext.configure(value));
+    out.push(ext.configure(value as any));
   }
   return out;
 }
@@ -141,6 +150,15 @@ export const Extensions = {
   Dropcursor,
   CharacterCount,
   Gapcursor,
+  BubbleMenu,
+  Collaboration,
+  CollaborationCursor,
+  FloatingMenu,
+  Mention,
+  Subscript,
+  Superscript,
+  Typography,
+  FocusClasses,
 } as const;
 
 export const DefaultExtensionBundleOptions: ExtensionOptions = {

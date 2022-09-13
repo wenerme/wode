@@ -1,8 +1,8 @@
 import test from 'ava';
-import { ExtensionBundle } from './Extensions';
-import { DefaultMarkdownExtensionOptions } from './DefaultMarkdownExtensionOptions';
-import { Editor } from '@tiptap/core';
 import 'prosemirror-model';
+import { Editor } from '@tiptap/core';
+import { DefaultMarkdownExtensionOptions } from './DefaultMarkdownExtensionOptions';
+import { ExtensionBundle } from './Extensions';
 import { createMarkdownSerializer } from './MarkdownExtension';
 import { createMarkdownParser } from './parseMarkdown';
 import { browserEnv } from './utils.test';

@@ -1,5 +1,5 @@
-import { ConstructorOptions, JSDOM, ResourceLoader, ResourceLoaderConstructorOptions } from 'jsdom';
 import test from 'ava';
+import { ConstructorOptions, JSDOM, ResourceLoader, ResourceLoaderConstructorOptions } from 'jsdom';
 
 test.before(() => browserEnv());
 test('browserEnv', (t) => {

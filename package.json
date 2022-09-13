@@ -31,11 +31,13 @@
     "@rollup/plugin-node-resolve": "^14.1.0",
     "@rollup/plugin-replace": "^4.0.0",
     "@rollup/plugin-typescript": "^8.5.0",
+    "@trivago/prettier-plugin-sort-imports": "^3.3.0",
     "@types/jsdom": "^20.0.0",
     "@types/node": "^16",
     "ava": "^4.3.3",
     "jsdom": "^20.0.0",
     "prettier": "latest",
+    "prettier-plugin-pkg": "^0.17.1",
     "rollup": "3.0.0-6",
     "rollup-plugin-dts": "^4.2.2",
     "rollup-plugin-size": "^0.2.2",
@@ -49,30 +51,6 @@
     "pnpm": ">=7.0.0",
     "npm": ">=7.0.0",
     "node": ">=14.0.0"
-  },
-  "prettier": {
-    "bracketSameLine": false,
-    "importOrder": [
-      "^(?!@src/)",
-      "^[^.]",
-      "^[.][.]",
-      "^[.][/]"
-    ],
-    "importOrderSeparation": false,
-    "trailingComma": "all",
-    "printWidth": 120,
-    "singleQuote": true,
-    "overrides": [
-      {
-        "files": [
-          "*.html",
-          "*.css"
-        ],
-        "options": {
-          "singleQuote": false
-        }
-      }
-    ]
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
