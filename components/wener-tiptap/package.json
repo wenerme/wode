@@ -4,9 +4,12 @@
   "description": "Collection of useful tiptap extensions",
   "type": "module",
   "sideEffects": false,
+  "types": "src/index.ts",
+  "module": "lib/index.js",
   "exports": {
     ".": {
       "import": "./lib/index.js",
+      "require": "./dist/cjs/index.js",
       "types": "./src/index.ts"
     },
     "./package.json": "./package.json"
@@ -73,6 +76,8 @@
     "@tiptap/starter-kit": "^2.0.0-beta.185",
     "@tiptap/suggestion": "^2.0.0-beta.92",
     "classnames": "^2.3.1",
+    "linkify-it": "^4.0.1",
+    "mdurl": "^1.0.1",
     "prosemirror-markdown": "^1.8.0",
     "prosemirror-model": "^1.18.0",
     "prosemirror-state": "^1.4.0",
@@ -88,11 +93,12 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "esbuild": "^0.14",
-    "typescript": "^4",
     "react": ">=18",
-    "react-dom": ">=18"
+    "react-dom": ">=18",
+    "typescript": "^4"
   },
   "optionalDependencies": {
     "markdown-it": "*"
-  }
+  },
+  "rollup": {}
 }

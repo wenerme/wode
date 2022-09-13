@@ -29,9 +29,10 @@
     "checkJs": true,
     "allowJs": true,
     "jsx": "react",
-    "incremental": true
+    "incremental": false
   },
   "include": [
+    "rollup.config.ts",
     "src/**/*.ts",
     "src/**/*.tsx"
   ],

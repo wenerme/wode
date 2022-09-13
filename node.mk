@@ -65,7 +65,7 @@ SOURCE_FILES?=$(shell ls 2>/dev/null src/**/*.js src/**/*.ts src/**/*.tsx | egre
 ESBUILD_BUILD_FLAGS?=--charset=utf8 --target=chrome90 --sourcemap --platform=neutral
 build:
 ifneq ($(wildcard rollup.config.*),)
-	$(EXEC) rollup -c
+	$(MAKE) rollup
 else ifneq ($(wildcard esbuild.build.*),)
 	$(EXEC) $(wildcard esbuild.build.*)
 else
@@ -109,7 +109,10 @@ else
 	@$(EXEC) esbuild --format=esm --outfile=dist/esm/$(OUT_NAME).min.js $(ESBUILD_PRODUCTION_FLAGS) $(ESBUILD_BUNDLE_FLAGS) src/index.ts
 endif
 
-ifneq ($(wildcard rollup.config.js),)
+ifneq ($(wildcard rollup.config.ts),)
+rollup:
+	$(EXEC) rollup -c --configPlugin @rollup/plugin-typescript
+else ifneq ($(wildcard rollup.config.js),)
 rollup:
 	$(EXEC) rollup -c
 endif
