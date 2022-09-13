@@ -113,7 +113,7 @@ importers:
       ajv-i18n: ^4.2.0
       ajv-keywords: ^5.1.0
       autoprefixer: ^10.4.9
-      classnames: ^2.3.2
+      classnames: ^2.3.1
       daisyui: ^2.27.0
       domhandler: ^5.0.3
       eslint: ^8.23.1
@@ -298,7 +298,7 @@ importers:
       '@tiptap/react': ^2.0.0-beta.194
       '@tiptap/starter-kit': ^2.0.0-beta.194
       '@tiptap/suggestion': ^2.0.0-beta.194
-      '@types/markdown-it': ^12
+      '@types/markdown-it': ^12.2.3
       '@types/react': ^18
       '@types/react-dom': ^18
       classnames: ^2.3.1
@@ -374,14 +374,14 @@ importers:
 
   packages/reaction:
     specifiers:
-      '@types/node': ^16.11.58
-      '@types/prop-types': ^15.7.5
-      '@types/react': ^18.0.19
-      '@types/react-dom': ^18.0.6
-      prop-types: ^15.8.1
-      react: ^18.2.0
-      react-dom: ^18.2.0
-      typescript: ^4.8.3
+      '@types/node': ^16
+      '@types/prop-types': ^15
+      '@types/react': ^18
+      '@types/react-dom': ^18
+      prop-types: '>=15'
+      react: ^18
+      react-dom: '>=18'
+      typescript: ^4
     dependencies:
       prop-types: 15.8.1
       react-dom: 18.2.0_react@18.2.0
@@ -395,12 +395,12 @@ importers:
 
   packages/utils:
     specifiers:
-      '@types/lodash': ^4.14.185
-      '@types/node': ^16.11.58
+      '@types/lodash': ^4
+      '@types/node': ^16
       ava: ^4.3.3
-      lodash: ^4.17.21
-      tslib: ^2.4.0
-      typescript: ^4.8.3
+      lodash: ^4
+      tslib: ^2
+      typescript: ^4
     devDependencies:
       '@types/lodash': 4.14.185
       '@types/node': 16.11.58
