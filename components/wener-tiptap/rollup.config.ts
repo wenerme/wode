@@ -1,6 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import type { MergedRollupOptions, RollupOptions } from 'rollup';
 import { terser } from 'rollup-plugin-terser';
+import dts from 'rollup-plugin-dts';
 import { visualizer } from 'rollup-plugin-visualizer';
 import commonjs from '@rollup/plugin-commonjs';
 import nodeResolve from '@rollup/plugin-node-resolve';
@@ -50,6 +51,11 @@ const replaceDev = replace({
 });
 const ts = typescript({
   noForceEmit: true,
+  compilerOptions: {
+    declaration: false,
+  },
+  // avoid rollup.config.d.ts
+  include: ['src/**/*.ts', 'src/**/*.tsx'],
 });
 export default function (): RollupOptions[] {
   let prod: MergedRollupOptions = {
@@ -102,7 +108,7 @@ export default function (): RollupOptions[] {
     input: 'src/index.ts',
     output: [
       {
-        entryFileNames: '[name].mjs',
+        entryFileNames: '[name].js',
         exports: 'named',
         preserveModules: true,
         dir: 'lib',
@@ -111,7 +117,19 @@ export default function (): RollupOptions[] {
         sourcemap: true,
       },
     ],
-    plugins: [ts, json(), commonjs(), nodeResolve({ extensions: ['.ts', '.tsx'] })],
+    plugins: [
+      typescript({
+        noForceEmit: true,
+        compilerOptions: {
+          declaration: true,
+        },
+        // avoid rollup.config.d.ts
+        include: ['src/**/*.ts', 'src/**/*.tsx'],
+      }),
+      json(),
+      commonjs(),
+      nodeResolve({ extensions: ['.ts', '.tsx'] }),
+    ],
     external: externalDev,
   };
 
@@ -130,29 +148,31 @@ export default function (): RollupOptions[] {
     });
   }
   if (buildCjs) {
-    neutral.output.push({
+    dev.output.push({
       file: `dist/cjs/${outputName}.js`,
       format: 'cjs',
       sourcemap: true,
     });
   }
 
-  return [
-    prod,
-    dev,
-    neutral,
-    // types - failed
-    // {
-    //   input: 'src/index.ts',
-    //   output: [
-    //     {
-    //       file: 'dist/types/index.d.ts',
-    //       format: 'esm',
-    //       interop: 'esModule',
-    //     },
-    //   ],
-    //   plugins: [nodeResolve({ extensions: ['.ts', '.tsx'] }), dts()],
-    //   external: externalDev,
-    // },
-  ];
+  // failed
+  // https://github.com/Swatinem/rollup-plugin-dts/blob/master/src/transform/index.ts#L70
+  // Invalid value false for option "output.interop"
+  let types: MergedRollupOptions = {
+    input: 'src/index.ts',
+    // input: 'lib/index.d.ts',
+    output: [
+      {
+        file: 'dist/types/index.d.ts',
+        format: 'es',
+      },
+    ],
+    plugins: [dts()],
+  };
+
+  let builds = [prod, dev, neutral];
+  if (process.env['BUILD_TYPES']) {
+    builds.push(types);
+  }
+  return builds;
 }

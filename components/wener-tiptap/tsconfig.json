@@ -25,7 +25,9 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "importsNotUsedAsValues": "error",
-    "declaration": false,
+    "declaration": true,
+    "outDir": "lib",
+    "baseUrl": ".",
     "checkJs": true,
     "allowJs": true,
     "jsx": "react",
@@ -37,6 +39,8 @@
     "src/**/*.tsx"
   ],
   "exclude": [
+    "dist",
+    "lib",
     "node_modules"
   ]
 }

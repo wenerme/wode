@@ -75,10 +75,10 @@ const Demo = () => {
   return (
     <div className={'container mx-auto flex-1 flex flex-col '}>
       <div className={'form-control flex-row gap-4'}>
-        {opts.map((v) => {
+        {opts.map((v, i) => {
           let val = options[v.name as keyof MarkdownIt.Options];
           return (
-            <label className={'label'}>
+            <label key={i} className={'label'}>
               <span data-tip={v.tooltip} className={classNames('label-text', v.tooltip && 'tooltip tooltip-bottom')}>
                 {v.label}
               </span>
