@@ -15,6 +15,9 @@ declare module '@tiptap/core' {
     };
   }
 }
+
+// TODO rewrite to use data-indent, render to margin
+
 export const IndentExtension = Extension.create<IndentOptions>({
   name: 'indent',
   addOptions() {

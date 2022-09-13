@@ -1,6 +1,6 @@
-import TipTapStrike from '@tiptap/extension-strike';
+import { Strike } from '@tiptap/extension-strike';
 
-export const StrikeExtension = TipTapStrike.extend({
+export const StrikeExtension = Strike.extend({
   renderMarkdown: {
     open: '~~',
     close: '~~',

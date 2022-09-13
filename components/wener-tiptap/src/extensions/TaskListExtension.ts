@@ -1,13 +1,13 @@
-import TipTapTaskList from '@tiptap/extension-task-list';
-import TipTapTaskItem from '@tiptap/extension-task-item';
+import { TaskList } from '@tiptap/extension-task-list';
+import { TaskItem } from '@tiptap/extension-task-item';
 
-export const TaskListExtension = TipTapTaskList.extend({
+export const TaskListExtension = TaskList.extend({
   renderMarkdown: (state, node) => {
     state.renderList(node, '  ', () => (node.attrs['bullet'] || '*') + ' ');
   },
 });
 
-export const TaskItemExtension = TipTapTaskItem.extend({
+export const TaskItemExtension = TaskItem.extend({
   renderMarkdown: (state, node) => {
     state.write(`[${node.attrs['checked'] ? 'x' : ' '}] `);
     state.renderContent(node);
