@@ -1,8 +1,8 @@
-import { Extension } from '@tiptap/core';
-import { Plugin, Transaction } from 'prosemirror-state';
-import { Decoration, DecorationSet } from 'prosemirror-view';
 import type { Node } from 'prosemirror-model';
+import { Plugin, Transaction } from 'prosemirror-state';
 import type { Transform } from 'prosemirror-transform';
+import { Decoration, DecorationSet } from 'prosemirror-view';
+import { Extension } from '@tiptap/core';
 
 export const ColorHighlighterExtension = Extension.create({
   name: 'colorHighlighter',

@@ -1,15 +1,15 @@
-import { Underline } from '@tiptap/extension-underline';
 import { markInputRule, markPasteRule } from '@tiptap/core';
 import { Bold, underscoreInputRegex, underscorePasteRegex } from '@tiptap/extension-bold';
 import { Italic } from '@tiptap/extension-italic';
-import type { ExtensionOptions } from './Extensions';
-import { DefaultExtensionBundleOptions } from './Extensions';
 import { Strike } from '@tiptap/extension-strike';
-import { TaskItem } from '@tiptap/extension-task-item';
-import { TaskList } from '@tiptap/extension-task-list';
-import { ImageNode } from './ImageNode';
 import { TableHeader } from '@tiptap/extension-table-header';
 import { TableRow } from '@tiptap/extension-table-row';
+import { TaskItem } from '@tiptap/extension-task-item';
+import { TaskList } from '@tiptap/extension-task-list';
+import { Underline } from '@tiptap/extension-underline';
+import type { ExtensionOptions } from './Extensions';
+import { DefaultExtensionBundleOptions } from './Extensions';
+import { ImageNode } from './ImageNode';
 
 export const DefaultMarkdownExtensionOptions: ExtensionOptions = {
   ...DefaultExtensionBundleOptions,

@@ -1,6 +1,6 @@
-import { Extension, getExtensionField, Mark, MarkConfig, Node } from '@tiptap/core';
 import { defaultMarkdownSerializer, MarkdownSerializer, MarkdownSerializerState } from 'prosemirror-markdown';
 import type { MarkType, Node as ProsemirrorNode, NodeType, Schema } from 'prosemirror-model';
+import { Extension, getExtensionField, Mark, MarkConfig, Node } from '@tiptap/core';
 import type { NodeConfig } from '@tiptap/react';
 import { createMarkdownParser } from './parseMarkdown';
 

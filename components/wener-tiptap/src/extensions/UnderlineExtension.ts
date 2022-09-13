@@ -1,6 +1,6 @@
-import { Underline } from '@tiptap/extension-underline';
 import { markInputRule, markPasteRule } from '@tiptap/core';
 import { underscoreInputRegex, underscorePasteRegex } from '@tiptap/extension-bold';
+import { Underline } from '@tiptap/extension-underline';
 
 export const UnderlineExtension = Underline.extend({
   // __ for underline, ** for bold, _ for italic

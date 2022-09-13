@@ -80,8 +80,7 @@ build-declaration:
 
 libsum:
 	@printf $(COLOR_INFO) "lib size"
-	-@du --apparent-size -sh lib/esm
-	-@du --apparent-size -sh lib/cjs
+	-@du --apparent-size -sh lib
 	@printf $(COLOR_INFO) "dist size"
 	-@du --apparent-size -sh dist/**/*.js
 	@printf $(COLOR_INFO) "dist bundle node_modules?"
