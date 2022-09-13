@@ -1,21 +1,25 @@
+import { ConstructorOptions, JSDOM, ResourceLoader, ResourceLoaderConstructorOptions } from 'jsdom';
 import test from 'ava';
-import { ExtensionBundle } from './Extensions';
-import { DefaultMarkdownExtensionOptions } from './DefaultMarkdownExtensionOptions';
-import { Editor } from '@tiptap/core';
-import { JSDOM, ResourceLoader, type ResourceLoaderConstructorOptions } from 'jsdom';
-import 'prosemirror-model';
-import { createMarkdownSerializer } from './MarkdownExtension';
 
-let editor: Editor;
-test.before(() => {
+test.before(() => browserEnv());
+test('browserEnv', (t) => {
+  t.truthy(globalThis.window);
+  t.truthy(globalThis.document);
+});
+
+export function browserEnv() {
   if (typeof globalThis === 'undefined') {
     throw new Error('globalThis is not defined');
   }
 
+  if (typeof window !== 'undefined') {
+    return window;
+  }
+
   // https://github.com/lukechilds/window/blob/master/src/index.js
   class Window {
-    constructor(jsdomConfig: ResourceLoaderConstructorOptions = {}) {
-      const { proxy, strictSSL, userAgent } = jsdomConfig;
+    constructor(opts: ResourceLoaderConstructorOptions & ConstructorOptions = {}) {
+      const { proxy, strictSSL, userAgent, ...jsdomOpts } = opts;
       const resources = new ResourceLoader({
         proxy,
         strictSSL,
@@ -23,7 +27,7 @@ test.before(() => {
       });
       return new JSDOM(
         '',
-        Object.assign(jsdomConfig, {
+        Object.assign(jsdomOpts, {
           resources,
         }),
       ).window;
@@ -35,10 +39,10 @@ test.before(() => {
   // These settings must override any custom settings to make sure we can iterate
   // over the window object.
   const defaultJsdomConfig = {
-    features: {
-      FetchExternalResources: false,
-      ProcessExternalResources: false,
-    },
+    // features: {
+    //   FetchExternalResources: false,
+    //   ProcessExternalResources: false,
+    // },
   };
   // IIFE executed on import to return an array of global Node.js properties that
   // conflict with global browser properties.
@@ -47,11 +51,11 @@ test.before(() => {
       (prop) => typeof globalThis[prop as keyof typeof globalThis] !== 'undefined',
     ))();
 
-  function browserEnv(...args: string[]) {
+  function installEnv(...args: any[]) {
     // Sets up global browser environment
     // Extract options from args
-    const properties = args.filter((arg) => Array.isArray(arg))[0];
-    const userJsdomConfig = args.filter((arg) => !Array.isArray(arg))[0];
+    const properties = args.filter((arg: any) => Array.isArray(arg))[0];
+    const userJsdomConfig = args.filter((arg: any) => !Array.isArray(arg))[0];
 
     // Create window object
     const window = new Window(Object.assign({}, userJsdomConfig, defaultJsdomConfig));
@@ -84,37 +88,5 @@ test.before(() => {
     return window;
   }
 
-  browserEnv();
-});
-
-test.before(() => {
-  let $ele = document.createElement('div');
-  editor = new Editor({
-    element: $ele,
-    extensions: [ExtensionBundle.configure(DefaultMarkdownExtensionOptions)],
-    // extensions: [StarterKit.configure()],
-    content: `<p>Hello world! :-)</p>`,
-    onCreate({}) {},
-    onUpdate({}) {},
-    onSelectionUpdate({}) {},
-  });
-});
-
-test('parseMarkdown', (t) => {
-  editor.commands.selectAll();
-  editor.commands.setMarkdownContent(
-    `
-## Hi
-**Nice** to meed _your_!
-  `.trim(),
-  );
-  {
-    t.log(JSON.stringify(editor.getJSON(), null, 2));
-    t.log({
-      markdown: createMarkdownSerializer(editor.schema).serialize(editor.state.doc, {}),
-      html: editor.getHTML(),
-      text: editor.getText(),
-    });
-  }
-  t.pass();
-});
+  return installEnv();
+}
