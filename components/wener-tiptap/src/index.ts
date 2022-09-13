@@ -15,3 +15,6 @@ export { ImageNode } from './extensions/ImageNode';
 export type { ImageNodeOptions } from './extensions/ImageNode';
 
 export { ColorHighlighterExtension } from './extensions/ColorHighlighterExtension';
+
+export { Extensions, addExtensions, type ExtensionOptions } from './extensions/Extensions';
+export { DefaultMarkdownExtensionOptions } from './extensions/DefaultMarkdownExtensionOptions';
