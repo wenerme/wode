@@ -8,10 +8,10 @@ import { visualizer } from 'rollup-plugin-visualizer';
 
 // const pkg = JSON.parse((await readFile(new URL(process.cwd()+'/package.json', import.meta.url))).toString());
 const pkg = JSON.parse((await readFile(process.cwd() + '/package.json')).toString());
-const externalProd = [...Object.keys(pkg.peerDependencies || {})].map((v) => new RegExp(`^${v}(/|$)`));
+const externalProd = [/^node:/, ...Object.keys(pkg.peerDependencies || {})].map((v) => new RegExp(`^${v}(/|$)`));
 const externalDev = [...externalProd, ...Object.keys(pkg.dependencies || {}).map((v) => new RegExp(`^${v}(/|$)`))];
 
-const input = await globby(['./src/index.ts', './src/index.tsx']);
+const input = pkg.rollup?.input || await globby(['./src/index.ts', './src/index.tsx']);
 
 /** @type import('rollup').RollupOptions */
 const dev = {

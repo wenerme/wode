@@ -114,3 +114,5 @@ packages/*/.next
 packages/*/storybook
 components/*/lib
 components/*/dist
+components/*/out
+out

@@ -18,7 +18,14 @@ export { useEventListener, createEventListenerHook } from './hooks/useEventListe
 export { useWindowEventListener, useDocumentEventListener, useBodyEventListener } from './hooks/useDomEventListener';
 export type { HandlersOfEventMap } from './hooks/useEventListener';
 export { usePrevious } from './hooks/usePrevious';
+export {
+  useDeepCompareMemo,
+  useDeepCompareCallback,
+  useDeepCompareEffect,
+  useDeepCompareMemoize,
+} from './hooks/useDeepCompareHooks';
 
+export { ErrorSuspenseBoundary } from './components/ErrorSuspenseBoundary';
 export { ErrorBoundary } from './components/ErrorBoundary';
 export { ReactShadowRoot } from './components/ReactShadowRoot';
 

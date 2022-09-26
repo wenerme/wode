@@ -1,53 +1,56 @@
 {
   "name": "@wener/utils",
-  "version": "1.1.2",
-  "description": "Utils for daily use",
+  "version": "1.1.3",
   "type": "module",
-  "sideEffects": false,
-  "keywords": [
-    "utils",
-    "core library",
-    "helper"
-  ],
+  "description": "Utils for daily use",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/wener/wode.git"
   },
-  "license": "MIT",
+  "homepage": "https://github.com/wenerme/wode#readme",
   "author": "wener",
+  "license": "MIT",
+  "engines": {
+    "node": "16",
+    "npm": "8"
+  },
+  "main": "dist/cjs/index.js",
   "exports": {
     ".": {
       "types": "./src/index.ts",
-      "import": "./lib/esm/index.mjs",
+      "import": "./lib/index.js",
       "system": {
-        "development": "./dist/system/index.development.js",
-        "default": "./dist/system/index.min.js"
+        "default": "./dist/system/index.js"
       },
       "require": "./dist/cjs/index.js"
     },
     "./types": {
       "types": "./src/types.d.ts"
     },
+    "./server": {
+      "types": "./src/server.ts",
+      "import": "./lib/server.js",
+      "system": {
+        "default": "./dist/system/server.js"
+      },
+      "require": "./dist/cjs/server.js"
+    },
     "./src/*": "./src/",
     "./package.json": "./package.json"
   },
-  "main": "dist/cjs/index.js",
-  "import": "lib/esm/index.mjs",
   "types": "src/index.ts",
-  "homepage": "https://github.com/wenerme/wode#readme",
   "files": [
-    "index.js",
-    "index.d.ts",
-    "lib",
     "dist",
+    "index.ts",
+    "lib",
+    "server.ts",
     "src",
-    "README.md",
-    "rollup.config.ts",
-    "jest.config.js",
-    "jest.setup.js",
-    "tsconfig.rollup.json",
-    "tsconfig.jest.json",
     "tsconfig.json"
+  ],
+  "keywords": [
+    "utils",
+    "core library",
+    "helper"
   ],
   "scripts": {
     "build": "make prepublish",
@@ -63,16 +66,20 @@
   "publishConfig": {
     "access": "public"
   },
-  "engines": {
-    "node": "16",
-    "npm": "8"
-  },
+  "sideEffects": false,
   "ava": {
     "extensions": {
       "ts": "module"
     },
     "nodeArguments": [
       "--loader=tsx"
+    ]
+  },
+  "import": "lib/index.js",
+  "rollup": {
+    "input": [
+      "./src/index.ts",
+      "./src/server.ts"
     ]
   }
 }
