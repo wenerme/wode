@@ -1,6 +1,6 @@
+import markdownit from 'markdown-it';
 import { MarkdownParser } from 'prosemirror-markdown';
 import { Schema } from 'prosemirror-model';
-import markdownit from 'markdown-it';
 
 type Token = any;
 type Attrs = any;

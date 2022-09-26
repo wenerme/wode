@@ -1,7 +1,7 @@
+import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
 
 const ActiveLink: React.FC<
   React.AnchorHTMLAttributes<HTMLAnchorElement> & {

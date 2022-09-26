@@ -1,6 +1,6 @@
 import React, { HTMLProps } from 'react';
-import { Editor } from '@tiptap/react';
 import classNames from 'classnames';
+import { Editor } from '@tiptap/react';
 import { MenuToolItem } from '@src/components/TipTapWord/components/MenuToolItem';
 
 const menus = [

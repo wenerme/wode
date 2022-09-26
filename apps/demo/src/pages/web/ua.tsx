@@ -1,5 +1,5 @@
-import type { NextPage } from 'next';
 import React from 'react';
+import type { NextPage } from 'next';
 import { UserAgentContent } from '@src/contents/web/UserAgentContent';
 
 const CurrentPage: NextPage = () => {

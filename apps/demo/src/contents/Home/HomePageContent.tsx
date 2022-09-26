@@ -1,5 +1,5 @@
-import { NavLinks } from '@src/components/page/const';
 import { MaybeLink } from '@src/components/MaybeLink';
+import { NavLinks } from '@src/components/page/const';
 
 export const HomePageContent = () => {
   return (

@@ -1,7 +1,7 @@
-import styled from 'styled-components';
-import { MdSettings } from 'react-icons/md';
 import React, { MouseEvent, MouseEventHandler, useMemo, useRef } from 'react';
+import { MdSettings } from 'react-icons/md';
 import classNames from 'classnames';
+import styled from 'styled-components';
 import { Menu, MenuItem } from '@src/components/TipTapWord/components/Menu';
 
 const MenuContainer = styled.div`

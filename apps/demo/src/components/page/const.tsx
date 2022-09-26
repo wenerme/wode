@@ -1,10 +1,10 @@
-import { VscGithubInverted } from 'react-icons/vsc';
-import { MdEditNote, MdInsertDriveFile, MdMenu } from 'react-icons/md';
-import { IoCalculator } from 'react-icons/io5';
+import { FaHtml5, FaMarkdown, FaUserSecret } from 'react-icons/fa';
 import { GrAppsRounded } from 'react-icons/gr';
 import { ImLab } from 'react-icons/im';
+import { IoCalculator } from 'react-icons/io5';
+import { MdEditNote, MdInsertDriveFile, MdMenu } from 'react-icons/md';
 import { SiReact } from 'react-icons/si';
-import { FaHtml5, FaMarkdown, FaUserSecret } from 'react-icons/fa';
+import { VscGithubInverted } from 'react-icons/vsc';
 
 export const NavLinks = [
   {

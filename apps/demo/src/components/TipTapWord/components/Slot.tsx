@@ -1,8 +1,8 @@
 import React, { memo, useEffect, useId } from 'react';
-import { EditorStore, useEditorStoreApi } from '@src/components/TipTapWord/useEditorStore';
-import { DraftFunction } from 'use-immer';
 import produce from 'immer';
+import { DraftFunction } from 'use-immer';
 import { useCompareEffect } from '@wener/reaction';
+import { EditorStore, useEditorStoreApi } from '@src/components/TipTapWord/useEditorStore';
 
 export interface SlotProps {
   name: string;

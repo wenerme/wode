@@ -1,8 +1,8 @@
-import { HiClipboardCopy, HiGlobe, HiRefresh, HiSearch } from 'react-icons/hi';
-import { useImmer } from 'use-immer';
 import { useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
-import UAParser, { IResult } from 'ua-parser-js';
+import { HiClipboardCopy, HiGlobe, HiRefresh, HiSearch } from 'react-icons/hi';
 import classNames from 'classnames';
+import UAParser, { IResult } from 'ua-parser-js';
+import { useImmer } from 'use-immer';
 import { copy } from '@wener/utils';
 
 export const UserAgentContent = () => {

@@ -1,6 +1,6 @@
 import React from 'react';
-import { Dialog, Transition } from '@headlessui/react';
 import { MdClose } from 'react-icons/md';
+import { Dialog, Transition } from '@headlessui/react';
 
 export const SimpleDialog: React.FC<{
   title?: React.ReactNode;

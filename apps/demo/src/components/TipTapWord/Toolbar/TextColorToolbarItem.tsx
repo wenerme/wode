@@ -1,8 +1,8 @@
 import React from 'react';
-import { Editor } from '@tiptap/react';
-import { ColorPickerToolbarItem } from '@src/components/TipTapWord/Toolbar/ColorPickerToolbarItem';
 import { ImTextColor } from 'react-icons/im';
 import type {} from '@tiptap/extension-color';
+import { Editor } from '@tiptap/react';
+import { ColorPickerToolbarItem } from '@src/components/TipTapWord/Toolbar/ColorPickerToolbarItem';
 
 export const TextColorToolbarItem: React.FC<{ editor: Editor }> = ({ editor }) => {
   const value = editor.getAttributes('textStyle')?.color || '';

@@ -1,14 +1,5 @@
 import React, { useRef } from 'react';
-import { TipTapWord } from '@src/components/TipTapWord/TipTapWord';
-import { CharacterCounter } from '@src/components/TipTapWord/Statusbar/CharacterCounter';
-import { useImmer } from 'use-immer';
-import { DataViewer } from '@src/components/TipTapWord/Statusbar/DataViewer';
-import { ColorHighlighterExtension, TipTapWordStarterKit } from '@wener/tiptap';
-import { Placeholder } from '@tiptap/extension-placeholder';
-import { CommandExtension, CommandSuggestionItem } from '@src/components/TipTapWord/extensions/commands';
-import { ReactRenderer } from '@tiptap/react';
-import tippy, { Instance } from 'tippy.js';
-import { CommandList, CommandListRef } from '@src/components/TipTapWord/CommandList';
+import { IoText } from 'react-icons/io5';
 import {
   MdAttachFile,
   MdChecklist,
@@ -25,7 +16,16 @@ import {
   MdTagFaces,
   MdToc,
 } from 'react-icons/md';
-import { IoText } from 'react-icons/io5';
+import tippy, { Instance } from 'tippy.js';
+import { useImmer } from 'use-immer';
+import { Placeholder } from '@tiptap/extension-placeholder';
+import { ReactRenderer } from '@tiptap/react';
+import { ColorHighlighterExtension, TipTapWordStarterKit } from '@wener/tiptap';
+import { CommandList, CommandListRef } from '@src/components/TipTapWord/CommandList';
+import { CharacterCounter } from '@src/components/TipTapWord/Statusbar/CharacterCounter';
+import { DataViewer } from '@src/components/TipTapWord/Statusbar/DataViewer';
+import { TipTapWord } from '@src/components/TipTapWord/TipTapWord';
+import { CommandExtension, CommandSuggestionItem } from '@src/components/TipTapWord/extensions/commands';
 
 function useExtensions() {
   return [

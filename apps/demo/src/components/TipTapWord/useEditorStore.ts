@@ -1,7 +1,7 @@
-import createContext from 'zustand/context';
-import create from 'zustand';
-import { Editor } from '@tiptap/react';
 import React, { RefObject } from 'react';
+import create from 'zustand';
+import createContext from 'zustand/context';
+import { Editor } from '@tiptap/react';
 
 export const {
   Provider: EditorStoreProvider,

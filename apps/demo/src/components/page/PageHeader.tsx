@@ -1,8 +1,8 @@
 import React from 'react';
-import Link from 'next/link';
 import classNames from 'classnames';
-import { NavLinks } from '@src/components/page/const';
+import Link from 'next/link';
 import { ThemeSelector } from '@src/components/page/ThemeSelector';
+import { NavLinks } from '@src/components/page/const';
 
 interface MenuSpec {
   icon?: React.ReactNode;

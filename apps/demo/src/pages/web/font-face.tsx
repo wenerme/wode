@@ -1,8 +1,8 @@
-import type { NextPage } from 'next';
 import React, { useDeferredValue, useEffect, useReducer, useState } from 'react';
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
+import type { NextPage } from 'next';
 import styled from 'styled-components';
 import { useImmer } from 'use-immer';
-import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 
 const fontFace = [
   { name: 'Alibaba PuHuiTi', title: '阿里巴巴普惠体 1.0' },

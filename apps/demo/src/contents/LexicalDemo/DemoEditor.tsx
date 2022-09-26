@@ -1,28 +1,28 @@
-import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
-import { PlainTextPlugin as LexicalPlainTextPlugin } from '@lexical/react/LexicalPlainTextPlugin';
-import { $getRoot, $getSelection, EditorState, EditorThemeClasses, LexicalNode } from 'lexical';
-import { LexicalComposer } from '@lexical/react/LexicalComposer';
-import { ContentEditable as LexicalContentEditable } from '@lexical/react/LexicalContentEditable';
-import { OnChangePlugin as LexicalOnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
-import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { useEffect, useRef } from 'react';
-import { AutoFocusPlugin as LexicalAutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin';
-import { AutoScrollPlugin as LexicalAutoScrollPlugin } from '@lexical/react/LexicalAutoScrollPlugin';
-import { ClearEditorPlugin as LexicalClearEditorPlugin } from '@lexical/react/LexicalClearEditorPlugin';
-import { HashtagPlugin as LexicalHashtagPlugin } from '@lexical/react/LexicalHashtagPlugin';
-import { RichTextPlugin as RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
+import { $getRoot, $getSelection, EditorState, EditorThemeClasses, LexicalNode } from 'lexical';
+import { Class } from 'utility-types';
+import create from 'zustand';
+import createContext from 'zustand/context';
 import { CodeHighlightNode, CodeNode } from '@lexical/code';
 import { HashtagNode } from '@lexical/hashtag';
 import { AutoLinkNode, LinkNode } from '@lexical/link';
 import { ListItemNode, ListNode } from '@lexical/list';
 import { MarkNode } from '@lexical/mark';
 import { OverflowNode } from '@lexical/overflow';
+import { AutoFocusPlugin as LexicalAutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin';
+import { AutoScrollPlugin as LexicalAutoScrollPlugin } from '@lexical/react/LexicalAutoScrollPlugin';
+import { ClearEditorPlugin as LexicalClearEditorPlugin } from '@lexical/react/LexicalClearEditorPlugin';
+import { LexicalComposer } from '@lexical/react/LexicalComposer';
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
+import { ContentEditable as LexicalContentEditable } from '@lexical/react/LexicalContentEditable';
+import { HashtagPlugin as LexicalHashtagPlugin } from '@lexical/react/LexicalHashtagPlugin';
+import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
 import { HorizontalRuleNode } from '@lexical/react/LexicalHorizontalRuleNode';
+import { OnChangePlugin as LexicalOnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
+import { PlainTextPlugin as LexicalPlainTextPlugin } from '@lexical/react/LexicalPlainTextPlugin';
+import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { HeadingNode, QuoteNode } from '@lexical/rich-text';
 import { TableCellNode, TableNode, TableRowNode } from '@lexical/table';
-import { Class } from 'utility-types';
-import create from 'zustand';
-import createContext from 'zustand/context';
 
 const theme: EditorThemeClasses = {
   // Theme styling goes here

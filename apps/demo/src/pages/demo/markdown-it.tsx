@@ -1,12 +1,12 @@
+import React, { useEffect, useMemo } from 'react';
+import classNames from 'classnames';
+import MarkdownIt from 'markdown-it';
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import React, { useEffect, useMemo } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useImmer } from 'use-immer';
 import { SampleMd } from '@src/contents/MarkdownIt/const';
-import MarkdownIt from 'markdown-it';
-import { useRouter } from 'next/router';
-import classNames from 'classnames';
-import Link from 'next/link';
 
 const Demo = () => {
   const [options, updateOptions] = useImmer<MarkdownIt.Options>({

@@ -1,7 +1,7 @@
+import React from 'react';
 import { Extension } from '@tiptap/core';
 import Suggestion from '@tiptap/suggestion';
 import { SuggestionOptions } from '@tiptap/suggestion/dist/packages/suggestion/src/suggestion';
-import React from 'react';
 
 export interface CommandSuggestionItem {
   title: string;

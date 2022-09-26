@@ -1,8 +1,8 @@
-import { Draft } from 'immer';
-import { Editor } from '@tiptap/react';
-import { Updater, useImmer } from 'use-immer';
-import { EditorStore, useEditorStore } from '@src/components/TipTapWord/useEditorStore';
 import { useEffect } from 'react';
+import { Draft } from 'immer';
+import { Updater, useImmer } from 'use-immer';
+import { Editor } from '@tiptap/react';
+import { EditorStore, useEditorStore } from '@src/components/TipTapWord/useEditorStore';
 
 export function useEditorDerivedState<S = any>(o: {
   initialState: S;
