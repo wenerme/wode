@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useCurrentEditor } from '@src/components/TipTapWord/hooks';
 import { MdImage } from 'react-icons/md';
 import { SimpleDialog } from '@src/components/TipTapWord/components/SimpleDialog';
 import { SimpleFileInput } from '@src/components/TipTapWord/components/SimpleFileInput';
+import { useCurrentEditor } from '@src/components/TipTapWord/hooks';
 
 export const ImageToolbarItem: React.FC<{}> = (props) => {
   let [open, setOpen] = useState(false);

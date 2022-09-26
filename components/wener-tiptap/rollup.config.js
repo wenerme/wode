@@ -1,17 +1,13 @@
 import { readFile } from 'node:fs/promises';
-import type { MergedRollupOptions, RollupOptions } from 'rollup';
-import { terser } from 'rollup-plugin-terser';
 import dts from 'rollup-plugin-dts';
+import esbuild from 'rollup-plugin-esbuild';
 import { visualizer } from 'rollup-plugin-visualizer';
 import commonjs from '@rollup/plugin-commonjs';
-import nodeResolve from '@rollup/plugin-node-resolve';
-import replace from '@rollup/plugin-replace';
-import typescript from '@rollup/plugin-typescript';
 import json from '@rollup/plugin-json';
+import nodeResolve from '@rollup/plugin-node-resolve';
 
 const pkg = JSON.parse((await readFile(new URL('./package.json', import.meta.url))).toString());
 // missing types
-const { default: size } = await import('rollup-plugin-size' as any);
 
 const buildCjs = pkg.main || pkg.exports?.['.']?.['require'];
 const buildSystem = pkg.system || pkg.exports?.['.']?.['system'];
@@ -37,28 +33,10 @@ const externalDev = [...external, ...(cfg?.dev?.externals || []), ...Object.keys
 
 console.debug(`Building`, { cjs: buildCjs, system: buildSystem });
 
-const env = process.env['NODE_ENV'] ?? 'production';
-const isProduction = env === 'production';
-const replaceProd = replace({
-  'process.env.NODE_ENV': JSON.stringify(env),
-  __DEV__: String(!isProduction),
-  preventAssignment: true,
-});
-const replaceDev = replace({
-  'process.env.NODE_ENV': JSON.stringify('development'),
-  __DEV__: String(true),
-  preventAssignment: true,
-});
-const ts = typescript({
-  noForceEmit: true,
-  compilerOptions: {
-    declaration: false,
-  },
-  // avoid rollup.config.d.ts
-  include: ['src/**/*.ts', 'src/**/*.tsx'],
-});
-export default function (): RollupOptions[] {
-  let prod: MergedRollupOptions = {
+// : RollupOptions[]
+export default function () {
+  /**@type import('rollup').MergedRollupOptions*/
+  let prod = {
     input: 'src/index.ts',
     output: [
       {
@@ -69,16 +47,10 @@ export default function (): RollupOptions[] {
       },
     ],
     plugins: [
-      replaceProd,
-      ts,
       json(),
       commonjs(),
       nodeResolve({ extensions: ['.ts', '.tsx'], browser: true }),
-      terser({
-        mangle: true,
-        compress: true,
-      }),
-      size({}),
+      esbuild(),
       visualizer({
         filename: `dist/report/stats.html`,
         gzipSize: true,
@@ -91,7 +63,8 @@ export default function (): RollupOptions[] {
     ],
     external,
   };
-  let dev: MergedRollupOptions = {
+  /**@type import('rollup').MergedRollupOptions*/
+  let dev = {
     input: 'src/index.ts',
     output: [
       {
@@ -101,10 +74,11 @@ export default function (): RollupOptions[] {
         sourcemap: true,
       },
     ],
-    plugins: [replaceDev, ts, json(), commonjs(), nodeResolve({ extensions: ['.ts', '.tsx'] })],
+    plugins: [json(), commonjs(), nodeResolve({ extensions: ['.ts', '.tsx'] }), esbuild()],
     external: externalDev,
   };
-  let neutral: MergedRollupOptions = {
+  /**@type import('rollup').MergedRollupOptions*/
+  let neutral = {
     input: 'src/index.ts',
     output: [
       {
@@ -117,19 +91,7 @@ export default function (): RollupOptions[] {
         sourcemap: true,
       },
     ],
-    plugins: [
-      typescript({
-        noForceEmit: true,
-        compilerOptions: {
-          declaration: true,
-        },
-        // avoid rollup.config.d.ts
-        include: ['src/**/*.ts', 'src/**/*.tsx'],
-      }),
-      json(),
-      commonjs(),
-      nodeResolve({ extensions: ['.ts', '.tsx'] }),
-    ],
+    plugins: [json(), commonjs(), nodeResolve({ extensions: ['.ts', '.tsx'] }), esbuild()],
     external: externalDev,
   };
 
@@ -158,18 +120,21 @@ export default function (): RollupOptions[] {
   // failed
   // https://github.com/Swatinem/rollup-plugin-dts/blob/master/src/transform/index.ts#L70
   // Invalid value false for option "output.interop"
-  let types: MergedRollupOptions = {
+  /**@type import('rollup').MergedRollupOptions*/
+  let types = {
     input: 'src/index.ts',
     // input: 'lib/index.d.ts',
     output: [
       {
         file: 'dist/types/index.d.ts',
         format: 'es',
+        interop: 'esModule',
       },
     ],
     plugins: [dts()],
   };
 
+  /**@type import('rollup').RollupOptions[]*/
   let builds = [prod, dev, neutral];
   if (process.env['BUILD_TYPES']) {
     builds.push(types);

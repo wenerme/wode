@@ -9,6 +9,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import cx from 'classnames';
 import { autoUpdate, flip, offset, shift } from '@floating-ui/dom';
 import {
   FloatingFocusManager,
@@ -28,7 +29,6 @@ import {
   useRole,
   useTypeahead,
 } from '@floating-ui/react-dom-interactions';
-import cx from 'classnames';
 import { mergeRefs } from '@wener/reaction';
 
 export const MenuItem = forwardRef<

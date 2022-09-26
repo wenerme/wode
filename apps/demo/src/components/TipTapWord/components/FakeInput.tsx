@@ -1,6 +1,6 @@
 import React, { HTMLProps, KeyboardEventHandler } from 'react';
-import styled from 'styled-components';
 import { MdAdd, MdRemove } from 'react-icons/md';
+import styled from 'styled-components';
 
 export interface FakeInputProps {
   value?: string;

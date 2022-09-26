@@ -1,8 +1,8 @@
-import { Listbox } from '@headlessui/react';
-import classNames from 'classnames';
 import React from 'react';
 import { HiChevronDown, HiColorSwatch } from 'react-icons/hi';
 import { MdSettings } from 'react-icons/md';
+import classNames from 'classnames';
+import { Listbox } from '@headlessui/react';
 import { useTheme } from '@src/hooks/useTheme';
 
 export const ThemeSelector = () => {

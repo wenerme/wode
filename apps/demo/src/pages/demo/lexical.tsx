@@ -1,14 +1,15 @@
 import type { NextPage } from 'next';
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
-import { LexicalDemoContent } from '@src/contents/LexicalDemo/LexicalDemoContent';
 
+const App = dynamic(() => import('@src/contents/LexicalDemo/LexicalDemoContent'), { ssr: false });
 const CurrentPage: NextPage = () => {
   return (
     <>
       <Head>
         <title>Lexical Editor</title>
       </Head>
-      <LexicalDemoContent />
+      <App />
     </>
   );
 };

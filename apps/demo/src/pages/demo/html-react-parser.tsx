@@ -1,11 +1,11 @@
-import type { NextPage } from 'next';
-import Head from 'next/head';
 import React from 'react';
-import { useImmer } from 'use-immer';
-import parse, { attributesToProps, DOMNode, domToReact, HTMLReactParserOptions } from 'html-react-parser';
-import { Element, Text } from 'domhandler';
 import { MdAnchor } from 'react-icons/md';
 import classNames from 'classnames';
+import { Element, Text } from 'domhandler';
+import parse, { attributesToProps, DOMNode, domToReact, HTMLReactParserOptions } from 'html-react-parser';
+import type { NextPage } from 'next';
+import Head from 'next/head';
+import { useImmer } from 'use-immer';
 
 let initialHtml = `
 <h1>Heading L1</h1><p>Hello</p>

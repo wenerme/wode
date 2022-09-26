@@ -1,9 +1,9 @@
+import React from 'react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import React from 'react';
-import { MenuToolItem } from '@src/components/TipTapWord/components/MenuToolItem';
 import { useImmer } from 'use-immer';
 import { SettingMenuItems } from '@src/components/TipTapWord/Toolbar/Toolbar';
+import { MenuToolItem } from '@src/components/TipTapWord/components/MenuToolItem';
 
 const DemoMenu = () => {
   const [state, update] = useImmer<Record<string, any>>({});

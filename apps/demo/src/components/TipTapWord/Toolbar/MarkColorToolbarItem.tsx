@@ -1,8 +1,8 @@
 import React from 'react';
-import { Editor } from '@tiptap/react';
-import { ColorPickerToolbarItem } from '@src/components/TipTapWord/Toolbar/ColorPickerToolbarItem';
 import { MdBrush } from 'react-icons/md';
 import type {} from '@tiptap/extension-highlight';
+import { Editor } from '@tiptap/react';
+import { ColorPickerToolbarItem } from '@src/components/TipTapWord/Toolbar/ColorPickerToolbarItem';
 
 export const MarkColorToolbarItem: React.FC<{ editor: Editor; className?: string }> = ({ editor, className }) => {
   const value = editor.getAttributes('highlight')?.color || '';

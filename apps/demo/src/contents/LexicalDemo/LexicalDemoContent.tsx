@@ -1,5 +1,5 @@
-import styles from './Lexical.module.css';
 import { DemoEditor } from '@src/contents/LexicalDemo/DemoEditor';
+import styles from './Lexical.module.css';
 
 export const LexicalDemoContent = () => {
   return (
@@ -10,3 +10,5 @@ export const LexicalDemoContent = () => {
     </div>
   );
 };
+
+export default LexicalDemoContent;

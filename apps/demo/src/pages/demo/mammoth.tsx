@@ -1,12 +1,12 @@
+import React, { useState } from 'react';
+import classNames from 'classnames';
+import { convertToHtml, extractRawText } from 'mammoth';
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import { SimpleFileInput } from '@src/components/TipTapWord/components/SimpleFileInput';
-import { convertToHtml, extractRawText } from 'mammoth';
-import { useAsyncEffect } from '@wener/reaction';
-import React, { useState } from 'react';
 import Link from 'next/link';
-import classNames from 'classnames';
 import { useRouter } from 'next/router';
+import { useAsyncEffect } from '@wener/reaction';
+import { SimpleFileInput } from '@src/components/TipTapWord/components/SimpleFileInput';
 
 const DemoMenu = () => {
   let [file, setFile] = useState<File>();

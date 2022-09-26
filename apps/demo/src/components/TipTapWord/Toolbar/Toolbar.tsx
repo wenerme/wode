@@ -1,3 +1,6 @@
+import React, { cloneElement, HTMLProps, useRef, useState } from 'react';
+import { BsLayoutSplit, BsLayoutThreeColumns } from 'react-icons/bs';
+import { CgQuote } from 'react-icons/cg';
 import {
   MdArrowDropDown,
   MdAutoAwesome,
@@ -33,33 +36,30 @@ import {
   MdTablet,
   MdUndo,
 } from 'react-icons/md';
-import React, { cloneElement, HTMLProps, useRef, useState } from 'react';
+import classNames, { Argument } from 'classnames';
 import styled from 'styled-components';
 import { Listbox } from '@headlessui/react';
-import { FakeInput } from '@src/components/TipTapWord/components/FakeInput';
+import type {} from '@tiptap/core';
+import type {} from '@tiptap/extension-blockquote';
+import type {} from '@tiptap/extension-bullet-list';
+import type {} from '@tiptap/extension-code';
+import type {} from '@tiptap/extension-code-block';
+import type {} from '@tiptap/extension-font-family';
+import type {} from '@tiptap/extension-heading';
+import type {} from '@tiptap/extension-history';
+import type {} from '@tiptap/extension-ordered-list';
+import type {} from '@tiptap/extension-table';
+import type {} from '@tiptap/extension-text-align';
 import { ChainedCommands, Editor } from '@tiptap/react';
-import classNames, { Argument } from 'classnames';
-import { CgQuote } from 'react-icons/cg';
-import { BsLayoutSplit, BsLayoutThreeColumns } from 'react-icons/bs';
-import { MenuSpec, MenuToolItem } from '@src/components/TipTapWord/components/MenuToolItem';
-import { useEditorStore, useEditorStoreApi } from '@src/components/TipTapWord/useEditorStore';
+import { ImageToolbarItem } from '@src/components/TipTapWord/Toolbar/ImageToolbarItem';
 import { isActive } from '@src/components/TipTapWord/Toolbar/IsActive';
 import { MarkColorToolbarItem } from '@src/components/TipTapWord/Toolbar/MarkColorToolbarItem';
 import { TextColorToolbarItem } from '@src/components/TipTapWord/Toolbar/TextColorToolbarItem';
-import { ImageToolbarItem } from '@src/components/TipTapWord/Toolbar/ImageToolbarItem';
 import { VideoToolbarItem } from '@src/components/TipTapWord/Toolbar/VideoToolbarItem';
+import { FakeInput } from '@src/components/TipTapWord/components/FakeInput';
+import { MenuSpec, MenuToolItem } from '@src/components/TipTapWord/components/MenuToolItem';
 import { useEditorDerivedState } from '@src/components/TipTapWord/hooks';
-import type {} from '@tiptap/extension-font-family';
-import type {} from '@tiptap/extension-text-align';
-import type {} from '@tiptap/extension-table';
-import type {} from '@tiptap/extension-heading';
-import type {} from '@tiptap/extension-code-block';
-import type {} from '@tiptap/extension-blockquote';
-import type {} from '@tiptap/extension-ordered-list';
-import type {} from '@tiptap/extension-bullet-list';
-import type {} from '@tiptap/extension-code';
-import type {} from '@tiptap/extension-history';
-import type {} from '@tiptap/core';
+import { useEditorStore, useEditorStoreApi } from '@src/components/TipTapWord/useEditorStore';
 
 const FontFamilySet: OptionItem[] = [
   { label: '默认字体', value: '' },

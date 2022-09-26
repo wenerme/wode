@@ -34,9 +34,8 @@
     "incremental": false
   },
   "include": [
-    "rollup.config.ts",
-    "src/**/*.ts",
-    "src/**/*.tsx"
+    "types",
+    "src",
   ],
   "exclude": [
     "dist",

@@ -1,9 +1,9 @@
-import { Editor, useEditor } from '@tiptap/react';
 import React, { useEffect, useState } from 'react';
+import { Extensions } from '@tiptap/core';
+import { Editor, useEditor } from '@tiptap/react';
+import { TipTapWordStarterKit } from '@wener/tiptap';
 import { TipTapWordEditor } from '@src/components/TipTapWord/TipTapWordEditor';
 import { Slot, SlotProps } from '@src/components/TipTapWord/components/Slot';
-import { TipTapWordStarterKit } from '@wener/tiptap';
-import { Extensions } from '@tiptap/core';
 
 export type TipTapWord = React.FC<
   React.PropsWithChildren<{ useExtensions?: () => Extensions; onEditor?: (v: Editor) => void }>
@@ -17,7 +17,7 @@ export const TipTapWord: TipTapWord = ({ children, onEditor, useExtensions }) =>
   const [value, setValue] = useState({ html: '', json: {} });
   const editor = useEditor(
     {
-      extensions: useExtensions?.() ?? [TipTapWordStarterKit.configure({})],
+      extensions: useExtensions?.() ?? ([TipTapWordStarterKit.configure({})] as Extensions),
       content: value.html,
       onUpdate(ctx) {
         setValue({ html: ctx.editor.getHTML(), json: ctx.editor.getJSON() });

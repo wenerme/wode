@@ -1,7 +1,7 @@
+import React, { MouseEvent, useRef } from 'react';
 import { MdAddCircleOutline, MdOutlineFormatColorReset } from 'react-icons/md';
 import classNames from 'classnames';
 import styled from 'styled-components';
-import React, { MouseEvent, useRef } from 'react';
 
 const colors: Array<[string, string, boolean]> = [
   ['黑色', '#000000', true],

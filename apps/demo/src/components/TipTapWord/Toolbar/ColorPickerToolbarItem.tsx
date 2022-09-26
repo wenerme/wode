@@ -1,6 +1,6 @@
 import React from 'react';
-import { Popover } from '@headlessui/react';
 import classNames from 'classnames';
+import { Popover } from '@headlessui/react';
 import { ColorPlates } from '@src/components/TipTapWord/components/ColorPlates';
 
 export const ColorPickerToolbarItem: React.FC<{
