@@ -31,10 +31,7 @@
       },
       "require": "./dist/cjs/index.js"
     },
-    "./types": {
-      "types": "./src/types.d.ts"
-    },
-    "./src/*": "./src/*",
+    "./src/*": "./src/",
     "./package.json": "./package.json"
   },
   "main": "dist/cjs/index.js",
