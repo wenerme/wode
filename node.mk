@@ -26,6 +26,13 @@ OSPM	?=$(shell for i in apk brew yum apt-get apt; do command -v $$i > /dev/null 
 # for reproducible build
 SOURCE_DATE_EPOCH?=$(shell git log -1 --pretty=%ct)
 
+# File Structure
+# lib/index.js - ESM build
+# dist/ - Bundle & Non-ESM build
+#	cjs/index.js
+#	system/index.js
+#	esm/index.js
+
 info:
 	@printf $(COLOR_INFO) $(PKG_NAME):
 	@echo "  version:" v$(PKG_VER)
@@ -64,14 +71,18 @@ SOURCE_FILES?=$(shell ls 2>/dev/null src/**/*.js src/**/*.ts src/**/*.tsx | egre
 # will not minify
 ESBUILD_BUILD_FLAGS?=--charset=utf8 --target=chrome90 --sourcemap --platform=neutral
 build:
-ifneq ($(wildcard rollup.config.*),)
+ifneq ($(wildcard rollup.build.js),)
+	$(EXEC) rollup -c rollup.build.js
+else ifneq ($(wildcard rollup.dev.js),)
+	$(EXEC) rollup -c rollup.dev.js
+else ifneq ($(wildcard rollup.config.*),)
 	$(MAKE) rollup
 else ifneq ($(wildcard esbuild.build.*),)
 	$(EXEC) $(wildcard esbuild.build.*)
 else
-	@$(EXEC) esbuild --format=esm --outdir=lib/esm --out-extension:.js=.mjs $(SOURCE_FILES) $(ESBUILD_BUILD_FLAGS)
+	@$(EXEC) esbuild --format=esm --outdir=lib $(SOURCE_FILES) $(ESBUILD_BUILD_FLAGS)
 ifeq ($(WANT_CJS),true)
-	@$(EXEC) esbuild --format=cjs --outdir=lib/cjs $(SOURCE_FILES) $(ESBUILD_BUILD_FLAGS)
+	@$(EXEC) esbuild --format=cjs --outdir=dist/cjs/lib $(SOURCE_FILES) $(ESBUILD_BUILD_FLAGS)
 endif
 endif
 
@@ -93,19 +104,26 @@ ESBUILD_DEV_FLAGS?= \
 	--define:process.env.NODE_ENV=\"development\" --define:__DEV__=true --charset=utf8 --target=chrome90 --sourcemap=external
 dev: ESBUILD_BUILD_FLAGS=$(ESBUILD_DEV_FLAGS)
 dev: build
+ifneq ($(wildcard rollup.dev.js),)
+	$(EXEC) rollup -c rollup.dev.js --watch
+else
 	@$(EXEC) esbuild --format=esm --outdir=lib --watch $(SOURCE_FILES) $(ESBUILD_DEV_FLAGS)
+endif
 
 ESBUILD_BUNDLE_FLAGS?= \
 	--external:{react,react-dom,prop-types,classnames,@*,markdown-it,prosemirror*} \
 	--charset=utf8 --target=chrome90 --sourcemap=external --legal-comments=external --bundle
 bundle:
-ifneq ($(wildcard rollup.config.*),)
+ifneq ($(wildcard rollup.bundle.js),)
+	NODE_ENV=production $(EXEC) rollup -c rollup.bundle.js
+else ifneq ($(wildcard rollup.config.*),)
 	@printf $(COLOR_INFO) "rollup bundled in build phase"
 else ifneq ($(wildcard esbuild.bundle.*),)
 	$(EXEC) $(wildcard esbuild.bundle.*)
 else
 	@$(EXEC) esbuild --format=esm --outfile=dist/esm/$(OUT_NAME).development.js $(ESBUILD_DEVELOPMENT_FLAGS) $(ESBUILD_BUNDLE_FLAGS) src/index.ts
-	@$(EXEC) esbuild --format=esm --outfile=dist/esm/$(OUT_NAME).min.js $(ESBUILD_PRODUCTION_FLAGS) $(ESBUILD_BUNDLE_FLAGS) src/index.ts
+	@$(EXEC) esbuild --format=esm --outfile=dist/esm/$(OUT_NAME).production.js $(ESBUILD_PRODUCTION_FLAGS) $(ESBUILD_BUNDLE_FLAGS) src/index.ts
+	@$(EXEC) esbuild --format=cjs --outfile=dist/cjs/index.js $(ESBUILD_DEVELOPMENT_FLAGS) $(ESBUILD_BUNDLE_FLAGS) src/index.ts
 endif
 
 ifneq ($(wildcard rollup.config.js),)
@@ -123,7 +141,6 @@ publish: prepublish
 
 sync-mirror:
 	curl -sf -X PUT "https://registry-direct.npmmirror.com/$(PKG_NAME)/sync?sync_upstream=true" | jq
-
 endif
 
 fmt:

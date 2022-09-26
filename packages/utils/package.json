@@ -28,7 +28,7 @@
     "./types": {
       "types": "./src/types.d.ts"
     },
-    "./src/*": "./src/*",
+    "./src/*": "./src/",
     "./package.json": "./package.json"
   },
   "main": "dist/cjs/index.js",
@@ -57,11 +57,8 @@
   },
   "devDependencies": {
     "@types/lodash": "^4",
-    "@types/node": "^16",
     "ava": "^4.3.3",
-    "lodash": "^4",
-    "tslib": "^2",
-    "typescript": "^4"
+    "lodash": "^4"
   },
   "publishConfig": {
     "access": "public"

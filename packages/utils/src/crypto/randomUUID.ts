@@ -1,3 +1,6 @@
+/**
+ * generate random UUIDv4
+ */
 export function randomUUID() {
   if ('randomUUID' in crypto) {
     return crypto.randomUUID();

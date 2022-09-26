@@ -18,3 +18,8 @@ clean:
 install:
 	npm i -g $(PM)
 	$(PM) install
+
+typedoc:
+	typedoc --entryPointStrategy packages 'packages/*' --out out/typedoc
+
+ci: install build typedoc
