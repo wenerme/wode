@@ -1,7 +1,5 @@
 import React, { DependencyList, EffectCallback, useEffect } from 'react';
-import { shallow } from '../utils/shallow';
-
-// import isEqual from 'react-fast-compare';
+import { shallow } from '@wener/utils';
 
 /**
  * useCompareEffect will call callback if deps is changed

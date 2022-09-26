@@ -144,7 +144,7 @@ sync-mirror:
 endif
 
 fmt:
-	$(EXEC) prettier src -w
+	$(EXEC) prettier -w src package.json
 
 fix: LINT_FIX=1
 fix: lint

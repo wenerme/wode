@@ -404,24 +404,16 @@ importers:
 
   packages/reaction:
     specifiers:
-      '@types/node': ^16
       '@types/prop-types': ^15
       '@types/react': ^18
       '@types/react-dom': ^18
-      prop-types: '>=15'
-      react: ^18
-      react-dom: '>=18'
-      typescript: ^4
+      '@wener/utils': ^1
     dependencies:
-      prop-types: 15.8.1
-      react-dom: 18.2.0_react@18.2.0
+      '@wener/utils': link:../utils
     devDependencies:
-      '@types/node': 16.11.58
       '@types/prop-types': 15.7.5
       '@types/react': 18.0.19
       '@types/react-dom': 18.0.6
-      react: 18.2.0
-      typescript: 4.8.3
 
   packages/utils:
     specifiers:

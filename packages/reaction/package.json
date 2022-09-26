@@ -1,6 +1,6 @@
 {
   "name": "@wener/reaction",
-  "version": "1.2.13",
+  "version": "1.2.14",
   "description": "React hooks, utils & reaction",
   "keywords": [
     "components",
@@ -24,18 +24,20 @@
   "exports": {
     ".": {
       "types": "./src/index.ts",
-      "import": "./lib/esm/index.mjs",
+      "import": "./lib/index.js",
       "system": {
-        "development": "./dist/system/index.development.js",
-        "default": "./dist/system/index.min.js"
+        "default": "./dist/system/index.js"
       },
       "require": "./dist/cjs/index.js"
+    },
+    "./types": {
+      "types": "./src/types.d.ts"
     },
     "./src/*": "./src/",
     "./package.json": "./package.json"
   },
   "main": "dist/cjs/index.js",
-  "import": "lib/esm/index.mjs",
+  "import": "lib/index.js",
   "types": "src/index.ts",
   "files": [
     "src",
@@ -66,16 +68,12 @@
     ]
   },
   "dependencies": {
-    "prop-types": ">=15",
-    "react-dom": ">=18"
+    "@wener/utils": "^1"
   },
   "devDependencies": {
-    "@types/node": "^16",
     "@types/prop-types": "^15",
     "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "react": "^18",
-    "typescript": "^4"
+    "@types/react-dom": "^18"
   },
   "peerDependencies": {
     "prop-types": ">=15",
@@ -83,6 +81,7 @@
     "react-dom": ">=16"
   },
   "publishConfig": {
+    "registry": "https://registry.npmjs.org",
     "access": "public"
   }
 }
