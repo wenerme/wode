@@ -3,6 +3,9 @@ export function getGlobalSystem() {
   return globalThis.System;
 }
 
+/**
+ * spec {@link https://github.com/wicg/import-maps import maps}
+ */
 export interface ImportMap {
   imports?: Record<string, string>;
   scopes?: Record<string, Record<string, string>>;
@@ -10,10 +13,12 @@ export interface ImportMap {
   integrity?: Record<string, any>;
 }
 
-type Module = {
+export type Module = {
   default?: any;
   [k: string | symbol]: any;
+  [Symbol.toStringTag]: 'Module';
 };
+
 export type DeclareFn = (
   _export: (o: any) => void,
   _context: {
@@ -21,8 +26,8 @@ export type DeclareFn = (
     meta: {
       url: string;
       env?: Record<string, any>;
+      resolve?: (moduleId: string, parentUrl?: string) => string;
     };
-    resolve?: (moduleId: string, parentUrl?: string) => string;
   },
 ) => { setters?: Array<(module: any) => any>; execute?: () => void };
 
