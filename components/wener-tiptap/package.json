@@ -13,7 +13,7 @@
       "import": "./lib/index.js",
       "require": "./dist/cjs/index.js"
     },
-    "./src/*": "./src/",
+    "./src/*": "./src/*",
     "./package.json": "./package.json"
   },
   "publishConfig": {

@@ -35,6 +35,7 @@
     "@wener/wode": "workspace:*",
     "ava": "^4.3.3",
     "esbuild": "^0.15",
+    "eslint": "^8.24.0",
     "globby": "^13.1.2",
     "jsdom": "^20.0.0",
     "prettier": "latest",

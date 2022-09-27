@@ -26,6 +26,13 @@ export { dequal } from './validations/dequal';
 
 // modules
 export { parseModuleId, type ParsedModuleId } from './modules/parseModuleId';
+export { isModule } from './modules/isModule';
+
+// logging
+export { type Logger, type LogLevel } from './logging/Logger';
+export { createWriteLogger } from './logging/createWriteLogger';
+export { createNoopLogger } from './logging/createNoopLogger';
+export { createChildLogger } from './logging/createChildLogger';
 
 // strings
 export { pascalCase, camelCase } from './strings/camelCase';
