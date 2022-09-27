@@ -24,13 +24,14 @@ test('hooks works', async (t) => {
 
   // unaffected
   {
-    t.true(addSystemPreload('test', { default: 'test' }));
     // no override
-    t.false(addSystemPreload('test', { default: 'test' }));
+    t.true(addSystemPreload('test', { default: 'test' }));
+    t.false(addSystemPreload('test', { default: 'test1' }));
     t.true(System.has(System.resolve('test')));
-
-    const { default: v } = await System.import('test');
-    t.is(v, 'test');
+    t.is((await System.import('test')).default, 'test');
+    // override
+    t.true(addSystemPreload('test', { default: 'test1' }, { override: true }));
+    t.is((await System.import('test')).default, 'test1');
   }
   {
     // async
@@ -39,8 +40,11 @@ test('hooks works', async (t) => {
 
     // sync
     t.true(addSystemPreload('test2', () => ({ default: 'test2' })));
-    // fixme can not detect override
-    t.true(addSystemPreload('test2', () => ({ default: 'test3' })));
+    // no override
+    t.false(addSystemPreload('test2', () => ({ default: 'test3' })));
+    t.is((await System.import('test2')).default, 'test2');
+    // override
+    t.true(addSystemPreload('test2', () => ({ default: 'test3' }), { override: true }));
     t.is((await System.import('test2')).default, 'test3');
   }
 
