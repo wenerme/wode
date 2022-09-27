@@ -3,9 +3,9 @@ import { getGlobalSystem, SystemJS } from './getGlobalSystem';
 export function addSystemPreload(
   id: string,
   preload: (() => Promise<any>) | object,
-  { System = getGlobalSystem() }: { System?: SystemJS } = {},
+  { System = getGlobalSystem(), override }: { System?: SystemJS; override?: boolean } = {},
 ) {
-  if (System.has(id)) {
+  if (!override && System.has(id)) {
     return false;
   }
 
@@ -14,11 +14,26 @@ export function addSystemPreload(
     resolvedId = System.resolve(id);
   } catch (e) {}
 
-  if (resolvedId && System.has(resolvedId)) {
+  if (!override && resolvedId && System.has(resolvedId)) {
     return false;
   }
 
+  let isBareSpecifier = true;
+  let moduleId = resolvedId || id;
+  try {
+    new URL(id);
+    isBareSpecifier = false;
+  } catch (e) {}
+
   if (typeof preload === 'function') {
+    // resolved by named register
+    // can not detect url register
+    if (!override && isBareSpecifier && resolvedId === id) {
+      return false;
+    }
+    if (override) {
+      System.delete(id);
+    }
     System.register(id, [], (exports) => {
       return {
         execute: async () => {
@@ -28,12 +43,9 @@ export function addSystemPreload(
     });
     return true;
   }
-
-  try {
-    new URL(resolvedId || id);
-  } catch (e) {
+  if (!resolvedId && isBareSpecifier) {
     throw new Error(`"${id}" is not a valid URL to set in the module registry`);
   }
-  System.set(resolvedId || id, preload);
+  System.set(moduleId, preload);
   return true;
 }
