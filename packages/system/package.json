@@ -1,6 +1,6 @@
 {
   "name": "@wener/system",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "type": "module",
   "description": "Utils for systemjs",
   "repository": {
@@ -59,25 +59,31 @@
     "dev": "make dev",
     "test": "make test"
   },
-  "devDependencies": {
-    "@wener/utils": "^1",
-    "ava": "^4.3.3"
-  },
   "peerDependencies": {
-    "systemjs": "*",
-    "node-fetch": "*"
+    "node-fetch": "*",
+    "systemjs": "*"
   },
   "peerDependenciesMeta": {
-    "systemjs": {
+    "node-fetch": {
       "optional": true
     },
-    "node-fetch": {
+    "systemjs": {
       "optional": true
     }
   },
   "optionalDependencies": {
-    "systemjs": "*",
-    "node-fetch": "*"
+    "node-fetch": "*",
+    "systemjs": "*"
+  },
+  "devDependencies": {
+    "@types/jsdom": "^20.0.0",
+    "@types/react": "^18.0.21",
+    "@types/react-dom": "^18.0.6",
+    "@wener/utils": "^1",
+    "ava": "^4.3.3",
+    "jsdom": "^20.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org",

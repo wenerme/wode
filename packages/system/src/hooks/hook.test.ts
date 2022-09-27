@@ -1,14 +1,15 @@
 import test from 'ava';
+import { createNoopLogger } from '@wener/utils';
 import { loadServerSystem } from '../loaders/loadServerSystem';
 import { addPreload } from '../utils/addPreload';
 import { getGlobalSystem } from '../utils/getGlobalSystem';
 
 test.before(async () => {
-  await loadServerSystem();
+  await loadServerSystem({ logger: createNoopLogger() });
 
   const System = getGlobalSystem();
   // should works with import map
-  System.applyImportMap({
+  System.addImportMap({
     imports: {
       'react/': 'package:react/',
     },

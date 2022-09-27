@@ -9,6 +9,15 @@ test('resolve legacy', (t) => {
     system: 'system.js',
   };
   t.is(legacy(base, { fields: ['system'] }), './system.js');
+  t.falsy(
+    legacy(
+      {
+        main: 'index.js',
+      },
+      { fields: ['system'] },
+    ),
+    './system.js',
+  );
 });
 
 test('resolve exports', (t) => {
