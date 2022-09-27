@@ -8,8 +8,9 @@ import { visualizer } from 'rollup-plugin-visualizer';
 
 // const pkg = JSON.parse((await readFile(new URL(process.cwd()+'/package.json', import.meta.url))).toString());
 const pkg = JSON.parse((await readFile(process.cwd() + '/package.json')).toString());
-const externalProd = [/^node:/, ...Object.keys(pkg.peerDependencies || {})].map((v) => new RegExp(`^${v}(/|$)`));
-const externalDev = [...externalProd, ...Object.keys(pkg.dependencies || {}).map((v) => new RegExp(`^${v}(/|$)`))];
+let toRegex = (v) => new RegExp(`^${v}(/|$)`);
+const externalProd = [/^node:/, ...(pkg.rollup?.external || []).map(toRegex), ...Object.keys(pkg.peerDependencies || {})].map(toRegex);
+const externalDev = [...externalProd, ...Object.keys(pkg.dependencies || {}).map(toRegex)];
 
 const input = pkg.rollup?.input || await globby(['./src/index.ts', './src/index.tsx']);
 
