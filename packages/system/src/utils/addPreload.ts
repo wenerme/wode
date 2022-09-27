@@ -1,6 +1,6 @@
 import { getGlobalSystem, SystemJS } from './getGlobalSystem';
 
-export function addSystemPreload(
+export function addPreload(
   id: string,
   preload: (() => Promise<any>) | object,
   { System = getGlobalSystem(), override }: { System?: SystemJS; override?: boolean } = {},
