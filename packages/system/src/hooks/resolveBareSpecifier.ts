@@ -7,10 +7,10 @@ export function resolveBareSpecifier({
   logger = console,
   cache = false,
 }: { protocol?: string; System?: SystemJS; logger?: Logger; cache?: boolean } = {}) {
-  const orig = System.resolve.bind(System);
+  const orig = System.constructor.prototype.resolve.bind(System);
   const map = new Map();
 
-  System.resolve = (id: string, parentUrl?: string) => {
+  System.constructor.prototype.resolve = (id: string, parentUrl?: string) => {
     try {
       return cache ? map.get(id) || orig(id, parentUrl) : orig(id, parentUrl);
     } catch (e) {
