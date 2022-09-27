@@ -19,10 +19,10 @@ export function instantiatePackageProtocol({
   logger = console,
   System = getGlobalSystem(),
 }: PackageResolveOptions = {}) {
-  const orig = System.instantiate!.bind(System);
+  const orig = System.constructor.prototype.instantiate!.bind(System);
   // cache resolve
   const cache = new Map<string, string>();
-  System.instantiate = async function (url: string, parent: string) {
+  System.constructor.prototype.instantiate = async function (url: string, parent: string) {
     const loader = System;
     let next = url;
     let shouldCache = false;
