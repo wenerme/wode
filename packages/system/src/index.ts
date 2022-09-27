@@ -4,3 +4,4 @@ export { isModule } from './utils/isModule';
 
 export { resolveBareSpecifier } from './hooks/resolveBareSpecifier';
 export { instantiatePackageProtocol } from './hooks/instantiatePackageProtocol';
+export { loadBrowserSystem } from './loaders/loadBrowserSystem';

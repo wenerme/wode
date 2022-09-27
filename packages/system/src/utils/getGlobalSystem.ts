@@ -42,7 +42,7 @@ export interface SystemJS {
   set: (moduleId: string, module: any) => void;
   entries: () => Iterable<[string, any]>;
 
-  applyImportMap?: (map: any, parentUrl?: string) => void;
+  addImportMap: (map: ImportMap, parentUrl?: string) => void;
   prepareImport: (doProcessScripts?: boolean) => Promise<any>;
 
   register(name: string, dependencies: string[], declare: DeclareFn): void;
