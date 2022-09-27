@@ -1,13 +1,12 @@
 import { createChildLogger, Logger } from '@wener/utils';
-import { instantiatePackageProtocol } from '../hooks/instantiatePackageProtocol';
-import { resolveBareSpecifier } from '../hooks/resolveBareSpecifier';
 import { getGlobalSystem } from '../utils/getGlobalSystem';
+import { hookSystem } from './hookSystem';
 
 export async function loadServerSystem({
-  hook = true,
+  hooks = true,
   logger = createChildLogger(console, { m: 'SystemJS' }),
   loadSystem,
-}: { hook?: boolean; logger?: Logger; loadSystem?: () => Promise<void> } = {}) {
+}: { hooks?: boolean; logger?: Logger; loadSystem?: () => Promise<void> } = {}) {
   if (getGlobalSystem()) {
     return getGlobalSystem();
   }
@@ -39,7 +38,7 @@ export async function loadServerSystem({
     await import('systemjs/dist/extras/module-types.js');
 
     let System = getGlobalSystem();
-    System.constructor.prototype.applyImportMap = (...args: any[]) => applyImportMap(System, ...args);
+    System.constructor.prototype.addImportMap ||= (...args: any[]) => applyImportMap(System, ...args);
     System.constructor.prototype.setBaseUrl = (u: string) => setBaseUrl(System, u);
   };
 
@@ -54,9 +53,6 @@ export async function loadServerSystem({
   System.constructor.prototype.shouldFetch = (url: string) => {
     return orig(url) || url.startsWith('https://');
   };
-  if (hook) {
-    resolveBareSpecifier({ System, logger: createChildLogger(logger, { c: 'resolveBareSpecifier' }) });
-    instantiatePackageProtocol({ System, logger: createChildLogger(logger, { c: 'instantiatePackageProtocol' }) });
-  }
+  hookSystem({ System, logger, hooks });
   return System;
 }

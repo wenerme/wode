@@ -3,7 +3,7 @@ import { loadServerSystem } from '../loaders/loadServerSystem';
 import { DeclareFn, getGlobalSystem } from '../utils/getGlobalSystem';
 
 test.before(async () => {
-  await loadServerSystem({ hook: false });
+  await loadServerSystem({ hooks: false });
 });
 
 test('SystemJS functional', async (t) => {

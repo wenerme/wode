@@ -2,6 +2,33 @@
 
 Utils for SystemJS
 
+**Browser env**
+
+```js
+import { getGlobalSystem, loadBrowserSystem } from '@wener/system';
+import { createNoopLogger } from '@wener/utils';
+
+await loadBrowserSystem({ logger: createNoopLogger(), script: true });
+const System = getGlobalSystem();
+// load through jsdelivr & ga.system.jspm.io
+const { default: React } = await System.import('react');
+console.log(`React`, React.createElement('a'));
+```
+
+**Server env**
+
+```js
+import { getGlobalSystem } from '@wener/system';
+import { loadServerSystem } from '@wener/system/server';
+import { createNoopLogger } from '@wener/utils';
+
+await loadServerSystem({ logger: createNoopLogger() });
+const System = getGlobalSystem();
+// load through jsdelivr & ga.system.jspm.io
+const { default: React } = await System.import('react');
+console.log(`React`, React.createElement('a'));
+```
+
 <!-- LINK:BEGIN -->
 
 # Links
