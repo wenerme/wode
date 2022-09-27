@@ -1,6 +1,7 @@
 import { createChildLogger, Logger } from '@wener/utils';
 import { getGlobalSystem } from '../utils/getGlobalSystem';
 import { hookSystem } from './hookSystem';
+import { polyfillFetch } from './polyfillFetch';
 
 export async function loadServerSystem({
   hooks = true,
@@ -15,21 +16,7 @@ export async function loadServerSystem({
   // }
   loadSystem ||= async () => {
     // polyfill fetch to make module-types works
-    if (typeof globalThis.fetch === 'undefined') {
-      const { default: fetch } = await import('node-fetch');
-      const { Response, Headers, Request, AbortError, FetchError, FormData, Blob, File } = await import('node-fetch');
-      Object.assign(globalThis, {
-        fetch,
-        Response,
-        Headers,
-        Request,
-        AbortError,
-        FetchError,
-        FormData,
-        Blob,
-        File,
-      });
-    }
+    await polyfillFetch();
 
     const {
       default: { applyImportMap, setBaseUrl },

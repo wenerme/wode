@@ -1,6 +1,10 @@
-export function getGlobalSystem() {
+export function getGlobalSystem(): SystemJS {
+  if (typeof window === 'undefined') {
+    // @ts-ignore
+    return globalThis.System;
+  }
   // @ts-ignore
-  return globalThis.System;
+  return window.System ?? globalThis.System;
 }
 
 /**
@@ -33,7 +37,7 @@ export type DeclareFn = (
 
 export interface SystemJS {
   import: (moduleId: string, parentUrl?: string) => Promise<Module>;
-  instantiate?: (url: string, parent: string) => Promise<Module>;
+  instantiate: (url: string, parent: string) => Promise<[deps: string[], fn: DeclareFn]>;
   shouldFetch: (url: string) => boolean;
   fetch: (url: string, options?: any) => Promise<any>;
   resolve: (moduleId: string, parentUrl?: string) => string;
