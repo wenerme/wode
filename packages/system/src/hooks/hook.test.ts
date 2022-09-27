@@ -1,6 +1,6 @@
 import test from 'ava';
 import { loadServerSystem } from '../loaders/loadServerSystem';
-import { addSystemPreload } from '../utils/addSystemPreload';
+import { addPreload } from '../utils/addPreload';
 import { getGlobalSystem } from '../utils/getGlobalSystem';
 
 test.before(async () => {
@@ -25,26 +25,26 @@ test('hooks works', async (t) => {
   // unaffected
   {
     // no override
-    t.true(addSystemPreload('test', { default: 'test' }));
-    t.false(addSystemPreload('test', { default: 'test1' }));
+    t.true(addPreload('test', { default: 'test' }));
+    t.false(addPreload('test', { default: 'test1' }));
     t.true(System.has(System.resolve('test')));
     t.is((await System.import('test')).default, 'test');
     // override
-    t.true(addSystemPreload('test', { default: 'test1' }, { override: true }));
+    t.true(addPreload('test', { default: 'test1' }, { override: true }));
     t.is((await System.import('test')).default, 'test1');
   }
   {
     // async
-    t.true(addSystemPreload('test1', () => Promise.resolve({ default: 'test1' })));
+    t.true(addPreload('test1', () => Promise.resolve({ default: 'test1' })));
     t.is((await System.import('test1')).default, 'test1');
 
     // sync
-    t.true(addSystemPreload('test2', () => ({ default: 'test2' })));
+    t.true(addPreload('test2', () => ({ default: 'test2' })));
     // no override
-    t.false(addSystemPreload('test2', () => ({ default: 'test3' })));
+    t.false(addPreload('test2', () => ({ default: 'test3' })));
     t.is((await System.import('test2')).default, 'test2');
     // override
-    t.true(addSystemPreload('test2', () => ({ default: 'test3' }), { override: true }));
+    t.true(addPreload('test2', () => ({ default: 'test3' }), { override: true }));
     t.is((await System.import('test2')).default, 'test3');
   }
 

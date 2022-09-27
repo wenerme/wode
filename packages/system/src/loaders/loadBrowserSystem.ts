@@ -18,7 +18,7 @@ export async function loadBrowserSystem({
     await loadScripts(`https://cdn.jsdelivr.net/npm/systemjs@${version}/dist/extras/named-register.js`);
     await loadScripts(`https://cdn.jsdelivr.net/npm/systemjs@${version}/dist/extras/dynamic-import-maps.js`);
     // if (script) {
-    //   // use srv version
+    //   // use src version
     //   // avoid minify
     //   await loadScripts(`https://cdn.jsdelivr.net/npm/systemjs@${version}/dist/system.js`);
     //   await loadScripts(`https://cdn.jsdelivr.net/npm/systemjs@${version}/dist/extras/named-register.js`);

@@ -14,6 +14,7 @@ export async function loadServerSystem({
   //   return loadBrowserSystem();
   // }
   loadSystem ||= async () => {
+    // polyfill fetch to make module-types works
     if (typeof globalThis.fetch === 'undefined') {
       const { default: fetch } = await import('node-fetch');
       const { Response, Headers, Request, AbortError, FetchError, FormData, Blob, File } = await import('node-fetch');

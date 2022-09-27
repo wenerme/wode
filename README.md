@@ -2,6 +2,16 @@
 
 Wener Node Monorepo
 
+- packages
+  - system - [@wener/system](https://www.npmjs.com/package/@wener/system)
+    - hooks to lets systemjs work with npm registry & package.json
+  - reaction - [@wener/reaction](https://www.npmjs.com/package/@wener/reaction)
+    - React hooks & utils
+  - utils - [@wener/utils](https://www.npmjs.com/package/@wener/utils)
+    - Typescript
+    - Zero Dependencies
+  - ethers - WIP
+    - Web3 utils
 - apps
   - demo https://wode.vercel.app/
     - TipTap based Google Doc
@@ -12,14 +22,6 @@ Wener Node Monorepo
         - parseMarkdown
         - slash command
     - [ ] WindowManager
-- packages
-  - reaction - [@wener/reaction](https://www.npmjs.com/package/@wener/reaction)
-    - React hooks & utils
-  - utils - [@wener/utils](https://www.npmjs.com/package/@wener/utils)
-    - Typescript
-    - Zero Dependencies
-  - ethers - WIP
-    - Web3 utils
 
 ## Dev
 

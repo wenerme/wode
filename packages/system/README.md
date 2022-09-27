@@ -5,14 +5,20 @@ Utils for SystemJS
 **Browser env**
 
 ```js
-import { getGlobalSystem, loadBrowserSystem } from '@wener/system';
+import { getGlobalSystem, loadBrowserSystem, addPreload } from '@wener/system';
 import { createNoopLogger } from '@wener/utils';
 
+// use script load to avoid minify error - nextjs & swc minify make cause minify error 
 await loadBrowserSystem({ logger: createNoopLogger(), script: true });
+
+// make external lib works with current react
+addPreload('react',()=>import('react'));
+addPreload('react/jsx-runtime',()=>import('react/jsx-runtime'));
+
 const System = getGlobalSystem();
 // load through jsdelivr & ga.system.jspm.io
-const { default: React } = await System.import('react');
-console.log(`React`, React.createElement('a'));
+const { ErrorSuspenseBoundary } = await System.import('@wener/reaction');
+console.log(`Result`, React.createElement(ErrorSuspenseBoundary));
 ```
 
 **Server env**
