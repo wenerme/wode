@@ -1,8 +1,8 @@
 {
-  "name": "@wener/utils",
-  "version": "1.1.4",
+  "name": "@wener/system",
+  "version": "1.0.0",
   "type": "module",
-  "description": "Utils for daily use",
+  "description": "Utils for systemjs",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/wener/wode.git"
@@ -50,7 +50,7 @@
   ],
   "keywords": [
     "utils",
-    "core library",
+    "system",
     "helper"
   ],
   "scripts": {
@@ -59,10 +59,13 @@
     "dev": "make dev",
     "test": "make test"
   },
+  "dependencies": {
+    "@wener/utils": "^1"
+  },
   "devDependencies": {
-    "@types/lodash": "^4",
+    "systemjs": "^6.12.6",
     "ava": "^4.3.3",
-    "lodash": "^4"
+    "node-fetch": "^3.2.10"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org",
