@@ -15,7 +15,8 @@ test('SystemJS functional', async (t) => {
   } catch (e) {}
 
   // will throw error but still valid
-  // use test1
+  System.set('test0', { default: 'test0' });
+  // proper way
   System.set('pkg:test1', { default: 'test1' });
   t.true(System.has('pkg:test1'));
 
