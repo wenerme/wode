@@ -1,0 +1,97 @@
+{
+  "name": "@wener/torrent",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Utils for torrent",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wener/wode.git"
+  },
+  "homepage": "https://github.com/wenerme/wode#readme",
+  "author": "wener",
+  "license": "MIT",
+  "engines": {
+    "node": "16",
+    "npm": "8"
+  },
+  "main": "dist/cjs/index.js",
+  "module": "lib/index.js",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./lib/index.js",
+      "system": {
+        "default": "./dist/system/index.js"
+      },
+      "require": "./dist/cjs/index.js"
+    },
+    "./types": {
+      "types": "./types.d.ts"
+    },
+    "./server": {
+      "types": "./src/server.ts",
+      "import": "./lib/server.js",
+      "system": {
+        "default": "./dist/system/server.js"
+      },
+      "require": "./dist/cjs/server.js"
+    },
+    "./src/*": "./src/*",
+    "./package.json": "./package.json"
+  },
+  "types": "src/index.ts",
+  "files": [
+    "dist",
+    "index.ts",
+    "lib",
+    "server.ts",
+    "src",
+    "tsconfig.json"
+  ],
+  "keywords": [
+    "torrent",
+    "bencode"
+  ],
+  "scripts": {
+    "build": "make prepublish",
+    "clean": "make clean",
+    "dev": "make dev",
+    "test": "make test"
+  },
+  "dependencies": {
+    "@wener/utils": "^1"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.186",
+    "ava": "^4.3.3",
+    "lodash": "^4",
+    "tsd": "^0.24.1"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org",
+    "access": "public"
+  },
+  "sideEffects": false,
+  "ava": {
+    "extensions": {
+      "ts": "module"
+    },
+    "nodeArguments": [
+      "--loader=tsx"
+    ]
+  },
+  "rollup": {
+    "input": [
+      "./src/index.ts",
+      "./src/server.ts"
+    ],
+    "external": [
+      "jsdom",
+      "node-fetch"
+    ]
+  },
+  "typedoc": {
+    "entryPoint": "./src/typedoc.ts",
+    "readmeFile": "./README.md"
+  }
+}
