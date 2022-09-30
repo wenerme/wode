@@ -31,7 +31,7 @@ export { dequal } from './validations/dequal';
 
 // modules
 export { parseModuleId, type ParsedModuleId } from './modules/parseModuleId';
-export { isModule } from './modules/isModule';
+export { isModule, type Module } from './modules/isModule';
 
 // logging
 export { type Logger, type LogLevel } from './logging/Logger';
@@ -42,14 +42,14 @@ export { createChildLogger } from './logging/createChildLogger';
 // strings
 export { pascalCase, camelCase } from './strings/camelCase';
 export { renderTemplate } from './strings/renderTemplate';
+export { formatBytes } from './strings/formatBytes';
 
 // i18n
 export { createTranslate } from './i18n/createTranslate';
 
-export { createRandom } from './maths/random';
-
 // io
 export { isBuffer } from './io/isBuffer';
+export { isTransferable } from './io/isTransferable';
 
 // browser
 export { copy } from './browsers/copy';
@@ -59,12 +59,13 @@ export { getFileFromDataTransfer } from './browsers/getFileFromDataTransfer';
 
 // polyfills
 export { getGlobalThis } from './isomorphics/getGlobalThis';
-
-export { formatBytes } from './formats/formatBytes';
-
-export { urljoin } from './shim/urljoin';
+export { structuredClone } from './isomorphics/structuredClone';
 
 // crypto
 export { randomUUID } from './crypto/randomUUID';
 export { sha1, sha256, sha384, sha512 } from './crypto/hashing';
 export { hex } from './crypto/hex';
+
+// misc
+export { createRandom } from './maths/random';
+export { urljoin } from './shim/urljoin';
