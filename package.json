@@ -34,7 +34,7 @@
     "@types/node": "^16",
     "@wener/wode": "workspace:*",
     "ava": "^4.3.3",
-    "esbuild": "^0.15",
+    "esbuild": "^0.15.10",
     "eslint": "^8.24.0",
     "globby": "^13.1.2",
     "jsdom": "^20.0.0",
@@ -43,11 +43,11 @@
     "rollup": "3.0.0-6",
     "rollup-plugin-dts": "^4.2.2",
     "rollup-plugin-esbuild": "^4.10.1",
-    "rollup-plugin-visualizer": "^5.8.1",
+    "rollup-plugin-visualizer": "^5.8.2",
     "tsx": "^3.8.2",
-    "turbo": "^1.2.9",
+    "turbo": "^1.5.5",
     "typedoc": "^0.23.15",
-    "typescript": "^4"
+    "typescript": "^4.8.4"
   },
   "engines": {
     "pnpm": ">=7.0.0",

@@ -114,16 +114,16 @@
     "react": ">=18",
     "react-dom": ">=18",
     "y-prosemirror": ">=1",
-    "yjs": ">=13",
-    "y-protocols": ">=1"
+    "y-protocols": ">=1",
+    "yjs": ">=13"
   },
   "devDependencies": {
     "@types/markdown-it": "^12.2.3",
-    "@types/react": "^18",
+    "@types/react": "^18.0.21",
     "@types/react-dom": "^18",
     "react": ">=18",
     "react-dom": ">=18",
-    "typescript": "^4.8.3"
+    "typescript": "^4.8.4"
   },
   "rollup": {},
   "ava": {

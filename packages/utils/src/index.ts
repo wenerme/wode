@@ -7,6 +7,11 @@ export {
   type MaybeArray,
 } from './arrays/MaybeArray';
 
+// object
+export { get } from './objects/get';
+export { set } from './objects/set';
+export { parseObjectPath } from './objects/parseObjectPath';
+
 // async
 export { createLazyPromise, type LazyPromise } from './asyncs/LazyPromise';
 export { setAsyncInterval, clearAsyncInterval } from './asyncs/AsyncInterval';
@@ -36,7 +41,7 @@ export { createChildLogger } from './logging/createChildLogger';
 
 // strings
 export { pascalCase, camelCase } from './strings/camelCase';
-export { templateString } from './strings/templates';
+export { renderTemplate } from './strings/renderTemplate';
 
 export { createRandom } from './maths/random';
 export { isBuffer } from './io/isBuffer';

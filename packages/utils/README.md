@@ -1,5 +1,14 @@
 # Daily use utils
 
+- Zero Dependencies
+- Common typing
+- Collection of some small util packages or alternative
+  - dlv
+  - is-buffer
+  - https://github.com/lukeed/dset
+  - https://github.com/lukeed/templite
+  - https://github.com/sindresorhus/camelcase
+
 <!-- LINK:BEGIN -->
 
 # Links

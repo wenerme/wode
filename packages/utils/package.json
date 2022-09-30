@@ -1,6 +1,6 @@
 {
   "name": "@wener/utils",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "type": "module",
   "description": "Utils for daily use",
   "repository": {
@@ -51,7 +51,12 @@
   "keywords": [
     "utils",
     "core library",
-    "helper"
+    "helper",
+    "camelcase",
+    "get",
+    "set",
+    "template",
+    "lodash"
   ],
   "scripts": {
     "build": "make prepublish",
@@ -60,9 +65,10 @@
     "test": "make test"
   },
   "devDependencies": {
-    "@types/lodash": "^4",
+    "@types/lodash": "^4.14.186",
     "ava": "^4.3.3",
-    "lodash": "^4"
+    "lodash": "^4",
+    "tsd": "^0.24.1"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org",
