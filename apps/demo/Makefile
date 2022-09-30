@@ -28,6 +28,9 @@ favicon:
 
 vercel-install: info
 	command -v jq > /dev/null || yum install jq -y
+	npm install -g $(PM)
+	# if vercel can not detect next version ,build will fail
+	$(PM) install
 
 ci:
 	echo $(date --rfc-3339=seconds) NPM Installing

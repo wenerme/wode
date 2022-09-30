@@ -122,5 +122,6 @@
   },
   "browserslist": [
     "last 10 chrome version"
-  ]
+  ],
+  "packageManager": "pnpm@7.12.0+"
 }
