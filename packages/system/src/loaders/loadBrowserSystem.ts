@@ -1,6 +1,6 @@
 import { createChildLogger, loadScripts, Logger } from '@wener/utils';
 import { getGlobalSystem } from '../utils/getGlobalSystem';
-import { hookSystem } from './hookSystem';
+import { hookSystem, SystemHookOption } from './hookSystem';
 
 let _loading: Promise<any>;
 
@@ -10,7 +10,13 @@ export function loadBrowserSystem({
   script = true,
   version = '6.13.0',
   loadSystem,
-}: { hooks?: boolean; logger?: Logger; loadSystem?: () => Promise<void>; script?: boolean; version?: string } = {}) {
+}: {
+  hooks?: boolean | Array<SystemHookOption>;
+  logger?: Logger;
+  loadSystem?: () => Promise<void>;
+  script?: boolean;
+  version?: string;
+} = {}) {
   if (getGlobalSystem()) {
     return Promise.resolve(getGlobalSystem());
   }
