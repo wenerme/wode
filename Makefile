@@ -7,6 +7,10 @@ else
 	PM=npm
 endif
 
+test:
+	$(EXEC) turbo run test
+fmt:
+	$(EXEC) turbo run fmt
 build:
 	$(EXEC) turbo run build --filter=@wener/demo
 build-force:

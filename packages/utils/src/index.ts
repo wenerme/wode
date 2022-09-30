@@ -26,8 +26,11 @@ export { isPromise } from './asyncs/isPromise';
 export { isClass } from './validations/isClass';
 export { isDefined } from './validations/isDefined';
 export { isEmptyObject } from './validations/isEmptyObject';
-export { shallow } from './validations/shallow';
-export { dequal } from './validations/dequal';
+export { shallowEqual } from './langs/shallowEqual';
+export { deepEqual } from './langs/deepEqual';
+export { isUUID } from './validations/isUUID';
+
+export { classOf } from './langs/classOf';
 
 // modules
 export { parseModuleId, type ParsedModuleId } from './modules/parseModuleId';

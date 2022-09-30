@@ -38,6 +38,7 @@
     "eslint": "^8.24.0",
     "globby": "^13.1.2",
     "jsdom": "^20.0.0",
+    "node-fetch": "*",
     "prettier": "latest",
     "prettier-plugin-pkg": "^0.17.1",
     "rollup": "3.0.0-6",

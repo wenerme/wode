@@ -2,7 +2,7 @@ import { ConstructorOptions, ResourceLoaderConstructorOptions } from 'jsdom';
 
 export async function polyfillJsDom() {
   if (typeof window !== 'undefined') {
-    return window;
+    return false;
   }
 
   const { ResourceLoader, JSDOM } = await import('jsdom');
@@ -79,5 +79,6 @@ export async function polyfillJsDom() {
     return window;
   }
 
-  return installEnv({ url: 'http://localhost' });
+  installEnv({ url: 'http://localhost' });
+  return true;
 }

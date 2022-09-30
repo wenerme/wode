@@ -87,6 +87,10 @@
     "input": [
       "./src/index.ts",
       "./src/server.ts"
+    ],
+    "external": [
+      "jsdom",
+      "node-fetch"
     ]
   }
 }

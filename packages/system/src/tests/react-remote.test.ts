@@ -1,13 +1,13 @@
 import React from 'react';
 import test, { ExecutionContext } from 'ava';
 import { createNoopLogger } from '@wener/utils';
+import { polyfillBrowser } from '@wener/utils/server';
 import { loadBrowserSystem } from '../loaders/loadBrowserSystem';
 import { addPreload } from '../utils/addPreload';
 import { getGlobalSystem, SystemJS } from '../utils/getGlobalSystem';
-import { browserEnv } from '../utils/testing/browserEnv';
 
 test.before(async (t) => {
-  await browserEnv();
+  await polyfillBrowser();
   t.truthy(fetch);
   t.truthy(window);
   t.truthy(document);

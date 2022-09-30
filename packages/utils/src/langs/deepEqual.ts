@@ -3,7 +3,7 @@ const hasElementType = typeof Element !== 'undefined';
 
 function find(iter: any, tar: any, key?: any) {
   for (key of iter.keys()) {
-    if (dequal(key, tar)) return key;
+    if (deepEqual(key, tar)) return key;
   }
 }
 
@@ -12,7 +12,7 @@ function find(iter: any, tar: any, key?: any) {
  * @see {@link https://github.com/lukeed/dequal/blob/master/src/lite.js dequal/src/lite.js}
  * @see {@link https://github.com/FormidableLabs/react-fast-compare/blob/master/index.js react-fast-compare/index.js}
  */
-export function dequal(foo: any, bar: any) {
+export function deepEqual(foo: any, bar: any) {
   let ctor, len, tmp;
   if (foo === bar) return true;
 
@@ -22,7 +22,7 @@ export function dequal(foo: any, bar: any) {
 
     if (ctor === Array) {
       if ((len = foo.length) === bar.length) {
-        while (len-- && dequal(foo[len], bar[len]));
+        while (len-- && deepEqual(foo[len], bar[len]));
       }
       return len === -1;
     }
@@ -52,7 +52,7 @@ export function dequal(foo: any, bar: any) {
           tmp = find(bar, tmp);
           if (!tmp) return false;
         }
-        if (!dequal(len[1], bar.get(tmp))) {
+        if (!deepEqual(len[1], bar.get(tmp))) {
           return false;
         }
       }
@@ -95,7 +95,7 @@ export function dequal(foo: any, bar: any) {
         }
 
         if (has.call(foo, ctor) && ++len && !has.call(bar, ctor)) return false;
-        if (!(ctor in bar) || !dequal(foo[ctor], bar[ctor])) return false;
+        if (!(ctor in bar) || !deepEqual(foo[ctor], bar[ctor])) return false;
       }
       return Object.keys(bar).length === len;
     }
