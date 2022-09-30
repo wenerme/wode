@@ -65,5 +65,6 @@
     "nodeArguments": [
       "--loader=tsx"
     ]
-  }
+  },
+  "packageManager": "pnpm@7.12.0+"
 }
