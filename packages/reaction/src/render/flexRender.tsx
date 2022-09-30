@@ -5,6 +5,7 @@ export type FlexRenderable<TProps> = React.ReactNode | React.ComponentType<TProp
 
 /**
  * flexRender will try to render a component or a react node
+ *
  * @param Comp component or react node
  * @param props props to pass to component
  * @param mergeProps merge props to pass to component
