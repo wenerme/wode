@@ -103,5 +103,9 @@
       "./src/index.ts",
       "./src/server.ts"
     ]
+  },
+  "typedoc": {
+    "entryPoint": "./src/index.ts",
+    "readmeFile": "./README.md"
   }
 }

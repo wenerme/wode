@@ -8,8 +8,8 @@
   - is-buffer
   - https://github.com/lukeed/dset
   - https://github.com/lukeed/templite
-  - https://github.com/sindresorhus/camelcase
   - https://github.com/lukeed/rosetta
+  - https://github.com/sindresorhus/camelcase
 
 <!-- LINK:BEGIN -->
 
