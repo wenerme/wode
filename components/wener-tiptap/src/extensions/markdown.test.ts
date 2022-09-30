@@ -1,18 +1,18 @@
 import test from 'ava';
 import 'prosemirror-model';
 import { Editor } from '@tiptap/core';
+import { polyfillJsDom } from '@wener/utils/server';
 import { DefaultMarkdownExtensionOptions } from './DefaultMarkdownExtensionOptions';
 import { ExtensionBundle } from './Extensions';
 import { createMarkdownSerializer } from './MarkdownExtension';
 import { createMarkdownParser } from './parseMarkdown';
-import { browserEnv } from './utils.test';
 
 let editor: Editor;
-test.before(() => {
-  browserEnv();
-});
 
-test.before(() => {
+test.before(async (t) => {
+  await polyfillJsDom();
+  t.truthy(document);
+
   let $ele = document.createElement('div');
   editor = new Editor({
     element: $ele,
@@ -25,7 +25,7 @@ test.before(() => {
   });
 });
 
-test('createMakrdownParser', (t) => {
+test('createMarkdownParser', (t) => {
   let node = createMarkdownParser(editor.schema).parse(
     `
 ## Hi

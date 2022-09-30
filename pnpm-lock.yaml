@@ -316,6 +316,7 @@ importers:
       '@types/markdown-it': ^12.2.3
       '@types/react': ^18.0.21
       '@types/react-dom': ^18
+      '@wener/utils': workspace:*
       classnames: ^2.3.1
       linkify-it: ^4.0.1
       markdown-it: ^13.0.1
@@ -380,6 +381,7 @@ importers:
       '@tiptap/react': 2.0.0-beta.196_xqkxfl7r37t4ymeshutfvrmugy
       '@tiptap/starter-kit': 2.0.0-beta.196
       '@tiptap/suggestion': 2.0.0-beta.196_wfvnwgzkyirymnacbqpm22v55m
+      '@wener/utils': link:../../packages/utils
       classnames: 2.3.2
       linkify-it: 4.0.1
       markdown-it: 13.0.1
