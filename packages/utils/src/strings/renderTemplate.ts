@@ -12,7 +12,10 @@ export function renderTemplate(
   match: 'js' | 'common' | RegExp = 'js',
 ) {
   let getter: Function;
-  if (typeof data === 'function') {
+  if (!data) {
+    // todo warning in dev
+    getter = () => '';
+  } else if (typeof data === 'function') {
     getter = data;
   } else {
     getter = (v: string) => get(data, v);

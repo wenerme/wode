@@ -1,13 +1,15 @@
 # Daily use utils
 
 - Zero Dependencies
+- ESM first
 - Common typing
-- Collection of some small util packages or alternative
+- Merging of some small util packages or alternative with modernization and improvement
   - dlv
   - is-buffer
   - https://github.com/lukeed/dset
   - https://github.com/lukeed/templite
   - https://github.com/sindresorhus/camelcase
+  - https://github.com/lukeed/rosetta
 
 <!-- LINK:BEGIN -->
 
