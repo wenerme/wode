@@ -27,6 +27,6 @@ typedoc:
 # install will remove dev deps
 ci-install:
 	npm i -g $(PM)
-	NODE_DEV= $(PM) install
-ci: ci-install typedoc build
+	$(PM) install
+ci: typedoc build
 	mv out/typedoc apps/demo/public/docs
