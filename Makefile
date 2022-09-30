@@ -28,5 +28,5 @@ typedoc:
 ci-install:
 	npm i -g $(PM)
 	$(PM) install
-ci: typedoc build
+ci: build typedoc
 	mv out/typedoc apps/demo/public/docs
