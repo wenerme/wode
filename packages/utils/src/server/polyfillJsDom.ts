@@ -1,4 +1,4 @@
-import { ConstructorOptions, ResourceLoaderConstructorOptions } from 'jsdom';
+import type { ConstructorOptions, ResourceLoaderConstructorOptions } from 'jsdom';
 
 export async function polyfillJsDom() {
   if (typeof window !== 'undefined') {

@@ -1,3 +1,8 @@
+import { Module } from '@wener/utils';
+
+/**
+ * Try to get the global System instance
+ */
 export function getGlobalSystem(): SystemJS {
   if (typeof window === 'undefined') {
     // @ts-ignore
@@ -17,12 +22,6 @@ export interface ImportMap {
   depcache?: Record<string, any>;
   integrity?: Record<string, any>;
 }
-
-export type Module = {
-  default?: any;
-  [k: string | symbol]: any;
-  [Symbol.toStringTag]: 'Module';
-};
 
 export type DeclareFn = (
   _export: (o: any) => void,
