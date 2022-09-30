@@ -1,13 +1,13 @@
 import { createChildLogger, Logger } from '@wener/utils';
 import { polyfillFetch } from '@wener/utils/server';
 import { getGlobalSystem } from '../utils/getGlobalSystem';
-import { hookSystem } from './hookSystem';
+import { hookSystem, SystemHookOption } from './hookSystem';
 
 export async function loadServerSystem({
   hooks = true,
   logger = createChildLogger(console, { m: 'SystemJS' }),
   loadSystem,
-}: { hooks?: boolean; logger?: Logger; loadSystem?: () => Promise<void> } = {}) {
+}: { hooks?: boolean | Array<SystemHookOption>; logger?: Logger; loadSystem?: () => Promise<void> } = {}) {
   if (getGlobalSystem()) {
     return getGlobalSystem();
   }

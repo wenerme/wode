@@ -3,6 +3,7 @@ export function getGlobalSystem(): SystemJS {
     // @ts-ignore
     return globalThis.System;
   }
+  // after jspom polyfill window != globalThis
   // @ts-ignore
   return window.System ?? globalThis.System;
 }

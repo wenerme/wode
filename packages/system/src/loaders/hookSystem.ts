@@ -3,6 +3,8 @@ import { instantiatePackageProtocol } from '../hooks/instantiatePackageProtocol'
 import { resolveBareSpecifier } from '../hooks/resolveBareSpecifier';
 import { SystemJS } from '../utils/getGlobalSystem';
 
+export type SystemHookOption = [hook: (o: { System: SystemJS; logger: Logger }) => void, opts?: object];
+
 export function hookSystem({
   System,
   logger,
@@ -10,7 +12,7 @@ export function hookSystem({
 }: {
   System: SystemJS;
   logger: Logger;
-  hooks: boolean | Array<[hook: (o: { System: SystemJS; logger: Logger }) => void, opts?: object]>;
+  hooks: boolean | Array<SystemHookOption>;
 }) {
   if (!hooks) {
     return;
