@@ -19,12 +19,12 @@ dev:
 	$(EXEC) turbo run dev --parallel
 clean:
 	$(EXEC) turbo run clean --parallel
-install:
-	npm i -g $(PM)
-	$(PM) install
 
 typedoc:
-	$(EXEC) typedoc --entryPointStrategy packages 'packages/*' --out out/typedoc
+	$(EXEC) typedoc --entryPointStrategy packages 'packages/*' --out out/typedoc --name "Wode"
 
-ci: install typedoc build
+ci-install:
+	npm i -g $(PM)
+	$(PM) install
+ci: ci-install typedoc build
 	mv out/typedoc apps/demo/public/docs

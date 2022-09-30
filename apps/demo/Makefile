@@ -28,8 +28,6 @@ favicon:
 
 vercel-install: info
 	command -v jq > /dev/null || yum install jq -y
-	npm install -g $(PM)
-	$(PM) install --prefix ../..
 
 ci:
 	echo $(date --rfc-3339=seconds) NPM Installing

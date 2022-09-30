@@ -1,3 +1,6 @@
+/**
+ * Check is ESM Module
+ */
 export function isModule(o: any): o is Module {
   return o && o[Symbol.toStringTag] === 'Module';
 }
