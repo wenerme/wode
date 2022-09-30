@@ -1,5 +1,5 @@
 /**
- * AbstractEncoding
+ * AbstractEncoding contract
  *
  * @see https://github.com/mafintosh/abstract-encoding
  */

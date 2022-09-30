@@ -1,7 +1,7 @@
 /**
- * check {@code obj} is Buffer
+ * check {@link obj} is Buffer
  *
- * {@link https://github.com/feross/is-buffer feross/is-buffer}
+ * @see {@link https://github.com/feross/is-buffer feross/is-buffer}
  */
 export function isBuffer(obj: any): obj is Buffer {
   return (

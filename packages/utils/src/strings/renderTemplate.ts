@@ -1,10 +1,13 @@
 import { get } from '../objects/get';
 
 /**
- * 替换类似于 JS 的模板字符串
+ * render template like js template string
  *
- *   templateString('My name is ${name}',{name:'wener'}) // => 'My name is wener'
+ * @example
+ * renderTemplate('My name is ${name}',{name:'wener'})
+ * // 'My name is wener'
  *
+ * @param match `js` for `${name}`, common for `{{name}}`
  */
 export function renderTemplate(
   template: string,

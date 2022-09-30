@@ -21,7 +21,7 @@ clean:
 	$(EXEC) turbo run clean --parallel
 
 typedoc:
-	$(EXEC) typedoc --entryPointStrategy packages 'packages/*' --out out/typedoc --name "Wode"
+	$(EXEC) typedoc --entryPointStrategy packages 'packages/*' --out out/typedoc --name "Wener Wode" --gitRemote git@github.com:wenerme/wode.git
 
 # Already install when vercel-install
 # install will remove dev deps

@@ -5,9 +5,10 @@ export type ObjectPathLike = ObjectKey | ObjectPath;
 /**
  * Parse object path
  *
- *   parseObjectPath('a.b.c') // => ['a', 'b', 'c']
- *   parseObjectPath('a[0].b') // => ['a', 0, 'b']
- *   parseObjectPath('a[0][1]') // => ['a', 0, 1]
+ * @example
+ * parseObjectPath('a.b.c') // => ['a', 'b', 'c']
+ * parseObjectPath('a[0].b') // => ['a', 0, 'b']
+ * parseObjectPath('a[0][1]') // => ['a', 0, 1]
  *
  */
 export function parseObjectPath(s: ObjectPathLike): ObjectPath {

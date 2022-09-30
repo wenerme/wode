@@ -26,7 +26,7 @@
       "require": "./dist/cjs/index.js"
     },
     "./types": {
-      "types": "./src/types.d.ts"
+      "types": "./types.d.ts"
     },
     "./server": {
       "types": "./src/server.ts",
@@ -94,7 +94,7 @@
     ]
   },
   "typedoc": {
-    "entryPoint": "./src/index.ts",
+    "entryPoint": "./src/typedoc.ts",
     "readmeFile": "./README.md"
   }
 }

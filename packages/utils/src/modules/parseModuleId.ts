@@ -20,7 +20,9 @@ export type ParsedModuleId = {
 /**
  * Parse NPM module id
  *
- *    parseModuleId('@wener/reaction@latest/index.js') // => { id: '@wener/reaction@latest', name: '@wener/reaction', version: 'latest', range: 'latest', pkg: 'reaction', path: '/index.js', scoped: true, org: 'wener' }
+ * @example
+ * parseModuleId('@wener/reaction@latest/index.js')
+ * // { id: '@wener/reaction@latest', name: '@wener/reaction', version: 'latest', range: 'latest', pkg: 'reaction', path: '/index.js', scoped: true, org: 'wener' }
  */
 export function parseModuleId(s: string): ParsedModuleId | undefined {
   const groups = s.match(regModuleId)?.groups;

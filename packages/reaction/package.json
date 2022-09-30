@@ -31,7 +31,7 @@
       "require": "./dist/cjs/index.js"
     },
     "./types": {
-      "types": "./src/types.d.ts"
+      "types": "./types.d.ts"
     },
     "./src/*": "./src/*",
     "./package.json": "./package.json"
