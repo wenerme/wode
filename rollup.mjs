@@ -5,6 +5,7 @@ import commonjs from '@rollup/plugin-commonjs';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import { globby } from 'globby';
 import { visualizer } from 'rollup-plugin-visualizer';
+import json from '@rollup/plugin-json';
 
 // const pkg = JSON.parse((await readFile(new URL(process.cwd()+'/package.json', import.meta.url))).toString());
 const pkg = JSON.parse((await readFile(process.cwd() + '/package.json')).toString());
@@ -49,6 +50,7 @@ const prod = {
   input,
   external: externalProd,
   plugins: [
+    json(),
     commonjs(),
     nodeResolve(),
     esbuild({

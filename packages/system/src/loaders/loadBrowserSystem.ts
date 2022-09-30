@@ -8,7 +8,7 @@ export function loadBrowserSystem({
   hooks = true,
   logger = createChildLogger(console, { m: 'SystemJS' }),
   script = true,
-  version = '6.12.6',
+  version = '6.13.0',
   loadSystem,
 }: { hooks?: boolean; logger?: Logger; loadSystem?: () => Promise<void>; script?: boolean; version?: string } = {}) {
   if (getGlobalSystem()) {

@@ -24,7 +24,7 @@
     "types": "lib/esm/index.d.ts"
   },
   "scripts": {
-    "test": "jest",
+    "test": "make test",
     "build": "make build",
     "dev": "esbuild --watch --format=esm --outdir=lib/esm --target=chrome90 src/index.ts src/**/*.ts",
     "lint": "tsc --noEmit",

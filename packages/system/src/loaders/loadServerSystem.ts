@@ -1,7 +1,7 @@
 import { createChildLogger, Logger } from '@wener/utils';
+import { polyfillFetch } from '@wener/utils/server';
 import { getGlobalSystem } from '../utils/getGlobalSystem';
 import { hookSystem } from './hookSystem';
-import { polyfillFetch } from './polyfillFetch';
 
 export async function loadServerSystem({
   hooks = true,

@@ -3,7 +3,7 @@
  *
  * @see {@link https://github.com/pmndrs/zustand/blob/main/src/shallow.ts zustand/src/shallow.ts}
  */
-export function shallow<T, U>(objA: T, objB: U) {
+export function shallowEqual<T, U>(objA: T, objB: U) {
   if (Object.is(objA, objB)) {
     return true;
   }

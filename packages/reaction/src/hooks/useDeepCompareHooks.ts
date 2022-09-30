@@ -1,7 +1,7 @@
 import { createDeepCompareHooks } from '../utils/createDeepCompareHooks';
-import { dequal } from '@wener/utils';
+import { deepEqual } from '@wener/utils';
 
 const { useDeepCompareMemoize, useDeepCompareCallback, useDeepCompareEffect, useDeepCompareMemo } =
-  createDeepCompareHooks(dequal);
+  createDeepCompareHooks(deepEqual);
 
 export { useDeepCompareMemoize, useDeepCompareCallback, useDeepCompareEffect, useDeepCompareMemo };

@@ -1,9 +1,9 @@
 import test from 'ava';
-import { dequal } from './dequal';
+import { deepEqual } from './deepEqual';
 
 test('deep equal', (t) => {
   t.true(
-    dequal(
+    deepEqual(
       {
         a: null,
         b: Infinity,
