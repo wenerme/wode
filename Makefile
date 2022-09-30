@@ -23,8 +23,10 @@ clean:
 typedoc:
 	$(EXEC) typedoc --entryPointStrategy packages 'packages/*' --out out/typedoc --name "Wode"
 
+# Already install when vercel-install
+# install will remove dev deps
 ci-install:
 	npm i -g $(PM)
-	$(PM) install
+	NODE_DEV= $(PM) install
 ci: ci-install typedoc build
 	mv out/typedoc apps/demo/public/docs
