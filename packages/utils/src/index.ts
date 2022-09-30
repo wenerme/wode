@@ -53,6 +53,7 @@ export { createTranslate } from './i18n/createTranslate';
 // io
 export { isBuffer } from './io/isBuffer';
 export { isTransferable } from './io/isTransferable';
+export type { AbstractEncoding } from './io/AbstractEncoding';
 
 // browser
 export { copy } from './browsers/copy';

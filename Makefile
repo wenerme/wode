@@ -24,6 +24,7 @@ install:
 	$(PM) install
 
 typedoc:
-	typedoc --entryPointStrategy packages 'packages/*' --out out/typedoc
+	$(EXEC) typedoc --entryPointStrategy packages 'packages/*' --out out/typedoc
 
-ci: install build typedoc
+ci: install typedoc build
+	mv out/typedoc apps/demo/public/docs
