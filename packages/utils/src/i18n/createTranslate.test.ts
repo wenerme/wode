@@ -18,7 +18,7 @@ test('usage', (t) => {
 
   t.deepEqual(ctx.dict('en'), { hello: 'Hello, {{name}}!' });
 
-  t.is(ctx.dict('foobar'), undefined);
+  t.true(ctx.dict('foobar') === undefined);
 
   let foo = ctx.t('hello');
   t.is(foo, '', '~> "" w/o locale');
