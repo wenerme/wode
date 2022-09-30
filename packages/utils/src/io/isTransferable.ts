@@ -3,7 +3,7 @@
  *
  * - Chrome 87, FF 103, Safari X, NodeJS X
  *
- * {@link https://developer.mozilla.org/en-US/docs/Glossary/Transferable_objects | Transferable objects}
+ * @see {@link https://developer.mozilla.org/en-US/docs/Glossary/Transferable_objects | Transferable objects}
  */
 export function isTransferable(v: any): v is TransferableObject {
   _ctors ||= ctors();

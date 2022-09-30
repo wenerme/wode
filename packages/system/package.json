@@ -105,7 +105,7 @@
     ]
   },
   "typedoc": {
-    "entryPoint": "./src/index.ts",
+    "entryPoint": "./src/typedoc.ts",
     "readmeFile": "./README.md"
   }
 }

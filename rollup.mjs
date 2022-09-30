@@ -1,19 +1,30 @@
+import { globby } from 'globby';
 import { readFile } from 'node:fs/promises';
 import path from 'path';
 import esbuild from 'rollup-plugin-esbuild';
-import commonjs from '@rollup/plugin-commonjs';
-import nodeResolve from '@rollup/plugin-node-resolve';
-import { globby } from 'globby';
 import { visualizer } from 'rollup-plugin-visualizer';
+import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
+import nodeResolve from '@rollup/plugin-node-resolve';
 
 // const pkg = JSON.parse((await readFile(new URL(process.cwd()+'/package.json', import.meta.url))).toString());
 const pkg = JSON.parse((await readFile(process.cwd() + '/package.json')).toString());
-let toRegex = (v) => new RegExp(`^${v}(/|$)`);
-const externalProd = [/^node:/, ...(pkg.rollup?.external || []).map(toRegex), ...Object.keys(pkg.peerDependencies || {})].map(toRegex);
+let toRegex = (v) => {
+  if (v instanceof RegExp) {
+    return v;
+  }
+  return new RegExp(`^${v}(/|$)`);
+};
+const externalProd = [
+  /^node:/,
+  ...(pkg.rollup?.external || []).map(toRegex),
+  ...Object.keys(pkg.peerDependencies || {}),
+].map(toRegex);
 const externalDev = [...externalProd, ...Object.keys(pkg.dependencies || {}).map(toRegex)];
 
-const input = pkg.rollup?.input || await globby(['./src/index.ts', './src/index.tsx']);
+const input = pkg.rollup?.input || (await globby(['./src/index.ts', './src/index.tsx']));
+
+console.info(`Building ${pkg.name} ${pkg.version} with rollup`, { externalProd });
 
 /** @type import('rollup').RollupOptions */
 const dev = {

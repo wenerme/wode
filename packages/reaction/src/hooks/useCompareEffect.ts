@@ -5,7 +5,7 @@ import { shallowEqual } from '@wener/utils';
  * useCompareEffect will call callback if deps is changed
  * @param f callback function if different
  * @param deps compare target
- * @param eq comparator default to {@link shallowEqual} - e.g. react-fast-compare
+ * @param eq comparator default to {@link @wener/utils!shallowEqual} - e.g. react-fast-compare
  */
 export function useCompareEffect(
   f: EffectCallback,
@@ -21,4 +21,7 @@ export function useCompareEffect(
   useEffect(f, [counter.current]);
 }
 
+/**
+ * default comparator for {@link useCompareEffect} is {@link shallowEqual}
+ */
 useCompareEffect.defaultComparator = shallowEqual;

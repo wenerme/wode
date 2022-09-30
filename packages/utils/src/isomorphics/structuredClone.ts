@@ -1,11 +1,13 @@
-/**
- * Chrome 98, Safari 15.4
- *
- * {@link https://developer.mozilla.org/en-US/docs/Web/API/structuredClone structuredClone}
- * {@link https://github.com/zloirock/core-js/blob/master/packages/core-js/modules/web.structured-clone.js core-js}
- */
 import { classOf } from '../langs/classOf';
 
+/**
+ * Clone an object using structured cloning algorithm
+ *
+ * - Chrome 98, Safari 15.4
+ *
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/structuredClone structuredClone}
+ * @see {@link https://github.com/zloirock/core-js/blob/master/packages/core-js/modules/web.structured-clone.js core-js}
+ */
 export const structuredClone: <T>(value: T, options?: StructuredSerializeOptions) => T =
   globalThis.structuredClone || _clone;
 
@@ -17,7 +19,7 @@ function set(obj: any, key: any, val: any) {
 }
 
 /**
- * {@link https://github.com/lukeed/klona/blob/master/src/full.js klona}
+ * @see {@link https://github.com/lukeed/klona/blob/master/src/full.js klona}
  */
 export function _clone(x: any): any {
   // too complex
@@ -39,13 +41,13 @@ export function _clone(x: any): any {
       break;
     case 'Set':
       tmp = new Set();
-      x.forEach(function (val: any) {
+      x.forEach(function(val: any) {
         tmp.add(_clone(val));
       });
       break;
     case 'Map':
       tmp = new Map();
-      x.forEach(function (val: any, key: any) {
+      x.forEach(function(val: any, key: any) {
         tmp.set(_clone(key), _clone(val));
       });
       break;
