@@ -13,7 +13,7 @@ export { set } from './objects/set';
 export { parseObjectPath } from './objects/parseObjectPath';
 
 // async
-export { createLazyPromise, type LazyPromise } from './asyncs/LazyPromise';
+export { createLazyPromise, type LazyPromise } from './asyncs/createLazyPromise';
 export { setAsyncInterval, clearAsyncInterval } from './asyncs/AsyncInterval';
 export { type MaybePromise } from './asyncs/MaybePromise';
 
@@ -43,17 +43,25 @@ export { createChildLogger } from './logging/createChildLogger';
 export { pascalCase, camelCase } from './strings/camelCase';
 export { renderTemplate } from './strings/renderTemplate';
 
+// i18n
+export { createTranslate } from './i18n/createTranslate';
+
 export { createRandom } from './maths/random';
+
+// io
 export { isBuffer } from './io/isBuffer';
 
+// browser
 export { copy } from './browsers/copy';
 export { download } from './browsers/download';
 export { loadScripts, loadStyles } from './browsers/loaders';
 export { getFileFromDataTransfer } from './browsers/getFileFromDataTransfer';
 
+// polyfills
 export { getGlobalThis } from './isomorphics/getGlobalThis';
 
 export { formatBytes } from './formats/formatBytes';
+
 export { urljoin } from './shim/urljoin';
 
 // crypto
