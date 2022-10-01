@@ -31,7 +31,7 @@ export function lastOfMaybeArray<T>(v: MaybeArray<T>): T {
   return v;
 }
 
-export function arrayOfMaybeArray<T>(v: MaybeArray<T>): T[] {
+export function arrayOfMaybeArray<T>(v: MaybeArray<T> | null | undefined): T[] {
   if (Array.isArray(v)) {
     return v;
   }

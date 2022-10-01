@@ -11,3 +11,4 @@ test('concat', (t) => {
   check(Uint16Array, [0xff, 0xffff]);
   check(Uint32Array, [0xfffffff]);
 });
+
