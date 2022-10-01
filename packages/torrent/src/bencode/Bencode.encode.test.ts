@@ -14,7 +14,7 @@ test('encode', (t) => {
 
   t.log('should sort dictionaries');
   t.is(
-    ArrayBuffers.stringify(
+    ArrayBuffers.toString(
       encode({
         string: 'Hello World',
         integer: 12345,
@@ -24,7 +24,7 @@ test('encode', (t) => {
   );
 
   t.is(
-    ArrayBuffers.stringify(
+    ArrayBuffers.toString(
       encode(
         new Map([
           [12, 'Hello World'],
@@ -37,7 +37,7 @@ test('encode', (t) => {
   );
 
   t.is(
-    ArrayBuffers.stringify(
+    ArrayBuffers.toString(
       encode(
         new Map([
           [12, 'Hello World'],
@@ -94,22 +94,15 @@ test('encode', (t) => {
     let l = Bencode.byteLength(k);
     t.is(l, buf.byteLength, `byteLength ${l} != ${buf.byteLength}`);
     if (typeof v === 'string') {
-      let out = ArrayBuffers.stringify(buf);
+      let out = ArrayBuffers.toString(buf);
       t.is(out, v, `should encode ${k} as ${v}`);
-      t.log(`decoding ${v} ->`);
+      // t.log(`decoding ${v} ->`);
       let data = decode(buf);
-      t.is(ArrayBuffers.stringify(encode(data)), v, `should decode ${k} to ${data}`);
+      t.is(ArrayBuffers.toString(encode(data)), v, `should decode ${k} to ${data}`);
     } else {
       t.deepEqual(buf, ArrayBuffers.from(v as any), m ? (m as string) : `should encode ${k} as ${v}`);
     }
   }
-});
-
-test.only('decode utf8', (t) => {
-  t.log(decode(ArrayBuffers.from('li32ei12ee')));
-  t.pass();
-  // let out = decode(ArrayBuffers.from('7:你:好'));
-  // t.is(ArrayBuffers.stringify(encode(out)), '7:你:好')
 });
 
 function isArrayBuffer(v: any) {

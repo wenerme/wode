@@ -1,77 +1,6 @@
 import { AbstractEncoding, classOf, isBuffer, isDefined } from '@wener/utils';
-import { ArrayBuffers, ArrayBufferViewLike } from './ArrayBuffers';
-
-const INTEGER_START = 0x69; // 'i'
-const STRING_DELIM = 0x3a; // ':'
-const DICT_START = 0x64; // 'd'
-const LIST_START = 0x6c; // 'l'
-const END_OF_TYPE = 0x65; // 'e'
-
-class Decoder {
-  readIndex = 0;
-
-  constructor(readonly view: Uint8Array) {}
-
-  integer(): Number {
-    let { readIndex: pos, view: view } = this;
-    pos++; // marker
-
-    let idx = view.indexOf(END_OF_TYPE, pos);
-    if (idx === -1) {
-      throw new Error(`Invalid bencode integer at ${pos}`);
-    }
-    this.readIndex = idx + 1;
-    return Number(ArrayBuffers.stringify(view.subarray(pos, idx)));
-  }
-
-  buffer() {
-    let { readIndex: pos, view } = this;
-
-    // string as buffer
-    let idx = view.indexOf(STRING_DELIM, pos);
-    if (idx === -1) {
-      throw new Error(`Invalid bencode string at ${pos}`);
-    }
-    let len = Number(ArrayBuffers.stringify(view.subarray(pos, idx)));
-    if (isNaN(len)) {
-      throw new Error(`Invalid bencode string length at ${pos}`);
-    }
-    pos = idx + 1;
-    this.readIndex = pos + len;
-    return view.slice(pos, this.readIndex).buffer;
-  }
-
-  decode() {
-    let { view } = this;
-
-    switch (view[this.readIndex]) {
-      case DICT_START: {
-        this.readIndex++;
-        const out: Record<string, any> = {};
-        while (view[this.readIndex] !== END_OF_TYPE) {
-          out[ArrayBuffers.stringify(this.buffer())] = this.decode();
-        }
-        this.readIndex++;
-        return out;
-      }
-      case LIST_START:
-        this.readIndex++;
-        const out: any[] = [];
-        while (view[this.readIndex] !== END_OF_TYPE) {
-          out.push(this.decode());
-        }
-        this.readIndex++;
-        return out;
-      case INTEGER_START: {
-        return this.integer();
-      }
-
-      default: {
-        return this.buffer();
-      }
-    }
-  }
-}
+import { ArrayBuffers } from './ArrayBuffers';
+import { BencodeDecoder, DICT_START, END_OF_TYPE, LIST_START } from './BencodeDecoder';
 
 class Bencode implements AbstractEncoding<any> {
   #BUFFER_DICT_START = new Uint8Array([DICT_START]);
@@ -84,9 +13,12 @@ class Bencode implements AbstractEncoding<any> {
     return ArrayBuffers.concat(buffers, buffer, offset);
   };
 
-  decode(buffer: ArrayBuffer, start = 0, end?: number) {
-    let view = new Uint8Array(buffer, start, end);
-    return new Decoder(view).decode();
+  decode = (buffer: BufferSource, start?: number, end?: number) => {
+    return this.createDecoder().decode(buffer, start, end);
+  };
+
+  createDecoder() {
+    return new BencodeDecoder();
   }
 
   byteLength = (data: any) => {
@@ -126,7 +58,7 @@ class Bencode implements AbstractEncoding<any> {
           let val = type === 'Map' ? data.get(key) : data[key];
           if (!isDefined(val)) continue;
           // force string
-          sum += this.#_byteLength(ArrayBuffer.isView(key) ? ArrayBuffers.stringify(key) : String(key));
+          sum += this.#_byteLength(ArrayBuffer.isView(key) ? ArrayBuffers.toString(key) : String(key));
           sum += this.#_byteLength(val);
         }
         break;
@@ -146,12 +78,14 @@ class Bencode implements AbstractEncoding<any> {
     return sum;
   }
 
-  #_encode(buffers: Array<ArrayBufferViewLike>, data: any) {
+  #_encode(buffers: Array<BufferSource>, data: any) {
+    // treat arraybuffer & buffer as string
     if (data instanceof ArrayBuffer || isBuffer(data)) {
       buffers.push(ArrayBuffers.from(data.byteLength + ':'));
       buffers.push(data);
       return;
     }
+    // treat arraybuffer view as raw data
     if (ArrayBuffer.isView(data)) {
       buffers.push(data);
       return;
@@ -190,7 +124,7 @@ class Bencode implements AbstractEncoding<any> {
           let val = type === 'Map' ? data.get(key) : data[key];
           if (!isDefined(val)) continue;
           // force string
-          this.#_encode(buffers, ArrayBuffer.isView(key) ? ArrayBuffers.stringify(key) : String(key));
+          this.#_encode(buffers, ArrayBuffer.isView(key) ? ArrayBuffers.toString(key) : String(key));
           this.#_encode(buffers, val);
         }
         buffers.push(this.#BUFFER_END_OF_TYPE);

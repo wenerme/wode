@@ -1,17 +1,37 @@
 import { TextDecoder } from 'util';
-import { classOf } from '@wener/utils';
+import { classOf, isBuffer } from '@wener/utils';
 
 export const ArrayBuffers = {
   isArrayBuffer: (v: any): v is ArrayBuffer => {
     return v instanceof ArrayBuffer;
   },
-  stringify: (v: ArrayBuffer | DataView | ArrayBufferView | string) => {
+  slice: (o: TypedArray, start?: number, end?: number) => {
+    // NodeJS Buffer slice is not the same as UInt8Array slice
+    // https://nodejs.org/api/buffer.html#bufslicestart-end
+    if (isBuffer(o)) {
+      return Uint8Array.prototype.slice.call(o, start, end);
+    }
+    return o.slice(start, end);
+  },
+  asView: <V, C extends ArrayBufferViewConstructor<V>>(TypedArray: C, v: BufferSource, byteOffset: number = 0, byteLength?: number): V => {
+    if (v instanceof TypedArray && (byteOffset ?? 0) === 0 && byteLength === undefined) {
+      return v;
+    }
+    if (ArrayBuffer.isView(v) || isBuffer(v)) {
+      return new TypedArray(v.buffer, v.byteOffset + byteOffset, byteLength ?? v.byteLength);
+    }
+    return new TypedArray(v, byteOffset, byteLength);
+  },
+  toString: (v: BufferSource | string) => {
     if (typeof v === 'string') {
       return v;
     }
     return new TextDecoder().decode(v as any);
   },
-  from: (v: string | ArrayBufferViewLike): ArrayBuffer => {
+  toJSON: (v: BufferSource | string, reviver?: (this: any, key: string, value: any) => any) => {
+    return JSON.parse(ArrayBuffers.toString(v), reviver);
+  },
+  from: (v: string | BufferSource): ArrayBuffer => {
     if (!v) {
       return new ArrayBuffer(0);
     }
@@ -21,9 +41,8 @@ export const ArrayBuffers = {
     if (v instanceof ArrayBuffer) {
       return v;
     }
-    let type = classOf(v);
     // lost some info
-    if ('buffer' in v && v.buffer instanceof ArrayBuffer) {
+    if (ArrayBuffer.isView(v) || isBuffer(v)) {
       if (v.byteOffset !== 0) {
         // return v.buffer.slice(v.byteOffset, v.byteOffset + v.byteLength)
         throw new Error('ArrayBuffers.from do not support view with offset');
@@ -31,9 +50,10 @@ export const ArrayBuffers = {
       return v.buffer;
     }
 
+    let type = classOf(v);
     throw new TypeError(`ArrayBuffers.from unsupported type ${type}`);
   },
-  concat: (buffers: Array<ArrayBufferViewLike>, result?: ArrayBuffer, offset = 0) => {
+  concat: (buffers: Array<BufferSource>, result?: ArrayBuffer, offset = 0) => {
     // https://stackoverflow.com/questions/10786128/appending-arraybuffers
 
     const length = buffers.reduce((a, b) => a + b.byteLength, 0);
@@ -54,7 +74,8 @@ export const ArrayBuffers = {
     return r.buffer;
   },
 };
-export type ArrayBufferViewLike = ArrayBuffer | ArrayBufferView | TypedArray | DataView;
+
+
 export type TypedArray =
   | Uint8Array
   | Uint8ClampedArray
@@ -67,3 +88,5 @@ export type TypedArray =
   | BigInt64Array
   | Float32Array
   | Float64Array;
+
+type ArrayBufferViewConstructor<T> = new (buffer: ArrayBufferLike, byteOffset?: number, byteLength?: number) => T;
