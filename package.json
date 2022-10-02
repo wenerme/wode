@@ -1,5 +1,5 @@
 {
-  "name": "@wener/wode",
+  "name": "@wener/wode-root",
   "version": "1.0.0",
   "description": "Wener Node Monorepo",
   "private": true,
@@ -33,6 +33,7 @@
     "@types/jsdom": "^20.0.0",
     "@types/node": "^16",
     "@wener/wode": "workspace:*",
+    "@wener/wode-root": "workspace:*",
     "ava": "^4.3.3",
     "esbuild": "^0.15.10",
     "eslint": "^8.24.0",

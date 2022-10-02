@@ -10,6 +10,8 @@
   - https://github.com/lukeed/templite
   - https://github.com/lukeed/rosetta
   - https://github.com/sindresorhus/camelcase
+- see also
+  - https://github.com/Daninet/hash-wasm
 
 <!-- LINK:BEGIN -->
 
