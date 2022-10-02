@@ -1,4 +1,4 @@
-import { ArrayBuffers } from './ArrayBuffers';
+import { ArrayBuffers } from '@wener/utils';
 
 export const DICT_START = 0x64; // d 100
 export const LIST_START = 0x6c; // l 108

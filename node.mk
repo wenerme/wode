@@ -67,14 +67,14 @@ WANT_CJS?=$(shell jq -r '.exports["."]|has("require")' package.json)
 ESBUILD_DEVELOPMENT_FLAGS?	=--define:process.env.NODE_ENV=\"development\" --define:__DEV__=true --minify-syntax --charset=utf8 --target=chrome90 --sourcemap
 ESBUILD_PRODUCTION_FLAGS?	=--define:process.env.NODE_ENV=\"production\" --define:__DEV__=false --minify --charset=utf8 --target=chrome90 --sourcemap
 
-SOURCE_FILES?=$(shell ls 2>/dev/null src/**/*.js src/**/*.ts src/**/*.tsx | egrep -v '[.]test[.]tsx?')
+SOURCE_FILES?=$(shell ls 2>/dev/null src/**/*.js src/**/*.ts src/**/*.tsx | grep -Ev '[.]test[.]tsx?')
 # will not minify
 ESBUILD_BUILD_FLAGS?=--charset=utf8 --target=chrome90 --sourcemap --platform=neutral
 build:
-ifneq ($(wildcard rollup.build.js),)
-	$(EXEC) rollup -c rollup.build.js
-else ifneq ($(wildcard rollup.dev.js),)
-	$(EXEC) rollup -c rollup.dev.js
+ifneq ($(wildcard rollup.build.*),)
+	$(EXEC) rollup -c $(wildcard rollup.build.*)
+else ifneq ($(wildcard rollup.dev.*),)
+	$(EXEC) rollup -c $(wildcard rollup.dev.*)
 else ifneq ($(wildcard rollup.config.*),)
 	$(MAKE) rollup
 else ifneq ($(wildcard esbuild.build.*),)
@@ -114,8 +114,8 @@ ESBUILD_BUNDLE_FLAGS?= \
 	--external:{react,react-dom,prop-types,classnames,@*,markdown-it,prosemirror*} \
 	--charset=utf8 --target=chrome90 --sourcemap=external --legal-comments=external --bundle
 bundle:
-ifneq ($(wildcard rollup.bundle.js),)
-	NODE_ENV=production $(EXEC) rollup -c rollup.bundle.js
+ifneq ($(wildcard rollup.bundle.*),)
+	NODE_ENV=production $(EXEC) rollup -c $(wildcard rollup.bundle.*)
 else ifneq ($(wildcard rollup.config.*),)
 	@printf $(COLOR_INFO) "rollup bundled in build phase"
 else ifneq ($(wildcard esbuild.bundle.*),)

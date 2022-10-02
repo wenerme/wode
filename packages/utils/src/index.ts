@@ -53,6 +53,7 @@ export { createTranslate } from './i18n/createTranslate';
 // io
 export { isBuffer } from './io/isBuffer';
 export { isTransferable } from './io/isTransferable';
+export { ArrayBuffers } from './io/ArrayBuffers';
 export type { AbstractEncoding } from './io/AbstractEncoding';
 
 // browser
@@ -68,7 +69,7 @@ export { structuredClone } from './isomorphics/structuredClone';
 // crypto
 export { randomUUID } from './crypto/randomUUID';
 export { sha1, sha256, sha384, sha512 } from './crypto/hashing';
-export { hex } from './crypto/hex';
+export { hex } from './crypto/base';
 
 // misc
 export { createRandom } from './maths/random';

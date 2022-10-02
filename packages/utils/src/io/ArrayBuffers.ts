@@ -1,5 +1,45 @@
-import { TextDecoder } from 'util';
-import { classOf, isBuffer } from '@wener/utils';
+import { isBuffer } from './isBuffer';
+import { classOf } from '../langs/classOf';
+
+/**
+ * Various utils to work with {@link ArrayBuffer}
+ */
+interface ArrayBuffers {
+  /**
+   * isArrayBuffer check if the given value is an {@link ArrayBuffer}
+   */
+  isArrayBuffer(v: any): v is ArrayBuffer;
+
+  /**
+   * slice the given view with the given offset and length, will handle the {@link Buffer} as well
+   *
+   * @see {@link https://nodejs.org/api/buffer.html#bufslicestart-end Buffer.slice}
+   */
+  slice<T extends ArrayBufferView>(o: T, start?: number, end?: number): T;
+
+  /**
+   * asView convert the given value to given {@link TypedArray} view
+   */
+  asView<V, C extends ArrayBufferViewConstructor<V>>(TypedArray: C, v: BufferSource, byteOffset?: number, byteLength?: number): V;
+
+  /**
+   * toString convert the given {@link BufferSource} to string
+   */
+  toString(v: BufferSource | string): string;
+
+  toJSON<T>(v: BufferSource | string, reviver?: (this: any, key: string, value: any) => any): T;
+
+
+  /**
+   * from convert the given value to {@link ArrayBuffer}
+   */
+  from(v: string | BufferSource): ArrayBuffer;
+
+  /**
+   * concat the given {@link BufferSource} to a new {@link ArrayBuffer}
+   */
+  concat(buffers: Array<BufferSource>, result?: ArrayBuffer, offset?: number): ArrayBuffer;
+}
 
 export const ArrayBuffers = {
   isArrayBuffer: (v: any): v is ArrayBuffer => {

@@ -1,5 +1,5 @@
 import test from 'ava';
-import { ArrayBuffers } from './ArrayBuffers';
+import { ArrayBuffers } from '@wener/utils';
 import Bencode from './Bencode';
 
 const { encode, decode } = Bencode;

@@ -1,5 +1,5 @@
 import { AbstractEncoding, classOf, isBuffer, isDefined } from '@wener/utils';
-import { ArrayBuffers } from './ArrayBuffers';
+import { ArrayBuffers } from '@wener/utils';
 import { BencodeDecoder, DICT_START, END_OF_TYPE, LIST_START } from './BencodeDecoder';
 
 class Bencode implements AbstractEncoding<any> {

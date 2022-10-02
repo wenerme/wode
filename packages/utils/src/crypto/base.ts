@@ -3,3 +3,5 @@ export function hex(s: Uint8Array | ArrayBuffer) {
     .map((v) => v.toString(16).padStart(2, '0'))
     .join('');
 }
+
+export const base16 = hex;
