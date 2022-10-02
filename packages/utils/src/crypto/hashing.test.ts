@@ -2,7 +2,7 @@ import test from 'ava';
 import { polyfillCrypto } from '../server/polyfillCrypto';
 import { isUUID } from '../validations/isUUID';
 import { sha1, sha256, sha384, sha512 } from './hashing';
-import { hex } from './hex';
+import { hex } from './base';
 import { _randomUUID } from './randomUUID';
 
 test.before(async () => {
