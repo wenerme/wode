@@ -19,6 +19,7 @@
   "exports": {
     ".": {
       "types": "./src/index.ts",
+      "typescript": "./src/index.ts",
       "import": "./lib/index.js",
       "system": {
         "default": "./dist/system/index.js"
@@ -30,6 +31,7 @@
     },
     "./server": {
       "types": "./src/server.ts",
+      "typescript": "./src/server.ts",
       "import": "./lib/server.js",
       "system": {
         "default": "./dist/system/server.js"

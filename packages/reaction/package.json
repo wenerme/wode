@@ -24,6 +24,7 @@
   "exports": {
     ".": {
       "types": "./src/index.ts",
+      "typescript": "./src/index.ts",
       "import": "./lib/index.js",
       "system": {
         "default": "./dist/system/index.js"

@@ -9,6 +9,8 @@
     "url": "git+https://github.com/wenerme/wode.git"
   },
   "files": [
+    "Makefile",
+    "node.mk",
     "*.cjs",
     "*.mjs"
   ],
@@ -30,7 +32,7 @@
       "ts": "module"
     },
     "nodeArguments": [
-      "--require=./suppress-experimental.cjs",
+      "--require=@wener/wode/suppress-experimental.cjs",
       "--loader=tsx"
     ]
   },
