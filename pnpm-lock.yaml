@@ -11,6 +11,7 @@ importers:
       '@types/jsdom': ^20.0.0
       '@types/node': ^16
       '@wener/wode': workspace:*
+      '@wener/wode-root': workspace:*
       ava: ^4.3.3
       esbuild: ^0.15.10
       eslint: ^8.24.0
@@ -34,7 +35,8 @@ importers:
       '@trivago/prettier-plugin-sort-imports': 3.3.0_prettier@2.7.1
       '@types/jsdom': 20.0.0
       '@types/node': 16.11.58
-      '@wener/wode': 'link:'
+      '@wener/wode': link:packages/wode
+      '@wener/wode-root': 'link:'
       ava: 4.3.3
       esbuild: 0.15.10
       eslint: 8.24.0
@@ -472,6 +474,9 @@ importers:
       ava: 4.3.3
       lodash: 4.17.21
       tsd: 0.24.1
+
+  packages/wode:
+    specifiers: {}
 
 packages:
 

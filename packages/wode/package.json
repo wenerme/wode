@@ -1,0 +1,38 @@
+{
+  "name": "@wener/wode",
+  "version": "1.0.0",
+  "description": "Wener's node starter conf",
+  "scripts": {},
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wenerme/wode.git"
+  },
+  "files": [
+    "*.cjs",
+    "*.mjs"
+  ],
+  "keywords": [
+    "wener",
+    "prettier",
+    "eslint",
+    "rollup",
+    "suppress experimental warning"
+  ],
+  "author": "wener",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wenerme/wode/issues"
+  },
+  "homepage": "https://github.com/wenerme/wode#readme",
+  "ava": {
+    "extensions": {
+      "ts": "module"
+    },
+    "nodeArguments": [
+      "--require=./suppress-experimental.cjs",
+      "--loader=tsx"
+    ]
+  },
+  "packageManager": "pnpm@7.12.0+"
+}
