@@ -69,5 +69,9 @@
       "--loader=tsx"
     ]
   },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org",
+    "access": "public"
+  },
   "packageManager": "pnpm@7.12.0+"
 }

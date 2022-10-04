@@ -13,7 +13,6 @@ export interface Torrent {
   [k: string]: any;
 }
 
-
 export interface TorrentInfo {
   'name.utf-8'?: string;
   name?: string;
@@ -25,7 +24,7 @@ export interface TorrentInfo {
 
   // TorrentV2
   'meta version'?: 2;
-  'file tree'?: Record<string, Record<string, { length: number, 'pieces root': string }>>;
+  'file tree'?: Record<string, Record<string, { length: number; 'pieces root': string }>>;
 
   [k: string]: any;
 }

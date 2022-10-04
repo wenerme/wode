@@ -58,6 +58,7 @@ make build
 | [@wener/utils][utils-repo]       | [![][utils-version]][utils-npm]       | [Doc][utils-doc]<br/> ![][utils-license]<br/>![][utils-size]<br/>![][utils-deps]             |
 | [@wener/system][system-repo]     | [![][system-version]][system-npm]     | [Doc][system-doc]<br/> ![][system-license]<br/>![][system-size]<br/>![][system-deps]         |
 | [@wener/reaction][reaction-repo] | [![][reaction-version]][reaction-npm] | [Doc][reaction-doc]<br/> ![][reaction-license]<br/>![][reaction-size]<br/>![][reaction-deps] |
+| [@wener/torrent][torrent-repo]   | [![][torrent-version]][torrent-npm]   | [Doc][torrent-doc]<br/> ![][torrent-license]<br/>![][torrent-size]<br/>![][torrent-deps]     |
 
 [utils-repo]: https://github.com/wenerme/wode/tree/main/packages/utils
 [utils-npm]: https://www.npmjs.com/package/@wener/utils
@@ -80,6 +81,13 @@ make build
 [reaction-size]: https://badgen.net/bundlephobia/minzip/@wener/reaction
 [reaction-deps]: https://badgen.net/bundlephobia/dependency-count/@wener/reaction
 [reaction-doc]: https://wode.vercel.app/docs/modules/_wener_reaction.html
+[torrent-repo]: https://github.com/wenerme/wode/tree/main/packages/torrent
+[torrent-npm]: https://www.npmjs.com/package/@wener/torrent
+[torrent-version]: https://img.shields.io/npm/v/@wener/torrent
+[torrent-license]: https://img.shields.io/npm/l/@wener/torrent
+[torrent-size]: https://badgen.net/bundlephobia/minzip/@wener/torrent
+[torrent-deps]: https://badgen.net/bundlephobia/dependency-count/@wener/torrent
+[torrent-doc]: https://wode.vercel.app/docs/modules/_wener_torrent.html
 
 - Site
   - [wener.me](https://wener.me)

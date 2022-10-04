@@ -17,12 +17,12 @@ export class ByteBuffer {
   littleEndian;
 
   constructor({
-                capacity = ByteBuffer.DEFAULT_CAPACITY,
-                buffer = new ArrayBuffer(capacity),
-                view = new DataView(buffer),
-                littleEndian = ByteBuffer.DEFAULT_ENDIAN,
-                offset = 0,
-              }: { buffer?: ArrayBuffer; littleEndian?: boolean; view?: DataView; capacity?: number; offset?: number } = {}) {
+    capacity = ByteBuffer.DEFAULT_CAPACITY,
+    buffer = new ArrayBuffer(capacity),
+    view = new DataView(buffer),
+    littleEndian = ByteBuffer.DEFAULT_ENDIAN,
+    offset = 0,
+  }: { buffer?: ArrayBuffer; littleEndian?: boolean; view?: DataView; capacity?: number; offset?: number } = {}) {
     this.buffer = buffer;
     this.view = view;
     this.offset = offset;
