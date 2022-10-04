@@ -4,7 +4,7 @@ import { classOf } from '../langs/classOf';
 /**
  * Various utils to work with {@link ArrayBuffer}
  */
-interface ArrayBuffers {
+export type ArrayBuffers = {
   /**
    * isArrayBuffer check if the given value is an {@link ArrayBuffer}
    */
@@ -25,9 +25,9 @@ interface ArrayBuffers {
   /**
    * toString convert the given {@link BufferSource} to string
    */
-  toString(v: BufferSource | string): string;
+  toString(v: BufferSource | string, encoding?: 'utf8' | 'utf-8' | 'base64' | 'hex'): string;
 
-  toJSON<T>(v: BufferSource | string, reviver?: (this: any, key: string, value: any) => any): T;
+  toJSON<T = any>(v: BufferSource | string, reviver?: (this: any, key: string, value: any) => any): T;
 
 
   /**
@@ -62,11 +62,30 @@ export const ArrayBuffers = {
     }
     return new TypedArray(v, byteOffset, byteLength);
   },
-  toString: (v: BufferSource | string) => {
+  toString: (v: BufferSource | string, encoding: 'utf8' | 'utf-8' | 'base64' | 'hex' = 'utf8') => {
+    // 'ascii'  'utf16le' | 'ucs2' | 'ucs-2' | 'base64' | 'base64url' | 'latin1' | 'binary' | 'hex'
     if (typeof v === 'string') {
       return v;
     }
-    return new TextDecoder().decode(v as any);
+    if (typeof Buffer !== undefined) {
+      return Buffer.from(ArrayBuffers.asView(Uint8Array, v)).toString(encoding);
+    }
+    switch (encoding) {
+      case 'hex': {
+        let view: Uint8Array = ArrayBuffers.asView(Uint8Array, v);
+        return [...view].map(b => b.toString(16).padStart(2, '0')).join('');
+      }
+      case 'base64': {
+        let view: Uint8Array = ArrayBuffers.asView(Uint8Array, v);
+        return btoa(String.fromCharCode(...view));
+      }
+      case 'utf8':
+      case 'utf-8':
+        return new TextDecoder().decode(v as any);
+
+      default:
+        throw new Error(`ArrayBuffers.toString: unsupported encoding ${encoding}`);
+    }
   },
   toJSON: (v: BufferSource | string, reviver?: (this: any, key: string, value: any) => any) => {
     return JSON.parse(ArrayBuffers.toString(v), reviver);

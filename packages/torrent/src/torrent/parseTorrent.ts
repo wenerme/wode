@@ -1,5 +1,6 @@
 import { Bencode } from '../index';
 import { arrayOfMaybeArray, hex, sha1 } from '@wener/utils';
+import { Torrent, TorrentInfo, TorrentInfoFile } from './torrent';
 
 
 interface ParsedTorrentFile {
@@ -7,6 +8,10 @@ interface ParsedTorrentFile {
   name: string;
   length: number;
   offset: number;
+  pieceLength: number;
+  piece0Hash: string;
+  piece0Offset: number;
+  piece1Hash?: string;
 }
 
 interface ParsedTorrent {
@@ -28,6 +33,10 @@ interface ParsedTorrent {
   files: ParsedTorrentFile[];
   comment?: string;
   extras: Record<string, any>;
+}
+
+export async function infoHash(s: BufferSource) {
+  return hex(await sha1(s));
 }
 
 export async function parseTorrent(data: BufferSource): Promise<ParsedTorrent> {
@@ -57,7 +66,7 @@ export async function parseTorrent(data: BufferSource): Promise<ParsedTorrent> {
   const result: ParsedTorrent = {
     torrent: torrent,
     info: torrent.info,
-    infoHash: hex(await sha1(infoBuffer)),
+    infoHash: await infoHash(infoBuffer),
     // infoBuffer: infoBuffer,
     name: name!,
     announce: uniq([arrayOfMaybeArray(torrent.announce), torrent['announce-list']].filter(Boolean).flat(2)) as string[],
@@ -73,26 +82,46 @@ export async function parseTorrent(data: BufferSource): Promise<ParsedTorrent> {
   };
 
   if (torrent.comment) result.comment = torrent.comment;
-  if (torrent['creation date']) result.createdAt = new Date(torrent['creation date'] * 1000);
-  if (torrent['created by']) result.createdBy = torrent['created by'];
+  {
+    const val = torrent['creation date'] || torrent['save date'];
+    if (val) result.createdAt = new Date(val * 1000);
+  }
+  {
+    let val = torrent['created by'] || torrent['saved by'];
+    if (val) result.createdBy = val;
+  }
+
 
   const files = torrent.info.files || [torrent.info as TorrentInfoFile];
-  result.files = files.map((file, i) => {
+
+  result.pieceLength = torrent.info['piece length']!;
+  result.pieces = splitPieces(torrent.info.pieces!);
+
+  let offset = 0;
+  result.files = files.map((file) => {
     const parts = [result.name, file['path.utf-8'] || file.path].filter(Boolean);
-    return {
+    let v: ParsedTorrentFile = {
       // path: path.join.apply(null, ['/'].concat(parts)).slice(1),
       path: parts.join('/'),
       name: parts[parts.length - 1],
       length: file.length,
-      offset: files.slice(0, i).reduce((c, v) => c + v.length, 0),
+      offset: offset,
+      piece0Hash: result.pieces[Math.floor(offset / result.pieceLength)],
+      piece0Offset: offset % result.pieceLength,
+
+      // offset: files.slice(0, i).reduce((c, v) => c + v.length, 0),
+      pieceLength: result.pieceLength,
     };
+    if (v.length > v.pieceLength && v.piece0Offset) {
+      v.piece1Hash = result.pieces[1 + Math.floor(offset / result.pieceLength)];
+    }
+
+    offset += file.length;
+    return v;
   });
   result.length = result.files.reduce((c, v) => c + v.length, 0);
-
   const lastFile = result.files[result.files.length - 1];
-  result.pieceLength = torrent.info['piece length']!;
   result.lastPieceLength = ((lastFile.offset + lastFile.length) % result.pieceLength) || result.pieceLength;
-  result.pieces = splitPieces(torrent.info.pieces!);
 
   return result;
 }
@@ -120,30 +149,3 @@ function ensure<T>(v: any, fieldName: string): asserts v is AssertTrue<T> {
 type AssertTrue<T> = T extends null | undefined | false ? never : T;
 
 
-interface Torrent {
-  info: TorrentInfo;
-  'creation date'?: number;
-  'created by'?: string;
-  comment?: string;
-  'announce-list'?: string[][];
-  announce?: string;
-  'url-list'?: string | string[];
-}
-
-interface TorrentInfo {
-  'name.utf-8'?: string;
-  name?: string;
-  files?: TorrentInfoFile[];
-  'piece length'?: number;
-  pieces?: Uint8Array;
-  private?: boolean;
-  length?: number;
-}
-
-interface TorrentInfoFile {
-  path: string;
-  'path.utf-8'?: string;
-  name: string;
-  length: number;
-  offset: number;
-}
