@@ -6,12 +6,19 @@ const INTEGER_START = 0x69; // i 105
 const STRING_DELIM = 0x3a; // : 58
 export const END_OF_TYPE = 0x65; // e 101
 
+interface Options {
+  buffer?: (k: string, v: ArrayBuffer) => any;
+}
+
 export class BencodeDecoder {
   private readIndex = 0;
   private view: Uint8Array = new Uint8Array(0);
   #path: Array<string | number> = [];
   #options = {
-    bufferPath: [] as string[],
+    bufferPath: [],
+  } as {
+    bufferPath: string[],
+    buffer?: (k: string, v: ArrayBuffer) => any
   };
 
   constructor() {
@@ -19,6 +26,11 @@ export class BencodeDecoder {
 
   addBufferPath(...s: string[]) {
     this.#options.bufferPath.push(...s);
+    return this;
+  }
+
+  set(o: Options) {
+    Object.assign(this.#options, o);
     return this;
   }
 
@@ -50,11 +62,13 @@ export class BencodeDecoder {
     pos = idx + 1;
     this.readIndex = pos + len;
     let buf = view.subarray(pos, this.readIndex);
-    if (this.#options.bufferPath.includes(this.#path.join('.'))) {
+    let k = this.#path.join('.');
+
+    if (this.#options.bufferPath.includes(k)) {
       // copy buffer
       return new Uint8Array(buf);
     }
-    return ArrayBuffers.toString(buf);
+    return this.#options.buffer?.(k, buf) || ArrayBuffers.toString(buf);
   }
 
   decode(view: BufferSource, start?: number, end?: number) {
