@@ -1,18 +1,24 @@
 {
   "name": "@wener/wode",
   "version": "1.0.0",
-  "description": "Wener's node starter conf",
-  "scripts": {},
   "type": "module",
+  "description": "Wener's node starter conf",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/wenerme/wode.git"
   },
+  "homepage": "https://github.com/wenerme/wode#readme",
+  "bugs": {
+    "url": "https://github.com/wenerme/wode/issues"
+  },
+  "author": "wener",
+  "license": "MIT",
+  "packageManager": "pnpm@7.12.0+",
   "files": [
-    "Makefile",
-    "node.mk",
     "*.cjs",
-    "*.mjs"
+    "*.mjs",
+    "Makefile",
+    "node.mk"
   ],
   "keywords": [
     "wener",
@@ -21,12 +27,11 @@
     "rollup",
     "suppress experimental warning"
   ],
-  "author": "wener",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/wenerme/wode/issues"
+  "scripts": {},
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org",
+    "access": "public"
   },
-  "homepage": "https://github.com/wenerme/wode#readme",
   "ava": {
     "extensions": {
       "ts": "module"
@@ -35,6 +40,5 @@
       "--require=@wener/wode/suppress-experimental.cjs",
       "--loader=tsx"
     ]
-  },
-  "packageManager": "pnpm@7.12.0+"
+  }
 }
