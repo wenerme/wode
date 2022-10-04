@@ -1,9 +1,8 @@
-import { Bencode } from '../index';
 import { arrayOfMaybeArray, hex, sha1 } from '@wener/utils';
+import { Bencode } from '../bencode/Bencode';
 import { Torrent, TorrentInfo, TorrentInfoFile } from './torrent';
 
-
-interface ParsedTorrentFile {
+export interface ParsedTorrentFile {
   path: string;
   name: string;
   length: number;
@@ -14,7 +13,7 @@ interface ParsedTorrentFile {
   piece1Hash?: string;
 }
 
-interface ParsedTorrent {
+export interface ParsedTorrent {
   torrent: Torrent;
   info: TorrentInfo;
   // infoBuffer: ArrayBuffer;
@@ -43,12 +42,14 @@ export async function parseTorrent(data: BufferSource): Promise<ParsedTorrent> {
   // https://github.com/webtorrent/parse-torrent
 
   let torrent = Bencode.createDecoder().addBufferPath('info.pieces').decode(data) as Torrent;
-
+  if (torrent.info?.['meta version'] === 2) {
+    throw new Error('meta version 2 is not supported');
+  }
   // sanity check
   ensure(torrent.info, 'info');
   let name = torrent.info['name.utf-8'] || torrent.info.name;
   ensure(name, 'info.name');
-  ensure(torrent.info['piece length'], 'info[\'piece length\']');
+  ensure(torrent.info['piece length'], "info['piece length']");
   ensure(torrent.info.pieces, 'info.pieces');
 
   if (torrent.info.files) {
@@ -91,7 +92,6 @@ export async function parseTorrent(data: BufferSource): Promise<ParsedTorrent> {
     if (val) result.createdBy = val;
   }
 
-
   const files = torrent.info.files || [torrent.info as TorrentInfoFile];
 
   result.pieceLength = torrent.info['piece length']!;
@@ -121,7 +121,7 @@ export async function parseTorrent(data: BufferSource): Promise<ParsedTorrent> {
   });
   result.length = result.files.reduce((c, v) => c + v.length, 0);
   const lastFile = result.files[result.files.length - 1];
-  result.lastPieceLength = ((lastFile.offset + lastFile.length) % result.pieceLength) || result.pieceLength;
+  result.lastPieceLength = (lastFile.offset + lastFile.length) % result.pieceLength || result.pieceLength;
 
   return result;
 }
@@ -147,5 +147,3 @@ function ensure<T>(v: any, fieldName: string): asserts v is AssertTrue<T> {
 }
 
 type AssertTrue<T> = T extends null | undefined | false ? never : T;
-
-

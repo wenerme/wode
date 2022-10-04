@@ -1,3 +1,6 @@
+/**
+ * Logger interface satisfies the `console`, `pino` logger interface.
+ */
 export interface Logger {
   trace(...data: any[]): void;
 
@@ -9,6 +12,9 @@ export interface Logger {
 
   error(...data: any[]): void;
 
+  /**
+   * create child logger with given context
+   */
   child?: (o: object) => Logger;
 }
 

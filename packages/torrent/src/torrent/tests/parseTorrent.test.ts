@@ -1,10 +1,11 @@
 import test from 'ava';
-import fs from 'node:fs/promises';
-import { fileURLToPath } from 'node:url';
-import path from 'node:path';
-import { parseTorrent } from '../parseTorrent';
-import { polyfillCrypto } from '@wener/utils/server';
 import { globby } from 'globby';
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { polyfillCrypto } from '@wener/utils/server';
+import { Bencode } from '../../bencode/Bencode';
+import { parseTorrent } from '../parseTorrent';
 
 var __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -19,5 +20,11 @@ test('parseFile', async (t) => {
     const r = await fs.readFile(file);
     let { pieces, info, torrent, ...rest } = await parseTorrent(r);
     t.snapshot(rest, `should parse ${path.basename(file)}`);
+    let encode = Bencode.encode(torrent);
+    // await fs.writeFile('a', r);
+    // await fs.writeFile('b', Buffer.from(encode));
+    t.is(encode.byteLength, r.length, `expected encode ${file} to ${r.length}`);
+    t.is(Bencode.byteLength(torrent), r.length, `expected byteLength ${r.length}`);
+    t.deepEqual(r, Buffer.from(encode), `should encode ${path.basename(file)}`);
   }
 });
