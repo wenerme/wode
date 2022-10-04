@@ -54,7 +54,7 @@ test('encode', (t) => {
     [123, 'i123e'],
     [true, 'i1e'],
     [Boolean(false), 'i0e'],
-    [new Number(123), 'i123e'],
+    [Number(123), 'i123e'],
     [-123, 'i-123e'],
     [123.5, 'i123e'],
     [-123.5, 'i-123e'],
@@ -75,8 +75,12 @@ test('encode', (t) => {
     // arraybuffer, buffer as string
     [ArrayBuffers.from('asdf'), `4:asdf`],
     [Buffer.from('asdf'), `4:asdf`],
+    [
+      new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      new Uint8Array(['9'.charCodeAt(0), ':'.charCodeAt(0), 1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      'Uint8Array as string',
+    ],
     // typed array as raw
-    [new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8, 9]), new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8, 9]), 'Uint8Array as buffer'],
     [new DataView(new Uint8Array([1, 2, 3]).buffer), new Uint8Array([1, 2, 3]), 'DataView as buffer'],
     [
       new Uint32Array([0xf, 0xff, 0xfff, 0xffff, 0xfffff, 0xffffff, 0xfffffff, 0xffffffff]),

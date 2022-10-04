@@ -43,6 +43,9 @@ make build
   - [ ] LineHeight 菜单
   - [ ] print
   - [ ] toolbar memo
+- Typedoc
+  - package multi entryPoints
+    https://github.com/TypeStrong/typedoc/issues/1937
 
 <!-- LINK:BEGIN -->
 

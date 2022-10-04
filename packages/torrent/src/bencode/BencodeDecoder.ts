@@ -7,7 +7,7 @@ const STRING_DELIM = 0x3a; // : 58
 export const END_OF_TYPE = 0x65; // e 101
 
 interface Options {
-  buffer?: (k: string, v: ArrayBuffer) => any;
+  buffer?: (path: string, value: ArrayBuffer) => any;
 }
 
 export class BencodeDecoder {
@@ -17,12 +17,11 @@ export class BencodeDecoder {
   #options = {
     bufferPath: [],
   } as {
-    bufferPath: string[],
-    buffer?: (k: string, v: ArrayBuffer) => any
+    bufferPath: string[];
+    buffer?: (k: string, v: ArrayBuffer) => any;
   };
 
-  constructor() {
-  }
+  constructor() {}
 
   addBufferPath(...s: string[]) {
     this.#options.bufferPath.push(...s);
@@ -33,7 +32,6 @@ export class BencodeDecoder {
     Object.assign(this.#options, o);
     return this;
   }
-
 
   #integer(): Number {
     let { readIndex: pos, view: view } = this;
