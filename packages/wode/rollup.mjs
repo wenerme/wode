@@ -42,7 +42,7 @@ const dev = {
   },
 };
 
-const entryFileNames = (ci) => {
+const entryFileNames = ( /** @type import('rollup').PreRenderedChunk */ ci) => {
   // src/index.js => index.js
   // src/resources/User/index.ts -> resources/User.js
   let filename = path
@@ -101,4 +101,28 @@ const prod = {
     },
   ],
 };
-export { dev, prod };
+/** @type import('rollup').RollupOptions */
+const bundleDev = {
+  input,
+  external: externalProd,
+  plugins: [
+    json(),
+    commonjs(),
+    nodeResolve(),
+    esbuild({
+      minify: false,
+      charset: 'utf8',
+      target: 'esnext',
+      platform: 'neutral',
+    }),
+  ],
+  output: [
+    {
+      entryFileNames: entryFileNames,
+      dir: 'dist/esm-dev',
+      format: 'esm',
+      sourcemap: true,
+    },
+  ],
+};
+export { dev, prod, bundleDev };

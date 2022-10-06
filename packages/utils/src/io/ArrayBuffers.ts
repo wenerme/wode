@@ -1,5 +1,5 @@
-import { isBuffer } from './isBuffer';
 import { classOf } from '../langs/classOf';
+import { isBuffer } from './isBuffer';
 
 /**
  * Various utils to work with {@link ArrayBuffer}
@@ -19,8 +19,15 @@ export type ArrayBuffers = {
 
   /**
    * asView convert the given value to given {@link TypedArray} view
+   *
+   * TypedArray can be {@link Buffer}, will avoid copy
    */
-  asView<V, C extends ArrayBufferViewConstructor<V>>(TypedArray: C, v: BufferSource, byteOffset?: number, byteLength?: number): V;
+  asView<V, C extends ArrayBufferViewConstructor<V>>(
+    TypedArray: C,
+    v: BufferSource,
+    byteOffset?: number,
+    byteLength?: number,
+  ): V;
 
   /**
    * toString convert the given {@link BufferSource} to string
@@ -28,7 +35,6 @@ export type ArrayBuffers = {
   toString(v: BufferSource | string, encoding?: 'utf8' | 'utf-8' | 'base64' | 'hex'): string;
 
   toJSON<T = any>(v: BufferSource | string, reviver?: (this: any, key: string, value: any) => any): T;
-
 
   /**
    * from convert the given value to {@link ArrayBuffer}
@@ -39,7 +45,7 @@ export type ArrayBuffers = {
    * concat the given {@link BufferSource} to a new {@link ArrayBuffer}
    */
   concat(buffers: Array<BufferSource>, result?: ArrayBuffer, offset?: number): ArrayBuffer;
-}
+};
 
 export const ArrayBuffers = {
   isArrayBuffer: (v: any): v is ArrayBuffer => {
@@ -53,7 +59,12 @@ export const ArrayBuffers = {
     }
     return o.slice(start, end);
   },
-  asView: <V, C extends ArrayBufferViewConstructor<V>>(TypedArray: C, v: BufferSource, byteOffset: number = 0, byteLength?: number): V => {
+  asView: <V, C extends ArrayBufferViewConstructor<V>>(
+    TypedArray: C,
+    v: BufferSource,
+    byteOffset: number = 0,
+    byteLength?: number,
+  ): V => {
     if (v instanceof TypedArray && (byteOffset ?? 0) === 0 && byteLength === undefined) {
       return v;
     }
@@ -73,7 +84,7 @@ export const ArrayBuffers = {
     switch (encoding) {
       case 'hex': {
         let view: Uint8Array = ArrayBuffers.asView(Uint8Array, v);
-        return [...view].map(b => b.toString(16).padStart(2, '0')).join('');
+        return [...view].map((b) => b.toString(16).padStart(2, '0')).join('');
       }
       case 'base64': {
         let view: Uint8Array = ArrayBuffers.asView(Uint8Array, v);
@@ -133,7 +144,6 @@ export const ArrayBuffers = {
     return r.buffer;
   },
 };
-
 
 export type TypedArray =
   | Uint8Array

@@ -1,0 +1,115 @@
+{
+  "name": "@wener/unpkg",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "NPM Registry unpkg",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wener/wode.git"
+  },
+  "homepage": "https://github.com/wenerme/wode#readme",
+  "author": "wener",
+  "license": "MIT",
+  "engines": {
+    "node": "16",
+    "npm": "8"
+  },
+  "main": "dist/cjs/index.js",
+  "module": "lib/index.js",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "typescript": "./src/index.ts",
+      "import": "./lib/index.js",
+      "system": {
+        "default": "./dist/system/index.js"
+      },
+      "require": "./dist/cjs/index.js"
+    },
+    "./types": {
+      "types": "./types.d.ts"
+    },
+    "./server": {
+      "types": "./src/server.ts",
+      "typescript": "./src/server.ts",
+      "import": "./lib/server.js",
+      "system": {
+        "default": "./dist/system/server.js"
+      },
+      "require": "./dist/cjs/server.js"
+    },
+    "./src/*": "./src/*",
+    "./package.json": "./package.json"
+  },
+  "types": "src/index.ts",
+  "files": [
+    "dist",
+    "index.ts",
+    "lib",
+    "server.ts",
+    "src",
+    "tsconfig.json"
+  ],
+  "keywords": [
+    "unpkg",
+    "registry",
+    "cdn"
+  ],
+  "scripts": {
+    "build": "make prepublish",
+    "clean": "make clean",
+    "dev": "make dev",
+    "test": "make test"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.0",
+    "@types/fs-extra": "^9.0.13",
+    "@types/mime": "^3.0.1",
+    "@types/semver": "^7.3.12",
+    "@types/tar": "^6.1.3",
+    "ava": "^4.3.3"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org",
+    "access": "public"
+  },
+  "sideEffects": false,
+  "ava": {
+    "extensions": {
+      "ts": "module"
+    },
+    "nodeArguments": [
+      "--conditions=typescript",
+      "--require=@wener/wode/suppress-experimental.cjs",
+      "--loader=tsx"
+    ]
+  },
+  "rollup": {
+    "input": [
+      "./src/index.ts",
+      "./src/server.ts"
+    ],
+    "external": [
+      "better-sqlite3",
+      "mime",
+      "tar",
+      "pino",
+      "semver",
+      "lru-cache",
+      "node-fetch"
+    ]
+  },
+  "typedoc": {
+    "entryPoint": "./src/typedoc.ts",
+    "readmeFile": "./README.md"
+  },
+  "dependencies": {
+    "@wener/utils": "*",
+    "better-sqlite3": "^7.6.2",
+    "lru-cache": "^7.14.0",
+    "mime": "^3.0.0",
+    "pino": "^8.6.1",
+    "semver": "^7.3.8",
+    "tar": "^6.1.11"
+  }
+}
