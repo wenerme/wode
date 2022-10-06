@@ -32,14 +32,18 @@ export type ArrayBuffers = {
   /**
    * toString convert the given {@link BufferSource} to string
    */
-  toString(v: BufferSource | string, encoding?: 'utf8' | 'utf-8' | 'base64' | 'hex'): string;
+  toString(v: BufferSource | string, encoding?: ToStringEncoding): string;
+  /**
+   * Returns true if encoding is the name of a supported character encoding, or false otherwise.
+   */
+  isEncoding(v?: string): v is ToStringEncoding;
 
   toJSON<T = any>(v: BufferSource | string, reviver?: (this: any, key: string, value: any) => any): T;
 
   /**
    * from convert the given value to {@link ArrayBuffer}
    */
-  from(v: string | BufferSource): ArrayBuffer;
+  from(v: string | BufferSource, encoding?: ToStringEncoding): ArrayBuffer;
 
   /**
    * concat the given {@link BufferSource} to a new {@link ArrayBuffer}
@@ -47,7 +51,22 @@ export type ArrayBuffers = {
   concat(buffers: Array<BufferSource>, result?: ArrayBuffer, offset?: number): ArrayBuffer;
 };
 
+type ToStringEncoding =
+  | 'ascii'
+  | 'utf16le'
+  // | 'utf-16le'
+  | 'ucs2'
+  | 'ucs-2'
+  | 'base64'
+  | 'base64url'
+  | 'latin1'
+  | 'binary'
+  | 'utf8'
+  | 'utf-8'
+  | 'hex';
+
 export const ArrayBuffers = {
+  _allowedBuffer: true,
   isArrayBuffer: (v: any): v is ArrayBuffer => {
     return v instanceof ArrayBuffer;
   },
@@ -73,45 +92,88 @@ export const ArrayBuffers = {
     }
     return new TypedArray(v, byteOffset, byteLength);
   },
-  toString: (v: BufferSource | string, encoding: 'utf8' | 'utf-8' | 'base64' | 'hex' = 'utf8') => {
+  toString: (buf: BufferSource | string, encoding: ToStringEncoding = 'utf8') => {
     // 'ascii'  'utf16le' | 'ucs2' | 'ucs-2' | 'base64' | 'base64url' | 'latin1' | 'binary' | 'hex'
-    if (typeof v === 'string') {
-      return v;
+    if (typeof buf === 'string') {
+      return buf;
     }
-    if (typeof Buffer !== undefined) {
-      return Buffer.from(ArrayBuffers.asView(Uint8Array, v)).toString(encoding);
+    if (typeof Buffer !== undefined && ArrayBuffers._allowedBuffer) {
+      return Buffer.from(ArrayBuffers.asView(Uint8Array, buf)).toString(encoding);
     }
+    // reference
+    // https://github.com/feross/buffer/blob/master/index.js
     switch (encoding) {
       case 'hex': {
-        let view: Uint8Array = ArrayBuffers.asView(Uint8Array, v);
-        return [...view].map((b) => b.toString(16).padStart(2, '0')).join('');
+        let view: Uint8Array = ArrayBuffers.asView(Uint8Array, buf);
+        return [...view].map((b) => hexLookupTable[b]).join('');
       }
       case 'base64': {
-        let view: Uint8Array = ArrayBuffers.asView(Uint8Array, v);
+        let view: Uint8Array = ArrayBuffers.asView(Uint8Array, buf);
         return btoa(String.fromCharCode(...view));
       }
       case 'utf8':
       case 'utf-8':
-        return new TextDecoder().decode(v as any);
-
+        return new TextDecoder().decode(buf as any);
+      case 'ascii': {
+        let view: Uint8Array = ArrayBuffers.asView(Uint8Array, buf);
+        return String.fromCharCode(...view.map((v) => v & 0x7f));
+      }
+      case 'latin1':
+      case 'binary': {
+        let view: Uint8Array = ArrayBuffers.asView(Uint8Array, buf);
+        return String.fromCharCode(...view);
+      }
+      case 'ucs2':
+      case 'ucs-2':
+      // case 'utf-16le':
+      case 'utf16le': {
+        let view: Uint8Array = ArrayBuffers.asView(Uint8Array, buf);
+        let res = '';
+        // If length is odd, the last 8 bits must be ignored (same as node.js)
+        for (let i = 0; i < view.length - 1; i += 2) {
+          res += String.fromCharCode(view[i] + view[i + 1] * 256);
+        }
+        return res;
+      }
       default:
-        throw new Error(`ArrayBuffers.toString: unsupported encoding ${encoding}`);
+        throw new Error(`[ArrayBuffers.toString] Unknown encoding: ${encoding}`);
     }
   },
   toJSON: (v: BufferSource | string, reviver?: (this: any, key: string, value: any) => any) => {
     return JSON.parse(ArrayBuffers.toString(v), reviver);
   },
-  from: (v: string | BufferSource): ArrayBuffer => {
+  alloc: (size: number, fill?: string | number, encoding?: ToStringEncoding) => {
+    if (fill !== undefined) {
+      if (typeof fill === 'number') {
+        return new Uint8Array(size).fill(fill);
+      }
+      return (ArrayBuffers.asView(Uint8Array, ArrayBuffers.from(fill, encoding)) as Uint8Array).slice(0, size);
+    }
+    return new ArrayBuffer(size);
+  },
+  from: (v: string | BufferSource | Array<number>, encoding: ToStringEncoding = 'utf8'): BufferSource => {
     if (!v) {
       return new ArrayBuffer(0);
     }
     if (typeof v === 'string') {
-      return new TextEncoder().encode(v as string).buffer;
+      if (typeof Buffer !== undefined && ArrayBuffers._allowedBuffer) {
+        return Buffer.from(v, encoding);
+      }
+
+      switch (encoding) {
+        case 'utf-8':
+        case 'utf8':
+          return new TextEncoder().encode(v as string).buffer;
+        case 'base64':
+          return Uint8Array.from(atob(v.replaceAll(/[^0-9a-zA-Z=+/_ \r\n]/g, '')), (c) => c.charCodeAt(0));
+        default:
+          throw new Error(`[ArrayBuffers.from] Unknown encoding: ${encoding}`);
+      }
     }
     if (v instanceof ArrayBuffer) {
       return v;
     }
-    // lost some info
+    // lost length
     if (ArrayBuffer.isView(v) || isBuffer(v)) {
       if (v.byteOffset !== 0) {
         // return v.buffer.slice(v.byteOffset, v.byteOffset + v.byteLength)
@@ -119,9 +181,29 @@ export const ArrayBuffers = {
       }
       return v.buffer;
     }
-
+    if (Array.isArray(v)) {
+      return new Uint8Array(v);
+    }
     let type = classOf(v);
     throw new TypeError(`ArrayBuffers.from unsupported type ${type}`);
+  },
+  isEncoding: (encoding?: string) => {
+    switch (String(encoding).toLowerCase()) {
+      case 'hex':
+      case 'utf8':
+      case 'utf-8':
+      case 'ascii':
+      case 'latin1':
+      case 'binary':
+      case 'base64':
+      case 'ucs2':
+      case 'ucs-2':
+      case 'utf16le':
+        // case 'utf-16le':
+        return true;
+      default:
+        return false;
+    }
   },
   concat: (buffers: Array<BufferSource>, result?: ArrayBuffer, offset = 0) => {
     // https://stackoverflow.com/questions/10786128/appending-arraybuffers
@@ -159,3 +241,15 @@ export type TypedArray =
   | Float64Array;
 
 type ArrayBufferViewConstructor<T> = new (buffer: ArrayBufferLike, byteOffset?: number, byteLength?: number) => T;
+
+const hexLookupTable = (function () {
+  const alphabet = '0123456789abcdef';
+  const table = new Array(256);
+  for (let i = 0; i < 16; ++i) {
+    const i16 = i * 16;
+    for (let j = 0; j < 16; ++j) {
+      table[i16 + j] = alphabet[i] + alphabet[j];
+    }
+  }
+  return table;
+})();

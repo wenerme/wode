@@ -59,6 +59,7 @@ make build
 | [@wener/system][system-repo]     | [![][system-version]][system-npm]     | [Doc][system-doc]<br/> ![][system-license]<br/>![][system-size]<br/>![][system-deps]         |
 | [@wener/reaction][reaction-repo] | [![][reaction-version]][reaction-npm] | [Doc][reaction-doc]<br/> ![][reaction-license]<br/>![][reaction-size]<br/>![][reaction-deps] |
 | [@wener/torrent][torrent-repo]   | [![][torrent-version]][torrent-npm]   | [Doc][torrent-doc]<br/> ![][torrent-license]<br/>![][torrent-size]<br/>![][torrent-deps]     |
+| [@wener/unpkg][unpkg-repo]       | [![][unpkg-version]][unpkg-npm]       | [Doc][unpkg-doc]<br/> ![][unpkg-license]<br/>![][unpkg-size]<br/>![][unpkg-deps]             |
 
 [utils-repo]: https://github.com/wenerme/wode/tree/main/packages/utils
 [utils-npm]: https://www.npmjs.com/package/@wener/utils
@@ -88,6 +89,13 @@ make build
 [torrent-size]: https://badgen.net/bundlephobia/minzip/@wener/torrent
 [torrent-deps]: https://badgen.net/bundlephobia/dependency-count/@wener/torrent
 [torrent-doc]: https://wode.vercel.app/docs/modules/_wener_torrent.html
+[unpkg-repo]: https://github.com/wenerme/wode/tree/main/packages/unpkg
+[unpkg-npm]: https://www.npmjs.com/package/@wener/unpkg
+[unpkg-version]: https://img.shields.io/npm/v/@wener/unpkg
+[unpkg-license]: https://img.shields.io/npm/l/@wener/unpkg
+[unpkg-size]: https://badgen.net/bundlephobia/minzip/@wener/unpkg
+[unpkg-deps]: https://badgen.net/bundlephobia/dependency-count/@wener/unpkg
+[unpkg-doc]: https://wode.vercel.app/docs/modules/_wener_unpkg.html
 
 - Site
   - [wener.me](https://wener.me)
