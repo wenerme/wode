@@ -1,8 +1,8 @@
 {
-  "name": "@wener/utils",
-  "version": "1.1.6",
+  "name": "@wener/unpkg",
+  "version": "1.0.0",
   "type": "module",
-  "description": "Utils for daily use",
+  "description": "NPM Registry unpkg",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/wener/wode.git"
@@ -51,14 +51,9 @@
     "tsconfig.json"
   ],
   "keywords": [
-    "utils",
-    "core library",
-    "helper",
-    "camelcase",
-    "get",
-    "set",
-    "template",
-    "lodash"
+    "unpkg",
+    "registry",
+    "cdn"
   ],
   "scripts": {
     "build": "make prepublish",
@@ -67,10 +62,12 @@
     "test": "make test"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.186",
-    "ava": "^4.3.3",
-    "lodash": "^4",
-    "tsd": "^0.24.1"
+    "@types/better-sqlite3": "^7.6.0",
+    "@types/fs-extra": "^9.0.13",
+    "@types/mime": "^3.0.1",
+    "@types/semver": "^7.3.12",
+    "@types/tar": "^6.1.3",
+    "ava": "^4.3.3"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org",
@@ -93,12 +90,26 @@
       "./src/server.ts"
     ],
     "external": [
-      "jsdom",
+      "better-sqlite3",
+      "mime",
+      "tar",
+      "pino",
+      "semver",
+      "lru-cache",
       "node-fetch"
     ]
   },
   "typedoc": {
     "entryPoint": "./src/typedoc.ts",
     "readmeFile": "./README.md"
+  },
+  "dependencies": {
+    "@wener/utils": "*",
+    "better-sqlite3": "^7.6.2",
+    "lru-cache": "^7.14.0",
+    "mime": "^3.0.0",
+    "pino": "^8.6.1",
+    "semver": "^7.3.8",
+    "tar": "^6.1.11"
   }
 }
