@@ -73,4 +73,3 @@ export { hex } from './crypto/base';
 
 // misc
 export { createRandom } from './maths/random';
-export { urljoin } from './shim/urljoin';

@@ -18,7 +18,7 @@ export function createLazyPromise<T = any>(
       throw new Error('pending reject');
     },
   };
-  let future = Object.assign(
+  const future = Object.assign(
     new Promise<T>((resolve, reject) => {
       holder.reject = reject;
       holder.resolve = resolve;

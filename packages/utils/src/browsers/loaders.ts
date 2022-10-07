@@ -29,7 +29,7 @@ export function loadScripts(
     return new Promise(async (resolve, reject) => {
       const all = [];
       try {
-        for (let s of src) {
+        for (const s of src) {
           all.push(await loadScripts(s));
         }
       } catch (e) {
@@ -40,7 +40,7 @@ export function loadScripts(
     });
   }
   // todo quote ?
-  let $ele = document.querySelector(`script[src="${src}"]`) as HTMLScriptElement;
+  const $ele = document.querySelector(`script[src="${src}"]`) as HTMLScriptElement;
   if ($ele) {
     return Promise.resolve($ele);
   }
@@ -52,7 +52,7 @@ export function loadScripts(
 }
 
 export function loadStyles(href: string, options?: { attributes: Record<string, string> }): Promise<HTMLLinkElement> {
-  let $ele = document.querySelector(`link[href="${href}"]`) as HTMLLinkElement;
+  const $ele = document.querySelector(`link[href="${href}"]`) as HTMLLinkElement;
   if ($ele) {
     return Promise.resolve($ele);
   }

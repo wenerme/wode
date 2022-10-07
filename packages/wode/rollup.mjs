@@ -9,7 +9,7 @@ import nodeResolve from '@rollup/plugin-node-resolve';
 
 // const pkg = JSON.parse((await readFile(new URL(process.cwd()+'/package.json', import.meta.url))).toString());
 const pkg = JSON.parse((await readFile(process.cwd() + '/package.json')).toString());
-let toRegex = (v) => {
+const toRegex = (v) => {
   if (v instanceof RegExp) {
     return v;
   }
@@ -42,7 +42,7 @@ const dev = {
   },
 };
 
-const entryFileNames = ( /** @type import('rollup').PreRenderedChunk */ ci) => {
+const entryFileNames = (/** @type import('rollup').PreRenderedChunk */ ci) => {
   // src/index.js => index.js
   // src/resources/User/index.ts -> resources/User.js
   let filename = path
@@ -73,28 +73,28 @@ const prod = {
       },
     }),
     visualizer({
-      filename: `out/report/stats.html`,
+      filename: 'out/report/stats.html',
     }),
     visualizer({
-      filename: `out/report/stats.json`,
+      filename: 'out/report/stats.json',
       template: 'raw-data',
     }),
   ],
   output: [
     {
-      entryFileNames: entryFileNames,
+      entryFileNames,
       dir: 'dist/system',
       format: 'systemjs',
       sourcemap: true,
     },
     {
-      entryFileNames: entryFileNames,
+      entryFileNames,
       dir: 'dist/cjs',
       format: 'cjs',
       sourcemap: true,
     },
     {
-      entryFileNames: entryFileNames,
+      entryFileNames,
       dir: 'dist/esm',
       format: 'esm',
       sourcemap: true,
@@ -118,7 +118,7 @@ const bundleDev = {
   ],
   output: [
     {
-      entryFileNames: entryFileNames,
+      entryFileNames,
       dir: 'dist/esm-dev',
       format: 'esm',
       sourcemap: true,

@@ -1,16 +1,16 @@
-export async function sha1(s: string | BufferSource) {
+export function sha1(s: string | BufferSource) {
   return digestOf('SHA-1', s);
 }
 
-export async function sha256(s: string | BufferSource) {
+export function sha256(s: string | BufferSource) {
   return digestOf('SHA-256', s);
 }
 
-export async function sha384(s: string | BufferSource) {
+export function sha384(s: string | BufferSource) {
   return digestOf('SHA-384', s);
 }
 
-export async function sha512(s: string | BufferSource) {
+export function sha512(s: string | BufferSource) {
   return digestOf('SHA-512', s);
 }
 

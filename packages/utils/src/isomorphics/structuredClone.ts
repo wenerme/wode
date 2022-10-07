@@ -1,3 +1,4 @@
+/* eslint no-proto:0 */
 import { classOf } from '../langs/classOf';
 
 /**
@@ -41,13 +42,13 @@ export function _clone(x: any): any {
       break;
     case 'Set':
       tmp = new Set();
-      x.forEach(function(val: any) {
+      x.forEach(function (val: any) {
         tmp.add(_clone(val));
       });
       break;
     case 'Map':
       tmp = new Map();
-      x.forEach(function(val: any, key: any) {
+      x.forEach(function (val: any, key: any) {
         tmp.set(_clone(key), _clone(val));
       });
       break;

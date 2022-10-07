@@ -3,7 +3,7 @@ import { createLazyPromise } from './createLazyPromise';
 import { sleep } from './sleep';
 
 test('basic', async (t) => {
-  let promise = createLazyPromise();
+  const promise = createLazyPromise();
   let r = 0;
   promise.then((v) => (r = v));
   t.is(r, 0);
@@ -17,7 +17,7 @@ test('basic', async (t) => {
 });
 
 test('manual resolve skip exec', async (t) => {
-  let promise = createLazyPromise(() => {
+  const promise = createLazyPromise(() => {
     t.fail();
   });
   promise.resolve(-1);
@@ -26,7 +26,7 @@ test('manual resolve skip exec', async (t) => {
 
 test('exec', async (t) => {
   let r = 0;
-  let promise = createLazyPromise((resolve) => {
+  const promise = createLazyPromise((resolve) => {
     r++;
     resolve(10);
   });

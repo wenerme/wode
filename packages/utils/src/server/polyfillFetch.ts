@@ -12,7 +12,6 @@ export async function polyfillFetch() {
     FormData,
     Blob,
     File,
-    // @ts-ignore
   } = await import('node-fetch');
   Object.assign(globalThis, {
     fetch,

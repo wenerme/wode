@@ -2,7 +2,7 @@ import test from 'ava';
 import { createTranslate } from './createTranslate';
 
 test('exports', (t) => {
-  let out = createTranslate();
+  const out = createTranslate();
   t.is(typeof out, 'object', 'returns an object');
   t.is(typeof out.t, 'function', '~> has "t" function');
   t.is(typeof out.dict, 'function', '~> has "set" function');
@@ -10,7 +10,7 @@ test('exports', (t) => {
 });
 
 test('usage', (t) => {
-  let ctx = createTranslate({
+  const ctx = createTranslate({
     en: { hello: 'Hello, {{name}}!' },
     es: { hello: 'Hola {{name}}!' },
     pt: { foo: 'foo {{name}}~!' },
@@ -20,21 +20,21 @@ test('usage', (t) => {
 
   t.true(ctx.dict('foobar') === undefined);
 
-  let foo = ctx.t('hello');
+  const foo = ctx.t('hello');
   t.is(foo, '', '~> "" w/o locale');
 
   t.is(ctx.locale('en'), 'en', '>>> ctx.locale()');
 
   t.is(ctx.locale(), 'en');
 
-  let bar = ctx.t('hello');
+  const bar = ctx.t('hello');
   t.not(bar, '', '(en) found "hello" key');
   t.is(bar, 'Hello, !', '~> interpolations empty if missing param');
 
-  let baz = ctx.t('hello', { name: 'world' });
+  const baz = ctx.t('hello', { name: 'world' });
   t.is(baz, 'Hello, world!', '~> interpolations successful');
 
-  let bat = ctx.t('hello', { name: 'world' }, 'es');
+  const bat = ctx.t('hello', { name: 'world' }, 'es');
   t.not(bat, '', '(es) found "hello" key');
   t.is(bat, 'Hola world!', '~> success');
 
@@ -42,11 +42,11 @@ test('usage', (t) => {
 
   t.is(ctx.dict('pt', { hello: 'Oí {{name}}!' }), undefined, '>>> ctx.dict()');
 
-  let quz = ctx.t('hello', { name: 'world' }, 'pt');
+  const quz = ctx.t('hello', { name: 'world' }, 'pt');
   t.not(quz, '', '(pt) found "hello" key');
   t.is(quz, 'Oí world!', '~> success');
 
-  let qut = ctx.t('foo', { name: 'bar' }, 'pt');
+  const qut = ctx.t('foo', { name: 'bar' }, 'pt');
   t.not(qut, '', '(pt) found "foo" key');
   t.is(qut, 'foo bar~!', '~> success');
 
@@ -58,7 +58,7 @@ test('usage', (t) => {
   t.is(ctx.locale(null as any), 'es');
   t.is(ctx.locale(0 as any), 'es');
 
-  let qux = ctx.t('hello', { name: 'default' });
+  const qux = ctx.t('hello', { name: 'default' });
   t.not(qux, '', '(es) found "hello" key');
   t.is(qux, 'Hola default!', '~> success');
 
@@ -66,13 +66,13 @@ test('usage', (t) => {
 
   t.is(ctx.dict('de', { hello: 'Hallo {{name}}!' }), undefined, '>>> ctx.dict(de)');
 
-  let qar = ctx.t('hello', { name: 'world' }, 'de');
+  const qar = ctx.t('hello', { name: 'world' }, 'de');
   t.not(qar, '', '(de) found "hello" key');
   t.is(qar, 'Hallo world!', '~> success');
 });
 
 test('functional', (t) => {
-  let ctx = createTranslate({
+  const ctx = createTranslate({
     en: {
       hello(value: any) {
         return `hello ${value || 'stranger'}~!`;
@@ -82,18 +82,18 @@ test('functional', (t) => {
 
   ctx.locale('en');
 
-  let foo = ctx.t('hello');
+  const foo = ctx.t('hello');
   t.is(foo, 'hello stranger~!', '~> called function w/o param');
 
-  let bar = ctx.t('hello', 'world' as any);
+  const bar = ctx.t('hello', 'world' as any);
   t.is(bar, 'hello world~!', '~> called function w/ param (string)');
 
-  let baz = ctx.t('hello', [1, 2, 3]);
+  const baz = ctx.t('hello', [1, 2, 3]);
   t.is(baz, 'hello 1,2,3~!', '~> called function w/ param (array)');
 });
 
 test('nested', (t) => {
-  let ctx = createTranslate({
+  const ctx = createTranslate({
     en: {
       fruits: {
         apple: 'apple',
@@ -126,7 +126,7 @@ test('nested', (t) => {
 });
 
 test('arrays', (t) => {
-  let ctx = createTranslate({
+  const ctx = createTranslate({
     en: {
       foo: '{{0}} + {{1}} = {{2}}',
       bar: [
@@ -145,7 +145,7 @@ test('arrays', (t) => {
 });
 
 test('invalid value', (t) => {
-  let ctx = createTranslate({
+  const ctx = createTranslate({
     en: {
       foo: ['bar'],
     },

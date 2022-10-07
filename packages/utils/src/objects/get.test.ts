@@ -56,7 +56,7 @@ test('get typed', (t) => {
 });
 
 test('get', (t) => {
-  let obj = {
+  const obj = {
     undef: undefined,
     zero: 0,
     one: 1,

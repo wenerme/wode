@@ -4,9 +4,9 @@ import { createWriteLogger } from './createWriteLogger';
 
 test('logger', (t) => {
   {
-    let logs: any[] = [];
+    const logs: any[] = [];
     const base = createWriteLogger((o) => logs.push(o));
-    let l = createChildLogger(base, { c: 'test' });
+    const l = createChildLogger(base, { c: 'test' });
     l.info('hello');
     t.deepEqual(logs.shift(), { level: 'info', values: ['hello'], c: 'test' });
     l.child({ m: 1 }).trace('trace');
@@ -15,7 +15,7 @@ test('logger', (t) => {
   createChildLogger(console, { c: 'test' }).info('hello');
   {
     let pass = 0;
-    let l = createWriteLogger(
+    const l = createWriteLogger(
       (o) => {
         pass++;
         t.log(`${o.level}: [${[o.m, o.c].filter(Boolean).join('.') || 'default'}]`, ...o.values);
