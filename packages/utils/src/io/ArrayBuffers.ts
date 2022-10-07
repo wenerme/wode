@@ -104,30 +104,30 @@ export const ArrayBuffers = {
     // https://github.com/feross/buffer/blob/master/index.js
     switch (encoding) {
       case 'hex': {
-        let view: Uint8Array = ArrayBuffers.asView(Uint8Array, buf);
+        const view: Uint8Array = ArrayBuffers.asView(Uint8Array, buf);
         return [...view].map((b) => hexLookupTable[b]).join('');
       }
       case 'base64': {
-        let view: Uint8Array = ArrayBuffers.asView(Uint8Array, buf);
+        const view: Uint8Array = ArrayBuffers.asView(Uint8Array, buf);
         return btoa(String.fromCharCode(...view));
       }
       case 'utf8':
       case 'utf-8':
         return new TextDecoder().decode(buf as any);
       case 'ascii': {
-        let view: Uint8Array = ArrayBuffers.asView(Uint8Array, buf);
+        const view: Uint8Array = ArrayBuffers.asView(Uint8Array, buf);
         return String.fromCharCode(...view.map((v) => v & 0x7f));
       }
       case 'latin1':
       case 'binary': {
-        let view: Uint8Array = ArrayBuffers.asView(Uint8Array, buf);
+        const view: Uint8Array = ArrayBuffers.asView(Uint8Array, buf);
         return String.fromCharCode(...view);
       }
       case 'ucs2':
       case 'ucs-2':
       // case 'utf-16le':
       case 'utf16le': {
-        let view: Uint8Array = ArrayBuffers.asView(Uint8Array, buf);
+        const view: Uint8Array = ArrayBuffers.asView(Uint8Array, buf);
         let res = '';
         // If length is odd, the last 8 bits must be ignored (same as node.js)
         for (let i = 0; i < view.length - 1; i += 2) {
@@ -151,7 +151,10 @@ export const ArrayBuffers = {
     }
     return new ArrayBuffer(size);
   },
-  from: (v: string | BufferSource | Array<number>, encoding: ToStringEncoding = 'utf8'): BufferSource => {
+  from: (
+    v: string | BufferSource | ArrayLike<number> | Iterable<number>,
+    encoding: ToStringEncoding = 'utf8',
+  ): BufferSource => {
     if (!v) {
       return new ArrayBuffer(0);
     }
@@ -184,7 +187,7 @@ export const ArrayBuffers = {
     if (Array.isArray(v)) {
       return new Uint8Array(v);
     }
-    let type = classOf(v);
+    const type = classOf(v);
     throw new TypeError(`ArrayBuffers.from unsupported type ${type}`);
   },
   isEncoding: (encoding?: string) => {

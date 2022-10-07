@@ -7,7 +7,7 @@ test('structuredClone', (t) => {
     ['', ''],
     [Number(1), 1],
   ]) {
-    let c = _clone(k);
+    const c = _clone(k);
     t.deepEqual(c, v);
     t.is(classOf(c), classOf(v));
   }

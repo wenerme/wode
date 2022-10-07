@@ -30,9 +30,9 @@ export function parseModuleId(s: string): ParsedModuleId | undefined {
     return undefined;
   }
   const { n: name, v: version, p: path, org, pkg } = groups;
-  let scoped = Boolean(org);
+  const scoped = Boolean(org);
   const v = /^\d+\.\d+\.\d+/.test(version) ? version : undefined;
-  let range = version || 'latest';
+  const range = version || 'latest';
   const o = {
     id: `${name}@${range}`,
     name,

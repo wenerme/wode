@@ -1,30 +1,37 @@
 {
   "name": "@wener/wode-root",
   "version": "1.0.0",
+  "type": "module",
   "description": "Wener Node Monorepo",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wenerme/wode.git"
+  },
+  "homepage": "https://github.com/wenerme/wode#readme",
+  "bugs": {
+    "url": "https://github.com/wenerme/wode/issues"
+  },
+  "author": "wener",
+  "license": "MIT",
   "private": true,
   "workspaces": [
     "apps/*",
     "components/*",
     "packages/*"
   ],
+  "packageManager": "pnpm@7.12.0+",
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=7.0.0",
+    "pnpm": ">=7.0.0"
+  },
+  "keywords": [],
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
-    "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "lint": "turbo run lint"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/wenerme/wode.git"
-  },
-  "keywords": [],
-  "author": "wener",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/wenerme/wode/issues"
-  },
-  "homepage": "https://github.com/wenerme/wode#readme",
   "devDependencies": {
     "@rollup/plugin-commonjs": "^22.0.2",
     "@rollup/plugin-json": "^4.1.0",
@@ -32,11 +39,18 @@
     "@trivago/prettier-plugin-sort-imports": "^3.3.0",
     "@types/jsdom": "^20.0.0",
     "@types/node": "^16",
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@wener/wode": "workspace:*",
     "@wener/wode-root": "workspace:*",
     "ava": "^4.3.3",
     "esbuild": "^0.15.10",
-    "eslint": "^8.24.0",
+    "eslint": "^8",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-standard-with-typescript": "^23.0.0",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-n": "^15.0.0",
+    "eslint-plugin-promise": "^6.0.0",
+    "eslint-plugin-react": "^7.31.8",
     "globby": "^13.1.2",
     "jsdom": "^20.0.0",
     "node-fetch": "*",
@@ -49,15 +63,11 @@
     "tsx": "^3.8.2",
     "turbo": "^1.5.5",
     "typedoc": "^0.23.15",
-    "typescript": "^4.8.4"
+    "typescript": "*"
   },
-  "engines": {
-    "pnpm": ">=7.0.0",
-    "npm": ">=7.0.0",
-    "node": ">=14.0.0"
-  },
-  "lint-staged": {
-    "**/*": "prettier --write --ignore-unknown"
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org",
+    "access": "public"
   },
   "ava": {
     "extensions": {
@@ -69,9 +79,7 @@
       "--loader=tsx"
     ]
   },
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org",
-    "access": "public"
-  },
-  "packageManager": "pnpm@7.12.0+"
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
+  }
 }

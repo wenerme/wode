@@ -1,10 +1,11 @@
+/* eslint no-proto:0 */
 import test from 'ava';
 import { set } from './set';
 
 test('set basics', (t) => {
   t.is(set({}, 'c', 3), undefined, 'should not give return value');
   {
-    let item = { foo: 1 };
+    const item = { foo: 1 };
     set(item, 'bar', 123);
     t.is(item, item);
     t.deepEqual(
@@ -30,7 +31,7 @@ test('set objects', (t) => {
     const set = (a: any, b: any, c: any) => orig(a, b, c, isMerge);
     const verb = isMerge ? 'merge' : 'overwrite';
     objects(`should ${verb} existing object value :: simple`, () => {
-      let { input } = prepare({
+      const { input } = prepare({
         hello: { a: 1 },
       });
 
@@ -51,7 +52,7 @@ test('set objects', (t) => {
     });
 
     objects(`should ${verb} existing object value :: nested`, () => {
-      let { input, copy } = prepare({
+      const { input, copy } = prepare({
         a: {
           b: {
             c: 123,
@@ -71,7 +72,7 @@ test('set objects', (t) => {
     });
 
     objects(`should ${verb} existing array value :: simple`, () => {
-      let { input } = prepare([{ foo: 1 }]);
+      const { input } = prepare([{ foo: 1 }]);
 
       set(input, '0', { bar: 2 });
 
@@ -83,7 +84,7 @@ test('set objects', (t) => {
     });
 
     objects(`should ${verb} existing array value :: nested`, () => {
-      let { input } = prepare([
+      const { input } = prepare([
         { name: 'bob', age: 56, friends: ['foobar'] },
         { name: 'alice', age: 47, friends: ['mary'] },
       ]);
@@ -118,7 +119,7 @@ test('set arrays', (t) => {
     f();
   };
   arrays('should create array instead of object via numeric key :: simple', () => {
-    let input: any = { a: 1 };
+    const input: any = { a: 1 };
     set(input, 'e.0', 2);
     t.true(Array.isArray(input.e));
     t.is(input.e[0], 2);
@@ -129,7 +130,7 @@ test('set arrays', (t) => {
   });
 
   arrays('should create array instead of object via numeric key :: nested', () => {
-    let input: any = { a: 1 };
+    const input: any = { a: 1 };
     set(input, 'e.0.0', 123);
     t.true(input.e instanceof Array);
     t.is(input.e[0][0], 123);
@@ -140,7 +141,7 @@ test('set arrays', (t) => {
   });
 
   arrays('should be able to create object inside of array', () => {
-    let input: any = {};
+    const input: any = {};
     set(input, ['x', '0', 'z'], 123);
     t.true(input.x instanceof Array);
     t.deepEqual(input, {
@@ -149,7 +150,7 @@ test('set arrays', (t) => {
   });
 
   arrays('should create arrays with hole(s) if needed', () => {
-    let input: any = {};
+    const input: any = {};
     set(input, ['x', '1', 'z'], 123);
     t.true(input.x instanceof Array);
     t.deepEqual(input, {
@@ -158,7 +159,7 @@ test('set arrays', (t) => {
   });
 
   arrays('should create object from decimal-like key :: array :: zero :: string', () => {
-    let input: any = {};
+    const input: any = {};
     set(input, ['x', '10.0', 'z'], 123);
     t.false(input.x instanceof Array);
     t.deepEqual(input, {
@@ -171,17 +172,17 @@ test('set arrays', (t) => {
   });
 
   arrays('should create array from decimal-like key :: array :: zero :: number', () => {
-    let input: any = {};
+    const input: any = {};
     set(input, ['x', 10.0, 'z'], 123);
     t.true(input.x instanceof Array);
 
-    let x = Array(10);
+    const x = Array(10);
     x.push({ z: 123 });
     t.deepEqual(input, { x });
   });
 
   arrays('should create object from decimal-like key :: array :: nonzero', () => {
-    let input: any = {};
+    const input: any = {};
     set(input, ['x', '10.2', 'z'], 123);
     t.false(input.x instanceof Array);
     t.deepEqual(input, {
@@ -200,8 +201,8 @@ test('set pollution', (t) => {
     f();
   };
   pollution('should protect against "__proto__" assignment', () => {
-    let input: any = { abc: 123 };
-    let before = input.__proto__;
+    const input: any = { abc: 123 };
+    const before = input.__proto__;
     set(input, '__proto__.hello', 123);
 
     t.deepEqual(input.__proto__, before);
@@ -211,8 +212,8 @@ test('set pollution', (t) => {
   });
 
   pollution('should protect against "__proto__" assignment :: nested', () => {
-    let input: any = { abc: 123 };
-    let before = input.__proto__;
+    const input: any = { abc: 123 };
+    const before = input.__proto__;
     set(input, ['xyz', '__proto__', 'hello'], 123);
 
     t.deepEqual(input.__proto__, before);
@@ -227,7 +228,7 @@ test('set pollution', (t) => {
   });
 
   pollution('should ignore "prototype" assignment', () => {
-    let input: any = { a: 123 };
+    const input: any = { a: 123 };
     set(input, 'a.prototype.hello', 'world');
 
     t.is(input.a.prototype, undefined);
@@ -243,7 +244,7 @@ test('set pollution', (t) => {
   });
 
   pollution('should ignore "constructor" assignment :: direct', () => {
-    let input: any = { a: 123 };
+    const input: any = { a: 123 };
 
     function Custom() {
       //
@@ -259,7 +260,7 @@ test('set pollution', (t) => {
   });
 
   pollution('should ignore "constructor" assignment :: nested', () => {
-    let input: any = {};
+    const input: any = {};
 
     set(input, 'constructor.prototype.hello', 'world');
     t.is(input.hasOwnProperty('constructor'), false);
@@ -272,7 +273,7 @@ test('set pollution', (t) => {
 
   // Test for CVE-2022-25645 - CWE-1321
   pollution('should ignore JSON.parse crafted object with "__proto__" key', () => {
-    let a: any = { b: { c: 1 } };
+    const a: any = { b: { c: 1 } };
     t.is(a.polluted, undefined);
     set(a, 'b', JSON.parse('{"__proto__":{"polluted":"Yes!"}}'));
     t.is(a.polluted, undefined);
@@ -284,19 +285,19 @@ test('set assigns', (t) => {
     f();
   };
   assigns('should add value to key path :: shallow :: string', () => {
-    let input: any = {};
+    const input: any = {};
     set(input, 'abc', 123);
     t.deepEqual(input, { abc: 123 });
   });
 
   assigns('should add value to key path :: shallow :: array', () => {
-    let input: any = {};
+    const input: any = {};
     set(input, ['abc'], 123);
     t.deepEqual(input, { abc: 123 });
   });
 
   assigns('should add value to key path :: nested :: string', () => {
-    let input: any = {};
+    const input: any = {};
     set(input, 'a.b.c', 123);
     t.deepEqual(input, {
       a: {
@@ -308,7 +309,7 @@ test('set assigns', (t) => {
   });
 
   assigns('should add value to key path :: nested :: array', () => {
-    let input: any = {};
+    const input: any = {};
     set(input, ['a', 'b', 'c'], 123);
     t.deepEqual(input, {
       a: {
@@ -320,7 +321,7 @@ test('set assigns', (t) => {
   });
 
   assigns('should create Array via integer key :: string', () => {
-    let input: any = {};
+    const input: any = {};
     set(input, ['foo', '0'], 123);
     t.true(input.foo instanceof Array);
     t.deepEqual(input, {
@@ -329,7 +330,7 @@ test('set assigns', (t) => {
   });
 
   assigns('should create Array via integer key :: number', () => {
-    let input: any = {};
+    const input: any = {};
     set(input, ['foo', 0], 123);
     t.true(input.foo instanceof Array);
     t.deepEqual(input, {
@@ -343,7 +344,7 @@ test('set preserves', (t) => {
     f();
   };
   preserves('should preserve existing object structure', () => {
-    let input = {
+    const input = {
       a: {
         b: {
           c: 123,
@@ -366,7 +367,7 @@ test('set preserves', (t) => {
   });
 
   preserves('should overwrite existing non-object values as object', () => {
-    let input = {
+    const input = {
       a: {
         b: 123,
       },
@@ -384,7 +385,7 @@ test('set preserves', (t) => {
   });
 
   preserves('should preserve existing object tree w/ array value', () => {
-    let input = {
+    const input = {
       a: {
         b: {
           c: 123,

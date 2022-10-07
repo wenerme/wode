@@ -17,6 +17,8 @@
   "files": [
     "*.cjs",
     "*.mjs",
+    "tsconfig",
+    "eslint-config",
     "Makefile",
     "node.mk"
   ],
