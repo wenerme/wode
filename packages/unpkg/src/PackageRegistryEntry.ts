@@ -1,4 +1,4 @@
-import { PackageJson } from './PackageJson';
+import { PackageJson as BasePackageJson } from './PackageJson';
 
 /**
  * @see https://registry.npmjs.org/@wener/reaction
@@ -9,7 +9,11 @@ export interface PackageRegistryEntry {
   name: string;
   'dist-tags': Record<string, string>;
   versions: Record<string, PackageJson>;
-  time: Record<string, string>;
+  time: {
+    created: string;
+    modified: string;
+    [key: string]: string;
+  };
   readme?: string;
   readmeFilename?: string;
   description: string;
@@ -26,4 +30,35 @@ export interface PackageRegistryEntry {
     url: string;
   };
   license: string;
+}
+
+interface PackageJson extends BasePackageJson {
+  _id: string;
+  _integrity: string;
+  _resolved: string;
+  _from: string;
+  _nodeVersion: string;
+  _npmVersion: string;
+  _npmUser: {
+    name: string;
+    email: string;
+  };
+  _npmOperationalInternal?: {
+    host: string;
+    tmp: string;
+  };
+  _hasShrinkwrap?: boolean;
+  gitHead?: string;
+  dist: {
+    integrity: string;
+    shasum: string;
+    tarball: string;
+    fileCount: number;
+    unpackedSize: number;
+    signatures?: {
+      keyid: string;
+      sig: string;
+    }[];
+    'npm-signature'?: string;
+  };
 }
