@@ -181,7 +181,8 @@ export const ArrayBuffers = {
         case 'utf8':
           return new TextEncoder().encode(v).buffer;
         case 'base64':
-          return Uint8Array.from(atob(v.replaceAll(/[^0-9a-zA-Z=+/_ \r\n]/g, '')), (c) => c.charCodeAt(0));
+          // replaceAll
+          return Uint8Array.from(atob(v.replace(/[^0-9a-zA-Z=+/_ \r\n]/g, '')), (c) => c.charCodeAt(0));
         default:
           throw new Error(`[ArrayBuffers.from] Unknown encoding: ${encoding}`);
       }
