@@ -69,6 +69,7 @@
     "@types/ua-parser-js": "^0.7.36",
     "@wener/reaction": "link:../../packages/reaction",
     "@wener/tiptap": "*",
+    "@wener/unpkg": "workspace:^1.0.2",
     "@wener/utils": "link:../../packages/utils",
     "ajv": "^8.11.0",
     "ajv-errors": "^3.0.0",
@@ -76,6 +77,7 @@
     "ajv-i18n": "^4.2.0",
     "ajv-keywords": "^5.1.0",
     "autoprefixer": "^10.4.12",
+    "better-sqlite3": "^7.6.2",
     "classnames": "^2.3.1",
     "daisyui": "^2.31.0",
     "domhandler": "^5.0.3",
@@ -118,6 +120,7 @@
     "@types/styled-components": "^5.1.26",
     "eslint-config-next": "^12",
     "next-transpile-modules": "^9.0.0",
+    "pino-pretty": "^9.1.1",
     "typescript": "^4.8.4"
   },
   "browserslist": [
