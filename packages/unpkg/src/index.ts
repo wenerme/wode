@@ -1,6 +1,6 @@
 export { Unpkg, type InitUnpkgOptions } from './Unpkg';
 export { type UnpkgStorage } from './UnpkgStorage';
 export { type PackageJson } from './PackageJson';
-export { type PackageRegistryEntry } from './PackageRegistryEntry';
+export { type RegistryPackage } from './RegistryPackage';
 
 export { getContentType } from './mime';
