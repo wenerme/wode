@@ -6,17 +6,17 @@ import { DependencyList, useEffect, useRef } from 'react';
  * @param deps DependencyList
  */
 export function useAsyncEffect(
-  effect: (o: { signal: AbortSignal }) => Promise<void | (() => void | undefined)>,
+  effect: (o: { signal: AbortSignal }) => Promise<undefined | (() => void)>,
   deps?: DependencyList,
 ): { abort: () => void } {
   const abortRef = useRef<() => void>();
   useEffect(() => {
-    let abortController = new AbortController();
+    const abortController = new AbortController();
     abortRef.current = () => abortController.abort();
     effect({ signal: abortController.signal }).catch((e) => {
       console.trace(`uncaught useAsyncEffect error`, deps, e);
     });
     return () => abortController.abort();
   }, deps);
-  return { abort: abortRef.current ?? (() => void 0) };
+  return { abort: abortRef.current ?? (() => undefined) };
 }

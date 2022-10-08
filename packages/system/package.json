@@ -97,6 +97,8 @@
       "ts": "module"
     },
     "nodeArguments": [
+      "--conditions=typescript",
+      "--require=@wener/wode/suppress-experimental.cjs",
       "--loader=tsx"
     ]
   },

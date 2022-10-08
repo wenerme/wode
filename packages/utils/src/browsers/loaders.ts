@@ -26,17 +26,12 @@ export function loadScripts(
   options?: { attributes: Record<string, string> },
 ): Promise<HTMLScriptElement | HTMLScriptElement[]> {
   if (Array.isArray(src)) {
-    return new Promise(async (resolve, reject) => {
+    return Promise.resolve().then(async () => {
       const all = [];
-      try {
-        for (const s of src) {
-          all.push(await loadScripts(s));
-        }
-      } catch (e) {
-        reject(e);
-        return;
+      for (const s of src) {
+        all.push(await loadScripts(s));
       }
-      resolve(all);
+      return all;
     });
   }
   // todo quote ?

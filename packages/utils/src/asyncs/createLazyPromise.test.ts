@@ -5,7 +5,7 @@ import { sleep } from './sleep';
 test('basic', async (t) => {
   const promise = createLazyPromise();
   let r = 0;
-  promise.then((v) => (r = v));
+  void promise.then((v) => (r = v));
   t.is(r, 0);
   const { resolve, reject } = promise;
   t.truthy(resolve);

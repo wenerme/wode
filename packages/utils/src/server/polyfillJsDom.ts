@@ -8,6 +8,7 @@ export async function polyfillJsDom() {
   const { ResourceLoader, JSDOM } = await import('jsdom');
 
   // https://github.com/lukechilds/window/blob/master/src/index.js
+  // eslint-disable-next-line @typescript-eslint/no-extraneous-class
   class Window {
     constructor(opts: ResourceLoaderConstructorOptions & ConstructorOptions = {}) {
       const { proxy, strictSSL, userAgent, ...jsdomOpts } = opts;
@@ -55,7 +56,7 @@ export async function polyfillJsDom() {
     Object.getOwnPropertyNames(window)
 
       // Remove protected properties
-      .filter((prop) => protectedProperties.indexOf(prop) === -1)
+      .filter((prop) => !protectedProperties.includes(prop))
 
       // If we're only applying specific required properties remove everything else
       .filter((prop) => !(properties && properties.indexOf(prop) === -1))

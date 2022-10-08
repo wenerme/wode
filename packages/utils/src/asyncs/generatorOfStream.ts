@@ -3,6 +3,7 @@ export function* generatorOfStream<T = any>(stream: any): IterableIterator<Promi
   stream.on('end', () => {
     done = true;
   });
+  // eslint-disable-next-line no-unmodified-loop-condition
   while (!done) {
     yield new Promise((resolve, reject) => {
       stream.once('data', resolve);

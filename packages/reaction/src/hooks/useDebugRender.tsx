@@ -9,7 +9,7 @@ export function useDebugRender(name: string, ...rest: any[]): DebugRenderLogger;
 export function useDebugRender(options: { name: string; onRender?: boolean }, ...rest: any[]): DebugRenderLogger;
 export function useDebugRender(o: any, ...rest: any[]): DebugRenderLogger {
   if (process.env.NODE_ENV === 'production') {
-    return () => void 0;
+    return () => undefined;
   }
 
   const counterRef = useRef(0);

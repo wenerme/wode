@@ -22,8 +22,8 @@ export function set<T extends object, V>(obj: T, key: ObjectKey | ObjectPath, va
           : val
         : typeof (x = current[k]) === typeof path
         ? x
-        : // @ts-ignore hacky type check
-        path[i] * 0 !== 0 || !!~('' + path[i]).indexOf('.')
+        : // @ts-expect-error hacky type check
+        path[i] * 0 !== 0 || !!~('' + path[i]).indexOf('.') // eslint-disable-line
         ? {}
         : [];
   }

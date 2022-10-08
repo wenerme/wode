@@ -1,6 +1,8 @@
-// https://gist.github.com/rproenca/64781c6a1329b48a455b645d361a9aa3
+import { MaybePromise } from '../asyncs/MaybePromise';
+
 let _copy: (s: any) => void;
 
+// https://gist.github.com/rproenca/64781c6a1329b48a455b645d361a9aa3
 function initCopy() {
   let textArea: HTMLTextAreaElement;
 
@@ -49,13 +51,12 @@ function initCopy() {
  * Write text to clipboard
  * @param content content
  */
-export function copy(content: string) {
+export function copy(content: string): MaybePromise<void> {
   if (window.navigator?.clipboard?.writeText) {
-    window.navigator.clipboard.writeText(content);
-    return;
+    return window.navigator.clipboard.writeText(content);
   }
   if (!_copy) {
     initCopy();
   }
-  _copy(content);
+  return _copy(content);
 }

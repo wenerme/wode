@@ -33,13 +33,13 @@ export function parseModuleId(s: string): ParsedModuleId | undefined {
   const scoped = Boolean(org);
   const v = /^\d+\.\d+\.\d+/.test(version) ? version : undefined;
   const range = version || 'latest';
-  const o = {
+  const o: ParsedModuleId = {
     id: `${name}@${range}`,
     name,
-    range: range,
+    range,
     scoped,
     pkg,
-  } as ParsedModuleId;
+  };
   if (v) {
     o.version = v;
   }

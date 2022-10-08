@@ -19,9 +19,9 @@ export function addPreload(
   }
 
   let isBareSpecifier = true;
-  let moduleId = resolvedId || id;
+  const moduleId = resolvedId || id;
   try {
-    new URL(id);
+    void new URL(id);
     isBareSpecifier = false;
   } catch (e) {}
 

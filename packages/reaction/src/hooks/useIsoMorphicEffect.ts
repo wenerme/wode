@@ -1,3 +1,3 @@
 import { useEffect, useLayoutEffect } from 'react';
 
-export let useIsoMorphicEffect = typeof document === 'undefined' ? useEffect : useLayoutEffect;
+export const useIsoMorphicEffect = typeof document === 'undefined' ? useEffect : useLayoutEffect;

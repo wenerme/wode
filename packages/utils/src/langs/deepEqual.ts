@@ -101,6 +101,6 @@ export function deepEqual(foo: any, bar: any) {
     }
   }
 
-  // eslint no-self-compare:0
+  // eslint-disable-next-line no-self-compare
   return foo !== foo && bar !== bar;
 }

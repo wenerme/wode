@@ -2,7 +2,7 @@ import test from 'ava';
 import { legacy, resolve } from './resolve';
 
 test('resolve legacy', (t) => {
-  let base = {
+  const base = {
     name: '@org/nice',
     main: 'main.cjs',
     module: 'module.mjs',
@@ -21,7 +21,7 @@ test('resolve legacy', (t) => {
 });
 
 test('resolve exports', (t) => {
-  let base = {
+  const base = {
     name: '@org/nice',
     exports: {
       '.': {
@@ -37,9 +37,9 @@ test('resolve exports', (t) => {
     },
   };
   {
-    let pkg = base;
+    const pkg = base;
     t.is(resolve(pkg, '.', { unsafe: true, conditions: ['system'] }), './dist/system.js');
-    let options = { unsafe: true, conditions: ['system', 'production'] };
+    const options = { unsafe: true, conditions: ['system', 'production'] };
     t.is(resolve(pkg, '@org/nice', options), './dist/system.prod.js');
     t.is(resolve(pkg, '.', options), './dist/system.prod.js');
     t.is(resolve(pkg, './assets/icon.png', options), './dist/assets/icon.png');

@@ -4,7 +4,7 @@ import { isBuffer } from './isBuffer';
 /**
  * Various utils to work with {@link ArrayBuffer}
  */
-export type ArrayBuffers = {
+export interface ArrayBuffers {
   /**
    * isArrayBuffer check if the given value is an {@link ArrayBuffer}
    */
@@ -33,6 +33,7 @@ export type ArrayBuffers = {
    * toString convert the given {@link BufferSource} to string
    */
   toString(v: BufferSource | string, encoding?: ToStringEncoding): string;
+
   /**
    * Returns true if encoding is the name of a supported character encoding, or false otherwise.
    */
@@ -49,7 +50,7 @@ export type ArrayBuffers = {
    * concat the given {@link BufferSource} to a new {@link ArrayBuffer}
    */
   concat(buffers: Array<BufferSource>, result?: ArrayBuffer, offset?: number): ArrayBuffer;
-};
+}
 
 type ToStringEncoding =
   | 'ascii'
@@ -65,6 +66,7 @@ type ToStringEncoding =
   | 'utf-8'
   | 'hex';
 
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ArrayBuffers = {
   _allowedBuffer: true,
   isArrayBuffer: (v: any): v is ArrayBuffer => {
@@ -88,6 +90,10 @@ export const ArrayBuffers = {
       return v;
     }
     if (ArrayBuffer.isView(v) || isBuffer(v)) {
+      if (ArrayBuffers._allowedBuffer && typeof Buffer !== 'undefined' && (TypedArray as any) === Buffer) {
+        // new Buffer() is deprecated
+        return Buffer.from(v.buffer, byteOffset, byteLength) as any;
+      }
       return new TypedArray(v.buffer, v.byteOffset + byteOffset, byteLength ?? v.byteLength);
     }
     return new TypedArray(v, byteOffset, byteLength);
@@ -97,7 +103,7 @@ export const ArrayBuffers = {
     if (typeof buf === 'string') {
       return buf;
     }
-    if (typeof Buffer !== undefined && ArrayBuffers._allowedBuffer) {
+    if (typeof Buffer !== 'undefined' && ArrayBuffers._allowedBuffer) {
       return Buffer.from(ArrayBuffers.asView(Uint8Array, buf)).toString(encoding);
     }
     // reference
@@ -112,6 +118,7 @@ export const ArrayBuffers = {
         return btoa(String.fromCharCode(...view));
       }
       case 'utf8':
+      // falls through
       case 'utf-8':
         return new TextDecoder().decode(buf as any);
       case 'ascii': {
@@ -119,13 +126,16 @@ export const ArrayBuffers = {
         return String.fromCharCode(...view.map((v) => v & 0x7f));
       }
       case 'latin1':
+      // falls through
       case 'binary': {
         const view: Uint8Array = ArrayBuffers.asView(Uint8Array, buf);
         return String.fromCharCode(...view);
       }
       case 'ucs2':
+      // falls through
       case 'ucs-2':
       // case 'utf-16le':
+      // falls through
       case 'utf16le': {
         const view: Uint8Array = ArrayBuffers.asView(Uint8Array, buf);
         let res = '';
@@ -147,7 +157,7 @@ export const ArrayBuffers = {
       if (typeof fill === 'number') {
         return new Uint8Array(size).fill(fill);
       }
-      return (ArrayBuffers.asView(Uint8Array, ArrayBuffers.from(fill, encoding)) as Uint8Array).slice(0, size);
+      return ArrayBuffers.asView(Uint8Array, ArrayBuffers.from(fill, encoding)).slice(0, size);
     }
     return new ArrayBuffer(size);
   },
@@ -159,14 +169,15 @@ export const ArrayBuffers = {
       return new ArrayBuffer(0);
     }
     if (typeof v === 'string') {
-      if (typeof Buffer !== undefined && ArrayBuffers._allowedBuffer) {
+      if (typeof Buffer !== 'undefined' && ArrayBuffers._allowedBuffer) {
         return Buffer.from(v, encoding);
       }
 
       switch (encoding) {
         case 'utf-8':
+        // falls through
         case 'utf8':
-          return new TextEncoder().encode(v as string).buffer;
+          return new TextEncoder().encode(v).buffer;
         case 'base64':
           return Uint8Array.from(atob(v.replaceAll(/[^0-9a-zA-Z=+/_ \r\n]/g, '')), (c) => c.charCodeAt(0));
         default:

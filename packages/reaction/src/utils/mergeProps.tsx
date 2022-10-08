@@ -10,7 +10,7 @@ export function mergeProps<T extends { className?: string; style?: CSSProperties
   source: T,
   override: T,
 ): T {
-  let o = {
+  const o = {
     ...source,
     ...override,
     className: [source.className, override.className].filter(Boolean).join(' '),

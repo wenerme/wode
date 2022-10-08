@@ -1,7 +1,7 @@
 import { LoggerWithChild } from './Logger';
 
 export function createNoopLogger(): LoggerWithChild {
-  const noop = (..._: any[]) => void 0;
+  const noop = (..._: any[]) => undefined;
   return {
     trace: noop,
     debug: noop,

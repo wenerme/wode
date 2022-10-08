@@ -11,7 +11,7 @@ import { get } from '../objects/get';
  */
 export function renderTemplate(
   template: string,
-  data: ((v: string) => any) | object,
+  data: ((v: string) => any) | object | undefined,
   match: 'js' | 'common' | RegExp = 'js',
 ) {
   let getter: Function;
@@ -24,14 +24,14 @@ export function renderTemplate(
     getter = (v: string) => get(data, v);
   }
   if (typeof match === 'string') {
-    match = Matches[match] || Matches['js'];
+    match = Matches[match] || Matches.js;
   }
   return template.replace(match, (_, g) => {
     return getter(g.trim());
   });
 }
 
-const Matches = {
+const Matches: Record<string, RegExp> = {
   js: /\${(.*?)}/g,
   common: /{{(.*?)}}/g,
 };

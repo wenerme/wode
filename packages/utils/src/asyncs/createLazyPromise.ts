@@ -52,7 +52,7 @@ export function createLazyPromise<T = any>(
     like.catch = future.catch.bind(future);
     if (future.finally) like.finally = future.finally;
 
-    Object.defineProperty(like, Symbol.species, {
+    void Object.defineProperty(like, Symbol.species, {
       get() {
         return Promise;
       },

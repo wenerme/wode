@@ -15,11 +15,13 @@ export function useControllable<T>(
   const [state, setState] = useState(initial);
   const controlled = value !== undefined;
   return [
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     controlled ? value : state!,
     useEvent((v) => {
       if (controlled) {
         return onChange?.(maybeFunction(v, value));
       } else {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const next = maybeFunction(v, state!);
         setState(next);
         return onChange?.(next);
