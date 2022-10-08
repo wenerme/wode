@@ -97,7 +97,7 @@ export class Unpkg {
           if (entry.meta) {
             return;
           }
-          const buf = Buffer.concat(await entry.collect());
+          const buf = Buffer.concat(await (entry as any).collect()); // demo next build cause eslint error WTF?
 
           let p = entry.path;
           p = p.substring(p.indexOf('/'));
