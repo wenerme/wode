@@ -1,6 +1,6 @@
 # @wener/unpkg
 
-Selfhost https://unpkg.com/ https://cdn.jsdelivr.net/npm/ alternative
+Selfhost https://unpkg.com/ , https://cdn.jsdelivr.net/npm/ alternative
 
 - Handler Endpoints
   - Unpkg
@@ -10,6 +10,12 @@ Selfhost https://unpkg.com/ https://cdn.jsdelivr.net/npm/ alternative
     - `GET /:pkg` - registry index
     - `GET /:pkg/:version` - version metadata
     - `GET /:pkg/-/:name-:version.tgz` - tarball - redirect
+  - [ ] SystemJS - With proper resolve, redirect js to system.ga.jspm.io or dynamic transfer with rollup/swc
+    - `GET /system/:pkg@:version`
+    - `GET /system/:pkg@:version/:file`
+- [ ] deploy to https://apis.wener.me/api/unpkg
+  - with cloudflare cdn
+  - vercel is blocked by China
 - Will resolve range/tag version to exact version
   - use 302 redirect
 

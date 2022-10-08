@@ -3,15 +3,15 @@
 Wener Node Monorepo
 
 - packages
-  - system
+  - @wener/system
     - hooks to lets systemjs work with npm registry & package.json
-  - reaction
+  - @wener/reaction
     - React hooks & utils
-  - utils
+  - @wener/utils
     - Typescript
     - Zero Dependencies
-  - ethers - WIP
-    - Web3 utils
+  - @wener/torrent
+    - Bencode codec
   - @wener/tiptap
     - TipTap based Google Doc
       - Extensions
@@ -20,6 +20,12 @@ Wener Node Monorepo
         - renderMarkdown
         - parseMarkdown
         - slash command
+  - @wener/unpkg
+    - Selfhost https://unpkg.com/ , https://cdn.jsdelivr.net/npm/ alternative
+  - @wener/wode
+    - common config
+  - ethers - WIP
+    - Web3 utils
 - apps
   - demo https://wode.vercel.app/
     - [ ] WindowManager
@@ -60,6 +66,7 @@ make build
 | [@wener/reaction][reaction-repo] | [![][reaction-version]][reaction-npm] | [Doc][reaction-doc]<br/> ![][reaction-license]<br/>![][reaction-size]<br/>![][reaction-deps] |
 | [@wener/torrent][torrent-repo]   | [![][torrent-version]][torrent-npm]   | [Doc][torrent-doc]<br/> ![][torrent-license]<br/>![][torrent-size]<br/>![][torrent-deps]     |
 | [@wener/unpkg][unpkg-repo]       | [![][unpkg-version]][unpkg-npm]       | [Doc][unpkg-doc]<br/> ![][unpkg-license]<br/>![][unpkg-size]<br/>![][unpkg-deps]             |
+| [@wener/wode][wode-repo]         | [![][wode-version]][wode-npm]         | [Doc][wode-doc]<br/> ![][wode-license]<br/>![][wode-size]<br/>![][wode-deps]                 |
 
 [utils-repo]: https://github.com/wenerme/wode/tree/main/packages/utils
 [utils-npm]: https://www.npmjs.com/package/@wener/utils
@@ -96,6 +103,13 @@ make build
 [unpkg-size]: https://badgen.net/bundlephobia/minzip/@wener/unpkg
 [unpkg-deps]: https://badgen.net/bundlephobia/dependency-count/@wener/unpkg
 [unpkg-doc]: https://wode.vercel.app/docs/modules/_wener_unpkg.html
+[wode-repo]: https://github.com/wenerme/wode/tree/main/packages/wode
+[wode-npm]: https://www.npmjs.com/package/@wener/wode
+[wode-version]: https://img.shields.io/npm/v/@wener/wode
+[wode-license]: https://img.shields.io/npm/l/@wener/wode
+[wode-size]: https://badgen.net/bundlephobia/minzip/@wener/wode
+[wode-deps]: https://badgen.net/bundlephobia/dependency-count/@wener/wode
+[wode-doc]: https://wode.vercel.app/docs/modules/_wener_wode.html
 
 - Site
   - [wener.me](https://wener.me)
