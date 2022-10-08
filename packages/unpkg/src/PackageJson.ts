@@ -1122,3 +1122,6 @@ export type SPDXLicenseIDApproved =
   | 'Xnet'
   | 'Zlib'
   | 'ZPL-2.0';
+
+export type PackageName = `@${string}/${string}` | string;
+export type PackageID = `${PackageName}@${string}`;

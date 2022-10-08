@@ -28,8 +28,8 @@ test('Unpkg.getPackageTarball', async (t) => {
 
 test('Unpkg.getPackageFile', async (t) => {
   const r = await createUnpkg();
-  const buf = await r.getPackageFile('@wener/reaction@1.2.12/package.json');
+  const buf = await r.getPackageFile('@wener/reaction@1.2.15/package.json');
   const info = JSON.parse(buf.toString());
   t.is(info.name, '@wener/reaction');
-  t.is(info.version, '1.2.12');
+  t.is(info.version, '1.2.15');
 });

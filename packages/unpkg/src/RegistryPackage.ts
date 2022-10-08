@@ -1,14 +1,14 @@
-import { PackageJson as BasePackageJson } from './PackageJson';
+import { PackageJson } from './PackageJson';
 
 /**
  * @see https://registry.npmjs.org/@wener/reaction
  */
-export interface PackageRegistryEntry {
+export interface RegistryPackage {
   _id: string;
   _rev: string;
   name: string;
   'dist-tags': Record<string, string>;
-  versions: Record<string, PackageJson>;
+  versions: Record<string, RegistryPackageJson>;
   time: {
     created: string;
     modified: string;
@@ -32,7 +32,7 @@ export interface PackageRegistryEntry {
   license: string;
 }
 
-interface PackageJson extends BasePackageJson {
+export interface RegistryPackageJson extends PackageJson {
   _id: string;
   _integrity: string;
   _resolved: string;

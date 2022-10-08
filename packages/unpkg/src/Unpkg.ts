@@ -6,8 +6,7 @@ import zlib from 'node:zlib';
 import semver from 'semver';
 import tar, { type ReadEntry } from 'tar';
 import { createLazyPromise, Logger, parseModuleId } from '@wener/utils';
-import { PackageJson } from './PackageJson';
-import { PackageRegistryEntry } from './PackageRegistryEntry';
+import { RegistryPackage, RegistryPackageJson } from './RegistryPackage';
 import { UnpkgStorage } from './UnpkgStorage';
 
 export interface InitUnpkgOptions {
@@ -77,7 +76,7 @@ export class Unpkg {
       throw new Error(`Missing path: ${packageName}`);
     }
     const pkgId = info._id;
-    if (await storage.hasPackageFile(pkgId)) {
+    if (!(await storage.hasPackageFile(pkgId))) {
       log.info(`getPackageFile: untar ${pkgId}`);
       const buffer = await this.getPackageTarball(packageName);
       const readable = Readable.from(buffer);
@@ -164,7 +163,7 @@ export class Unpkg {
    * will resolve to matched version
    * @param packageName @org/name@version
    */
-  async getPackageInfo(packageName: string): Promise<PackageRegistryEntry> {
+  async getPackageInfo(packageName: string): Promise<RegistryPackage> {
     const module = parseModuleId(packageName);
     if (!module) {
       throw Object.assign(new Error(`Invalid package name: ${packageName}`), { status: 400 });
@@ -210,7 +209,7 @@ export class Unpkg {
   /**
    * will resolve to matched version
    */
-  async getPackageVersionInfo(packageName: string): Promise<PackageJson> {
+  async getPackageVersionInfo(packageName: string): Promise<RegistryPackageJson> {
     const module = parseModuleId(packageName);
     if (!module) {
       throw Object.assign(new Error(`Invalid package name: ${packageName}`), { status: 400 });
@@ -218,7 +217,7 @@ export class Unpkg {
     const { storage, log, fetch, lru } = this;
     log.trace(`getPackageInfo: ${packageName}`);
     let { id, name, version, range } = module;
-    let out: PackageJson;
+    let out: RegistryPackageJson;
 
     // always fetch latest
     if (range !== 'latest') {
@@ -234,7 +233,7 @@ export class Unpkg {
         id = `${name}@${version}`;
       }
 
-      out = lru.get(id) as PackageJson;
+      out = lru.get(id) as RegistryPackageJson;
       if (out) {
         return out;
       }

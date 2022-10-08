@@ -1,6 +1,6 @@
 {
   "name": "@wener/unpkg",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "type": "module",
   "description": "NPM Registry unpkg",
   "repository": {
