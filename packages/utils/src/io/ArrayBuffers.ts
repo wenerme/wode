@@ -157,7 +157,9 @@ export const ArrayBuffers = {
       if (typeof fill === 'number') {
         return new Uint8Array(size).fill(fill);
       }
-      return ArrayBuffers.asView(Uint8Array, ArrayBuffers.from(fill, encoding)).slice(0, size);
+      // as cast
+      // https://stackoverflow.com/questions/73994091
+      return (ArrayBuffers.asView(Uint8Array, ArrayBuffers.from(fill, encoding)) as Uint8Array).slice(0, size);
     }
     return new ArrayBuffer(size);
   },
