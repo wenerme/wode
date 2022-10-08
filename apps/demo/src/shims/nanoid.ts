@@ -1,4 +1,4 @@
-export let nanoid = (t = 21): string =>
+export const nanoid = (t = 21): string =>
   globalThis.crypto
     .getRandomValues(new Uint8Array(t))
     .reduce(
