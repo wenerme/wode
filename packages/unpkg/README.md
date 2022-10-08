@@ -2,6 +2,17 @@
 
 Selfhost https://unpkg.com/ https://cdn.jsdelivr.net/npm/ alternative
 
+- Handler Endpoints
+  - Unpkg
+    - `GET /:pkg@:version` - version metadata
+    - `GET /:pkg@:version/:file`
+  - NPM
+    - `GET /:pkg` - registry index
+    - `GET /:pkg/:version` - version metadata
+    - `GET /:pkg/-/:name-:version.tgz` - tarball - redirect
+- Will resolve range/tag version to exact version
+  - use 302 redirect
+
 ```ts
 import { Unpkg } from '@wener/unpkg';
 import { createBearerAuthFetch, createUnpkg, createUnpkgHandler } from '@wener/unpkg/server';

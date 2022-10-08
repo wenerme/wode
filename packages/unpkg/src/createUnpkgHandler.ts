@@ -47,7 +47,7 @@ pkg/-/pkg-version.tgz
     if (!parsed) {
       throw Object.assign(new Error('invalid module id'), { status: 400 });
     }
-    let { id, name, version: ver, path: file = '', versioned } = parsed;
+    let { id, name, version: ver, pkg, path: file = '', versioned } = parsed;
     if (!versioned && !file) {
       // list
       return {
@@ -58,18 +58,38 @@ pkg/-/pkg-version.tgz
     }
     let versionPath = false;
     if (!versioned) {
+      const index = await unpkg.getPackageInfo(name);
       // npm pattern
       // pkg/version
-      const segments = file.split('/');
+      const segments = file.replace(/^\//, '').split('/');
       const firstSegment = segments[0];
-      if (isVersion(firstSegment)) {
+      let tarballMatchGroups;
+      if (isVersion(firstSegment) || index['dist-tags'][firstSegment]) {
         file = file.substring(firstSegment.length + 1);
-        ver = firstSegment;
+        ver = index['dist-tags'][firstSegment] || firstSegment;
         id = `${name}@${ver}`;
         versionPath = true;
+      } else if (
+        firstSegment === '-' &&
+        segments.length === 2 &&
+        (tarballMatchGroups = segments[1].match(/^(?<name>.+)-(?<version>.+)\.tgz$/)?.groups)
+      ) {
+        // detect tarball
+        // /-/:name-:version.tgz
+        const { version, name } = tarballMatchGroups;
+        if (name !== pkg) {
+          throw Object.assign(new Error(`invalid tarball name ${name} for ${pkg}`), { status: 404 });
+        }
+        const meta = await unpkg.getPackageVersionInfo(`${name}@${version}`);
+        return {
+          status: 302,
+          headers: {
+            'Cache-Tag': `redirect, tarball-redirect`,
+            'Cache-Control': 'public, s-maxage=600, max-age=60',
+            Location: meta.dist.tarball,
+          },
+        };
       }
-      // todo detect
-      // /-/name-version.tgz
     }
     const meta = await unpkg.getPackageVersionInfo(id);
     if (meta.version !== ver) {
@@ -116,16 +136,5 @@ pkg/-/pkg-version.tgz
 }
 
 function isVersion(maybeVersion: string) {
-  // NPM pattern
-  switch (maybeVersion) {
-    case 'latest':
-    case 'next':
-    case 'beta':
-    case 'alpha':
-    case 'experimental':
-    case 'rc':
-      return true;
-    default:
-      return /^\d+\.\d+\.\d+(-.*)?$/.test(maybeVersion);
-  }
+  return /^\d+\.\d+\.\d+(-.*)?$/.test(maybeVersion);
 }
