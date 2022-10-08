@@ -8,7 +8,7 @@ export interface SQLiteStorageOptions {
 
 export class SQLiteStorage implements UnpkgStorage<SQLiteStorageOptions> {
   cache: Database = undefined as any;
-  private options: SQLiteStorageOptions = {};
+  private readonly options: SQLiteStorageOptions = {};
 
   constructor(options: SQLiteStorageOptions = {}) {
     this.options = options;
@@ -16,13 +16,13 @@ export class SQLiteStorage implements UnpkgStorage<SQLiteStorageOptions> {
 
   init(o: SQLiteStorageOptions = {}): Promise<void> {
     Object.assign(this.options, o);
-    let cache = (this.cache = this.options.cache!);
+    let cache = this.options.cache;
     const { database } = this.options;
     if (!cache) {
-      cache = new SQLite(database || 'unpkg.db', {});
+      const db = (cache = new SQLite(database || 'unpkg.db', {}));
       cache.pragma('journal_mode = WAL');
       cache.pragma('synchronous = OFF');
-      SQLiteSchemas.forEach((v) => cache.exec(v));
+      SQLiteSchemas.forEach((v) => db.exec(v));
     }
     this.cache = cache;
     return Promise.resolve(undefined);
