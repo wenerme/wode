@@ -15,31 +15,19 @@ export function createUnpkgHandler({
 }: CreateUnpkgHandlerOptions): (r: { path: string }) => Promise<{ status: number; headers: any; body?: any }> {
   /*
 package registry meta
-@org/pkg
-pkg
+:pkg
 
-package meta
-@org/pkg@version
-pkg@version
-Resolved version redirect
-@org/pkg@latest -> @org/pkg@1.0.0
-pkg@latest -> pkg@1.0.0
+package meta - will resolve version
+:pkg@:version
+:pkg/:version
+:pkg/ -> :pkg@version
 
-NPM
-pkg
-pkg/version
-pkg/version/-/pkg-version.tgz
+NPM tarball
+:pkg/-/:name-:version.tgz
 
 file
-@org/pkg@version/path
-@org/pkg/path -> @org/pkg@version/path
-pkg@version/path
-pkg/path -> pkg@version/path
-
-tar
-@org/pkg/-/pkg-version.tgz
-pkg/-/pkg-version.tgz
-
+:pkg/:file -> :pkg@version/:file
+:pkg@:version/:file
 */
 
   return async ({ path: requestPath }) => {
