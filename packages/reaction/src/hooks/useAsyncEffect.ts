@@ -6,7 +6,7 @@ import { DependencyList, useEffect, useRef } from 'react';
  * @param deps DependencyList
  */
 export function useAsyncEffect(
-  effect: (o: { signal: AbortSignal }) => Promise<undefined | (() => void)>,
+  effect: (o: { signal: AbortSignal }) => Promise<void | (() => void)>, // eslint-disable-line @typescript-eslint/no-invalid-void-type
   deps?: DependencyList,
 ): { abort: () => void } {
   const abortRef = useRef<() => void>();
