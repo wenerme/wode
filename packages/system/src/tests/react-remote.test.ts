@@ -44,7 +44,7 @@ export async function testReactRender(t: ExecutionContext, System: SystemJS) {
     }, []);
     return React.createElement('span', {}, 'Hello');
   };
-  let ele = React.createElement(ErrorSuspenseBoundary, {}, React.createElement(Comp, {}));
+  const ele = React.createElement(ErrorSuspenseBoundary, {}, React.createElement(Comp, {}));
   t.is(ReactDOMServer.renderToString(ele), `<!--$--><span>Hello</span><!--/$-->`);
 
   // Not works in pure System env - maybe caused by not dev build

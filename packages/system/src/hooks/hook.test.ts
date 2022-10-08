@@ -61,8 +61,9 @@ test('hooks works', async (t) => {
   {
     const { default: meta } = await System.import('package:@wener/reaction/package.json');
     t.is(meta.name, '@wener/reaction');
-    const { sleep, shallow } = await System.import('package:@wener/utils');
+    const { sleep, shallowEqual } = await System.import('package:@wener/utils');
     t.truthy(sleep);
-    t.true(shallow({}, {}));
+    t.truthy(shallowEqual);
+    t.true(shallowEqual({}, {}));
   }
 });

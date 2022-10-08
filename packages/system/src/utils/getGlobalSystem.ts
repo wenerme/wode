@@ -5,11 +5,11 @@ import { Module } from '@wener/utils';
  */
 export function getGlobalSystem(): SystemJS {
   if (typeof window === 'undefined') {
-    // @ts-ignore
+    // @ts-expect-error
     return globalThis.System;
   }
   // after jspom polyfill window != globalThis
-  // @ts-ignore
+  // @ts-expect-error
   return window.System ?? globalThis.System;
 }
 
@@ -67,7 +67,7 @@ export interface SystemJS {
    * This represents the System base class, which can be extended or reinstantiated to create a custom System instance.
    * @category Core
    */
-  constructor(): SystemJS;
+  constructor(): SystemJS; // eslint-disable-line @typescript-eslint/no-misused-new
 
   /**
    * Applies to the global loading extra.
@@ -231,17 +231,16 @@ export interface SystemJS {
    * @category Core
    */
   register(...args: Registration): void;
+  /**
+   * @category Named Register
+   */
+  register(name: string, ...args: Registration): void;
 
   /**
    * Last {@link register} invocation params
    * @category Hook
    */
   getRegister(): Registration;
-
-  /**
-   * @category Named Register
-   */
-  register(name: string, ...args: Registration): void;
 
   /**
    * Deletes a module from the registry by ID.
@@ -258,15 +257,7 @@ export interface SystemJS {
   wasmModules?: Record<string, WebAssembly.Module>;
 }
 
-// declare let System: SystemJS;
-declare global {
-  let System: SystemJS;
-  namespace NodeJS {
-    interface Global {
-      System: SystemJS;
-    }
-  }
-}
+declare let System: SystemJS; // eslint-disable-line @typescript-eslint/no-unused-vars
 
 /**
  * Internal load object

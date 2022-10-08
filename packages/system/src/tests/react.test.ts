@@ -59,7 +59,7 @@ export async function testReactRender(t: ExecutionContext, System: SystemJS) {
     return React.createElement('span', {}, 'Hello');
   };
 
-  let $root = document.createElement('div');
+  const $root = document.createElement('div');
   const ReactTestUtils = await System.import('react-dom/test-utils');
   const ReactDOMClient = await System.import('react-dom/client');
   ReactTestUtils.act(() => {

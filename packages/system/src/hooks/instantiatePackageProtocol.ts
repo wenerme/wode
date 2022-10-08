@@ -27,10 +27,10 @@ export function instantiatePackageProtocol({
 
     const loader = System;
     let nextUrl = url;
-    let nextParent = parent;
+    const nextParent = parent;
 
     // package:react -> react
-    let originModuleId = new URL(url).pathname;
+    const originModuleId = new URL(url).pathname;
 
     let {
       n: name,
@@ -52,7 +52,7 @@ export function instantiatePackageProtocol({
     {
       logger.debug(`load package.json for ${url} through ${metaModuleUrl}`);
 
-      let module = await System.import(metaModuleUrl);
+      const module = await System.import(metaModuleUrl);
       if (!module?.default) {
         throw new Error(`package.json of ${name} -> ${metaModuleUrl} not found`);
       }
@@ -71,16 +71,16 @@ export function instantiatePackageProtocol({
     const base = resolveUrl(`${name}@${meta.version}/`);
     const baseSystem = resolveSystemUrl(`${name}@${meta.version}/`);
 
-    let pri = isPrivate(name);
+    const pri = isPrivate(name);
 
     // /lib -> /lib/package.json -> .module, .import, .main
     // /lib -> /lib/index.js
     // /lib -> /lib.js
     // /package.json -> .exports
 
-    let isBrowser = typeof window !== 'undefined';
+    const isBrowser = typeof window !== 'undefined';
 
-    let resolved: string | void;
+    let resolved: string | undefined;
     let isSystem = false;
 
     if (!path || path === '/') {
@@ -94,7 +94,7 @@ export function instantiatePackageProtocol({
       try {
         resolved = resolve(meta, path, { unsafe: true, conditions: ['system', 'production'] });
         // if exports only have default will also resolve, recheck the system condition
-        isSystem = Boolean(meta.exports['.']?.['system']);
+        isSystem = Boolean(meta.exports['.']?.system);
       } catch (e) {
         try {
           // at least use esm
@@ -119,7 +119,7 @@ export function instantiatePackageProtocol({
       if (!subBase.endsWith('/')) {
         subBase += '/';
       }
-      let pkgUrl = new URL('package.json', subBase).href;
+      const pkgUrl = new URL('package.json', subBase).href;
       try {
         logger.debug(`try resolve package.json of sub-path ${path} through ${pkgUrl}`);
         const { default: meta } = await loader.import(pkgUrl);
@@ -153,7 +153,7 @@ export function instantiatePackageProtocol({
       throw new Error(`Resolve ${url} failed`);
     }
 
-    let result = await orig(nextUrl, nextParent);
+    const result = await orig(nextUrl, nextParent);
     result[0] = result[0].map((v: string) => {
       if (v.startsWith('./')) {
         return new URL(v, nextUrl).href;

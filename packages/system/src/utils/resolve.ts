@@ -1,4 +1,5 @@
 // https://github.com/lukeed/resolve.exports/blob/master/src/index.js
+/* eslint no-cond-assign:0 no-unreachable-loop:0 */
 
 function loop(exports: any, keys: Set<string>): string | undefined {
   if (typeof exports === 'string') {
@@ -19,10 +20,10 @@ function loop(exports: any, keys: Set<string>): string | undefined {
       }
     }
   }
-  return;
+  return undefined;
 }
 
-function bail(name: string, entry: string, condition?: number) {
+function bail(name: string, entry: string, condition?: number): undefined {
   throw new Error(
     condition
       ? `No known conditions for "${entry}" entry in "${name}" package`
@@ -45,11 +46,11 @@ export interface ResolveOptions {
 /**
  * resolve based on exports
  */
-export function resolve(pkg: any, entry = '.', options: ResolveOptions = {}) {
-  let { name, exports } = pkg;
+export function resolve(pkg: any, entry = '.', options: ResolveOptions = {}): string | undefined {
+  const { name, exports } = pkg;
 
   if (exports) {
-    let { browser, require, unsafe, conditions = [] } = options;
+    const { browser, require, unsafe, conditions = [] } = options;
 
     let target = toName(name, entry);
     if (target[0] !== '.') target = './' + target;
@@ -58,13 +59,13 @@ export function resolve(pkg: any, entry = '.', options: ResolveOptions = {}) {
       return target === '.' ? exports : bail(name, target);
     }
 
-    let allows = new Set(['default', ...conditions]);
+    const allows = new Set(['default', ...conditions]);
     unsafe || allows.add(require ? 'require' : 'import');
     unsafe || allows.add(browser ? 'browser' : 'node');
 
-    let key,
-      tmp,
-      isSingle = false;
+    let key;
+    let tmp;
+    let isSingle = false;
 
     for (key in exports) {
       isSingle = key[0] !== '.';
@@ -96,16 +97,17 @@ export function resolve(pkg: any, entry = '.', options: ResolveOptions = {}) {
 
     return bail(name, target);
   }
+  return undefined;
 }
 
 /**
  * resolve main, module, browser
  */
 export function legacy(pkg: any, options: { browser?: boolean | string; fields?: string[] } = {}) {
-  let i = 0,
-    value,
-    browser = options.browser,
-    fields = options.fields || ['module', 'main'];
+  let i = 0;
+  let value;
+  let browser = options.browser;
+  const fields = options.fields ?? ['module', 'main'];
 
   if (browser && !fields.includes('browser')) {
     fields.unshift('browser');
@@ -113,10 +115,10 @@ export function legacy(pkg: any, options: { browser?: boolean | string; fields?:
 
   for (; i < fields.length; i++) {
     if ((value = pkg[fields[i]])) {
-      if (typeof value == 'string') {
+      if (typeof value === 'string') {
         //
-      } else if (typeof value == 'object' && fields[i] == 'browser') {
-        if (typeof browser == 'string') {
+      } else if (typeof value === 'object' && fields[i] === 'browser') {
+        if (typeof browser === 'string') {
           value = value[(browser = toName(pkg.name, browser))];
           if (value == null) return browser;
         }
@@ -124,7 +126,7 @@ export function legacy(pkg: any, options: { browser?: boolean | string; fields?:
         continue;
       }
 
-      return typeof value == 'string' ? './' + value.replace(/^\.?\//, '') : value;
+      return typeof value === 'string' ? './' + value.replace(/^\.?\//, '') : value;
     }
   }
 }

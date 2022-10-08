@@ -36,15 +36,15 @@ export function loadBrowserSystem({
           await loadScript();
         } else {
           logger.debug(`load systemjs through import`);
-          // @ts-ignore
+          // @ts-expect-error
           await import('systemjs/dist/system.js');
-          // @ts-ignore
+          // @ts-expect-error
           await import('systemjs/dist/extras/named-register.js');
-          // @ts-ignore
+          // @ts-expect-error
           await import('systemjs/dist/extras/dynamic-import-maps.js');
         }
         if (typeof window !== 'undefined') {
-          // @ts-ignore
+          // @ts-expect-error
           globalThis.System ??= window.System;
         }
       }
@@ -59,7 +59,7 @@ export function loadBrowserSystem({
     };
 
     await loadSystem();
-    let System = getGlobalSystem();
+    const System = getGlobalSystem();
     if (!System) {
       throw new Error('SystemJS not loaded');
     }

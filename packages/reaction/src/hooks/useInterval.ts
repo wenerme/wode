@@ -5,7 +5,7 @@ import { useEffect, useRef } from 'react';
  * @param handler
  * @param interval 0 means disable
  */
-export function useInterval(handler: TimerHandler, interval: number) {
+export function useInterval(handler: Function, interval: number) {
   const ref = useRef<any>();
   useEffect(() => {
     if (!interval || interval < 0) {

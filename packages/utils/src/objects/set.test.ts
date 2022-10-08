@@ -1,4 +1,4 @@
-/* eslint no-proto:0 */
+/* eslint no-proto:0 no-prototype-builtins:0 */
 import test from 'ava';
 import { set } from './set';
 
@@ -154,7 +154,7 @@ test('set arrays', (t) => {
     set(input, ['x', '1', 'z'], 123);
     t.true(input.x instanceof Array);
     t.deepEqual(input, {
-      x: [, { z: 123 }],
+      x: [undefined, { z: 123 }],
     });
   });
 

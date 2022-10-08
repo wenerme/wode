@@ -6,7 +6,7 @@
     "lib": [
       "dom",
       "dom.iterable",
-      "ESNext"
+      "ES2018"
     ],
     "strict": true,
     "sourceMap": true,
@@ -23,9 +23,5 @@
   },
   "exclude": [
     "node_modules"
-  ],
-  "include": [
-    "types.d.ts",
-    "src"
   ]
 }

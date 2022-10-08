@@ -42,7 +42,7 @@ function isClassComponent(component: any) {
     typeof component === 'function' &&
     (() => {
       const proto = Object.getPrototypeOf(component);
-      return proto.prototype && proto.prototype.isReactComponent;
+      return proto.prototype?.isReactComponent;
     })()
   );
 }

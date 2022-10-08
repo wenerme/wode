@@ -6,7 +6,7 @@ export function withStyleProps<T extends keyof JSX.IntrinsicElements, P extends 
 ): React.ComponentType<Omit<P, keyof D> & Partial<D>>;
 
 export function withStyleProps<T extends ComponentType<P>, P extends {}>(base: T, def: P): React.ComponentType<P> {
-  let Next = forwardRef<T, P>(({ className, style, ...props }: any, ref) =>
+  const Next = forwardRef<T, P>(({ className, style, ...props }: any, ref) =>
     createElement(base, {
       ...def,
       className: [(def as any).className, className].filter(Boolean).join(' '),

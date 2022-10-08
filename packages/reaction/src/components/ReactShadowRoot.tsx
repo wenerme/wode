@@ -6,10 +6,11 @@ const hasWindow = typeof window !== 'undefined';
 const constructableStylesheetsSupported =
   hasWindow &&
   window.ShadowRoot &&
-  window.ShadowRoot.prototype.hasOwnProperty('adoptedStyleSheets') &&
+  Object.prototype.hasOwnProperty.call(window.ShadowRoot, 'adoptedStyleSheets') &&
   window.CSSStyleSheet &&
-  window.CSSStyleSheet.prototype.hasOwnProperty('replace');
-const shadowRootSupported = hasWindow && window.Element && window.Element.prototype.hasOwnProperty('attachShadow');
+  Object.prototype.hasOwnProperty.call(window.CSSStyleSheet, 'replace');
+const shadowRootSupported =
+  hasWindow && window.Element && Object.prototype.hasOwnProperty.call(window.Element, 'attachShadow');
 
 export interface ReactShadowRootProps {
   delegatesFocus?: boolean;
@@ -28,11 +29,12 @@ export class ReactShadowRoot extends React.PureComponent<ReactShadowRootProps> {
     delegatesFocus: false,
     mode: 'open',
   };
+
   static displayName = 'ReactShadowRoot';
   static propTypes = {};
   static shadowRootSupported = shadowRootSupported;
   private shadowRoot?: ShadowRoot;
-  private placeholder: React.RefObject<HTMLElement>;
+  private readonly placeholder: React.RefObject<HTMLElement>;
   state = { initialized: false };
 
   /**
@@ -67,7 +69,7 @@ export class ReactShadowRoot extends React.PureComponent<ReactShadowRootProps> {
     if (!this.state.initialized) {
       return <span ref={this.placeholder} />;
     }
-    return ReactDOM.createPortal(this.props.children, this.shadowRoot!);
+    return this.shadowRoot && ReactDOM.createPortal(this.props.children, this.shadowRoot);
   }
 }
 

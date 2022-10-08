@@ -20,18 +20,18 @@ export async function loadServerSystem({
 
     const {
       default: { applyImportMap, setBaseUrl },
-      // @ts-ignore
-    } = await import('systemjs/dist/system-node.cjs'); // @ts-ignore
-    await import('systemjs/dist/extras/named-register.js'); // @ts-ignore
+      // @ts-expect-error
+    } = await import('systemjs/dist/system-node.cjs'); // @ts-expect-error
+    await import('systemjs/dist/extras/named-register.js'); // @ts-expect-error
     await import('systemjs/dist/extras/module-types.js');
 
-    let System = getGlobalSystem();
+    const System = getGlobalSystem();
     System.constructor.prototype.addImportMap ||= (...args: any[]) => applyImportMap(System, ...args);
     System.constructor.prototype.setBaseUrl = (u: string) => setBaseUrl(System, u);
   };
 
   await loadSystem();
-  let System = getGlobalSystem();
+  const System = getGlobalSystem();
   if (!System) {
     throw new Error('SystemJS not loaded');
   }

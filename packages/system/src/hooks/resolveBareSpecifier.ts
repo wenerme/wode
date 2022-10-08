@@ -15,7 +15,7 @@ export function resolveBareSpecifier({
       return cache ? map.get(id) || orig(id, parentUrl) : orig(id, parentUrl);
     } catch (e) {
       if (parseModuleId(id)) {
-        let r = `${protocol}:${id}`;
+        const r = `${protocol}:${id}`;
         logger.debug(`resolve bare specifier ${id} as ${r} from ${parentUrl || 'top level'}`);
         map.set(id, r);
         return orig(r, parentUrl);

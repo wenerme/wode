@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import { useIsoMorphicEffect } from './useIsoMorphicEffect';
 
 export function useLatestValue<T>(value: T) {
-  let cache = useRef(value);
+  const cache = useRef(value);
 
   useIsoMorphicEffect(() => {
     cache.current = value;

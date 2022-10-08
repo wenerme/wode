@@ -45,7 +45,7 @@ export function createTranslate<T extends object>(obj?: Record<string, T>): Tran
         }
       }
       if (typeof val === 'function') return val(params);
-      if (typeof val === 'string') return renderTemplate(val, params!, 'common');
+      if (typeof val === 'string') return renderTemplate(val, params, 'common');
       return val;
     },
   };
