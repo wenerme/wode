@@ -67,7 +67,7 @@ WANT_CJS?=$(shell jq -r '.exports["."]|has("require")' package.json)
 ESBUILD_DEVELOPMENT_FLAGS?	=--define:process.env.NODE_ENV=\"development\" --define:__DEV__=true --minify-syntax --charset=utf8 --target=chrome90 --sourcemap
 ESBUILD_PRODUCTION_FLAGS?	=--define:process.env.NODE_ENV=\"production\" --define:__DEV__=false --minify --charset=utf8 --target=chrome90 --sourcemap
 
-SOURCE_FILES?=$(shell ls 2>/dev/null src/**/*.js src/**/*.ts src/**/*.tsx | grep -Ev '[.]test[.]tsx?')
+SOURCE_FILES?=$(shell ls 2>/dev/null src/**/*.js src/**/*.ts src/**/*.tsx | egrep -v '[.]test[.]tsx?')
 # will not minify
 ESBUILD_BUILD_FLAGS?=--charset=utf8 --target=chrome90 --sourcemap --platform=neutral
 build:
@@ -154,7 +154,7 @@ lint:
 	@printf $(COLOR_INFO) "Linting..."
 ifneq ($(wildcard next.config.*),)
 	$(EXEC) next lint $(if $(filter 1,$(LINT_FIX)),--fix)
-else ifneq ($(wildcard .eslintrc.js $(REPO_ROOT)/.eslintrc.js),)
+else ifneq ($(wildcard .eslintrc.* $(REPO_ROOT)/.eslintrc.*),)
 	$(EXEC) eslint src $(if $(filter 1,$(LINT_FIX)),--fix)
 else ifneq ($(wildcard tsconfig.json),)
 	$(EXEC) tsc --pretty --noEmit
