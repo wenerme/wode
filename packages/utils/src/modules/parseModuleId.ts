@@ -9,11 +9,13 @@ export type ParsedModuleId = {
   range: string; // version, tag, range
   pkg: string;
   path?: string;
+  org?: string;
+  versioned: boolean; // is module id contain a version specifier
 } & (
   | { scoped: false }
   | {
       scoped: true;
-      org?: string;
+      org: string;
     }
 );
 
@@ -39,6 +41,8 @@ export function parseModuleId(s: string): ParsedModuleId | undefined {
     range,
     scoped,
     pkg,
+    org,
+    versioned: Boolean(version),
   };
   if (v) {
     o.version = v;
@@ -46,8 +50,8 @@ export function parseModuleId(s: string): ParsedModuleId | undefined {
   if (path) {
     o.path = path;
   }
-  if (o.scoped) {
-    o.org = org;
+  if (!o.scoped) {
+    delete o.org;
   }
   return o;
 }

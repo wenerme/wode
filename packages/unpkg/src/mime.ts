@@ -18,6 +18,7 @@ mime.define(
   },
   /* force */ true,
 );
+// .npmrc, .gitkeep, .dockerignore, yarn.lock
 const textFiles = /\/?(\.[a-z]*rc|\.git[a-z]*|\.[a-z]*ignore|\.lock)$/i;
 
 export function getContentType(file: string) {
