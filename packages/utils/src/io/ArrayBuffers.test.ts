@@ -15,8 +15,8 @@ test('concat', (t) => {
 test('asView for Buffer', (t) => {
   const buf = Buffer.from([1, 2, 3, 4, 5]);
   t.is(ArrayBuffers.asView(Buffer, buf), buf);
-  const uint8: Uint8Array = ArrayBuffers.asView(Uint8Array, buf);
-  t.is((ArrayBuffers.asView(Buffer, uint8) as Buffer).buffer, buf.buffer);
+  const uint8 = ArrayBuffers.asView(Uint8Array, buf);
+  t.is(ArrayBuffers.asView(Buffer, uint8).buffer, buf.buffer);
 
   t.deepEqual(uint8, buf);
   t.deepEqual(ArrayBuffers.asView(Buffer, uint8), buf);

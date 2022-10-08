@@ -22,12 +22,12 @@ export interface ArrayBuffers {
    *
    * TypedArray can be {@link Buffer}, will avoid copy
    */
-  asView<V, C extends ArrayBufferViewConstructor<V>>(
+  asView<C extends ArrayBufferViewConstructor<unknown>>(
     TypedArray: C,
     v: BufferSource,
     byteOffset?: number,
     byteLength?: number,
-  ): V;
+  ): InstanceType<C>;
 
   /**
    * toString convert the given {@link BufferSource} to string
@@ -80,23 +80,23 @@ export const ArrayBuffers = {
     }
     return o.slice(start, end);
   },
-  asView: <V, C extends ArrayBufferViewConstructor<V>>(
+  asView: <C extends ArrayBufferViewConstructor<unknown>, I extends InstanceType<C>>(
     TypedArray: C,
     v: BufferSource,
-    byteOffset: number = 0,
+    byteOffset?: number,
     byteLength?: number,
-  ): V => {
+  ): I => {
     if (v instanceof TypedArray && (byteOffset ?? 0) === 0 && byteLength === undefined) {
-      return v;
+      return v as I;
     }
     if (ArrayBuffer.isView(v) || isBuffer(v)) {
       if (ArrayBuffers._allowedBuffer && typeof Buffer !== 'undefined' && (TypedArray as any) === Buffer) {
         // new Buffer() is deprecated
-        return Buffer.from(v.buffer, byteOffset, byteLength) as any;
+        return Buffer.from(v.buffer, byteOffset, byteLength) as I;
       }
-      return new TypedArray(v.buffer, v.byteOffset + byteOffset, byteLength ?? v.byteLength);
+      return new TypedArray(v.buffer, v.byteOffset + (byteOffset ?? 0), byteLength ?? v.byteLength) as I;
     }
-    return new TypedArray(v, byteOffset, byteLength);
+    return new TypedArray(v, byteOffset, byteLength) as I;
   },
   toString: (buf: BufferSource | string, encoding: ToStringEncoding = 'utf8') => {
     // 'ascii'  'utf16le' | 'ucs2' | 'ucs-2' | 'base64' | 'base64url' | 'latin1' | 'binary' | 'hex'
@@ -159,7 +159,7 @@ export const ArrayBuffers = {
       }
       // as cast
       // https://stackoverflow.com/questions/73994091
-      return (ArrayBuffers.asView(Uint8Array, ArrayBuffers.from(fill, encoding)) as Uint8Array).slice(0, size);
+      return ArrayBuffers.asView(Uint8Array, ArrayBuffers.from(fill, encoding)).slice(0, size);
     }
     return new ArrayBuffer(size);
   },
