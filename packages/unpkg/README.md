@@ -1,6 +1,30 @@
 # @wener/unpkg
 
-Selfhost https://unpkg.com/ alternative
+Selfhost https://unpkg.com/ https://cdn.jsdelivr.net/npm/ alternative
+
+```ts
+import { Unpkg } from '@wener/unpkg';
+import { createBearerAuthFetch, createUnpkg, createUnpkgHandler } from '@wener/unpkg/server';
+
+const unpkg = await createUnpkg({
+  logger: fastify.log,
+  url: process.env.UNPKG_REGISTRY,
+  sqlite: {
+    database: process.env.UNPKG_CACHE_DB,
+  },
+});
+// for private npm registry
+if (process.env.UNPKG_TOKEN) {
+  unpkg.fetch = createBearerAuthFetch(process.env.UNPKG_TOKEN);
+}
+
+// for server handler
+// NextJS, fastify, etc.
+const handler = await createUnpkgHandler({
+  unpkg,
+  prefix: '/api/unpkg',
+});
+```
 
 <!-- LINK:BEGIN -->
 
