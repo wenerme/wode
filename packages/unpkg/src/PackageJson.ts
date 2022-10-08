@@ -1,3 +1,5 @@
+import { MaybeArray } from '@wener/utils';
+
 /**
  * Package author information.
  * @see https://docs.npmjs.com/files/package.json#people-fields-author-contributors
@@ -183,6 +185,12 @@ export interface PackageJson {
   exports?: IExports;
   module?: string;
   import?: string;
+  funding?: MaybeArray<{ type: string; url: string } | string>;
+
+  peerDependenciesMeta?: Record<string, { optional?: boolean }>;
+  bundleDependencies?: string[];
+  overrides?: IDependencyMap | Record<string, IDependencyMap>;
+  workspaces?: string[];
 
   /**
    * Package author information. An author is one person.
