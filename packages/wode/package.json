@@ -1,6 +1,6 @@
 {
   "name": "@wener/wode",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "description": "Wener's node starter conf",
   "repository": {
@@ -19,6 +19,7 @@
     "*.mjs",
     "tsconfig",
     "eslint-config",
+    "prettier-config",
     "Makefile",
     "node.mk"
   ],
