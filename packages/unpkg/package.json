@@ -1,6 +1,6 @@
 {
   "name": "@wener/unpkg",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "type": "module",
   "description": "NPM Registry unpkg",
   "repository": {
@@ -53,6 +53,8 @@
   "keywords": [
     "unpkg",
     "registry",
+    "jsdelivr",
+    "npm",
     "cdn"
   ],
   "scripts": {
