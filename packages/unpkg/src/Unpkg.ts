@@ -19,12 +19,9 @@ export interface InitUnpkgOptions {
 }
 
 interface UnpkgOptions {
-  url: string;
-  storage: UnpkgStorage;
-  logger: Logger;
   tmp: string;
-  fetch: SimpleFetch;
-  lru: LRU<string, any>;
+  packageIndexTtlMs: number;
+  packageVersionTtlMs: number;
 }
 
 export type SimpleFetch = (url: string, init?: RequestInit) => Promise<Response>;
@@ -33,12 +30,12 @@ export class Unpkg {
   url: string;
   fetch: SimpleFetch;
   readonly storage: UnpkgStorage;
-  protected log;
+  readonly logger;
   // pkg -> package list meta
   // pkg@version -> package meta
   protected tmp;
   // pkg@version/path -> file
-  protected lru: LRU<string, any>;
+  readonly lru: LRU<string, any>;
   private readonly options: UnpkgOptions;
 
   constructor(options: InitUnpkgOptions) {
@@ -48,13 +45,19 @@ export class Unpkg {
         url: 'https://registry.npmjs.org',
         tmp: '/tmp/unpkg',
         fetch: globalThis.fetch,
-        lru: new LRU({ max: 1000, ttl: 1000 * 60 * 5 }), // 5 min
+        lru: new LRU({
+          max: 1000,
+          maxSize: 1024 * 1024 * 100, // 100M
+          ttl: 1000 * 60 * 5,
+        }), // 5 min
+        packageIndexTtlMs: 1000 * 60 * 60 * 15, // 15min
+        packageVersionTtlMs: 1000 * 60 * 60 * 30, // 30min
       },
       options,
     ));
 
     this.url = url;
-    this.log = logger;
+    this.logger = logger;
     this.tmp = tmp;
     this.fetch = fetch;
     this.lru = lru;
@@ -67,7 +70,7 @@ export class Unpkg {
   }
 
   async getPackageFile(packageName: string): Promise<Buffer> {
-    const { storage, log } = this;
+    const { storage, logger } = this;
     const info = await this.getPackageVersionInfo(packageName);
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const { path: requestFilePath } = parseModuleId(packageName)!;
@@ -77,7 +80,7 @@ export class Unpkg {
     }
     const pkgId = info._id;
     if (!(await storage.hasPackageFile(pkgId))) {
-      log.info(`getPackageFile: untar ${pkgId}`);
+      logger.info(`getPackageFile: untar ${pkgId}`);
       const buffer = await this.getPackageTarball(packageName);
       const readable = Readable.from(buffer);
 
@@ -87,7 +90,7 @@ export class Unpkg {
         .pipe(tar.t())
         .on('error' as any, read.reject)
         .on('close', () => {
-          log.info('Tar: close');
+          logger.info('Tar: close');
           read.resolve();
         })
         .on('entry', async (entry: ReadEntry) => {
@@ -98,7 +101,7 @@ export class Unpkg {
 
           let p = entry.path;
           p = p.substring(p.indexOf('/'));
-          log.info(`Tar: ${entry.type} -  ${p} - ${entry.size} - ${path.extname(p)} `);
+          logger.info(`Tar: ${entry.type} -  ${p} - ${entry.size} - ${path.extname(p)} `);
           await storage.savePackageFile({
             package: pkgId,
             size: entry.size ?? 0,
@@ -114,7 +117,7 @@ export class Unpkg {
       path: requestFilePath,
     })) as Buffer;
     if (!data) {
-      log.warn(`getPackageFile: ${pkgId} ${requestFilePath} not found`);
+      logger.warn(`getPackageFile: ${pkgId} ${requestFilePath} not found`);
       throw Object.assign(new Error(`File not found: ${requestFilePath}`), { status: 404 });
     }
     return data;
@@ -153,7 +156,7 @@ export class Unpkg {
     if (data) {
       return data;
     }
-    this.log.info(`getPackageTarball fetch ${packageName} -> ${url}`);
+    this.logger.info(`getPackageTarball fetch ${packageName} -> ${url}`);
     data = Buffer.from(await fetch(url).then((v) => v.arrayBuffer()));
     await storage.saveRawFile({ url, name, version, data });
     return data;
@@ -168,7 +171,7 @@ export class Unpkg {
     if (!module) {
       throw Object.assign(new Error(`Invalid package name: ${packageName}`), { status: 400 });
     }
-    const { fetch, log, lru } = this;
+    const { fetch, logger, lru } = this;
     const { name } = module;
     const dir = `${this.tmp}/${name}`;
     const metaPath = `${dir}/package.json`;
@@ -179,29 +182,42 @@ export class Unpkg {
       return out;
     }
     try {
+      // fs cache for index
       const mtime = (await fs.stat(metaPath))?.mtime;
       // 15min
       if (mtime) {
         if (Date.now() - mtime.getTime() < 1000 * 60 * 60 * 15) {
-          out = JSON.parse((await fs.readFile(metaPath)).toString());
-          lru.set(name, out);
+          const text = (await fs.readFile(metaPath)).toString();
+          out = JSON.parse(text);
+          lru.set(name, out, {
+            size: text.length,
+            ttl: this.options.packageIndexTtlMs,
+          });
           return out;
         } else {
-          log.info(`getPackageInfo: expired ${packageName}`);
+          logger.info(`getPackageInfo: expired ${packageName}`);
         }
       }
     } catch (e) {
       // file not exists
     }
 
+    // maybe very large - react 3MB
     const url = `${this.url}/${name}`;
-    log.info(`getPackageInfo: fetch ${packageName} -> ${url}`);
-    out = await fetch(url).then((v) => v.json());
+    logger.info(`getPackageInfo: fetch ${packageName} -> ${url}`);
+    let size = 2048;
+    out = await fetch(url).then((v) => {
+      size = parseInt(v.headers.get('content-length') || '') || size;
+      return v.json();
+    });
     if (!out?._id) {
       throw new Error(`Invalid package ${packageName} metadata: missing _id`);
     }
     await fs.mkdir(dir, { recursive: true });
-    lru.set(name, out);
+    lru.set(name, out, {
+      size,
+      ttl: this.options.packageIndexTtlMs,
+    });
     await fs.writeFile(metaPath, JSON.stringify(out, null, 2));
     return out;
   }
@@ -214,8 +230,8 @@ export class Unpkg {
     if (!module) {
       throw Object.assign(new Error(`Invalid package name: ${packageName}`), { status: 400 });
     }
-    const { storage, log, fetch, lru } = this;
-    log.trace(`getPackageInfo: ${packageName}`);
+    const { storage, logger, fetch, lru } = this;
+    logger.trace(`getPackageInfo: ${packageName}`);
     let { id, name, version, range } = module;
     let out: RegistryPackageJson;
 
@@ -241,18 +257,25 @@ export class Unpkg {
       const meta = await storage.getPackageMetaByNameAndVersion({ name, version });
       if (meta) {
         out = JSON.parse(meta);
-        lru.set(id, out);
+        lru.set(id, out, {
+          size: meta.length,
+          ttl: this.options.packageVersionTtlMs,
+        });
         return out;
       }
     }
 
     //
     const url = `${this.url}/${name}/${version || 'latest'}`;
-    out = await fetch(url).then((v) => v.json());
+    let size = 1024;
+    out = await fetch(url).then((v) => {
+      size = parseInt(v.headers.get('content-length') || '') || size;
+      return v.json();
+    });
     version = out.version;
-    log.info(`getPackageVersionInfo: fetch ${packageName} -> ${url}`);
+    logger.info(`getPackageVersionInfo: fetch ${packageName} -> ${url}`);
     if (!out?.name) {
-      log.warn(`getPackageVersionInfo: not found ${packageName} -> ${url}`);
+      logger.warn(`getPackageVersionInfo: not found ${packageName} -> ${url}`);
       throw Object.assign(new Error(`unable to fetch ${id}`), { status: 404 });
     }
     await storage.savePackage({
@@ -260,8 +283,14 @@ export class Unpkg {
       version,
       meta: JSON.stringify(out),
     });
-
-    lru.set(id, out);
+    {
+      // found new version, invalidate index
+      const index = lru.get(name);
+      if (index && index['dist-tags'][range] !== out.version) {
+        lru.delete(name);
+      }
+    }
+    lru.set(id, out, { size, ttl: this.options.packageVersionTtlMs });
     return out;
   }
 }

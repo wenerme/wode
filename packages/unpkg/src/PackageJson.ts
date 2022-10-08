@@ -191,6 +191,7 @@ export interface PackageJson {
   bundleDependencies?: string[];
   overrides?: IDependencyMap | Record<string, IDependencyMap>;
   workspaces?: string[];
+  type?: 'module' | 'common' | string;
 
   /**
    * Package author information. An author is one person.
