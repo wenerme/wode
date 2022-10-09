@@ -1,4 +1,4 @@
-import { MaybePromise } from '@wener/utils';
+import type { MaybePromise } from '@wener/utils';
 
 export interface UnpkgStorage<O extends object = any> {
   init(o?: O): Promise<void>;

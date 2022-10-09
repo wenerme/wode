@@ -1,5 +1,5 @@
 import React from 'react';
-import { Equivalence } from '../typing';
+import type { Equivalence } from '../typing';
 
 /**
  * create deep compare hooks based on eq

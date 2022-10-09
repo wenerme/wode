@@ -5,9 +5,10 @@ import { Readable } from 'node:stream';
 import zlib from 'node:zlib';
 import semver from 'semver';
 import tar, { type ReadEntry } from 'tar';
-import { createLazyPromise, Logger, parseModuleId } from '@wener/utils';
-import { RegistryPackage, RegistryPackageJson } from './RegistryPackage';
-import { UnpkgStorage } from './UnpkgStorage';
+import type { Logger} from '@wener/utils';
+import { createLazyPromise, parseModuleId } from '@wener/utils';
+import type { RegistryPackage, RegistryPackageJson } from './RegistryPackage';
+import type { UnpkgStorage } from './UnpkgStorage';
 
 export interface InitUnpkgOptions {
   url?: string;

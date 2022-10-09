@@ -14,14 +14,12 @@ export class BencodeDecoder {
   private readIndex = 0;
   private view: Uint8Array = new Uint8Array(0);
   #path: Array<string | number> = [];
-  #options = {
-    bufferPath: [],
-  } as {
+  #options: {
     bufferPath: string[];
     buffer?: (k: string, v: ArrayBuffer) => any;
+  } = {
+    bufferPath: [],
   };
-
-  constructor() {}
 
   addBufferPath(...s: string[]) {
     this.#options.bufferPath.push(...s);
@@ -34,10 +32,10 @@ export class BencodeDecoder {
   }
 
   #integer(): Number {
-    let { readIndex: pos, view: view } = this;
+    let { readIndex: pos, view } = this;
     pos++; // marker
 
-    let idx = view.indexOf(END_OF_TYPE, pos);
+    const idx = view.indexOf(END_OF_TYPE, pos);
     if (idx === -1) {
       throw new Error(`Invalid bencode integer at ${pos}`);
     }
@@ -49,18 +47,18 @@ export class BencodeDecoder {
     let { readIndex: pos, view } = this;
 
     // string as buffer
-    let idx = view.indexOf(STRING_DELIM, pos);
+    const idx = view.indexOf(STRING_DELIM, pos);
     if (idx === -1) {
       throw new Error(`Invalid bencode string at ${pos}`);
     }
-    let len = Number(ArrayBuffers.toString(view.subarray(pos, idx)));
+    const len = Number(ArrayBuffers.toString(view.subarray(pos, idx)));
     if (isNaN(len)) {
       throw new Error(`Invalid bencode string length at ${pos}`);
     }
     pos = idx + 1;
     this.readIndex = pos + len;
-    let buf = view.subarray(pos, this.readIndex);
-    let k = this.#path.join('.');
+    const buf = view.subarray(pos, this.readIndex);
+    const k = this.#path.join('.');
 
     if (this.#options.bufferPath.includes(k)) {
       // copy buffer
@@ -76,14 +74,14 @@ export class BencodeDecoder {
   }
 
   #decode() {
-    let { view } = this;
+    const { view } = this;
 
     switch (view[this.readIndex]) {
       case DICT_START: {
         this.readIndex++;
         const out: Record<string, any> = {};
         while (view[this.readIndex] !== END_OF_TYPE) {
-          let key = ArrayBuffers.toString(this.#string());
+          const key = ArrayBuffers.toString(this.#string());
           this.#path.push(key);
           out[key] = this.#decode();
           this.#path.pop();
@@ -91,7 +89,7 @@ export class BencodeDecoder {
         this.readIndex++;
         return out;
       }
-      case LIST_START:
+      case LIST_START: {
         this.readIndex++;
         const out: any[] = [];
         let index = 0;
@@ -102,6 +100,7 @@ export class BencodeDecoder {
         }
         this.readIndex++;
         return out;
+      }
       case INTEGER_START: {
         return this.#integer();
       }

@@ -1,4 +1,4 @@
-import { SimpleFetch } from './Unpkg';
+import type { SimpleFetch } from './Unpkg';
 
 export function createBearerAuthFetch(token: string | (() => string), fetch: SimpleFetch = globalThis.fetch) {
   return (url: string, init?: RequestInit) => {

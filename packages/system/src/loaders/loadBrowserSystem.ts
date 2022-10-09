@@ -1,6 +1,8 @@
-import { createChildLogger, loadScripts, Logger } from '@wener/utils';
+import type { Logger } from '@wener/utils';
+import { createChildLogger, loadScripts } from '@wener/utils';
 import { getGlobalSystem } from '../utils/getGlobalSystem';
-import { hookSystem, SystemHookOption } from './hookSystem';
+import type { SystemHookOption } from './hookSystem';
+import { hookSystem } from './hookSystem';
 
 let _loading: Promise<any>;
 

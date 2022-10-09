@@ -1,4 +1,5 @@
-import React, { DependencyList, EffectCallback, useEffect } from 'react';
+import type { DependencyList, EffectCallback} from 'react';
+import React, { useEffect } from 'react';
 import { shallowEqual } from '@wener/utils';
 
 /**

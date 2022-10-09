@@ -1,1 +1,1 @@
-export { default as Bencode } from './bencode/Bencode';
+export { Bencode } from './bencode/Bencode';

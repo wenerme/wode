@@ -1,4 +1,4 @@
-import { CSSProperties, Ref } from 'react';
+import type { CSSProperties, Ref } from 'react';
 import { mergeRefs } from './mergeRefs';
 
 /**

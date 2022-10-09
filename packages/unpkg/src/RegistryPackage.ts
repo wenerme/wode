@@ -1,4 +1,4 @@
-import { PackageJson } from './PackageJson';
+import type { PackageJson } from './PackageJson';
 
 /**
  * @see https://registry.npmjs.org/@wener/reaction

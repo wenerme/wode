@@ -1,6 +1,6 @@
 import test from 'ava';
 import { ArrayBuffers } from '@wener/utils';
-import Bencode from './Bencode';
+import { Bencode } from './Bencode';
 
 const { encode, decode } = Bencode;
 
@@ -92,19 +92,19 @@ test('encode', (t) => {
       new Float32Array([1.2, 2.3, 3.4, 4.5, 5.6, 6.7, 7.8, 8.9, 9.0]),
       'Float32Array as buffer',
     ],
-  ]) {
-    let buf = encode(k);
+  ] as Array<[any, any, string | undefined]>) {
+    const buf = encode(k);
     //
-    let l = Bencode.byteLength(k);
+    const l = Bencode.byteLength(k);
     t.is(l, buf.byteLength, `byteLength ${l} != ${buf.byteLength}`);
     if (typeof v === 'string') {
-      let out = ArrayBuffers.toString(buf);
+      const out = ArrayBuffers.toString(buf);
       t.is(out, v, `should encode ${k} as ${v}`);
       // t.log(`decoding ${v} ->`);
-      let data = decode(buf);
+      const data = decode(buf);
       t.is(ArrayBuffers.toString(encode(data)), v, `should decode ${k} to ${data}`);
     } else {
-      t.deepEqual(buf, ArrayBuffers.from(v as any), m ? (m as string) : `should encode ${k} as ${v}`);
+      t.deepEqual(buf, ArrayBuffers.from(v), m || `should encode ${k} as ${v}`);
     }
   }
 });
