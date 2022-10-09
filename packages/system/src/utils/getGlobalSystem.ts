@@ -1,4 +1,4 @@
-import { Module } from '@wener/utils';
+import type { Module } from '@wener/utils';
 
 /**
  * Try to get the global System instance

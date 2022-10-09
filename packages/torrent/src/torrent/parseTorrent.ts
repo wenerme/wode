@@ -1,6 +1,6 @@
 import { arrayOfMaybeArray, hex, sha1 } from '@wener/utils';
 import { Bencode } from '../bencode/Bencode';
-import { Torrent, TorrentInfo, TorrentInfoFile } from './torrent';
+import type { Torrent, TorrentInfo, TorrentInfoFile } from './torrent';
 
 export interface ParsedTorrentFile {
   path: string;
@@ -41,16 +41,18 @@ export async function infoHash(s: BufferSource) {
 export async function parseTorrent(data: BufferSource): Promise<ParsedTorrent> {
   // https://github.com/webtorrent/parse-torrent
 
-  let torrent = Bencode.createDecoder().addBufferPath('info.pieces').decode(data) as Torrent;
+  const torrent = Bencode.createDecoder().addBufferPath('info.pieces').decode(data) as Torrent;
   if (torrent.info?.['meta version'] === 2) {
     throw new Error('meta version 2 is not supported');
   }
   // sanity check
   ensure(torrent.info, 'info');
-  let name = torrent.info['name.utf-8'] || torrent.info.name;
+  const name = torrent.info['name.utf-8'] || torrent.info.name;
+  const pieceLength = torrent.info['piece length'];
+  const pieces = torrent.info.pieces;
   ensure(name, 'info.name');
-  ensure(torrent.info['piece length'], "info['piece length']");
-  ensure(torrent.info.pieces, 'info.pieces');
+  ensure(pieceLength, "info['piece length']");
+  ensure(pieces, 'info.pieces');
 
   if (torrent.info.files) {
     torrent.info.files.forEach((file, i) => {
@@ -62,19 +64,19 @@ export async function parseTorrent(data: BufferSource): Promise<ParsedTorrent> {
     ensure(typeof torrent.info.length === 'number', 'info.length');
   }
 
-  let infoBuffer = Bencode.encode(torrent.info);
+  const infoBuffer = Bencode.encode(torrent.info);
 
   const result: ParsedTorrent = {
-    torrent: torrent,
+    torrent,
     info: torrent.info,
     infoHash: await infoHash(infoBuffer),
     // infoBuffer: infoBuffer,
-    name: name!,
+    name,
     announce: uniq([arrayOfMaybeArray(torrent.announce), torrent['announce-list']].filter(Boolean).flat(2)) as string[],
     private: Boolean(torrent.info.private),
     // handle url-list (BEP19 / web seeding)
     urlList: uniq(arrayOfMaybeArray(torrent['url-list']).filter(Boolean)),
-    pieceLength: 0,
+    pieceLength,
     files: [],
     pieces: [],
     lastPieceLength: 0,
@@ -88,24 +90,23 @@ export async function parseTorrent(data: BufferSource): Promise<ParsedTorrent> {
     if (val) result.createdAt = new Date(val * 1000);
   }
   {
-    let val = torrent['created by'] || torrent['saved by'];
+    const val = torrent['created by'] || torrent['saved by'];
     if (val) result.createdBy = val;
   }
 
   const files = torrent.info.files || [torrent.info as TorrentInfoFile];
 
-  result.pieceLength = torrent.info['piece length']!;
-  result.pieces = splitPieces(torrent.info.pieces!);
+  result.pieces = splitPieces(pieces);
 
   let offset = 0;
   result.files = files.map((file) => {
     const parts = [result.name, file['path.utf-8'] || file.path].filter(Boolean);
-    let v: ParsedTorrentFile = {
+    const v: ParsedTorrentFile = {
       // path: path.join.apply(null, ['/'].concat(parts)).slice(1),
       path: parts.join('/'),
       name: parts[parts.length - 1],
       length: file.length,
-      offset: offset,
+      offset,
       piece0Hash: result.pieces[Math.floor(offset / result.pieceLength)],
       piece0Offset: offset % result.pieceLength,
 
@@ -142,8 +143,6 @@ function splitPieces(buf: Uint8Array) {
   return pieces;
 }
 
-function ensure<T>(v: any, fieldName: string): asserts v is AssertTrue<T> {
+function ensure<T>(v: any, fieldName: string): asserts v is NonNullable<T> {
   if (v === null || v === undefined || v === false) throw new Error(`Torrent is missing required field: ${fieldName}`);
 }
-
-type AssertTrue<T> = T extends null | undefined | false ? never : T;

@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 
 /**
  * mergeRefs help handling multi refs

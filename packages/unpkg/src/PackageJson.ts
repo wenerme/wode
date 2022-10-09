@@ -1,4 +1,4 @@
-import { MaybeArray } from '@wener/utils';
+import type { MaybeArray } from '@wener/utils';
 
 /**
  * Package author information.

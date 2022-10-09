@@ -7,20 +7,20 @@ import { polyfillCrypto } from '@wener/utils/server';
 import { Bencode } from '../../bencode/Bencode';
 import { parseTorrent } from '../parseTorrent';
 
-var __dirname = path.dirname(fileURLToPath(import.meta.url));
+const dirname = path.dirname(fileURLToPath(import.meta.url));
 
 test.before(async () => {
   await polyfillCrypto();
 });
 
 test('parseFile', async (t) => {
-  const files = await globby(path.join(__dirname, 'fixtures') + '/*.torrent');
+  const files = await globby(path.join(dirname, 'fixtures') + '/*.torrent');
   files.sort();
   for (const file of files) {
     const r = await fs.readFile(file);
-    let { pieces, info, torrent, ...rest } = await parseTorrent(r);
+    const { pieces, info, torrent, ...rest } = await parseTorrent(r);
     t.snapshot(rest, `should parse ${path.basename(file)}`);
-    let encode = Bencode.encode(torrent);
+    const encode = Bencode.encode(torrent);
     // await fs.writeFile('a', r);
     // await fs.writeFile('b', Buffer.from(encode));
     t.is(encode.byteLength, r.length, `expected encode ${file} to ${r.length}`);

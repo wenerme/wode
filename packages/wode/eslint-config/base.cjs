@@ -35,12 +35,19 @@ module.exports = {
         '@typescript-eslint/promise-function-async': 'off',
         '@typescript-eslint/restrict-template-expressions': 'off',
         '@typescript-eslint/prefer-nullish-coalescing': 'off',
+
+        // avoid errors in esbuild
+        '@typescript-eslint/consistent-type-imports': 'warn',
+        '@typescript-eslint/consistent-type-exports': 'error',
+        // too strict
         '@typescript-eslint/array-type': [
           'off',
           {
             default: 'array-simple',
           },
         ],
+        //
+        '@typescript-eslint/no-extraneous-class': ['error', { allowStaticOnly: true }],
         '@typescript-eslint/no-redeclare': [
           'error',
           {

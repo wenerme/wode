@@ -1,5 +1,6 @@
-import { Logger, parseModuleId } from '@wener/utils';
-import { Unpkg } from './Unpkg';
+import type { Logger} from '@wener/utils';
+import { parseModuleId } from '@wener/utils';
+import type { Unpkg } from './Unpkg';
 import { getContentType } from './mime';
 
 export interface CreateUnpkgHandlerOptions {

@@ -1,4 +1,4 @@
-import { AbstractEncoding } from '@wener/utils';
+import type { AbstractEncoding } from '@wener/utils';
 import { BencodeDecoder } from './BencodeDecoder';
 import { BencodeEncoder } from './BencodeEncoder';
 
@@ -6,6 +6,9 @@ import { BencodeEncoder } from './BencodeEncoder';
  * Bencode Encoding
  */
 export interface Bencode extends AbstractEncoding<any> {
+  /**
+   * byte length of encoded data
+   */
   byteLength(data: any): number;
 
   /**
@@ -16,16 +19,16 @@ export interface Bencode extends AbstractEncoding<any> {
   createEncoder(): typeof BencodeEncoder;
 }
 
-export const Bencode = {
-  byteLength: (data: any) => new BencodeEncoder().byteLength(data),
-  encode: (data: any, buffer?: ArrayBuffer, offset = 0): ArrayBuffer => {
+export class Bencode {
+  static byteLength = (data: any) => new BencodeEncoder().byteLength(data);
+  static encode = (data: any, buffer?: ArrayBuffer, offset = 0): ArrayBuffer => {
     return new BencodeEncoder().encode(data, buffer, offset);
-  },
-  decode: (buffer: BufferSource, start?: number, end?: number) => {
-    return new BencodeDecoder().decode(buffer, start, end);
-  },
-  createDecoder: () => new BencodeDecoder(),
-  createEncoder: () => new BencodeEncoder(),
-};
+  };
 
-export default Bencode;
+  static decode = (buffer: BufferSource, start?: number, end?: number) => {
+    return new BencodeDecoder().decode(buffer, start, end);
+  };
+
+  static createDecoder = () => new BencodeDecoder();
+  static createEncoder = () => new BencodeEncoder();
+}

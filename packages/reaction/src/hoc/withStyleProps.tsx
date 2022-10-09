@@ -1,4 +1,6 @@
-import React, { ComponentType, createElement, forwardRef } from 'react';
+import type { ComponentType} from 'react';
+import type React from 'react';
+import { createElement, forwardRef } from 'react';
 
 export function withStyleProps<T extends keyof JSX.IntrinsicElements, P extends JSX.IntrinsicElements[T], D extends P>(
   base: T,

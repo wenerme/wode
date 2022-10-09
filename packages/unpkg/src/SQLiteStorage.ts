@@ -1,5 +1,5 @@
 import SQLite, { type Database } from 'better-sqlite3';
-import { PackageEntity, PackageFileEntity, RawFileEntity, UnpkgStorage } from './UnpkgStorage';
+import type { PackageEntity, PackageFileEntity, RawFileEntity, UnpkgStorage } from './UnpkgStorage';
 
 export interface SQLiteStorageOptions {
   database?: string;

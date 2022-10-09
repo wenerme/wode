@@ -1,6 +1,7 @@
 import test from 'ava';
 import { loadServerSystem } from '../loaders/loadServerSystem';
-import { DeclareFn, getGlobalSystem } from '../utils/getGlobalSystem';
+import type { DeclareFn} from '../utils/getGlobalSystem';
+import { getGlobalSystem } from '../utils/getGlobalSystem';
 
 test.before(async () => {
   await loadServerSystem({ hooks: false });

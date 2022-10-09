@@ -1,7 +1,8 @@
-import { createChildLogger, Logger } from '@wener/utils';
+import type { Logger } from '@wener/utils';
+import { createChildLogger } from '@wener/utils';
 import { instantiatePackageProtocol } from '../hooks/instantiatePackageProtocol';
 import { resolveBareSpecifier } from '../hooks/resolveBareSpecifier';
-import { SystemJS } from '../utils/getGlobalSystem';
+import type { SystemJS } from '../utils/getGlobalSystem';
 
 export type SystemHookOption = [hook: (o: { System: SystemJS; logger: Logger }) => void, opts?: object];
 

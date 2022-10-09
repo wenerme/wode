@@ -1,6 +1,8 @@
 import pino from 'pino';
-import { SQLiteStorage, SQLiteStorageOptions } from './SQLiteStorage';
-import { InitUnpkgOptions, Unpkg } from './Unpkg';
+import type { SQLiteStorageOptions } from './SQLiteStorage';
+import { SQLiteStorage } from './SQLiteStorage';
+import type { InitUnpkgOptions} from './Unpkg';
+import { Unpkg } from './Unpkg';
 
 export interface CreateUnpkgOptions extends Partial<InitUnpkgOptions> {
   sqlite?: SQLiteStorageOptions;

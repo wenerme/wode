@@ -1,10 +1,12 @@
 import React from 'react';
-import test, { ExecutionContext } from 'ava';
+import type { ExecutionContext } from 'ava';
+import test from 'ava';
 import { createNoopLogger } from '@wener/utils';
 import { polyfillBrowser } from '@wener/utils/server';
 import { loadBrowserSystem } from '../loaders/loadBrowserSystem';
 import { addPreload } from '../utils/addPreload';
-import { getGlobalSystem, SystemJS } from '../utils/getGlobalSystem';
+import type { SystemJS } from '../utils/getGlobalSystem';
+import { getGlobalSystem } from '../utils/getGlobalSystem';
 
 test.before(async () => {
   await polyfillBrowser();
