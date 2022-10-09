@@ -70,6 +70,7 @@ export { structuredClone } from './isomorphics/structuredClone';
 export { randomUUID } from './crypto/randomUUID';
 export { sha1, sha256, sha384, sha512 } from './crypto/hashing';
 export { hex } from './crypto/base';
+export { isULID, createULID, ulid, parseULID } from './crypto/ulid';
 
 // misc
 export { createRandom } from './maths/random';
