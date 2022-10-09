@@ -1,4 +1,4 @@
-import { Logger, LoggerWithChild } from './Logger';
+import type { Logger, LoggerWithChild } from './Logger';
 import { createWriteLogger } from './createWriteLogger';
 
 export function createChildLogger(l: Logger, ctx: object): LoggerWithChild {

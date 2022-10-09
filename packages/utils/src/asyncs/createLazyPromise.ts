@@ -1,3 +1,5 @@
+import type { MaybePromise } from './MaybePromise';
+
 export type LazyPromise<T> = Promise<T> & {
   reject(reason?: any): void;
   resolve(v?: T | PromiseLike<T>): void;
@@ -8,7 +10,9 @@ export type LazyPromise<T> = Promise<T> & {
  * if you pass a function to it, it will be executed when the promise try to resolve.
  */
 export function createLazyPromise<T = any>(
-  executor?: (resolve: LazyPromise<T>['resolve'], reject: LazyPromise<T>['reject']) => void,
+  executor?:
+    | ((resolve: LazyPromise<T>['resolve'], reject: LazyPromise<T>['reject']) => void)
+    | ((resolve: LazyPromise<T>['resolve'], reject: LazyPromise<T>['reject']) => MaybePromise<T>),
 ): LazyPromise<T> {
   const holder = {
     resolve(_: any): void {
@@ -43,7 +47,18 @@ export function createLazyPromise<T = any>(
     future.then = (...args) => {
       if (shouldExec) {
         shouldExec = false;
-        executor(holder.resolve, holder.reject);
+        try {
+          // kind of bad
+          const result = executor(holder.resolve, holder.reject);
+          // ensure resolve/reject is called
+          if (result && 'then' in result) {
+            result.then(holder.resolve, holder.reject);
+          } else if (result !== undefined) {
+            holder.resolve(result);
+          }
+        } catch (e) {
+          holder.reject(e);
+        }
       }
       return then(...args);
     };

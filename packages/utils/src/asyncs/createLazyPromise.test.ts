@@ -37,3 +37,18 @@ test('exec', async (t) => {
   promise.resolve(20);
   t.is(await promise, 10);
 });
+
+test('exec auto', async (t) => {
+  let r = 0;
+  const promise = createLazyPromise(() => {
+    r++;
+    return 10;
+  });
+  await sleep(10);
+  t.is(r, 0);
+  void promise.then(() => undefined);
+  t.is(await promise, 10);
+  t.is(r, 1);
+  t.is(await promise, 10);
+  t.is(r, 1);
+});

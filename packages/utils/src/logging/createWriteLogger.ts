@@ -1,4 +1,4 @@
-import { LoggerWithChild, LogLevel } from './Logger';
+import type { LoggerWithChild, LogLevel } from './Logger';
 
 export function createWriteLogger(
   write: (o: { level: LogLevel; values: any[] } & Record<string | symbol, any>) => void,
