@@ -66,21 +66,27 @@ type ToStringEncoding =
   | 'utf-8'
   | 'hex';
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const ArrayBuffers = {
-  _allowedBuffer: true,
-  isArrayBuffer: (v: any): v is ArrayBuffer => {
+export class ArrayBuffers {
+  static _allowedNativeBuffer: true;
+
+  static #isNativeBufferValid() {
+    return this._allowedNativeBuffer && !(globalThis.Buffer as any)?.isPollyfill?.();
+  }
+
+  static isArrayBuffer = (v: any): v is ArrayBuffer => {
     return v instanceof ArrayBuffer;
-  },
-  slice: (o: TypedArray, start?: number, end?: number) => {
+  };
+
+  static slice = (o: TypedArray, start?: number, end?: number) => {
     // NodeJS Buffer slice is not the same as UInt8Array slice
     // https://nodejs.org/api/buffer.html#bufslicestart-end
     if (isBuffer(o)) {
       return Uint8Array.prototype.slice.call(o, start, end);
     }
     return o.slice(start, end);
-  },
-  asView: <C extends ArrayBufferViewConstructor<unknown>, I extends InstanceType<C>>(
+  };
+
+  static asView = <C extends ArrayBufferViewConstructor<unknown>, I extends InstanceType<C>>(
     TypedArray: C,
     v: BufferSource,
     byteOffset?: number,
@@ -90,20 +96,21 @@ export const ArrayBuffers = {
       return v as I;
     }
     if (ArrayBuffer.isView(v) || isBuffer(v)) {
-      if (ArrayBuffers._allowedBuffer && typeof Buffer !== 'undefined' && (TypedArray as any) === Buffer) {
+      if (ArrayBuffers.#isNativeBufferValid() && (TypedArray as any) === Buffer) {
         // new Buffer() is deprecated
         return Buffer.from(v.buffer, byteOffset, byteLength) as I;
       }
       return new TypedArray(v.buffer, v.byteOffset + (byteOffset ?? 0), byteLength ?? v.byteLength) as I;
     }
     return new TypedArray(v, byteOffset, byteLength) as I;
-  },
-  toString: (buf: BufferSource | string, encoding: ToStringEncoding = 'utf8') => {
+  };
+
+  static toString = (buf: BufferSource | string, encoding: ToStringEncoding = 'utf8') => {
     // 'ascii'  'utf16le' | 'ucs2' | 'ucs-2' | 'base64' | 'base64url' | 'latin1' | 'binary' | 'hex'
     if (typeof buf === 'string') {
       return buf;
     }
-    if (typeof Buffer !== 'undefined' && ArrayBuffers._allowedBuffer) {
+    if (ArrayBuffers.#isNativeBufferValid()) {
       return Buffer.from(ArrayBuffers.asView(Uint8Array, buf)).toString(encoding);
     }
     // reference
@@ -148,11 +155,13 @@ export const ArrayBuffers = {
       default:
         throw new Error(`[ArrayBuffers.toString] Unknown encoding: ${encoding}`);
     }
-  },
-  toJSON: (v: BufferSource | string, reviver?: (this: any, key: string, value: any) => any) => {
+  };
+
+  static toJSON = (v: BufferSource | string, reviver?: (this: any, key: string, value: any) => any) => {
     return JSON.parse(ArrayBuffers.toString(v), reviver);
-  },
-  alloc: (size: number, fill?: string | number, encoding?: ToStringEncoding) => {
+  };
+
+  static alloc = (size: number, fill?: string | number, encoding?: ToStringEncoding) => {
     if (fill !== undefined) {
       if (typeof fill === 'number') {
         return new Uint8Array(size).fill(fill);
@@ -162,8 +171,9 @@ export const ArrayBuffers = {
       return ArrayBuffers.asView(Uint8Array, ArrayBuffers.from(fill, encoding)).slice(0, size);
     }
     return new ArrayBuffer(size);
-  },
-  from: (
+  };
+
+  static from = (
     v: string | BufferSource | ArrayLike<number> | Iterable<number>,
     encoding: ToStringEncoding = 'utf8',
   ): BufferSource => {
@@ -171,7 +181,7 @@ export const ArrayBuffers = {
       return new ArrayBuffer(0);
     }
     if (typeof v === 'string') {
-      if (typeof Buffer !== 'undefined' && ArrayBuffers._allowedBuffer) {
+      if (ArrayBuffers.#isNativeBufferValid()) {
         return Buffer.from(v, encoding);
       }
 
@@ -203,8 +213,9 @@ export const ArrayBuffers = {
     }
     const type = classOf(v);
     throw new TypeError(`ArrayBuffers.from unsupported type ${type}`);
-  },
-  isEncoding: (encoding?: string) => {
+  };
+
+  static isEncoding = (encoding?: string) => {
     switch (String(encoding).toLowerCase()) {
       case 'hex':
       case 'utf8':
@@ -221,8 +232,9 @@ export const ArrayBuffers = {
       default:
         return false;
     }
-  },
-  concat: (buffers: Array<BufferSource>, result?: ArrayBuffer, offset = 0) => {
+  };
+
+  static concat = (buffers: Array<BufferSource>, result?: ArrayBuffer, offset = 0) => {
     // https://stackoverflow.com/questions/10786128/appending-arraybuffers
 
     const length = buffers.reduce((a, b) => a + b.byteLength, 0);
@@ -241,8 +253,8 @@ export const ArrayBuffers = {
       offset += buffer.byteLength;
     }
     return r.buffer;
-  },
-};
+  };
+}
 
 export type TypedArray =
   | Uint8Array

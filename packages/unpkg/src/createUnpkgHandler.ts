@@ -1,4 +1,4 @@
-import type { Logger} from '@wener/utils';
+import type { Logger } from '@wener/utils';
 import { parseModuleId } from '@wener/utils';
 import type { Unpkg } from './Unpkg';
 import { getContentType } from './mime';
@@ -90,7 +90,7 @@ file
           'Cache-Control': 'public, s-maxage=600, max-age=60',
           Location: versionPath
             ? `${prefix}/${name}/${meta.version}${file || ''}`
-            : `${prefix}/${meta._id}/${file || ''}`,
+            : `${prefix}/${meta._id}${file || ''}`,
         },
       };
     }

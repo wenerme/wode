@@ -1,4 +1,4 @@
-import { LoggerWithChild } from './Logger';
+import type { LoggerWithChild } from './Logger';
 
 export function createNoopLogger(): LoggerWithChild {
   const noop = (..._: any[]) => undefined;

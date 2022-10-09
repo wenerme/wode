@@ -4,7 +4,7 @@ import { classOf } from '../langs/classOf';
 /**
  * Clone an object using structured cloning algorithm
  *
- * - Chrome 98, Safari 15.4
+ * - Chrome 98, Safari 15.4, NodeJS 17
  *
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/structuredClone structuredClone}
  * @see {@link https://github.com/zloirock/core-js/blob/master/packages/core-js/modules/web.structured-clone.js core-js}

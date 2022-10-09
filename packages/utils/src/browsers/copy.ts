@@ -1,4 +1,4 @@
-import { MaybePromise } from '../asyncs/MaybePromise';
+import type { MaybePromise } from '../asyncs/MaybePromise';
 
 let _copy: (s: any) => void;
 

@@ -1,5 +1,5 @@
 import { get } from '../objects/get';
-import { ObjectPathLike } from '../objects/parseObjectPath';
+import type { ObjectPathLike } from '../objects/parseObjectPath';
 import { renderTemplate } from '../strings/renderTemplate';
 
 export interface Translate<T extends object> {
