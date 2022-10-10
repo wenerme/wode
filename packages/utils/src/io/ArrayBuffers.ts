@@ -67,10 +67,14 @@ type ToStringEncoding =
   | 'hex';
 
 export class ArrayBuffers {
-  static _allowedNativeBuffer: true;
+  static #_allowedNativeBuffer: boolean = true;
 
   static #isNativeBufferValid() {
-    return this._allowedNativeBuffer && !(globalThis.Buffer as any)?.isPollyfill?.();
+    return this.#_allowedNativeBuffer && !(globalThis.Buffer as any)?.isPollyfill?.();
+  }
+
+  static setAllowedNativeBuffer(v: boolean) {
+    this.#_allowedNativeBuffer = v;
   }
 
   static isArrayBuffer = (v: any): v is ArrayBuffer => {
