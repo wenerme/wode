@@ -2,7 +2,7 @@ import test from 'ava';
 import { ArrayBuffers } from './ArrayBuffers';
 
 test.before(() => {
-  ArrayBuffers._allowedNativeBuffer = false;
+  ArrayBuffers.setAllowedNativeBuffer(false);
 });
 
 test('base64: ignore whitespace', function (t) {
