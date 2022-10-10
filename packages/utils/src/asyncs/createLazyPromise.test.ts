@@ -17,7 +17,7 @@ test('basic', async (t) => {
 });
 
 test('manual resolve skip exec', async (t) => {
-  const promise = createLazyPromise(() => {
+  const promise = createLazyPromise<number>(() => {
     t.fail();
   });
   promise.resolve(-1);
