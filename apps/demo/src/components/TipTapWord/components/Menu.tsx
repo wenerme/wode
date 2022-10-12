@@ -213,7 +213,7 @@ export const MenuComponent = forwardRef<any, MenuProps & Omit<React.HTMLProps<HT
       };
     }, [allowHover]);
 
-    const mergedReferenceRef = useMemo(() => mergeRefs([ref, reference]), [reference, ref]);
+    const mergedReferenceRef = useMemo(() => mergeRefs(ref, reference), [reference, ref]);
 
     return (
       <FloatingNode id={nodeId}>
