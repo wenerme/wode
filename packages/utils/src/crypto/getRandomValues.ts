@@ -2,7 +2,11 @@
 let nodeCrypto: Awaited<typeof import('node:crypto')>;
 if (globalThis.process?.release?.name) {
   try {
-    nodeCrypto = await import('node:crypto');
+    if (typeof require === 'undefined') {
+      void import('node:crypto').then((v) => (nodeCrypto = v.default));
+    } else {
+      nodeCrypto = require('node:crypto');
+    }
   } catch (e) {}
 }
 
