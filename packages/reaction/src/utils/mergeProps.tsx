@@ -15,12 +15,7 @@ export function mergeProps<T extends { className?: string; style?: CSSProperties
     ...override,
     className: [source.className, override.className].filter(Boolean).join(' '),
     style: { ...source.style, ...override.style },
-    ref: source.ref || override.ref,
+    ref: mergeRefs(source.ref, override.ref),
   };
-  if (source.ref && override.ref) {
-    o.ref = mergeRefs([source.ref, override.ref]);
-  } else if (!o.ref) {
-    delete o.ref;
-  }
   return o;
 }
