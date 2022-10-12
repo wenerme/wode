@@ -430,22 +430,30 @@ importers:
 
   packages/reaction:
     specifiers:
+      '@types/hoist-non-react-statics': ^3.3.1
       '@types/prop-types': ^15
       '@types/react': ^18.0.21
       '@types/react-dom': ^18
+      '@types/react-is': ^17.0.3
       '@wener/utils': ^1
+      hoist-non-react-statics: ^3.3.2
       prop-types: '>=15'
       react: '>=16'
       react-dom: '>=16'
+      react-is: ^18.2.0
     dependencies:
       '@wener/utils': link:../utils
+      hoist-non-react-statics: 3.3.2
       prop-types: 15.8.1
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
+      react-is: 18.2.0
     devDependencies:
+      '@types/hoist-non-react-statics': 3.3.1
       '@types/prop-types': 15.7.5
       '@types/react': 18.0.21
       '@types/react-dom': 18.0.6
+      '@types/react-is': 17.0.3
 
   packages/system:
     specifiers:
@@ -2134,6 +2142,12 @@ packages:
 
   /@types/react-dom/18.0.6:
     resolution: {integrity: sha512-/5OFZgfIPSwy+YuIBP/FgJnQnsxhZhjjrnxudMddeblOouIodEQ75X14Rr4wGSG/bknL+Omy9iWlLo1u/9GzAA==}
+    dependencies:
+      '@types/react': 18.0.21
+    dev: true
+
+  /@types/react-is/17.0.3:
+    resolution: {integrity: sha512-aBTIWg1emtu95bLTLx0cpkxwGW3ueZv71nE2YFBpL8k/z5czEW8yYpOo8Dp+UUAFAtKwNaOsh/ioSeQnWlZcfw==}
     dependencies:
       '@types/react': 18.0.21
     dev: true

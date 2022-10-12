@@ -37,4 +37,4 @@ export { mergeProps } from './utils/mergeProps';
 
 export type { Equivalence, Selector, UseSelector, Optional, PartialRequired } from './typing';
 
-export { withStyleProps } from './hoc/withStyleProps';
+export { withDefaultProps } from './hoc/withDefaultProps';
