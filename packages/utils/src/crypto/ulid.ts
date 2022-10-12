@@ -1,3 +1,5 @@
+import { getRandomValues } from './getRandomValues';
+
 type PRNG = () => number;
 
 /**
@@ -129,17 +131,11 @@ export function parseULID(id: string): { time: number; random: string } {
 }
 
 function createPrng(): PRNG {
-  if (globalThis.crypto) {
-    return () => {
-      const buffer = new Uint8Array(1);
-      globalThis.crypto.getRandomValues(buffer);
-      return buffer[0] / 0xff;
-    };
-  }
-  try {
-    console.error('secure crypto unusable, falling back to insecure Math.random()!');
-  } catch (e) {}
-  return () => Math.random();
+  return () => {
+    const buffer = new Uint8Array(1);
+    getRandomValues(buffer);
+    return buffer[0] / 0xff;
+  };
 }
 
 /**
@@ -174,4 +170,13 @@ export function createULID({
 /**
  * default monotonic ulid generator
  */
-export const ulid: ULID = createULID();
+export let ulid: ULID = (...args) => {
+  if (_real) {
+    return _real(...args);
+  }
+  // delay initialize crypto
+  _real = createULID();
+  ulid = _real;
+  return _real(...args);
+};
+let _real: ULID;
