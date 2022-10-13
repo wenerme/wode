@@ -6,12 +6,12 @@ import type React from 'react';
  */
 export function mergeRefs<T = any>(
   ...refs: Array<undefined | null | React.MutableRefObject<T | null | undefined> | React.RefCallback<T> | string>
-): React.LegacyRef<T> | React.MutableRefObject<T | null | undefined> | undefined {
+): React.LegacyRef<T> | React.MutableRefObject<T> | undefined {
   const valid = refs.filter(Boolean);
   if (valid.length === 0) {
     return undefined;
   } else if (valid.length === 1) {
-    return valid[0];
+    return valid[0] as any;
   }
   return (value) => {
     refs.forEach((ref) => {
