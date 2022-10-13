@@ -2,7 +2,8 @@
 let nodeCrypto: Awaited<typeof import('node:crypto')>;
 // globalThis.process?.release?.name
 
-if (!process.browser) {
+// typedoc error
+if (!(process as any).browser) {
   try {
     if (typeof require === 'undefined') {
       void import('node:crypto').then((v) => (nodeCrypto = v.default));
