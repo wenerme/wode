@@ -1,10 +1,17 @@
 import React from 'react';
 import { mergeProps as defaultMergeProps } from '../utils/mergeProps';
 
-export type FlexRenderable<TProps> = React.ReactNode | React.ComponentType<TProps>;
+/**
+ * FlexRenderable maybe a component maybe an element
+ *
+ * The Component doesn't have to match the props type
+ */
+export type FlexRenderable<TProps> = React.ReactNode | React.ComponentType<Partial<TProps>>;
 
 /**
- * flexRender will try to render a component or a react node
+ * flexRender will try to render a component or a React node
+ *
+ * When passing a {@link mergeProps}, will clone the element and merge the props.
  *
  * @param Comp component or react node
  * @param props props to pass to component
@@ -14,21 +21,22 @@ export type FlexRenderable<TProps> = React.ReactNode | React.ComponentType<TProp
 export function flexRender<TProps extends object>(
   Comp: FlexRenderable<TProps>,
   props: TProps,
-  mergeProps?: (a: TProps, b: TProps) => TProps | true,
+  mergeProps?: ((a: TProps, b: TProps) => TProps) | true,
 ): React.ReactNode | JSX.Element {
   if (!Comp) {
-    return null;
+    return undefined;
   }
   if (isReactComponent<TProps>(Comp)) {
     return <Comp {...props} />;
   }
-  if (typeof mergeProps === 'boolean' && mergeProps === true) {
+  if (mergeProps === true) {
     mergeProps = flexRender.mergeProps;
   }
   if (typeof mergeProps === 'function' && typeof Comp === 'object' && 'props' in Comp) {
     return React.cloneElement(Comp, (mergeProps as any)(Comp.props, props));
   }
-  return Comp;
+  // various ReactNode types
+  return Comp as any;
 }
 
 flexRender.mergeProps = defaultMergeProps;
