@@ -1,6 +1,8 @@
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 let nodeCrypto: Awaited<typeof import('node:crypto')>;
-if (globalThis.process?.release?.name) {
+// globalThis.process?.release?.name
+
+if (!process.browser) {
   try {
     if (typeof require === 'undefined') {
       void import('node:crypto').then((v) => (nodeCrypto = v.default));
