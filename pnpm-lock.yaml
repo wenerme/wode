@@ -4,26 +4,26 @@ importers:
 
   .:
     specifiers:
-      '@rollup/plugin-commonjs': ^23.0.0
-      '@rollup/plugin-json': ^5.0.0
-      '@rollup/plugin-node-resolve': ^15.0.0
+      '@rollup/plugin-commonjs': ^23
+      '@rollup/plugin-json': ^5
+      '@rollup/plugin-node-resolve': ^15
       '@trivago/prettier-plugin-sort-imports': ^3.3.0
       '@types/jsdom': ^20.0.0
-      '@types/node': ^16.11.65
+      '@types/node': ^16
       '@typescript-eslint/eslint-plugin': ^5.40.0
-      '@wener/wode': workspace:1.0.1
-      '@wener/wode-root': workspace:1.0.0
+      '@wener/wode': workspace:*
+      '@wener/wode-root': workspace:*
       ava: ^4.3.3
       esbuild: ^0.15.10
       eslint: ^8.25.0
       eslint-config-prettier: ^8.5.0
       eslint-config-standard-with-typescript: ^23.0.0
       eslint-plugin-import: ^2.26.0
-      eslint-plugin-n: ^15.3.0
-      eslint-plugin-promise: ^6.0.1
-      eslint-plugin-react: ^7.31.10
+      eslint-plugin-n: ^15.0.0
+      eslint-plugin-promise: ^6.0.0
+      eslint-plugin-react: ^7.31.8
       globby: ^13.1.2
-      jsdom: ^20.0.1
+      jsdom: ^20.0.0
       node-fetch: '*'
       prettier: latest
       prettier-plugin-pkg: ^0.17.1
@@ -71,8 +71,8 @@ importers:
   apps/demo:
     specifiers:
       '@floating-ui/dom': ^1.0.2
-      '@floating-ui/react-dom-interactions': ^0.10.1
-      '@headlessui/react': ^1.7.3
+      '@floating-ui/react-dom-interactions': ^0.10
+      '@headlessui/react': ^1.7.2
       '@lexical/clipboard': ^0.5.0
       '@lexical/code': ^0.5.0
       '@lexical/hashtag': ^0.5.0
@@ -86,44 +86,44 @@ importers:
       '@lexical/table': ^0.5.0
       '@lexical/utils': ^0.5.0
       '@tailwindcss/typography': ^0.5.7
-      '@tiptap/core': ^2.0.0-beta.199
-      '@tiptap/extension-blockquote': ^2.0.0-beta.199
-      '@tiptap/extension-bold': ^2.0.0-beta.199
-      '@tiptap/extension-bullet-list': ^2.0.0-beta.199
-      '@tiptap/extension-character-count': ^2.0.0-beta.198
-      '@tiptap/extension-code': ^2.0.0-beta.199
-      '@tiptap/extension-code-block': ^2.0.0-beta.199
-      '@tiptap/extension-color': ^2.0.0-beta.199
-      '@tiptap/extension-font-family': ^2.0.0-beta.198
-      '@tiptap/extension-heading': ^2.0.0-beta.199
-      '@tiptap/extension-highlight': ^2.0.0-beta.199
-      '@tiptap/extension-history': ^2.0.0-beta.199
-      '@tiptap/extension-horizontal-rule': ^2.0.0-beta.199
-      '@tiptap/extension-image': ^2.0.0-beta.199
-      '@tiptap/extension-italic': ^2.0.0-beta.199
-      '@tiptap/extension-link': ^2.0.0-beta.199
-      '@tiptap/extension-ordered-list': ^2.0.0-beta.199
-      '@tiptap/extension-placeholder': ^2.0.0-beta.199
-      '@tiptap/extension-strike': ^2.0.0-beta.199
-      '@tiptap/extension-table': ^2.0.0-beta.199
-      '@tiptap/extension-table-cell': ^2.0.0-beta.199
-      '@tiptap/extension-table-header': ^2.0.0-beta.199
-      '@tiptap/extension-table-row': ^2.0.0-beta.199
-      '@tiptap/extension-task-item': ^2.0.0-beta.199
-      '@tiptap/extension-task-list': ^2.0.0-beta.199
-      '@tiptap/extension-text-align': ^2.0.0-beta.199
-      '@tiptap/extension-text-style': ^2.0.0-beta.199
-      '@tiptap/extension-underline': ^2.0.0-beta.199
-      '@tiptap/html': ^2.0.0-beta.198
-      '@tiptap/react': ^2.0.0-beta.198
-      '@tiptap/starter-kit': ^2.0.0-beta.199
-      '@tiptap/suggestion': ^2.0.0-beta.199
-      '@trpc/client': ^9.27.4
-      '@trpc/next': ^9.27.4
-      '@trpc/react': ^9.27.4
-      '@trpc/server': ^9.27.4
+      '@tiptap/core': ^2.0.0-beta.196
+      '@tiptap/extension-blockquote': ^2.0.0-beta.196
+      '@tiptap/extension-bold': ^2.0.0-beta.196
+      '@tiptap/extension-bullet-list': ^2.0.0-beta.196
+      '@tiptap/extension-character-count': ^2.0.0-beta.196
+      '@tiptap/extension-code': ^2.0.0-beta.196
+      '@tiptap/extension-code-block': ^2.0.0-beta.196
+      '@tiptap/extension-color': ^2.0.0-beta.196
+      '@tiptap/extension-font-family': ^2.0.0-beta.196
+      '@tiptap/extension-heading': ^2.0.0-beta.196
+      '@tiptap/extension-highlight': ^2.0.0-beta.196
+      '@tiptap/extension-history': ^2.0.0-beta.196
+      '@tiptap/extension-horizontal-rule': ^2.0.0-beta.196
+      '@tiptap/extension-image': ^2.0.0-beta.196
+      '@tiptap/extension-italic': ^2.0.0-beta.196
+      '@tiptap/extension-link': ^2.0.0-beta.196
+      '@tiptap/extension-ordered-list': ^2.0.0-beta.196
+      '@tiptap/extension-placeholder': ^2.0.0-beta.196
+      '@tiptap/extension-strike': ^2.0.0-beta.196
+      '@tiptap/extension-table': ^2.0.0-beta.196
+      '@tiptap/extension-table-cell': ^2.0.0-beta.196
+      '@tiptap/extension-table-header': ^2.0.0-beta.196
+      '@tiptap/extension-table-row': ^2.0.0-beta.196
+      '@tiptap/extension-task-item': ^2.0.0-beta.196
+      '@tiptap/extension-task-list': ^2.0.0-beta.196
+      '@tiptap/extension-text-align': ^2.0.0-beta.196
+      '@tiptap/extension-text-style': ^2.0.0-beta.196
+      '@tiptap/extension-underline': ^2.0.0-beta.196
+      '@tiptap/html': ^2.0.0-beta.196
+      '@tiptap/react': ^2.0.0-beta.196
+      '@tiptap/starter-kit': ^2.0.0-beta.196
+      '@tiptap/suggestion': ^2.0.0-beta.196
+      '@trpc/client': ^9.27.2
+      '@trpc/next': ^9.27.2
+      '@trpc/react': ^9.27.2
+      '@trpc/server': ^9.27.2
       '@types/markdown-it': ^12.2.3
-      '@types/node': ^16.11.65
+      '@types/node': ^16.11.58
       '@types/prosemirror-markdown': ^1.5.6
       '@types/react': ^18.0.21
       '@types/react-dom': ^18.0.6
@@ -141,10 +141,10 @@ importers:
       ajv-keywords: ^5.1.0
       autoprefixer: ^10.4.12
       better-sqlite3: ^7.6.2
-      classnames: ^2.3.2
+      classnames: ^2.3.1
       daisyui: ^2.31.0
       domhandler: ^5.0.3
-      eslint-config-next: ^12.3.1
+      eslint-config-next: ^12
       html-react-parser: ^3.0.4
       immer: ^9.0.15
       json5: ^2.2.1
@@ -291,73 +291,73 @@ importers:
 
   components/wener-tiptap:
     specifiers:
-      '@tiptap/core': ^2.0.0-beta.199
-      '@tiptap/extension-blockquote': ^2.0.0-beta.199
-      '@tiptap/extension-bold': ^2.0.0-beta.199
+      '@tiptap/core': ^2.0.0-beta.196
+      '@tiptap/extension-blockquote': ^2.0.0-beta.196
+      '@tiptap/extension-bold': ^2.0.0-beta.196
       '@tiptap/extension-bubble-menu': 2.0.0-beta.196
-      '@tiptap/extension-bullet-list': ^2.0.0-beta.199
-      '@tiptap/extension-character-count': ^2.0.0-beta.198
-      '@tiptap/extension-code': ^2.0.0-beta.199
-      '@tiptap/extension-code-block': ^2.0.0-beta.199
+      '@tiptap/extension-bullet-list': ^2.0.0-beta.196
+      '@tiptap/extension-character-count': ^2.0.0-beta.196
+      '@tiptap/extension-code': ^2.0.0-beta.196
+      '@tiptap/extension-code-block': ^2.0.0-beta.196
       '@tiptap/extension-collaboration': 2.0.0-beta.196
       '@tiptap/extension-collaboration-cursor': 2.0.0-beta.196
-      '@tiptap/extension-color': ^2.0.0-beta.199
-      '@tiptap/extension-document': ^2.0.0-beta.199
-      '@tiptap/extension-dropcursor': ^2.0.0-beta.199
+      '@tiptap/extension-color': ^2.0.0-beta.196
+      '@tiptap/extension-document': ^2.0.0-beta.196
+      '@tiptap/extension-dropcursor': ^2.0.0-beta.196
       '@tiptap/extension-floating-menu': 2.0.0-beta.196
       '@tiptap/extension-focus': 2.0.0-beta.196
-      '@tiptap/extension-font-family': ^2.0.0-beta.198
+      '@tiptap/extension-font-family': ^2.0.0-beta.196
       '@tiptap/extension-gapcursor': 2.0.0-beta.196
-      '@tiptap/extension-hard-break': ^2.0.0-beta.199
-      '@tiptap/extension-heading': ^2.0.0-beta.199
-      '@tiptap/extension-highlight': ^2.0.0-beta.199
-      '@tiptap/extension-history': ^2.0.0-beta.199
-      '@tiptap/extension-horizontal-rule': ^2.0.0-beta.199
-      '@tiptap/extension-image': ^2.0.0-beta.199
-      '@tiptap/extension-italic': ^2.0.0-beta.199
-      '@tiptap/extension-link': ^2.0.0-beta.199
+      '@tiptap/extension-hard-break': ^2.0.0-beta.196
+      '@tiptap/extension-heading': ^2.0.0-beta.196
+      '@tiptap/extension-highlight': ^2.0.0-beta.196
+      '@tiptap/extension-history': ^2.0.0-beta.196
+      '@tiptap/extension-horizontal-rule': ^2.0.0-beta.196
+      '@tiptap/extension-image': ^2.0.0-beta.196
+      '@tiptap/extension-italic': ^2.0.0-beta.196
+      '@tiptap/extension-link': ^2.0.0-beta.196
       '@tiptap/extension-list-item': 2.0.0-beta.196
       '@tiptap/extension-mention': 2.0.0-beta.196
-      '@tiptap/extension-ordered-list': ^2.0.0-beta.199
-      '@tiptap/extension-paragraph': ^2.0.0-beta.199
-      '@tiptap/extension-placeholder': ^2.0.0-beta.199
-      '@tiptap/extension-strike': ^2.0.0-beta.199
+      '@tiptap/extension-ordered-list': ^2.0.0-beta.196
+      '@tiptap/extension-paragraph': ^2.0.0-beta.196
+      '@tiptap/extension-placeholder': ^2.0.0-beta.196
+      '@tiptap/extension-strike': ^2.0.0-beta.196
       '@tiptap/extension-subscript': 2.0.0-beta.196
       '@tiptap/extension-superscript': 2.0.0-beta.196
-      '@tiptap/extension-table': ^2.0.0-beta.199
-      '@tiptap/extension-table-cell': ^2.0.0-beta.199
-      '@tiptap/extension-table-header': ^2.0.0-beta.199
-      '@tiptap/extension-table-row': ^2.0.0-beta.199
-      '@tiptap/extension-task-item': ^2.0.0-beta.199
-      '@tiptap/extension-task-list': ^2.0.0-beta.199
-      '@tiptap/extension-text': ^2.0.0-beta.199
-      '@tiptap/extension-text-align': ^2.0.0-beta.199
-      '@tiptap/extension-text-style': ^2.0.0-beta.199
+      '@tiptap/extension-table': ^2.0.0-beta.196
+      '@tiptap/extension-table-cell': ^2.0.0-beta.196
+      '@tiptap/extension-table-header': ^2.0.0-beta.196
+      '@tiptap/extension-table-row': ^2.0.0-beta.196
+      '@tiptap/extension-task-item': ^2.0.0-beta.196
+      '@tiptap/extension-task-list': ^2.0.0-beta.196
+      '@tiptap/extension-text': ^2.0.0-beta.196
+      '@tiptap/extension-text-align': ^2.0.0-beta.196
+      '@tiptap/extension-text-style': ^2.0.0-beta.196
       '@tiptap/extension-typography': 2.0.0-beta.196
-      '@tiptap/extension-underline': ^2.0.0-beta.199
-      '@tiptap/html': ^2.0.0-beta.198
-      '@tiptap/react': ^2.0.0-beta.198
-      '@tiptap/starter-kit': ^2.0.0-beta.199
-      '@tiptap/suggestion': ^2.0.0-beta.199
+      '@tiptap/extension-underline': ^2.0.0-beta.196
+      '@tiptap/html': ^2.0.0-beta.196
+      '@tiptap/react': ^2.0.0-beta.196
+      '@tiptap/starter-kit': ^2.0.0-beta.196
+      '@tiptap/suggestion': ^2.0.0-beta.196
       '@types/markdown-it': ^12.2.3
       '@types/react': ^18.0.21
-      '@types/react-dom': ^18.0.6
-      '@wener/utils': workspace:1.1.7
-      classnames: ^2.3.2
+      '@types/react-dom': ^18
+      '@wener/utils': workspace:*
+      classnames: ^2.3.1
       linkify-it: ^4.0.1
       markdown-it: ^13.0.1
       mdurl: ^1.0.1
       prosemirror-markdown: ^1.10.0
-      prosemirror-model: ^1.18.1
-      prosemirror-state: ^1.4.1
-      prosemirror-transform: ^1.7.0
+      prosemirror-model: ^1.18.0
+      prosemirror-state: ^1.4.0
+      prosemirror-transform: ^1.6.0
       prosemirror-view: ^1.28.3
-      react: ^18.2.0
-      react-dom: ^18.2.0
+      react: '>=18'
+      react-dom: '>=18'
       typescript: ^4.8.4
-      y-prosemirror: ^1.2.0
-      y-protocols: ^1.0.5
-      yjs: ^13.5.41
+      y-prosemirror: '>=1'
+      y-protocols: '>=1'
+      yjs: '>=13'
     dependencies:
       '@tiptap/core': 2.0.0-beta.199
       '@tiptap/extension-blockquote': 2.0.0-beta.199_4focsuckzeocqotdxlryrtksam
@@ -431,15 +431,15 @@ importers:
   packages/reaction:
     specifiers:
       '@types/hoist-non-react-statics': ^3.3.1
-      '@types/prop-types': ^15.7.5
+      '@types/prop-types': ^15
       '@types/react': ^18.0.21
-      '@types/react-dom': ^18.0.6
+      '@types/react-dom': ^18
       '@types/react-is': ^17.0.3
-      '@wener/utils': workspace:^1.1.7
+      '@wener/utils': ^1
       hoist-non-react-statics: ^3.3.2
-      prop-types: ^15.8.1
-      react: ^18.2.0
-      react-dom: ^18.2.0
+      prop-types: '>=15'
+      react: '>=16'
+      react-dom: '>=16'
       react-is: ^18.2.0
     dependencies:
       '@wener/utils': link:../utils
@@ -460,9 +460,9 @@ importers:
       '@types/jsdom': ^20.0.0
       '@types/react': ^18.0.21
       '@types/react-dom': ^18.0.6
-      '@wener/utils': workspace:^1.1.7
+      '@wener/utils': ^1
       ava: ^4.3.3
-      jsdom: ^20.0.1
+      jsdom: ^20.0.0
       node-fetch: '*'
       react: ^18.2.0
       react-dom: ^18.2.0
@@ -483,9 +483,9 @@ importers:
   packages/torrent:
     specifiers:
       '@types/lodash': ^4.14.186
-      '@wener/utils': workspace:^1.1.7
+      '@wener/utils': ^1
       ava: ^4.3.3
-      lodash: ^4.17.21
+      lodash: ^4
       tsd: ^0.24.1
     dependencies:
       '@wener/utils': link:../utils
@@ -497,7 +497,7 @@ importers:
 
   packages/unpkg:
     specifiers:
-      '@types/better-sqlite3': ^7.6.2
+      '@types/better-sqlite3': ^7.6.0
       '@types/fs-extra': ^9.0.13
       '@types/mime': ^3.0.1
       '@types/semver': ^7.3.12
@@ -531,7 +531,7 @@ importers:
     specifiers:
       '@types/lodash': ^4.14.186
       ava: ^4.3.3
-      lodash: ^4.17.21
+      lodash: ^4
       tsd: ^0.24.1
     devDependencies:
       '@types/lodash': 4.14.186
