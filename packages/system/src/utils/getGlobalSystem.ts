@@ -113,7 +113,7 @@ export interface SystemJS {
    * @category Hook
    * @internal
    */
-  instantiate(url: string, parent: string): Promise<[deps: string[], declar: DeclareFn]>;
+  instantiate(url: string, parent?: string): Promise<[deps: string[], declar: DeclareFn]>;
 
   /**
    * create the module content from the registration

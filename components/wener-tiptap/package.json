@@ -105,11 +105,11 @@
     "linkify-it": "^4.0.1",
     "markdown-it": "^13.0.1",
     "mdurl": "^1.0.1",
-    "prosemirror-markdown": "^1.8.0",
+    "prosemirror-markdown": "^1.10.0",
     "prosemirror-model": "^1.18.0",
     "prosemirror-state": "^1.4.0",
     "prosemirror-transform": "^1.6.0",
-    "prosemirror-view": "^1.26.2"
+    "prosemirror-view": "^1.28.3"
   },
   "peerDependencies": {
     "react": ">=18",

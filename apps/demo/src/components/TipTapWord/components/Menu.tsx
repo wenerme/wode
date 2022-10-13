@@ -111,7 +111,7 @@ export const MenuComponent = forwardRef<any, MenuProps & Omit<React.HTMLProps<HT
       }),
       useClick(context, {
         toggle: !nested,
-        pointerDown: true,
+        // pointerDown: true,
         ignoreMouse: nested,
       }),
       useRole(context, { role: 'menu' }),
@@ -242,7 +242,7 @@ export const MenuComponent = forwardRef<any, MenuProps & Omit<React.HTMLProps<HT
         </button>
         <FloatingPortal>
           {open && (
-            <FloatingFocusManager context={context} preventTabbing modal={!nested}>
+            <FloatingFocusManager context={context} modal={!nested}>
               <As
                 {...getFloatingProps({
                   className: 'Menu',
