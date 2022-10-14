@@ -1,6 +1,6 @@
 import { AnchorHTMLAttributes, ButtonHTMLAttributes, forwardRef, ReactNode } from 'react';
 import classNames from 'classnames';
-import { daisy, IntentType, omitDaisyModifiers, SizeType } from '../daisy';
+import { daisyProps, IntentType, SizeType } from '../daisy';
 
 export type ButtonProps = (
   | ButtonHTMLAttributes<HTMLButtonElement>
@@ -26,7 +26,6 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
       // input
       // input-primary, input-secondary, input-success, input-danger, input-warning, input-info, input-light, input-dark
       // input-sm, input-lg, input-xs
-      daisy('btn', props),
       active && 'btn-active',
       loading && 'loading',
       disabled && 'btn-disabled',
@@ -34,13 +33,13 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
     );
     if ('href' in props) {
       return (
-        <a className={cs} role={'button'} ref={ref as any} {...omitDaisyModifiers(props)}>
+        <a role={'button'} ref={ref as any} {...daisyProps('btn', props, { className: cs })}>
           {children}
         </a>
       );
     }
     return (
-      <button type={'button'} className={cs} ref={ref as any} {...omitDaisyModifiers(props)}>
+      <button type={'button'} ref={ref as any} {...daisyProps('btn', props, { className: cs })}>
         {children}
       </button>
     );
