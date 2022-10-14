@@ -19,7 +19,17 @@ export interface Translate<T extends object> {
 export function createTranslate<T extends object>(obj?: Record<string, T>): Translate<T> {
   let locale = '';
   const tree = obj || {};
-
+  // en-US -> en-US,en
+  const keyOfDict = (s: string | string[]) => {
+    if (Array.isArray(s)) {
+      return s;
+    }
+    const sp = s.split(/[_-]/);
+    if (sp.length > 1) {
+      return [s, sp[0]];
+    }
+    return [s];
+  };
   return {
     locale(lang) {
       return (locale = lang || locale);
@@ -34,7 +44,13 @@ export function createTranslate<T extends object>(obj?: Record<string, T>): Tran
     }) as Translate<T>['dict'],
 
     t(key, params, lang) {
-      const val = get(tree[lang || locale], key, '') as any;
+      let val: any;
+      for (const k of keyOfDict(lang || locale)) {
+        val = get(tree[k], key, '');
+        if (val) {
+          break;
+        }
+      }
       if (process.env.NODE_ENV === 'development') {
         if (val == null) {
           return console.error(
