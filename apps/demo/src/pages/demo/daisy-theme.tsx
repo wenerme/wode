@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import classNames from 'classnames';
 import { useImmer } from 'use-immer';
 import { useSnapshot } from 'valtio';
-import { daisy, IntentType, SizeType } from '@src/daisy/daisy';
+import { DaisyDemo } from '@src/daisy/theme/DaisyDemo';
 import { ThemeListSelector } from '@src/daisy/theme/ThemeListSelector';
 import { hookThemeState, useThemeState } from '@src/daisy/theme/useTheme';
 import { HSLToRGB } from '@src/utils/hsl';
@@ -32,153 +32,10 @@ const Page = () => {
         <ThemeDetails />
       </div>
       <hr />
-      <Demo />
+      <DaisyDemo />
     </div>
   );
 };
-
-const Demo = () => {
-  const [state, update] = useImmer<{ size?: SizeType; intent?: IntentType }>({
-    size: undefined,
-    intent: undefined,
-  });
-  const { size, intent } = state;
-  let ex = daisy('btn', { size, intent });
-  return (
-    <div className={'flex flex-col justify-center gap-4 py-4'}>
-      <h3 className={'text-xl font-medium'}>Demo</h3>
-      <div>
-        <div className="dropdown">
-          <label tabIndex={0} className="btn btn-sm btn-outline m-1">
-            {state.size || 'Size'}
-          </label>
-          <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
-            <li onClick={() => update({ ...state, size: undefined })}>
-              <a>Default</a>
-            </li>
-            {sizes.map((v) => {
-              return (
-                <li key={v} onClick={() => update({ ...state, size: v })}>
-                  <a>{v}</a>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-        <div className="dropdown">
-          <label tabIndex={0} className={`btn btn-sm btn-outline m-1 ${daisy('btn', { intent })}`}>
-            {state.intent || 'Intent'}
-          </label>
-          <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
-            <li onClick={() => update({ ...state, intent: undefined })}>
-              <a>Default</a>
-            </li>
-            {intents.map((v) => {
-              return (
-                <li key={v} onClick={() => update({ ...state, intent: v })}>
-                  <a>{v}</a>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      </div>
-
-      <div className={'flex flex-wrap [&>div]:px-4'}>
-        <div className={'flex gap-2 flex-col'}>
-          <div className="divider">Button</div>
-          <div className={'flex gap-2 flex-wrap'}>
-            {intents.map((v) => (
-              <button key={v} className={`btn btn-${v} ${daisy('btn', { size })}`}>
-                {v}
-              </button>
-            ))}
-          </div>
-          <div className={'flex gap-2 flex-wrap'}>
-            {sizes.map((v) => (
-              <button key={v} className={`btn btn-${v} ${daisy('btn', { intent })}`}>
-                {v}
-              </button>
-            ))}
-          </div>
-          <div className={'flex gap-2 flex-wrap'}>
-            <button className={`btn btn-outline ${ex}`}>outline</button>
-            <button className={`btn glass ${ex}`}>glass</button>
-            <button className={`btn btn-ghost ${ex}`}>ghost</button>
-            <button className={`btn loading ${ex}`}>loading</button>
-            <button className={`btn btn-link ${ex}`}>link</button>
-            <button className={`btn btn-active ${ex}`}>active</button>
-            <button className={`btn btn-disabled ${ex}`}>disabled</button>
-            <button className={`btn btn-circle ${ex}`}>C</button>
-            <button className={`btn btn-square ${ex}`}>S</button>
-          </div>
-        </div>
-
-        <div>
-          <div className="divider">link</div>
-          <div className={'flex flex-col items-start'}>
-            <a className="link">link</a>
-            <a className="link link-primary">link-primary</a>
-            <a className="link link-secondary">link-secondary</a>
-            <a className="link link-accent">link-accent</a>
-            <a className="link link-neutral">link-neutral</a>
-            <a className="link link-hover">link-hover</a>
-          </div>
-        </div>
-
-        <div>
-          <div className="divider">tabs</div>
-          <div className={'flex flex-col items-center gap-2'}>
-            <div className="tabs">
-              <a className="tab">Tab 1</a>
-              <a className="tab tab-active">Tab 2</a>
-              <a className="tab">Tab 3</a>
-            </div>
-            <div className="tabs">
-              <a className="tab tab-bordered">tab-bordered</a>
-              <a className="tab tab-bordered tab-active">Tab 2</a>
-              <a className="tab tab-bordered">Tab 3</a>
-            </div>
-            <div className="tabs">
-              <a className="tab tab-lifted">tab-lifted</a>
-              <a className="tab tab-lifted tab-active">Tab 2</a>
-              <a className="tab tab-lifted">Tab 3</a>
-            </div>
-            <div className="tabs tabs-boxed">
-              <a className="tab">tabs-boxed</a>
-              <a className="tab tab-active">Tab 2</a>
-              <a className="tab">Tab 3</a>
-            </div>
-            {/*  size */}
-            <div className="tabs">
-              <a className="tab tab-xs tab-lifted">tab-xs</a>
-              <a className="tab tab-xs tab-lifted tab-active">Tiny</a>
-              <a className="tab tab-xs tab-lifted">Tiny</a>
-            </div>
-            <div className="tabs">
-              <a className="tab tab-sm tab-lifted">tab-sm</a>
-              <a className="tab tab-sm tab-lifted tab-active">Small</a>
-              <a className="tab tab-sm tab-lifted">Small</a>
-            </div>
-            <div className="tabs">
-              <a className="tab tab-lifted">Normal</a>
-              <a className="tab tab-lifted tab-active">Normal</a>
-              <a className="tab tab-lifted">Normal</a>
-            </div>
-            <div className="tabs">
-              <a className="tab tab-lg tab-lifted">tab-lg</a>
-              <a className="tab tab-lg tab-lifted tab-active">Large</a>
-              <a className="tab tab-lg tab-lifted">Large</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const intents: IntentType[] = ['primary', 'secondary', 'accent', 'info', 'success', 'warning', 'error'];
-const sizes: SizeType[] = ['xs', 'sm', 'md', 'lg'];
 
 const ThemeStyleProps: Record<string, { name?: string; description?: string; preview?: React.ReactNode }> = {
   p: { name: 'primary' },
