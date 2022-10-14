@@ -11,8 +11,10 @@ interface ThemeState {
   light?: string; // 覆盖系统亮色主题
   dark?: string; // 覆盖系统暗色主题
 
-  active?: string; //  当前主题
+  readonly active?: string; // 当前主题
   system?: string; // 当前系统主题 - state self-contained
+  // $ele
+  // storageKey
 }
 
 const DefaultState = {
