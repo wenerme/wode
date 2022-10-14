@@ -1,3 +1,7 @@
+/*
+https://css-tricks.com/converting-color-spaces-in-javascript/
+ */
+
 export function HSLToRGB(h: number, s: number, l: number) {
   // Must be fractions of 1
   s /= 100;

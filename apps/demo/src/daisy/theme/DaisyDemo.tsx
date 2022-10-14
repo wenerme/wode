@@ -105,38 +105,38 @@ export const DaisyDemo = () => {
         <div className={'flex flex-wrap flex-col gap-2 [&>div]:flex [&>div]:gap-2'}>
           <div className="divider">checkbox</div>
           <div>
-            <input type="checkbox" checked className="checkbox checkbox-primary" />
-            <input type="checkbox" checked className="checkbox checkbox-secondary" />
-            <input type="checkbox" checked className="checkbox checkbox-accent" />
+            <input type="checkbox" defaultChecked className="checkbox checkbox-primary" />
+            <input type="checkbox" defaultChecked className="checkbox checkbox-secondary" />
+            <input type="checkbox" defaultChecked className="checkbox checkbox-accent" />
           </div>
           <div>
-            <input type="checkbox" checked className="checkbox checkbox-xs" />
-            <input type="checkbox" checked className="checkbox checkbox-sm" />
-            <input type="checkbox" checked className="checkbox checkbox-md" />
-            <input type="checkbox" checked className="checkbox checkbox-lg" />
+            <input type="checkbox" defaultChecked className="checkbox checkbox-xs" />
+            <input type="checkbox" defaultChecked className="checkbox checkbox-sm" />
+            <input type="checkbox" defaultChecked className="checkbox checkbox-md" />
+            <input type="checkbox" defaultChecked className="checkbox checkbox-lg" />
           </div>
           <div>
             <input type="checkbox" className="checkbox" disabled />
-            <input type="checkbox" className="checkbox" disabled checked />
+            <input type="checkbox" className="checkbox" disabled defaultChecked />
           </div>
         </div>
 
         <div className={'flex flex-wrap flex-col gap-2 [&>div]:flex [&>div]:gap-2'}>
           <div className="divider">radio</div>
           <div>
-            <input type="radio" checked className="radio radio-primary" />
-            <input type="radio" checked className="radio radio-secondary" />
-            <input type="radio" checked className="radio radio-accent" />
+            <input type="radio" defaultChecked className="radio radio-primary" />
+            <input type="radio" defaultChecked className="radio radio-secondary" />
+            <input type="radio" defaultChecked className="radio radio-accent" />
           </div>
           <div>
-            <input type="radio" checked className="radio radio-xs" />
-            <input type="radio" checked className="radio radio-sm" />
-            <input type="radio" checked className="radio radio-md" />
-            <input type="radio" checked className="radio radio-lg" />
+            <input type="radio" defaultChecked className="radio radio-xs" />
+            <input type="radio" defaultChecked className="radio radio-sm" />
+            <input type="radio" defaultChecked className="radio radio-md" />
+            <input type="radio" defaultChecked className="radio radio-lg" />
           </div>
           <div>
             <input type="radio" className="radio" disabled />
-            <input type="radio" className="radio" disabled checked />
+            <input type="radio" className="radio" disabled defaultChecked />
           </div>
         </div>
 
