@@ -4,14 +4,11 @@ import { useImmer } from 'use-immer';
 import { useSnapshot } from 'valtio';
 import { DaisyDemo } from '@src/daisy/theme/DaisyDemo';
 import { ThemeListSelector } from '@src/daisy/theme/ThemeListSelector';
-import { hookThemeState, useThemeState } from '@src/daisy/theme/useTheme';
+import { useThemeState } from '@src/daisy/theme/useTheme';
 import { HSLToRGB } from '@src/utils/hsl';
 
 const Page = () => {
   const state = useThemeState();
-  useEffect(() => {
-    return hookThemeState({ state });
-  }, []);
   const { theme, active } = useSnapshot(state);
   return (
     <div className={'container mx-auto'}>

@@ -151,7 +151,7 @@ export function hookThemeState({
   return () => closer.forEach((v) => v());
 }
 
-export const ThemeConnector = () => {
+export const ThemeStateReactor = () => {
   let state = useThemeState();
   useEffect(() => {
     return hookThemeState({ state });
