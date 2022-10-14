@@ -2,6 +2,11 @@
 module.exports = {
   mode: 'jit',
   content: ['./src/**/*.{html,ts,tsx,js}'],
+  safelist:[
+    {
+      pattern: /^btn-/,
+    },
+  ],
   darkMode: 'media',
   theme: {
     extend: {},

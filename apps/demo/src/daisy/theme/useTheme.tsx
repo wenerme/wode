@@ -1,7 +1,6 @@
-import React, { useDeferredValue, useEffect, useLayoutEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useSnapshot } from 'valtio';
 import { derive, watch } from 'valtio/utils';
-import { useDebugRender } from '@wener/reaction';
 import { getPrefersColorSchema } from './getPrefersColorSchema';
 import { getSupportedThemes } from './getSupportedThemes';
 import { proxyWithCompare } from './proxyWithCompare';
@@ -23,9 +22,10 @@ const DefaultState = {
   dark: 'business',
 };
 
-function createThemeState() {
+export function createThemeState(o: Partial<ThemeState> = {}) {
   const state = proxyWithCompare<ThemeState>({
     ...DefaultState,
+    ...o,
   });
   return derive(
     {
@@ -78,62 +78,84 @@ export function useThemeSchema(): 'light' | 'dark' {
   }
 }
 
-export const ThemeConnector = () => {
-  let state = useThemeState();
-  const [init, setInit] = useState(false);
-  const log = useDebugRender('ThemeConnector');
+export function hookThemeState({
+  state,
+  element,
+  loadInitialState = true,
+}: {
+  state: ThemeState;
+  element?: HTMLElement;
+  loadInitialState?: boolean;
+}) {
+  if (!globalThis.localStorage) {
+    return () => {};
+  }
+
+  const closer: Array<() => void> = [];
   const key = 'THEME_STATE';
-  useEffect(() => {
-    const loadState = (s: string | null) => {
-      let neo = DefaultState;
-      try {
-        if (s) {
-          let { dark = DefaultState.dark, light = DefaultState.light, theme = DefaultState.theme } = JSON.parse(s);
-          neo = { dark, light, theme };
-        }
-      } catch (e) {}
-      Object.assign(state, neo);
-    };
-    const handler = (e: StorageEvent) => {
+  // init load
+  const loadState = (s: string | null) => {
+    if (!s) {
+      return;
+    }
+    let neo = DefaultState;
+    try {
+      if (s) {
+        let { dark = DefaultState.dark, light = DefaultState.light, theme = DefaultState.theme } = JSON.parse(s);
+        neo = { dark, light, theme };
+      }
+    } catch (e) {}
+    Object.assign(state, neo);
+  };
+  if (loadInitialState) {
+    loadState(localStorage.getItem(key));
+  }
+  // watch storage state change - cross tab
+  {
+    const handleStorageChange = (e: StorageEvent) => {
       if (e.key !== key) {
         return;
       }
       loadState(e.newValue);
     };
-    loadState(localStorage.getItem(key));
-    window.addEventListener('storage', handler);
+    window.addEventListener('storage', handleStorageChange);
+    closer.push(() => window.removeEventListener('storage', handleStorageChange));
+  }
+  // system
+  {
     state.system = getPrefersColorSchema();
-    setInit(true);
-    return () => {
-      window.removeEventListener('storage', handler);
-    };
-  }, [state]);
-  useEffect(() => {
-    if (!init) {
-      return;
-    }
-    return watch((get) => {
+    closer.push(
+      watchPrefersColorSchema(() => {
+        state.system = getPrefersColorSchema();
+      }),
+    );
+  }
+
+  // persist
+  {
+    const unsub = watch((get) => {
       const { light, dark, theme } = get(state);
-      log(`changed:`, { light, dark, theme });
       localStorage[key] = JSON.stringify({ light, dark, theme });
     });
-  }, [state, init]);
+    closer.push(unsub);
+  }
 
-  useLayoutEffect(() => {
-    return watchPrefersColorSchema(() => {
-      state.system = getPrefersColorSchema();
-    });
-  }, [state]);
+  // apply
+  closer.push(
+    watch((get) => {
+      const active = get(state).active;
+      setElementThemeAttribute(active, element);
+    }),
+  );
 
-  let snapshot = useSnapshot(state);
-  const active = useDeferredValue(snapshot.active);
+  return () => closer.forEach((v) => v());
+}
+
+export const ThemeConnector = () => {
+  let state = useThemeState();
   useEffect(() => {
-    if (!init) {
-      return;
-    }
-    log(`set:`, active, state);
-    setElementThemeAttribute(active);
-  }, [active, init]);
+    return hookThemeState({ state });
+  }, [state]);
   return <></>;
 };
 

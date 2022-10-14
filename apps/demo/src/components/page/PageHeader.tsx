@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
 import Link from 'next/link';
-import { ThemeSelector } from '@src/components/page/ThemeSelector';
 import { NavLinks } from '@src/components/page/const';
+import { ThemeSelectorButton } from '@src/daisy/theme/ThemeSelectorButton';
 
 interface MenuSpec {
   icon?: React.ReactNode;
@@ -93,7 +93,7 @@ export const PageHeader = () => {
           <ul className="menu menu-horizontal p-0">{renderMenu(NavLinks, { icon: <Down /> })}</ul>
         </div>
         <div className="navbar-end">
-          <ThemeSelector />
+          <ThemeSelectorButton />
         </div>
       </div>
     </header>

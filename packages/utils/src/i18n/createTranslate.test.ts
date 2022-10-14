@@ -153,3 +153,18 @@ test('invalid value', (t) => {
 
   t.deepEqual(ctx.t('foo', null as any, 'en'), ['bar']);
 });
+
+test('fallback', (t) => {
+  const ctx = createTranslate({
+    en: {
+      a: 'a',
+    },
+    'en-US': {
+      a: 'a-US',
+    },
+  });
+
+  // t.deepEqual(ctx.t('a', undefined, 'en'), 'a');
+  // t.deepEqual(ctx.t('a', undefined, 'en-US'), 'a-US');
+  t.deepEqual(ctx.t('a', undefined, 'en-UK'), 'a');
+});
