@@ -1,6 +1,6 @@
 import { AnchorHTMLAttributes, ButtonHTMLAttributes, forwardRef, ReactNode } from 'react';
 import classNames from 'classnames';
-import { daisy, omitDaisyModifiers, IntentType, SizeType } from '../daisy';
+import { daisy, IntentType, omitDaisyModifiers, SizeType } from '../daisy';
 
 export type ButtonProps = (
   | ButtonHTMLAttributes<HTMLButtonElement>
@@ -46,3 +46,4 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
     );
   },
 );
+Button.displayName = 'Button';
