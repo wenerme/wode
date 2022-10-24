@@ -26,11 +26,13 @@ export { isPromise } from './asyncs/isPromise';
 export { isClass } from './validations/isClass';
 export { isDefined } from './validations/isDefined';
 export { isEmptyObject } from './validations/isEmptyObject';
-export { shallowEqual } from './langs/shallowEqual';
-export { deepEqual } from './langs/deepEqual';
 export { isUUID } from './validations/isUUID';
 
+// langs
+export { shallowEqual } from './langs/shallowEqual';
+export { deepEqual } from './langs/deepEqual';
 export { classOf } from './langs/classOf';
+export { shallowClone } from './langs/shallowClone';
 
 // modules
 export { parseModuleId, type ParsedModuleId } from './modules/parseModuleId';
