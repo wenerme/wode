@@ -68,7 +68,7 @@
   },
   "devDependencies": {
     "@types/lodash": "^4.14.186",
-    "ava": "^4.3.3",
+    "ava": "^5.0.1",
     "lodash": "^4",
     "tsd": "^0.24.1"
   },
