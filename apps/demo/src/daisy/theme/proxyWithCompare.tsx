@@ -1,17 +1,29 @@
 import { typeOf } from 'react-is';
 import { unstable_buildProxyFunction } from 'valtio';
-import { deepEqual as eq } from '@wener/utils';
+import { deepEqual } from '@wener/utils';
 
-const canProxyOrig = unstable_buildProxyFunction()[7];
-export const proxyWithCompare = unstable_buildProxyFunction(eq, undefined, (v) => {
-  if (typeOf(v)) {
+const canProxyOrig = unstable_buildProxyFunction()[5];
+export const proxyWithCompare = unstable_buildProxyFunction(deepEqual, undefined, (x) => {
+  if (typeOf(x)) {
+    // react
     return false;
   }
-  if (v instanceof EventTarget) {
+  if (x instanceof EventTarget) {
     // dom
     return false;
   }
-  return canProxyOrig(v);
+  // if (
+  //   (typeof HTMLElement === 'undefined' && x instanceof HTMLElement) ||
+  //   (typeof SVGElement === 'undefined' && x instanceof SVGElement) ||
+  //   x instanceof Node
+  // ) {
+  //   // dom
+  //   return false;
+  // }
+
+  // 不会 proxy 的类型
+  // refSet, isArray && !iterator, WeakMap, WeakSet, Error, Number, Date, String, RegExp, ArrayBuffer
+  return canProxyOrig(x);
 })[0];
 
 function isNode(o: any): o is Node {
