@@ -1,8 +1,3 @@
-import { prod } from '@wener/wode/rollup.mjs';
+import { createBundle } from '@wener/wode/rollup.mjs';
 
-export default {
-  input: prod.input,
-  output: prod.output,
-  plugins: prod.plugins,
-  external: prod.external,
-};
+export default createBundle()

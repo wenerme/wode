@@ -1,6 +1,6 @@
 {
   "name": "@wener/reaction",
-  "version": "1.2.16",
+  "version": "1.2.17",
   "description": "React hooks, utils & reaction",
   "keywords": [
     "components",
@@ -27,9 +27,10 @@
       "typescript": "./src/index.ts",
       "import": "./lib/index.js",
       "system": {
+        "development": "./dist/system/lib/index.js",
         "default": "./dist/system/index.js"
       },
-      "require": "./dist/cjs/index.cjs"
+      "require": "./dist/cjs/lib/index.cjs"
     },
     "./types": {
       "types": "./types.d.ts"
@@ -68,12 +69,8 @@
       }
     ]
   },
-  "dependencies": {
-    "@wener/utils": "^1",
-    "hoist-non-react-statics": "^3.3.2",
-    "react-is": "^18.2.0"
-  },
   "devDependencies": {
+    "@wener/utils": "^1",
     "@types/hoist-non-react-statics": "^3.3.1",
     "@types/prop-types": "^15",
     "@types/react": "^18.0.21",
@@ -82,8 +79,10 @@
   },
   "peerDependencies": {
     "prop-types": ">=15",
-    "react": ">=16",
-    "react-dom": ">=16"
+    "react": ">=18",
+    "react-dom": ">=18",
+    "hoist-non-react-statics": ">=3",
+    "react-is": ">=18"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org",
