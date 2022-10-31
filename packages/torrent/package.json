@@ -1,6 +1,6 @@
 {
   "name": "@wener/torrent",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "description": "Utils for torrent",
   "repository": {
@@ -14,7 +14,7 @@
     "node": "16",
     "npm": "8"
   },
-  "main": "dist/cjs/index.js",
+  "main": "dist/cjs/index.cjs",
   "module": "lib/index.js",
   "exports": {
     ".": {
@@ -24,7 +24,7 @@
       "system": {
         "default": "./dist/system/index.js"
       },
-      "require": "./dist/cjs/index.js"
+      "require": "./dist/cjs/index.cjs"
     },
     "./types": {
       "types": "./types.d.ts"
@@ -36,7 +36,7 @@
       "system": {
         "default": "./dist/system/server.js"
       },
-      "require": "./dist/cjs/server.js"
+      "require": "./dist/cjs/server.cjs"
     },
     "./src/*": "./src/*",
     "./package.json": "./package.json"
