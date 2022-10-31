@@ -93,7 +93,7 @@ libsum:
 	@printf $(COLOR_INFO) "lib size"
 	-@du --apparent-size -sh lib
 	@printf $(COLOR_INFO) "dist size"
-	-@du --apparent-size -sh dist/**/*.js
+	-@du --apparent-size -sh dist/**/*.{cjs,mjs,js}
 	@printf $(COLOR_INFO) "dist bundle node_modules?"
 	-@grep '^// ' dist/esm/index.development.js | grep node_modules || echo none
 	@printf $(COLOR_INFO) "checksum"

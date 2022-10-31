@@ -1,6 +1,6 @@
 {
   "name": "@wener/system",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "type": "module",
   "description": "Utils for systemjs",
   "repository": {
@@ -24,7 +24,7 @@
       "system": {
         "default": "./dist/system/index.js"
       },
-      "require": "./dist/cjs/index.js"
+      "require": "./dist/cjs/index.cjs"
     },
     "./types": {
       "types": "./src/types.d.ts"
@@ -36,7 +36,7 @@
       "system": {
         "default": "./dist/system/server.js"
       },
-      "require": "./dist/cjs/server.js"
+      "require": "./dist/cjs/server.cjs"
     },
     "./src/*": "./src/*",
     "./package.json": "./package.json"

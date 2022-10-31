@@ -42,19 +42,21 @@ const dev = {
   },
 };
 
-const entryFileNames = (/** @type import('rollup').PreRenderedChunk */ ci) => {
+const createEntryFileNames = ({ext = '.js'} = {})=>(/** @type import('rollup').PreRenderedChunk */ ci) => {
   // src/index.js => index.js
   // src/resources/User/index.ts -> resources/User.js
   let filename = path
     .relative(process.cwd(), ci.facadeModuleId)
     .replace(/^src./, '')
-    .replace(/.tsx?$/, '.js');
+    .replace(/.tsx?$/, ext);
   // preserve pages dir index
   if (!filename.startsWith('pages')) {
-    filename = filename.replace(/\/index.js$/, '.js');
+    filename = filename.replace(/\/index.js$/, ext);
   }
   return filename;
 };
+
+const entryFileNames = createEntryFileNames();
 
 /** @type import('rollup').RollupOptions */
 const prod = {
@@ -88,7 +90,7 @@ const prod = {
       sourcemap: true,
     },
     {
-      entryFileNames,
+      entryFileNames:createEntryFileNames({ext:'.cjs'}),
       dir: 'dist/cjs',
       format: 'cjs',
       sourcemap: true,
