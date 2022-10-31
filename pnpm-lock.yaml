@@ -30,6 +30,7 @@ importers:
       rollup: ^3.1.0
       rollup-plugin-dts: ^5
       rollup-plugin-esbuild: ^4.10.1
+      rollup-plugin-license: ^3.0.0
       rollup-plugin-visualizer: ^5.8.2
       tsx: ^3.10.1
       turbo: ^1.5.6
@@ -62,6 +63,7 @@ importers:
       rollup: 3.2.3
       rollup-plugin-dts: 5.0.0_655ssj4e7sdqlljrreeiqtltve
       rollup-plugin-esbuild: 4.10.1_droztabqhwwmdz3zmwuhn47qtq
+      rollup-plugin-license: 3.0.0_rollup@3.2.3
       rollup-plugin-visualizer: 5.8.3_rollup@3.2.3
       tsx: 3.11.0
       turbo: 1.6.1
@@ -3115,6 +3117,10 @@ packages:
     engines: {node: '>= 10'}
     dev: true
 
+  /commenting/1.1.0:
+    resolution: {integrity: sha512-YeNK4tavZwtH7jEgK1ZINXzLKm6DZdEMfsaaieOsCAN0S8vsY7UeuO3Q7d/M018EFgE+IeUAuBOKkFccBZsUZA==}
+    dev: true
+
   /common-path-prefix/3.0.0:
     resolution: {integrity: sha512-QE33hToZseCH3jS0qN96O/bSh3kaw/h+Tq7ngyY9eWDUnTlTNUyqfqvCXioLe5Na5jFsL78ra/wuBU4iuEgd4w==}
     dev: true
@@ -5625,7 +5631,10 @@ packages:
     resolution: {integrity: sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==}
     engines: {node: '>=10'}
     hasBin: true
-    dev: false
+
+  /moment/2.29.4:
+    resolution: {integrity: sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==}
+    dev: true
 
   /ms/2.0.0:
     resolution: {integrity: sha512-Tpp60P6IUJDTuOq/5Z8cdskzJujfwqfOTkrwIwj7IRISpnkJnT6SyJ4PCPnGMoFjC9ddhal5KVIYtAt97ix05A==}
@@ -5980,6 +5989,11 @@ packages:
   /p-try/2.2.0:
     resolution: {integrity: sha512-R4nPAVTAU0B9D35/Gk3uJf/7XYbQcyohSKdvAxIRSNghFl4e71hVoGnBNQz9cWaXxO2I10KTC+3jMdvvoKw6dQ==}
     engines: {node: '>=6'}
+    dev: true
+
+  /package-name-regex/2.0.6:
+    resolution: {integrity: sha512-gFL35q7kbE/zBaPA3UKhp2vSzcPYx2ecbYuwv1ucE9Il6IIgBDweBlH8D68UFGZic2MkllKa2KHCfC1IQBQUYA==}
+    engines: {node: '>=12'}
     dev: true
 
   /pako/1.0.11:
@@ -6985,6 +6999,24 @@ packages:
       - supports-color
     dev: true
 
+  /rollup-plugin-license/3.0.0_rollup@3.2.3:
+    resolution: {integrity: sha512-L8SV7SUc7VSgUaOhjaOnfAUKbL0DI0ojS0Opb4jOskrlKkU0YOgkUuMDyVc0pe5+L3+X5Ro2fYwmRYOJ/LoowA==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      rollup: ^1.0.0 || ^2.0.0 || ^3.0.0
+    dependencies:
+      commenting: 1.1.0
+      glob: 7.2.3
+      lodash: 4.17.21
+      magic-string: 0.26.7
+      mkdirp: 1.0.4
+      moment: 2.29.4
+      package-name-regex: 2.0.6
+      rollup: 3.2.3
+      spdx-expression-validate: 2.0.0
+      spdx-satisfies: 5.0.1
+    dev: true
+
   /rollup-plugin-visualizer/5.8.3_rollup@3.2.3:
     resolution: {integrity: sha512-QGJk4Bqe4AOat5AjipOh8esZH1nck5X2KFpf4VytUdSUuuuSwvIQZjMGgjcxe/zXexltqaXp5Vx1V3LmnQH15Q==}
     engines: {node: '>=14'}
@@ -7197,6 +7229,14 @@ packages:
     resolution: {integrity: sha512-9NykojV5Uih4lgo5So5dtw+f0JgJX30KCNI8gwhz2J9A15wD0Ml6tjHKwf6fTSa6fAdVBdZeNOs9eJ71qCk8vA==}
     dev: true
 
+  /spdx-compare/1.0.0:
+    resolution: {integrity: sha512-C1mDZOX0hnu0ep9dfmuoi03+eOdDoz2yvK79RxbcrVEG1NO1Ph35yW102DHWKN4pk80nwCgeMmSY5L25VE4D9A==}
+    dependencies:
+      array-find-index: 1.0.2
+      spdx-expression-parse: 3.0.1
+      spdx-ranges: 2.1.1
+    dev: true
+
   /spdx-correct/3.1.1:
     resolution: {integrity: sha512-cOYcUWwhCuHCXi49RhFRCyJEK3iPj1Ziz9DpViV3tbZOwXD49QzIN3MpOLJNxh2qwq2lJJZaKMVw9qNi4jTC0w==}
     dependencies:
@@ -7215,8 +7255,26 @@ packages:
       spdx-license-ids: 3.0.12
     dev: true
 
+  /spdx-expression-validate/2.0.0:
+    resolution: {integrity: sha512-b3wydZLM+Tc6CFvaRDBOF9d76oGIHNCLYFeHbftFXUWjnfZWganmDmvtM5sm1cRwJc/VDBMLyGGrsLFd1vOxbg==}
+    dependencies:
+      spdx-expression-parse: 3.0.1
+    dev: true
+
   /spdx-license-ids/3.0.12:
     resolution: {integrity: sha512-rr+VVSXtRhO4OHbXUiAF7xW3Bo9DuuF6C5jH+q/x15j2jniycgKbxU09Hr0WqlSLUs4i4ltHGXqTe7VHclYWyA==}
+    dev: true
+
+  /spdx-ranges/2.1.1:
+    resolution: {integrity: sha512-mcdpQFV7UDAgLpXEE/jOMqvK4LBoO0uTQg0uvXUewmEFhpiZx5yJSZITHB8w1ZahKdhfZqP5GPEOKLyEq5p8XA==}
+    dev: true
+
+  /spdx-satisfies/5.0.1:
+    resolution: {integrity: sha512-Nwor6W6gzFp8XX4neaKQ7ChV4wmpSh2sSDemMFSzHxpTw460jxFYeOn+jq4ybnSSw/5sc3pjka9MQPouksQNpw==}
+    dependencies:
+      spdx-compare: 1.0.0
+      spdx-expression-parse: 3.0.1
+      spdx-ranges: 2.1.1
     dev: true
 
   /split2/4.1.0:
