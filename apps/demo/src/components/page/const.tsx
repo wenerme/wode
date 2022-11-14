@@ -27,6 +27,7 @@ export const NavLinks = [
       { icon: <FaHtml5 />, label: 'Color Names', href: '/web/color-name' },
       { icon: <FaHtml5 />, label: 'UserAgent', href: '/web/ua' },
       { icon: <FaHtml5 />, label: 'Daisy Themes', href: '/demo/daisy-theme' },
+      { icon: <FaHtml5 />, label: 'Intl.Segmenter', href: '/demo/Intl.Segmenter' },
     ],
   },
   {
