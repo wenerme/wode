@@ -28,6 +28,8 @@ export const NavLinks = [
       { icon: <FaHtml5 />, label: 'UserAgent', href: '/web/ua' },
       { icon: <FaHtml5 />, label: 'Daisy Themes', href: '/demo/daisy-theme' },
       { icon: <FaHtml5 />, label: 'Intl.Segmenter', href: '/demo/Intl.Segmenter' },
+      { icon: <FaHtml5 />, label: 'sucrase', href: '/demo/sucrase' },
+      { icon: <FaHtml5 />, label: 'IDs', href: '/demo/ids' },
     ],
   },
   {
