@@ -15,10 +15,8 @@ function renderItem(v: MenuSpec, key: number) {
   return (
     <li key={key}>
       <Link href={v.href || ''}>
-        <a>
-          {v.icon}
-          {v.label}
-        </a>
+        {v.icon}
+        {v.label}
       </Link>
     </li>
   );
@@ -45,12 +43,10 @@ function renderMenu(menu: MenuSpec[], { icon = <Down />, listClassName = 'z-20 b
     if (v.children?.length) {
       return (
         <li tabIndex={0} key={i}>
-          <Link href={v.href || '/'}>
-            <a className="justify-between">
-              {v.icon}
-              {v.label}
-              {icon}
-            </a>
+          <Link href={v.href || '/'} className="justify-between">
+            {v.icon}
+            {v.label}
+            {icon}
           </Link>
           <ul className={classNames('p-2', listClassName)}>{v.children.map(renderItem)}</ul>
         </li>
@@ -85,8 +81,8 @@ export const PageHeader = () => {
               {renderMenu(NavLinks, { icon: <Right /> })}
             </ul>
           </div>
-          <Link href={'/'}>
-            <a className="btn btn-ghost normal-case text-xl">Wener Web Demo</a>
+          <Link href={'/'} className="btn btn-ghost normal-case text-xl">
+            Wener Web Demo
           </Link>
         </div>
         <div className="navbar-center hidden lg:flex">

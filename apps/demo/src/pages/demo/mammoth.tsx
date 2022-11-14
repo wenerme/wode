@@ -37,14 +37,14 @@ const DemoMenu = () => {
       </div>
       <div className={'border p-2 flex flex-col'}>
         <div className="tabs">
-          <Link href={{ query: { tab: 'render' } }}>
-            <a className={classNames('tab tab-lifted', tab === 'render')}>Render</a>
+          <Link href={{ query: { tab: 'render' } }} className={classNames('tab tab-lifted', tab === 'render')}>
+            Render
           </Link>
-          <Link href={{ query: { tab: 'html' } }}>
-            <a className={classNames('tab tab-lifted', tab === 'html')}>HTML</a>
+          <Link href={{ query: { tab: 'html' } }} className={classNames('tab tab-lifted', tab === 'html')}>
+            HTML
           </Link>
-          <Link href={{ query: { tab: 'text' } }}>
-            <a className={classNames('tab tab-lifted', tab === 'json')}>Text</a>
+          <Link href={{ query: { tab: 'text' } }} className={classNames('tab tab-lifted', tab === 'json')}>
+            Text
           </Link>
         </div>
         <div>

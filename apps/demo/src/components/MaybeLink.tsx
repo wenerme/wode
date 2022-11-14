@@ -23,10 +23,8 @@ const ActiveLink: React.FC<
   }, [router.asPath]);
 
   return (
-    <Link href={href}>
-      <a className={classNames(className, activeClassName)} {...props}>
-        {children}
-      </a>
+    <Link href={href} className={classNames(className, activeClassName)} {...props}>
+      {children}
     </Link>
   );
 };
