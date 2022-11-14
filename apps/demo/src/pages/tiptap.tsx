@@ -5,6 +5,7 @@ import Head from 'next/head';
 const Content = dynamic({
   loader: () => import('@src/contents/TipTap/TipTapPageContent'),
   loading: () => <div>Loading...</div>,
+  ssr: false,
 });
 
 const CurrentPage: NextPage = () => {
