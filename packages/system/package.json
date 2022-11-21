@@ -78,12 +78,12 @@
     "systemjs": "*"
   },
   "devDependencies": {
-    "@types/jsdom": "^20.0.0",
-    "@types/react": "^18.0.21",
-    "@types/react-dom": "^18.0.6",
-    "@wener/utils": "^1",
-    "ava": "^5.0.1",
-    "jsdom": "^20.0.0",
+    "@types/jsdom": "^20.0.1",
+    "@types/react": "^18.0.25",
+    "@types/react-dom": "^18.0.9",
+    "@wener/utils": "workspace:^1.1.8",
+    "ava": "^5.1.0",
+    "jsdom": "^20.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
