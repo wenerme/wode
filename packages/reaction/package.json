@@ -70,18 +70,18 @@
     ]
   },
   "devDependencies": {
-    "@wener/utils": "^1",
     "@types/hoist-non-react-statics": "^3.3.1",
-    "@types/prop-types": "^15",
-    "@types/react": "^18.0.21",
-    "@types/react-dom": "^18",
-    "@types/react-is": "^17.0.3"
+    "@types/prop-types": "^15.7.5",
+    "@types/react": "^18.0.25",
+    "@types/react-dom": "^18.0.9",
+    "@types/react-is": "^17.0.3",
+    "@wener/utils": "workspace:^1.1.8"
   },
   "peerDependencies": {
+    "hoist-non-react-statics": ">=3",
     "prop-types": ">=15",
     "react": ">=18",
     "react-dom": ">=18",
-    "hoist-non-react-statics": ">=3",
     "react-is": ">=18"
   },
   "publishConfig": {
@@ -91,5 +91,12 @@
   "typedoc": {
     "entryPoint": "./src/index.ts",
     "readmeFile": "./README.md"
+  },
+  "dependencies": {
+    "hoist-non-react-statics": "^3.3.2",
+    "prop-types": "^15.8.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-is": "^18.2.0"
   }
 }

@@ -225,4 +225,4 @@ const createBuild = () => {
   ];
 };
 
-export { dev, prod, bundleDev, createBundle };
+export { dev, prod, bundleDev, createBundle, createBuild };

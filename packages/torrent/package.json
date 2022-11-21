@@ -61,12 +61,12 @@
     "test": "make test"
   },
   "dependencies": {
-    "@wener/utils": "^1"
+    "@wener/utils": "workspace:^1.1.8"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.186",
-    "ava": "^5.0.1",
-    "lodash": "^4",
+    "@types/lodash": "^4.14.189",
+    "ava": "^5.1.0",
+    "lodash": "^4.17.21",
     "tsd": "^0.24.1"
   },
   "publishConfig": {

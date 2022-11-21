@@ -1,0 +1,36 @@
+{
+  "name": "@wener/wechat",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Wechat Server SDK & Client SDK",
+  "homepage": "https://github.com/wenerme/wode#readme",
+  "author": "wener",
+  "license": "MIT",
+  "engines": {
+    "node": "16",
+    "npm": "8"
+  },
+  "main": "index.js",
+  "keywords": [],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@sequelize/core": "7.0.0-alpha.10",
+    "@wener/utils": "workspace:^1.1.8",
+    "https-proxy-agent": "^5.0.1"
+  },
+  "devDependencies": {
+    "lru-cache": "^7.14.1"
+  },
+  "ava": {
+    "extensions": {
+      "ts": "module"
+    },
+    "nodeArguments": [
+      "--conditions=typescript",
+      "--require=@wener/wode/suppress-experimental.cjs",
+      "--loader=tsx"
+    ]
+  }
+}

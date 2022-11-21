@@ -79,3 +79,5 @@ export { isULID, createULID, ulid, parseULID } from './crypto/ulid';
 
 // misc
 export { createRandom } from './maths/random';
+
+export type FetchLike = (url: string, init?: RequestInit) => Promise<Response>;
