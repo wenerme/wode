@@ -1,4 +1,5 @@
 import type { MaybePromise } from './MaybePromise';
+import { isPromise } from './isPromise';
 
 export type LazyPromise<T> = Promise<T> & {
   reject(reason?: any): void;
@@ -51,7 +52,7 @@ export function createLazyPromise<T = any>(
           // kind of bad
           const result = executor(holder.resolve, holder.reject);
           // ensure resolve/reject is called
-          if (result && 'then' in result) {
+          if (isPromise(result)) {
             result.then(holder.resolve, holder.reject);
           } else if (result !== undefined) {
             holder.resolve(result);
