@@ -16,7 +16,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@sequelize/core": "7.0.0-alpha.10",
+    "@sequelize/core": "7.0.0-alpha.19",
     "@wener/utils": "workspace:^1.1.8",
     "https-proxy-agent": "^5.0.1"
   },

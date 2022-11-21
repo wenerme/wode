@@ -4,7 +4,7 @@ import type { TokenProvider } from '../server/Token';
 import { WechatServerClient } from '../server/WechatServerClient';
 import { WechatToken } from './db/models';
 
-export function createWechatServerClientFromEnv() {
+export function createWechatServerClient() {
   const { WX_PROXY: proxy, WX_APP_ID: appId, WX_APP_SECRET: appSecret } = process.env;
   let fetch: FetchLike = globalThis.fetch;
   const logger = console;
