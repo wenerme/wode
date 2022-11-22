@@ -2,14 +2,12 @@ import type { Logger } from '@wener/utils';
 import { isDefined } from '@wener/utils';
 import type { Token, TokenProvider } from './Token';
 import { createDummyTokenProvider } from './Token';
+import { TokenTypes } from './TokenTypes';
 import type { ErrorResponse, SnsOAuth2TokenResponse, UserInfoResponse } from './types';
 
-export const TokenTypes = {
-  AppSecret: 'AppSecret',
-  AccessToken: 'AccessToken',
-  JsTicket: 'JsTicket',
-};
-
+/**
+ * 微信 服务端接口 客户端封装
+ */
 export class WechatServerClient {
   options: ClientOptions = {
     fetch: globalThis.fetch,
