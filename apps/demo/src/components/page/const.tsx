@@ -33,6 +33,11 @@ export const NavLinks = [
     ],
   },
   {
+    icon: <ImLab />,
+    label: 'China',
+    children: [{ icon: <FaHtml5 />, label: 'ID Info', href: '/cn/id' }],
+  },
+  {
     icon: <VscGithubInverted />,
     label: 'Github',
     href: 'https://github.com/wenerme/wode',

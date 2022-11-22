@@ -4,3 +4,4 @@ export type { TokenProvider } from './server/Token';
 export type { Token } from './server/Token';
 export { WechatErrors } from './common/WechatErrors';
 export type { UserInfoResponse, ErrorResponse, SnsOAuth2TokenResponse, JsSdkSignature } from './server/types';
+export { TokenTypes } from './server/TokenTypes';
