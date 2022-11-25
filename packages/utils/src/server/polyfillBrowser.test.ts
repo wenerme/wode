@@ -1,7 +1,11 @@
 import test from 'ava';
+import * as nodeFetch from 'node-fetch';
 import { polyfillBrowser } from './polyfillBrowser';
+import { polyfillFetch } from './polyfillFetch';
 
-test.before(async () => {
+test.before(async (t) => {
+  t.true(polyfillFetch(nodeFetch));
+  t.false(polyfillFetch());
   await polyfillBrowser();
 });
 

@@ -7,7 +7,7 @@ import type React from 'react';
 export function mergeRefs<T = any>(
   ...refs: Array<undefined | null | React.MutableRefObject<T | null | undefined> | React.RefCallback<T> | string>
 ): React.LegacyRef<T> | React.MutableRefObject<T> | undefined {
-  const valid = refs.filter(Boolean);
+  const valid = refs.filter(Boolean) as Array<React.MutableRefObject<T | null | undefined> | ((v: T) => void)>;
   if (valid.length === 0) {
     return undefined;
   } else if (valid.length === 1) {
@@ -15,17 +15,12 @@ export function mergeRefs<T = any>(
   }
   return (value) => {
     refs.forEach((ref) => {
-      if (!ref) {
-        return;
-      }
-      if (typeof ref === 'string') {
-        console.error('Cannot pass string refs to mergeRefs');
-        return;
-      }
       if (typeof ref === 'function') {
         ref(value);
-      } else {
+      } else if (typeof ref === 'object' && ref && 'current' in ref) {
         ref.current = value;
+      } else {
+        console.error(`mergeRefs: unable to handle ref ${typeof ref}`, { ref });
       }
     });
   };
