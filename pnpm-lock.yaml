@@ -124,6 +124,7 @@ importers:
       '@trpc/next': ^9.27.4
       '@trpc/react': ^9.27.4
       '@trpc/server': ^9.27.4
+      '@types/cookie': ^0.5.1
       '@types/lodash': ^4.14.189
       '@types/markdown-it': ^12.2.3
       '@types/node': ^16.18.3
@@ -146,6 +147,7 @@ importers:
       autoprefixer: ^10.4.13
       better-sqlite3: ^7.6.2
       classnames: ^2.3.2
+      cookie: ^0.5.0
       cssnano: ^5.1.14
       daisyui: ^2.41.0
       domhandler: ^5.0.3
@@ -253,6 +255,7 @@ importers:
       autoprefixer: 10.4.13_postcss@8.4.19
       better-sqlite3: 7.6.2
       classnames: 2.3.2
+      cookie: 0.5.0
       daisyui: 2.41.0_2lwn2upnx27dqeg6hqdu7sq75m
       domhandler: 5.0.3
       html-react-parser: 3.0.4_react@18.2.0
@@ -289,6 +292,7 @@ importers:
       zod: 3.19.1
       zustand: 4.1.4_immer@9.0.16+react@18.2.0
     devDependencies:
+      '@types/cookie': 0.5.1
       '@types/lodash': 4.14.189
       '@types/markdown-it': 12.2.3
       '@types/node': 16.18.3
@@ -2107,6 +2111,10 @@ packages:
       '@types/node': 18.11.9
     dev: true
 
+  /@types/cookie/0.5.1:
+    resolution: {integrity: sha512-COUnqfB2+ckwXXSFInsFdOAWQzCCx+a5hq2ruyj+Vjund94RJQd4LG2u9hnvJrTgunKAaax7ancBYlDrNYxA0g==}
+    dev: true
+
   /@types/debug/4.1.7:
     resolution: {integrity: sha512-9AonUzyTjXXhEOa0DnqpzZi6VHlqKMswga9EXjpXnnqxwLtdvPPtlO8evrI5D9S6asFRCQ6v+wpiUKbw+vKqyg==}
     dependencies:
@@ -3207,6 +3215,11 @@ packages:
     resolution: {integrity: sha512-rcQ1bsQO9799wq24uE5AM2tAILy4gXGIK/njFWcVQkGNZ96edlpY+A7bjwvzjYvLDyzmG1MmMLZhpcsb+klNMQ==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     dev: true
+
+  /cookie/0.5.0:
+    resolution: {integrity: sha512-YZ3GUyn/o8gfKJlnlX7g7xq4gyO6OSuhGPKaaGssGB2qgDUS0gPgtTvoyZLTt9Ab6dC4hfc9dV5arkvc/OCmrw==}
+    engines: {node: '>= 0.6'}
+    dev: false
 
   /core-js-pure/3.26.1:
     resolution: {integrity: sha512-VVXcDpp/xJ21KdULRq/lXdLzQAtX7+37LzpyfFM973il0tWSsDEoyzG38G14AjTpK9VTfiNM9jnFauq/CpaWGQ==}
