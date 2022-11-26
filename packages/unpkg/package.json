@@ -107,7 +107,7 @@
   },
   "dependencies": {
     "@wener/utils": "*",
-    "better-sqlite3": "^7.6.2",
+    "better-sqlite3": "^8.0.0",
     "lru-cache": "^7.14.1",
     "mime": "^3.0.0",
     "pino": "^8.7.0",
