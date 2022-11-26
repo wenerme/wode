@@ -30,3 +30,6 @@ ci-install:
 	$(PM) install
 ci: build typedoc
 	mv out/typedoc apps/demo/public/docs
+
+outdated:
+	pnpm outdated -r | grep -v lexical | grep -v '@tiptap' | grep -v '^├─'
