@@ -177,6 +177,7 @@ importers:
       react-test-renderer: ^18.2.0
       styled-components: ^5.3.6
       sucrase: ^3.29.0
+      superjson: ^1.11.0
       tailwindcss: ^3.2.4
       tar: ^6.1.12
       tippy.js: ^6.3.7
@@ -280,6 +281,7 @@ importers:
       react-query: 3.39.2_biqbaboplfbrettd7655fr4n2y
       styled-components: 5.3.6_7i5myeigehqah43i5u7wbekgba
       sucrase: 3.29.0
+      superjson: 1.11.0
       tailwindcss: 3.2.4_postcss@8.4.19
       tar: 6.1.12
       tippy.js: 6.3.7
@@ -3281,6 +3283,13 @@ packages:
     engines: {node: '>= 0.6'}
     dev: false
 
+  /copy-anything/3.0.2:
+    resolution: {integrity: sha512-CzATjGXzUQ0EvuvgOCI6A4BGOo2bcVx8B+eC2nF862iv9fopnPQwlrbACakNCHRIJbCSBj+J/9JeDf60k64MkA==}
+    engines: {node: '>=12.13'}
+    dependencies:
+      is-what: 4.1.7
+    dev: false
+
   /core-js-pure/3.26.1:
     resolution: {integrity: sha512-VVXcDpp/xJ21KdULRq/lXdLzQAtX7+37LzpyfFM973il0tWSsDEoyzG38G14AjTpK9VTfiNM9jnFauq/CpaWGQ==}
     requiresBuild: true
@@ -5265,6 +5274,11 @@ packages:
     dependencies:
       call-bind: 1.0.2
     dev: true
+
+  /is-what/4.1.7:
+    resolution: {integrity: sha512-DBVOQNiPKnGMxRMLIYSwERAS5MVY1B7xYiGnpgctsOFvVDz9f9PFXXxMcTOHuoqYp4NK9qFYQaIC1NRRxLMpBQ==}
+    engines: {node: '>=12.13'}
+    dev: false
 
   /is-wsl/2.2.0:
     resolution: {integrity: sha512-fKzAra0rGJUUBwGBgNkHZuToZcn+TtXHpeCgmkMJMMYx1sQDYaCSyjJBSCa2nH1DGm7s3n1oBnohoVTBaN7Lww==}
@@ -7626,6 +7640,13 @@ packages:
       mz: 2.7.0
       pirates: 4.0.5
       ts-interface-checker: 0.1.13
+    dev: false
+
+  /superjson/1.11.0:
+    resolution: {integrity: sha512-6PfAg1FKhqkwWvPb2uXhH4MkMttdc17eJ91+Aoz4s1XUEDZFmLfFx/xVA3wgkPxAGy5dpozgGdK6V/n20Wj9yg==}
+    engines: {node: '>=10'}
+    dependencies:
+      copy-anything: 3.0.2
     dev: false
 
   /supertap/3.0.1:
