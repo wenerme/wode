@@ -31,7 +31,8 @@ const RANDOM_LEN = 16;
  * check give {@link str} is a valid ulid
  */
 export function isULID(str: string): boolean {
-  return str?.length === 26 && /^[0-9A-HJKMNP-TV-Z]{26}$/.test(str);
+  // ttttttttttrrrrrrrrrrrrrrrr
+  return str?.length === 26 && /^[0-9A-HJKMNP-TV-Z]{26}$/i.test(str);
 }
 
 function replaceCharAt(str: string, index: number, char: string) {
@@ -109,7 +110,7 @@ function encodeRandom(len: number, prng: PRNG): string {
  *
  * @throws ULIDError
  */
-export function parseULID(id: string): { time: number; random: string } {
+export function parseULID(id: string): { timestamp: number; random: string } {
   if (id.length !== TIME_LEN + RANDOM_LEN) {
     throw createError('malformed ulid');
   }
@@ -127,7 +128,7 @@ export function parseULID(id: string): { time: number; random: string } {
   if (time > TIME_MAX) {
     throw createError('malformed ulid, timestamp too large');
   }
-  return { time, random: id.substring(TIME_LEN) };
+  return { timestamp: time, random: id.substring(TIME_LEN) };
 }
 
 function createPrng(): PRNG {

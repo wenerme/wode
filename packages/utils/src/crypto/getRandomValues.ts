@@ -14,11 +14,13 @@ if (!(process as any).browser) {
 }
 
 export let getRandomValues: <T extends Exclude<NodeJS.TypedArray, Float32Array | Float64Array>>(typedArray: T) => T =
-  globalThis.crypto?.getRandomValues || (globalThis as any).msCrypto?.getRandomValues || _getRandomValues;
+  globalThis.crypto?.getRandomValues?.bind(globalThis.crypto) ||
+  (globalThis as any).msCrypto?.getRandomValues?.bind((globalThis as any).msCrypto) ||
+  _getRandomValues;
 
 function _getRandomValues<T extends Exclude<NodeJS.TypedArray, Float32Array | Float64Array>>(buf: T) {
   if (nodeCrypto?.webcrypto?.getRandomValues) {
-    getRandomValues = nodeCrypto?.webcrypto?.getRandomValues;
+    getRandomValues = nodeCrypto?.webcrypto?.getRandomValues?.bind(nodeCrypto?.webcrypto);
     return nodeCrypto.webcrypto.getRandomValues(buf);
   }
   if (nodeCrypto?.randomBytes) {

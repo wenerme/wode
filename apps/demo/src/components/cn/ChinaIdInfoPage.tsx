@@ -2,13 +2,13 @@ import { useEffect } from 'react';
 import { HiMagnifyingGlass, HiOutlineXCircle } from 'react-icons/hi2';
 import { useImmer } from 'use-immer';
 import { USICCard } from '@src/components/cn/USICCard';
-import { ParsedIdInfo, parseId } from '@src/components/cn/parseId';
+import { ParsedIt, parseIt } from '@src/components/cn/parseIt';
 import { randomUsci } from '@src/components/cn/usic/randomUsci';
 
 export const ChinaIdInfoPage = () => {
-  const [state, update] = useImmer<{ id: string; info: ParsedIdInfo; alter?: { level: string; message: string } }>({
+  const [state, update] = useImmer<{ id: string; info: ParsedIt; alter?: { level: string; message: string } }>({
     id: '91310000775785552L',
-    info: parseId('91310000775785552L')!,
+    info: parseIt('91310000775785552L')!,
   });
   useEffect(() => {
     update((s) => {
@@ -23,7 +23,7 @@ export const ChinaIdInfoPage = () => {
         onSubmit={(e) => {
           e.preventDefault();
           update((s) => {
-            let info = parseId(s.id);
+            let info = parseIt(s.id);
             if (!info) {
               s.alter = {
                 level: 'error',
