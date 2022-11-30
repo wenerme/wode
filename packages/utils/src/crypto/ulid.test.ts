@@ -1,5 +1,5 @@
 import test from 'ava';
-import { createULID, parseULID } from './ulid';
+import { createULID, isULID, parseULID } from './ulid';
 
 test('ulid', (t) => {
   // monotonic
@@ -13,10 +13,18 @@ test('ulid', (t) => {
     });
 
     const ulid1 = ulid();
-    t.is(parseULID(ulid1).time, lastTime);
+    t.is(parseULID(ulid1).timestamp, lastTime);
+    t.true(isULID(ulid1), ulid1);
 
     const ulid2 = ulid();
     t.true(ulid1 < ulid2);
-    t.is(parseULID(ulid2).time, lastTime);
+    t.true(isULID(ulid2), ulid2);
+    t.is(parseULID(ulid2).timestamp, lastTime);
+  }
+
+  {
+    const next = createULID();
+    t.true(isULID(next().toLowerCase()));
+    t.true(isULID('ttttttttttrrrrrrrrrrrrrrrr'));
   }
 });
