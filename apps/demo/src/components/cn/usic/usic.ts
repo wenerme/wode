@@ -53,6 +53,9 @@ export const USICRegistryBureauCode: Record<string, Code> = {
   },
 };
 export const USICPrefixRegex = /^[159][1239]|Y1/;
+/**
+ * 16 位
+ */
 export const USICRegex = /^([159][1239]|Y1)[0-9]{6}[0-9A-HJ-NP-RTUWXY]{10}$/; // I O Z S V
 
 export function parseUsic(s: string): ParsedUSCI {

@@ -41,6 +41,7 @@
     },
     "nodeArguments": [
       "--conditions=typescript",
+      "--experimental-import-meta-resolve",
       "--require=@wener/wode/suppress-experimental.cjs",
       "--loader=tsx"
     ]

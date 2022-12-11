@@ -1,8 +1,8 @@
 module.exports = {
-  root: true,
+  // root: true,
   extends: [
     // require.resolve('@wener/wode/eslint-config/next.cjs'),
     // 'next',
-    "next/core-web-vitals",
+    // "next/core-web-vitals",
   ],
 };

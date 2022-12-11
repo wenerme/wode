@@ -1,5 +1,5 @@
 {
-  "name": "@wener/wechat",
+  "name": "@wener/wechat-client",
   "version": "1.0.0",
   "type": "module",
   "description": "Wechat Server SDK & Client SDK",

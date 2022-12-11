@@ -34,6 +34,8 @@ export { isDefined } from './validations/isDefined';
 export { isEmptyObject } from './validations/isEmptyObject';
 export { isUUID } from './validations/isUUID';
 export { isPlainObject } from './validations/isPlainObject';
+export { parseTimestamp } from './validations/parseTimestamp';
+export { parseBoolean } from './validations/parseBoolean';
 
 // modules
 export { parseModuleId, type ParsedModuleId } from './modules/parseModuleId';
