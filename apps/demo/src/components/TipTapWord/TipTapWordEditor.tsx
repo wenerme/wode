@@ -1,21 +1,18 @@
 import React, { useEffect, useRef } from 'react';
-import { Editor, EditorContent } from '@tiptap/react';
 import { Menubar } from '@src/components/TipTapWord/Menubar/Menubar';
 import { Statusbar } from '@src/components/TipTapWord/Statusbar/Statusbar';
 import { Toolbar } from '@src/components/TipTapWord/Toolbar/Toolbar';
 import { Viewer } from '@src/components/TipTapWord/Viewer';
-import {
-  createEditorStore,
-  EditorStore,
-  EditorStoreProvider,
-  useEditorStoreApi,
-} from '@src/components/TipTapWord/useEditorStore';
+import type { EditorStore } from '@src/components/TipTapWord/useEditorStore';
+import { createEditorStore, EditorStoreProvider, useEditorStoreApi } from '@src/components/TipTapWord/useEditorStore';
+import type { Editor } from '@tiptap/react';
+import { EditorContent } from '@tiptap/react';
 
 const EditorStoreConnector: React.FC<Partial<EditorStore>> = ({ editor, editorDomRef }) => {
-  let api = useEditorStoreApi();
+  const api = useEditorStoreApi();
   useEffect(() => {
     api.setState((s) => {
-      let change = s.editor !== editor || s.editorDomRef !== editorDomRef;
+      const change = s.editor !== editor || s.editorDomRef !== editorDomRef;
       s.editor = editor ?? s.editor;
       s.editorDomRef = editorDomRef ?? s.editorDomRef;
       if (change) {

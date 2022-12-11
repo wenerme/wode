@@ -1,4 +1,5 @@
-import React, { HTMLProps, KeyboardEventHandler } from 'react';
+import type { HTMLProps, KeyboardEventHandler } from 'react';
+import React from 'react';
 import { MdAdd, MdRemove } from 'react-icons/md';
 import styled from 'styled-components';
 
@@ -80,7 +81,7 @@ export const FakeInput: React.FC<
   const { value, min, max, options = [], onChange, pattern, placeholder, step = 1, ...rest } = props;
   const [edit, setEdit] = React.useState(value ?? '');
   React.useLayoutEffect(() => {
-    let next = value ?? '';
+    const next = value ?? '';
     if (next !== edit) {
       setEdit(next);
     }
@@ -139,7 +140,7 @@ export const FakeInput: React.FC<
         break;
       default:
         if (e.key.length === 1) {
-          let next = String(edit) + e.key;
+          const next = String(edit) + e.key;
           setEdit(next);
         }
     }

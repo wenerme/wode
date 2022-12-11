@@ -1,14 +1,15 @@
 import { randomPick } from '../utils/randomPick';
 import { mod31, Mod31Chars } from './mod31';
-import { ParsedUSCI, USICRegistryBureauCode } from './usic';
+import type { ParsedUSCI } from './usic';
+import { USICRegistryBureauCode } from './usic';
 
 export function randomUsci(info: Partial<ParsedUSCI> = {}): ParsedUSCI {
   info.registryBureauCode ||= randomPick(Object.keys(USICRegistryBureauCode));
-  let primaryCode = USICRegistryBureauCode[info.registryBureauCode];
+  const primaryCode = USICRegistryBureauCode[info.registryBureauCode];
   if (!primaryCode?.codes) {
     throw new Error('invalid registryBureauCode');
   }
-  info.registryBureauTypeCode ||= randomPick(Object.keys(primaryCode?.codes!));
+  info.registryBureauTypeCode ||= randomPick(Object.keys(primaryCode?.codes));
 
   info.registryBureauLabel = primaryCode.label;
   info.registryBureauTypeLabel = primaryCode.codes?.[info.registryBureauTypeCode]?.label;
@@ -18,7 +19,7 @@ export function randomUsci(info: Partial<ParsedUSCI> = {}): ParsedUSCI {
     .fill(0)
     .map(() => Mod31Chars[Math.floor(Math.random() * 31)])
     .join('');
-  let s =
+  const s =
     String(info.registryBureauCode) +
     String(info.registryBureauTypeCode) +
     String(info.registryBureauDistrictCode) +

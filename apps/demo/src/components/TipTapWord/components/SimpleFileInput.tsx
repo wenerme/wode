@@ -1,8 +1,8 @@
 import React from 'react';
 import { MdUploadFile } from 'react-icons/md';
 import classNames from 'classnames';
-import { formatBytes } from '@wener/utils';
 import { useFileInput } from '@src/hooks/useFileInput';
+import { formatBytes } from '@wener/utils';
 
 export const SimpleFileInput: React.FC<{
   src?: string;
@@ -16,10 +16,10 @@ export const SimpleFileInput: React.FC<{
     onFile,
     accept,
   });
-  let type = state.file?.type || initialType || '';
-  let src = state.url || initialSrc;
-  let isImage = !type || type.startsWith('image/');
-  let isVideo = type.startsWith('video/');
+  const type = state.file?.type || initialType || '';
+  const src = state.url || initialSrc;
+  const isImage = !type || type.startsWith('image/');
+  const isVideo = type.startsWith('video/');
   return (
     <label
       className={classNames(

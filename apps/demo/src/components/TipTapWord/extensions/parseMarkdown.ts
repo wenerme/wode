@@ -1,6 +1,6 @@
 import markdownit from 'markdown-it';
 import { MarkdownParser } from 'prosemirror-markdown';
-import { Schema } from 'prosemirror-model';
+import type { Schema } from 'prosemirror-model';
 
 type Token = any;
 type Attrs = any;
@@ -46,7 +46,7 @@ export interface MarkdownParseSpec {
 }
 
 export function createMarkdownParser(schema: Schema) {
-  let create = () =>
+  const create = () =>
     new MarkdownParser(schema, markdownit('commonmark', { html: false }), {
       blockquote: { block: 'blockquote' },
       paragraph: { block: 'paragraph' },
@@ -85,7 +85,7 @@ export function createMarkdownParser(schema: Schema) {
       code_inline: { mark: 'code', noCloseToken: true },
     } as Record<string, MarkdownParseSpec> as any);
 
-  let parser = (schema.cached.markdownParser ??= create());
+  const parser = (schema.cached.markdownParser ??= create());
   return {
     parser,
     parse(content: string) {

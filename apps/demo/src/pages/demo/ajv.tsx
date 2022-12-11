@@ -1,7 +1,8 @@
 import React, { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { HiOutlineXCircle } from 'react-icons/hi';
-import AjvDraft07, { ErrorObject } from 'ajv';
+import type { ErrorObject } from 'ajv';
+import AjvDraft07 from 'ajv';
 import addErrors from 'ajv-errors';
 import addFormats from 'ajv-formats';
 import addKeywords from 'ajv-keywords';
@@ -100,7 +101,6 @@ const Demo = () => {
       updateResult({ error: undefined, valid, errors: ajv.errors || [] });
     } catch (e: any) {
       updateResult({ error: e });
-      return;
     }
   };
   console.log(`Result`, result);

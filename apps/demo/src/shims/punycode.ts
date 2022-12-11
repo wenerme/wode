@@ -30,7 +30,7 @@ const baseMinusTMin = base - tMin;
 const floor = Math.floor;
 const stringFromCharCode = String.fromCharCode;
 
-/*--------------------------------------------------------------------------*/
+/* -------------------------------------------------------------------------- */
 
 /**
  * A generic error utility function.
@@ -152,7 +152,7 @@ const basicToDigit = function (codePoint: number) {
 const digitToBasic = function (digit: number, flag: number) {
   //  0..25 map to ASCII a..z or A..Z
   // 26..35 map to ASCII 0..9
-  // @ts-ignore
+  // @ts-expect-error
   return digit + 22 + 75 * (digit < 26) - ((flag != 0) << 5);
 };
 
@@ -212,7 +212,7 @@ const decode = function (input: string) {
     // which gets added to `i`. The overflow checking is easier
     // if we increase `i` as we go, then subtract off its starting
     // value at the end to obtain `delta`.
-    let oldi = i;
+    const oldi = i;
     for (let w = 1, k = base /* no condition */; ; k += base) {
       if (index >= inputLength) {
         error('invalid-input');
@@ -269,10 +269,10 @@ const encode = function (inputStr: string) {
   const output = [];
 
   // Convert the input in UCS-2 to an array of Unicode code points.
-  let input = ucs2decode(inputStr);
+  const input = ucs2decode(inputStr);
 
   // Cache the length.
-  let inputLength = input.length;
+  const inputLength = input.length;
 
   // Initialize the state.
   let n = initialN;
@@ -286,7 +286,7 @@ const encode = function (inputStr: string) {
     }
   }
 
-  let basicLength = output.length;
+  const basicLength = output.length;
   let handledCPCount = basicLength;
 
   // `handledCPCount` is the number of code points that have been handled;
@@ -383,7 +383,7 @@ const toASCII = function (input: string) {
   });
 };
 
-/*--------------------------------------------------------------------------*/
+/* -------------------------------------------------------------------------- */
 
 /** Define the public API */
 export default {
@@ -404,8 +404,8 @@ export default {
     decode: ucs2decode,
     encode: ucs2encode,
   },
-  decode: decode,
-  encode: encode,
-  toASCII: toASCII,
-  toUnicode: toUnicode,
+  decode,
+  encode,
+  toASCII,
+  toUnicode,
 };

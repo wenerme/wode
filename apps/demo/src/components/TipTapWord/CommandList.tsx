@@ -1,15 +1,15 @@
 import React, { cloneElement, forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { MdImage } from 'react-icons/md';
 import classNames from 'classnames';
-import { CommandSuggestionItem } from '@src/components/TipTapWord/extensions/commands';
+import type { CommandSuggestionItem } from '@src/components/TipTapWord/extensions/commands';
 
-export type CommandListRef = {
+export interface CommandListRef {
   onKeyDown: (o: { event: KeyboardEvent }) => boolean;
-};
-export type CommandListProps = {
+}
+export interface CommandListProps {
   items: CommandSuggestionItem[];
   command: Function;
-};
+}
 export const CommandList = forwardRef<CommandListRef, CommandListProps>((props, ref) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const selectItem = (index: number) => {
@@ -42,26 +42,25 @@ export const CommandList = forwardRef<CommandListRef, CommandListProps>((props, 
     },
   }));
   useEffect(() => {
-    let $div = containerRef.current;
+    const $div = containerRef.current;
     if (!$div) {
       return;
     }
-    let $ele = $div.querySelector(`[data-index="${selectedIndex}"]`) as HTMLButtonElement;
+    const $ele = $div.querySelector(`[data-index="${selectedIndex}"]`) as HTMLButtonElement;
     if (!$ele) {
       return;
     }
-    let top = $div.scrollTop;
+    const top = $div.scrollTop;
 
-    let min = $ele.offsetTop;
+    const min = $ele.offsetTop;
     if (min < top) {
       $div.scrollTop = min;
       return;
     }
-    let max = min + $ele.clientHeight;
-    let h = $div.clientHeight;
+    const max = min + $ele.clientHeight;
+    const h = $div.clientHeight;
     if (max > top + h) {
       $div.scrollTop = max - h;
-      return;
     }
   }, [selectedIndex]);
   return (

@@ -26,7 +26,7 @@ export const ThemeSelectorButton = () => {
         <span className={'hidden sm:inline'}>主题</span>
         <HiChevronDown />
       </Listbox.Button>
-      {/*<Transition as={Fragment} leave="transition ease-in duration-100" leaveFrom="opacity-100" leaveTo="opacity-0">*/}
+      {/* <Transition as={Fragment} leave="transition ease-in duration-100" leaveFrom="opacity-100" leaveTo="opacity-0"> */}
       <Listbox.Options
         className={classNames(
           'absolute right-0 z-50 flex h-[400px] w-[200px] flex-col gap-2 overflow-y-auto rounded bg-base-200 p-2 text-sm',
@@ -62,7 +62,7 @@ export const ThemeSelectorButton = () => {
           </Listbox.Option>
         ))}
       </Listbox.Options>
-      {/*</Transition>*/}
+      {/* </Transition> */}
     </Listbox>
   );
 };

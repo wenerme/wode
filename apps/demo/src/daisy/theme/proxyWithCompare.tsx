@@ -32,9 +32,9 @@ function isNode(o: any): o is Node {
     : o && typeof o === 'object' && typeof o.nodeType === 'number' && typeof o.nodeName === 'string';
 }
 
-//Returns true if it is a DOM element
+// Returns true if it is a DOM element
 function isDomElement(o: any): o is HTMLElement {
   return typeof HTMLElement === 'object'
-    ? o instanceof HTMLElement //DOM2
+    ? o instanceof HTMLElement // DOM2
     : o && typeof o === 'object' && typeof o.nodeType === 'number' && typeof o.nodeName === 'string';
 }

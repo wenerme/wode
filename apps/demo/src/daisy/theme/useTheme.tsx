@@ -63,7 +63,7 @@ function getActiveTheme(s: ThemeState) {
 }
 
 export function useActiveTheme(): string {
-  let s = useSnapshot(useThemeState());
+  const s = useSnapshot(useThemeState());
   return s.active;
 }
 
@@ -103,7 +103,7 @@ export function hookThemeState({
     let neo = DefaultState;
     try {
       if (s) {
-        let { dark = DefaultState.dark, light = DefaultState.light, theme = DefaultState.theme } = JSON.parse(s);
+        const { dark = DefaultState.dark, light = DefaultState.light, theme = DefaultState.theme } = JSON.parse(s);
         neo = { dark, light, theme };
       }
     } catch (e) {}
@@ -154,7 +154,7 @@ export function hookThemeState({
 }
 
 export const ThemeStateReactor = () => {
-  let state = useThemeState();
+  const state = useThemeState();
   useEffect(() => {
     return hookThemeState({ state });
   }, [state]);

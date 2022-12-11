@@ -1,10 +1,12 @@
-import React, { MouseEventHandler } from 'react';
+import type { MouseEventHandler } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 class AutoScalingText extends React.Component<React.PropsWithChildren<{}>> {
   state = {
     scale: 1,
   };
+
   node?: HTMLElement | null;
 
   componentDidUpdate() {
@@ -149,7 +151,7 @@ export class Calculator extends React.Component {
   inputDot() {
     const { displayValue } = this.state;
 
-    if (!/\./.test(displayValue)) {
+    if (!displayValue.includes('.')) {
       this.setState({
         displayValue: displayValue + '.',
         waitingForOperand: false,

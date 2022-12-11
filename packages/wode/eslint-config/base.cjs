@@ -49,7 +49,7 @@ module.exports = {
         //
         '@typescript-eslint/no-extraneous-class': ['error', { allowStaticOnly: true }],
         '@typescript-eslint/no-redeclare': [
-          'error',
+          'warn',
           {
             ignoreDeclarationMerge: true,
           },
@@ -60,6 +60,7 @@ module.exports = {
             'checksVoidReturn': false,
           },
         ],
+        'react/prop-types': 'off',
       },
       parserOptions: {
         project: ['./tsconfig.json'], // Specify it only for TypeScript files

@@ -1,9 +1,10 @@
-import React, { ButtonHTMLAttributes, memo, useEffect, useRef, useState } from 'react';
+import type { ButtonHTMLAttributes } from 'react';
+import React, { memo, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useImmer } from 'use-immer';
-import { Editor } from '@tiptap/react';
-import { createMarkdownSerializer } from '@wener/tiptap';
 import { useEditorStore } from '@src/components/TipTapWord/useEditorStore';
+import type { Editor } from '@tiptap/react';
+import { createMarkdownSerializer } from '@wener/tiptap';
 
 const modes: Record<
   string,
@@ -71,7 +72,7 @@ export const DataViewer = memo(() => {
     mode: '',
   });
 
-  let mode = modes[state.mode] || { title: '' };
+  const mode = modes[state.mode] || { title: '' };
   const setMode = (mode: string) => {
     update({ mode });
     if (!mode) {

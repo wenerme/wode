@@ -5,11 +5,11 @@ import { SimpleFileInput } from '@src/components/TipTapWord/components/SimpleFil
 import { useCurrentEditor } from '@src/components/TipTapWord/hooks';
 
 export const ImageToolbarItem: React.FC<{}> = (props) => {
-  let [open, setOpen] = useState(false);
-  let editor = useCurrentEditor();
+  const [open, setOpen] = useState(false);
+  const editor = useCurrentEditor();
   const [state, setState] = useState<{ file?: File; width?: number; height?: number }>({});
   const doInsert = () => {
-    let file = state.file;
+    const file = state.file;
     if (!file) {
       return;
     }

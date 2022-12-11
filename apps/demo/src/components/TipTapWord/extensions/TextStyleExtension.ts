@@ -29,7 +29,7 @@ export const TextStyleExtension = Mark.create<TextStyleOptions>({
       {
         tag: 'span',
         getAttrs: (element) => {
-          let ele = element as HTMLElement;
+          const ele = element as HTMLElement;
           // allowed classNames
           if (!ele.hasAttribute('style') && !ele.hasAttribute('class')) {
             return false;

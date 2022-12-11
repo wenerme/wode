@@ -1,12 +1,8 @@
 // https://github.com/ulid/javascript/blob/master/lib/index.ts
 
-export interface PRNG {
-  (): number;
-}
+export type PRNG = () => number;
 
-export interface ULID {
-  (seedTime?: number): string;
-}
+export type ULID = (seedTime?: number) => string;
 
 export interface LibError extends Error {
   source: string;
@@ -34,7 +30,7 @@ export function replaceCharAt(str: string, index: number, char: string) {
 }
 
 export function incrementBase32(str: string): string {
-  let done: string | undefined = undefined;
+  let done: string | undefined;
   let index = str.length;
   let char;
   let charIndex;
@@ -148,7 +144,7 @@ export function detectPrng(allowInsecure: boolean = false, root?: any): PRNG {
 }
 
 export function factory(currPrng?: PRNG): ULID {
-  let prng = currPrng || detectPrng();
+  const prng = currPrng || detectPrng();
   return function ulid(seedTime?: number): string {
     if (!seedTime || isNaN(seedTime)) {
       seedTime = Date.now();
@@ -158,7 +154,7 @@ export function factory(currPrng?: PRNG): ULID {
 }
 
 export function monotonicFactory(currPrng?: PRNG): ULID {
-  let prng = currPrng || detectPrng();
+  const prng = currPrng || detectPrng();
   let lastTime: number = 0;
   let lastRandom: string;
   return function ulid(seedTime?: number): string {

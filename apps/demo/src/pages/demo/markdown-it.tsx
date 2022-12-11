@@ -18,9 +18,9 @@ const Demo = () => {
     quotes: '“”‘’',
     typographer: false,
   });
-  let md = useMemo(() => new MarkdownIt(options), [options]);
+  const md = useMemo(() => new MarkdownIt(options), [options]);
   useEffect(() => {
-    (window as any)['markdownIt'] = md;
+    (window as any).markdownIt = md;
   }, [md]);
   const {
     query: { tab = 'render' },
@@ -47,7 +47,7 @@ const Demo = () => {
           s.html = md.render(s.md);
           break;
         case 'json':
-          let minify = (key: string, value: any): any => {
+          const minify = (key: string, value: any): any => {
             switch (value) {
               case 0:
               case '':
@@ -76,7 +76,7 @@ const Demo = () => {
     <div className={'container mx-auto flex-1 flex flex-col '}>
       <div className={'form-control flex-row gap-4'}>
         {opts.map((v, i) => {
-          let val = options[v.name as keyof MarkdownIt.Options];
+          const val = options[v.name as keyof MarkdownIt.Options];
           return (
             <label key={i} className={'label'}>
               <span data-tip={v.tooltip} className={classNames('label-text', v.tooltip && 'tooltip tooltip-bottom')}>
@@ -107,7 +107,7 @@ const Demo = () => {
             className={'border p-2 resize-none h-full'}
             defaultValue={state.md}
             onBlur={(e) => {
-              let next = e.currentTarget.value;
+              const next = e.currentTarget.value;
               update((s) => {
                 if (s.md === next) {
                   return;

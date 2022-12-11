@@ -2,18 +2,19 @@ import React from 'react';
 import { MdAnchor } from 'react-icons/md';
 import classNames from 'classnames';
 import { Element, Text } from 'domhandler';
-import parse, { attributesToProps, DOMNode, domToReact, HTMLReactParserOptions } from 'html-react-parser';
+import type { DOMNode, HTMLReactParserOptions } from 'html-react-parser';
+import parse, { attributesToProps, domToReact } from 'html-react-parser';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { useImmer } from 'use-immer';
 
-let initialHtml = `
+const initialHtml = `
 <h1>Heading L1</h1><p>Hello</p>
 <h2>Heading L2</h2><p>Hello</p>
 `;
 const Demo = () => {
-  let [state, update] = useImmer({ edit: initialHtml, html: initialHtml });
-  let options: HTMLReactParserOptions = {
+  const [state, update] = useImmer({ edit: initialHtml, html: initialHtml });
+  const options: HTMLReactParserOptions = {
     replace: (dom) => {
       if (dom instanceof Element) {
         const props = attributesToProps(dom.attribs);

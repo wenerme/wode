@@ -1,11 +1,11 @@
 import { Extension } from '@tiptap/core';
 import '@tiptap/extension-text-style';
-import { CommandProps } from '@tiptap/react';
+import type { CommandProps } from '@tiptap/react';
 
-export type SubTextStylesOptions = {
+export interface SubTextStylesOptions {
   types: string[];
   defaultUnit: string;
-};
+}
 
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {
@@ -129,7 +129,7 @@ function createSubTextStyle(o: CreateStyleOptions) {
               default: null,
               parseHTML: (element) => element.style[styleName as any]?.replace(/['"]+/g, ''),
               renderHTML: (attributes) => {
-                let attr = attributes[name];
+                const attr = attributes[name];
                 if (!attr) {
                   return {};
                 }
@@ -201,7 +201,7 @@ function createStyle(o: CreateStyleOptions) {
               default: null,
               parseHTML: (element) => element.style[styleName as any] || null,
               renderHTML: (attributes) => {
-                let attr = attributes[name];
+                const attr = attributes[name];
                 if (!attr) {
                   return {};
                 }
@@ -233,7 +233,7 @@ function createStyle(o: CreateStyleOptions) {
               .filter((v) => editor.isActive(v))
               .some((type) => {
                 let next = value;
-                let last = editor.getAttributes(type)?.[name];
+                const last = editor.getAttributes(type)?.[name];
                 if (typeof value === 'function') {
                   next = value(last);
                 }

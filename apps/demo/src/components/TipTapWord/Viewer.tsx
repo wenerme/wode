@@ -96,7 +96,7 @@ export const Viewer: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
     viewSize,
     presetStyleName,
   }));
-  let cx = classNames(
+  const cx = classNames(
     'p-4 shadow border bg-white mx-auto h-fit min-h-full',
     presetStyleName?.startsWith('prose') && 'prose',
     presetStyleName,

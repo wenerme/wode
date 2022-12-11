@@ -1,4 +1,5 @@
-import { HTMLProps, useRef } from 'react';
+import type { HTMLProps } from 'react';
+import { useRef } from 'react';
 import { useImmer } from 'use-immer';
 import { useBodyEventListener } from '@wener/reaction';
 import { getFileFromDataTransfer } from '@wener/utils';
@@ -73,7 +74,7 @@ export function useFileInput(o: UseFileInputOptions = {}) {
 
           enterTargetRef.current = e.target;
 
-          let acceptable = isAcceptable(Array.from(e.dataTransfer.items)[0]?.type, accept);
+          const acceptable = isAcceptable(Array.from(e.dataTransfer.items)[0]?.type, accept);
           update({ ...state, acceptable, isDragOver: true });
           return false;
         },
@@ -100,7 +101,7 @@ export function useFileInput(o: UseFileInputOptions = {}) {
       return {
         accept: accept.join(', '),
         onChange: (e) => {
-          let file = e.currentTarget.files?.[0];
+          const file = e.currentTarget.files?.[0];
           file && onFile(file);
         },
       };

@@ -95,10 +95,10 @@ const ThemeDetails = () => {
   useEffect(() => {
     const ele = document.documentElement;
     const style = getComputedStyle(ele);
-    const props = Object.keys(ThemeStyleProps).reduce((acc, prop) => {
+    const props = Object.keys(ThemeStyleProps).reduce<Record<string, string>>((acc, prop) => {
       acc[prop] = style.getPropertyValue(`--${prop}`).trim();
       return acc;
-    }, {} as Record<string, string>);
+    }, {});
     updateProps(props);
   }, [active]);
   return (
@@ -116,7 +116,7 @@ const ThemeDetails = () => {
             const { name = prop, preview } = ThemeStyleProps[prop] || {};
             const isColor = prop.length <= 3;
             const value = props[prop];
-            let rgb = HSLToRGB(...(value.split(/\s/).map((v) => parseFloat(v)) as [number, number, number]))
+            const rgb = HSLToRGB(...(value.split(/\s/).map((v) => parseFloat(v)) as [number, number, number]))
               .map((v) => v.toString(16).padStart(2, '0'))
               .join('');
             return (

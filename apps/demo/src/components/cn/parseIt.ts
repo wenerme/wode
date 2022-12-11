@@ -1,5 +1,6 @@
+import type { ParsedUSCI } from '@src/components/cn/usic/usic';
+import { parseUsic, USICRegex } from '@src/components/cn/usic/usic';
 import { parseULID } from '@wener/utils';
-import { ParsedUSCI, parseUsic, USICRegex } from '@src/components/cn/usic/usic';
 
 const Parsers: Parser[] = [
   {
@@ -127,7 +128,7 @@ export function tryParse(raw: string): ParseResult[] {
   return Parsers.map((parser) => {
     const { name, length, pattern, parse } = parser;
     if ((length && len !== length) || (pattern && !pattern.test(raw))) {
-      return { parser, raw: raw, matched: false };
+      return { parser, raw, matched: false };
     }
     let data: any;
     try {
@@ -150,25 +151,25 @@ export function parseIt(raw: string): ParsedIt | undefined {
     return;
   }
   const out: ParsedIt = {
-    raw: raw,
+    raw,
     type: '',
     maybe: [],
   };
-  let len = raw.length;
+  const len = raw.length;
   // http://www.chinatax.gov.cn/chinatax/n810219/n810744/n2594306/c101700/index.html
   if (len === 18 && USICRegex.test(raw)) {
     out.usci = parseUsic(raw);
   }
   if (len === 36) {
     try {
-      out.ulid = { ...parseULID(raw), raw: raw };
+      out.ulid = { ...parseULID(raw), raw };
     } catch (e) {
       //
     }
   }
 
   if (/^[+-][0-9.,]+$/.test(raw)) {
-    let n = parseFloat(raw);
+    const n = parseFloat(raw);
     if (!Number.isNaN(n)) {
       out.number = { raw, number: n };
     }
