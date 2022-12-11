@@ -2,20 +2,26 @@ import { useEffect } from 'react';
 import { HiMagnifyingGlass, HiOutlineXCircle } from 'react-icons/hi2';
 import { useImmer } from 'use-immer';
 import { USICCard } from '@src/components/cn/USICCard';
-import { ParsedIt, parseIt } from '@src/components/cn/parseIt';
+import { ParsedIt, parseIt, ParseResult, tryParse } from '@src/components/cn/parseIt';
 import { randomUsci } from '@src/components/cn/usic/randomUsci';
 
 export const ChinaIdInfoPage = () => {
-  const [state, update] = useImmer<{ id: string; info: ParsedIt; alter?: { level: string; message: string } }>({
+  const [state, update] = useImmer<{
+    id: string;
+    info: ParsedIt;
+    maybe: ParseResult[];
+    alter?: { level: string; message: string };
+  }>({
     id: '91310000775785552L',
     info: parseIt('91310000775785552L')!,
+    maybe: tryParse('91310000775785552L'),
   });
   useEffect(() => {
     update((s) => {
       s.alter = undefined;
     });
   }, [state.id]);
-  let { alter } = state;
+  let { alter, maybe } = state;
   return (
     <div className={'container mx-auto'}>
       <form
@@ -90,7 +96,17 @@ export const ChinaIdInfoPage = () => {
           </div>
         )}
       </div>
-      <div className={'py-4 max-w-lg mx-auto'}>{state.info?.usci && <USICCard item={state.info.usci} />}</div>
+      <div className={'py-4 max-w-lg mx-auto'}>
+        {maybe
+          .filter((v) => v.matched)
+          .map((v) => {
+            let name = v.parser.name;
+            switch (name) {
+              case 'USCI':
+                return <USICCard key={name} item={v.data as any} />;
+            }
+          })}
+      </div>
     </div>
   );
 };
