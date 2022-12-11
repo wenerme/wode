@@ -4,4 +4,5 @@ module.exports = {
   extends: [
     require.resolve('@wener/wode/eslint-config/base.cjs'),
   ],
+  rules: {},
 };

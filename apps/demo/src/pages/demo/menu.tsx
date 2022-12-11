@@ -12,8 +12,8 @@ const DemoMenu = () => {
       <MenuToolItem
         items={SettingMenuItems}
         getItemProps={(v) => {
-          let active = !v.disabled && v.value !== undefined && v.name && state[v.name] === v.value;
-          let props: Record<string, any> = {};
+          const active = !v.disabled && v.value !== undefined && v.name && state[v.name] === v.value;
+          const props: Record<string, any> = {};
           if (active) {
             props['data-active'] = true;
           }

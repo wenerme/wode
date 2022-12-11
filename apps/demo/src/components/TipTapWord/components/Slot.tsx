@@ -1,8 +1,9 @@
 import React, { memo, useEffect, useId } from 'react';
 import produce from 'immer';
-import { DraftFunction } from 'use-immer';
+import type { DraftFunction } from 'use-immer';
+import type { EditorStore } from '@src/components/TipTapWord/useEditorStore';
+import { useEditorStoreApi } from '@src/components/TipTapWord/useEditorStore';
 import { useCompareEffect } from '@wener/reaction';
-import { EditorStore, useEditorStoreApi } from '@src/components/TipTapWord/useEditorStore';
 
 export interface SlotProps {
   name: string;
@@ -12,7 +13,7 @@ export interface SlotProps {
 }
 
 export const Slot: React.FC<SlotProps> = memo<SlotProps>((props) => {
-  let api = useEditorStoreApi();
+  const api = useEditorStoreApi();
   const updateSlots = (f: DraftFunction<EditorStore['slots']>) => {
     api.setState((s) => {
       const next = produce<EditorStore['slots']>(f)(s.slots);
@@ -22,12 +23,12 @@ export const Slot: React.FC<SlotProps> = memo<SlotProps>((props) => {
       return { ...s, slots: next };
     });
   };
-  let id = useId();
+  const id = useId();
   useCompareEffect(() => {
     updateSlots((slots) => {
-      let slot = { order: 100, ...props, id };
+      const slot = { order: 100, ...props, id };
       const place = (slots[slot.name || ''] ||= []);
-      let idx = place.findIndex((v) => v.id === id);
+      const idx = place.findIndex((v) => v.id === id);
       if (idx >= 0) {
         place[idx] = slot;
       } else {
@@ -39,7 +40,7 @@ export const Slot: React.FC<SlotProps> = memo<SlotProps>((props) => {
     return () => {
       updateSlots((slots) => {
         const slot = (slots[props.name || ''] ||= []);
-        let idx = slot.findIndex((v) => v.id === id);
+        const idx = slot.findIndex((v) => v.id === id);
         if (idx < 0) {
           return;
         }

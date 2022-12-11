@@ -1,8 +1,10 @@
 import { useEffect } from 'react';
-import { Draft } from 'immer';
-import { Updater, useImmer } from 'use-immer';
-import { Editor } from '@tiptap/react';
-import { EditorStore, useEditorStore } from '@src/components/TipTapWord/useEditorStore';
+import type { Draft } from 'immer';
+import type { Updater } from 'use-immer';
+import { useImmer } from 'use-immer';
+import type { EditorStore } from '@src/components/TipTapWord/useEditorStore';
+import { useEditorStore } from '@src/components/TipTapWord/useEditorStore';
+import type { Editor } from '@tiptap/react';
 
 export function useEditorDerivedState<S = any>(o: {
   initialState: S;
@@ -12,7 +14,7 @@ export function useEditorDerivedState<S = any>(o: {
   const [state, update] = useImmer(o.initialState);
   useEffect(() => {
     const e = editor;
-    let handleUpdate = () => {
+    const handleUpdate = () => {
       update((state) => {
         o.onUpdate({ state, editor });
       });
@@ -25,7 +27,7 @@ export function useEditorDerivedState<S = any>(o: {
   return { state, update, editor };
 }
 
-let selectEditor = (s: EditorStore) => s.editor;
+const selectEditor = (s: EditorStore) => s.editor;
 
 export function useCurrentEditor() {
   return useEditorStore(selectEditor);

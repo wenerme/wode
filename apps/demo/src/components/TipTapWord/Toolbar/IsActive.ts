@@ -1,4 +1,4 @@
-import { Editor } from '@tiptap/react';
+import type { Editor } from '@tiptap/react';
 
 export function isActive(editor: Editor, a?: ((o: { editor: Editor }) => boolean) | string | object) {
   if (a === undefined) {

@@ -1,4 +1,5 @@
-import React, { MouseEvent, useRef } from 'react';
+import type { MouseEvent } from 'react';
+import React, { useRef } from 'react';
 import { MdAddCircleOutline, MdOutlineFormatColorReset } from 'react-icons/md';
 import classNames from 'classnames';
 import styled from 'styled-components';
@@ -116,7 +117,7 @@ export const ColorPlates: React.FC<{ value?: string; onChange?: (v: string) => v
   };
   let myColors: Array<[string, string, boolean]> = [];
   try {
-    myColors = JSON.parse(localStorage['colors'] || '[]');
+    myColors = JSON.parse(localStorage.colors || '[]');
   } catch {
     //
   }
@@ -146,13 +147,13 @@ export const ColorPlates: React.FC<{ value?: string; onChange?: (v: string) => v
           type="color"
           value={value}
           onChange={(e) => {
-            let pick = e.target.value;
+            const pick = e.target.value;
             if (!pick) {
               return;
             }
             if (!myColors.find((v) => v[1] === pick) && !colors.find((v) => v[1] === pick)) {
               myColors.push(['', pick, true]);
-              localStorage['colors'] = JSON.stringify(myColors);
+              localStorage.colors = JSON.stringify(myColors);
             }
             onChange?.(pick);
           }}

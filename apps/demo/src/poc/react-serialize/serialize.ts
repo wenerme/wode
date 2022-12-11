@@ -50,7 +50,7 @@ export function serialize(element: React.ReactNode, { refs = new Map(), refOf, r
               throw new Error(`Deserialization error: unable to resolve component "${String(type)}"`);
             }
             return {
-              type: type,
+              type,
             };
           }
           break;
@@ -77,8 +77,8 @@ function _ser(x: any, o: SerializeOptionsResolved): any {
   // element
   {
     let s;
-    if ((s = x['$$typeof']) && typeof s === 'symbol') {
-      let to = Symbol.keyFor(s)!;
+    if ((s = x.$$typeof) && typeof s === 'symbol') {
+      const to = Symbol.keyFor(s)!;
       const ele: Record<string, any> = {
         ...refOf(to, x, o),
         $$typeof: to,
@@ -90,10 +90,10 @@ function _ser(x: any, o: SerializeOptionsResolved): any {
       return ele;
     }
   }
-  return Object.keys(x).reduce((a, k) => {
+  return Object.keys(x).reduce<Record<string, any>>((a, k) => {
     a[k] = _ser(x[k], o);
     return a;
-  }, {} as Record<string, any>);
+  }, {});
 }
 
 export interface DeserializeOptions extends Partial<DeserializeOptionsResolved> {
@@ -146,7 +146,7 @@ function _des(x: any, o: DeserializeOptionsResolved): any {
   // element
   {
     let to;
-    if ((to = x['$$typeof'])) {
+    if ((to = x.$$typeof)) {
       if (to === 'function') {
         return resolveOf(to, x, o);
       }
@@ -156,13 +156,13 @@ function _des(x: any, o: DeserializeOptionsResolved): any {
       if (typeof type === 'string' && type.toLowerCase() !== type) {
         throw new Error(`Deserialization error: unable to resolve component "${type}"`);
       }
-      // @ts-ignore
+      // @ts-expect-error
       // const { children = [], ...props } = _des(x.props, o) || {};
       return Runtime.createElement(type, Object.assign({ key: x.key }, _des(x.props, o)));
     }
   }
-  return Object.keys(x).reduce((a, k) => {
+  return Object.keys(x).reduce<Record<string, any>>((a, k) => {
     a[k] = _des(x[k], o);
     return a;
-  }, {} as Record<string, any>);
+  }, {});
 }

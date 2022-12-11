@@ -47,7 +47,7 @@ const Demo = () => {
             onClick={() => {
               update((s) => {
                 try {
-                  let o = JSON.parse(s.parsed);
+                  const o = JSON.parse(s.parsed);
                   s.value = Object.entries(o)
                     .map(([k, v]: [string, any]) => {
                       return cookie.serialize(k, typeof v === 'string' ? v : v.value, typeof v === 'object' ? v : {});

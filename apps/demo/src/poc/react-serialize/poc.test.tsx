@@ -1,5 +1,6 @@
 import React from 'react';
-import { act, create, ReactTestRenderer } from 'react-test-renderer';
+import type { ReactTestRenderer } from 'react-test-renderer';
+import { act, create } from 'react-test-renderer';
 import test from 'ava';
 import _ from 'lodash';
 import { deserialize, serialize } from './serialize';
@@ -66,7 +67,7 @@ test('serialize', (t) => {
     so.refs.set(Ctx.Provider, 'Ctx.Provider');
     so.refs.set(Ctx.Consumer, 'Ctx.Consumer');
 
-    let a = (
+    const a = (
       <C
         title={
           <h3 key={'kk'}>
@@ -88,7 +89,7 @@ test('serialize', (t) => {
       ra = create(a);
     });
 
-    let data = serialize(a, so);
+    const data = serialize(a, so);
     t.snapshot(data, 'serialize');
 
     const out = deserialize(JSON.parse(JSON.stringify(data)), {

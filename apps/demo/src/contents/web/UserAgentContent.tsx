@@ -1,12 +1,13 @@
 import { useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
 import { HiClipboardCopy, HiGlobe, HiRefresh, HiSearch } from 'react-icons/hi';
 import classNames from 'classnames';
-import UAParser, { IResult } from 'ua-parser-js';
+import type { IResult } from 'ua-parser-js';
+import UAParser from 'ua-parser-js';
 import { useImmer } from 'use-immer';
 import { copy } from '@wener/utils';
 
 export const UserAgentContent = () => {
-  let [state, update] = useImmer<{ ua: string; result?: IResult }>({ ua: '' });
+  const [state, update] = useImmer<{ ua: string; result?: IResult }>({ ua: '' });
   const [randomLoading, setRandomLoading] = useState(false);
   const parser = useMemo(() => new UAParser(), []);
   useEffect(() => {
@@ -17,9 +18,9 @@ export const UserAgentContent = () => {
     if (!ua) {
       return;
     }
-    let result = parser.setUA(ua).getResult();
+    const result = parser.setUA(ua).getResult();
     console.log(`Result`, result);
-    update({ ...state, result: result });
+    update({ ...state, result });
   }, [ua]);
   const randomUserAgent = async () => {
     setRandomLoading(true);

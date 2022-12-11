@@ -1,4 +1,4 @@
-import { Code } from '../code';
+import type { Code } from '../code';
 
 export interface ParsedUSCI {
   raw: string;

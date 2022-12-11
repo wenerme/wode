@@ -1,4 +1,5 @@
-import React, { MouseEvent, MouseEventHandler, useMemo, useRef } from 'react';
+import type { MouseEvent, MouseEventHandler } from 'react';
+import React, { useMemo, useRef } from 'react';
 import { MdSettings } from 'react-icons/md';
 import classNames from 'classnames';
 import styled from 'styled-components';
@@ -63,7 +64,7 @@ const MenuContainer = styled.div`
   }
 `;
 
-export type MenuSpec = {
+export interface MenuSpec {
   icon?: React.ReactNode;
   label?: React.ReactNode;
   name?: string;
@@ -74,7 +75,7 @@ export type MenuSpec = {
   className?: string;
 
   type?: 'divider';
-};
+}
 
 export const MenuToolItem: React.FC<{
   items?: MenuSpec[];
@@ -84,8 +85,8 @@ export const MenuToolItem: React.FC<{
 }> = ({ items = [], getItemProps = () => ({}), onItemClick, label = <MdSettings /> }) => {
   const handleClickRef = useRef<MouseEventHandler<HTMLButtonElement>>();
   handleClickRef.current = (e) => {
-    let name = e.currentTarget.getAttribute('data-name') ?? undefined;
-    let value = e.currentTarget?.value;
+    const name = e.currentTarget.getAttribute('data-name') ?? undefined;
+    const value = e.currentTarget?.value;
 
     onItemClick?.(e, {
       name,
@@ -94,11 +95,11 @@ export const MenuToolItem: React.FC<{
   };
   const menu = useMemo(() => {
     const normalize = (m: MenuSpec, i: number, p?: MenuSpec) => {
-      let key = [p?.key, m.name || String(i)].filter(Boolean).join('.');
+      const key = [p?.key, m.name || String(i)].filter(Boolean).join('.');
       const out = {
         ...m,
         name: [p?.name, m.name].filter(Boolean).join('.'),
-        key: key,
+        key,
       };
       if (out.type === 'divider') {
         return out;

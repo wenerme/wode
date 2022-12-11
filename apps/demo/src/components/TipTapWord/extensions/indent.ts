@@ -81,7 +81,7 @@ function update({ step = 1, min = 0, max = Number.POSITIVE_INFINITY, unit = '' }
     n += delta;
     n = clamp(n, min, max);
     let frac = 0;
-    let abs = Math.abs(delta);
+    const abs = Math.abs(delta);
     if (abs >= 1) {
     } else if (abs >= 0.1) {
       frac = 1;

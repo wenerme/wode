@@ -1,5 +1,5 @@
 import React from 'react';
-import { NextPage } from 'next';
+import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import NextNProgress from 'nextjs-progressbar';
 import { PageHead } from '@src/components/page/PageHead';

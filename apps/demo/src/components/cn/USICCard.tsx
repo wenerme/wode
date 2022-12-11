@@ -1,5 +1,6 @@
 import { IdTypes } from './code';
-import { ParsedUSCI, USICRegistryBureauCode } from './usic/usic';
+import type { ParsedUSCI } from './usic/usic';
+import { USICRegistryBureauCode } from './usic/usic';
 
 export const USICCard: React.FC<{ item: ParsedUSCI }> = ({ item }) => {
   return (

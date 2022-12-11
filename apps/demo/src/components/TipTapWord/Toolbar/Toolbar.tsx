@@ -1,4 +1,5 @@
-import React, { cloneElement, HTMLProps, useRef, useState } from 'react';
+import type { HTMLProps } from 'react';
+import React, { cloneElement, useRef, useState } from 'react';
 import { BsLayoutSplit, BsLayoutThreeColumns } from 'react-icons/bs';
 import { CgQuote } from 'react-icons/cg';
 import {
@@ -36,9 +37,20 @@ import {
   MdTablet,
   MdUndo,
 } from 'react-icons/md';
-import classNames, { Argument } from 'classnames';
+import type { Argument } from 'classnames';
+import classNames from 'classnames';
 import styled from 'styled-components';
 import { Listbox } from '@headlessui/react';
+import { ImageToolbarItem } from '@src/components/TipTapWord/Toolbar/ImageToolbarItem';
+import { isActive } from '@src/components/TipTapWord/Toolbar/IsActive';
+import { MarkColorToolbarItem } from '@src/components/TipTapWord/Toolbar/MarkColorToolbarItem';
+import { TextColorToolbarItem } from '@src/components/TipTapWord/Toolbar/TextColorToolbarItem';
+import { VideoToolbarItem } from '@src/components/TipTapWord/Toolbar/VideoToolbarItem';
+import { FakeInput } from '@src/components/TipTapWord/components/FakeInput';
+import type { MenuSpec } from '@src/components/TipTapWord/components/MenuToolItem';
+import { MenuToolItem } from '@src/components/TipTapWord/components/MenuToolItem';
+import { useEditorDerivedState } from '@src/components/TipTapWord/hooks';
+import { useEditorStore, useEditorStoreApi } from '@src/components/TipTapWord/useEditorStore';
 import type {} from '@tiptap/core';
 import type {} from '@tiptap/extension-blockquote';
 import type {} from '@tiptap/extension-bullet-list';
@@ -50,16 +62,7 @@ import type {} from '@tiptap/extension-history';
 import type {} from '@tiptap/extension-ordered-list';
 import type {} from '@tiptap/extension-table';
 import type {} from '@tiptap/extension-text-align';
-import { ChainedCommands, Editor } from '@tiptap/react';
-import { ImageToolbarItem } from '@src/components/TipTapWord/Toolbar/ImageToolbarItem';
-import { isActive } from '@src/components/TipTapWord/Toolbar/IsActive';
-import { MarkColorToolbarItem } from '@src/components/TipTapWord/Toolbar/MarkColorToolbarItem';
-import { TextColorToolbarItem } from '@src/components/TipTapWord/Toolbar/TextColorToolbarItem';
-import { VideoToolbarItem } from '@src/components/TipTapWord/Toolbar/VideoToolbarItem';
-import { FakeInput } from '@src/components/TipTapWord/components/FakeInput';
-import { MenuSpec, MenuToolItem } from '@src/components/TipTapWord/components/MenuToolItem';
-import { useEditorDerivedState } from '@src/components/TipTapWord/hooks';
-import { useEditorStore, useEditorStoreApi } from '@src/components/TipTapWord/useEditorStore';
+import type { ChainedCommands, Editor } from '@tiptap/react';
 
 const FontFamilySet: OptionItem[] = [
   { label: '默认字体', value: '' },
@@ -92,7 +95,7 @@ const FontFamilySelect: React.FC = () => {
   } = useEditorDerivedState<{ value: OptionItem & EditorCommandOptions }>({
     initialState: { value: TypographySet[0] },
     onUpdate: ({ editor, state }) => {
-      let ff = editor.getAttributes('textStyle')?.fontFamily || '';
+      const ff = editor.getAttributes('textStyle')?.fontFamily || '';
       state.value = FontFamilySet.find((v) => v.value === ff) || FontFamilySet[0];
     },
   });
@@ -157,7 +160,7 @@ const TypographyToolbarItem: React.FC = () => {
   } = useEditorDerivedState<{ value: OptionItem & EditorCommandOptions }>({
     initialState: { value: TypographySet[0] },
     onUpdate: ({ editor, state }) => {
-      state.value = TypographySet.find((v) => isActive(editor!, v.active)) || TypographySet[0];
+      state.value = TypographySet.find((v) => isActive(editor, v.active)) || TypographySet[0];
     },
   });
   return (
@@ -165,7 +168,7 @@ const TypographyToolbarItem: React.FC = () => {
       value={value}
       onChange={(v) => {
         if (v.value === 'paragraph') {
-          editor!.chain().focus().setParagraph().run();
+          editor.chain().focus().setParagraph().run();
         } else {
           editor
             .chain()
@@ -557,8 +560,8 @@ export const SettingMenuItems: MenuSpec[] = [
 ];
 
 const SettingToolItem = () => {
-  let settings = useEditorStore((s) => s.settings);
-  let api = useEditorStoreApi();
+  const settings = useEditorStore((s) => s.settings);
+  const api = useEditorStoreApi();
   return (
     <MenuToolItem
       items={SettingMenuItems}
@@ -568,8 +571,8 @@ const SettingToolItem = () => {
         </span>
       }
       getItemProps={(v) => {
-        let active = !v.disabled && v.value !== undefined && v.name && settings[v.name] === v.value;
-        let props: Record<string, any> = {};
+        const active = !v.disabled && v.value !== undefined && v.name && settings[v.name] === v.value;
+        const props: Record<string, any> = {};
         if (active) {
           props['data-active'] = true;
         }
@@ -653,7 +656,7 @@ const Container = styled.div`
   }
 `;
 
-type ToolItem = {
+interface ToolItem {
   tooltip?: string;
   type?: 'divider';
   icon?: React.ReactElement;
@@ -662,16 +665,20 @@ type ToolItem = {
   active?: ((o: RenderParam) => boolean) | string | object;
   onClick?: (o: RenderParam) => void;
   command?: (o: { chain: ChainedCommands }) => ChainedCommands;
-};
+}
 
-type RenderParam = { item: ToolItem; editor: Editor; props: HTMLProps<HTMLButtonElement> };
+interface RenderParam {
+  item: ToolItem;
+  editor: Editor;
+  props: HTMLProps<HTMLButtonElement>;
+}
 
 function renderToolItem({ item, key, editor }: { item: ToolItem; key: any; editor: Editor }) {
   if (item.type === 'divider') {
     return <hr key={key} />;
   }
   const props: Omit<HTMLProps<HTMLButtonElement>, 'type'> & { editor: Editor } = {
-    key: key,
+    key,
     editor,
     title: item.tooltip,
   };

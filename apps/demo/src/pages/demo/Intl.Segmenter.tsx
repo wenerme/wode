@@ -26,7 +26,6 @@ const Page = () => {
       update((s) => {
         s.hasSegmenter = false;
       });
-      return;
     }
   }, []);
   useDeepCompareEffect(() => {

@@ -6,11 +6,11 @@ import { useImmer } from 'use-immer';
 import { nanoid } from '@src/shims/nanoid';
 import { ulid } from '@src/shims/ulid';
 
-type Spec = {
+interface Spec {
   title: string;
   name: string;
   next?: () => string;
-};
+}
 const ids: Spec[] = [
   {
     title: 'UUIDv4',
@@ -40,16 +40,16 @@ const PageContent = () => {
     update((s) => {
       for (const id of s.ids) {
         id.value = id.spec.next?.() || '';
-        id.disabled = !Boolean(id.spec.next);
+        id.disabled = !id.spec.next;
       }
     });
   }, []);
   const doBenchmark = async (n: number) => {
-    let measures = ids.filter((v) => v.next).map((v) => ({ run: v.next!, name: v.name, time: 0, rate: 0 }));
-    let loop = n / 10;
-    for (let m of measures) {
-      let f = m.run;
-      let start = performance.now();
+    const measures = ids.filter((v) => v.next).map((v) => ({ run: v.next!, name: v.name, time: 0, rate: 0 }));
+    const loop = n / 10;
+    for (const m of measures) {
+      const f = m.run;
+      const start = performance.now();
       performance.mark(m.name);
       for (let i = 0; i < loop; i++) {
         f();
@@ -64,7 +64,7 @@ const PageContent = () => {
         f();
       }
       performance.measure(m.name);
-      let end = performance.now();
+      const end = performance.now();
       m.time = end - start;
       await Promise.resolve();
     }
@@ -74,7 +74,7 @@ const PageContent = () => {
     });
     update((s) => {
       for (let i = 0; i < s.ids.length; i++) {
-        let id = s.ids[i];
+        const id = s.ids[i];
         if (!id.spec.next) {
           continue;
         }

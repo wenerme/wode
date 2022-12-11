@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Extensions } from '@tiptap/core';
-import { Editor, useEditor } from '@tiptap/react';
-import { TipTapWordStarterKit } from '@wener/tiptap';
 import { TipTapWordEditor } from '@src/components/TipTapWord/TipTapWordEditor';
-import { Slot, SlotProps } from '@src/components/TipTapWord/components/Slot';
+import type { SlotProps } from '@src/components/TipTapWord/components/Slot';
+import { Slot } from '@src/components/TipTapWord/components/Slot';
+import type { Extensions } from '@tiptap/core';
+import type { Editor } from '@tiptap/react';
+import { useEditor } from '@tiptap/react';
+import { TipTapWordStarterKit } from '@wener/tiptap';
 
 export type TipTapWord = React.FC<
   React.PropsWithChildren<{ useExtensions?: () => Extensions; onEditor?: (v: Editor) => void }>

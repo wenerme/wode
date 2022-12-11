@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { Unpkg } from '@wener/unpkg';
+import type { Unpkg } from '@wener/unpkg';
 import { createUnpkg, createUnpkgHandler } from '@wener/unpkg/server';
 import { arrayOfMaybeArray, isBuffer } from '@wener/utils';
 
@@ -21,9 +21,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       prefix: '/api/unpkg',
     });
   }
-  let path = arrayOfMaybeArray(req.query.path).join('/');
+  const path = arrayOfMaybeArray(req.query.path).join('/');
   console.log(`unpkg: ${path}`);
-  const resp = await h({ path: path });
+  const resp = await h({ path });
   res.status(resp.status);
   for (const [k, v] of Object.entries(resp.headers)) {
     res.setHeader(k, v as any);

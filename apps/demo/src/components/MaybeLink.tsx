@@ -9,12 +9,12 @@ const ActiveLink: React.FC<
     active?: string | ((v: boolean) => string);
   }
 > = ({ href, children, active, className, ...props }) => {
-  let router = useRouter();
+  const router = useRouter();
 
-  let [activeClassName, set] = useState('');
+  const [activeClassName, set] = useState('');
   // prevent server render different from client
   useEffect(() => {
-    let isActive = router.asPath === href;
+    const isActive = router.asPath === href;
     if (active instanceof Function) {
       set(active(isActive));
     } else if (isActive) {

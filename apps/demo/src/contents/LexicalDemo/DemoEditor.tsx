@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
-import { $getRoot, $getSelection, EditorState, EditorThemeClasses, LexicalNode } from 'lexical';
-import { Class } from 'utility-types';
+import type { EditorState, EditorThemeClasses, LexicalNode } from 'lexical';
+import { $getRoot, $getSelection } from 'lexical';
+import type { Class } from 'utility-types';
 import create from 'zustand';
 import createContext from 'zustand/context';
 import { CodeHighlightNode, CodeNode } from '@lexical/code';
@@ -129,7 +130,7 @@ const DemoEditorContent = () => {
     },
   };
   const settings = useEditorStore((s) => s.settings);
-  let api = useEditorStoreApi();
+  const api = useEditorStoreApi();
   const setSettings = (v: EditorStore['settings']) => {
     api.setState((s) => {
       return { ...s, settings: v };
@@ -163,7 +164,7 @@ const DemoEditorContent = () => {
 const Editor = () => {
   const scrollRef = useRef(null);
   const settings = useEditorStore((s) => s.settings);
-  let placeholder = <div>Enter some text...</div>;
+  const placeholder = <div>Enter some text...</div>;
 
   return (
     <>
@@ -171,15 +172,15 @@ const Editor = () => {
       <LexicalClearEditorPlugin />
 
       <LexicalHashtagPlugin />
-      {/*<MentionsPlugin />*/}
-      {/*<EmojisPlugin />*/}
-      {/*<ExcalidrawPlugin />*/}
-      {/*<KeywordsPlugin />*/}
-      {/*<HorizontalRulePlugin />*/}
-      {/*<SpeechToTextPlugin />*/}
-      {/*<AutoLinkPlugin />*/}
-      {/*<CharacterStylesPopupPlugin />*/}
-      {/*<EquationsPlugin />*/}
+      {/* <MentionsPlugin /> */}
+      {/* <EmojisPlugin /> */}
+      {/* <ExcalidrawPlugin /> */}
+      {/* <KeywordsPlugin /> */}
+      {/* <HorizontalRulePlugin /> */}
+      {/* <SpeechToTextPlugin /> */}
+      {/* <AutoLinkPlugin /> */}
+      {/* <CharacterStylesPopupPlugin /> */}
+      {/* <EquationsPlugin /> */}
       <LexicalAutoScrollPlugin scrollRef={scrollRef} />
 
       {settings.isRichText ? (
@@ -188,7 +189,7 @@ const Editor = () => {
             contentEditable={<LexicalContentEditable className={'LexicalContentEditable__root'} />}
             placeholder={placeholder}
           />
-          {/*<LexicalMarkdownShortcutPlugin />*/}
+          {/* <LexicalMarkdownShortcutPlugin /> */}
         </>
       ) : (
         <>

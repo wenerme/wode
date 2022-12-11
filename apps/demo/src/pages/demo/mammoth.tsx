@@ -5,23 +5,23 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useAsyncEffect } from '@wener/reaction';
 import { SimpleFileInput } from '@src/components/TipTapWord/components/SimpleFileInput';
+import { useAsyncEffect } from '@wener/reaction';
 
 const DemoMenu = () => {
-  let [file, setFile] = useState<File>();
-  let [state, setState] = useState({ html: '', text: '' });
+  const [file, setFile] = useState<File>();
+  const [state, setState] = useState({ html: '', text: '' });
   useAsyncEffect(async () => {
     if (!file) {
       return;
     }
-    let arrayBuffer = await file.arrayBuffer();
+    const arrayBuffer = await file.arrayBuffer();
     let rel = await convertToHtml({ arrayBuffer });
-    let html = rel.value;
+    const html = rel.value;
     console.log(`toHTML messages`, rel.messages);
 
     rel = await extractRawText({ arrayBuffer });
-    let text = rel.value;
+    const text = rel.value;
     console.log(`toText messages`, rel.messages);
 
     setState({ html, text });
