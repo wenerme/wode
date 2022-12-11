@@ -11,8 +11,7 @@
   "author": "wener",
   "license": "MIT",
   "engines": {
-    "node": "16||18",
-    "npm": "8"
+    "node": "16+"
   },
   "main": "dist/cjs/index.cjs",
   "module": "lib/index.js",

@@ -58,7 +58,7 @@ export const USICPrefixRegex = /^[159][1239]|Y1/;
  */
 export const USICRegex = /^([159][1239]|Y1)[0-9]{6}[0-9A-HJ-NP-RTUWXY]{10}$/; // I O Z S V
 
-export function parseUsic(s: string): ParsedUSCI {
+export function parseUSCI(s: string): ParsedUSCI {
   return {
     raw: s,
     registryBureauCode: s[0],

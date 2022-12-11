@@ -1,9 +1,9 @@
 import { randomPick } from '../utils/randomPick';
 import { mod31, Mod31Chars } from './mod31';
-import type { ParsedUSCI } from './usic';
-import { USICRegistryBureauCode } from './usic';
+import type { ParsedUSCI } from './usci';
+import { USICRegistryBureauCode } from './usci';
 
-export function randomUsci(info: Partial<ParsedUSCI> = {}): ParsedUSCI {
+export function randomUSCI(info: Partial<ParsedUSCI> = {}): ParsedUSCI {
   info.registryBureauCode ||= randomPick(Object.keys(USICRegistryBureauCode));
   const primaryCode = USICRegistryBureauCode[info.registryBureauCode];
   if (!primaryCode?.codes) {

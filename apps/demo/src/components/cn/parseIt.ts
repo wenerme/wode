@@ -1,118 +1,132 @@
-import type { ParsedUSCI } from '@src/components/cn/usic/usic';
-import { parseUsic, USICRegex } from '@src/components/cn/usic/usic';
-import { parseULID } from '@wener/utils';
+import { ChinaCitizenId } from '@src/components/cn/gb11643/parse';
+import { parseULID, randomUUID, ulid } from '@wener/utils';
+import { randomUSCI } from './usci/randomUSCI';
+import type { ParsedUSCI } from './usci/usci';
+import { parseUSCI, USICRegex } from './usci/usci';
 
-const Parsers: Parser[] = [
+export const Parsers: Parser[] = [
   {
     // wrV_AAAAAA0A0AAaAaaAaAAaaaAA-aaa
     name: 'WecomRoomIdFromWechat',
-    label: 'Wecom Room ID from Wechat',
+    title: 'Wecom Room ID from Wechat',
     // 28+4
     length: 32,
     pattern: /^wrV_[-a-zA-Z0-9]{28}$/,
   },
   {
     name: 'WecomMemberIdFromWechat',
-    label: 'Wecom Member ID from Wechat',
+    title: 'Wecom Member ID from Wechat',
     length: 32,
     pattern: /^wmV_[-a-zA-Z0-9]{28}$/,
   },
   {
     name: 'WecomRoomId',
-    label: 'Wecom Room ID',
+    title: 'Wecom Room ID',
     length: 32,
     pattern: /^wr[-a-zA-Z0-9]{30}$/,
   },
   {
     name: 'WecomMemberId',
-    label: 'Wecom Member ID',
+    title: 'Wecom Member ID',
     length: 32,
     pattern: /^wm[-a-zA-Z0-9]{30}$/,
   },
   {
     name: 'WecomCorpID',
-    label: 'Wecom Corp ID/Suit ID',
+    title: 'Wecom Corp ID/Suit ID',
     length: 32,
     pattern: /^ww[a-zA-Z0-9]{16}$/,
   },
   // wecom - wo OpenId, tj 早期套件
   {
-    name: 'USIC',
-    label: '中国统一信用代码',
+    name: 'ChinaCitizenId',
+    title: '中国公民身份证',
+    length: ChinaCitizenId.Length,
+    pattern: ChinaCitizenId.Regex,
+    parse: ChinaCitizenId.parse,
+    generate: () => ChinaCitizenId.random().toString(),
+  },
+  {
+    name: 'USCI',
+    title: '中国统一信用代码',
     length: 18,
     pattern: USICRegex,
-    parse: parseUsic,
+    parse: parseUSCI,
+    generate: () => randomUSCI().raw,
   },
   {
     name: 'ULID',
-    label: 'ULID',
+    title: 'ULID',
     length: 26,
     pattern: /^[0-9A-HJKMNP-TV-Z]{26}$/i,
     parse: parseULID,
+    generate: () => ulid(),
   },
   {
     name: 'UUID',
-    label: 'UUID',
+    title: 'UUID',
     length: 36,
     pattern: /^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$/i,
+    generate: () => randomUUID(),
   },
   {
     name: 'JsonObject',
-    label: 'JSON Object',
+    title: 'JSON Object',
     pattern: /^\{.*}$/,
     parse: (s) => JSON.parse(s),
   },
   {
     name: 'URL',
-    label: 'URL',
+    title: 'URL',
     pattern: /^https?:\/\//i,
     parse: (s) => new URL(s),
   },
   // URI
   {
     name: 'Integer',
-    label: '整数',
+    title: '整数',
     pattern: /^[-+]?\d+(e\d+)?$/,
   },
   {
     name: 'Timestamp',
-    label: '时间戳',
+    title: '时间戳',
     pattern: /^\d{10,13}$/,
   },
   {
     name: 'Binary',
-    label: '二进制',
+    title: '二进制',
     pattern: /^(0[bB])?[01]+$/,
   },
   {
     name: 'Octal',
-    label: '八进制',
+    title: '八进制',
     pattern: /^(0[oO])?[0-7]+$/,
   },
   {
     name: 'Hex',
-    label: 'Hex',
+    title: 'Hex',
     pattern: /^(0x)?[0-9A-F]+$/i,
   },
   {
     name: 'Base32',
-    label: 'Base32',
+    title: 'Base32',
     pattern: /^[A-Z2-7]+$/i,
   },
   {
     name: 'Base64',
-    label: 'Base64',
+    title: 'Base64',
     pattern: /^[A-Za-z0-9+/]+={0,2}$/,
   },
 ];
 
 export interface Parser {
   name: string;
-  label: string;
+  title: string;
   description?: string;
   length?: number;
   pattern?: RegExp;
   parse?: (s: string) => any;
+  generate?: (o?: any) => string;
 }
 
 export interface ParseResult {
@@ -158,7 +172,7 @@ export function parseIt(raw: string): ParsedIt | undefined {
   const len = raw.length;
   // http://www.chinatax.gov.cn/chinatax/n810219/n810744/n2594306/c101700/index.html
   if (len === 18 && USICRegex.test(raw)) {
-    out.usci = parseUsic(raw);
+    out.usci = parseUSCI(raw);
   }
   if (len === 36) {
     try {
@@ -198,13 +212,7 @@ export interface ParsedIt {
     a: bigint;
     b: bigint;
   };
-  ChinaCitizenIdNo?: {
-    raw: string;
-    date: Date;
-    gender: 'female' | 'male';
-    districtCode: string;
-    checkCode: string;
-  };
+  ChinaCitizenId?: ChinaCitizenId;
   timestamp?: {
     raw: string;
     timestamp: number;

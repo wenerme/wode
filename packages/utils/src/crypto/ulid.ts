@@ -158,7 +158,7 @@ export function createULID({
   let lastRandom: string;
   return function ulid(seedTime?: number): string {
     seedTime ||= now();
-    if (seedTime <= lastTime) {
+    if (seedTime <= lastTime && lastRandom) {
       const incrementedRandom = (lastRandom = incrementBase32(lastRandom));
       return encodeTime(lastTime, TIME_LEN) + incrementedRandom;
     }
