@@ -2,9 +2,11 @@ import { useEffect } from 'react';
 import { HiMagnifyingGlass, HiOutlineXCircle } from 'react-icons/hi2';
 import { useImmer } from 'use-immer';
 import { isDefined } from '@wener/utils';
-import { USICCard } from './USICCard';
+import { IdTypes } from './code';
+import { ChinaCitizenId } from './gb11643/ChinaCitizenId';
 import type { Parser, ParseResult } from './parseIt';
 import { parseIt, Parsers, tryParse } from './parseIt';
+import { ParsedUSCI, USICRegistryBureauCode } from './usci/usci';
 
 export const ChinaIdInfoPage = () => {
   const [state, update] = useImmer<{
@@ -44,6 +46,7 @@ export const ChinaIdInfoPage = () => {
         className={'flex flex-col items-center justify-center gap-2'}
         onSubmit={(e) => {
           e.preventDefault();
+          parse(() => state.id);
         }}
       >
         <div className="form-control">
@@ -93,16 +96,26 @@ export const ChinaIdInfoPage = () => {
           </div>
         )}
       </div>
-      <div className={'py-4 max-w-lg mx-auto'}>
+      <div className={'py-4 max-w-lg mx-auto flex flex-col gap-4'}>
         {maybe
           .filter((v) => v.matched)
           .map((v) => {
             const name = v.parser.name;
             switch (name) {
               case 'USCI':
-                return <USICCard key={name} item={v.data as any} />;
+                return (
+                  <ParserCard key={name} parser={v.parser}>
+                    <USCIDescription item={v.data} />
+                  </ParserCard>
+                );
+              case 'ChinaCitizenId':
+                return (
+                  <ParserCard key={name} parser={v.parser}>
+                    <CnIdDescription item={v.data} />
+                  </ParserCard>
+                );
               default:
-                return <MaybeCard key={name} parser={v.parser}></MaybeCard>;
+                return <ParserCard key={name} parser={v.parser}></ParserCard>;
             }
           })}
       </div>
@@ -110,23 +123,89 @@ export const ChinaIdInfoPage = () => {
   );
 };
 
-export const MaybeCard: React.FC<{
-  children?: React.ReactNode;
+export const ParserCard: React.FC<{
   parser: Parser;
+  parsed?: any;
+  children?: React.ReactNode;
 }> = ({ parser, children }) => {
-  const { title, description, name } = parser;
+  const { title, description } = parser;
   return (
     <>
       <div className="card bg-base-200 shadow-xl">
         <div className="card-body">
           <div className="card-title">
-            <h3 className="text-lg font-medium leading-6">{name}</h3>
-            <p className="mt-1 max-w-2xl text-sm opacity-75">{title}</p>
+            <h3 className="text-lg font-medium leading-6">{title}</h3>
+            <p className="mt-1 max-w-2xl text-sm opacity-75">{description}</p>
           </div>
-
-          <div className="border-t border-base-300 px-4 py-5 sm:px-6">{children}</div>
+          {children && <div className="border-t border-base-300 px-4 py-5 sm:px-6">{children}</div>}
         </div>
       </div>
     </>
+  );
+};
+
+const USCIDescription: React.FC<{ item: ParsedUSCI }> = ({ item }) => {
+  return (
+    <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
+      <div className="sm:col-span-2">
+        <dt className="text-sm font-medium opacity-85">{IdTypes.USCI.label}</dt>
+        <dd className="mt-1 text-sm">{item.raw}</dd>
+      </div>
+      <div className="sm:col-span-1">
+        <dt className="text-sm font-medium opacity-85">登记管理部门</dt>
+        <dd className="mt-1 text-sm">{USICRegistryBureauCode[item.registryBureauCode]?.label}</dd>
+      </div>
+      <div className="sm:col-span-1">
+        <dt className="text-sm font-medium opacity-85">机构类别</dt>
+        <dd className="mt-1 text-sm">
+          {USICRegistryBureauCode[item.registryBureauCode]?.codes?.[item.registryBureauTypeCode]?.label}
+        </dd>
+      </div>
+      <div className="sm:col-span-1">
+        <dt className="text-sm font-medium opacity-85">登记管理机关行政区划码</dt>
+        <dd className="mt-1 text-sm">{item.registryBureauDistrictCode}</dd>
+      </div>
+      <div className="sm:col-span-1">
+        <dt className="text-sm font-medium opacity-85">主体标识码/组织机构代码</dt>
+        <dd className="mt-1 text-sm">{item.subjectCode}</dd>
+      </div>
+      <div className="sm:col-span-1">
+        <dt className="text-sm font-medium opacity-85">校验码</dt>
+        <dd className="mt-1 text-sm">{item.checkCode}</dd>
+      </div>
+    </dl>
+  );
+};
+
+const CnIdDescription: React.FC<{ item: ChinaCitizenId }> = ({ item }) => {
+  return (
+    <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
+      <div className="sm:col-span-2">
+        <dt className="text-sm font-medium opacity-85">{'身份证'}</dt>
+        <dd className="mt-1 text-sm">{item.toString()}</dd>
+      </div>
+      <div className="sm:col-span-1">
+        <dt className="text-sm font-medium opacity-85">出生地编号</dt>
+        <dd className="mt-1 text-sm">{item.division}</dd>
+      </div>
+      <div className="sm:col-span-1">
+        <dt className="text-sm font-medium opacity-85">性别</dt>
+        <dd className="mt-1 text-sm">{item.gender}</dd>
+      </div>
+      <div className="sm:col-span-1">
+        <dt className="text-sm font-medium opacity-85">出生日期</dt>
+        <dd className="mt-1 text-sm">{item.date.format('YYYY-MM-DD')}</dd>
+      </div>
+      <div className="sm:col-span-1">
+        <dt className="text-sm font-medium opacity-85">序号</dt>
+        <dd className="mt-1 text-sm">{item.sequence}</dd>
+      </div>
+      <div className="sm:col-span-1">
+        <dt className="text-sm font-medium opacity-85">校验码</dt>
+        <dd className="mt-1 text-sm">
+          {item.sum} {item.valid ? '✅' : '❌'}
+        </dd>
+      </div>
+    </dl>
   );
 };
