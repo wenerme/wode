@@ -1,7 +1,7 @@
 import type { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
 import objectSupport from 'dayjs/plugin/objectSupport';
-import { randomDivisionCode } from '../utils/randomDivisionCode';
+import { randomDivisionCode } from '../division';
 import { mod11 } from './mod11';
 
 export class ChinaCitizenId {
