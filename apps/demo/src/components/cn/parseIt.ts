@@ -1,4 +1,4 @@
-import { ChinaCitizenId } from '@src/components/cn/gb11643/parse';
+import { ChinaCitizenId } from '@src/components/cn/gb11643/ChinaCitizenId';
 import { parseULID, randomUUID, ulid } from '@wener/utils';
 import { randomUSCI } from './usci/randomUSCI';
 import type { ParsedUSCI } from './usci/usci';
@@ -41,14 +41,16 @@ export const Parsers: Parser[] = [
   {
     name: 'ChinaCitizenId',
     title: '中国公民身份证',
+    description: 'Chinese National ID Card',
     length: ChinaCitizenId.Length,
-    pattern: ChinaCitizenId.Regex,
+    pattern: ChinaCitizenId.Pattern,
     parse: ChinaCitizenId.parse,
     generate: () => ChinaCitizenId.random().toString(),
   },
   {
     name: 'USCI',
     title: '中国统一信用代码',
+    description: 'Unified Social Credit Identifier',
     length: 18,
     pattern: USICRegex,
     parse: parseUSCI,
