@@ -1,12 +1,14 @@
 import { useEffect } from 'react';
+import { FaFemale, FaMale } from 'react-icons/fa';
 import { HiMagnifyingGlass, HiOutlineXCircle } from 'react-icons/hi2';
 import { useImmer } from 'use-immer';
 import { isDefined } from '@wener/utils';
 import { IdTypes } from './code';
-import { ChinaCitizenId } from './gb11643/ChinaCitizenId';
+import type { ChinaCitizenId } from './gb11643/ChinaCitizenId';
 import type { Parser, ParseResult } from './parseIt';
 import { parseIt, Parsers, tryParse } from './parseIt';
-import { ParsedUSCI, USICRegistryBureauCode } from './usci/usci';
+import type { ParsedUSCI } from './usci/usci';
+import { USICRegistryBureauCode } from './usci/usci';
 
 export const ChinaIdInfoPage = () => {
   const [state, update] = useImmer<{
@@ -190,7 +192,9 @@ const CnIdDescription: React.FC<{ item: ChinaCitizenId }> = ({ item }) => {
       </div>
       <div className="sm:col-span-1">
         <dt className="text-sm font-medium opacity-85">性别</dt>
-        <dd className="mt-1 text-sm">{item.gender}</dd>
+        <dd className="mt-1 text-sm">
+          <GenderFormat value={item.gender} />
+        </dd>
       </div>
       <div className="sm:col-span-1">
         <dt className="text-sm font-medium opacity-85">出生日期</dt>
@@ -208,4 +212,25 @@ const CnIdDescription: React.FC<{ item: ChinaCitizenId }> = ({ item }) => {
       </div>
     </dl>
   );
+};
+
+const GenderFormat: React.FC<{ value?: string }> = ({ value }) => {
+  if (!value) {
+    return null;
+  }
+  switch (value) {
+    case 'male':
+      return (
+        <span className="text-blue-500 flex items-center">
+          <FaMale />男
+        </span>
+      );
+    case 'female':
+      return (
+        <span className="text-pink-500 flex items-center">
+          <FaFemale />女
+        </span>
+      );
+  }
+  return <span>{value}</span>;
 };
