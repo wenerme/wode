@@ -1,9 +1,10 @@
 export function mod31(s: string) {
   let sum = 0;
   for (let i = 0; i < s.length; i++) {
-    sum += _numbers[s[i]] * _weights[i];
+    sum += Mode31Numbers[s[i]] * _weights[i];
   }
-  return Mod31Chars[31 - (sum % 31)];
+  // fixme
+  return Mod31Chars[31 - (sum % 31)] ?? '';
 }
 
 const _weights = [1, 3, 9, 27, 19, 26, 16, 17, 20, 29, 25, 13, 8, 24, 10, 30, 28];
@@ -40,7 +41,7 @@ export const Mod31Chars: Record<string, string> = {
   29: 'X',
   30: 'Y',
 };
-const _numbers: Record<string, number> = {
+export const Mode31Numbers: Record<string, number> = {
   0: 0,
   1: 1,
   2: 2,

@@ -2,10 +2,11 @@ import { useEffect } from 'react';
 import { HiMagnifyingGlass, HiOutlineXCircle } from 'react-icons/hi2';
 import { useImmer } from 'use-immer';
 import { ChinaCitizenIdDescription } from '@src/components/cn/ChinaCitizenIdDescription';
+import { ParserCard } from '@src/components/cn/ParserCard';
 import { Parsers } from '@src/components/cn/Parsers';
 import { UnifiedSocialCreditIdDescription } from '@src/components/cn/UnifiedSocialCreditIdDescription';
 import { isDefined } from '@wener/utils';
-import type { Parser, ParseResult } from './parseIt';
+import type { ParseResult } from './parseIt';
 import { tryParse } from './parseIt';
 
 export const ChinaIdInfoPage = () => {
@@ -109,45 +110,22 @@ export const ChinaIdInfoPage = () => {
           .filter((v) => v.matched)
           .map((v) => {
             const name = v.parser.name;
+            let content: React.ReactNode;
             switch (name) {
               case 'USCI':
-                return (
-                  <ParserCard key={name} parser={v.parser}>
-                    <UnifiedSocialCreditIdDescription item={v.data} />
-                  </ParserCard>
-                );
+                content = <UnifiedSocialCreditIdDescription item={v.data} />;
+                break;
               case 'ChinaCitizenId':
-                return (
-                  <ParserCard key={name} parser={v.parser}>
-                    <ChinaCitizenIdDescription item={v.data} />
-                  </ParserCard>
-                );
-              default:
-                return <ParserCard key={name} parser={v.parser}></ParserCard>;
+                content = <ChinaCitizenIdDescription item={v.data} />;
+                break;
             }
+            return (
+              <ParserCard key={name} parser={v.parser} parsed={v.data} onChange={(s) => parse(() => s)}>
+                {content}
+              </ParserCard>
+            );
           })}
       </div>
     </div>
-  );
-};
-
-export const ParserCard: React.FC<{
-  parser: Parser;
-  parsed?: any;
-  children?: React.ReactNode;
-}> = ({ parser, children }) => {
-  const { title, description } = parser;
-  return (
-    <>
-      <div className="card bg-base-200 shadow-xl">
-        <div className="card-body">
-          <div className="card-title">
-            <h3 className="text-lg font-medium leading-6">{title}</h3>
-            <p className="mt-1 max-w-2xl text-sm opacity-75">{description}</p>
-          </div>
-          {children && <div className="border-t border-base-300 px-4 py-5 sm:px-6">{children}</div>}
-        </div>
-      </div>
-    </>
   );
 };

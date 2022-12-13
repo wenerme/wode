@@ -1,6 +1,6 @@
 import { randomDivisionCode } from '../division';
 import { randomPick } from '../utils/randomPick';
-import { mod31, Mod31Chars } from './mod31';
+import { mod31, Mod31Chars, Mode31Numbers } from './mod31';
 
 const RegistryBureauCode: Record<string, BureauCode> = {
   1: {
@@ -111,6 +111,18 @@ export class UnifiedSocialCreditId {
     return this.bureau + this.subtype + this.division + this.subject;
   }
 
+  next() {
+    const id = new UnifiedSocialCreditId(this.bureau, this.subtype, this.division, next(this.subject, +1), this.sum);
+    id.sum = mod31(id.primary);
+    return id;
+  }
+
+  prev() {
+    const id = new UnifiedSocialCreditId(this.bureau, this.subtype, this.division, next(this.subject, -1), this.sum);
+    id.sum = mod31(id.primary);
+    return id;
+  }
+
   toString() {
     return this.primary + this.sum;
   }
@@ -119,4 +131,19 @@ export class UnifiedSocialCreditId {
 export interface BureauCode {
   label: string;
   codes?: Record<string, BureauCode>;
+}
+
+export function next(s: string, delta: number) {
+  const sp = s.split('').map((v) => Mode31Numbers[v]);
+  for (let i = sp.length - 1; i >= 0; i--) {
+    if ((delta > 0 && sp[i] < 30) || (delta < 0 && sp[i] > 0)) {
+      sp[i] += delta;
+      break;
+    } else if (delta > 0 && sp[i] === 30) {
+      sp[i] = 0;
+    } else if (delta < 0 && sp[i] === 0) {
+      sp[i] = 30;
+    }
+  }
+  return sp.map((v) => Mod31Chars[v]).join('');
 }
