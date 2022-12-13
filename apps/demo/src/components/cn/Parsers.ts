@@ -45,6 +45,7 @@ export const Parsers: Parser[] = [
     pattern: ChinaCitizenId.Pattern,
     parse: ChinaCitizenId.parse,
     generate: () => ChinaCitizenId.random().toString(),
+    model: ChinaCitizenId,
   },
   {
     name: 'USCI',
@@ -54,6 +55,7 @@ export const Parsers: Parser[] = [
     pattern: UnifiedSocialCreditId.Pattern,
     parse: UnifiedSocialCreditId.parse,
     generate: () => UnifiedSocialCreditId.random().toString(),
+    model: UnifiedSocialCreditId,
   },
   {
     name: 'ULID',

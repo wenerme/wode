@@ -6,6 +6,16 @@ export interface Parser {
   pattern?: RegExp;
   parse?: (s: string) => any;
   generate?: (o?: any) => string;
+
+  model?: ParseableModel<any>;
+}
+
+export interface ParseableModel<T extends abstract new (...args: any) => any> {
+  random(): InstanceType<T>;
+
+  parse(s: string): InstanceType<T>;
+
+  toString(): string;
 }
 
 export interface ParseResult {
