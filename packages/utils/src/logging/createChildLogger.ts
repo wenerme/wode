@@ -1,11 +1,11 @@
 import type { Logger, LoggerWithChild } from './Logger';
-import { createWriteLogger } from './createWriteLogger';
+import { createLogger } from './createLogger';
 
 export function createChildLogger(l: Logger, ctx: object): LoggerWithChild {
   if (l.child) {
     return l.child(ctx) as LoggerWithChild;
   }
-  return createWriteLogger((o) => {
+  return createLogger((o) => {
     const { level, values, ...c } = o;
     if (Object.keys(c).length) {
       l[level](c, ...values);

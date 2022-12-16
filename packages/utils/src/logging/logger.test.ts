@@ -1,11 +1,11 @@
 import test from 'ava';
 import { createChildLogger } from './createChildLogger';
-import { createWriteLogger } from './createWriteLogger';
+import { createLogger } from './createLogger';
 
 test('logger', (t) => {
   {
     const logs: any[] = [];
-    const base = createWriteLogger((o) => logs.push(o));
+    const base = createLogger((o) => logs.push(o));
     const l = createChildLogger(base, { c: 'test' });
     l.info('hello');
     t.deepEqual(logs.shift(), { level: 'info', values: ['hello'], c: 'test' });
@@ -15,7 +15,7 @@ test('logger', (t) => {
   createChildLogger(console, { c: 'test' }).info('hello');
   {
     let pass = 0;
-    const l = createWriteLogger(
+    const l = createLogger(
       (o) => {
         pass++;
         t.log(`${o.level}: [${[o.m, o.c].filter(Boolean).join('.') || 'default'}]`, ...o.values);
@@ -30,5 +30,7 @@ test('logger', (t) => {
     t.is(pass, 2);
     createChildLogger(l, { m: 'Child' }).info('nice 3');
     t.is(pass, 3);
+
+    createLogger().child({ name: 'wener' }).info({ x: 1 }, 'Nice');
   }
 });

@@ -43,7 +43,7 @@ export { isModule, type Module } from './modules/isModule';
 
 // logging
 export { type Logger, type LogLevel } from './logging/Logger';
-export { createWriteLogger } from './logging/createWriteLogger';
+export { createLogger } from './logging/createLogger';
 export { createNoopLogger } from './logging/createNoopLogger';
 export { createChildLogger } from './logging/createChildLogger';
 
