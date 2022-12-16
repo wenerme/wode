@@ -1,5 +1,5 @@
 import { Button } from '../../daisy';
-import { Parser } from './parseIt';
+import type { Parser } from './parseIt';
 
 export const ParserCard: React.FC<{
   parser: Parser;
@@ -12,14 +12,14 @@ export const ParserCard: React.FC<{
   if (parsed) {
     if ('prev' in parsed) {
       actions.push(
-        <Button size={'sm'} onClick={() => onChange?.(parsed.prev().toString())}>
+        <Button key={'prev'} size={'sm'} onClick={() => onChange?.(parsed.prev().toString())}>
           上一位
         </Button>,
       );
     }
     if ('next' in parsed) {
       actions.push(
-        <Button size={'sm'} onClick={() => onChange?.(parsed.next().toString())}>
+        <Button key={'next'} size={'sm'} onClick={() => onChange?.(parsed.next().toString())}>
           下一位
         </Button>,
       );
@@ -28,7 +28,7 @@ export const ParserCard: React.FC<{
   if (model) {
     if ('random' in model) {
       actions.push(
-        <Button size={'sm'} onClick={() => onChange?.(model.random().toString())}>
+        <Button key={'random'} size={'sm'} onClick={() => onChange?.(model.random().toString())}>
           随机
         </Button>,
       );
