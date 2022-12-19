@@ -100,7 +100,7 @@
     "@tiptap/react": "^2.0.0-beta.202",
     "@tiptap/starter-kit": "^2.0.0-beta.202",
     "@tiptap/suggestion": "^2.0.0-beta.202",
-    "@wener/utils": "workspace:1.1.8",
+    "@wener/utils": "workspace:*",
     "classnames": "^2.3.2",
     "linkify-it": "^4.0.1",
     "markdown-it": "^13.0.1",

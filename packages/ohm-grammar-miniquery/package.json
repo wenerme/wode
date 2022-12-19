@@ -1,0 +1,83 @@
+{
+  "name": "ohm-grammar-miniquery",
+  "version": "1.0.5",
+  "type": "module",
+  "description": "MiniQuery grammars for various editions of ORM/SQL.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wenerme/js-miniquery.git"
+  },
+  "homepage": "https://github.com/wenerme/js-miniquery/tree/main/packages/ohm-grammar-miniquery#readme",
+  "bugs": {
+    "url": "https://github.com/wenerme/js-miniquery/issues"
+  },
+  "license": "MIT",
+  "exports": {
+    ".": {
+      "import": "./lib/index.js",
+      "require": "./lib/cjs/index.js",
+      "types": "./src/index.ts"
+    },
+    "./sequelize": {
+      "import": "./lib/sequelize/index.js",
+      "require": "./lib/cjs/sequelize/index.js",
+      "types": "./src/sequelize/index.ts"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.js",
+    "index.ts",
+    "lib",
+    "sequelize.js",
+    "sequelize.ts",
+    "src",
+    "tsconfig.json"
+  ],
+  "keywords": [
+    "ohm",
+    "ohm-grammar",
+    "miniquery",
+    "sql",
+    "sequelize",
+    "peg"
+  ],
+  "scripts": {
+    "build": "make build",
+    "dev": "make dev",
+    "gen": "ohm generateBundles --withTypes --esm ./src/grammar/miniquery.ohm",
+    "lint": "make lint",
+    "test": "make test"
+  },
+  "peerDependencies": {
+    "@sequelize/core": "*",
+    "ohm-js": "^16"
+  },
+  "peerDependenciesMeta": {
+    "@sequelize/core": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@ohm-js/cli": "^1.1.0",
+    "c8": "^7.12.0",
+    "sqlite3": "^5.0.11"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "sideEffects": [
+    "./lib/ast.js"
+  ],
+  "ava": {
+    "extensions": {
+      "ts": "module"
+    },
+    "nodeArguments": [
+      "--conditions=typescript",
+      "--require=@wener/wode/suppress-experimental.cjs",
+      "--loader=tsx"
+    ]
+  }
+}

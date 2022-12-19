@@ -1,0 +1,67 @@
+MiniQuery {
+  Main = Expr end
+  Expr = LogicExpr
+
+  LogicExpr
+    = LogicExpr logic RelExpr -- match
+    | RelExpr
+
+  RelExpr
+    = RelExpr (">=" | "<=" |  ">" | "<") InExpr -- match
+    | RelExpr ("==" | "!=" | "<>" | "=") InExpr -- match_eq
+    | RelExpr ":" literal -- has
+    | InExpr
+  InExpr
+    = InExpr in Array -- match
+    | PredicateExpr
+  PredicateExpr
+    = PredicateExpr is (null| bool) -- is
+    | PredicateExpr like string -- like
+    | BetweenExpr
+  BetweenExpr
+    = BetweenExpr between CallExpr "and" CallExpr -- match
+    | CallExpr
+  CallExpr
+    = ident "(" ListOf<Expr,","> ")" -- match
+    | PriExpr
+
+  PriExpr
+    = "(" Expr ")" -- paren
+    | caseInsensitive<"not"> Expr -- not
+    | Array
+    | Value
+    | "+" Expr -- pos
+    | "-" Expr -- neg
+
+
+  Array   = "(" ListOf<Expr,","> ")" | "[" ListOf<Expr,","> "]"
+  Value   = literal | ref | ident
+
+  ListOf<elem, sep>
+    := TrailNonEmptyListOf<elem, sep>
+    | EmptyListOf<elem, sep>
+
+  TrailNonEmptyListOf<elem, sep>
+    = elem (sep elem)* sep?
+
+  in = (caseInsensitive<"not"> space+)? caseInsensitive<"in">
+  is = caseInsensitive<"is"> (space+ caseInsensitive<"not">?)
+  logic = caseInsensitive<"and"> | caseInsensitive<"or"> | "&&" | "||"
+  like = (caseInsensitive<"not"> space+)? (caseInsensitive<"like"> | caseInsensitive<"ilike">)
+  between = (caseInsensitive<"not"> space+)? caseInsensitive<"between">
+
+  ref = ident ( "." (ident | string) )+
+  ident = letter (alnum | "_")*
+  literal = string | float | int | bool | null
+  null    = "null" | "NULL"
+  bool    = "true" | "false" | "TRUE" | "FALSE"
+  string
+    = "'" (~"'" any)* "'"
+    | "\"" (~"\"" any)* "\""
+  int = (("-"|"+") spaces)? uint
+  uint
+    = "0"
+    | int_non_zero
+  int_non_zero = "1".."9" digit*
+  float   = int? "." digit+
+}
