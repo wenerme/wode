@@ -27,15 +27,15 @@ export { shallowEqual } from './langs/shallowEqual';
 export { deepEqual } from './langs/deepEqual';
 export { classOf } from './langs/classOf';
 export { shallowClone } from './langs/shallowClone';
+export { isClass } from './langs/isClass';
+export { isDefined } from './langs/isDefined';
+export { isEmptyObject } from './langs/isEmptyObject';
+export { isPlainObject } from './langs/isPlainObject';
+export { parseBoolean } from './langs/parseBoolean';
+export { maybeFunction, type MaybeFunction } from './langs/MaybeFunction';
 
-// assertions
-export { isClass } from './validations/isClass';
-export { isDefined } from './validations/isDefined';
-export { isEmptyObject } from './validations/isEmptyObject';
 export { isUUID } from './validations/isUUID';
-export { isPlainObject } from './validations/isPlainObject';
 export { parseTimestamp } from './validations/parseTimestamp';
-export { parseBoolean } from './validations/parseBoolean';
 
 // modules
 export { parseModuleId, type ParsedModuleId } from './modules/parseModuleId';
