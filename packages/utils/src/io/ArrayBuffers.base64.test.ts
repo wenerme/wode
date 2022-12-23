@@ -1,8 +1,9 @@
 import test from 'ava';
 import { ArrayBuffers } from './ArrayBuffers';
 
-test.before(() => {
-  ArrayBuffers.setAllowedNativeBuffer(false);
+test.before((t) => {
+  t.true(ArrayBuffers.isNativeBufferAvailable());
+  ArrayBuffers.setNativeBufferAllowed(false);
 });
 
 test('base64: ignore whitespace', function (t) {

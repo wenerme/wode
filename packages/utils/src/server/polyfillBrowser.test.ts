@@ -4,7 +4,8 @@ import { polyfillBrowser } from './polyfillBrowser';
 import { polyfillFetch } from './polyfillFetch';
 
 test.before(async (t) => {
-  t.true(polyfillFetch(nodeFetch));
+  // return false in nodejs18
+  polyfillFetch(nodeFetch);
   t.false(polyfillFetch());
   await polyfillBrowser();
 });

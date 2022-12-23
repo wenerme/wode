@@ -78,6 +78,7 @@ export { getRandomValues } from './crypto/getRandomValues';
 export { sha1, sha256, sha384, sha512 } from './crypto/hashing';
 export { hex } from './crypto/base';
 export { isULID, createULID, ulid, parseULID } from './crypto/ulid';
+export { PEM } from './crypto/pem/pem';
 
 // misc
 export { createRandom } from './maths/random';
