@@ -1,7 +1,34 @@
 import { ArrayBuffers } from '../../io/ArrayBuffers';
 
 export interface Block {
-  type: string | 'RSA PRIVATE KEY'; // https://github.com/openssl/openssl/blob/master/include/openssl/pem.h#L35-L60
+  /**
+   * @see https://github.com/openssl/openssl/blob/master/include/openssl/pem.h#L35-L60 openssl/pem.h
+   */
+  type:
+    | string
+    | `${'RSA' | 'DSA'} ${'PRIVATE' | 'PUBLIC'} KEY`
+    | `${'X509' | 'TRUSTED'} CERTIFICATE`
+    | 'CERTIFICATE'
+    | 'X509 CRL'
+    | 'CERTIFICATE REQUEST'
+    | 'NEW CERTIFICATE REQUEST'
+    | 'ANY PRIVATE KEY'
+    | 'PUBLIC KEY'
+    | 'PKCS7'
+    | 'PKCS #7 SIGNED DATA'
+    | 'ENCRYPTED PRIVATE KEY'
+    | 'PRIVATE KEY'
+    | 'DH PARAMETERS'
+    | 'X9.42 DH PARAMETERS'
+    | 'SSL SESSION PARAMETERS'
+    | 'DSA PARAMETERS'
+    | 'ECDSA PUBLIC KEY'
+    | 'EC PARAMETERS'
+    | 'EC PRIVATE KEY'
+    | 'PARAMETERS'
+    | 'CMS'
+    | 'SM2 PARAMETERS';
+
   header: Record<string, string>;
   bytes: BufferSource;
 }
@@ -25,12 +52,14 @@ export class PEM {
       block: {
         type,
         header,
-        bytes: ArrayBuffers.from(b64.replaceAll(/[\r\n]/g, ''), 'base64'),
+        //  avoid replaceAll
+        bytes: ArrayBuffers.from(b64.replace(/[\r\n]/g, ''), 'base64'),
       },
       head: data.slice(0, match.index || 0),
       tail: data.slice((match.index || 0) + match[0].length),
     };
   }
+
   static encode(block: { type: string; bytes: string | BufferSource; header?: Record<string, string> }): string {
     const { type, header, bytes } = block;
     const headers = Object.entries(header || {})
