@@ -1,8 +1,16 @@
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import type { TypedArray } from '../io/ArrayBuffers';
+
 let nodeCrypto: Awaited<typeof import('node:crypto')>;
 // globalThis.process?.release?.name
 
-// typedoc error
+// eslint-disable-next-line
+interface Process {
+  browser: boolean;
+}
+declare var process: Process;
+
+// const isBrowser = typeof window !== 'undefined';
 if (!process.browser) {
   try {
     if (typeof require === 'undefined') {
@@ -13,12 +21,12 @@ if (!process.browser) {
   } catch (e) {}
 }
 
-export let getRandomValues: <T extends Exclude<NodeJS.TypedArray, Float32Array | Float64Array>>(typedArray: T) => T =
+export let getRandomValues: <T extends Exclude<TypedArray, Float32Array | Float64Array>>(typedArray: T) => T =
   globalThis.crypto?.getRandomValues?.bind(globalThis.crypto) ||
   (globalThis as any).msCrypto?.getRandomValues?.bind((globalThis as any).msCrypto) ||
   _getRandomValues;
 
-function _getRandomValues<T extends Exclude<NodeJS.TypedArray, Float32Array | Float64Array>>(buf: T) {
+function _getRandomValues<T extends Exclude<TypedArray, Float32Array | Float64Array>>(buf: T) {
   if (nodeCrypto?.webcrypto?.getRandomValues) {
     getRandomValues = nodeCrypto?.webcrypto?.getRandomValues?.bind(nodeCrypto?.webcrypto);
     return nodeCrypto.webcrypto.getRandomValues(buf);
