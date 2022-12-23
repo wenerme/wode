@@ -3,15 +3,15 @@ let nodeCrypto: Awaited<typeof import('node:crypto')>;
 // globalThis.process?.release?.name
 
 // typedoc error
-// if (!(process as any).browser) {
-//   try {
-//     if (typeof require === 'undefined') {
-//       void import('node:crypto').then((v) => (nodeCrypto = v.default));
-//     } else {
-//       nodeCrypto = require('node:crypto');
-//     }
-//   } catch (e) {}
-// }
+if (!process.browser) {
+  try {
+    if (typeof require === 'undefined') {
+      void import('node:crypto').then((v) => (nodeCrypto = v.default));
+    } else {
+      nodeCrypto = require('node:crypto');
+    }
+  } catch (e) {}
+}
 
 export let getRandomValues: <T extends Exclude<NodeJS.TypedArray, Float32Array | Float64Array>>(typedArray: T) => T =
   globalThis.crypto?.getRandomValues?.bind(globalThis.crypto) ||

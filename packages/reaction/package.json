@@ -84,6 +84,23 @@
     "react-dom": ">=18",
     "react-is": ">=18"
   },
+  "peerDependenciesMeta": {
+    "hoist-non-react-statics": {
+      "optional": true
+    },
+    "prop-types": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    },
+    "react-is": {
+      "optional": true
+    }
+  },
   "publishConfig": {
     "registry": "https://registry.npmjs.org",
     "access": "public"

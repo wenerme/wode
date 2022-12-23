@@ -1,4 +1,5 @@
 import { classOf } from '../langs/classOf';
+import { decodeBase64ToArrayBuffer, encodeArrayBufferToBase64 } from './base64';
 import { isBuffer } from './isBuffer';
 
 /**
@@ -67,14 +68,20 @@ type ToStringEncoding =
   | 'hex';
 
 export class ArrayBuffers {
-  static #_allowedNativeBuffer: boolean = true;
+  static #nativeBufferAllowed: boolean = true;
+  static #isBufferAvailable: undefined | boolean;
 
-  static #isNativeBufferValid() {
-    return this.#_allowedNativeBuffer && !(globalThis.Buffer as any)?.isPollyfill?.();
+  static isNativeBufferAvailable() {
+    // eslint-disable-next-line no-return-assign
+    return (this.#isBufferAvailable ??= !(globalThis.Buffer as any)?.isPollyfill?.());
   }
 
-  static setAllowedNativeBuffer(v: boolean) {
-    this.#_allowedNativeBuffer = v;
+  static isNativeBufferAllowed() {
+    return this.#nativeBufferAllowed && this.#isBufferAvailable;
+  }
+
+  static setNativeBufferAllowed(v: boolean) {
+    this.#nativeBufferAllowed = v;
   }
 
   static isArrayBuffer = (v: any): v is ArrayBuffer => {
@@ -100,7 +107,7 @@ export class ArrayBuffers {
       return v as I;
     }
     if (ArrayBuffer.isView(v) || isBuffer(v)) {
-      if (ArrayBuffers.#isNativeBufferValid() && (TypedArray as any) === Buffer) {
+      if (ArrayBuffers.isNativeBufferAllowed() && (TypedArray as any) === Buffer) {
         // new Buffer() is deprecated
         return Buffer.from(v.buffer, byteOffset, byteLength) as I;
       }
@@ -112,9 +119,17 @@ export class ArrayBuffers {
   static toString = (buf: BufferSource | string, encoding: ToStringEncoding = 'utf8') => {
     // 'ascii'  'utf16le' | 'ucs2' | 'ucs-2' | 'base64' | 'base64url' | 'latin1' | 'binary' | 'hex'
     if (typeof buf === 'string') {
-      return buf;
+      switch (encoding) {
+        case 'base64':
+          return btoa(buf);
+        case 'utf-8':
+        case 'utf8':
+          return buf;
+        default:
+          throw new Error(`[ArrayBuffers.toString] Unsupported encoding for string: ${encoding}`);
+      }
     }
-    if (ArrayBuffers.#isNativeBufferValid()) {
+    if (ArrayBuffers.isNativeBufferAllowed()) {
       return Buffer.from(ArrayBuffers.asView(Uint8Array, buf)).toString(encoding);
     }
     // reference
@@ -125,8 +140,7 @@ export class ArrayBuffers {
         return [...view].map((b) => hexLookupTable[b]).join('');
       }
       case 'base64': {
-        const view: Uint8Array = ArrayBuffers.asView(Uint8Array, buf);
-        return btoa(String.fromCharCode(...view));
+        return encodeArrayBufferToBase64(ArrayBuffers.asView(Uint8Array, buf));
       }
       case 'utf8':
       // falls through
@@ -185,7 +199,7 @@ export class ArrayBuffers {
       return new ArrayBuffer(0);
     }
     if (typeof v === 'string') {
-      if (ArrayBuffers.#isNativeBufferValid()) {
+      if (ArrayBuffers.isNativeBufferAllowed()) {
         return Buffer.from(v, encoding);
       }
 
@@ -195,8 +209,10 @@ export class ArrayBuffers {
         case 'utf8':
           return new TextEncoder().encode(v).buffer;
         case 'base64':
-          // replaceAll
-          return Uint8Array.from(atob(v.replace(/[^0-9a-zA-Z=+/_ \r\n]/g, '')), (c) => c.charCodeAt(0));
+          // replaceAll need higher version of nodejs
+          return decodeBase64ToArrayBuffer(v.replace(/[^0-9a-zA-Z=+/_]/g, ''));
+        // error in nodejs 18
+        // return Uint8Array.from(atob(v.replace(/[^0-9a-zA-Z=+/_ \r\n]/g, '')), (c) => c.charCodeAt(0));
         default:
           throw new Error(`[ArrayBuffers.from] Unknown encoding: ${encoding}`);
       }
@@ -244,7 +260,7 @@ export class ArrayBuffers {
     const length = buffers.reduce((a, b) => a + b.byteLength, 0);
     const r = result ? new Uint8Array(result) : new Uint8Array(length);
     for (const buffer of buffers) {
-      if (!buffer || !buffer.byteLength) continue;
+      if (!buffer?.byteLength) continue;
       let n: Uint8Array;
       if (buffer instanceof ArrayBuffer) {
         n = new Uint8Array(buffer);
