@@ -1,0 +1,1 @@
+export { proxyWithCompare } from './proxyWithCompare';

@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { useSnapshot } from 'valtio';
 import { derive, watch } from 'valtio/utils';
+import { proxyWithCompare } from '../../valtio';
 import { getPrefersColorSchema } from './getPrefersColorSchema';
 import { getSupportedThemes } from './getSupportedThemes';
-import { proxyWithCompare } from './proxyWithCompare';
 import { setElementThemeAttribute } from './setElementThemeAttribute';
 
 interface ThemeState {

@@ -19,7 +19,7 @@ import {
   useListNavigation,
   useRole,
   useTypeahead,
-} from '@floating-ui/react-dom-interactions';
+} from '@floating-ui/react';
 import { mergeRefs } from '@wener/reaction';
 
 export const MenuItem = forwardRef<

@@ -11,20 +11,26 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "@floating-ui/dom": "^1.1.0",
+    "@floating-ui/react": "^0.15.1",
     "@headlessui/react": "^1.7.7",
+    "@tanstack/react-table": "^8.7.4",
     "@wener/reaction": "workspace:^1.2.17",
     "@wener/utils": "workspace:^1.1.9",
     "classnames": "^2.3.2",
     "immer": "^9.0.17",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hot-toast": "^2.4.0",
     "react-icons": "^4.7.1",
+    "react-is": "^18.2.0",
     "use-immer": "^0.8.1",
     "valtio": "^1.8.0",
     "zod": "^3.20.2"
   },
   "devDependencies": {
     "@types/react": "^18.0.26",
-    "@types/react-dom": "^18.0.10"
+    "@types/react-dom": "^18.0.10",
+    "@types/react-is": "^17.0.3"
   }
 }
