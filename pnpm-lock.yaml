@@ -96,9 +96,13 @@ importers:
       '@trpc/client': ^10.7.0
       '@trpc/next': ^10.7.0
       '@trpc/server': ^10.7.0
+      '@wener/reaction': workspace:^1.2.17
       '@wener/utils': workspace:^1.1.9
       common: workspace:^1.0.0
       next: ^13.1.1
+      next-auth: ^4.18.7
+      react-icons: ^4.7.1
+      react-router-dom: ^6.6.1
       superjson: ^1.12.1
       trpc-openapi: ^1.0.0
       zod: ^3.20.2
@@ -107,9 +111,13 @@ importers:
       '@trpc/client': 10.7.0_@trpc+server@10.7.0
       '@trpc/next': 10.7.0_gmaturtqmtlrknaw65ek5pmv2i
       '@trpc/server': 10.7.0
+      '@wener/reaction': link:../../packages/reaction
       '@wener/utils': link:../../packages/utils
       common: link:../../packages/common
       next: 13.1.1_biqbaboplfbrettd7655fr4n2y
+      next-auth: 4.18.7_q76c2b4vyoegvsbrcwkfvimnai
+      react-icons: 4.7.1_react@18.2.0
+      react-router-dom: 6.6.1_biqbaboplfbrettd7655fr4n2y
       superjson: 1.12.1
       trpc-openapi: 1.0.0_xfxv3otgv6nbap2imkii6swyfm
       zod: 3.20.2
@@ -501,6 +509,7 @@ importers:
       '@floating-ui/dom': ^1.1.0
       '@floating-ui/react': ^0.15.1
       '@headlessui/react': ^1.7.7
+      '@heroicons/react': ^2.0.13
       '@sequelize/core': 7.0.0-alpha.20
       '@tanstack/react-query': ^4.20.4
       '@tanstack/react-query-devtools': ^4.20.4
@@ -534,6 +543,7 @@ importers:
       '@floating-ui/dom': 1.1.0
       '@floating-ui/react': 0.15.1_ib3m5ricvtkl2cll7qpr2f6lvq
       '@headlessui/react': 1.7.7_biqbaboplfbrettd7655fr4n2y
+      '@heroicons/react': 2.0.13_react@18.2.0
       '@sequelize/core': 7.0.0-alpha.20
       '@tanstack/react-query': 4.20.4_biqbaboplfbrettd7655fr4n2y
       '@tanstack/react-table': 8.7.4_biqbaboplfbrettd7655fr4n2y
@@ -1108,6 +1118,14 @@ packages:
       client-only: 0.0.1
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
+    dev: false
+
+  /@heroicons/react/2.0.13_react@18.2.0:
+    resolution: {integrity: sha512-iSN5XwmagrnirWlYEWNPdCDj9aRYVD/lnK3JlsC9/+fqGF80k8C7rl+1HCvBX0dBoagKqOFBs6fMhJJ1hOg1EQ==}
+    peerDependencies:
+      react: '>= 16'
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /@humanwhocodes/config-array/0.11.8:
