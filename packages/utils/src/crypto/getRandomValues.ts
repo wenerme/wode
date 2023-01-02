@@ -4,14 +4,8 @@ import type { TypedArray } from '../io/ArrayBuffers';
 let nodeCrypto: Awaited<typeof import('node:crypto')>;
 // globalThis.process?.release?.name
 
-// eslint-disable-next-line
-interface Process {
-  browser: boolean;
-}
-declare var process: Process;
-
-// const isBrowser = typeof window !== 'undefined';
-if (!process.browser) {
+// avoid process.browser
+if (typeof window !== 'undefined') {
   try {
     if (typeof require === 'undefined') {
       void import('node:crypto').then((v) => (nodeCrypto = v.default));
@@ -46,5 +40,5 @@ function _getRandomValues<T extends Exclude<TypedArray, Float32Array | Float64Ar
     buf.set(bytes);
     return buf;
   }
-  throw new Error('No secure random number generator available.');
+  throw new Error('[getRandomValues]: No secure random number generator available.');
 }
