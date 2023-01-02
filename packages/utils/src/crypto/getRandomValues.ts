@@ -5,8 +5,9 @@ let nodeCrypto: Awaited<typeof import('node:crypto')>;
 // globalThis.process?.release?.name
 
 // avoid process.browser
-if (typeof window !== 'undefined') {
+if (typeof window === 'undefined') {
   try {
+    // UnhandledSchemeError https://github.com/vercel/next.js/issues/28774
     if (typeof require === 'undefined') {
       void import('node:crypto').then((v) => (nodeCrypto = v.default));
     } else {

@@ -24,9 +24,18 @@ typedoc:
 	$(EXEC) typedoc --entryPointStrategy packages 'packages/*' --out out/typedoc --name "Wener Wode" --gitRemote git@github.com:wenerme/wode.git
 
 ci-install:
-	command -v jq > /dev/null || yum install jq -y
-ci: ci-install build typedoc
+	-command -v jq > /dev/null || yum install jq -y
+ci: ci-demo ci-apis
+
+ci-demo: ci-install
+	$(EXEC) turbo run build --filter=@wener/demo --force
+	$(MAKE) typedoc
 	mv out/typedoc apps/demo/public/docs
+
+ci-apis: ci-install
+	$(EXEC) turbo run build --filter=@wener/apis --force
+	$(MAKE) typedoc
+	mv out/typedoc apps/apis/public/docs
 
 outdated:
 	pnpm outdated -r | grep -v lexical | grep -v '@tiptap' | grep -v '^├─'
