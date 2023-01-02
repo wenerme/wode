@@ -115,6 +115,6 @@
     "tar": "^6.1.13"
   },
   "optionalDependencies": {
-    "@wener/utils": "^1.1.9"
+    "@wener/utils": "workspace:^1.1.9"
   }
 }

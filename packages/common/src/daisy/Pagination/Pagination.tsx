@@ -39,7 +39,7 @@ export const Pagination: React.FC<{
         </button>
       )}
 
-      <div className={'flex items-center'}>
+      <div className={'flex items-center gap-1'}>
         {!pageOptions && (
           <button className={'btn btn-xs'}>
             {pageNumber}/{pageCount}
