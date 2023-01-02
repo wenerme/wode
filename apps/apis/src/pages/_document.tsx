@@ -1,5 +1,5 @@
 import React from 'react';
-import type { DocumentContext} from 'next/document';
+import type { DocumentContext } from 'next/document';
 import Document, { Head, Html, Main, NextScript } from 'next/document';
 
 class MyDocument extends Document {

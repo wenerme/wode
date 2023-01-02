@@ -10,6 +10,12 @@ module.exports = {
         singleQuote: false,
       },
     },
+    {
+      files: '*.svg',
+      options: {
+        parser: 'html',
+      },
+    },
   ],
   // @trivago/prettier-plugin-sort-imports
   importOrder: [
