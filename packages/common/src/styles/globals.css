@@ -1,0 +1,106 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans,
+    Helvetica Neue, sans-serif;
+}
+
+html,
+body,
+#__next {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+#__next {
+  display: flex;
+  flex-direction: column;
+}
+
+/**
+ * DaisyUI minor fix
+ */
+
+/* hide icon for loading */
+.btn.loading > svg:first-of-type {
+  display: none;
+}
+
+/* 统一 border 颜色 - 一般默认为 currentColor */
+/* .btn-outline */
+.border-color {
+  @apply border-base-300;
+}
+
+.divide-color {
+  @apply divide-base-300;
+}
+
+/**
+ * scrollbar style follow theme
+ */
+/* 更细 并跟随主题色的 滚动条 */
+.scrollbar-thin {
+  scrollbar-width: thin;
+}
+
+/*
+scrollbar:!w-1.5 scrollbar:!h-1.5 scrollbar:bg-transparent scrollbar-track:!bg-base-100 scrollbar-thumb:!rounded
+scrollbar-thumb:!bg-base-300 scrollbar-track:!rounded
+ */
+.scrollbar-thin {
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+}
+
+/* 角落 */
+::-webkit-scrollbar-corner {
+  background: hsl(var(--b1));
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  @apply rounded;
+  background: hsl(var(--b1));
+}
+
+*::-webkit-scrollbar-thumb {
+  @apply rounded;
+  background: hsl(var(--b2));
+  transition: background-color 0.2s ease-in-out;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--b3));
+}
+
+/**
+ * react splitter
+ */
+
+.__dbk__gutter {
+  background: transparent !important;
+}
+
+.__dbk__dragger {
+  background: transparent !important;
+}
+
+.__dbk__gutter:hover {
+  background: hsl(var(--b2)) !important;
+
+  .__dbk__dragger {
+    background: hsl(var(--b3)) !important;
+  }
+}
