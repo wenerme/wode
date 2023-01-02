@@ -1,10 +1,8 @@
 import { useEffect } from 'react';
 import classNames from 'classnames';
+import { DaisyDemo, ThemeListSelector, useThemeState } from 'common/src/daisy/theme';
 import { useImmer } from 'use-immer';
 import { useSnapshot } from 'valtio';
-import { DaisyDemo } from '@src/daisy/theme/DaisyDemo';
-import { ThemeListSelector } from '@src/daisy/theme/ThemeListSelector';
-import { useThemeState } from '@src/daisy/theme/useTheme';
 import { HSLToRGB } from '@src/utils/hsl';
 
 const Page = () => {
@@ -85,8 +83,6 @@ const ThemeStyleProps: Record<string, { name?: string; description?: string; pre
   },
   'tab-radius': {},
 };
-
-const safelist = ['btn-info'];
 
 const ThemeDetails = () => {
   const state = useThemeState();

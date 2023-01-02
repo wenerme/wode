@@ -1,6 +1,7 @@
+import React from 'react';
 import { useImmer } from 'use-immer';
-import type { IntentType, SizeType } from '@src/daisy/daisy';
-import { daisy } from '@src/daisy/daisy';
+import type { IntentType, SizeType } from '../const';
+import { daisy } from '../daisy';
 
 export const DaisyDemo = () => {
   const [state, update] = useImmer<{ size?: SizeType; intent?: IntentType }>({

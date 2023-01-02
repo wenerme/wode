@@ -13,8 +13,8 @@ export const Pagination: React.FC<{
   const pageNumber = pageIndex + 1;
   const canNextPage = pageNumber < pageCount;
   const canPreviousPage = pageNumber > 1;
-  const previousPage = () => onPageIndexChange?.(pageIndex - 1);
-  const nextPage = () => onPageIndexChange?.(pageIndex + 1);
+  // const previousPage = () => onPageIndexChange?.(pageIndex - 1);
+  // const nextPage = () => onPageIndexChange?.(pageIndex + 1);
   // let firstPage = () => onPageIndexChange(0);
   // let lastPage = () => onPageIndexChange(pageCount - 1);
 

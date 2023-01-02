@@ -1,4 +1,4 @@
-import { Button } from '../../daisy';
+import { Button } from 'common/src/daisy';
 import type { Parser } from './parseIt';
 
 export const ParserCard: React.FC<{

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-redeclare */
 import { z } from 'zod';
 
 export const SizeType = z.enum(['lg', 'md', 'sm', 'xs'] as const);

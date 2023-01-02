@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { PlaceSlot } from '@src/components/TipTapWord/components/PlaceSlot';
+import { PlaceSlot } from '../components/PlaceSlot';
 
 export const Statusbar = memo(() => {
   return (
