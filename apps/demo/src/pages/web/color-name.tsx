@@ -1,6 +1,6 @@
 import React from 'react';
 import type { NextPage } from 'next';
-import { ColorNameContent } from '@src/contents/web/ColorNameContent';
+import { ColorNameContent } from '../../contents/web/ColorNameContent';
 
 const Demo = () => {
   return (

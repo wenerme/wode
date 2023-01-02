@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
+import { ThemeSelectorButton } from 'common/src/daisy/theme';
 import Link from 'next/link';
 import { NavLinks } from '@src/components/page/const';
-import { ThemeSelectorButton } from '@src/daisy/theme/ThemeSelectorButton';
 
 interface MenuSpec {
   icon?: React.ReactNode;

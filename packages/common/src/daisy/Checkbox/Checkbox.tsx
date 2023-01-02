@@ -1,10 +1,9 @@
 import type { HTMLProps } from 'react';
 import React, { forwardRef } from 'react';
 import classNames from 'classnames';
-import _ from 'lodash';
 import { mergeRefs } from '@wener/reaction';
 import type { DaisyModifierProps } from '../daisy';
-import { daisy, DaisyModifiers } from '../daisy';
+import { daisy, omit } from '../daisy';
 
 export type CheckboxProps = HTMLProps<HTMLInputElement> & {
   indeterminate?: boolean;
@@ -23,7 +22,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(({ indetermi
       type="checkbox"
       ref={mergeRefs(ref, _ref)}
       className={classNames('cursor-pointer', daisy('checkbox', props), className)}
-      {..._.omit(props, ['intent', 'size'])}
+      {...omit(props, ['intent', 'size'])}
     />
   );
 });

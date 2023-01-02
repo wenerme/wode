@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import type { IntentType, SizeType } from './const';
 
 export interface DaisyModifierProps {
@@ -32,7 +31,11 @@ export function omitDaisyModifiers<I extends object, K extends DaisyModifierKey>
   o: I,
   keys: ReadonlyArray<K> = DaisyModifiers as any,
 ): Omit<I, K> {
-  return _.omit(o, keys) as any;
+  return omit(o, keys as any) as any;
+}
+
+export function omit<T extends object, K extends keyof T>(obj: T, keys: K[]) {
+  return Object.fromEntries(Object.entries(obj).filter(([k]) => !keys.includes(k as any)));
 }
 
 export function daisy(

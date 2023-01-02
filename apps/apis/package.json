@@ -9,6 +9,7 @@
   },
   "type": "module",
   "dependencies": {
+    "common": "workspace:^1.0.0",
     "next": "^13.1.1"
   }
 }

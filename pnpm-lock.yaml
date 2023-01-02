@@ -84,8 +84,10 @@ importers:
 
   apps/apis:
     specifiers:
+      common: workspace:^1.0.0
       next: ^13.1.1
     dependencies:
+      common: link:../../packages/common
       next: 13.1.1_biqbaboplfbrettd7655fr4n2y
 
   apps/demo:
@@ -164,6 +166,7 @@ importers:
       autoprefixer: ^10.4.13
       better-sqlite3: ^8.0.1
       classnames: ^2.3.2
+      common: workspace:^1.0.0
       cookie: ^0.5.0
       cssnano: ^5.1.14
       daisyui: ^2.46.1
@@ -274,6 +277,7 @@ importers:
       autoprefixer: 10.4.13_postcss@8.4.20
       better-sqlite3: 8.0.1
       classnames: 2.3.2
+      common: link:../../packages/common
       cookie: 0.5.0
       daisyui: 2.46.1_r4gnkvssmvyxmi2wmat5xbx36a
       dayjs: 1.11.7
@@ -467,6 +471,37 @@ importers:
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       typescript: 4.9.4
+
+  packages/common:
+    specifiers:
+      '@headlessui/react': ^1.7.7
+      '@types/react': ^18.0.26
+      '@types/react-dom': ^18.0.10
+      '@wener/reaction': workspace:^1.2.17
+      '@wener/utils': workspace:^1.1.9
+      classnames: ^2.3.2
+      immer: ^9.0.17
+      react: ^18.2.0
+      react-dom: ^18.2.0
+      react-icons: ^4.7.1
+      use-immer: ^0.8.1
+      valtio: ^1.8.0
+      zod: ^3.20.2
+    dependencies:
+      '@headlessui/react': 1.7.7_biqbaboplfbrettd7655fr4n2y
+      '@wener/reaction': link:../reaction
+      '@wener/utils': link:../utils
+      classnames: 2.3.2
+      immer: 9.0.17
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+      react-icons: 4.7.1_react@18.2.0
+      use-immer: 0.8.1_immer@9.0.17+react@18.2.0
+      valtio: 1.8.0_react@18.2.0
+      zod: 3.20.2
+    devDependencies:
+      '@types/react': 18.0.26
+      '@types/react-dom': 18.0.10
 
   packages/ohm-grammar-miniquery:
     specifiers:

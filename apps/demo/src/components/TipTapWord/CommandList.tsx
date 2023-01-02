@@ -1,7 +1,7 @@
 import React, { cloneElement, forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { MdImage } from 'react-icons/md';
 import classNames from 'classnames';
-import type { CommandSuggestionItem } from '@src/components/TipTapWord/extensions/commands';
+import type { CommandSuggestionItem } from './extensions/commands';
 
 export interface CommandListRef {
   onKeyDown: (o: { event: KeyboardEvent }) => boolean;

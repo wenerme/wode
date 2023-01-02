@@ -6,7 +6,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useImmer } from 'use-immer';
-import { SampleMd } from '@src/contents/MarkdownIt/const';
+import { SampleMd } from '../../contents/MarkdownIt/const';
 
 const Demo = () => {
   const [options, updateOptions] = useImmer<MarkdownIt.Options>({

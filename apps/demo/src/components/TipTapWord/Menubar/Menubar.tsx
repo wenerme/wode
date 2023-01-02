@@ -1,8 +1,8 @@
 import type { HTMLProps } from 'react';
 import React from 'react';
 import classNames from 'classnames';
-import { MenuToolItem } from '@src/components/TipTapWord/components/MenuToolItem';
 import type { Editor } from '@tiptap/react';
+import { MenuToolItem } from '../components/MenuToolItem';
 
 const menus = [
   {

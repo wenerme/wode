@@ -2,9 +2,9 @@ import type { ButtonHTMLAttributes } from 'react';
 import React, { memo, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useImmer } from 'use-immer';
-import { useEditorStore } from '@src/components/TipTapWord/useEditorStore';
 import type { Editor } from '@tiptap/react';
 import { createMarkdownSerializer } from '@wener/tiptap';
+import { useEditorStore } from '../useEditorStore';
 
 const modes: Record<
   string,

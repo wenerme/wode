@@ -6,7 +6,7 @@ var __dirname = path.dirname(__filename);
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  transpilePackages: ['@wener/reaction', '@wener/utils', '@wener/tiptap'],
+  transpilePackages: ['@wener/reaction', '@wener/utils', '@wener/tiptap', '@wener/common'],
   reactStrictMode: true,
   compiler: {
     styledComponents: true,

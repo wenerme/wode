@@ -1,6 +1,6 @@
 import React from 'react';
+import { ThemeStateReactor } from 'common/src/daisy/theme';
 import { PageHeader } from '@src/components/page/PageHeader';
-import { ThemeStateReactor } from '@src/daisy/theme/useTheme';
 
 export const PageLayout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
   return (
