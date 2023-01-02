@@ -12,9 +12,9 @@ test:
 fmt:
 	$(EXEC) turbo run fmt
 build:
-	$(EXEC) turbo run build --filter=@wener/demo
+	$(EXEC) turbo run build --filter=@wener/demo --filter=@wener/apis
 build-force:
-	$(EXEC) turbo run build --filter=@wener/demo --force
+	$(EXEC) turbo run build --filter=@wener/demo --filter=@wener/apis --force
 dev:
 	$(EXEC) turbo run dev --parallel
 clean:
@@ -23,12 +23,9 @@ clean:
 typedoc:
 	$(EXEC) typedoc --entryPointStrategy packages 'packages/*' --out out/typedoc --name "Wener Wode" --gitRemote git@github.com:wenerme/wode.git
 
-# Already install when vercel-install
-# install will remove dev deps
 ci-install:
-	npm i -g $(PM)
-	$(PM) install
-ci: build typedoc
+	command -v jq > /dev/null || yum install jq -y
+ci: ci-install build typedoc
 	mv out/typedoc apps/demo/public/docs
 
 outdated:
