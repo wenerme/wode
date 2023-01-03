@@ -1,4 +1,4 @@
-import type { CreationOptional, InferAttributes, InferCreationAttributes} from '@sequelize/core';
+import type { CreationOptional, InferAttributes, InferCreationAttributes } from '@sequelize/core';
 import { DataTypes, fn, Model } from '@sequelize/core';
 
 export const MinimalModelFields = {

@@ -1,4 +1,4 @@
-import type { ReactElement} from 'react';
+import type { ReactElement } from 'react';
 import React, { Children, useEffect, useState } from 'react';
 import type { LinkProps } from 'next/link';
 import Link from 'next/link';
