@@ -5,7 +5,7 @@ import * as Icons from './index';
 
 # Icons
 
-<div className={'flex flex-wrap gap-2 [&>.Icon>svg]:h-12 [&>.Icon>svg]:w-12'}>
+<div className={'grid grid-cols-6 gap-2 [&>.Icon>svg]:h-12 [&>.Icon>svg]:w-12'}>
   {Object.entries(Icons).map(([name, Icon]) => {
     return (
       <figure className={'Icon flex flex-col items-center'}>

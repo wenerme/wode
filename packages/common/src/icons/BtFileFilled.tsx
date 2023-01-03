@@ -2,14 +2,7 @@ import * as React from 'react';
 import { SVGProps, memo } from 'react';
 
 const SvgBtFileFilled = (props: SVGProps<SVGSVGElement>) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width={200}
-    height={200}
-    className="BtFileFilled_svg__icon"
-    viewBox="0 0 1024 1024"
-    {...props}
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" {...props}>
     <path d="M183.467 56.889h493.51l241.779 241.778v598.755c0 38.4-31.29 69.69-69.69 69.69H184.89c-38.4 0-69.689-31.29-69.689-69.69V128c-1.422-39.822 29.867-71.111 68.267-71.111z" />
     <path d="M918.756 298.667H748.089c-38.4 0-69.689-31.29-69.689-69.69V56.89l240.356 241.778z" />
     <path

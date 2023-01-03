@@ -2,14 +2,7 @@ import * as React from 'react';
 import { SVGProps, memo } from 'react';
 
 const SvgBittorrentFilled = (props: SVGProps<SVGSVGElement>) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width={200}
-    height={200}
-    className="BittorrentFilled_svg__icon"
-    viewBox="0 0 1024 1024"
-    {...props}
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" {...props}>
     <path d="M1024 512c0 282.773-229.227 512-512 512S0 794.773 0 512 229.227 0 512 0s512 229.227 512 512" />
     <path
       fill="#D0D1D1"
