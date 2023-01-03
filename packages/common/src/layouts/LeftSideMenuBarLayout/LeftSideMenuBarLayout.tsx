@@ -3,7 +3,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { AutoNavLink } from '../../components/links';
 import { Tooltip } from '../../floating';
-import { BaseNavLink } from '../ExpandableSideMenuLayout/BaseNavLink';
+import type { BaseNavLink } from '../ExpandableSideMenuLayout/BaseNavLink';
 
 const Layout: FC<
   HTMLProps<HTMLDivElement> & {

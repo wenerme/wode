@@ -8,7 +8,7 @@ export function getSupportedThemes() {
   return themes;
 }
 
-const themes: ThemeProps[] = [
+const themes = [
   // { label: 'Light', value: 'light', icon: <MdLightMode />, iconActive: <MdOutlineLightMode /> },
   // { label: 'Dark', value: 'dark', type: 'dark', icon: <MdDarkMode />, iconActive: <MdOutlineDarkMode /> },
   // { label: '跟随系统', value: 'system', icon: <MdSettings /> },
@@ -41,4 +41,4 @@ const themes: ThemeProps[] = [
   { label: '夜晚', value: 'night', type: 'dark' },
   { label: '咖啡', value: 'coffee', type: 'dark' },
   { label: '冬天', value: 'winter' },
-];
+] satisfies ThemeProps[];

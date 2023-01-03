@@ -54,7 +54,7 @@ export const DockUserAvatar = () => {
                   <div className={'text-lg font-medium'}>{name}</div>
                   <div className={'flex gap-4 items-baseline justify-between'}>
                     <span title={'用户名'}>{email}</span>
-                    {/*{employeeNumber && <small title={'员工编号'}>#{employeeNumber}</small>}*/}
+                    {/* {employeeNumber && <small title={'员工编号'}>#{employeeNumber}</small>} */}
                   </div>
                 </div>
                 <hr className={'my-2 border-base-200'} />

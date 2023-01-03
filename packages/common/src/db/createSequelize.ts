@@ -1,5 +1,6 @@
 import * as pg from 'pg';
-import { Dialect, InitOptions, Sequelize } from '@sequelize/core';
+import type { Dialect, InitOptions} from '@sequelize/core';
+import { Sequelize } from '@sequelize/core';
 
 export interface CreateSequelizeOptions {
   name?: string;

@@ -1,4 +1,4 @@
-import { GetServerSideProps } from 'next';
+import type { GetServerSideProps } from 'next';
 import { getRemoteServerSession } from './getRemoteServerSession';
 
 export const requireSessionServerSideProps: GetServerSideProps = async ({ req, res, resolvedUrl }) => {

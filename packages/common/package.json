@@ -41,6 +41,7 @@
     "zustand": "^4.2.0"
   },
   "devDependencies": {
+    "@storybook/addon-docs": "7.0.0-beta.19",
     "@tanstack/react-query-devtools": "^4.20.4",
     "@tanstack/react-table-devtools": "^8.7.2",
     "@types/react": "^18.0.26",

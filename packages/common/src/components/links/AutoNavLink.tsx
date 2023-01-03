@@ -1,6 +1,6 @@
 import React, { forwardRef } from 'react';
 import { NavLink, useInRouterContext } from 'react-router-dom';
-import { BaseNavLinkProps } from './BaseNavLink';
+import type { BaseNavLinkProps } from './BaseNavLink';
 import { NextNavLink } from './NextNavLink';
 
 export interface AutoNavLinkProps extends BaseNavLinkProps {

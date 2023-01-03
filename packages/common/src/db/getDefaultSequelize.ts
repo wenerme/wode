@@ -1,5 +1,6 @@
-import { Sequelize } from '@sequelize/core';
-import { createSequelize, CreateSequelizeOptions } from './createSequelize';
+import type { Sequelize } from '@sequelize/core';
+import type { CreateSequelizeOptions } from './createSequelize';
+import { createSequelize } from './createSequelize';
 
 const _instances: Record<string, Sequelize> = {};
 

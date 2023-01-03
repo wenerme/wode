@@ -1,4 +1,5 @@
-import React, { HTMLProps } from 'react';
+import type { HTMLProps } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 
 const LogoBgGradientBlue = 'bg-gradient-to-br from-green-300 via-blue-500 to-purple-600';

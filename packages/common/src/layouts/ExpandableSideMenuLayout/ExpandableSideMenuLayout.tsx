@@ -1,9 +1,10 @@
-import React, { forwardRef, HTMLProps, ReactElement, ReactNode, useState } from 'react';
+import type { HTMLProps, ReactElement, ReactNode} from 'react';
+import React, { forwardRef, useState } from 'react';
 import { AiOutlineDoubleLeft, AiOutlineDoubleRight } from 'react-icons/ai';
 import classNames from 'classnames';
 import { AutoNavLink } from '../../components/links';
 import { Tooltip } from '../../floating';
-import { BaseNavLink } from './BaseNavLink';
+import type { BaseNavLink } from './BaseNavLink';
 import styles from './ExpandableSideMenuLayout.module.css';
 
 export type ExpandableSideMenuItemProps =

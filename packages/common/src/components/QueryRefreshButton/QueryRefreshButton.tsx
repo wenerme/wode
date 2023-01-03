@@ -1,9 +1,8 @@
 import React from 'react';
 import { TbRefresh } from 'react-icons/tb';
 import classNames from 'classnames';
-import { UseQueryResult } from '@tanstack/react-query';
+import type { UseQueryResult } from '@tanstack/react-query';
 import { Button } from '../../daisy';
-
 
 export const QueryRefreshButton: React.FC<{ result: UseQueryResult }> = ({
   result: { isError, refetch, error, isFetching },

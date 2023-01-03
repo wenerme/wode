@@ -1,6 +1,5 @@
 import { z } from 'zod';
-import { ProcedureBuilder } from '@trpc/server';
-
+import type { ProcedureBuilder } from '@trpc/server';
 
 export function createPingQuery<P extends ProcedureBuilder<any>>(procedure: P) {
   return procedure

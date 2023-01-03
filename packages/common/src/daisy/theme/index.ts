@@ -2,3 +2,4 @@ export { ThemeStateReactor, useThemeSchema, useActiveTheme, useThemeState } from
 export { DaisyDemo } from './DaisyDemo';
 export { ThemeSelectorButton } from './ThemeSelectorButton';
 export { ThemeListSelector } from './ThemeListSelector';
+export { getSupportedThemes } from './getSupportedThemes';
