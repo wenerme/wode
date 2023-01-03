@@ -89,6 +89,8 @@ export function hookThemeState({
   element?: HTMLElement;
   loadInitialState?: boolean;
 }) {
+  console.log(`hookThemeState: `);
+
   if (!globalThis.localStorage) {
     return () => {};
   }

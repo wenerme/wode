@@ -1,6 +1,6 @@
 import React, { forwardRef, ReactNode, useEffect, useRef, useState } from 'react';
 import { FaUsersCog } from 'react-icons/fa';
-import { HiAdjustmentsHorizontal, HiOutlineAdjustmentsHorizontal } from 'react-icons/hi2';
+import { HiAdjustmentsHorizontal, HiOutlineAdjustmentsHorizontal, HiKey, HiOutlineKey } from 'react-icons/hi2';
 import { AutoNavLinkProps } from 'common/src/components/links';
 import { DockLayout, LeftSideMenuBarLayout } from 'common/src/layouts';
 import { WenerLogo } from './WenerLogo';
@@ -16,6 +16,12 @@ const TopItems = [
 ];
 
 const CenterItems = [
+  {
+    title: '密码',
+    href: '/password',
+    icon: <HiOutlineKey className={'h-6 w-6'} />,
+    iconActive: <HiKey className={'h-6 w-6'} />,
+  },
   {
     title: '用户管理',
     href: '/auth/admin',
