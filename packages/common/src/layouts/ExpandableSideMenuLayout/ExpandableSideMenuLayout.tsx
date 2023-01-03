@@ -1,4 +1,4 @@
-import type { HTMLProps, ReactElement, ReactNode} from 'react';
+import type { HTMLProps, ReactElement, ReactNode } from 'react';
 import React, { forwardRef, useState } from 'react';
 import { AiOutlineDoubleLeft, AiOutlineDoubleRight } from 'react-icons/ai';
 import classNames from 'classnames';

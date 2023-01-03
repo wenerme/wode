@@ -62,7 +62,7 @@ export const SystemInfo = () => {
       <div className={'rounded-lg border p-4 text-sm shadow'}>
         <article className={'prose'}>
           <p>{getSiteTitle()}</p>
-          <small>由 上海真思科技发展有限公司 提供技术支持。</small>
+          <small>由 Wener 提供技术支持。</small>
         </article>
       </div>
 
