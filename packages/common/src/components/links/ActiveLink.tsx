@@ -1,5 +1,7 @@
-import React, { Children, ReactElement, useEffect, useState } from 'react';
-import Link, { LinkProps } from 'next/link';
+import type { ReactElement} from 'react';
+import React, { Children, useEffect, useState } from 'react';
+import type { LinkProps } from 'next/link';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 export type ActiveLinkProps = LinkProps & {

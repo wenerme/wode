@@ -4,7 +4,8 @@ import classNames from 'classnames';
 import { autoUpdate } from '@floating-ui/dom';
 import type { Placement } from '@floating-ui/react';
 import { flip, FloatingFocusManager, FloatingPortal, offset, shift, useFloating, useId } from '@floating-ui/react';
-import { flexRender, FlexRenderable, mergeRefs, useControllable } from '@wener/reaction';
+import type { FlexRenderable} from '@wener/reaction';
+import { flexRender, mergeRefs, useControllable } from '@wener/reaction';
 import type { UseFloatingInteractionsOptions } from '../useFloatingInteractions';
 import { useFloatingInteractions } from '../useFloatingInteractions';
 

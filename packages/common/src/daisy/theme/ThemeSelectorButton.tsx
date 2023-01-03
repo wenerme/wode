@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { HiChevronDown, HiColorSwatch } from 'react-icons/hi';
 import { MdSettings } from 'react-icons/md';
 import classNames from 'classnames';
 import { useSnapshot } from 'valtio';
-import { Listbox } from '@headlessui/react';
+import { Listbox, Transition } from '@headlessui/react';
 import { ThemePreviewCard } from './ThemePreviewCard';
 import { getSupportedThemes } from './getSupportedThemes';
 import { useThemeState } from './useTheme';
@@ -26,43 +26,45 @@ export const ThemeSelectorButton = () => {
         <span className={'hidden sm:inline'}>主题</span>
         <HiChevronDown />
       </Listbox.Button>
-      {/* <Transition as={Fragment} leave="transition ease-in duration-100" leaveFrom="opacity-100" leaveTo="opacity-0"> */}
-      <Listbox.Options
-        className={classNames(
-          'absolute right-0 z-50 flex h-[400px] w-[200px] flex-col gap-2 overflow-y-auto rounded bg-base-200 p-2 text-sm',
-          'border border-base-300 shadow-lg',
-        )}
-      >
-        {[{ label: '跟随系统', value: 'system' }, ...getSupportedThemes()].map((item) => (
-          <Listbox.Option
-            key={item.value}
-            value={item.value}
-            data-theme={item.value}
-            className={({ active }) =>
-              classNames(
-                'cursor-pointer',
-                'rounded p-2',
-                'flex items-center justify-between',
-                // 'hover:bg-accent-focus transition-colors',
-                // active && 'bg-accent-focus',
-              )
-            }
-          >
-            {({ selected }) => {
-              if (item.value === 'system') {
-                return (
-                  <>
-                    <MdSettings />
-                    {item.label}
-                  </>
-                );
+      <Transition as={Fragment} leave="transition ease-in duration-100" leaveFrom="opacity-100" leaveTo="opacity-0">
+        <Listbox.Options
+          className={classNames(
+            'absolute right-0 z-50 flex h-[400px] w-[200px] flex-col gap-2 overflow-y-auto rounded bg-base-200 p-2 text-sm',
+            'border border-base-300 shadow-lg',
+          )}
+        >
+          {[{ label: '跟随系统', value: 'system' }, ...getSupportedThemes()].map((item) => (
+            <Listbox.Option
+              key={item.value}
+              value={item.value}
+              data-theme={item.value}
+              className={({ active }) =>
+                classNames(
+                  'cursor-pointer',
+                  'rounded p-2',
+                  'flex items-center justify-between',
+                  'text-base-content bg-base-100',
+                  // 'hover:bg-primary-focus transition-colors',
+                  'border border-transparent',
+                  active && 'border-primary-focus',
+                )
               }
-              return <ThemePreviewCard title={item.value} />;
-            }}
-          </Listbox.Option>
-        ))}
-      </Listbox.Options>
-      {/* </Transition> */}
+            >
+              {({ selected }) => {
+                if (item.value === 'system') {
+                  return (
+                    <>
+                      <MdSettings />
+                      {item.label}
+                    </>
+                  );
+                }
+                return <ThemePreviewCard title={item.value} />;
+              }}
+            </Listbox.Option>
+          ))}
+        </Listbox.Options>
+      </Transition>
     </Listbox>
   );
 };

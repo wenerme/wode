@@ -1,4 +1,5 @@
-import { arrayOfMaybeArray, MaybeArray } from '@wener/utils';
+import type { MaybeArray } from '@wener/utils';
+import { arrayOfMaybeArray } from '@wener/utils';
 
 export type Order = Array<[string, 'ASC' | 'DESC', 'NULLS LAST' | 'NULLS FIRST']>;
 

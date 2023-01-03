@@ -11,7 +11,6 @@ import type {
   WhereOptions,
 } from '@sequelize/core';
 import { col, DataTypes, fn, Op, where } from '@sequelize/core';
-import type { AbstractDataTypeConstructor } from '@sequelize/core/types/data-types';
 import type { MiniQueryASTNode } from '../ast';
 import { toMiniQueryAST } from '../ast';
 
@@ -28,6 +27,7 @@ export interface SequelizeWhereOptions {
     }
   >;
 }
+
 type WhereContext = Omit<SequelizeWhereOptions, 'functions'> & {
   current?: any;
   functions: Record<
@@ -68,11 +68,19 @@ function checkFunctions(name: string, args: any[] = [], o: WhereContext) {
   }
 }
 
-function isSameType(a: DataType, b: AbstractDataTypeConstructor) {
-  if (typeof a === 'string') {
-    return a.toUpperCase() === b.key;
+function isSameType(a: DataType, b: DataType) {
+  return a === b || keyOfDataType(a) === keyOfDataType(b);
+}
+
+function keyOfDataType(d: DataType) {
+  if (typeof d === 'string') {
+    return d.toUpperCase();
   }
-  return a.key === b.key;
+  if ('key' in d) {
+    return d.key;
+  }
+  // fixme
+  return d.name;
 }
 
 function resolve(parts: string[], c: WhereContext) {

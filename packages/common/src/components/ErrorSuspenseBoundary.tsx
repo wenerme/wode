@@ -1,4 +1,5 @@
-import React, { ReactNode, Suspense } from 'react';
+import type { ReactNode} from 'react';
+import React, { Suspense } from 'react';
 import { ErrorBoundary } from '@wener/reaction';
 import { PageErrorState } from './PageErrorState';
 import { LoadingIndicator } from './loaders/LoadingIndicator';

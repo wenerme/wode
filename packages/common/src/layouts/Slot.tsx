@@ -1,4 +1,5 @@
-import React, { FC, memo, PropsWithChildren, ReactNode, useCallback, useDebugValue, useEffect, useId } from 'react';
+import type { FC, PropsWithChildren, ReactNode} from 'react';
+import React, { memo, useCallback, useDebugValue, useEffect, useId } from 'react';
 import create from 'zustand';
 import createContext from 'zustand/context';
 import { immer } from 'zustand/middleware/immer';
@@ -49,10 +50,10 @@ export function createSlotContext<SlotTypes extends Record<string, string> = {}>
 
   const Slot = memo<SlotProps<SlotTypes>>(({ name, placement = 'default', order = 0, children }) => {
     const api = useStoreApi();
-    let slotId = useId();
+    const slotId = useId();
     placement ||= 'default';
     order ||= 0;
-    let slotPlace = `${name}/${placement}`;
+    const slotPlace = `${name}/${placement}`;
     useCompareEffect(() => {
       // wrap children with key
       api.setState((s) => {
@@ -90,7 +91,7 @@ export function createSlotContext<SlotTypes extends Record<string, string> = {}>
   Slot.displayName = 'Slot';
 
   function useSlot({ name, placement }: { name: string; placement?: string }) {
-    let slotPlace = `${name}/${placement || 'default'}`;
+    const slotPlace = `${name}/${placement || 'default'}`;
     return useStore(
       useCallback((s) => s.slots[slotPlace] || [], [slotPlace]),
       shallow,
@@ -98,13 +99,13 @@ export function createSlotContext<SlotTypes extends Record<string, string> = {}>
   }
 
   const SlotPlaceholder = memo<SlotPlaceholderProps<SlotTypes>>(({ name, placement, placeholder }) => {
-    let slotPlace = `${name}/${placement || 'default'}`;
+    const slotPlace = `${name}/${placement || 'default'}`;
     const slot = useStore(
       useCallback((s) => s.slots[slotPlace] || [], [slotPlace]),
       shallow,
     );
     useDebugValue(`SlotPlaceholder ${name}${placement ? `@${placement}` : ''}`);
-    let children = slot.length
+    const children = slot.length
       ? slot.map((v) => {
           return v.children;
         })

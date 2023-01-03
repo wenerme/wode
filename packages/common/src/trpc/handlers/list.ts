@@ -1,9 +1,9 @@
 import { toSequelizeWhere } from 'ohm-grammar-miniquery/sequelize';
-import { ModelStatic, Sequelize } from '@sequelize/core';
-import { WhereOptions } from '@sequelize/core/types/model';
+import type { ModelStatic, Sequelize } from '@sequelize/core';
+import type { WhereOptions } from '@sequelize/core/types/model';
 import { TRPCError } from '@trpc/server';
 import { arrayOfMaybeArray, isULID, isUUID } from '@wener/utils';
-import { PageRequest, PageResponse } from '../../apis';
+import type { PageRequest, PageResponse } from '../../apis';
 
 export interface ListQueryOptions<T extends ModelStatic> {
   input: PageRequest;
@@ -70,15 +70,14 @@ async function listQueryResolver<T extends ModelStatic>({
   });
   return {
     items: items.map((v) => v.toJSON()),
-    total: await Scope.count({ where }),
+    total: (await Scope.count({ where })) as any as number, // fixme
   } as PageResponse<InstanceType<T>>;
 }
 
 export interface BuildSearchOptions<T extends ModelStatic> {
   search?: string;
-  onSearch?:
-    // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
-    | ((ctx: { search: string; where: WhereOptions[]; sequelize: Sequelize; Model: T }) => boolean | void)
+  onSearch?: // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
+  | ((ctx: { search: string; where: WhereOptions[]; sequelize: Sequelize; Model: T }) => boolean | void)
     | string
     | string[];
   where: WhereOptions[];

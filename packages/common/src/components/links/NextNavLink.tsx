@@ -1,5 +1,7 @@
-import React, { forwardRef, ReactElement, useEffect, useState } from 'react';
-import Link, { LinkProps } from 'next/link';
+import type { ReactElement} from 'react';
+import React, { forwardRef, useEffect, useState } from 'react';
+import type { LinkProps } from 'next/link';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 export interface NextNavLinkProps extends LinkProps {

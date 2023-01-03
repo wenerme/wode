@@ -5,4 +5,4 @@ export { Logo } from './Logo';
 
 export { NonIdealPage, NotFoundPage, ServerErrorPage } from './NonIdealPage';
 
-export { QueryRefreshButton } from './QueryRefreshButton/QueryRefreshButton'
+export { QueryRefreshButton } from './QueryRefreshButton/QueryRefreshButton';
