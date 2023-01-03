@@ -1,0 +1,17 @@
+import { Meta } from '@storybook/addon-docs';
+import * as Icons from './index';
+
+<Meta title="components/Icons" />
+
+# Icons
+
+<div className={'flex flex-wrap gap-2 [&>.Icon>svg]:h-12 [&>.Icon>svg]:w-12'}>
+  {Object.entries(Icons).map(([name, Icon]) => {
+    return (
+      <figure className={'Icon flex flex-col items-center'}>
+        <Icon key={name} />
+        <figcaption className={'text-xs'}>{name}</figcaption>
+      </figure>
+    );
+  })}
+</div>
