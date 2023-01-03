@@ -1,7 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" class="icon" viewBox="0 0 1024 1024">
-  <defs>
-    <style/>
-  </defs>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
   <path d="M794.88 255.936h64.064V320H794.88z"/>
   <path
     d="M602.688 320h128.128v-64.064H602.688V127.68h64.32v64.256H858.88V0h-63.808v63.808h-64.256V0H538.88v320h52.608zM293.824 127.872h64v64h-64z"/>
