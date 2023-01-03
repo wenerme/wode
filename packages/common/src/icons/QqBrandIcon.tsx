@@ -1,20 +1,11 @@
 import * as React from 'react';
-import type { SVGProps, Ref } from 'react';
-import { forwardRef } from 'react';
+import { SVGProps, memo } from 'react';
 
-const SvgQqBrandIcon = (props: SVGProps<SVGSVGElement>, ref: Ref<SVGSVGElement>) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    className="icon"
-    viewBox="0 0 1024 1024"
-    width="1em"
-    height="1em"
-    ref={ref}
-    {...props}
-  >
+const SvgQqBrandIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" className="QQBrandIcon_svg__icon" viewBox="0 0 1024 1024" {...props}>
     <path fill="#FAAD08" d="M511 957c-80 0-154-25-201-62-24 7-55 17-74 31-17 11-15 23-12 28 13 20 226 13 287 6v-3z" />
     <path fill="#FAAD08" d="M497 957c80 0 153-25 201-62 24 7 55 17 74 31 17 11 15 23 12 28-14 20-226 13-287 6v-3z" />
-    <path d="M497 475c132-1 238-26 274-36 8-2 13-6 13-6v-31c0-172-83-345-287-345-205 0-288 173-288 345l1 31s3 4 10 5c33 9 141 36 276 37h1zM860 620c-8-26-19-57-30-86h-10c-101 29-223 48-316 47h-1c-92 1-213-17-314-46l-11-1-31 86c-38 124-26 176-16 177 20 2 80-94 80-94 0 98 88 248 290 249a718 718 0 0 1 6 0c202-1 290-151 290-249 0 0 59 96 80 94 9-1 22-53-17-177" />
+    <path d="M497 475c132-1 238-26 274-36 8-2 13-6 13-6v-31c0-172-83-345-287-345-205 0-288 173-288 345l1 31s3 4 10 5c33 9 141 36 276 37h1zm363 145c-8-26-19-57-30-86h-10c-101 29-223 48-316 47h-1c-92 1-213-17-314-46l-11-1-31 86c-38 124-26 176-16 177 20 2 80-94 80-94 0 98 88 248 290 249a718 718 0 0 1 6 0c202-1 290-151 290-249 0 0 59 96 80 94 9-1 22-53-17-177" />
     <path
       fill="#FFF"
       d="M434 317c-28 1-51-30-53-70-1-40 20-73 48-74 28-2 52 30 53 69 2 40-20 74-48 75m207-70c-1 40-25 71-53 70s-49-35-48-75c2-39 25-71 53-69 28 1 50 34 48 74"
@@ -36,5 +27,5 @@ const SvgQqBrandIcon = (props: SVGProps<SVGSVGElement>, ref: Ref<SVGSVGElement>)
   </svg>
 );
 
-const ForwardRef = forwardRef(SvgQqBrandIcon);
-export default ForwardRef;
+const Memo = memo(SvgQqBrandIcon);
+export default Memo;
