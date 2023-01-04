@@ -1,5 +1,5 @@
 import React from 'react';
-import { GetStaticPaths, GetStaticProps } from 'next';
+import type { GetStaticPaths, GetStaticProps } from 'next';
 import { useMounted } from '@wener/reaction';
 import { arrayOfMaybeArray } from '@wener/utils';
 

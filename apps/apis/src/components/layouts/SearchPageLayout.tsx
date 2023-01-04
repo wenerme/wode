@@ -1,8 +1,10 @@
-import React, { ReactNode, useEffect, useState } from 'react';
+import type { ReactNode} from 'react';
+import React, { useEffect, useState } from 'react';
 import { BsSearch } from 'react-icons/bs';
 import { useParams, useSearchParams } from 'react-router-dom';
 import classNames from 'classnames';
-import { flexRender, FlexRenderable } from '@wener/reaction';
+import type { FlexRenderable } from '@wener/reaction';
+import { flexRender } from '@wener/reaction';
 
 export const SearchPageLayout: React.FC<{
   name?: string;
