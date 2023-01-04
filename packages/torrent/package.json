@@ -67,7 +67,7 @@
     "@types/lodash": "^4.14.191",
     "ava": "^5.1.0",
     "lodash": "^4.17.21",
-    "tsd": "^0.24.1"
+    "tsd": "^0.25.0"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org",
