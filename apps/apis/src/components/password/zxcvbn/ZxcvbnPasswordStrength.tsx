@@ -3,6 +3,7 @@ import { HiKey, HiMagnifyingGlass } from 'react-icons/hi2';
 import { Form, useLoaderData, useNavigation } from 'react-router-dom';
 import { Button } from 'common/src/daisy';
 import type { ZXCVBNResult } from 'zxcvbn';
+import { ZxcvbnNote } from './ZxcvbnNote';
 
 export const ZxcvbnPasswordStrength = () => {
   const data = useLoaderData() as ZXCVBNResult & { password: string };
@@ -40,11 +41,17 @@ export const ZxcvbnPasswordStrength = () => {
           </pre>
         </section>
       )}
+      <section>
+        <ZxcvbnNote />
+      </section>
     </div>
   );
 };
 
+export default ZxcvbnPasswordStrength;
+
 const ZxcvbnDescription: React.FC<{ result: ZXCVBNResult & { password: string } }> = ({ result }) => {
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   const { score, guesses, guesses_log10, feedback, password, crack_times_display: times } = result;
   const scoreColors = ['#D50000', '#F44336', '#FF5722', '#FFC107', '#43A047'];
   const crackTimes = [

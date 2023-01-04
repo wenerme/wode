@@ -81,3 +81,5 @@ export const SystemInfo = () => {
     </div>
   );
 };
+
+export default SystemInfo;
