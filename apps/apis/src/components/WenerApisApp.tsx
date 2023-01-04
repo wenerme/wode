@@ -1,36 +1,8 @@
-import type { ReactNode } from 'react';
 import React from 'react';
-import type { RouteObject } from 'react-router-dom';
 import { createBrowserRouter, createMemoryRouter, RouterProvider } from 'react-router-dom';
 import { ThemeStateReactor } from 'common/src/daisy/theme';
-import { Router as RemixRouter } from '@remix-run/router';
-
-declare module 'react-router-dom' {
-  export interface IndexRouteObject {
-    meta?: RouteObjectMeta;
-  }
-
-  export interface NonIndexRouteObject {
-    meta?: RouteObjectMeta;
-  }
-}
-
-export interface RouteObjectMeta {
-  id?: string;
-  title?: string;
-  icon?: ReactNode;
-  menu?: Record<string, any>;
-
-  [k: string]: any;
-}
-
-export function createPrimaryRouters(): RouteObject[] {
-  return [
-    {
-      element: <div>Hello</div>,
-    },
-  ];
-}
+import type { Router as RemixRouter } from '@remix-run/router';
+import { createPrimaryRouters } from './createPrimaryRouters';
 
 let router: RemixRouter;
 
@@ -39,7 +11,7 @@ export const WenerApisApp: React.FC = () => {
   router ||=
     typeof window === 'undefined'
       ? createMemoryRouter(createPrimaryRouters())
-      : createBrowserRouter(createPrimaryRouters(), {});
+      : createBrowserRouter(createPrimaryRouters());
 
   return (
     <>
