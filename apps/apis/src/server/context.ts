@@ -1,9 +1,7 @@
 import { getRemoteServerSession } from 'common/src/server';
 import { getLogger } from 'common/src/trpc/server/logger';
 import type { inferAsyncReturnType } from '@trpc/server';
-import { TRPCError } from '@trpc/server';
 import type { CreateNextContextOptions } from '@trpc/server/adapters/next';
-import { getSequelize } from './db/sequelize';
 import { waitInit } from './waitInit';
 
 export async function createContext(opts: CreateNextContextOptions) {
@@ -18,9 +16,6 @@ export async function createContext(opts: CreateNextContextOptions) {
   let user: ContextUser | undefined;
   if (session?.user) {
     user = { ...session.user } as ContextUser;
-  }
-  if (!user && process.env.NODE_ENV !== 'development') {
-    throw new TRPCError({ code: 'UNAUTHORIZED', message: `Unauthorized` });
   }
   return {
     logger,
