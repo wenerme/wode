@@ -1,4 +1,6 @@
 import test from 'ava';
-import { next } from '../gb31200/UnifiedSocialCreditId';
+import { BusinessLicenseNo } from '@src/components/cn/gs15/BusinessLicenseNo';
 
-test('BusinessLicenseNo', (t) => {});
+test('BusinessLicenseNo', (t) => {
+  BusinessLicenseNo.parse('330196000080659');
+});

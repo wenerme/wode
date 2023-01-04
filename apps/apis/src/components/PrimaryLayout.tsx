@@ -1,7 +1,9 @@
-import React, { forwardRef, ReactNode, useEffect, useRef, useState } from 'react';
+import type { ReactNode} from 'react';
+import React, { forwardRef, useEffect, useRef, useState } from 'react';
 import { FaUsersCog } from 'react-icons/fa';
-import { HiAdjustmentsHorizontal, HiOutlineAdjustmentsHorizontal, HiKey, HiOutlineKey } from 'react-icons/hi2';
-import { AutoNavLinkProps } from 'common/src/components/links';
+import { HiAdjustmentsHorizontal, HiKey, HiOutlineAdjustmentsHorizontal, HiOutlineKey } from 'react-icons/hi2';
+import type { AutoNavLinkProps } from 'common/src/components/links';
+import { AutoNavLink } from 'common/src/components/links';
 import { DockLayout, LeftSideMenuBarLayout } from 'common/src/layouts';
 import { WenerLogo } from './WenerLogo';
 
@@ -32,13 +34,14 @@ const CenterItems = [
 const BottomItems = [
   {
     title: '设置',
-    href: '/settings',
+    href: '/setting',
     icon: <HiOutlineAdjustmentsHorizontal className={'h-6 w-6'} />,
     iconActive: <HiAdjustmentsHorizontal className={'h-6 w-6'} />,
   },
 ];
 
 const Layout: React.FC<{ children?: ReactNode }> = ({ children }) => {
+  const NavLink = AutoNavLink;
   return (
     <LeftSideMenuBarLayout
       className={'min-h-screen flex-1'}

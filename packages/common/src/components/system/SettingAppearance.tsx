@@ -3,7 +3,7 @@ import { useSnapshot } from 'valtio';
 import { ThemeListSelector, useThemeState } from '../../daisy/theme';
 import { getPrefersColorSchema } from '../../daisy/theme/getPrefersColorSchema';
 
-export const SettingsAppearance = () => {
+export const SettingAppearance = () => {
   const state = useThemeState();
   const { theme } = useSnapshot(state);
   const setTheme = (v: string) => {
