@@ -92,7 +92,6 @@ importers:
 
   apps/apis:
     specifiers:
-      '@remix-run/router': ^1.2.1
       '@sequelize/core': 7.0.0-alpha.20
       '@trpc/client': ^10.7.0
       '@trpc/next': ^10.7.0
@@ -113,7 +112,6 @@ importers:
       zod: ^3.20.2
       zxcvbn: ^4.4.2
     dependencies:
-      '@remix-run/router': 1.2.1
       '@sequelize/core': 7.0.0-alpha.20
       '@trpc/client': 10.7.0_@trpc+server@10.7.0
       '@trpc/next': 10.7.0_feu6xodxtgd2hktgc23del3mna
@@ -3209,11 +3207,6 @@ packages:
     engines: {node: '>=14'}
     dev: false
 
-  /@remix-run/router/1.2.1:
-    resolution: {integrity: sha512-XiY0IsyHR+DXYS5vBxpoBe/8veTeoRpMHP+vDosLZxL5bnpetzI0igkxkLZS235ldLzyfkxF+2divEwWHP3vMQ==}
-    engines: {node: '>=14'}
-    dev: false
-
   /@rollup/plugin-commonjs/24.0.0_rollup@3.9.1:
     resolution: {integrity: sha512-0w0wyykzdyRRPHOb0cQt14mIBLujfAv6GgP6g8nvg/iBxEm112t3YPPq+Buqe2+imvElTka+bjNlJ/gB56TD8g==}
     engines: {node: '>=14.0.0'}
@@ -5320,7 +5313,7 @@ packages:
       '@trpc/client': 10.7.0_@trpc+server@10.7.0
       '@trpc/react-query': 10.7.0_voi52uzzn4btzulk52fuvwecw4
       '@trpc/server': 10.7.0
-      next: 13.1.1_7xlrwlvvs7cv2obrs6a5y6oxxq
+      next: 13.1.1_biqbaboplfbrettd7655fr4n2y
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-ssr-prepass: 1.5.0_react@18.2.0
@@ -11167,7 +11160,7 @@ packages:
       '@panva/hkdf': 1.0.2
       cookie: 0.5.0
       jose: 4.11.2
-      next: 13.1.1_7xlrwlvvs7cv2obrs6a5y6oxxq
+      next: 13.1.1_biqbaboplfbrettd7655fr4n2y
       oauth: 0.9.15
       openid-client: 5.3.1
       preact: 10.11.3
