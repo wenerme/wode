@@ -1,7 +1,8 @@
 import type { HTMLProps, ReactElement, ReactNode } from 'react';
-import React, { forwardRef, useState } from 'react';
+import React, { forwardRef } from 'react';
 import { AiOutlineDoubleLeft, AiOutlineDoubleRight } from 'react-icons/ai';
 import classNames from 'classnames';
+import { useControllable } from '@wener/reaction';
 import { AutoNavLink } from '../../components/links';
 import { Tooltip } from '../../floating';
 import type { BaseNavLink } from './BaseNavLink';
@@ -30,8 +31,9 @@ export interface ExpandableSideMenuLayoutProps extends Omit<HTMLProps<HTMLDivEle
 
   children?: React.ReactNode;
   items: Array<ExpandableSideMenuItemProps>;
-  expand?: boolean;
-  onExpandChange?: (v: boolean) => void;
+  expanded?: boolean;
+  initialExpanded?: boolean;
+  onExpandedChange?: (v: boolean) => void;
   NavLink?: BaseNavLink;
 }
 
@@ -77,9 +79,13 @@ const SideMenuItem: React.FC<{ item: ExpandableSideMenuItemProps; expanded?: boo
 };
 
 export const ExpandableSideMenuLayout = forwardRef<HTMLDivElement, ExpandableSideMenuLayoutProps>(
-  ({ children, header: _header, title, icon, items, NavLink = AutoNavLink }, ref) => {
-    const [expanded, setExpanded] = useState(() =>
-      typeof window === 'undefined' ? true : window.matchMedia('(min-width: 768px)').matches,
+  ({ children, header: _header, title, icon, items, NavLink = AutoNavLink, ...props }, ref) => {
+    const [expanded, setExpanded] = useControllable(
+      props.expanded,
+      props.onExpandedChange,
+      () =>
+        props.initialExpanded ??
+        (typeof window === 'undefined' ? true : window.matchMedia('(min-width: 768px)').matches),
     );
 
     return (

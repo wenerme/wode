@@ -32,8 +32,10 @@ const SettingAppearance = lazy(() => import('common/src/components/system/Settin
 const SystemInfo = lazy(() => import('common/src/components/system/SystemInfo'));
 const SettingPage = lazy(() => import('./setting/SettingPage'));
 const IpfsPage = lazy(() => import('./ipfs/IpfsPage'));
+const IpfsAccess = lazy(() => import('./ipfs/IpfsAccess'));
 const IpfsGatewayCheck = lazy(() => import('./ipfs/gateway/IpfsGatewayCheck'));
 const IpfsGatewaySetting = lazy(() => import('./ipfs/gateway/IpfsGatewaySetting'));
+const HashPage = lazy(() => import('./hash/HashPage'));
 
 export function createRouters(): RouteObject[] {
   return [
@@ -67,7 +69,11 @@ export function createRouters(): RouteObject[] {
           children: [
             {
               index: true,
-              element: <Navigate to={'gateway/check'} />,
+              element: <IpfsAccess />,
+            },
+            {
+              path: ':hash',
+              element: <IpfsAccess />,
             },
             {
               path: 'gateway',
@@ -86,6 +92,19 @@ export function createRouters(): RouteObject[] {
                   element: <IpfsGatewaySetting />,
                 },
               ],
+            },
+          ],
+        },
+        {
+          path: 'hash',
+          children: [
+            {
+              index: true,
+              element: <HashPage />,
+            },
+            {
+              path: ':content',
+              element: <HashPage />,
             },
           ],
         },
