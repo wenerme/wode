@@ -1,6 +1,4 @@
-import { getDefaultSequelize } from 'common/src/db';
-import { Sequelize } from '@sequelize/core';
-import { initModels } from './models';
+import type { Sequelize } from '@sequelize/core';
 
 export function getSequelize() {
   return undefined as any as Sequelize;

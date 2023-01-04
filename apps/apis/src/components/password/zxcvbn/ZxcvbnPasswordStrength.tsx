@@ -1,30 +1,45 @@
 import React from 'react';
-import { HiKey } from 'react-icons/hi2';
-import { useLoaderData, Form } from 'react-router-dom';
-import { ZXCVBNResult } from 'zxcvbn';
-import { SearchBox } from './SearchBox';
+import { HiKey, HiMagnifyingGlass } from 'react-icons/hi2';
+import { Form, useLoaderData, useNavigation } from 'react-router-dom';
+import { Button } from 'common/src/daisy';
+import type { ZXCVBNResult } from 'zxcvbn';
 
 export const ZxcvbnPasswordStrength = () => {
   const data = useLoaderData() as ZXCVBNResult & { password: string };
-
+  const navigation = useNavigation();
   return (
     <div className={'p-2'}>
       <h3 className={'font-bold text-xl flex gap-2 border-b py-4'}>
         <HiKey className={'w-6 h-6'} />
         Zxcvbn 密码强度检测
       </h3>
-      <Form method={'get'} action={'/password/zxcvbn'} className={'p-1'}>
-        <SearchBox name={'password'} value={data.password} />
+      <Form method={'get'} action={'/password/zxcvbn'} className={'py-1 px-2'}>
+        <div className="form-control">
+          <label className="input-group">
+            <input
+              type="search"
+              placeholder="密码"
+              className="input-bordered input flex-1"
+              name={'password'}
+              defaultValue={data?.password || ''}
+            />
+            <Button type={'submit'} loading={navigation.state !== 'idle'}>
+              <HiMagnifyingGlass className={'w-6 h-6'} />
+            </Button>
+          </label>
+        </div>
       </Form>
       <section className={'p-4 flex justify-center items-center'}>
-        <ZxcvbnDescription result={data} />
+        {data && <ZxcvbnDescription result={data} />}
       </section>
-      <section>
-        <h4 className={'p-2'}>JSON</h4>
-        <pre>
-          <code>{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      </section>
+      {data && (
+        <section>
+          <h4 className={'p-2'}>JSON</h4>
+          <pre>
+            <code>{JSON.stringify(data, null, 2)}</code>
+          </pre>
+        </section>
+      )}
     </div>
   );
 };
