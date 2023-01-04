@@ -22,6 +22,7 @@ export type ButtonProps = (
   size?: SizeType;
   children?: ReactNode;
   as?: ComponentType<any>;
+  [k: string]: any; // fixme type based on as
 };
 
 export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>(
@@ -57,7 +58,7 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
       className,
     );
     // 有 href 且 disabled 为 false 时，使用 a 标签
-    const As: any = as || ('href' in props && !(props as any).disabled) ? 'a' : 'button';
+    const As: any = as || ('href' in props && !(props as any).disabled ? 'a' : 'button');
     return (
       <As className={cs} role={'button'} ref={ref as any} onClick={handleClick} {...omitDaisyModifiers(props)}>
         {children}

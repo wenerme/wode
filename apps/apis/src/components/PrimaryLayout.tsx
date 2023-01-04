@@ -1,10 +1,9 @@
 import type { ReactNode } from 'react';
 import React, { forwardRef, useEffect, useRef, useState } from 'react';
-import { FaUsersCog } from 'react-icons/fa';
 import { HiAdjustmentsHorizontal, HiKey, HiOutlineAdjustmentsHorizontal, HiOutlineKey } from 'react-icons/hi2';
 import type { AutoNavLinkProps } from 'common/src/components/links';
 import { AutoNavLink } from 'common/src/components/links';
-import { IpfsOutlined } from 'common/src/icons';
+import { HashLockOutlined, IpfsOutlined } from 'common/src/icons';
 import { DockLayout, LeftSideMenuBarLayout } from 'common/src/layouts';
 import { WenerLogo } from './WenerLogo';
 
@@ -31,9 +30,9 @@ const CenterItems = [
     icon: <IpfsOutlined className={'h-6 w-6'} />,
   },
   {
-    title: '用户管理',
-    href: '/auth/admin',
-    icon: <FaUsersCog className={'h-6 w-6'} />,
+    title: '哈希',
+    href: '/hash',
+    icon: <HashLockOutlined className={'h-6 w-6'} />,
   },
 ];
 

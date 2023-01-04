@@ -13,9 +13,6 @@ export const DockClock = memo(() => {
     <div className={'self-center flex flex-col items-center'} title={title}>
       <span style={{ fontSize: 10 }}>{date.format('ddd hh:mm')}</span>
       <span style={{ fontSize: 9 }}>{date.format('YYYY/MM/DD')}</span>
-      <span className={'inline md:hidden'} style={{ fontSize: 8 }}>
-        {title}
-      </span>
     </div>
   );
 });

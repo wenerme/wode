@@ -1,5 +1,4 @@
-import { proxyWithCompare } from 'common/src/valtio';
-import { subscribe } from 'valtio';
+import { proxyWithPersist } from 'common/src/valtio';
 
 export function getFallbackGateway() {
   return 'https://ipfs.io/ipfs/:hash';
@@ -15,20 +14,10 @@ export interface IpfsGatewayState {
 
 export function useIpfsGatewayState(): IpfsGatewayState {
   // eslint-disable-next-line no-return-assign
-  return ((globalThis as any).IpfsGatewayState ||= (() => {
-    let initialState = {};
-    try {
-      initialState = JSON.parse(globalThis?.localStorage.getItem('IpfsGatewayState') || '{}');
-    } catch (e) {}
-    const state = proxyWithCompare({
+  return ((globalThis as any).IpfsGatewayState ||= proxyWithPersist({
+    key: 'IpfsGatewayState',
+    initialState: {
       prefer: getFallbackGateway(),
-      ...initialState,
-    });
-    if (globalThis?.localStorage) {
-      subscribe(state, () => {
-        globalThis?.localStorage.setItem('IpfsGatewayState', JSON.stringify(state));
-      });
-    }
-    return state;
-  })());
+    },
+  }));
 }
