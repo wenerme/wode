@@ -4,8 +4,8 @@ import { Button } from 'common/src/daisy';
 import { useSnapshot } from 'valtio';
 import { SettingLayout } from '../../setting/SettingLayout';
 import { buildIpfsLink } from '../buildIpfsLink';
-import { getGatewayCheckTextHash } from '../checker';
 import { getRecommendGateways, useIpfsGatewayState } from '../gateway';
+import { getGatewayCheckTextHash } from './checker';
 
 export const IpfsGatewaySetting = () => {
   const ipfsGatewayState = useIpfsGatewayState();
