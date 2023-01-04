@@ -1,9 +1,10 @@
 import React from 'react';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, createMemoryRouter, RouterProvider } from 'react-router-dom';
 import { ThemeStateReactor } from 'common/src/daisy/theme';
 import { createRouters } from './createRouters';
 
-const router = createBrowserRouter(createRouters(), {});
+const router =
+  typeof window === 'undefined' ? createMemoryRouter(createRouters()) : createBrowserRouter(createRouters(), {});
 
 export const WenerApisApp: React.FC = () => {
   return (
