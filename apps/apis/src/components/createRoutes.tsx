@@ -3,7 +3,7 @@ import React, { lazy } from 'react';
 import { HiColorSwatch, HiOutlineColorSwatch } from 'react-icons/hi';
 import type { RouteObject } from 'react-router-dom';
 import { Navigate, Outlet } from 'react-router-dom';
-import { ErrorSuspenseBoundary, ServerErrorPage } from 'common/src/components';
+import { ErrorSuspenseBoundary, PageErrorState } from 'common/src/components';
 import { trpcClient } from '../utils/trpc';
 
 declare module 'react-router-dom' {
@@ -46,6 +46,7 @@ export function createRoutes(): RouteObject[] {
           </ErrorSuspenseBoundary>
         </IpfsPage>
       ),
+      errorElement: <PageErrorState />,
       children: [
         {
           index: true,
@@ -97,6 +98,7 @@ export function createRoutes(): RouteObject[] {
           </ErrorSuspenseBoundary>
         </SettingPage>
       ),
+      errorElement: <PageErrorState />,
       children: [
         {
           index: true,
@@ -157,7 +159,7 @@ export function createRoutes(): RouteObject[] {
         {
           path: 'zxcvbn',
           element: <ZxcvbnPasswordStrength />,
-          errorElement: <ServerErrorPage />,
+          errorElement: <PageErrorState />,
           action: ({ params: { password = '123456789' } }) => {
             return trpcClient.password.zxcvbn.query({ password });
           },
