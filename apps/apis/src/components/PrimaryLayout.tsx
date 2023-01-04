@@ -1,9 +1,10 @@
-import type { ReactNode} from 'react';
+import type { ReactNode } from 'react';
 import React, { forwardRef, useEffect, useRef, useState } from 'react';
 import { FaUsersCog } from 'react-icons/fa';
 import { HiAdjustmentsHorizontal, HiKey, HiOutlineAdjustmentsHorizontal, HiOutlineKey } from 'react-icons/hi2';
 import type { AutoNavLinkProps } from 'common/src/components/links';
 import { AutoNavLink } from 'common/src/components/links';
+import { IpfsOutlined } from 'common/src/icons';
 import { DockLayout, LeftSideMenuBarLayout } from 'common/src/layouts';
 import { WenerLogo } from './WenerLogo';
 
@@ -23,6 +24,11 @@ const CenterItems = [
     href: '/password',
     icon: <HiOutlineKey className={'h-6 w-6'} />,
     iconActive: <HiKey className={'h-6 w-6'} />,
+  },
+  {
+    title: 'IPFS',
+    href: '/ipfs',
+    icon: <IpfsOutlined className={'h-6 w-6'} />,
   },
   {
     title: '用户管理',

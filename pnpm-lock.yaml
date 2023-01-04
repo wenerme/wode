@@ -99,13 +99,16 @@ importers:
       '@types/zxcvbn': ^4.4.1
       '@wener/reaction': workspace:^1.2.17
       '@wener/utils': workspace:^1.1.9
+      classnames: ^2.3.2
       common: workspace:^1.0.0
+      immer: ^9.0.17
       next: ^13.1.1
       next-auth: ^4.18.7
       react-icons: ^4.7.1
       react-router-dom: ^6.6.1
       superjson: ^1.12.1
       trpc-openapi: ^1.1.1
+      valtio: ^1.8.0
       zod: ^3.20.2
       zxcvbn: ^4.4.2
     dependencies:
@@ -115,13 +118,16 @@ importers:
       '@trpc/server': 10.7.0
       '@wener/reaction': link:../../packages/reaction
       '@wener/utils': link:../../packages/utils
+      classnames: 2.3.2
       common: link:../../packages/common
+      immer: 9.0.17
       next: 13.1.1_biqbaboplfbrettd7655fr4n2y
       next-auth: 4.18.7_q76c2b4vyoegvsbrcwkfvimnai
       react-icons: 4.7.1_react@18.2.0
       react-router-dom: 6.6.1_biqbaboplfbrettd7655fr4n2y
       superjson: 1.12.1
       trpc-openapi: 1.1.1_xfxv3otgv6nbap2imkii6swyfm
+      valtio: 1.8.0_react@18.2.0
       zod: 3.20.2
       zxcvbn: 4.4.2
     devDependencies:

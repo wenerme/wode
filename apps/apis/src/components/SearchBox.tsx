@@ -23,7 +23,7 @@ export const SearchBox: React.FC<{ value?: string; onChange?: (v: string) => voi
           className="input-bordered input input-sm"
           name={name}
           value={edit}
-          onChange={(e) => setEdit(e.currentTarget.value)}
+          onChange={(e) => { setEdit(e.currentTarget.value); }}
           onKeyUp={(e) => {
             if (onChange) {
               e.code === 'Enter' && onChange?.(edit);
@@ -33,7 +33,7 @@ export const SearchBox: React.FC<{ value?: string; onChange?: (v: string) => voi
         <Button
           size={'sm'}
           type={onChange ? 'button' : 'submit'}
-          onClick={onChange ? () => onChange?.(edit) : undefined}
+          onClick={onChange ? () => { onChange?.(edit); } : undefined}
         >
           <HiMagnifyingGlass />
         </Button>

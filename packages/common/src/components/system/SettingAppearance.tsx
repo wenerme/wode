@@ -32,3 +32,4 @@ export const SettingAppearance = () => {
     </div>
   );
 };
+export default SettingAppearance;

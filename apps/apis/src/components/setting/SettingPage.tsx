@@ -3,7 +3,7 @@ import React from 'react';
 import { HiColorSwatch, HiOutlineColorSwatch } from 'react-icons/hi';
 import { HiOutlineCog } from 'react-icons/hi2';
 import { TiInfoLarge, TiInfoLargeOutline } from 'react-icons/ti';
-import type { ExpandableSideMenuItemProps} from 'common/src/layouts';
+import type { ExpandableSideMenuItemProps } from 'common/src/layouts';
 import { ExpandableSideMenuLayout } from 'common/src/layouts';
 
 const MenuItems: ExpandableSideMenuItemProps[] = [
@@ -36,3 +36,5 @@ export const SettingPage: React.FC<{ children?: ReactNode }> = ({ children }) =>
     </ExpandableSideMenuLayout>
   );
 };
+
+export default SettingPage;
