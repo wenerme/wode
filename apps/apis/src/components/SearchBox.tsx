@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import { HiMagnifyingGlass } from 'react-icons/hi2';
 import { Button } from 'common/src/daisy';
 import { isDefined } from '@wener/utils';
 
-export const SearchBox: React.FC<{ value?: string; onChange?: (v: string) => void; name?: string }> = ({
-  value,
-  name,
-  onChange,
-}) => {
+export const SearchBox: React.FC<{
+  value?: string;
+  onChange?: (v: string) => void;
+  name?: string;
+  placeholder?: string;
+  icon?: ReactNode;
+}> = ({ value, name, onChange, placeholder = '搜索', icon = <HiMagnifyingGlass /> }) => {
   const [edit, setEdit] = useState(value || '');
   useEffect(() => {
     if (isDefined(value) && value !== edit) {
@@ -19,7 +21,7 @@ export const SearchBox: React.FC<{ value?: string; onChange?: (v: string) => voi
       <label className="input-group-sm input-group">
         <input
           type="search"
-          placeholder="搜索"
+          placeholder={placeholder}
           className="input-bordered input input-sm"
           name={name}
           value={edit}
@@ -43,7 +45,7 @@ export const SearchBox: React.FC<{ value?: string; onChange?: (v: string) => voi
               : undefined
           }
         >
-          <HiMagnifyingGlass />
+          {icon}
         </Button>
       </label>
     </div>

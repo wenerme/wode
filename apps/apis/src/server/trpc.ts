@@ -12,7 +12,7 @@ const isAuthed = middleware(({ next, ctx }) => {
   if (process.env.NODE_ENV === 'development') {
     return next({ ctx });
   }
-  if (!ctx.user?.isAdmin) {
+  if (!ctx.user) {
     throw new TRPCError({ code: 'UNAUTHORIZED' });
   }
   return next({ ctx });
