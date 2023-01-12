@@ -35,6 +35,10 @@ const IpfsGatewayCheck = lazy(() => import('./ipfs/gateway/IpfsGatewayCheck'));
 const IpfsGatewaySetting = lazy(() => import('./ipfs/gateway/IpfsGatewaySetting'));
 const HashPage = lazy(() => import('./hash/HashPage'));
 
+const SemverTool = lazy(() => import('./tool/SemverTool'));
+const ToolHomePage = lazy(() => import('./tool/ToolHomePage'));
+const ToolLayout = lazy(() => import('./tool/ToolLayout'));
+
 export function createRoutes(): RouteObject[] {
   return [
     {
@@ -168,6 +172,28 @@ export function createRoutes(): RouteObject[] {
               password: new URL(request.url).searchParams.get('password') || '123456',
             });
           },
+        },
+      ],
+    },
+
+    {
+      path: 'tool',
+      index: true,
+      element: <ToolHomePage />,
+    },
+    {
+      path: 'tool',
+      element: (
+        <ToolLayout>
+          <ErrorSuspenseBoundary>
+            <Outlet />
+          </ErrorSuspenseBoundary>
+        </ToolLayout>
+      ),
+      children: [
+        {
+          path: 'semver',
+          element: <SemverTool />,
         },
       ],
     },

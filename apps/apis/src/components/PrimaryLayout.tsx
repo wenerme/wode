@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import React, { forwardRef, useEffect, useRef, useState } from 'react';
+import { AiFillTool, AiOutlineTool } from 'react-icons/ai';
 import { HiAdjustmentsHorizontal, HiKey, HiOutlineAdjustmentsHorizontal, HiOutlineKey } from 'react-icons/hi2';
 import type { AutoNavLinkProps } from 'common/src/components/links';
 import { AutoNavLink } from 'common/src/components/links';
@@ -33,6 +34,12 @@ const CenterItems = [
     title: '哈希',
     href: '/hash',
     icon: <HashLockOutlined className={'h-6 w-6'} />,
+  },
+  {
+    title: '工具',
+    href: '/tool',
+    icon: <AiOutlineTool className={'h-6 w-6'} />,
+    iconActive: <AiFillTool className={'h-6 w-6'} />,
   },
 ];
 
