@@ -12,7 +12,7 @@ const Items = [
 export const ToolHomePage = () => {
   return (
     <div className={'flex h-full items-center justify-center'}>
-      <ModuleListCard items={Items} title={'企业设置'} figure={<AiFillTool className={'w-20 h-20 m-4'} />} />
+      <ModuleListCard items={Items} title={'工具'} figure={<AiFillTool className={'w-20 h-20 m-4'} />} />
     </div>
   );
 };

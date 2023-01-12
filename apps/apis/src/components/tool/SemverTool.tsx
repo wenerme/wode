@@ -27,7 +27,7 @@ export const SemverTool = () => {
             size={'sm'}
             type={'button'}
             className={'normal-case'}
-            disabled={raw === clean && !clean}
+            disabled={raw === clean || !clean}
             onClick={() => {
               clean && setVersion(clean);
             }}
@@ -39,7 +39,7 @@ export const SemverTool = () => {
             size={'sm'}
             type={'button'}
             className={'normal-case'}
-            disabled={raw === coerce && !coerce}
+            disabled={raw === coerce || !coerce}
             onClick={() => {
               coerce && setVersion(coerce);
             }}
@@ -181,9 +181,6 @@ const VersionInfo: React.FC<{ version: SemVer; onChange?: (v: string) => void }>
               </label>
             </div>
           </div>
-        </div>
-        <div className="card-actions justify-end">
-          <button className="btn btn-primary">Clean</button>
         </div>
       </div>
     </div>

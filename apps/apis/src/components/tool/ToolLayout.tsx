@@ -9,7 +9,7 @@ export const ToolLayout: React.FC<{ children?: ReactNode }> = ({ children }) => 
     <SettingLayout
       title={'工具'}
       action={
-        <div className={'tooltip tooltip-bottom'} data-tip={'设置'}>
+        <div className={'tooltip tooltip-bottom'} data-tip={'工具'}>
           <Button as={Link} to={'.'} size={'sm'} square ghost>
             <IoApps />
           </Button>
