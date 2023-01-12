@@ -8,7 +8,7 @@ module.exports = {
     'node_modules/common/src/**/*.{html,ts,tsx,js,mdx}',
   ],
   safelist: [
-    {pattern: /^(btn|input)-/},
+    { pattern: /^(btn|input)-/ },
   ],
   darkMode: 'media',
   theme: {
@@ -33,7 +33,7 @@ module.exports = {
     require('@tailwindcss/container-queries'),
     require('daisyui'),
     // https://github.com/tailwindlabs/tailwindcss.com/blob/ceb07ba4d7694ef48e108e66598a20ae31cced19/tailwind.config.js#L280-L284
-    function ({addVariant}) {
+    function({ addVariant }) {
       addVariant(
         'supports-backdrop-blur',
         '@supports (backdrop-filter: blur(0)) or (-webkit-backdrop-filter: blur(0))',
