@@ -12,9 +12,9 @@ export const DockLayout: React.FC<{ children?: ReactNode; dock?: ReactNode }> = 
       </main>
       <aside
         className={classNames(
-          'flex items-center',
+          'flex items-center border-color',
           'w-full order-1 border-b px-2',
-          'md:w-auto md:order-6  md:border-l md:px-0 md:w-[57px] md:flex-col',
+          'md:w-auto md:order-6 md:border-b-0 md:border-l md:px-0 md:w-[57px] md:flex-col',
         )}
       >
         {dock}

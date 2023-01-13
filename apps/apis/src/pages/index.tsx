@@ -1,8 +1,9 @@
 import React from 'react';
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { ErrorSuspenseBoundary } from '@wener/reaction';
 
-const Content = React.lazy(() => import('../components/WenerApisApp'));
+const Content = dynamic(() => import('../components/WenerApisApp'), { ssr: false });
 
 const CurrentPage: React.FC<{ path?: string }> = ({ path }) => {
   return (

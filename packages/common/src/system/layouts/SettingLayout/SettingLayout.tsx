@@ -15,7 +15,7 @@ export const SettingLayout: React.FC<
         <div className={'flex-1'} />
         {action}
       </h3>
-      <hr />
+      <hr className={'border-color'} />
       <div className={'relative flex flex-1 flex-col flex-wrap gap-1 p-2'}>{children}</div>
     </div>
   );

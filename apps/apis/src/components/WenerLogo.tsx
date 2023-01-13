@@ -1,8 +1,8 @@
 import React from 'react';
 
-export const WenerLogo = () => {
+export const WenerLogo = (props: any) => {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" id="图层_1" x="0" y="0" version="1.1" viewBox="0 0 1024 1024">
+    <svg xmlns="http://www.w3.org/2000/svg" id="图层_1" x="0" y="0" version="1.1" viewBox="0 0 1024 1024" {...props}>
       <style>{`.st0{fill:#d00}.st1{fill:#64b5f6}.st3{fill:#424242}`}</style>
       <path d="M-2233.5-3.7h1024v1024h-1024z" />
       <path

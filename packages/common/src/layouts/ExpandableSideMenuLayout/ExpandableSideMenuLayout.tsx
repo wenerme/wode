@@ -1,6 +1,7 @@
 import type { HTMLProps, ReactElement, ReactNode } from 'react';
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useState } from 'react';
 import { AiOutlineDoubleLeft, AiOutlineDoubleRight } from 'react-icons/ai';
+import { HiChevronDown, HiChevronRight } from 'react-icons/hi2';
 import classNames from 'classnames';
 import { useControllable } from '@wener/reaction';
 import { AutoNavLink } from '../../components/links';
@@ -8,21 +9,32 @@ import { Tooltip } from '../../floating';
 import type { BaseNavLink } from './BaseNavLink';
 import styles from './ExpandableSideMenuLayout.module.css';
 
-export type ExpandableSideMenuItemProps =
-  | {
-      type?: 'item';
-      label?: string;
-      icon?: ReactElement;
-      iconActive?: ReactElement;
-      href: string;
-      end?: boolean;
-    }
-  | {
-      type: 'title';
-      label: string;
-      icon?: ReactElement;
-      iconActive?: ReactElement;
-    };
+interface ExpandableSideMenuTitle {
+  type: 'title';
+  label: string;
+  icon?: ReactElement;
+  iconActive?: ReactElement;
+}
+
+interface ExpandableSideMenuItem {
+  type?: 'item';
+  label?: string;
+  icon?: ReactElement;
+  iconActive?: ReactElement;
+  href: string;
+  end?: boolean;
+}
+
+interface ExpandableSideMenuGroup {
+  type?: 'group';
+  label: string;
+  icon?: ReactElement;
+  iconActive?: ReactElement;
+  end?: boolean;
+  children: ExpandableSideMenuItem[];
+}
+
+export type ExpandableSideMenuItemProps = ExpandableSideMenuItem | ExpandableSideMenuGroup | ExpandableSideMenuTitle;
 
 export interface ExpandableSideMenuLayoutProps extends Omit<HTMLProps<HTMLDivElement>, 'title'> {
   header?: React.ReactNode | ((o: { expanded: boolean }) => React.ReactNode);
@@ -42,6 +54,71 @@ const SideMenuItem: React.FC<{ item: ExpandableSideMenuItemProps; expanded?: boo
   expanded,
   NavLink = AutoNavLink,
 }) => {
+  const [collapse, setCollapse] = useState(true);
+  if ('children' in item) {
+    const { label, icon, children } = item;
+
+    if (!expanded) {
+      return (
+        <li>
+          <span>{icon}</span>
+        </li>
+      );
+    }
+    return (
+      <>
+        <li
+          onClick={() => {
+            setCollapse(!collapse);
+          }}
+        >
+          <span>
+            {icon}
+            {label}
+            <span className={'flex-1'} />
+            {collapse ? <HiChevronRight /> : <HiChevronDown />}
+          </span>
+        </li>
+        {!collapse &&
+          children.map((item, i) => {
+            return (
+              <SideMenuItem
+                expanded
+                item={{
+                  ...item,
+                  type: 'item',
+                  icon: <div className={'inline-block w-4'} />,
+                  iconActive: undefined,
+                }}
+                key={`${label}/${i}`}
+              />
+            );
+          })}
+      </>
+    );
+
+    // fixme collapse not works
+    // return (
+    //   <li className="collapse">
+    //       <span tabIndex={0} className="collapse-title">
+    //         {icon}
+    //         {label}
+    //       </span>
+    //         <ul
+    //           className={classNames(
+    //             // "collapse-content",
+    //             // ' gap-0.5 bg-base-100',
+    //           )}
+    //         >
+    //           {children.map((item, i) => {
+    //             return <li key={i}>
+    //               <span>{item.label}</span>
+    //             </li>
+    //           })}
+    //         </ul>
+    //   </li>
+  }
+
   if (item.type === 'title') {
     if (!expanded) {
       return null;
@@ -52,8 +129,9 @@ const SideMenuItem: React.FC<{ item: ExpandableSideMenuItemProps; expanded?: boo
       </li>
     );
   }
+
   const { href, icon, end, iconActive, label } = item;
-  // tooltip 由于 overflow 实际无法显示
+  // data-tooltip 由于 overflow 实际无法显示
   return (
     <li>
       <Tooltip portal placement={'right'} content={!expanded && label} className={'hidden md:block'}>
@@ -145,7 +223,9 @@ export const ExpandableSideMenuLayout = forwardRef<HTMLDivElement, ExpandableSid
               >
                 <button
                   type={'button'}
-                  onClick={() => setExpanded(!expanded)}
+                  onClick={() => {
+                    setExpanded(!expanded);
+                  }}
                   className={'flex h-12 items-center p-4 hover:bg-base-300'}
                 >
                   {expanded ? <AiOutlineDoubleLeft /> : <AiOutlineDoubleRight />}

@@ -1,4 +1,4 @@
-import { proxyWithPersist } from 'common/src/valtio';
+import { proxyWithPersist } from '../../valtio';
 
 export interface PageLayoutState {
   expanded?: boolean;

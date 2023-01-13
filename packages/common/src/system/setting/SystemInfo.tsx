@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 import { useImmer } from 'use-immer';
 import { useWindowEventListener } from '@wener/reaction';
 import { getBuildInfo, getSiteTitle } from '../../runtime';
-import { Logo } from '../Logo';
+import { SystemLogo } from '../components/SystemLogo';
 
 export const SystemInfo = () => {
   const info = getBuildInfo();
@@ -20,7 +20,9 @@ export const SystemInfo = () => {
   const [state, update] = useImmer(getState);
   useWindowEventListener(
     {
-      resize: () => update(getState()),
+      resize: () => {
+        update(getState());
+      },
     } as any,
     [],
   );
@@ -29,7 +31,7 @@ export const SystemInfo = () => {
       <div className={'rounded-lg border shadow'}>
         <ul className={'flex flex-col divide-y [&>li]:flex [&>li]:items-center [&>li]:gap-2 [&>li]:p-3'}>
           <li>
-            <Logo />
+            <SystemLogo className={'w-6 h-6'} />
             <span className={'text-xl font-medium'}>{getSiteTitle()}</span>
           </li>
           <li>

@@ -1,14 +1,15 @@
 import React, { lazy } from 'react';
 import { HiColorSwatch, HiOutlineColorSwatch } from 'react-icons/hi';
-import type { RouteObject } from 'react-router-dom';
 import { Navigate, Outlet } from 'react-router-dom';
-import { ErrorSuspenseBoundary, PageErrorState } from 'common/src/components';
+import { ErrorSuspenseBoundary } from '@wener/reaction';
+import { PageErrorState } from '../../components';
+import { RouteObjects } from '../../router';
 
-const SettingAppearance = lazy(() => import('common/src/components/system/SettingAppearance'));
-const SystemInfo = lazy(() => import('common/src/components/system/SystemInfo'));
-const SettingPage = lazy(() => import('./setting/SettingPage'));
+const SettingAppearance = lazy(() => import('./SettingAppearance'));
+const SystemInfo = lazy(() => import('./SystemInfo'));
+const SettingPage = lazy(() => import('./SettingPage'));
 
-export function createSystemRoutes(): RouteObject[] {
+export function createSettingRoutes(): RouteObjects {
   return [
     {
       path: 'setting',
