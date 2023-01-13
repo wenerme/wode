@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { createHashRouter, createMemoryRouter, RouterProvider } from 'react-router-dom';
 import { ThemeStateReactor } from 'common/src/daisy/theme';
+import { ComponentProvider } from 'common/src/system/components/ComponentContext';
+import { WenerLogo } from './WenerLogo';
 import { createPrimaryRouters } from './createPrimaryRouters';
 
 let router: any;
@@ -19,10 +21,22 @@ export const WenerApisApp: React.FC<{ path?: string }> = ({ path = '/' }) => {
     console.log('\nSSR Render:', path);
   }
   return (
-    <>
+    <WenerApisContext>
       <ThemeStateReactor />
       {router && <RouterProvider router={router} />}
-    </>
+    </WenerApisContext>
   );
 };
 export default WenerApisApp;
+
+const WenerApisContext: React.FC<{ children?: ReactNode }> = ({ children }) => {
+  return (
+    <ComponentProvider
+      components={{
+        Logo: WenerLogo,
+      }}
+    >
+      {children}
+    </ComponentProvider>
+  );
+};

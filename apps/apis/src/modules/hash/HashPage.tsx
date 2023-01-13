@@ -3,9 +3,9 @@ import { HiDuplicate } from 'react-icons/hi';
 import { Form } from 'react-router-dom';
 import { Button } from 'common/src/daisy';
 import { HashLockOutlined } from 'common/src/icons';
+import { SearchPageLayout } from 'common/src/system/layouts';
 import { useAsyncEffect } from '@wener/reaction';
 import { ArrayBuffers, copy } from '@wener/utils';
-import { SearchPageLayout } from '../../components/layouts/SearchPageLayout';
 
 export const HashPage = () => {
   return (

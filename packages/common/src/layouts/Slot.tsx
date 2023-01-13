@@ -1,10 +1,10 @@
 import type { FC, PropsWithChildren, ReactNode } from 'react';
 import React, { memo, useCallback, useDebugValue, useEffect, useId } from 'react';
-import create from 'zustand';
-import createContext from 'zustand/context';
+import { createStore } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 import shallow from 'zustand/shallow';
 import { useCompareEffect } from '@wener/reaction';
+import { createStoreContext } from '../zustand';
 
 export interface SlotProps<
   S extends Record<string, string> = {},
@@ -12,7 +12,7 @@ export interface SlotProps<
   P extends string = S[N],
 > {
   name: N;
-  placement?: S[N];
+  placement?: P;
   order?: number;
   children: ReactNode;
 }
@@ -40,12 +40,12 @@ interface SlotStore {
   slots: Record<string, SlotData[]>;
 }
 
-const createStore = () => create<SlotStore>()(immer(() => ({ slots: {} })));
+const createSlotStore = () => createStore<SlotStore>()(immer(() => ({ slots: {} })));
 
 export function createSlotContext<SlotTypes extends Record<string, string> = {}>() {
-  const { Provider, useStore, useStoreApi } = createContext<ReturnType<typeof createStore>>();
+  const { Provider, useStore, useStoreApi } = createStoreContext<ReturnType<typeof createSlotStore>>();
   const SlotProvider: FC<PropsWithChildren<{ name?: string }>> = ({ children }) => {
-    return <Provider createStore={createStore}>{children}</Provider>;
+    return <Provider createStore={createSlotStore}>{children}</Provider>;
   };
 
   const Slot = memo<SlotProps<SlotTypes>>(({ name, placement = 'default', order = 0, children }) => {
