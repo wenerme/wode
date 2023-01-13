@@ -3,7 +3,7 @@ import React from 'react';
 import { IoApps } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
 import { Button } from 'common/src/daisy';
-import { SettingLayout } from '../setting/SettingLayout';
+import { SettingLayout } from '../system/setting/SettingLayout';
 
 export const ToolLayout: React.FC<{ children?: ReactNode }> = ({ children }) => {
   return (

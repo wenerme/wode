@@ -1,6 +1,6 @@
 import React from 'react';
-import { ExternalLink } from '../../common/ExternalLink';
-import { FootNote } from '../../common/FootNote';
+import { ExternalLink } from '../../../components/common/ExternalLink';
+import { FootNote } from '../../../components/common/FootNote';
 
 export const ZxcvbnNote = () => {
   return (

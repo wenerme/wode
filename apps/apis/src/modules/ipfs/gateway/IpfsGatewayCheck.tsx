@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Button } from 'common/src/daisy';
 import { useSnapshot } from 'valtio';
-import { ExternalLink } from '../../common/ExternalLink';
-import { FootNote } from '../../common/FootNote';
+import { ExternalLink } from '../../../components/common/ExternalLink';
+import { FootNote } from '../../../components/common/FootNote';
 import { useIpfsGatewayState } from '../gateway';
 import type { GatewayCheckNodeState } from './checker';
 import { checkGateways, compareCheckState, OnScriptloaded } from './checker';

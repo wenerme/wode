@@ -5,7 +5,7 @@ import { Button } from 'common/src/daisy';
 import { HashLockOutlined } from 'common/src/icons';
 import { useAsyncEffect } from '@wener/reaction';
 import { ArrayBuffers, copy } from '@wener/utils';
-import { SearchPageLayout } from '../layouts/SearchPageLayout';
+import { SearchPageLayout } from '../../components/layouts/SearchPageLayout';
 
 export const HashPage = () => {
   return (

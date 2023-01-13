@@ -21,7 +21,9 @@ export const SettingAppearance = () => {
               type="checkbox"
               className="toggle toggle-accent"
               checked={theme === 'system'}
-              onChange={() => setTheme(theme === 'system' ? getPrefersColorSchema() : 'system')}
+              onChange={() => {
+                setTheme(theme === 'system' ? getPrefersColorSchema() : 'system');
+              }}
             />
           </label>
         </div>

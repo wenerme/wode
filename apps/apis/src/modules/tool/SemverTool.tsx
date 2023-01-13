@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { Button } from 'common/src/daisy';
 import * as semver from 'semver';
 import { SemVer } from 'semver';
-import { SearchBox } from '../SearchBox';
+import { SearchBox } from '../../components/common/SearchBox';
 
 export const SemverTool = () => {
   const [params, setParams] = useSearchParams();
