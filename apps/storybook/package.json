@@ -18,16 +18,16 @@
     "common": "workspace:^1.0.0"
   },
   "devDependencies": {
-    "@storybook/addon-essentials": "^7.0.0-beta.19",
-    "@storybook/addon-interactions": "^7.0.0-beta.19",
-    "@storybook/addon-links": "^7.0.0-beta.19",
-    "@storybook/blocks": "^7.0.0-beta.19",
-    "@storybook/react": "^7.0.0-beta.19",
-    "@storybook/react-vite": "^7.0.0-beta.19",
+    "@storybook/addon-essentials": "7.0.0-beta.25",
+    "@storybook/addon-interactions": "7.0.0-beta.25",
+    "@storybook/addon-links": "7.0.0-beta.25",
+    "@storybook/blocks": "7.0.0-beta.25",
+    "@storybook/react": "7.0.0-beta.25",
+    "@storybook/react-vite": "7.0.0-beta.25",
     "@storybook/testing-library": "^0.0.13",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "storybook": "^7.0.0-beta.19"
+    "storybook": "7.0.0-beta.25"
   }
 }
