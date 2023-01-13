@@ -3,7 +3,7 @@ import { HiCog } from 'react-icons/hi2';
 import { Form, Link } from 'react-router-dom';
 import { Button } from 'common/src/daisy';
 import { IpfsOutlined } from 'common/src/icons';
-import { SearchPageLayout } from '../layouts/SearchPageLayout';
+import { SearchPageLayout } from '../../components/layouts/SearchPageLayout';
 import { buildIpfsLink } from './buildIpfsLink';
 
 export const IpfsAccess = () => {

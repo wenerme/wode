@@ -2,7 +2,7 @@ import React from 'react';
 import { AiFillApi, AiOutlineDownload } from 'react-icons/ai';
 import { Button } from 'common/src/daisy';
 import { useSnapshot } from 'valtio';
-import { SettingLayout } from '../../setting/SettingLayout';
+import { SettingLayout } from '../../system/setting/SettingLayout';
 import { buildIpfsLink } from '../buildIpfsLink';
 import { getRecommendGateways, useIpfsGatewayState } from '../gateway';
 import { getGatewayCheckTextHash } from './checker';

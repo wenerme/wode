@@ -6,7 +6,7 @@ import { SiTestin } from 'react-icons/si';
 import { IpfsOutlined } from 'common/src/icons';
 import type { ExpandableSideMenuItemProps } from 'common/src/layouts';
 import { ExpandableSideMenuLayout } from 'common/src/layouts';
-import { usePageLayoutState } from '../layouts/usePageLayoutState';
+import { usePageLayoutState } from '../../components/layouts/usePageLayoutState';
 
 const MenuItems: ExpandableSideMenuItemProps[] = [
   {

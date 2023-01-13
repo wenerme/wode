@@ -1,11 +1,9 @@
-import type { ReactNode } from 'react';
-import React, { lazy } from 'react';
 import type { RouteObject } from 'react-router-dom';
-import { createSystemRoutes } from './createSystemRoutes';
-import { createHashRoutes } from './hash/createHashRoutes';
-import { createIpfsRoutes } from './ipfs/createIpfsRoutes';
-import { createPasswordRoutes } from './password/createPasswordRoutes';
-import { createToolRoutes } from './tool/createToolRoutes';
+import { createHashRoutes } from '../modules/hash/createHashRoutes';
+import { createIpfsRoutes } from '../modules/ipfs/createIpfsRoutes';
+import { createPasswordRoutes } from '../modules/password/createPasswordRoutes';
+import { createSystemRoutes } from '../modules/system/createSystemRoutes';
+import { createToolRoutes } from '../modules/tool/createToolRoutes';
 
 export function createRoutes(): RouteObject[] {
   return [

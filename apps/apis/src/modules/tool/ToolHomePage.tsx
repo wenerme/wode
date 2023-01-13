@@ -1,6 +1,6 @@
 import React from 'react';
 import { AiFillTool } from 'react-icons/ai';
-import { ModuleListCard } from '../common/ModuleListCard';
+import { ModuleListCard } from '../../components/common/ModuleListCard';
 
 const Items = [
   {
