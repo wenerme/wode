@@ -83,7 +83,7 @@
     "@types/react-dom": "^18.0.10",
     "@wener/utils": "workspace:^1.1.9",
     "ava": "^5.1.0",
-    "jsdom": "^20.0.3",
+    "jsdom": "^21.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
