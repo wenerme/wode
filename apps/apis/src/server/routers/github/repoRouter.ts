@@ -1,7 +1,7 @@
-import { SemVer } from 'semver';
+import type { SemVer } from 'semver';
 import semver from 'semver/preload';
 import { z } from 'zod';
-import { Octokit } from '@octokit/rest';
+import type { Octokit } from '@octokit/rest';
 import { router } from '../../trpc';
 import { githubProcedure } from './githubProcedure';
 
