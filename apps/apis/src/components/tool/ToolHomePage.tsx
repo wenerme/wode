@@ -8,6 +8,21 @@ const Items = [
     icon: <div>V.</div>,
     title: '语义版本号',
   },
+  {
+    href: 'url-explain',
+    icon: <div>U.</div>,
+    title: 'URL解析',
+  },
+  {
+    href: 'qrcode',
+    icon: <div>Qr.</div>,
+    title: '二维码',
+  },
+  {
+    href: 'barcode',
+    icon: <div>Br.</div>,
+    title: '条形码',
+  },
 ];
 export const ToolHomePage = () => {
   return (

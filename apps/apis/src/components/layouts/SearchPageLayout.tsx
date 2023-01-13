@@ -1,4 +1,4 @@
-import type { ReactNode} from 'react';
+import type { ReactNode } from 'react';
 import React, { useEffect, useState } from 'react';
 import { BsSearch } from 'react-icons/bs';
 import { useParams, useSearchParams } from 'react-router-dom';

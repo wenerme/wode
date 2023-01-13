@@ -1,4 +1,5 @@
-import React, { ReactNode } from 'react';
+import type { ReactNode } from 'react';
+import React from 'react';
 import { IoApps } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
 import { Button } from 'common/src/daisy';
