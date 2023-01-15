@@ -1,4 +1,5 @@
-import React, { HTMLAttributes } from 'react';
+import type { HTMLAttributes } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 const GooeyLoaderContainer = styled.div`

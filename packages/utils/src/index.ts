@@ -6,6 +6,7 @@ export {
   objectOfMaybeArray,
   type MaybeArray,
 } from './arrays/MaybeArray';
+export { arrayFromAsync } from './arrays/arrayFromAsync';
 
 // object
 export { get } from './objects/get';
@@ -83,4 +84,4 @@ export { PEM } from './crypto/pem/pem';
 // misc
 export { createRandom } from './maths/random';
 
-export type FetchLike = (url: string, init?: RequestInit) => Promise<Response>;
+export { type FetchLike } from './fetch';

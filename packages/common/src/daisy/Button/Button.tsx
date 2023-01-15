@@ -39,7 +39,9 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
         const r = raw(...args);
         if (isPromise(r)) {
           setLoading(true);
-          r.finally(() => setLoading(false));
+          r.finally(() => {
+            setLoading(false);
+          });
         }
         return r;
       };

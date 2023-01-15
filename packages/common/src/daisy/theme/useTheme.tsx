@@ -123,7 +123,9 @@ export function hookThemeState({
       loadState(e.newValue);
     };
     window.addEventListener('storage', handleStorageChange);
-    closer.push(() => window.removeEventListener('storage', handleStorageChange));
+    closer.push(() => {
+      window.removeEventListener('storage', handleStorageChange);
+    });
   }
   // system
   {
@@ -152,7 +154,11 @@ export function hookThemeState({
     }),
   );
 
-  return () => closer.forEach((v) => v());
+  return () => {
+    closer.forEach((v) => {
+      v();
+    });
+  };
 }
 
 export const ThemeStateReactor = () => {
@@ -170,5 +176,7 @@ function watchPrefersColorSchema(cb: (light: boolean) => void) {
   const target = window.matchMedia('(prefers-color-scheme: light)');
   cb(target.matches);
   target.addEventListener('change', listener);
-  return () => target.removeEventListener('change', listener);
+  return () => {
+    target.removeEventListener('change', listener);
+  };
 }

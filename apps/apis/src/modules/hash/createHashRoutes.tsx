@@ -6,6 +6,9 @@ const HashPage = lazy(() => import('./HashPage'));
 export function createHashRoutes(): RouteObject[] {
   return [
     {
+      handle: {
+        title: '哈希',
+      },
       path: 'hash',
       children: [
         {

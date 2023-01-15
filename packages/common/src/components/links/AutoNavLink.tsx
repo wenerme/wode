@@ -16,3 +16,7 @@ export const AutoNavLink = forwardRef<any, AutoNavLinkProps>((props, ref) => {
   return <NextNavLink ref={ref} {...props} />;
 });
 AutoNavLink.displayName = 'AutoNavLink';
+
+export const ReactRouterNavLink = ({ href, to = href, ...props }: any) => {
+  return <NavLink to={to} {...props} />;
+};

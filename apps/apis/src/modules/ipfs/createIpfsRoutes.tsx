@@ -20,6 +20,9 @@ export function createIpfsRoutes(): RouteObject[] {
         </IpfsPage>
       ),
       errorElement: <PageErrorState />,
+      handle: {
+        title: 'IPFS',
+      },
       children: [
         {
           index: true,
@@ -31,18 +34,30 @@ export function createIpfsRoutes(): RouteObject[] {
         },
         {
           path: 'gateway',
+          handle: {
+            title: '网关',
+          },
           children: [
             {
               path: 'check',
+              handle: {
+                title: '检测',
+              },
               element: <IpfsGatewayCheck />,
             },
           ],
         },
         {
           path: 'setting',
+          handle: {
+            title: '设置',
+          },
           children: [
             {
               path: 'gateway',
+              handle: {
+                title: '网关',
+              },
               element: <IpfsGatewaySetting />,
             },
           ],

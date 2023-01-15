@@ -3,7 +3,8 @@ import React from 'react';
 import { HiColorSwatch, HiOutlineColorSwatch } from 'react-icons/hi';
 import { HiOutlineCog } from 'react-icons/hi2';
 import { TiInfoLarge, TiInfoLargeOutline } from 'react-icons/ti';
-import { ExpandableSideMenuItemProps, ExpandableSideMenuLayout } from '../../layouts';
+import type { ExpandableSideMenuItemProps } from '../../layouts';
+import { ExpandableSideMenuLayout } from '../../layouts';
 import { usePageLayoutState } from '../layouts/usePageLayoutState';
 
 const MenuItems: ExpandableSideMenuItemProps[] = [

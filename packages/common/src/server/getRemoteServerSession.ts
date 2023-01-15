@@ -1,6 +1,6 @@
-import { IncomingMessage, ServerResponse } from 'http';
-import { Session } from 'next-auth';
-import { NextApiRequestCookies } from 'next/dist/server/api-utils';
+import type { IncomingMessage, ServerResponse } from 'http';
+import type { Session } from 'next-auth';
+import type { NextApiRequestCookies } from 'next/dist/server/api-utils';
 import { getInternalAuthBaseUrl } from '../runtime/withBasePath';
 
 function getSessionToken(

@@ -1,4 +1,4 @@
-import { Provider } from 'next-auth/providers';
+import type { Provider } from 'next-auth/providers';
 
 export interface SnsOAuth2AccessTokenResponse {
   openid: string;

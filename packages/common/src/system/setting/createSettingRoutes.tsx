@@ -3,7 +3,8 @@ import { HiColorSwatch, HiOutlineColorSwatch } from 'react-icons/hi';
 import { Navigate, Outlet } from 'react-router-dom';
 import { ErrorSuspenseBoundary } from '@wener/reaction';
 import { PageErrorState } from '../../components';
-import { RouteObjects } from '../../router';
+import type { RouteObjects } from '../../router';
+import { SettingRouteId } from './const';
 
 const SettingAppearance = lazy(() => import('./SettingAppearance'));
 const SystemInfo = lazy(() => import('./SystemInfo'));
@@ -12,7 +13,11 @@ const SettingPage = lazy(() => import('./SettingPage'));
 export function createSettingRoutes(): RouteObjects {
   return [
     {
+      id: SettingRouteId,
       path: 'setting',
+      handle: {
+        title: '设置',
+      },
       element: (
         <SettingPage>
           <ErrorSuspenseBoundary>
@@ -32,6 +37,9 @@ export function createSettingRoutes(): RouteObjects {
         },
         {
           path: 'appearance',
+          handle: {
+            title: '显示和行为',
+          },
           meta: {
             title: '显示和行为',
             icon: <HiOutlineColorSwatch />,
@@ -43,6 +51,9 @@ export function createSettingRoutes(): RouteObjects {
             {
               index: true,
               element: <SettingAppearance />,
+              handle: {
+                title: '显示设置',
+              },
               meta: {
                 title: '显示设置',
                 icon: <HiOutlineColorSwatch />,
@@ -61,6 +72,7 @@ export function createSettingRoutes(): RouteObjects {
             {
               path: 'info',
               element: <SystemInfo />,
+              handle: '系统信息',
             },
           ],
         },

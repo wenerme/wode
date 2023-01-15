@@ -19,12 +19,21 @@ export const DaisyDemo = () => {
             {state.size || 'Size'}
           </label>
           <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
-            <li onClick={() => update({ ...state, size: undefined })}>
+            <li
+              onClick={() => {
+                update({ ...state, size: undefined });
+              }}
+            >
               <a>Default</a>
             </li>
             {sizes.map((v) => {
               return (
-                <li key={v} onClick={() => update({ ...state, size: v })}>
+                <li
+                  key={v}
+                  onClick={() => {
+                    update({ ...state, size: v });
+                  }}
+                >
                   <a>{v}</a>
                 </li>
               );
@@ -36,12 +45,21 @@ export const DaisyDemo = () => {
             {state.intent || 'Intent'}
           </label>
           <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
-            <li onClick={() => update({ ...state, intent: undefined })}>
+            <li
+              onClick={() => {
+                update({ ...state, intent: undefined });
+              }}
+            >
               <a>Default</a>
             </li>
             {intents.map((v) => {
               return (
-                <li key={v} onClick={() => update({ ...state, intent: v })}>
+                <li
+                  key={v}
+                  onClick={() => {
+                    update({ ...state, intent: v });
+                  }}
+                >
                   <a>{v}</a>
                 </li>
               );

@@ -1,5 +1,5 @@
-import { TokenSet } from 'next-auth';
-import { Provider } from 'next-auth/providers';
+import type { TokenSet } from 'next-auth';
+import type { Provider } from 'next-auth/providers';
 
 // https://developer.work.weixin.qq.com/document/path/91023
 export interface AuthGetUserInfoResponse {
