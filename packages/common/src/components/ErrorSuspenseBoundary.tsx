@@ -11,7 +11,9 @@ export const ErrorSuspenseBoundary: React.FC<{ fallback?: ReactNode; children: R
   return (
     <ErrorBoundary
       renderError={(props) => <PageErrorState {...props} />}
-      onError={({ error, errorInfo }) => console.error(`Content`, errorInfo, error)}
+      onError={({ error, errorInfo }) => {
+        console.error(`Content`, errorInfo, error);
+      }}
     >
       <Suspense fallback={fallback}>{children}</Suspense>
     </ErrorBoundary>

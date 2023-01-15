@@ -31,7 +31,9 @@ export const GotoPageInput: React.FC<{
             goto();
           }
         }}
-        onChange={(e) => setVal(e.currentTarget.value)}
+        onChange={(e) => {
+          setVal(e.currentTarget.value);
+        }}
       />
       <span>页</span>
     </div>

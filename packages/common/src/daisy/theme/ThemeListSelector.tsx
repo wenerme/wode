@@ -17,7 +17,9 @@ export const ThemeListSelector: React.FC<React.HTMLAttributes<HTMLDivElement>> =
       {getSupportedThemes().map((v) => (
         <div
           key={v.value}
-          onClick={() => setTheme(v.value)}
+          onClick={() => {
+            setTheme(v.value);
+          }}
           className={classNames(
             'cursor-pointer rounded border p-1',
             'hover:border-info',

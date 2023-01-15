@@ -1,6 +1,8 @@
 import type { ReactNode } from 'react';
 import type { RouteObject } from 'react-router-dom';
 
+export { useRouteTitles } from './useRouteTitles';
+
 declare module 'react-router-dom' {
   export interface IndexRouteObject {
     meta?: RouteObjectMeta;
@@ -19,4 +21,5 @@ export interface RouteObjectMeta {
 
   [k: string]: any;
 }
+
 export type RouteObjects = RouteObject[];

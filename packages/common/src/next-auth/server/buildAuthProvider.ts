@@ -1,4 +1,4 @@
-import { Provider } from 'next-auth/providers';
+import type { Provider } from 'next-auth/providers';
 import GithubProvider from 'next-auth/providers/github';
 import GitlabProvider from 'next-auth/providers/gitlab';
 import { WechatWebProvider } from '../wechat';

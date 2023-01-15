@@ -10,6 +10,9 @@ export function createPasswordRoutes(): RouteObject[] {
   return [
     {
       path: 'password',
+      handle: {
+        title: '密码',
+      },
       element: (
         <ErrorSuspenseBoundary>
           <Outlet />
@@ -21,6 +24,9 @@ export function createPasswordRoutes(): RouteObject[] {
           element: <Navigate to={'zxcvbn'} />,
         },
         {
+          handle: {
+            title: 'zxcvbn 密码强度检测',
+          },
           path: 'zxcvbn',
           element: <ZxcvbnPasswordStrength />,
           errorElement: <PageErrorState />,

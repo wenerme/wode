@@ -89,7 +89,15 @@ export const Popover = ({
         aria-describedby={descriptionId}
         {...getFloatingProps()}
       >
-        {!open ? null : flexRender(content, { close: () => setOpen(false), labelId, descriptionId })}
+        {!open
+          ? null
+          : flexRender(content, {
+              close: () => {
+                setOpen(false);
+              },
+              labelId,
+              descriptionId,
+            })}
       </div>
     </FloatingFocusManager>
   );

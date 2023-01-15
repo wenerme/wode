@@ -1,5 +1,6 @@
-import { Provider } from 'next-auth/providers';
-import { AuthProviderConfig, buildAuthProvider } from './buildAuthProvider';
+import type { Provider } from 'next-auth/providers';
+import type { AuthProviderConfig } from './buildAuthProvider';
+import { buildAuthProvider } from './buildAuthProvider';
 
 export function buildAuthProvidersFromEnv(): Provider[] {
   const configs: AuthProviderConfig[] = [];
