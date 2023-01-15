@@ -88,7 +88,7 @@
   "rollup": {
     "input": [
       "./src/index.ts",
-      "./src/server.ts"
+      "./src/server/index.ts"
     ],
     "external": [
       "jsdom",
