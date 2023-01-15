@@ -7,7 +7,7 @@ body {
   padding: 0;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans,
-    Helvetica Neue, sans-serif;
+  Helvetica Neue, sans-serif;
 }
 
 html,
@@ -35,6 +35,18 @@ body,
 /* .btn-outline */
 .border-color {
   @apply border-base-300;
+}
+
+@layer components {
+  .border,
+  .border-r,
+  .border-l,
+  .border-t,
+  .border-b,
+  .border-x,
+  .border-y {
+    @apply border-base-300;
+  }
 }
 
 .divide-color {
