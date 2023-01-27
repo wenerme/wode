@@ -1,7 +1,7 @@
 /**
  * generate random UUIDv4
  */
-export const randomUUID: () => string = globalThis.crypto?.randomUUID.bind(globalThis.crypto) || _randomUUID;
+export const randomUUID: () => string = globalThis.crypto?.randomUUID?.bind(globalThis.crypto) || _randomUUID;
 
 /**
  * @internal

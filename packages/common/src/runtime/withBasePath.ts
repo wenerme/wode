@@ -14,12 +14,12 @@ export function getBasePath() {
   return maybe || '';
 }
 
-export function getBaseUrl() {
+export function getBaseUrl({ origin }: { origin?: string } = {}) {
   let maybe = process.env.NEXT_PUBLIC_BASE_URL;
   if (!globalThis.window) {
     ({ NEXT_PUBLIC_BASE_URL: maybe } = process.env);
   }
-  return maybe || getOriginUrl() + getBasePath();
+  return maybe || (origin || getOriginUrl()) + getBasePath();
 }
 
 export function getAuthBaseUrl() {
@@ -43,7 +43,11 @@ export function getOriginUrl() {
   if (globalThis.window) return window.location.origin;
 
   const { NEXT_PUBLIC_URL, VERCEL_URL, RENDER_INTERNAL_HOSTNAME, PORT = 3000 } = process.env;
+
+  // https://vercel.com/docs/concepts/projects/environment-variables
+  // NEXT_PUBLIC_VERCEL_URL
   if (NEXT_PUBLIC_URL) return NEXT_PUBLIC_URL;
+  // VERCEL_URL unique deployment URL
   if (VERCEL_URL) return `https://${VERCEL_URL}`;
   if (RENDER_INTERNAL_HOSTNAME) return `http://${RENDER_INTERNAL_HOSTNAME}:${PORT}`;
 
