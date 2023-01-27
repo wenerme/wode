@@ -100,6 +100,7 @@ importers:
       '@types/lodash': ^4.14.191
       '@types/semver': ^7.3.13
       '@types/zxcvbn': ^4.4.1
+      '@wener/data': workspace:^1.0.0
       '@wener/reaction': workspace:^1.2.17
       '@wener/utils': workspace:^1.1.9
       classnames: ^2.3.2
@@ -130,6 +131,7 @@ importers:
       '@trpc/client': 10.9.0_@trpc+server@10.9.0
       '@trpc/next': 10.9.0_zf4dmnjasp57goshgvidib2hkq
       '@trpc/server': 10.9.0
+      '@wener/data': link:../../packages/data
       '@wener/reaction': link:../../packages/reaction
       '@wener/utils': link:../../packages/utils
       classnames: 2.3.2
@@ -242,6 +244,7 @@ importers:
       dayjs: ^1.11.7
       domhandler: ^5.0.3
       eslint-config-next: ^13.1.5
+      fs-extra: ^11.1.0
       html-react-parser: ^3.0.8
       immer: ^9.0.18
       json5: ^2.2.3
@@ -398,6 +401,7 @@ importers:
       '@types/tar': 6.1.3
       cssnano: 5.1.14_postcss@8.4.21
       eslint-config-next: 13.1.5_7uibuqfxkfaozanbtbziikiqje
+      fs-extra: 11.1.0
       pino-pretty: 9.1.1
       react-test-renderer: 18.2.0_react@18.2.0
       typescript: 4.9.4
@@ -666,6 +670,21 @@ importers:
       '@types/react-dom': 18.0.10
       '@types/react-is': 17.0.3
       tslib: 2.5.0
+
+  packages/data:
+    specifiers:
+      '@types/fs-extra': ^11.0.1
+      '@wener/utils': workspace:^1.1.9
+      csv-parse: ^5.3.3
+      fs-extra: ^11.1.0
+      lodash: ^4.17.21
+    dependencies:
+      '@wener/utils': link:../utils
+    devDependencies:
+      '@types/fs-extra': 11.0.1
+      csv-parse: 5.3.3
+      fs-extra: 11.1.0
+      lodash: 4.17.21
 
   packages/ohm-grammar-miniquery:
     specifiers:
@@ -7938,6 +7957,10 @@ packages:
 
   /csstype/3.1.1:
     resolution: {integrity: sha512-DJR/VvkAvSZW9bTouZue2sSxDwdTN92uHjqeKVm+0dAqdfNykRzQ95tay8aXMBAAPpUiq4Qcug2L7neoRh2Egw==}
+
+  /csv-parse/5.3.3:
+    resolution: {integrity: sha512-kEWkAPleNEdhFNkHQpFHu9RYPogsFj3dx6bCxL847fsiLgidzWg0z/O0B1kVWMJUc5ky64zGp18LX2T3DQrOfw==}
+    dev: true
 
   /currently-unhandled/0.4.1:
     resolution: {integrity: sha512-/fITjgjGU50vjQ4FH6eUoYu+iUoUKIXws2hL15JJpIR+BbTxaXQsMuuyjtNh2WqsSBS5nsaZHFsFecyw5CCAng==}

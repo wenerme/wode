@@ -1,0 +1,22 @@
+{
+  "name": "@wener/data",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.1",
+    "csv-parse": "^5.3.3",
+    "fs-extra": "^11.1.0",
+    "lodash": "^4.17.21"
+  },
+  "dependencies": {
+    "@wener/utils": "workspace:^1.1.9"
+  }
+}
