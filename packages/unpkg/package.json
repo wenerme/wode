@@ -65,11 +65,11 @@
   },
   "devDependencies": {
     "@types/better-sqlite3": "^7.6.3",
-    "@types/fs-extra": "^11",
+    "@types/fs-extra": "^11.0.1",
     "@types/mime": "^3.0.1",
     "@types/semver": "^7.3.13",
     "@types/tar": "^6.1.3",
-    "ava": "^5.1.0"
+    "ava": "^5.1.1"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org",
