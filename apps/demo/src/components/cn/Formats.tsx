@@ -1,11 +1,18 @@
+import { useEffect, useState } from 'react';
 import { FaFemale, FaMale } from 'react-icons/fa';
-import { parseDivisionCode } from './division/parseDivisionCode';
+import { getDivisions } from '@src/components/cn/division/getDivisions';
+import { DivisionCode, parseDivisionCode } from '@wener/data/cn';
 
 export const DivisionFormat: React.FC<{ value?: string }> = ({ value }) => {
+  const [code, setCode] = useState<DivisionCode>();
+  useEffect(() => {
+    Promise.resolve(getDivisions()).then((v) => {
+      value && setCode(parseDivisionCode(v || {}, value));
+    });
+  }, [value]);
   if (!value) {
     return null;
   }
-  const code = parseDivisionCode(value);
   if (code) {
     let title = code.name;
     if (!value.endsWith('00')) {

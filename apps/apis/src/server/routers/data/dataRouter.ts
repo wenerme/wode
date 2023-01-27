@@ -3,8 +3,10 @@ import { z } from 'zod';
 import { CountryCode } from '@wener/data/src/country-codes';
 import { get, set } from '@wener/utils';
 import { publicProcedure, router } from '../../trpc';
+import { cnRouter } from './cnRouter';
 
 export const dataRouter = router({
+  cn: cnRouter,
   whatis: publicProcedure
     .meta({ openapi: { method: 'GET', path: '/data/whatis/{data}' } })
     .input(

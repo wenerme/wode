@@ -225,6 +225,7 @@ importers:
       '@types/styled-components': ^5.1.26
       '@types/tar': ^6.1.3
       '@types/ua-parser-js': ^0.7.36
+      '@wener/data': workspace:^1.0.0
       '@wener/reaction': workspace:^1.2.17
       '@wener/tiptap': workspace:^1.0.0
       '@wener/unpkg': workspace:^1.0.6
@@ -337,6 +338,7 @@ importers:
       '@trpc/react-query': 10.9.0_22wgxldzdfxutowffn2dykkd3i
       '@trpc/server': 10.9.0
       '@types/ua-parser-js': 0.7.36
+      '@wener/data': link:../../packages/data
       '@wener/reaction': link:../../packages/reaction
       '@wener/tiptap': link:../../components/wener-tiptap
       '@wener/unpkg': link:../../packages/unpkg

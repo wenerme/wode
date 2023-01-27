@@ -68,6 +68,7 @@
     "@trpc/react-query": "^10.9.0",
     "@trpc/server": "^10.9.0",
     "@types/ua-parser-js": "^0.7.36",
+    "@wener/data": "workspace:^1.0.0",
     "@wener/reaction": "workspace:^1.2.17",
     "@wener/tiptap": "workspace:^1.0.0",
     "@wener/unpkg": "workspace:^1.0.6",
