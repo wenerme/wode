@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import React from 'react';
-import { AiFillExperiment, AiOutlineExperiment } from 'react-icons/ai';
+import { AiFillApi, AiFillExperiment, AiOutlineApi, AiOutlineExperiment } from 'react-icons/ai';
 import { HiColorSwatch, HiOutlineColorSwatch } from 'react-icons/hi';
 import { HiOutlineCog } from 'react-icons/hi2';
 import { TiInfoLarge, TiInfoLargeOutline } from 'react-icons/ti';
@@ -40,6 +40,12 @@ const MenuItems: ExpandableSideMenuItemProps[] = [
     href: '/setting/dev/debug',
     icon: <AiOutlineExperiment />,
     iconActive: <AiFillExperiment />,
+  },
+  {
+    label: 'API 文档',
+    href: '/setting/dev/api-docs',
+    icon: <AiOutlineApi />,
+    iconActive: <AiFillApi />,
   },
 ];
 export const SettingPage: React.FC<{ children?: ReactNode }> = ({ children }) => {
