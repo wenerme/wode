@@ -1,1 +1,1 @@
-export { parseDivisionCode, type DivisionCode } from './division/parseDivisionCode';
+export { parseDivisionCode, randomDivisionCode, type DivisionCode } from './division/parseDivisionCode';
