@@ -1,1 +1,1 @@
-import { useComponent } from './ComponentContext';
+export { useComponent, ComponentProvider } from './ComponentContext';

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { ReactNode, useEffect } from 'react';
 import { useSnapshot } from 'valtio';
 import { derive, watch } from 'valtio/utils';
 import { proxyWithCompare } from '../../valtio';
@@ -11,24 +11,24 @@ interface ThemeState {
   light?: string; // 覆盖系统亮色主题
   dark?: string; // 覆盖系统暗色主题
 
-  readonly active?: string; // 当前主题
+  readonly active: string; // 当前主题
   system?: string; // 当前系统主题 - state self-contained
   // $ele
   // storageKey
 }
 
-const DefaultState = {
+const InitialState = {
   theme: 'system',
   // 修改默认主题色
   light: 'corporate',
   dark: 'business',
 };
 
-export function createThemeState(o: Partial<ThemeState> = {}) {
+export function createThemeState(o: Partial<ThemeState> = {}): ThemeState {
   const state = proxyWithCompare<ThemeState>({
-    ...DefaultState,
+    ...InitialState,
     ...o,
-  });
+  } as any); // as any for readonly active
   return derive(
     {
       active: (get) => {
@@ -41,8 +41,8 @@ export function createThemeState(o: Partial<ThemeState> = {}) {
   );
 }
 
-const themeState = createThemeState();
-const ThemeStateContext = React.createContext(themeState);
+const DefaultThemeState = createThemeState();
+const ThemeStateContext = React.createContext(DefaultThemeState);
 
 export function useThemeState() {
   return React.useContext(ThemeStateContext);
@@ -80,7 +80,7 @@ export function useThemeSchema(): 'light' | 'dark' {
   }
 }
 
-export function hookThemeState({
+function hookThemeState({
   state,
   element,
   loadInitialState = true,
@@ -89,8 +89,6 @@ export function hookThemeState({
   element?: HTMLElement;
   loadInitialState?: boolean;
 }) {
-  console.log(`hookThemeState: `);
-
   if (!globalThis.localStorage) {
     return () => {};
   }
@@ -102,10 +100,10 @@ export function hookThemeState({
     if (!s) {
       return;
     }
-    let neo = DefaultState;
+    let neo = InitialState;
     try {
       if (s) {
-        const { dark = DefaultState.dark, light = DefaultState.light, theme = DefaultState.theme } = JSON.parse(s);
+        const { dark = InitialState.dark, light = InitialState.light, theme = InitialState.theme } = JSON.parse(s);
         neo = { dark, light, theme };
       }
     } catch (e) {}
@@ -167,6 +165,18 @@ export const ThemeStateReactor = () => {
     return hookThemeState({ state });
   }, [state]);
   return <></>;
+};
+
+export const ThemeProvider: React.FC<{ children?: ReactNode; state?: ThemeState }> = ({
+  children,
+  state = DefaultThemeState,
+}) => {
+  return (
+    <ThemeStateContext.Provider value={state}>
+      <ThemeStateReactor />
+      {children}
+    </ThemeStateContext.Provider>
+  );
 };
 
 function watchPrefersColorSchema(cb: (light: boolean) => void) {

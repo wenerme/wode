@@ -28,7 +28,7 @@ export function instantiatePackageProtocol({
 
     const loader = System;
     let nextUrl = url;
-    const nextParent = parent;
+    let nextParent = parent;
 
     // package:react -> react
     const originModuleId = new URL(url).pathname;
@@ -41,7 +41,7 @@ export function instantiatePackageProtocol({
       /^(?<n>(?:@(?<org>[a-z0-9-~][a-z0-9-._~]*)\/)?(?<pkg>[a-z0-9-~][a-z0-9-._~]*))(?:@(?<v>[-a-z0-9><=_.^~*| ]+))?(?<p>\/[^\r\n]*)?$/,
     )?.groups || {};
     if (!name) {
-      throw new Error(`Invalid package name ${url}`);
+      throw new Error(`Invalid package name ${url} from ${parent}`);
     }
 
     // resolve the version by jsdelivr
@@ -140,14 +140,18 @@ export function instantiatePackageProtocol({
     }
 
     if (resolved) {
+      // change nextParent, so dynamic import like `System.import(./hello.js)` will resolved based on nextParent
+      // nextParent can also be like package:@wener/reaction/
+      //
+      // resolveBareSpecifier can handle resolve(./a.jsm,@a/b)
       if (isSystem || !resolved.endsWith('.js')) {
         nextUrl = new URL(resolved, base).href;
         // nextParent = base;
       } else if (pri) {
         throw new Error(`Resolve ${url} to ${resolved} external`);
       } else {
-        // nextParent = baseSystem;
         nextUrl = new URL(resolved, baseSystem).href;
+        // nextParent = baseSystem;
       }
       logger.info(`resolved ${url} from ${parent || 'top level'} -> ${resolved} (system:${isSystem}) -> ${nextUrl}`);
     } else {

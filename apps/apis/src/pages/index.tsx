@@ -2,8 +2,11 @@ import React from 'react';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { ErrorSuspenseBoundary } from '@wener/reaction';
+import App from '../components/App';
 
-const Content = dynamic(() => import('../components/WenerApisApp'), { ssr: false });
+// const Content = dynamic(() => import('../components/WenerApisApp'), {
+//   ssr: false,
+// });
 
 const CurrentPage: React.FC<{ path?: string }> = ({ path }) => {
   return (
@@ -12,7 +15,7 @@ const CurrentPage: React.FC<{ path?: string }> = ({ path }) => {
         <title>Wener&apos;s APIs</title>
       </Head>
       <ErrorSuspenseBoundary>
-        <Content path={path} />
+        <App path={path} />
       </ErrorSuspenseBoundary>
     </>
   );

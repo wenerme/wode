@@ -8,6 +8,9 @@ export interface Parser {
   generate?: (o?: any) => string;
 
   model?: ParseableModel<any>;
+
+  tags?: string[];
+  confidence?: number;
 }
 
 export interface ParseableModel<T extends abstract new (...args: any) => any> {

@@ -11,30 +11,35 @@ export const Parsers: Parser[] = [
     // 28+4
     length: 32,
     pattern: /^wrV_[-a-zA-Z0-9]{28}$/,
+    tags: ['wecom'],
   },
   {
     name: 'WecomMemberIdFromWechat',
     title: 'Wecom Member ID from Wechat',
     length: 32,
     pattern: /^wmV_[-a-zA-Z0-9]{28}$/,
+    tags: ['wecom', 'wechat'],
   },
   {
     name: 'WecomRoomId',
     title: 'Wecom Room ID',
     length: 32,
     pattern: /^wr[-a-zA-Z0-9]{30}$/,
+    tags: ['wecom'],
   },
   {
     name: 'WecomMemberId',
     title: 'Wecom Member ID',
     length: 32,
     pattern: /^wm[-a-zA-Z0-9]{30}$/,
+    tags: ['wecom'],
   },
   {
     name: 'WecomCorpID',
     title: 'Wecom Corp ID/Suit ID',
     length: 32,
     pattern: /^ww[a-zA-Z0-9]{16}$/,
+    tags: ['wecom'],
   },
   // wecom - wo OpenId, tj 早期套件
   {
@@ -46,6 +51,7 @@ export const Parsers: Parser[] = [
     parse: ChinaCitizenId.parse,
     generate: () => ChinaCitizenId.random().toString(),
     model: ChinaCitizenId,
+    tags: ['china'],
   },
   {
     name: 'USCI',
@@ -56,6 +62,7 @@ export const Parsers: Parser[] = [
     parse: UnifiedSocialCreditId.parse,
     generate: () => UnifiedSocialCreditId.random().toString(),
     model: UnifiedSocialCreditId,
+    tags: ['china'],
   },
   {
     name: 'ULID',
@@ -64,6 +71,7 @@ export const Parsers: Parser[] = [
     pattern: /^[0-9A-HJKMNP-TV-Z]{26}$/i,
     parse: parseULID,
     generate: () => ulid(),
+    tags: ['id'],
   },
   {
     name: 'UUID',
@@ -71,6 +79,7 @@ export const Parsers: Parser[] = [
     length: 36,
     pattern: /^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$/i,
     generate: () => randomUUID(),
+    tags: ['id'],
   },
   {
     name: 'JsonObject',
