@@ -10,6 +10,7 @@ const SettingAppearance = lazy(() => import('./SettingAppearance'));
 const SystemInfo = lazy(() => import('./SystemInfo'));
 const SettingPage = lazy(() => import('./SettingPage'));
 const DevDebug = lazy(() => import('./DevDebug'));
+const DevApiDocs = lazy(() => import('./DevApiDocs'));
 
 export function createSettingRoutes(): RouteObjects {
   return [
@@ -87,6 +88,13 @@ export function createSettingRoutes(): RouteObjects {
               element: <DevDebug />,
               handle: {
                 title: '调试设置',
+              },
+            },
+            {
+              path: 'api-docs',
+              element: <DevApiDocs />,
+              handle: {
+                title: '接口文档',
               },
             },
           ],
