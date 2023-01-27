@@ -9,6 +9,7 @@ import { SettingRouteId } from './const';
 const SettingAppearance = lazy(() => import('./SettingAppearance'));
 const SystemInfo = lazy(() => import('./SystemInfo'));
 const SettingPage = lazy(() => import('./SettingPage'));
+const DevDebug = lazy(() => import('./DevDebug'));
 
 export function createSettingRoutes(): RouteObjects {
   return [
@@ -72,7 +73,21 @@ export function createSettingRoutes(): RouteObjects {
             {
               path: 'info',
               element: <SystemInfo />,
-              handle: '系统信息',
+              handle: {
+                title: '系统信息',
+              },
+            },
+          ],
+        },
+        {
+          path: 'dev',
+          children: [
+            {
+              path: 'debug',
+              element: <DevDebug />,
+              handle: {
+                title: '调试设置',
+              },
             },
           ],
         },
