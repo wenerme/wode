@@ -2,7 +2,7 @@ import type { CSSProperties } from 'react';
 import React, { createContext, useContext, useState } from 'react';
 import { GrSystem } from 'react-icons/gr';
 import { createStore } from 'zustand';
-import shallow from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 import { useCompareEffect } from '@wener/reaction';
 
 type ComponentStoreApi = ReturnType<typeof createComponentStore>;

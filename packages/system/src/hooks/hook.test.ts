@@ -2,7 +2,7 @@ import test from 'ava';
 import { createNoopLogger } from '@wener/utils';
 import { loadServerSystem } from '../loaders/loadServerSystem';
 import { addPreload } from '../utils/addPreload';
-import { getGlobalSystem } from '../utils/getGlobalSystem';
+import { DeclareFn, getGlobalSystem } from '../utils/getGlobalSystem';
 
 test.before(async () => {
   await loadServerSystem({ logger: createNoopLogger() });
@@ -66,4 +66,30 @@ test('hooks works', async (t) => {
     t.truthy(shallowEqual);
     t.true(shallowEqual({}, {}));
   }
+});
+
+test('resolve', async (t) => {
+  const System = getGlobalSystem();
+  t.is(System.resolve('./a.js', '@wener/reaction'), 'package:@wener/reaction/a.js');
+  // dynamic import 时的 parent
+  t.is(System.resolve('./a.js', 'package:@wener/reaction'), 'package:@wener/reaction/a.js');
+
+  t.is(System.resolve('./b.js', '@wener/reaction/dist/a.js'), 'package:@wener/reaction/dist/b.js');
+  t.is(System.resolve('./b.js', 'package:@wener/reaction/dist/a.js'), 'package:@wener/reaction/dist/b.js');
+
+  t.is(System.resolve('../b.js', '@wener/reaction/dist/a.js'), 'package:@wener/reaction/b.js');
+  t.is(System.resolve('../b.js', 'package:@wener/reaction/dist/a.js'), 'package:@wener/reaction/b.js');
+});
+
+test('resolve throw', async (t) => {
+  const System = getGlobalSystem();
+  System.register('@wener/test', [], ((_, m) => {
+    return {
+      execute: async () => {
+        await m.import('./hello.js');
+      },
+    };
+  }) as DeclareFn);
+  t.is(System.resolve('@wener/test'), '@wener/test');
+  await t.throwsAsync(() => System.import('@wener/test'), { message: /Unable to resolve bare specifier/ });
 });

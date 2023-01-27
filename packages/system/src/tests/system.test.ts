@@ -1,6 +1,6 @@
 import test from 'ava';
 import { loadServerSystem } from '../loaders/loadServerSystem';
-import type { DeclareFn} from '../utils/getGlobalSystem';
+import type { DeclareFn } from '../utils/getGlobalSystem';
 import { getGlobalSystem } from '../utils/getGlobalSystem';
 
 test.before(async () => {
@@ -31,4 +31,17 @@ test('SystemJS functional', async (t) => {
   t.is(System.resolve('test'), 'test');
   // t.log(Array.from(System.entries()));
   t.is((await System.import('test')).default, 'test');
+});
+
+test.failing('map', async (t) => {
+  const System = getGlobalSystem();
+  System.addImportMap({
+    imports: {
+      '@wener/test': 'package:@wener/test/a.js',
+      '@wener/test/': 'package:@wener/test/',
+    },
+  });
+  t.is(System.resolve('@wener/test'), 'package:@wener/test/a.js');
+  // this failed
+  t.is(System.resolve('./b.js', '@wener/test'), 'package:@wener/test/b.js');
 });

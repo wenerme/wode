@@ -1,4 +1,4 @@
-export { ThemeStateReactor, useThemeSchema, useActiveTheme, useThemeState } from './useTheme';
+export { ThemeStateReactor, useThemeSchema, useActiveTheme, useThemeState, ThemeProvider } from './useTheme';
 export { DaisyDemo } from './DaisyDemo';
 export { ThemeSelectorButton } from './ThemeSelectorButton';
 export { ThemeListSelector } from './ThemeListSelector';

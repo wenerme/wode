@@ -2,7 +2,7 @@ import type { FC, PropsWithChildren, ReactNode } from 'react';
 import React, { memo, useCallback, useDebugValue, useEffect, useId } from 'react';
 import { createStore } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
-import shallow from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 import { useCompareEffect } from '@wener/reaction';
 import { createStoreContext } from '../zustand';
 

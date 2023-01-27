@@ -1,7 +1,7 @@
 import React from 'react';
 import { ImLab } from 'react-icons/im';
 
-export const WenerApiHome = () => {
+export const HomePage = () => {
   return (
     <div className={'flex flex-col gap-4 h-full items-center justify-center'}>
       <div className="hero min-h-screen bg-base-200">
