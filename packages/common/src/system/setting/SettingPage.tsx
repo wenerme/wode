@@ -1,11 +1,12 @@
 import type { ReactNode } from 'react';
 import React from 'react';
+import { AiFillExperiment, AiOutlineExperiment } from 'react-icons/ai';
 import { HiColorSwatch, HiOutlineColorSwatch } from 'react-icons/hi';
 import { HiOutlineCog } from 'react-icons/hi2';
 import { TiInfoLarge, TiInfoLargeOutline } from 'react-icons/ti';
 import type { ExpandableSideMenuItemProps } from '../../layouts';
 import { ExpandableSideMenuLayout } from '../../layouts';
-import { usePageLayoutState } from '../layouts/usePageLayoutState';
+import { usePageLayoutState } from '../layouts';
 
 const MenuItems: ExpandableSideMenuItemProps[] = [
   {
@@ -28,6 +29,17 @@ const MenuItems: ExpandableSideMenuItemProps[] = [
     href: '/setting/system/info',
     icon: <TiInfoLargeOutline />,
     iconActive: <TiInfoLarge />,
+  },
+
+  {
+    type: 'title',
+    label: '开发',
+  },
+  {
+    label: '调试设置',
+    href: '/setting/dev/debug',
+    icon: <AiOutlineExperiment />,
+    iconActive: <AiFillExperiment />,
   },
 ];
 export const SettingPage: React.FC<{ children?: ReactNode }> = ({ children }) => {

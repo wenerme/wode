@@ -1,8 +1,5 @@
 import type { HTMLAttributes, ReactSVGElement } from 'react';
 import React from 'react';
-import { useComponent } from './ComponentContext';
+import { createContextComponent } from './ComponentContext';
 
-export const SystemLogo: React.FC<HTMLAttributes<ReactSVGElement>> = (props) => {
-  const Logo = useComponent('Logo');
-  return <Logo {...props} />;
-};
+export const SystemLogo = createContextComponent<HTMLAttributes<ReactSVGElement>>('Logo');

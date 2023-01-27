@@ -20,7 +20,7 @@ export const SettingAppearance = () => {
               <span className="label-text">使用系统配色</span>
               <input
                 type="checkbox"
-                className="toggle toggle-accent"
+                className="toggle toggle-sm toggle-accent"
                 checked={theme === 'system'}
                 onChange={() => {
                   setTheme(theme === 'system' ? getPrefersColorSchema() : 'system');

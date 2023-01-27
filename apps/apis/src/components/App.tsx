@@ -12,9 +12,10 @@ export const App: React.FC<{ path?: string }> = ({ path = '/' }) => {
     typeof window === 'undefined'
       ? createMemoryRouter(createPrimaryRoutes(), { initialEntries: [path] })
       : createBrowserRouter(createPrimaryRoutes());
+  // NOTE ssr not works as expected - always render home page
   if (typeof window === 'undefined') {
     console.debug('\nSSR Render:', path);
-    // router 使用 lazy 构建，无法 ssr
+    // router built by React.lazy, can not ssr
 
     // const match = matchRoutes(createPrimaryRoutes(), path);
     // return <AppContext>{renderMatches(match)}</AppContext>; // Missing context

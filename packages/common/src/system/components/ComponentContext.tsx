@@ -1,4 +1,4 @@
-import type { CSSProperties } from 'react';
+import type { CSSProperties, ReactElement } from 'react';
 import React, { createContext, useContext, useState } from 'react';
 import { GrSystem } from 'react-icons/gr';
 import { createStore } from 'zustand';
@@ -36,6 +36,19 @@ export const ComponentContext = createContext<ReturnType<typeof createComponentS
     components: DefaultComponentRegistry,
   }),
 );
+
+export function createContextComponent<P extends Record<string, any>>(
+  name: string,
+  { fallback }: { fallback?: ReactElement } = {},
+): React.FC<P> {
+  return (props) => {
+    const C = useComponent(name);
+    if (!C) {
+      return fallback || null;
+    }
+    return React.createElement(C, props);
+  };
+}
 
 export const ComponentProvider: React.FC<{ children?: React.ReactNode; components: Partial<ComponentRegistry> }> = ({
   children,
