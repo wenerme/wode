@@ -26,9 +26,12 @@ export function parseDivisionCode(divisions: Record<string, string>, code: strin
   };
 }
 
-let _DivisionCodes;
+let _DivisionCodes: string[];
 
-export function randomDivisionCode(divisions: Record<string, string>): string {
+export function randomDivisionCode(divisions?: Record<string, string>): string {
+  if (!divisions || !_DivisionCodes) {
+    return String(Math.floor(Math.random() * 999999));
+  }
   _DivisionCodes ||= Object.keys(divisions);
   return randomPick(_DivisionCodes);
 }
