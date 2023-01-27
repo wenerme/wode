@@ -1,5 +1,6 @@
 import React from 'react';
 import { ImLab } from 'react-icons/im';
+import { Link } from 'react-router-dom';
 
 export const HomePage = () => {
   return (
@@ -12,8 +13,12 @@ export const HomePage = () => {
             </h1>
             <p className="py-6">Just writing some codes & make it accessible.</p>
             <div className={'flex items-center gap-2'}>
-              <button className="btn btn-primary">Explorer</button>
-              <button className="btn btn-primary">API Docs</button>
+              <Link to={'/tool'} className="btn btn-primary">
+                Explorer
+              </Link>
+              <Link to={'/setting/dev/api-docs'} className="btn btn-secondary">
+                API Docs
+              </Link>
             </div>
           </div>
         </div>
