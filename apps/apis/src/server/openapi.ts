@@ -6,6 +6,7 @@ let openApiDocument: ReturnType<typeof generateOpenApiDocument>;
 
 export function getOpenApiDocument({ origin }: { origin?: string }) {
   const baseUrl = `${getBaseUrl({ origin })}/api`;
+  const servers = Array.from(new Set([baseUrl, `${getBaseUrl()}/api`, 'https://apis.wener.me/api'])).sort();
   return (openApiDocument ||= {
     ...generateOpenApiDocument(appRouter, {
       title: 'APIs',
@@ -15,13 +16,6 @@ export function getOpenApiDocument({ origin }: { origin?: string }) {
       docsUrl: 'https://apis.wener.me',
       tags: ['auth', 'users', 'posts'],
     }),
-    servers: [
-      {
-        url: baseUrl,
-      },
-      {
-        url: 'https://apis.wener.me',
-      },
-    ],
+    servers: servers.map((url) => ({ url })),
   });
 }
