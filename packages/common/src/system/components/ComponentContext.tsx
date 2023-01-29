@@ -1,9 +1,9 @@
-import type { CSSProperties, ReactElement } from 'react';
+import type { CSSProperties } from 'react';
 import React, { createContext, useContext, useState } from 'react';
 import { GrSystem } from 'react-icons/gr';
 import { createStore } from 'zustand';
 import { shallow } from 'zustand/shallow';
-import { useCompareEffect } from '@wener/reaction';
+import { flexRender, FlexRenderable, useCompareEffect } from '@wener/reaction';
 
 type ComponentStoreApi = ReturnType<typeof createComponentStore>;
 
@@ -28,23 +28,29 @@ const createComponentStore = ({ parent, components = {} }: Partial<ComponentStor
       components,
     };
   });
-const DefaultComponentRegistry: ComponentRegistry = {
+const DefaultContextComponents: ComponentRegistry = {
   Logo: GrSystem,
+  // SystemAbout, // 循环依赖
 };
+
+export function getDefaultContextComponents() {
+  return DefaultContextComponents;
+}
+
 export const ComponentContext = createContext<ReturnType<typeof createComponentStore>>(
   createComponentStore({
-    components: DefaultComponentRegistry,
+    components: DefaultContextComponents,
   }),
 );
 
-export function createContextComponent<P extends Record<string, any>>(
+export function createContextComponent<P extends {}>(
   name: string,
-  { fallback }: { fallback?: ReactElement } = {},
+  { fallback }: { fallback?: FlexRenderable<P> } = {},
 ): React.FC<P> {
   return (props) => {
     const C = useComponent(name);
     if (!C) {
-      return fallback || null;
+      return fallback ? (flexRender(fallback, props) as any) : null;
     }
     return React.createElement(C, props);
   };
@@ -74,7 +80,7 @@ export function useComponent(o: any): any {
   const select = (store: ComponentStoreApi, o: any, _components?: ComponentRegistry): any => {
     const state = store.getState();
     const components = _components || {
-      ...DefaultComponentRegistry,
+      ...DefaultContextComponents,
       ...state.parent?.getState().components,
       ...state.components,
     };

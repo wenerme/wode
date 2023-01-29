@@ -4,13 +4,18 @@ import { Navigate, Outlet } from 'react-router-dom';
 import { ErrorSuspenseBoundary } from '@wener/reaction';
 import { PageErrorState } from '../../components';
 import type { RouteObjects } from '../../router';
+import { createContextComponent, SystemAbout } from '../components';
 import { SettingRouteId } from './const';
 
 const SettingAppearance = lazy(() => import('./SettingAppearance'));
-const SystemInfo = lazy(() => import('./SystemInfo'));
 const SettingPage = lazy(() => import('./SettingPage'));
 const DevDebug = lazy(() => import('./DevDebug'));
 const DevApiDocs = lazy(() => import('./DevApiDocs'));
+
+// avoid circular dependency
+const SettingSystemAbout = createContextComponent('SystemAbout', {
+  fallback: SystemAbout,
+});
 
 export function createSettingRoutes(): RouteObjects {
   return [
@@ -72,8 +77,8 @@ export function createSettingRoutes(): RouteObjects {
               element: <Navigate to={'info'} />,
             },
             {
-              path: 'info',
-              element: <SystemInfo />,
+              path: 'about',
+              element: <SettingSystemAbout children={null} />,
               handle: {
                 title: '系统信息',
               },
