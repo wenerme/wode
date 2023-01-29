@@ -6,6 +6,8 @@ import { type DivisionCodeLevel } from './types';
 export interface ParsedDivisionCode {
   level: DivisionCodeLevel;
   code: string;
+  name?: string;
+  fullName?: string;
   names: string[];
   // 村级（村委会、居委会）
   // 12 位
@@ -22,6 +24,8 @@ export interface ParsedDivisionCode {
   // 省级（省份、直辖市、自治区）
   // 2 位 - 32 个
   province: CodeName;
+
+  children?: Array<{ code: string; name?: string }>;
 }
 
 export interface CodeName {
@@ -112,6 +116,13 @@ export function parseDivisionCode(code: string | number): ParsedDivisionCode | u
   out.names = [out.province.name, out.city?.name, out.county?.name, out.town?.name, out.village?.name].filter(
     Boolean,
   ) as string[];
+  out.name = out.names.at(-1);
+  out.fullName = out.names.join('') || undefined;
+
+  out.children = (table.get(parseInt(out.code))?.children ?? []).map((code) => {
+    const { name } = table.get(code) || {};
+    return { code: String(code), name };
+  });
   return out;
 }
 
