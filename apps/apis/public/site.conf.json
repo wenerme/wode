@@ -6,5 +6,18 @@
   },
   "module": {
     "src": "/module.config.json"
+  },
+  "api": {
+    "origin": "https://apis.wener.me"
+  },
+  "trpc": {
+    "servers": {
+      "default": {
+        "url": "api/trpc"
+      },
+      "wecom": {
+        "url": "wecom/api/trpc"
+      }
+    }
   }
 }

@@ -1,5 +1,6 @@
+import React from 'react';
 import { useSnapshot } from 'valtio';
-import { useDebugState } from '../components/useDebugState';
+import { useDebugState } from '../components';
 import { SettingLayout } from '../layouts';
 
 const isDev = process.env.NODE_ENV === 'development';

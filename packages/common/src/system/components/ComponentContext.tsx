@@ -3,7 +3,7 @@ import React, { createContext, useContext, useState } from 'react';
 import { GrSystem } from 'react-icons/gr';
 import { createStore } from 'zustand';
 import { shallow } from 'zustand/shallow';
-import { flexRender, FlexRenderable, useCompareEffect } from '@wener/reaction';
+import { flexRender, type FlexRenderable, useCompareEffect } from '@wener/reaction';
 
 type ComponentStoreApi = ReturnType<typeof createComponentStore>;
 

@@ -1,11 +1,13 @@
 import React from 'react';
-import { Outlet, RouteObject } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import { ErrorSuspenseBoundary, NotFoundPage } from 'common/src/components';
+import { type RouteObjects } from 'common/src/router';
+import { getSiteConf } from 'common/src/system/components';
 import { HomePage } from './HomePage';
 import { PrimaryLayout } from './PrimaryLayout';
 import { RootRouteReactor } from './RootRouteReactor';
 
-export function createPrimaryLayoutRoutes(createRoutes: () => RouteObject[] = () => []): RouteObject[] {
+export function createPrimaryLayoutRoutes(routes: RouteObjects): RouteObjects {
   return [
     {
       element: (
@@ -18,7 +20,7 @@ export function createPrimaryLayoutRoutes(createRoutes: () => RouteObject[] = ()
       ),
       errorElement: <NotFoundPage />,
       handle: {
-        title: 'Wener APIs',
+        title: getSiteConf().title,
       },
       children: [
         {
@@ -29,7 +31,7 @@ export function createPrimaryLayoutRoutes(createRoutes: () => RouteObject[] = ()
           index: true,
           element: <HomePage />,
         },
-        ...createRoutes(),
+        ...routes,
       ],
     },
   ];

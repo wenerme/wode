@@ -16,7 +16,7 @@ export function getOpenApiDocument({ origin }: { origin?: string }) {
       title: 'APIs',
       description: 'Wener APIs',
       version: '1.0.0',
-      baseUrl: baseUrl,
+      baseUrl,
       docsUrl: 'https://apis.wener.me',
       tags: ['auth', 'users', 'posts'],
     }),

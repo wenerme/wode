@@ -1,6 +1,6 @@
 // https://github.com/yonycalsin/nextjs-cors/blob/master/src/index.ts
-import cors, { CorsOptions, CorsOptionsDelegate } from 'cors';
-import { NextApiRequest, NextApiResponse } from 'next';
+import cors, { type CorsOptions, type CorsOptionsDelegate } from 'cors';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
 // Helper method to wait for a middleware to execute before continuing
 // And to throw an error when an error happens in a middleware
@@ -9,10 +9,10 @@ function initMiddleware(middleware: typeof cors) {
     new Promise((resolve, reject) => {
       middleware(options)(req, res, (result: Error | unknown) => {
         if (result instanceof Error) {
-          return reject(result);
+          reject(result); return;
         }
 
-        return resolve(result);
+        resolve(result);
       });
     });
 }

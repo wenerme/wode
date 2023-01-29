@@ -1,6 +1,6 @@
 import { requireFound } from 'common/src/trpc/handlers';
 import { z } from 'zod';
-import { CountryCode } from '@wener/data/src/country-codes';
+import { type CountryCode } from '@wener/data/src/country-codes';
 import { get, set } from '@wener/utils';
 import { publicProcedure, router } from '../../trpc';
 import { cnRouter } from './cnRouter';
@@ -35,7 +35,7 @@ export const dataRouter = router({
 });
 
 let CountryCodes;
-let CountryCodesByKey: Record<string, CountryCode> = {};
+const CountryCodesByKey: Record<string, CountryCode> = {};
 
 async function getCountryCodesIndex(): Promise<Record<string, CountryCode>> {
   await getCountryCodes();
@@ -60,8 +60,8 @@ async function getCountryCodes(): Promise<CountryCode[]> {
 
 function localize(o: any, lang: string, paths: string[]) {
   o = structuredClone(o);
-  for (let path of paths) {
-    let dict = get(o, path);
+  for (const path of paths) {
+    const dict = get(o, path);
     if (dict) {
       set(o, path, local(dict, lang));
     }

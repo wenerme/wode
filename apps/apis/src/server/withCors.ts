@@ -1,5 +1,5 @@
 import { runNextCors } from 'common/src/nextjs/server';
-import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
+import { type NextApiHandler, type NextApiRequest, type NextApiResponse } from 'next';
 
 export function withCors(next: NextApiHandler) {
   // The value of the 'Access-Control-Allow-Origin' header in the response must not be the wildcard '*' when the request's credentials mode is 'include'

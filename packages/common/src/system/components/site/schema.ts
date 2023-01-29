@@ -24,5 +24,23 @@ export const SiteConf = z.object({
         include: [],
       },
     }),
+  api: z
+    .object({
+      origin: z.string().optional(),
+    })
+    .default({}),
+  trpc: z
+    .object({
+      servers: z
+        .record(
+          z.object({
+            url: z.string(),
+          }),
+        )
+        .default({}),
+    })
+    .default({})
+    .default({}),
+  auth: z.object({}).default({}),
 });
 export type SiteConf = z.infer<typeof SiteConf>;
