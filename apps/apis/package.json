@@ -48,6 +48,7 @@
     "@types/semver": "^7.3.13",
     "@types/zxcvbn": "^4.4.1",
     "@vitejs/plugin-react": "^3.0.1",
-    "vite": "^4.0.4"
+    "vite": "^4.0.4",
+    "vite-plugin-dynamic-import": "^1.2.7"
   }
 }

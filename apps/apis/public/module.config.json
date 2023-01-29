@@ -1,0 +1,9 @@
+{
+  "include": [
+    "setting",
+    "hash",
+    "password",
+    "ipfs",
+    "tool"
+  ]
+}

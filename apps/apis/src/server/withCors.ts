@@ -17,8 +17,10 @@ export function withCors(next: NextApiHandler) {
       'http://127.0.0.1:3000',
       'http://0.0.0.0:3000',
       'http://localhost:3000',
-      // vite
+      // vite dev
       'http://localhost:5173',
+      // vite preview
+      'http://localhost:4173',
     ],
   };
   return async (req: NextApiRequest, res: NextApiResponse) => {

@@ -3,3 +3,4 @@ export { DaisyDemo } from './DaisyDemo';
 export { ThemeSelectorButton } from './ThemeSelectorButton';
 export { ThemeListSelector } from './ThemeListSelector';
 export { getSupportedThemes } from './getSupportedThemes';
+export { getPrefersColorSchema } from './getPrefersColorSchema';
