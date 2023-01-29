@@ -1,26 +1,20 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaFemale, FaMale } from 'react-icons/fa';
-import { index } from '@src/components/cn/division';
 import { DivisionCode, parseDivisionCode } from '@wener/data/cn';
+import { loadCounty } from '@wener/data/cn/division/loaders';
 
 export const DivisionFormat: React.FC<{ value?: string }> = ({ value }) => {
-  const [code, setCode] = useState<DivisionCode>();
+  const [code, setCode] = useState<DivisionCode | undefined>();
   useEffect(() => {
-    Promise.resolve(index()).then((v) => {
-      value && setCode(parseDivisionCode(v || {}, value));
+    Promise.resolve(loadCounty()).then((v) => {
+      value && setCode(parseDivisionCode(value));
     });
   }, [value]);
   if (!value) {
     return null;
   }
   if (code) {
-    let title = code.name;
-    if (!value.endsWith('00')) {
-      title = `${code.cityName} ${title}`;
-    }
-    if (!value.endsWith('0000')) {
-      title = `${code.provinceName} ${title}`;
-    }
+    let title = code.names.join(' ');
     return (
       <span>
         <span className="mr-1">{title}</span>

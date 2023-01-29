@@ -16,20 +16,22 @@ export const dataRouter = router({
     )
     .output(z.object({}).passthrough())
     .query(() => {}),
-  getCountryCode: publicProcedure
-    .meta({ openapi: { method: 'GET', path: '/dara/country-code/{code}' } })
-    .input(
-      z.object({
-        code: z.string(),
-        lang: z.string().optional(),
+  countryCode: router({
+    get: publicProcedure
+      .meta({ openapi: { method: 'GET', path: '/dara/country-code/{code}' } })
+      .input(
+        z.object({
+          code: z.string(),
+          lang: z.string().optional(),
+        }),
+      )
+      .output(z.object({}).passthrough())
+      .query(async ({ input: { code, lang = 'zh-CN' }, ctx: {} }) => {
+        const found = (await getCountryCodesIndex())[code.toUpperCase()];
+        requireFound(found);
+        return localize(found, lang, ['fullName', 'shortName', 'officialName', 'currency.name']);
       }),
-    )
-    .output(z.object({}).passthrough())
-    .query(async ({ input: { code, lang = 'zh-CN' }, ctx: {} }) => {
-      const found = (await getCountryCodesIndex())[code.toUpperCase()];
-      requireFound(found);
-      return localize(found, lang, ['fullName', 'shortName', 'officialName', 'currency.name']);
-    }),
+  }),
 });
 
 let CountryCodes;

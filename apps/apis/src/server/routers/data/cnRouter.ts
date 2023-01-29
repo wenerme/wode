@@ -1,6 +1,8 @@
 import { requireFound } from 'common/src/trpc/handlers';
 import { z } from 'zod';
 import { parseDivisionCode } from '@wener/data/cn';
+import { loadCounty } from '@wener/data/src/cn/division/loaders';
+import { getDivisionTable } from '@wener/data/src/cn/division/table';
 import { publicProcedure, router } from '../../trpc';
 
 export const cnRouter = router({
@@ -14,17 +16,18 @@ export const cnRouter = router({
       )
       .output(z.object({}).passthrough().array())
       .query(async ({ input: { query } }) => {
-        let all = await getDivisions();
+        await loadCounty();
+        let table = getDivisionTable();
         let out = [];
-        for (let [k, v] of Object.entries(all)) {
-          if (k.includes(query) || (v as string).includes(query)) {
-            out.push(parseDivisionCode(all, k));
+        for (let [code, { name }] of table.entries()) {
+          if (name.includes(query)) {
+            out.push(parseDivisionCode(code)!);
           }
-          if (out.length >= 50) {
+          if (out.length > 10) {
             break;
           }
         }
-        return out as any;
+        return out;
       }),
     get: publicProcedure
       .meta({ openapi: { method: 'GET', path: '/data/cn/division/{code}' } })
@@ -35,14 +38,14 @@ export const cnRouter = router({
       )
       .output(z.object({}).passthrough())
       .query(async ({ input: { code } }) => {
-        const divisions = await getDivisions();
-        return requireFound(parseDivisionCode(divisions, code));
+        await loadCounty();
+        let out = requireFound(parseDivisionCode(code));
+        const table = getDivisionTable();
+        (out as any).children = (table.get(parseInt(out.code))?.children ?? []).map((code) => {
+          const { name } = table.get(code) || {};
+          return { code, name };
+        });
+        return out;
       }),
   }),
 });
-
-let Divisions;
-
-export async function getDivisions() {
-  return (Divisions ||= await import('@wener/data/cn/division/divisions.json').then((v) => v.default));
-}
