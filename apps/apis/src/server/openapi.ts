@@ -6,7 +6,11 @@ let openApiDocument: ReturnType<typeof generateOpenApiDocument>;
 
 export function getOpenApiDocument({ origin }: { origin?: string }) {
   const baseUrl = `${getBaseUrl({ origin })}/api`;
-  const servers = Array.from(new Set([baseUrl, `${getBaseUrl()}/api`, 'https://apis.wener.me/api'])).sort();
+  // origin server be the first
+  const set = new Set([`${getBaseUrl()}/api`, 'https://apis.wener.me/api']);
+  set.delete(baseUrl);
+  const servers = [baseUrl, ...Array.from(set).sort()];
+
   return (openApiDocument ||= {
     ...generateOpenApiDocument(appRouter, {
       title: 'APIs',

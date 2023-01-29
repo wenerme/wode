@@ -23,9 +23,9 @@ export function loadCounty(): MaybePromise<DivisionTable> {
 loadCounty.loaded = false;
 loadCounty.loader = undefined as Promise<DivisionTable> | undefined;
 
-export type DivisionNameData = [number, string][];
-export type DivisionChildrenData = [number, number[]][];
 export type DivisionData = [number, string, number[]][];
+
+type DivisionNameData = [number, string][];
 
 // @ts-expect-error
 function loadName(data: DivisionNameData) {
@@ -41,6 +41,8 @@ function loadName(data: DivisionNameData) {
   }
 }
 
+type DivisionChildrenData = [number, number[]][];
+
 // @ts-expect-error
 function loadChildren(data: DivisionChildrenData) {
   const table = getDivisionTable();
@@ -55,7 +57,7 @@ function loadChildren(data: DivisionChildrenData) {
   }
 }
 
-function loadData(data: DivisionData) {
+export function loadData(data: DivisionData) {
   const table = getDivisionTable();
   for (const [code, name, children] of data) {
     let e = table.get(code);
