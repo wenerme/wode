@@ -1,5 +1,6 @@
 import type { NextApiHandler } from 'next';
 import { getOpenApiDocument } from '../../server/openapi';
+import { withCors } from '../../server/withCors';
 
 const handler: NextApiHandler = (req, res) => {
   let origin;
@@ -9,4 +10,4 @@ const handler: NextApiHandler = (req, res) => {
   res.status(200).send(getOpenApiDocument({ origin }));
 };
 
-export default handler;
+export default withCors(handler);
