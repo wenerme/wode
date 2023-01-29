@@ -127,6 +127,7 @@ importers:
       use-immer: ^0.8.1
       valtio: ^1.9.0
       vite: ^4.0.4
+      vite-plugin-dynamic-import: ^1.2.7
       zod: ^3.20.2
       zustand: ^4.3.2
       zxcvbn: ^4.4.2
@@ -170,6 +171,7 @@ importers:
       '@types/zxcvbn': 4.4.1
       '@vitejs/plugin-react': 3.0.1_vite@4.0.4
       vite: 4.0.4
+      vite-plugin-dynamic-import: 1.2.7
 
   apps/demo:
     specifiers:
@@ -15641,6 +15643,12 @@ packages:
   /vary/1.1.2:
     resolution: {integrity: sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==}
     engines: {node: '>= 0.8'}
+
+  /vite-plugin-dynamic-import/1.2.7:
+    resolution: {integrity: sha512-n1fjBaYF8ByqORv7hpEaZQiQie8sNiWGU61DpYs+fgToGmzGIgThUI8BCnW3RICVK4gJC2sDNn7NK1RzTvRyEA==}
+    dependencies:
+      fast-glob: 3.2.12
+    dev: true
 
   /vite-plugin-externals/0.5.1_vite@4.0.4:
     resolution: {integrity: sha512-HvRFG5y9wXoJUG9FSbSp9ikOiJRh7EzN6tJC5oIOcEj+19GUw9Z1NNCPFtAmX75Ajcr10FdELKNmuXS3lExkcg==}

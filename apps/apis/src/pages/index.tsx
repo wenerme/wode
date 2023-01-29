@@ -1,7 +1,8 @@
 import React from 'react';
 import Head from 'next/head';
 import { ErrorSuspenseBoundary } from '@wener/reaction';
-import { RootApp } from '../components/RootApp';
+import App from '../components/App';
+import { RootContext } from '../components/RootContext';
 
 // const Content = dynamic(() => import('../components/WenerApisApp'), {
 //   ssr: false,
@@ -14,7 +15,9 @@ const CurrentPage: React.FC<{ path?: string }> = ({ path }) => {
         <title>Wener&apos;s APIs</title>
       </Head>
       <ErrorSuspenseBoundary>
-        <RootApp path={path} />
+        <RootContext>
+          <App path={path} />
+        </RootContext>
       </ErrorSuspenseBoundary>
     </>
   );

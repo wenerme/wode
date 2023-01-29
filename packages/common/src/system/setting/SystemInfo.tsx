@@ -4,9 +4,9 @@ import { ImLab } from 'react-icons/im';
 import dayjs from 'dayjs';
 import { useImmer } from 'use-immer';
 import { useWindowEventListener } from '@wener/reaction';
-import { getPrefersColorSchema } from '../../daisy/theme/getPrefersColorSchema';
+import { getPrefersColorSchema } from '../../daisy/theme';
 import { BuildInfo, getBuildInfo, getSiteTitle } from '../../runtime';
-import { SystemLogo } from '../components/SystemLogo';
+import { SystemLogo } from '../components';
 
 export const SystemInfo = () => {
   return (

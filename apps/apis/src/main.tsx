@@ -1,10 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import 'common/src/styles/globals.css';
-import { RootApp } from './components/RootApp';
+import { ModuleApp } from './components/ModuleApp';
+import { RootContext } from './components/RootContext';
 
 ReactDOM.createRoot(document.getElementById('__next') as HTMLElement).render(
   <React.StrictMode>
-    <RootApp />
+    <RootContext>
+      <ModuleApp />
+    </RootContext>
   </React.StrictMode>,
 );
