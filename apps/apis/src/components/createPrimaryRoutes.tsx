@@ -4,5 +4,5 @@ import { createPrimaryLayoutRoutes } from './createPrimaryLayoutRoutes';
 import { createRoutes } from './createRoutes';
 
 export function createPrimaryRoutes(): RouteObject[] {
-  return createPrimaryLayoutRoutes(createRoutes);
+  return createPrimaryLayoutRoutes(createRoutes());
 }

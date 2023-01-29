@@ -1,6 +1,6 @@
-import { ReactElement } from 'react';
-import { RouteObjects } from 'common/src/router';
-import { MaybePromise } from '@wener/utils';
+import { type ReactElement } from 'react';
+import { type MaybePromise } from '@wener/utils';
+import { type RouteObjects } from '../../router';
 
 export interface Module {
   id: string;

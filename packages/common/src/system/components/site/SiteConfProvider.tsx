@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { type ReactNode, useEffect, useState } from 'react';
 import { createStore } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 import { createLazyPromise } from '@wener/utils';
@@ -10,7 +10,7 @@ export const SiteConfProvider: React.FC<{ children?: ReactNode }> = ({ children 
   const [init, setInit] = useState(false);
   useEffect(() => {
     // fixme handle error
-    Loader.finally(() => setInit(true));
+    Loader.finally(() => { setInit(true); });
   }, []);
   if (!init) {
     return <LoadingIndicator />;
@@ -28,7 +28,7 @@ const Loader = createLazyPromise(async () => {
       // localStorage['__SITE_MODULE_CONF__'] = JSON.stringify({disabled:['tool']})
       // 恢复
       // delete localStorage['__SITE_MODULE_CONF__']
-      let data = SiteModuleConf.deepPartial().parse(JSON.parse(localStorage['__SITE_MODULE_CONF__']));
+      const data = SiteModuleConf.deepPartial().parse(JSON.parse(localStorage.__SITE_MODULE_CONF__));
       if (data) {
         moduleConf.disabled = moduleConf.disabled.concat(data.disabled || []);
       }

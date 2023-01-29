@@ -1,6 +1,6 @@
 import React from 'react';
 import 'common/src/styles/globals.css';
-import { AppProps, AppType } from 'next/app';
+import { type AppProps, type AppType } from 'next/app';
 
 // import { Setup } from 'common/src/layouts';
 // import { SessionProvider } from 'next-auth/react';

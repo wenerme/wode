@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { type ReactNode } from 'react';
 import { HiCheck } from 'react-icons/hi';
 import { ImLab } from 'react-icons/im';
 import dayjs from 'dayjs';
@@ -6,7 +6,7 @@ import { useImmer } from 'use-immer';
 import { useWindowEventListener } from '@wener/reaction';
 import { Button } from '../../daisy';
 import { getPrefersColorSchema } from '../../daisy/theme';
-import { BuildInfo, getBuildInfo } from '../../runtime';
+import { type BuildInfo, getBuildInfo } from '../../runtime';
 import { getSiteConf, SystemLogo } from './index';
 
 export const SystemAbout: React.FC<{ children?: ReactNode }> = ({ children }) => {

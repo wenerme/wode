@@ -1,6 +1,7 @@
 import { getOriginUrl } from 'common/src/runtime';
+import { getSiteConf } from 'common/src/system/components';
 import superjson from 'superjson';
-import { createTRPCProxyClient, httpBatchLink, TRPCClientRuntime, TRPCLink } from '@trpc/client';
+import { createTRPCProxyClient, httpBatchLink, type TRPCClientRuntime, type TRPCLink } from '@trpc/client';
 import { createTRPCReact } from '@trpc/react-query';
 import type { AppRouter } from '../server/routers/_app';
 
@@ -13,37 +14,6 @@ export function createReactClient() {
   });
 }
 
-// export const trpc = createTRPCNext<AppRouter>({
-//   config({ ctx }) {
-//     return {
-//       transformer: superjson,
-//       links: [
-//         httpBatchLink({
-//           /**
-//            * If you want to use SSR, you need to use the server's full URL
-//            * @link https://trpc.io/docs/ssr
-//            **/
-//           url: `${getBaseUrl()}/api/trpc`,
-//           fetch(url, options) {
-//             return fetch(url, {
-//               ...options,
-//               credentials: 'include',
-//             });
-//           },
-//         }),
-//       ],
-//       /**
-//        * @link https://tanstack.com/query/v4/docs/reference/QueryClient
-//        **/
-//       queryClientConfig: { defaultOptions: { queries: { staleTime: 60 * 5 * 1000 } } },
-//     };
-//   },
-//   /**
-//    * @link https://trpc.io/docs/ssr
-//    **/
-//   ssr: true,
-// });
-
 export const trpcClient = createTRPCProxyClient<AppRouter>(createClientOptions());
 
 function createClientOptions() {
@@ -54,12 +24,16 @@ function createClientOptions() {
 }
 
 function getApiOriginUrl() {
+  const origin = getSiteConf().api.origin;
+  if (origin) {
+    return origin;
+  }
   // vite
   try {
-    return import.meta.env.VITE_SERVER_ORIGIN_URL || 'https://apis.wener.me';
+    return import.meta.env.VITE_API_ORIGIN_URL || getOriginUrl();
   } catch {}
   // nextjs
-  return process.env.NEXT_PUBLIC_SERVER_ORIGIN_URL || getOriginUrl();
+  return process.env.NEXT_PUBLIC_API_ORIGIN_URL || getOriginUrl();
 }
 
 function createClientLink(): TRPCLink<AppRouter> {

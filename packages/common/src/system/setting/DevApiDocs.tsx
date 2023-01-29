@@ -1,3 +1,4 @@
+import React from 'react';
 import { getBaseUrl } from '../../runtime';
 
 export const DevApiDocs = () => {

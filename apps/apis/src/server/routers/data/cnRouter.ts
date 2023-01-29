@@ -16,9 +16,9 @@ export const cnRouter = router({
       .output(z.object({}).passthrough().array())
       .query(async ({ input: { query } }) => {
         await loadCounty();
-        let table = getDivisionTable();
-        let out = [];
-        for (let [code, { name }] of table.entries()) {
+        const table = getDivisionTable();
+        const out = [];
+        for (const [code, { name }] of table.entries()) {
           if (name.includes(query)) {
             out.push(parseCode(code)!);
           }

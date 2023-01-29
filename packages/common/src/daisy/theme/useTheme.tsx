@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect } from 'react';
+import React, { type ReactNode, useEffect } from 'react';
 import { useSnapshot } from 'valtio';
 import { derive, watch } from 'valtio/utils';
 import { proxyWithCompare } from '../../valtio';
