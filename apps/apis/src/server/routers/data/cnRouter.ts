@@ -1,6 +1,6 @@
 import { requireFound } from 'common/src/trpc/handlers';
 import { z } from 'zod';
-import { getDivisionTable, parseDivisionCode } from '@wener/data/cn/division';
+import { getDivisionTable, ParsedDivisionCode, parseDivisionCode } from '@wener/data/cn/division';
 import { loadCounty } from '@wener/data/cn/division/loaders';
 import { publicProcedure, router } from '../../trpc';
 
@@ -20,7 +20,7 @@ export const cnRouter = router({
         let out = [];
         for (let [code, { name }] of table.entries()) {
           if (name.includes(query)) {
-            out.push(parseDivisionCode(code)!);
+            out.push(parseCode(code)!);
           }
           if (out.length > 10) {
             break;
@@ -38,13 +38,11 @@ export const cnRouter = router({
       .output(z.object({}).passthrough())
       .query(async ({ input: { code } }) => {
         await loadCounty();
-        let out = requireFound(parseDivisionCode(code));
-        const table = getDivisionTable();
-        (out as any).children = (table.get(parseInt(out.code))?.children ?? []).map((code) => {
-          const { name } = table.get(code) || {};
-          return { code: String(code), name };
-        });
-        return out;
+        return requireFound(parseCode(code));
       }),
   }),
 });
+
+function parseCode(code: string | number) {
+  return parseDivisionCode(code);
+}
