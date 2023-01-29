@@ -1,6 +1,6 @@
 import { requireFound } from 'common/src/trpc/handlers';
 import { z } from 'zod';
-import { getDivisionTable, ParsedDivisionCode, parseDivisionCode } from '@wener/data/cn/division';
+import { getDivisionTable, parseDivisionCode } from '@wener/data/cn/division';
 import { loadCounty } from '@wener/data/cn/division/loaders';
 import { publicProcedure, router } from '../../trpc';
 
