@@ -4,28 +4,42 @@ import { ImLab } from 'react-icons/im';
 import dayjs from 'dayjs';
 import { useImmer } from 'use-immer';
 import { useWindowEventListener } from '@wener/reaction';
+import { Button } from '../../daisy';
 import { getPrefersColorSchema } from '../../daisy/theme';
-import { BuildInfo, getBuildInfo, getSiteTitle } from '../../runtime';
-import { SystemLogo } from '../components';
+import { BuildInfo, getBuildInfo } from '../../runtime';
+import { getSiteConf, SystemLogo } from './index';
 
-export const SystemInfo = () => {
+export const SystemAbout: React.FC<{ children?: ReactNode }> = ({ children }) => {
   return (
     <div className={'mx-auto mt-8 flex max-w-prose flex-col gap-8'}>
-      <AppBuildInfo info={getBuildInfo()} title={getSiteTitle()} />
-
-      <div className={'rounded-lg border p-4 text-sm shadow'}>
-        <article className={'prose'}>
-          <p>{getSiteTitle()}</p>
-          <small>由 Wener 提供技术支持。</small>
-        </article>
-      </div>
-
+      <AppBuildInfo info={getBuildInfo()} title={getSiteConf().title} />
+      <AuthorInfo />
       <ClientBrowserInfo />
+      {children}
     </div>
   );
 };
 
-export default SystemInfo;
+const AuthorInfo = () => {
+  const {
+    title,
+    author: { name, link },
+  } = getSiteConf();
+  return (
+    <div className={'rounded-lg border p-4 text-sm shadow'}>
+      <article className={'prose'}>
+        <p>{title}</p>
+        <small>
+          由{' '}
+          <Button href={link} size={'xs'} className={'btn-link'} target={'_blank'}>
+            {name}
+          </Button>{' '}
+          提供技术支持。
+        </small>
+      </article>
+    </div>
+  );
+};
 
 const AppBuildInfo: React.FC<{ logo?: ReactNode; title?: ReactNode; info: BuildInfo }> = ({ logo, title, info }) => {
   return (
@@ -96,6 +110,7 @@ const ClientBrowserInfo = () => {
             <summary className={'text-sm btn-link'}>更多信息</summary>
             <small>
               偏好主题: {getPrefersColorSchema()} <br />
+              语言: {navigator.language}
             </small>
           </details>
         </div>

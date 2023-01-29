@@ -1,9 +1,9 @@
 import React, { ReactNode, useEffect, useState } from 'react';
-import { LoadingIndicator } from 'common/src/components';
-import { getBaseUrl } from 'common/src/runtime';
 import { createStore } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 import { createLazyPromise } from '@wener/utils';
+import { LoadingIndicator } from '../../../components';
+import { getBaseUrl } from '../../../runtime';
 import { SiteConf, SiteModuleConf } from './schema';
 
 export const SiteConfProvider: React.FC<{ children?: ReactNode }> = ({ children }) => {
@@ -24,7 +24,11 @@ const Loader = createLazyPromise(async () => {
     const moduleConf = SiteModuleConf.parse(await fetch(conf.module.src).then((v) => v.json()));
     // local override
     try {
-      let data = SiteModuleConf.deepPartial().parse(JSON.parse(localStorage['__MODULE_CONF__']));
+      // e.g. 禁用 tool 模块
+      // localStorage['__SITE_MODULE_CONF__'] = JSON.stringify({disabled:['tool']})
+      // 恢复
+      // delete localStorage['__SITE_MODULE_CONF__']
+      let data = SiteModuleConf.deepPartial().parse(JSON.parse(localStorage['__SITE_MODULE_CONF__']));
       if (data) {
         moduleConf.disabled = moduleConf.disabled.concat(data.disabled || []);
       }
@@ -45,4 +49,7 @@ const SiteConfStore = createStore<SiteConf>()(
 
 export function getSiteConfStore() {
   return SiteConfStore;
+}
+export function getSiteConf() {
+  return getSiteConfStore().getState();
 }

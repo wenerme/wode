@@ -26,7 +26,7 @@ const MenuItems: ExpandableSideMenuItemProps[] = [
   },
   {
     label: '系统信息',
-    href: '/setting/system/info',
+    href: '/setting/system/about',
     icon: <TiInfoLargeOutline />,
     iconActive: <TiInfoLarge />,
   },
