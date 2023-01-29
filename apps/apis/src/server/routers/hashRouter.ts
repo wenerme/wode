@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { hex, sha1, sha256, sha384, sha512 } from '@wener/utils';
 import { publicProcedure, router } from '../trpc';
 
 export const hashRouter = router({
@@ -24,9 +25,14 @@ export const hashRouter = router({
           .partial(),
       }),
     )
-    .query(({ input: { data } }) => {
+    .query(async ({ input: { data } }) => {
       return {
-        digest: {},
+        digest: {
+          sha1: hex(await sha1(data)),
+          sha256: hex(await sha256(data)),
+          sha384: hex(await sha384(data)),
+          sha512: hex(await sha512(data)),
+        },
       };
     }),
 });
