@@ -1,0 +1,10 @@
+{
+  "title": "Wener APIs",
+  "author": {
+    "name": "Wener",
+    "link": "https://wener.me"
+  },
+  "module": {
+    "src": "/module.config.json"
+  }
+}
