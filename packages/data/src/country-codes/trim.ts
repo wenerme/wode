@@ -12,7 +12,7 @@ export function trim(o: any) {
     o = o.map(trim).filter((v) => v !== undefined);
     return o.length === 0 ? undefined : o;
   }
-  for (let k in o) {
+  for (const k in o) {
     const v = (o[k] = trim(o[k]));
     if (v === undefined) {
       delete o[k];

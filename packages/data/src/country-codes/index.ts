@@ -1,6 +1,6 @@
 export {};
 
-// @ts-ignore
+// @ts-expect-error
 declare module '@wener/data/country-codes.json' {
   const CountryCodes: CountryCode[];
   export default CountryCodes;

@@ -1,4 +1,4 @@
-let _table: Map<number, DivisionTableEntry> = new Map();
+const _table = new Map<number, DivisionTableEntry>();
 
 export type DivisionTable = Map<number, DivisionTableEntry>;
 

@@ -3,8 +3,8 @@ import { resolve } from 'import-meta-resolve';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-var __filename = fileURLToPath(import.meta.url);
-var __dirname = path.dirname(__filename);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // const resolve = import.meta.resolve!.bind(import.meta);
 

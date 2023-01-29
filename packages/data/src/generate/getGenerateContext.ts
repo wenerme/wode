@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import { formatBytes, MaybePromise } from '@wener/utils';
+import { formatBytes, type MaybePromise } from '@wener/utils';
 import { getPackageRootDir } from '../cn/utils/getPackageRootDir';
 import { cache } from './cache';
 
@@ -21,9 +21,9 @@ export interface GenerateContext {
 export function getGenerateContext(prefix?: string): MaybePromise<GenerateContext> {
   if (prefix) {
     return Promise.resolve(getGenerateContext()).then((c) => {
-      let cacheDir = path.resolve(c.cacheDir, prefix);
-      let dataDir = path.resolve(c.dataDir, prefix);
-      let srcDir = path.resolve(c.srcDir, prefix);
+      const cacheDir = path.resolve(c.cacheDir, prefix);
+      const dataDir = path.resolve(c.dataDir, prefix);
+      const srcDir = path.resolve(c.srcDir, prefix);
       return {
         ...c,
         dataDir,
@@ -60,8 +60,8 @@ export function getGenerateContext(prefix?: string): MaybePromise<GenerateContex
 }
 
 async function write(dir: string, file: string, content: string) {
-  let size = new Blob([content]).size;
-  let dst = path.join(dir, file);
+  const size = new Blob([content]).size;
+  const dst = path.join(dir, file);
   let last;
   try {
     last = (await fs.stat(dst)).size;
@@ -71,5 +71,5 @@ async function write(dir: string, file: string, content: string) {
       last ? (last !== size ? `${formatBytes(last)} (${last}) -> ` : 'SAME SIZE ') : ''
     }${formatBytes(size)} (${size})`,
   );
-  return fs.writeFile(dst, content);
+  await fs.writeFile(dst, content);
 }
