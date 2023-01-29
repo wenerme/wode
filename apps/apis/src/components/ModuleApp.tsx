@@ -1,15 +1,15 @@
-import React, { memo, useCallback } from 'react';
+import React, { ReactNode, useCallback, useEffect, useState } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { LoadingIndicator } from 'common/src/components';
 import { RouteObjects } from 'common/src/router';
-import { getBaseUrl } from 'common/src/runtime';
-import { z } from 'zod';
 import { createStore, useStore } from 'zustand';
 import { useAsyncEffect, useDebugRender } from '@wener/reaction';
 import { createLazyPromise } from '@wener/utils';
 import { AppContext } from './AppContext';
 import { DynamicModule, Module } from './Module';
+import { getSiteConfStore, SiteConfProvider } from './SiteConfProvider';
 import { createPrimaryLayoutRoutes } from './createPrimaryLayoutRoutes';
+import { SiteModuleConf } from './schema';
 
 export const ModuleApp = () => {
   const router = useStore(
@@ -17,37 +17,52 @@ export const ModuleApp = () => {
     useCallback((state) => state.router, []),
   );
   return (
-    <AppContext>
-      <ModuleSystemReactor />
-      {router && <RouterProvider router={router} fallbackElement={<LoadingIndicator />} />}
-    </AppContext>
+    <SiteConfProvider>
+      <ModuleProvider>
+        <AppContext>{router && <RouterProvider router={router} fallbackElement={<LoadingIndicator />} />}</AppContext>
+      </ModuleProvider>
+    </SiteConfProvider>
   );
+};
+
+const ModuleProvider: React.FC<{ children?: ReactNode }> = ({ children }) => {
+  const [init, setInit] = useState(false);
+  useEffect(() => {
+    // fixme handle error
+    Loader.finally(() => setInit(true));
+  }, []);
+  if (!init) {
+    return <LoadingIndicator />;
+  }
+  return <>{children}</>;
 };
 
 function useModuleSystemSetup() {
   const log = useDebugRender('useModuleSystemSetup');
   useAsyncEffect(async () => {
-    await SystemLoader;
+    await Loader;
     log('System loaded');
   }, []);
 }
 
-const SystemLoader = createLazyPromise(async () => {
+const Loader = createLazyPromise(async () => {
   // will not dynamic change - disable/enable module need refresh
   if (ModuleSystemStore.getState().router) {
     return;
   }
+  const src = getSiteConfStore().getState().module?.src;
 
-  const conf: ModuleConf = await fetch(`${getBaseUrl()}/module.config.json`).then((v) => v.json());
+  if (!src) {
+    // empty
+    const router = createBrowserRouter(createPrimaryLayoutRoutes(() => []));
+    ModuleSystemStore.setState((state) => {
+      return { ...state, modules: [], router, routes: [] };
+    });
+    return;
+  }
+
+  const conf = { ...getSiteConfStore().getState().module.config };
   conf.disabled ||= [];
-  try {
-    let result = ModuleConf.partial().safeParse(JSON.parse(localStorage['__MODULE_CONF__']));
-    if (result.success) {
-      const { data } = result;
-      conf.disabled = conf.disabled.concat(data.disabled || []);
-    }
-  } catch (e) {}
-
   const enabled = new Set(conf.include);
   conf.disabled.forEach((v) => enabled.delete(v));
   const cond = Array.from(enabled).map(async (name) => {
@@ -89,11 +104,6 @@ const SystemLoader = createLazyPromise(async () => {
   console.debug('Module initialized', { routes, router });
 });
 
-const ModuleSystemReactor = memo(() => {
-  useModuleSystemSetup();
-  return null;
-});
-
 interface IModuleSystemStore {
   router: ReturnType<typeof createBrowserRouter>;
   routes: RouteObjects;
@@ -109,10 +119,3 @@ const createModuleSystemStore = (): IModuleSystemStore => {
   };
 };
 const ModuleSystemStore = createStore<IModuleSystemStore>(createModuleSystemStore);
-
-const ModuleConf = z.object({
-  include: z.string().array(),
-  disabled: z.string().array().optional(),
-});
-
-type ModuleConf = z.infer<typeof ModuleConf>;
