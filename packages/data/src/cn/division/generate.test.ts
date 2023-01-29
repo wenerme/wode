@@ -1,5 +1,6 @@
 import test from 'ava';
 import { getGenerateContext } from '../../generate/getGenerateContext';
+import { split } from './parseDivisionCode';
 
 function parseCsv(v: string) {
   return v
@@ -22,7 +23,7 @@ async function generate() {
   const entries: Record<string, [number, string][]> = {};
   const set = new Map<number, [number, string, number[]?]>();
   for (const fn of ['provinces', 'cities', 'areas', 'streets', 'villages']) {
-    let rows: string[][] = await cache(
+    const rows: string[][] = await cache(
       `https://ghproxy.com/https://raw.githubusercontent.com/modood/Administrative-divisions-of-China/master/dist/${fn}.csv`,
     ).then(parseCsv);
     entries[fn] = rows.map(([k, v]) => {
@@ -42,10 +43,10 @@ async function generate() {
 
   const all = Object.values(entries).flat();
   for (const [k, v] of all) {
-    let p = parent(k);
+    const p = parent(k);
     set.set(k, [k, v]);
     if (p) {
-      let par = set.get(parseInt(p));
+      const par = set.get(parseInt(p));
       if (!par) {
         throw new Error(`missing parent ${p} for ${k}`);
       }
@@ -54,7 +55,7 @@ async function generate() {
     }
   }
 
-  let full = Array.from(set.values());
+  const full = Array.from(set.values());
   const dataset = {
     'village.json': full,
     'village.csv': full.map(([code, name]) => `${code},${name}`).join('\n'),
@@ -77,10 +78,10 @@ async function generate() {
 export const ProvinceCodes = [${entries.provinces.map(([k]) => JSON.stringify(String(k))).join(',')}];
 `,
   };
-  for (let [name, data] of Object.entries(dataset)) {
+  for (const [name, data] of Object.entries(dataset)) {
     await writeData(name, typeof data === 'object' ? JSON.stringify(data) : data);
   }
-  for (let [name, data] of Object.entries(srcs)) {
+  for (const [name, data] of Object.entries(srcs)) {
     await writeSrc(name, typeof data === 'object' ? JSON.stringify(data) : data);
   }
   await writeData(`stats.json`, JSON.stringify(stats, null, 2));
@@ -106,13 +107,6 @@ export function search(arr: TreeNode[], val: number): [boolean, number] {
   }
 
   return [false, mid ?? 0];
-}
-
-function split(code: string | number) {
-  code = String(code);
-  return [code.slice(0, 2), code.slice(2, 4), code.slice(4, 6), code.slice(6, 9), code.slice(9)].filter(
-    Boolean,
-  ) as string[];
 }
 
 function parent(code: string | number) {

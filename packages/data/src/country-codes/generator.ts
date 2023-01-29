@@ -1,4 +1,4 @@
-import { CountryCode } from './index';
+import { type CountryCode } from './index';
 import { trim } from './trim';
 
 export function convertRecordToCountryCode(record: Record<string, any>): CountryCode {

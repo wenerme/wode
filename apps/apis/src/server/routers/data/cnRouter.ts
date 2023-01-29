@@ -42,7 +42,7 @@ export const cnRouter = router({
         const table = getDivisionTable();
         (out as any).children = (table.get(parseInt(out.code))?.children ?? []).map((code) => {
           const { name } = table.get(code) || {};
-          return { code, name };
+          return { code: String(code), name };
         });
         return out;
       }),

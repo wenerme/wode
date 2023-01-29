@@ -1,7 +1,7 @@
-import { MaybePromise } from '@wener/utils';
-import { DivisionTable, getDivisionTable } from './table';
+import { type MaybePromise } from '@wener/utils';
+import { type DivisionTable, getDivisionTable } from './table';
 
-//@ts-ignore
+// @ts-expect-error
 declare module '@wener/data/cn/division/county.json' {
   const data: DivisionData;
   export default data;
@@ -27,10 +27,10 @@ export type DivisionNameData = [number, string][];
 export type DivisionChildrenData = [number, number[]][];
 export type DivisionData = [number, string, number[]][];
 
-// @ts-ignore
+// @ts-expect-error
 function loadName(data: DivisionNameData) {
-  let table = getDivisionTable();
-  for (let [code, name] of data) {
+  const table = getDivisionTable();
+  for (const [code, name] of data) {
     let e = table.get(code);
     if (!e) {
       e = { name, children: [] };
@@ -41,10 +41,10 @@ function loadName(data: DivisionNameData) {
   }
 }
 
-// @ts-ignore
+// @ts-expect-error
 function loadChildren(data: DivisionChildrenData) {
-  let table = getDivisionTable();
-  for (let [code, children] of data) {
+  const table = getDivisionTable();
+  for (const [code, children] of data) {
     let e = table.get(code);
     if (!e) {
       e = { name: '', children };
@@ -56,8 +56,8 @@ function loadChildren(data: DivisionChildrenData) {
 }
 
 function loadData(data: DivisionData) {
-  let table = getDivisionTable();
-  for (let [code, name, children] of data) {
+  const table = getDivisionTable();
+  for (const [code, name, children] of data) {
     let e = table.get(code);
     if (!e) {
       e = { name, children };

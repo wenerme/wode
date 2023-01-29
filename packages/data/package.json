@@ -1,23 +1,23 @@
 {
   "name": "@wener/data",
   "version": "1.0.0",
+  "type": "module",
   "description": "",
+  "author": "",
+  "license": "ISC",
   "main": "index.js",
+  "keywords": [],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "module",
+  "dependencies": {
+    "@wener/utils": "workspace:^1.1.9"
+  },
   "devDependencies": {
     "@types/fs-extra": "^11.0.1",
     "csv-parse": "^5.3.3",
     "fs-extra": "^11.1.0",
     "import-meta-resolve": "^2.2.1",
     "lodash": "^4.17.21"
-  },
-  "dependencies": {
-    "@wener/utils": "workspace:^1.1.9"
   }
 }

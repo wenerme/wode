@@ -1,6 +1,6 @@
 import test from 'ava';
 import { loadCounty } from './loaders';
-import { parseDivisionCode } from './parseDivisionCode';
+import { parseDivisionCode, split } from './parseDivisionCode';
 import { getDivisionTable } from './table';
 
 test.before(async () => {
@@ -34,4 +34,8 @@ test('division', async (t) => {
       310120, 310151,
     ],
   });
+});
+
+test('parse', (t) => {
+  t.deepEqual(split('659010000000'), ['65', '90', '10']);
 });
