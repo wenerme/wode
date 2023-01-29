@@ -1,8 +1,7 @@
 import { requireFound } from 'common/src/trpc/handlers';
 import { z } from 'zod';
-import { parseDivisionCode } from '@wener/data/cn';
-import { loadCounty } from '@wener/data/src/cn/division/loaders';
-import { getDivisionTable } from '@wener/data/src/cn/division/table';
+import { getDivisionTable, parseDivisionCode } from '@wener/data/cn/division';
+import { loadCounty } from '@wener/data/cn/division/loaders';
 import { publicProcedure, router } from '../../trpc';
 
 export const cnRouter = router({

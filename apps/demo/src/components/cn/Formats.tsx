@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { FaFemale, FaMale } from 'react-icons/fa';
-import { DivisionCode, parseDivisionCode } from '@wener/data/cn';
+import { ParsedDivisionCode, parseDivisionCode } from '@wener/data/cn/division';
 import { loadCounty } from '@wener/data/cn/division/loaders';
 
 export const DivisionFormat: React.FC<{ value?: string }> = ({ value }) => {
-  const [code, setCode] = useState<DivisionCode | undefined>();
+  const [code, setCode] = useState<ParsedDivisionCode | undefined>();
   useEffect(() => {
     Promise.resolve(loadCounty()).then((v) => {
       value && setCode(parseDivisionCode(value));

@@ -1,4 +1,4 @@
-import { randomDivisionCode } from '../division';
+import { randomDivisionCode } from '@wener/data/cn/division';
 import { randomPick } from '../utils/randomPick';
 import { mod31, Mod31Chars, Mode31Numbers } from './mod31';
 

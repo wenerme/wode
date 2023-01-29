@@ -1,6 +1,12 @@
 import { MaybePromise } from '@wener/utils';
 import { DivisionTable, getDivisionTable } from './table';
 
+//@ts-ignore
+declare module '@wener/data/cn/division/county.json' {
+  const data: DivisionData;
+  export default data;
+}
+
 export function loadCounty(): MaybePromise<DivisionTable> {
   const table = getDivisionTable();
   if (loadCounty.loaded) {
