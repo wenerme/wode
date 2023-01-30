@@ -1,24 +1,30 @@
 import React, { type ReactNode, useEffect, useState } from 'react';
 import { createStore } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
-import { createLazyPromise } from '@wener/utils';
+import { memoize } from '@wener/utils';
 import { LoadingIndicator } from '../../../components';
-import { getBaseUrl } from '../../../runtime';
 import { SiteConf, SiteModuleConf } from './schema';
 
-export const SiteConfProvider: React.FC<{ children?: ReactNode }> = ({ children }) => {
+export const SiteConfProvider: React.FC<{ children?: ReactNode; url?: string }> = ({
+  children,
+  url = '/site.conf.json',
+}) => {
   const [init, setInit] = useState(false);
   useEffect(() => {
     // fixme handle error
-    Loader.finally(() => { setInit(true); });
+    loadSiteConf(url).finally(() => {
+      setInit(true);
+    });
   }, []);
   if (!init) {
     return <LoadingIndicator />;
   }
   return <>{children}</>;
 };
-const Loader = createLazyPromise(async () => {
-  const conf = SiteConf.parse(await fetch(`${getBaseUrl()}/site.conf.json`).then((v) => v.json()));
+
+const loadSiteConf = memoize(async (url: string) => {
+  // TODO cache to session storage make reload faster
+  const conf = SiteConf.parse(await fetch(url).then((v) => v.json()));
   SiteConfStore.setState(conf);
   if (conf.module.src) {
     const moduleConf = SiteModuleConf.parse(await fetch(conf.module.src).then((v) => v.json()));
@@ -50,6 +56,7 @@ const SiteConfStore = createStore<SiteConf>()(
 export function getSiteConfStore() {
   return SiteConfStore;
 }
+
 export function getSiteConf() {
   return getSiteConfStore().getState();
 }

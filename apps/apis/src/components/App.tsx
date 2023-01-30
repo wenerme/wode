@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { createBrowserRouter, createMemoryRouter, RouterProvider } from 'react-router-dom';
 import { LoadingIndicator } from 'common/src/components';
-import { AppContext } from './AppContext';
+import { ThemeProvider } from 'common/src/daisy/theme';
+import { ComponentProvider } from 'common/src/system/components';
+import { AppSystemAbout } from './AppSystemAbout';
+import { WenerLogo } from './WenerLogo';
 import { createPrimaryRoutes } from './createPrimaryRoutes';
 
 export const App: React.FC<{ path?: string }> = ({ path = '/' }) => {
@@ -26,6 +29,17 @@ export const App: React.FC<{ path?: string }> = ({ path = '/' }) => {
     // );
   }
 
-  return <AppContext>{router && <RouterProvider router={router} fallbackElement={<LoadingIndicator />} />}</AppContext>;
+  return (
+    <ThemeProvider>
+      <ComponentProvider
+        components={{
+          Logo: WenerLogo,
+          SystemAbout: AppSystemAbout,
+        }}
+      >
+        {router && <RouterProvider router={router} fallbackElement={<LoadingIndicator />} />}
+      </ComponentProvider>
+    </ThemeProvider>
+  );
 };
 export default App;

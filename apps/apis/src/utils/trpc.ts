@@ -14,7 +14,12 @@ export function createReactClient() {
   });
 }
 
-export const trpcClient = createTRPCProxyClient<AppRouter>(createClientOptions());
+let trpcClient;
+
+export function getTrpcProxyClient() {
+  // wait site conf
+  return (trpcClient ??= createTRPCProxyClient<AppRouter>(createClientOptions()));
+}
 
 function createClientOptions() {
   return {

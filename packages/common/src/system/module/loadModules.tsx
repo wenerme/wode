@@ -1,10 +1,10 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { type RouteObjects } from '../../router';
 import { getSiteConfStore } from '../components';
-import { type DynamicModule, type Module } from './Module';
+import { type DynamicModule, type DynamicModuleLoader, type Module } from './Module';
 import { getModuleStore } from './ModuleStore';
 
-export async function loadModules({ loader }: { loader: (name: string) => Promise<DynamicModule> }) {
+export async function loadModules({ loader }: { loader: DynamicModuleLoader }) {
   const src = getSiteConfStore().getState().module?.src;
   if (!src) {
     return;

@@ -1,8 +1,8 @@
 import React from 'react';
 import Head from 'next/head';
 import { ErrorSuspenseBoundary } from '@wener/reaction';
+import { RootContext } from '../app/RootContext';
 import App from '../components/App';
-import { RootContext } from '../components/RootContext';
 
 // const Content = dynamic(() => import('../components/WenerApisApp'), {
 //   ssr: false,

@@ -25,3 +25,5 @@ export interface DynamicModule {
 
   [k: string | symbol]: any;
 }
+
+export type DynamicModuleLoader = (id: string) => Promise<DynamicModule>;
