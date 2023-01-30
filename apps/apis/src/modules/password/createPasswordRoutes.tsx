@@ -2,7 +2,7 @@ import React, { lazy } from 'react';
 import type { RouteObject } from 'react-router-dom';
 import { Navigate, Outlet } from 'react-router-dom';
 import { ErrorSuspenseBoundary, PageErrorState } from 'common/src/components';
-import { useTrpcClient } from '../../common';
+import { getTrpcProxyClient } from '../../common';
 
 const ZxcvbnPasswordStrength = lazy(() => import('./zxcvbn/ZxcvbnPasswordStrength'));
 
@@ -31,10 +31,10 @@ export function createPasswordRoutes(): RouteObject[] {
           element: <ZxcvbnPasswordStrength />,
           errorElement: <PageErrorState />,
           action: ({ params: { password = '123456789' } }) => {
-            return useTrpcClient().password.zxcvbn.query({ password });
+            return getTrpcProxyClient().password.zxcvbn.query({ password });
           },
           loader: ({ request }) => {
-            return useTrpcClient().password.zxcvbn.query({
+            return getTrpcProxyClient().password.zxcvbn.query({
               password: new URL(request.url).searchParams.get('password') || '123456',
             });
           },

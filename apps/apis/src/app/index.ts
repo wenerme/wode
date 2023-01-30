@@ -1,0 +1,1 @@
+export { ModuleApp } from './ModuleApp';

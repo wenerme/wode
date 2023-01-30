@@ -41,6 +41,11 @@ export const SiteConf = z.object({
     })
     .default({})
     .default({}),
-  auth: z.object({}).default({}),
+  auth: z
+    .object({
+      baseUrl: z.string().optional(),
+      basePath: z.string().optional(),
+    })
+    .default({}),
 });
 export type SiteConf = z.infer<typeof SiteConf>;

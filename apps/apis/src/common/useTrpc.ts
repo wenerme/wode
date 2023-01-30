@@ -1,11 +1,7 @@
-import { trpc, trpcClient } from '../utils/trpc';
-
-export function useTrpc() {
-  return { trpc, client: trpcClient } as const;
-}
+import { trpc } from '../utils/trpc';
 
 export function useTrpcClient() {
-  return trpcClient;
+  return trpc.useContext();
 }
 
 export function useTrpcQueryClient() {

@@ -3,7 +3,6 @@ import { Setup } from 'common/src/layouts';
 import { SessionProvider } from 'next-auth/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ErrorSuspenseBoundary } from '@wener/reaction';
-import App from '../components/App';
 import { createReactClient, trpc } from '../utils/trpc';
 
 export const RootContext: React.FC<{ children?: ReactNode }> = ({ children }) => {
