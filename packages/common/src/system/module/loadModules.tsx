@@ -1,16 +1,11 @@
-import { createBrowserRouter } from 'react-router-dom';
 import { type RouteObjects } from '../../router';
 import { getSiteConfStore } from '../components';
 import { type DynamicModule, type DynamicModuleLoader, type Module } from './Module';
 import { getModuleStore } from './ModuleStore';
 
 export async function loadModules({ loader }: { loader: DynamicModuleLoader }) {
-  const src = getSiteConfStore().getState().module?.src;
-  if (!src) {
-    return;
-  }
   const store = getModuleStore();
-  const conf = { ...getSiteConfStore().getState().module.config };
+  const conf = { ...getSiteConfStore().getState().module };
   conf.disabled ||= [];
   const enabled = new Set(conf.include);
   conf.disabled.forEach((v) => enabled.delete(v));
@@ -53,17 +48,4 @@ export async function loadModules({ loader }: { loader: DynamicModuleLoader }) {
   });
 
   console.debug('Module initialized');
-}
-
-export function createModuleRouter({
-  createRoutes = (v) => v,
-}: {
-  createRoutes?: (routes: RouteObjects) => RouteObjects;
-} = {}) {
-  const routes = getModuleStore().getState().routes;
-  const router = createBrowserRouter(createRoutes(routes));
-  // getModuleStore().setState((state) => {
-  //   return { ...state, router };
-  // });
-  return router;
 }

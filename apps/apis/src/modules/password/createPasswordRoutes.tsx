@@ -21,13 +21,13 @@ export function createPasswordRoutes(): RouteObject[] {
       children: [
         {
           index: true,
-          element: <Navigate to={'zxcvbn'} />,
+          element: <Navigate to={'strength'} />,
         },
         {
           handle: {
-            title: 'zxcvbn 密码强度检测',
+            title: '密码强度检测',
           },
-          path: 'zxcvbn',
+          path: 'strength',
           element: <ZxcvbnPasswordStrength />,
           errorElement: <PageErrorState />,
           action: ({ params: { password = '123456789' } }) => {

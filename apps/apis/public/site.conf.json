@@ -4,9 +4,10 @@
     "name": "Wener",
     "link": "https://wener.me"
   },
-  "module": {
-    "src": "/module.config.json"
-  },
+  "include": [
+    "/module.config.json"
+  ],
+  "module": {},
   "api": {
     "origin": "https://apis.wener.me"
   },
@@ -19,5 +20,6 @@
         "url": "wecom/api/trpc"
       }
     }
-  }
+  },
+  "auth": {}
 }

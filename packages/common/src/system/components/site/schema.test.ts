@@ -11,11 +11,23 @@ test('conf schema', (t) => {
     author: {
       name: 'Wener',
     },
+    include: [],
+    trpc: {
+      servers: {},
+    },
+    api: {},
+    auth: {},
     module: {
-      config: {
-        include: [],
-        disabled: [],
-      },
+      include: [],
+      disabled: [],
     },
   });
+
+  t.log(
+    SiteConf.partial().parse({
+      module: {
+        include: ['a'],
+      },
+    }),
+  );
 });

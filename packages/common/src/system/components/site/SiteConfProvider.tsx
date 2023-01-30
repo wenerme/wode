@@ -25,25 +25,34 @@ export const SiteConfProvider: React.FC<{ children?: ReactNode; url?: string }> 
 const loadSiteConf = memoize(async (url: string) => {
   // TODO cache to session storage make reload faster
   const conf = SiteConf.parse(await fetch(url).then((v) => v.json()));
-  SiteConfStore.setState(conf);
-  if (conf.module.src) {
-    const moduleConf = SiteModuleConf.parse(await fetch(conf.module.src).then((v) => v.json()));
-    // local override
+  const partial = SiteConf.partial();
+  for (let url of conf.include) {
     try {
-      // e.g. 禁用 tool 模块
-      // localStorage['__SITE_MODULE_CONF__'] = JSON.stringify({disabled:['tool']})
-      // 恢复
-      // delete localStorage['__SITE_MODULE_CONF__']
-      const data = SiteModuleConf.deepPartial().parse(JSON.parse(localStorage.__SITE_MODULE_CONF__));
-      if (data) {
-        moduleConf.disabled = moduleConf.disabled.concat(data.disabled || []);
-      }
-    } catch (e) {}
-
-    SiteConfStore.setState((s) => {
-      Object.assign(s.module.config, moduleConf);
-    });
+      const part = await fetch(url)
+        .then((v) => v.json())
+        .then((v) => {
+          // console.debug(`Site conf include ${url}`, v, partial.parse(v));
+          return partial.parse(v);
+        });
+      // TODO better merge
+      Object.assign(conf, part);
+    } catch (e) {
+      console.error(`load site conf failed: ${url} ${e}`);
+    }
   }
+  // local override
+  try {
+    // e.g. 禁用 tool 模块
+    // localStorage['__SITE_MODULE_CONF__'] = JSON.stringify({disabled:['tool']})
+    // 恢复
+    // delete localStorage['__SITE_MODULE_CONF__']
+    const data = SiteModuleConf.deepPartial().parse(JSON.parse(localStorage.__SITE_MODULE_CONF__));
+    if (data) {
+      conf.module.disabled = conf.module.disabled.concat(data.disabled || []);
+    }
+  } catch (e) {}
+  SiteConfStore.setState(conf);
+
   return conf;
 });
 
