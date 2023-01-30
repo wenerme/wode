@@ -1,9 +1,11 @@
 {
-  "include": [
-    "setting",
-    "hash",
-    "password",
-    "ipfs",
-    "tool"
-  ]
+  "module": {
+    "include": [
+      "setting",
+      "hash",
+      "password",
+      "ipfs",
+      "tool"
+    ]
+  }
 }

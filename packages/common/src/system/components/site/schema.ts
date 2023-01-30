@@ -14,19 +14,11 @@ export const SiteConf = z.object({
       link: z.string().optional(),
     })
     .default({}),
-  module: z
-    .object({
-      src: z.string().optional().describe('Module config url'),
-      config: SiteModuleConf.default({}),
-    })
-    .default({
-      config: {
-        include: [],
-      },
-    }),
+  include: z.string().array().default([]).describe('Include external conf'),
+  module: SiteModuleConf.default({}),
   api: z
     .object({
-      origin: z.string().optional(),
+      url: z.string().optional(),
     })
     .default({}),
   trpc: z

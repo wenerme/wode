@@ -1,27 +1,33 @@
 import React, { useCallback, useEffect } from 'react';
-import { RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { useStore } from 'zustand';
 import { LoadingIndicator } from '../../components';
 import { type RouteObjects } from '../../router';
 import { getModuleStore } from './ModuleStore';
-import { createModuleRouter } from './loadModules';
 
 export const ModuleRouterProvider: React.FC<{
   createRoutes?: (routes: RouteObjects) => RouteObjects;
-}> = ({ createRoutes }) => {
+  createRouter?: (routes: RouteObjects) => ReturnType<typeof createBrowserRouter>;
+}> = ({ createRoutes = (v) => v, createRouter = createBrowserRouter }) => {
   const store = getModuleStore();
   const routes = useStore(
     store,
     useCallback((s) => s.routes, []),
   );
-  // only init once
   useEffect(() => {
-    if (!routes) {
+    if (!routes.length) {
       return;
     }
-    const router = createModuleRouter({ createRoutes });
-    store.setState({ router });
-  }, []);
+    store.setState((s) => {
+      // NOTE 暂不支持动态调整路由
+      if (s.router) {
+        return s;
+      }
+      const router = createRouter(createRoutes(s.routes));
+      console.debug(`Setup router`, router);
+      return { ...s, router };
+    });
+  }, [routes]);
   const router = useStore(
     store,
     useCallback((s) => s.router, []),

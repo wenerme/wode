@@ -28,8 +28,8 @@ function createClientOptions() {
   };
 }
 
-function getApiOriginUrl() {
-  const origin = getSiteConf().api.origin;
+function getApiUrl() {
+  const origin = getSiteConf().api.url;
   if (origin) {
     return origin;
   }
@@ -44,7 +44,7 @@ function getApiOriginUrl() {
 function createClientLink(): TRPCLink<AppRouter> {
   return (runtime: TRPCClientRuntime) => {
     // 多服务
-    const root = getApiOriginUrl();
+    const root = getApiUrl();
     const servers = {
       default: httpBatchLink({
         url: `${root}/api/trpc`,
