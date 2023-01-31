@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import React from 'react';
-import { AiFillApi, AiFillExperiment, AiOutlineApi, AiOutlineExperiment } from 'react-icons/ai';
+import { AiFillExperiment, AiOutlineExperiment } from 'react-icons/ai';
 import { HiColorSwatch, HiOutlineColorSwatch } from 'react-icons/hi';
 import { HiOutlineCog } from 'react-icons/hi2';
 import { TiInfoLarge, TiInfoLargeOutline } from 'react-icons/ti';
@@ -8,7 +8,7 @@ import type { ExpandableSideMenuItemProps } from '../../layouts';
 import { ExpandableSideMenuLayout } from '../../layouts';
 import { usePageLayoutState } from '../layouts';
 
-const MenuItems: ExpandableSideMenuItemProps[] = [
+export const DefaultMenuItems: ExpandableSideMenuItemProps[] = [
   {
     type: 'title',
     label: '显示和行为',
@@ -41,14 +41,11 @@ const MenuItems: ExpandableSideMenuItemProps[] = [
     icon: <AiOutlineExperiment />,
     iconActive: <AiFillExperiment />,
   },
-  {
-    label: 'API 文档',
-    href: '/setting/dev/api-docs',
-    icon: <AiOutlineApi />,
-    iconActive: <AiFillApi />,
-  },
 ];
-export const SettingPage: React.FC<{ children?: ReactNode }> = ({ children }) => {
+export const SettingPage: React.FC<{ children?: ReactNode; items?: ExpandableSideMenuItemProps[] }> = ({
+  children,
+  items = DefaultMenuItems,
+}) => {
   const state = usePageLayoutState('setting');
   return (
     <ExpandableSideMenuLayout
@@ -56,7 +53,7 @@ export const SettingPage: React.FC<{ children?: ReactNode }> = ({ children }) =>
       onExpandedChange={(e) => (state.expanded = e)}
       icon={<HiOutlineCog className={'h-8 w-8'} />}
       title={'设置'}
-      items={MenuItems}
+      items={items}
     >
       {children}
     </ExpandableSideMenuLayout>

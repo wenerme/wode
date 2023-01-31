@@ -33,27 +33,25 @@ const DefaultContextComponents: ComponentRegistry = {
   // SystemAbout, // 循环依赖
 };
 
-export function getDefaultContextComponents() {
-  return DefaultContextComponents;
-}
-
 export const ComponentContext = createContext<ReturnType<typeof createComponentStore>>(
   createComponentStore({
     components: DefaultContextComponents,
   }),
 );
 
-export function createContextComponent<P extends {}>(
+export function createContextComponent<P extends Record<string, any>>(
   name: string,
   { fallback }: { fallback?: FlexRenderable<P> } = {},
 ): React.FC<P> {
-  return (props) => {
+  const C: React.FC<P> = (props) => {
     const C = useComponent(name);
     if (!C) {
       return fallback ? (flexRender(fallback, props) as any) : null;
     }
     return React.createElement(C, props);
   };
+  C.displayName = `ContextComponent(${name})`
+  return C;
 }
 
 export const ComponentProvider: React.FC<{ children?: React.ReactNode; components: Partial<ComponentRegistry> }> = ({

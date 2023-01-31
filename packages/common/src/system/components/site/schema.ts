@@ -7,6 +7,7 @@ export const SiteModuleConf = z.object({
 export type SiteModuleConf = z.infer<typeof SiteModuleConf>;
 
 export const SiteConf = z.object({
+  version: z.string().optional(),
   title: z.string().default('System'),
   author: z
     .object({
@@ -35,7 +36,6 @@ export const SiteConf = z.object({
     .default({}),
   auth: z
     .object({
-      baseUrl: z.string().optional(),
       basePath: z.string().optional(),
     })
     .default({}),

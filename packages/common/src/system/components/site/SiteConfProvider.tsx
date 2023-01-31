@@ -26,14 +26,16 @@ const loadSiteConf = memoize(async (url: string) => {
   // TODO cache to session storage make reload faster
   const conf = SiteConf.parse(await fetch(url).then((v) => v.json()));
   const partial = SiteConf.partial();
-  for (let url of conf.include) {
+  for (const url of conf.include) {
     try {
       const part = await fetch(url)
         .then((v) => v.json())
         .then((v) => {
-          // console.debug(`Site conf include ${url}`, v, partial.parse(v));
           return partial.parse(v);
         });
+      if (process.env.NODE_ENV === "development") {
+        console.debug(`Site conf include ${url}`, part);
+      }
       // TODO better merge
       Object.assign(conf, part);
     } catch (e) {
@@ -52,7 +54,9 @@ const loadSiteConf = memoize(async (url: string) => {
     }
   } catch (e) {}
   SiteConfStore.setState(conf);
-
+  if (process.env.NODE_ENV === "development") {
+    console.debug('Site conf', conf);
+  }
   return conf;
 });
 

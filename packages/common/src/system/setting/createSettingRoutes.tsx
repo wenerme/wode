@@ -6,18 +6,18 @@ import { PageErrorState } from '../../components';
 import type { RouteObjects } from '../../router';
 import { createContextComponent, SystemAbout } from '../components';
 import { SettingRouteId } from './const';
+import { type ExpandableSideMenuItemProps } from "../../layouts";
 
 const SettingAppearance = lazy(() => import('./SettingAppearance'));
 const SettingPage = lazy(() => import('./SettingPage'));
 const DevDebug = lazy(() => import('./DevDebug'));
-const DevApiDocs = lazy(() => import('./DevApiDocs'));
 
 // avoid circular dependency
-const SettingSystemAbout = createContextComponent('SystemAbout', {
+const SettingSystemAbout = createContextComponent<any>('SystemAbout', {
   fallback: SystemAbout,
 });
 
-export function createSettingRoutes(): RouteObjects {
+export function createSettingRoutes({ routes = [],menu }: { routes?: RouteObjects,menu?:ExpandableSideMenuItemProps[] } = {}): RouteObjects {
   return [
     {
       id: SettingRouteId,
@@ -26,7 +26,7 @@ export function createSettingRoutes(): RouteObjects {
         title: '设置',
       },
       element: (
-        <SettingPage>
+        <SettingPage items={menu}>
           <ErrorSuspenseBoundary>
             <Outlet />
           </ErrorSuspenseBoundary>
@@ -78,7 +78,7 @@ export function createSettingRoutes(): RouteObjects {
             },
             {
               path: 'about',
-              element: <SettingSystemAbout children={null} />,
+              element: <SettingSystemAbout />,
               handle: {
                 title: '系统信息',
               },
@@ -95,15 +95,9 @@ export function createSettingRoutes(): RouteObjects {
                 title: '调试设置',
               },
             },
-            {
-              path: 'api-docs',
-              element: <DevApiDocs />,
-              handle: {
-                title: '接口文档',
-              },
-            },
           ],
         },
+        ...routes
       ],
     },
   ];
