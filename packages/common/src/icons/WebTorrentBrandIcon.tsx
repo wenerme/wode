@@ -1,8 +1,7 @@
 import * as React from 'react';
-import type { SVGProps } from 'react';
-import { memo } from 'react';
+import { SVGProps, memo } from 'react';
 
-const SvgWebTorrentIcon = (props: SVGProps<SVGSVGElement>) => (
+const SvgWebTorrentBrandIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     xmlnsXlink="http://www.w3.org/1999/xlink"
@@ -41,6 +40,5 @@ const SvgWebTorrentIcon = (props: SVGProps<SVGSVGElement>) => (
     />
   </svg>
 );
-
-const Memo = memo(SvgWebTorrentIcon);
+const Memo = memo(SvgWebTorrentBrandIcon);
 export default Memo;
