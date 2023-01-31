@@ -1,20 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import type { TypedArray } from '../io/ArrayBuffers';
-
-let nodeCrypto: Awaited<typeof import('node:crypto')>;
-// globalThis.process?.release?.name
-
-// avoid process.browser
-if (typeof window === 'undefined') {
-  try {
-    // UnhandledSchemeError https://github.com/vercel/next.js/issues/28774
-    if (typeof require === 'undefined') {
-      void import('node:crypto').then((v) => (nodeCrypto = v.default));
-    } else {
-      nodeCrypto = require('node:crypto');
-    }
-  } catch (e) {}
-}
+import { getNodeCrypto } from './getNodeCrypto';
 
 export let getRandomValues: <T extends Exclude<TypedArray, Float32Array | Float64Array>>(typedArray: T) => T =
   globalThis.crypto?.getRandomValues?.bind(globalThis.crypto) ||
@@ -22,6 +8,7 @@ export let getRandomValues: <T extends Exclude<TypedArray, Float32Array | Float6
   _getRandomValues;
 
 function _getRandomValues<T extends Exclude<TypedArray, Float32Array | Float64Array>>(buf: T) {
+  const nodeCrypto = getNodeCrypto();
   if (nodeCrypto?.webcrypto?.getRandomValues) {
     getRandomValues = nodeCrypto?.webcrypto?.getRandomValues?.bind(nodeCrypto?.webcrypto);
     return nodeCrypto.webcrypto.getRandomValues(buf);
