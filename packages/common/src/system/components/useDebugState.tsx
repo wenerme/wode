@@ -13,6 +13,15 @@ export interface DebugState {
       position?: Corner;
     };
   };
+  api?: {
+    url?: string;
+  };
+  trpc?: {
+    servers?: Record<string, { url: string }>;
+  };
+  modules?: Record<string, {
+    enabled?: boolean
+  }>
 }
 
 const InitialState: DebugState = {
