@@ -1,9 +1,8 @@
 import * as React from 'react';
-import type { SVGProps } from 'react';
-import { memo } from 'react';
+import { SVGProps, memo } from 'react';
 
 const SvgDarkModeFilled = (props: SVGProps<SVGSVGElement>) => (
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 21" {...props}>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 21" fill="currentColor" {...props}>
     <g fillRule="evenodd">
       <circle cx={10.5} cy={10.5} r={10.5} />
       <path
@@ -14,6 +13,5 @@ const SvgDarkModeFilled = (props: SVGProps<SVGSVGElement>) => (
     </g>
   </svg>
 );
-
 const Memo = memo(SvgDarkModeFilled);
 export default Memo;

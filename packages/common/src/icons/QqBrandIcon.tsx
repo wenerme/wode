@@ -1,6 +1,5 @@
 import * as React from 'react';
-import type { SVGProps } from 'react';
-import { memo } from 'react';
+import { SVGProps, memo } from 'react';
 
 const SvgQqBrandIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg xmlns="http://www.w3.org/2000/svg" className="QQBrandIcon_svg__icon" viewBox="0 0 1024 1024" {...props}>
@@ -27,6 +26,5 @@ const SvgQqBrandIcon = (props: SVGProps<SVGSVGElement>) => (
     />
   </svg>
 );
-
 const Memo = memo(SvgQqBrandIcon);
 export default Memo;

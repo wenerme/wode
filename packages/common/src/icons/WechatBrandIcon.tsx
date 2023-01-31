@@ -1,6 +1,5 @@
 import * as React from 'react';
-import type { SVGProps } from 'react';
-import { memo } from 'react';
+import { SVGProps, memo } from 'react';
 
 const SvgWechatBrandIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1025 1024" {...props}>
@@ -10,6 +9,5 @@ const SvgWechatBrandIcon = (props: SVGProps<SVGSVGElement>) => (
     />
   </svg>
 );
-
 const Memo = memo(SvgWechatBrandIcon);
 export default Memo;
