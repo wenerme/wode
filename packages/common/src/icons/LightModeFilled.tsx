@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { SVGProps, memo } from 'react';
+import { type SVGProps, memo } from 'react';
 
 const SvgLightModeFilled = (props: SVGProps<SVGSVGElement>) => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 21" fill="currentColor" {...props}>

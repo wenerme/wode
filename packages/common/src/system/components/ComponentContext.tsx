@@ -50,7 +50,7 @@ export function createContextComponent<P extends Record<string, any>>(
     }
     return React.createElement(C, props);
   };
-  C.displayName = `ContextComponent(${name})`
+  C.displayName = `ContextComponent(${name})`;
   return C;
 }
 

@@ -33,7 +33,7 @@ const loadSiteConf = memoize(async (url: string) => {
         .then((v) => {
           return partial.parse(v);
         });
-      if (process.env.NODE_ENV === "development") {
+      if (process.env.NODE_ENV === 'development') {
         console.debug(`Site conf include ${url}`, part);
       }
       // TODO better merge
@@ -54,7 +54,7 @@ const loadSiteConf = memoize(async (url: string) => {
     }
   } catch (e) {}
   SiteConfStore.setState(conf);
-  if (process.env.NODE_ENV === "development") {
+  if (process.env.NODE_ENV === 'development') {
     console.debug('Site conf', conf);
   }
   return conf;

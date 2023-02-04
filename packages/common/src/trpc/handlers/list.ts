@@ -1,9 +1,9 @@
 import { toSequelizeWhere } from 'ohm-grammar-miniquery/sequelize';
-import type { ModelStatic, Sequelize } from '@sequelize/core';
-import type { WhereOptions } from '@sequelize/core/types/model';
+import { type ModelStatic, type Sequelize } from '@sequelize/core';
+import { type WhereOptions } from '@sequelize/core/types/model';
 import { TRPCError } from '@trpc/server';
 import { arrayOfMaybeArray, isULID, isUUID } from '@wener/utils';
-import type { PageRequest, PageResponse } from '../../apis';
+import { type PageRequest, type PageResponse } from '../../apis';
 
 export interface ListQueryOptions<T extends ModelStatic> {
   input: PageRequest;
@@ -70,7 +70,7 @@ async function listQueryResolver<T extends ModelStatic>({
   });
   return {
     items: items.map((v) => v.toJSON()),
-    total: (await Scope.count({ where })) as any as number, // fixme
+    total: await Scope.count({ where }),
   } as PageResponse<InstanceType<T>>;
 }
 

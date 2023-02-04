@@ -641,6 +641,7 @@ importers:
       '@types/react': ^18.0.27
       '@types/react-dom': ^18.0.10
       '@types/react-is': ^17.0.3
+      '@types/ws': ^8.5.4
       '@wener/reaction': workspace:^1.2.17
       '@wener/utils': workspace:^1.1.9
       classnames: ^2.3.2
@@ -651,6 +652,9 @@ importers:
       next: ^13.1.5
       next-auth: ^4.18.10
       ohm-grammar-miniquery: workspace:^1.0.5
+      openapi-types: ^12.1.0
+      pino: ^8.8.0
+      pino-pretty: ^9.1.1
       polished: ^4.2.2
       react: ^18.2.0
       react-dom: ^18.2.0
@@ -661,9 +665,11 @@ importers:
       react-router-dom: 6.8.0
       styled-components: 6.0.0-beta.9
       superjson: ^1.12.2
+      trpc-openapi: ^1.1.2
       tslib: ^2.5.0
       use-immer: ^0.8.1
       valtio: ^1.9.0
+      ws: ^8.12.0
       zod: ^3.20.2
       zustand: ^4.3.2
     dependencies:
@@ -688,6 +694,8 @@ importers:
       next: 13.1.5_pjwopsidmaokadturxaafygjp4
       next-auth: 4.18.10_s6zlkfvllybxhmcq5pkr2zsuza
       ohm-grammar-miniquery: link:../ohm-grammar-miniquery
+      pino: 8.8.0
+      pino-pretty: 9.1.1
       polished: 4.2.2
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
@@ -698,8 +706,10 @@ importers:
       react-router-dom: 6.8.0_biqbaboplfbrettd7655fr4n2y
       styled-components: 6.0.0-beta.9_gkk2qfmmnyf3fw43jdk4y5v5dy
       superjson: 1.12.2
+      trpc-openapi: 1.1.2_v7aw5md42ua3rf277jyeogdfny
       use-immer: 0.8.1_immer@9.0.18+react@18.2.0
       valtio: 1.9.0_react@18.2.0
+      ws: 8.12.0
       zod: 3.20.2
       zustand: 4.3.2_immer@9.0.18+react@18.2.0
     devDependencies:
@@ -712,6 +722,8 @@ importers:
       '@types/react': 18.0.27
       '@types/react-dom': 18.0.10
       '@types/react-is': 17.0.3
+      '@types/ws': 8.5.4
+      openapi-types: 12.1.0
       tslib: 2.5.0
 
   packages/data:
@@ -12370,7 +12382,6 @@ packages:
 
   /openapi-types/12.1.0:
     resolution: {integrity: sha512-XpeCy01X6L5EpP+6Hc3jWN7rMZJ+/k1lwki/kTmWzbVhdPie3jd5O2ZtedEx8Yp58icJ0osVldLMrTB/zslQXA==}
-    dev: false
 
   /openid-client/5.3.2:
     resolution: {integrity: sha512-nXXt+cna0XHOw+WqjMZOmuXw/YZEMwfWD2lD7tCsFtsBjMQGVXA+NZABA3upYBET1suhIsmfd7GnxG4jCAnvYQ==}
@@ -16007,7 +16018,6 @@ packages:
         optional: true
       utf-8-validate:
         optional: true
-    dev: true
 
   /xml-name-validator/4.0.0:
     resolution: {integrity: sha512-ICP2e+jsHvAj2E2lIHxa5tjXRlKDJo4IdvPvCXbXQGdzSfmSpNVyIKMvoZHjDY9DP0zV17iI85o90vRFXNccRw==}
