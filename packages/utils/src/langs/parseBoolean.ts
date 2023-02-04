@@ -1,5 +1,5 @@
 export function parseBoolean(s: string | boolean | number | null | undefined, strict: true): boolean | undefined;
-export function parseBoolean(s: string | boolean | number | null | undefined): boolean;
+export function parseBoolean(s: string | boolean | number | null | undefined | any): boolean;
 export function parseBoolean(s?: string | boolean | number | null, strict = false): boolean | undefined {
   if (typeof s === 'boolean') {
     return s;

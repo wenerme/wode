@@ -34,6 +34,7 @@ export const repoRouter = router({
         repo: z.string(),
         range: z.string().optional(),
         prerelease: z.boolean().default(false).optional(),
+        calver: z.string().optional(),
       }),
     )
     .output(
@@ -41,6 +42,12 @@ export const repoRouter = router({
         tag: z.string(),
         version: z.string(),
         commit: z.string(),
+        calver: z
+          .object({
+            year: z.number(),
+            month: z.number().optional(),
+          })
+          .optional(),
         semver: z.object({
           major: z.number(),
           minor: z.number(),
@@ -50,10 +57,12 @@ export const repoRouter = router({
     )
     .query(async ({ input, ctx: { octokit } }) => {
       const tags = await repoTags({ ...input, octokit });
-      const items = tags.map(({ name, version, commit }) => ({
+
+      const items = tags.map(({ name, version, commit, calver }) => ({
         tag: name,
         version: version.format(),
         commit: commit.sha,
+        calver,
         semver: {
           major: version.major,
           minor: version.minor,
@@ -70,13 +79,16 @@ async function repoTags({
   octokit,
   range,
   prerelease,
+  calver,
 }: {
   octokit: Octokit;
   repo: string;
   owner: string;
   range?: string;
   prerelease?: boolean;
+  calver?: string;
 }) {
+  // https://docs.github.com/rest/reference/repos#list-repository-tags
   const { data } = await octokit.rest.repos.listTags({
     owner,
     repo,
@@ -89,7 +101,23 @@ async function repoTags({
         version: semver.coerce(v.name) as SemVer,
       };
     })
-    .filter((v) => v.version);
+    .filter((v) => v.version)
+    .map((v) => {
+      if (v.version.major > 2000) {
+        // calendar
+        const calver = {
+          year: v.version.major,
+          month: v.version.minor,
+        };
+        return { ...v, calver };
+      }
+      return { ...v, calver: undefined };
+    });
+  if (calver === 'only') {
+    tags = tags.filter((v) => v.calver);
+  } else if (calver === 'ignore') {
+    tags = tags.filter((v) => !v.calver);
+  }
   if (range) {
     tags = tags.filter((v) =>
       semver.satisfies(v.version, range, {
@@ -97,7 +125,18 @@ async function repoTags({
       }),
     );
   }
+  // 遇到 calver 会导致排序失败 - 可以考虑 node_id
   // sort by version
   tags.sort((a, b) => semver.compare(b.version, a.version));
   return tags;
+}
+
+interface TagInfo {
+  name: string;
+  version: SemVer;
+  commit: string;
+  calver?: {
+    year: number;
+    month: number;
+  };
 }

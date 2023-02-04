@@ -2,6 +2,13 @@ import fs from 'fs-extra';
 import path from 'node:path';
 import { readGitContext } from './git';
 
+export function getAportsRepos(branch = 'edge') {
+  if (branch !== 'edge') {
+    return ['main', 'community'];
+  }
+  return ['main', 'community', 'testing'];
+}
+
 export async function readAportsContext() {
   let git = await readGitContext();
   if (!(await fs.exists(path.join(git.root, 'main')))) {
