@@ -848,12 +848,14 @@ importers:
   packages/utils:
     specifiers:
       '@types/lodash': ^4.14.191
+      '@types/ws': ^8.5.4
       ava: ^5.1.1
       https-proxy-agent: ^5.0.1
       lodash: ^4.17.21
       tsd: ^0.25.0
     devDependencies:
       '@types/lodash': 4.14.191
+      '@types/ws': 8.5.4
       ava: 5.1.1
       https-proxy-agent: 5.0.1
       lodash: 4.17.21
@@ -6260,6 +6262,12 @@ packages:
 
   /@types/which/2.0.1:
     resolution: {integrity: sha512-Jjakcv8Roqtio6w1gr0D7y6twbhx6gGgFGF5BLwajPpnOIOxFkakFhCq+LmyyeAz7BX6ULrjBOxdKaCDy+4+dQ==}
+    dev: true
+
+  /@types/ws/8.5.4:
+    resolution: {integrity: sha512-zdQDHKUgcX/zBc4GrwsE/7dVdAD8JR4EuiAXiiUhhfyIJXXb2+PrGshFyeXWQPMmmZ2XxgaqclgpIC7eTXc1mg==}
+    dependencies:
+      '@types/node': 18.11.18
     dev: true
 
   /@types/yargs-parser/21.0.0:
