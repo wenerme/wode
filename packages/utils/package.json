@@ -64,6 +64,7 @@
   },
   "devDependencies": {
     "@types/lodash": "^4.14.191",
+    "@types/ws": "^8.5.4",
     "ava": "^5.1.1",
     "https-proxy-agent": "^5.0.1",
     "lodash": "^4.17.21",

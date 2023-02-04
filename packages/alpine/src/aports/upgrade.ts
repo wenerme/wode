@@ -49,8 +49,15 @@ async function upgrade({ pkg, dry = false }: { pkg: ParsedPackageId; dry?: boole
   if (!owner && !repo) {
     throw new Error(`Unable to detect next version: ${sources}`);
   }
-  const next = (await fetch(`https://apis.wener.me/api/github/r/${owner}/${repo}/version`).then((v) => v.json()))
-    .version;
+  const info = await fetch(`https://apis.wener.me/api/github/r/${owner}/${repo}/version`).then((v) => v.json());
+  let next = info.version;
+  // 匹配格式
+  switch (pkg.pkg) {
+    case 'seaweedfs':
+      next = info.tag;
+      break;
+    case 'grpc':
+  }
   if (!next) {
     throw new Error(`Failed to get next version: ${sources}`);
   }
