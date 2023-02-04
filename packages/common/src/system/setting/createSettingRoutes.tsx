@@ -3,10 +3,10 @@ import { HiColorSwatch, HiOutlineColorSwatch } from 'react-icons/hi';
 import { Navigate, Outlet } from 'react-router-dom';
 import { ErrorSuspenseBoundary } from '@wener/reaction';
 import { PageErrorState } from '../../components';
+import { type ExpandableSideMenuItemProps } from '../../layouts';
 import type { RouteObjects } from '../../router';
 import { createContextComponent, SystemAbout } from '../components';
 import { SettingRouteId } from './const';
-import { type ExpandableSideMenuItemProps } from "../../layouts";
 
 const SettingAppearance = lazy(() => import('./SettingAppearance'));
 const SettingPage = lazy(() => import('./SettingPage'));
@@ -17,7 +17,10 @@ const SettingSystemAbout = createContextComponent<any>('SystemAbout', {
   fallback: SystemAbout,
 });
 
-export function createSettingRoutes({ routes = [],menu }: { routes?: RouteObjects,menu?:ExpandableSideMenuItemProps[] } = {}): RouteObjects {
+export function createSettingRoutes({
+  routes = [],
+  menu,
+}: { routes?: RouteObjects; menu?: ExpandableSideMenuItemProps[] } = {}): RouteObjects {
   return [
     {
       id: SettingRouteId,
@@ -97,7 +100,7 @@ export function createSettingRoutes({ routes = [],menu }: { routes?: RouteObject
             },
           ],
         },
-        ...routes
+        ...routes,
       ],
     },
   ];

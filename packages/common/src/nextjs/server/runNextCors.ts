@@ -9,7 +9,8 @@ function initMiddleware(middleware: typeof cors) {
     new Promise((resolve, reject) => {
       middleware(options)(req, res, (result: Error | unknown) => {
         if (result instanceof Error) {
-          reject(result); return;
+          reject(result);
+          return;
         }
 
         resolve(result);

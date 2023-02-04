@@ -19,9 +19,12 @@ export interface DebugState {
   trpc?: {
     servers?: Record<string, { url: string }>;
   };
-  modules?: Record<string, {
-    enabled?: boolean
-  }>
+  modules?: Record<
+    string,
+    {
+      enabled?: boolean;
+    }
+  >;
 }
 
 const InitialState: DebugState = {
