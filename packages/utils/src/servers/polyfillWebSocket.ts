@@ -10,5 +10,5 @@ export function polyfillWebSocket(ws?: typeof import('ws')): MaybePromise<boolea
     const { WebSocket } = ws;
     Object.assign(globalThis, { WebSocket });
   }
-  return import('ws').then(polyfillWebSocket);
+  return import('ws').then((ws) => polyfillWebSocket(ws.default));
 }
