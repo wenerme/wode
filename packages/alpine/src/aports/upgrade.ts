@@ -1,26 +1,36 @@
 #!/usr/bin/env zx
-import { argv, chalk } from 'zx';
+import fs from 'fs-extra';
+import { argv, chalk, glob } from 'zx';
 import 'zx/globals';
 import { parseBoolean } from '@wener/utils';
 import { readApkBuild, writeApkBuild } from './utils/apkbuild';
-import { readAportsContext } from './utils/aports';
+import { getAportsRepos, readAportsContext } from './utils/aports';
 import { ParsedPackageId, parsePackageId } from './utils/pkg';
+
+if (argv.cwd) {
+  cd(argv.cwd);
+}
+const aports = await readAportsContext();
 
 let ids: ParsedPackageId[] = [];
 for (let pkg of argv._) {
   let id = parsePackageId(pkg);
+  if (!id) {
+    for (let repo of getAportsRepos()) {
+      if (await fs.exists(path.join(aports.root, repo, pkg))) {
+        id = parsePackageId(`${repo}/${pkg}`);
+        break;
+      }
+    }
+  }
   if (!id) {
     throw new Error(`Invalid package id: ${pkg}`);
   }
   ids.push(id);
 }
 
-if (argv.cwd) {
-  cd(argv.cwd);
-}
 if (ids.length) {
   console.log(`Upgrade packages: ${ids.map((v) => v.path).join(', ')}`);
-  const aports = await readAportsContext();
   console.log(`pwd: ${process.cwd()}`);
   console.log(`aports: ${aports.root}`);
 }
@@ -55,6 +65,10 @@ async function upgrade({ pkg, dry = false }: { pkg: ParsedPackageId; dry?: boole
   switch (pkg.pkg) {
     case 'seaweedfs':
       next = info.tag;
+      break;
+    case 'fio':
+      // 默认排序取到的是 calver
+      // https://apis.wener.me/api/github/r/axboe/fio/version?range=3
       break;
     case 'grpc':
   }
