@@ -107,6 +107,8 @@ build/**
 dist/**
 .next/**
 
+local.mk
+
 packages/*/lib
 packages/*/out
 packages/*/.next

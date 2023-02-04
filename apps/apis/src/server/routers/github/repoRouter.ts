@@ -1,3 +1,4 @@
+import { requireFound } from 'common/src/trpc/handlers';
 import type { SemVer } from 'semver';
 import semver from 'semver/preload';
 import { z } from 'zod';
@@ -35,11 +36,31 @@ export const repoRouter = router({
         prerelease: z.boolean().default(false).optional(),
       }),
     )
-    .output(z.object({}).passthrough())
+    .output(
+      z.object({
+        tag: z.string(),
+        version: z.string(),
+        commit: z.string(),
+        semver: z.object({
+          major: z.number(),
+          minor: z.number(),
+          patch: z.number(),
+        }),
+      }),
+    )
     .query(async ({ input, ctx: { octokit } }) => {
       const tags = await repoTags({ ...input, octokit });
-      const items = tags.map(({ name, version, commit }) => ({ name, version: version.format(), commit: commit.sha }));
-      return items?.[0];
+      const items = tags.map(({ name, version, commit }) => ({
+        tag: name,
+        version: version.format(),
+        commit: commit.sha,
+        semver: {
+          major: version.major,
+          minor: version.minor,
+          patch: version.patch,
+        },
+      }));
+      return requireFound(items?.[0]);
     }),
 });
 
@@ -61,12 +82,11 @@ async function repoTags({
     repo,
     per_page: 100,
   });
-
   let tags = data
     .map((v) => {
       return {
         ...v,
-        version: semver.parse(v.name) as SemVer,
+        version: semver.coerce(v.name) as SemVer,
       };
     })
     .filter((v) => v.version);
@@ -77,5 +97,7 @@ async function repoTags({
       }),
     );
   }
+  // sort by version
+  tags.sort((a, b) => semver.compare(b.version, a.version));
   return tags;
 }
