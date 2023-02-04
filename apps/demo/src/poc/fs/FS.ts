@@ -1,3 +1,6 @@
+/**
+ * @see https://github.com/os-js/osjs-webdav-adapter/blob/master/index.js
+ */
 export interface FS {
   mkdir(dir: string, opts?: { recursive?: boolean; mode?: Mode }): Promise<void>;
 

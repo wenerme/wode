@@ -20,6 +20,7 @@ export function polyfillFetch(nodeFetch?: typeof import('node-fetch')): MaybePro
       Blob,
       File,
     });
+    // abort controller
     return true;
   }
   return import('node-fetch').then((v) => polyfillFetch(v));

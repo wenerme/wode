@@ -26,6 +26,8 @@ OSPM	?=$(shell for i in apk brew yum apt-get apt; do command -v $$i > /dev/null 
 # for reproducible build
 SOURCE_DATE_EPOCH?=$(shell git log -1 --pretty=%ct)
 
+-include local.mk
+
 # File Structure
 # lib/index.js - ESM build
 # dist/ - Bundle & Non-ESM build
