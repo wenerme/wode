@@ -1,4 +1,5 @@
 export async function readGitLastLog() {
+  // https://gist.github.com/varemenos/e95c2e098e657c7688fd
   return JSON.parse(
     String(
       (
