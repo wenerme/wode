@@ -6,6 +6,7 @@ import { ms } from '@wener/utils';
 
 const cache = new LRUCache({
   ttl: 1000 * 60 * 5, // 5min
+  max: 1000,
 });
 
 export async function getFlagged(): Promise<FlaggedPackage[]> {
