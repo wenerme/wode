@@ -18,22 +18,27 @@ export async function getFlagged(): Promise<FlaggedPackage[]> {
     let all: FlaggedPackage[] = [];
     let page = 1;
     while (true) {
-      const {
-        window: { document },
-      } = await JSDOM.fromURL(`https://pkgs.alpinelinux.org/flagged?page=${page}`);
-      const $$ = document.querySelectorAll.bind(document);
-      let items = Array.from($$('table tr'))
-        .map((tr) => Array.from(tr.querySelectorAll('td')).map((td) => td.textContent?.trim()))
-        .slice(1)
-        .map(([origin, version, next, repo, maintainer, flaggedAt]) => ({
-          origin,
-          version,
-          next,
-          repo,
-          maintainer,
-          flaggedAt,
-        }))
-        .filter((v) => v.next) as FlaggedPackage[];
+      // 一次性拉取所有会导致 vercel 超时 - 10s
+      let items: FlaggedPackage[] = cache.get(`flagged.${page}`) as any;
+      if (!items) {
+        const {
+          window: { document },
+        } = await JSDOM.fromURL(`https://pkgs.alpinelinux.org/flagged?page=${page}`);
+        const $$ = document.querySelectorAll.bind(document);
+        items = Array.from($$('table tr'))
+          .map((tr) => Array.from(tr.querySelectorAll('td')).map((td) => td.textContent?.trim()))
+          .slice(1)
+          .map(([origin, version, next, repo, maintainer, flaggedAt]) => ({
+            origin,
+            version,
+            next,
+            repo,
+            maintainer,
+            flaggedAt,
+          }))
+          .filter((v) => v.next) as FlaggedPackage[];
+        cache.set(`flagged.${page}`, items);
+      }
 
       getLogger().info({ page, items: items.length }, 'getFlagged');
       page++;
