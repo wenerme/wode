@@ -1,5 +1,5 @@
 import { requireFound } from 'common/src/trpc/handlers';
-import type { SemVer } from 'semver';
+import type { Range, SemVer } from 'semver';
 import semver from 'semver/preload';
 import { z } from 'zod';
 import type { Octokit } from '@octokit/rest';
@@ -139,4 +139,35 @@ interface TagInfo {
     year: number;
     month: number;
   };
+}
+
+function filter(
+  v: SemVer,
+  {
+    range,
+    prerelease,
+    calver,
+  }: {
+    range?: Range;
+    prerelease?: boolean;
+    calver?: string;
+  },
+) {
+  if (range && !semver.satisfies(v, range)) {
+    return false;
+  }
+  if (calver === 'only' && v.major < 2000) {
+    return false;
+  } else if (calver === 'ignore' && v.major > 2000) {
+    return false;
+  }
+  if (prerelease !== undefined) {
+    if (prerelease && !v.prerelease.length) {
+      return false;
+    }
+    if (!prerelease && v.prerelease.length) {
+      return false;
+    }
+  }
+  return true;
 }

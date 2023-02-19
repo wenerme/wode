@@ -1,5 +1,6 @@
 import { createPingQuery } from 'common/src/trpc/handlers';
 import { publicProcedure, router } from '../trpc';
+import { alpineRouter } from './alpine/alpineRouter';
 import { dataRouter } from './data/dataRouter';
 import { githubRouter } from './github/githubRouter';
 import { toolRouter } from './github/toolRouter';
@@ -11,6 +12,7 @@ export const appRouter = router({
   hash: hashRouter,
   data: dataRouter,
   github: githubRouter,
+  alpine: alpineRouter,
   tool: toolRouter,
   ping: createPingQuery(publicProcedure),
 });

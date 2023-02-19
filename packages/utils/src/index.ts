@@ -86,3 +86,6 @@ export { PEM } from './crypto/pem/pem';
 export { createRandom } from './maths/random';
 
 export { type FetchLike } from './fetch';
+
+// bundled
+export { default as ms } from './libs/ms';
