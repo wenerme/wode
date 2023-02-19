@@ -39,6 +39,26 @@ export function createPasswordRoutes(): RouteObject[] {
             });
           },
         },
+        {
+          handle: {
+            title: '密码强度检测',
+          },
+          path: 'strength/{password}',
+          element: <ZxcvbnPasswordStrength />,
+          errorElement: <PageErrorState />,
+          action: ({ params: { password = '123456789' } }) => {
+            return getTrpcProxyClient().password.zxcvbn.query({ password });
+          },
+          loader: ({ request }) => {
+            let password = new URL(request.url).searchParams.get('password') || '123456';
+            if (password.endsWith('.html')) {
+              password = password.slice(0, -5);
+            }
+            return getTrpcProxyClient().password.zxcvbn.query({
+              password: password,
+            });
+          },
+        },
       ],
     },
   ];
