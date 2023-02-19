@@ -14,7 +14,7 @@ export const ZxcvbnPasswordStrength = () => {
         <HiKey className={'w-6 h-6'} />
         Zxcvbn 密码强度检测
       </h3>
-      <Form method={'get'} action={'/password/zxcvbn'} className={'py-1 px-2'}>
+      <Form method={'get'} action={'/password/strength'} className={'py-1 px-2'}>
         <div className="form-control">
           <label className="input-group">
             <input
