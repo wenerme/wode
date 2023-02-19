@@ -38,9 +38,11 @@ export async function getFlagged(): Promise<FlaggedPackage[]> {
           }))
           .filter((v) => v.next) as FlaggedPackage[];
         cache.set(`flagged.${page}`, items);
+        getLogger().info({ page, items: items.length }, 'getFlagged');
       }
+      // fixme too slow - vercel timeout
+      return items;
 
-      getLogger().info({ page, items: items.length }, 'getFlagged');
       page++;
       all.push(...items);
       if (items.length < 50) {
