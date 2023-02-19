@@ -1,0 +1,1 @@
+- https://github.com/vercel/ms/blob/master/src/index.ts

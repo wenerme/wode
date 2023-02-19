@@ -24,7 +24,9 @@
     "common": "workspace:^1.0.0",
     "cors": "^2.8.5",
     "immer": "^9.0.18",
+    "jsdom": "^21.1.0",
     "lodash": "^4.17.21",
+    "lru-cache": "^7.14.1",
     "next": "^13.1.5",
     "next-auth": "^4.18.10",
     "next-superjson-plugin": "^0.5.4",
@@ -50,5 +52,15 @@
     "@vitejs/plugin-react": "^3.0.1",
     "vite": "^4.0.4",
     "vite-plugin-dynamic-import": "^1.2.7"
+  },
+  "ava": {
+    "extensions": {
+      "ts": "module"
+    },
+    "nodeArguments": [
+      "--conditions=typescript",
+      "--require=@wener/wode/suppress-experimental.cjs",
+      "--loader=tsx"
+    ]
   }
 }
