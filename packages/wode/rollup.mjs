@@ -35,7 +35,7 @@ console.info(`Building ${pkg.name} ${pkg.version} with rollup`, { externalProd }
 const dev = {
   input,
   external: externalDev,
-  plugins: [esbuild({ charset: 'utf8', target: 'esnext' })],
+  plugins: [esbuild({ charset: 'utf8', target: 'chrome79' })],
   output: {
     entryFileNames: '[name].js',
     exports: 'named',
@@ -209,7 +209,8 @@ const createBundle = () => {
         esbuild({
           minify: false,
           charset: 'utf8',
-          target: 'chrome90',
+          // chrome80 ??
+          target: 'chrome79',
           define: {
             'process.env.NODE_ENV': `"${process.env.NODE_ENV}"`,
           },
