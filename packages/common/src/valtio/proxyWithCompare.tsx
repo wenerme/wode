@@ -8,7 +8,7 @@ export const proxyWithCompare = unstable_buildProxyFunction(deepEqual, undefined
     // react
     return false;
   }
-  if (x instanceof EventTarget) {
+  if (typeof EventTarget !== 'undefined' && x instanceof EventTarget) {
     // dom
     return false;
   }
