@@ -1,5 +1,6 @@
 /* eslint no-proto:0 */
 import { classOf } from '../langs/classOf';
+import { globalThis } from './globalThis';
 
 /**
  * Clone an object using structured cloning algorithm

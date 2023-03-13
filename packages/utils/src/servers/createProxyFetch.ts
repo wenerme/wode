@@ -1,4 +1,5 @@
-import { FetchLike } from '../fetch';
+import { type FetchLike } from '../fetch';
+import { globalThis } from '../isomorphics/globalThis';
 
 export function createProxyFetch(proxy?: string, fetch?: FetchLike): FetchLike {
   if (!proxy) {

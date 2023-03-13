@@ -4,7 +4,7 @@ export function timeout<T = any>(v: Promise<T>, ms: number): Promise<T> {
   return Promise.race([
     v,
     new Promise((_resolve, reject) => {
-      timeout = setTimeout(() => reject(error), ms);
+      timeout = setTimeout(() => { reject(error); }, ms);
     }),
   ]).then(
     (v) => {

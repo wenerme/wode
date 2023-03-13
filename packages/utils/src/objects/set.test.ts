@@ -28,7 +28,7 @@ test('set objects', (t) => {
   const orig = set;
 
   function run(isMerge: boolean) {
-    const set = (a: any, b: any, c: any) => orig(a, b, c, isMerge);
+    const set = (a: any, b: any, c: any) => { orig(a, b, c, isMerge); };
     const verb = isMerge ? 'merge' : 'overwrite';
     objects(`should ${verb} existing object value :: simple`, () => {
       const { input } = prepare({

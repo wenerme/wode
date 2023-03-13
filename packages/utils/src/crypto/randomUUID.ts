@@ -1,3 +1,5 @@
+import { globalThis } from '../isomorphics/globalThis';
+
 /**
  * generate random UUIDv4
  */

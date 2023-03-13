@@ -4,13 +4,13 @@ function load(
   reject: (v: any) => void,
   options: { attributes: Record<string, string> } | undefined,
 ) {
-  el.onload = () => resolve(el);
+  el.onload = () => { resolve(el); };
   el.onerror = (e) => {
     el.remove();
     reject(e);
   };
   const { attributes = {} } = options || {};
-  Object.entries(attributes).forEach(([k, v]) => el.setAttribute(k, v));
+  Object.entries(attributes).forEach(([k, v]) => { el.setAttribute(k, v); });
 
   document.head.appendChild(el);
 }

@@ -53,11 +53,12 @@ export function createTranslate<T extends object>(obj?: Record<string, T>): Tran
       }
       if (process.env.NODE_ENV === 'development') {
         if (val == null) {
-          return console.error(
+          console.error(
             `[Translate] Missing the "${[].concat(key as any).join('.')}" key within the "${
               lang || locale
             }" dictionary`,
           );
+          return;
         }
       }
       if (typeof val === 'function') return val(params);

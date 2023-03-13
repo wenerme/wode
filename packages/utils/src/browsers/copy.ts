@@ -1,6 +1,6 @@
 import type { MaybePromise } from '../asyncs/MaybePromise';
 
-let _copy: (s: any) => void;
+let _copy: (s: any) => MaybePromise<void>;
 
 // https://gist.github.com/rproenca/64781c6a1329b48a455b645d361a9aa3
 function initCopy() {

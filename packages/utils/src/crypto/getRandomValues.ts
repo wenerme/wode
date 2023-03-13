@@ -1,5 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import type { TypedArray } from '../io/ArrayBuffers';
+import { globalThis } from '../isomorphics/globalThis';
 import { getNodeCrypto } from './getNodeCrypto';
 
 export let getRandomValues: <T extends Exclude<TypedArray, Float32Array | Float64Array>>(typedArray: T) => T =
