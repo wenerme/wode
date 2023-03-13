@@ -12,11 +12,11 @@ export function createLogger(
   context: object = {},
 ): LoggerWithChild {
   return {
-    trace: (...values) => write({ ...context, level: 'trace', values }),
-    debug: (...values) => write({ ...context, level: 'debug', values }),
-    info: (...values) => write({ ...context, level: 'info', values }),
-    warn: (...values) => write({ ...context, level: 'warn', values }),
-    error: (...values) => write({ ...context, level: 'error', values }),
+    trace: (...values) => { write({ ...context, level: 'trace', values }); },
+    debug: (...values) => { write({ ...context, level: 'debug', values }); },
+    info: (...values) => { write({ ...context, level: 'info', values }); },
+    warn: (...values) => { write({ ...context, level: 'warn', values }); },
+    error: (...values) => { write({ ...context, level: 'error', values }); },
     child: (ctx) => createLogger(write, { ...context, ...ctx }),
   };
 }

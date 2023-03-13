@@ -72,6 +72,7 @@ export { getFileFromDataTransfer } from './browsers/getFileFromDataTransfer';
 
 // polyfills
 export { getGlobalThis } from './isomorphics/getGlobalThis';
+export { globalThis } from './isomorphics/globalThis';
 export { structuredClone } from './isomorphics/structuredClone';
 
 // crypto

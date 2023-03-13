@@ -1,3 +1,5 @@
+import { globalThis } from '../isomorphics/globalThis';
+
 /**
  * transferable object pass between workers, can work with structuredClone
  *
