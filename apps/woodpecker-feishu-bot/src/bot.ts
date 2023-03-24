@@ -1,4 +1,4 @@
-import { type AxiosRequestConfig } from 'axios';
+import axios, { type AxiosRequestConfig } from 'axios';
 import { createHmac } from 'node:crypto';
 import { z } from 'zod';
 
@@ -157,4 +157,8 @@ export function createSign(secret: string, timestamp: number | string): string {
   const hmac = createHmac('sha256', stringToSign);
   hmac.update('');
   return hmac.digest('base64');
+}
+
+export function uploadImage({ url }: { url: string }) {
+  axios.postForm(url, {});
 }
