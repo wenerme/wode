@@ -59,4 +59,5 @@ pipeline:
 | text              | =content+format=text                   |
 | dry_run           |                                        |
 | debug             | print env                              |
-| template_render   | render template, default to true       |
+| template          | render template, default to true       |
+| failsafe          | if true, ignore error                  |
