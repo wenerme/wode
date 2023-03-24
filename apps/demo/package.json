@@ -86,7 +86,7 @@
     "daisyui": "^2.49.0",
     "dayjs": "^1.11.7",
     "domhandler": "^5.0.3",
-    "eta": "^2.0.0",
+    "eta": "^2.0.1",
     "html-react-parser": "^3.0.8",
     "immer": "^9.0.18",
     "json5": "^2.2.3",
