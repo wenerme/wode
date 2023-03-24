@@ -115,6 +115,10 @@ async function upgrade({ pkg, dry = false, next }: { pkg: ParsedPackageId; dry?:
   }
 
   if (!next) {
+    next = process.env[`${pkg.pkg}_next`];
+  }
+
+  if (!next) {
     const { owner, repo } = sources[0]?.match(/github.com\/(?<owner>[^/]+)\/(?<repo>[^/]+)/)?.groups || {};
     if (!owner && !repo) {
       throw new Error(`Unable to detect next version: ${sources}`);
