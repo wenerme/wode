@@ -11,8 +11,8 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
-    "@wener/utils": "workspace:^1.1.11",
+    "@wener/utils": "workspace:^1.1.13",
     "common": "workspace:^1.0.0",
-    "next": "^13.1.5"
+    "next": "^13.2.4"
   }
 }
