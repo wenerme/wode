@@ -74,16 +74,16 @@
     }
   },
   "optionalDependencies": {
-    "node-fetch": "^3.3.0",
-    "systemjs": "^6.13.0"
+    "node-fetch": "^3.3.1",
+    "systemjs": "^6.14.1"
   },
   "devDependencies": {
-    "@types/jsdom": "^20.0.1",
-    "@types/react": "^18.0.27",
-    "@types/react-dom": "^18.0.10",
-    "@wener/utils": "workspace:^1.1.9",
-    "ava": "^5.1.1",
-    "jsdom": "^21.1.0",
+    "@types/jsdom": "^21.1.1",
+    "@types/react": "^18.0.29",
+    "@types/react-dom": "^18.0.11",
+    "@wener/utils": "workspace:^1.1.13",
+    "ava": "^5.2.0",
+    "jsdom": "^21.1.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

@@ -13,8 +13,8 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
-    "@wener/reaction": "workspace:^1.2.17",
-    "@wener/utils": "workspace:^1.1.9",
+    "@wener/reaction": "workspace:^1.2.18",
+    "@wener/utils": "workspace:^1.1.13",
     "common": "workspace:^1.0.0"
   },
   "devDependencies": {
