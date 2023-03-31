@@ -2,7 +2,7 @@ import axios from 'axios';
 import dotenv from 'dotenv';
 import * as Eta from 'eta';
 import type { EtaConfig } from 'eta/dist/types/config';
-import fs from 'node:fs/promises';
+import fs from 'fs-extra';
 import { z } from 'zod';
 import { createFeishuBotHookRequest } from './bot';
 
@@ -36,6 +36,7 @@ async function main() {
   const result = Envs.safeParse(process.env);
   if (!result.success) {
     console.error(`${result.error.issues.map(({ path, message }) => `${path.join('.')}: ${message}`).join(' ;')}`);
+    process.exit(1);
     return;
   }
   const {
@@ -119,6 +120,7 @@ async function run({
   if (template) {
     const ctx = {
       env: { ...process.env },
+      fs: Object.freeze(fs),
     };
     let opts: EtaConfig = {
       ...Eta.defaultConfig,
@@ -126,7 +128,7 @@ async function run({
       autoTrim: false,
     };
     if (text) {
-      text = Eta.render(
+      text = await Eta.renderAsync(
         text,
         {
           ...ctx,
@@ -136,7 +138,7 @@ async function run({
       );
     }
     if (markdown) {
-      markdown = Eta.render(
+      markdown = await Eta.renderAsync(
         markdown,
         {
           ...ctx,
@@ -146,7 +148,7 @@ async function run({
       );
     }
     if (html) {
-      html = Eta.render(
+      html = await Eta.renderAsync(
         html,
         {
           ...ctx,
@@ -166,12 +168,13 @@ async function run({
     }
   }
 
+  console.log(`Send`, {
+    text,
+    markdown,
+  });
+
   if (dryRun) {
     console.log('dry run');
-    console.log({
-      text,
-      markdown,
-    });
     return true;
   }
 
@@ -189,7 +192,7 @@ async function run({
     console.error({ statusText, status, data, headers });
     return;
   }
-  console.log(JSON.stringify(data, null, 2));
+  console.log(`->`, JSON.stringify(data));
 
   return true;
 }
