@@ -30,6 +30,8 @@ pipeline:
 
         📦️ <%=$.link(env.CI_REPO_NAME,env.CI_BUILD_LINK)%>
 
+  # Do the real work
+
   Notify Done:
     image: *notify_image
     settings:
@@ -49,15 +51,19 @@ pipeline:
 
 ## settings
 
-| setting           | for                                    |
-|-------------------|----------------------------------------|
-| feisbu_bot_url    |                                        |
-| feisbu_bot_secret |                                        |
-| content           |                                        |
-| format            | format of content, default to markdown |
-| markdown          | =content+format=markdown               |
-| text              | =content+format=text                   |
-| dry_run           |                                        |
-| debug             | print env                              |
-| template          | render template, default to true       |
-| failsafe          | if true, ignore error                  |
+| setting           | for                                     |
+|-------------------|-----------------------------------------|
+| feisbu_bot_url    |                                         |
+| feisbu_bot_secret |                                         |
+| content           |                                         |
+| format            | format of content, default to markdown  |
+| markdown          | =content+format=markdown                |
+| text              | =content+format=text                    |
+| dry_run           |                                         |
+| debug             | print env                               |
+| template          | render as eta template, default to true |
+| failsafe          | if true, ignore error                   |
+
+- eta template context
+  - env -> process.env
+  - fs -> fs-extra

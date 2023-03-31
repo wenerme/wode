@@ -43,8 +43,8 @@ const CurrentPage = () => {
       <div className={'flex flex-col'}>
         <h3 className={'font-bold'}>Template</h3>
         <textarea
-          cols="30"
-          rows="10"
+          cols={30}
+          rows={10}
           value={state.template}
           onChange={(e) => {
             update((s) => {
@@ -64,7 +64,7 @@ const CurrentPage = () => {
           />
         </div>
       </div>
-      <textarea cols="30" rows="10" value={state.output} />
+      <textarea cols={30} rows={10} value={state.output} />
     </div>
   );
 };
@@ -83,8 +83,8 @@ const DataInput: React.FC<{ initialData?: any; onDataChange?: (v: any) => void }
         <button className={'btn btn-sm'}>Pretty</button>
       </div>
       <textarea
-        cols="30"
-        rows="10"
+        cols={30}
+        rows={10}
         value={value}
         onChange={(e) => {
           update((s) => {
