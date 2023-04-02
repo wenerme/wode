@@ -1,0 +1,30 @@
+{
+  "name": "@wener/dashboard",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@wener/reaction": "workspace:^",
+    "@wener/utils": "workspace:^",
+    "immer": "^9.0.21",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-icons": "^4.8.0",
+    "react-router-dom": "6.10.0",
+    "use-immer": "^0.8.1",
+    "valtio": "^1.10.3",
+    "zod": "^3.21.4",
+    "zustand": "^4.3.7"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.32",
+    "@types/react-dom": "^18.0.11"
+  }
+}

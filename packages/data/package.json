@@ -11,7 +11,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@wener/utils": "workspace:^1.1.13"
+    "@wener/utils": "workspace:^"
   },
   "devDependencies": {
     "@types/fs-extra": "^11.0.1",

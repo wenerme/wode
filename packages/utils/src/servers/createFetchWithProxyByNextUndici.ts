@@ -9,6 +9,11 @@ export function createFetchWithProxyByNextUndici({ proxy, fetch }: {
   }
   let agent: any;
   return async (...args) => {
+    const init = args[1] ||= {};
+    if (init.body instanceof ReadableStream) {
+      // https://github.com/nodejs/node/issues/46221
+      (init as any).duplex ||= "half";
+    }
     if (!agent) {
       let ProxyAgent;
       if ('ProxyAgent' in globalThis) {

@@ -79,9 +79,9 @@
   },
   "devDependencies": {
     "@types/jsdom": "^21.1.1",
-    "@types/react": "^18.0.29",
+    "@types/react": "^18.0.32",
     "@types/react-dom": "^18.0.11",
-    "@wener/utils": "workspace:^1.1.13",
+    "@wener/utils": "workspace:^",
     "ava": "^5.2.0",
     "jsdom": "^21.1.1",
     "react": "^18.2.0",
