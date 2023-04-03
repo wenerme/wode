@@ -1,4 +1,5 @@
 import { NextApiHandler, NextApiRequest } from 'next';
+import hash from 'object-hash';
 import QRCode, { QRCodeRenderersOptions } from 'qrcode';
 import { z } from 'zod';
 import { arrayOfMaybeArray } from '@wener/utils';
@@ -47,7 +48,14 @@ const handler: NextApiHandler = async (req: NextApiRequest, res) => {
 
   console.log('QR Encode', str, trim(opts));
 
-  res.setHeader('Cache-Control', 'public,max-age=31536000');
+  const etag = hash(trim({ ...opts, text: str, format }));
+  if (req.headers['if-none-match'] === etag) {
+    res.status(304).end();
+    return;
+  }
+
+  res.setHeader('ETag', etag);
+  res.setHeader('Cache-Control', 'public,max-age=86400,s-maxage=86400');
 
   if (format === 'svg') {
     res.setHeader('Content-Type', 'image/svg+xml');

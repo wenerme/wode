@@ -208,6 +208,9 @@ importers:
       next-superjson-plugin:
         specifier: ^0.5.6
         version: 0.5.6(next@13.1.6)(superjson@1.12.2)
+      object-hash:
+        specifier: ^3.0.0
+        version: 3.0.0
       pino:
         specifier: ^8.11.0
         version: 8.11.0
@@ -260,6 +263,9 @@ importers:
       '@types/lodash':
         specifier: ^4.14.192
         version: 4.14.192
+      '@types/object-hash':
+        specifier: ^3.0.2
+        version: 3.0.2
       '@types/qrcode':
         specifier: ^1.5.0
         version: 1.5.0
@@ -6688,6 +6694,10 @@ packages:
   /@types/nprogress@0.2.0:
     resolution: {integrity: sha512-1cYJrqq9GezNFPsWTZpFut/d4CjpZqA0vhqDUPFWYKF1oIyBz5qnoYMzR+0C/T96t3ebLAC1SSnwrVOm5/j74A==}
     dev: false
+
+  /@types/object-hash@3.0.2:
+    resolution: {integrity: sha512-tfyXl1JPCf2hzIDK29gO7qGqJjThKBzg/Cn3bA68R9NmWdOx+f7k5mm4to/n43BHspCwcoUC6FU4NpUoK/h9bQ==}
+    dev: true
 
   /@types/object.omit@3.0.0:
     resolution: {integrity: sha512-I27IoPpH250TUzc9FzXd0P1BV/BMJuzqD3jOz98ehf9dQqGkxlq+hO1bIqZGWqCg5bVOy0g4AUVJtnxe0klDmw==}
