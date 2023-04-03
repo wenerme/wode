@@ -1,10 +1,17 @@
+# API
+
+```bash
+curl https://apis.wener.me/api/qr/dec/json -F file=@qrcode.jpg -v
+curl https://apis.wener.me/api/qr/dec/text -F file=@qrcode.jpg -v
+```
+
 # Note
 
 新旧版本 apis 区别 
 
 - [ ] url-explain
 - [ ] barcode
-- [ ] qrcode
+- [x] qrcode
 - ~~kong admin~~
 - ~~web torrent~~ - client
 - [ ] bencode
