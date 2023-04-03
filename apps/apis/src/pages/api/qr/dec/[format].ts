@@ -9,6 +9,7 @@ import {
   DecodeHintType,
   HybridBinarizer,
   MultiFormatReader,
+  ResultMetadataType,
   RGBLuminanceSource,
 } from '@zxing/library';
 
@@ -67,15 +68,31 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const binaryBitmap = new BinaryBitmap(new HybridBinarizer(luminanceSource));
   const decoded = reader.decode(binaryBitmap);
 
-  console.log(`Decode qrcode ${imageData.width}x${imageData.height} to ${decoded.getText()}`);
+  let text = decoded.getText();
+  console.log(`Decode qrcode ${imageData.width}x${imageData.height} to ${text}`);
   const { format } = params.data;
   switch (format) {
-    case 'json':
+    case 'json': {
+      const url = `https://apis.wener.me/api/qr/enc/svg/base64:${btoa(text)}`;
+
       return res.status(200).json({
-        text: decoded.getText(),
+        text: text,
+        url,
+        image: {
+          mime: img.getMIME(),
+          ext: img.getExtension(),
+          width: imageData.width,
+          height: imageData.height,
+        },
+        qrcode: {
+          bytes: decoded.getRawBytes().length,
+          level: decoded.getResultMetadata().get(ResultMetadataType.ERROR_CORRECTION_LEVEL),
+          orientation: decoded.getResultMetadata().get(ResultMetadataType.ORIENTATION),
+        },
       });
+    }
     case 'text':
-      return res.status(200).send(decoded.getText());
+      return res.status(200).send(text);
   }
 };
 
