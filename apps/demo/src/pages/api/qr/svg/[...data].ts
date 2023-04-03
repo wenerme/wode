@@ -16,6 +16,8 @@ const handler: NextApiHandler = async (req: NextApiRequest, res) => {
     buf = Buffer.from(data.slice(7), 'base64');
   } else if (data.startsWith('b64:')) {
     buf = Buffer.from(data.slice(4), 'base64');
+  } else {
+    buf = Buffer.from(data, 'utf-8');
   }
   if (!buf) {
     res.json({
@@ -26,7 +28,9 @@ const handler: NextApiHandler = async (req: NextApiRequest, res) => {
   }
 
   res.setHeader('Content-Type', 'image/svg+xml');
-  const out = await QRCode.toString(buf.toString(), { type: 'svg' });
+  let str = buf.toString();
+  console.log('QrCode', str);
+  const out = await QRCode.toString(str, { type: 'svg' });
   res.send(out);
 };
 
