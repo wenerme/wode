@@ -19,12 +19,15 @@
     "@wener/data": "workspace:^",
     "@wener/reaction": "workspace:^",
     "@wener/utils": "workspace:^",
+    "@zxing/library": "^0.19.2",
     "canvas": "^2.11.2",
     "classnames": "^2.3.2",
     "cmdk": "^0.1.22",
     "common": "workspace:^",
     "cors": "^2.8.5",
+    "formidable": "^2.1.1",
     "immer": "^9.0.21",
+    "jimp": "^0.22.7",
     "jsdom": "^21.1.1",
     "lodash": "^4.17.21",
     "lru-cache": "^8.0.4",
@@ -48,6 +51,7 @@
     "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
+    "@types/formidable": "^2.0.5",
     "@types/lodash": "^4.14.192",
     "@types/qrcode": "^1.5.0",
     "@types/semver": "^7.3.13",
