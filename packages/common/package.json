@@ -29,7 +29,7 @@
     "dayjs": "^1.11.7",
     "goober": "^2.1.12",
     "immer": "^9.0.21",
-    "next": "^13.2.4",
+    "next": "^13.1.6",
     "next-auth": "^4.21.0",
     "ohm-grammar-miniquery": "workspace:^",
     "pino": "^8.11.0",
