@@ -1,7 +1,7 @@
-import test from 'ava';
+import { test, expect } from 'vitest';
 import { mod31 } from './mod31';
 
-test.failing('mod31', (t) => {
+test.fails('mod31', () => {
   // fixme mod 31
-  t.truthy(mod31('11610582435JGWXMU'));
+  expect(mod31('11610582435JGWXMU')).toBeFalsy();
 });

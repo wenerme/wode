@@ -1,8 +1,8 @@
-import test from 'ava';
+import { test, assert } from 'vitest';
 import { mod11 } from './mod11';
 
-test('mod11', (t) => {
+test('mod11', () => {
   for (const [s, r] of [['11010519491231002', 'X']]) {
-    t.is(mod11(s), r);
+    assert.equal(mod11(s), r);
   }
 });

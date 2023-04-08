@@ -13,7 +13,7 @@
     "skipLibCheck": true,
     "declaration": false,
     "esModuleInterop": true,
-    "jsx": "react",
+    "jsx": "preserve",
     "importHelpers": true,
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
