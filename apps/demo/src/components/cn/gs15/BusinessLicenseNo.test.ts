@@ -1,6 +1,6 @@
-import test from 'ava';
-import { BusinessLicenseNo } from '@src/components/cn/gs15/BusinessLicenseNo';
+import { test } from 'vitest';
+import { BusinessLicenseNo } from './BusinessLicenseNo';
 
-test('BusinessLicenseNo', (t) => {
+test('BusinessLicenseNo', () => {
   BusinessLicenseNo.parse('330196000080659');
 });

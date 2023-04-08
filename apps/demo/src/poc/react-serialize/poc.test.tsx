@@ -1,14 +1,14 @@
 import React from 'react';
 import type { ReactTestRenderer } from 'react-test-renderer';
 import { act, create } from 'react-test-renderer';
-import test from 'ava';
 import _ from 'lodash';
+import { test, assert, expect } from 'vitest';
 import { deserialize, serialize } from './serialize';
 
-test('ele', (t) => {
+test('ele', () => {
   {
     const a = React.createElement('a', {});
-    t.deepEqual(_.omit(a, ['_owner', '_store']), {
+    assert.deepEqual(_.omit(a, ['_owner', '_store']), {
       type: 'a',
       props: {},
       key: null,
@@ -18,14 +18,14 @@ test('ele', (t) => {
   }
   {
     const a = React.createElement(MemoComp, {});
-    t.deepEqual(_.omit(a, ['_owner', '_store']), {
+    assert.deepEqual(_.omit(a, ['_owner', '_store']), {
       type: MemoComp,
       props: {},
       key: null,
       ref: null,
       $$typeof: Symbol.for('react.element'),
     });
-    t.deepEqual(a.type, {
+    assert.deepEqual(a.type, {
       compare: null,
       $$typeof: Symbol.for('react.memo'),
       // original
@@ -35,7 +35,7 @@ test('ele', (t) => {
 
   {
     const a = React.createElement('a', {}, 'hello');
-    t.deepEqual(_.omit(a, ['_owner', '_store']), {
+    assert.deepEqual(_.omit(a, ['_owner', '_store']), {
       type: 'a',
       props: {
         children: 'hello',
@@ -52,14 +52,14 @@ test('ele', (t) => {
   // }
 
   {
-    t.log(React.Fragment);
+    console.log(React.Fragment);
     const m = new Map();
     m.set(React.Fragment, 'F');
-    t.log(m.get(React.Fragment));
+    console.log(m.get(React.Fragment));
   }
 });
 
-test('serialize', (t) => {
+test('serialize', () => {
   {
     const so = { refs: new Map(), register: true };
     so.refs.set(React.Fragment, 'React.Fragment');
@@ -90,21 +90,21 @@ test('serialize', (t) => {
     });
 
     const data = serialize(a, so);
-    t.snapshot(data, 'serialize');
+
+    expect(data, 'serialize').matchSnapshot();
 
     const out = deserialize(JSON.parse(JSON.stringify(data)), {
       refs: new Map(Array.from(so.refs.entries()).map(([k, v]) => [v, k])),
     });
-    t.deepEqual(out, a);
+    assert.deepEqual(out, a);
 
     let rb: ReactTestRenderer;
     act(() => {
       rb = create(out as React.ReactElement);
     });
-    t.deepEqual(ra!.toJSON(), rb!.toJSON());
-    t.snapshot(ra!.toJSON(), 'render');
+    assert.deepEqual(ra!.toJSON(), rb!.toJSON());
+    expect(ra!.toJSON(), 'render').matchSnapshot();
   }
-  t.pass();
 });
 
 const Ctx = React.createContext('default');

@@ -68,24 +68,13 @@
     "@types/fs-extra": "^11.0.1",
     "@types/mime": "^3.0.1",
     "@types/semver": "^7.3.13",
-    "@types/tar": "^6.1.4",
-    "ava": "^5.2.0"
+    "@types/tar": "^6.1.4"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org",
     "access": "public"
   },
   "sideEffects": false,
-  "ava": {
-    "extensions": {
-      "ts": "module"
-    },
-    "nodeArguments": [
-      "--conditions=typescript",
-      "--require=@wener/wode/suppress-experimental.cjs",
-      "--loader=tsx"
-    ]
-  },
   "rollup": {
     "input": [
       "./src/index.ts",

@@ -1,8 +1,6 @@
-import test from 'ava';
+import { test } from 'vitest';
 import { getFlagged } from './getFlagged';
 
-test('flagged', async (t) => {
-  t.log(await getFlagged());
-  t.log(await getFlagged());
-  t.pass();
-});
+test('flagged', async () => {
+  console.log(await getFlagged());
+}, 30_000);
