@@ -21,7 +21,7 @@
     "https-proxy-agent": "^5.0.1"
   },
   "devDependencies": {
-    "lru-cache": "^8.0.4"
+    "lru-cache": "^8.0.5"
   },
   "ava": {
     "extensions": {
