@@ -1341,17 +1341,14 @@ importers:
         specifier: ^21.1.1
         version: 21.1.1
       '@types/react':
-        specifier: ^18.0.32
-        version: 18.0.32
+        specifier: ^18.0.33
+        version: 18.0.33
       '@types/react-dom':
         specifier: ^18.0.11
         version: 18.0.11
       '@wener/utils':
         specifier: workspace:^
         version: link:../utils
-      ava:
-        specifier: ^5.2.0
-        version: 5.2.0
       jsdom:
         specifier: ^21.1.1
         version: 21.1.1(canvas@2.11.2)
@@ -6859,6 +6856,14 @@ packages:
       '@types/prop-types': 15.7.5
       '@types/scheduler': 0.16.3
       csstype: 3.1.2
+
+  /@types/react@18.0.33:
+    resolution: {integrity: sha512-sHxzVxeanvQyQ1lr8NSHaj0kDzcNiGpILEVt69g9S31/7PfMvNCKLKcsHw4lYKjs3cGNJjXSP4mYzX43QlnjNA==}
+    dependencies:
+      '@types/prop-types': 15.7.5
+      '@types/scheduler': 0.16.3
+      csstype: 3.1.2
+    dev: true
 
   /@types/resolve@1.20.2:
     resolution: {integrity: sha512-60BCwRFOZCQhDncwQdxxeOEEkbc5dIMccYLwbxsS4TUNeVECQ/pBJ0j09mrHOl/JJvpRPGwO9SvE4nR2Nb/a4Q==}

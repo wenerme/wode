@@ -1,12 +1,12 @@
-import test from 'ava';
+import { test, assert } from 'vitest';
 import { SiteConf, SiteModuleConf } from './schema';
 
-test('conf schema', (t) => {
-  t.deepEqual(SiteModuleConf.parse({}), {
+test('conf schema', () => {
+  assert.deepEqual(SiteModuleConf.parse({}), {
     include: [],
     disabled: [],
   });
-  t.deepEqual(SiteConf.parse({}), {
+  assert.deepEqual(SiteConf.parse({}), {
     title: 'System',
     author: {
       name: 'Wener',
@@ -23,7 +23,7 @@ test('conf schema', (t) => {
     },
   });
 
-  t.log(
+  console.log(
     SiteConf.partial().parse({
       module: {
         include: ['a'],

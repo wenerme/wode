@@ -1,25 +1,25 @@
-import test from 'ava';
+import { assert, beforeAll, expect, test } from 'vitest';
 import { loadServerSystem } from '../loaders/loadServerSystem';
 import type { DeclareFn } from '../utils/getGlobalSystem';
 import { getGlobalSystem } from '../utils/getGlobalSystem';
 
-test.before(async () => {
+beforeAll(async () => {
   await loadServerSystem({ hooks: false });
 });
 
-test('SystemJS functional', async (t) => {
+test('SystemJS functional', async () => {
   const System = getGlobalSystem();
   // named register
   try {
     System.resolve('test');
-    t.fail('should not resolve');
+    expect.fail('should not resolve');
   } catch (e) {}
 
   // will throw error but still valid
   System.set('test0', { default: 'test0' });
   // proper way
   System.set('pkg:test1', { default: 'test1' });
-  t.true(System.has('pkg:test1'));
+  assert.isTrue(System.has('pkg:test1'));
 
   System.register('test', [], ((e) => {
     return {
@@ -28,12 +28,12 @@ test('SystemJS functional', async (t) => {
       },
     };
   }) as DeclareFn);
-  t.is(System.resolve('test'), 'test');
+  assert.equal(System.resolve('test'), 'test');
   // t.log(Array.from(System.entries()));
-  t.is((await System.import('test')).default, 'test');
+  assert.equal((await System.import('test')).default, 'test');
 });
 
-test.failing('map', async (t) => {
+test.fails('map', async () => {
   const System = getGlobalSystem();
   System.addImportMap({
     imports: {
@@ -41,7 +41,7 @@ test.failing('map', async (t) => {
       '@wener/test/': 'package:@wener/test/',
     },
   });
-  t.is(System.resolve('@wener/test'), 'package:@wener/test/a.js');
+  assert.equal(System.resolve('@wener/test'), 'package:@wener/test/a.js');
   // this failed
-  t.is(System.resolve('./b.js', '@wener/test'), 'package:@wener/test/b.js');
+  assert.equal(System.resolve('./b.js', '@wener/test'), 'package:@wener/test/b.js');
 });
