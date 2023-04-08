@@ -1,7 +1,7 @@
-import test from 'ava';
+import { assert, test } from 'vitest';
 import { MiniQueryGrammar, toMiniQueryAST } from './';
 
-test('miniquery syntax', (t) => {
+test('miniquery syntax', () => {
   for (const v of [
     // base
     '- 1.1',
@@ -53,13 +53,13 @@ test('miniquery syntax', (t) => {
     `a.b: 10`,
   ]) {
     const result = MiniQueryGrammar.match(v);
-    t.true(result.succeeded());
-    t.notThrows(() => toMiniQueryAST(result));
+    assert.isTrue(result.succeeded());
+    assert.doesNotThrow(() => toMiniQueryAST(result));
   }
 });
 
-test('miniquery incorrect syntax', (t) => {
+test('miniquery incorrect syntax', () => {
   for (const v of [`a notlike '%hello%'`, `a notbetween a and b`]) {
-    t.false(MiniQueryGrammar.match(v).succeeded());
+    assert.isNotTrue(MiniQueryGrammar.match(v).succeeded());
   }
 });
