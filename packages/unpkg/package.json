@@ -64,7 +64,7 @@
     "test": "make test"
   },
   "devDependencies": {
-    "@types/better-sqlite3": "^7.6.3",
+    "@types/better-sqlite3": "^7.6.4",
     "@types/fs-extra": "^11.0.1",
     "@types/mime": "^3.0.1",
     "@types/semver": "^7.3.13",
@@ -97,7 +97,7 @@
   "dependencies": {
     "@wener/utils": "*",
     "better-sqlite3": "^8.2.0",
-    "lru-cache": "^8.0.4",
+    "lru-cache": "^8.0.5",
     "mime": "^3.0.0",
     "pino": "^8.11.0",
     "semver": "^7.3.8",
