@@ -6,3 +6,6 @@ publish: fmt build
 
 cover:
 	#pnpm exec c8 ava
+
+gen:
+	pnpm ohm generateBundles --withTypes --esm src/grammar/miniquery.ohm
