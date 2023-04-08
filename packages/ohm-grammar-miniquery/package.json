@@ -58,8 +58,11 @@
       "optional": true
     }
   },
+  "dependencies": {
+    "ohm-js": "^17.0.4"
+  },
   "devDependencies": {
-    "@ohm-js/cli": "^1.1.0",
+    "@ohm-js/cli": "^2.0.0",
     "@sequelize/core": "7.0.0-alpha.25",
     "sqlite3": "^5.1.6"
   },
@@ -69,8 +72,5 @@
   },
   "sideEffects": [
     "./lib/ast.js"
-  ],
-  "dependencies": {
-    "ohm-js": "^16.6.0"
-  }
+  ]
 }

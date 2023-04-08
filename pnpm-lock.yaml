@@ -1278,18 +1278,15 @@ importers:
   packages/ohm-grammar-miniquery:
     dependencies:
       ohm-js:
-        specifier: ^16.6.0
-        version: 16.6.0
+        specifier: ^17.0.4
+        version: 17.0.4
     devDependencies:
       '@ohm-js/cli':
-        specifier: ^1.1.0
-        version: 1.1.0
+        specifier: ^2.0.0
+        version: 2.0.0(ohm-js@17.0.4)
       '@sequelize/core':
         specifier: 7.0.0-alpha.25
         version: 7.0.0-alpha.25(pg-hstore@2.3.4)(pg@8.10.0)(sqlite3@5.1.6)
-      c8:
-        specifier: ^7.13.0
-        version: 7.13.0
       sqlite3:
         specifier: ^5.1.6
         version: 5.1.6
@@ -4369,13 +4366,15 @@ packages:
       '@octokit/openapi-types': 16.0.0
     dev: false
 
-  /@ohm-js/cli@1.1.0:
-    resolution: {integrity: sha512-CQSwyT6JsO6qc6lFGy9/EF639ZwPVqx2u8ZW/lTCxBGcnBs4aPueJtEYg3XT8yi7oGslCpddvoVDbsnnIEy+mw==}
+  /@ohm-js/cli@2.0.0(ohm-js@17.0.4):
+    resolution: {integrity: sha512-yiO6QEqW4wQQe1l9c+jOIfmhGm2LlHEhjmaB5Qu9hhz6rEQvL/vhz44azgHegLb0m23D0S7a78orURbPClRtyA==}
     hasBin: true
+    peerDependencies:
+      ohm-js: ^17.0.0
     dependencies:
       commander: 8.3.0
       fast-glob: 3.2.12
-      ohm-js: 16.6.0
+      ohm-js: 17.0.4
     dev: true
 
   /@panva/hkdf@1.0.4:
@@ -12670,8 +12669,8 @@ packages:
     resolution: {integrity: sha512-z+pI07qxo4c2CulUHCDf9lcqDlMSo72N/4rLUpRXf6fu+q8vjt8y0xS+Tlf8NTJDdTXHbdeO1n3MlbctwEoXZw==}
     dev: false
 
-  /ohm-js@16.6.0:
-    resolution: {integrity: sha512-X9P4koSGa7swgVQ0gt71UCYtkAQGOjciJPJAz74kDxWt8nXbH5HrDOQG6qBDH7SR40ktNv4x61BwpTDE9q4lRA==}
+  /ohm-js@17.0.4:
+    resolution: {integrity: sha512-32VmXQxDHPLT0agDp8mZpv/eVS5DmpGjfDr5adg/1MeePQUBbeifaPW5wuzz3pUz8keSVqLPMlxJh9LnmAObkQ==}
     engines: {node: '>=0.12.1'}
 
   /oidc-token-hash@5.0.1:
