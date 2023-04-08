@@ -1,6 +1,5 @@
 import React from 'react';
-import type { ExecutionContext } from 'ava';
-import test from 'ava';
+import { assert, beforeAll, expect, test, TestContext } from 'vitest';
 import { createNoopLogger } from '@wener/utils';
 import { polyfillBrowser } from '@wener/utils/server';
 import { loadBrowserSystem } from '../loaders/loadBrowserSystem';
@@ -8,32 +7,31 @@ import { addPreload } from '../utils/addPreload';
 import type { SystemJS } from '../utils/getGlobalSystem';
 import { getGlobalSystem } from '../utils/getGlobalSystem';
 
-test.before(async () => {
+beforeAll(async () => {
   await polyfillBrowser();
   await loadBrowserSystem({ script: false, logger: createNoopLogger() });
 });
 
-test('nested resolve', async (t) => {
+test('nested resolve', async () => {
   // https://ga.system.jspm.io/npm:prop-types@15.8.1/index.js
   // will import "./_/eb83dd95.js"
   const System = getGlobalSystem();
-  t.truthy(await System.import('prop-types'));
-  t.log('====== Second import');
-  t.truthy(await System.import('prop-types'));
-});
+  expect(await System.import('prop-types')).toBeTruthy();
+  console.log('====== Second import');
+  expect(await System.import('prop-types')).toBeTruthy();
+}, 30_000);
 
-test('subpath resolve', async (t) => {
+test('subpath resolve', async () => {
   // https://cdn.jsdelivr.net/npm/@heroicons/react@2.0.11/20/solid/
   const System = getGlobalSystem();
-  t.truthy((await System.import('@heroicons/react@2.0.11/20/solid')).AdjustmentsHorizontalIcon);
-});
+  expect((await System.import('@heroicons/react@2.0.11/20/solid')).AdjustmentsHorizontalIcon).toBeTruthy();
+}, 30_000);
 
 test('React render using preload', async (t) => {
-  t.timeout(30_000, 'networking high latency');
   (globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
 
   const System = getGlobalSystem();
-  t.truthy(System);
+  expect(System).toBeTruthy();
 
   const BuiltinModules = {
     react: () => import('react'),
@@ -44,11 +42,11 @@ test('React render using preload', async (t) => {
   };
   Object.entries(BuiltinModules).map(([k, v]) => addPreload(k, v));
   // same
-  t.is((await System.import('react')).isValidElement, React.isValidElement);
+  assert.equal((await System.import('react')).isValidElement, React.isValidElement);
   await testReactRender(t, System);
-});
+}, 30_000);
 
-export async function testReactRender(t: ExecutionContext, System: SystemJS) {
+export async function testReactRender(_: TestContext, System: SystemJS) {
   const { ErrorSuspenseBoundary } = await System.import('@wener/reaction');
   const React = await System.import('react');
 
@@ -56,7 +54,7 @@ export async function testReactRender(t: ExecutionContext, System: SystemJS) {
   const Comp = () => {
     React.useEffect(() => {
       mounted = true;
-      t.log(`mounted`);
+      console.log(`mounted`);
     }, []);
     return React.createElement('span', {}, 'Hello');
   };
@@ -70,6 +68,6 @@ export async function testReactRender(t: ExecutionContext, System: SystemJS) {
     );
   });
 
-  t.is($root.innerHTML, '<span>Hello</span>');
-  t.true(mounted);
+  assert.equal($root.innerHTML, '<span>Hello</span>');
+  assert.isTrue(mounted);
 }

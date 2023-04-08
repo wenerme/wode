@@ -1,6 +1,5 @@
 import React from 'react';
-import type { ExecutionContext } from 'ava';
-import test from 'ava';
+import { assert, beforeAll, expect, test, TestContext } from 'vitest';
 import { createNoopLogger } from '@wener/utils';
 import { polyfillBrowser } from '@wener/utils/server';
 import { loadBrowserSystem } from '../loaders/loadBrowserSystem';
@@ -8,16 +7,15 @@ import { addPreload } from '../utils/addPreload';
 import type { SystemJS } from '../utils/getGlobalSystem';
 import { getGlobalSystem } from '../utils/getGlobalSystem';
 
-test.before(async (t) => {
+beforeAll(async () => {
   await polyfillBrowser();
-  t.truthy(fetch);
-  t.truthy(window);
-  t.truthy(document);
+  expect(fetch).toBeTruthy();
+  expect(window).toBeTruthy();
+  expect(document).toBeTruthy();
   await loadBrowserSystem({ script: false, logger: createNoopLogger() });
 });
 
 test('React render using remote', async (t) => {
-  t.timeout(30_000, 'networking high latency');
   const System = getGlobalSystem();
 
   // dev env - can not get react dev build
@@ -29,11 +27,11 @@ test('React render using remote', async (t) => {
   addPreload('util', () => import('node:util'));
   addPreload('stream', () => import('node:stream'));
 
-  t.not((await System.import('react')).isValidElement, React.isValidElement);
+  assert.notEqual((await System.import('react')).isValidElement, React.isValidElement);
   await testReactRender(t, System);
-});
+}, 60_000);
 
-export async function testReactRender(t: ExecutionContext, System: SystemJS) {
+export async function testReactRender(_: TestContext, System: SystemJS) {
   const ReactDOMServer = await System.import('react-dom/server');
   const React = await System.import('react');
   const { ErrorSuspenseBoundary } = await System.import('@wener/reaction');
@@ -42,12 +40,12 @@ export async function testReactRender(t: ExecutionContext, System: SystemJS) {
   const Comp = () => {
     React.useEffect(() => {
       // mounted = true;
-      t.log(`mounted`);
+      console.log(`mounted`);
     }, []);
     return React.createElement('span', {}, 'Hello');
   };
   const ele = React.createElement(ErrorSuspenseBoundary, {}, React.createElement(Comp, {}));
-  t.is(ReactDOMServer.renderToString(ele), `<!--$--><span>Hello</span><!--/$-->`);
+  assert.equal(ReactDOMServer.renderToString(ele), `<!--$--><span>Hello</span><!--/$-->`);
 
   // Not works in pure System env - maybe caused by not dev build
   // const ReactTestUtils = await System.import('react-dom/test-utils');
