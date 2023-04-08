@@ -1,14 +1,14 @@
-import test from 'ava';
+import { expect, test } from 'vitest';
 import { classOf } from '../langs/classOf';
 import { _clone } from './structuredClone';
 
-test('structuredClone', (t) => {
+test('structuredClone', () => {
   for (const [k, v] of [
     ['', ''],
     [Number(1), 1],
   ]) {
     const c = _clone(k);
-    t.deepEqual(c, v);
-    t.is(classOf(c), classOf(v));
+    expect(c).toEqual(v);
+    expect(classOf(c)).toBe(classOf(v));
   }
 });

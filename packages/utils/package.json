@@ -65,27 +65,14 @@
   "devDependencies": {
     "@types/lodash": "^4.14.192",
     "@types/ws": "^8.5.4",
-    "ava": "^5.2.0",
     "https-proxy-agent": "^5.0.1",
-    "lodash": "^4.17.21",
-    "tsd": "^0.28.1"
+    "lodash": "^4.17.21"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org",
     "access": "public"
   },
   "sideEffects": false,
-  "ava": {
-    "extensions": {
-      "ts": "module"
-    },
-    "nodeArguments": [
-      "--conditions=typescript",
-      "--experimental-import-meta-resolve",
-      "--require=@wener/wode/suppress-experimental.cjs",
-      "--loader=tsx"
-    ]
-  },
   "rollup": {
     "input": [
       "./src/index.ts",

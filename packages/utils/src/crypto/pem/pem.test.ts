@@ -1,10 +1,10 @@
-import test from 'ava';
+import { expect, test } from 'vitest';
 import { ArrayBuffers } from '../../io/ArrayBuffers';
 import { PEM } from './pem';
 
 const { decode, encode } = PEM;
 
-test('pem', (t) => {
+test('pem', () => {
   const pem = `-----BEGIN RSA PRIVATE KEY-----
 Proc-Type: 4,ENCRYPTED
 DEK-Info: DES-EDE3-CBC,ABC
@@ -27,10 +27,10 @@ MDAwMDAwMDAwMDAwMDAwMA==
     head: 'Nice\n',
     tail: 'Hello\n',
   };
-  t.deepEqual(decode(input), out);
-  t.is(encode(out.block), pem);
+  expect(decode(input)).toEqual(out);
+  expect(encode(out.block)).toBe(pem);
 });
-test('cases', (t) => {
+test('cases', () => {
   for (const b of [
     {
       type: 'RSA PRIVATE KEY',
@@ -47,17 +47,14 @@ test('cases', (t) => {
   ]) {
     const s = encode(b);
     const act = decode(s);
-    t.deepEqual(
-      {
-        ...act.block,
-        bytes: ArrayBuffers.toString(act.block.bytes),
-      },
-      {
-        header: {},
-        ...b,
-        bytes: ArrayBuffers.toString(b.bytes),
-      },
-    );
-    t.snapshot(s);
+    expect({
+      ...act.block,
+      bytes: ArrayBuffers.toString(act.block.bytes),
+    }).toStrictEqual({
+      header: {},
+      ...b,
+      bytes: ArrayBuffers.toString(b.bytes),
+    });
+    expect(s).matchSnapshot();
   }
 });

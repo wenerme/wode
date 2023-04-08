@@ -1,7 +1,7 @@
-import test from 'ava';
+import { test, expect } from 'vitest';
 import { parseModuleId } from './parseModuleId';
 
-test('parseModuleId', (t) => {
+test('parseModuleId', () => {
   const tests = {
     '@wener/reaction': {
       id: `@wener/reaction@latest`,
@@ -68,6 +68,6 @@ test('parseModuleId', (t) => {
     },
   };
   for (const [k, v] of Object.entries(tests)) {
-    t.deepEqual(parseModuleId(k), v);
+    expect(parseModuleId(k)).toStrictEqual(v);
   }
 });
