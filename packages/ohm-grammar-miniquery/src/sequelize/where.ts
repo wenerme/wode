@@ -76,11 +76,15 @@ function keyOfDataType(d: DataType) {
   if (typeof d === 'string') {
     return d.toUpperCase();
   }
-  if ('key' in d) {
-    return d.key;
-  }
-  // fixme
-  return d.name;
+  return d;
+  // if ('key' in d) {
+  //   // v7 removed
+  //   // return d.key;
+  //   // return d.usageContext?.model.name
+  //   return d
+  // }
+  // // fixme
+  // return d.name;
 }
 
 function resolve(parts: string[], c: WhereContext) {

@@ -60,7 +60,7 @@
   },
   "devDependencies": {
     "@ohm-js/cli": "^1.1.0",
-    "c8": "^7.13.0",
+    "@sequelize/core": "7.0.0-alpha.25",
     "sqlite3": "^5.1.6"
   },
   "publishConfig": {
@@ -70,18 +70,7 @@
   "sideEffects": [
     "./lib/ast.js"
   ],
-  "ava": {
-    "extensions": {
-      "ts": "module"
-    },
-    "nodeArguments": [
-      "--conditions=typescript",
-      "--require=@wener/wode/suppress-experimental.cjs",
-      "--loader=tsx"
-    ]
-  },
   "dependencies": {
-    "@sequelize/core": "7.0.0-alpha.23",
     "ohm-js": "^16.6.0"
   }
 }

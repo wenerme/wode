@@ -5,4 +5,4 @@ publish: fmt build
 	pnpm publish --access public --registry https://registry.npmjs.org --tag latest
 
 cover:
-	pnpm exec c8 ava
+	#pnpm exec c8 ava

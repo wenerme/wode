@@ -1,0 +1,25 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`sequelize association 1`] = `"NOT (\`profile\`.\`name\` IS NULL)"`;
+
+exports[`sequelize association 2`] = `"NOT (\`profile->avatar\`.\`image_url\` IS NULL)"`;
+
+exports[`sequelize where 1`] = `""`;
+
+exports[`sequelize where 2`] = `"\`User\`.\`age\` > -1"`;
+
+exports[`sequelize where 3`] = `"\`User\`.\`age\` > -1"`;
+
+exports[`sequelize where 4`] = `"length(\`name\`) > length(\`username\`)"`;
+
+exports[`sequelize where 5`] = `"\`User\`.\`name\` = 'wener' AND \`User\`.\`age\` > 18 AND \`User\`.\`age\` < 80"`;
+
+exports[`sequelize where 6`] = `"\`User\`.\`name\` = 'wener' AND (\`User\`.\`age\` > 18 OR \`User\`.\`age\` < 80)"`;
+
+exports[`sequelize where 7`] = `"\`User\`.\`age\` NOT BETWEEN 18 AND 80"`;
+
+exports[`sequelize where 8`] = `"(date(\`created_at\`) BETWEEN '2020-01-01' AND '2020-01-31') AND length(\`name\`) > 1 AND NOT (\`User\`.\`username\` IS NULL) AND \`User\`.\`name\` LIKE 'wen%'"`;
+
+exports[`sequelize where 9`] = `"\`User\`.\`age\` > 0 AND \`User\`.\`age\` > 0 AND \`User\`.\`age\` > 0"`;
+
+exports[`sequelize where 10`] = `"NOT (\`User\`.\`avatar_url\` IS NULL)"`;
