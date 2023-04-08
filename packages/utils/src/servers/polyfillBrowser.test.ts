@@ -1,20 +1,20 @@
-import test from 'ava';
 import * as nodeFetch from 'node-fetch';
+import { test, expect, beforeAll } from 'vitest';
 import { polyfillBrowser } from './polyfillBrowser';
 import { polyfillFetch } from './polyfillFetch';
 
-test.before(async (t) => {
+beforeAll(async () => {
   // return false in nodejs18
   polyfillFetch(nodeFetch);
-  t.false(polyfillFetch());
+  expect(polyfillFetch()).toBeFalsy();
   await polyfillBrowser();
 });
 
-test('polyfillBrowser', (t) => {
-  t.truthy(fetch);
-  t.truthy(window);
-  t.truthy(document);
-  t.truthy(crypto);
+test('polyfillBrowser', () => {
+  expect(fetch).toBeTruthy();
+  expect(window).toBeTruthy();
+  expect(document).toBeTruthy();
+  expect(crypto).toBeTruthy();
   // not the same
-  t.not(window, globalThis);
+  expect(window).not.toBe(globalThis);
 });

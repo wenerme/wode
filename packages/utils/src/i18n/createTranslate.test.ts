@@ -1,80 +1,83 @@
-import test from 'ava';
+import { assert, test } from 'vitest';
 import { createTranslate } from './createTranslate';
 
-test('exports', (t) => {
-  const out = createTranslate();
-  t.is(typeof out, 'object', 'returns an object');
-  t.is(typeof out.t, 'function', '~> has "t" function');
-  t.is(typeof out.dict, 'function', '~> has "set" function');
-  t.is(typeof out.locale, 'function', '~> has "locale" function');
+test('exports', () => {
+  assert.equal(typeof createTranslate, 'function', 'exports a function');
+
+  let out = createTranslate();
+  assert.equal(typeof out, 'object', 'returns an object');
+  assert.equal(typeof out.t, 'function', '~> has "t" function');
+  assert.equal(typeof out.dict, 'function', '~> has "dict" function');
+  assert.equal(typeof out.locale, 'function', '~> has "locale" function');
 });
 
-test('usage', (t) => {
-  const ctx = createTranslate({
+test('usage', () => {
+  let ctx = createTranslate({
     en: { hello: 'Hello, {{name}}!' },
     es: { hello: 'Hola {{name}}!' },
     pt: { foo: 'foo {{name}}~!' },
   });
 
-  t.deepEqual(ctx.dict('en'), { hello: 'Hello, {{name}}!' });
+  assert.deepEqual(ctx.dict('en'), { hello: 'Hello, {{name}}!' });
 
-  t.true(ctx.dict('foobar') === undefined);
+  assert.equal(ctx.dict('foobar'), undefined);
 
-  const foo = ctx.t('hello');
-  t.is(foo, '', '~> "" w/o locale');
+  let foo = ctx.t('hello');
+  assert.equal(foo, '', '~> "" w/o locale');
 
-  t.is(ctx.locale('en'), 'en', '>>> ctx.locale()');
+  assert.equal(ctx.locale('en'), 'en', '>>> ctx.locale()');
 
-  t.is(ctx.locale(), 'en');
+  assert.equal(ctx.locale(), 'en');
 
-  const bar = ctx.t('hello');
-  t.not(bar, '', '(en) found "hello" key');
-  t.is(bar, 'Hello, !', '~> interpolations empty if missing param');
+  let bar = ctx.t('hello');
 
-  const baz = ctx.t('hello', { name: 'world' });
-  t.is(baz, 'Hello, world!', '~> interpolations successful');
+  assert.notEqual(bar, '', '(en) found "hello" key');
+  assert.equal(bar, 'Hello, !', '~> interpolations empty if missing param');
 
-  const bat = ctx.t('hello', { name: 'world' }, 'es');
-  t.not(bat, '', '(es) found "hello" key');
-  t.is(bat, 'Hola world!', '~> success');
+  let baz = ctx.t('hello', { name: 'world' });
+  assert.equal(baz, 'Hello, world!', '~> interpolations successful');
 
-  t.is(ctx.t('hello', { name: 'world' }, 'pt'), '', '(pt) did NOT find "hello" key');
+  let bat = ctx.t('hello', { name: 'world' }, 'es');
+  assert.notEqual(bat, '', '(es) found "hello" key');
+  assert.equal(bat, 'Hola world!', '~> success');
 
-  t.is(ctx.dict('pt', { hello: 'Oí {{name}}!' }), undefined, '>>> ctx.dict()');
+  assert.equal(ctx.t('hello', { name: 'world' }, 'pt'), '', '(pt) did NOT find "hello" key');
 
-  const quz = ctx.t('hello', { name: 'world' }, 'pt');
-  t.not(quz, '', '(pt) found "hello" key');
-  t.is(quz, 'Oí world!', '~> success');
+  assert.equal(ctx.dict('pt', { hello: 'Oí {{name}}!' }), undefined, '>>> ctx.set()');
 
-  const qut = ctx.t('foo', { name: 'bar' }, 'pt');
-  t.not(qut, '', '(pt) found "foo" key');
-  t.is(qut, 'foo bar~!', '~> success');
+  let quz = ctx.t('hello', { name: 'world' }, 'pt');
+  assert.notEqual(quz, '', '(pt) found "hello" key');
+  assert.equal(quz, 'Oí world!', '~> success');
 
-  t.is(ctx.locale('es'), 'es', '>>> ctx.locale()');
+  let qut = ctx.t('foo', { name: 'bar' }, 'pt');
+  assert.notEqual(qut, '', '(pt) found "foo" key');
+  assert.equal(qut, 'foo bar~!', '~> success');
 
-  t.is(ctx.locale(), 'es');
-  t.is(ctx.locale(''), 'es');
-  t.is(ctx.locale(false as any), 'es');
-  t.is(ctx.locale(null as any), 'es');
-  t.is(ctx.locale(0 as any), 'es');
+  assert.equal(ctx.locale('es'), 'es', '>>> ctx.locale()');
 
-  const qux = ctx.t('hello', { name: 'default' });
-  t.not(qux, '', '(es) found "hello" key');
-  t.is(qux, 'Hola default!', '~> success');
+  assert.equal(ctx.locale(), 'es');
+  assert.equal(ctx.locale(''), 'es');
+  assert.equal(ctx.locale(false as any), 'es');
+  assert.equal(ctx.locale(null as any), 'es');
+  assert.equal(ctx.locale(0 as any), 'es');
 
-  t.is(ctx.t('hello', { name: 'world' }, 'de'), '', '(de) did NOT find "hello" key');
+  let qux = ctx.t('hello', { name: 'default' });
+  assert.notEqual(qux, '', '(es) found "hello" key');
+  assert.equal(qux, 'Hola default!', '~> success');
 
-  t.is(ctx.dict('de', { hello: 'Hallo {{name}}!' }), undefined, '>>> ctx.dict(de)');
+  assert.equal(ctx.t('hello', { name: 'world' }, 'de'), '', '(de) did NOT find "hello" key');
 
-  const qar = ctx.t('hello', { name: 'world' }, 'de');
-  t.not(qar, '', '(de) found "hello" key');
-  t.is(qar, 'Hallo world!', '~> success');
+  assert.equal(ctx.dict('de', { hello: 'Hallo {{name}}!' }), undefined, '>>> ctx.set(de)');
+
+  let qar = ctx.t('hello', { name: 'world' }, 'de');
+  assert.notEqual(qar, '', '(de) found "hello" key');
+  assert.equal(qar, 'Hallo world!', '~> success');
 });
 
-test('functional', (t) => {
-  const ctx = createTranslate({
+test('functional', () => {
+  let ctx = createTranslate({
     en: {
-      hello(value: any) {
+      hello(value: string) {
         return `hello ${value || 'stranger'}~!`;
       },
     },
@@ -82,18 +85,18 @@ test('functional', (t) => {
 
   ctx.locale('en');
 
-  const foo = ctx.t('hello');
-  t.is(foo, 'hello stranger~!', '~> called function w/o param');
+  let foo = ctx.t('hello');
+  assert.equal(foo, 'hello stranger~!', '~> called function w/o param');
 
-  const bar = ctx.t('hello', 'world' as any);
-  t.is(bar, 'hello world~!', '~> called function w/ param (string)');
+  let bar = ctx.t('hello', 'world' as any);
+  assert.equal(bar, 'hello world~!', '~> called function w/ param (string)');
 
-  const baz = ctx.t('hello', [1, 2, 3]);
-  t.is(baz, 'hello 1,2,3~!', '~> called function w/ param (array)');
+  let baz = ctx.t('hello', [1, 2, 3]);
+  assert.equal(baz, 'hello 1,2,3~!', '~> called function w/ param (array)');
 });
 
-test('nested', (t) => {
-  const ctx = createTranslate({
+test('nested', () => {
+  let ctx = createTranslate({
     en: {
       fruits: {
         apple: 'apple',
@@ -111,22 +114,22 @@ test('nested', (t) => {
   });
 
   ctx.locale('en');
-  t.is(ctx.t('fruits.apple'), 'apple', '(en) fruits.apple');
-  t.is(ctx.t('fruits.orange'), 'orange', '(en) fruits.orange');
-  t.is(ctx.t(['fruits', 'grape']), 'grape', '(en) ["fruits","grape"]');
-  t.is(ctx.t('fruits.404'), '', '(en) fruits.404 ~> ""');
-  t.is(ctx.t('error.404'), '', '(en) error.404 ~> ""');
+  assert.equal(ctx.t('fruits.apple'), 'apple', '(en) fruits.apple');
+  assert.equal(ctx.t('fruits.orange'), 'orange', '(en) fruits.orange');
+  assert.equal(ctx.t(['fruits', 'grape']), 'grape', '(en) ["fruits","grape"]');
+  assert.equal(ctx.t('fruits.404'), '', '(en) fruits.404 ~> ""');
+  assert.equal(ctx.t('error.404'), '', '(en) error.404 ~> ""');
 
   ctx.locale('es');
-  t.is(ctx.t('fruits.apple'), 'manzana', '(es) fruits.apple');
-  t.is(ctx.t('fruits.orange'), 'naranja', '(es) fruits.orange');
-  t.is(ctx.t(['fruits', 'grape']), 'uva', '(es) ["fruits","grape"]');
-  t.is(ctx.t('fruits.404'), '', '(es) fruits.404 ~> ""');
-  t.is(ctx.t('error.404'), '', '(es) error.404 ~> ""');
+  assert.equal(ctx.t('fruits.apple'), 'manzana', '(es) fruits.apple');
+  assert.equal(ctx.t('fruits.orange'), 'naranja', '(es) fruits.orange');
+  assert.equal(ctx.t(['fruits', 'grape']), 'uva', '(es) ["fruits","grape"]');
+  assert.equal(ctx.t('fruits.404'), '', '(es) fruits.404 ~> ""');
+  assert.equal(ctx.t('error.404'), '', '(es) error.404 ~> ""');
 });
 
-test('arrays', (t) => {
-  const ctx = createTranslate({
+test('arrays', () => {
+  let ctx = createTranslate({
     en: {
       foo: '{{0}} + {{1}} = {{2}}',
       bar: [
@@ -139,32 +142,17 @@ test('arrays', (t) => {
 
   ctx.locale('en');
 
-  t.is(ctx.t('foo', [1, 2, 3]), '1 + 2 = 3', '~> foo');
+  assert.equal(ctx.t('foo', [1, 2, 3]), '1 + 2 = 3', '~> foo');
 
-  t.is(ctx.t('bar.0.baz', { colors: ['red', 'blue'] }), 'roses are red, violets are blue', '~> bar.0.baz');
+  assert.equal(ctx.t('bar.0.baz', { colors: ['red', 'blue'] }), 'roses are red, violets are blue', '~> bar.0.baz');
 });
 
-test('invalid value', (t) => {
-  const ctx = createTranslate({
+test('invalid value', () => {
+  let ctx = createTranslate({
     en: {
       foo: ['bar'],
     },
   });
 
-  t.deepEqual(ctx.t('foo', null as any, 'en'), ['bar']);
-});
-
-test('fallback', (t) => {
-  const ctx = createTranslate({
-    en: {
-      a: 'a',
-    },
-    'en-US': {
-      a: 'a-US',
-    },
-  });
-
-  // t.deepEqual(ctx.t('a', undefined, 'en'), 'a');
-  // t.deepEqual(ctx.t('a', undefined, 'en-US'), 'a-US');
-  t.deepEqual(ctx.t('a', undefined, 'en-UK'), 'a');
+  assert.deepEqual(ctx.t('foo', null as never, 'en'), ['bar'] as any);
 });

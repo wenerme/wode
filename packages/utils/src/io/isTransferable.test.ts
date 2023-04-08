@@ -1,10 +1,11 @@
-import test from 'ava';
 import { Buffer } from 'node:buffer';
+import { expect, test } from 'vitest';
 import { isTransferable } from './isTransferable';
 
-test('isTransferable', (t) => {
-  t.false(isTransferable(0));
-  t.false(isTransferable(Buffer.from('')));
-  t.true(new ArrayBuffer(0) instanceof ArrayBuffer);
-  t.true(isTransferable(new ArrayBuffer(0)));
+test('isTransferable', () => {
+  expect(isTransferable(0)).toBeFalsy();
+  expect(isTransferable(Buffer.from(''))).toBeFalsy();
+
+  expect(new ArrayBuffer(0) instanceof ArrayBuffer).toBeTruthy();
+  expect(isTransferable(new ArrayBuffer(0))).toBeTruthy();
 });

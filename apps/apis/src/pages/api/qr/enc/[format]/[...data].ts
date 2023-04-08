@@ -7,10 +7,15 @@ import { arrayOfMaybeArray } from '@wener/utils';
 const handler: NextApiHandler = async (req: NextApiRequest, res) => {
   const data = arrayOfMaybeArray(req.query.data).join('/');
   const params = await Params.safeParse(req.query);
-  if (!data || !params.success) {
+  if (!params.success) {
+    return res.status(400).send({ message: 'invalid request', code: 'BAD_REQUEST', error: params.error });
+  }
+  if (!data) {
     res.json({
-      error: 'invalid data',
+      message: 'invalid data',
+      code: 'BAD_REQUEST',
     });
+
     res.status(400).end();
     return;
   }
@@ -24,6 +29,7 @@ const handler: NextApiHandler = async (req: NextApiRequest, res) => {
     buf = Buffer.from(data, 'utf-8');
   }
   if (!buf) {
+    console.error(`Invalid`, data);
     res.json({
       error: 'invalid data',
     });
@@ -45,6 +51,12 @@ const handler: NextApiHandler = async (req: NextApiRequest, res) => {
       dark: fg,
     },
   };
+
+  if (format === 'png') {
+    opts.width ??= 200;
+    opts.scale ??= 2;
+    opts.margin ??= 1;
+  }
 
   console.log('QR Encode', str, trim(opts));
 
@@ -72,10 +84,10 @@ export default handler;
 const Params = z.object({
   format: z.enum(['png', 'svg']),
   level: z.enum(['low', 'medium', 'quartile', 'high', 'L', 'M', 'Q', 'H']).optional(),
-  version: z.number().optional(),
-  margin: z.number().optional(),
-  scale: z.number().optional(),
-  width: z.number().optional(),
+  version: z.coerce.number().optional(),
+  margin: z.coerce.number().optional(),
+  scale: z.coerce.number().optional(),
+  width: z.coerce.number().optional(),
   bg: z
     .string()
     .optional()

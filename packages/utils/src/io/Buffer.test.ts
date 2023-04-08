@@ -1,12 +1,12 @@
-import test from 'ava';
+import { test, expect } from 'vitest';
 import { Buffer } from './Buffer';
 import { isBuffer } from './isBuffer';
 
-test('basic', (t) => {
+test('basic', () => {
   {
     const buf = new Buffer(0);
-    t.true(Buffer.isBuffer(buf));
-    t.true(isBuffer(buf));
+    expect(Buffer.isBuffer(buf)).toBeTruthy();
+    expect(isBuffer(buf)).toBeTruthy();
   }
   // const b = new Buffer(10)
   // t.is(b.length,10)

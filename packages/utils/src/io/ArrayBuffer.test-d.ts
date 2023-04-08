@@ -1,4 +1,6 @@
-import { expectType } from 'tsd';
+import { expectTypeOf, test } from 'vitest';
 import { ArrayBuffers } from './ArrayBuffers';
 
-expectType<Buffer>(ArrayBuffers.asView(Buffer, new Uint8Array()));
+test('my types work properly', () => {
+  expectTypeOf(ArrayBuffers.asView(Buffer, new Uint8Array())).toMatchTypeOf<Buffer>();
+});

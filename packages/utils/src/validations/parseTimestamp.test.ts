@@ -1,7 +1,7 @@
-import test from 'ava';
+import { assert, test } from 'vitest';
 import { parseTimestamp } from './parseTimestamp';
 
-test('parseTimestamp', (t) => {
-  t.is(parseTimestamp(''), undefined);
-  t.is(parseTimestamp(), undefined);
+test('parseTimestamp', () => {
+  assert.equal(parseTimestamp(''), undefined);
+  assert.equal(parseTimestamp(), undefined);
 });

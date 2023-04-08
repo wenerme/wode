@@ -1,8 +1,8 @@
 /* eslint no-template-curly-in-string:0 */
-import test from 'ava';
+import { expect, test } from 'vitest';
 import { renderTemplate } from './renderTemplate';
 
-test('renderTemplate', (t) => {
+test('renderTemplate', () => {
   const obj = {
     name: 'wener',
     authors: [
@@ -15,12 +15,9 @@ test('renderTemplate', (t) => {
     'My name is ${name}': 'My name is wener',
     'My name is ${  authors[0].name  }': 'My name is wener',
   })) {
-    t.is(renderTemplate(k, obj), v);
+    expect(renderTemplate(k, obj)).toBe(v);
   }
-  t.is(
-    renderTemplate('My name is ${name}', (v) => v),
-    'My name is name',
-  );
-  t.is(renderTemplate('My name is ${name}', obj, 'common'), 'My name is ${name}');
-  t.is(renderTemplate('My name is {{name}}', obj, 'common'), 'My name is wener');
+  expect(renderTemplate('My name is ${name}', (v) => v)).toBe('My name is name');
+  expect(renderTemplate('My name is ${name}', obj, 'common')).toBe('My name is ${name}');
+  expect(renderTemplate('My name is {{name}}', obj, 'common')).toBe('My name is wener');
 });

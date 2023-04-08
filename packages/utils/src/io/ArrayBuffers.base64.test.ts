@@ -1,23 +1,23 @@
-import test from 'ava';
+import { test, beforeAll, assert, expect } from 'vitest';
 import { ArrayBuffers } from './ArrayBuffers';
 
-test.before((t) => {
-  t.true(ArrayBuffers.isNativeBufferAvailable());
+beforeAll(() => {
+  expect(ArrayBuffers.isNativeBufferAvailable()).toBeTruthy();
   ArrayBuffers.setNativeBufferAllowed(false);
 });
 
-test('base64: ignore whitespace', function (t) {
+test('base64: ignore whitespace', function () {
   const text = '\n   YW9ldQ==  ';
   const buf = ArrayBuffers.from(text, 'base64');
-  t.is(ArrayBuffers.toString(buf), 'aoeu');
+  expect(ArrayBuffers.toString(buf)).toBe('aoeu');
 });
 
-test('base64: strings without padding', function (t) {
-  t.is(ArrayBuffers.toString(ArrayBuffers.from('YW9ldQ', 'base64')), 'aoeu');
+test('base64: strings without padding', function () {
+  expect(ArrayBuffers.toString(ArrayBuffers.from('YW9ldQ', 'base64'))).toBe('aoeu');
 });
 
-test('base64: newline in utf8 -- should not be an issue', function (t) {
-  t.is(
+test('base64: newline in utf8 -- should not be an issue', function () {
+  assert.equal(
     ArrayBuffers.toString(
       ArrayBuffers.from('LS0tCnRpdGxlOiBUaHJlZSBkYXNoZXMgbWFya3MgdGhlIHNwb3QKdGFnczoK', 'base64'),
       'utf8',
@@ -26,8 +26,8 @@ test('base64: newline in utf8 -- should not be an issue', function (t) {
   );
 });
 
-test('base64: newline in base64 -- should get stripped', function (t) {
-  t.is(
+test('base64: newline in base64 -- should get stripped', function () {
+  assert.equal(
     ArrayBuffers.toString(
       ArrayBuffers.from(
         'LS0tCnRpdGxlOiBUaHJlZSBkYXNoZXMgbWFya3MgdGhlIHNwb3QKdGFnczoK\nICAtIHlhbWwKICAtIGZyb250LW1hdHRlcgogIC0gZGFzaGVzCmV4cGFuZWQt',
@@ -39,8 +39,8 @@ test('base64: newline in base64 -- should get stripped', function (t) {
   );
 });
 
-test('base64: tab characters in base64 - should get stripped', function (t) {
-  t.is(
+test('base64: tab characters in base64 - should get stripped', function () {
+  assert.equal(
     ArrayBuffers.toString(
       ArrayBuffers.from(
         'LS0tCnRpdGxlOiBUaHJlZSBkYXNoZXMgbWFya3MgdGhlIHNwb3QKdGFnczoK\t\t\t\tICAtIHlhbWwKICAtIGZyb250LW1hdHRlcgogIC0gZGFzaGVzCmV4cGFuZWQt',
@@ -52,11 +52,11 @@ test('base64: tab characters in base64 - should get stripped', function (t) {
   );
 });
 
-test('base64: invalid non-alphanumeric characters -- should be stripped', function (t) {
-  t.is(ArrayBuffers.toString(ArrayBuffers.from('!"#$%&\'()*,.:;<=>?@[\\]^`{|}~', 'base64'), 'utf8'), '');
+test('base64: invalid non-alphanumeric characters -- should be stripped', function () {
+  expect(ArrayBuffers.toString(ArrayBuffers.from('!"#$%&\'()*,.:;<=>?@[\\]^`{|}~', 'base64'), 'utf8')).toBe('');
 });
 
-test('base64: high byte', function (t) {
+test('base64: high byte', function () {
   const highByte = ArrayBuffers.from([128]);
-  t.deepEqual(ArrayBuffers.alloc(1, ArrayBuffers.toString(highByte, 'base64'), 'base64'), highByte);
+  assert.deepEqual(ArrayBuffers.alloc(1, ArrayBuffers.toString(highByte, 'base64'), 'base64'), highByte);
 });

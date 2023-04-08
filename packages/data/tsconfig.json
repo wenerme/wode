@@ -33,6 +33,7 @@
   ],
   "include": [
     "types.d.ts",
-    "src"
+    "src",
+    "dataset/**/*.ts"
   ]
 }

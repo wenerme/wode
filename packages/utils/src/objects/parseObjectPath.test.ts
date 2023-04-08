@@ -1,7 +1,7 @@
-import test from 'ava';
+import { test, expect } from 'vitest';
 import { parseObjectPath } from './parseObjectPath';
 
-test('parseObjectPath', (t) => {
+test('parseObjectPath', () => {
   for (const [k, v] of [
     ['a.b.c', ['a', 'b', 'c']],
     ['a[1].c', ['a', '1', 'c']],
@@ -13,6 +13,6 @@ test('parseObjectPath', (t) => {
     [Symbol.toStringTag, [Symbol.toStringTag]],
     [[Symbol.toStringTag], [Symbol.toStringTag]],
   ]) {
-    t.deepEqual(parseObjectPath(k), v);
+    expect(parseObjectPath(k)).toEqual(v);
   }
 });

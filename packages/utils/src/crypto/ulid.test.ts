@@ -1,7 +1,7 @@
-import test from 'ava';
+import { expect, test } from 'vitest';
 import { createULID, isULID, parseULID } from './ulid';
 
-test('ulid', (t) => {
+test('ulid', () => {
   // monotonic
   {
     let lastTime = 0;
@@ -13,18 +13,18 @@ test('ulid', (t) => {
     });
 
     const ulid1 = ulid();
-    t.is(parseULID(ulid1).timestamp, lastTime);
-    t.true(isULID(ulid1), ulid1);
+    expect(parseULID(ulid1).timestamp).toBe(lastTime);
+    expect(isULID(ulid1), ulid1).toBeTruthy();
 
     const ulid2 = ulid();
-    t.true(ulid1 < ulid2);
-    t.true(isULID(ulid2), ulid2);
-    t.is(parseULID(ulid2).timestamp, lastTime);
+    expect(ulid1 < ulid2).toBeTruthy();
+    expect(isULID(ulid2), ulid2).toBeTruthy();
+    expect(parseULID(ulid2).timestamp).toBe(lastTime);
   }
 
   {
     const next = createULID();
-    t.true(isULID(next().toLowerCase()));
-    t.true(isULID('ttttttttttrrrrrrrrrrrrrrrr'));
+    expect(isULID(next().toLowerCase())).toBeTruthy();
+    expect(isULID('ttttttttttrrrrrrrrrrrrrrrr')).toBeTruthy();
   }
 });

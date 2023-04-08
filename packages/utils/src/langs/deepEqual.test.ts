@@ -1,8 +1,8 @@
-import test from 'ava';
+import { expect, test } from 'vitest';
 import { deepEqual } from './deepEqual';
 
-test('deep equal', (t) => {
-  t.true(
+test('deep equal', () => {
+  expect(
     deepEqual(
       {
         a: null,
@@ -13,5 +13,5 @@ test('deep equal', (t) => {
         b: Infinity,
       },
     ),
-  );
+  ).toBeTruthy();
 });

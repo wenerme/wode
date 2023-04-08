@@ -1,7 +1,7 @@
-import test from 'ava';
+import { expect, test } from 'vitest';
 import { classOf } from './classOf';
 
-test('classOf', (t) => {
+test('classOf', () => {
   for (const [k, v] of [
     [0, 'Number'],
     ['', 'String'],
@@ -18,6 +18,6 @@ test('classOf', (t) => {
     [new DataView(new ArrayBuffer(0)), 'DataView'],
     [new Int8Array(0), 'Int8Array'],
   ]) {
-    t.is(classOf(k), v as any);
+    expect(classOf(k)).toBe(v);
   }
 });

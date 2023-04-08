@@ -1,0 +1,18 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`cases 1`] = `
+"-----BEGIN RSA PRIVATE KEY-----
+SGVsbG8=
+-----END RSA PRIVATE KEY-----
+"
+`;
+
+exports[`cases 2`] = `
+"-----BEGIN RSA PRIVATE KEY-----
+Name: N-:1/=
+Age: 1234
+
+TmljZQ==
+-----END RSA PRIVATE KEY-----
+"
+`;

@@ -1,54 +1,54 @@
-import test from 'ava';
+import { test, expect } from 'vitest';
 import { createLazyPromise } from './createLazyPromise';
 import { sleep } from './sleep';
 
-test('basic', async (t) => {
+test('basic', async () => {
   const promise = createLazyPromise();
   let r = 0;
   void promise.then((v) => (r = v));
-  t.is(r, 0);
+  expect(r).toBe(0);
   const { resolve, reject } = promise;
-  t.truthy(resolve);
-  t.truthy(reject);
+  expect(resolve).toBeTruthy();
+  expect(reject).toBeTruthy();
   resolve(1);
-  t.is(r, 0);
+  expect(r).toBe(0);
   await promise;
-  t.is(r, 1);
+  expect(r).toBe(1);
 });
 
-test('manual resolve skip exec', async (t) => {
+test('manual resolve skip exec', async () => {
   const promise = createLazyPromise<number>(() => {
-    t.fail();
+    expect.fail();
   });
   promise.resolve(-1);
-  t.is(await promise, -1);
+  expect(await promise).toBe(-1);
 });
 
-test('exec', async (t) => {
+test('exec', async () => {
   let r = 0;
   const promise = createLazyPromise((resolve) => {
     r++;
     resolve(10);
   });
   await sleep(10);
-  t.is(r, 0);
-  t.is(await promise, 10);
-  t.is(r, 1);
+  expect(r).toBe(0);
+  expect(await promise).toBe(10);
+  expect(r).toBe(1);
   promise.resolve(20);
-  t.is(await promise, 10);
+  expect(await promise).toBe(10);
 });
 
-test('exec auto', async (t) => {
+test('exec auto', async () => {
   let r = 0;
   const promise = createLazyPromise(() => {
     r++;
     return 10;
   });
   await sleep(10);
-  t.is(r, 0);
+  expect(r).toBe(0);
   void promise.then(() => undefined);
-  t.is(await promise, 10);
-  t.is(r, 1);
-  t.is(await promise, 10);
-  t.is(r, 1);
+  expect(await promise).toBe(10);
+  expect(r).toBe(1);
+  expect(await promise).toBe(10);
+  expect(r).toBe(1);
 });
