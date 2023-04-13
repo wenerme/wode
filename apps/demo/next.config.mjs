@@ -13,14 +13,6 @@ const nextConfig = {
   },
   swcMinify: true,
   experimental: {
-    swcPlugins: [
-      [
-        'next-superjson-plugin',
-        {
-          excluded: [],
-        },
-      ],
-    ],
     appDir: false,
     outputFileTracingRoot: path.join(__dirname, '../../'),
   },
