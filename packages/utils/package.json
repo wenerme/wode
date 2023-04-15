@@ -94,9 +94,5 @@
       "jsdom",
       "node-fetch"
     ]
-  },
-  "typedoc": {
-    "entryPoint": "./src/typedoc.ts",
-    "readmeFile": "./README.md"
   }
 }
