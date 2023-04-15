@@ -32,10 +32,6 @@
       },
       "require": "./dist/cjs/lib/index.cjs"
     },
-    "./types": {
-      "types": "./types.d.ts"
-    },
-    "./src/*": "./src/*",
     "./package.json": "./package.json"
   },
   "main": "dist/cjs/index.cjs",
@@ -104,10 +100,6 @@
   "publishConfig": {
     "registry": "https://registry.npmjs.org",
     "access": "public"
-  },
-  "typedoc": {
-    "entryPoint": "./src/index.ts",
-    "readmeFile": "./README.md"
   },
   "dependencies": {
     "hoist-non-react-statics": "^3.3.2",
