@@ -63,7 +63,7 @@
     "test": "make test"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.192",
+    "@types/lodash": "^4.14.194",
     "@types/ws": "^8.5.4",
     "https-proxy-agent": "^5.0.1",
     "lodash": "^4.17.21"
@@ -71,6 +71,18 @@
   "publishConfig": {
     "registry": "https://registry.npmjs.org",
     "access": "public"
+  },
+  "peerDependencies": {
+    "undici": "*",
+    "https-proxy-agent": "*"
+  },
+  "peerDependenciesMeta": {
+    "undici": {
+      "optional": true
+    },
+    "https-proxy-agent": {
+      "optional": true
+    }
   },
   "sideEffects": false,
   "rollup": {
