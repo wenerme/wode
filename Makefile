@@ -39,3 +39,6 @@ ci-apis: ci-install
 
 outdated:
 	pnpm outdated -r | grep -v lexical | grep -v '@tiptap' | grep -v '^├─'
+
+prepare:
+	npm add -g pnpm@latest
