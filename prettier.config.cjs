@@ -26,6 +26,7 @@ module.exports = {
     '^[.][/]',
   ],
   importOrderSeparation: false,
+  importOrderParserPlugins: ['typescript', 'decorators-legacy'],
 
   plugins: [
     require('prettier-plugin-pkg'),

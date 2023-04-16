@@ -1,0 +1,14 @@
+
+swc-build:
+	pnpm swc ./src -d ./dist/out
+swc-watch:
+	rm -rf ./dist/out/*
+	pnpm swc --watch ./src -d ./dist/out
+
+dev SERVER:
+	NODE_ENV=development pnpm tsx watch ./dist/out/apps/{{SERVER}}/main.js
+
+fmt:
+	pnpm prettier --write ./src package.json
+fix:
+	pnpm eslint --fix ./src
