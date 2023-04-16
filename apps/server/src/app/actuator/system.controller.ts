@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 
-@Controller()
+@Controller('system')
 export class SystemController {
   @Get('ping')
   ping() {
