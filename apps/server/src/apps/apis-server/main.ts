@@ -1,5 +1,7 @@
 import { Module, ValidationPipe } from '@nestjs/common';
+import { RouterModule } from '@nestjs/core';
 import { polyfillCrypto } from '@wener/utils/server';
+import { ActuatorModule } from '../../app/actuator/actuator.module';
 import { runApplication } from '../../app/app.run';
 import { GithubModule } from './github/github.module';
 import { HashController } from './hash/hash.controller';
@@ -7,7 +9,17 @@ import { ZxcvbnController } from './password/zxcvbn.controller';
 import { SemverController } from './semver/semver.controller';
 
 @Module({
-  imports: [GithubModule],
+  imports: [
+    GithubModule,
+    ActuatorModule,
+    // RouterModule.register([
+    //   {
+    //     path: 'actuator',
+    //     module: ActuatorModule,
+    //   },
+    // ]),
+  ],
+
   controllers: [HashController, ZxcvbnController, SemverController],
 })
 class ApisServerModule {}
