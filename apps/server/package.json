@@ -11,6 +11,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "@apollo/subgraph": "^2.4.1",
     "@fastify/helmet": "^10.1.0",
     "@fastify/static": "^6.10.1",
     "@fastify/websocket": "^7.2.0",
@@ -18,7 +19,9 @@
     "@mikro-orm/core": "^5.6.16",
     "@mikro-orm/postgresql": "^5.6.16",
     "@nestjs/common": "^9.4.0",
+    "@nestjs/config": "^2.3.1",
     "@nestjs/core": "^9.4.0",
+    "@nestjs/graphql": "^11.0.5",
     "@nestjs/mercurius": "^11.0.5",
     "@nestjs/platform-fastify": "^9.4.0",
     "@nestjs/serve-static": "^3.0.1",

@@ -1,9 +1,9 @@
 import 'reflect-metadata';
 import helmet from '@fastify/helmet';
 import { Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { FastifyAdapter, type NestFastifyApplication } from '@nestjs/platform-fastify';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { loadEnvs } from '../util/loadEnvs';
 import { bootstrap, type BootstrapOptions } from './bootstrap';
 import { getStaticRootPath } from './util/getStaticRootPath';
 
@@ -14,8 +14,10 @@ export interface ApplicationOptions extends BootstrapOptions {
 }
 
 export async function runApplication(opts: ApplicationOptions) {
-  await loadEnvs();
   const app: NestFastifyApplication = await bootstrap({ ...opts, httpAdapter: new FastifyAdapter(), options: {} });
+
+  const cs = app.get(ConfigService);
+  const port = cs.get('server.port') || 3000;
 
   const { openapi = true } = opts;
   if (openapi) {
@@ -23,8 +25,8 @@ export async function runApplication(opts: ApplicationOptions) {
       .setTitle('API')
       .setDescription('API description')
       .setVersion('1.0.0')
-      .addServer('http://localhost:3000')
-      .addServer('http://127.0.0.1:3000');
+      .addServer(`http://localhost:${port}`)
+      .addServer(`http://127.0.0.1:${port}`);
     typeof openapi === 'function' && openapi(builder);
     const config = builder.build();
     const document = SwaggerModule.createDocument(app, config);
@@ -44,7 +46,6 @@ export async function runApplication(opts: ApplicationOptions) {
   });
   app.enableCors({});
 
-  const port = 3000;
   await app.listen(port, '0.0.0.0');
   log.log(`Server started http://localhost:${port}`);
   return app;
