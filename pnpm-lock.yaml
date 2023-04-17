@@ -724,6 +724,9 @@ importers:
 
   apps/server:
     dependencies:
+      '@apollo/subgraph':
+        specifier: ^2.4.1
+        version: 2.4.1(graphql@16.6.0)
       '@fastify/helmet':
         specifier: ^10.1.0
         version: 10.1.0
@@ -745,12 +748,18 @@ importers:
       '@nestjs/common':
         specifier: ^9.4.0
         version: 9.4.0(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.0)
+      '@nestjs/config':
+        specifier: ^2.3.1
+        version: 2.3.1(@nestjs/common@9.4.0)(reflect-metadata@0.1.13)(rxjs@7.8.0)
       '@nestjs/core':
         specifier: ^9.4.0
         version: 9.4.0(@nestjs/common@9.4.0)(reflect-metadata@0.1.13)(rxjs@7.8.0)
+      '@nestjs/graphql':
+        specifier: ^11.0.5
+        version: 11.0.5(@apollo/subgraph@2.4.1)(@nestjs/common@9.4.0)(@nestjs/core@9.4.0)(class-transformer@0.5.1)(class-validator@0.14.0)(graphql@16.6.0)(reflect-metadata@0.1.13)
       '@nestjs/mercurius':
         specifier: ^11.0.5
-        version: 11.0.5(@mercuriusjs/gateway@1.2.0)(@nestjs/common@9.4.0)(@nestjs/graphql@11.0.5)(fastify@4.15.0)(graphql@16.6.0)(mercurius@12.2.0)
+        version: 11.0.5(@apollo/subgraph@2.4.1)(@mercuriusjs/gateway@1.2.0)(@nestjs/common@9.4.0)(@nestjs/graphql@11.0.5)(fastify@4.15.0)(graphql@16.6.0)(mercurius@12.2.0)
       '@nestjs/platform-fastify':
         specifier: ^9.4.0
         version: 9.4.0(@fastify/static@6.10.1)(@nestjs/common@9.4.0)(@nestjs/core@9.4.0)
@@ -1573,6 +1582,38 @@ packages:
     dependencies:
       '@jridgewell/gen-mapping': 0.3.3
       '@jridgewell/trace-mapping': 0.3.18
+
+  /@apollo/cache-control-types@1.0.2(graphql@16.6.0):
+    resolution: {integrity: sha512-Por80co1eUm4ATsvjCOoS/tIR8PHxqVjsA6z76I6Vw0rFn4cgyVElQcmQDIZiYsy41k8e5xkrMRECkM2WR8pNw==}
+    peerDependencies:
+      graphql: 14.x || 15.x || 16.x
+    dependencies:
+      graphql: 16.6.0
+    dev: false
+
+  /@apollo/federation-internals@2.4.1(graphql@16.6.0):
+    resolution: {integrity: sha512-C0jI/jApL0DIY2a6ig/RDRDpWinUpc3hSARhyBVNFQX0xtnuW+AjB+lpRZoEoWOZzGjfbaN+zmbUUqkxqjlc9Q==}
+    engines: {node: '>=14.15.0'}
+    peerDependencies:
+      graphql: ^16.5.0
+    dependencies:
+      '@types/uuid': 9.0.1
+      chalk: 4.1.2
+      graphql: 16.6.0
+      js-levenshtein: 1.1.6
+      uuid: 9.0.0
+    dev: false
+
+  /@apollo/subgraph@2.4.1(graphql@16.6.0):
+    resolution: {integrity: sha512-z9o0qMHyxMjBvQzQvuNMuxvI0GTttdMr3p2tlJN2LdL792/ZhN6hhdBEaV+n6C2nZ4Dw+bV5jq5I+6fBlnmV3Q==}
+    engines: {node: '>=14.15.0'}
+    peerDependencies:
+      graphql: ^16.5.0
+    dependencies:
+      '@apollo/cache-control-types': 1.0.2(graphql@16.6.0)
+      '@apollo/federation-internals': 2.4.1(graphql@16.6.0)
+      graphql: 16.6.0
+    dev: false
 
   /@aw-web-design/x-default-browser@1.4.88:
     resolution: {integrity: sha512-AkEmF0wcwYC2QkhK703Y83fxWARttIWXDmQN8+cof8FmFZ5BRhnNXGymeb1S73bOCLfWjYELxtujL56idCN/XA==}
@@ -4417,6 +4458,22 @@ packages:
       tslib: 2.5.0
       uid: 2.0.2
 
+  /@nestjs/config@2.3.1(@nestjs/common@9.4.0)(reflect-metadata@0.1.13)(rxjs@7.8.0):
+    resolution: {integrity: sha512-Ckzel0NZ9CWhNsLfE1hxfDuxJuEbhQvGxSlmZ1/X8awjRmAA/g3kT6M1+MO1SHj1wMtPyUfd9WpwkiqFbiwQgA==}
+    peerDependencies:
+      '@nestjs/common': ^7.0.0 || ^8.0.0 || ^9.0.0
+      reflect-metadata: ^0.1.13
+      rxjs: ^6.0.0 || ^7.2.0
+    dependencies:
+      '@nestjs/common': 9.4.0(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.0)
+      dotenv: 16.0.3
+      dotenv-expand: 10.0.0
+      lodash: 4.17.21
+      reflect-metadata: 0.1.13
+      rxjs: 7.8.0
+      uuid: 9.0.0
+    dev: false
+
   /@nestjs/core@9.4.0(@nestjs/common@9.4.0)(reflect-metadata@0.1.13)(rxjs@7.8.0):
     resolution: {integrity: sha512-yTLryCgFD0462wPe4HIzhyTcDgibt8Stfwb5YzcX7Ma0NM4m8uBIpcPG109KBubp8ZmV85e5mw4rl20qLQQVsQ==}
     requiresBuild: true
@@ -4447,7 +4504,7 @@ packages:
     transitivePeerDependencies:
       - encoding
 
-  /@nestjs/graphql@11.0.5(@nestjs/common@9.4.0)(@nestjs/core@9.4.0)(class-transformer@0.5.1)(class-validator@0.14.0)(graphql@16.6.0)(reflect-metadata@0.1.13):
+  /@nestjs/graphql@11.0.5(@apollo/subgraph@2.4.1)(@nestjs/common@9.4.0)(@nestjs/core@9.4.0)(class-transformer@0.5.1)(class-validator@0.14.0)(graphql@16.6.0)(reflect-metadata@0.1.13):
     resolution: {integrity: sha512-yWDxorb3efDpY55i8exSlJTRRdIISoaQAWm1LukvVJAn4FiRAMUOUlAgNOSU+oX4TMjMp6LffA2cG66WpIssPg==}
     peerDependencies:
       '@apollo/subgraph': ^2.0.0
@@ -4468,6 +4525,7 @@ packages:
       ts-morph:
         optional: true
     dependencies:
+      '@apollo/subgraph': 2.4.1(graphql@16.6.0)
       '@graphql-tools/merge': 8.4.0(graphql@16.6.0)
       '@graphql-tools/schema': 9.0.17(graphql@16.6.0)
       '@graphql-tools/utils': 9.2.1(graphql@16.6.0)
@@ -4512,7 +4570,7 @@ packages:
       reflect-metadata: 0.1.13
     dev: false
 
-  /@nestjs/mercurius@11.0.5(@mercuriusjs/gateway@1.2.0)(@nestjs/common@9.4.0)(@nestjs/graphql@11.0.5)(fastify@4.15.0)(graphql@16.6.0)(mercurius@12.2.0):
+  /@nestjs/mercurius@11.0.5(@apollo/subgraph@2.4.1)(@mercuriusjs/gateway@1.2.0)(@nestjs/common@9.4.0)(@nestjs/graphql@11.0.5)(fastify@4.15.0)(graphql@16.6.0)(mercurius@12.2.0):
     resolution: {integrity: sha512-50U3MolmjN6CH7Z7jQDgP5NXtyNtpmYKLeUeqmRmON2Kf7NxcpO5RaEhums6E+X7i4q6QdNdSptbuiIsAENz6Q==}
     peerDependencies:
       '@apollo/subgraph': ^2.0.0
@@ -4531,9 +4589,10 @@ packages:
       '@mercuriusjs/gateway':
         optional: true
     dependencies:
+      '@apollo/subgraph': 2.4.1(graphql@16.6.0)
       '@mercuriusjs/gateway': 1.2.0
       '@nestjs/common': 9.4.0(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.0)
-      '@nestjs/graphql': 11.0.5(@nestjs/common@9.4.0)(@nestjs/core@9.4.0)(class-transformer@0.5.1)(class-validator@0.14.0)(graphql@16.6.0)(reflect-metadata@0.1.13)
+      '@nestjs/graphql': 11.0.5(@apollo/subgraph@2.4.1)(@nestjs/common@9.4.0)(@nestjs/core@9.4.0)(class-transformer@0.5.1)(class-validator@0.14.0)(graphql@16.6.0)(reflect-metadata@0.1.13)
       fastify: 4.15.0
       graphql: 16.6.0
       mercurius: 12.2.0(graphql@16.6.0)
@@ -7597,6 +7656,10 @@ packages:
     resolution: {integrity: sha512-PBjIUxZHOuj0R15/xuwJYjFi+KZdNFrehocChv4g5hu6aFroHue8m0lBP0POdK2nKzbw0cgV1mws8+V/JAcEkQ==}
     dev: true
 
+  /@types/uuid@9.0.1:
+    resolution: {integrity: sha512-rFT3ak0/2trgvp4yYZo5iKFEPsET7vKydKF+VRCxlQ9bpheehyAJH89dAkaLEq/j/RZXJIqcgsmPJKUP1Z28HA==}
+    dev: false
+
   /@types/validator@13.7.15:
     resolution: {integrity: sha512-yeinDVQunb03AEP8luErFcyf/7Lf7AzKCD0NXfgVoGCCQDNpZET8Jgq74oBgqKld3hafLbfzt/3inUdQvaFeXQ==}
 
@@ -9613,7 +9676,6 @@ packages:
   /dotenv-expand@10.0.0:
     resolution: {integrity: sha512-GopVGCpVS1UKH75VKHGuQFqS1Gusej0z4FyQkPdwjil2gNIv+LNsqBlboOzpJFZKVT95GkCyWJbBSdFEFUWI2A==}
     engines: {node: '>=12'}
-    dev: true
 
   /dotenv@16.0.3:
     resolution: {integrity: sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ==}
@@ -11998,6 +12060,11 @@ packages:
 
   /jpeg-js@0.4.4:
     resolution: {integrity: sha512-WZzeDOEtTOBK4Mdsar0IqEU5sMr3vSV2RqkAIzUEV2BHnUfKGyswWFPFwK5EeDo93K3FohSHbLAjj0s1Wzd+dg==}
+    dev: false
+
+  /js-levenshtein@1.1.6:
+    resolution: {integrity: sha512-X2BB11YZtrRqY4EnQcLX5Rh373zbK4alC1FW7D7MBhL2gtcC17cTnr6DmfHZeS0s2rTHjUTMMHfG7gO8SSdw+g==}
+    engines: {node: '>=0.10.0'}
     dev: false
 
   /js-sdsl@4.4.0:
