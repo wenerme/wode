@@ -16,7 +16,10 @@
     // https://rapidocweb.com/api.html
     el.setAttribute('spec-url', url);
     el.setAttribute('server-url', location.origin)
+    el.setAttribute('default-api-server', location.origin)
+    el.setAttribute('persist-auth', 'true');
     document.body.appendChild(el);
+    globalThis.$doc = el;
   }
 </script>
 </html>
