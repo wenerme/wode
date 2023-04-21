@@ -42,6 +42,7 @@
     "jose": "^4.14.0",
     "jsdom": "^21.1.1",
     "lodash": "^4.17.21",
+    "lru-cache": "^8.0.5",
     "mercurius": "^12.2.0",
     "reflect-metadata": "^0.1.13",
     "semver": "^7.4.0",
