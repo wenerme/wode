@@ -8,7 +8,12 @@ import { RepoController } from './repo.controller';
     {
       provide: Octokit,
       useFactory: () => {
-        return new Octokit();
+        return new Octokit({
+          request: {
+            // fixme use cache, use proxy
+            fetch: globalThis.fetch,
+          },
+        });
       },
     },
   ],

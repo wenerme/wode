@@ -11,9 +11,6 @@ import { SemverController } from './semver/semver.controller';
 
 const AppName = 'apis-server';
 
-const { NODE_ENV: env = 'production' } = process.env;
-const __dirname = process.cwd();
-
 @Module({
   imports: [
     CoreModule.forRoot({
@@ -22,13 +19,6 @@ const __dirname = process.cwd();
     }),
     GithubModule,
     AlpineModule,
-
-    // RouterModule.register([
-    //   {
-    //     path: 'actuator',
-    //     module: ActuatorModule,
-    //   },
-    // ]),
   ],
 
   controllers: [HashController, ZxcvbnController, SemverController],

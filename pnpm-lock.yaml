@@ -817,6 +817,9 @@ importers:
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
+      lru-cache:
+        specifier: ^8.0.5
+        version: 8.0.5
       mercurius:
         specifier: ^12.2.0
         version: 12.2.0(graphql@16.6.0)

@@ -26,6 +26,7 @@ const nextConfig = {
   },
   swcMinify: true,
   experimental: {
+    serverComponentsExternalPackages: ['canvas'],
     // swcPlugins: [['next-superjson-plugin', {}]],
     appDir: false,
     outputFileTracingRoot: path.join(__dirname, '../../'),
@@ -38,5 +39,9 @@ const nextConfig = {
   },
   basePath: process.env.BASE_PATH,
 };
+
+if (process.env.STANDALONE) {
+  nextConfig.output = 'standalone';
+}
 
 export default nextConfig;
