@@ -3,7 +3,7 @@ import { LocalRepoService } from './LocalRepoService';
 import { AlpineController } from './alpine.controller';
 import { ContentController } from './content.controller';
 import { MirrorController } from './mirror.controller';
-import { PackageController } from './package.controller';
+import { PackageController } from './pkg/package.controller';
 
 @Module({
   controllers: [PackageController, MirrorController, ContentController, AlpineController],

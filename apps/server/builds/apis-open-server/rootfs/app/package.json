@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "dependencies": {
-    "class-transformer": "*"
+    "class-transformer": "*",
+    "jsdom": "^21"
   }
 }

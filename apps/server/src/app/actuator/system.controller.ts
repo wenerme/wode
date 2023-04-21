@@ -23,6 +23,7 @@ export class SystemController {
     const { NODE_ENV: env } = process.env;
 
     return {
+      versions: process.versions,
       env,
       platform: process.platform,
       arch: process.arch,
@@ -30,7 +31,6 @@ export class SystemController {
       uptime: ms(process.uptime()),
       memory: process.memoryUsage(),
       cpu: process.cpuUsage(),
-      versions: process.versions,
     };
   }
 }

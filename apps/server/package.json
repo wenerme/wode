@@ -34,6 +34,7 @@
     "class-validator": "^0.14.0",
     "dayjs": "^1.11.7",
     "dotenv": "^16.0.3",
+    "eventsource-parser": "^1.0.0",
     "fastify": "^4.15.0",
     "fs-extra": "^11.1.1",
     "graphql": "^16.6.0",

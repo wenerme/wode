@@ -33,6 +33,5 @@ export async function bootstrap<T extends INestApplication>({
 
   setAppContext(app);
   await onInit?.(app);
-  await app.init();
   return app as T;
 }
