@@ -5,6 +5,7 @@ import { ConfigService } from '@nestjs/config';
 import { FastifyAdapter, type NestFastifyApplication } from '@nestjs/platform-fastify';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { bootstrap, type BootstrapOptions } from './bootstrap';
+import { ServerConfig } from './config/server.config';
 import { getStaticRootPath } from './util/getStaticRootPath';
 
 const log = new Logger('RunApplication');
@@ -17,7 +18,7 @@ export async function runApplication(opts: ApplicationOptions) {
   const app: NestFastifyApplication = await bootstrap({ ...opts, httpAdapter: new FastifyAdapter(), options: {} });
 
   const cs = app.get(ConfigService);
-  const port = cs.get('server.port') || 3000;
+  const { port = 3000, prefix } = cs.get<ServerConfig>('server') || {};
 
   const { openapi = true } = opts;
   if (openapi) {
@@ -38,6 +39,9 @@ export async function runApplication(opts: ApplicationOptions) {
   app.useStaticAssets({
     root: staticRootPath,
   });
+  if (prefix) {
+    app.setGlobalPrefix(prefix);
+  }
 
   log.log(`HttpAdapter: ${app.getHttpAdapter().constructor.name}`);
   // https://docs.nestjs.com/security/helmet#use-with-fastify
