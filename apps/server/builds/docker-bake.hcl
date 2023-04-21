@@ -13,10 +13,10 @@ target "base" {
     pull       = true
 }
 
-target "apis-server" {
+target "apis-open-server" {
     inherits = ["base"]
-    context  = "apis-server"
-    tags     = tags("apis-server")
+    context  = "apis-open-server"
+    tags     = tags("apis-open-server")
 }
 
 function "tags" {
