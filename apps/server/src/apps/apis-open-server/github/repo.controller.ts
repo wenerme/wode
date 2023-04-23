@@ -1,9 +1,11 @@
 import { type SemVer } from 'semver';
 import semver from 'semver/preload';
 import { Controller, Get, Param } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { Octokit } from '@octokit/rest';
 import { requireFound } from '../../../app/util/requireFound';
 
+@ApiTags('GitHub')
 @Controller('/github/r/:owner/:repo')
 export class RepoController {
   constructor(readonly octokit: Octokit) {}
