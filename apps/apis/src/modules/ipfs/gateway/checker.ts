@@ -1,7 +1,7 @@
 /**
  * https://github.com/ipfs/public-gateway-checker
  */
-import produce from 'immer';
+import { produce } from 'immer';
 
 export interface GatewayCheckNodeState {
   id: number;
