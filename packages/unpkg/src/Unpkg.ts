@@ -1,11 +1,11 @@
-import LRU from 'lru-cache';
+import { LRUCache } from 'lru-cache';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { Readable } from 'node:stream';
 import zlib from 'node:zlib';
 import semver from 'semver';
 import tar, { type ReadEntry } from 'tar';
-import type { Logger} from '@wener/utils';
+import type { Logger } from '@wener/utils';
 import { createLazyPromise, parseModuleId } from '@wener/utils';
 import type { RegistryPackage, RegistryPackageJson } from './RegistryPackage';
 import type { UnpkgStorage } from './UnpkgStorage';
@@ -16,7 +16,7 @@ export interface InitUnpkgOptions {
   logger?: Logger;
   tmp?: string;
   fetch?: SimpleFetch;
-  lru?: LRU<string, any>;
+  lru?: LRUCache<string, any>;
 }
 
 interface UnpkgOptions {
@@ -36,7 +36,7 @@ export class Unpkg {
   // pkg@version -> package meta
   protected tmp;
   // pkg@version/path -> file
-  readonly lru: LRU<string, any>;
+  readonly lru: LRUCache<string, any>;
   private readonly options: UnpkgOptions;
 
   constructor(options: InitUnpkgOptions) {
@@ -46,7 +46,7 @@ export class Unpkg {
         url: 'https://registry.npmjs.org',
         tmp: '/tmp/unpkg',
         fetch: globalThis.fetch,
-        lru: new LRU({
+        lru: new LRUCache({
           max: 1000,
           maxSize: 1024 * 1024 * 100, // 100M
           ttl: 1000 * 60 * 5,

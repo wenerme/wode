@@ -10,10 +10,11 @@ export interface FindCacheOptions {
   method: string;
   cookie?: string;
   requestPayload?: Record<string, any>;
+  schema?: string;
 }
 
 export class HttpRequestLogRepository extends EntityRepository<HttpRequestLog> {
-  findCache({ expires, url, method, cookie, requestPayload }: FindCacheOptions) {
+  findCache({ expires, url, method, cookie, requestPayload, schema }: FindCacheOptions) {
     const qb = this.qb();
     let createdAt: Date | undefined;
     if (expires) {
@@ -31,7 +32,9 @@ export class HttpRequestLogRepository extends EntityRepository<HttpRequestLog> {
     })
       .orderBy({ createdAt: 'DESC' })
       .limit(1);
-
+    if (schema) {
+      qb.withSchema(schema);
+    }
     if (cookie) {
       qb.andWhere({ requestHeaders: { cookie } });
     }

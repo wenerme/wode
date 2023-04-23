@@ -2,7 +2,7 @@ import { Entity, EntityRepositoryType, Property, types } from '@mikro-orm/core';
 import { MinimalBaseEntity } from '../../db/base/MinimalBaseEntity';
 import { HttpRequestLogRepository } from './HttpRequestLog.repository';
 
-@Entity({ customRepository: () => HttpRequestLogRepository, schema: 'cache' })
+@Entity({ customRepository: () => HttpRequestLogRepository })
 export class HttpRequestLog extends MinimalBaseEntity<HttpRequestLog> {
   [EntityRepositoryType]?: HttpRequestLogRepository;
 

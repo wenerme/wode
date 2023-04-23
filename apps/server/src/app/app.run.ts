@@ -74,7 +74,6 @@ export async function runApplication(opts: ApplicationOptions) {
   });
   app.enableCors({});
 
-  await app.init();
   await app.listen(port, '0.0.0.0');
   const u = new URL(`http://localhost:${port}`);
   if (prefix) {

@@ -1,4 +1,4 @@
-import LRU from 'lru-cache';
+import { LRUCache } from 'lru-cache';
 
 export interface Token {
   appId: string;
@@ -32,7 +32,7 @@ export function createDummyTokenProvider(token?: Token): TokenProvider {
 }
 
 export function createCachedTokenProvider(next: TokenProvider): TokenProvider {
-  const cache = new LRU<string, Token>({
+  const cache = new LRUCache<string, Token>({
     max: 100,
   });
   return async (id, type, o) => {

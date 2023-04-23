@@ -68,9 +68,10 @@ export class CoreModule {
       imports.push(
         MikroOrmModule.forRootAsync({
           useFactory: (cs: ConfigService) => {
-            const { dsn } = cs.get<DatabaseConfig>('database') || {};
+            const { dsn, debug } = cs.get<DatabaseConfig>('database') || {};
             return createMikroOrmConfig({
               clientUrl: dsn,
+              debug,
               ...db,
             });
           },

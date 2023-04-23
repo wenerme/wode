@@ -13,6 +13,7 @@ export interface CreateFetchWithCacheOptions {
   logger?: Logger;
   config?: FetchCacheConfig;
   getEntityManager?: () => EntityManager;
+  schema?: string;
 }
 
 export function createFetchWithCache({
@@ -20,12 +21,16 @@ export function createFetchWithCache({
   logger: log = new Logger('FetchWithCache'),
   config: _config,
   getEntityManager = _getEntityManager,
+  schema,
 }: CreateFetchWithCacheOptions = {}): FetchLike {
   return async (url, init = {}) => {
     const e = new HttpRequestLog();
     e.fromRequest(url, init);
     if (init?.body) {
       e.requestPayload = removeNullChar(JSON.parse(init.body as string));
+    }
+    if (schema) {
+      e.setSchema(schema);
     }
 
     const config = Object.assign({}, _config, FetchCache.getConfig());
@@ -42,6 +47,7 @@ export function createFetchWithCache({
         expires,
         cookie: e.requestHeaders?.cookie,
         requestPayload: e.requestPayload,
+        schema,
       };
       const repo = em.getRepository(HttpRequestLog);
 
@@ -51,7 +57,7 @@ export function createFetchWithCache({
       }
       const last: HttpRequestLog | null = await repo.findCache(find);
       if (last) {
-        log.log(`${last.url} use cache: ${last.id}`);
+        log.log(`cache hit [${last.id}]:${e.method} ${last.url}`);
         ctx.hit = true;
         ctx.entry = last;
         FetchCache.set(last, true);
