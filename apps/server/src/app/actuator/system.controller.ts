@@ -28,7 +28,7 @@ export class SystemController {
       platform: process.platform,
       arch: process.arch,
       now: new Date(),
-      uptime: ms(process.uptime()),
+      uptime: ms(process.uptime() * 1000),
       memory: process.memoryUsage(),
       cpu: process.cpuUsage(),
     };
