@@ -1,4 +1,4 @@
-import { SemVer } from 'semver';
+import { type SemVer } from 'semver';
 import semver from 'semver/preload';
 import { Controller, Get, Param } from '@nestjs/common';
 import { Octokit } from '@octokit/rest';

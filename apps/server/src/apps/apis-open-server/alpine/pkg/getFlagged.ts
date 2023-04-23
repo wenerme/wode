@@ -1,6 +1,6 @@
 import { JSDOM } from 'jsdom';
 import { z } from 'zod';
-import { FetchLike, Logger } from '@wener/utils';
+import { type FetchLike, type Logger } from '@wener/utils';
 
 export async function getFlagged({
   logger = console,
@@ -9,7 +9,7 @@ export async function getFlagged({
   logger?: Logger;
   fetch?: FetchLike;
 } = {}): Promise<FlaggedPackage[]> {
-  let all: FlaggedPackage[] = [];
+  const all: FlaggedPackage[] = [];
   let page = 1;
   while (true) {
     // slow

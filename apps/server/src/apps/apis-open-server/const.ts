@@ -1,4 +1,4 @@
-import { FetchLike } from '@wener/utils';
+import { type FetchLike } from '@wener/utils';
 
 export const Injects = {
   fetch: tokenOf<FetchLike>('fetch'),

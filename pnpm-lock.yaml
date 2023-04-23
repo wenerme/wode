@@ -811,6 +811,9 @@ importers:
       fs-extra:
         specifier: ^11.1.1
         version: 11.1.1
+      generate-password:
+        specifier: ^1.7.0
+        version: 1.7.0
       graphql:
         specifier: ^16.6.0
         version: 16.6.0
@@ -11098,6 +11101,10 @@ packages:
     resolution: {integrity: sha512-eeB5GfMNeevm/GRYq20ShmsaGcmI81kIX2K9XQx5miC8KdHaC6Jm0qQ8ZNeGOi7wYB8OsdxKs+Y2oVuTFuVwKQ==}
     dependencies:
       is-property: 1.0.2
+    dev: false
+
+  /generate-password@1.7.0:
+    resolution: {integrity: sha512-WPCtlfy0jexf7W5IbwxGUgpIDvsZIohbI2DAq2Q6TSlKKis+G4GT9sxvPxrZUGL8kP6WUXMWNqYnxY6DDKAdFA==}
     dev: false
 
   /gensync@1.0.0-beta.2:
