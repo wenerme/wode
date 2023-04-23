@@ -13,12 +13,22 @@ export async function getFlagged({
   let page = 1;
   while (true) {
     // slow
+    let url = `https://pkgs.alpinelinux.org/flagged?page=${page}`;
     const {
       window: { document },
-    } = new JSDOM(await fetch(`https://pkgs.alpinelinux.org/flagged?page=${page}`).then((v) => v.text()));
+    } = new JSDOM(await fetch(url).then((v) => v.text()), {
+      url,
+      contentType: 'text/html',
+    });
     const $$ = document.querySelectorAll.bind(document);
     const items: FlaggedPackage[] = Array.from($$('table tr'))
-      .map((tr) => Array.from(tr.querySelectorAll('td')).map((td) => td.textContent?.trim()))
+      .map((tr) =>
+        Array.from(tr.querySelectorAll('td')).map((td) => {
+          // text contain \n
+          return td.textContent?.trim();
+          // return td.textContent?.trim().replaceAll(/[\n\r]+|[\s]{2,}/g, '');
+        }),
+      )
       .slice(1)
       .map(([origin, version, next, repo, maintainer, flaggedAt]) => ({
         origin,

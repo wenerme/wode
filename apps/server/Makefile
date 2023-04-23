@@ -24,7 +24,7 @@ build: swc-build
 		--external:{@mikro-orm/entity-generator,@mikro-orm/migrations,@mikro-orm/seeder} \
 		--external:{@mikro-orm/mongodb,@mikro-orm/mysql,@mikro-orm/sqlite,@mikro-orm/better-sqlite,@mikro-orm/mariadb} \
 		--external:{sqlite3,better-sqlite3,mysql2,mysql,oracledb,tedious} \
-		--external:{class-transformer,cache-manager,@fastify/view,@nestjs/platform-express,@nestjs/microservices,@nestjs/websockets} \
+		--external:{class-transformer,@fastify/view,@nestjs/platform-express,@nestjs/microservices,@nestjs/websockets} \
 		--external:{ts-morph,fsevents} \
 		--format=esm --platform=node --charset=utf8 --target=chrome90 --sourcemap --legal-comments=external --bundle \
 		--keep-names --minify-syntax \

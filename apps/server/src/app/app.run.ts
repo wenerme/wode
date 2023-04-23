@@ -21,12 +21,7 @@ export async function runApplication(opts: ApplicationOptions) {
   const app: NestFastifyApplication = await bootstrap({ ...opts, httpAdapter: new FastifyAdapter(), options: {} });
 
   const cs = app.get(ConfigService);
-  let { port = 3000, prefix } = cs.get<ServerConfig>('server') || {};
-  if (prefix) {
-    if (!prefix.startsWith('/')) {
-      prefix = `/${prefix}`;
-    }
-  }
+  const { port = 3000, prefix, origin } = cs.get<ServerConfig>('server') || {};
   if (prefix) {
     log.log(`global prefix: ${prefix}`);
     app.setGlobalPrefix(prefix, {
@@ -37,11 +32,21 @@ export async function runApplication(opts: ApplicationOptions) {
   const { openapi = true } = opts;
   if (openapi) {
     let servers = [`http://localhost:${port}`, `http://127.0.0.1:${port}`];
-    const builder = new DocumentBuilder().setTitle('API').setDescription('API description').setVersion('1.0.0');
+    if (origin) {
+      servers.push(origin);
+    }
+    const builder = new DocumentBuilder()
+      .setTitle('API')
+      .setDescription('API description')
+      .setVersion('1.0.0')
+      .addBearerAuth()
+      .addBasicAuth()
+      .addCookieAuth();
     if (prefix) {
       servers = servers.map((s) => s + prefix);
       // builder.setBasePath(prefix);
     }
+    servers = Array.from(new Set(servers)).sort();
     servers.forEach((s) => builder.addServer(s));
     typeof openapi === 'function' && openapi(builder);
     const config = builder.build();

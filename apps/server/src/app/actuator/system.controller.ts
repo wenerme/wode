@@ -1,27 +1,15 @@
 import { Controller, Get } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ms } from '@wener/utils';
+import { Role, Roles } from '../auth';
 
 @ApiTags('Actuator')
+@ApiBearerAuth()
+@Roles(Role.SystemAdmin)
 @Controller('actuator')
 export class SystemController {
-  @Get('health/readiness')
-  readiness() {
-    return { status: 'UP' };
-  }
-
-  @Get('health/liveness')
-  liveness() {
-    return { status: 'UP' };
-  }
-
-  @Get('health')
-  ping() {
-    return { status: 'UP' };
-  }
-
-  @Get('summary')
-  version() {
+  @Get('process')
+  process() {
     const { NODE_ENV: env } = process.env;
 
     return {
