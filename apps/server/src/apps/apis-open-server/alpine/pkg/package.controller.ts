@@ -1,8 +1,10 @@
 import { Controller, Get, Logger } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { createFetchWithProxy } from '@wener/utils/server';
 import { createFetchWithCache } from '../../../../modules/fetch-cache';
 import { getFlagged } from './getFlagged';
 
+@ApiTags('Alpine')
 @Controller('alpine/pkg')
 export class PackageController {
   private readonly log = new Logger('PackageController');

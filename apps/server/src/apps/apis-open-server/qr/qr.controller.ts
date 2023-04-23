@@ -17,7 +17,7 @@ import {
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiBody, ApiConsumes, ApiOperation, ApiParam, ApiProperty } from '@nestjs/swagger';
+import { ApiBody, ApiConsumes, ApiOperation, ApiParam, ApiProperty, ApiTags } from '@nestjs/swagger';
 import {
   BarcodeFormat,
   BinaryBitmap,
@@ -32,7 +32,7 @@ class FileUploadDto {
   @ApiProperty({ type: 'string', format: 'binary' })
   file: any;
 }
-
+@ApiTags('QrCode')
 @Controller('qr')
 export class QrController {
   private readonly log = new Logger('QrController');

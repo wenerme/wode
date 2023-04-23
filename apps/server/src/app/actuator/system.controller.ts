@@ -1,6 +1,8 @@
 import { Controller, Get } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { ms } from '@wener/utils';
 
+@ApiTags('Actuator')
 @Controller('actuator')
 export class SystemController {
   @Get('health/readiness')

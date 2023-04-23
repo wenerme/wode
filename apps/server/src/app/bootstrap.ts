@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import { type INestApplication, Logger, type NestApplicationOptions } from '@nestjs/common';
 import { type AbstractHttpAdapter, NestFactory } from '@nestjs/core';
+import { FastifyAdapter } from '@nestjs/platform-fastify';
 import { type MaybePromise } from '@wener/utils';
 import { setAppContext } from './app.context';
 
@@ -16,7 +17,7 @@ export interface BootstrapOptions<T extends INestApplication = INestApplication>
 export async function bootstrap<T extends INestApplication>({
   name,
   module,
-  httpAdapter,
+  httpAdapter = new FastifyAdapter(), // 似乎必须需要 httpAdapter 存在
   options,
   onInit,
 }: BootstrapOptions): Promise<T> {
