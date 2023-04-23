@@ -6,12 +6,16 @@ import { hex, sha1, sha256, sha384, sha512 } from '@wener/utils';
 class HashDigestResponse {
   @ApiProperty()
   base64!: string;
+
   @ApiProperty()
   sha1!: string;
+
   @ApiProperty()
   sha256!: string;
+
   @ApiProperty()
   sha384!: string;
+
   @ApiProperty()
   sha512!: string;
 }
@@ -20,6 +24,7 @@ class HashDigestRequest {
   @IsString()
   @MaxLength(1024)
   data!: string;
+
   @ApiProperty({
     default: 'raw',
     enum: ['raw', 'base64'],

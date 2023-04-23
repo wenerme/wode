@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import { inspect } from 'util';
 import { MemoryCacheAdapter, ReflectMetadataProvider } from '@mikro-orm/core';
 import { defineConfig } from '@mikro-orm/postgresql';
-import { PostgreSqlOptions } from '@mikro-orm/postgresql/PostgreSqlMikroORM';
+import { type PostgreSqlOptions } from '@mikro-orm/postgresql/PostgreSqlMikroORM';
 import { HttpException } from '@nestjs/common';
 
 export function createMikroOrmConfig(opts: Partial<PostgreSqlOptions>) {

@@ -1,7 +1,7 @@
 import { type FastifyReply, type FastifyRequest } from 'fastify';
 import Jimp from 'jimp';
 import hash from 'object-hash';
-import QRCode, { QRCodeRenderersOptions } from 'qrcode';
+import QRCode, { type QRCodeRenderersOptions } from 'qrcode';
 import { z } from 'zod';
 import { FileInterceptor } from '@nest-lab/fastify-multer';
 import {
@@ -73,7 +73,7 @@ export class QrController {
       throw new HttpException('invalid data', 400);
     }
 
-    let str = buf.toString();
+    const str = buf.toString();
 
     const { version, level: errorCorrectionLevel, margin, scale, width, bg, fg } = options.data;
     const opts: QRCodeRenderersOptions = {
@@ -155,14 +155,14 @@ export class QrController {
     const binaryBitmap = new BinaryBitmap(new HybridBinarizer(luminanceSource));
     const decoded = reader.decode(binaryBitmap);
 
-    let text = decoded.getText();
+    const text = decoded.getText();
     console.log(`Decode qrcode ${imageData.width}x${imageData.height} to ${text}`);
     switch (format) {
       case 'json': {
         const url = `https://apis.wener.me/api/qr/enc/svg/base64:${btoa(text)}`;
 
         return {
-          text: text,
+          text,
           url,
           image: {
             mime: img.getMIME(),

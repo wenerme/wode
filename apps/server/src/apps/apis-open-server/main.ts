@@ -6,6 +6,7 @@ import { HttpRequestLog } from '../../modules/fetch-cache';
 import { AlpineModule } from './alpine/alpine.module';
 import { GithubModule } from './github/github.module';
 import { HashController } from './hash/hash.controller';
+import { GenerateController } from './password/generate.controller';
 import { ZxcvbnController } from './password/zxcvbn.controller';
 import { QrModule } from './qr/qr.module';
 import { RootResolver } from './root.resolver';
@@ -26,13 +27,13 @@ const AppName = 'apis-server';
     QrModule,
   ],
 
-  controllers: [HashController, ZxcvbnController, SemverController],
+  controllers: [HashController, GenerateController, ZxcvbnController, SemverController],
   providers: [RootResolver],
 })
 class ApisServerModule {}
 
 await polyfillCrypto();
-const app = await runApplication({
+await runApplication({
   name: 'apis-server',
   module: ApisServerModule,
   onInit: (app) => {
