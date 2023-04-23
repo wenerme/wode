@@ -1,15 +1,17 @@
 import dayjs from 'dayjs';
 import path from 'node:path';
+import { EntityManager as CoreEntityManager, MikroORM as CoreMikroORM } from '@mikro-orm/core';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
-import { type PostgreSqlOptions } from '@mikro-orm/postgresql/PostgreSqlMikroORM';
-import { type DynamicModule, type ModuleMetadata } from '@nestjs/common';
+import { EntityManager, MikroORM, type Options as PostgreSqlOptions } from '@mikro-orm/postgresql';
+import { type DynamicModule } from '@nestjs/common';
+import { type Provider } from '@nestjs/common/interfaces/modules/provider.interface';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { MercuriusDriver, type MercuriusDriverConfig } from '@nestjs/mercurius';
-import { polyfillCrypto } from '@wener/utils/server';
 import { getPackageDir } from '../util/getPackageDir';
 import { ActuatorModule } from './actuator/actuator.module';
 import { type DatabaseConfig, databaseConfig } from './config/database.config';
+import { redisConfig } from './config/redis.config';
 import { serverConfig } from './config/server.config';
 import { getDayjs } from './dayjs';
 import { createMikroOrmConfig } from './mikro-orm/createMikroOrmConfig';
@@ -29,14 +31,27 @@ export class CoreModule {
   static forRoot(opts: CoreModuleOptions): DynamicModule {
     // downside - large bundle
     const { name, db } = opts;
-    const imports: ModuleMetadata['imports'] = [
-      ConfigModule.forRoot({
-        isGlobal: true,
-        envFilePath: [`.env.${env}.local`, `.env.${env}`, `.env.local`, '.env'],
-        load: [serverConfig, databaseConfig],
-        cache: true,
-      }),
-    ];
+    const mod: Required<DynamicModule> = {
+      global: true,
+      controllers: [],
+      imports: [
+        ConfigModule.forRoot({
+          isGlobal: true,
+          envFilePath: [`.env.${env}.local`, `.env.${env}`, `.env.local`, '.env'],
+          load: [serverConfig, databaseConfig, redisConfig],
+          cache: true,
+        }),
+      ],
+      module: CoreModule,
+      providers: [
+        {
+          provide: dayjs,
+          useValue: getDayjs(),
+        },
+      ] as Provider[],
+      exports: [dayjs],
+    };
+    const { imports, providers, exports } = mod;
     if (opts.graphql !== false) {
       imports.push(
         GraphQLModule.forRoot<MercuriusDriverConfig>({
@@ -48,6 +63,7 @@ export class CoreModule {
         }),
       );
     }
+    //
     if (opts.db !== false) {
       imports.push(
         MikroOrmModule.forRootAsync({
@@ -61,22 +77,24 @@ export class CoreModule {
           inject: [ConfigService],
         }),
       );
+      // postgres
+      providers.push({
+        provide: EntityManager,
+        useExisting: CoreEntityManager,
+      });
+      exports.push(EntityManager);
+
+      providers.push({
+        provide: MikroORM,
+        useExisting: CoreMikroORM,
+      });
+      exports.push(MikroORM);
     }
+    //
     if (opts.actuator !== false) {
       imports.push(ActuatorModule);
     }
 
-    const dynamicModule: DynamicModule = {
-      imports,
-      module: CoreModule,
-      global: true,
-      providers: [
-        {
-          provide: dayjs,
-          useValue: getDayjs(),
-        },
-      ],
-    };
-    return dynamicModule;
+    return mod;
   }
 }

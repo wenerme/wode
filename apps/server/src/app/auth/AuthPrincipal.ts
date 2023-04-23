@@ -1,4 +1,4 @@
-export interface AuthSubject {
+export interface AuthPrincipal {
   admin: boolean;
   roles: string[];
 }

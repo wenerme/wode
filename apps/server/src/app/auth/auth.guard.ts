@@ -1,6 +1,6 @@
-import { FastifyRequest } from 'fastify';
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
-import { AuthSubject } from './AuthSubject';
+import { type FastifyRequest } from 'fastify';
+import { type CanActivate, type ExecutionContext, Injectable } from '@nestjs/common';
+import { type AuthPrincipal } from './AuthPrincipal';
 import { Role } from './role.enum';
 
 @Injectable()
@@ -13,15 +13,15 @@ export class AuthGuard implements CanActivate {
     // if (!token) {
     //   throw new UnauthorizedException();
     // }
-    let subject: AuthSubject | undefined;
+    let principal: AuthPrincipal | undefined;
     if (token && process.env.ADMIN_SECRET === token) {
-      subject = {
+      principal = {
         admin: true,
         roles: [Role.User, Role.Admin, Role.SystemAdmin],
-      } as AuthSubject;
+      } as AuthPrincipal;
     }
-    if (subject) {
-      req.user = subject;
+    if (principal) {
+      req.user = principal;
     }
     // console.log(`Subject token:${token}`, subject);
     return true;

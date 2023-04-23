@@ -1,5 +1,5 @@
-import { CacheTTL } from '@nestjs/cache-manager';
-import { Controller, Get, Logger } from '@nestjs/common';
+import { CacheInterceptor, CacheTTL } from '@nestjs/cache-manager';
+import { Controller, Get, Logger, UseInterceptors } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { ms } from '@wener/utils';
 import { createFetchWithProxy } from '@wener/utils/server';
@@ -8,6 +8,7 @@ import { getFlagged } from './getFlagged';
 
 @ApiTags('Alpine')
 @Controller('alpine/pkg')
+@UseInterceptors(CacheInterceptor)
 export class PackageController {
   private readonly log = new Logger('PackageController');
 
