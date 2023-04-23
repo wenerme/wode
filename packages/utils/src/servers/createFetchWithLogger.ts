@@ -8,7 +8,7 @@ export function createFetchWithLogger({
   logger?: (s: string) => void;
 } = {}): FetchLike {
   return async (...args) => {
-    const [, init = { method: 'GET', headers: {} }] = args;
+    const [, init = { method: 'GET', headers: {} } as RequestInit] = args;
     const url = typeof args[0] === 'string' ? args[0] : args[0].url;
 
     let dumpRequest = `-> ${init.method} ${url}

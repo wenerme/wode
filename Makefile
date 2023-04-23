@@ -30,12 +30,12 @@ ci: ci-demo ci-apis
 ci-demo: ci-install
 	$(EXEC) turbo run build --filter=@wener/demo --force
 	$(MAKE) typedoc
-	mv out/typedoc apps/demo/public/docs
+	-mv out/typedoc apps/demo/public/docs
 
 ci-apis: ci-install
 	$(EXEC) turbo run build --filter=@wener/apis --force
 	$(MAKE) typedoc
-	mv out/typedoc apps/apis/public/docs
+	-mv out/typedoc apps/apis/public/docs
 
 outdated:
 	pnpm outdated -r | grep -v lexical | grep -v '@tiptap' | grep -v '^├─'
