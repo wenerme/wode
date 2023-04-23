@@ -73,8 +73,8 @@
     "access": "public"
   },
   "peerDependencies": {
-    "undici": "*",
-    "https-proxy-agent": "*"
+    "https-proxy-agent": "*",
+    "undici": "*"
   },
   "peerDependenciesMeta": {
     "undici": {
@@ -94,5 +94,8 @@
       "jsdom",
       "node-fetch"
     ]
+  },
+  "dependencies": {
+    "undici": "^5.22.0"
   }
 }

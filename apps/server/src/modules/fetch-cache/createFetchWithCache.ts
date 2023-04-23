@@ -1,21 +1,26 @@
 import { createParser, type ParsedEvent } from 'eventsource-parser';
+import { EntityManager } from '@mikro-orm/postgresql';
 import { HttpException, Logger } from '@nestjs/common';
 import { type FetchLike } from '@wener/utils';
-import { getEntityManager } from '../../app/mikro-orm/context';
+import { getEntityManager as _getEntityManager } from '../../app/mikro-orm/context';
 import { FetchCache, FetchCacheConfig, FetchCacheHookContext } from './FetchCache';
 import { HttpRequestLog } from './HttpRequestLog';
 import { FindCacheOptions } from './HttpRequestLog.repository';
 import { removeNullChar } from './removeNullChar';
 
+export interface CreateFetchWithCacheOptions {
+  fetch?: FetchLike;
+  logger?: Logger;
+  config?: FetchCacheConfig;
+  getEntityManager?: () => EntityManager;
+}
+
 export function createFetchWithCache({
   fetch = globalThis.fetch,
   logger: log = new Logger('FetchWithCache'),
   config: _config,
-}: {
-  fetch?: FetchLike;
-  logger?: Logger;
-  config?: FetchCacheConfig;
-} = {}): FetchLike {
+  getEntityManager = _getEntityManager,
+}: CreateFetchWithCacheOptions = {}): FetchLike {
   return async (url, init = {}) => {
     const e = new HttpRequestLog();
     e.fromRequest(url, init);
@@ -27,7 +32,7 @@ export function createFetchWithCache({
     const ctx: FetchCacheHookContext = { entry: e, init, config: config || {}, hit: false };
 
     await config.onBeforeRequest?.(ctx);
-    const em = getEntityManager({ fork: true });
+    const em = getEntityManager().fork();
 
     const { expires, use = 'cache' } = config;
     if (use === 'cache' || use === 'cache-only') {

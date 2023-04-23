@@ -67,6 +67,10 @@ export async function runApplication(opts: ApplicationOptions) {
 
   await app.init();
   await app.listen(port, '0.0.0.0');
-  log.log(`Server started http://localhost:${port} in ${ms(process.uptime())} ${prefix ? `prefix: ${prefix}` : ''}`);
+  const u = new URL(`http://localhost:${port}`);
+  if (prefix) {
+    u.pathname = prefix;
+  }
+  log.log(`Server started ${u} in ${ms(process.uptime() * 1000)}`);
   return app;
 }
