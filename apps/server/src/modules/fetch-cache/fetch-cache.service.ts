@@ -10,7 +10,7 @@ export class FetchCacheService {
 
   createFetch(opts: CreateFetchWithCacheOptions = {}) {
     return createFetchWithCache({
-      em: this.em,
+      getEntityManager: () => this.em,
       ...opts,
     });
   }

@@ -85,14 +85,6 @@ export function createFetchWithCache({
           res = new Response(text, res);
           break;
         }
-        case 'text/html':
-        case 'text/plain': {
-          const body = await res.text();
-          e.responsePayload = removeNullChar(body);
-          e.contentLength ||= new TextEncoder().encode(body).length;
-          res = new Response(body, res);
-          break;
-        }
 
         case 'text/event-stream': {
           if (res.body instanceof ReadableStream) {
@@ -129,6 +121,15 @@ export function createFetchWithCache({
           }
           break;
         }
+        // avoid escape & data loss
+        // case 'text/html':
+        // case 'text/plain': {
+        //   const body = await res.text();
+        //   e.responsePayload = removeNullChar(body);
+        //   e.contentLength ||= new TextEncoder().encode(body).length;
+        //   res = new Response(body, res);
+        //   break;
+        // }
         default: {
           if (res.body instanceof ReadableStream) {
             const [a, b] = res.body.tee();

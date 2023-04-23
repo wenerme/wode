@@ -1,5 +1,7 @@
+import { CacheTTL } from '@nestjs/cache-manager';
 import { Controller, Get, Logger } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { ms } from '@wener/utils';
 import { createFetchWithProxy } from '@wener/utils/server';
 import { createFetchWithCache } from '../../../../modules/fetch-cache';
 import { getFlagged } from './getFlagged';
@@ -12,6 +14,7 @@ export class PackageController {
   @Get()
   list() {}
 
+  @CacheTTL(ms('5m'))
   @Get('/-/flagged')
   getFlagged() {
     const { log } = this;
