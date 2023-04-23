@@ -1,7 +1,7 @@
 import path from 'node:path';
 import 'reflect-metadata';
 import helmet from '@fastify/helmet';
-import { INestApplication, Logger } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { FastifyAdapter, type NestFastifyApplication } from '@nestjs/platform-fastify';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
