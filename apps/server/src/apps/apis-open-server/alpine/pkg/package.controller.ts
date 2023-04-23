@@ -2,8 +2,7 @@ import { CacheInterceptor, CacheTTL } from '@nestjs/cache-manager';
 import { Controller, Get, Logger, UseInterceptors } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { ms } from '@wener/utils';
-import { createFetchWithProxy } from '@wener/utils/server';
-import { createFetchWithCache } from '../../../../modules/fetch-cache';
+import { createFetchWithCacheProxy } from '../../createFetchWithCacheProxy';
 import { getFlagged } from './getFlagged';
 
 @ApiTags('Alpine')
@@ -20,22 +19,7 @@ export class PackageController {
   getFlagged() {
     const { log } = this;
     return getFlagged({
-      fetch: createFetchWithCache({
-        fetch: createFetchWithProxy({
-          proxy: process.env.FETCH_PROXY,
-          fetch: globalThis.fetch,
-        }),
-        config: {
-          use: 'cache',
-          expires: '15m',
-          match: {
-            cookie: false,
-          },
-          onBeforeFetch: ({ entry }) => {
-            log.log(`fetch ${entry.method} ${entry.url}`);
-          },
-        },
-      }),
+      fetch: createFetchWithCacheProxy(),
     });
   }
 

@@ -1,6 +1,6 @@
 import { getLogger } from 'common/src/trpc/server/logger';
 import { JSDOM } from 'jsdom';
-import LRUCache from 'lru-cache';
+import { LRUCache } from 'lru-cache';
 import { z } from 'zod';
 import { ms } from '@wener/utils';
 
