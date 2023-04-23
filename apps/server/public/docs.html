@@ -12,13 +12,14 @@
   {
     let href = new URL(location.href);
     let specPath = 'api-json'; // nestjs api-json, trpc api/openapi.json
-    let url = href.searchParams.get('url') || `${href.pathname.replace(/docs.html$/, '')}${specPath}`;
+    let prefix = href.pathname.replace(/\/?docs.html$/, '');
+    let url = href.searchParams.get('url') || `${prefix}/${specPath}`;
     let el = document.createElement('rapi-doc');
     // https://rapidocweb.com/api.html
     let attrs = {
       'spec-url': url,
-      'server-url': location.origin,
-      'default-api-server': location.origin,
+      'server-url': location.origin + prefix,
+      'default-api-server': location.origin + prefix,
       'persist-auth': 'true',
       'use-path-in-nav-bar': 'true',
       'show-method-in-nav-bar': 'as-colored-block',
@@ -26,7 +27,7 @@
     Object.entries(attrs).forEach(([k, v]) => {
       attrs[k] = href.searchParams.get(k) || v;
     });
-    console.info(`Render Docs with attrs:`, attrs)
+    console.info(`Render Docs with attrs:`, attrs);
     for (let [key, value] of Object.entries(attrs)) {
       el.setAttribute(key, value);
     }

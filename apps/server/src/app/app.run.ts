@@ -36,18 +36,19 @@ export async function runApplication(opts: ApplicationOptions) {
 
   const { openapi = true } = opts;
   if (openapi) {
-    const builder = new DocumentBuilder()
-      .setTitle('API')
-      .setDescription('API description')
-      .setVersion('1.0.0')
-      .addServer(`http://localhost:${port}`)
-      .addServer(`http://127.0.0.1:${port}`);
+    let servers = [`http://localhost:${port}`, `http://127.0.0.1:${port}`];
+    const builder = new DocumentBuilder().setTitle('API').setDescription('API description').setVersion('1.0.0');
     if (prefix) {
-      builder.setBasePath(prefix);
+      servers = servers.map((s) => s + prefix);
+      // builder.setBasePath(prefix);
     }
+    servers.forEach((s) => builder.addServer(s));
     typeof openapi === 'function' && openapi(builder);
     const config = builder.build();
-    const document = SwaggerModule.createDocument(app, config);
+    // generate shorter path
+    const document = SwaggerModule.createDocument(app, config, {
+      ignoreGlobalPrefix: true,
+    });
     SwaggerModule.setup(path.join(prefix || '', 'api'), app, document);
   }
 
