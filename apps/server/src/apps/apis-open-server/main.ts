@@ -2,7 +2,6 @@ import fastifyCookie from '@fastify/cookie';
 import { CacheModule } from '@nestjs/cache-manager';
 import { Module, ValidationPipe } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
-import { NestFastifyApplication } from '@nestjs/platform-fastify';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { randomUUID } from '@wener/utils';
 import { polyfillCrypto } from '@wener/utils/server';
@@ -13,6 +12,7 @@ import { FetchCacheModule, HttpRequestLog } from '../../modules/fetch-cache';
 import { AlpineModule } from './alpine/alpine.module';
 import { GithubModule } from './github/github.module';
 import { HashController } from './hash/hash.controller';
+import { IpController } from './http/ip.controller';
 import { WhoamiController } from './http/whoami.controller';
 import { GenerateController } from './password/generate.controller';
 import { ZxcvbnController } from './password/zxcvbn.controller';
@@ -44,7 +44,7 @@ const AppName = 'apis-open-server';
     QrModule,
   ],
 
-  controllers: [HashController, GenerateController, ZxcvbnController, SemverController, WhoamiController],
+  controllers: [HashController, GenerateController, ZxcvbnController, SemverController, WhoamiController, IpController],
   providers: [
     RootResolver,
     {

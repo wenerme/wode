@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { type INestApplication, Logger, type NestApplicationOptions } from '@nestjs/common';
 import { type AbstractHttpAdapter, NestFactory } from '@nestjs/core';
-import { FastifyAdapter, type NestFastifyApplication } from '@nestjs/platform-fastify';
+import { FastifyAdapter } from '@nestjs/platform-fastify';
 import { type MaybePromise } from '@wener/utils';
 import { setAppContext } from './app.context';
 
@@ -34,5 +34,5 @@ export async function bootstrap<T extends INestApplication>({
 
   setAppContext(app);
   await onAfterBootstrap?.(app);
-  return app as T;
+  return app;
 }
