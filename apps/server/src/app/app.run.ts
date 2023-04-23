@@ -1,31 +1,34 @@
 import path from 'node:path';
 import 'reflect-metadata';
 import helmet from '@fastify/helmet';
-import { Logger } from '@nestjs/common';
-import { RequestMethod } from '@nestjs/common/enums/request-method.enum';
+import { INestApplication, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { FastifyAdapter, type NestFastifyApplication } from '@nestjs/platform-fastify';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ms } from '@wener/utils';
 import { bootstrap, type BootstrapOptions } from './bootstrap';
-import { type ServerConfig } from './config/server.config';
+import { type ServerConfig } from './config';
 import { getStaticRootPath } from './util/getStaticRootPath';
 
 const log = new Logger('RunApplication');
 
-export interface ApplicationOptions extends BootstrapOptions {
+export interface ApplicationOptions extends BootstrapOptions<NestFastifyApplication> {
   openapi?: boolean | ((builder: DocumentBuilder) => void);
 }
 
 export async function runApplication(opts: ApplicationOptions) {
-  const app: NestFastifyApplication = await bootstrap({ ...opts, httpAdapter: new FastifyAdapter(), options: {} });
+  const app: NestFastifyApplication = await bootstrap<NestFastifyApplication>({
+    ...opts,
+    httpAdapter: new FastifyAdapter(),
+    options: {},
+  });
 
   const cs = app.get(ConfigService);
   const { port = 3000, prefix, origin } = cs.get<ServerConfig>('server') || {};
   if (prefix) {
     log.log(`global prefix: ${prefix}`);
     app.setGlobalPrefix(prefix, {
-      exclude: [{ path: 'actuator', method: RequestMethod.ALL }],
+      exclude: ['actuator/health'],
     });
   }
 

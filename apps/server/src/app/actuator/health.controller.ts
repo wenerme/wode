@@ -1,18 +1,20 @@
 import { Controller, Get } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Actuator')
 @Controller('actuator/health')
 export class HealthController {
-  @Get('health/readiness')
+  @Get('readiness')
   readiness() {
     return { status: 'UP' };
   }
 
-  @Get('health/liveness')
+  @Get('liveness')
   liveness() {
     return { status: 'UP' };
   }
 
-  @Get('health')
+  @Get()
   ping() {
     return { status: 'UP' };
   }

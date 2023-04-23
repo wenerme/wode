@@ -13,7 +13,7 @@ export async function getFlagged({
   let page = 1;
   while (true) {
     // slow
-    let url = `https://pkgs.alpinelinux.org/flagged?page=${page}`;
+    const url = `https://pkgs.alpinelinux.org/flagged?page=${page}`;
     const {
       window: { document },
     } = new JSDOM(await fetch(url).then((v) => v.text()), {
