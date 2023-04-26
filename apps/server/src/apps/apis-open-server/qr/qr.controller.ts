@@ -130,7 +130,7 @@ export class QrController {
     description: 'QR code image file',
     type: FileUploadDto,
   })
-  async dec(@Param('format') format: string, @UploadedFile() file: UploadedFile) {
+  async dec(@Param('format') format: string, @UploadedFile() file: IUploadedFile) {
     const img = await Jimp.read(file.buffer);
     const imageData = img.bitmap;
 
@@ -159,7 +159,7 @@ export class QrController {
     console.log(`Decode qrcode ${imageData.width}x${imageData.height} to ${text}`);
     switch (format) {
       case 'json': {
-        const url = `https://apis.wener.me/api/qr/enc/svg/base64:${btoa(text)}`;
+        const url = `https://apis.wener.me/api/open/qr/enc/svg/base64:${btoa(text)}`;
 
         return {
           text,
@@ -185,7 +185,7 @@ export class QrController {
   }
 }
 
-interface UploadedFile {
+interface IUploadedFile {
   fieldname: string;
   originalname: string;
   encoding: string; // 7bit

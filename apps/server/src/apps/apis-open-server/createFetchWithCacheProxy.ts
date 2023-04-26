@@ -1,6 +1,6 @@
 import { Logger } from '@nestjs/common';
 import { FetchLike } from '@wener/utils';
-import { createFetchWithProxy } from '@wener/utils/src/servers/createFetchWithProxy';
+import { createFetchWithProxy } from '@wener/utils/server';
 import { createFetchWithCache } from '../../modules/fetch-cache';
 
 let _fetch: FetchLike;

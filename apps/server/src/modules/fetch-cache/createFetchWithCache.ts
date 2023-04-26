@@ -25,12 +25,12 @@ export function createFetchWithCache({
 }: CreateFetchWithCacheOptions = {}): FetchLike {
   return async (url, init = {}) => {
     const e = new HttpRequestLog();
+    if (schema) {
+      e.setSchema(schema)
+    }
     e.fromRequest(url, init);
     if (init?.body) {
       e.requestPayload = removeNullChar(JSON.parse(init.body as string));
-    }
-    if (schema) {
-      e.setSchema(schema);
     }
 
     const config = Object.assign({}, _config, FetchCache.getConfig());

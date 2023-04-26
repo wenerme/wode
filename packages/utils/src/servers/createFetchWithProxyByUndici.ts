@@ -15,19 +15,13 @@ export function createFetchWithProxyByUndici({
   }
   let agent: any;
   return async (...args) => {
-    const init = (args[1] ||= {});
+    const init: RequestInit & { duplex?: string; dispatcher?: any } = (args[1] ||= {});
     if (init.body instanceof ReadableStream) {
       // https://github.com/nodejs/node/issues/46221
-      (init as any).duplex ||= 'half';
+      init.duplex ||= 'half';
     }
     if (!agent) {
-      // process.env.__NEXT_VERSION
-      // process.env.NEXT_RUNTIME
-      if (process.env.__NEXT_VERSION) {
-        // @ts-ignore
-        undici ||= import('next/dist/compiled/undici');
-      }
-      // @ts-ignore
+      // if in next use 'next/dist/compiled/undici'
       undici ||= import('undici');
       const mod = await undici;
       const ProxyAgent = mod.ProxyAgent;
@@ -36,7 +30,7 @@ export function createFetchWithProxyByUndici({
       // https://github.com/nodejs/node/issues/43187#issuecomment-1134634174
       // (global as any)[Symbol.for('undici.globalDispatcher.1')] = agent;
     }
-    (init as any).dispatcher = agent;
-    return fetch!(...args);
+    init.dispatcher = agent;
+    return await fetch!(...args);
   };
 }

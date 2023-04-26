@@ -2,24 +2,32 @@ import { type FastifyReply, type FastifyRequest } from 'fastify';
 import { once } from 'node:events';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
-import { Controller, Get, Param, Req, Res } from '@nestjs/common';
+import { Controller, Get, Inject, Param, Req, Res } from '@nestjs/common';
 import { ApiBearerAuth, ApiCookieAuth, ApiTags } from '@nestjs/swagger';
 import { Role, Roles } from '../../app/auth';
 import { HttpRequestLog } from './HttpRequestLog';
 import { SSE } from './SSE';
+import { type FetchCacheModuleOptions } from './fetch-cache.module';
+import {KeyOfFetchCacheModuleOptions} from './const';
 
 @ApiTags('FetchCache')
 @ApiBearerAuth()
 @ApiCookieAuth()
 @Controller('fetch-cache/request')
 export class RequestController {
-  constructor(@InjectRepository(HttpRequestLog) private readonly repo: EntityRepository<HttpRequestLog>) {}
+  constructor(
+    @InjectRepository(HttpRequestLog) private readonly repo: EntityRepository<HttpRequestLog>,
+    @Inject(KeyOfFetchCacheModuleOptions) private readonly options: FetchCacheModuleOptions,
+  ) {}
 
   @Roles(Role.Admin)
   @Get(':requestId')
   async get(@Res() res: FastifyReply, @Req() req: FastifyRequest, @Param('requestId') requestId: string) {
-    const { repo } = this;
-    const e = await repo.findOneOrFail(requestId);
+    const {
+      repo,
+      options: { schema },
+    } = this;
+    const e = await repo.findOneOrFail(requestId, { schema });
     const ac = new AbortController();
     abortForSocket(ac, req);
     res.status(e.statusCode);
