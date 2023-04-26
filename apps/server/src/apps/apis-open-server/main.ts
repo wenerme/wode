@@ -1,5 +1,4 @@
 import fastifyCookie from '@fastify/cookie';
-import { EntitySchema } from '@mikro-orm/core';
 import { CacheModule } from '@nestjs/cache-manager';
 import { Module, ValidationPipe } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
@@ -9,7 +8,7 @@ import { polyfillCrypto } from '@wener/utils/server';
 import { runApplication } from '../../app/app.run';
 import { AuthModule } from '../../app/auth/auth.module';
 import { CoreModule } from '../../app/core.module';
-import { FetchCacheModule, HttpRequestLog, HttpRequestLogRepository } from '../../modules/fetch-cache';
+import { FetchCacheModule, HttpRequestLog } from '../../modules/fetch-cache';
 import { AlpineModule } from './alpine/alpine.module';
 import { GithubModule } from './github/github.module';
 import { HashController } from './hash/hash.controller';
@@ -33,7 +32,9 @@ const AppName = 'apis-open-server';
       ttl: 60,
       limit: 30,
     }),
-    FetchCacheModule,
+    FetchCacheModule.forRoot({
+      schema: 'cache',
+    }),
     AuthModule,
     CoreModule.forRoot({
       name: AppName,
