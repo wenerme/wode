@@ -38,7 +38,6 @@
     "@rollup/plugin-json": "^6.0.0",
     "@rollup/plugin-node-resolve": "^15.0.2",
     "@tailwindcss/container-queries": "^0.1.1",
-    "@tailwindcss/line-clamp": "^0.4.4",
     "@tailwindcss/typography": "^0.5.9",
     "@trivago/prettier-plugin-sort-imports": "^4.1.1",
     "@types/jsdom": "^21.1.1",
