@@ -1,9 +1,34 @@
+import { Transform } from 'class-transformer';
+import { IsBoolean, IsBooleanString, IsOptional } from 'class-validator';
 import { type SemVer } from 'semver';
 import semver from 'semver/preload';
-import { Controller, Get, Param } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { Controller, Get, Param, Query, UsePipes, ValidationPipe } from '@nestjs/common';
+import { ApiProperty, ApiTags } from '@nestjs/swagger';
 import { Octokit } from '@octokit/rest';
 import { requireFound } from '../../../app/util/requireFound';
+
+class VersionFilter {
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @IsBoolean()
+  @Transform(({ value }) => value === 'true' || value === true)
+  prerelease: boolean = false;
+
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @IsBoolean()
+  @Transform(({ value }) => value === 'true' || value === true)
+  loose: boolean = false;
+
+  @ApiProperty({ required: false })
+  range?: string;
+
+  @ApiProperty({
+    enum: ['only', 'ignore'],
+    required: false,
+  })
+  calver?: string;
+}
 
 @ApiTags('GitHub')
 @Controller('/github/r/:owner/:repo')
@@ -11,9 +36,10 @@ export class RepoController {
   constructor(readonly octokit: Octokit) {}
 
   @Get('version')
-  async version(@Param('owner') owner: string, @Param('repo') repo: string) {
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async version(@Param('owner') owner: string, @Param('repo') repo: string, @Query() filter: VersionFilter) {
     const { octokit } = this;
-    const tags = await repoTags({ owner, repo, octokit });
+    const tags = await repoTags({ ...filter, owner, repo, octokit });
     const items = tags.map(({ name, version, commit, calver }) => ({
       tag: name,
       version: version.format(),
@@ -23,15 +49,17 @@ export class RepoController {
         major: version.major,
         minor: version.minor,
         patch: version.patch,
+        build: version.build,
+        prerelease: version.prerelease,
       },
     }));
     return requireFound(items?.[0]);
   }
 
   @Get('tag')
-  async listTag(@Param('owner') owner: string, @Param('repo') repo: string) {
+  async listTag(@Param('owner') owner: string, @Param('repo') repo: string, @Query() filter: VersionFilter) {
     const { octokit } = this;
-    const tags = await repoTags({ owner, repo, octokit });
+    const tags = await repoTags({ ...filter, owner, repo, octokit });
     const items = tags.map(({ name, version, commit }) => ({ name, version: version.format(), commit: commit.sha }));
     return { items };
   }
@@ -62,7 +90,7 @@ async function repoTags({
     .map((v) => {
       return {
         ...v,
-        version: semver.coerce(v.name) as SemVer,
+        version: (semver.parse(v.name) || semver.coerce(v.name)) as SemVer,
       };
     })
     .filter((v) => v.version)
@@ -81,6 +109,11 @@ async function repoTags({
     tags = tags.filter((v) => v.calver);
   } else if (calver === 'ignore') {
     tags = tags.filter((v) => !v.calver);
+  }
+  if (prerelease === true) {
+    tags = tags.filter((v) => v.version.prerelease.length > 0);
+  } else if (prerelease === false) {
+    tags = tags.filter((v) => v.version.prerelease.length === 0);
   }
   if (range) {
     tags = tags.filter((v) =>

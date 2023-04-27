@@ -109,7 +109,7 @@
     "prosemirror-model": "^1.19.0",
     "prosemirror-state": "^1.4.2",
     "prosemirror-transform": "^1.7.1",
-    "prosemirror-view": "^1.30.2",
+    "prosemirror-view": "^1.31.0",
     "y-prosemirror": "^1.2.1",
     "y-protocols": "^1.0.5",
     "yjs": "^13.6.0"
@@ -123,8 +123,8 @@
   },
   "devDependencies": {
     "@types/markdown-it": "^12.2.3",
-    "@types/react": "^18.0.38",
-    "@types/react-dom": "^18.0.11",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "typescript": "^5.0.4"
