@@ -1,6 +1,6 @@
 import path from 'node:path';
 import 'reflect-metadata';
-import helmet from '@fastify/helmet';
+import fastifyHelmet from '@fastify/helmet';
 import { Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { FastifyAdapter, type NestFastifyApplication } from '@nestjs/platform-fastify';
@@ -19,7 +19,12 @@ export interface ApplicationOptions extends BootstrapOptions<NestFastifyApplicat
 export async function runApplication(opts: ApplicationOptions) {
   const app: NestFastifyApplication = await bootstrap<NestFastifyApplication>({
     ...opts,
-    httpAdapter: new FastifyAdapter(),
+
+    httpAdapter: new FastifyAdapter({
+      // url max 2048, default 100
+      // https://stackoverflow.com/a/417184/1870054
+      maxParamLength: 2000,
+    }),
     options: {},
   });
 
@@ -69,7 +74,7 @@ export async function runApplication(opts: ApplicationOptions) {
 
   log.log(`HttpAdapter: ${app.getHttpAdapter().constructor.name}`);
   // https://docs.nestjs.com/security/helmet#use-with-fastify
-  await app.register(helmet, {
+  await app.register(fastifyHelmet, {
     contentSecurityPolicy: false,
   });
   app.enableCors({});
