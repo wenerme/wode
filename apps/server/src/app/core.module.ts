@@ -37,7 +37,7 @@ export class CoreModule {
       imports: [
         ConfigModule.forRoot({
           isGlobal: true,
-          envFilePath: [`.env.${env}.local`, `.env.${env}`, `.env.local`, '.env'],
+          envFilePath: [`.env.${name}.local`, `.env.${name}`, `.env.${env}.local`, `.env.${env}`, `.env.local`, '.env'],
           load: [serverConfig, databaseConfig, redisConfig],
           cache: true,
         }),

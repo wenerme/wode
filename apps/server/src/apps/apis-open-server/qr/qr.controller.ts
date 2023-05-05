@@ -27,6 +27,7 @@ import {
   ResultMetadataType,
   RGBLuminanceSource,
 } from '@zxing/library';
+import { getServerUrl } from '../getServerUrl';
 
 class FileUploadDto {
   @ApiProperty({ type: 'string', format: 'binary' })
@@ -159,7 +160,7 @@ export class QrController {
     console.log(`Decode qrcode ${imageData.width}x${imageData.height} to ${text}`);
     switch (format) {
       case 'json': {
-        const url = `https://apis.wener.me/api/open/qr/enc/svg/base64:${btoa(text)}`;
+        const url = getServerUrl(`/qr/enc/svg/base64:${btoa(text)}`);
 
         return {
           text,
