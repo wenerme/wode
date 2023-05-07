@@ -2,7 +2,7 @@ import { Type } from 'class-transformer';
 import { IsBooleanString, IsInt, IsOptional, IsString, Max, MaxLength, Min } from 'class-validator';
 import { generate, generateMultiple, type GenerateOptions } from 'generate-password';
 import { Controller, Get, Query } from '@nestjs/common';
-import { ApiConsumes, ApiProduces, ApiProperty, ApiTags } from '@nestjs/swagger';
+import { ApiConsumes, ApiOperation, ApiProduces, ApiProperty, ApiTags } from '@nestjs/swagger';
 
 class Options implements GenerateOptions {
   @ApiProperty({ default: 1, required: false })
@@ -71,10 +71,13 @@ class Options implements GenerateOptions {
   strict?: boolean;
 }
 
-@ApiTags('password')
+@ApiTags('Password')
 @Controller('password/generate')
 export class GenerateController {
   @Get()
+  @ApiOperation({
+    summary: 'Generate random password',
+  })
   @ApiConsumes('text/plain', 'application/json')
   @ApiProduces('text/plain', 'application/json')
   generate(@Query() options: Options) {

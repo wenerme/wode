@@ -108,9 +108,9 @@ curl -X POST http://127.0.0.1:3000/hash/digest \
 不需要认证
 </aside>
 
-<h1 id="api-password">password</h1>
+<h1 id="api-password">Password</h1>
 
-## GenerateController_generate
+## Generate random password
 
 <a id="opIdGenerateController_generate"></a>
 
@@ -144,7 +144,7 @@ curl -X GET http://127.0.0.1:3000/password/generate
 
 `GET /password/generate`
 
-<h3 id="generatecontroller_generate-parameters">参数</h3>
+<h3 id="generate-random-password-parameters">参数</h3>
 
 |名字|位置|类型|必须|说明|
 |---|---|---|---|---|
@@ -157,7 +157,7 @@ curl -X GET http://127.0.0.1:3000/password/generate
 |exclude|query|string|false|List of characters to be excluded from the password|
 |strict|query|boolean|false|Password should include at least one character from each pool|
 
-<h3 id="generatecontroller_generate-responses">响应</h3>
+<h3 id="generate-random-password-responses">响应</h3>
 
 |状态|含义|描述|Schema|
 |---|---|---|---|
@@ -167,57 +167,7 @@ curl -X GET http://127.0.0.1:3000/password/generate
 不需要认证
 </aside>
 
-## ZxcvbnController_zxcvbn
-
-<a id="opIdZxcvbnController_zxcvbn"></a>
-
-> 代码示例
-
-```javascript
-
-fetch('http://127.0.0.1:3000/password/zxcvbn?password=string', {
-  method: 'GET'
-
-})
-.then(function(res) {
-    return res.json();
-}).then(function(body) {
-    console.log(body);
-});
-
-```
-
-```http
-GET http://127.0.0.1:3000/password/zxcvbn?password=string HTTP/1.1
-Host: 127.0.0.1:3000
-
-```
-
-```shell
-# 也可以用 wget
-curl -X GET http://127.0.0.1:3000/password/zxcvbn?password=string
-
-```
-
-`GET /password/zxcvbn`
-
-<h3 id="zxcvbncontroller_zxcvbn-parameters">参数</h3>
-
-|名字|位置|类型|必须|说明|
-|---|---|---|---|---|
-|password|query|string|true|none|
-
-<h3 id="zxcvbncontroller_zxcvbn-responses">响应</h3>
-
-|状态|含义|描述|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|无|
-
-<aside class="success">
-不需要认证
-</aside>
-
-## ZxcvbnController_zxcvbnFromPath
+## Check password by zxcvbn
 
 <a id="opIdZxcvbnController_zxcvbnFromPath"></a>
 
@@ -251,13 +201,13 @@ curl -X GET http://127.0.0.1:3000/password/zxcvbn/{password}
 
 `GET /password/zxcvbn/{password}`
 
-<h3 id="zxcvbncontroller_zxcvbnfrompath-parameters">参数</h3>
+<h3 id="check-password-by-zxcvbn-parameters">参数</h3>
 
 |名字|位置|类型|必须|说明|
 |---|---|---|---|---|
 |password|path|string|true|none|
 
-<h3 id="zxcvbncontroller_zxcvbnfrompath-responses">响应</h3>
+<h3 id="check-password-by-zxcvbn-responses">响应</h3>
 
 |状态|含义|描述|Schema|
 |---|---|---|---|

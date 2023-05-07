@@ -28,7 +28,7 @@ const nextConfig = {
   experimental: {
     serverComponentsExternalPackages: ['canvas'],
     // swcPlugins: [['next-superjson-plugin', {}]],
-    appDir: false,
+    appDir: true,
     outputFileTracingRoot: path.join(__dirname, '../../'),
   },
   eslint: {

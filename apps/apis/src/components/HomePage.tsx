@@ -1,6 +1,6 @@
 import React from 'react';
 import { ImLab } from 'react-icons/im';
-import { Link } from 'react-router-dom';
+import { Link } from '../modules/core/Link';
 
 export const HomePage = () => {
   return (
