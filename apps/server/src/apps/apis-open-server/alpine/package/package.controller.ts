@@ -6,7 +6,7 @@ import { createFetchWithCacheProxy } from '../../createFetchWithCacheProxy';
 import { getFlagged } from './getFlagged';
 
 @ApiTags('Alpine')
-@Controller('alpine/pkg')
+@Controller('alpine/package')
 @UseInterceptors(CacheInterceptor)
 export class PackageController {
   private readonly log = new Logger('PackageController');
