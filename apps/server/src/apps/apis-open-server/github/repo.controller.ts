@@ -1,11 +1,24 @@
 import { Transform } from 'class-transformer';
-import { IsBoolean, IsBooleanString, IsOptional } from 'class-validator';
+import { IsBoolean, IsOptional } from 'class-validator';
 import { type SemVer } from 'semver';
 import semver from 'semver/preload';
 import { Controller, Get, Param, Query, UsePipes, ValidationPipe } from '@nestjs/common';
 import { ApiProperty, ApiTags } from '@nestjs/swagger';
 import { Octokit } from '@octokit/rest';
 import { requireFound } from '../../../app/util/requireFound';
+
+export interface IVersionFilter {
+  /**
+   * @default false
+   */
+  prerelease?: boolean;
+  /**
+   * @default false
+   */
+  loose?: boolean;
+  range?: string;
+  calver?: 'only' | 'ignore';
+}
 
 class VersionFilter {
   @ApiProperty({ required: false })

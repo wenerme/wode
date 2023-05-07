@@ -93,5 +93,22 @@
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
+  },
+  "pnpm": {
+    "overrides": {
+      "fastify": "^4.17.0"
+    },
+    "packageExtensions": {
+      "@nestjs/platform-fastify": {
+        "dependencies": {
+          "fastify": "*"
+        }
+      },
+      "@nestjs/mercurius": {
+        "peerDependencies": {
+          "mercurius": "*"
+        }
+      }
+    }
   }
 }

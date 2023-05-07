@@ -58,6 +58,12 @@ image-inspect: image
 		--entrypoint bash \
 		-w /app \
 		--name $(SERVER) $(IMAGE)
+doc:
+	mkdir -p docs/reference/$(SERVER)
+	mkdir -p docs/$(SERVER)/reference
+	command -v widdershins || npm add -g widdershins
+	curl -o docs/$(SERVER)/reference/openapi.json http://127.0.0.1:3000/api-json
+	widdershins -u docs/widdershins/templates/openapi3 --omitHeader --summary --language_tabs='javascript:JavaScript' --language_tabs='http:HTTP' --language_tabs='shell:Shell' -o=docs/reference/includes/_$(SERVER).md -- docs/$(SERVER)/reference/openapi.json
 
 else
 
@@ -76,3 +82,13 @@ swc-build:
 swc-watch:
 	rm -rf ./dist/out/*
 	pnpm swc --watch ./src -d ./dist/out
+
+typia:
+	pnpm typia generate --input ./src/apps/apis-open-server/github/tpl --output ./src/apps/apis-open-server/github/gen
+
+doc-preview:
+	docker run --rm --name slate -p 4567:4567 \
+		-v `pwd`/dist/docs/build:/srv/slate/build \
+		-v `pwd`/docs/reference/index.html.md:/srv/slate/source/index.html.md \
+		-v `pwd`/docs/reference/includes:/srv/slate/source/includes \
+		slatedocs/slate serve
