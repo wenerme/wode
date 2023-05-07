@@ -2,10 +2,10 @@ import * as os from 'os';
 import { Logger, Module } from '@nestjs/common';
 import { EnvController } from './env.controller';
 import { HealthController } from './health.controller';
-import { SystemController } from './system.controller';
+import { ProcessController } from './process.controller';
 
 @Module({
-  controllers: [SystemController, EnvController, HealthController],
+  controllers: [ProcessController, EnvController, HealthController],
 })
 export class ActuatorModule {
   private readonly log = new Logger('ActuatorModule');

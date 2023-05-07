@@ -1,0 +1,5 @@
+<aside class="info">
+认证方式:
+{{= data.utils.getAuthenticationStr(data) }}
+</aside>
+

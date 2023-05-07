@@ -33,12 +33,13 @@ class FileUploadDto {
   @ApiProperty({ type: 'string', format: 'binary' })
   file: any;
 }
+
 @ApiTags('QrCode')
 @Controller('qr')
 export class QrController {
   private readonly log = new Logger('QrController');
 
-  @Get('enc/:format/*')
+  @Get('enc/:format/:dataFormat/*')
   @ApiOperation({ summary: 'Encode data to QR code' })
   @ApiParam({ name: 'level', required: false })
   @ApiParam({ name: 'bg', required: false })
@@ -46,8 +47,11 @@ export class QrController {
   @ApiParam({ name: 'width', required: false })
   @ApiParam({ name: 'scale', required: false })
   @ApiParam({ name: 'margin', required: false })
+  @ApiParam({ name: 'format', enum: ['png', 'svg', 'jpg'] })
+  @ApiParam({ name: 'dataFormat', enum: ['base64', 'raw'] })
   async enc(
     @Param('format') format: string,
+    @Param('dataFormat') dataFormat: string,
     @Param('*') data: string,
     @Query() query: Record<string, any>,
     @Req() req: FastifyRequest,
@@ -62,10 +66,8 @@ export class QrController {
       throw new HttpException(options.error, 400);
     }
     let buf;
-    if (data.startsWith('base64:')) {
-      buf = Buffer.from(data.slice(7), 'base64');
-    } else if (data.startsWith('b64:')) {
-      buf = Buffer.from(data.slice(4), 'base64');
+    if (dataFormat === 'base64') {
+      buf = Buffer.from(data, 'base64');
     } else {
       buf = Buffer.from(data, 'utf-8');
     }
@@ -125,6 +127,7 @@ export class QrController {
   }
 
   @Post('dec/:format')
+  @ApiParam({ name: 'format', enum: ['json', 'text'] })
   @UseInterceptors(FileInterceptor('file', { limits: { fieldSize: 1024 * 1024 * 5 } }))
   @ApiConsumes('multipart/form-data')
   @ApiBody({

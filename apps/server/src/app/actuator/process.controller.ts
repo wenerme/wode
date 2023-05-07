@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ms } from '@wener/utils';
 import { Role, Roles } from '../auth';
 
@@ -7,8 +7,11 @@ import { Role, Roles } from '../auth';
 @ApiBearerAuth()
 @Roles(Role.SystemAdmin)
 @Controller('actuator')
-export class SystemController {
+export class ProcessController {
   @Get('process')
+  @ApiOperation({
+    summary: 'Process status',
+  })
   process() {
     const { NODE_ENV: env } = process.env;
 

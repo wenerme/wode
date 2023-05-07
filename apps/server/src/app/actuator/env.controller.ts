@@ -1,6 +1,19 @@
-import { Controller, Get } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiProperty, ApiTags } from '@nestjs/swagger';
 import { Role, Roles } from '../auth';
+
+class SetEnvBody {
+  @ApiProperty()
+  value!: string;
+}
+class SetEnvResult {
+  @ApiProperty()
+  name!: string;
+  @ApiProperty({ required: false })
+  old?: string;
+  @ApiProperty({ required: false })
+  neo?: string;
+}
 
 @ApiTags('Actuator')
 @ApiBearerAuth()
@@ -8,7 +21,34 @@ import { Role, Roles } from '../auth';
 @Controller('actuator/env')
 export class EnvController {
   @Get()
-  getEnv() {
+  @ApiOperation({
+    summary: 'List Env',
+  })
+  listEnv() {
     return process.env;
+  }
+
+  @Get(':name')
+  @ApiOperation({
+    summary: 'Get Env',
+  })
+  @ApiOkResponse({
+    type: Object,
+  })
+  getEnv(@Param('name') name: string) {
+    return process.env[name];
+  }
+
+  @Post(':name')
+  @ApiOperation({
+    summary: 'Set Env',
+  })
+  @ApiOkResponse({
+    type: SetEnvResult,
+  })
+  setEnv(@Param('name') name: string, @Body() { value }: SetEnvBody) {
+    let old = process.env[name];
+    process.env[name] = value;
+    return { name, old, neo: value };
   }
 }

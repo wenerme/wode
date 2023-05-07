@@ -1,0 +1,19 @@
+{{
+data.translations.defaultTag = '默认';
+data.translations.response = '响应';
+data.translations.responseDefault = '默认';
+data.translations.responseUnknown = '未知';
+data.translations.schemaInline = 'Inline';
+data.translations.schemaNone = '无';
+data.translations.externalDocs = '外部文档';
+data.translations.secDefNone = '无';
+data.translations.secDefScopes = '范围';
+data.translations.anonymous = 'anonymous';
+data.translations.continued = 'continued';
+data.translations.indent = '»';
+data.translations.readOnly = 'read-only';
+data.translations.writeOnly = 'write-only';
+data.tags = {};
+data.tags.section = data.options.respec ? '<section>' : '';
+data.tags.endSection = data.options.respec ? '</section>' : '';
+}}
