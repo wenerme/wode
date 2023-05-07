@@ -29,36 +29,13 @@ export function createPasswordRoutes(): RouteObject[] {
           },
           path: 'strength',
           lazy: lazyRouter(() => import('./strength')),
-          // element: <ZxcvbnPasswordStrength />,
-          // errorElement: <PageErrorState />,
-          // action: ({ params: { password = '123456789' } }) => {
-          //   return getTrpcProxyClient().password.zxcvbn.query({ password });
-          // },
-          // loader: ({ request }) => {
-          //   return getTrpcProxyClient().password.zxcvbn.query({
-          //     password: new URL(request.url).searchParams.get('password') || '123456',
-          //   });
-          // },
         },
         {
           handle: {
             title: '密码强度检测',
           },
-          path: 'strength/{password}',
-          element: <ZxcvbnPasswordStrength />,
-          errorElement: <PageErrorState />,
-          action: ({ params: { password = '123456789' } }) => {
-            return getTrpcProxyClient().password.zxcvbn.query({ password });
-          },
-          loader: ({ request }) => {
-            let password = new URL(request.url).searchParams.get('password') || '123456';
-            if (password.endsWith('.html')) {
-              password = password.slice(0, -5);
-            }
-            return getTrpcProxyClient().password.zxcvbn.query({
-              password: password,
-            });
-          },
+          path: 'strength/:password',
+          lazy: lazyRouter(() => import('./strength')),
         },
       ],
     },

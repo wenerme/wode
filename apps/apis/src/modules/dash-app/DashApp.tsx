@@ -13,22 +13,33 @@ import { Setup } from 'common/src/layouts';
 import { createPasswordRoutes } from '../password';
 
 const createRouter = typeof window === 'undefined' ? createMemoryRouter : createBrowserRouter;
-const router = createRouter([
-  {
-    element: <PrimaryLayout>
-      <Outlet />
-    </PrimaryLayout>,
-    children: [
-      {
-        index: true,
-        element: <HomePage />,
-      },
-      ...createPasswordRoutes(),
-    ],
-  },
-]);
+let router;
 
-export const DashApp: React.FC<PropsWithChildren> = ({ children }) => {
+export const DashApp: React.FC<PropsWithChildren & { initialPath?: string }> = ({ children, initialPath }) => {
+  if (initialPath && !initialPath.startsWith('/')) {
+    // relative pathnames are not supported in memory history
+    initialPath = `/${initialPath}`
+  }
+  router ||= createRouter([
+    {
+      element: <PrimaryLayout>
+        <Outlet />
+      </PrimaryLayout>,
+      children: [
+        {
+          index: true,
+          element: <HomePage />,
+        },
+        ...createPasswordRoutes(),
+      ],
+    },
+  ], {
+    basename: '/dash',
+    initialEntries: [
+      { pathname: initialPath || '/' },
+    ],
+    initialIndex: 0,
+  });
   return <ComponentProvider
     components={{
       Logo: WenerLogo,

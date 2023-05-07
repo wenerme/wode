@@ -1,11 +1,11 @@
 import { useTranslation } from '../i18n/server';
-import {unstable_cache} from 'next/server'
+import { HomePage } from '../../components/HomePage';
+import { withTranslation } from '../i18n';
 
 const CurrentPage = async ({ params }: { params: { lang: string } }) => {
-  const { t } = await useTranslation(params.lang);
-  return <div>
-    {String(t('hello'))}
-  </div>;
+  const r = await useTranslation(params.lang);
+  withTranslation(() => r, params.lang);
+  return <HomePage />;
 };
 export default CurrentPage;
 
