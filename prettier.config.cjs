@@ -18,15 +18,9 @@ module.exports = {
     },
   ],
   // @trivago/prettier-plugin-sort-imports
-  importOrder: [
-    '^react',
-    '^[a-z]',
-    '^@[^/]',
-    '^[.][.]',
-    '^[.][/]',
-  ],
+  importOrder: ['^react', '^[a-z]', '^@[^/]', '^[.][.]', '^[.][/]'],
   importOrderSeparation: false,
-  importOrderParserPlugins: ['typescript', 'decorators-legacy'],
+  importOrderParserPlugins: ['typescript', 'jsx', 'decorators-legacy'],
 
   plugins: [
     require('prettier-plugin-pkg'),

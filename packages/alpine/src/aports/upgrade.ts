@@ -123,7 +123,7 @@ async function upgrade({ pkg, dry = false, next }: { pkg: ParsedPackageId; dry?:
     if (!owner && !repo) {
       throw new Error(`Unable to detect next version: ${sources}`);
     }
-    const url = new URL(`https://apis.wener.me/api/open/github/r/${owner}/${repo}/version`);
+    const url = new URL(`https://apis.wener.me/open/github/r/${owner}/${repo}/version`);
     let sv = semver.coerce(ver);
     url.searchParams.set('calver', String((sv?.major ?? 0) > 2000));
     if (pkg.branch !== 'edge') {
