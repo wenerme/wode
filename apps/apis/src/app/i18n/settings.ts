@@ -1,9 +1,11 @@
+import { InitOptions } from 'i18next';
+
 export const fallbackLng = 'zh-CN';
 export const languages = [fallbackLng, 'en-US'];
 
 export const defaultNS = 'translation';
 
-export function getOptions(lng = fallbackLng, ns = defaultNS) {
+export function getOptions<T>(lng = fallbackLng, ns = defaultNS): InitOptions<T> {
   return {
     debug: process.env.NODE_ENV === 'development',
     supportedLngs: languages,

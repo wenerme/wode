@@ -72,8 +72,9 @@ export { getFileFromDataTransfer } from './browsers/getFileFromDataTransfer';
 
 // polyfills
 export { getGlobalThis } from './isomorphics/getGlobalThis';
-export { globalThis } from './isomorphics/globalThis';
 export { structuredClone } from './isomorphics/structuredClone';
+// should not export as sideEffect
+// export { globalThis } from './isomorphics/globalThis';
 
 // crypto
 export { randomUUID } from './crypto/randomUUID';

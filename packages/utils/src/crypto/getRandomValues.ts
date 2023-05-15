@@ -1,8 +1,9 @@
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import type { TypedArray } from '../io/ArrayBuffers';
-import { globalThis } from '../isomorphics/globalThis';
+import { getGlobalThis } from '../isomorphics/getGlobalThis';
 import { getNodeCrypto } from './getNodeCrypto';
 
+const globalThis = getGlobalThis();
 export let getRandomValues: <T extends Exclude<TypedArray, Float32Array | Float64Array>>(typedArray: T) => T =
   globalThis.crypto?.getRandomValues?.bind(globalThis.crypto) ||
   (globalThis as any).msCrypto?.getRandomValues?.bind((globalThis as any).msCrypto) ||

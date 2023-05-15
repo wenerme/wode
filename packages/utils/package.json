@@ -59,7 +59,7 @@
   "devDependencies": {
     "@types/lodash": "^4.14.194",
     "@types/ws": "^8.5.4",
-    "https-proxy-agent": "^5.0.1",
+    "https-proxy-agent": "^6.1.0",
     "lodash": "^4.17.21"
   },
   "publishConfig": {
@@ -90,6 +90,6 @@
     ]
   },
   "dependencies": {
-    "undici": "^5.22.0"
+    "undici": "^5.22.1"
   }
 }

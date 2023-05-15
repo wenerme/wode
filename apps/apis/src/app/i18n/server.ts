@@ -1,4 +1,4 @@
-import { DefaultNamespace, UseTranslationOptions } from 'react-i18next';
+import { UseTranslationOptions } from 'react-i18next';
 import { initReactI18next } from 'react-i18next/initReactI18next';
 import { createInstance, KeyPrefix, Namespace } from 'i18next';
 import resourcesToBackend from 'i18next-resources-to-backend';
