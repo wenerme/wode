@@ -32,6 +32,7 @@ build: swc-build
 		--banner:js="import { createRequire } from 'module';const require = createRequire(import.meta.url);var __filename;var __dirname;{const {fileURLToPath} = await import('url');const {dirname} = await import('path');var __filename = fileURLToPath(import.meta.url); __dirname = dirname(__filename)};" \
 		--outfile=dist/apps/$(SERVER)/main.mjs \
 		./dist/out/apps/$(SERVER)/main.js
+	test ! -e bundle.esbuild.ts || SERVER=$(SERVER) pnpm tsx bundle.esbuild.ts
 	sha256sum dist/apps/$(SERVER)/main.mjs
 	rsync -av dist/apps/$(SERVER)/ builds/$(SERVER)/app/
 	rsync -av public/ builds/$(SERVER)/app/public/

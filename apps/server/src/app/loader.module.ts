@@ -1,4 +1,4 @@
-import { DynamicModule, Logger } from '@nestjs/common';
+import { DynamicModule, Logger, Type } from '@nestjs/common';
 import { MaybePromise } from '@wener/utils';
 
 export class ModuleLoader {
@@ -8,7 +8,7 @@ export class ModuleLoader {
     modules,
     loader,
   }: {
-    modules: Array<string>;
+    modules: Array<string | Promise<{ Module: DynamicModule | Type<any> }>>;
     loader: (name: string) => MaybePromise<{ Module: DynamicModule }>;
   }): DynamicModule {
     const { log } = this;
@@ -16,6 +16,9 @@ export class ModuleLoader {
       module: ModuleLoader,
     };
     mod.imports = modules.map((name) => {
+      if (typeof name !== 'string') {
+        return name.then((v) => v.Module as any);
+      }
       log.log(`Loading ${name}`);
       return Promise.resolve(loader(name)).then((v) => v.Module);
     });
