@@ -8,19 +8,14 @@ import { polyfillCrypto } from '@wener/utils/server';
 import { runApplication } from '../../app/app.run';
 import { AuthModule } from '../../app/auth/auth.module';
 import { CoreModule } from '../../app/core.module';
+import { ModuleLoader } from '../../app/loader.module';
 import { FetchCacheModule, HttpRequestLog } from '../../modules/fetch-cache';
-import { AlpineModule } from './alpine/alpine.module';
 import { getServerUrl } from './getServerUrl';
-import { GithubModule } from './github/github.module';
 import { HashController } from './hash/hash.controller';
-import { HackerNewsModule } from './hn/hacker-news.module';
 import { IpController } from './http/ip.controller';
 import { WhoamiController } from './http/whoami.controller';
-import { NpmModule } from './npm/npm.module';
-import { PackageMeta } from './npm/registry/entity/PackageMeta';
 import { GenerateController } from './password/generate.controller';
 import { ZxcvbnController } from './password/zxcvbn.controller';
-import { QrModule } from './qr/qr.module';
 import { RootResolver } from './root.resolver';
 import { SemverController } from './semver/semver.controller';
 
@@ -53,14 +48,13 @@ class WellKnownController {
     CoreModule.forRoot({
       name: AppName,
       db: {
-        entities: [HttpRequestLog, PackageMeta],
+        entities: [HttpRequestLog],
       },
     }),
-    GithubModule,
-    AlpineModule,
-    QrModule,
-    HackerNewsModule,
-    NpmModule,
+    ModuleLoader.forRoot({
+      modules: ['npm', 'github', 'hn', 'alpine', 'qr'],
+      loader: (name) => import(`./modules/${name}/module`),
+    }),
   ],
 
   controllers: [

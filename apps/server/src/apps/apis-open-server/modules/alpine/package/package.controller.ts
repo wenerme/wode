@@ -2,7 +2,7 @@ import { CacheInterceptor, CacheTTL } from '@nestjs/cache-manager';
 import { Controller, Get, Logger, UseInterceptors } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { ms } from '@wener/utils';
-import { createFetchWithCacheProxy } from '../../createFetchWithCacheProxy';
+import { createFetchWithCacheProxy } from '../../../createFetchWithCacheProxy';
 import { getFlagged } from './getFlagged';
 
 @ApiTags('Alpine')

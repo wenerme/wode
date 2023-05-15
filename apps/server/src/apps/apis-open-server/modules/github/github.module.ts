@@ -1,6 +1,6 @@
 import { Logger, Module } from '@nestjs/common';
 import { Octokit } from '@octokit/rest';
-import { createFetchWithCacheProxy } from '../createFetchWithCacheProxy';
+import { createFetchWithCacheProxy } from '../../createFetchWithCacheProxy';
 import { RepoController } from './repo.controller';
 
 const log = new Logger('GithubModule');

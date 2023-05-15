@@ -5,7 +5,7 @@ import semver from 'semver/preload';
 import { Controller, Get, Param, Query, UsePipes, ValidationPipe } from '@nestjs/common';
 import { ApiProperty, ApiTags } from '@nestjs/swagger';
 import { Octokit } from '@octokit/rest';
-import { requireFound } from '../../../app/util/requireFound';
+import { requireFound } from '../../../../app/util/requireFound';
 
 export interface IVersionFilter {
   /**

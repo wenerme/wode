@@ -1,16 +1,36 @@
 import { EntityManager } from '@mikro-orm/core';
-import { Module } from '@nestjs/common';
-import { getDefaultMikroOrmOptions } from '../../../app/mikro-orm/createMikroOrmConfig';
+import { Global, Module } from '@nestjs/common';
+import { createHookToken, HookService, MikroOrmConfig } from '../../../../app/hook.module';
 import { RegistryMetaStore } from './registry/RegistryMetaStore';
 import { PackageMeta } from './registry/entity/PackageMeta';
 import { RegistryController } from './registry/registry.controller';
 
+class NpmModuleHook implements HookService {
+  onMikroOrmConfig = (o: MikroOrmConfig) => {
+    o.entities.push(PackageMeta);
+  };
+}
+
 @Module({
+  providers: [
+    {
+      provide: createHookToken('npm'),
+      useClass: NpmModuleHook,
+    },
+  ],
+  exports: [createHookToken('npm')],
+})
+@Global()
+class NpmModuleHookModule {}
+
+@Module({
+  imports: [NpmModuleHookModule],
   controllers: [RegistryController],
   providers: [
     {
       provide: RegistryMetaStore,
       useFactory: async (em) => {
+        // it's hard to maintain multi MikroORM instance, not works as expected
         // const { defineConfig, MikroORM } = await import('@mikro-orm/better-sqlite');
         // const config = defineConfig({
         //   // ...getDefaultMikroOrmOptions(),
