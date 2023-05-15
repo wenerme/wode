@@ -27,7 +27,7 @@ import {
   ResultMetadataType,
   RGBLuminanceSource,
 } from '@zxing/library';
-import { getServerUrl } from '../getServerUrl';
+import { getServerUrl } from '../../getServerUrl';
 
 class FileUploadDto {
   @ApiProperty({ type: 'string', format: 'binary' })

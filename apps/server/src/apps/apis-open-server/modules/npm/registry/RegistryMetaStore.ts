@@ -34,7 +34,8 @@ export class RegistryMetaStore {
     let last = await repo.findOne(pkg);
     let stale = !last;
     if (last) {
-      stale = dayjs().unix() - dayjs(last.updatedAt).unix() > 5 * 1000;
+      // 15m
+      stale = dayjs().unix() - dayjs(last.updatedAt).unix() > 15 * 60;
     }
     if (stale) {
       log.debug(`[${pkg}] fetch, last ${last?.updatedAt}`);
