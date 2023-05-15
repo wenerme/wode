@@ -2,9 +2,14 @@ import dayjs from 'dayjs';
 import path from 'node:path';
 import { EntityManager as CoreEntityManager, MikroORM as CoreMikroORM } from '@mikro-orm/core';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
-import { EntityManager, MikroORM, type Options as PostgreSqlOptions } from '@mikro-orm/postgresql';
-import { type DynamicModule } from '@nestjs/common';
-import { type Provider } from '@nestjs/common/interfaces/modules/provider.interface';
+import {
+  AbstractSqlConnection,
+  EntityManager,
+  knex,
+  MikroORM,
+  type Options as PostgreSqlOptions,
+} from '@mikro-orm/postgresql';
+import { type DynamicModule, Logger, type Provider } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { MercuriusDriver, type MercuriusDriverConfig } from '@nestjs/mercurius';
@@ -14,6 +19,7 @@ import { type DatabaseConfig, databaseConfig } from './config/database.config';
 import { redisConfig } from './config/redis.config';
 import { serverConfig } from './config/server.config';
 import { getDayjs } from './dayjs';
+import { HookManager, HookModule, MikroOrmConfig } from './hook.module';
 import { createMikroOrmConfig } from './mikro-orm/createMikroOrmConfig';
 
 const __dirname = getPackageDir() || process.cwd();
@@ -28,6 +34,8 @@ export interface CoreModuleOptions {
 }
 
 export class CoreModule {
+  private static readonly log = new Logger('CoreModule');
+
   static forRoot(opts: CoreModuleOptions): DynamicModule {
     // downside - large bundle
     const { name, db } = opts;
@@ -41,6 +49,7 @@ export class CoreModule {
           load: [serverConfig, databaseConfig, redisConfig],
           cache: true,
         }),
+        HookModule,
       ],
       module: CoreModule,
       providers: [
@@ -67,22 +76,35 @@ export class CoreModule {
     if (opts.db !== false) {
       imports.push(
         MikroOrmModule.forRootAsync({
-          useFactory: (cs: ConfigService) => {
+          useFactory: (cs: ConfigService, hm: HookManager) => {
             const { dsn, debug } = cs.get<DatabaseConfig>('database') || {};
-            return createMikroOrmConfig({
+            let config = createMikroOrmConfig({
               clientUrl: dsn,
               debug,
+              entities: [],
               ...db,
-            });
+            }) as MikroOrmConfig;
+            config = hm.onMikroOrmConfig(config);
+            this.log.log(`Entities: ${config.entities.map((v) => (v as any).name || v).join(', ')}`);
+            return config;
           },
-          inject: [ConfigService],
+          inject: [ConfigService, HookManager],
         }),
       );
       // postgres
-      providers.push({
-        provide: EntityManager,
-        useExisting: CoreEntityManager,
-      });
+      providers.push(
+        {
+          provide: EntityManager,
+          useExisting: CoreEntityManager,
+        },
+        {
+          provide: knex,
+          useFactory: (orm: CoreMikroORM) => {
+            return (orm.em.getConnection() as AbstractSqlConnection).getKnex();
+          },
+          inject: [CoreMikroORM],
+        },
+      );
       exports.push(EntityManager);
 
       providers.push({
