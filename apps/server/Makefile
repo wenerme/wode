@@ -19,20 +19,21 @@ ifdef SERVER
 dev:
 	NODE_ENV=development pnpm tsx watch ./dist/out/apps/$(SERVER)/main.js
 build: swc-build
-	pnpm esbuild \
-		--external:{jsdom,pg-native,pg-query-stream} \
-		--external:{@mikro-orm/entity-generator,@mikro-orm/migrations,@mikro-orm/seeder} \
-		--external:{@mikro-orm/mongodb,@mikro-orm/mysql,@mikro-orm/sqlite,@mikro-orm/better-sqlite,@mikro-orm/mariadb} \
-		--external:{sqlite3,better-sqlite3,mysql2,mysql,oracledb,tedious} \
-		--external:{class-transformer,@fastify/view,@nestjs/platform-express,@nestjs/microservices,@nestjs/websockets} \
-		--external:{ts-morph,fsevents} \
-		--format=esm --platform=node --charset=utf8 --target=chrome90 --sourcemap --legal-comments=external --bundle \
-		--keep-names --minify-syntax \
-		--define:process.env.NODE_ENV=\"production\" --define:__DEV__=false \
-		--banner:js="import { createRequire } from 'module';const require = createRequire(import.meta.url);var __filename;var __dirname;{const {fileURLToPath} = await import('url');const {dirname} = await import('path');var __filename = fileURLToPath(import.meta.url); __dirname = dirname(__filename)};" \
-		--outfile=dist/apps/$(SERVER)/main.mjs \
-		./dist/out/apps/$(SERVER)/main.js
-	test ! -e bundle.esbuild.ts || SERVER=$(SERVER) pnpm tsx bundle.esbuild.ts
+#	pnpm esbuild \
+#		--external:{jsdom,pg-native,pg-query-stream} \
+#		--external:{@mikro-orm/entity-generator,@mikro-orm/migrations,@mikro-orm/seeder} \
+#		--external:{@mikro-orm/mongodb,@mikro-orm/mysql,@mikro-orm/sqlite,@mikro-orm/better-sqlite,@mikro-orm/mariadb} \
+#		--external:{sqlite3,better-sqlite3,mysql2,mysql,oracledb,tedious} \
+#		--external:{class-transformer,@fastify/view,@nestjs/platform-express,@nestjs/microservices,@nestjs/websockets} \
+#		--external:{ts-morph,fsevents} \
+#		--format=esm --platform=node --charset=utf8 --target=chrome90 --sourcemap --legal-comments=external --bundle \
+#		--keep-names --minify-syntax \
+#		--define:process.env.NODE_ENV=\"production\" --define:__DEV__=false \
+#		--banner:js="import { createRequire } from 'module';const require = createRequire(import.meta.url);var __filename;var __dirname;{const {fileURLToPath} = await import('url');const {dirname} = await import('path');var __filename = fileURLToPath(import.meta.url); __dirname = dirname(__filename)};" \
+#		--outfile=dist/apps/$(SERVER)/main.mjs \
+#		./dist/out/apps/$(SERVER)/main.js
+#	test ! -e bundle.esbuild.ts || SERVER=$(SERVER) pnpm tsx bundle.esbuild.ts
+	pnpm tsx src/scripts/bundle.esbuild.ts
 	sha256sum dist/apps/$(SERVER)/main.mjs
 	rsync -av dist/apps/$(SERVER)/ builds/$(SERVER)/app/
 	rsync -av public/ builds/$(SERVER)/app/public/

@@ -52,18 +52,18 @@ class WellKnownController {
       },
     }),
     ModuleLoader.forRoot({
-      // modules: ['npm', 'github', 'hn', 'alpine', 'qr'],
-      modules: [
-        import('./modules/npm/module'),
-        import('./modules/github/module'),
-        import('./modules/hn/module'),
-        import('./modules/alpine/module'),
-        import('./modules/qr/module'),
-      ],
+      modules: ['npm', 'github', 'hn', 'alpine', 'qr'],
+      // modules: [
+      //   import('./modules/npm/module'),
+      //   import('./modules/github/module'),
+      //   import('./modules/hn/module'),
+      //   import('./modules/alpine/module'),
+      //   import('./modules/qr/module'),
+      // ],
       // vite-plugin-dynamic-import
       // @rollup/plugin-dynamic-import-vars
       // https://github.com/RtVision/esbuild-dynamic-import
-      loader: (name) => import(`./modules/${name}/module`),
+      loader: (name) => import(`./modules/${name}/module.js`),
     }),
   ],
 

@@ -1,4 +1,5 @@
 import * as esbuild from 'esbuild';
+import { DynamicImport } from './DynamicImport';
 
 const SERVER = process.env.SERVER;
 
@@ -57,5 +58,12 @@ let result = await esbuild.build({
     //
     'ts-morph',
     'fsevents',
+  ],
+  plugins: [
+    // https://github.com/RTVision/esbuild-dynamic-import/blob/master/src/index.ts
+    // 本来只支持 default，改成了 import * as _DynamicImportModule
+    DynamicImport({
+      transformExtensions: ['.js'],
+    }),
   ],
 });
