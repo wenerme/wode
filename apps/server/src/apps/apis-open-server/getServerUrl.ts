@@ -6,5 +6,5 @@ export function getServerUrl(u?: string) {
   if (!u) {
     return base;
   }
-  return new URL(u.replace(/^\/+/, ''), base).toString();
+  return new URL(u.replace(/^\/+/, ''), base.replace(/\/*$/, '/')).toString();
 }
