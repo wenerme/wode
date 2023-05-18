@@ -10,7 +10,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-22.04
-
     steps:
       - uses: actions/checkout@v3
       - name: Install Node.js
@@ -21,7 +20,7 @@ jobs:
         name: Install pnpm
         id: pnpm-install
         with:
-          version: 7
+          version: 8
           run_install: false
       - name: Get pnpm store directory
         id: pnpm-cache
