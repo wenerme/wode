@@ -72,7 +72,7 @@ export class QrController {
       buf = Buffer.from(data, 'utf-8');
     }
     if (!buf) {
-      console.error(`Invalid`, data);
+      log.error(`Invalid data ${data}`);
       throw new HttpException('invalid data', 400);
     }
 
@@ -135,6 +135,7 @@ export class QrController {
     type: FileUploadDto,
   })
   async dec(@Param('format') format: string, @UploadedFile() file: IUploadedFile) {
+    const { log } = this;
     const img = await Jimp.read(file.buffer);
     const imageData = img.bitmap;
 
@@ -160,10 +161,10 @@ export class QrController {
     const decoded = reader.decode(binaryBitmap);
 
     const text = decoded.getText();
-    console.log(`Decode qrcode ${imageData.width}x${imageData.height} to ${text}`);
+    log.log(`Decode qrcode ${imageData.width}x${imageData.height} to ${text}`);
     switch (format) {
       case 'json': {
-        const url = getServerUrl(`/qr/enc/svg/base64:${btoa(text)}`);
+        const url = getServerUrl(`/qr/enc/svg/base64/${btoa(text)}`);
 
         return {
           text,

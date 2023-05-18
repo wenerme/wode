@@ -107,7 +107,7 @@ async function replaceImports(fileContents: string, resolveDir: string, config: 
     // remove the extra comma added and add the closing bracket and semicolon
     objectMapString = objectMapString.replace(/.$/, '};');
 
-    const importFunctionString = `function _DynamicImport(path) { return Promise.resolve({ default: _DynamicImportModuleMap[path], [Symbol.toStringTag]: 'Module' }); }`;
+    const importFunctionString = `function _DynamicImport(path) {const mod=_DynamicImportModuleMap[path];mod[Symbol.toStringTag]='Module';return Promise.resolve(mod); }`;
 
     const jsStr = `${importString}\n${objectMapString}\n${importFunctionString}\n`;
 

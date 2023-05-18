@@ -8,20 +8,36 @@ export class ModuleLoader {
     modules,
     loader,
   }: {
-    modules: Array<string | Promise<{ Module: DynamicModule | Type<any> }>>;
-    loader: (name: string) => MaybePromise<{ Module: DynamicModule }>;
+    modules: Array<string | MaybePromise<IModule>>;
+    loader: (name: string) => MaybePromise<IModule>;
   }): DynamicModule {
     const { log } = this;
     const mod: DynamicModule = {
       module: ModuleLoader,
     };
-    mod.imports = modules.map((name) => {
-      if (typeof name !== 'string') {
-        return name.then((v) => v.Module as any);
+    mod.imports = modules.map((modOrName) => {
+      let mod: Promise<IModule>;
+      let name: string = '';
+      if (typeof modOrName !== 'string') {
+        mod = Promise.resolve(modOrName);
+      } else {
+        name = modOrName;
+        mod = Promise.resolve(loader(modOrName));
       }
+
       log.log(`Loading ${name}`);
-      return Promise.resolve(loader(name)).then((v) => v.Module);
+      return mod.then((v) => {
+        name ||= v.Module?.name;
+        log.log(`Load ${name}: ${Object.keys(v).join(' ')}`);
+        return {
+          module: v.Module,
+        } satisfies DynamicModule;
+      });
     });
     return mod;
   }
+}
+
+interface IModule {
+  Module: Type<any>;
 }
