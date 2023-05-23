@@ -1,7 +1,7 @@
 import { createParser, type ParsedEvent } from 'eventsource-parser';
 import { type EntityManager } from '@mikro-orm/postgresql';
 import { HttpException, Logger } from '@nestjs/common';
-import { type FetchLike } from '@wener/utils';
+import { classOf, type FetchLike } from '@wener/utils';
 import { getEntityManager as _getEntityManager } from '../../app/mikro-orm/context';
 import { FetchCache, type FetchCacheConfig, type FetchCacheHookContext } from './FetchCache';
 import { HttpRequestLog } from './HttpRequestLog';
@@ -16,6 +16,15 @@ export interface CreateFetchWithCacheOptions {
   schema?: string;
 }
 
+function parseForm(o: URLSearchParams | string) {
+  const p = typeof o === 'string' ? new URLSearchParams(o) : o;
+  return Array.from(p.entries()).reduce<Record<string, string | string[]>>((o, [k, v]) => {
+    const cv = o[k];
+    o[k] = Array.isArray(cv) ? [...cv, v] : cv ? [cv, v] : v;
+    return o;
+  }, {});
+}
+
 export function createFetchWithCache({
   fetch = globalThis.fetch,
   logger: log = new Logger('FetchWithCache'),
@@ -26,11 +35,36 @@ export function createFetchWithCache({
   return async (url, init = {}) => {
     const e = new HttpRequestLog();
     if (schema) {
-      e.setSchema(schema)
+      e.setSchema(schema);
     }
     e.fromRequest(url, init);
     if (init?.body) {
-      e.requestPayload = removeNullChar(JSON.parse(init.body as string));
+      const requestContentType = e.requestHeaders?.['content-type']?.split(';')[0];
+
+      const body = init.body;
+      if (body instanceof FormData) {
+        e.requestBody = await readStreamToBuffer(new Response(body).body!);
+        e.requestPayload = Object.fromEntries(Array.from(body.entries()).filter(([k, v]) => typeof v === 'string'));
+      } else if (body instanceof ReadableStream) {
+        let rs;
+        [init.body, rs] = body.tee();
+        e.requestBody = await readStreamToBuffer(rs);
+      } else if (typeof body === 'string') {
+        switch (requestContentType) {
+          case 'application/x-www-form-urlencoded': {
+            e.requestPayload = parseForm(body);
+            break;
+          }
+          default:
+            if (body.startsWith('{') || requestContentType?.includes('json')) {
+              e.requestPayload = removeNullChar(JSON.parse(body));
+            } else {
+              e.requestBody = Buffer.from(body);
+            }
+        }
+      } else {
+        log.warn(`Unknown body type ContentType=${requestContentType} ${typeof body} ${classOf(body)}`);
+      }
     }
 
     const config = Object.assign({}, _config, FetchCache.getConfig());
@@ -178,4 +212,32 @@ export function createFetchWithCache({
       await config.onAfterRequest?.(ctx);
     }
   };
+}
+
+async function teeBuffer(rs: ReadableStream) {
+  const [a, b] = rs.tee();
+  const reader = b.getReader();
+  const buffers = [];
+  while (true) {
+    const result = await reader.read();
+    const { done, value } = result;
+    if (value) {
+      buffers.push(value);
+    }
+    if (done) {
+      break;
+    }
+  }
+  return [a, Buffer.concat(buffers)];
+}
+
+async function readStreamToBuffer(rs: ReadableStream) {
+  const reader = rs.getReader();
+  const chunks = [];
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    chunks.push(value);
+  }
+  return Buffer.concat(chunks);
 }
