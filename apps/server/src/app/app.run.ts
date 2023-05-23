@@ -39,24 +39,26 @@ export async function runApplication(opts: ApplicationOptions) {
 
   const { openapi = true } = opts;
   if (openapi) {
-    let servers = [`http://localhost:${port}`, `http://127.0.0.1:${port}`];
+    let servers = [];
+    if (process.env.NODE_ENV === 'development') {
+      servers.push(`http://localhost:${port}`, `http://127.0.0.1:${port}`);
+    }
     if (origin) {
       servers.push(origin);
     }
-    const builder = new DocumentBuilder()
-      .setTitle('API')
-      .setDescription('API description')
-      .setVersion('1.0.0')
-      .addBearerAuth()
-      .addBasicAuth()
-      .addCookieAuth();
+    const builder = new DocumentBuilder().setTitle('API').setDescription('API description').setVersion('1.0.0');
+
     if (prefix) {
       servers = servers.map((s) => s + prefix);
       // builder.setBasePath(prefix);
     }
     servers = Array.from(new Set(servers)).sort();
     servers.forEach((s) => builder.addServer(s));
-    typeof openapi === 'function' && openapi(builder);
+    if (typeof openapi === 'function') {
+      openapi(builder);
+    } else {
+      builder.addBearerAuth().addBasicAuth().addCookieAuth();
+    }
     const config = builder.build();
     // generate shorter path
     const document = SwaggerModule.createDocument(app, config, {
