@@ -7,8 +7,8 @@ import { ApiBearerAuth, ApiCookieAuth, ApiTags } from '@nestjs/swagger';
 import { Role, Roles } from '../../app/auth';
 import { HttpRequestLog } from './HttpRequestLog';
 import { SSE } from './SSE';
+import { KeyOfFetchCacheModuleOptions } from './const';
 import { type FetchCacheModuleOptions } from './fetch-cache.module';
-import {KeyOfFetchCacheModuleOptions} from './const';
 
 @ApiTags('FetchCache')
 @ApiBearerAuth()

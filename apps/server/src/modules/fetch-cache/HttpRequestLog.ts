@@ -1,5 +1,5 @@
 import { Entity, EntityRepositoryType, Property, types } from '@mikro-orm/core';
-import { MinimalBaseEntity } from '../../db/base/MinimalBaseEntity';
+import { MinimalBaseEntity } from '../../app/mikro-orm/entity';
 import { HttpRequestLogRepository } from './HttpRequestLog.repository';
 
 @Entity({ customRepository: () => HttpRequestLogRepository, schema: '*' })
@@ -26,6 +26,9 @@ export class HttpRequestLog extends MinimalBaseEntity<HttpRequestLog> {
 
   @Property({ type: types.json, nullable: true })
   requestPayload?: any;
+
+  @Property({ type: types.blob, nullable: true })
+  requestBody?: Buffer;
 
   @Property({ type: types.json, nullable: true })
   responseHeaders!: Record<string, any>;
@@ -56,6 +59,9 @@ export class HttpRequestLog extends MinimalBaseEntity<HttpRequestLog> {
 
   @Property({ type: types.json, nullable: true })
   attributes!: Record<string, any>;
+
+  @Property({ type: types.integer, nullable: false, default: 0 })
+  hit?: number;
 
   fromUrl(o: string) {
     const u = new URL(o);

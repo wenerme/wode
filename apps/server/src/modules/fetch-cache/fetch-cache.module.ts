@@ -6,7 +6,6 @@ import { KeyOfFetchCacheModuleOptions } from './const';
 import { FetchCacheService } from './fetch-cache.service';
 import { RequestController } from './request.controller';
 
-
 export class FetchCacheModule {
   static forRoot(o: FetchCacheModuleOptions = {}): DynamicModule {
     return {
