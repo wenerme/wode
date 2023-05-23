@@ -4,11 +4,13 @@ import { type ArgumentsHost, Catch, type ExceptionFilter, Logger } from '@nestjs
 
 @Catch(ValidationError, DriverException)
 export class MikroOrmErrorFilter implements ExceptionFilter {
-  log = new Logger('MikroOrmErrorFilter');
+  log = new Logger(MikroOrmErrorFilter.name);
 
   catch(error: ValidationError | DriverException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const res = ctx.getResponse<FastifyReply>();
+
+    this.log.error(error);
 
     // https://github.com/mikro-orm/mikro-orm/blob/master/packages/core/src/errors.ts
     if (error instanceof NotFoundError) {
@@ -17,7 +19,6 @@ export class MikroOrmErrorFilter implements ExceptionFilter {
         message: error.message,
       });
     }
-    this.log.error(error);
 
     if (error instanceof DriverException) {
       return res.status(500).send({

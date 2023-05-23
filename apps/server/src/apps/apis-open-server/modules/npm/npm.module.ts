@@ -1,6 +1,6 @@
 import { EntityManager } from '@mikro-orm/core';
 import { Global, Module } from '@nestjs/common';
-import { createHookToken, HookService, MikroOrmConfig } from '../../../../app/hook.module';
+import { createHookToken, HookService, MikroOrmConfig } from '../../../../app/modules/hook/hook.module';
 import { RegistryMetaStore } from './registry/RegistryMetaStore';
 import { PackageMeta } from './registry/entity/PackageMeta';
 import { RegistryController } from './registry/registry.controller';

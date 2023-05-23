@@ -1,7 +1,7 @@
 import { Controller, Get, HttpException, Param, ParseIntPipe } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { requireResponseOk } from '../../../../app/util/requireResponseOk';
 import { FetchCache } from '../../../../modules/fetch-cache';
-import { requireResponseOk } from '../../../../util/requireResponseOk';
 import { createFetchWithCacheProxy } from '../../createFetchWithCacheProxy';
 
 @ApiTags('HackerNews')

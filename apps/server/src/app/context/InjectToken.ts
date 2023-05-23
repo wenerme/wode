@@ -1,5 +1,5 @@
 import { type INestApplicationContext } from '@nestjs/common';
-import { getContext } from './app.context';
+import { getContext } from '../app.context';
 
 export class InjectToken<T> {
   private constructor(private readonly name: string) {}
