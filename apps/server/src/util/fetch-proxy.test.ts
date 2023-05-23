@@ -1,7 +1,7 @@
 import { assert, beforeAll, test } from 'vitest';
+import { requireResponseOk } from '../app/util/requireResponseOk';
 import { createFetchWithProxyByUndici } from './createFetchWithProxyByUndici';
 import { loadEnvs } from './loadEnvs';
-import { requireResponseOk } from './requireResponseOk';
 
 beforeAll(async () => {
   await loadEnvs();

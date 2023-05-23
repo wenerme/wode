@@ -1,8 +1,8 @@
 import { DynamicModule, Logger, Type } from '@nestjs/common';
 import { MaybePromise } from '@wener/utils';
 
-export class ModuleLoader {
-  static log = new Logger(ModuleLoader.name);
+export class LoaderModule {
+  static log = new Logger(LoaderModule.name);
 
   static forRoot({
     modules,
@@ -13,7 +13,7 @@ export class ModuleLoader {
   }): DynamicModule {
     const { log } = this;
     const mod: DynamicModule = {
-      module: ModuleLoader,
+      module: LoaderModule,
     };
     mod.imports = modules.map((modOrName) => {
       let mod: Promise<IModule>;

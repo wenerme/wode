@@ -1,1 +1,1 @@
-export { InjectToken } from './InjectToken';
+export { InjectToken } from './context/InjectToken';
