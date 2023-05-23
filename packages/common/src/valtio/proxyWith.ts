@@ -1,28 +1,31 @@
 import { snapshot, subscribe } from 'valtio';
+import { getGlobalThis } from '@wener/utils';
 import { proxyWithCompare } from './proxyWithCompare';
 
 export interface ProxyWithOptions<T extends Record<string, any>> {
   initialState: T | ((saved?: T) => T);
   name: string;
   storage?: boolean | IStorage;
-  global?: boolean | Record<string, any>;
+  globalStates?: boolean | Record<string, any>;
   broadcast?: boolean | BroadcastChannel;
   proxy?: (v: T) => T;
+  globalThis?: any;
 }
 
 export function proxyWith<T extends Record<string, any>>({
   initialState,
   name,
   storage,
-  global,
+  globalThis = getGlobalThis(),
+  globalStates,
   broadcast,
   proxy = proxyWithCompare,
 }: ProxyWithOptions<T>): T {
   let globalHolder;
-  if (global === true) {
-    globalHolder = (globalThis as any).__GLOBAL_STATES__ ||= {};
-  } else if (global && typeof global === 'object') {
-    globalHolder = global;
+  if (globalStates === true) {
+    globalHolder = globalThis.__GLOBAL_STATES__ ||= {};
+  } else if (globalStates && typeof globalStates === 'object') {
+    globalHolder = globalStates;
   }
   if (globalHolder?.[name]) {
     return globalHolder[name];
@@ -63,9 +66,9 @@ export function proxyWith<T extends Record<string, any>>({
   }
 
   let bc: BroadcastChannel | undefined;
-  if (broadcast === true) {
-    bc = new BroadcastChannel(`valtio:${name}`);
-  } else if (broadcast) {
+  if (broadcast === true && 'BroadcastChannel' in globalThis) {
+    bc = new globalThis.BroadcastChannel(`valtio:${name}`);
+  } else if (typeof broadcast === 'object') {
     bc = broadcast;
   }
 

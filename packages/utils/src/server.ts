@@ -5,3 +5,4 @@ export { polyfillBrowser } from './servers/polyfillBrowser';
 export { createFetchWithProxyByNodeFetch } from './servers/createFetchWithProxyByNodeFetch';
 export { createFetchWithProxyByUndici } from './servers/createFetchWithProxyByUndici';
 export { createFetchWithProxy } from './servers/createFetchWithProxy';
+export { createFetchWithLogger } from './servers/createFetchWithLogger';

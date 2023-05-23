@@ -1,0 +1,106 @@
+name: Build
+on:
+  - push
+
+jobs:
+  Build:
+    name: Build
+    runs-on: alpine-exec
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: ${{ github.event_name == 'pull_request' && 2 || 0 }}
+      # https://stackoverflow.com/a/74268200/1870054
+      - name: Changes
+        id: changes
+        run: |
+          if ${{ github.event_name == 'pull_request' }}; then
+              echo "files=$(git diff --name-only -r HEAD^1 HEAD | xargs)" >> $GITHUB_OUTPUT
+          else
+              echo "files=$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }} | xargs)" >> $GITHUB_OUTPUT
+          fi
+      - name: Info
+        run: |
+          env
+          uname -a
+      - name: Install
+        run: |
+          set -e
+          # Install
+          # may need Proxy
+          # npm_config_proxy=http://127.0.0.1:1080 http_proxy=http://127.0.0.1:1080 https_proxy=http://127.0.0.1:1080
+          CI=true \
+          pnpm i
+
+      - name: Docker Login
+        run: |
+          [ -z "$DOCKER_REGISTRY" ] || docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD" "$DOCKER_REGISTRY"
+          [ -z "${{ secrets.DOCKER_REGISTRY }}" ] || docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_PASSWORD }}" "${{ secrets.DOCKER_REGISTRY }}"
+
+      - name: Build
+        env:
+          WXA_UPLOAD_KEY: "${{ secrets.WXA_UPLOAD_KEY }}"
+        run: |
+          set -ex
+          export BUILDKIT_PROGRESS=plain
+          
+          # build packages
+          turbo run build --filter=@wener/utils --filter=@wener/reaction
+          
+          TMPDIR=/tmp/run/$GITHUB_RUN_ID/tmp
+          mkdir -p $TMPDIR
+          launch-as() {
+            local name=$1
+            shift
+            echo "[$name] Running" 
+            (time $@ || echo $name >> $TMPDIR/run.fail.txt) 2>&1 > $TMPDIR/run.$name.txt
+            echo "[$name] Done"
+          }
+          
+          echo Changes:
+          # 空格分割
+          echo ${{ steps.changes.outputs.files }} > $TMPDIR/changes
+          cat $TMPDIR/changes | sed -e "s/^/  /m"
+          
+          is-unchanged() {
+            # always change
+            grep -q pnpm-lock.yaml $TMPDIR/changes && return 1
+            # based on message - gitea 不支持
+            test "${{github.event.head_commit.message}}" == *"$1"* && return 1
+            # based on changed file
+            ! grep -q "$1" $TMPDIR/changes
+            return $?
+          }
+          
+          #
+          
+          is-unchanged apps/server || {
+            cd apps/server
+            launch-as apis-open-server make SERVER=apis-open-server build image-push &
+            cd -
+          }
+          
+          is-unchanged apps/dash || {
+            cd dash
+            launch-as dash make build image-push &
+            cd -
+          }
+          
+          is-unchanged apps/demo || {
+            cd apps/demo
+            launch-as demo make build image-push &
+            cd -
+          }
+          
+          is-unchanged apps/apis || {
+            cd apps/apis
+            launch-as apis make build image-push &
+            cd -
+          }
+          
+          wait < <(jobs -p)
+          
+          if [ -f run.fail.txt ]; then
+            cat run.fail.txt
+            exit 1
+          fi

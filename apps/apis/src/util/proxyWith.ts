@@ -1,4 +1,5 @@
 import { snapshot, subscribe } from 'valtio';
+import { getGlobalThis } from '@wener/utils';
 import { proxyWithCompare } from './proxyWithCompare';
 
 export interface ProxyWithOptions<T extends Record<string, any>> {
@@ -8,19 +9,21 @@ export interface ProxyWithOptions<T extends Record<string, any>> {
   global?: boolean | Record<string, any>;
   broadcast?: boolean | BroadcastChannel;
   proxy?: (v: T) => T;
+  globalThis?: any;
 }
 
 export function proxyWith<T extends Record<string, any>>({
   initialState,
   name,
   storage,
+  globalThis = getGlobalThis(),
   global,
   broadcast,
   proxy = proxyWithCompare,
 }: ProxyWithOptions<T>): T {
   let globalHolder;
   if (global === true) {
-    globalHolder = (globalThis as any).__GLOBAL_STATES__ ||= {};
+    globalHolder = globalThis.__GLOBAL_STATES__ ||= {};
   } else if (global && typeof global === 'object') {
     globalHolder = global;
   }
@@ -63,9 +66,9 @@ export function proxyWith<T extends Record<string, any>>({
   }
 
   let bc: BroadcastChannel | undefined;
-  if (broadcast === true) {
-    bc = new BroadcastChannel(`valtio:${name}`);
-  } else if (broadcast) {
+  if (broadcast === true && 'BroadcastChannel' in globalThis) {
+    bc = new globalThis.BroadcastChannel(`valtio:${name}`);
+  } else if (typeof broadcast === 'object') {
     bc = broadcast;
   }
 
