@@ -3,7 +3,7 @@ import path from 'node:path';
 import { EntityManager as CoreEntityManager, MikroORM as CoreMikroORM } from '@mikro-orm/core';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import {
-  AbstractSqlConnection,
+  type AbstractSqlConnection,
   EntityManager,
   knex,
   MikroORM,
@@ -19,7 +19,7 @@ import { type DatabaseConfig, databaseConfig } from './config/database.config';
 import { redisConfig } from './config/redis.config';
 import { serverConfig } from './config/server.config';
 import { getDayjs } from './dayjs';
-import { HookManager, HookModule, MikroOrmConfig } from './hook.module';
+import { HookManager, HookModule, type MikroOrmConfig } from './hook.module';
 import { createMikroOrmConfig } from './mikro-orm/createMikroOrmConfig';
 
 const __dirname = getPackageDir() || process.cwd();

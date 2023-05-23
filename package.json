@@ -19,11 +19,11 @@
     "components/*",
     "packages/*"
   ],
-  "packageManager": "pnpm@7.12.0+",
+  "packageManager": "pnpm@8.5.0+",
   "engines": {
-    "node": "16||18",
-    "npm": ">=7.0.0",
-    "pnpm": ">=7.0.0"
+    "node": "18",
+    "npm": ">=9.0.0",
+    "pnpm": ">=8.0.0"
   },
   "keywords": [],
   "scripts": {
@@ -59,7 +59,6 @@
     "eslint-plugin-react": "^7.32.2",
     "globby": "^13.1.4",
     "jsdom": "^22.0.0",
-    "node-fetch": "^3.3.1",
     "pg": "^8.11.0",
     "pg-hstore": "^2.3.4",
     "prettier": "^2.8.8",

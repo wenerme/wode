@@ -1,4 +1,4 @@
-import { Options as PostgreSqlOptions } from '@mikro-orm/postgresql';
+import { type Options as PostgreSqlOptions } from '@mikro-orm/postgresql';
 import { Global, Logger, Module } from '@nestjs/common';
 
 const HookTokens: string[] = [];

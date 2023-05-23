@@ -6,11 +6,14 @@ class SetEnvBody {
   @ApiProperty()
   value!: string;
 }
+
 class SetEnvResult {
   @ApiProperty()
   name!: string;
+
   @ApiProperty({ required: false })
   old?: string;
+
   @ApiProperty({ required: false })
   neo?: string;
 }
@@ -47,7 +50,7 @@ export class EnvController {
     type: SetEnvResult,
   })
   setEnv(@Param('name') name: string, @Body() { value }: SetEnvBody) {
-    let old = process.env[name];
+    const old = process.env[name];
     process.env[name] = value;
     return { name, old, neo: value };
   }
