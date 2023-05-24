@@ -1,10 +1,11 @@
 import { type FetchLike } from '../fetch';
-import { globalThis } from '../isomorphics/globalThis';
+import { getGlobalThis } from '../isomorphics/getGlobalThis';
 
 export function createFetchWithProxyByNodeFetch({
   proxy,
   fetch,
 }: { proxy?: string; fetch?: FetchLike } = {}): FetchLike {
+  const globalThis = getGlobalThis();
   if (!proxy) {
     return fetch || globalThis.fetch;
   }

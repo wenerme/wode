@@ -1,4 +1,4 @@
-import { globalThis } from '../isomorphics/globalThis';
+import { getGlobalThis } from '../isomorphics/getGlobalThis';
 import { classOf } from '../langs/classOf';
 import { decodeBase64ToArrayBuffer, encodeArrayBufferToBase64 } from './base64';
 import { isBuffer } from './isBuffer';
@@ -74,7 +74,7 @@ export class ArrayBuffers {
 
   static isNativeBufferAvailable() {
     // eslint-disable-next-line no-return-assign
-    return (this.#isBufferAvailable ??= !(globalThis.Buffer as any)?.isPollyfill?.());
+    return (this.#isBufferAvailable ??= !(getGlobalThis().Buffer as any)?.isPollyfill?.());
   }
 
   static isNativeBufferAllowed() {
