@@ -1,4 +1,6 @@
-import { globalThis } from '../isomorphics/globalThis';
+import { getGlobalThis } from '../isomorphics/getGlobalThis';
+
+const globalThis = getGlobalThis();
 
 /**
  * generate random UUIDv4

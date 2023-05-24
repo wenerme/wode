@@ -1,6 +1,7 @@
-import { globalThis } from '../isomorphics/globalThis';
+import { getGlobalThis } from '../isomorphics/getGlobalThis';
 
 export async function polyfillCrypto() {
+  const globalThis = getGlobalThis();
   if ('crypto' in globalThis) {
     return false;
   }

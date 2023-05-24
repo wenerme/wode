@@ -1,10 +1,12 @@
 import type { ConstructorOptions, ResourceLoaderConstructorOptions } from 'jsdom';
-import { globalThis } from '../isomorphics/globalThis';
+import { getGlobalThis } from '../isomorphics/getGlobalThis';
 
 export async function polyfillJsDom() {
   if (typeof window !== 'undefined') {
     return false;
   }
+
+  const globalThis = getGlobalThis();
 
   const { ResourceLoader, JSDOM } = await import('jsdom');
 
