@@ -1,15 +1,19 @@
 {
   "$schema": "https://turborepo.org/schema.json",
-  "baseBranch": "origin/main",
   "globalDependencies": [
     "Makefile",
     "package.json",
     "tsconfig.json",
     "rollup.config.ts",
-    "rollup.config.js",
-    ".env"
+    "rollup.config.js"
   ],
   "pipeline": {
+    "image-push": {
+      "dependsOn": [
+        "build"
+      ],
+      "outputs": []
+    },
     "build": {
       "dependsOn": [
         "^build"

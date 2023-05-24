@@ -1,12 +1,9 @@
+REPO_ROOT ?= $(shell git rev-parse --show-toplevel)
+-include $(REPO_ROOT)/base.mk
 
-CI_COMMIT_BRANCH	?=$(shell git rev-parse --abbrev-ref HEAD)
-CI_COMMIT_TAG		?=$(shell git describe --tags --exact-match 2>/dev/null || true)
-CI_COMMIT_SHA		?=$(shell git rev-parse HEAD)
-CI_COMMIT_SHORT_SHA	?=$(shell git rev-parse --short HEAD)
 
 APP_NAME?=$(SERVER)
 
-IMAGE_TAG?=$(shell echo $(CI_COMMIT_BRANCH) | tr '/' '-')
 IMAGE_TAG_COMMIT?=$(IMAGE_TAG)-$(CI_COMMIT_SHORT_SHA)
 IMAGE_NAME?=$(APP_NAME):$(IMAGE_TAG)
 #IMAGE?=$(IMAGE_REPO)/$(APP_NAME):$(IMAGE_TAG)
@@ -69,8 +66,12 @@ doc:
 
 else
 
-build:
+build: swc-build
 	echo Building all
+	SERVER=`ls src/apps/* -d | xargs -n 1 basename | paste -sd,` pnpm tsx src/scripts/bundle.esbuild.ts
+
+image-push:
+	cd builds && TAG=$(IMAGE_TAG) docker buildx bake --push
 
 endif
 

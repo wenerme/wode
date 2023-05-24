@@ -1,12 +1,5 @@
 REPO_ROOT ?= $(shell git rev-parse --show-toplevel)
-# -include $(REPO_ROOT)/node.mk
-
-# globstar match all files
-# extglob can exclude file
-SHELL:=env bash -O extglob -O globstar
-
-COLOR_INFO 	:= "\e[1;36m%s\e[0m\n"
-COLOR_WARN 	:= "\e[1;31m%s\e[0m\n"
+-include $(REPO_ROOT)/base.mk
 
 ifneq ("$(wildcard $(REPO_ROOT)/pnpm-lock.yaml)","")
 PM	:=pnpm
@@ -23,10 +16,6 @@ PKG_VER ?=$(shell jq -r '.version' package.json)
 OUT_NAME?=$(shell jq -r '.name' package.json | tr -d '@' | tr '/' '-')
 OSPM	?=$(shell for i in apk brew yum apt-get apt; do command -v $$i > /dev/null && break ; done; echo $$i)
 
-# for reproducible build
-SOURCE_DATE_EPOCH?=$(shell git log -1 --pretty=%ct)
-
--include local.mk
 
 # File Structure
 # lib/index.js - ESM build

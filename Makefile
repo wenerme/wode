@@ -1,4 +1,6 @@
 REPO_ROOT ?= $(shell git rev-parse --show-toplevel)
+-include $(REPO_ROOT)/base.mk
+
 ifneq ("$(wildcard $(REPO_ROOT)/pnpm-lock.yaml)","")
     EXEC=pnpm exec
 	PM=pnpm
@@ -6,6 +8,13 @@ else
 	EXEC=npx
 	PM=npm
 endif
+
+info:
+	@echo `uname -a`
+	@echo
+	@echo DOCKER_REGISTRY=$(DOCKER_REGISTRY)
+	@echo IMAGE_REGISTRY=$(IMAGE_REGISTRY)
+	@echo CI=$(CI)
 
 test:
 	$(EXEC) turbo run test

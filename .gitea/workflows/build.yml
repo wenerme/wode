@@ -19,10 +19,6 @@ jobs:
           else
               echo "files=$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }} | xargs)" >> $GITHUB_OUTPUT
           fi
-      - name: Info
-        run: |
-          env
-          uname -a
       - name: Install
         run: |
           set -e
@@ -40,13 +36,15 @@ jobs:
       - name: Build
         env:
           WXA_UPLOAD_KEY: "${{ secrets.WXA_UPLOAD_KEY }}"
+          DOCKER_REGISTRY: "${{ secrets.DOCKER_REGISTRY }}"
+          TURBO_TEAM: "${{ secrets.TURBO_TEAM }}"
+          TURBO_API: "${{ secrets.TURBO_API }}"
+          TURBO_TOKEN: "${{ secrets.TURBO_TOKEN }}"
+          TURBO_REMOTE_ONLY: true
         run: |
-          set -ex
+          set -e
           export BUILDKIT_PROGRESS=plain
-          
-          # build packages
-          turbo run build --filter=@wener/utils --filter=@wener/reaction
-          
+
           TMPDIR=/tmp/run/$GITHUB_RUN_ID/tmp
           mkdir -p $TMPDIR
           launch-as() {
@@ -57,12 +55,17 @@ jobs:
             echo "[$name] Done"
           }
           
+          echo Message:
+          echo "${{github.event.head_commit.message}}" | sed -e "s/^/  /m"
+          
           echo Changes:
           # 空格分割
           echo ${{ steps.changes.outputs.files }} > $TMPDIR/changes
           cat $TMPDIR/changes | sed -e "s/^/  /m"
           
           is-unchanged() {
+            # manual
+            echo "${{github.event.head_commit.message}}" | grep 'rebuild' && return 1
             # always change
             grep -q pnpm-lock.yaml $TMPDIR/changes && return 1
             # based on message - gitea 不支持
@@ -74,33 +77,38 @@ jobs:
           
           #
           
-          is-unchanged apps/server || {
-            cd apps/server
-            launch-as apis-open-server make SERVER=apis-open-server build image-push &
-            cd -
-          }
+          make info
+          # build packages
+          pnpm turbo run image-push --filter=@wener/dash --filter=@wener/apis --filter=@wener/server
           
-          is-unchanged apps/dash || {
-            cd dash
-            launch-as dash make build image-push &
-            cd -
-          }
+          #is-unchanged apps/server || {
+          #  cd apps/server
+          #  launch-as apis-open-server make SERVER=apis-open-server image-push &
+          #  cd -
+          #}
           
-          is-unchanged apps/demo || {
-            cd apps/demo
-            launch-as demo make build image-push &
-            cd -
-          }
+          #is-unchanged apps/dash || {
+          #  cd apps/dash
+          #  launch-as dash make image-push &
+          #  cd -
+          #}
           
-          is-unchanged apps/apis || {
-            cd apps/apis
-            launch-as apis make build image-push &
-            cd -
-          }
+          #is-unchanged apps/demo || {
+          #  cd apps/demo
+          #  launch-as demo make image-push &
+          #  cd -
+          #}
+          
+          #is-unchanged apps/apis || {
+          #  cd apps/apis
+          #  launch-as apis make build-standalone image-push &
+          #  cd -
+          #}
           
           wait < <(jobs -p)
           
-          if [ -f run.fail.txt ]; then
-            cat run.fail.txt
+          if [ -f $TMPDIR/run.fail.txt ]; then
+            echo Failed:
+            cat $TMPDIR/run.fail.txt | sed -e "s/^/  /m"
             exit 1
           fi

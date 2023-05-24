@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "make build",
+    "image-push": "make image-push"
   },
   "keywords": [],
   "author": "",
@@ -14,6 +15,7 @@
     "@wener/reaction": "workspace:^",
     "@wener/utils": "workspace:^",
     "immer": "^10.0.2",
+    "next": "^13.4.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.8.0",

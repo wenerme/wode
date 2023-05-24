@@ -59,8 +59,10 @@
   "devDependencies": {
     "@types/lodash": "^4.14.194",
     "@types/ws": "^8.5.4",
-    "https-proxy-agent": "^6.1.0",
-    "lodash": "^4.17.21"
+    "https-proxy-agent": "^6.2.1",
+    "lodash": "^4.17.21",
+    "undici": "^5.22.1",
+    "node-fetch": "^3.3.1"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org",
@@ -76,6 +78,9 @@
     },
     "https-proxy-agent": {
       "optional": true
+    },
+    "node-fetch": {
+      "optional": true
     }
   },
   "sideEffects": false,
@@ -88,8 +93,5 @@
       "jsdom",
       "node-fetch"
     ]
-  },
-  "dependencies": {
-    "undici": "^5.22.1"
   }
 }
