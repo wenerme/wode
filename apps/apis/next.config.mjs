@@ -38,10 +38,7 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   basePath: process.env.BASE_PATH,
+  output: process.env.NEXT_OUTPUT ?? (!process.env.VERCEL ? 'standalone' : undefined),
 };
-
-if (process.env.STANDALONE) {
-  nextConfig.output = 'standalone';
-}
 
 export default nextConfig;

@@ -17,7 +17,7 @@ export function createFetchWithProxyByNodeFetch({
   return async (url, init?: RequestInit) => {
     if (!agent) {
       const { default: createHttpsProxyAgent } = await import('https-proxy-agent');
-      agent = createHttpsProxyAgent(proxy);
+      agent = (createHttpsProxyAgent as any)(proxy);
     }
 
     // node-fetch 才可以，node v18 fetch 不支持

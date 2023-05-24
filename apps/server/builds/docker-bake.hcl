@@ -2,9 +2,10 @@ variable "TAG" {
     default = "latest"
 }
 variable "VERSION" { default = "" }
+variable "IMAGE_REGISTRY" { default = "registry.gitlab.com" }
 
 group "default" {
-    targets = ["browser-agent"]
+    targets = ["apis-open-server"]
 }
 
 target "base" {
@@ -22,6 +23,6 @@ target "apis-open-server" {
 function "tags" {
     params = [name]
     result = [
-        "registry.gitlab.com/wenerme/wode/${name}:${TAG}",
+        "${IMAGE_REGISTRY}/wenerme/wode/${name}:${TAG}",
     ]
 }
