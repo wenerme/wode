@@ -16,6 +16,9 @@ info:
 	@echo IMAGE_REGISTRY=$(IMAGE_REGISTRY)
 	@echo CI=$(CI)
 
+deploy:
+	pnpm turbo run deploy --filter=@wener/dash --filter=@wener/apis --filter=@wener/server
+
 test:
 	$(EXEC) turbo run test
 fmt:
@@ -34,8 +37,11 @@ typedoc:
 
 ci-install:
 	-command -v jq > /dev/null || yum install jq -y
-ci: ci-demo ci-apis
 
+ci-build:
+	pnpm turbo run image-push --filter=@wener/dash --filter=@wener/apis --filter=@wener/server
+
+# Vercel
 ci-demo: ci-install
 	$(EXEC) turbo run build --filter=@wener/demo --force
 	$(MAKE) typedoc

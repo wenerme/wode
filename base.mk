@@ -19,7 +19,26 @@ CI_COMMIT_SHORT_SHA	?=$(shell git rev-parse --short HEAD)
 IMAGE_TAG			?=$(shell echo $(CI_COMMIT_BRANCH) | tr '/' '-')
 
 -include $(REPO_ROOT)/local.mk
+-include package.mk
+
+export CI_COMMIT_BRANCH
+export CI_COMMIT_SHA
 
 ifneq ($(DOCKER_REGISTRY),"")
 export IMAGE_REGISTRY=$(DOCKER_REGISTRY)
+endif
+
+package-scripts-inject:
+	yq '.scripts.build="make build" | .scripts.deploy="make deploy"' package.json
+
+ifneq ($(wildcard next.config.*),)
+build:
+	$(EXEC) next build
+dev:
+	$(EXEC) next dev
+else ifneq ($(wildcard vite.config.*),)
+build:
+	$(EXEC) vite build
+dev:
+	$(EXEC) vite dev
 endif
