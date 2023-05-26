@@ -79,25 +79,8 @@ jobs:
           
           make info
           # build packages
-          pnpm turbo run image-push --filter=@wener/dash --filter=@wener/apis --filter=@wener/server
+          make deploy
           
-          #is-unchanged apps/server || {
-          #  cd apps/server
-          #  launch-as apis-open-server make SERVER=apis-open-server image-push &
-          #  cd -
-          #}
-          
-          #is-unchanged apps/dash || {
-          #  cd apps/dash
-          #  launch-as dash make image-push &
-          #  cd -
-          #}
-          
-          #is-unchanged apps/demo || {
-          #  cd apps/demo
-          #  launch-as demo make image-push &
-          #  cd -
-          #}
           
           #is-unchanged apps/apis || {
           #  cd apps/apis

@@ -8,9 +8,22 @@
     "rollup.config.js"
   ],
   "pipeline": {
-    "image-push": {
+    "deploy": {
       "dependsOn": [
         "build"
+      ],
+      "env": [
+        "CI_COMMIT_TAG",
+        "CI_COMMIT_BRANCH",
+        "DOCKER_REGISTRY",
+        "IMAGE_REGISTRY"
+      ],
+      "inputs": [
+        "deploy.sh",
+        "docker-bake.hcl",
+        "Dockerfile",
+        "builds/docker-bake.hcl",
+        "builds/*/Dockerfile"
       ],
       "outputs": []
     },
@@ -21,9 +34,11 @@
       "outputs": [
         "dist/**",
         "lib/**",
-        ".next/**"
+        ".next/**",
+        "!.next/cache/**"
       ],
       "inputs": [
+        "build.sh",
         "src/**/*.tsx",
         "src/**/*.ts",
         "src/**/*.js",

@@ -17,3 +17,5 @@ image-push: image-tag
 	docker buildx build --push --build-arg APP_NAME=$(APP_NAME) --build-arg DIR_NAME=$(DIR_NAME) -t $(IMAGE_NAME):$(IMAGE_TAG) .
 image-run:
 	docker run --rm -it -p 3000:3000 --name $(APP_NAME) $(IMAGE_NAME)
+
+deploy: image-push

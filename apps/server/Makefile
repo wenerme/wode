@@ -30,7 +30,7 @@ build: swc-build
 #		--outfile=dist/apps/$(SERVER)/main.mjs \
 #		./dist/out/apps/$(SERVER)/main.js
 #	test ! -e bundle.esbuild.ts || SERVER=$(SERVER) pnpm tsx bundle.esbuild.ts
-	pnpm tsx src/scripts/bundle.esbuild.ts
+	pnpm tsx src/app/scripts/bundle.esbuild.ts
 	sha256sum dist/apps/$(SERVER)/main.mjs
 	rsync -av dist/apps/$(SERVER)/ builds/$(SERVER)/app/
 	rsync -av public/ builds/$(SERVER)/app/public/
@@ -68,7 +68,7 @@ else
 
 build: swc-build
 	echo Building all
-	SERVER=`ls src/apps/* -d | xargs -n 1 basename | paste -sd,` pnpm tsx src/scripts/bundle.esbuild.ts
+	SERVER=`ls src/apps/* -d | xargs -n 1 basename | paste -sd,` pnpm tsx src/app/scripts/bundle.esbuild.ts
 
 image-push:
 	cd builds && TAG=$(IMAGE_TAG) docker buildx bake --push

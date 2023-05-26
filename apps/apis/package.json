@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "build": "make build",
+    "deploy": "make deploy",
     "dev": "next dev",
     "lint": "next lint",
     "start": "next start"
