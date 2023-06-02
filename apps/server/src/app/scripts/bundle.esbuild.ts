@@ -1,5 +1,6 @@
 import * as esbuild from 'esbuild';
 import { DynamicImport } from './DynamicImport';
+import esbuildPluginTsc from './esbuild-plugin-tsc';
 
 const SERVER = process.env.SERVER;
 if (!SERVER) {
@@ -13,8 +14,9 @@ await Promise.all(
 );
 
 async function bundle(server: string) {
-  let result = await esbuild.build({
-    entryPoints: [`./dist/out/apps/${server}/main.js`],
+  const result = await esbuild.build({
+    //entryPoints: [`./dist/out/apps/${server}/main.js`], // for swc handle decorator
+    entryPoints: [`./src/apps/${server}/main.ts`],
     bundle: true,
     logLevel: 'info',
     banner: {
@@ -39,6 +41,7 @@ async function bundle(server: string) {
       'jsdom',
       'canvas',
       'bcrypt',
+      'sharp',
       // https://mikro-orm.io/docs/next/deployment#excluding-dependencies-from-esbuild
       '@mikro-orm/mongodb',
       '@mikro-orm/mysql',
@@ -75,6 +78,7 @@ async function bundle(server: string) {
       DynamicImport({
         transformExtensions: ['.js'],
       }),
+      esbuildPluginTsc(),
     ],
   });
   return result;

@@ -1,4 +1,4 @@
-import { Plugin } from 'esbuild';
+import { type Plugin } from 'esbuild';
 import FastGlob from 'fast-glob';
 import { promises as FsPromise } from 'fs';
 import Path from 'path';
@@ -10,6 +10,9 @@ export interface DynamicImportConfig {
   loader?: string;
 }
 
+/**
+ * @see https://github.com/RTVision/esbuild-dynamic-import RTVision/esbuild-dynamic-import
+ */
 export function DynamicImport(config: DynamicImportConfig): Plugin {
   if (!Array.isArray(config.transformExtensions) && !config.changeRelativeToAbsolute) {
     throw new Error('Either transformExtensions needs to be supplied or changeRelativeToAbsolute needs to be true');
@@ -80,8 +83,8 @@ async function replaceImports(fileContents: string, resolveDir: string, config: 
       return fileContents;
     }
 
-    const uniqueFilePathsMap: Map<string, number> = new Map();
-    const moduleMap: Map<string, string> = new Map();
+    const uniqueFilePathsMap = new Map<string, number>();
+    const moduleMap = new Map<string, string>();
     const dedupedImportFilePaths = importFilePaths.filter((filePath) => {
       const pathNormalized = Path.normalize(`${resolveDir}/${filePath}`);
       let filterCondition = false;
