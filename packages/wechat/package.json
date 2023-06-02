@@ -18,10 +18,10 @@
   "dependencies": {
     "@sequelize/core": "7.0.0-alpha.23",
     "@wener/utils": "workspace:^",
-    "https-proxy-agent": "^6.2.1"
+    "https-proxy-agent": "^7.0.0"
   },
   "devDependencies": {
-    "lru-cache": "^9.1.1"
+    "lru-cache": "^9.1.2"
   },
   "ava": {
     "extensions": {

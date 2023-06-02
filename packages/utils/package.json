@@ -57,12 +57,12 @@
     "test": "make test"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.194",
+    "@types/lodash": "^4.14.195",
     "@types/ws": "^8.5.4",
-    "https-proxy-agent": "^6.2.1",
+    "https-proxy-agent": "^7.0.0",
     "lodash": "^4.17.21",
-    "undici": "^5.22.1",
-    "node-fetch": "^3.3.1"
+    "node-fetch": "^3.3.1",
+    "undici": "^5.22.1"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org",
