@@ -81,19 +81,5 @@
     "@types/semver": "^7.5.0",
     "@types/tar": "^6.1.5",
     "@types/zxcvbn": "^4.4.1"
-  },
-  "pnpm": {
-    "packageExtensions": {
-      "@nestjs/platform-fastify": {
-        "dependencies": {
-          "fastify": "*"
-        }
-      },
-      "@nestjs/mercurius": {
-        "peerDependencies": {
-          "mercurius": "*"
-        }
-      }
-    }
   }
 }

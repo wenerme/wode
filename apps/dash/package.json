@@ -12,6 +12,8 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
+    "@nestjs/common": "^9.4.2",
+    "@wener/nestjs": "workspace:^",
     "@wener/reaction": "workspace:^",
     "@wener/utils": "workspace:^",
     "immer": "^10.0.2",
