@@ -29,7 +29,7 @@ export IMAGE_REGISTRY=$(DOCKER_REGISTRY)
 endif
 
 package-scripts-inject:
-	yq '.scripts.build="make build" | .scripts.deploy="make deploy"' package.json
+	yq '.scripts.build="make build" | .scripts.deploy="make deploy" | .scripts.test="make test"' -i package.json
 
 ifneq ($(wildcard next.config.*),)
 build:
