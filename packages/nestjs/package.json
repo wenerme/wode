@@ -1,0 +1,55 @@
+{
+  "name": "@wener/nestjs",
+  "version": "1.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "make test",
+    "build": "make build",
+    "deploy": "make deploy"
+  },
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./lib/index.js",
+      "default": "./lib/index.js"
+    },
+    "./mikro-orm": {
+      "types": "./src/mikro-orm/index.ts",
+      "import": "./lib/mikro-orm/index.js",
+      "default": "./lib/mikro-orm/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "src",
+    "tsconfig.json",
+    "mikro-orm.ts",
+    "index.ts",
+    "package.json"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "keywords": [],
+  "author": "wener",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+  },
+  "peerDependencies": {
+    "@nestjs/common": "*",
+    "@mikro-orm/core": "*"
+  },
+  "peerDependenciesMeta": {
+    "@mikro-orm/core": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@nestjs/common": "^9.4.2",
+    "@mikro-orm/core": "^5"
+  }
+}
