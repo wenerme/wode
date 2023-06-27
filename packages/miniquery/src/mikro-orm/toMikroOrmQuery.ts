@@ -1,6 +1,14 @@
+import { EntityName } from '@mikro-orm/core';
+import { SqlEntityManager } from '@mikro-orm/sqlite';
 import { parse } from './miniquery';
 
-export function toMikroOrmQuery(query?: string, options?: any) {
+export function toMikroOrmQuery(
+  query?: string,
+  options?: {
+    em?: SqlEntityManager;
+    Entity?: EntityName<any>;
+  },
+) {
   query = query?.trim();
   if (!query) {
     return;
