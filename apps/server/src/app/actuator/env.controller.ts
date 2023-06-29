@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
-import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiProperty, ApiTags } from '@nestjs/swagger';
+import {ApiBearerAuth, ApiExcludeController, ApiOkResponse, ApiOperation, ApiProperty, ApiTags} from '@nestjs/swagger';
 import { Role, Roles } from '../auth';
+import {hideActuatorApi} from './const';
 
 class SetEnvBody {
   @ApiProperty()
@@ -22,6 +23,7 @@ class SetEnvResult {
 @ApiBearerAuth()
 @Roles(Role.SystemAdmin)
 @Controller('actuator/env')
+@ApiExcludeController(hideActuatorApi())
 export class EnvController {
   @Get()
   @ApiOperation({

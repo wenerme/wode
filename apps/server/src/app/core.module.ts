@@ -13,14 +13,14 @@ import { type DynamicModule, Logger, type Provider } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { MercuriusDriver, type MercuriusDriverConfig } from '@nestjs/mercurius';
+import { getPackageDir } from '../util/getPackageDir';
 import { ActuatorModule } from './actuator/actuator.module';
 import { type DatabaseConfig, databaseConfig } from './config/database.config';
 import { redisConfig } from './config/redis.config';
 import { serverConfig } from './config/server.config';
+import { getDayjs } from './dayjs';
+import { HookManager, HookModule, type MikroOrmConfig } from './hook.module';
 import { createMikroOrmConfig } from './mikro-orm/createMikroOrmConfig';
-import { HookManager, HookModule, type MikroOrmConfig } from './modules/hook';
-import { getDayjs } from './util/dayjs';
-import { getPackageDir } from './util/getPackageDir';
 
 const __dirname = getPackageDir() || process.cwd();
 
@@ -34,7 +34,7 @@ export interface CoreModuleOptions {
 }
 
 export class CoreModule {
-  private static readonly log = new Logger('CoreModule');
+  private static readonly log = new Logger(CoreModule.name);
 
   static forRoot(opts: CoreModuleOptions): DynamicModule {
     // downside - large bundle
@@ -61,17 +61,17 @@ export class CoreModule {
       exports: [dayjs],
     };
     const { imports, providers, exports } = mod;
-    if (opts.graphql !== false) {
-      imports.push(
-        GraphQLModule.forRoot<MercuriusDriverConfig>({
-          driver: MercuriusDriver,
-          graphiql: true,
-          autoSchemaFile: path.join(__dirname, `src/apps/${name}/schema.graphql`),
-          sortSchema: true,
-          subscription: true,
-        }),
-      );
-    }
+    // if (opts.graphql !== false) {
+    //   imports.push(
+    //     GraphQLModule.forRoot<MercuriusDriverConfig>({
+    //       driver: MercuriusDriver,
+    //       graphiql: true,
+    //       autoSchemaFile: path.join(__dirname, `src/apps/${name}/schema.graphql`),
+    //       sortSchema: true,
+    //       subscription: true,
+    //     }),
+    //   );
+    // }
     //
     if (opts.db !== false) {
       imports.push(

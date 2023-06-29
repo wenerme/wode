@@ -24,6 +24,7 @@ export async function runApplication(opts: ApplicationOptions) {
       // url max 2048, default 100
       // https://stackoverflow.com/a/417184/1870054
       maxParamLength: 2000,
+      bodyLimit: 10 * 1024 * 1024, // 10MB
     }),
     options: {},
   });
@@ -60,8 +61,8 @@ export async function runApplication(opts: ApplicationOptions) {
       builder.addBearerAuth().addBasicAuth().addCookieAuth();
     }
     const config = builder.build();
-    // generate shorter path
     const document = SwaggerModule.createDocument(app, config, {
+      // generate shorter path
       ignoreGlobalPrefix: true,
     });
     SwaggerModule.setup(path.join(prefix || '', 'api'), app, document);

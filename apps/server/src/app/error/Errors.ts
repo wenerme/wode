@@ -111,3 +111,11 @@ export class Errors {
     return new ErrorDetailHolder(init);
   }
 }
+
+interface ZodError {
+  path: (string | number)[];
+  message: string;
+  code: string;
+  expected?: any;
+  received?: any;
+}

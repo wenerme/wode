@@ -1,1 +1,3 @@
-export { InjectToken } from './context/InjectToken';
+export { InjectToken } from './InjectToken';
+export { setAppContext, getContext, getAppContext } from './app.context';
+export * from './hook.module';
