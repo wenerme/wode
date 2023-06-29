@@ -1,6 +1,5 @@
 import { AsyncLocalStorage } from 'node:async_hooks';
-import { type ExecutionContext, Logger, type Type } from '@nestjs/common';
-import { getRequest } from '../auth/getRequest';
+import { Logger, type Type } from '@nestjs/common';
 import { Errors } from '../error';
 
 export class Currents {
@@ -29,11 +28,6 @@ export class Currents {
     return found;
   }
 
-  static fromExecutionContext(ctx: ExecutionContext) {
-    const req = getRequest(ctx);
-    return ((req as any).$$Currents ||= new Currents());
-  }
-
   static getStore() {
     const store = this.Store.getStore();
     if (!store) {
@@ -47,6 +41,10 @@ export class Currents {
   static run<T = void>(f: () => T) {
     return this.Store.run(new Map(this.Store.getStore()), f);
   }
+
+  static create<T>(key: string | Type<T>): ContextToken<T> {
+    return new Token<T>(key);
+  }
 }
 
 export function createCurrentToken<T>(key: string | Type<T>): ContextToken<T> {
@@ -54,7 +52,9 @@ export function createCurrentToken<T>(key: string | Type<T>): ContextToken<T> {
 }
 
 export interface ContextToken<T> {
-  get(def?: T | (() => T)): T | undefined;
+  get(def: T | (() => T)): T;
+
+  get(): T | undefined;
 
   set(value: T): void;
 
@@ -79,6 +79,8 @@ class Token<T> implements ContextToken<T> {
     return Currents.clear(this.key);
   }
 
+  get(): T | undefined;
+  get(def: T | (() => T)): T;
   get(def?: T | (() => T)): T | undefined {
     return Currents.get(this.key, def);
   }

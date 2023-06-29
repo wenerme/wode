@@ -1,2 +1,2 @@
-export { MinimalBaseEntity } from './MinimalBaseEntity';
+export { MinimalBaseEntity, type MinimalOptionalEntityFields } from './MinimalBaseEntity';
 export { EnumBaseEntity } from './EnumBaseEntity';

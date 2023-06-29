@@ -1,6 +1,6 @@
 import fs from 'fs-extra';
 import path from 'node:path';
-import { getPackageDir } from './getPackageDir';
+import { getPackageDir } from '../../util/getPackageDir';
 
 export function getStaticRootPath() {
   let s = process.env.STATIC_ROOT_PATH;
