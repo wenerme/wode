@@ -7,7 +7,7 @@ import { FetchCacheService } from './fetch-cache.service';
 import { RequestController } from './request.controller';
 
 export class FetchCacheModule {
-  static forRoot(o: FetchCacheModuleOptions = {}): DynamicModule {
+  static forRoot({ options, global }: { options?: FetchCacheModuleOptions; global?: boolean } = {}): DynamicModule {
     return {
       module: FetchCacheModule,
       imports: [MikroOrmModule.forFeature([HttpRequestLog])],
@@ -16,10 +16,17 @@ export class FetchCacheModule {
         FetchCacheService,
         {
           provide: KeyOfFetchCacheModuleOptions,
-          useValue: o,
+          useValue: options,
         },
       ],
       exports: [FetchCacheService],
+      global,
+    };
+  }
+
+  static forFeature(): DynamicModule {
+    return {
+      module: FetchCacheModule,
     };
   }
 }
