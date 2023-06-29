@@ -1,11 +1,10 @@
 import { Entity, EntityRepositoryType, OptionalProps, Property, types } from '@mikro-orm/core';
-import { MinimalBaseEntity } from '../../app/mikro-orm/entity';
-import { MinimalOptionalEntityFields } from '../../app/mikro-orm/entity/MinimalBaseEntity';
+import { MinimalBaseEntity, type MinimalOptionalEntityFields } from '../../app/mikro-orm/entity';
 import { HttpRequestLogRepository } from './HttpRequestLog.repository';
 
 @Entity({ customRepository: () => HttpRequestLogRepository, schema: '*' })
 export class HttpRequestLog extends MinimalBaseEntity<HttpRequestLog> {
-  [OptionalProps]?: MinimalOptionalEntityFields;
+  [OptionalProps]?: MinimalOptionalEntityFields | 'attributes' | 'properties' | 'hit';
 
   [EntityRepositoryType]?: HttpRequestLogRepository;
 
@@ -63,8 +62,11 @@ export class HttpRequestLog extends MinimalBaseEntity<HttpRequestLog> {
   @Property({ type: types.json, nullable: true })
   attributes!: Record<string, any>;
 
+  @Property({ type: types.json, nullable: true })
+  properties!: Record<string, any>;
+
   @Property({ type: types.integer, nullable: false, default: 0 })
-  hit?: number;
+  hit!: number;
 
   fromUrl(o: string) {
     const u = new URL(o);
