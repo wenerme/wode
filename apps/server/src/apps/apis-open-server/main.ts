@@ -8,7 +8,7 @@ import { polyfillCrypto } from '@wener/utils/server';
 import { runApplication } from '../../app/app.run';
 import { AuthModule } from '../../app/auth/auth.module';
 import { CoreModule } from '../../app/core.module';
-import { LoaderModule } from '../../app/modules/loader/loader.module';
+import { ModuleLoader } from '../../app/loader.module';
 import { FetchCacheModule, HttpRequestLog } from '../../modules/fetch-cache';
 import { getServerUrl } from './getServerUrl';
 import { HashController } from './hash/hash.controller';
@@ -42,7 +42,10 @@ class WellKnownController {
       limit: 30,
     }),
     FetchCacheModule.forRoot({
-      schema: 'cache',
+      options: {
+        schema: 'cache',
+      },
+      global: true,
     }),
     AuthModule,
     CoreModule.forRoot({
@@ -51,7 +54,7 @@ class WellKnownController {
         entities: [HttpRequestLog],
       },
     }),
-    LoaderModule.forRoot({
+    ModuleLoader.forRoot({
       modules: ['npm', 'github', 'hn', 'alpine', 'qr'],
       // modules: [
       //   import('./modules/npm/module'),
