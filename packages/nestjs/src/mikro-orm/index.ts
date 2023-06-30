@@ -1,3 +1,5 @@
+import 'reflect-metadata';
+
 export { MinimalBaseEntity, type MinimalBaseOptionalEntityFields } from './entity/MinimalBaseEntity';
 export { EnumBaseEntity } from './entity/EnumBaseEntity';
 export { ResourceBaseEntity, type ResourceBaseOptionalEntityFields } from './entity/ResourceBaseEntity';

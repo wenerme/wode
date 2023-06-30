@@ -1,17 +1,37 @@
 {
   "name": "@wener/miniquery",
-  "version": "0.0.2",
-  "description": "",
-  "main": "index.js",
+  "version": "0.0.3",
+  "description": "SQL Where like **safe** filter expression for ORM.",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "make test",
+    "build": "make build",
+    "deploy": "make deploy"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "sql",
+    "builder",
+    "dsl"
+  ],
+  "author": "wener",
   "license": "ISC",
   "type": "module",
   "devDependencies": {
     "@mikro-orm/core": "^5.7.11",
     "@mikro-orm/sqlite": "^5.7.11"
+  },
+  "files": [
+    "lib",
+    "src",
+    "*.ts",
+    "*.js"
+  ],
+  "publishConfig": {
+    "exports": {
+      "./mikro-orm": {
+        "typing": "./src/mikro-orm.ts",
+        "import": "./lib/mikro-orm.js"
+      },
+      "./package.json": "./package.json"
+    }
   }
 }

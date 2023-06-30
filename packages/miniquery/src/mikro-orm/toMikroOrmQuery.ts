@@ -1,5 +1,5 @@
-import { EntityName } from '@mikro-orm/core';
-import { SqlEntityManager } from '@mikro-orm/sqlite';
+import type { EntityName, QBFilterQuery } from '@mikro-orm/core';
+import { type SqlEntityManager } from '@mikro-orm/sqlite';
 import { parse } from './miniquery';
 
 export function toMikroOrmQuery(
@@ -8,10 +8,10 @@ export function toMikroOrmQuery(
     em?: SqlEntityManager;
     Entity?: EntityName<any>;
   },
-) {
+): QBFilterQuery<any> {
   query = query?.trim();
   if (!query) {
-    return;
+    return [];
   }
   // console.log(`Query ${query}`);
   let out = parse(query, options);
