@@ -1,6 +1,6 @@
 {
   "name": "@wener/utils",
-  "version": "1.1.14",
+  "version": "1.1.16",
   "type": "module",
   "description": "Utils for daily use",
   "repository": {
@@ -12,25 +12,6 @@
   "license": "MIT",
   "main": "dist/cjs/index.cjs",
   "module": "lib/index.js",
-  "exports": {
-    ".": {
-      "types": "./src/index.ts",
-      "typescript": "./src/index.ts",
-      "system": "./dist/system/index.js",
-      "import": "./lib/index.js"
-    },
-    "./types": {
-      "types": "./types.d.ts"
-    },
-    "./server": {
-      "types": "./src/server.ts",
-      "typescript": "./src/server.ts",
-      "system": "./dist/system/server.js",
-      "import": "./lib/server.js"
-    },
-    "./src/*": "./src/*",
-    "./package.json": "./package.json"
-  },
   "types": "src/index.ts",
   "files": [
     "dist",
@@ -56,6 +37,14 @@
     "dev": "make dev",
     "test": "make test"
   },
+  "peerDependencies": {
+    "undici": "*"
+  },
+  "peerDependenciesMeta": {
+    "undici": {
+      "optional": true
+    }
+  },
   "devDependencies": {
     "@types/lodash": "^4.14.195",
     "@types/ws": "^8.5.4",
@@ -66,21 +55,25 @@
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org",
-    "access": "public"
-  },
-  "peerDependencies": {
-    "https-proxy-agent": "*",
-    "undici": "*"
-  },
-  "peerDependenciesMeta": {
-    "undici": {
-      "optional": true
-    },
-    "https-proxy-agent": {
-      "optional": true
-    },
-    "node-fetch": {
-      "optional": true
+    "access": "public",
+    "exports": {
+      ".": {
+        "types": "./src/index.ts",
+        "typescript": "./src/index.ts",
+        "system": "./dist/system/index.js",
+        "import": "./lib/index.js"
+      },
+      "./types": {
+        "types": "./types.d.ts"
+      },
+      "./server": {
+        "types": "./src/server.ts",
+        "typescript": "./src/server.ts",
+        "system": "./dist/system/server.js",
+        "import": "./lib/server.js"
+      },
+      "./src/*": "./src/*",
+      "./package.json": "./package.json"
     }
   },
   "sideEffects": false,
@@ -90,8 +83,10 @@
       "./src/server.ts"
     ],
     "external": [
+      "crypto",
       "jsdom",
-      "node-fetch"
+      "node-fetch",
+      "undici"
     ]
   }
 }
