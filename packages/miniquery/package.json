@@ -28,8 +28,8 @@
   "publishConfig": {
     "exports": {
       "./mikro-orm": {
-        "typing": "./src/mikro-orm.ts",
-        "import": "./lib/mikro-orm.js"
+        "types": "./src/mikro-orm.ts",
+        "default": "./lib/mikro-orm.js"
       },
       "./package.json": "./package.json"
     }

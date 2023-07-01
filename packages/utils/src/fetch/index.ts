@@ -1,1 +1,5 @@
-export type FetchLike = (url: string | Request, init?: RequestInit) => Promise<Response>;
+export type * from './types';
+export { createFetchWith } from './createFetchWith';
+export { createFetchWithLogging } from './createFetchWithLogging';
+export { dumpRequest } from './dumpRequest';
+export { dumpResponse } from './dumpResponse';
