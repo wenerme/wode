@@ -59,7 +59,7 @@ class ErrorDetailHolder implements ErrorDetail {
     return new ErrorDetailException(detail);
   }
 
-  require<T>(v: T | undefined | null, message?: string): T {
+  require(v: any, message?: string): any {
     if (v === undefined || v === null) {
       throw this.asException({ message });
     }
@@ -91,11 +91,14 @@ export interface ErrorDetail {
 
   asException(message: string): Error;
 
-  require<T>(v: T | undefined | null, message?: string): T;
+  require<T>(v: T | undefined | null, message?: string): NonNullable<T>;
 
-  check(condition: boolean, message?: string): asserts condition is true;
+  // 不支持 return value
+  // https://stackoverflow.com/a/73252858/1870054
 
-  check<T extends object>(v: T | undefined | null, message?: string): asserts v is T;
+  check(condition: boolean, message?: string): asserts condition;
+
+  check<T>(v: T | undefined | null, message?: string): asserts v is NonNullable<T>;
 }
 
 export class Errors {
