@@ -32,7 +32,7 @@ const RANDOM_LEN = 16;
  */
 export function isULID(str: string): boolean {
   // ttttttttttrrrrrrrrrrrrrrrr
-  return str?.length === 26 && /^[0-9A-HJKMNP-TV-Z]{26}$/i.test(str);
+  return str?.length === 26 && /^[0-9]{10}[0-9A-HJKMNP-TV-Z]{16}$/i.test(str);
 }
 
 function replaceCharAt(str: string, index: number, char: string) {

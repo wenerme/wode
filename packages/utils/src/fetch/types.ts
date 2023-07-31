@@ -1,1 +1,1 @@
-export type FetchLike = (url: string | Request, init?: RequestInit) => Promise<Response>;
+export type FetchLike<R extends RequestInit = RequestInit> = (url: string | Request, init?: R) => Promise<Response>;

@@ -1,28 +1,21 @@
-import { type INestApplicationContext, Type } from '@nestjs/common';
-import { getContext } from './app.context';
+import { getAppContext } from './app.context';
 
-export type Token<T> = Function & {
-  get(ctx?: INestApplicationContext): T | undefined;
+export type Token<T> = symbol & {
+  get(ctx?: Context): T | undefined;
 };
 
-export class InjectToken<T> {
-  private static readonly Store = new WeakMap<any, any>();
+interface Context {
+  get(token: symbol): any;
+}
 
-  static of<T>(name: Type<T> | string | symbol) {
-    let token: Token<T> = this.Store.get(name);
-    if (!token) {
-      token = Object.assign(() => name, {
-        toString: () => `InjectToken(${String(name)})`,
-        get: (ctx?: INestApplicationContext): T => {
-          if (ctx) {
-            return ctx.get(token);
-          }
-          return getContext(token);
-        },
-      });
-      this.Store.set(name, token);
-    }
+export class InjectToken<T> {
+  static of<T>(key: { readonly name: string } | string): Token<T> {
+    const name = typeof key === 'string' ? key : key.name;
+    const token = Object.assign(Symbol.for(`InjectToken(${String(name)})`), {
+      get: (ctx: Context = getAppContext()): T => {
+        return ctx.get(token);
+      },
+    });
     return token;
   }
 }
-

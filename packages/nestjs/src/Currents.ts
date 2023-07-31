@@ -3,7 +3,7 @@ import { Logger, type Type } from '@nestjs/common';
 import { Errors } from './Errors';
 
 export class Currents {
-  private static readonly Store = new AsyncLocalStorage<Map<any, any>>();
+  private static readonly store = new AsyncLocalStorage<Map<any, any>>();
 
   static clear(key: Type<any> | string | symbol) {
     const store = Currents.getStore();
@@ -16,21 +16,25 @@ export class Currents {
   }
 
   static get<T>(key: Type<T> | string | symbol, def?: T | (() => T)) {
-    const store = Currents.getStore();
-    const found = store.get(key);
+    const store = Currents.getStore(false);
+    const found = store?.get(key);
     if (found === undefined) {
       const neo = def instanceof Function ? def() : def;
       if (!neo !== undefined) {
-        store.set(key, neo);
+        store?.set(key, neo);
       }
       return neo;
     }
     return found;
   }
 
-  static getStore() {
-    const store = this.Store.getStore();
-    if (!store) {
+  static getStore(): Map<any, any>;
+  static getStore(require: true): Map<any, any>;
+  static getStore(require: boolean): Map<any, any> | undefined;
+
+  static getStore(require = true) {
+    const store = this.store.getStore();
+    if (!store && require) {
       throw Errors.InternalServerError.asException(`Currents not ready`);
       // store = new Map();
       // this.Store.enterWith(store);
@@ -39,15 +43,16 @@ export class Currents {
   }
 
   static run<T = void>(f: () => T) {
-    return this.Store.run(new Map(this.Store.getStore()), f);
+    return this.store.run(new Map(this.store.getStore()), f);
   }
 
-  static create<T>(key: string | Type<T>): CurrentContextToken<T> {
+  static create<T>(key: string | Type<T>): ContextToken<T> {
     return new Token<T>(key);
   }
 }
 
-export interface CurrentContextToken<T> {
+
+export interface ContextToken<T> {
   get(def: T | (() => T)): T;
 
   get(): T | undefined;
@@ -59,15 +64,19 @@ export interface CurrentContextToken<T> {
   require(): T;
 }
 
-class Token<T> implements CurrentContextToken<T> {
+class Token<T> implements ContextToken<T> {
   private readonly log;
 
   constructor(readonly key: Type<T> | string | symbol) {
-    this.log = new Logger(`Token(${String(key instanceof Function ? key.name : key)})`);
+    this.log = new Logger(this.toString());
+  }
+
+  toString() {
+    const { key } = this;
+    return `Token(${String(key instanceof Function ? key.name : key)})`;
   }
 
   set(value: T) {
-    this.log.verbose(`set`);
     Currents.set(this.key, value);
   }
 
@@ -84,7 +93,7 @@ class Token<T> implements CurrentContextToken<T> {
   require(): T {
     const found = this.get();
     if (found === undefined) {
-      this.log.warn(`context not found`);
+      this.log.warn(`context value not found`);
       throw Errors.InternalServerError.asException('上下文不存在');
     }
     return found;
