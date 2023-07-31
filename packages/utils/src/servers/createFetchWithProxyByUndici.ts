@@ -56,6 +56,7 @@ export function createFetchWithProxyByUndici({
       });
       // https://github.com/nodejs/node/issues/43187#issuecomment-1134634174
       // (global as any)[Symbol.for('undici.globalDispatcher.1')] = agent;
+      // fixme should unwrap error https://github.com/nodejs/undici/issues/1248
     }
     init.dispatcher = agent;
     return await fetch!(...args);
