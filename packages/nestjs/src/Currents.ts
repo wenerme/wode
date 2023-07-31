@@ -3,16 +3,23 @@ import { Logger, type Type } from '@nestjs/common';
 import { Errors } from './Errors';
 
 export class Currents {
-  private static readonly store = new AsyncLocalStorage<Map<any, any>>();
+  static readonly #storage = new AsyncLocalStorage<Map<any, any>>();
+
+  static get storage(): AsyncLocalStorage<Map<any, any>> {
+    return this.#storage;
+  }
+
+  static get store(): Map<any, any> | undefined {
+    return this.#storage.getStore();
+  }
 
   static clear(key: Type<any> | string | symbol) {
     const store = Currents.getStore();
-    return store.delete(key);
+    return store?.delete(key) ?? false;
   }
 
   static set<T>(key: Type<T> | string | symbol, value: T) {
-    const store = Currents.getStore();
-    store.set(key, value);
+    Currents.store?.set(key, value);
   }
 
   static get<T>(key: Type<T> | string | symbol, def?: T | (() => T)) {
@@ -28,12 +35,12 @@ export class Currents {
     return found;
   }
 
-  static getStore(): Map<any, any>;
+  static getStore(): Map<any, any> | undefined;
   static getStore(require: true): Map<any, any>;
   static getStore(require: boolean): Map<any, any> | undefined;
 
   static getStore(require = true) {
-    const store = this.store.getStore();
+    const store = this.store;
     if (!store && require) {
       throw Errors.InternalServerError.asException(`Currents not ready`);
       // store = new Map();
@@ -43,14 +50,13 @@ export class Currents {
   }
 
   static run<T = void>(f: () => T) {
-    return this.store.run(new Map(this.store.getStore()), f);
+    return this.#storage.run(new Map(this.#storage.getStore()), f);
   }
 
   static create<T>(key: string | Type<T>): ContextToken<T> {
     return new Token<T>(key);
   }
 }
-
 
 export interface ContextToken<T> {
   get(def: T | (() => T)): T;
