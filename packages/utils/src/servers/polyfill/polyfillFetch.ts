@@ -1,4 +1,4 @@
-import type { MaybePromise } from '../asyncs/MaybePromise';
+import type { MaybePromise } from '../../asyncs/MaybePromise';
 
 export function polyfillFetch(nodeFetch: typeof import('node-fetch')): boolean;
 export function polyfillFetch(nodeFetch?: undefined): Promise<boolean>;

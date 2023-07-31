@@ -1,5 +1,5 @@
 export * from './Errors';
-export { Currents, type CurrentContextToken } from './Currents';
+export { Currents, type ContextToken } from './Currents';
 export { getContext, getAppContext, setAppContext } from './context';
 export { Cookies } from './decorator/cookies.decorator';
 

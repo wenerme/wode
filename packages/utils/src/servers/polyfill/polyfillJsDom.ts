@@ -1,5 +1,5 @@
 import type { ConstructorOptions, ResourceLoaderConstructorOptions } from 'jsdom';
-import { getGlobalThis } from '../isomorphics/getGlobalThis';
+import { getGlobalThis } from '../../isomorphics/getGlobalThis';
 
 export async function polyfillJsDom() {
   if (typeof window !== 'undefined') {

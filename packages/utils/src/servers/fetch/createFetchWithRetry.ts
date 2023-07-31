@@ -1,5 +1,5 @@
-import { FetchLike } from '../fetch';
-import { getGlobalThis } from '../isomorphics/getGlobalThis';
+import { FetchLike } from '../../fetch';
+import { getGlobalThis } from '../../isomorphics/getGlobalThis';
 
 type RequestDelayFunction = (attempt: number, error: Error | null, response: Response | null) => number;
 type RequestRetryOnFunction = (
