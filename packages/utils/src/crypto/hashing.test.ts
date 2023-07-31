@@ -1,5 +1,5 @@
 import { test, beforeAll, expect } from 'vitest';
-import { polyfillCrypto } from '../servers/polyfillCrypto';
+import { polyfillCrypto } from '../servers/polyfill/polyfillCrypto';
 import { isUUID } from '../validations/isUUID';
 import { hex } from './base';
 import { sha1, sha256, sha384, sha512 } from './hashing';

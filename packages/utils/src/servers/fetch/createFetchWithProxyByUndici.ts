@@ -1,5 +1,5 @@
-import { MaybePromise } from '../asyncs/MaybePromise';
-import { FetchLike } from '../fetch';
+import { MaybePromise } from '../../asyncs/MaybePromise';
+import { FetchLike } from '../../fetch';
 
 export function createFetchWithProxyByUndici({
   proxy,
