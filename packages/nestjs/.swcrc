@@ -18,5 +18,11 @@
     "keepClassNames": true,
     "baseUrl": "./"
   },
-  "minify": false
+  "minify": false,
+  "env": {
+      "targets": {
+        "chrome": "100"
+      }
+    },
+  "exclude": ["\\.test\\.ts$"]
 }
