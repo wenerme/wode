@@ -2,15 +2,15 @@
  * Logger interface satisfies the `console`, `pino` logger interface.
  */
 export interface Logger {
-  trace(...data: any[]): void;
+  trace(...args: any[]): void;
 
-  debug(...data: any[]): void;
+  debug(...args: any[]): void;
 
-  info(...data: any[]): void;
+  info(...args: any[]): void;
 
-  warn(...data: any[]): void;
+  warn(...args: any[]): void;
 
-  error(...data: any[]): void;
+  error(...args: any[]): void;
 
   /**
    * create child logger with given context
@@ -19,7 +19,7 @@ export interface Logger {
 }
 
 export interface LoggerWithChild extends Logger {
-  child: (o: object) => LoggerWithChild;
+  child: (o: Record<string, any>) => LoggerWithChild;
 }
 
 export type LogLevel = 'error' | 'warn' | 'info' | 'debug' | 'trace';
