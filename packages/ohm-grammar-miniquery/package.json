@@ -63,7 +63,7 @@
   },
   "devDependencies": {
     "@ohm-js/cli": "^2.0.0",
-    "@sequelize/core": "7.0.0-alpha.25",
+    "@sequelize/core": "7.0.0-alpha.27",
     "sqlite3": "^5.1.6"
   },
   "publishConfig": {

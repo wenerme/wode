@@ -16,12 +16,12 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@sequelize/core": "7.0.0-alpha.23",
+    "@sequelize/core": "7.0.0-alpha.27",
     "@wener/utils": "workspace:^",
-    "https-proxy-agent": "^7.0.0"
+    "https-proxy-agent": "^7.0.1"
   },
   "devDependencies": {
-    "lru-cache": "^9.1.2"
+    "lru-cache": "^10.0.0"
   },
   "ava": {
     "extensions": {
