@@ -42,10 +42,10 @@
   "type": "module",
   "peerDependencies": {
     "@mikro-orm/core": "*",
+    "@nestjs/common": "*",
     "@nestjs/core": "*",
     "@nestjs/swagger": "*",
-    "fastify": "*",
-    "@nestjs/common": "*"
+    "fastify": "*"
   },
   "peerDependenciesMeta": {
     "@nestjs/common": {
@@ -65,11 +65,11 @@
     }
   },
   "devDependencies": {
-    "@mikro-orm/core": "^5",
-    "@nestjs/common": "^9.4.2",
-    "@nestjs/core": "^9.4.2",
-    "@nestjs/swagger": "^6.3.0",
-    "fastify": "^4.17.0"
+    "@mikro-orm/core": "^5.7.14",
+    "@nestjs/common": "^10.1.3",
+    "@nestjs/core": "^10.1.3",
+    "@nestjs/swagger": "^7.1.6",
+    "fastify": "^4.21.0"
   },
   "dependencies": {
     "@wener/utils": "workspace:^"
