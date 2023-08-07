@@ -32,22 +32,22 @@ test('miniquery', async () => {
   {
     for (const schema of [
       `
-          create table users
-          (
-              id    bigint primary key,
-              a     bigint,
-              b     text,
-              attrs json
-          );
+        create table users
+        (
+          id    bigint primary key,
+          a     bigint,
+          b     text,
+          attrs json
+        );
       `,
       `
-          create table user_profile
-          (
-              id    bigint primary key,
-              user_id   bigint,
-              age   bigint,
-              attrs json
-          );
+        create table user_profile
+        (
+          id      bigint primary key,
+          user_id bigint,
+          age     bigint,
+          attrs   json
+        );
       `,
     ]) {
       await em.execute(schema);
@@ -99,7 +99,7 @@ class UserEntity extends BaseEntity<UserEntity, 'id'> {
 }
 
 @Entity({ tableName: 'user_profile' })
-class UserProfileEntity extends BaseEntity<GroupEntity, 'id'> {
+class UserProfileEntity extends BaseEntity<UserProfileEntity, 'id'> {
   @PrimaryKey({ type: types.bigint })
   id!: number;
   @Property({ type: types.bigint, nullable: true })

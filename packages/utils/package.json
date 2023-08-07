@@ -10,9 +10,6 @@
   "homepage": "https://github.com/wenerme/wode#readme",
   "author": "wener",
   "license": "MIT",
-  "main": "dist/cjs/index.cjs",
-  "module": "lib/index.js",
-  "types": "src/index.ts",
   "files": [
     "dist",
     "index.ts",
