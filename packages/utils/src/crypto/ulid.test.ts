@@ -1,5 +1,18 @@
 import { expect, test } from 'vitest';
-import { createULID, isULID, parseULID } from './ulid';
+import { randomUUID } from './randomUUID';
+import { createULID, isULID, parseULID, ulid } from './ulid';
+
+test('isULID', () => {
+  for (const [a, b] of [
+    [undefined, false],
+    [null, false],
+    ['', false],
+    [randomUUID(), false],
+    [ulid(), true],
+  ] as const) {
+    expect(isULID(a), `${a} -> ${b}`).toEqual(b);
+  }
+});
 
 test('ulid', () => {
   // monotonic
