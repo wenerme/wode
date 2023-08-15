@@ -1,6 +1,6 @@
 {
   "name": "ohm-grammar-miniquery",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "type": "module",
   "description": "MiniQuery grammars for various editions of ORM/SQL.",
   "repository": {
@@ -51,7 +51,7 @@
   },
   "peerDependencies": {
     "@sequelize/core": "*",
-    "ohm-js": "^16"
+    "ohm-js": "^17"
   },
   "peerDependenciesMeta": {
     "@sequelize/core": {
