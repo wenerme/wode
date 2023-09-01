@@ -23,6 +23,16 @@
       "import": "./lib/auth/index.js",
       "default": "./lib/auth/index.js"
     },
+    "./app": {
+      "types": "./src/app/index.ts",
+      "import": "./lib/app/index.js",
+      "default": "./lib/app/index.js"
+    },
+    "./config": {
+      "types": "./src/config/index.ts",
+      "import": "./lib/config/index.js",
+      "default": "./lib/config/index.js"
+    },
     "./package.json": "./package.json"
   },
   "files": [
@@ -72,6 +82,7 @@
     "fastify": "^4.21.0"
   },
   "dependencies": {
-    "@wener/utils": "workspace:^"
+    "@wener/utils": "workspace:^",
+    "zod": "^3.21.4"
   }
 }
