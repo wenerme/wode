@@ -6,10 +6,11 @@ export interface ErrorDetailInit {
   description?: string;
   code?: number;
   data?: any;
+  cause?: any;
 }
 
 class ErrorDetailException extends HttpException {
-  constructor(readonly detail: ErrorDetail & { cause?: any }) {
+  constructor(readonly detail: ErrorDetail) {
     super(detail.message, detail.status, {
       cause: detail.cause,
       description: detail.description,
@@ -23,13 +24,15 @@ class ErrorDetailHolder implements ErrorDetail {
   readonly code: number;
   readonly data?: any;
   readonly description?: string;
+  readonly cause?: any;
 
-  constructor({ message, status, code = status, data, description }: ErrorDetailInit) {
+  constructor({ message, status, code = status, data, description, cause }: ErrorDetailInit) {
     this.message = message;
     this.status = status;
     this.code = code;
     this.description = description;
     this.data = data;
+    this.cause = cause;
   }
 
   with(o?: Partial<ErrorDetailInit> | string): ErrorDetailHolder {
@@ -44,19 +47,16 @@ class ErrorDetailHolder implements ErrorDetail {
       code: this.code,
       message: this.message,
       data: this.data,
+      cause: this.cause,
       ...o,
     });
   }
 
-  asException(o?: Partial<ErrorDetailInit & { cause?: any }> | string): Error {
+  asException(o?: Partial<ErrorDetailInit> | string): Error {
     if (typeof o === 'string') {
       o = { message: o };
     }
-    const detail = this.with(o);
-    if (o?.cause) {
-      (detail as any).cause = o.cause;
-    }
-    return new ErrorDetailException(detail);
+    return new ErrorDetailException(this.with(o));
   }
 
   require(v: any, message?: string): any {
@@ -82,12 +82,13 @@ export interface ErrorDetail {
   readonly code?: number | string;
   readonly data?: any;
   readonly description?: string;
+  readonly cause?: any;
 
   with(message: string): ErrorDetail;
 
   with(o?: Partial<ErrorDetailInit>): ErrorDetail;
 
-  asException(o?: Partial<ErrorDetailInit & { cause?: any }>): Error;
+  asException(o?: Partial<ErrorDetailInit>): Error;
 
   asException(message: string): Error;
 
@@ -112,6 +113,27 @@ export class Errors {
 
   static with(init: ErrorDetailInit): ErrorDetail {
     return new ErrorDetailHolder(init);
+  }
+
+  static resolve(e: any): ErrorDetail {
+    if (e instanceof ErrorDetailHolder) {
+      return e;
+    }
+    if (e instanceof ErrorDetailException) {
+      return e.detail;
+    }
+    if (e instanceof HttpException) {
+      return new ErrorDetailHolder({
+        message: e.message,
+        status: e.getStatus(),
+        cause: e,
+      });
+    }
+    return new ErrorDetailHolder({
+      message: e.message,
+      status: 500,
+      cause: e,
+    });
   }
 }
 
