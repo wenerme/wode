@@ -1,0 +1,24 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`conf 1`] = `
+{
+  "database": {
+    "debug": false,
+    "dsn": undefined,
+  },
+  "redis": {
+    "db": undefined,
+    "dsn": undefined,
+    "host": "127.0.0.1",
+    "password": undefined,
+    "port": 6379,
+    "username": undefined,
+  },
+  "server": {
+    "origin": undefined,
+    "port": 3000,
+    "prefix": undefined,
+    "url": undefined,
+  },
+}
+`;

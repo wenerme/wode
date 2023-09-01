@@ -1,6 +1,7 @@
 export { polyfillCrypto } from './servers/polyfill/polyfillCrypto';
 export { polyfillJsDom } from './servers/polyfill/polyfillJsDom';
 export { polyfillBrowser } from './servers/polyfill/polyfillBrowser';
+export { polyfillWebSocket } from './servers/polyfill/polyfillWebSocket';
 export { createFetchWithProxyByUndici } from './servers/fetch/createFetchWithProxyByUndici';
 export { createFetchWithProxy } from './servers/fetch/createFetchWithProxy';
 export { createFetchWithRetry, type FetchWithRetryOptions } from './servers/fetch/createFetchWithRetry';

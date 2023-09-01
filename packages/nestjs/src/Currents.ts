@@ -49,11 +49,20 @@ export class Currents {
     return store;
   }
 
-  static run<T = void>(f: () => T) {
-    return this.#storage.run(new Map(this.#storage.getStore()), f);
+  static run<T = void>(
+    f: () => T,
+    {
+      inherit = true,
+      init = inherit ? this.#storage.getStore() : new Map(),
+    }: {
+      inherit?: boolean;
+      init?: Map<any, any>;
+    } = {},
+  ) {
+    return this.#storage.run(new Map(init), f);
   }
 
-  static create<T>(key: string | Type<T>): ContextToken<T> {
+  static create<T = unknown>(key: string | Type<T>): ContextToken<T> {
     return new Token<T>(key);
   }
 }
