@@ -1,10 +1,11 @@
 import { HttpException } from '@nestjs/common';
+import { getHttpStatusText } from './HttpStatus';
 
 export interface ErrorDetailInit {
-  message: string;
+  message?: string;
   status: number;
   description?: string;
-  code?: number;
+  code?: number | string;
   data?: any;
   cause?: any;
 }
@@ -21,12 +22,19 @@ class ErrorDetailException extends HttpException {
 class ErrorDetailHolder implements ErrorDetail {
   readonly message: string;
   readonly status: number;
-  readonly code: number;
+  readonly code: number | string;
   readonly data?: any;
   readonly description?: string;
   readonly cause?: any;
 
-  constructor({ message, status, code = status, data, description, cause }: ErrorDetailInit) {
+  constructor({
+    status,
+    message = getHttpStatusText(status),
+    code = status,
+    data,
+    description,
+    cause,
+  }: ErrorDetailInit) {
     this.message = message;
     this.status = status;
     this.code = code;

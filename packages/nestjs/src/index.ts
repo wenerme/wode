@@ -1,4 +1,5 @@
 export * from './Errors';
+export { getHttpStatusText } from './HttpStatus';
 export { Currents, type ContextToken } from './Currents';
 export { getContext, getAppContext, setAppContext } from './context';
 export { Cookies } from './decorator/cookies.decorator';
