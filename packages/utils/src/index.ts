@@ -12,11 +12,13 @@ export { arrayFromAsync } from './arrays/arrayFromAsync';
 export { get } from './objects/get';
 export { set } from './objects/set';
 export { parseObjectPath } from './objects/parseObjectPath';
+export { merge, type MergeOptions } from './objects/merge';
 
 // async
 export { createLazyPromise, type LazyPromise } from './asyncs/createLazyPromise';
 export { setAsyncInterval, clearAsyncInterval } from './asyncs/AsyncInterval';
 export { type MaybePromise } from './asyncs/MaybePromise';
+export { createAsyncIterator } from './asyncs/createAsyncIterator';
 
 export { sleep } from './asyncs/sleep';
 export { timeout, TimeoutError } from './asyncs/timeout';
