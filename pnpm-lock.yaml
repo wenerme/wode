@@ -1714,6 +1714,15 @@ importers:
 
   packages/wode: {}
 
+  packages/xf-client:
+    dependencies:
+      '@wener/utils':
+        specifier: workspace:^
+        version: link:../utils
+      ws:
+        specifier: ^8.13.0
+        version: 8.13.0
+
 packages:
 
   /@aashutoshrathi/word-wrap@1.2.6:
