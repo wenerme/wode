@@ -1,4 +1,4 @@
-import { createLazyPromise, LazyPromise } from '@wener/utils';
+import { createAsyncIterator, merge } from '@wener/utils';
 import { buildAuthUrl } from './buildAuthParams';
 import { RequestPayload, ResponsePayload } from './types';
 
@@ -9,7 +9,7 @@ export interface ClientOptions {
   apiKey: string;
   apiSecret: string;
   appId: string;
-  parameters?: any;
+  parameter?: any;
 }
 
 export class Client {
@@ -20,6 +20,7 @@ export class Client {
     apiSecret = process.env.XF_API_SECRET ?? '',
     apiKey = process.env.XF_API_KEY ?? '',
     appId = process.env.XF_APP_ID ?? '',
+    ...rest
   }: ClientOptionsInit) {
     if (!apiKey || !apiSecret) {
       throw new Error('Missing API Key or Secret');
@@ -32,21 +33,37 @@ export class Client {
       apiSecret,
       apiKey,
       appId,
+      ...rest,
     };
   }
 
   send(
-    req: RequestPayload,
+    _req: Partial<RequestPayload>,
     {
       signal,
     }: {
       signal?: AbortSignal;
     } = {},
   ) {
-    req = structuredClone(req);
-    req.header.app_id ||= this.options.appId;
+    const req: RequestPayload = merge(
+      {
+        header: {
+          app_id: this.options.appId,
+        },
+        parameter: this.options.parameter ?? {},
+        payload: {
+          message: {
+            text: [],
+          },
+        },
+      },
+      _req,
+    );
+    if (!req.payload.message.text.length) {
+      throw new Error('Missing message');
+    }
 
-    return transform<ResponsePayload>(async (next) => {
+    return createAsyncIterator<ResponsePayload>(async (next) => {
       try {
         const ws = await this._connect();
         signal?.addEventListener('abort', () => {
@@ -60,7 +77,12 @@ export class Client {
         });
         ws.addEventListener('message', (e) => {
           const data = JSON.parse(e.data as string) as ResponsePayload;
-          next([data, data.header.status === 2]);
+          if (!data.header.code) {
+            next([data, data.header.status === 2]);
+          } else {
+            const { code, message, sid } = data.header;
+            next([undefined, true], new Error(`[${code}] ${message} ${sid}`));
+          }
         });
 
         ws.send(JSON.stringify(req));
@@ -86,36 +108,4 @@ export class Client {
       });
     });
   }
-}
-
-function transform<T>(fn: (next: (val: [T | undefined, boolean] | undefined, err?: any) => void) => void) {
-  const values: Array<Promise<[T | undefined, boolean]>> = [];
-  let recv: (val: [T | undefined, boolean] | undefined, err?: any) => void;
-  {
-    let next: LazyPromise<[T | undefined, boolean]>;
-    values.push((next = createLazyPromise()));
-    recv = (val, err) => {
-      if (err !== undefined) {
-        next.reject(err);
-      } else if (val !== undefined) {
-        next.resolve(val);
-      } else {
-        return;
-      }
-      values.push((next = createLazyPromise()));
-    };
-  }
-
-  fn(recv);
-
-  return (async function* () {
-    let value: T | undefined;
-    for (let i = 0, done = false; !done; i++) {
-      [value, done] = await values[i];
-      delete values[i];
-      if (value !== undefined) {
-        yield value;
-      }
-    }
-  })();
 }

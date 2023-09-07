@@ -17,7 +17,9 @@ function defaultArrayMerge(target: any, source: any, options: Options) {
   });
 }
 
-function getMergeFunction(key: any, options: any) {
+type Merger = (x: any, y: any, options: Options) => any;
+
+function getMergeFunction(key: any, options: Options): Merger {
   if (!options.customMerge) {
     return merge;
   }
@@ -46,7 +48,7 @@ function propertyIsOnObject(object: any, property: any) {
 }
 
 // Protects from prototype poisoning and unexpected merging up the prototype chain.
-function propertyIsUnsafe(target: any, key: any) {
+function propertyIsUnsafe(target: any, key: string) {
   return (
     propertyIsOnObject(target, key) && // Properties are safe to merge if they don't exist in the target yet,
     !(
@@ -57,13 +59,13 @@ function propertyIsUnsafe(target: any, key: any) {
 }
 
 function mergeObject(target: any, source: any, options: Options) {
-  var destination: Record<string, any> = {};
+  const destination: Record<string, any> = {};
   if (options.isMergeableObject(target)) {
-    getKeys(target).forEach(function (key) {
+    getKeys(target).forEach((key) => {
       destination[key] = cloneUnlessOtherwiseSpecified(target[key], options);
     });
   }
-  getKeys(source).forEach(function (key) {
+  getKeys(source).forEach((key) => {
     if (propertyIsUnsafe(target, key)) {
       return;
     }
