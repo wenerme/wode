@@ -5,7 +5,7 @@ describe('custom-array-merge', () => {
   test('custom merge array', () => {
     var mergeFunctionCalled = false;
 
-    function overwriteMerge(target: any, source: any, options: any) {
+    function overwriteMerge(_target: any, source: any, options: any) {
       mergeFunctionCalled = true;
       assert.equal(options.arrayMerge, overwriteMerge);
 
@@ -30,7 +30,7 @@ describe('custom-array-merge', () => {
   });
 
   test('merge top-level arrays', function () {
-    function overwriteMerge(a: any, b: any) {
+    function overwriteMerge(_a: any, b: any) {
       return b;
     }
 
@@ -722,11 +722,12 @@ describe('merge', () => {
       return 'merged letters';
     };
 
-    const options = {
+    const options: MergeOptions = {
       customMerge: (key: any) => {
         if (key === 'letters') {
           return mergeLetters;
         }
+        return;
       },
     };
 
