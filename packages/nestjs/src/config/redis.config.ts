@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { App } from '../app/App';
+import { App } from '../app';
 
 export const RedisConfig = z.object({
   dsn: z.string().optional(),
@@ -7,7 +7,7 @@ export const RedisConfig = z.object({
   port: z.coerce.number().default(6379).catch(6379),
   username: z.string().optional(),
   password: z.string().optional(),
-  db: z.coerce.number().optional(),
+  db: z.coerce.number().default(0),
 });
 export type RedisConfig = z.infer<typeof RedisConfig>;
 

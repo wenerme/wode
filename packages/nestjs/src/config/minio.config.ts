@@ -33,7 +33,6 @@ export function getMinioConfig(env = process.env) {
 
 export function getMinioOptions() {
   const { endpoint, useSsl, port, accessKey, secretKey } = getMinioConfig();
-  console.debug(`Minio Options`, { endpoint, useSsl, port });
   return {
     endPoint: endpoint,
     port,

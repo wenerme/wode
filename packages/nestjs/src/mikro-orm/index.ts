@@ -4,3 +4,5 @@ export { MinimalBaseEntity, type MinimalBaseOptionalEntityFields } from './entit
 export { EnumBaseEntity } from './entity/EnumBaseEntity';
 export { ResourceBaseEntity, type ResourceBaseOptionalEntityFields } from './entity/ResourceBaseEntity';
 export { TenantBaseEntity, type TenantBaseOptionalEntityFields } from './entity/TenantBaseEntity';
+
+export { getMikroORM, getEntityManager, runInTransaction, requireContextEntityManager } from './context';

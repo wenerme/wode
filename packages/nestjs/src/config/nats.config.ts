@@ -15,18 +15,21 @@ export type NatsConfig = z.infer<typeof NatsConfig>;
 
 export function getNatsConfig(env = process.env) {
   let { NATS_URL, NATS_HOST, NATS_PORT, NATS_DEBUG, NATS_NAME, NATS_PASSWORD, NATS_USERNAME, NATS_TLS } = env;
-  let servers: string[] = [];
+  const servers: string[] = [];
   let tls = null;
   if (NATS_URL) {
-    try {
-      const u = new URL(NATS_URL);
-      NATS_USERNAME ||= u.username;
-      NATS_PASSWORD ||= u.password;
-      u.username = '';
-      u.password = '';
-      servers.push(u.toString());
-    } catch (e) {
-      console.warn(`Invalid NATS_URL ${NATS_URL}`, e);
+    // nats, ws, wss, natss
+    for (const url of NATS_URL.split(',')) {
+      try {
+        const u = new URL(url);
+        NATS_USERNAME ||= u.username;
+        NATS_PASSWORD ||= u.password;
+        u.username = '';
+        u.password = '';
+        servers.push(u.toString());
+      } catch (e) {
+        console.warn(`Invalid NATS_URL ${NATS_URL}`, e);
+      }
     }
   } else if (NATS_HOST) {
     servers.push(`${NATS_HOST}:${NATS_PORT || 4222}`);

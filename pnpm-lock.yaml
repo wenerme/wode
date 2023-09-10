@@ -1517,6 +1517,9 @@ importers:
       '@wener/utils':
         specifier: workspace:^
         version: link:../utils
+      reflect-metadata:
+        specifier: ^0.1.13
+        version: 0.1.13
       zod:
         specifier: ^3.21.4
         version: 3.21.4
@@ -1530,12 +1533,24 @@ importers:
       '@nestjs/core':
         specifier: ^10.1.3
         version: 10.1.3(@nestjs/common@10.1.3)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+      '@nestjs/platform-fastify':
+        specifier: ^10.1.3
+        version: 10.1.3(@fastify/static@6.10.2)(@nestjs/common@10.1.3)(@nestjs/core@10.1.3)
       '@nestjs/swagger':
         specifier: ^7.1.6
         version: 7.1.6(@fastify/static@6.10.2)(@nestjs/common@10.1.3)(@nestjs/core@10.1.3)(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)
+      '@nestjs/testing':
+        specifier: ^10.1.3
+        version: 10.1.3(@nestjs/common@10.1.3)(@nestjs/core@10.1.3)
       fastify:
         specifier: ^4.21.0
         version: 4.21.0
+      nats:
+        specifier: ^2.16.0
+        version: 2.16.0
+      nats.ws:
+        specifier: ^1.17.0
+        version: 1.17.0
 
   packages/ohm-grammar-miniquery:
     dependencies:
@@ -1715,6 +1730,15 @@ importers:
   packages/wode: {}
 
   packages/xf-client:
+    dependencies:
+      '@wener/utils':
+        specifier: workspace:^
+        version: link:../utils
+      ws:
+        specifier: ^8.13.0
+        version: 8.13.0
+
+  packages/xunfei-client:
     dependencies:
       '@wener/utils':
         specifier: workspace:^
@@ -3760,7 +3784,6 @@ packages:
     dependencies:
       fastify-plugin: 4.5.1
       mnemonist: 0.39.5
-    dev: false
 
   /@fastify/deepmerge@1.3.0:
     resolution: {integrity: sha512-J8TOSBq3SoZbDhM9+R/u77hP93gz/rajSA+K2kGyijPpORPWUXHUpTaleoj+92As0S9uPRP7Oi8IqMf0u+ro6A==}
@@ -3778,7 +3801,6 @@ packages:
     dependencies:
       fast-querystring: 1.1.2
       fastify-plugin: 4.5.1
-    dev: false
 
   /@fastify/helmet@11.0.0:
     resolution: {integrity: sha512-YSFhJFR4Pk2azmTkX54f0Z/O7h5j4ruCQUlagf/Rw1P45u5/2u+F+I83DRyIKryM6prXl++X2yY0Ib0RXAlZ7Q==}
@@ -3794,7 +3816,6 @@ packages:
       fastify-plugin: 4.5.1
       path-to-regexp: 6.2.1
       reusify: 1.0.4
-    dev: false
 
   /@fastify/send@2.1.0:
     resolution: {integrity: sha512-yNYiY6sDkexoJR0D8IDy3aRP3+L4wdqCpvx5WP+VtEU58sn7USmKynBzDQex5X42Zzvw2gNzzYgP90UfWShLFA==}
@@ -3877,7 +3898,7 @@ packages:
     dependencies:
       '@graphql-tools/utils': 10.0.1(graphql@16.7.1)
       graphql: 16.7.1
-      tslib: 2.6.0
+      tslib: 2.6.1
     dev: false
 
   /@graphql-tools/schema@10.0.0(graphql@16.7.1):
@@ -3889,7 +3910,7 @@ packages:
       '@graphql-tools/merge': 9.0.0(graphql@16.7.1)
       '@graphql-tools/utils': 10.0.1(graphql@16.7.1)
       graphql: 16.7.1
-      tslib: 2.6.0
+      tslib: 2.6.1
       value-or-promise: 1.0.12
     dev: false
 
@@ -3901,7 +3922,7 @@ packages:
     dependencies:
       '@graphql-typed-document-node/core': 3.2.0(graphql@16.7.1)
       graphql: 16.7.1
-      tslib: 2.6.0
+      tslib: 2.6.1
     dev: false
 
   /@graphql-typed-document-node/core@3.2.0(graphql@16.7.1):
@@ -5268,7 +5289,6 @@ packages:
       tslib: 2.6.1
     transitivePeerDependencies:
       - supports-color
-    dev: false
 
   /@nestjs/serve-static@4.0.0(@fastify/static@6.10.2)(@nestjs/common@10.1.3)(@nestjs/core@10.1.3)(fastify@4.21.0):
     resolution: {integrity: sha512-8cTrNV2ngdHIjiLNsXePnw0+KY1ThrZGz/WeyAG5gIvmZNDbnZBOrPoYlKL+MOzlXlQStxR5jKLYmn+nJeoncQ==}
@@ -12511,7 +12531,7 @@ packages:
       graphql: ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
     dependencies:
       graphql: 16.7.1
-      tslib: 2.6.0
+      tslib: 2.6.1
     dev: false
 
   /graphql-ws@5.14.0(graphql@16.7.1):
@@ -14342,7 +14362,6 @@ packages:
     resolution: {integrity: sha512-FPUtkhtJ0efmEFGpU14x7jGbTB+s18LrzRL2KgoWz9YvcY3cPomz8tih01GbHwnGk/OmkOKfqd/RAQoc8Lm7DQ==}
     dependencies:
       obliterator: 2.0.4
-    dev: false
 
   /moment@2.29.4:
     resolution: {integrity: sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==}
@@ -14404,6 +14423,19 @@ packages:
 
   /napi-build-utils@1.0.2:
     resolution: {integrity: sha512-ONmRUqK7zj7DWX0D9ADe03wbwOBZxNAfF20PlGfCWQcD3+/MakShIHrMqx9YwPTfxDdF1zLeL+RGZiR9kGMLdg==}
+
+  /nats.ws@1.17.0:
+    resolution: {integrity: sha512-kKWYsh7fOYWfEnnO9AGSlbux68FCyeI0Th0kndvZSeT56zbcSq4fS0n1AKXwdtDLgZAALCLo4DnVO8F11OcTkQ==}
+    optionalDependencies:
+      nkeys.js: 1.0.5
+    dev: true
+
+  /nats@2.16.0:
+    resolution: {integrity: sha512-VH0FiMGMjv+6+DGz5sPfpEkOQXn9rVtadJ3l1D0+HzezVks5lCl2WTgNO3Q0Ba5n43n+BOz95U5muPF3EpsEtA==}
+    engines: {node: '>= 14.0.0'}
+    dependencies:
+      nkeys.js: 1.0.5
+    dev: true
 
   /natural-compare-lite@1.4.0:
     resolution: {integrity: sha512-Tj+HTDSJJKaZnfiuw+iaF9skdPpTo2GtEly5JHnWV/hfv2Qj/9RKsGISQtLh2ox3l5EAGw487hnBee0sIJ6v2g==}
@@ -14512,6 +14544,13 @@ packages:
       prop-types: 15.8.1
       react: 18.2.0
     dev: false
+
+  /nkeys.js@1.0.5:
+    resolution: {integrity: sha512-u25YnRPHiGVsNzwyHnn+PT90sgAhnS8jUJ1nxmkHMFYCJ6+Ic0lv291w7uhRBpJVJ3PH2GWbYqA151lGCRrB5g==}
+    engines: {node: '>=10.0.0'}
+    dependencies:
+      tweetnacl: 1.0.3
+    dev: true
 
   /node-abi@3.45.0:
     resolution: {integrity: sha512-iwXuFrMAcFVi/ZoZiqq8BzAdsLw9kxDfTC0HMyjXfSL/6CSDAGD5UmR7azrAgWV1zKYq7dUUMj4owusBWKLsiQ==}
@@ -14825,7 +14864,6 @@ packages:
 
   /obliterator@2.0.4:
     resolution: {integrity: sha512-lgHwxlxV1qIg1Eap7LgIeoBWIMFibOjbrYPIPJZcI1mmGAI2m3lNYpK12Y+GBdPQ0U1hRwSord7GIaawz962qQ==}
-    dev: false
 
   /oblivious-set@1.0.0:
     resolution: {integrity: sha512-z+pI07qxo4c2CulUHCDf9lcqDlMSo72N/4rLUpRXf6fu+q8vjt8y0xS+Tlf8NTJDdTXHbdeO1n3MlbctwEoXZw==}
@@ -15121,7 +15159,6 @@ packages:
 
   /path-to-regexp@6.2.1:
     resolution: {integrity: sha512-JLyh7xT1kizaEvcaXOQwOc2/Yhw6KZOvPf1S8401UyLk86CU79LN3vl7ztXGm/pZ+YjoyAJ4rxmHwbkBXJX+yw==}
-    dev: false
 
   /path-type@4.0.0:
     resolution: {integrity: sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==}
@@ -18190,6 +18227,11 @@ packages:
       turbo-linux-arm64: 1.10.12
       turbo-windows-64: 1.10.12
       turbo-windows-arm64: 1.10.12
+    dev: true
+
+  /tweetnacl@1.0.3:
+    resolution: {integrity: sha512-6rt+RN7aOi1nGMyC4Xa5DdYiukl2UWCbcJft7YhxReBGQD7OAM8Pbxw6YMo4r2diNEA8FEmu32YOn9rhaiE5yw==}
+    requiresBuild: true
     dev: true
 
   /type-check@0.4.0:
