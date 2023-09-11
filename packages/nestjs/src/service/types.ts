@@ -7,23 +7,23 @@ export interface KnownServiceMessageHeaders {
   'x-timestamp'?: string;
 }
 
-export interface ServiceLocation {
-  namespace?: string;
-  service?: string;
-  method?: string;
-  version?: string;
-  instance?: string;
-}
+// export interface ServiceLocation {
+//   namespace?: string;
+//   service?: string;
+//   method?: string;
+//   version?: string;
+//   instance?: string;
+// }
 
-export interface ServiceMethodSchema {
-  name: string;
-  input?: any;
-  output?: any;
-  metadata?: Record<string, any>;
-}
-
-export interface ServiceSchema {
-  name: string;
-  methods: ServiceMethodSchema[];
-  metadata?: Record<string, any>;
-}
+// export interface ServiceMethodSchema {
+//   name: string;
+//   input?: any;
+//   output?: any;
+//   metadata?: Record<string, any>;
+// }
+//
+// export interface ServiceSchema {
+//   name: string;
+//   methods: ServiceMethodSchema[];
+//   metadata?: Record<string, any>;
+// }

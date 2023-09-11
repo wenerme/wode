@@ -1,4 +1,5 @@
-import type { NatsConnection, Subscription } from 'nats';
+import type { NatsConnection } from 'nats';
+import type { Subscription } from 'nats';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { DiscoveryService, ModulesContainer } from '@nestjs/core';
 import { createLazyPromise } from '@wener/utils';
@@ -23,7 +24,7 @@ export class NatsServerHandler {
   constructor(
     @Inject(ModulesContainer) private readonly modulesContainer: ModulesContainer,
     @Inject(ServiceRegistry) private readonly svc: ServiceRegistry,
-    @Inject(NatsConn) readonly nc: NatsConnection,
+    @Inject(NatsConn) readonly nc: NatsConn,
   ) {
     this.discoveryService = new DiscoveryService(modulesContainer);
   }

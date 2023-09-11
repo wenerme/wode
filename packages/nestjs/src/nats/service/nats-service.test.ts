@@ -1,4 +1,3 @@
-import type { NatsConnection } from 'nats';
 import { afterAll, beforeAll, describe, expect, test } from 'vitest';
 import type { INestApplication } from '@nestjs/common';
 import { Inject, Injectable, Module } from '@nestjs/common';
@@ -15,7 +14,7 @@ import {
   Service,
   ServiceRegistry,
 } from '../../service';
-import { ServiceClientModule } from '../../service/client/ServiceClientModule';
+import { ServiceClientModule } from '../../service';
 import { InjectNatsClient, NatsConn, NatsModule } from '../nats.module';
 import { NatsServerHandler } from './NatsServerHandler';
 import { NatsServiceClientConnectionModule } from './NatsServiceClientConnectionModule';
@@ -90,7 +89,7 @@ class TestServiceImpl implements LocalTestService {
 @Injectable()
 class TestService {
   constructor(
-    @InjectNatsClient() readonly nats: NatsConnection,
+    @InjectNatsClient() readonly nats: NatsConn,
     @Inject(NatsConn) readonly nats2: NatsConn,
   ) {
     console.log(`Init TestService`);

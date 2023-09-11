@@ -6,3 +6,5 @@ export { ResourceBaseEntity, type ResourceBaseOptionalEntityFields } from './ent
 export { TenantBaseEntity, type TenantBaseOptionalEntityFields } from './entity/TenantBaseEntity';
 
 export { getMikroORM, getEntityManager, runInTransaction, requireContextEntityManager } from './context';
+
+export { OrmModule, type MikroOrmConfig } from './orm.module';
