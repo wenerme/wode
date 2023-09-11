@@ -1,20 +1,23 @@
 import { Injectable } from '@nestjs/common';
-import type { Constructor } from '../../types';
+import type { AbstractConstructor, Constructor } from '../../types';
+import { getServiceSchema, ServiceSchema } from '../decorator';
 import { getServiceName } from '../decorator/Service';
-import type {
-  ClientConnection,
-  ClientRequest,
-  ClientRequestInit,
-  ClientRequestOptions,
-  ClientResponse,
-  RemoteService,
-} from './types';
+import { createProxyClient } from './createProxyClient';
+import { createRemoteServiceClient } from './createRemoteServiceClient';
+import type { ClientConnection, ClientRequest, ClientRequestInit, ClientResponse, RemoteService } from './types';
 
 export type ClientMiddleware = (next: ClientConnection) => ClientConnection;
 
+interface RemoteClientEntry {
+  schema: ServiceSchema;
+  client: IRemoteServiceClient;
+}
+
+export interface IRemoteServiceClient {}
+
 @Injectable()
 export class ClientRegistry {
-  private clients = new Map<any, any>();
+  private clients = new Map<string, RemoteClientEntry>();
 
   private conn: ClientConnection = () => {
     throw new Error('ServiceClientConnection not connected');
@@ -38,27 +41,40 @@ export class ClientRegistry {
     this.handler = undefined;
   }
 
-  getClient<T>(svc: Constructor<T>): RemoteService<T>;
-  getClient<T>(svc: string): RemoteService<T>;
+  getClient<T>(svc: Constructor<T> | AbstractConstructor<T>): RemoteService<T>;
+  // getClient<T>(svc: string): RemoteService<T>;
   getClient<T>(svc: any): RemoteService<T> {
     const service = getServiceName(svc);
     if (!service) {
       throw new Error(`Service ${svc} not found`);
     }
-    let client = this.clients.get(service);
-    if (!client) {
-      client = this.createClient({ service, constructor: typeof svc === 'function' ? svc : undefined });
-      this.clients.set(service, client);
+    let last = this.clients.get(service);
+    if (!last) {
+      const schema = getServiceSchema(svc);
+      if (!schema) {
+        throw new Error(`Service ${svc} not found`);
+      }
+      last = {
+        schema,
+        client: createRemoteServiceClient({ schema, invoke: this.send }),
+      };
+      this.clients.set(service, last);
     }
-    return client;
+    return last.client as any;
+    // let client = this.clients.get(service);
+    // if (!client) {
+    //   client = this.createClient({ service, constructor: typeof svc === 'function' ? svc : undefined });
+    //   this.clients.set(service, client);
+    // }
+    // return client;
   }
 
-  private createClient<T>(opts: { service: string; constructor?: Constructor<any> }): RemoteService<T> {
-    return createProxyClient({
-      ...opts,
-      invoke: this.send,
-    });
-  }
+  // private createClient<T>(opts: { service: string; constructor?: Constructor<any> }): RemoteService<T> {
+  //   return createProxyClient({
+  //     ...opts,
+  //     invoke: this.send,
+  //   });
+  // }
 
   send = async (init: ClientRequestInit): Promise<ClientResponse> => {
     const req: ClientRequest = {
@@ -76,97 +92,4 @@ export class ClientRegistry {
     this.conn = conn;
     this.handler = undefined;
   }
-}
-
-interface ClientProxyTarget {
-  service: string;
-  methods: Record<string, Function>;
-  attrs: Map<any, any>;
-  constructor?: Constructor<any>;
-}
-
-export function createProxyClient<T>({
-  invoke,
-  ...opts
-}: {
-  service: string;
-  constructor?: Constructor<any>;
-  invoke: (req: ClientRequestInit) => Promise<ClientResponse>;
-}): RemoteService<T> {
-  const ctx: ClientProxyTarget = {
-    service: opts.service,
-    methods: {} as Record<string | symbol, Function>,
-    attrs: new Map(),
-    constructor: opts.constructor,
-  };
-  return new Proxy(ctx, {
-    getPrototypeOf(target: ClientProxyTarget): object | null {
-      return target.constructor?.prototype || null;
-    },
-    has(target, key): boolean {
-      switch (key) {
-        case 'toString':
-        case 'toJSON':
-      }
-      return false;
-    },
-    get: (target, key) => {
-      if (key === Symbol.hasInstance) {
-        let last = target.attrs.get(key);
-        if (!last) {
-          last = (instance: any) => {
-            if (instance === Proxy) {
-              return true;
-            }
-            if (!target.constructor) {
-              return false;
-            }
-            return instance instanceof target.constructor;
-          };
-          target.attrs.set(key, last);
-        }
-        return last;
-      }
-      // fixme by explicit method check
-      switch (key) {
-        case 'then':
-        case 'catch':
-        case 'finally':
-        case 'onModuleInit':
-        case 'onModuleDestroy':
-        case 'onApplicationBootstrap':
-        case 'onApplicationShutdown':
-        case 'beforeApplicationShutdown':
-          return undefined;
-        case 'constructor':
-          return target.constructor;
-        case 'toString':
-          return () => `${target.constructor?.name || 'RemoteService'}(${target.service})`;
-        case 'toJSON':
-          return () => `${target.constructor?.name || 'RemoteService'}(${target.service})`;
-      }
-      if (typeof key === 'string') {
-        return (target.methods[key] ||= async (...args: any[]) => {
-          const opts = (args[1] || {}) as ClientRequestOptions;
-          const res = await invoke({
-            service: target.service,
-            method: key,
-            input: args[0],
-            headers: opts.headers,
-          });
-          return handleResponse({
-            res,
-          });
-        });
-      }
-      return target.attrs.get(key);
-    },
-  }) as any;
-}
-
-function handleResponse({ res }: { res: ClientResponse }) {
-  if (!res.ok) {
-    throw Object.assign(new Error(res.description), { res, status: res.status });
-  }
-  return res.output;
 }

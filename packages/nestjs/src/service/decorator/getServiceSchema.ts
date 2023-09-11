@@ -4,12 +4,12 @@ import { getMethodOptions } from './Method';
 import type { ServiceOptions } from './Service';
 import { getServiceName, getServiceOptions } from './Service';
 
-export function getServiceSchema(type: Constructor | AbstractConstructor) {
+export function getServiceSchema<T = unknown>(type: Constructor<T> | AbstractConstructor<T>) {
   const name = getServiceName(type);
   if (!name) {
     return;
   }
-  const schema: ServiceSchema = {
+  const schema: ServiceSchema<T> = {
     name,
     options: getServiceOptions(type) ?? { name },
     ref: type,
@@ -47,11 +47,11 @@ export function getServiceSchema(type: Constructor | AbstractConstructor) {
   return schema;
 }
 
-export interface ServiceSchema {
+export interface ServiceSchema<T = unknown> {
   name: string;
   options: ServiceOptions;
   methods: MethodSchema[];
-  ref?: any;
+  ref?: Constructor<T> | AbstractConstructor<T>;
 }
 
 export interface MethodSchema {
