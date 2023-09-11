@@ -3,7 +3,7 @@ import { expect, test } from 'vitest';
 import { ClientRegistry } from './client';
 import { createProxyClient } from './client/ClientRegistry';
 import { RemoteServiceOf } from './client/RemoteServiceOf';
-import { getServiceName, Service } from './decorator';
+import { getServiceName, Service } from './decorator/Service';
 import { createServerLoggingMiddleware, ExposeMethod, ExposeService, ServiceRegistry } from './server';
 import { getServiceMetadata } from './server/ServiceRegistry';
 

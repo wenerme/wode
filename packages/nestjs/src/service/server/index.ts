@@ -9,3 +9,4 @@ export {
 } from './ServiceRegistry';
 export type * from './types';
 export { createServerLoggingMiddleware } from './createServerLoggingMiddleware';
+export { ServiceServerModule } from './ServiceServerModule';

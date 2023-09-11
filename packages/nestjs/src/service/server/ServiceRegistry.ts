@@ -1,7 +1,7 @@
 import { applyDecorators, Injectable, Logger, SetMetadata } from '@nestjs/common';
 import type { Constructor } from '../../types';
-import { getServiceName } from '../decorator';
-import type { ServiceSchema } from '../types';
+import type { MethodOptions, ServiceOptions, ServiceSchema } from '../decorator';
+import { getServiceName, METHOD_METADATA_KEY, SERVICE_METADATA_KEY } from '../decorator';
 import { createResponse } from './createResponse';
 import type { ServerRequest, ServerRequestContext, ServerResponse } from './types';
 
@@ -124,14 +124,11 @@ export interface RegisterServiceOptions<T = any> {
   schema?: ServiceSchema;
 }
 
-export interface ExposeServiceOptions {
+export interface ExposeServiceOptions extends Partial<ServiceOptions> {
   as?: Function;
 }
 
-export interface ExposeMethodOptions {
-  input?: any;
-  output?: any;
-}
+export type ExposeMethodOptions = MethodOptions;
 
 interface ServiceMetadata {
   name: string;
@@ -146,10 +143,11 @@ interface ServiceMetadata {
   >;
 }
 
-export const EXPOSE_SERVICE_METADATA_KEY = 'service:server:expose-service';
-export const EXPOSE_METHOD_METADATA_KEY = 'service:server:expose-method';
+export const EXPOSE_SERVICE_METADATA_KEY = SERVICE_METADATA_KEY;
+export const EXPOSE_METHOD_METADATA_KEY = METHOD_METADATA_KEY;
 
 export const ExposeService = (opts: ExposeServiceOptions = {}): ClassDecorator =>
+  // Reflect.metadata(EXPOSE_SERVICE_METADATA_KEY, opts);
   applyDecorators(SetMetadata(EXPOSE_SERVICE_METADATA_KEY, opts), Injectable());
 
 export const ExposeMethod = (opts: ExposeMethodOptions = {}): MethodDecorator =>

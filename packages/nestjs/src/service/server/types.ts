@@ -20,6 +20,6 @@ export interface ServerRequestContext {
 
 export type LocalService<T> = InterfaceWithExtraParameters<T, ServerRequestContext>;
 
-export type ServerResponse = ServiceResponse
+export type ServerResponse = ServiceResponse;
 
-export type ServerRequest = ServiceRequest
+export type ServerRequest = ServiceRequest;

@@ -5,6 +5,7 @@ exports[`conf 1`] = `
   "database": {
     "debug": false,
     "dsn": undefined,
+    "type": undefined,
   },
   "minio": {
     "accessKey": "",

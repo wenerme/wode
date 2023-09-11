@@ -1,5 +1,5 @@
 import type { ConnectionOptions, NatsConnection } from 'nats';
-import type { DynamicModule, Type } from '@nestjs/common';
+import type { DynamicModule } from '@nestjs/common';
 import { Inject, Logger, Module } from '@nestjs/common';
 import { getNatsOptions } from '../config';
 import { connect as defaultConnect } from './connect';
@@ -8,8 +8,9 @@ export const NATS_CONNECTION = Symbol.for('NATS_CONNECTION');
 
 export const InjectNatsClient = () => Inject(NATS_CONNECTION);
 
-// @ts-ignore not works as expected
-export abstract class NatsConn implements NatsConnection {}
+// avoid NatsConnection type import
+export const NatsConn = NATS_CONNECTION;
+export type NatsConn = NatsConnection;
 
 // export const NatsConn = NatsConnToken as Type<NatsConnection>;
 // export type NatsConn = Type<NatsConnection>;

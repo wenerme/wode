@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import type { Constructor } from '../../types';
-import { getServiceName } from '../decorator';
+import { getServiceName } from '../decorator/Service';
 import type {
   ClientConnection,
   ClientRequest,
