@@ -1,9 +1,9 @@
 import 'reflect-metadata';
 import { expect, test } from 'vitest';
-import { ClientRegistry } from './client';
-import { createProxyClient } from './client/ClientRegistry';
-import { RemoteServiceOf } from './client/RemoteServiceOf';
-import { getServiceName, Service } from './decorator/Service';
+import { ClientRegistry, RemoteServiceOf } from './client';
+import { createProxyClient } from './client/createProxyClient';
+import { createRemoteServiceClient } from './client/createRemoteServiceClient';
+import { getServiceName, getServiceSchema, Service } from './decorator';
 import { createServerLoggingMiddleware, ExposeMethod, ExposeService, ServiceRegistry } from './server';
 import { getServiceMetadata } from './server/ServiceRegistry';
 
@@ -26,12 +26,26 @@ test('service in memory connect', async () => {
   const res = await client.hello('world');
 
   console.log('Response', res);
-  await expect(() => client.hidden('')).rejects.toThrow();
+  // extend inherit this method
+  // expect(() => client.hidden('')).toThrow('is not a function');
 });
 
-test('remote wrapper', () => {
+test('class remote wrapper', () => {
+  const client: RemoteTestService = createRemoteServiceClient({
+    schema: getServiceSchema(RemoteTestService)!,
+    invoke: () => {
+      throw new Error();
+    },
+  });
+  expect(client instanceof RemoteTestService).toBeTruthy();
+  expect(client instanceof TestService).toBeTruthy();
+  // works
+  expect(client.hidden({})).toBe('');
+});
+
+test('proxy remote wrapper', async () => {
   expect(getServiceName(RemoteTestService)).toBe(getServiceName(TestService));
-  const client = createProxyClient({
+  const client: RemoteTestService = createProxyClient({
     service: getServiceName(RemoteTestService)!,
     constructor: RemoteTestService,
     invoke: () => {
@@ -40,6 +54,7 @@ test('remote wrapper', () => {
   });
   expect(client instanceof RemoteTestService).toBeTruthy();
   expect(client instanceof TestService).toBeTruthy();
+  await expect(() => client.hidden({})).rejects.toThrow();
 });
 
 @Service({
