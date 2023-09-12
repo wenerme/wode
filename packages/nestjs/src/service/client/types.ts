@@ -27,3 +27,4 @@ export type ClientRequestInit = Optional<ClientRequest, 'id' | 'headers' | 'meta
 export type ClientRequest = ServiceRequest;
 
 export type ClientConnection = (req: ClientRequest) => Promise<ClientResponse>;
+type ClientConnection_ = (req: ClientRequest) => Promise<AsyncIterator<ClientResponse>>;
