@@ -19,5 +19,6 @@ export const ServiceResponseSchema = z.object({
   description: z.string(),
   headers: z.record(z.string()).default({}),
   metadata: z.record(z.any()).default({}),
+  done: z.boolean().optional(), // for many responses
 });
 export type ServiceResponse = z.infer<typeof ServiceResponseSchema>;

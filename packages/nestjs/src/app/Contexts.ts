@@ -32,3 +32,14 @@ export function setCurrentContext({
   requestId && Contexts.requestId.set(requestId);
   request && Contexts.request.set(request);
 }
+
+export function getCurrentContext() {
+  return {
+    tenantId: Contexts.tenantId.get(),
+    userId: Contexts.userId.get(),
+    sessionId: Contexts.sessionId.get(),
+    clientId: Contexts.clientId.get(),
+    requestId: Contexts.requestId.get(),
+    request: Contexts.request.get(),
+  };
+}
