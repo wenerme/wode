@@ -1,6 +1,7 @@
 import type { NatsError } from 'nats';
 import { headers, type NatsConnection } from 'nats';
 import { DynamicModule, Logger, Module } from '@nestjs/common';
+import { getHttpStatusText } from '../../HttpStatus';
 import { NATS_CONNECTION, NatsModule } from '../../nats';
 import type { ClientConnection, ClientResponse } from '../../service';
 import { SERVICE_CLIENT_CONNECTION, ServiceClientModule } from '../../service/client/ServiceClientModule';
@@ -53,16 +54,14 @@ export function createNatsClientConnection(nc: NatsConnection): ClientConnection
         switch (e.code) {
           case 'TIMEOUT':
             return createResponse(req, {
-              status: '请求超时',
-              code: 500,
+              status: 408, // request timeout
               description: err.message,
               ok: false,
             });
           case '503':
             return createResponse(req, {
-              status: '服务不存在',
-              code: 500,
-              description: err.message,
+              code: 503,
+              description: `${getHttpStatusText(503)}: ${err.message}`,
               ok: false,
             });
           default:
@@ -74,8 +73,7 @@ export function createNatsClientConnection(nc: NatsConnection): ClientConnection
         }
       }
       return createResponse(req, {
-        status: 'InternalError',
-        code: 500,
+        status: 500,
         description: String(e),
         ok: false,
       });

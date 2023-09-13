@@ -74,7 +74,7 @@ export function createProxyClient<T>({
           const res = await invoke({
             service: target.service,
             method: key,
-            input: args[0],
+            body: args[0],
             headers: opts.headers,
           });
           return handleResponse({
@@ -91,5 +91,5 @@ export function handleResponse({ res }: { res: ClientResponse }) {
   if (!res.ok) {
     throw Object.assign(new Error(res.description), { res, status: res.status });
   }
-  return res.output;
+  return res.body;
 }
