@@ -8,6 +8,7 @@ export interface MethodOptions {
   name?: string;
   timeout?: number;
   metadata?: Record<string, any>;
+  stream?: true;
 }
 
 export const Method = (opts: MethodOptions = {}): MethodDecorator => Reflect.metadata(METHOD_METADATA_KEY, opts);

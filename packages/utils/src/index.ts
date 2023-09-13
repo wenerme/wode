@@ -20,6 +20,7 @@ export { setAsyncInterval, clearAsyncInterval } from './asyncs/AsyncInterval';
 export { type MaybePromise } from './asyncs/MaybePromise';
 export { createAsyncIterator } from './asyncs/createAsyncIterator';
 export { firstOfAsyncIterator } from './asyncs/firstOfAsyncIterator';
+export { isIterator } from './asyncs/isIterator';
 
 export { sleep } from './asyncs/sleep';
 export { timeout, TimeoutError } from './asyncs/timeout';
@@ -95,3 +96,4 @@ export { type FetchLike, createFetchWith, createFetchWithLogging, dumpResponse, 
 
 // bundled
 export { default as ms } from './libs/ms';
+export { nextOfAsyncIterator } from './asyncs/nextOfAsyncIterator';

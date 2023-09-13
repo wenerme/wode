@@ -15,7 +15,9 @@ type InterfaceWithExtraOptionalParameters<T, X> = {
 
 export interface ClientRequestOptions {
   headers?: Record<string, string>;
+  metadata?: Record<string, any>;
   timeout?: number;
+  signal?: AbortSignal;
 }
 
 export type RemoteService<T> = InterfaceWithExtraOptionalParameters<T, ClientRequestOptions>;
@@ -24,7 +26,9 @@ export type ClientResponse = ServiceResponse;
 
 export type ClientRequestInit = Optional<ClientRequest, 'id' | 'headers' | 'metadata'>;
 
-export type ClientRequest = ServiceRequest;
+export type ClientRequest = ServiceRequest & {
+  options: ClientRequestOptions;
+};
 
-export type ClientConnection = (req: ClientRequest) => Promise<ClientResponse>;
-type ClientConnection_ = (req: ClientRequest) => Promise<AsyncIterator<ClientResponse>>;
+export type ClientConnection = (req: ClientRequest) => Promise<ClientResponse | AsyncIterator<ClientResponse>>;
+// export type ClientConnection = (req: ClientRequest) => Promise<AsyncIterator<ClientResponse>>;

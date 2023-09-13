@@ -1,5 +1,6 @@
 import { Constructor } from '../../types';
-import { ClientRequestInit, ClientRequestOptions, ClientResponse, RemoteService } from './types';
+import { handleResponse } from './handleResponse';
+import { ClientRequest, ClientRequestInit, ClientRequestOptions, ClientResponse, RemoteService } from './types';
 
 interface ClientProxyTarget {
   service: string;
@@ -71,25 +72,23 @@ export function createProxyClient<T>({
       if (typeof key === 'string') {
         return (target.methods[key] ||= async (...args: any[]) => {
           const opts = (args[1] || {}) as ClientRequestOptions;
-          const res = await invoke({
+          let req: ClientRequest = {
+            id: Math.random().toString(36).slice(2),
             service: target.service,
             method: key,
             body: args[0],
-            headers: opts.headers,
-          });
+            headers: opts.headers ?? {},
+            metadata: opts.metadata ?? {},
+            options: opts,
+          };
+          const res = await invoke(req);
           return handleResponse({
             res,
+            req,
           });
         });
       }
       return target.attrs.get(key);
     },
   }) as any;
-}
-
-export function handleResponse({ res }: { res: ClientResponse }) {
-  if (!res.ok) {
-    throw Object.assign(new Error(res.description), { res, status: res.status });
-  }
-  return res.body;
 }

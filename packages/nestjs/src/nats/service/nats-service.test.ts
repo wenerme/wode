@@ -10,7 +10,7 @@ import {
   type LocalService,
   Method,
   RemoteMethodNotImplemented,
-  type ServerRequestContext,
+  type ServerRequestOptions,
   Service,
   ServiceRegistry,
 } from '../../service';
@@ -81,7 +81,7 @@ class TestServiceImpl implements LocalTestService {
   }
 
   @ExposeMethod()
-  async hello(a: { name: string }, _opts: ServerRequestContext) {
+  async hello(a: { name: string }, _opts: ServerRequestOptions) {
     return `Hello ${a.name}`;
   }
 }
