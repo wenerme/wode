@@ -58,8 +58,7 @@ export class ServiceRegistry {
     };
     if (!svc) {
       return createResponse(req, {
-        code: 404,
-        status: 'NotFound',
+        status: 404,
         description: `Service ${req.service} not found`,
         ok: false,
       });
@@ -71,31 +70,28 @@ export class ServiceRegistry {
     }
     if (!method) {
       return createResponse(req, {
-        code: 404,
-        status: 'NotFound',
+        status: 404,
         description: `Service ${req.service} method ${req.method} not found`,
         ok: false,
       });
     }
     if (typeof method !== 'function') {
       return createResponse(req, {
-        code: 500,
-        status: 'ServerError',
+        status: 500,
         description: `Service ${req.service} method ${req.method} invalid`,
         ok: false,
       });
     }
     try {
-      const output = await method.call(svc.target, req.input, ctx);
+      const output = await method.call(svc.target, req.body, ctx);
       return createResponse(req, {
-        output,
+        body: output,
         ok: true,
       });
     } catch (e) {
-      this.log.error(`Service ${req.service} method ${req.method} error: ${e}`);
+      this.log.error(`Handle ${req.service}#${req.method} error: ${e}`);
       return createResponse(req, {
-        code: 500,
-        status: 'ServerError',
+        status: 500,
         description: String(e),
         ok: false,
       });

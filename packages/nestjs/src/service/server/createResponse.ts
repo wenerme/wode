@@ -1,19 +1,26 @@
 import { randomUUID } from '@wener/utils';
+import { getHttpStatusText } from '../../HttpStatus';
 import type { ServerRequest, ServerResponse } from './types';
 
 export function createResponse(
   req: Partial<ServerRequest>,
-  { code = 0, ok = code === 0 || code === 200, ...o }: Partial<ServerResponse> = {},
+  {
+    code,
+    status = 200,
+    ok = status >= 200 && status <= 400,
+    description = getHttpStatusText(status) || 'Unknown',
+    ...o
+  }: Partial<ServerResponse> = {},
 ): ServerResponse {
   return {
     id: req.id || randomUUID(),
     code,
-    status: 'OK',
+    status,
     ok,
-    description: `Handle ${req.service}.${req.method}`,
+    description,
     headers: {},
     metadata: {},
-    output: null,
+    body: null,
     ...o,
   };
 }

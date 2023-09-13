@@ -82,14 +82,12 @@ export class NatsServerHandler {
         if (!res) {
           if (cause) {
             res = createResponse(req, {
-              status: 'InternalError',
-              code: 500,
+              status: 500,
               description: String(cause),
             });
           } else if (!res) {
             res = createResponse(req, {
-              status: 'InternalError',
-              code: 500,
+              status: 500,
               description: 'Invalid Response',
             });
           }

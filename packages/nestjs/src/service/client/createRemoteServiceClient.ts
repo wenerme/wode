@@ -48,7 +48,7 @@ export function createRemoteServiceClient<T = unknown>({
         const res = await this.$invoke({
           service: schema.name,
           method: methodName,
-          input: req,
+          body: req,
           headers: opts.headers,
           metadata: opts.metadata,
         });

@@ -3,8 +3,8 @@ import { headers } from 'nats';
 
 export function fromMessageHeader(
   res: {
-    status?: string;
-    code?: number;
+    status?: number;
+    code?: number | string;
     ok?: boolean;
     description?: string;
     headers?: Record<string, string>;
@@ -27,8 +27,8 @@ export function fromMessageHeader(
 
 export function toMessageHeader(
   res: {
-    status?: string;
-    code?: number;
+    status?: number;
+    code?: number | string;
     ok?: boolean;
     description?: string;
     headers?: Record<string, string>;

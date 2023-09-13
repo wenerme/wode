@@ -63,7 +63,7 @@ describe('nats service module', async () => {
 })
 abstract class AbstractTestService {
   @Method()
-  hello(opts: { name: string }): string {
+  hello(_opts: { name: string }): string {
     throw new RemoteMethodNotImplemented();
   }
 }
@@ -81,7 +81,7 @@ class TestServiceImpl implements LocalTestService {
   }
 
   @ExposeMethod()
-  async hello(a: { name: string }, opts: ServerRequestContext) {
+  async hello(a: { name: string }, _opts: ServerRequestContext) {
     return `Hello ${a.name}`;
   }
 }
