@@ -49,6 +49,7 @@ export function createNatsClientConnection(nc: NatsConnection): ClientConnection
       fromMessageHeader(res, msg.headers);
       return res;
     } catch (e) {
+      log.error(`Unexpected ${req.service}:${req.method} ${e}`);
       return createErrorResponse({ error: e, req });
     }
   };

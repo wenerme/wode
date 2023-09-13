@@ -81,6 +81,7 @@ export class NatsServerHandler {
         }
         if (!res) {
           if (cause) {
+            log.error(`Handle ${req.service}#${req.method} error: ${cause}`);
             res = createResponse(req, {
               status: 500,
               description: String(cause),
