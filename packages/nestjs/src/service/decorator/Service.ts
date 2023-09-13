@@ -3,13 +3,16 @@ import type { AbstractConstructor, Constructor } from '../../types';
 
 export const SERVICE_METADATA_KEY = 'Service:Metadata:Options';
 
+export type ServiceOptionsInit = Partial<ServiceOptions>
+
 export interface ServiceOptions {
   name: string;
   timeout?: number;
   metadata?: Record<string, any>;
+  as?: Constructor | AbstractConstructor;
 }
 
-export const Service = (opts: ServiceOptions): ClassDecorator => Reflect.metadata(SERVICE_METADATA_KEY, opts);
+export const Service = (opts: ServiceOptionsInit): ClassDecorator => Reflect.metadata(SERVICE_METADATA_KEY, opts);
 export const ServiceNameProp = Symbol('$ServiceName');
 
 export function getServiceName(svc: Constructor | string | Function | undefined): string | undefined {
@@ -29,7 +32,7 @@ export function getServiceName(svc: Constructor | string | Function | undefined)
   return;
 }
 
-export function getServiceOptions(svc: Constructor | AbstractConstructor | Function): ServiceOptions | undefined {
+export function getServiceOptions(svc: Constructor | AbstractConstructor | Function): ServiceOptionsInit | undefined {
   if (!svc) {
     return;
   }

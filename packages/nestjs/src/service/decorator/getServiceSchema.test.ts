@@ -4,7 +4,7 @@ import { Service } from './Service';
 import { getServiceSchema } from './getServiceSchema';
 
 test('base service schema', () => {
-  function check(cls: any) {
+  function checkTest1(cls: any) {
     const schema = getServiceSchema(cls);
     expect(schema).toBeTruthy();
     expect(schema?.name).toBe('test.TestService');
@@ -15,12 +15,12 @@ test('base service schema', () => {
     expect(schema?.methods[0].options.name).toBe('HELLO');
   }
 
-  check(TestService);
+  checkTest1(TestService);
   // missing @Service still works ?
-  check(Test2);
+  checkTest1(Test2);
 
-  {
-    const schema = getServiceSchema(Test3);
+  function checkTest3(cls: any) {
+    const schema = getServiceSchema(cls);
     expect(schema).toBeTruthy();
     expect(schema?.name).toBe('test.Test3');
     expect(schema?.methods).toHaveLength(2);
@@ -30,6 +30,10 @@ test('base service schema', () => {
     expect(schema?.methods[0].options.timeout).toBe(2);
     expect(schema?.methods[1].options.name).toBe('SK');
   }
+
+  checkTest3(Test3);
+  // point to real service
+  checkTest3(SomeMethod);
 });
 
 @Service({
@@ -60,5 +64,12 @@ class Test3 extends TestService {
   @Method({
     name: 'SK',
   })
+  skip() {}
+}
+
+@Service({
+  as: Test3,
+})
+class SomeMethod {
   skip() {}
 }

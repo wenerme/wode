@@ -1,7 +1,8 @@
-import { ServiceNameProp, ServiceSchema } from '../decorator';
-import { IRemoteServiceClient } from './ClientRegistry';
+import type { ServiceSchema } from '../decorator';
+import { ServiceNameProp } from '../decorator';
+import type { IRemoteServiceClient } from './ClientRegistry';
 import { handleResponse } from './handleResponse';
-import { ClientRequest, ClientRequestInit, ClientResponse } from './types';
+import type { ClientRequest, ClientResponse } from './types';
 
 export function createRemoteServiceClient<T = unknown>({
   schema,
@@ -10,7 +11,7 @@ export function createRemoteServiceClient<T = unknown>({
   schema: ServiceSchema<T>;
   invoke: (req: ClientRequest) => Promise<ClientResponse | AsyncIterator<ClientResponse>>;
 }): T & IRemoteServiceClient {
-  let Base = schema.ref || Object;
+  const Base = schema.ref || Object;
 
   const Client = class RemoteServiceClient extends Base {
     static [ServiceNameProp] = schema.name;
@@ -30,7 +31,7 @@ export function createRemoteServiceClient<T = unknown>({
     }
 
     toString() {
-      let name = this.constructor?.prototype?.[ServiceNameProp];
+      const name = this.constructor?.prototype?.[ServiceNameProp];
       return `${this.constructor?.name || 'RemoteServiceClient'}(${name})`;
     }
 
@@ -41,8 +42,8 @@ export function createRemoteServiceClient<T = unknown>({
     }
   };
 
-  for (let method of schema.methods) {
-    let methodName = method.options.name || method.name;
+  for (const method of schema.methods) {
+    const methodName = method.options.name || method.name;
     Object.defineProperty(Client.prototype, method.name, {
       value: async function (req: any, opts: any = {}) {
         const res = await this.$invoke({

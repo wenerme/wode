@@ -1,9 +1,8 @@
-import { NatsConnection } from 'nats';
 import { Injectable } from '@nestjs/common';
 import type { AbstractConstructor, Constructor } from '../../types';
-import { getServiceSchema, ServiceSchema } from '../decorator';
+import type { ServiceSchema } from '../decorator';
+import { getServiceSchema } from '../decorator';
 import { getServiceName } from '../decorator/Service';
-import { createProxyClient } from './createProxyClient';
 import { createRemoteServiceClient } from './createRemoteServiceClient';
 import type { ClientConnection, ClientRequest, ClientRequestInit, ClientResponse, RemoteService } from './types';
 

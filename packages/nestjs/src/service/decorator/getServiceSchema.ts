@@ -2,20 +2,27 @@ import type { AbstractConstructor, Constructor } from '../../types';
 import type { MethodOptions } from './Method';
 import { getMethodOptions } from './Method';
 import type { ServiceOptions } from './Service';
-import { getServiceName, getServiceOptions } from './Service';
+import { getServiceOptions } from './Service';
 
 export function getServiceSchema<T = unknown>(type: Constructor<T> | AbstractConstructor<T>) {
-  const name = getServiceName(type);
-  if (!name) {
+  let so = getServiceOptions(type);
+  if (!so) {
     return;
   }
-  const schema: ServiceSchema<T> = {
-    name,
-    options: getServiceOptions(type) ?? { name },
-    ref: type,
-    methods: [],
-  };
-  const methods = schema.methods;
+  let base: undefined | ServiceSchema;
+  if (so.as) {
+    base = getServiceSchema(so.as);
+    if (!base) {
+      throw new Error(`Service ${type} base ${so.as} is invalid`);
+    }
+    so = Object.assign({}, base.options, so);
+  }
+  const { name } = so;
+  if (!name) {
+    throw new Error(`Service ${type} name is invalid`);
+  }
+
+  let methods: MethodSchema[] = [];
   const byName: Record<string, MethodSchema> = {};
   let proto = type.prototype;
   while (proto) {
@@ -41,15 +48,33 @@ export function getServiceSchema<T = unknown>(type: Constructor<T> | AbstractCon
       } else {
         const ms = {
           name: methodName,
-          options: mo,
+          options: Object.assign({ name: methodName }, mo),
           ref: method,
         };
         methods.push(ms);
         byName[methodName] = ms;
       }
     }
+
     proto = Object.getPrototypeOf(proto);
   }
+
+  if (base) {
+    for (const method of base.methods) {
+      byName[method.name] ||= method;
+    }
+  }
+  methods = Object.values(byName).sort((a, b) => a.options.name.localeCompare(b.options.name));
+
+  const schema: ServiceSchema<T> = {
+    name,
+    options: {
+      name,
+      ...so,
+    },
+    ref: type,
+    methods,
+  };
   return schema;
 }
 

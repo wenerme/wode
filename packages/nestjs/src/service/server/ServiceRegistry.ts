@@ -1,7 +1,7 @@
 import { applyDecorators, Injectable, Logger, SetMetadata } from '@nestjs/common';
 import type { Constructor } from '../../types';
-import type { MethodOptions, ServiceOptions, ServiceSchema } from '../decorator';
-import { getServiceName, METHOD_METADATA_KEY, SERVICE_METADATA_KEY } from '../decorator';
+import type { MethodOptionsInit, ServiceOptions, ServiceOptionsInit, ServiceSchema , MethodSchema} from '../decorator';
+import { getServiceSchema, METHOD_METADATA_KEY, SERVICE_METADATA_KEY } from '../decorator';
 import { createResponse } from './createResponse';
 import type { ServerRequest, ServerRequestOptions, ServerResponse } from './types';
 
@@ -63,13 +63,21 @@ export class ServiceRegistry {
         description: `Service ${req.service} not found`,
       });
     }
-    let method = svc.target[req.method];
     // require exposed
-    let methodOptions = svc.metadata.methods[req.method];
-    if (!methodOptions) {
-      method = null;
+    const methodSchema = svc.metadata.methods.find((v) => {
+      const name = v.options?.name || v.name;
+      return req.method === name;
+    });
+    if (!methodSchema) {
+      return createResponse(req, {
+        status: 404,
+        description: `Service ${req.service} method ${req.method} not found`,
+      });
     }
-    ctx.options = methodOptions;
+
+    let method: Function | undefined;
+    method = svc.target[methodSchema.name];
+    ctx.options = methodSchema?.options ?? {};
 
     if (!method) {
       return createResponse(req, {
@@ -110,7 +118,7 @@ interface Service {
   name: string;
   target: any;
   schema?: ServiceSchema;
-  metadata: ServiceMetadata;
+  metadata: ServerServiceSchema;
 }
 
 export interface RegisterServiceOptions<T = any> {
@@ -119,61 +127,38 @@ export interface RegisterServiceOptions<T = any> {
   schema?: ServiceSchema;
 }
 
-export interface ExposeServiceOptions extends Partial<ServiceOptions> {
-  as?: Function;
-}
+export type ExposeServiceOptions = ServiceOptions
 
-export type ExposeMethodOptions = MethodOptions;
+export type ExposeMethodOptions = MethodOptionsInit;
 
-interface ServiceMetadata {
+interface ServerServiceSchema extends ServiceSchema {
   name: string;
-  constructor: any;
-  methods: Record<string, ExposeMethodOptions>;
+  options: ExposeServiceOptions;
+  methods: MethodSchema[];
 }
 
 export const EXPOSE_SERVICE_METADATA_KEY = SERVICE_METADATA_KEY;
 export const EXPOSE_METHOD_METADATA_KEY = METHOD_METADATA_KEY;
 
-export const ExposeService = (opts: ExposeServiceOptions = {}): ClassDecorator =>
+export const ExposeService = (opts: ServiceOptionsInit = {}): ClassDecorator =>
   // Reflect.metadata(EXPOSE_SERVICE_METADATA_KEY, opts);
   applyDecorators(SetMetadata(EXPOSE_SERVICE_METADATA_KEY, opts), Injectable());
 
 export const ExposeMethod = (opts: ExposeMethodOptions = {}): MethodDecorator =>
   Reflect.metadata(EXPOSE_METHOD_METADATA_KEY, opts); // target.prototype
 
-export function getServiceMetadata<T>(svc: Constructor<T>): ServiceMetadata | undefined {
-  const so: ExposeServiceOptions = Reflect.getMetadata(EXPOSE_SERVICE_METADATA_KEY, svc);
-  if (!so) {
+export function getServiceMetadata<T>(svc: Constructor<T>): ServerServiceSchema | undefined {
+  const schema = getServiceSchema(svc) as ServerServiceSchema;
+  if (!schema) {
     return;
   }
-  const name = getServiceName(svc) || getServiceName(so.as);
-  if (!name) {
-    return;
+  let base: undefined | ServiceSchema<T>;
+  if (schema.options?.as) {
+    base = getServiceSchema(svc);
+    if (!base) {
+      throw new Error(`Service ${svc} base ${schema.options.as} is invalid`);
+    }
   }
 
-  const methods = Object.fromEntries(
-    Object.getOwnPropertyNames(svc.prototype)
-      .map((key) => {
-        const value = svc.prototype[key];
-        if (typeof value !== 'function') {
-          return;
-        }
-        const meta = Reflect.getMetadata(EXPOSE_METHOD_METADATA_KEY, svc.prototype, key);
-        if (!meta) {
-          return;
-        }
-        return {
-          name: key,
-          ...meta,
-        };
-      })
-      .filter(Boolean)
-      .map((v) => [v.name, v]),
-  );
-
-  return {
-    name,
-    constructor: svc,
-    methods: methods,
-  };
+  return schema;
 }
