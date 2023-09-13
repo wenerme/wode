@@ -10,8 +10,11 @@ import { getServiceMetadata } from './server/ServiceRegistry';
 test('service in memory connect', async () => {
   const server = new ServiceRegistry();
   server.addMiddleware(createServerLoggingMiddleware());
+  server.addMiddleware((next) => next);
 
   const registry = new ClientRegistry();
+  registry.addMiddleware((next) => next);
+  registry.addMiddleware((next) => next);
 
   console.log(getServiceMetadata(TestService));
 

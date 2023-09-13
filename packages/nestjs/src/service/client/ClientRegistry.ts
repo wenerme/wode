@@ -3,6 +3,7 @@ import type { AbstractConstructor, Constructor } from '../../types';
 import type { ServiceSchema } from '../decorator';
 import { getServiceSchema } from '../decorator';
 import { getServiceName } from '../decorator/Service';
+import { ServerMiddleware } from '../server';
 import { createRemoteServiceClient } from './createRemoteServiceClient';
 import type { ClientConnection, ClientRequest, ClientRequestInit, ClientResponse, RemoteService } from './types';
 
@@ -36,8 +37,12 @@ export class ClientRegistry {
     this.handler = undefined;
   }
 
-  addMiddleware(v: ClientMiddleware) {
-    this.#middlewares.push(v);
+  addMiddleware(v: ClientMiddleware | Array<ClientMiddleware>) {
+    if (Array.isArray(v)) {
+      this.#middlewares.push(...v);
+    } else {
+      this.#middlewares.push(v);
+    }
     this.handler = undefined;
   }
 

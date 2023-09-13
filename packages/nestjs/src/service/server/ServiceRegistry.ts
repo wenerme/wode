@@ -1,6 +1,6 @@
 import { applyDecorators, Injectable, Logger, SetMetadata } from '@nestjs/common';
 import type { Constructor } from '../../types';
-import type { MethodOptionsInit, ServiceOptions, ServiceOptionsInit, ServiceSchema , MethodSchema} from '../decorator';
+import type { MethodOptionsInit, ServiceOptions, ServiceOptionsInit, ServiceSchema, MethodSchema } from '../decorator';
 import { getServiceSchema, METHOD_METADATA_KEY, SERVICE_METADATA_KEY } from '../decorator';
 import { createResponse } from './createResponse';
 import type { ServerRequest, ServerRequestOptions, ServerResponse } from './types';
@@ -26,8 +26,12 @@ export class ServiceRegistry {
     this.handler = undefined;
   }
 
-  addMiddleware(v: ServerMiddleware) {
-    this.#middlewares.push(v);
+  addMiddleware(v: ServerMiddleware | Array<ServerMiddleware>) {
+    if (Array.isArray(v)) {
+      this.#middlewares.push(...v);
+    } else {
+      this.#middlewares.push(v);
+    }
     this.handler = undefined;
   }
 
@@ -106,7 +110,10 @@ export class ServiceRegistry {
   };
 
   handle(req: ServerRequest): Promise<ServerResponse> {
-    const handler = (this.handler ||= this.middlewares.reverse().reduce((f, m) => m(f), this._handle));
+    const handler = (this.handler ||= this.middlewares.reduceRight(
+      (next, middleware) => middleware(next),
+      this._handle,
+    ));
     return handler(req);
   }
 }
@@ -127,7 +134,7 @@ export interface RegisterServiceOptions<T = any> {
   schema?: ServiceSchema;
 }
 
-export type ExposeServiceOptions = ServiceOptions
+export type ExposeServiceOptions = ServiceOptions;
 
 export type ExposeMethodOptions = MethodOptionsInit;
 
