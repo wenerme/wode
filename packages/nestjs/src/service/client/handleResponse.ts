@@ -1,5 +1,5 @@
-import { firstOfAsyncIterator, nextOfAsyncIterator } from '@wener/utils';
-import { ClientRequest, ClientResponse } from './types';
+import { nextOfAsyncIterator } from '@wener/utils';
+import type { ClientRequest, ClientResponse } from './types';
 
 export async function handleResponse({
   res,

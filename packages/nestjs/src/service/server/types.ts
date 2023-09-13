@@ -1,12 +1,13 @@
-import { MethodOptions } from '../decorator';
+import type { MaybePromise } from '@wener/utils';
+import type { MethodOptionsInit } from '../decorator';
 import type { ServiceRequest, ServiceResponse } from '../schema';
 
 type IsValidArg<T> = T extends object ? (keyof T extends never ? false : true) : true;
 
 type AddParameters<T, X> = T extends (a: infer A, b: infer B) => infer R
   ? IsValidArg<A> extends true
-    ? (a: A, opts: X) => Promise<Awaited<R>>
-    : (a: any, opts: X) => Promise<Awaited<R>>
+    ? (req: A, options: X) => MaybePromise<R>
+    : (req: any, options: X) => MaybePromise<R>
   : never;
 
 type InterfaceWithExtraParameters<T, X> = {
@@ -17,7 +18,7 @@ export interface ServerRequestOptions {
   id: string;
   headers: Record<string, string>;
   metadata: Record<string, any>;
-  options: MethodOptions;
+  options: MethodOptionsInit;
 }
 
 export type LocalService<T> = InterfaceWithExtraParameters<T, ServerRequestOptions>;

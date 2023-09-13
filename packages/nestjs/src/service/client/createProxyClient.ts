@@ -1,6 +1,6 @@
-import { Constructor } from '../../types';
+import type { Constructor } from '../../types';
 import { handleResponse } from './handleResponse';
-import { ClientRequest, ClientRequestInit, ClientRequestOptions, ClientResponse, RemoteService } from './types';
+import type { ClientRequest, ClientRequestInit, ClientRequestOptions, ClientResponse, RemoteService } from './types';
 
 interface ClientProxyTarget {
   service: string;
@@ -72,7 +72,7 @@ export function createProxyClient<T>({
       if (typeof key === 'string') {
         return (target.methods[key] ||= async (...args: any[]) => {
           const opts = (args[1] || {}) as ClientRequestOptions;
-          let req: ClientRequest = {
+          const req: ClientRequest = {
             id: Math.random().toString(36).slice(2),
             service: target.service,
             method: key,
