@@ -1,3 +1,4 @@
+import { MethodOptions } from '../decorator';
 import type { ServiceRequest, ServiceResponse } from '../schema';
 
 type IsValidArg<T> = T extends object ? (keyof T extends never ? false : true) : true;
@@ -12,13 +13,14 @@ type InterfaceWithExtraParameters<T, X> = {
   [P in keyof T]: AddParameters<T[P], X>;
 };
 
-export interface ServerRequestContext {
+export interface ServerRequestOptions {
   id: string;
   headers: Record<string, string>;
   metadata: Record<string, any>;
+  options: MethodOptions;
 }
 
-export type LocalService<T> = InterfaceWithExtraParameters<T, ServerRequestContext>;
+export type LocalService<T> = InterfaceWithExtraParameters<T, ServerRequestOptions>;
 
 export type ServerResponse = ServiceResponse;
 

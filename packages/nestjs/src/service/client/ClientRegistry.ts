@@ -1,3 +1,4 @@
+import { NatsConnection } from 'nats';
 import { Injectable } from '@nestjs/common';
 import type { AbstractConstructor, Constructor } from '../../types';
 import { getServiceSchema, ServiceSchema } from '../decorator';
@@ -76,7 +77,7 @@ export class ClientRegistry {
   //   });
   // }
 
-  send = async (init: ClientRequestInit): Promise<ClientResponse> => {
+  send = async (init: ClientRequestInit): Promise<ClientResponse | AsyncIterator<ClientResponse>> => {
     const req: ClientRequest = {
       ...init,
       id: init.id || Math.random().toString(36).slice(2),

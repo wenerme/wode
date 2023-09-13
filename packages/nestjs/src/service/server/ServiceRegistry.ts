@@ -3,7 +3,7 @@ import type { Constructor } from '../../types';
 import type { MethodOptions, ServiceOptions, ServiceSchema } from '../decorator';
 import { getServiceName, METHOD_METADATA_KEY, SERVICE_METADATA_KEY } from '../decorator';
 import { createResponse } from './createResponse';
-import type { ServerRequest, ServerRequestContext, ServerResponse } from './types';
+import type { ServerRequest, ServerRequestOptions, ServerResponse } from './types';
 
 export class ServiceRegistry {
   private readonly log = new Logger(ServiceRegistry.name);
@@ -51,49 +51,48 @@ export class ServiceRegistry {
 
   private _handle = async (req: ServerRequest): Promise<ServerResponse> => {
     const svc = this.services[req.service];
-    const ctx: ServerRequestContext = {
+    const ctx: ServerRequestOptions = {
       id: req.id,
       metadata: req.metadata,
       headers: req.headers,
+      options: {},
     };
     if (!svc) {
       return createResponse(req, {
         status: 404,
         description: `Service ${req.service} not found`,
-        ok: false,
       });
     }
     let method = svc.target[req.method];
     // require exposed
-    if (!svc.metadata.methods[req.method]) {
+    let methodOptions = svc.metadata.methods[req.method];
+    if (!methodOptions) {
       method = null;
     }
+    ctx.options = methodOptions;
+
     if (!method) {
       return createResponse(req, {
         status: 404,
         description: `Service ${req.service} method ${req.method} not found`,
-        ok: false,
       });
     }
     if (typeof method !== 'function') {
       return createResponse(req, {
         status: 500,
         description: `Service ${req.service} method ${req.method} invalid`,
-        ok: false,
       });
     }
     try {
       const output = await method.call(svc.target, req.body, ctx);
       return createResponse(req, {
         body: output,
-        ok: true,
       });
     } catch (e) {
       this.log.error(`Handle ${req.service}#${req.method} error: ${e}`);
       return createResponse(req, {
         status: 500,
         description: String(e),
-        ok: false,
       });
     }
   };
@@ -129,14 +128,7 @@ export type ExposeMethodOptions = MethodOptions;
 interface ServiceMetadata {
   name: string;
   constructor: any;
-  methods: Record<
-    string,
-    {
-      name: string;
-      input?: any;
-      output?: any;
-    }
-  >;
+  methods: Record<string, ExposeMethodOptions>;
 }
 
 export const EXPOSE_SERVICE_METADATA_KEY = SERVICE_METADATA_KEY;

@@ -1,10 +1,10 @@
 import type { NatsError } from 'nats';
 import { headers, type NatsConnection } from 'nats';
-import { DynamicModule, Logger, Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { getHttpStatusText } from '../../HttpStatus';
 import { NATS_CONNECTION, NatsModule } from '../../nats';
-import type { ClientConnection, ClientResponse } from '../../service';
-import { SERVICE_CLIENT_CONNECTION, ServiceClientModule } from '../../service/client/ServiceClientModule';
+import type { ClientConnection, ClientRequest, ClientResponse } from '../../service';
+import { SERVICE_CLIENT_CONNECTION } from '../../service';
 import { createResponse } from '../../service/server/createResponse';
 import { fromMessageHeader, getRequestSubject } from './nats';
 
@@ -33,7 +33,7 @@ const log = new Logger('NatsServiceClient');
 
 export function createNatsClientConnection(nc: NatsConnection): ClientConnection {
   return async (req) => {
-    const { headers: _, ...write } = req;
+    const { headers: _, options: __, ...write } = req;
     const hdr = headers();
     Object.entries(req.headers).forEach(([k, v]) => {
       hdr.set(k, v);
@@ -44,39 +44,40 @@ export function createNatsClientConnection(nc: NatsConnection): ClientConnection
         timeout: 5000,
         headers: hdr,
       });
+
       const res = JSON.parse(msg.string()) as ClientResponse;
       fromMessageHeader(res, msg.headers);
       return res;
     } catch (e) {
-      if (e && typeof e === 'object' && 'code' in e) {
-        const err = e as NatsError;
-        log.error(`NatsError: ${e.code} ${err.message}`);
-        switch (e.code) {
-          case 'TIMEOUT':
-            return createResponse(req, {
-              status: 408, // request timeout
-              description: err.message,
-              ok: false,
-            });
-          case '503':
-            return createResponse(req, {
-              code: 503,
-              description: `${getHttpStatusText(503)}: ${err.message}`,
-              ok: false,
-            });
-          default:
-            return createResponse(req, {
-              code: 500,
-              description: err.message,
-              ok: false,
-            });
-        }
-      }
-      return createResponse(req, {
-        status: 500,
-        description: String(e),
-        ok: false,
-      });
+      return createErrorResponse({ error: e, req });
     }
   };
+}
+
+function createErrorResponse({ error: e, req }: { error: any; req: ClientRequest }) {
+  if (e && typeof e === 'object' && 'code' in e) {
+    const err = e as NatsError;
+    log.error(`NatsError: ${e.code} ${err.message}`);
+    switch (e.code) {
+      case 'TIMEOUT':
+        return createResponse(req, {
+          status: 408, // request timeout
+          description: err.message,
+        });
+      case '503':
+        return createResponse(req, {
+          code: 503,
+          description: `${getHttpStatusText(503)}: ${err.message}`,
+        });
+      default:
+        return createResponse(req, {
+          code: 500,
+          description: err.message,
+        });
+    }
+  }
+  return createResponse(req, {
+    status: 500,
+    description: String(e),
+  });
 }

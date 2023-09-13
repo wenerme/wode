@@ -26,6 +26,12 @@ export function getServiceSchema<T = unknown>(type: Constructor<T> | AbstractCon
         continue;
       }
 
+      switch (Object.prototype.toString.call(method)) {
+        case '[object GeneratorFunction]':
+        case '[object AsyncGeneratorFunction]':
+          mo.stream = true;
+      }
+
       const methodName = key;
       const last = byName[methodName];
       if (last) {

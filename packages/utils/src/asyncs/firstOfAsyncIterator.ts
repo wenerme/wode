@@ -1,12 +1,11 @@
 import { MaybePromise } from './MaybePromise';
+import { isPromise } from './isPromise';
+import { nextOfAsyncIterator } from './nextOfAsyncIterator';
 
-export function firstOfAsyncIterator<T>(it: MaybePromise<AsyncIterator<T> | Iterator<T>>): MaybePromise<T> {
-  if ('then' in it) {
-    return it.then((v) => firstOfAsyncIterator(v));
+export function firstOfAsyncIterator<T>(it: MaybePromise<AsyncIterator<T> | Iterator<T> | T>): MaybePromise<T> {
+  const next = nextOfAsyncIterator(it);
+  if (isPromise(next)) {
+    return next.then((v) => v[0]);
   }
-  let next = it.next();
-  if ('then' in next) {
-    return next.then((v) => v.value);
-  }
-  return next.value;
+  return next[0];
 }
