@@ -38,7 +38,7 @@ async function bundle(server: string) {
     // https://mikro-orm.io/docs/next/deployment#excluding-dependencies-from-esbuild
     // 支持 @nestjs/* 写法，但是需要 app 预先安装
     external: [
-      'ws',
+      // 'ws',
       'jsdom',
       'canvas',
       'bcrypt',

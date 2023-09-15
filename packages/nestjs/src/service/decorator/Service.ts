@@ -3,10 +3,12 @@ import type { AbstractConstructor, Constructor } from '../../types';
 
 export const SERVICE_METADATA_KEY = 'Service:Metadata:Options';
 
-export type ServiceOptionsInit = Partial<ServiceOptions>
+export type ServiceOptionsInit = Partial<ServiceOptions>;
 
 export interface ServiceOptions {
   name: string;
+  summary?: string;
+  description?: string;
   timeout?: number;
   metadata?: Record<string, any>;
   as?: Constructor | AbstractConstructor;
