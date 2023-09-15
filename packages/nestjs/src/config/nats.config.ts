@@ -10,11 +10,22 @@ export const NatsConfig = z.object({
   port: z.coerce.number().optional(),
   servers: z.string().array().default([]),
   tls: z.any().optional(),
+  maxReconnectAttempts: z.coerce.number().optional(),
 });
 export type NatsConfig = z.infer<typeof NatsConfig>;
 
 export function getNatsConfig(env = process.env) {
-  let { NATS_URL, NATS_HOST, NATS_PORT, NATS_DEBUG, NATS_NAME, NATS_PASSWORD, NATS_USERNAME, NATS_TLS } = env;
+  let {
+    NATS_URL,
+    NATS_HOST,
+    NATS_PORT,
+    NATS_DEBUG,
+    NATS_NAME,
+    NATS_PASSWORD,
+    NATS_USERNAME,
+    NATS_TLS,
+    NATS_MAX_RECONNECT_ATTEMPTS,
+  } = env;
   const servers: string[] = [];
   let tls = null;
   if (NATS_URL) {
@@ -46,11 +57,21 @@ export function getNatsConfig(env = process.env) {
     username: NATS_USERNAME,
     servers,
     tls,
+    maxReconnectAttempts: NATS_MAX_RECONNECT_ATTEMPTS,
   });
 }
 
 export function getNatsOptions() {
-  const { debug, name, password: pass, username: user, host, servers, tls } = getNatsConfig();
+  const {
+    debug,
+    name,
+    password: pass,
+    username: user,
+    host,
+    servers,
+    tls,
+    maxReconnectAttempts = -1, // default 10
+  } = getNatsConfig();
   return {
     debug,
     name,
@@ -58,5 +79,6 @@ export function getNatsOptions() {
     user,
     servers,
     tls,
+    maxReconnectAttempts,
   };
 }
