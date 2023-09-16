@@ -5,6 +5,6 @@ export type TenantBaseOptionalEntityFields = 'tid';
 
 @Entity({ abstract: true })
 export abstract class TenantBaseEntity<E extends TenantBaseEntity<any>> extends MinimalBaseEntity<E> {
-  @ManyToOne({ nullable: false, name: 'tid', defaultRaw: `current_tenant_id()`, onUpdateIntegrity: 'no action' })
+  @ManyToOne({ nullable: false, name: 'tid', defaultRaw: 'current_tenant_id()', onUpdateIntegrity: 'no action' })
   tid!: string;
 }

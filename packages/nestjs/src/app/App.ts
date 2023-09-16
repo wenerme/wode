@@ -48,16 +48,14 @@ class DefaultApp implements App {
       hostname = globalThis.os
         .hostname()
         .toLowerCase()
-        .replaceAll(/[^-a-z0-9]/g, '-');
+        .replaceAll(/[^-a-z\d]/g, '-');
     }
+
     if (typeof globalThis.process === 'object' && 'pid' in globalThis.process) {
       pid = globalThis.process.pid;
     }
-    if (hostname.startsWith(prefix)) {
-      prefix = hostname;
-    } else {
-      prefix = `${prefix}-${pid}`;
-    }
+
+    prefix = hostname.startsWith(prefix) ? hostname : `${prefix}-${pid}`;
     return (this.#instanceId ||= process.env.APP_ID || `${prefix}-${randomUUID()}`.slice(0, 36).replace(/-$/, ''));
   }
 

@@ -1,3 +1,4 @@
+import process from 'node:process';
 import { z } from 'zod';
 
 export const ServerConfig = z.object({
@@ -17,19 +18,20 @@ export function getServerConfig(env = process.env) {
     origin: SERVER_ORIGIN,
     url: SERVER_URL,
   };
-  if (data.prefix) {
-    if (!data.prefix.startsWith('/')) {
-      data.prefix = `/${data.prefix}`;
-    }
+  if (data.prefix && !data.prefix.startsWith('/')) {
+    data.prefix = `/${data.prefix}`;
   }
+
   if (!data.url && data.origin) {
     const u = new URL(data.origin);
     u.pathname = data.prefix || '';
     data.url = u.toString();
   }
+
   if (data.url && !data.origin) {
     const u = new URL(data.url);
     data.origin = u.origin;
   }
+
   return ServerConfig.parse(data);
 }

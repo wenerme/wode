@@ -21,25 +21,27 @@ export function getServiceName(svc: Constructor | string | Function | undefined)
   if (!svc) {
     return;
   }
+
   if (typeof svc === 'string') {
     return svc;
   }
+
   if (typeof svc === 'function') {
     let name = Reflect.getMetadata(SERVICE_METADATA_KEY, svc)?.name;
     if (!name && ServiceNameProp in svc && typeof svc[ServiceNameProp] === 'string') {
       name ||= svc[ServiceNameProp];
     }
+
     return name;
   }
-  return;
 }
 
 export function getServiceOptions(svc: Constructor | AbstractConstructor | Function): ServiceOptionsInit | undefined {
   if (!svc) {
     return;
   }
+
   if (typeof svc === 'function') {
     return Reflect.getMetadata(SERVICE_METADATA_KEY, svc);
   }
-  return;
 }

@@ -36,7 +36,7 @@ test('service in memory connect', async () => {
 test('class remote wrapper', () => {
   const client: RemoteTestService = createRemoteServiceClient({
     schema: getServiceSchema(RemoteTestService)!,
-    invoke: () => {
+    invoke() {
       throw new Error();
     },
   });
@@ -51,13 +51,13 @@ test('proxy remote wrapper', async () => {
   const client: RemoteTestService = createProxyClient({
     service: getServiceName(RemoteTestService)!,
     constructor: RemoteTestService,
-    invoke: () => {
+    invoke() {
       throw new Error();
     },
   });
   expect(client instanceof RemoteTestService).toBeTruthy();
   expect(client instanceof TestService).toBeTruthy();
-  await expect(() => client.hidden({})).rejects.toThrow();
+  await expect(async () => client.hidden({})).rejects.toThrow();
 });
 
 @Service({

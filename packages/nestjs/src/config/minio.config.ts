@@ -1,3 +1,4 @@
+import process from 'node:process';
 import { z } from 'zod';
 import { parseBoolean } from '@wener/utils';
 
@@ -21,6 +22,7 @@ export function getMinioConfig(env = process.env) {
     S3_ACCESS_KEY ||= u.username;
     S3_SECRET_KEY ||= u.password;
   }
+
   return MinioConfig.parse({
     endpoint: S3_ENDPOINT,
     port: S3_PORT,

@@ -34,7 +34,7 @@ export class NatsServiceServerModule implements OnApplicationBootstrap, OnApplic
         },
         {
           provide: NATS_SERVICE_SERVER_OPTIONS,
-          useFactory: (mc: ModulesContainer, _mw: ServerMiddleware[] | ServerMiddleware) => {
+          useFactory(mc: ModulesContainer, _mw: ServerMiddleware[] | ServerMiddleware) {
             const o = {
               middlewares: [],
               ...options,
@@ -54,11 +54,11 @@ export class NatsServiceServerModule implements OnApplicationBootstrap, OnApplic
 
   constructor() {}
 
-  onApplicationShutdown() {
+  async onApplicationShutdown() {
     return this.hdr.close();
   }
 
   onApplicationBootstrap(): any {
-    return this.hdr.listen();
+    this.hdr.listen();
   }
 }

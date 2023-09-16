@@ -47,9 +47,11 @@ class ErrorDetailHolder implements ErrorDetail {
     if (typeof o === 'string') {
       o = { message: o };
     }
+
     if (o === undefined) {
       return new ErrorDetailHolder(this);
     }
+
     return new ErrorDetailHolder({
       status: this.status,
       code: this.code,
@@ -64,6 +66,7 @@ class ErrorDetailHolder implements ErrorDetail {
     if (typeof o === 'string') {
       o = { message: o };
     }
+
     return new ErrorDetailException(this.with(o));
   }
 
@@ -71,6 +74,7 @@ class ErrorDetailHolder implements ErrorDetail {
     if (v === undefined || v === null) {
       throw this.asException({ message });
     }
+
     return v;
   }
 
@@ -78,8 +82,9 @@ class ErrorDetailHolder implements ErrorDetail {
     switch (cond) {
       case false:
       case undefined:
-      case null:
+      case null: {
         throw this.asException({ message });
+      }
     }
   }
 }
@@ -100,14 +105,14 @@ export interface ErrorDetail {
 
   asException(message: string): Error;
 
-  require<T>(v: T | undefined | null, message?: string): NonNullable<T>;
+  require<T>(v: T | undefined, message?: string): NonNullable<T>;
 
   // 不支持 return value
   // https://stackoverflow.com/a/73252858/1870054
 
   check(condition: boolean, message?: string): asserts condition;
 
-  check<T>(v: T | undefined | null, message?: string): asserts v is NonNullable<T>;
+  check<T>(v: T | undefined, message?: string): asserts v is NonNullable<T>;
 }
 
 export class Errors {
@@ -127,9 +132,11 @@ export class Errors {
     if (e instanceof ErrorDetailHolder) {
       return e;
     }
+
     if (e instanceof ErrorDetailException) {
       return e.detail;
     }
+
     if (e instanceof HttpException) {
       return new ErrorDetailHolder({
         message: e.message,
@@ -137,6 +144,7 @@ export class Errors {
         cause: e,
       });
     }
+
     return new ErrorDetailHolder({
       message: e.message,
       status: 500,
@@ -146,7 +154,7 @@ export class Errors {
 }
 
 interface ZodError {
-  path: (string | number)[];
+  path: Array<string | number>;
   message: string;
   code: string;
   expected?: any;

@@ -1,3 +1,4 @@
+import process from 'node:process';
 import { z } from 'zod';
 import { parseBoolean } from '@wener/utils';
 
@@ -38,8 +39,8 @@ export function getNatsConfig(env = process.env) {
         u.username = '';
         u.password = '';
         servers.push(u.toString());
-      } catch (e) {
-        console.warn(`Invalid NATS_URL ${NATS_URL}`, e);
+      } catch (error) {
+        console.warn(`Invalid NATS_URL ${NATS_URL}`, error);
       }
     }
   } else if (NATS_HOST) {

@@ -15,7 +15,7 @@ export type MikroOrmConfig = PostgreSqlOptions & Pick<Required<PostgreSqlOptions
 export const MikroOrmConfigToken = Symbol('MikroOrmConfigToken');
 
 export class OrmModule {
-  private static log = new Logger(OrmModule.name);
+  private static readonly log = new Logger(OrmModule.name);
 
   static forRoot({ config: _config }: { config: MikroOrmConfig }): DynamicModule {
     const mod: Required<DynamicModule> = {
@@ -43,7 +43,7 @@ export class OrmModule {
 
     imports.push(
       MikroOrmModule.forRootAsync({
-        useFactory: (conf: MikroOrmConfig) => {
+        useFactory(conf: MikroOrmConfig) {
           return conf;
         },
         inject: [MikroOrmConfigToken],
@@ -59,7 +59,7 @@ export class OrmModule {
       },
       {
         provide: knex,
-        useFactory: (orm: MikroORM) => {
+        useFactory(orm: MikroORM) {
           return (orm.em.getConnection() as AbstractSqlConnection).getKnex();
         },
         inject: [MikroORM],

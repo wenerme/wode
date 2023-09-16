@@ -1,6 +1,6 @@
 import process from 'node:process';
 import 'reflect-metadata';
-import { inspect } from 'util';
+import { inspect } from 'node:util';
 import { MemoryCacheAdapter, ReflectMetadataProvider } from '@mikro-orm/core';
 import { type MikroORMOptions } from '@mikro-orm/core';
 import { defineConfig } from '@mikro-orm/postgresql';
@@ -29,10 +29,10 @@ export function getDefaultMikroOrmOptions() {
       expiration: 5000, // 5s
       options: {},
     },
-    findOneOrFailHandler: (entityName, where) => {
+    findOneOrFailHandler(entityName, where) {
       throw new HttpException(`未找到数据: ${entityName} ${inspect(where)}`, 404);
     },
-    findExactlyOneOrFailHandler: (entityName, where) => {
+    findExactlyOneOrFailHandler(entityName, where) {
       throw new HttpException(`错误的数据数量: ${entityName} ${inspect(where)}`, 400);
     },
     entities: [],

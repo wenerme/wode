@@ -1,4 +1,5 @@
 import * as os from 'node:os';
+import process from 'node:process';
 import { Logger, Module } from '@nestjs/common';
 import { EnvController } from './env.controller';
 import { HealthController } from './health.controller';

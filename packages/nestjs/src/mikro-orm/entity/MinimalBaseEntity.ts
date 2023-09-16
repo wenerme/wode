@@ -7,7 +7,7 @@ export abstract class MinimalBaseEntity<E extends MinimalBaseEntity<any>> extend
   @PrimaryKey({ type: types.string, defaultRaw: 'public.gen_ulid()', nullable: false })
   id!: string;
 
-  @Property({ type: types.uuid, columnType: 'uuid', defaultRaw: `gen_random_uuid()`, unique: true, nullable: false })
+  @Property({ type: types.uuid, columnType: 'uuid', defaultRaw: 'gen_random_uuid()', unique: true, nullable: false })
   uid!: string;
 
   @Property({ type: types.datetime, defaultRaw: 'current_timestamp' })

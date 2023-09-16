@@ -24,7 +24,7 @@ export function createProxyClient<T>({
     constructor: opts.constructor,
   };
   return new Proxy(ctx, {
-    getPrototypeOf(target: ClientProxyTarget): object | null {
+    getPrototypeOf(target: ClientProxyTarget): Record<string, unknown> | undefined {
       return target.constructor?.prototype || null;
     },
     has(target, key): boolean {
@@ -32,9 +32,10 @@ export function createProxyClient<T>({
         case 'toString':
         case 'toJSON':
       }
+
       return false;
     },
-    get: (target, key) => {
+    get(target, key) {
       if (key === Symbol.hasInstance) {
         let last = target.attrs.get(key);
         if (!last) {
@@ -42,15 +43,20 @@ export function createProxyClient<T>({
             if (instance === Proxy) {
               return true;
             }
+
             if (!target.constructor) {
               return false;
             }
+
             return instance instanceof target.constructor;
           };
+
           target.attrs.set(key, last);
         }
+
         return last;
       }
+
       // fixme by explicit method check
       switch (key) {
         case 'then':
@@ -60,15 +66,23 @@ export function createProxyClient<T>({
         case 'onModuleDestroy':
         case 'onApplicationBootstrap':
         case 'onApplicationShutdown':
-        case 'beforeApplicationShutdown':
+        case 'beforeApplicationShutdown': {
           return undefined;
-        case 'constructor':
+        }
+
+        case 'constructor': {
           return target.constructor;
-        case 'toString':
+        }
+
+        case 'toString': {
           return () => `${target.constructor?.name || 'RemoteService'}(${target.service})`;
-        case 'toJSON':
+        }
+
+        case 'toJSON': {
           return () => `${target.constructor?.name || 'RemoteService'}(${target.service})`;
+        }
       }
+
       if (typeof key === 'string') {
         return (target.methods[key] ||= async (...args: any[]) => {
           const opts = (args[1] || {}) as ClientRequestOptions;
@@ -88,6 +102,7 @@ export function createProxyClient<T>({
           });
         });
       }
+
       return target.attrs.get(key);
     },
   }) as any;

@@ -8,13 +8,14 @@ let _context: INestApplicationContext;
 export function setAppContext(ctx: INestApplicationContext) {
   _context = ctx;
   // _$context = Promise.resolve(ctx);
-  log.log(`setAppContext`);
+  log.log('setAppContext');
 }
 
 export function getAppContext() {
   if (!_context) {
-    throw new Error(`appContext is not ready`);
+    throw new Error('appContext is not ready');
   }
+
   return _context;
 }
 
@@ -26,5 +27,6 @@ export function getContext<TInput = any, TResult = TInput>(
   if (!out) {
     log.warn(`getService(${String(typeOrToken)}) not found`);
   }
+
   return out as any;
 }

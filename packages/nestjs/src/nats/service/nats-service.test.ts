@@ -1,3 +1,4 @@
+import process from 'node:process';
 import { afterAll, beforeAll, describe, expect, test } from 'vitest';
 import type { INestApplication } from '@nestjs/common';
 import { Inject, Injectable, Module } from '@nestjs/common';
@@ -36,6 +37,7 @@ describe('nats service module', async () => {
       await svr.init();
       svr.get(ServiceRegistry).addMiddleware(createServerLoggingMiddleware());
     }
+
     {
       const moduleRef = await Test.createTestingModule({
         imports: [ClientModule],
@@ -77,7 +79,7 @@ type LocalTestService = LocalService<AbstractTestService>;
 })
 class TestServiceImpl implements LocalTestService {
   constructor() {
-    console.log(`Init TestServiceImpl`);
+    console.log('Init TestServiceImpl');
   }
 
   @ExposeMethod()
@@ -92,7 +94,7 @@ class TestService {
     @InjectNatsClient() readonly nats: NatsConn,
     @Inject(NatsConn) readonly nats2: NatsConn,
   ) {
-    console.log(`Init TestService`);
+    console.log('Init TestService');
   }
 }
 

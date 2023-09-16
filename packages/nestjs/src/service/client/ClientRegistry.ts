@@ -18,11 +18,12 @@ export interface IRemoteServiceClient {}
 
 @Injectable()
 export class ClientRegistry {
-  private clients = new Map<string, RemoteClientEntry>();
+  private readonly clients = new Map<string, RemoteClientEntry>();
 
   private conn: ClientConnection = () => {
     throw new Error('ServiceClientConnection not connected');
   };
+
   private handler?: ClientConnection;
 
   #middlewares: ClientMiddleware[] = [];
@@ -37,12 +38,13 @@ export class ClientRegistry {
     this.handler = undefined;
   }
 
-  addMiddleware(v: ClientMiddleware | Array<ClientMiddleware>) {
+  addMiddleware(v: ClientMiddleware | ClientMiddleware[]) {
     if (Array.isArray(v)) {
       this.#middlewares.push(...v);
     } else {
       this.#middlewares.push(v);
     }
+
     this.handler = undefined;
   }
 
@@ -53,18 +55,21 @@ export class ClientRegistry {
     if (!service) {
       throw new Error(`Service ${svc} not found`);
     }
+
     let last = this.clients.get(service);
     if (!last) {
       const schema = getServiceSchema(svc);
       if (!schema) {
         throw new Error(`Service ${svc} not found`);
       }
+
       last = {
         schema,
         client: createRemoteServiceClient({ schema, invoke: this.send }),
       };
       this.clients.set(service, last);
     }
+
     return last.client as any;
     // let client = this.clients.get(service);
     // if (!client) {
