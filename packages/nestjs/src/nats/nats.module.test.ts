@@ -1,4 +1,4 @@
-import type { NatsConnection } from 'nats';
+import { NatsConnection } from 'nats';
 import { afterAll, beforeAll, describe, expect, test } from 'vitest';
 import type { INestApplication } from '@nestjs/common';
 import { Inject, Injectable, Module } from '@nestjs/common';
@@ -45,7 +45,7 @@ class TestService {
     @InjectNatsClient() readonly nats: NatsConnection,
     @Inject(NatsConn) readonly nats2: NatsConn,
   ) {
-    console.log(`Init TestService`);
+    console.log('Init TestService');
   }
 }
 

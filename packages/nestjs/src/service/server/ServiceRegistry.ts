@@ -26,12 +26,13 @@ export class ServiceRegistry {
     this.handler = undefined;
   }
 
-  addMiddleware(v: ServerMiddleware | Array<ServerMiddleware>) {
+  addMiddleware(v: ServerMiddleware | ServerMiddleware[]) {
     if (Array.isArray(v)) {
       this.#middlewares.push(...v);
     } else {
       this.#middlewares.push(v);
     }
+
     this.handler = undefined;
   }
 
@@ -43,9 +44,11 @@ export class ServiceRegistry {
     if (!metadata || !name) {
       throw new Error(`Service ${name || target} metadata not found`);
     }
+
     if (this.services[name]) {
       throw new Error(`Service ${name} already registered`);
     }
+
     this.services[name] = {
       name,
       target,
@@ -53,7 +56,7 @@ export class ServiceRegistry {
     };
   }
 
-  private _handle = async (req: ServerRequest): Promise<ServerResponse> => {
+  private readonly _handle = async (req: ServerRequest): Promise<ServerResponse> => {
     const svc = this.services[req.service];
     const ctx: ServerRequestOptions = {
       id: req.id,
@@ -67,6 +70,7 @@ export class ServiceRegistry {
         description: `Service ${req.service} not found`,
       });
     }
+
     // require exposed
     const methodSchema = svc.metadata.methods.find((v) => {
       const name = v.options?.name || v.name;
@@ -89,27 +93,29 @@ export class ServiceRegistry {
         description: `Service ${req.service} method ${req.method} not found`,
       });
     }
+
     if (typeof method !== 'function') {
       return createResponse(req, {
         status: 500,
         description: `Service ${req.service} method ${req.method} invalid`,
       });
     }
+
     try {
       const output = await method.call(svc.target, req.body, ctx);
       return createResponse(req, {
         body: output,
       });
-    } catch (e) {
-      this.log.error(`Handle ${req.service}#${req.method} error: ${e}`);
+    } catch (error) {
+      this.log.error(`Handle ${req.service}#${req.method} error: ${error}`);
       return createResponse(req, {
         status: 500,
-        description: String(e),
+        description: String(error),
       });
     }
   };
 
-  handle(req: ServerRequest): Promise<ServerResponse> {
+  async handle(req: ServerRequest): Promise<ServerResponse> {
     const handler = (this.handler ||= this.middlewares.reduceRight(
       (next, middleware) => middleware(next),
       this._handle,
@@ -159,6 +165,7 @@ export function getServiceMetadata<T>(svc: Constructor<T>): ServerServiceSchema 
   if (!schema) {
     return;
   }
+
   let base: undefined | ServiceSchema<T>;
   if (schema.options?.as) {
     base = getServiceSchema(svc);

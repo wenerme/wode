@@ -95,11 +95,42 @@
     "@nestjs/testing": "^10.1.3",
     "fastify": "^4.21.0",
     "nats": "^2.16.0",
-    "nats.ws": "^1.17.0"
+    "nats.ws": "^1.17.0",
+    "vitest": "^0.34.1"
   },
   "dependencies": {
     "@wener/utils": "workspace:^",
     "reflect-metadata": "^0.1.13",
     "zod": "^3.21.4"
+  },
+  "xo": {
+    "envs": [
+      "es2022",
+      "node"
+    ],
+    "rules": {
+      "import/no-unassigned-import": "off",
+      "@typescript-eslint/no-unsafe-assignment": "off",
+      "@typescript-eslint/no-unsafe-return": "off",
+      "@typescript-eslint/no-redeclare": "off",
+      "@typescript-eslint/no-empty-function": 1,
+      "@typescript-eslint/consistent-type-definitions": "off",
+      "@typescript-eslint/indent": "off",
+      "@typescript-eslint/naming-convention": "off",
+      "@typescript-eslint/no-unsafe-argument": 1,
+      "@typescript-eslint/object-curly-spacing": "off",
+      "@typescript-eslint/prefer-nullish-coalescing": "off",
+      "@typescript-eslint/restrict-template-expressions": 1,
+      "@typescript-eslint/switch-exhaustiveness-check": "off",
+      "arrow-parens": "off",
+      "capitalized-comments": "off",
+      "import/extensions": "off",
+      "n/file-extension-in-import": "off",
+      "new-cap": "off",
+      "no-await-in-loop": "off",
+      "prettier/prettier": "off",
+      "unicorn/filename-case": "off",
+      "unicorn/prevent-abbreviations": "off"
+    }
   }
 }

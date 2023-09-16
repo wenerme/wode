@@ -6,9 +6,7 @@ export const createServerLoggingMiddleware = ({
   logger: log = new Logger('ServerHandler'),
 }: {
   logger?: Logger;
-} = {}): ServerMiddleware => {
-  return (next) => {
-    return async (req: ServerRequest) => {
+} = {}): ServerMiddleware => (next) => async (req: ServerRequest) => {
       log.log(`<- ${req.service}.${req.method} from ${req.headers['x-instance-id']}`);
       const start = Date.now();
       return next(req).then((out) => {
@@ -21,8 +19,7 @@ export const createServerLoggingMiddleware = ({
             }): ${out.description}`,
           );
         }
+
         return out;
       });
     };
-  };
-};

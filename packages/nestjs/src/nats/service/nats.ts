@@ -14,10 +14,12 @@ export function fromMessageHeader(
   if (!hdr) {
     return res;
   }
+
   res.headers ||= {};
   for (const [k, v] of hdr) {
     res.headers[k] = v.join(',');
   }
+
   // res.ok = !hdr.hasError;
   // res.status = hdr.status;
   // res.code = hdr.code;
@@ -43,6 +45,7 @@ export function toMessageHeader(
   for (const [k, v] of Object.entries(res.headers || {})) {
     hdr.set(k, v as any);
   }
+
   return hdr;
 }
 

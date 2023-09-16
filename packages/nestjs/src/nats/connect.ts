@@ -8,6 +8,7 @@ export async function connect(opts: Partial<ConnectionOptions> = getNatsOptions(
     const { connect } = await import('nats.ws');
     return connect(opts);
   }
+
   const { connect } = await import('nats');
   return connect(opts);
 }

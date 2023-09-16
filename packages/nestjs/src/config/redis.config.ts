@@ -1,3 +1,4 @@
+import process from 'node:process';
 import { z } from 'zod';
 import { App } from '../app';
 
@@ -21,8 +22,9 @@ export function getRedisConfig(env = process.env) {
       REDIS_PORT ||= u.port;
       REDIS_USERNAME ||= u.username;
       REDIS_PASSWORD ||= u.password;
-    } catch (e) {}
+    } catch {}
   }
+
   return RedisConfig.parse({
     dsn: REDIS_DSN,
     host: REDIS_HOST,

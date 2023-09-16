@@ -1,5 +1,4 @@
-import type { NatsConnection } from 'nats';
-import type { Subscription } from 'nats';
+import type { NatsConnection, Subscription } from 'nats';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { DiscoveryService, ModulesContainer } from '@nestjs/core';
 import { createLazyPromise } from '@wener/utils';
@@ -15,7 +14,7 @@ export class NatsServerHandler {
   private subscriptions: Subscription[] = [];
   private readonly log = new Logger(NatsServerHandler.name);
   readonly discoveryService: DiscoveryService;
-  private _started = createLazyPromise();
+  private readonly _started = createLazyPromise();
 
   get started(): Promise<void> {
     return this._started;
@@ -29,11 +28,13 @@ export class NatsServerHandler {
     this.discoveryService = new DiscoveryService(modulesContainer);
   }
 
-  close(): Promise<void> {
+  async close(): Promise<void> {
     const done: Promise<any> = Promise.allSettled(
-      this.subscriptions.map((v) => {
-        return v.drain().then(() => v.unsubscribe());
-      }),
+      this.subscriptions.map(async (v) =>
+        v.drain().then(() => {
+          v.unsubscribe();
+        }),
+      ),
     );
     this.subscriptions = [];
     return done;
@@ -43,11 +44,12 @@ export class NatsServerHandler {
     const { nc, log, svc } = this;
 
     const sub = nc.subscribe(getSubscribeSubject({ service: name }), {
-      callback: async (err, msg) => {
+      async callback(err, msg) {
         if (err) {
           log.error(String(err));
           return;
         }
+
         if (!msg.reply) {
           log.debug(`No reply subject: ${msg.subject}`);
           return;
@@ -59,14 +61,14 @@ export class NatsServerHandler {
         try {
           req = ServiceRequestSchema.parse(JSON.parse(msg.string()));
           fromMessageHeader(req, msg.headers);
-        } catch (e) {
+        } catch (error) {
           msg.respond(
             JSON.stringify(
               createResponse(
                 {},
                 {
                   code: 400,
-                  description: `Invalid request: ${String(e)}`,
+                  description: `Invalid request: ${String(error)}`,
                 },
               ),
             ),
@@ -74,11 +76,13 @@ export class NatsServerHandler {
           );
           return;
         }
+
         try {
           res = await svc.handle(req);
-        } catch (e) {
-          cause = e;
+        } catch (error) {
+          cause = error;
         }
+
         if (!res) {
           if (cause) {
             log.error(`Handle ${req.service}#${req.method} error: ${cause}`);
@@ -93,6 +97,7 @@ export class NatsServerHandler {
             });
           }
         }
+
         const { headers: _, ...write } = res;
         const hdr = toMessageHeader(res);
         msg.respond(JSON.stringify(write), {
@@ -106,22 +111,21 @@ export class NatsServerHandler {
 
   listen() {
     const { svc, log } = this;
-    this.discoveryService
+    for (const { metatype, instance } of this.discoveryService
       .getProviders()
-      .filter(({ metatype }) => {
-        return metatype && Reflect.getMetadata(EXPOSE_SERVICE_METADATA_KEY, metatype);
-      })
-      .forEach(({ metatype, instance }) => {
-        svc.addService({
-          service: metatype as any,
-          target: instance,
-        });
+      .filter(({ metatype }) => metatype && Reflect.getMetadata(EXPOSE_SERVICE_METADATA_KEY, metatype))) {
+      svc.addService({
+        service: metatype as any,
+        target: instance,
       });
+    }
+
     const names = svc.getServiceNames();
     log.log(`Register service (${names.length}) ${names.join(', ')}`);
-    names.forEach((name) => {
+    for (const name of names) {
       this.subscribeService({ name });
-    });
+    }
+
     this._started.resolve(true);
   }
 }

@@ -1,5 +1,5 @@
-import type { IDatabaseDriver } from '@mikro-orm/core';
-import { type EntityManager, MikroORM, RequestContext } from '@mikro-orm/core';
+import { MikroORM, RequestContext } from '@mikro-orm/core';
+import type { IDatabaseDriver, type EntityManager } from '@mikro-orm/core';
 import { type TransactionOptions } from '@mikro-orm/core/enums';
 import { type MaybePromise } from '@wener/utils';
 import { getContext } from '../context';
@@ -21,11 +21,13 @@ export function getEntityManager<D extends IDatabaseDriver = IDatabaseDriver>({ 
   if (em && !fork) {
     return em;
   }
+
   const orm = getMikroORM<D>();
   em = orm.em as any;
   if (fork) {
     em = em.fork() as any;
   }
+
   return em;
 }
 
@@ -34,10 +36,11 @@ export function requireContextEntityManager<D extends IDatabaseDriver = IDatabas
   if (!context) {
     throw new Error('No entity manager context');
   }
+
   return context as EntityManager<D>;
 }
 
-export function runInTransaction<T, D extends IDatabaseDriver = IDatabaseDriver>(
+export async function runInTransaction<T, D extends IDatabaseDriver = IDatabaseDriver>(
   fn: (em: EntityManager<D>) => MaybePromise<T>,
   opts?: TransactionOptions,
 ): Promise<T> {

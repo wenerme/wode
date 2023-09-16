@@ -10,6 +10,7 @@ test('gen php', () => {
   if (!schema) {
     throw new Error('schema not found');
   }
+
   console.log(genPHPService(schema));
 });
 
@@ -21,12 +22,10 @@ function genPHPService(schema: ServiceSchema) {
 ])]
 interface ${schema.name.split('.').at(-1)} {
 ${schema.methods
-  .map((v) => {
-    return `
+  .map((v) => `
 #[Method()]
 function ${v.name}($req, $meta = null);
-`.trim();
-  })
+`.trim())
   .join('\n')
   .replaceAll(/^/gm, '  ')}
 }

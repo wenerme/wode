@@ -12,5 +12,6 @@ export async function handleResponse({
   if (!result.ok) {
     throw Object.assign(new Error(result.description), { res: result, status: result.status });
   }
+
   return result.body;
 }

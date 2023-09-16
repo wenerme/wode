@@ -37,14 +37,14 @@ export class NatsModule {
         },
         {
           provide: NATS_CONNECTION,
-          useFactory: async () => {
+          async useFactory() {
             log.log(
               `connecting: ${Array.from(options.servers ?? [])
                 .flat()
                 .map((v) => maskUrl(v))}`,
             );
             const client = await connect(options);
-            log.log(`connected`);
+            log.log('connected');
             return client;
           },
         },
@@ -61,5 +61,6 @@ function maskUrl(s: string) {
   if (!/^\w+:\/\//.test(s)) {
     s = 'nats://' + s;
   }
+
   return s.replace(/:\/\/.*@/, '://***:***@');
 }

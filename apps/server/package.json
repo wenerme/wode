@@ -82,5 +82,31 @@
     "@types/semver": "^7.5.0",
     "@types/tar": "^6.1.5",
     "@types/zxcvbn": "^4.4.1"
+  },
+  "xo": {
+    "envs": [
+      "es2022",
+      "node"
+    ],
+    "rules": {
+      "@typescript-eslint/no-empty-function": 1,
+      "@typescript-eslint/consistent-type-definitions": "off",
+      "@typescript-eslint/indent": "off",
+      "@typescript-eslint/naming-convention": "off",
+      "@typescript-eslint/no-unsafe-argument": 1,
+      "@typescript-eslint/object-curly-spacing": "off",
+      "@typescript-eslint/prefer-nullish-coalescing": "off",
+      "@typescript-eslint/restrict-template-expressions": 1,
+      "@typescript-eslint/switch-exhaustiveness-check": "off",
+      "arrow-parens": "off",
+      "capitalized-comments": "off",
+      "import/extensions": "off",
+      "n/file-extension-in-import": "off",
+      "new-cap": "off",
+      "no-await-in-loop": "off",
+      "prettier/prettier": "off",
+      "unicorn/filename-case": "off",
+      "unicorn/prevent-abbreviations": "off"
+    }
   }
 }

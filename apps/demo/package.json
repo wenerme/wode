@@ -140,7 +140,6 @@
     "@types/styled-components": "^5.1.26",
     "@types/tar": "^6.1.5",
     "cssnano": "^6.0.1",
-    "eslint-config-next": "^13.4.12",
     "fs-extra": "^11.1.1",
     "pino-pretty": "^10.2.0",
     "react-test-renderer": "^18.2.0",

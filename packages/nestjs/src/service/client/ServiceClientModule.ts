@@ -14,7 +14,7 @@ export class ServiceClientModule {
       providers: [
         {
           provide: ClientRegistry,
-          useFactory: (conn: ClientConnection) => {
+          useFactory(conn: ClientConnection) {
             const cli = new ClientRegistry();
             cli.connect(conn);
             return cli;
@@ -28,19 +28,17 @@ export class ServiceClientModule {
   }
 
   static forFeature(svcs: any[]): DynamicModule {
-    const providers = svcs.map((v) => {
-      return {
+    const providers = svcs.map((v) => ({
         provide: v,
-        useFactory: (clientRegistry: ClientRegistry) => {
+        useFactory(clientRegistry: ClientRegistry) {
           return clientRegistry.getClient(v);
         },
         inject: [ClientRegistry],
-      } as Provider;
-    });
+      } as Provider));
     return {
       module: ServiceClientFeatureModule,
       imports: [ServiceClientModule],
-      providers: providers,
+      providers,
       exports: providers,
     };
   }

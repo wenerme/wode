@@ -11,6 +11,6 @@ export abstract class ResourceBaseEntity<E extends ResourceBaseEntity<any>> exte
   @Property({ type: types.string, nullable: true })
   eid?: string;
 
-  @Property({ type: types.bigint, defaultRaw: `gen_next_sid()`, nullable: false, unique: true })
+  @Property({ type: types.bigint, defaultRaw: 'gen_next_sid()', nullable: false, unique: true })
   sid!: number;
 }

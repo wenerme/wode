@@ -45,7 +45,7 @@ export function createRemoteServiceClient<T = unknown>({
   for (const method of schema.methods) {
     const methodName = method.options.name || method.name;
     Object.defineProperty(Client.prototype, method.name, {
-      value: async function (req: any, opts: any = {}) {
+      async value(req: any, opts: any = {}) {
         const res = await this.$invoke({
           id: Math.random().toString(36).slice(2),
           service: schema.name,

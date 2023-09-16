@@ -1,8 +1,8 @@
-import type { NatsError } from 'nats';
-import { headers, type NatsConnection } from 'nats';
+import { headers } from 'nats';
+import type { NatsError, NatsConnection } from 'nats';
 import { Logger, Module } from '@nestjs/common';
+import { NATS_CONNECTION, NatsModule } from '..';
 import { getHttpStatusText } from '../../HttpStatus';
-import { NATS_CONNECTION, NatsModule } from '../../nats';
 import type { ClientConnection, ClientRequest, ClientResponse } from '../../service';
 import { SERVICE_CLIENT_CONNECTION } from '../../service';
 import { createResponse } from '../../service/server/createResponse';
@@ -15,7 +15,7 @@ const NATS_SERVICE_CLIENT_CONNECTION = Symbol('NATS_SERVICE_CLIENT_CONNECTION');
   providers: [
     {
       provide: NATS_SERVICE_CLIENT_CONNECTION,
-      useFactory: (nc: NatsConnection) => {
+      useFactory(nc: NatsConnection) {
         return createNatsClientConnection(nc);
       },
       inject: [NATS_CONNECTION],
@@ -35,9 +35,10 @@ export function createNatsClientConnection(nc: NatsConnection): ClientConnection
   return async (req) => {
     const { headers: _, options: __, ...write } = req;
     const hdr = headers();
-    Object.entries(req.headers).forEach(([k, v]) => {
+    for (const [k, v] of Object.entries(req.headers)) {
       hdr.set(k, v);
-    });
+    }
+
     try {
       log.debug(`-> ${req.service}:${req.method}`);
       const msg = await nc.request(getRequestSubject(req), JSON.stringify(write), {
@@ -48,9 +49,9 @@ export function createNatsClientConnection(nc: NatsConnection): ClientConnection
       const res = JSON.parse(msg.string()) as ClientResponse;
       fromMessageHeader(res, msg.headers);
       return res;
-    } catch (e) {
-      log.error(`Unexpected ${req.service}:${req.method} ${e}`);
-      return createErrorResponse({ error: e, req });
+    } catch (error) {
+      log.error(`Unexpected ${req.service}:${req.method} ${error}`);
+      return createErrorResponse({ error, req });
     }
   };
 }
@@ -60,23 +61,29 @@ function createErrorResponse({ error: e, req }: { error: any; req: ClientRequest
     const err = e as NatsError;
     log.error(`NatsError: ${e.code} ${err.message}`);
     switch (e.code) {
-      case 'TIMEOUT':
+      case 'TIMEOUT': {
         return createResponse(req, {
           status: 408, // request timeout
           description: err.message,
         });
-      case '503':
+      }
+
+      case '503': {
         return createResponse(req, {
           code: 503,
           description: `${getHttpStatusText(503)}: ${err.message}`,
         });
-      default:
+      }
+
+      default: {
         return createResponse(req, {
           code: 500,
           description: err.message,
         });
+      }
     }
   }
+
   return createResponse(req, {
     status: 500,
     description: String(e),

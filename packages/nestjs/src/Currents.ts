@@ -13,7 +13,7 @@ export class Currents {
     return this.#storage.getStore();
   }
 
-  static clear(key: Type<any> | string | symbol) {
+  static clear(key: Type | string | symbol) {
     const store = Currents.getStore();
     return store?.delete(key) ?? false;
   }
@@ -30,8 +30,10 @@ export class Currents {
       if (!neo !== undefined) {
         store?.set(key, neo);
       }
+
       return neo;
     }
+
     return found;
   }
 
@@ -42,10 +44,11 @@ export class Currents {
   static getStore(require = true) {
     const store = this.store;
     if (!store && require) {
-      throw Errors.InternalServerError.asException(`Currents not ready`);
+      throw Errors.InternalServerError.asException('Currents not ready');
       // store = new Map();
       // this.Store.enterWith(store);
     }
+
     return store;
   }
 
@@ -108,9 +111,10 @@ class Token<T> implements ContextToken<T> {
   require(): T {
     const found = this.get();
     if (found === undefined) {
-      this.log.warn(`context value not found`);
+      this.log.warn('context value not found');
       throw Errors.InternalServerError.asException('上下文不存在');
     }
+
     return found;
   }
 }

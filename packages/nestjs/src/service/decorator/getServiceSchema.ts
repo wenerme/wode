@@ -9,14 +9,17 @@ export function getServiceSchema<T = unknown>(type: Constructor<T> | AbstractCon
   if (!so) {
     return;
   }
+
   let base: undefined | ServiceSchema;
   if (so.as) {
     base = getServiceSchema(so.as);
     if (!base) {
       throw new Error(`Service ${type} base ${so.as} is invalid`);
     }
+
     so = Object.assign({}, base.options, so);
   }
+
   const { name } = so;
   if (!name) {
     throw new Error(`Service ${type} name is invalid`);
@@ -35,8 +38,9 @@ export function getServiceSchema<T = unknown>(type: Constructor<T> | AbstractCon
 
       switch (Object.prototype.toString.call(method)) {
         case '[object GeneratorFunction]':
-        case '[object AsyncGeneratorFunction]':
+        case '[object AsyncGeneratorFunction]': {
           mo.stream = true;
+        }
       }
 
       const methodName = key;
@@ -64,6 +68,7 @@ export function getServiceSchema<T = unknown>(type: Constructor<T> | AbstractCon
       byName[method.name] ||= method;
     }
   }
+
   methods = Object.values(byName).sort((a, b) => a.options.name.localeCompare(b.options.name));
 
   const schema: ServiceSchema<T> = {
