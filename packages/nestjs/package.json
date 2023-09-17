@@ -1,6 +1,6 @@
 {
   "name": "@wener/nestjs",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "",
   "scripts": {
     "test": "make test",

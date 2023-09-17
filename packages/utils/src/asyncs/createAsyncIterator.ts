@@ -1,12 +1,15 @@
-import { createLazyPromise, LazyPromise } from './createLazyPromise';
+import { type MaybePromise } from './MaybePromise';
+import { createLazyPromise, type LazyPromise } from './createLazyPromise';
+
+type Val<T> = [val: MaybePromise<T> | undefined, done: boolean, err?: any];
 
 export function createAsyncIterator<T>(
-  fn: (next: (val: [T | undefined, boolean] | undefined, err?: any) => void) => void,
-) {
-  const values: Array<Promise<[val: T | undefined, done: boolean, err?: any]>> = [];
-  let recv: (val: [T | undefined, boolean] | undefined, err?: any) => void;
+  fn: (next: (val: [MaybePromise<T> | undefined, boolean] | undefined, err?: any) => void) => void,
+): AsyncGenerator<T, void, unknown> {
+  const values: Array<Promise<Val<T>>> = [];
+  let recv: (val: [MaybePromise<T> | undefined, boolean] | undefined, err?: any) => void;
   {
-    let next: LazyPromise<[val: T | undefined, done: boolean, err?: any]>;
+    let next: LazyPromise<Val<T>>;
     values.push((next = createLazyPromise()));
     recv = (val, err) => {
       if (err !== undefined) {
@@ -23,7 +26,7 @@ export function createAsyncIterator<T>(
   fn(recv);
 
   return (async function* () {
-    let value: T | undefined;
+    let value: Val<T>[0];
     let err: any;
     for (let i = 0, done = false; !done; i++) {
       let result = await values[i];

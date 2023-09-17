@@ -94,21 +94,19 @@ class Token<T> implements ContextToken<T> {
     return `Token(${String(key instanceof Function ? key.name : key)})`;
   }
 
-  set(value: T) {
+  set = (value: T) => {
     Currents.set(this.key, value);
-  }
+  };
 
-  clear() {
+  clear = () => {
     return Currents.clear(this.key);
-  }
+  };
 
-  get(): T | undefined;
-  get(def: T | (() => T)): T;
-  get(def?: T | (() => T)): T | undefined {
+  get = (def?: any): any => {
     return Currents.get(this.key, def);
-  }
+  };
 
-  require(): T {
+  require = (): T => {
     const found = this.get();
     if (found === undefined) {
       this.log.warn('context value not found');
@@ -116,5 +114,5 @@ class Token<T> implements ContextToken<T> {
     }
 
     return found;
-  }
+  };
 }

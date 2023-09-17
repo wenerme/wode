@@ -17,6 +17,7 @@ exports[`conf 1`] = `
   },
   "nats": {
     "debug": false,
+    "maxReconnectAttempts": undefined,
     "name": undefined,
     "password": undefined,
     "servers": [],

@@ -2,10 +2,16 @@ import { Injectable } from '@nestjs/common';
 import type { AbstractConstructor, Constructor } from '../../types';
 import type { ServiceSchema } from '../decorator';
 import { getServiceSchema } from '../decorator';
-import { getServiceName } from '../decorator/Service';
-import { ServerMiddleware } from '../server';
+import { getServiceName } from '../decorator';
 import { createRemoteServiceClient } from './createRemoteServiceClient';
-import type { ClientConnection, ClientRequest, ClientRequestInit, ClientResponse, RemoteService } from './types';
+import type {
+  ClientConnection,
+  ClientRequest,
+  ClientRequestInit,
+  ClientRequestOptions,
+  ClientResponse,
+  RemoteService,
+} from './types';
 
 export type ClientMiddleware = (next: ClientConnection) => ClientConnection;
 
@@ -14,7 +20,11 @@ interface RemoteClientEntry {
   client: IRemoteServiceClient;
 }
 
-export interface IRemoteServiceClient {}
+export interface IRemoteServiceClient {
+  $schema: ServiceSchema;
+  $invoke: (req: ClientRequest) => Promise<ClientResponse | AsyncIterator<ClientResponse>>;
+  $options: ClientRequestOptions;
+}
 
 @Injectable()
 export class ClientRegistry {
