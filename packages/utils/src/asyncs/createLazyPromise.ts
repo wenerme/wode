@@ -3,7 +3,7 @@ import { isPromise } from './isPromise';
 
 export type LazyPromise<T> = Promise<T> & {
   reject(reason?: any): void;
-  resolve(v?: T | PromiseLike<T>): void;
+  resolve(v?: MaybePromise<T>): void;
 };
 
 /**

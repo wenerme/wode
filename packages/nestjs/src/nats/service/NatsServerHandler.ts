@@ -1,13 +1,14 @@
-import type { NatsConnection, Subscription } from 'nats';
+import type { Subscription } from 'nats';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { DiscoveryService, ModulesContainer } from '@nestjs/core';
 import { createLazyPromise } from '@wener/utils';
 import { App } from '../../app';
-import type { ServerRequest, ServerResponse } from '../../service';
-import { EXPOSE_SERVICE_METADATA_KEY, ServiceRegistry, ServiceRequestSchema } from '../../service';
-import { createResponse } from '../../service/server/createResponse';
+import { EXPOSE_SERVICE_METADATA_KEY, ServiceRegistry } from '../../service';
 import { NatsConn } from '../nats.module';
-import { fromMessageHeader, getSubscribeSubject, toMessageHeader } from './nats';
+import { NATS_SERVICE_SERVER_OPTIONS } from './const';
+import { handleNatsServiceServerMessage } from './handleNatsServiceServerMessage';
+import { getSubscribeSubject } from './nats';
+import type { NatsServiceServerOptions } from './types';
 
 @Injectable()
 export class NatsServerHandler {
@@ -24,6 +25,7 @@ export class NatsServerHandler {
     @Inject(ModulesContainer) private readonly modulesContainer: ModulesContainer,
     @Inject(ServiceRegistry) private readonly svc: ServiceRegistry,
     @Inject(NatsConn) readonly nc: NatsConn,
+    @Inject(NATS_SERVICE_SERVER_OPTIONS) readonly options: NatsServiceServerOptions,
   ) {
     this.discoveryService = new DiscoveryService(modulesContainer);
   }
@@ -41,72 +43,27 @@ export class NatsServerHandler {
   }
 
   private subscribeService({ name }: { name: string }) {
+    const { getServiceSubject = getSubscribeSubject, queue = App.service } = this.options;
     const { nc, log, svc } = this;
 
-    const sub = nc.subscribe(getSubscribeSubject({ service: name }), {
-      async callback(err, msg) {
-        if (err) {
-          log.error(String(err));
-          return;
-        }
-
-        if (!msg.reply) {
-          log.debug(`No reply subject: ${msg.subject}`);
-          return;
-        }
-
-        let res: ServerResponse | undefined;
-        let cause: any | undefined;
-        let req: ServerRequest;
-        try {
-          req = ServiceRequestSchema.parse(JSON.parse(msg.string()));
-          fromMessageHeader(req, msg.headers);
-        } catch (error) {
-          msg.respond(
-            JSON.stringify(
-              createResponse(
-                {},
-                {
-                  code: 400,
-                  description: `Invalid request: ${String(error)}`,
-                },
-              ),
-            ),
-            {},
-          );
-          return;
-        }
-
-        try {
-          res = await svc.handle(req);
-        } catch (error) {
-          cause = error;
-        }
-
-        if (!res) {
-          if (cause) {
-            log.error(`Handle ${req.service}#${req.method} error: ${cause}`);
-            res = createResponse(req, {
-              status: 500,
-              description: String(cause),
-            });
-          } else if (!res) {
-            res = createResponse(req, {
-              status: 500,
-              description: 'Invalid Response',
-            });
+    for (let subject of getServiceSubject({ service: name })) {
+      this.log.log(`Subscribe ${subject}`);
+      const sub = nc.subscribe(subject, {
+        callback(err, msg) {
+          if (err) {
+            log.error(String(err));
+            return;
           }
-        }
-
-        const { headers: _, ...write } = res;
-        const hdr = toMessageHeader(res);
-        msg.respond(JSON.stringify(write), {
-          headers: hdr,
-        });
-      },
-      queue: App.service,
-    });
-    this.subscriptions.push(sub);
+          if (!msg.reply) {
+            log.debug(`No reply subject: ${msg.subject}`);
+            return;
+          }
+          return handleNatsServiceServerMessage({ msg, registry: svc, logger: log });
+        },
+        queue,
+      });
+      this.subscriptions.push(sub);
+    }
   }
 
   listen() {

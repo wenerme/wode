@@ -1,19 +1,12 @@
 import type { DynamicModule, OnApplicationBootstrap, OnApplicationShutdown } from '@nestjs/common';
-import { Inject, Injectable, Module } from '@nestjs/common';
+import { Inject, Module } from '@nestjs/common';
 import { ModulesContainer } from '@nestjs/core';
-import { arrayOfMaybeArray } from '@wener/utils';
-import type { ServerMiddleware } from '../../service/server/ServiceRegistry';
-import { ServiceServerModule } from '../../service/server/ServiceServerModule';
+import type { ServerMiddleware } from '../../service';
+import { ServiceServerModule } from '../../service';
 import { NatsServerHandler } from './NatsServerHandler';
 import { NatsServerRegistry } from './NatsServerRegistry';
-
-export interface NatsServiceServerOptions {
-  getServiceSubject?: (o: { name: string }) => string[];
-  middlewares?: ServerMiddleware[];
-}
-
-export const NATS_SERVICE_SERVER_MIDDLEWARE = Symbol('NATS_SERVICE_SERVER_MIDDLEWARE');
-export const NATS_SERVICE_SERVER_OPTIONS = Symbol('NATS_SERVICE_SERVER_OPTIONS');
+import { NATS_SERVICE_SERVER_MIDDLEWARE, NATS_SERVICE_SERVER_OPTIONS } from './const';
+import { NatsServiceServerOptions } from './types';
 
 @Module({})
 export class NatsServiceServerModule implements OnApplicationBootstrap, OnApplicationShutdown {
@@ -40,7 +33,7 @@ export class NatsServiceServerModule implements OnApplicationBootstrap, OnApplic
               ...options,
             };
 
-            o.middlewares.push(...arrayOfMaybeArray(_mw));
+            // o.middlewares.push(...arrayOfMaybeArray(_mw));
             return o;
           },
           inject: [ModulesContainer, NATS_SERVICE_SERVER_MIDDLEWARE],

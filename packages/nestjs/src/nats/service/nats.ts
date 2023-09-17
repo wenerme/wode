@@ -50,9 +50,12 @@ export function toMessageHeader(
 }
 
 export function getRequestSubject({ service, method }: { service: string; method: string }) {
-  return `service.${service}.${method}`;
+  return `service.${service}`;
 }
 
 export function getSubscribeSubject({ service }: { service: string }) {
-  return `service.${service}.>`;
+  return [
+    `service.${service}`,
+    `service.${service}.*`, // for method
+  ];
 }

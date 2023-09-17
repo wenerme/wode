@@ -24,7 +24,7 @@ export function createProxyClient<T>({
     constructor: opts.constructor,
   };
   return new Proxy(ctx, {
-    getPrototypeOf(target: ClientProxyTarget): Record<string, unknown> | undefined {
+    getPrototypeOf(target: ClientProxyTarget) {
       return target.constructor?.prototype || null;
     },
     has(target, key): boolean {

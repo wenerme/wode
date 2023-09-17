@@ -9,6 +9,10 @@ export const ServiceRequestSchema = z.object({
   metadata: z.record(z.any()).default({}),
 });
 export type ServiceRequest = z.infer<typeof ServiceRequestSchema>;
+export const ServiceRequestPayloadSchema = ServiceRequestSchema.omit({
+  metadata: true,
+});
+export type ServiceRequestPayload = z.infer<typeof ServiceRequestPayloadSchema>;
 
 export const ServiceResponseSchema = z.object({
   id: z.string(),
@@ -22,3 +26,7 @@ export const ServiceResponseSchema = z.object({
   // done: z.boolean().optional(), // for many responses
 });
 export type ServiceResponse = z.infer<typeof ServiceResponseSchema>;
+export const ServiceResponsePayloadSchema = ServiceResponseSchema.omit({
+  metadata: true,
+});
+export type ServiceResponsePayload = z.infer<typeof ServiceResponsePayloadSchema>;
