@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 
 const hasWindow = typeof window !== 'undefined';
 const constructableStylesheetsSupported =
@@ -73,13 +73,13 @@ export class ReactShadowRoot extends React.PureComponent<ReactShadowRootProps> {
   }
 }
 
-if (process.env.NODE_ENV !== 'production') {
-  ReactShadowRoot.propTypes = {
-    delegatesFocus: PropTypes.bool,
-    mode: PropTypes.oneOf(['open', 'closed']),
-    // stylesheets: PropTypes.arrayOf(PropTypes.instanceOf(window.CSSStyleSheet)),
-  };
-}
+// if (process.env.NODE_ENV !== 'production') {
+//   ReactShadowRoot.propTypes = {
+//     delegatesFocus: PropTypes.bool,
+//     mode: PropTypes.oneOf(['open', 'closed']),
+//     // stylesheets: PropTypes.arrayOf(PropTypes.instanceOf(window.CSSStyleSheet)),
+//   };
+// }
 
 declare global {
   interface ShadowRoot {

@@ -22,10 +22,12 @@ function genPHPService(schema: ServiceSchema) {
 ])]
 interface ${schema.name.split('.').at(-1)} {
 ${schema.methods
-  .map((v) => `
+  .map((v) =>
+    `
 #[Method()]
 function ${v.name}($req, $meta = null);
-`.trim())
+`.trim(),
+  )
   .join('\n')
   .replaceAll(/^/gm, '  ')}
 }

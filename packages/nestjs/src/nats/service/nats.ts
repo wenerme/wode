@@ -49,13 +49,20 @@ export function toMessageHeader(
   return hdr;
 }
 
+/*
+wener.UserService -> service.wener/UserService
+
+能够实现 remapping
+serive.wener.UserService 方式需要 `>` - 不支持 remapping
+ */
+
 export function getRequestSubject({ service, method }: { service: string; method: string }) {
-  return `service.${service}`;
+  return `service.${service.replaceAll('.', '/')}.${method}`;
 }
 
 export function getSubscribeSubject({ service }: { service: string }) {
   return [
-    `service.${service}`,
-    `service.${service}.*`, // for method
+    `service.${service.replaceAll('.', '/')}`,
+    `service.${service.replaceAll('.', '/')}.*`, // for method
   ];
 }

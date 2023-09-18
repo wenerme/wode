@@ -4,7 +4,7 @@ import { ClientConnection, ClientResponse, ServerRequest, ServiceResponsePayload
 import { createNatsErrorResponse } from './createNatsErrorResponse';
 import { fromMessageHeader, getRequestSubject } from './nats';
 
-export interface NatsClientConnectionOptions {
+export interface CreateNatsClientConnectionOptions {
   nc: NatsConnection;
   getSubject?: (req: ServerRequest) => string;
   logger?: Logger;
@@ -14,7 +14,7 @@ export function createNatsClientConnection({
   nc,
   getSubject = getRequestSubject,
   logger: log = new Logger('NatsServiceClient'),
-}: NatsClientConnectionOptions): ClientConnection {
+}: CreateNatsClientConnectionOptions): ClientConnection {
   return async (req) => {
     const { headers: _, options: __, ...write } = req;
     const hdr = headers();

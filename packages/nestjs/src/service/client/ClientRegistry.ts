@@ -104,6 +104,10 @@ export class ClientRegistry {
       metadata: init.metadata || {},
     };
 
+    if (!this.conn) {
+      throw new Error('ServiceClient not connected');
+    }
+
     const handler = (this.handler ||= this.middlewares.reduceRight((next, middleware) => middleware(next), this.conn));
     return handler(req);
   };

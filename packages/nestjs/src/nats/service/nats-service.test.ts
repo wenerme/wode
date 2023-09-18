@@ -13,16 +13,20 @@ import {
   RemoteMethodNotImplemented,
   type ServerRequestOptions,
   Service,
+  ServiceClientModule,
   ServiceRegistry,
 } from '../../service';
-import { ServiceClientModule } from '../../service';
 import { InjectNatsClient, NatsConn, NatsModule } from '../nats.module';
 import { NatsServerHandler } from './NatsServerHandler';
-import { NatsServiceClientConnectionModule } from './NatsServiceClientConnectionModule';
+import { NatsServiceClientModule } from './NatsServiceClientModule';
 import { NatsServiceServerModule } from './NatsServiceServerModule';
 
 process.env.NATS_URL ||= process.env.TEST_NATS_URL || 'nats://demo.nats.io:4222';
 
+const triggers = {
+  server: 0,
+  client: 0,
+};
 describe('nats service module', async () => {
   let svr: INestApplication;
   let client: INestApplication;
@@ -52,6 +56,8 @@ describe('nats service module', async () => {
     const rts = client.get(RemoteTestService);
     const res = await rts.hello({ name: 'Wener' });
     expect(res).toBe('Hello Wener');
+    expect(triggers.client).toBe(1);
+    expect(triggers.server).toBe(1);
   });
 
   afterAll(async () => {
@@ -99,7 +105,19 @@ class TestService {
 }
 
 @Module({
-  imports: [NatsModule.forRoot(), NatsServiceServerModule.forRoot()],
+  imports: [
+    NatsModule.forRoot({}),
+    NatsServiceServerModule.forRoot({
+      middlewares: [
+        (next) => {
+          return (req) => {
+            triggers.server++;
+            return next(req);
+          };
+        },
+      ],
+    }),
+  ],
   providers: [TestServiceImpl],
   exports: [TestServiceImpl],
 })
@@ -107,9 +125,16 @@ class ServerModule {}
 
 @Module({
   imports: [
-    NatsModule.forRoot(),
-    ServiceClientModule.forRoot({
-      imports: [NatsServiceClientConnectionModule],
+    NatsModule.forRoot({}),
+    NatsServiceClientModule.forRoot({
+      middlewares: [
+        (next) => {
+          return (req) => {
+            triggers.client++;
+            return next(req);
+          };
+        },
+      ],
     }),
     ServiceClientModule.forFeature([RemoteTestService]),
   ],
