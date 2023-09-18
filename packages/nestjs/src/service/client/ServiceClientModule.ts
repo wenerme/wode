@@ -1,43 +1,63 @@
 import type { DynamicModule, Provider } from '@nestjs/common';
-import { Module } from '@nestjs/common';
-import { ClientRegistry } from './ClientRegistry';
+import { ConfigurableModuleBuilder, Module } from '@nestjs/common';
+import { ClientMiddleware, ClientRegistry } from './ClientRegistry';
 import type { ClientConnection } from './types';
 
 export const SERVICE_CLIENT_CONNECTION = Symbol('SERVICE_CLIENT_CONNECTION');
 
-@Module({})
-export class ServiceClientModule {
-  static forRoot(opts: Partial<Omit<DynamicModule, 'providers' | 'exports' | 'module'>> = {}): DynamicModule {
-    opts.global ??= true;
-    return {
-      module: ServiceClientModule,
-      providers: [
-        {
-          provide: ClientRegistry,
-          useFactory(conn: ClientConnection) {
-            const cli = new ClientRegistry();
-            cli.connect(conn);
-            return cli;
-          },
-          inject: [SERVICE_CLIENT_CONNECTION],
-        },
-      ],
-      exports: [ClientRegistry],
-      ...opts,
-    };
-  }
+export interface ServiceClientModuleOptions {
+  connection?: ClientConnection;
+  middlewares?: ClientMiddleware[];
+}
 
+const { ConfigurableModuleClass, MODULE_OPTIONS_TOKEN } = new ConfigurableModuleBuilder<ServiceClientModuleOptions>()
+  .setExtras(
+    {
+      isGlobal: true,
+    },
+    (definition, extras) => ({
+      ...definition,
+      global: extras.isGlobal,
+    }),
+  )
+  .setClassMethodName('forRoot')
+  .build();
+
+export const SERVICE_CLIENT_MODULE_OPTIONS = MODULE_OPTIONS_TOKEN;
+
+@Module({
+  providers: [
+    {
+      provide: ClientRegistry,
+      useFactory(conn: ClientConnection, { connection, middlewares = [] }: ServiceClientModuleOptions = {}) {
+        const cli = new ClientRegistry();
+        cli.connect(conn ?? connection);
+        cli.middlewares = middlewares;
+        return cli;
+      },
+      inject: [
+        { token: SERVICE_CLIENT_CONNECTION, optional: true },
+        { token: MODULE_OPTIONS_TOKEN, optional: true },
+      ],
+    },
+  ],
+  exports: [ClientRegistry],
+})
+export class ServiceClientModule extends ConfigurableModuleClass {
   static forFeature(svcs: any[]): DynamicModule {
-    const providers = svcs.map((v) => ({
-        provide: v,
-        useFactory(clientRegistry: ClientRegistry) {
-          return clientRegistry.getClient(v);
-        },
-        inject: [ClientRegistry],
-      } as Provider));
+    const providers = svcs.map(
+      (v) =>
+        ({
+          provide: v,
+          useFactory(clientRegistry: ClientRegistry) {
+            return clientRegistry.getClient(v);
+          },
+          inject: [ClientRegistry],
+        }) as Provider,
+    );
     return {
       module: ServiceClientFeatureModule,
-      imports: [ServiceClientModule],
+      imports: [],
       providers,
       exports: providers,
     };

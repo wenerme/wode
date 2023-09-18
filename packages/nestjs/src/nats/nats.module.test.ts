@@ -50,7 +50,7 @@ class TestService {
 }
 
 @Module({
-  imports: [NatsModule.forRoot()],
+  imports: [NatsModule.forRoot({})],
   providers: [TestService],
   exports: [TestService],
 })

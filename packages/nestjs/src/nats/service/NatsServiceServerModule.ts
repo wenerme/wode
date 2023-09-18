@@ -1,51 +1,35 @@
-import type { DynamicModule, OnApplicationBootstrap, OnApplicationShutdown } from '@nestjs/common';
+import type { OnApplicationBootstrap, OnApplicationShutdown } from '@nestjs/common';
 import { Inject, Module } from '@nestjs/common';
-import { ModulesContainer } from '@nestjs/core';
-import type { ServerMiddleware } from '../../service';
 import { ServiceServerModule } from '../../service';
+import { SERVICE_SERVER_MODULE_OPTIONS, ServiceServerModuleOptions } from '../../service/server/ServiceServerModule';
+import { NatsModule } from '../nats.module';
 import { NatsServerHandler } from './NatsServerHandler';
 import { NatsServerRegistry } from './NatsServerRegistry';
-import { NATS_SERVICE_SERVER_MIDDLEWARE, NATS_SERVICE_SERVER_OPTIONS } from './const';
-import { NatsServiceServerOptions } from './types';
+import ServerModule from './ServerModule';
+import type { NatsServiceServerModuleOptions } from './types';
 
-@Module({})
-export class NatsServiceServerModule implements OnApplicationBootstrap, OnApplicationShutdown {
-  static forRoot({
-    options = {},
-  }: {
-    options?: NatsServiceServerOptions;
-  } = {}): DynamicModule {
-    return {
-      module: NatsServiceServerModule,
-      imports: [ServiceServerModule],
-      providers: [
-        NatsServerHandler,
-        NatsServerRegistry,
-        {
-          provide: NATS_SERVICE_SERVER_MIDDLEWARE,
-          useValue: [],
-        },
-        {
-          provide: NATS_SERVICE_SERVER_OPTIONS,
-          useFactory(mc: ModulesContainer, _mw: ServerMiddleware[] | ServerMiddleware) {
-            const o = {
-              middlewares: [],
-              ...options,
-            };
+const { ConfigurableModuleClass, MODULE_OPTIONS_TOKEN } = ServerModule;
 
-            // o.middlewares.push(...arrayOfMaybeArray(_mw));
-            return o;
-          },
-          inject: [ModulesContainer, NATS_SERVICE_SERVER_MIDDLEWARE],
-        },
-      ],
-      exports: [NatsServerRegistry],
-    };
-  }
-
+@Module({
+  imports: [ServiceServerModule, NatsModule],
+  providers: [
+    NatsServerHandler,
+    NatsServerRegistry,
+    {
+      provide: SERVICE_SERVER_MODULE_OPTIONS,
+      useFactory: ({ middlewares }: NatsServiceServerModuleOptions): ServiceServerModuleOptions => {
+        return { middlewares };
+      },
+      inject: [{ token: MODULE_OPTIONS_TOKEN, optional: true }],
+    },
+  ],
+  exports: [NatsServerRegistry, ServiceServerModule, SERVICE_SERVER_MODULE_OPTIONS],
+})
+export class NatsServiceServerModule
+  extends ConfigurableModuleClass
+  implements OnApplicationBootstrap, OnApplicationShutdown
+{
   @Inject(NatsServerHandler) private readonly hdr!: NatsServerHandler;
-
-  constructor() {}
 
   async onApplicationShutdown() {
     return this.hdr.close();

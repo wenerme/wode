@@ -1,59 +1,56 @@
 import type { ConnectionOptions, NatsConnection } from 'nats';
-import type { DynamicModule } from '@nestjs/common';
-import { Inject, Logger, Module } from '@nestjs/common';
+import { ConfigurableModuleBuilder, Inject, Logger, Module } from '@nestjs/common';
 import { getNatsOptions } from '../config';
 import { connect as defaultConnect } from './connect';
 
 export const NATS_CONNECTION = Symbol.for('NATS_CONNECTION');
 
 export const InjectNatsClient = () => Inject(NATS_CONNECTION);
-
-// avoid NatsConnection type import
 export const NatsConn = NATS_CONNECTION;
 export type NatsConn = NatsConnection;
 
-// export const NatsConn = NatsConnToken as Type<NatsConnection>;
-// export type NatsConn = Type<NatsConnection>;
-// export const NatsConn = NatsConnToken as Type<NatsConnection>;
-
-@Module({})
-export class NatsModule {
-  static forRoot({
-    global = true,
-    connect = defaultConnect,
-    options = getNatsOptions(),
-  }: {
-    global?: boolean;
-    connect?: (opts: ConnectionOptions) => Promise<NatsConnection>;
-    options?: ConnectionOptions;
-  } = {}): DynamicModule {
-    const mod = {
-      module: NatsModule,
-      exports: [NATS_CONNECTION, NatsConn],
-      providers: [
-        {
-          provide: NatsConn,
-          useExisting: NATS_CONNECTION,
-        },
-        {
-          provide: NATS_CONNECTION,
-          async useFactory() {
-            log.log(
-              `connecting: ${Array.from(options.servers ?? [])
-                .flat()
-                .map((v) => maskUrl(v))}`,
-            );
-            const client = await connect(options);
-            log.log('connected');
-            return client;
-          },
-        },
-      ],
-      global,
-    };
-    return mod;
-  }
+export interface NatsModuleOptions {
+  connect?: (opts: Partial<ConnectionOptions>) => Promise<NatsConnection>;
+  options?: Partial<ConnectionOptions>;
 }
+
+const { ConfigurableModuleClass, MODULE_OPTIONS_TOKEN } = new ConfigurableModuleBuilder<NatsModuleOptions>()
+  .setExtras(
+    {
+      isGlobal: true,
+    },
+    (definition, extras) => ({
+      ...definition,
+      global: extras.isGlobal,
+    }),
+  )
+  .setClassMethodName('forRoot')
+  .build();
+
+@Module({
+  exports: [NATS_CONNECTION, NatsConn],
+  providers: [
+    {
+      provide: NatsConn,
+      useExisting: NATS_CONNECTION,
+    },
+    {
+      provide: NATS_CONNECTION,
+      async useFactory({ options = getNatsOptions(), connect = defaultConnect }: NatsModuleOptions = {}) {
+        log.log(
+          `connecting: ${Array.from(options.servers ?? [])
+            .flat()
+            .map((v) => maskUrl(v))}`,
+        );
+        const client = await connect(options);
+        log.log('connected');
+        return client;
+      },
+      inject: [{ token: MODULE_OPTIONS_TOKEN, optional: true }],
+    },
+  ],
+})
+export class NatsModule extends ConfigurableModuleClass {}
 
 const log = new Logger(NatsModule.name);
 

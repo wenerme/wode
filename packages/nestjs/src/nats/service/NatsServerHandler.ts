@@ -1,14 +1,16 @@
 import type { Subscription } from 'nats';
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable, Logger, Optional } from '@nestjs/common';
 import { DiscoveryService, ModulesContainer } from '@nestjs/core';
 import { createLazyPromise } from '@wener/utils';
 import { App } from '../../app';
 import { EXPOSE_SERVICE_METADATA_KEY, ServiceRegistry } from '../../service';
 import { NatsConn } from '../nats.module';
-import { NATS_SERVICE_SERVER_OPTIONS } from './const';
+import ServerModule from './ServerModule';
 import { handleNatsServiceServerMessage } from './handleNatsServiceServerMessage';
 import { getSubscribeSubject } from './nats';
-import type { NatsServiceServerOptions } from './types';
+import type { NatsServiceServerModuleOptions } from './types';
+
+const { MODULE_OPTIONS_TOKEN } = ServerModule;
 
 @Injectable()
 export class NatsServerHandler {
@@ -25,7 +27,7 @@ export class NatsServerHandler {
     @Inject(ModulesContainer) private readonly modulesContainer: ModulesContainer,
     @Inject(ServiceRegistry) private readonly svc: ServiceRegistry,
     @Inject(NatsConn) readonly nc: NatsConn,
-    @Inject(NATS_SERVICE_SERVER_OPTIONS) readonly options: NatsServiceServerOptions,
+    @Optional() @Inject(MODULE_OPTIONS_TOKEN) readonly options: NatsServiceServerModuleOptions = {},
   ) {
     this.discoveryService = new DiscoveryService(modulesContainer);
   }
