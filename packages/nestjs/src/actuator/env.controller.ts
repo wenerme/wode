@@ -7,8 +7,7 @@ import {
   ApiProperty,
   ApiTags,
 } from '@nestjs/swagger';
-import { Role } from '../auth/role.enum';
-import { Roles } from '../auth/roles.decorator';
+import { Role, Roles } from '../auth';
 import { hideActuatorApi } from './const';
 
 class SetEnvBody {
