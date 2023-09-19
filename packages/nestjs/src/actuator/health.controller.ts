@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { ApiExcludeController, ApiTags } from '@nestjs/swagger';
-import { Public } from '../auth/public.decorator';
+import { Public } from '../auth';
 import { hideActuatorApi } from './const';
 
 @ApiTags('Actuator')

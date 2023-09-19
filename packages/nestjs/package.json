@@ -1,6 +1,6 @@
 {
   "name": "@wener/nestjs",
-  "version": "1.0.15",
+  "version": "1.0.17",
   "description": "",
   "scripts": {
     "test": "make test",
@@ -42,6 +42,11 @@
       "types": "./src/nats/index.ts",
       "import": "./lib/nats/index.js",
       "default": "./lib/nats/index.js"
+    },
+    "./actuator": {
+      "types": "./src/actuator/index.ts",
+      "import": "./lib/actuator/index.js",
+      "default": "./lib/actuator/index.js"
     },
     "./package.json": "./package.json"
   },
