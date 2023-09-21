@@ -1,5 +1,5 @@
-import { EntityManager, MikroORM } from '@mikro-orm/core';
-import { MikroOrmModule } from '@mikro-orm/nestjs';
+import { AnyEntity, MikroORM } from '@mikro-orm/core';
+import { EntityName, MikroOrmModule, MikroOrmModuleFeatureOptions } from '@mikro-orm/nestjs';
 import {
   type AbstractSqlConnection,
   EntityManager as SqlEntityManager,
@@ -7,71 +7,73 @@ import {
   MikroORM as PostgreSqlMikroORM,
   type Options as PostgreSqlOptions,
 } from '@mikro-orm/postgresql';
-import type { DynamicModule, Provider } from '@nestjs/common';
-import { Logger } from '@nestjs/common';
+import { ConfigurableModuleBuilder, DynamicModule, Logger, Module } from '@nestjs/common';
+import { getMikroOrmConfig } from '../config';
 import { createMikroOrmConfig } from './createMikroOrmConfig';
 
-export type MikroOrmConfig = PostgreSqlOptions & Pick<Required<PostgreSqlOptions>, 'entities'>;
-export const MikroOrmConfigToken = Symbol('MikroOrmConfigToken');
+export type OrmModuleOptions = Partial<PostgreSqlOptions>;
 
-export class OrmModule {
-  private static readonly log = new Logger(OrmModule.name);
+const { ConfigurableModuleClass, MODULE_OPTIONS_TOKEN } = new ConfigurableModuleBuilder<OrmModuleOptions>()
+  .setExtras(
+    {
+      isGlobal: true,
+    },
+    (definition, extras) => ({
+      ...definition,
+      global: extras.isGlobal,
+    }),
+  )
+  .setClassMethodName('forRoot')
+  .build();
 
-  static forRoot({ config: _config }: { config: MikroOrmConfig }): DynamicModule {
-    const mod: Required<DynamicModule> = {
-      global: true,
-      controllers: [],
-      imports: [],
-      module: OrmModule,
-      providers: [] as Provider[],
-      exports: [],
-    };
+export const ORM_MODULE_OPTIONS_TOKEN = MODULE_OPTIONS_TOKEN;
 
-    const { imports, providers, exports } = mod;
-
-    providers.push({
-      provide: MikroOrmConfigToken,
-      useFactory: () => {
-        const config = createMikroOrmConfig(_config) as MikroOrmConfig;
+@Module({
+  imports: [
+    MikroOrmModule.forRootAsync({
+      useFactory: (opts: OrmModuleOptions) => {
+        let config = createMikroOrmConfig({
+          entities: [],
+          ...getMikroOrmConfig(),
+          ...opts,
+        }) as PostgreSqlOptions;
         // dedup
         config.entities = Array.from(new Set(config.entities));
-        this.log.log(`Entities: ${config.entities.map((v) => (v as any).name || v).join(', ')}`);
+        OrmModule.log.log(`Entities: ${config.entities?.map((v) => (v as any).name || v).join(', ')}`);
         return config;
       },
-      inject: [],
-    });
-
-    imports.push(
-      MikroOrmModule.forRootAsync({
-        useFactory(conf: MikroOrmConfig) {
-          return conf;
-        },
-        inject: [MikroOrmConfigToken],
-      }),
-    );
-    exports.push(MikroOrmConfigToken);
-
-    // postgres
-    providers.push(
-      {
-        provide: SqlEntityManager,
-        useExisting: EntityManager,
+      inject: [MODULE_OPTIONS_TOKEN],
+    }),
+  ],
+  providers: [
+    {
+      provide: SqlEntityManager,
+      useFactory(orm: MikroORM) {
+        return orm.em;
       },
-      {
-        provide: knex,
-        useFactory(orm: MikroORM) {
-          return (orm.em.getConnection() as AbstractSqlConnection).getKnex();
-        },
-        inject: [MikroORM],
-      },
-    );
-    exports.push(SqlEntityManager);
-
-    providers.push({
+      inject: [MikroORM],
+    },
+    {
       provide: PostgreSqlMikroORM,
       useExisting: MikroORM,
-    });
-    exports.push(PostgreSqlMikroORM);
-    return mod;
+    },
+    {
+      provide: knex,
+      useFactory(orm: MikroORM) {
+        return (orm.em.getConnection() as AbstractSqlConnection).getKnex();
+      },
+      inject: [MikroORM],
+    },
+  ],
+  exports: [SqlEntityManager, PostgreSqlMikroORM, knex, MODULE_OPTIONS_TOKEN],
+})
+export class OrmModule extends ConfigurableModuleClass {
+  protected static readonly log = new Logger(OrmModule.name);
+
+  static forFeature(
+    options: EntityName<AnyEntity>[] | MikroOrmModuleFeatureOptions,
+    contextName?: string,
+  ): DynamicModule {
+    return MikroOrmModule.forFeature(options, contextName);
   }
 }

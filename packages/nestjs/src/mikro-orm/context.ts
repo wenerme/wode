@@ -1,5 +1,5 @@
+import type { EntityManager, IDatabaseDriver } from '@mikro-orm/core';
 import { MikroORM, RequestContext } from '@mikro-orm/core';
-import type { IDatabaseDriver, EntityManager } from '@mikro-orm/core';
 import { type TransactionOptions } from '@mikro-orm/core/enums';
 import { type MaybePromise } from '@wener/utils';
 import { getContext } from '../context';
@@ -16,19 +16,23 @@ export function getMikroORM<D extends IDatabaseDriver = IDatabaseDriver>() {
   return getContext(MikroORM<D>);
 }
 
-export function getEntityManager<D extends IDatabaseDriver = IDatabaseDriver>({ fork }: { fork?: true } = {}) {
-  let em = RequestContext.getEntityManager() as EntityManager<D>;
+export function getEntityManager<D extends IDatabaseDriver = IDatabaseDriver>({
+  fork,
+  em,
+}: {
+  fork?: true;
+  em?: EntityManager<D>;
+} = {}): EntityManager<D> {
+  em ||= RequestContext.getEntityManager() as EntityManager<D>;
   if (em && !fork) {
     return em;
   }
-
   const orm = getMikroORM<D>();
-  em = orm.em as any;
+  em = orm.em as EntityManager<D>;
   if (fork) {
-    em = em.fork() as any;
+    em = em.fork() as EntityManager<D>;
   }
-
-  return em;
+  return em as EntityManager<D>;
 }
 
 export function requireContextEntityManager<D extends IDatabaseDriver = IDatabaseDriver>() {
@@ -40,9 +44,9 @@ export function requireContextEntityManager<D extends IDatabaseDriver = IDatabas
   return context as EntityManager<D>;
 }
 
-export async function runInTransaction<T, D extends IDatabaseDriver = IDatabaseDriver>(
-  fn: (em: EntityManager<D>) => MaybePromise<T>,
-  opts?: TransactionOptions,
-): Promise<T> {
-  return getEntityManager().transactional(fn as any, opts);
+export function runInTransaction<R, D extends IDatabaseDriver = IDatabaseDriver>(
+  fn: (em: EntityManager<D>) => MaybePromise<R>,
+  { em, ...opts }: TransactionOptions & { em?: EntityManager } = {},
+): Promise<R> {
+  return getEntityManager({ em }).transactional(fn as any, opts);
 }
