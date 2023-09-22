@@ -1241,6 +1241,22 @@ importers:
         specifier: ^13.4.12
         version: 13.4.12(@babel/core@7.22.9)(react-dom@18.2.0)(react@18.2.0)
 
+  packages/client:
+    dependencies:
+      '@wener/utils':
+        specifier: workspace:^
+        version: link:../utils
+      zod:
+        specifier: ^3.21.4
+        version: 3.21.4
+    devDependencies:
+      '@wecom/jssdk':
+        specifier: ^1.4.3
+        version: 1.4.3
+      ws:
+        specifier: ^8.13.0
+        version: 8.13.0
+
   packages/common:
     dependencies:
       '@emotion/styled':
@@ -1713,15 +1729,6 @@ importers:
         version: 10.0.0
 
   packages/wode: {}
-
-  packages/xunfei-client:
-    dependencies:
-      '@wener/utils':
-        specifier: workspace:^
-        version: link:../utils
-      ws:
-        specifier: ^8.13.0
-        version: 8.13.0
 
 packages:
 
@@ -9105,6 +9112,10 @@ packages:
     dependencies:
       '@webassemblyjs/ast': 1.11.6
       '@xtuc/long': 4.2.2
+    dev: true
+
+  /@wecom/jssdk@1.4.3:
+    resolution: {integrity: sha512-CjL8Tqh2gLO9CxI4gFZwbwFL3e5S/kIaGH0MvTOHClTVUCnw7/8JsWT3s565UCPRR2xg8zqzFZw+kX5LDlK7kQ==}
     dev: true
 
   /@xmldom/xmldom@0.8.10:

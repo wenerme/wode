@@ -117,3 +117,5 @@ components/*/lib
 components/*/dist
 components/*/out
 out
+
+ignored
