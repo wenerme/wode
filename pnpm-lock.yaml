@@ -1253,6 +1253,9 @@ importers:
       '@wecom/jssdk':
         specifier: ^1.4.3
         version: 1.4.3
+      undici:
+        specifier: ^5.23.0
+        version: 5.23.0
       ws:
         specifier: ^8.13.0
         version: 8.13.0

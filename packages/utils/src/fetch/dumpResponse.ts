@@ -10,9 +10,9 @@ export async function dumpResponse({
   log?: (s: string) => void;
 }) {
   let out = `<- ${res.status} ${res.statusText} ${req.method} ${url}
-  ${Array.from(res.headers.entries())
-    .map(([k, v]) => `${k}: ${v}`)
-    .join('\n')}
+${Array.from(res.headers.entries())
+  .map(([k, v]) => `${k}: ${v}`)
+  .join('\n')}
    `;
   let contentType = res.headers.get('content-type');
   // TODO text/event-stream
