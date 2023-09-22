@@ -5,7 +5,7 @@
     "type": "es6"
   },
   "jsc": {
-    "target": "es2017",
+    "target": "es2022",
     "parser": {
       "syntax": "typescript",
       "decorators": true,
@@ -15,14 +15,8 @@
       "legacyDecorator": true,
       "decoratorMetadata": true
     },
-    "keepClassNames": true,
-    "baseUrl": "./"
+    "keepClassNames": true
   },
   "minify": false,
-  "env": {
-      "targets": {
-        "chrome": "100"
-      }
-    },
   "exclude": ["\\.test\\.ts$"]
 }

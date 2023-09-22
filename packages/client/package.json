@@ -1,0 +1,30 @@
+{
+  "name": "@wener/client",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "make test",
+    "build": "make build",
+    "deploy": "make deploy"
+  },
+  "exports": {
+    "./wecom": {
+      "types": "./wecom.ts",
+      "default": "./lib/wecom/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@wener/utils": "workspace:^",
+    "zod": "^3.21.4"
+  },
+  "devDependencies": {
+    "@wecom/jssdk": "^1.4.3",
+    "ws": "^8.13.0"
+  }
+}
