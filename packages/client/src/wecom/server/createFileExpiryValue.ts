@@ -12,8 +12,8 @@ export function createFileExpiryValue<T>({
   let init = 0;
   return createExpireValue<T>({
     onLoad: async (v) => {
+      // skip first write
       if (init > 1) {
-        console.log(`save ${path}`, v);
         await fs.writeFile(path, JSON.stringify(v, null, 2));
       }
     },
@@ -25,7 +25,6 @@ export function createFileExpiryValue<T>({
         try {
           let val = ExpiryValueSchema.parse(JSON.parse(await fs.readFile(path, 'utf8')));
           if (val.expiresAt > new Date()) {
-            console.log(`load from ${path}`, val);
             return val as any;
           }
         } catch (e) {}

@@ -14,16 +14,7 @@ export interface CreateExpireValueOptions<T> {
 }
 
 export function createExpireValue<T>({ loader, onLoad, ...opts }: CreateExpireValueOptions<T>): ReadonlyValue<T> {
-  let reload = ({
-    value,
-    expiresAt,
-  }: {
-    value?: T;
-    expiresAt?: Date;
-  }): MaybePromise<{
-    value: T;
-    expiresAt: Date;
-  }> => {
+  let reload = ({ value, expiresAt }: { value?: T; expiresAt?: Date }): MaybePromise<ExpireValue<T>> => {
     if (value === undefined || !expiresAt || expiresAt < new Date()) {
       let next: Promise<{ value: T; expiresAt: Date }> = loader().then(async ({ value, expiresAt }) => {
         expiresAt = tryParseDate(expiresAt);

@@ -8,4 +8,5 @@ build:
 
 fmt:
 
-publish:
+publish: build
+	pnpm publish --registry https://registry.npmjs.org --access public --no-git-checks

@@ -1,1 +1,1 @@
-export * from '../src/wecom/server';
+export * from '../src/wechat/server';
