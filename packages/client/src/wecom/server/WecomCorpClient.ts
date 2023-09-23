@@ -1,16 +1,19 @@
 import { FetchLike } from '@wener/utils';
-import { createExpireValue, CreateExpireValueOptions, ExpireValue } from '../../ExpireValue';
-import { getValue, isValue, MaybeValue, ReadonlyValue } from '../../Value';
+import { createExpireValueHolder, CreateExpireValueHolderOptions } from '../../ExpiryValue';
+import { getValue, MaybeValueHolder, ReadonlyValueHolder } from '../../ValueHolder';
 import { createJsSdkSignature } from '../../wechat';
 import { request, RequestOptions } from './request';
 
+// type ExpireValueLike<T, P extends any[] = any[]> = MaybeFunction<ReadonlyValueHolder<T>, P> | ExpiryValue<T>;
+// type ClientExpiryValue = ExpireValueLike<string, [{ client: WecomCorpClient; loader: () => ExpiryValue<string> }]>;
+
 export interface WecomCorpClientInitOptions {
   corpId: string;
-  corpSecret: MaybeValue<string>;
-  accessToken?: ReadonlyValue<string> | ExpireValue<string>;
+  corpSecret: MaybeValueHolder<string>;
+  accessToken?: CreateExpireValueHolderOptions<string>['value'];
+  jsApiTicket?: CreateExpireValueHolderOptions<string>['value'];
+  agentJsApiTicket?: CreateExpireValueHolderOptions<string>['value'];
   onAccessToken?: (data: { value: string; expiresAt: Date }) => void;
-  jsApiTicket?: ReadonlyValue<string> | ExpireValue<string>;
-  agentJsApiTicket?: ReadonlyValue<string> | ExpireValue<string>;
   onJsApiTicket?: (data: { value: string; expiresAt: Date }) => void;
   onAgentJsApiTicket?: (data: { value: string; expiresAt: Date }) => void;
   fetch?: FetchLike;
@@ -18,10 +21,10 @@ export interface WecomCorpClientInitOptions {
 
 export interface WecomCorpClientOptions {
   corpId: string;
-  corpSecret: MaybeValue<string>;
-  accessToken: ReadonlyValue<string>;
-  jsApiTicket: ReadonlyValue<string>;
-  agentJsApiTicket: ReadonlyValue<string>;
+  corpSecret: MaybeValueHolder<string>;
+  accessToken: ReadonlyValueHolder<string>;
+  jsApiTicket: ReadonlyValueHolder<string>;
+  agentJsApiTicket: ReadonlyValueHolder<string>;
   fetch: FetchLike;
 }
 
@@ -39,7 +42,8 @@ export class WecomCorpClient {
   }: WecomCorpClientInitOptions) {
     this.options = {
       fetch: globalThis.fetch,
-      accessToken: createMaybeExpireValue<string>(accessToken, {
+      accessToken: createExpireValueHolder<string>({
+        value: accessToken,
         onLoad: onAccessToken,
         loader: async () => {
           const { access_token, expires_at } = await this.getAccessToken();
@@ -49,7 +53,8 @@ export class WecomCorpClient {
           };
         },
       }),
-      jsApiTicket: createMaybeExpireValue<string>(jsApiTicket, {
+      jsApiTicket: createExpireValueHolder<string>({
+        value: jsApiTicket,
         onLoad: onJsApiTicket,
         loader: async () => {
           const { ticket, expires_at } = await this.getJsApiTicket();
@@ -59,7 +64,8 @@ export class WecomCorpClient {
           };
         },
       }),
-      agentJsApiTicket: createMaybeExpireValue<string>(agentJsApiTicket, {
+      agentJsApiTicket: createExpireValueHolder<string>({
+        value: agentJsApiTicket,
         onLoad: onAgentJsApiTicket,
         loader: async () => {
           const { ticket, expires_at } = await this.getAgentJsApiTicket();
@@ -139,7 +145,7 @@ export class WecomCorpClient {
 
   async request<T>(o: RequestOptions<T>): Promise<T> {
     o.params ||= {};
-    const preset: Record<string, MaybeValue<any>> = {
+    const preset: Record<string, MaybeValueHolder<any>> = {
       corpid: () => this.options.corpId,
       corpsecret: () => this.options.corpSecret,
       access_token: () => this.options.accessToken,
@@ -164,22 +170,4 @@ export interface GetJsApiTicketResponse {
   ticket: string;
   expires_in: number;
   expires_at: number;
-}
-
-function createMaybeExpireValue<T>(
-  val: ReadonlyValue<T> | ExpireValue<T> | undefined,
-  opts: CreateExpireValueOptions<T>,
-) {
-  if (isValue(val)) {
-    return val;
-  }
-  if (!val) {
-    return createExpireValue(opts);
-  }
-  const v = val as ExpireValue<T>;
-  return createExpireValue<T>({
-    value: v?.value ?? opts.value,
-    expiresAt: v?.expiresAt ?? opts.expiresAt,
-    ...opts,
-  });
 }

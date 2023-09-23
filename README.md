@@ -24,6 +24,15 @@ Wener Node Monorepo
     - Selfhost https://unpkg.com/ , https://cdn.jsdelivr.net/npm/ alternative
   - @wener/wode
     - common config
+  - @wener/client
+    - Wechat client
+    - Wecom/Wework client
+    - Xunfei spark client
+    - OpenAI chat client
+  - @wener/nextjs
+    - Nats based RPC service
+    - NextJS utils
+    - mikro-orm utils
   - ethers - WIP
     - Web3 utils
 - apps

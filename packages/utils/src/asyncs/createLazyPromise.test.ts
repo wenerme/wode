@@ -1,6 +1,5 @@
-import { test, expect } from 'vitest';
+import { expect, test } from 'vitest';
 import { createLazyPromise } from './createLazyPromise';
-import { sleep } from './sleep';
 
 test('basic', async () => {
   const promise = createLazyPromise();
@@ -18,36 +17,38 @@ test('basic', async () => {
 
 test('manual resolve skip exec', async () => {
   const promise = createLazyPromise<number>(() => {
-    expect.fail();
+    expect.fail('should not exec');
   });
   promise.resolve(-1);
   expect(await promise).toBe(-1);
 });
 
-test('exec', async () => {
+test('lazy exec resolve by manual', async () => {
   let r = 0;
   const promise = createLazyPromise((resolve) => {
     r++;
     resolve(10);
   });
-  await sleep(10);
+  await Promise.resolve();
   expect(r).toBe(0);
   expect(await promise).toBe(10);
   expect(r).toBe(1);
   promise.resolve(20);
   expect(await promise).toBe(10);
+  expect(r).toBe(1);
 });
 
-test('exec auto', async () => {
+test('lazy exec resolve by return', async () => {
   let r = 0;
   const promise = createLazyPromise(() => {
     r++;
     return 10;
   });
-  await sleep(10);
+  await Promise.resolve();
   expect(r).toBe(0);
   void promise.then(() => undefined);
-  expect(await promise).toBe(10);
+  await Promise.resolve();
+  // already resolved
   expect(r).toBe(1);
   expect(await promise).toBe(10);
   expect(r).toBe(1);
