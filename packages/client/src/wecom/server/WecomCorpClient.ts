@@ -10,7 +10,9 @@ export interface WecomCorpClientInitOptions {
   accessToken?: ReadonlyValue<string> | ExpireValue<string>;
   onAccessToken?: (data: { value: string; expiresAt: Date }) => void;
   jsApiTicket?: ReadonlyValue<string> | ExpireValue<string>;
+  agentJsApiTicket?: ReadonlyValue<string> | ExpireValue<string>;
   onJsApiTicket?: (data: { value: string; expiresAt: Date }) => void;
+  onAgentJsApiTicket?: (data: { value: string; expiresAt: Date }) => void;
   fetch?: FetchLike;
 }
 
@@ -19,13 +21,22 @@ export interface WecomCorpClientOptions {
   corpSecret: MaybeValue<string>;
   accessToken: ReadonlyValue<string>;
   jsApiTicket: ReadonlyValue<string>;
+  agentJsApiTicket: ReadonlyValue<string>;
   fetch: FetchLike;
 }
 
 export class WecomCorpClient {
   readonly options: WecomCorpClientOptions;
 
-  constructor({ onAccessToken, accessToken, jsApiTicket, onJsApiTicket, ...options }: WecomCorpClientInitOptions) {
+  constructor({
+    onAccessToken,
+    accessToken,
+    jsApiTicket,
+    agentJsApiTicket,
+    onJsApiTicket,
+    onAgentJsApiTicket,
+    ...options
+  }: WecomCorpClientInitOptions) {
     this.options = {
       fetch: globalThis.fetch,
       accessToken: createMaybeExpireValue<string>(accessToken, {
@@ -42,6 +53,16 @@ export class WecomCorpClient {
         onLoad: onJsApiTicket,
         loader: async () => {
           const { ticket, expires_at } = await this.getJsApiTicket();
+          return {
+            value: ticket,
+            expiresAt: expires_at,
+          };
+        },
+      }),
+      agentJsApiTicket: createMaybeExpireValue<string>(agentJsApiTicket, {
+        onLoad: onAgentJsApiTicket,
+        loader: async () => {
+          const { ticket, expires_at } = await this.getAgentJsApiTicket();
           return {
             value: ticket,
             expiresAt: expires_at,
@@ -85,10 +106,34 @@ export class WecomCorpClient {
     });
   }
 
-  async getJsSdkSignature({ url }: { url: string }) {
+  /**
+   * https://qyapi.weixin.qq.com/cgi-bin/ticket/get?access_token=ACCESS_TOKEN&type=agent_config
+   */
+  getAgentJsApiTicket() {
+    return this.request<GetJsApiTicketResponse>({
+      url: '/cgi-bin/ticket/get',
+      params: {
+        access_token: true,
+        type: 'agent_config',
+      },
+    });
+  }
+
+  async getJsSdkSignature({ url, timestamp, nonce }: { url: string; timestamp?: number; nonce?: string }) {
     return createJsSdkSignature({
       url,
+      timestamp,
+      nonce,
       ticket: await this.options.jsApiTicket.get(),
+    });
+  }
+
+  async getAgentJsSdkSignature({ url, timestamp, nonce }: { url: string; timestamp?: number; nonce?: string }) {
+    return createJsSdkSignature({
+      url,
+      timestamp,
+      nonce,
+      ticket: await this.options.agentJsApiTicket.get(),
     });
   }
 

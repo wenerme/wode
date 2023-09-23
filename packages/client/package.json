@@ -1,6 +1,6 @@
 {
   "name": "@wener/client",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "type": "module",
   "description": "",
   "author": "",
@@ -29,7 +29,11 @@
     "*.js",
     "*.ts",
     "lib",
-    "src"
+    "src",
+    "wechat/*.ts",
+    "wecom/*.ts",
+    "xunfei/*.ts",
+    "xunfei/spark/*.ts"
   ],
   "keywords": [],
   "scripts": {

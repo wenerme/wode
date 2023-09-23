@@ -1,4 +1,4 @@
-export function getWxJsSdk(): WxJsSdk | null {
+export function getWxJsSdk(): WxJsSdk {
   return globalThis.window?.wx;
 }
 
