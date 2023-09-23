@@ -1,12 +1,16 @@
 {
   "name": "@wener/client",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "type": "module",
   "description": "",
   "author": "",
   "license": "ISC",
   "main": "index.js",
   "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./lib/index.js"
+    },
     "./wechat": {
       "types": "./wechat.ts",
       "default": "./lib/wechat/index.js"

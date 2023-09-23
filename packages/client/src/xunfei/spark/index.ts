@@ -1,1 +1,2 @@
-export { Client, type ClientOptions, type ClientOptionsInit } from './Client';
+export { XunfeiSparkClient, type ClientOptions, type ClientOptionsInit } from './XunfeiSparkClient';
+export * from './XunfeiConfig';

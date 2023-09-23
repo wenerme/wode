@@ -12,7 +12,7 @@ export interface ClientOptions {
   parameter?: any;
 }
 
-export class Client {
+export class XunfeiSparkClient {
   readonly options: ClientOptions;
 
   constructor({
@@ -72,7 +72,7 @@ export class Client {
         ws.addEventListener('close', () => {
           next([undefined, true]);
         });
-        ws.addEventListener('error', (e) => {
+        ws.addEventListener('error', (_e) => {
           next([undefined, true], new Error('Connect error'));
         });
         ws.addEventListener('message', (e) => {
@@ -96,7 +96,7 @@ export class Client {
     const url = buildAuthUrl(this.options);
     let ws = new WebSocket(url);
     return new Promise<WebSocket>((resolve, reject) => {
-      ws.addEventListener('open', (e) => {
+      ws.addEventListener('open', (_e) => {
         resolve(ws);
       });
       ws.addEventListener('close', (e) => {
