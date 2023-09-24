@@ -1,11 +1,15 @@
 {
   "name": "@wener/client",
-  "version": "1.0.5",
+  "version": "1.0.10",
   "type": "module",
-  "description": "",
-  "author": "",
-  "license": "ISC",
-  "main": "index.js",
+  "description": "Client for Wechat, Wecom, Xunfei, etc.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wener/wode.git"
+  },
+  "homepage": "https://github.com/wenerme/wode#readme",
+  "author": "wener",
+  "license": "MIT",
   "exports": {
     ".": {
       "types": "./src/index.ts",

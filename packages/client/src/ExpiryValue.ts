@@ -1,7 +1,13 @@
 import { MaybePromise } from '@wener/utils';
-import { ReadonlyValueHolder } from './ValueHolder';
+import { isValueHolder, ReadonlyValueHolder } from './ValueHolder';
 
-export interface ExpiryValueHolder<T> extends ReadonlyValueHolder<T> {}
+export interface ExpiryValueHolder<T> extends ReadonlyValueHolder<T> {
+  getExpiryValue(): Promise<ExpiryValue<T>>;
+}
+
+export function isExpiryValueHolder(v: any): v is ExpiryValueHolder<any> {
+  return isValueHolder(v) && 'getExpiryValue' in v && typeof v.getExpiryValue === 'function';
+}
 
 export type ExpiryValue<T> = {
   expiresAt: Date;
@@ -17,7 +23,8 @@ export interface CreateExpireValueHolderOptions<T> {
           }
         | undefined
       >
-    | ((o: Omit<CreateExpireValueHolderOptions<T>, 'value'>) => Promise<{ value: T; expiresAt: number | Date }>);
+    | ((o: Omit<CreateExpireValueHolderOptions<T>, 'value'>) => Promise<{ value: T; expiresAt: number | Date }>)
+    | ExpiryValueHolder<T>;
   loader: () => Promise<{ value: T; expiresAt: number | Date }>;
   onLoad?: (data: ExpiryValue<T>) => MaybePromise<void | ExpiryValue<T>>;
   isExpired?: (data: ExpiryValue<T>) => boolean;
@@ -29,6 +36,10 @@ export function createExpireValueHolder<T>({
   isExpired = (data) => data.expiresAt.getTime() - Date.now() < 30 * 1000, // 30s
   ...opts
 }: CreateExpireValueHolderOptions<T>): ExpiryValueHolder<T> {
+  if (isExpiryValueHolder(opts.value)) {
+    return opts.value;
+  }
+
   let reload = (value?: ExpiryValue<T>): MaybePromise<ExpiryValue<T>> => {
     if (!value || isExpired(value)) {
       let next: Promise<{ value: T; expiresAt: Date }> = loader().then(async ({ value, expiresAt }) => {
@@ -44,9 +55,11 @@ export function createExpireValueHolder<T>({
 
   let val$: Promise<ExpiryValue<T> | undefined>;
   if (typeof opts.value === 'function') {
-    const old = opts.value;
+    // use the callback to wrap the loader
+    const realLoader = loader;
+    const cb = opts.value;
     loader = () => {
-      return old({ loader, onLoad, isExpired });
+      return cb({ loader: realLoader, onLoad, isExpired });
     };
   } else if (opts.value) {
     // delay ?
@@ -56,6 +69,7 @@ export function createExpireValueHolder<T>({
 
   return {
     get: () => val$.then(reload).then((v) => v.value),
+    getExpiryValue: () => val$.then(reload),
   };
 }
 
