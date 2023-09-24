@@ -10,19 +10,21 @@ export interface RequestOptions<T> {
   headers?: Record<string, any>;
   fetch?: FetchLike;
   onSuccess?: (ctx: { res: Response; data: T }) => MaybePromise<T | void>;
+  onResponse?: (ctx: { res: Response; req: RequestInit; data?: T; err?: any }) => MaybePromise<void>;
 }
 
 export async function request<T>({
   baseUrl = 'https://qyapi.weixin.qq.com',
-  url,
+  url: path,
   params = {},
   fetch = globalThis.fetch,
   body,
   headers,
   method = body ? 'POST' : 'GET',
+  onResponse,
   onSuccess,
 }: RequestOptions<T>): Promise<T> {
-  const u = new URL(url, baseUrl);
+  const u = new URL(path, baseUrl);
   Object.entries(params).forEach(([k, v]) => {
     u.searchParams.set(k, v);
   });
@@ -35,12 +37,27 @@ export async function request<T>({
     };
   }
 
-  let res = await fetch(u.toString(), {
+  let req = {
     method,
     headers,
     body,
-  });
-  let data: T = await requireSuccessResponse(res);
+  };
+  let url = u.toString();
+
+  let res = await fetch(url, req);
+
+  let data: T;
+  try {
+    data = await requireSuccessResponse(res);
+  } catch (e) {
+    if (onResponse) {
+      await onResponse({ res, req, err: e });
+    }
+    throw e;
+  }
+  if (onResponse) {
+    await onResponse({ res, req, data });
+  }
   if (onSuccess) {
     data = (await onSuccess({ res, data })) ?? data;
   }

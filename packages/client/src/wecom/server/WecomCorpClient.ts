@@ -1,11 +1,8 @@
 import { FetchLike } from '@wener/utils';
-import { createExpireValueHolder, CreateExpireValueHolderOptions } from '../../ExpiryValue';
-import { getValue, MaybeValueHolder, ReadonlyValueHolder } from '../../ValueHolder';
+import { createExpireValueHolder, CreateExpireValueHolderOptions, ExpiryValueHolder } from '../../ExpiryValue';
+import { getValue, MaybeValueHolder } from '../../ValueHolder';
 import { createJsSdkSignature } from '../../wechat';
 import { request, RequestOptions } from './request';
-
-// type ExpireValueLike<T, P extends any[] = any[]> = MaybeFunction<ReadonlyValueHolder<T>, P> | ExpiryValue<T>;
-// type ClientExpiryValue = ExpireValueLike<string, [{ client: WecomCorpClient; loader: () => ExpiryValue<string> }]>;
 
 export interface WecomCorpClientInitOptions {
   corpId: string;
@@ -22,9 +19,9 @@ export interface WecomCorpClientInitOptions {
 export interface WecomCorpClientOptions {
   corpId: string;
   corpSecret: MaybeValueHolder<string>;
-  accessToken: ReadonlyValueHolder<string>;
-  jsApiTicket: ReadonlyValueHolder<string>;
-  agentJsApiTicket: ReadonlyValueHolder<string>;
+  accessToken: ExpiryValueHolder<string>;
+  jsApiTicket: ExpiryValueHolder<string>;
+  agentJsApiTicket: ExpiryValueHolder<string>;
   fetch: FetchLike;
 }
 
@@ -122,6 +119,9 @@ export class WecomCorpClient {
         access_token: true,
         type: 'agent_config',
       },
+    }).then((v) => {
+      v.expires_at = Date.now() + v.expires_in * 1000;
+      return v;
     });
   }
 
