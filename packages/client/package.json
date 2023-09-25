@@ -1,6 +1,6 @@
 {
   "name": "@wener/client",
-  "version": "1.0.10",
+  "version": "1.0.12",
   "type": "module",
   "description": "Client for Wechat, Wecom, Xunfei, etc.",
   "repository": {
@@ -28,7 +28,7 @@
       "default": "./lib/wecom/server/index.js"
     },
     "./xunfei/spark": {
-      "types": "./src/xunfei/spark.ts",
+      "types": "./src/xunfei/spark/index.ts",
       "default": "./lib/xunfei/spark/index.js"
     },
     "./package.json": "./package.json"
