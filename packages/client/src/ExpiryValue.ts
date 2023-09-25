@@ -9,10 +9,18 @@ export function isExpiryValueHolder(v: any): v is ExpiryValueHolder<any> {
   return isValueHolder(v) && 'getExpiryValue' in v && typeof v.getExpiryValue === 'function';
 }
 
+export type ExpiryValueFactory<T> = (
+  o: PartialRequired<Omit<CreateExpireValueHolderOptions<T>, 'value'>, 'isExpired'>,
+) => Promise<{
+  value: T;
+  expiresAt: number | Date;
+}>;
+
 export type ExpiryValue<T> = {
   expiresAt: Date;
   value: T;
 };
+type PartialRequired<T, K extends keyof T> = Partial<Omit<T, K>> & Required<Pick<T, K>>;
 
 export interface CreateExpireValueHolderOptions<T> {
   value?:
@@ -23,7 +31,7 @@ export interface CreateExpireValueHolderOptions<T> {
           }
         | undefined
       >
-    | ((o: Omit<CreateExpireValueHolderOptions<T>, 'value'>) => Promise<{ value: T; expiresAt: number | Date }>)
+    | ExpiryValueFactory<T>
     | ExpiryValueHolder<T>;
   loader: () => Promise<{ value: T; expiresAt: number | Date }>;
   onLoad?: (data: ExpiryValue<T>) => MaybePromise<void | ExpiryValue<T>>;

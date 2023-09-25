@@ -2,6 +2,7 @@ import { FetchLike } from '@wener/utils';
 import { createExpireValueHolder, CreateExpireValueHolderOptions, ExpiryValueHolder } from '../../ExpiryValue';
 import { getValue, MaybeValueHolder } from '../../ValueHolder';
 import { createJsSdkSignature } from '../../wechat';
+import { CreateUserRequest, DepartmentInput, DepartmentOutput, GeneralResponse, GetUserResponse } from './api';
 import { request, RequestOptions } from './request';
 
 export interface WecomCorpClientInitOptions {
@@ -158,6 +159,230 @@ export class WecomCorpClient {
     o.fetch ||= this.options.fetch;
     return request<T>(o);
   }
+
+  /**
+   * @see https://developer.work.weixin.qq.com/document/path/91023
+   */
+  getUserInfoByAuthCode({ code }: { code: string }) {
+    return this.request<{
+      userid?: string;
+      user_ticket?: string; // snsapi_privateinfo, 1800s
+
+      openid?: string;
+      external_userid?: string;
+    }>({
+      url: '/cgi-bin/auth/getuserinfo',
+      params: {
+        access_token: true,
+        code,
+      },
+    });
+  }
+
+  /**
+   * @see https://developer.work.weixin.qq.com/document/path/95833
+   */
+  getUserDetailByUserTicket({ user_ticket }: { user_ticket: string }) {
+    return this.request<{
+      gender: string; // 1 男 2 女 0 未知
+      avatar: string;
+      qr_code: string;
+      mobile: string;
+      email: string;
+      biz_mail: string;
+      address: string;
+    }>({
+      url: '/cgi-bin/auth/getuserdetail',
+      params: {
+        access_token: true,
+      },
+      body: {
+        user_ticket,
+      },
+    });
+  }
+
+  /**
+   * @see https://developer.work.weixin.qq.com/document/path/90196
+   */
+  getUser({ userid }: { userid: string }) {
+    return this.request<GetUserResponse>({
+      url: '/cgi-bin/user/get',
+      params: {
+        access_token: true,
+        userid,
+      },
+    });
+  }
+
+  /**
+   * @see https://developer.work.weixin.qq.com/document/path/90198
+   */
+  deleteUser({ userid }: { userid: string }) {
+    return this.request<GeneralResponse>({
+      url: '/cgi-bin/user/delete',
+      params: {
+        access_token: true,
+        userid,
+      },
+    });
+  }
+
+  /**
+   * @see https://developer.work.weixin.qq.com/document/path/90199
+   */
+  batchDeleteUser({ useridlist }: { useridlist: string[] }) {
+    return this.request<GeneralResponse>({
+      url: '/cgi-bin/user/delete',
+      params: {
+        access_token: true,
+      },
+      body: {
+        useridlist,
+      },
+    });
+  }
+
+  /**
+   * @see https://developer.work.weixin.qq.com/document/path/90195
+   */
+  createUser(data: CreateUserRequest) {
+    return this.request<GeneralResponse>({
+      url: '/cgi-bin/user/create',
+      params: {
+        access_token: true,
+      },
+      body: data,
+    });
+  }
+
+  /**
+   * @see https://developer.work.weixin.qq.com/document/path/90197
+   */
+  updateUser(data: CreateUserRequest) {
+    return this.request<GeneralResponse>({
+      url: '/cgi-bin/user/update',
+      params: {
+        access_token: true,
+      },
+      body: data,
+    });
+  }
+
+  /**
+   * @see https://developer.work.weixin.qq.com/document/path/96021
+   */
+  listUserId({ cursor, limit }: { limit?: number; cursor?: string }) {
+    return this.request<{
+      next_cursor: string;
+      dept_user: Array<{
+        open_userid: string;
+        department: number;
+      }>;
+    }>({
+      url: '/cgi-bin/user/list_id',
+      params: {
+        access_token: true,
+        cursor,
+        limit,
+      },
+      method: 'POST',
+    });
+  }
+
+  /**
+   * @see https://developer.work.weixin.qq.com/document/path/95350
+   */
+  listDepartmentId({ id }: { id?: string | number }) {
+    return this.request<{
+      department_id: Array<{
+        id: number;
+        parentid: number; // root=1
+        order: number;
+      }>;
+    }>({
+      url: '/cgi-bin/department/simplelist',
+      params: {
+        access_token: true,
+        id,
+      },
+    });
+  }
+
+  /**
+   * @see https://developer.work.weixin.qq.com/document/path/90205
+   */
+  createDepartment(data: DepartmentInput) {
+    return this.request<GeneralResponse & { id: number }>({
+      url: '/cgi-bin/department/create',
+      params: {
+        access_token: true,
+      },
+      body: data,
+    });
+  }
+
+  /**
+   * @see https://developer.work.weixin.qq.com/document/path/90206
+   */
+  updateDepartment(data: DepartmentInput & { id: string | number }) {
+    return this.request<GeneralResponse & { id: number }>({
+      url: '/cgi-bin/department/update',
+      params: {
+        access_token: true,
+      },
+      body: data,
+    });
+  }
+
+  /**
+   * @see https://developer.work.weixin.qq.com/document/path/90207
+   */
+  deleteDepartment({ id }: { id: number | string }) {
+    return this.request<GeneralResponse>({
+      url: '/cgi-bin/department/delete',
+      params: {
+        access_token: true,
+        id,
+      },
+    });
+  }
+
+  /**
+   * @see https://developer.work.weixin.qq.com/document/path/95351
+   */
+  getDepartment({ id }: { id: number | string }) {
+    return this.request<{
+      department: DepartmentOutput;
+    }>({
+      url: '/cgi-bin/department/delete',
+      params: {
+        access_token: true,
+        id,
+      },
+    });
+  }
+
+  /**
+   * @see https://developer.work.weixin.qq.com/document/path/90200
+   * @deprecated
+   */
+  listDepartmentMember({ department_id }: { department_id: string | number }) {
+    return this.request<{
+      userlist: Array<{
+        userid: string;
+        name: string;
+        department: Array<number>;
+        open_userid: string;
+      }>;
+    }>({
+      url: '/cgi-bin/user/simplelist',
+      params: {
+        access_token: true,
+        department_id,
+      },
+    });
+  }
 }
 
 export interface GetAccessTokenResponse {
@@ -170,4 +395,12 @@ export interface GetJsApiTicketResponse {
   ticket: string;
   expires_in: number;
   expires_at: number;
+}
+
+enum SecretType {
+  AccessToken = 'AccessToken',
+  JsApiTicket = 'JsApiTicket',
+  AgentJsApiTicket = 'AgentJsApiTicket',
+  CorpSecret = 'CorpSecret',
+  // ServerEncodingAESKey
 }
