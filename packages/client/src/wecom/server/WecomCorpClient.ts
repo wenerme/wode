@@ -397,10 +397,10 @@ export interface GetJsApiTicketResponse {
   expires_at: number;
 }
 
-enum SecretType {
-  AccessToken = 'AccessToken',
-  JsApiTicket = 'JsApiTicket',
-  AgentJsApiTicket = 'AgentJsApiTicket',
-  CorpSecret = 'CorpSecret',
-  // ServerEncodingAESKey
-}
+// enum SecretType {
+//   AccessToken = 'AccessToken',
+//   JsApiTicket = 'JsApiTicket',
+//   AgentJsApiTicket = 'AgentJsApiTicket',
+//   CorpSecret = 'CorpSecret',
+//   // ServerEncodingAESKey
+// }

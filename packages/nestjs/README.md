@@ -1,6 +1,12 @@
 
 # NestJS Server
 
+## service
+
+- NATS based microservice
+
+## Common Dependencies for NestJS dev
+
 ```bash
 pnpm add @nestjs/{common,core,platform-fastify,serve-static,swagger} fastify
 pnpm add @wener/{miniquery,nestjs,utils} dayjs reflect-metadata

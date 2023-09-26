@@ -1,6 +1,6 @@
 {
   "name": "@wener/client",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "type": "module",
   "description": "Client for Wechat, Wecom, Xunfei, etc.",
   "repository": {
@@ -14,6 +14,10 @@
     ".": {
       "types": "./src/index.ts",
       "default": "./lib/index.js"
+    },
+    "./server": {
+      "types": "./server.ts",
+      "default": "./lib/server/index.js"
     },
     "./wechat": {
       "types": "./wechat.ts",
