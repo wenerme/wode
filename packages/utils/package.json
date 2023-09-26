@@ -15,6 +15,7 @@
     "index.ts",
     "lib",
     "server.ts",
+    "types.d.ts",
     "src",
     "tsconfig.json"
   ],

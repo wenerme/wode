@@ -3,7 +3,7 @@ import { getGlobalThis } from '@wener/utils';
 
 export const WecomConfigSchema = z.object({
   corpId: z.string(),
-  corpSecret: z.string(),
+  corpSecret: z.string().optional(),
   agentId: z.coerce.number().optional(),
   agentSecret: z.string().optional(),
   proxy: z.string().optional(),

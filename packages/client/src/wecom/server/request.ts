@@ -1,5 +1,5 @@
 import { FetchLike, MaybePromise } from '@wener/utils';
-import { requireSuccessResponse } from './requireSuccessResponse';
+import { WecomClientError } from './WecomClientError';
 
 export interface RequestOptions<T> {
   method?: string;
@@ -48,7 +48,7 @@ export async function request<T>({
 
   let data: T;
   try {
-    data = await requireSuccessResponse(res);
+    data = await WecomClientError.ok(res);
   } catch (e) {
     if (onResponse) {
       await onResponse({ res, req, err: e });

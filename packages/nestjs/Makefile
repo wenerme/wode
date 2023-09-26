@@ -8,10 +8,8 @@ REPO_ROOT ?= $(shell git rev-parse --show-toplevel)
 
 build:
 	-rm -rf lib/*
-	# pnpm tsc --noEmit false --outdir lib --declaration --declarationDir lib
-	# pnpm tsc --noEmit false --outdir lib
 	pnpm swc ./src -d ./lib
-	sed -E -i -r 's#(\bfrom\s+"\.[^"]+)";#\1.js";#g' ./lib/**/*.js
+	pnpm dlx ts-add-js-extension --dir=lib
 
 publish: build
 	pnpm publish --registry https://registry.npmjs.org --access public --no-git-checks
