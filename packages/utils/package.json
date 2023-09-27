@@ -44,12 +44,12 @@
     }
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.196",
-    "@types/ws": "^8.5.5",
-    "https-proxy-agent": "^7.0.1",
+    "@types/lodash": "^4.14.199",
+    "@types/ws": "^8.5.6",
+    "https-proxy-agent": "^7.0.2",
     "lodash": "^4.17.21",
     "node-fetch": "^3.3.2",
-    "undici": "^5.23.0"
+    "undici": "^5.25.2"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org",
@@ -70,7 +70,6 @@
         "system": "./dist/system/server.js",
         "import": "./lib/server.js"
       },
-      "./src/*": "./src/*",
       "./package.json": "./package.json"
     }
   },
@@ -84,6 +83,7 @@
       "crypto",
       "jsdom",
       "node-fetch",
+      "ws",
       "undici"
     ]
   }

@@ -13,6 +13,6 @@
   "dependencies": {
     "@wener/utils": "workspace:^",
     "common": "workspace:^",
-    "next": "^13.4.12"
+    "next": "^13.5.3"
   }
 }

@@ -55,11 +55,11 @@
   },
   "dependencies": {
     "@wener/utils": "workspace:^",
-    "zod": "^3.21.4"
+    "zod": "^3.22.2"
   },
   "devDependencies": {
     "@wecom/jssdk": "^1.4.3",
-    "undici": "^5.23.0",
-    "ws": "^8.13.0"
+    "undici": "^5.25.2",
+    "ws": "^8.14.2"
   }
 }
