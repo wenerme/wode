@@ -16,8 +16,8 @@
   "license": "ISC",
   "type": "module",
   "devDependencies": {
-    "@mikro-orm/core": "^5.7.14",
-    "@mikro-orm/sqlite": "^5.7.14"
+    "@mikro-orm/core": "^5.8.3",
+    "@mikro-orm/sqlite": "^5.8.3"
   },
   "files": [
     "lib",
