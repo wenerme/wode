@@ -18,8 +18,10 @@ export { merge, type MergeOptions } from './objects/merge';
 export { createLazyPromise, type LazyPromise } from './asyncs/createLazyPromise';
 export { setAsyncInterval, clearAsyncInterval } from './asyncs/AsyncInterval';
 export { type MaybePromise } from './asyncs/MaybePromise';
+// async - iterator
 export { createAsyncIterator } from './asyncs/createAsyncIterator';
 export { firstOfAsyncIterator } from './asyncs/firstOfAsyncIterator';
+export { nextOfAsyncIterator } from './asyncs/nextOfAsyncIterator';
 export { isIterator } from './asyncs/isIterator';
 
 export { sleep } from './asyncs/sleep';
@@ -96,4 +98,10 @@ export { type FetchLike, createFetchWith, createFetchWithLogging, dumpResponse, 
 
 // bundled
 export { default as ms } from './libs/ms';
-export { nextOfAsyncIterator } from './asyncs/nextOfAsyncIterator';
+
+// error
+export { Errors, type ErrorDetail, type ErrorDetailInit } from './errors/Errors';
+// http
+export { getHttpStatusText, isRetryableHttpStatus } from './http/HttpStatus';
+
+export type * from './types';
