@@ -51,9 +51,8 @@ export class ModuleService {
   }
 
   async createRoutes(): Promise<RouteObject[]> {
-    const { context, modules } = this;
-    const all = await Promise.all(modules.map((v) => v.createRoutes?.(context)));
-    return all.filter(Boolean).flat();
+    const all = await Promise.all(this.instances.map((v) => v.module?.createRoutes?.(v.context)));
+    return all.flat().filter((x): x is NonNullable<typeof x> => Boolean(x));
   }
 }
 

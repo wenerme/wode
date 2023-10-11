@@ -87,6 +87,7 @@ const ClientBrowserInfo = () => {
     dpr: globalThis.devicePixelRatio,
     screenWidth: globalThis.screen?.width,
     screenHeight: globalThis.screen?.height,
+    timezone: Intl.DateTimeFormat?.().resolvedOptions?.()?.timeZone,
   });
   const [state, update] = useImmer(getState);
   useWindowEventListener(
@@ -103,15 +104,16 @@ const ClientBrowserInfo = () => {
         <p>当前客户端系统信息</p>
         <div className={'flex flex-col'}>
           <small>
-            窗口: {state.width}x{state.height} <br />
-            屏幕: {state.screenWidth}x{state.screenHeight} @{state.dpr}x <br />
+            窗口: {state.width}×{state.height} <br />
+            屏幕: {state.screenWidth}×{state.screenHeight} @{state.dpr}x <br />
           </small>
           <small>{state.ua}</small>
           <details>
             <summary className={'btn-link text-sm'}>更多信息</summary>
             <small>
-              偏好主题: {getPrefersColorSchema()} <br />
-              语言: {navigator.language}
+              <div>偏好主题: {getPrefersColorSchema()}</div>
+              <div>语言: {navigator.language}</div>
+              <div>时区: {state.timezone}</div>
             </small>
           </details>
         </div>

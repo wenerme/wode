@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { createHashRouter as createRouter, Outlet, RouterProvider, useInRouterContext } from 'react-router-dom';
 import { ContextStoreProvider, isDev, useExposeDebug, useLogger } from '@wener/console';
-import { DynamicModule, ModuleService, NotFoundPage, PageErrorState } from '@wener/console/console';
+import { DynamicModule, getConsoleContext, NotFoundPage, PageErrorState } from '@wener/console/console';
+import { UserAuthExpireOverlay, UserLockOverlay } from '@wener/console/console/user';
 import { LoadingIndicator } from '@wener/console/loader';
 import { lazyRoute, RouteObjects, useRouteTitles } from '@wener/console/router';
 import { ErrorSuspenseBoundary, useAsyncEffect } from '@wener/reaction';
@@ -9,19 +10,21 @@ import { createStore, useStore } from 'zustand';
 import { PrimaryLayout } from './PrimaryLayout';
 
 export const ConsoleApp = () => {
-  return <Content />;
+  return (
+    <>
+      <Content />
+    </>
+  );
 };
 
 const RootStore = createStore<{
   router?: any;
   routes: RouteObjects;
   state?: string;
-  moduleService: ModuleService;
 }>(() => {
   return {
     state: 'New',
     routes: [],
-    moduleService: new ModuleService(loadModule),
   };
 });
 
@@ -34,7 +37,7 @@ const Content = () => {
   });
 
   useAsyncEffect(async () => {
-    const { moduleService, state } = RootStore.getState();
+    const { state } = RootStore.getState();
     const setState = (state: string) => {
       RootStore.setState({ state });
     };
@@ -46,6 +49,9 @@ const Content = () => {
     }
     log('Initializing');
     setState('Pending');
+
+    const moduleService = getConsoleContext().getModuleService();
+    moduleService.loader = loadModule;
 
     try {
       await moduleService.loadModules([
@@ -75,7 +81,9 @@ const Content = () => {
     return <LoadingIndicator />;
   }
   return (
-    <ContextStoreProvider value={RootStore.getState().moduleService.store}>
+    <ContextStoreProvider value={getConsoleContext().getModuleService().store}>
+      <UserAuthExpireOverlay />
+      <UserLockOverlay />
       <RouterProvider
         router={router}
         fallbackElement={<LoadingIndicator />}
@@ -89,7 +97,7 @@ const Content = () => {
 
 export default ConsoleApp;
 
-function createRootRoutes(children: RouteObjects[]) {
+function createRootRoutes(children: RouteObjects): RouteObjects {
   return [
     {
       element: (
