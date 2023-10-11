@@ -6,5 +6,5 @@ import { SitePreferences } from '../prefs';
 export const SiteLogo = (props: any) => {
   const { useWatch } = useContextStore<SitePreferences>();
   const logo = useWatch('site.logo');
-  return flexRender(logo || GrSystem, props);
+  return flexRender(logo || GrSystem, props, true);
 };

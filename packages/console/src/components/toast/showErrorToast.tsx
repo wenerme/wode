@@ -10,7 +10,3 @@ function getErrorMessage(error: Error | any) {
   }
   return String(error);
 }
-
-export function showSuccessToast(msg: string) {
-  toast.success(msg);
-}

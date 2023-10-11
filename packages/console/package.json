@@ -1,6 +1,6 @@
 {
   "name": "@wener/console",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "type": "module",
   "description": "Base console UI toolkit",
   "author": "wener",
@@ -29,6 +29,14 @@
     "./console/user": {
       "types": "./console/user.ts",
       "default": "./lib/components/console/user/index.js"
+    },
+    "./pages": {
+      "types": "./console/pages.ts",
+      "default": "./lib/components/console/pages/index.js"
+    },
+    "./toast": {
+      "types": "./console/pages.ts",
+      "default": "./lib/components/toast/index.js"
     },
     "./console/pages/setting/about/route": {
       "types": "./src/components/console/pages/setting/about/route.ts",

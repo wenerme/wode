@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { createHashRouter as createRouter, Outlet, RouterProvider, useInRouterContext } from 'react-router-dom';
+import { Authenticated } from '@src/client/console/Authenticated';
 import { ContextStoreProvider, isDev, useExposeDebug, useLogger } from '@wener/console';
 import { DynamicModule, getConsoleContext, NotFoundPage, PageErrorState } from '@wener/console/console';
 import { UserAuthExpireOverlay, UserLockOverlay } from '@wener/console/console/user';
@@ -10,11 +11,7 @@ import { createStore, useStore } from 'zustand';
 import { PrimaryLayout } from './PrimaryLayout';
 
 export const ConsoleApp = () => {
-  return (
-    <>
-      <Content />
-    </>
-  );
+  return <Content />;
 };
 
 const RootStore = createStore<{
