@@ -50,7 +50,7 @@ export function createRoutes(): RouteObject[] {
           children: [
             {
               index: true,
-              lazy: lazyRoute(() => import('./setting/appearance/route')),
+              lazy: lazyRoute(() => import('@wener/console/console/pages/setting/appearance/route')),
               handle: {
                 title: '显示设置',
               },
@@ -71,7 +71,7 @@ export function createRoutes(): RouteObject[] {
             },
             {
               path: 'about',
-              lazy: lazyRoute(() => import('./setting/about/route')),
+              lazy: lazyRoute(() => import('@wener/console/console/pages/setting/about/route')),
               handle: {
                 title: '系统信息',
               },
@@ -83,7 +83,7 @@ export function createRoutes(): RouteObject[] {
           children: [
             {
               path: 'debug',
-              lazy: lazyRoute(() => import('./setting/dev/debug/route')),
+              lazy: lazyRoute(() => import('@wener/console/console/pages/setting/dev/debug/route')),
               handle: {
                 title: '调试设置',
               },

@@ -26,6 +26,18 @@
       "types": "./console.ts",
       "default": "./lib/components/console/index.js"
     },
+    "./console/pages/setting/about/route": {
+      "types": "./src/components/console/pages/setting/about/route.ts",
+      "default": "./lib/components/console/pages/setting/about/route.js"
+    },
+    "./console/pages/setting/appearance/route": {
+      "types": "./src/components/console/pages/setting/appearance/route.ts",
+      "default": "./lib/components/console/pages/setting/appearance/route.js"
+    },
+    "./console/pages/setting/dev/debug/route": {
+      "types": "./src/components/console/pages/setting/dev/debug/route.ts",
+      "default": "./lib/components/console/pages/setting/dev/debug/route.js"
+    },
     "./daisy": {
       "types": "./daisy.ts",
       "default": "./lib/components/daisy/index.js"

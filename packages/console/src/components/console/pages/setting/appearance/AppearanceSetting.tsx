@@ -1,16 +1,10 @@
 import React from 'react';
-import { SettingLayout } from '@wener/console/console';
-import { DaisyThemeDemo, ThemeListSelector, useThemeState } from '@wener/console/daisy';
 import { useSnapshot } from 'valtio';
+import { getPrefersColorSchema } from '../../../../../utils';
+import { DaisyThemeDemo, ThemeListSelector, useThemeState } from '../../../../daisy';
+import { SettingLayout } from '../../../layouts/SettingLayout/SettingLayout';
 
-function getPrefersColorSchema(): 'dark' | 'light' {
-  if (typeof window === 'undefined') {
-    return 'light';
-  }
-  return window?.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-}
-
-export const SettingAppearance = () => {
+export const AppearanceSetting = () => {
   const state = useThemeState();
   const { theme } = useSnapshot(state);
   const setTheme = (v: string) => {
@@ -43,4 +37,4 @@ export const SettingAppearance = () => {
     </SettingLayout>
   );
 };
-export default SettingAppearance;
+export default AppearanceSetting;

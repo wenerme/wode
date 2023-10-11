@@ -4,7 +4,11 @@ import { RouteObject } from 'react-router-dom';
 import { MaybePromise } from '@wener/utils';
 
 export interface ModuleStore<O extends Record<string, any> = Record<string, any>> {
-  set<P extends Path<O> | ArrayPath<O>, V extends PathValue<O, P>>(type: P, payload: V): void;
+  set<P extends Path<O> | ArrayPath<O>, V extends PathValue<O, P>>(
+    type: P,
+    payload: V,
+    options?: { merge?: boolean },
+  ): void;
 
   get<P extends Path<O> | ArrayPath<O>, V extends PathValue<O, P>>(path: P): V;
 

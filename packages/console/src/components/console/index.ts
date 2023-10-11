@@ -23,3 +23,6 @@ export { usePageLayoutState } from './usePageLayoutState';
 
 export { ModuleService } from './module/ModuleService';
 export { useDebugState } from './useDebugState';
+
+export * from './prefs';
+export { SiteLogo } from './site/SiteLogo';
