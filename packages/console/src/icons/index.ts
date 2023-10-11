@@ -1,0 +1,11 @@
+export { default as ChinaResidentIdentityCardBack } from './ChinaResidentIdentityCardBack';
+export { default as ChinaResidentIdentityCardFront } from './ChinaResidentIdentityCardFront';
+export { default as DingtalkBrandIcon } from './DingtalkBrandIcon';
+export { default as FinanceIcon } from './FinanceIcon';
+export { default as PinduoduoBrandIcon } from './PinduoduoBrandIcon';
+export { default as QqBrandIcon } from './QqBrandIcon';
+export { default as TaxIcon } from './TaxIcon';
+export { default as TicketIcon } from './TicketIcon';
+export { default as WechatBrandIcon } from './WechatBrandIcon';
+export { default as WecomBrandIcon } from './WecomBrandIcon';
+export { default as WecomOutlineIcon } from './WecomOutlineIcon';
