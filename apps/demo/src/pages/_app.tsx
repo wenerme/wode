@@ -1,9 +1,9 @@
 import React from 'react';
+import { PageHead } from '@src/components/page/PageHead';
+import { PageLayout } from '@src/components/page/PageLayout';
 import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import NextNProgress from 'nextjs-progressbar';
-import { PageHead } from '@src/components/page/PageHead';
-import { PageLayout } from '@src/components/page/PageLayout';
 import '../styles/globals.css';
 
 function App({ Component, pageProps }: AppPropsWithLayout) {
@@ -18,7 +18,7 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
 
   return (
     <>
-      <NextNProgress color="#474DD2" options={{ showSpinner: false }} />
+      <NextNProgress color='#474DD2' options={{ showSpinner: false }} />
       {getLayout(<Component {...pageProps} />)}
     </>
   );

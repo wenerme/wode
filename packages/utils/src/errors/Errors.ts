@@ -9,7 +9,7 @@ export interface ErrorDetailInit {
   cause?: any;
 }
 
-class DetailError extends Error {
+export class DetailError extends Error {
   readonly status: number;
   readonly description?: string;
 

@@ -6,8 +6,18 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans,
-    Helvetica Neue, sans-serif;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    Segoe UI,
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    Fira Sans,
+    Droid Sans,
+    Helvetica Neue,
+    sans-serif;
 }
 
 html,
@@ -33,7 +43,7 @@ body,
 
   blockquote,
   figure {
-    @apply my-4 mx-10;
+    @apply mx-10 my-4;
   }
 
   hr {
@@ -41,27 +51,27 @@ body,
   }
 
   h1 {
-    @apply text-4xl font-bold my-2;
+    @apply my-2 text-4xl font-bold;
   }
 
   h2 {
-    @apply text-2xl font-bold my-3;
+    @apply my-3 text-2xl font-bold;
   }
 
   h3 {
-    @apply text-lg font-bold my-4;
+    @apply my-4 text-lg font-bold;
   }
 
   h4 {
-    @apply text-base font-bold my-5;
+    @apply my-5 text-base font-bold;
   }
 
   h5 {
-    @apply text-sm font-bold my-6;
+    @apply my-6 text-sm font-bold;
   }
 
   h6 {
-    @apply text-xs font-bold my-10;
+    @apply my-10 text-xs font-bold;
   }
 
   article,
@@ -69,7 +79,7 @@ body,
   nav,
   section {
     h1 {
-      @apply text-2xl font-bold my-3;
+      @apply my-3 text-2xl font-bold;
     }
 
     article,
@@ -77,7 +87,7 @@ body,
     nav,
     section {
       h1 {
-        @apply text-lg font-bold my-4;
+        @apply my-4 text-lg font-bold;
       }
 
       article,
@@ -85,7 +95,7 @@ body,
       nav,
       section {
         h1 {
-          @apply text-base font-bold my-5;
+          @apply my-5 text-base font-bold;
         }
 
         article,
@@ -93,7 +103,7 @@ body,
         nav,
         section {
           h1 {
-            @apply text-sm font-bold my-6;
+            @apply my-6 text-sm font-bold;
           }
 
           article,
@@ -101,7 +111,7 @@ body,
           nav,
           section {
             h1 {
-              @apply text-xs font-bold my-10;
+              @apply my-10 text-xs font-bold;
             }
           }
         }
@@ -112,11 +122,11 @@ body,
   ul,
   menu {
     /*should be my-4 for proper reset, but thats ugly af*/
-    @apply list-disc my-1 pl-10;
+    @apply my-1 list-disc pl-10;
   }
 
   ol {
-    @apply list-decimal my-4 pl-10;
+    @apply my-4 list-decimal pl-10;
   }
 
   ul,
@@ -154,11 +164,11 @@ body,
   }
 
   legend {
-    @apply py-0 px-1;
+    @apply px-1 py-0;
   }
 
   fieldset {
-    @apply my-0 mx-1 pt-0 px-1 pb-2;
+    @apply mx-1 my-0 px-1 pb-2 pt-0;
   }
 
   b,
@@ -169,4 +179,121 @@ body,
   pre {
     @apply my-4;
   }
+}
+
+@font-face {
+  font-family: "color-emoji";
+  src: local("Apple Color Emoji"), local("Twemoji Mozilla"), local("Segoe UI Emoji"), local("Segoe UI Symbol"),
+    local("Noto Color Emoji"), local("EmojiOne Color"), local("Android Emoji");
+
+  /* Emoji unicode blocks */
+  unicode-range: U+00A9, U+00AE, U+200D, U+203C, U+2049, U+20E3, U+2122, U+2139, U+2194-2199, U+21A9-21AA, U+231A,
+    U+231B, U+2328, U+23CF, U+23E9-23F3, U+23F8-23FA, U+24C2, U+25AA, U+25AB, U+25B6, U+25C0, U+25FB-25FE, U+2600-27EF,
+    U+2934, U+2935, U+2B00-2BFF, U+3030, U+303D, U+3297, U+3299, U+1F000-1F02F, U+1F0A0-1F0FF, U+1F100-1F64F,
+    U+1F680-1F6FF, U+1F910-1F96B, U+1F980-1F9E0;
+}
+
+/**
+ * DaisyUI minor fix
+ */
+
+.btn {
+  text-transform: none;
+}
+
+/* hide icon for loading */
+.btn.loading > svg:first-of-type {
+  display: none;
+}
+
+/* 统一 border 颜色 - 一般默认为 currentColor */
+/* .btn-outline */
+.border-color {
+  @apply border-base-300;
+}
+
+@layer components {
+  .border,
+  .border-r,
+  .border-l,
+  .border-t,
+  .border-b,
+  .border-x,
+  .border-y {
+    @apply border-base-300;
+  }
+}
+
+.divide-color {
+  @apply divide-base-300;
+}
+
+/**
+ * scrollbar style follow theme
+ */
+/* 更细 并跟随主题色的 滚动条 */
+.scrollbar-thin {
+  scrollbar-width: thin;
+}
+
+/*
+scrollbar:!w-1.5 scrollbar:!h-1.5 scrollbar:bg-transparent scrollbar-track:!bg-base-100 scrollbar-thumb:!rounded
+scrollbar-thumb:!bg-base-300 scrollbar-track:!rounded
+ */
+.scrollbar-thin {
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+}
+
+/* 角落 */
+::-webkit-scrollbar-corner {
+  background: hsl(var(--b1));
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  @apply rounded;
+  background: hsl(var(--b1));
+}
+
+*::-webkit-scrollbar-thumb {
+  @apply rounded;
+  background: hsl(var(--b2));
+  transition: background-color 0.2s ease-in-out;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--b3));
+}
+
+/**
+ * react splitter
+ */
+
+.__dbk__gutter {
+  background: transparent !important;
+}
+
+.__dbk__dragger {
+  background: transparent !important;
+}
+
+.__dbk__gutter:hover {
+  background: hsl(var(--b2)) !important;
+
+  .__dbk__dragger {
+    background: hsl(var(--b3)) !important;
+  }
+}
+
+/* antd 样式冲突 */
+
+.ant-select-selection-search-input:focus {
+  box-shadow: none;
 }

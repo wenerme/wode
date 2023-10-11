@@ -86,6 +86,7 @@ export { structuredClone } from './isomorphics/structuredClone';
 export { randomUUID } from './crypto/randomUUID';
 export { getRandomValues } from './crypto/getRandomValues';
 export { sha1, sha256, sha384, sha512 } from './crypto/hashing';
+export { md5 } from './crypto/md5';
 export { hex } from './crypto/base';
 export { isULID, createULID, ulid, parseULID } from './crypto/ulid';
 export { PEM } from './crypto/pem/pem';
@@ -100,7 +101,7 @@ export { type FetchLike, createFetchWith, createFetchWithLogging, dumpResponse, 
 export { default as ms } from './libs/ms';
 
 // error
-export { Errors, type ErrorDetail, type ErrorDetailInit } from './errors/Errors';
+export { Errors, DetailError, type ErrorDetail, type ErrorDetailInit } from './errors/Errors';
 // http
 export { getHttpStatusText, isRetryableHttpStatus } from './http/HttpStatus';
 

@@ -1,9 +1,4 @@
 import { useEffect, useRef } from 'react';
-import type { EditorState, EditorThemeClasses, LexicalNode } from 'lexical';
-import { $getRoot, $getSelection } from 'lexical';
-import type { Class } from 'utility-types';
-import create from 'zustand';
-import createContext from 'zustand/context';
 import { CodeHighlightNode, CodeNode } from '@lexical/code';
 import { HashtagNode } from '@lexical/hashtag';
 import { AutoLinkNode, LinkNode } from '@lexical/link';
@@ -24,6 +19,11 @@ import { PlainTextPlugin as LexicalPlainTextPlugin } from '@lexical/react/Lexica
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { HeadingNode, QuoteNode } from '@lexical/rich-text';
 import { TableCellNode, TableNode, TableRowNode } from '@lexical/table';
+import type { EditorState, EditorThemeClasses, LexicalNode } from 'lexical';
+import { $getRoot, $getSelection } from 'lexical';
+import type { Class } from 'utility-types';
+import create from 'zustand';
+import createContext from 'zustand/context';
 
 const theme: EditorThemeClasses = {
   // Theme styling goes here

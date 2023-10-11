@@ -37,9 +37,6 @@ import {
   MdTablet,
   MdUndo,
 } from 'react-icons/md';
-import type { Argument } from 'classnames';
-import classNames from 'classnames';
-import styled from 'styled-components';
 import { Listbox } from '@headlessui/react';
 import { ImageToolbarItem } from '@src/components/TipTapWord/Toolbar/ImageToolbarItem';
 import { isActive } from '@src/components/TipTapWord/Toolbar/IsActive';
@@ -63,6 +60,9 @@ import type {} from '@tiptap/extension-ordered-list';
 import type {} from '@tiptap/extension-table';
 import type {} from '@tiptap/extension-text-align';
 import type { ChainedCommands, Editor } from '@tiptap/react';
+import type { Argument } from 'classnames';
+import classNames from 'classnames';
+import styled from 'styled-components';
 
 const FontFamilySet: OptionItem[] = [
   { label: '默认字体', value: '' },

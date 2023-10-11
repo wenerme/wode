@@ -1,9 +1,9 @@
 import React from 'react';
+import { useCompareEffect } from '@wener/reaction';
+import { deepEqual } from '@wener/utils';
 import * as Eta from 'eta';
 import { EtaConfig } from 'eta/dist/types/config';
 import { useImmer } from 'use-immer';
-import { useCompareEffect } from '@wener/reaction';
-import { deepEqual } from '@wener/utils';
 
 const CurrentPage = () => {
   const [state, update] = useImmer({

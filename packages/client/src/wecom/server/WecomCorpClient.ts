@@ -4,6 +4,12 @@ import { getValue, MaybeValueHolder } from '../../ValueHolder';
 import { createJsSdkSignature } from '../../wechat';
 import { CreateUserRequest, DepartmentInput, DepartmentOutput, GeneralResponse, GetUserResponse } from './api';
 import { request, RequestOptions } from './request';
+import {
+  BatchGetExternalContactByUserResponse,
+  GetExternalContactGroupChat,
+  GetExternalContactResponse,
+  GetMessageAuditGroupChatResponse,
+} from './types';
 
 export interface WecomCorpClientInitOptions {
   corpId: string;
@@ -30,14 +36,14 @@ export class WecomCorpClient {
   readonly options: WecomCorpClientOptions;
 
   constructor({
-    onAccessToken,
-    accessToken,
-    jsApiTicket,
-    agentJsApiTicket,
-    onJsApiTicket,
-    onAgentJsApiTicket,
-    ...options
-  }: WecomCorpClientInitOptions) {
+                onAccessToken,
+                accessToken,
+                jsApiTicket,
+                agentJsApiTicket,
+                onJsApiTicket,
+                onAgentJsApiTicket,
+                ...options
+              }: WecomCorpClientInitOptions) {
     this.options = {
       fetch: globalThis.fetch,
       accessToken: createExpireValueHolder<string>({
@@ -216,6 +222,118 @@ export class WecomCorpClient {
   }
 
   /**
+   * @see https://developer.work.weixin.qq.com/document/path/90202 userid转openid
+   */
+  convertUserIdToOpenId(body: { userid: string }) {
+    return this.request<{ openid: string }>({
+      method: 'POST',
+      url: '/cgi-bin/user/convert_to_openid',
+      params: {
+        access_token: true,
+      },
+      body,
+    });
+  }
+
+  convertOpenIdToUserId(body: { openid: string }) {
+    return this.request<{ userid: string }>({
+      method: 'POST',
+      url: '/cgi-bin/user/convert_to_userid',
+      params: {
+        access_token: true,
+      },
+      body,
+    });
+  }
+
+  /**
+   * @see https://developer.work.weixin.qq.com/document/path/92951 获取会话内容存档内部群信息
+   */
+  getMessageAuditGroupChat(body: { roomid: string }) {
+    return this.request<GetMessageAuditGroupChatResponse>({
+      method: 'POST',
+      url: '/cgi-bin/msgaudit/groupchat/get',
+      params: {
+        access_token: true,
+      },
+      body,
+    });
+  }
+
+
+  /**
+   * @see https://developer.work.weixin.qq.com/document/path/91614 获取会话内容存档开启成员列表
+   */
+  getMessageAuditPermitUserList(
+    params: {
+      // 拉取对应版本的开启成员列表。1表示办公版；2表示服务版；3表示企业版。非必填，不填写的时候返回全量成员列表。
+      type?: number;
+    } = {},
+  ) {
+    return this.request<{ ids: string[] }>({
+      url: '/cgi-bin/msgaudit/get_permit_user_list',
+      params: {
+        access_token: true,
+        ...params,
+      },
+    });
+  }
+
+  /**
+   * @see https://developer.work.weixin.qq.com/document/path/91774 获取机器人信息
+   */
+  getMessageAuditRobotInfo(params: { access_token?: string; robot_id: string }) {
+    return this.request<{
+      data: {
+        name: string;
+        robot_id: string;
+        creator_userid: string;
+      };
+    }>({
+      url: '/cgi-bin/msgaudit/get_robot_info',
+      params: {
+        access_token: true,
+        ...params,
+      },
+    });
+  }
+
+  /**
+   * @see https://developer.work.weixin.qq.com/document/path/95327 转换external-userid
+   */
+  getExternalContactNewExternalUserId({
+                                        access_token,
+                                        ...body
+                                      }: {
+    access_token?: string;
+    external_userid_list: string[];
+  }) {
+    return this.request({
+      method: 'POST',
+      url: '/cgi-bin/externalcontact/get_new_external_userid',
+      params: {
+        access_token,
+      },
+      body,
+    });
+  }
+
+
+  /**
+   * @see https://developer.work.weixin.qq.com/document/path/96721 外部联系人openid转换
+   */
+  convertExternalContactUserIdToOpenId(body: { external_userid: string }) {
+    return this.request({
+      method: 'POST',
+      url: '/cgi-bin/externalcontact/convert_to_openid',
+      params: {
+        access_token: true,
+      },
+      body,
+    });
+  }
+
+  /**
    * @see https://developer.work.weixin.qq.com/document/path/90198
    */
   deleteUser({ userid }: { userid: string }) {
@@ -272,7 +390,7 @@ export class WecomCorpClient {
   /**
    * @see https://developer.work.weixin.qq.com/document/path/96021
    */
-  listUserId({ cursor, limit }: { limit?: number; cursor?: string }) {
+  getUserIds({ cursor, limit }: { limit?: number; cursor?: string }) {
     return this.request<{
       next_cursor: string;
       dept_user: Array<{
@@ -293,7 +411,7 @@ export class WecomCorpClient {
   /**
    * @see https://developer.work.weixin.qq.com/document/path/95350
    */
-  listDepartmentId({ id }: { id?: string | number }) {
+  getDepartmentIds({ id }: { id?: string | number }) {
     return this.request<{
       department_id: Array<{
         id: number;
@@ -367,7 +485,7 @@ export class WecomCorpClient {
    * @see https://developer.work.weixin.qq.com/document/path/90200
    * @deprecated
    */
-  listDepartmentMember({ department_id }: { department_id: string | number }) {
+  getDepartmentMembers({ department_id }: { department_id: string | number }) {
     return this.request<{
       userlist: Array<{
         userid: string;
@@ -380,6 +498,140 @@ export class WecomCorpClient {
       params: {
         access_token: true,
         department_id,
+      },
+    });
+  }
+
+  /**
+   * @see https://developer.work.weixin.qq.com/document/path/92122 获取客户群详情
+   */
+  getExternalContactGroupChat(body: {
+    access_token?: string;
+    chat_id?: string;
+    need_name?: number;
+  }) {
+    return this.request<GetExternalContactGroupChat>({
+      method: 'POST',
+      url: '/cgi-bin/externalcontact/groupchat/get',
+      params: {
+        access_token: true,
+      },
+      body,
+    });
+  }
+
+  /**
+   *
+   * @see https://developer.work.weixin.qq.com/document/path/92113 获取客户列表
+   */
+  getExternalContactList(params: {
+    userid?: string; // 企业成员的userid
+  }) {
+    return this.request<{ external_userid: Array<string> }>({
+      method: 'GET',
+      url: '/cgi-bin/externalcontact/list',
+      params: {
+        access_token: true,
+        ...params,
+      },
+    });
+  }
+
+  /**
+   * @see https://developer.work.weixin.qq.com/document/path/92120 获取客户群列表
+   */
+  getExternalContactGroupChatList(body: {
+    status_filter?: number;
+    // 最大 1000
+    limit?: number;
+    owner_filter?: {
+      userid_list: string[];
+    };
+    cursor?: string;
+  }) {
+    return this.request<{
+      next_cursor?: string
+      group_chat_list: Array<{
+        /**
+         * 0 - 跟进人正常
+         * 1 - 跟进人离职
+         * 2 - 离职继承中
+         * 3 - 离职继承完成
+         */
+        status: number;
+        chat_id: string;
+      }>;
+    }>({
+      method: 'POST',
+      url: '/cgi-bin/externalcontact/groupchat/list',
+      params: {
+        access_token: true,
+      },
+      body: {
+        limit: 1000,
+        ...body,
+      },
+    });
+  }
+
+  /**
+   * @see https://developer.work.weixin.qq.com/document/path/92114 获取客户详情
+   */
+  getExternalContact(params: { external_userid: string }) {
+    return this.request<GetExternalContactResponse>({
+      url: '/cgi-bin/externalcontact/get',
+      params: {
+        access_token: true,
+        ...params,
+      },
+    });
+  }
+
+  /**
+   * @see https://developer.work.weixin.qq.com/document/path/92994 批量获取客户详情
+   */
+  batchGetExternalContactByUser(params: {
+    access_token?: string;
+    userid_list: string[];
+    cursor?: string;
+    // 最大 100
+    limit: number;
+  }) {
+    return this.request<BatchGetExternalContactByUserResponse>({
+      url: '/cgi-bin/externalcontact/batch/get_by_user',
+      params: {
+        access_token: true,
+        ...params,
+      },
+    });
+  }
+
+  getExternalContactFollowUserList() {
+    // https://developer.work.weixin.qq.com/document/path/92571
+    return this.request<{ follow_user: string[] }>({
+      url: '/cgi-bin/externalcontact/get_follow_user_list',
+      params: {
+        access_token: true,
+      },
+    });
+  }
+
+  /**
+   * @see https://developer.work.weixin.qq.com/document/path/90247
+   */
+  getAppChat(params: { chatid: string }) {
+    return this.request<{
+      chat_info: {
+        chatid: string;
+        name: string;
+        owner: string;
+        userlist: string[];
+      };
+    }>({
+      url: '/cgi-bin/appchat/get',
+      params: {
+        access_token: true,
+        ...params,
       },
     });
   }

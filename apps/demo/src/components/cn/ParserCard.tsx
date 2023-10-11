@@ -1,4 +1,4 @@
-import { Button } from 'common/src/daisy';
+import { Button } from '@wener/console/daisy';
 import type { Parser } from './parseIt';
 
 export const ParserCard: React.FC<{
@@ -36,14 +36,14 @@ export const ParserCard: React.FC<{
   }
   return (
     <>
-      <div className="card bg-base-200 shadow-xl">
-        <div className="card-body">
-          <div className="card-title">
-            <h3 className="text-lg font-medium leading-6">{title}</h3>
-            <p className="mt-1 max-w-2xl text-sm opacity-75">{description}</p>
+      <div className='card bg-base-200 shadow-xl'>
+        <div className='card-body'>
+          <div className='card-title'>
+            <h3 className='text-lg font-medium leading-6'>{title}</h3>
+            <p className='mt-1 max-w-2xl text-sm opacity-75'>{description}</p>
           </div>
-          {children && <div className="border-t border-base-300 px-4 py-5 sm:px-6">{children}</div>}
-          {Boolean(actions.length) && <div className="card-actions justify-end">{actions}</div>}
+          {children && <div className='border-t border-base-300 px-4 py-5 sm:px-6'>{children}</div>}
+          {Boolean(actions.length) && <div className='card-actions justify-end'>{actions}</div>}
         </div>
       </div>
     </>

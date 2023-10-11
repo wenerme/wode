@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { HiMagnifyingGlass, HiOutlineXCircle } from 'react-icons/hi2';
-import { useImmer } from 'use-immer';
 import { ChinaCitizenIdDescription } from '@src/components/cn/ChinaCitizenIdDescription';
 import { ParserCard } from '@src/components/cn/ParserCard';
 import { Parsers } from '@src/components/cn/Parsers';
 import { UnifiedSocialCreditIdDescription } from '@src/components/cn/UnifiedSocialCreditIdDescription';
 import { isDefined } from '@wener/utils';
+import { useImmer } from 'use-immer';
 import type { ParseResult } from './parseIt';
 import { tryParse } from './parseIt';
 
@@ -50,21 +50,21 @@ export const ChinaIdInfoPage = () => {
           parse(() => state.id);
         }}
       >
-        <div className="form-control">
-          <label className="input-group input-group-lg">
+        <div className='form-control'>
+          <label className='input-group input-group-lg'>
             <span>ID</span>
             <input
-              type="text"
-              placeholder="身份证、统一信用代码"
+              type='text'
+              placeholder='身份证、统一信用代码'
               value={state.id}
               onChange={(e) => {
                 update((s) => {
                   s.id = e.target.value;
                 });
               }}
-              className="input input-bordered input-lg md:min-w-[24rem]"
+              className='input input-bordered input-lg md:min-w-[24rem]'
             />
-            <button className="btn btn-square btn-lg">
+            <button className='btn btn-square btn-lg'>
               <HiMagnifyingGlass className={'w-5 h-5'} />
             </button>
           </label>

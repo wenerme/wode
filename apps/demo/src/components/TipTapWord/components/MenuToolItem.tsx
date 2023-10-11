@@ -1,9 +1,9 @@
 import type { MouseEvent, MouseEventHandler } from 'react';
 import React, { useMemo, useRef } from 'react';
 import { MdSettings } from 'react-icons/md';
+import { Menu, MenuItem } from '@src/components/TipTapWord/components/Menu';
 import classNames from 'classnames';
 import styled from 'styled-components';
-import { Menu, MenuItem } from '@src/components/TipTapWord/components/Menu';
 
 const MenuContainer = styled.div`
   &.Menu {

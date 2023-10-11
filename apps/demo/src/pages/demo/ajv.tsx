@@ -110,7 +110,7 @@ const Demo = () => {
         <div className={'flex flex-col gap-2'}>
           <div>
             {result.error?.message && (
-              <div className="alert alert-error shadow-sm">
+              <div className='alert alert-error shadow-sm'>
                 <div>
                   <HiOutlineXCircle />
                   <span>{result.error?.message}</span>
@@ -119,7 +119,7 @@ const Demo = () => {
             )}
             {!!result.errors?.length &&
               result.errors.map((v, i) => (
-                <div key={i} className="alert alert-error shadow-sm">
+                <div key={i} className='alert alert-error shadow-sm'>
                   <div>
                     <HiOutlineXCircle />
                     <span className={'flex flex-wrap items-center gap-2'}>
@@ -132,7 +132,7 @@ const Demo = () => {
                 </div>
               ))}
           </div>
-          <textarea className="textarea textarea-bordered w-full" {...register('schema')} placeholder="{}" />
+          <textarea className='textarea textarea-bordered w-full' {...register('schema')} placeholder='{}' />
         </div>
         <div className={'flex flex-col gap-2'}>
           <div>
@@ -145,7 +145,7 @@ const Demo = () => {
               result.valid === false && 'textarea-error',
             )}
             {...register('data')}
-            placeholder="{}"
+            placeholder='{}'
           />
         </div>
       </form>

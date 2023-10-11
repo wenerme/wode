@@ -1,8 +1,8 @@
 import type { RefObject } from 'react';
 import type React from 'react';
+import type { Editor } from '@tiptap/react';
 import create from 'zustand';
 import createContext from 'zustand/context';
-import type { Editor } from '@tiptap/react';
 
 export const {
   Provider: EditorStoreProvider,

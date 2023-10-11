@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { HiXCircle } from 'react-icons/hi2';
-import { useImmer } from 'use-immer';
 import { useDeepCompareEffect } from '@wener/reaction';
+import { useImmer } from 'use-immer';
 
 const Page = () => {
   const [state, update] = useImmer({
@@ -54,7 +54,7 @@ const Page = () => {
     <div className={'container mx-auto flex-1 flex flex-col '}>
       <h3 className={'font-medium font-lg'}>Intl.Segmenter</h3>
       {!state.hasSegmenter && (
-        <div className="alert alert-error shadow-lg">
+        <div className='alert alert-error shadow-lg'>
           <div>
             <HiXCircle className={'w-4 h-4'} />
             <span>Do not support Intl.Segmenter</span>
@@ -62,16 +62,16 @@ const Page = () => {
         </div>
       )}
       <div className={'p-4 flex flex-wrap gap-2'}>
-        <div className="form-control">
-          <label className="input-group">
+        <div className='form-control'>
+          <label className='input-group'>
             <span>Locals</span>
             <input
-              type="text"
+              type='text'
               defaultValue={'zh-CN,zh-TW,en-US'}
               onChange={(e) => {
                 update({ ...state, locales: e.currentTarget.value.split(',').map((v) => v.trim()) });
               }}
-              className="input input-bordered"
+              className='input input-bordered'
             />
           </label>
         </div>

@@ -1,6 +1,6 @@
 import React from 'react';
-import type { NextPage } from 'next';
 import { SimpleFileInput } from '@src/components/TipTapWord/components/SimpleFileInput';
+import type { NextPage } from 'next';
 
 // https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Image_types
 const fileTypes = [

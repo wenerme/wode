@@ -191,7 +191,7 @@ const Demo = () => {
             <p>
               接口基于{' '}
               <a
-                href="https://developer.mozilla.org/en-US/docs/Web/API/FontFaceSet"
+                href='https://developer.mozilla.org/en-US/docs/Web/API/FontFaceSet'
                 target={'_blank'}
                 rel={'noreferrer'}
               >
@@ -219,8 +219,8 @@ const Demo = () => {
               })
             }
           >
-            <option value="">Weights</option>
-            <option value="300,500,700">300,500,700</option>
+            <option value=''>Weights</option>
+            <option value='300,500,700'>300,500,700</option>
             <option value={weights.join(',')}>所有</option>
             {weights.map((v) => (
               <option key={v} value={v}>
@@ -229,20 +229,20 @@ const Demo = () => {
             ))}
           </select>
 
-          <div className="form-control">
-            <div className="input-group input-group-sm">
+          <div className='form-control'>
+            <div className='input-group input-group-sm'>
               <button
                 type={'button'}
-                className="btn btn-sm btn-square"
+                className='btn btn-sm btn-square'
                 onClick={() => updateSettings({ ...settings, previewText: !settings.previewText })}
               >
                 {settings.previewText && <AiFillEye />}
                 {!settings.previewText && <AiFillEyeInvisible />}
               </button>
               <input
-                type="text"
-                placeholder="Preview text"
-                className="input input-sm input-bordered"
+                type='text'
+                placeholder='Preview text'
+                className='input input-sm input-bordered'
                 value={settings.text}
                 onChange={(e) => updateSettings({ ...settings, text: e.currentTarget.value })}
               />
@@ -270,12 +270,12 @@ const Demo = () => {
               </ul>
             </div>
             <input
-              type="range"
-              min="8"
-              max="280"
+              type='range'
+              min='8'
+              max='280'
               value={settings.size}
               onChange={(e) => updateSettings({ ...settings, size: parseInt(e.currentTarget.value) })}
-              className="range range-sm w-[200px]"
+              className='range range-sm w-[200px]'
             />
           </div>
         </div>
