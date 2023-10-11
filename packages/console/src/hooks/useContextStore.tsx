@@ -8,10 +8,10 @@ const DefaultStore = createStore(() => {
   return {};
 });
 
-const Context = createContext<StoreApi<any>>(DefaultStore);
+const Context = createContext<StoreApi<any> | undefined>(undefined);
 
 function useModuleStore() {
-  return useContext(Context);
+  return useContext(Context) ?? DefaultStore;
 }
 
 export const ContextStoreProvider: React.FC<{ value: StoreApi<any>; children?: ReactNode }> = ({ value, children }) => {

@@ -2,6 +2,7 @@ import type { PropsWithChildren, ReactNode } from 'react';
 import React from 'react';
 import { BiHomeHeart, BiHomeSmile } from 'react-icons/bi';
 import { useContextStore } from '@wener/console';
+import { SitePreferences } from '@wener/console/console';
 import { AutoNavLink, DockLayout, LeftSideMenuBarLayout } from '@wener/console/console';
 import type { ConsoleLayoutContext, DashMenu } from './ConsoleLayoutContext';
 
@@ -27,12 +28,16 @@ function renderMenuItems(items: DashMenu[]): ReactNode[] {
   });
 }
 
+const SiteLogo: React.FC<{ active?: boolean }> = ({ active }) => {
+  const { useWatch } = useContextStore<SitePreferences>();
+  const logo = useWatch('site.logo');
+  return logo || (!active ? <BiHomeSmile className={'h-6 w-6'} /> : <BiHomeHeart className={'h-6 w-6'} />);
+};
 const TopItems = [
   {
     title: '首页',
     href: '/',
-    icon: <BiHomeSmile className={'h-6 w-6'} />,
-    iconActive: <BiHomeHeart className={'h-6 w-6'} />,
+    icon: <SiteLogo />,
   },
 ];
 

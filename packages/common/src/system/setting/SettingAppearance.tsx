@@ -1,7 +1,6 @@
 import React from 'react';
 import { useSnapshot } from 'valtio';
-import { ThemeListSelector, useThemeState } from '../../daisy/theme';
-import { getPrefersColorSchema } from '../../daisy/theme/getPrefersColorSchema';
+import { getPrefersColorSchema, ThemeListSelector, useThemeState } from '../../daisy/theme';
 import { SettingLayout } from '../layouts';
 
 export const SettingAppearance = () => {
@@ -15,12 +14,12 @@ export const SettingAppearance = () => {
       title={
         <>
           <span>主题设置</span>
-          <div className="form-control">
-            <label className="label cursor-pointer">
-              <span className="label-text">使用系统配色</span>
+          <div className='form-control'>
+            <label className='label cursor-pointer'>
+              <span className='label-text'>使用系统配色</span>
               <input
-                type="checkbox"
-                className="toggle toggle-sm toggle-accent"
+                type='checkbox'
+                className='toggle toggle-sm toggle-accent'
                 checked={theme === 'system'}
                 onChange={() => {
                   setTheme(theme === 'system' ? getPrefersColorSchema() : 'system');

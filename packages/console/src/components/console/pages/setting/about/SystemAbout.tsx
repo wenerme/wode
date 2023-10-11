@@ -1,22 +1,16 @@
 import React, { type ReactNode } from 'react';
 import { HiCheck } from 'react-icons/hi';
 import { ImLab } from 'react-icons/im';
-import { SitePreferences } from '@src/client/console/modules/user.core/types';
-import { useContextStore } from '@wener/console';
-import type { BuildInfo } from '@wener/console/buildinfo';
-import { getBuildInfo } from '@wener/console/buildinfo';
-import { Button } from '@wener/console/daisy';
 import { useWindowEventListener } from '@wener/reaction';
 import dayjs from 'dayjs';
 import { useImmer } from 'use-immer';
+import type { BuildInfo } from '../../../../../buildinfo';
+import { getBuildInfo } from '../../../../../buildinfo';
+import { useContextStore } from '../../../../../hooks';
+import { getPrefersColorSchema } from '../../../../../utils';
+import { Button } from '../../../../daisy';
+import { SitePreferences } from '../../../prefs';
 import { SystemLogo } from './SystemLogo';
-
-export function getPrefersColorSchema(): 'dark' | 'light' {
-  if (typeof window === 'undefined') {
-    return 'light';
-  }
-  return window?.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-}
 
 export const SystemAbout: React.FC<{ children?: ReactNode }> = ({ children }) => {
   return (
@@ -30,8 +24,8 @@ export const SystemAbout: React.FC<{ children?: ReactNode }> = ({ children }) =>
 };
 
 const AuthorInfo = () => {
-  const { title = '控制台', author: { name = 'Console', link = 'https://wener.me' } = {} } =
-    useContextStore<SitePreferences>() ?? {};
+  const { useWatch } = useContextStore<SitePreferences>();
+  const { title = '控制台', author: { name = 'Console', link = 'https://wener.me' } = {} } = useWatch('site');
   return (
     <div className={'rounded-lg border p-4 text-sm shadow'}>
       <article className={'prose'}>

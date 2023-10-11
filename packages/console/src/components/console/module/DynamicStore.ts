@@ -35,9 +35,9 @@ export class DynamicStore implements ModuleStore {
     return found;
   }
 
-  set(key: string, value: any) {
+  set(key: string, value: any, { merge } = {}) {
     this.store.setState((s) => {
-      set(s, key, value, false);
+      set(s, key, value, merge);
     });
   }
 
