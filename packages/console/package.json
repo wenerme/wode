@@ -4,7 +4,7 @@
   "type": "module",
   "description": "Base console UI toolkit",
   "author": "wener",
-  "license": "ISC",
+  "license": "MIT",
   "exports": {
     ".": {
       "types": "./index.ts",
@@ -64,6 +64,8 @@
     "admin",
     "console",
     "react",
+    "daisy",
+    "tailwindcss",
     "builder"
   ],
   "scripts": {

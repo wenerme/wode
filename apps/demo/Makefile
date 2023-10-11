@@ -27,7 +27,8 @@ favicon:
 	convert -resize 16x16 public/favicon.png public/favicon.ico
 
 vercel-install: info
-	command -v jq > /dev/null || yum install jq -y
+	-command -v jq > /dev/null || yum install jq -y
+	-command -v rsync > /dev/null || yum install rsync -y
 	npm install -g $(PM)
 	# if vercel can not detect next version ,build will fail
 	$(PM) install

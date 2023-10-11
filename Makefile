@@ -37,6 +37,7 @@ typedoc:
 
 ci-install:
 	-command -v jq > /dev/null || yum install jq -y
+	-command -v rsync > /dev/null || yum install rsync -y
 
 ci-build:
 	pnpm turbo run image-push --filter=@wener/dash --filter=@wener/apis --filter=@wener/server
