@@ -26,3 +26,5 @@ export { useDebugState } from './useDebugState';
 
 export * from './prefs';
 export { SiteLogo } from './site/SiteLogo';
+
+export { getConsoleContext, setConsoleContext, ConsoleContext } from './ConsoleContext';

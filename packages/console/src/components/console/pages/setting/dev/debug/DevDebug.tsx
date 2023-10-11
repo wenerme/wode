@@ -1,6 +1,7 @@
 import React from 'react';
-import { SettingLayout, useDebugState } from '@wener/console/console';
 import { useSnapshot } from 'valtio';
+import { SettingLayout } from '../../../../layouts/SettingLayout/SettingLayout';
+import { useDebugState } from '../../../../useDebugState';
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -27,7 +28,7 @@ export const DevDebug = () => {
           </div>
         </div>
       )}
-      <fieldset className={'flex flex-col gap-2 rounded border p-2'}>
+      <fieldset disabled={!isDev} className={'flex flex-col gap-2 rounded border p-2'}>
         <legend>ReactQuery</legend>
         <ReactQueryDevSetting />
       </fieldset>
@@ -48,7 +49,6 @@ const ReactQueryDevSetting = () => {
           <input
             type='checkbox'
             className='toggle'
-            disabled={!isDev}
             checked={enable || false}
             onChange={(e) => {
               state.enable = e.target.checked;

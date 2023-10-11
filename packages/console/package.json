@@ -26,6 +26,10 @@
       "types": "./console.ts",
       "default": "./lib/components/console/index.js"
     },
+    "./console/user": {
+      "types": "./console/user.ts",
+      "default": "./lib/components/console/user/index.js"
+    },
     "./console/pages/setting/about/route": {
       "types": "./src/components/console/pages/setting/about/route.ts",
       "default": "./lib/components/console/pages/setting/about/route.js"
@@ -55,6 +59,7 @@
   "files": [
     "*.ts",
     "components/**/*.ts",
+    "console/**/*.ts",
     "lib",
     "postcss.config.cjs",
     "src",
