@@ -13,8 +13,7 @@ interface ThemeState {
 
   readonly active: string; // 当前主题
   system?: string; // 当前系统主题 - state self-contained
-  // $ele
-  // storageKey
+  custom?: Record<string, any>; // 自定义主题
 }
 
 const InitialState = {

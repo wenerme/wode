@@ -1,9 +1,11 @@
 import React from 'react';
 import { useCompareEffect } from '@wener/reaction';
 import { deepEqual } from '@wener/utils';
-import * as Eta from 'eta';
-import { EtaConfig } from 'eta/dist/types/config';
+import { Eta } from 'eta';
 import { useImmer } from 'use-immer';
+
+const eta = new Eta();
+type EtaConfig = typeof Eta.prototype.config;
 
 const CurrentPage = () => {
   const [state, update] = useImmer({
@@ -22,14 +24,10 @@ const CurrentPage = () => {
       const { template, data, options } = state;
       update((s) => {
         try {
-          s.output = Eta.render(
-            template,
-            {
-              it: data,
-              $: MarkdownUtils,
-            },
-            Eta.getConfig(options),
-          );
+          s.output = eta.withConfig(options).render(template, {
+            it: data,
+            $: MarkdownUtils,
+          });
         } catch (e) {
           console.error(e);
         }
