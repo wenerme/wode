@@ -1,11 +1,16 @@
+import { randomDivisionCode } from '@wener/data/cn/division';
 import type { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
 import objectSupport from 'dayjs/plugin/objectSupport';
-import { randomDivisionCode } from '@wener/data/cn/division';
 import { mod11 } from './mod11';
 
 export class ChinaCitizenId {
-  constructor(public division: string, public date: Dayjs, public sequence: number, public sum: string) {}
+  constructor(
+    public division: string,
+    public date: Dayjs,
+    public sequence: number,
+    public sum: string,
+  ) {}
 
   get valid() {
     return mod11(this.primary) === this.sum;

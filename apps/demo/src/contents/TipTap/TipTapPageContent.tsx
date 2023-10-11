@@ -16,9 +16,6 @@ import {
   MdTagFaces,
   MdToc,
 } from 'react-icons/md';
-import type { Instance } from 'tippy.js';
-import tippy from 'tippy.js';
-import { useImmer } from 'use-immer';
 import type { CommandListRef } from '@src/components/TipTapWord/CommandList';
 import { CommandList } from '@src/components/TipTapWord/CommandList';
 import { CharacterCounter } from '@src/components/TipTapWord/Statusbar/CharacterCounter';
@@ -29,6 +26,9 @@ import { CommandExtension } from '@src/components/TipTapWord/extensions/commands
 import { Placeholder } from '@tiptap/extension-placeholder';
 import { ReactRenderer } from '@tiptap/react';
 import { ColorHighlighterExtension, TipTapWordStarterKit } from '@wener/tiptap';
+import type { Instance } from 'tippy.js';
+import tippy from 'tippy.js';
+import { useImmer } from 'use-immer';
 
 function useExtensions() {
   return [

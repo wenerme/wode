@@ -1,11 +1,18 @@
 import type { LoggerWithChild, LogLevel } from './Logger';
 
+export interface CreateLoggerOptions {
+  name?: string;
+  handler?: (o: { level: LogLevel; values: any[] } & Record<string | symbol, any>) => void;
+  context?: Record<string, any>;
+  levels?: LogLevel[];
+}
+
 export function createLogger(
   write: (o: { level: LogLevel; values: any[] } & Record<string | symbol, any>) => void = ({
-    level,
-    values,
-    ...ctx
-  }) => {
+                                                                                             level,
+                                                                                             values,
+                                                                                             ...ctx
+                                                                                           }) => {
     ({ values, ...ctx } = merge(ctx, values));
     console[level]?.(...values, ctx);
   },
@@ -39,3 +46,5 @@ function merge(ctx: any, values: any[]) {
   }
   return { ...ctx, values };
 }
+
+// https://github.com/nestjs/nest/blob/master/packages/common/services/console-logger.service.ts

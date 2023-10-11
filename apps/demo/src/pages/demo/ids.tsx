@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { MdRefresh } from 'react-icons/md';
+import { nanoid } from '@src/shims/nanoid';
+import { ulid } from '@src/shims/ulid';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { useImmer } from 'use-immer';
-import { nanoid } from '@src/shims/nanoid';
-import { ulid } from '@src/shims/ulid';
 
 interface Spec {
   title: string;
@@ -93,13 +93,13 @@ const PageContent = () => {
       </div>
       <div className={'flex flex-col gap-8'}>
         <div className={'btn-group'}>
-          <button onClick={() => doBenchmark(1000)} type={'button'} className="btn btn-sm">
+          <button onClick={() => doBenchmark(1000)} type={'button'} className='btn btn-sm'>
             Run 1000 times
           </button>
-          <button onClick={() => doBenchmark(10000)} type={'button'} className="btn btn-sm">
+          <button onClick={() => doBenchmark(10000)} type={'button'} className='btn btn-sm'>
             Run 10,000 times
           </button>
-          <button onClick={() => doBenchmark(100000)} type={'button'} className="btn btn-sm">
+          <button onClick={() => doBenchmark(100000)} type={'button'} className='btn btn-sm'>
             Run 100,000 times
           </button>
           <button
@@ -112,7 +112,7 @@ const PageContent = () => {
               })
             }
             type={'button'}
-            className="btn btn-sm btn-info"
+            className='btn btn-sm btn-info'
           >
             Reset
           </button>
@@ -140,7 +140,7 @@ const PageContent = () => {
                       })
                     }
                     type={'button'}
-                    className="btn btn-square btn-sm"
+                    className='btn btn-square btn-sm'
                   >
                     <MdRefresh />
                   </button>

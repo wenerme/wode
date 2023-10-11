@@ -1,0 +1,1 @@
+export { getPrefersColorSchema } from './getPrefersColorSchema';

@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
+import { SimpleFileInput } from '@src/components/TipTapWord/components/SimpleFileInput';
+import { useAsyncEffect } from '@wener/reaction';
 import classNames from 'classnames';
 import { convertToHtml, extractRawText } from 'mammoth';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { SimpleFileInput } from '@src/components/TipTapWord/components/SimpleFileInput';
-import { useAsyncEffect } from '@wener/reaction';
 
 const DemoMenu = () => {
   const [file, setFile] = useState<File>();
@@ -36,7 +36,7 @@ const DemoMenu = () => {
         <SimpleFileInput preview={false} accept={['.docx']} onFile={setFile} />
       </div>
       <div className={'border p-2 flex flex-col'}>
-        <div className="tabs">
+        <div className='tabs'>
           <Link href={{ query: { tab: 'render' } }} className={classNames('tab tab-lifted', tab === 'render')}>
             Render
           </Link>

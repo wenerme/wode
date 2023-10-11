@@ -187,8 +187,8 @@ export const ColorNameContent = () => {
           value={settings.display}
           onChange={(e) => updateSettings({ ...settings, display: e.currentTarget.value as any })}
         >
-          <option value="named">Named Color</option>
-          <option value="system">System Color</option>
+          <option value='named'>Named Color</option>
+          <option value='system'>System Color</option>
         </select>
       </div>
       <table className={'table w-full table-compact'}>

@@ -17,7 +17,7 @@ export const DivisionFormat: React.FC<{ value?: string }> = ({ value }) => {
     let title = code.names.join(' ');
     return (
       <span>
-        <span className="mr-1">{title}</span>
+        <span className='mr-1'>{title}</span>
         <small>({value})</small>
       </span>
     );
@@ -28,11 +28,11 @@ export const DivisionFormat: React.FC<{ value?: string }> = ({ value }) => {
 export const ValidFormat: React.FC<{ actual: string; expected?: string }> = ({ actual, expected }) => {
   const valid = !expected || actual === expected;
   if (valid) {
-    return <span className="text-green-500">{actual} ✅</span>;
+    return <span className='text-green-500'>{actual} ✅</span>;
   }
   return (
     <span className={'flex-inline justify-center'}>
-      <del className={'text-red-500'}>{actual}</del> ❌ <ins className="text-green-500">{expected}</ins>
+      <del className={'text-red-500'}>{actual}</del> ❌ <ins className='text-green-500'>{expected}</ins>
     </span>
   );
 };
@@ -43,13 +43,13 @@ export const GenderFormat: React.FC<{ value?: string }> = ({ value }) => {
   switch (value) {
     case 'male':
       return (
-        <span className="text-blue-500 flex items-center">
+        <span className='text-blue-500 flex items-center'>
           <FaMale />男
         </span>
       );
     case 'female':
       return (
-        <span className="text-pink-500 flex items-center">
+        <span className='text-pink-500 flex items-center'>
           <FaFemale />女
         </span>
       );

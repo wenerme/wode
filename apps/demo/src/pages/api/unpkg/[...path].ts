@@ -1,7 +1,7 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
 import type { Unpkg } from '@wener/unpkg';
 import { createUnpkg, createUnpkgHandler } from '@wener/unpkg/server';
 import { arrayOfMaybeArray, isBuffer } from '@wener/utils';
+import type { NextApiRequest, NextApiResponse } from 'next';
 
 let h: any;
 export let unpkg: Unpkg;

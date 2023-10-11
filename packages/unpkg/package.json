@@ -66,7 +66,7 @@
   "devDependencies": {
     "@types/better-sqlite3": "^7.6.5",
     "@types/fs-extra": "^11.0.2",
-    "@types/mime": "^3.0.1",
+    "@types/mime": "^3.0.2",
     "@types/semver": "^7.5.3",
     "@types/tar": "^6.1.6"
   },
@@ -96,10 +96,10 @@
   },
   "dependencies": {
     "@wener/utils": "*",
-    "better-sqlite3": "^8.6.0",
+    "better-sqlite3": "^8.7.0",
     "lru-cache": "^10.0.1",
     "mime": "^3.0.0",
-    "pino": "^8.15.1",
+    "pino": "^8.16.0",
     "semver": "^7.5.4",
     "tar": "^6.2.0"
   },

@@ -1,8 +1,8 @@
 import React from 'react';
 import { MdUploadFile } from 'react-icons/md';
-import classNames from 'classnames';
 import { useFileInput } from '@src/hooks/useFileInput';
 import { formatBytes } from '@wener/utils';
+import classNames from 'classnames';
 
 export const SimpleFileInput: React.FC<{
   src?: string;
@@ -74,7 +74,34 @@ export const SimpleFileInput: React.FC<{
           )}
         </div>
       )}
-      <input type="file" className={'hidden'} {...getInputProps()} />
+      <input type='file' className={'hidden'} {...getInputProps()} />
     </label>
   );
 };
+
+function createProgressTrackingStream({ total }: { total?: number }) {
+  const state = {
+    transformed: 0,
+    progress: 0,
+    total,
+    done: false,
+  };
+  // chrome v105+
+  // https://stackoverflow.com/a/69400632/1870054
+  const stream = new TransformStream({
+    transform(chunk, controller) {
+      controller.enqueue(chunk);
+      state.transformed += chunk.byteLength;
+      if (state.total) {
+        state.progress = state.transformed / state.total;
+      }
+    },
+    flush(controller) {
+      state.done = true;
+    },
+  });
+  return {
+    stream,
+    state,
+  };
+}

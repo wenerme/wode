@@ -16,7 +16,11 @@ export class BusinessLicenseNo {
     title: '营业执照号(15位)',
   };
 
-  constructor(public bureau: string, public sequence: string, public sum: string) {}
+  constructor(
+    public bureau: string,
+    public sequence: string,
+    public sum: string,
+  ) {}
 
   get primary() {
     return this.bureau + this.sequence;

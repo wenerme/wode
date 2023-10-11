@@ -1,10 +1,10 @@
 import dayjs from 'dayjs';
 import { test, assert } from 'vitest';
-import { ChinaCitizenId } from './ChinaCitizenId';
+import { ChinaCitizenIdNo } from './ChinaCitizenIdNo';
 
 test('ChinaCitizenId', (t) => {
   const input = '11010519491231002X';
-  const parsed = ChinaCitizenId.parse(input);
+  const parsed = ChinaCitizenIdNo.parse(input);
   const { division, sequence, sum, valid, date, gender } = parsed;
   assert.deepEqual(
     {
@@ -32,7 +32,7 @@ test('ChinaCitizenId', (t) => {
   );
 
   for (let i = 0; i < 100; i++) {
-    const id = ChinaCitizenId.random();
+    const id = ChinaCitizenIdNo.random();
     assert.isTrue(id.valid, id.toString());
   }
 });

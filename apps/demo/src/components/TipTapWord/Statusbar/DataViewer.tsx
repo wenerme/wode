@@ -1,9 +1,9 @@
 import type { ButtonHTMLAttributes } from 'react';
 import React, { memo, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { useImmer } from 'use-immer';
 import type { Editor } from '@tiptap/react';
 import { createMarkdownSerializer } from '@wener/tiptap';
+import { useImmer } from 'use-immer';
 import { useEditorStore } from '../useEditorStore';
 
 const modes: Record<
@@ -99,7 +99,7 @@ export const DataViewer = memo(() => {
               onMinify={mode.minify}
             />
             <hr />
-            <form method="dialog">
+            <form method='dialog'>
               <button onClick={() => setMode('')}>Close</button>
             </form>
           </dialog>
@@ -184,7 +184,7 @@ const DisplayValue: React.FC<{
         </div>
       </h3>
       <textarea
-        spellCheck="false"
+        spellCheck='false'
         rows={10}
         className={'border rounded font-mono'}
         value={edit}

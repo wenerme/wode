@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
-import classNames from 'classnames';
-import { DaisyDemo, ThemeListSelector, useThemeState } from 'common/src/daisy/theme';
+import { HSLToRGB } from '@src/utils/hsl';
+import { DaisyThemeDemo, ThemeListSelector, useThemeState } from '@wener/console/daisy';
+import clsx from 'clsx';
 import { useImmer } from 'use-immer';
 import { useSnapshot } from 'valtio';
-import { HSLToRGB } from '@src/utils/hsl';
 
 const Page = () => {
   const state = useThemeState();
@@ -13,7 +13,7 @@ const Page = () => {
       <div className={'p-2'}>
         <button
           type={'button'}
-          className={classNames('btn btn-outline', theme === 'system' && 'active')}
+          className={clsx('btn btn-outline', theme === 'system' && 'active')}
           onClick={() => (state.theme = 'system')}
         >
           Follow System {theme === 'system' && <span className={'badge badge-primary'}>{active}</span>}
@@ -27,7 +27,7 @@ const Page = () => {
         <ThemeDetails />
       </div>
       <hr />
-      <DaisyDemo />
+      <DaisyThemeDemo />
     </div>
   );
 };
@@ -68,16 +68,16 @@ const ThemeStyleProps: Record<string, { name?: string; description?: string; pre
     preview: <button className={'btn btn-xs'}>hello world</button>,
   },
   'rounded-badge': {
-    preview: <span className="badge badge-xs">Badge</span>,
+    preview: <span className='badge badge-xs'>Badge</span>,
   },
   'rounded-box': {},
   'rounded-btn': {},
   'tab-border': {
     preview: (
-      <div className="tabs">
-        <a className="tab tab-xs tab-lifted">A</a>
-        <a className="tab tab-xs tab-lifted tab-active">B</a>
-        <a className="tab tab-xs tab-lifted">C</a>
+      <div className='tabs'>
+        <a className='tab tab-xs tab-lifted'>A</a>
+        <a className='tab tab-xs tab-lifted tab-active'>B</a>
+        <a className='tab tab-xs tab-lifted'>C</a>
       </div>
     ),
   },

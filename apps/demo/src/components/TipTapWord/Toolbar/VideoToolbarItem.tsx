@@ -36,13 +36,13 @@ export const VideoToolbarItem: React.FC<{}> = (props) => {
         title={'选择视频'}
         action={
           <>
-            <button disabled={!state.file} type="button" className="btn btn-primary btn-sm" onClick={doInsert}>
+            <button disabled={!state.file} type='button' className='btn btn-primary btn-sm' onClick={doInsert}>
               确定
             </button>
           </>
         }
       >
-        <div className="mt-2 text-center">
+        <div className='mt-2 text-center'>
           <SimpleFileInput accept={['video/*']} onFile={(file, o) => setState({ file, ...o })} />
         </div>
       </SimpleDialog>

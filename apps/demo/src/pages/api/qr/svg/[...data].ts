@@ -1,6 +1,6 @@
+import { arrayOfMaybeArray } from '@wener/utils';
 import { NextApiHandler, NextApiRequest } from 'next';
 import QRCode from 'qrcode';
-import { arrayOfMaybeArray } from '@wener/utils';
 
 const handler: NextApiHandler = async (req: NextApiRequest, res) => {
   const data = arrayOfMaybeArray(req.query.data).join('/');

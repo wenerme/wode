@@ -66,7 +66,7 @@ export const CommandList = forwardRef<CommandListRef, CommandListProps>((props, 
   return (
     <div
       ref={containerRef}
-      className="items relative flex flex-col shadow-lg rounded border w-80 h-80 overflow-y-auto p-1"
+      className='items relative flex flex-col shadow-lg rounded border w-80 h-80 overflow-y-auto p-1'
     >
       {props.items.length ? (
         props.items.map((item, index) => (
@@ -92,7 +92,7 @@ export const CommandList = forwardRef<CommandListRef, CommandListProps>((props, 
           </button>
         ))
       ) : (
-        <div className="item">No actions</div>
+        <div className='item'>No actions</div>
       )}
     </div>
   );

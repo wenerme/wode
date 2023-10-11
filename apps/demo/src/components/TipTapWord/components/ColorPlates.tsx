@@ -103,7 +103,9 @@ const ColorButton = styled.button`
   }
 
   &:hover {
-    box-shadow: 0 0px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.4);
+    box-shadow:
+      0 0px 6px -1px rgb(0 0 0 / 0.3),
+      0 2px 4px -2px rgb(0 0 0 / 0.4);
   }
 `;
 export const ColorPlates: React.FC<{ value?: string; onChange?: (v: string) => void; onReset?: () => void }> = ({
@@ -144,7 +146,7 @@ export const ColorPlates: React.FC<{ value?: string; onChange?: (v: string) => v
         </button>
         <input
           ref={inputRef}
-          type="color"
+          type='color'
           value={value}
           onChange={(e) => {
             const pick = e.target.value;

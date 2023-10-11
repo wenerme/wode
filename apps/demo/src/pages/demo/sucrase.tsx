@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
+import { useAsyncEffect } from '@wener/reaction';
 import type { transform } from 'sucrase';
 import { useImmer } from 'use-immer';
-import { useAsyncEffect } from '@wener/reaction';
 
 const Page = () => {
   const [state, update] = useImmer({

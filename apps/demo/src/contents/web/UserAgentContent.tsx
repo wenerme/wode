@@ -1,10 +1,10 @@
 import { useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
 import { HiClipboardCopy, HiGlobe, HiRefresh, HiSearch } from 'react-icons/hi';
+import { copy } from '@wener/utils';
 import classNames from 'classnames';
 import type { IResult } from 'ua-parser-js';
 import UAParser from 'ua-parser-js';
 import { useImmer } from 'use-immer';
-import { copy } from '@wener/utils';
 
 export const UserAgentContent = () => {
   const [state, update] = useImmer<{ ua: string; result?: IResult }>({ ua: '' });
@@ -36,15 +36,15 @@ export const UserAgentContent = () => {
   return (
     <div className={'flex flex-col'}>
       <div className={'mx-auto max-w-prose flex flex-col gap-4 items-center justify-center '}>
-        <div className="form-control">
-          <div className="input-group w-[500px]">
+        <div className='form-control'>
+          <div className='input-group w-[500px]'>
             <span>
               <HiGlobe className={'h-6 w-6'} />
             </span>
             <input
-              type="search"
-              placeholder="UserAgent"
-              className="flex-1 input input-bordered"
+              type='search'
+              placeholder='UserAgent'
+              className='flex-1 input input-bordered'
               value={state.ua}
               onChange={(e) => update({ ...state, ua: e.currentTarget.value })}
             />
@@ -56,11 +56,11 @@ export const UserAgentContent = () => {
         <div>
           <div className={'btn-group'}>
             <button type={'button'} className={classNames('btn', randomLoading && 'loading')} onClick={randomUserAgent}>
-              <HiRefresh className="h-6 w-6" />
+              <HiRefresh className='h-6 w-6' />
               Random
             </button>
-            <button type={'button'} className="btn" onClick={() => update({ ...state, ua: navigator.userAgent })}>
-              <HiRefresh className="h-6 w-6" />
+            <button type={'button'} className='btn' onClick={() => update({ ...state, ua: navigator.userAgent })}>
+              <HiRefresh className='h-6 w-6' />
               Reset
             </button>
           </div>

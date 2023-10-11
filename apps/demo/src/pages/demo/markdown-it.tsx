@@ -119,7 +119,7 @@ const Demo = () => {
         </div>
 
         <div className={'border p-2 flex flex-col'}>
-          <div className="tabs">
+          <div className='tabs'>
             <Link href={{ query: { tab: 'render' } }} className={classNames('tab tab-lifted', tab === 'render')}>
               Render
             </Link>
@@ -142,7 +142,7 @@ const Demo = () => {
                 <label className={'label'}>
                   <span className={'label-text'}>Trim Empty</span>
                   <input
-                    type="checkbox"
+                    type='checkbox'
                     checked={state.jsonTrimEmpty}
                     onChange={(e) => update({ ...state, jsonTrimEmpty: e.currentTarget.checked })}
                   />

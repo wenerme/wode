@@ -1,8 +1,8 @@
 import type { HTMLProps } from 'react';
 import { useRef } from 'react';
-import { useImmer } from 'use-immer';
 import { useBodyEventListener } from '@wener/reaction';
 import { getFileFromDataTransfer } from '@wener/utils';
+import { useImmer } from 'use-immer';
 
 interface UseFileInputOptions {
   onFile?: (file: File) => void;

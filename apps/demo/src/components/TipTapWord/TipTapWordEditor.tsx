@@ -36,10 +36,10 @@ export const TipTapWordEditor: React.FC<{ children: React.ReactNode; editor: Edi
           <div className={'absolute inset-0 p-4 overflow-auto'}>
             <Viewer>
               <EditorContent
-                spellCheck="false"
-                autoComplete="off"
-                autoCorrect="off"
-                autoCapitalize="off"
+                spellCheck='false'
+                autoComplete='off'
+                autoCorrect='off'
+                autoCapitalize='off'
                 editor={editor}
               />
             </Viewer>
