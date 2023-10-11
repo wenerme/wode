@@ -14,7 +14,7 @@ console.log(`NextJS:`, { isDev, __dirname, cwd: process.cwd(), PORT: process.env
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  transpilePackages: ['@wener/reaction', '@wener/utils', '@wener/tiptap','server'],
+  transpilePackages: ['@wener/reaction', '@wener/utils', '@wener/tiptap', 'server'],
   experimental: {
     serverActions: true,
     outputFileTracingRoot: path.join(__dirname, '../../'),
@@ -42,8 +42,7 @@ const nextConfig = {
       '@nestjs/swagger',
     ],
   },
-  images: {
-  },
+  images: {},
   // output: 'standalone',
   env: {
     BUILD_DATE: new Date().toJSON(),
@@ -104,6 +103,12 @@ const nextConfig = {
         }),
       );
     }
+    config.resolve.fallback = { fs: false, ...config.resolve.fallback };
+    config.plugins.push(
+      new webpack.NormalModuleReplacementPlugin(/^node:/, (resource) => {
+        resource.request = resource.request.replace(/^node:/, '');
+      }),
+    );
 
     // 内置
     // https://github.com/tailwindlabs/headlessui/issues/2677#issuecomment-1683307508
