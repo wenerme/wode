@@ -47,7 +47,7 @@ export const LoginPage: React.FC<{
                 <SiteLogo className={'w-10 h-10'} /> <span className={'text-xl font-medium'}>{title}</span>
               </div>
               <h2 className='mt-8 text-2xl font-bold leading-9 tracking-tight text-gray-900'>登录系统</h2>
-              {!showRegistry && (
+              {showRegistry && (
                 <p className='mt-2 text-sm leading-6 text-gray-500'>
                   尚未加入?{' '}
                   <a href='#' className='font-semibold text-indigo-600 hover:text-indigo-500'>
@@ -60,8 +60,6 @@ export const LoginPage: React.FC<{
             <div className='mt-10'>
               <div>
                 <form onSubmit={handleSubmit(onSubmit)} method='POST' className='space-y-6'>
-                  {title && <input type='hidden' value={title} {...register('org')} />}
-
                   <div className={'flex flex-col gap-2'}>
                     {showOrg && (
                       <div className='join w-full'>
