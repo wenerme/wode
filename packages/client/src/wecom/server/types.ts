@@ -30,40 +30,40 @@ export interface ExtAttr {
 
 export type ExtAttrItem =
   | {
-  type: number; // 0 text, 1 web
-  name: string;
-  text?: {
-    value: string;
-  };
-  web?: {
-    url: string;
-    title: string;
-  };
-}
+      type: number; // 0 text, 1 web
+      name: string;
+      text?: {
+        value: string;
+      };
+      web?: {
+        url: string;
+        title: string;
+      };
+    }
   | {
-  type: 0;
-  name: string;
-  text: {
-    value: string;
-  };
-}
+      type: 0;
+      name: string;
+      text: {
+        value: string;
+      };
+    }
   | {
-  type: 1;
-  name: string;
-  web: {
-    url: string;
-    title: string;
-  };
-}
+      type: 1;
+      name: string;
+      web: {
+        url: string;
+        title: string;
+      };
+    }
   | {
-  type: 2;
-  name: string;
-  miniprogram: {
-    appid: string;
-    pagepath: string;
-    title: string;
-  };
-};
+      type: 2;
+      name: string;
+      miniprogram: {
+        appid: string;
+        pagepath: string;
+        title: string;
+      };
+    };
 
 export interface ExternalProfile {
   external_corp_name: string; //外部联系人所在企业名称

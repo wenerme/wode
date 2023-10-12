@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises';
 import { z } from 'zod';
-import { createExpireValueHolder, CreateExpireValueHolderOptions } from '@wener/client';
+import { createExpireValueHolder, CreateExpireValueHolderOptions } from '../ExpiryValue';
 
 export function createFileExpiryValue<T>({
   path,

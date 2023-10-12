@@ -1,6 +1,6 @@
 export function parseErrorMessage(m?: string) {
-  if (!m){
-    return undefined
+  if (!m) {
+    return undefined;
   }
   const r = /(?<description>.*?), hint: \[(?<requestId>[^\]]+)].*?from ip: (?<ip>[^,]*?), more info at (?<url>.*)/;
   // avoid use message as key, conflict with Error.message
