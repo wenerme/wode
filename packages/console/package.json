@@ -22,6 +22,10 @@
       "types": "./loader.ts",
       "default": "./lib/components/loader/index.js"
     },
+    "./icons": {
+      "types": "./icons.ts",
+      "default": "./lib/icons/index.js"
+    },
     "./console": {
       "types": "./console.ts",
       "default": "./lib/components/console/index.js"
