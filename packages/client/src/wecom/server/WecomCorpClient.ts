@@ -36,14 +36,14 @@ export class WecomCorpClient {
   readonly options: WecomCorpClientOptions;
 
   constructor({
-                onAccessToken,
-                accessToken,
-                jsApiTicket,
-                agentJsApiTicket,
-                onJsApiTicket,
-                onAgentJsApiTicket,
-                ...options
-              }: WecomCorpClientInitOptions) {
+    onAccessToken,
+    accessToken,
+    jsApiTicket,
+    agentJsApiTicket,
+    onJsApiTicket,
+    onAgentJsApiTicket,
+    ...options
+  }: WecomCorpClientInitOptions) {
     this.options = {
       fetch: globalThis.fetch,
       accessToken: createExpireValueHolder<string>({
@@ -130,6 +130,34 @@ export class WecomCorpClient {
       v.expires_at = Date.now() + v.expires_in * 1000;
       return v;
     });
+  }
+
+  /**
+   * @see  https://developer.work.weixin.qq.com/document/path/92521 获取企业微信服务器的ip段
+   */
+  getCallbackIps() {
+    return this.request<{
+      ip_list: string[];
+    }>({
+      url: '/cgi-bin/getcallbackip',
+      params: {
+        access_token: true,
+      },
+    }).then((v) => v.ip_list);
+  }
+
+  /**
+   * @see https://developer.work.weixin.qq.com/document/path/92520 获取企业微信接口IP段
+   */
+  getApiDomainIps() {
+    return this.request<{
+      ip_list: string[];
+    }>({
+      url: '/cgi-bin/get_api_domain_ip',
+      params: {
+        access_token: true,
+      },
+    }).then((v) => v.ip_list);
   }
 
   async getJsSdkSignature({ url, timestamp, nonce }: { url: string; timestamp?: number; nonce?: string }) {
@@ -260,7 +288,6 @@ export class WecomCorpClient {
     });
   }
 
-
   /**
    * @see https://developer.work.weixin.qq.com/document/path/91614 获取会话内容存档开启成员列表
    */
@@ -302,9 +329,9 @@ export class WecomCorpClient {
    * @see https://developer.work.weixin.qq.com/document/path/95327 转换external-userid
    */
   getExternalContactNewExternalUserId({
-                                        access_token,
-                                        ...body
-                                      }: {
+    access_token,
+    ...body
+  }: {
     access_token?: string;
     external_userid_list: string[];
   }) {
@@ -317,7 +344,6 @@ export class WecomCorpClient {
       body,
     });
   }
-
 
   /**
    * @see https://developer.work.weixin.qq.com/document/path/96721 外部联系人openid转换
@@ -394,7 +420,7 @@ export class WecomCorpClient {
     return this.request<{
       next_cursor: string;
       dept_user: Array<{
-        open_userid: string;
+        userid: string;
         department: number;
       }>;
     }>({
@@ -505,11 +531,7 @@ export class WecomCorpClient {
   /**
    * @see https://developer.work.weixin.qq.com/document/path/92122 获取客户群详情
    */
-  getExternalContactGroupChat(body: {
-    access_token?: string;
-    chat_id?: string;
-    need_name?: number;
-  }) {
+  getExternalContactGroupChat(body: { access_token?: string; chat_id?: string; need_name?: number }) {
     return this.request<GetExternalContactGroupChat>({
       method: 'POST',
       url: '/cgi-bin/externalcontact/groupchat/get',
@@ -550,7 +572,7 @@ export class WecomCorpClient {
     cursor?: string;
   }) {
     return this.request<{
-      next_cursor?: string
+      next_cursor?: string;
       group_chat_list: Array<{
         /**
          * 0 - 跟进人正常

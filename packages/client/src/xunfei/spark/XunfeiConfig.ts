@@ -1,5 +1,5 @@
-import { z } from 'zod';
 import { getGlobalThis } from '@wener/utils';
+import { z } from 'zod';
 
 export const XunfeiConfigSchema = z.object({
   url: z.string(),

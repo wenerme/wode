@@ -1,4 +1,4 @@
-import { test,assert } from 'vitest';
+import { test, assert } from 'vitest';
 import { parseErrorMessage } from './parseErrorMessage';
 
 test('parse error', (t) => {

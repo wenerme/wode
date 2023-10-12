@@ -1,5 +1,5 @@
-import { z } from 'zod';
 import { getGlobalThis } from '@wener/utils';
+import { z } from 'zod';
 
 export const WechatConfigSchema = z.object({
   appId: z.string(),
