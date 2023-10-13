@@ -171,3 +171,122 @@ export interface GeneralRequestParams extends Record<string, any> {
   corpsecret?: string | true;
   access_token?: string | true;
 }
+
+export interface Message {
+  msgtype: string;
+  text?: {
+    content: string;
+  };
+  image?: {
+    media_id: string;
+  };
+  voice?: {
+    media_id: string;
+  };
+  video?: {
+    media_id: string;
+  };
+  file?: {
+    media_id: string;
+  };
+  textcard?: {
+    title: string;
+    description: string;
+    url: string;
+    btntxt: string;
+  };
+  news?: {
+    articles: Array<{
+      title: string;
+      description: string;
+      url: string;
+      picurl: string;
+      appid?: string;
+      pagepath?: string;
+    }>;
+  };
+  mpnews?: {
+    articles: Array<{
+      title: string;
+      thumb_media_id: string;
+      author?: string;
+      content_source_url?: string;
+      content: string;
+      digest?: string;
+    }>;
+  };
+  markdown?: {
+    content: string;
+  };
+  miniprogram_notice?: {
+    appid: string;
+    page: string;
+    title: string;
+    description: string;
+    emphasis_first_item?: boolean;
+    content_item?: Array<{
+      key: string;
+      value: string;
+    }>;
+  };
+
+  template_card?: {
+    card_type: string | 'text_notice' | 'news_notice';
+    source: {
+      icon_url: string;
+      desc: string;
+      desc_color?: number;
+    };
+    main_title: {
+      title: string;
+      desc: string;
+    };
+    emphasis_content: {
+      title: string;
+      desc: string;
+    };
+    quote_area?: {
+      type: number;
+      url: string;
+      appid?: string;
+      pagepath?: string;
+      title: string;
+      quote_text: string;
+    };
+    sub_title_text?: string;
+    horizontal_content_list?: Array<{
+      keyname: string;
+      value: string;
+      type: number;
+      url?: string;
+      media_id?: string;
+    }>;
+    jump_list?: Array<{
+      type: number;
+      title: string;
+      url?: string;
+      appid?: string;
+      pagepath?: string;
+    }>;
+    card_action?: Array<{
+      type: number;
+      title: string;
+      url?: string;
+      appid?: string;
+      pagepath?: string;
+    }>;
+  };
+}
+export interface SendMessageRequest extends Message {
+  touser?: string;
+  toparty?: string;
+  totag?: string;
+  agentid?: string;
+
+  safe?: number; // 表示是否是保密消息，0表示可对外分享，1表示不能分享且内容显示水印，默认为0
+  enable_id_trans?: number; // 表示是否开启id转译，0表示否，1表示是，默认0 - 仅第三方应用需要用到，企业自建应用可以忽略。
+  enable_duplicate_check?: number; // 表示是否开启重复消息检查，0表示否，1表示是，默认0
+  duplicate_check_interval?: number; // 表示是否重复消息检查的时间间隔，默认1800s，最大不超过4小时
+}
+
+export interface SendWebhookRequest extends Message {}

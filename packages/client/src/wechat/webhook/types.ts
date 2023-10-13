@@ -7,7 +7,7 @@ export interface WechatWebhookPayload {
   ToUserName: string;
   FromUserName: string;
   CreateTime: number;
-  MsgType: string;
+  MsgType: string | 'event';
   Event: string;
   EventKey: string;
 }
@@ -24,7 +24,7 @@ export type WechatWebhookQuery =
       timestamp: string;
       nonce: string;
       openid: string;
-      encrypt_type: string;
+      encrypt_type: string; // aes
       msg_signature: string;
       echostr?: string;
     };

@@ -1,6 +1,6 @@
 {
   "name": "@wener/client",
-  "version": "1.0.13",
+  "version": "1.0.15",
   "type": "module",
   "description": "Client for Wechat, Wecom, Xunfei, etc.",
   "repository": {
