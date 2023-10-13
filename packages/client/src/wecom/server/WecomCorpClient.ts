@@ -9,6 +9,7 @@ import {
   GetExternalContactGroupChat,
   GetExternalContactResponse,
   GetMessageAuditGroupChatResponse,
+  SendMessageRequest,
 } from './types';
 
 export interface WecomCorpClientInitOptions {
@@ -657,6 +658,124 @@ export class WecomCorpClient {
       },
     });
   }
+
+  getTags() {
+    return this.request<{
+      taglist: {
+        tagid: number;
+        tagname: string;
+      };
+    }>({
+      url: '/cgi-bin/tag/list',
+      params: {
+        access_token: true,
+      },
+    });
+  }
+
+  createTag(body: { tagname: string; tagid?: number }) {
+    return this.request<{
+      tagid: number;
+    }>({
+      url: '/cgi-bin/tag/create',
+      params: {
+        access_token: true,
+      },
+      body,
+    });
+  }
+
+  updateTag(body: { tagname: string; tagid: number }) {
+    return this.request<{}>({
+      url: '/cgi-bin/tag/update',
+      params: {
+        access_token: true,
+      },
+      body,
+    });
+  }
+
+  deleteTag(params: { tagid: number }) {
+    return this.request<{}>({
+      url: '/cgi-bin/tag/update',
+      params: {
+        ...params,
+        access_token: true,
+      },
+    });
+  }
+
+  getTagMembers(params: { tagid: number }) {
+    return this.request<{
+      tagname: string;
+      userlist: Array<{
+        userid: string;
+        name?: string;
+      }>; // 成员
+      partylist: number[]; // 部门
+    }>({
+      url: '/cgi-bin/tag/get',
+      params: {
+        ...params,
+        access_token: true,
+      },
+    });
+  }
+
+  addTagMembers(body: {
+    tagid: number;
+    /*单次不超过 1000*/ userlist?: string[];
+    /*单次不超过 100*/ partylist?: number[];
+  }) {
+    return this.request<{}>({
+      url: '/cgi-bin/tag/addtagusers',
+      params: {
+        access_token: true,
+      },
+      body,
+    });
+  }
+
+  deleteTagMembers(body: {
+    tagid: number;
+    /*单次不超过 1000*/ userlist?: string[];
+    /*单次不超过 100*/ partylist?: number[];
+  }) {
+    return this.request<{}>({
+      url: '/cgi-bin/tag/deltagusers',
+      params: {
+        access_token: true,
+      },
+      body,
+    });
+  }
+
+  sendMessage(body: SendMessageRequest) {
+    return this.request<{
+      invaliduser: string; // | 分割
+      invalidparty: string;
+      invalidtag: string;
+      unlicenseduser: string;
+      msgid: string;
+      response_code: string;
+    }>({
+      url: '/cgi-bin/message/send',
+      params: {
+        access_token: true,
+      },
+      body,
+    });
+  }
+
+  recallMessage(body: { msgid: string }) {
+    return this.request<GeneralResponse>({
+      url: '/cgi-bin/message/recall',
+      params: {
+        access_token: true,
+      },
+      body,
+    });
+  }
 }
 
 export interface GetAccessTokenResponse {
@@ -678,3 +797,36 @@ export interface GetJsApiTicketResponse {
 //   CorpSecret = 'CorpSecret',
 //   // ServerEncodingAESKey
 // }
+
+const AgentTypes = {
+  3010185: {
+    title: '人事助手',
+  },
+  3010115: {
+    title: '对外收款',
+  },
+  3010011: {
+    title: '打卡',
+  },
+  3010040: {
+    title: '审批',
+  },
+  3010041: {
+    title: '汇报',
+  },
+  3010097: { title: '直播' }, // https://developer.work.weixin.qq.com/document/path/93633
+  // : { title: '公费电话' }, // https://work.weixin.qq.com/api/doc/14744
+  // 企业微信服务商助手
+  // 会议室
+  // 学习园地
+  // 公告
+  // 健康上报
+  // 同事吧
+  // 行业资讯
+  // 投屏
+  // 测温
+  // 打印
+  // 网络
+  // 门禁
+  // 通讯录同步
+};

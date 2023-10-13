@@ -1,7 +1,24 @@
 import { hex, sha1 } from '@wener/utils';
 import { polyfillCrypto } from '@wener/utils/server';
+import { XMLParser } from 'fast-xml-parser';
 import { assert, test } from 'vitest';
-import { MessageCrypt } from '../../wechat/webhook';
+import { createWechatWebhookHandler } from '../../wechat/webhook';
+
+test('parse', async () => {
+  const p = new XMLParser();
+  const out = p.parse(`
+<xml>
+   <ToUserName><![CDATA[toUser]]></ToUserName>
+   <FromUserName><![CDATA[fromUser]]></FromUserName> 
+   <CreateTime>1348831860</CreateTime>
+   <MsgType><![CDATA[text]]></MsgType>
+   <Content><![CDATA[this is a test]]></Content>
+   <MsgId>1234567890123456</MsgId>
+   <AgentID>1</AgentID>
+</xml>`);
+
+  console.log(JSON.stringify(out.xml, null, 2));
+});
 
 test('crypto', async () => {
   // https://developer.work.weixin.qq.com/document/path/90968#%E6%B6%88%E6%81%AF%E4%BD%93%E7%AD%BE%E5%90%8D%E6%A0%A1%E9%AA%8C
@@ -18,8 +35,8 @@ test('crypto', async () => {
 <AgentID><![CDATA[218]]></AgentID>
 </xml>
 `;
-  let c = await MessageCrypt.create(encodingAesKey);
-  const out = await c.parse(body);
+  let c = await createWechatWebhookHandler({ encodingAesKey, token, appId: corpId });
+  const out = c.parse(body);
 
   {
     const msg_signature = '477715d11cdb4164915debcba66cb864d751f3e6';
@@ -28,6 +45,8 @@ test('crypto', async () => {
     const s = [token, timestamp, nonce, out.Encrypt];
     const sign = hex(await sha1(s.sort().join('')));
     assert.equal(sign, msg_signature);
+
+    assert.isTrue(await c.verify({ timestamp, nonce, signature: msg_signature, message: out.Encrypt }));
   }
 
   console.log(out);
