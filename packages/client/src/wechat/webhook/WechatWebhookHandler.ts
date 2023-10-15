@@ -1,7 +1,6 @@
-import { createDecipheriv } from 'node:crypto';
 import { ArrayBuffers, hex, sha1 } from '@wener/utils';
 import { XMLBuilder, XMLParser } from 'fast-xml-parser';
-import { PKCS7 } from './PKCS7';
+import { decrypt } from './crypt';
 import { WechatWebhookEncryptPayload, WechatWebhookPayload } from './types';
 
 export interface WechatWebhookHandlerCreateOptions {
@@ -58,41 +57,36 @@ export class WechatWebhookHandler {
     return signature === hex(await sha1(s));
   }
 
-  async decrypt(xml: string | WechatWebhookEncryptPayload): Promise<WechatMessageDecryptResult> {
+  async decrypt(s: BufferSource) {
+    return decrypt({
+      key: this.options.key,
+      iv: this.options.iv,
+      data: s,
+    });
+  }
+
+  async decryptPayload(xml: string | WechatWebhookEncryptPayload): Promise<WechatMessageDecryptResult> {
     const { iv, key, parser } = this.options;
     const data = this.parse(xml);
-    // let enc = ArrayBuffers.from(data.xml.Encrypt, 'base64') as Uint8Array;
     let enc = Buffer.from(data.Encrypt, 'base64');
 
-    const decipher = createDecipheriv('aes-256-cbc', key as any, iv);
-    decipher.setAutoPadding(false);
+    const { nonce, receiverId, data: content } = await this.decrypt(enc);
 
-    // The "data" argument must be of type string or an instance of Buffer, TypedArray, or DataView. Received an instance of ArrayBuffer
-    let buf = ArrayBuffers.concat([decipher.update(enc), decipher.final()]);
-    let dec = ArrayBuffers.asView(Uint8Array, buf);
-
-    // fixme subtle 有可能 decrypt 失败
-    // let buf = await crypto.subtle.decrypt({ name: 'AES-CBC', iv }, key, enc);
-    // let dec = ArrayBuffers.asView(Uint8Array, buf);
-
-    dec = PKCS7.trim(dec);
-    const len = new DataView(buf).getInt32(16, false);
-    let message = ArrayBuffers.toString(dec.slice(16 + 4, 16 + 4 + len));
     let parsed: any;
-    if (message.startsWith('<xml>')) {
-      parsed = parser.parse(message).xml;
+    if (content.startsWith('<xml>')) {
+      parsed = parser.parse(content).xml;
     }
 
     const out = {
-      nonce: ArrayBuffers.toString(dec.slice(0, 16)),
-      message,
-      appId: ArrayBuffers.toString(dec.slice(16 + 4 + len)),
-      data: parsed,
+      nonce,
+      content,
+      receiverId: receiverId,
+      payload: parsed,
     };
 
-    if (this.options.appId) {
-      if (out.appId !== this.options.appId) {
-        throw new Error(`Invalid appId: expected ${this.options.appId} got ${out.appId}`);
+    if (this.options.receiverId) {
+      if (out.receiverId !== this.options.receiverId) {
+        throw new Error(`Invalid appId: expected ${this.options.receiverId} got ${out.receiverId}`);
       }
     }
 
@@ -102,9 +96,9 @@ export class WechatWebhookHandler {
 
 export interface WechatMessageDecryptResult<T = WechatWebhookPayload> {
   nonce: string;
-  message: string;
-  appId: string;
-  data?: T;
+  content: string;
+  receiverId: string;
+  payload?: T;
 }
 
 export interface WechatWebhookHandlerOptions {
@@ -113,5 +107,5 @@ export interface WechatWebhookHandlerOptions {
   parser: XMLParser;
   builder: XMLBuilder;
   token?: string;
-  appId?: string;
+  receiverId?: string;
 }

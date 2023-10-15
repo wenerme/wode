@@ -2,13 +2,16 @@ import { FetchLike } from '@wener/utils';
 import { createExpireValueHolder, CreateExpireValueHolderOptions, ExpiryValueHolder } from '../../ExpiryValue';
 import { getValue, MaybeValueHolder } from '../../ValueHolder';
 import { createJsSdkSignature } from '../../wechat';
-import { CreateUserRequest, DepartmentInput, DepartmentOutput, GeneralResponse, GetUserResponse } from './api';
+import { CreateUserRequest, DepartmentInput, DepartmentOutput, GeneralResponse } from './api';
 import { request, RequestOptions } from './request';
 import {
   BatchGetExternalContactByUserResponse,
+  ExternalContactTagGroup,
   GetExternalContactGroupChat,
   GetExternalContactResponse,
+  GetExternalContactTagsResponse,
   GetMessageAuditGroupChatResponse,
+  GetUserResponse,
   SendMessageRequest,
 } from './types';
 
@@ -292,7 +295,7 @@ export class WecomCorpClient {
   /**
    * @see https://developer.work.weixin.qq.com/document/path/91614 获取会话内容存档开启成员列表
    */
-  getMessageAuditPermitUserList(
+  getMessageAuditPermitUsers(
     params: {
       // 拉取对应版本的开启成员列表。1表示办公版；2表示服务版；3表示企业版。非必填，不填写的时候返回全量成员列表。
       type?: number;
@@ -547,7 +550,7 @@ export class WecomCorpClient {
    *
    * @see https://developer.work.weixin.qq.com/document/path/92113 获取客户列表
    */
-  getExternalContactList(params: {
+  getExternalContacts(params: {
     userid?: string; // 企业成员的userid
   }) {
     return this.request<{ external_userid: Array<string> }>({
@@ -563,7 +566,7 @@ export class WecomCorpClient {
   /**
    * @see https://developer.work.weixin.qq.com/document/path/92120 获取客户群列表
    */
-  getExternalContactGroupChatList(body: {
+  getExternalContactGroupChats(body: {
     status_filter?: number;
     // 最大 1000
     limit?: number;
@@ -613,7 +616,7 @@ export class WecomCorpClient {
   /**
    * @see https://developer.work.weixin.qq.com/document/path/92994 批量获取客户详情
    */
-  batchGetExternalContactByUser(params: {
+  batchGetExternalContactByUser(body: {
     access_token?: string;
     userid_list: string[];
     cursor?: string;
@@ -624,18 +627,86 @@ export class WecomCorpClient {
       url: '/cgi-bin/externalcontact/batch/get_by_user',
       params: {
         access_token: true,
-        ...params,
       },
+      body,
     });
   }
 
-  getExternalContactFollowUserList() {
+  getExternalContactFollowUsers() {
     // https://developer.work.weixin.qq.com/document/path/92571
     return this.request<{ follow_user: string[] }>({
       url: '/cgi-bin/externalcontact/get_follow_user_list',
       params: {
         access_token: true,
       },
+    });
+  }
+
+  /**
+   * @see https://developer.work.weixin.qq.com/document/path/92117 获取企业标签库
+   */
+  getExternalContactTags(body: { tag_id?: string[]; group_id?: string[] }) {
+    return this.request<GetExternalContactTagsResponse>({
+      url: '/cgi-bin/externalcontact/get_corp_tag_list',
+      params: {
+        access_token: true,
+      },
+      body,
+    });
+  }
+
+  /**
+   * @see https://developer.work.weixin.qq.com/document/path/92117 删除企业客户标签
+   */
+  deleteExternalContactTags(body: { tag_id?: string[]; group_id?: string[]; agentid?: number }) {
+    return this.request<GeneralResponse>({
+      url: '/cgi-bin/externalcontact/del_corp_tag',
+      params: {
+        access_token: true,
+      },
+      body,
+    });
+  }
+
+  /**
+   * @see https://developer.work.weixin.qq.com/document/path/92117 添加企业客户标签
+   */
+  createExternalContactTag(body: {
+    group_id?: string;
+    group_name?: string;
+    order?: number;
+    tag: { name: string; order?: number };
+    ahentid?: number;
+  }) {
+    return this.request<{ tag_group: ExternalContactTagGroup }>({
+      url: '/cgi-bin/externalcontact/add_corp_tag',
+      params: {
+        access_token: true,
+      },
+      body,
+    });
+  }
+
+  /**
+   * @see https://developer.work.weixin.qq.com/document/path/92117 编辑企业客户标签
+   */
+  updateExternalContactTag(body: { id: string; name?: string; order?: number; agentid?: number }) {
+    return this.request<GeneralResponse>({
+      url: '/cgi-bin/externalcontact/edit_corp_tag',
+      params: {
+        access_token: true,
+      },
+      body,
+    });
+  }
+
+  convertOpenGidToChatId(body: { opengid: string }) {
+    return this.request<{ chat_id: string }>({
+      url: '/cgi-bin/externalcontact/opengid_to_chatid',
+      params: {
+        access_token: true,
+      },
+      body,
     });
   }
 
@@ -664,7 +735,7 @@ export class WecomCorpClient {
       taglist: {
         tagid: number;
         tagname: string;
-      };
+      }[];
     }>({
       url: '/cgi-bin/tag/list',
       params: {
