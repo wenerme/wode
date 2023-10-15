@@ -14,7 +14,7 @@ export interface GetUserResponse {
   thumb_avatar: string; //头像缩略图url。第三方仅通讯录应用可获取；对于非第三方创建的成员，第三方通讯录应用也不可获取；上游企业不可获取下游企业成员该字段
   telephone: string; //座机。代开发自建应用需要管理员授权才返回；第三方仅通讯录应用可获取；对于非第三方创建的成员，第三方通讯录应用也不可获取；上游企业不可获取下游企业成员该字段
   alias: string; //别名；第三方仅通讯录应用可获取；对于非第三方创建的成员，第三方通讯录应用也不可获取；上游企业不可获取下游企业成员该字段
-  extattr: string; //扩展属性，代开发自建应用需要管理员授权才返回；第三方仅通讯录应用可获取；对于非第三方创建的成员，第三方通讯录应用也不可获取；上游企业不可获取下游企业成员该字段
+  extattr: ExtAttr; //扩展属性，代开发自建应用需要管理员授权才返回；第三方仅通讯录应用可获取；对于非第三方创建的成员，第三方通讯录应用也不可获取；上游企业不可获取下游企业成员该字段
   status: number; //激活状态: 1=已激活，2=已禁用，4=未激活，5=退出企业。 已激活代表已激活企业微信或已关注微信插件（原企业号）。未激活代表既未激活企业微信又未关注微信插件（原企业号）。
   qr_code: string; //员工个人二维码，扫描可添加为外部联系人(注意返回的是一个url，可在浏览器上打开该url以展示二维码)；代开发自建应用需要管理员授权且成员oauth2授权获取；第三方仅通讯录应用可获取；对于非第三方创建的成员，第三方通讯录应用也不可获取；上游企业不可获取下游企业成员该字段
   external_profile: string; //成员对外属性，字段详情见对外属性；代开发自建应用需要管理员授权才返回；第三方仅通讯录应用可获取；对于非第三方创建的成员，第三方通讯录应用也不可获取；上游企业不可获取下游企业成员该字段
@@ -112,7 +112,7 @@ export interface ExternalContactFollowInfo {
   remark: string;
   description: string;
   createtime: number;
-  tags?: TagsEntity[] | null;
+  tags?: ExternalContactFollowInfoTag[] | null;
   remark_corp_name?: string | null;
   remark_mobiles?: string[] | null;
   oper_userid: string;
@@ -121,11 +121,32 @@ export interface ExternalContactFollowInfo {
   state?: string | null;
 }
 
-export interface TagsEntity {
+export interface ExternalContactFollowInfoTag {
   group_name: string;
   tag_name: string;
   tag_id?: string | null;
   type: number;
+}
+
+export interface GetExternalContactTagsResponse {
+  tag_group: ExternalContactTagGroup[];
+}
+
+export interface ExternalContactTagGroup {
+  group_id: string;
+  group_name: string;
+  create_time: number;
+  order: number;
+  deleted: boolean;
+  tag: ExternalContactTag[];
+}
+
+export interface ExternalContactTag {
+  id: string;
+  name: string;
+  create_time: number;
+  order: number;
+  deleted: boolean;
 }
 
 export interface WechatChannels {
