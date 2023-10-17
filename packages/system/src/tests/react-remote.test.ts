@@ -1,11 +1,19 @@
 import React from 'react';
-import { assert, beforeAll, expect, test, TestContext } from 'vitest';
 import { createNoopLogger } from '@wener/utils';
-import { polyfillBrowser } from '@wener/utils/server';
+import { polyfillCrypto } from '@wener/utils/server';
+import { polyfillJsDom } from '@wener/utils/server/jsdom';
+import { polyfillWebSocket } from '@wener/utils/server/ws';
+import { assert, beforeAll, expect, test, TestContext } from 'vitest';
 import { loadBrowserSystem } from '../loaders/loadBrowserSystem';
 import { addPreload } from '../utils/addPreload';
 import type { SystemJS } from '../utils/getGlobalSystem';
 import { getGlobalSystem } from '../utils/getGlobalSystem';
+
+export async function polyfillBrowser() {
+  await polyfillJsDom();
+  await polyfillWebSocket();
+  await polyfillCrypto();
+}
 
 beforeAll(async () => {
   await polyfillBrowser();

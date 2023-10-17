@@ -1,6 +1,5 @@
 import type { Logger } from '@wener/utils';
 import { createChildLogger } from '@wener/utils';
-import { polyfillFetch } from '@wener/utils/server';
 import { getGlobalSystem } from '../utils/getGlobalSystem';
 import type { SystemHookOption } from './hookSystem';
 import { hookSystem } from './hookSystem';
@@ -18,7 +17,6 @@ export async function loadServerSystem({
   // }
   loadSystem ||= async () => {
     // polyfill fetch to make module-types works
-    await polyfillFetch();
 
     const {
       default: { applyImportMap, setBaseUrl },
