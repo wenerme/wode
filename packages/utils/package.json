@@ -1,6 +1,6 @@
 {
   "name": "@wener/utils",
-  "version": "1.1.21",
+  "version": "1.1.22",
   "type": "module",
   "description": "Utils for daily use",
   "repository": {
@@ -14,10 +14,11 @@
     "dist",
     "index.ts",
     "lib",
+    "server",
     "server.ts",
-    "types.d.ts",
     "src",
-    "tsconfig.json"
+    "tsconfig.json",
+    "types.d.ts"
   ],
   "keywords": [
     "utils",
@@ -69,6 +70,18 @@
         "typescript": "./src/server.ts",
         "system": "./dist/system/server.js",
         "import": "./lib/server.js"
+      },
+      "./server/node-fetch": {
+        "types": "./server/node-fetch.ts",
+        "default": "./lib/servers/node-fetch.js"
+      },
+      "./server/jsdom": {
+        "types": "./server/jsdom.ts",
+        "default": "./lib/servers/jsdom.js"
+      },
+      "./server/ws": {
+        "types": "./server/ws.ts",
+        "default": "./lib/servers/ws.js"
       },
       "./package.json": "./package.json"
     }
