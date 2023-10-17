@@ -1,10 +1,5 @@
-import { assert, beforeAll, test } from 'vitest';
-import { polyfillFetch } from '@wener/utils/server';
+import { assert, test } from 'vitest';
 import { createUnpkg } from './createUnpkg';
-
-beforeAll(async () => {
-  await polyfillFetch();
-});
 
 test('Unpkg.getPackageVersionInfo', async () => {
   const r = await createUnpkg();
