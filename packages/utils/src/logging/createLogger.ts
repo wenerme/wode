@@ -9,10 +9,10 @@ export interface CreateLoggerOptions {
 
 export function createLogger(
   write: (o: { level: LogLevel; values: any[] } & Record<string | symbol, any>) => void = ({
-                                                                                             level,
-                                                                                             values,
-                                                                                             ...ctx
-                                                                                           }) => {
+    level,
+    values,
+    ...ctx
+  }) => {
     ({ values, ...ctx } = merge(ctx, values));
     console[level]?.(...values, ctx);
   },

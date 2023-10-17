@@ -46,9 +46,9 @@ export const LoginPage: React.FC<{
               <div className={'flex items-center gap-2'}>
                 <SiteLogo className={'w-10 h-10'} /> <span className={'text-xl font-medium'}>{title}</span>
               </div>
-              <h2 className='mt-8 text-2xl font-bold leading-9 tracking-tight text-gray-900'>登录系统</h2>
+              <h2 className='mt-8 text-2xl font-bold leading-9 tracking-tight opacity-80'>登录系统</h2>
               {showRegistry && (
-                <p className='mt-2 text-sm leading-6 text-gray-500'>
+                <p className='mt-2 text-sm leading-6  opacity-60'>
                   尚未加入?{' '}
                   <a href='#' className='font-semibold text-indigo-600 hover:text-indigo-500'>
                     注册试用
@@ -163,7 +163,7 @@ const SocialLogin = () => {
           <div className='w-full border-t border-gray-200' />
         </div>
         <div className='relative flex justify-center text-sm font-medium leading-6'>
-          <span className='bg-white px-6 text-gray-900'>社交方式登录</span>
+          <span className='bg-white px-6 opacity-80'>社交方式登录</span>
         </div>
       </div>
 
