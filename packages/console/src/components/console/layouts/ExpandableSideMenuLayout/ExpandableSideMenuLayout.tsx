@@ -154,7 +154,7 @@ const SideMenuItem: React.FC<{ item: ExpandableSideMenuItemProps; expanded?: boo
   );
 };
 
-export const ExpandableSideMenuLayout = forwardRef<HTMLDivElement, ExpandableSideMenuLayoutProps>(
+export const ExpandableSideMenuLayout = /* @__PURE__ */ forwardRef<HTMLDivElement, ExpandableSideMenuLayoutProps>(
   ({ children, header: _header, title, icon, items, NavLink = AutoNavLink, ...props }, ref) => {
     const [expanded, setExpanded] = useControllable(
       props.expanded,

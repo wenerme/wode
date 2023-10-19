@@ -4,7 +4,7 @@ import type { AutoNavLinkProps } from './AutoNavLink';
 /**
  *  不会添加 basename
  */
-export const StaticNavLink = forwardRef<HTMLAnchorElement, AutoNavLinkProps>(
+export const StaticNavLink = /* @__PURE__ */ forwardRef<HTMLAnchorElement, AutoNavLinkProps>(
   ({ href, children, className, ...rest }, ref) => {
     const [isActive, setActive] = useState(() =>
       new URL(globalThis.location?.href || 'http://127.0.0.1:3000').pathname.startsWith(href),
@@ -36,5 +36,3 @@ export const StaticNavLink = forwardRef<HTMLAnchorElement, AutoNavLinkProps>(
     );
   },
 );
-
-StaticNavLink.displayName = 'StaticNavLink';

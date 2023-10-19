@@ -95,6 +95,9 @@ importers:
       tailwindcss:
         specifier: ^3.3.3
         version: 3.3.3(ts-node@10.9.1)
+      ts-add-js-extension:
+        specifier: ^1.6.0
+        version: 1.6.0
       ts-node:
         specifier: ^10.9.1
         version: 10.9.1(@swc/core@1.3.92)(@types/node@18.18.4)(typescript@5.2.2)
@@ -18634,6 +18637,13 @@ packages:
       zod: 3.22.4
       zod-to-json-schema: 3.21.4(zod@3.22.4)
     dev: false
+
+  /ts-add-js-extension@1.6.0:
+    resolution: {integrity: sha512-vJSCfL0YEn0tPxJKSOgMEjxPoKnqLaW+stSLEtpY974/GkgEVukc0O7Q4ryAGbvEzP1WYVW/w563TO3uvFFbqw==}
+    hasBin: true
+    dependencies:
+      typescript: 5.2.2
+    dev: true
 
   /ts-api-utils@1.0.3(typescript@5.2.2):
     resolution: {integrity: sha512-wNMeqtMz5NtwpT/UZGY5alT+VoKdSsOOP/kqHFcUW1P/VRhH2wJ48+DN2WwUliNbQ976ETwDL0Ifd2VVvgonvg==}

@@ -1,6 +1,6 @@
 {
   "name": "@wener/console",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "description": "Base console UI toolkit",
   "author": "wener",
@@ -128,5 +128,6 @@
     "next": "^13.5.4",
     "react-hook-form": "^7.47.0",
     "react-icons": "^4.11.0"
-  }
+  },
+  "sideEffects": false
 }

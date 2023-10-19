@@ -1,5 +1,4 @@
 import React from 'react';
-import { ActiveLink } from '../links';
 
 export const MenuLayout: React.FC<{
   children?: React.ReactNode;
@@ -14,12 +13,13 @@ export const MenuLayout: React.FC<{
         </header>
         <ul className='menu-compact menu bg-base-100 py-2 '>
           {menu.map(({ href, label }, i) => {
+            // fixme
             return (
-              <ActiveLink key={i} activeClassName={'bordered'} href={href}>
+              <a key={i} href={href}>
                 <li>
                   <a href={href}>{label}</a>
                 </li>
-              </ActiveLink>
+              </a>
             );
           })}
         </ul>
