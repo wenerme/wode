@@ -1,6 +1,6 @@
 {
   "name": "@wener/utils",
-  "version": "1.1.22",
+  "version": "1.1.23",
   "type": "module",
   "description": "Utils for daily use",
   "repository": {
@@ -90,13 +90,17 @@
   "rollup": {
     "input": [
       "./src/index.ts",
-      "./src/server.ts"
+      "./src/server.ts",
+      "./src/servers/ws.ts",
+      "./src/servers/jsdom.ts",
+      "./src/servers/node-fetch.ts"
     ],
     "external": [
       "crypto",
       "jsdom",
       "node-fetch",
       "ws",
+      "https-proxy-agent",
       "undici"
     ]
   }
