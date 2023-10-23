@@ -25,6 +25,7 @@ export {
   useDeepCompareEffect,
   useDeepCompareMemoize,
 } from './hooks/useDeepCompareHooks';
+export * from './hooks/useContainer';
 
 export { ErrorSuspenseBoundary } from './components/ErrorSuspenseBoundary';
 export { ErrorBoundary } from './components/ErrorBoundary';

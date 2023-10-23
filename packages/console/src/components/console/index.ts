@@ -1,5 +1,7 @@
 export type * from './module/types';
 
+export * from './components';
+
 export { DockLayout } from './layouts';
 export { DockClock } from './layouts/DockLayout/DockClock';
 export { DockUserAvatar, type DockUserAvatarProps } from './layouts/DockLayout/DockUserAvatar';

@@ -1,0 +1,1 @@
+export { ErrorSuspenseBoundary } from './ErrorSuspenseBoundary';
