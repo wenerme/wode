@@ -1,5 +1,5 @@
-import { z } from 'zod';
 import { registerAs } from '@nestjs/config';
+import { z } from 'zod';
 
 export const RedisConfig = z.object({
   dsn: z.string().optional(),

@@ -1,8 +1,8 @@
+import { Controller, Get, Query } from '@nestjs/common';
+import { ApiConsumes, ApiOperation, ApiProduces, ApiProperty, ApiTags } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsBooleanString, IsInt, IsOptional, IsString, Max, MaxLength, Min } from 'class-validator';
 import { generate, generateMultiple, type GenerateOptions } from 'generate-password';
-import { Controller, Get, Query } from '@nestjs/common';
-import { ApiConsumes, ApiOperation, ApiProduces, ApiProperty, ApiTags } from '@nestjs/swagger';
 
 class Options implements GenerateOptions {
   @ApiProperty({ default: 1, required: false })

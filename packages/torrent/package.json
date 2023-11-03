@@ -11,8 +11,7 @@
   "author": "wener",
   "license": "MIT",
   "engines": {
-    "node": "16||18",
-    "npm": "8"
+    "node": ">=18"
   },
   "main": "dist/cjs/index.cjs",
   "module": "lib/index.js",
@@ -64,7 +63,7 @@
     "@wener/utils": "workspace:^"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.199",
+    "@types/lodash": "^4.14.200",
     "lodash": "^4.17.21"
   },
   "publishConfig": {

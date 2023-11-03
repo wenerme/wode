@@ -1,7 +1,14 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
-import {ApiBearerAuth, ApiExcludeController, ApiOkResponse, ApiOperation, ApiProperty, ApiTags} from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiExcludeController,
+  ApiOkResponse,
+  ApiOperation,
+  ApiProperty,
+  ApiTags,
+} from '@nestjs/swagger';
 import { Role, Roles } from '../auth';
-import {hideActuatorApi} from './const';
+import { hideActuatorApi } from './const';
 
 class SetEnvBody {
   @ApiProperty()

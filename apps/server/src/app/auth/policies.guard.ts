@@ -9,7 +9,10 @@ interface AuthAbilityFactory {
 
 @Injectable()
 export class PoliciesGuard implements CanActivate {
-  constructor(private readonly reflector: Reflector, private readonly abilityFactory: AuthAbilityFactory) {}
+  constructor(
+    private readonly reflector: Reflector,
+    private readonly abilityFactory: AuthAbilityFactory,
+  ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const policyHandlers = this.reflector.get<PolicyHandler[]>(CHECK_POLICIES_KEY, context.getHandler()) || [];

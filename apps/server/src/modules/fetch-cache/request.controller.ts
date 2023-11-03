@@ -1,9 +1,9 @@
-import { type FastifyReply, type FastifyRequest } from 'fastify';
 import { once } from 'node:events';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
 import { Controller, Get, Inject, Param, Req, Res } from '@nestjs/common';
 import { ApiBearerAuth, ApiCookieAuth, ApiTags } from '@nestjs/swagger';
+import { type FastifyReply, type FastifyRequest } from 'fastify';
 import { Role, Roles } from '../../app/auth';
 import { HttpRequestLog } from './HttpRequestLog';
 import { SSE } from './SSE';

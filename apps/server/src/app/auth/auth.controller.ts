@@ -1,5 +1,5 @@
-import { type FastifyRequest } from 'fastify';
 import { Body, Controller, Get, HttpCode, HttpStatus, Post, Req, UseGuards } from '@nestjs/common';
+import { type FastifyRequest } from 'fastify';
 import { AuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
 

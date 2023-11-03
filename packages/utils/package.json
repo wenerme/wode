@@ -45,12 +45,12 @@
     }
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.199",
-    "@types/ws": "^8.5.7",
+    "@types/lodash": "^4.14.200",
+    "@types/ws": "^8.5.8",
     "https-proxy-agent": "^7.0.2",
     "lodash": "^4.17.21",
     "node-fetch": "^3.3.2",
-    "undici": "^5.25.4"
+    "undici": "^5.27.0"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org",

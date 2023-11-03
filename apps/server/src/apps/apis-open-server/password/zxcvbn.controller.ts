@@ -1,6 +1,6 @@
-import zxcvbn from 'zxcvbn';
 import { Controller, Get, Param, Query } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import zxcvbn from 'zxcvbn';
 
 @ApiTags('Password')
 @Controller('password')

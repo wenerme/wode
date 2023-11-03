@@ -1,10 +1,10 @@
+import { Controller, Get, Param, Query, UsePipes, ValidationPipe } from '@nestjs/common';
+import { ApiProperty, ApiTags } from '@nestjs/swagger';
+import { Octokit } from '@octokit/rest';
 import { Transform } from 'class-transformer';
 import { IsBoolean, IsOptional } from 'class-validator';
 import { type SemVer } from 'semver';
 import semver from 'semver/preload';
-import { Controller, Get, Param, Query, UsePipes, ValidationPipe } from '@nestjs/common';
-import { ApiProperty, ApiTags } from '@nestjs/swagger';
-import { Octokit } from '@octokit/rest';
 import { requireFound } from '../../../../app/util/requireFound';
 
 export interface IVersionFilter {

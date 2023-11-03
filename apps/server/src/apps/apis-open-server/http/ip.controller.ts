@@ -1,7 +1,7 @@
-import { type FastifyRequest } from 'fastify';
 import { Controller, Get, Req } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { firstOfMaybeArray } from '@wener/utils';
+import { type FastifyRequest } from 'fastify';
 
 @ApiTags('Misc')
 @Controller()

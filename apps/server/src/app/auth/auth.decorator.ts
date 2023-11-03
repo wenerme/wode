@@ -1,5 +1,5 @@
-import { UnauthenticatedError } from 'dz17-client';
 import { createParamDecorator, type ExecutionContext } from '@nestjs/common';
+import { UnauthenticatedError } from 'dz17-client';
 import { getRequest } from './getRequest';
 
 export const CurrentUser = createParamDecorator(async (data: { optional?: boolean } = {}, ctx: ExecutionContext) => {

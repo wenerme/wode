@@ -1,24 +1,14 @@
 REPO_ROOT ?= $(shell git rev-parse --show-toplevel)
 -include $(REPO_ROOT)/base.mk
 
-
-APP_NAME?=$(SERVER)
-
-IMAGE_TAG_COMMIT?=$(IMAGE_TAG)-$(CI_COMMIT_SHORT_SHA)
-IMAGE_NAME?=$(APP_NAME):$(IMAGE_TAG)
-#IMAGE?=$(IMAGE_REPO)/$(APP_NAME):$(IMAGE_TAG)
-
-# IMAGE_REPO?=
-
-
-
 ifdef SERVER
-IMAGE=`cd builds && docker buildx bake --print $(SERVER) 2>/dev/null | jq -r '.target."$(SERVER)".tags[0]'`
+APP_NAME:=$(SERVER)
+IMAGE:=`cd builds && docker buildx bake --print $(SERVER) 2>/dev/null | jq -r '.target."$(SERVER)".tags[0]'`
 
 # NODE_ENV=development pnpm tsx watch ./dist/out/apps/$(SERVER)/main.js
 dev:
-	NODE_ENV=development pnpm node --loader ts-node/esm --watch ./src/apps/$(SERVER)/main.js
-build:
+	NODE_ENV=development pnpm node --loader ts-node/esm --watch ./src/apps/$(SERVER)/main.ts
+build: swc-build
 	pnpm tsx src/app/scripts/bundle.esbuild.ts
 	sha256sum dist/apps/$(SERVER)/main.mjs
 
@@ -39,10 +29,11 @@ image-push: image-build-prepare
 image-tag:
 	cd builds && TAG=$(IMAGE_TAG) docker buildx bake --print $(SERVER) 2>/dev/null | jq -r '.target."$(SERVER)".tags[0]'
 
+deploy: build image-push
+
 DOCKER_RUN_FLAGS?=--rm -it -p 3000:3000 --name $(SERVER)
-ifneq ($(wildcard .env.local),"")
-	# --env-file .env.local
-	DOCKER_RUN_FLAGS=$(DOCKER_RUN_FLAGS) --env-file .env.local
+ifneq ($(wildcard .env.local),)
+	DOCKER_RUN_FLAGS:=$(DOCKER_RUN_FLAGS) --env-file .env.local
 endif
 image-run: image
 	docker run $(DOCKER_RUN_FLAGS) --init $(IMAGE)
@@ -58,10 +49,10 @@ doc:
 else
 
 list:
-	ls src/apps/* -d | xargs -n 1 basename
+	@ls src/apps/* -d | xargs -n 1 basename
 
 build:
-	echo Building all
+	@echo Building all
 	SERVER=`ls src/apps/* -d | xargs -n 1 basename | paste -sd,` pnpm tsx src/app/scripts/bundle.esbuild.ts
 
 image-build-prepare:
@@ -70,9 +61,30 @@ image-build-prepare:
 image-push: image-build-prepare
 	cd builds && TAG=$(IMAGE_TAG) docker buildx bake --push
 
+image-print:
+	cd builds && TAG=$(IMAGE_TAG) docker buildx bake --print
+
 deploy: image-push
 
-dev: swc-watch
+dev: list
+	false
+
+dev\:%:
+	@echo "Dev $*"
+	@make SERVER=$(*) dev
+
+run\:%:
+	@echo "Running $*"
+	@make SERVER=$(*) run
+
+build\:%:
+	@echo "Building $*"
+	@make SERVER=$(*) build
+
+deploy\:%:
+	@echo "Deploy $*"
+	@make SERVER=$(*) deploy
+
 
 endif
 
@@ -83,8 +95,7 @@ swc-watch:
 	rm -rf ./dist/out/*
 	pnpm swc --watch ./src -d ./dist/out
 
-fmt:
-	pnpm prettier --write ./src package.json
+
 fix:
 	pnpm eslint --fix ./src
 

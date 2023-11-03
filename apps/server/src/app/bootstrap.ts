@@ -1,23 +1,27 @@
 import 'reflect-metadata';
-import { type INestApplication, Logger, type NestApplicationOptions } from '@nestjs/common';
+import { type INestApplication, INestApplicationContext, Logger, type NestApplicationOptions } from '@nestjs/common';
 import { type AbstractHttpAdapter, NestFactory } from '@nestjs/core';
-import { FastifyAdapter } from '@nestjs/platform-fastify';
+import { setAppContext } from '@wener/nestjs';
+import { App } from '@wener/nestjs/app';
 import { type MaybePromise } from '@wener/utils';
-import { setAppContext } from './app.context';
+
+export interface MicroserviceOptions extends Record<string, any> {}
 
 export interface BootstrapOptions<T extends INestApplication> {
-  name: string;
+  name?: string;
   module: any;
 
-  httpAdapter?: AbstractHttpAdapter;
+  http?: AbstractHttpAdapter | false;
+  microservice?: MicroserviceOptions;
   options?: NestApplicationOptions;
   onAfterBootstrap?: (app: T) => MaybePromise<void>;
 }
 
 export async function bootstrap<T extends INestApplication>({
-  name,
+  name = App.service,
   module,
-  httpAdapter = new FastifyAdapter(), // 似乎必须需要 httpAdapter 存在
+  http,
+  microservice,
   options,
   onAfterBootstrap,
 }: BootstrapOptions<T>): Promise<T> {
@@ -25,14 +29,22 @@ export async function bootstrap<T extends INestApplication>({
 
   log.log(`bootstrapping: ${name}`);
 
-  let app: T;
-  if (httpAdapter) {
-    app = await NestFactory.create<T>(module, httpAdapter, options);
+  let out: INestApplicationContext;
+  let app: INestApplication;
+  if (http) {
+    app = await NestFactory.create<T>(module, http, options);
+    if (microservice) {
+      app.connectMicroservice<MicroserviceOptions>(microservice);
+    }
+    out = app;
+  } else if (microservice) {
+    out = await NestFactory.createMicroservice<MicroserviceOptions>(module, microservice);
   } else {
     app = await NestFactory.create(module);
+    out = app;
   }
 
-  setAppContext(app);
-  await onAfterBootstrap?.(app);
-  return app;
+  setAppContext(out);
+  await onAfterBootstrap?.(out as T);
+  return out as T;
 }

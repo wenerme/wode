@@ -16,9 +16,9 @@
   "license": "ISC",
   "type": "module",
   "devDependencies": {
-    "@types/fs-extra": "^11.0.2",
-    "@types/semver": "^7.5.3",
-    "tsx": "^3.13.0",
+    "@types/fs-extra": "^11.0.3",
+    "@types/semver": "^7.5.4",
+    "tsx": "^3.14.0",
     "typescript": "^5.2.2",
     "zx": "^7.2.3"
   },
