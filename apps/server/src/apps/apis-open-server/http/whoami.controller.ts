@@ -1,6 +1,6 @@
-import { type FastifyRequest } from 'fastify';
 import { All, Body, Controller, Req } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { type FastifyRequest } from 'fastify';
 import { Cookies } from '../../../app/decorator';
 
 @ApiTags('Misc')

@@ -1,5 +1,5 @@
-import { z } from 'zod';
 import { registerAs } from '@nestjs/config';
+import { z } from 'zod';
 
 export const ServerConfig = z.object({
   port: z.coerce.number().optional().default(3000),

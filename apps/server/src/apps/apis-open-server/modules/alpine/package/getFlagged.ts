@@ -1,6 +1,6 @@
+import { type FetchLike, type Logger } from '@wener/utils';
 import { JSDOM } from 'jsdom';
 import { z } from 'zod';
-import { type FetchLike, type Logger } from '@wener/utils';
 
 export async function getFlagged({
   logger = console,

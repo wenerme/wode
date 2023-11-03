@@ -1,8 +1,8 @@
 import { Controller, Get } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiTags,ApiExcludeController } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags, ApiExcludeController } from '@nestjs/swagger';
 import { ms } from '@wener/utils';
 import { Role, Roles } from '../auth';
-import {hideActuatorApi} from './const';
+import { hideActuatorApi } from './const';
 
 @ApiTags('Actuator')
 @ApiBearerAuth()

@@ -3,7 +3,9 @@
 # ------------------------------------------------------
 
 type CurrentContext {
-  """current server time"""
+  """
+  current server time
+  """
   now: DateTime!
 }
 

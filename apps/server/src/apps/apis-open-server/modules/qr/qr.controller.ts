@@ -1,8 +1,3 @@
-import { type FastifyReply, type FastifyRequest } from 'fastify';
-import Jimp from 'jimp';
-import hash from 'object-hash';
-import QRCode, { type QRCodeRenderersOptions } from 'qrcode';
-import { z } from 'zod';
 import { FileInterceptor } from '@nest-lab/fastify-multer';
 import {
   Controller,
@@ -27,6 +22,11 @@ import {
   ResultMetadataType,
   RGBLuminanceSource,
 } from '@zxing/library';
+import { type FastifyReply, type FastifyRequest } from 'fastify';
+import Jimp from 'jimp';
+import hash from 'object-hash';
+import QRCode, { type QRCodeRenderersOptions } from 'qrcode';
+import { z } from 'zod';
 import { getServerUrl } from '../../getServerUrl';
 
 class FileUploadDto {

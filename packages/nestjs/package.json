@@ -90,15 +90,15 @@
     }
   },
   "devDependencies": {
-    "@mikro-orm/core": "^5.8.7",
+    "@mikro-orm/core": "^5.9.2",
     "@mikro-orm/nestjs": "^5.2.2",
-    "@mikro-orm/postgresql": "^5.8.7",
-    "@nestjs/common": "^10.2.7",
-    "@nestjs/core": "^10.2.7",
-    "@nestjs/platform-fastify": "^10.2.7",
-    "@nestjs/swagger": "^7.1.13",
-    "@nestjs/testing": "^10.2.7",
-    "fastify": "^4.23.2",
+    "@mikro-orm/postgresql": "^5.9.2",
+    "@nestjs/common": "^10.2.8",
+    "@nestjs/core": "^10.2.8",
+    "@nestjs/platform-fastify": "^10.2.8",
+    "@nestjs/swagger": "^7.1.14",
+    "@nestjs/testing": "^10.2.8",
+    "fastify": "^4.24.3",
     "nats": "^2.17.0",
     "nats.ws": "^1.18.0",
     "vitest": "^0.34.6"

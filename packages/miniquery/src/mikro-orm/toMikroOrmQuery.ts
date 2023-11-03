@@ -1,11 +1,10 @@
-import type { EntityName, QBFilterQuery } from '@mikro-orm/core';
-import { type SqlEntityManager } from '@mikro-orm/sqlite';
+import type { EntityManager, EntityName, QBFilterQuery } from '@mikro-orm/core';
 import { parse } from './miniquery';
 
 export function toMikroOrmQuery(
   query?: string,
   options?: {
-    em?: SqlEntityManager;
+    em?: EntityManager;
     Entity?: EntityName<any>;
   },
 ): QBFilterQuery<any> {

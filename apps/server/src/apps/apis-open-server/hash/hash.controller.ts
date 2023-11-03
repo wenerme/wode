@@ -1,8 +1,8 @@
-import { IsEnum, IsString, MaxLength } from 'class-validator';
 import { Body, Controller, Post } from '@nestjs/common';
 import { ApiOkResponse, ApiProperty, ApiTags } from '@nestjs/swagger';
 import { SkipThrottle } from '@nestjs/throttler';
 import { hex, sha1, sha256, sha384, sha512 } from '@wener/utils';
+import { IsEnum, IsString, MaxLength } from 'class-validator';
 
 class HashDigestResponse {
   @ApiProperty()

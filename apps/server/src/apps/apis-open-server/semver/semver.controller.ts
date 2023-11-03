@@ -1,7 +1,7 @@
-import _ from 'lodash';
-import * as semver from 'semver';
 import { Controller, Get, Param, Query, UsePipes, ValidationPipe } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import _ from 'lodash';
+import * as semver from 'semver';
 
 @ApiTags('Misc')
 @Controller('semver')

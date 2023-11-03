@@ -1,5 +1,5 @@
-import { unstable_buildProxyFunction } from 'valtio';
 import { deepEqual } from '@wener/utils';
+import { unstable_buildProxyFunction } from 'valtio';
 
 const canProxyOrig = unstable_buildProxyFunction()[5];
 export const proxyWithCompare = unstable_buildProxyFunction(deepEqual, undefined, (x) => {

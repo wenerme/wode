@@ -1,4 +1,3 @@
-import { test } from 'vitest';
 import {
   BaseEntity,
   Collection,
@@ -12,7 +11,10 @@ import {
   types,
 } from '@mikro-orm/core';
 import { defineConfig } from '@mikro-orm/sqlite';
+import { test } from 'vitest';
 import { parse } from './miniquery';
+
+test('syntax', async () => {});
 
 test('miniquery', async () => {
   const orm = await MikroORM.init(
@@ -69,6 +71,7 @@ test('miniquery', async () => {
     'profile.age > 1',
     // json works as expected
     'attrs.test = true',
+    'attrs.vendor.code = "wener"',
   ];
 
   for (const v of valid) {
