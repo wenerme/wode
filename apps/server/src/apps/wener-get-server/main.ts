@@ -11,10 +11,12 @@ import { databaseConfig } from '../../app/config/database.config';
 import { redisConfig } from '../../app/config/redis.config';
 import { serverConfig } from '../../app/config/server.config';
 import { runApplication } from '../../app/run';
+import { AuditModule } from '../../modules/audit';
 import { loadEnvs } from '../../util/loadEnvs';
 import { EntityEventSubscriber } from './EntityEventSubscriber';
 import { EntityType } from './EntityType';
 import { ErrorFilter } from './ErrorFilter';
+import { WebMiddlewareModule } from './WebMiddlewareModule';
 import { WenerGetWebModule } from './WenerGetWebModule';
 
 process.env.APP_NAME = 'wener';
@@ -30,7 +32,7 @@ class DataModule {}
 await polyfillCrypto();
 await loadEnvs();
 
-const modules = [WenerGetWebModule];
+const modules = [WenerGetWebModule, AuditModule];
 
 @Module({
   controllers: [],
@@ -71,6 +73,7 @@ const modules = [WenerGetWebModule];
       load: [serverConfig, databaseConfig, redisConfig],
       cache: true,
     }),
+    WebMiddlewareModule,
     ...modules,
   ],
 

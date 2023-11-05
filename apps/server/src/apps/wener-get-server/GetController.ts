@@ -9,6 +9,7 @@ import type { FastifyReply, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 import { Public } from '../../app/auth';
 import { StorageItemEntity } from '../../entity/StorageItemEntity';
+import { writeAuditLog } from '../../modules/audit';
 import { StorageService } from './StorageService';
 
 export const ResourceOutputSchema = z.object({
@@ -95,6 +96,12 @@ export class FileUploadDto {
 
 export class FileResponseDto extends createZodDto(FileOutputSchema) {}
 
+const GetServerAuditType = {
+  StorageItemAccessDenied: 'storage-item.access-denied',
+  StorageItemGet: 'storage-item.get',
+  StorageItemUpload: 'storage-item.upload',
+};
+
 @Controller()
 @Public()
 export class GetController {
@@ -144,6 +151,12 @@ export class GetController {
       ...body,
       content: buffer.toString('base64'),
     });
+    writeAuditLog({
+      entity: {
+        actionType: GetServerAuditType.StorageItemUpload,
+        entityId: ent.id,
+      },
+    });
 
     return FileOutputSchema.parse(ent);
   }
@@ -167,15 +180,26 @@ export class GetController {
 
     Errors.NotFound.check(entity, 'item not found');
 
+    let accessAllowed = true;
     if (entity.authToken) {
+      accessAllowed = false;
       let [type, token] = req.headers.authorization?.split(' ') ?? [];
       if (type === 'Basic') {
         const sp = atob(token).split(':');
         // treat user as token
         token = sp[0];
       }
-      Errors.Unauthorized.check(token === entity.authToken, 'invalid token');
+      accessAllowed = token === entity.authToken;
     }
+    if (!accessAllowed) {
+      writeAuditLog({
+        entity: {
+          actionType: GetServerAuditType.StorageItemAccessDenied,
+          entityId: entity.id,
+        },
+      });
+    }
+    Errors.Unauthorized.check(accessAllowed);
 
     if (entity.link) {
       res.redirect(entity.link);
@@ -187,6 +211,13 @@ export class GetController {
       res.status(304);
       return;
     }
+
+    writeAuditLog({
+      entity: {
+        actionType: GetServerAuditType.StorageItemGet,
+        entityId: entity.id,
+      },
+    });
 
     // const content = await this.svc.getContentEntity(entity);
     const content = entity;

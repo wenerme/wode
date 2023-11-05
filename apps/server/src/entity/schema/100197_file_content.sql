@@ -31,9 +31,9 @@ create table if not exists file_content
     unique (tid, sha256sum)
 );
 
--- insert into entity_schema(display_name, type_name, view_name, type_tag)
--- values ('文件内容', 'FileContent', 'file_content', 'filec')
--- on conflict do nothing;
+insert into entity_schema(display_name, type_name, view_name, type_tag)
+values ('文件内容', 'FileContent', 'file_content', 'filec')
+on conflict do nothing;
 
 create index if not exists file_content_tid_created_at_idx on file_content (tid, created_at);
 create index if not exists file_content_tid_updated_at_idx on file_content (tid, updated_at);
