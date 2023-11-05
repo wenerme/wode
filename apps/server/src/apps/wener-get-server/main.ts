@@ -3,9 +3,8 @@ import { Module, VersioningType } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { HttpAdapterHost } from '@nestjs/core';
 import { EventEmitterModule } from '@nestjs/event-emitter';
-import { ServeStaticModule } from '@nestjs/serve-static';
-import { getStaticRootPath } from '@wener/nestjs';
 import { OrmModule } from '@wener/nestjs/mikro-orm';
+import { polyfillCrypto } from '@wener/utils/server';
 import { FastifyInstance } from 'fastify';
 import { ActuatorModule } from '../../app/actuator/actuator.module';
 import { databaseConfig } from '../../app/config/database.config';
@@ -28,6 +27,7 @@ let debug = process.env.NODE_ENV === 'development';
 })
 class DataModule {}
 
+await polyfillCrypto();
 await loadEnvs();
 
 const modules = [WenerGetWebModule];
