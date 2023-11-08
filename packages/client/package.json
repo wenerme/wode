@@ -43,6 +43,10 @@
       "types": "./src/xunfei/spark/index.ts",
       "default": "./lib/xunfei/spark/index.js"
     },
+    "./openai": {
+      "types": "./openai.ts",
+      "default": "./lib/openai/index.js"
+    },
     "./package.json": "./package.json"
   },
   "files": [
@@ -66,8 +70,10 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@sinclair/typebox": "^0.31.23",
     "@wecom/jssdk": "^1.4.3",
     "fast-xml-parser": "^4.3.2",
+    "openai": "^4.16.1",
     "undici": "^5.27.0",
     "ws": "^8.14.2"
   }
