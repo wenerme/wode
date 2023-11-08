@@ -1,4 +1,5 @@
 import { FetchLike, getGlobalThis, MaybePromise } from '@wener/utils';
+import { CreateEmbeddingRequest } from './messages';
 import { OpenAiRequestOptions, request } from './request';
 import { ImageObject, ListObject, ModelObject } from './types';
 

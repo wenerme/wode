@@ -5,6 +5,12 @@ export type ListObject<T> = {
   data: Array<T>;
 };
 
+export type EmbeddingObject = {
+  object: 'embedding';
+  embedding: number[];
+  index: number;
+};
+
 export type ImageObject =
   | {
       url: string;

@@ -20,6 +20,7 @@ export function buildRequest({
   url.searchParams.sort();
   if (body) {
     if (body instanceof ReadableStream) {
+    } else if (body instanceof FormData) {
     } else {
       body = JSON.stringify(body);
       headers = {
@@ -35,4 +36,12 @@ export function buildRequest({
     body,
     url,
   };
+}
+
+export function buildFormData(o: Record<string, any>) {
+  const fd = new FormData();
+  Object.entries(o).forEach(([k, v]) => {
+    fd.append(k, v);
+  });
+  return fd;
 }
