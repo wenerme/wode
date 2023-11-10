@@ -13,10 +13,9 @@
     },
     "transform": {
       "legacyDecorator": true,
-      "decoratorMetadata": true
+      "decoratorMetadata": false
     },
-    "keepClassNames": true,
-    "baseUrl": "./"
+    "keepClassNames": true
   },
   "minify": false,
   "exclude": ["\\.test\\.ts$"]
