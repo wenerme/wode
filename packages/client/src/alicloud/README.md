@@ -1,0 +1,4 @@
+- https://next.api.aliyun.com/meta/v1/products/Dytnsapi/versions/2020-02-17/api-docs.json
+- https://help.aliyun.com/zh/sdk/product-overview/request-structure-and-signature
+- https://www.unpkg.com/browse/@alicloud/openapi-client@0.4.6/src/client.ts
+- https://www.unpkg.com/browse/@alicloud/openapi-util@0.3.2/src/client.ts
