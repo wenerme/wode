@@ -1,7 +1,7 @@
 /*
 https://help.aliyun.com/zh/sdk/product-overview/v3-request-structure-and-signature
 */
-import { FetchLike, getGlobalThis, MaybePromise } from '@wener/utils';
+import { ArrayBuffers, FetchLike, getGlobalThis, MaybePromise } from '@wener/utils';
 import { signv3 } from './signv3';
 
 export interface AliCloudRequestOptions<T> {
@@ -15,7 +15,7 @@ export interface AliCloudRequestOptions<T> {
   method?: string;
   url?: string;
   params?: Record<string, any>;
-  body?: string | Record<string, any>;
+  body?: string | BufferSource | Record<string, any>;
   sign?: (
     init: RequestInit & { url: string },
     o: AliCloudRequestOptions<any>,
@@ -71,21 +71,33 @@ export async function request<T>(options: AliCloudRequestOptions<T>) {
       u.searchParams.append(k, v);
     });
   }
-
-  let init = {
-    method,
-    headers: {
-      'user-agent': 'github.com/wenerme/wode',
-      accept: 'application/json; charset=utf-8',
-      'x-acs-action': action,
-      'x-acs-version': version,
-      ...headers,
-    } as Record<string, any>,
-    body: body ? JSON.stringify(body) : undefined,
+  headers = {
+    'user-agent': 'github.com/wenerme/wode',
+    accept: 'application/json; charset=utf-8',
+    'x-acs-action': action,
+    'x-acs-version': version,
+    ...headers,
   };
-  if (body) {
-    init.headers['content-type'] ||= 'application/json; charset=utf-8';
+  let init: {
+    method: string;
+    headers: Record<string, any>;
+    body?: string | BufferSource;
+  } = {
+    method,
+    headers,
+    body: undefined,
+  };
+  if (typeof body === 'string') {
+    // skip
+  } else if (ArrayBuffer.isView(body)) {
+    // body = ArrayBuffers.toString(body, 'base64');
+    headers['content-type'] ||= 'application/octet-stream';
+  } else if (body) {
+    headers['content-type'] ||= 'application/json; charset=utf-8';
+    body = JSON.stringify(body);
   }
+  init.body = body;
+
   {
     const { headers } = await sign(
       {
@@ -109,11 +121,18 @@ export async function request<T>(options: AliCloudRequestOptions<T>) {
   }
 
   await onResponse?.({ res, req: init, payload, data: payload?.Data });
-  if (!payload.Success) {
+  if (!res.ok || ('Success' in payload && !payload.Success)) {
+    console.error(`Error`, payload);
     throw new AliCloudClientError(payload.Code, payload.Message, payload.RequestId);
   }
 
   let data = payload.Data;
+
+  // auto parse
+  if (typeof data === 'string' && data.startsWith('{') && data.endsWith('}')) {
+    data = JSON.parse(data);
+  }
+
   data = (await onSuccess?.({ res, req: init, payload, data: data })) ?? data;
   return data;
 }
@@ -171,4 +190,25 @@ interface KnownHeaders {
   'x-acs-content-sm3'?: string;
   'x-acs-security-token'?: string;
   Authorization?: string;
+}
+
+export function stringOfMultipartFormData(data: FormData): { body: string; headers: Record<string, string> } {
+  const boundary = '----FormBoundary' + Math.random().toString(16);
+  const headers: Record<string, string> = {
+    'content-type': `multipart/form-data; boundary=${boundary}`,
+  };
+  let body = '';
+  for (const [k, v] of data.entries()) {
+    body += `--${boundary}\r\n`;
+    let content = v;
+    if (ArrayBuffer.isView(v)) {
+      body += 'Content-Type: application/octet-stream';
+      body += 'Content-Transfer-Encoding: base64';
+      content = ArrayBuffers.toString(v, 'base64');
+    }
+    body += `Content-Disposition: form-data; name="${k}"\r\n\r\n`;
+    body += `${content}\r\n`;
+  }
+  body += `--${boundary}--\r\n`;
+  return { headers, body };
 }

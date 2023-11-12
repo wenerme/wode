@@ -12,12 +12,18 @@ export interface AliCloudClientOptions {
 }
 
 export class AliCloudClient {
-  readonly options: AliCloudClientOptions;
   private static APIS: Record<string, { endpoint: string; product: string; version: string }> = {};
+  readonly options: AliCloudClientOptions;
 
   static {
     this.registry({ product: 'Dytnsapi', version: '2020-02-17' }, { endpoint: 'dytnsapi.aliyuncs.com' });
     this.registry({ product: 'ocr-api', version: '2021-07-07' }, { endpoint: 'ocr-api.cn-hangzhou.aliyuncs.com' });
+  }
+
+  constructor(o: Partial<AliCloudClientOptions>) {
+    this.options = {
+      ...o,
+    };
   }
 
   static registry({ product, version }: { product: string; version: string }, val: { endpoint: string }) {
@@ -26,12 +32,6 @@ export class AliCloudClient {
 
   static getService(svc: { product: string; version: string }) {
     return this.APIS[`${svc.product}/${svc.version}`];
-  }
-
-  constructor(o: Partial<AliCloudClientOptions>) {
-    this.options = {
-      ...o,
-    };
   }
 
   request<T>(options: AliCloudRequestOptions<T>) {
