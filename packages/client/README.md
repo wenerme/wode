@@ -9,8 +9,6 @@
 
 **支持客户端**
 
-> 大多只有核心基础实现，尚未包含完整的服务定义（类型生成）
-
 - 阿里云客户端
 - 微信客户端
 - 企业微信
@@ -26,6 +24,32 @@
 ```bash
 # for dev version
 npm install 'https://gitpkg.now.sh/wenerme/wode/packages/client?main'
+```
+
+**基础**
+ 
+- 所有客户端都支持
+
+```ts
+import { createFetchWithLogging } from '@wener/utils';
+import { createFetchWithProxy } from '@wener/utils/server';
+
+// debug - dump 所有请求和返回
+{
+  const fetch = createFetchWithLogging();
+  const aliCloudClient = new AliCloudClient({
+    fetch,
+    accessKeyId: process.env.ALIBABA_CLOUD_ACCESS_KEY_ID,
+    accessKeySecret: process.env.ALIBABA_CLOUD_ACCESS_KEY_SECRET,
+  });
+}
+// 配置代理 - 例如 http://127.0.0.1:7890
+{
+  const fetch = createFetchWithProxy({
+    // 例如：企业微信如果配置白名单，可以考虑走代理
+    proxy: process.env.WECOM_PROXY,
+  });
+}
 ```
 
 ## OpenAI
@@ -53,12 +77,15 @@ console.log(await client.getModels());
 - 可在浏览器端使用 - 需要自行处理 cors
   - 测试、工具为主
   - 表明不需要什么依赖
+- 接口定义基于代码生成
+  - 默认以 Proxy+Interface 为主 - size 非常小
+  - 可以考虑 stub method 方式
 
 > **Note** Why?
 > 1. 阿里云的客户端质量非常的差
 >    - @alicloud/openapi-client 一个文件、一个包
 >      - **19** 个依赖
->      - 最基础的依赖，可能要做非常多的兼容，所有都肉在一起，导致包很大 - 180kB/ gzip 42kB
+>      - 最基础的依赖，可能要做非常多的兼容，所有都揉在一起，导致包很大 - 180kB/ gzip 42kB
 >      - 代码质量非常差，非常多 Utils.xyz 调用
 >        - https://www.unpkg.com/browse/@alicloud/openapi-client@0.4.6/src/client.ts 有 242 处 `Util.`
 >    - @alicloud/openapi-utils 一个文件、一个包
