@@ -85,7 +85,7 @@ export { structuredClone } from './isomorphics/structuredClone';
 // crypto
 export { randomUUID } from './crypto/randomUUID';
 export { getRandomValues } from './crypto/getRandomValues';
-export { sha1, sha256, sha384, sha512 } from './crypto/hashing';
+export { sha1, sha256, sha384, sha512, hmac, type DigestOptions } from './crypto/hashing';
 export { md5 } from './crypto/md5';
 export { hex } from './crypto/base';
 export { isULID, createULID, ulid, parseULID } from './crypto/ulid';

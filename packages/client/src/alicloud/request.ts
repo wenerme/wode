@@ -22,9 +22,20 @@ export interface AliCloudRequestOptions<T> {
   ) => MaybePromise<{
     headers: Record<string, any>;
   }>;
+  onSuccess?: (ctx: {
+    res: Response;
+    req: RequestInit;
+    payload: AliCloudResponse<T>;
+    data: T;
+  }) => MaybePromise<T | void>;
+  onResponse?: (ctx: {
+    res: Response;
+    req: RequestInit;
+    payload?: AliCloudResponse<T>;
+    data?: T;
+    error?: any;
+  }) => MaybePromise<void>;
 }
-
-// /clusters/{cluster_id}/triggers
 
 /**
  * @see https://github.com/aliyun/aliyun-openapi-nodejs-sdk
@@ -42,6 +53,8 @@ export async function request<T>(options: AliCloudRequestOptions<T>) {
     headers,
     params,
     sign = signv3,
+    onResponse,
+    onSuccess,
   } = options;
   let u: URL;
   {
@@ -83,13 +96,61 @@ export async function request<T>(options: AliCloudRequestOptions<T>) {
     );
     (init as any).headers = headers;
   }
+
   const res = await fetch(u, init);
-  const payload = (await res.json()) as AliCloudResponse;
-  let data = payload.Data as T;
-  if (!payload.Success) {
-    throw new Error(`[${payload.RequestId}] ${payload.Code} ${payload.Message}`);
+  let payload: AliCloudResponse<T> | undefined;
+  try {
+    payload = await requirePayload(res);
+  } catch (e) {
+    if (onResponse) {
+      await onResponse({ res, req: init, payload, error: e });
+    }
+    throw e;
   }
+
+  await onResponse?.({ res, req: init, payload, data: payload?.Data });
+  if (!payload.Success) {
+    throw new AliCloudClientError(payload.Code, payload.Message, payload.RequestId);
+  }
+
+  let data = payload.Data;
+  data = (await onSuccess?.({ res, req: init, payload, data: data })) ?? data;
   return data;
+}
+
+async function requirePayload(res: Response) {
+  let body;
+  let last;
+  try {
+    const type = res.headers.get('content-type');
+    if (type?.includes('application/json')) {
+      body = await res.json();
+    } else if (type?.includes('text/')) {
+      body = await res.text();
+    } else {
+      body = res.body;
+    }
+  } catch (e) {
+    last = e;
+  }
+  if (last) {
+    throw last;
+  }
+
+  if (body && 'Success' in body) {
+    return body as AliCloudResponse;
+  }
+  throw new Error(`Invalid response: ${res.status} ${res.statusText} ${res.headers.get('content-type')} ${body}`);
+}
+
+export class AliCloudClientError extends Error {
+  constructor(
+    public code: string,
+    public message: string,
+    public requestId: string,
+  ) {
+    super(`${code} ${message} ${requestId}`);
+  }
 }
 
 export interface AliCloudResponse<T = any> {

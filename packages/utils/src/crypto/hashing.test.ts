@@ -1,8 +1,9 @@
-import { test, beforeAll, expect } from 'vitest';
+import { assert, beforeAll, expect, test } from 'vitest';
+import { ArrayBuffers } from '../io/ArrayBuffers';
 import { polyfillCrypto } from '../servers/polyfill/polyfillCrypto';
 import { isUUID } from '../validations/isUUID';
 import { hex } from './base';
-import { sha1, sha256, sha384, sha512 } from './hashing';
+import { hmac, sha1, sha256, sha384, sha512 } from './hashing';
 import { md5 } from './md5';
 import { _randomUUID } from './randomUUID';
 
@@ -12,6 +13,11 @@ beforeAll(async () => {
 
 test('sha', async () => {
   expect(hex(await sha1(''))).toBe('da39a3ee5e6b4b0d3255bfef95601890afd80709');
+  expect(await sha1('', 'hex')).toBe('da39a3ee5e6b4b0d3255bfef95601890afd80709');
+  expect(ArrayBuffers.toString(await sha1(''), 'base64')).toBe('2jmj7l5rSw0yVb/vlWAYkK/YBwk=');
+  expect(await sha1('', 'base64')).toBe('2jmj7l5rSw0yVb/vlWAYkK/YBwk=');
+
+  expect(await sha1('', 'hex')).toBe('da39a3ee5e6b4b0d3255bfef95601890afd80709');
   expect(hex(await sha1('abc'))).toBe('a9993e364706816aba3e25717850c26c9cd0d89d');
   expect(hex(await sha256(''))).toBe('e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855');
   expect(hex(await sha384(''))).toBe(
@@ -28,4 +34,36 @@ test('randomUUID', () => {
   for (let i = 0; i < 20; i++) {
     expect(isUUID(_randomUUID())).toBeTruthy();
   }
+});
+
+test('hmac', async () => {
+  let key = await crypto.subtle.importKey(
+    'raw',
+    new TextEncoder().encode('YourAccessKeySecret'),
+    {
+      name: 'HMAC',
+      hash: {
+        name: 'SHA-256',
+      },
+    },
+    false,
+    ['sign', 'verify'],
+  );
+  const out = hex(
+    await crypto.subtle.sign(
+      {
+        name: 'HMAC',
+        hash: {
+          name: 'SHA-256',
+        },
+      },
+      key,
+      new TextEncoder().encode(''),
+    ),
+  );
+  console.log(out);
+  const { createHmac } = await import('node:crypto');
+  let fromNode = createHmac('sha256', 'YourAccessKeySecret').update('').digest('hex');
+  assert.equal(out, fromNode);
+  assert.equal(out, await hmac('sha256', 'YourAccessKeySecret', '', 'hex'));
 });

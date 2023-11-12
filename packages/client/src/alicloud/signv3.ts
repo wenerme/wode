@@ -1,4 +1,4 @@
-import { hex, isDefined, randomUUID, sha256 } from '@wener/utils';
+import { hex, hmac, isDefined, randomUUID, sha256 } from '@wener/utils';
 
 export async function signv3(
   { method, url, headers, body = '' }: { method: string; url: string; headers: Record<string, any>; body?: string },
@@ -40,10 +40,11 @@ export async function signv3(
     contentHash,
   ];
   let canonical = parts.join('\n');
-  const hash = hex(await sha256(canonical));
+  const hash = await sha256(canonical, 'hex');
   const algorithm = 'ACS3-HMAC-SHA256';
-  const { createHmac } = await import('node:crypto');
-  const signature = createHmac('sha256', accessKeySecret).update([algorithm, hash].join('\n')).digest().toString('hex');
+  // const { createHmac } = await import('node:crypto');
+  // const signature = createHmac('sha256', accessKeySecret).update([algorithm, hash].join('\n')).digest().toString('hex');
+  const signature = await hmac('sha256', accessKeySecret, [algorithm, hash].join('\n'), 'hex');
 
   // console.log(`> canonical\n${canonical}`);
   // console.log(`> hash\n${hash}`);
