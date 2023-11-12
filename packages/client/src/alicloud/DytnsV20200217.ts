@@ -102,6 +102,7 @@ export interface DytnsV20200217Api {
     req: GetUAIDApplyTokenSignRequest,
     opts?: AliCloudClientOptions,
   ): Promise<GetUAIDApplyTokenSignResponse>;
+
   /**
    * 根据运营商授权Token获取UAID。
    * 获取授权Token及其签名值请参考GetUAIDApplyTokenSign API文档。
@@ -121,6 +122,7 @@ export interface DytnsV20200217Api {
    * @acs-operation-type read
    */
   UAIDVerification(req: UAIDVerificationRequest, opts?: AliCloudClientOptions): Promise<UAIDVerificationResponse>;
+
   /**
    * 用于核验企业名称和企业证件号，名称和证件必须全部一致且企业经营状态为在营才会判定核验通过。
    *
@@ -139,6 +141,7 @@ export interface DytnsV20200217Api {
     req: CompanyTwoElementsVerificationRequest,
     opts?: AliCloudClientOptions,
   ): Promise<CompanyTwoElementsVerificationResponse>;
+
   /**
    * 用于核验企业名称、企业证件号和企业法人姓名，必须全部一致且企业经营状态为在营才会判定核验通过。
    *
@@ -157,6 +160,7 @@ export interface DytnsV20200217Api {
     req: CompanyThreeElementsVerificationRequest,
     opts?: AliCloudClientOptions,
   ): Promise<CompanyThreeElementsVerificationResponse>;
+
   /**
    * 用于核验企业名称、企业证件号、企业法人姓名和企业法人身份证号，必须全部一致且企业经营状态为在营才会判定核验通过。
    *
@@ -175,6 +179,7 @@ export interface DytnsV20200217Api {
     req: CompanyFourElementsVerificationRequest,
     opts?: AliCloudClientOptions,
   ): Promise<CompanyFourElementsVerificationResponse>;
+
   /**
    * 查询手机号码的归属信息，包括：所属省份、所属城市、所属基础运营商（中国移动、中国联通、中国电信、中国广电）、移动转售企业（阿里通信等）、是否携号转网、归属号码段等。
    *
@@ -194,6 +199,7 @@ export interface DytnsV20200217Api {
     req: DescribePhoneNumberOperatorAttributeRequest,
     opts?: AliCloudClientOptions,
   ): Promise<DescribePhoneNumberOperatorAttributeResponse>;
+
   /**
    * 获取手机号码实时在网状态，例如正常、停机、空号等状态。支持明文、MD5/SHA256加密方式的号码查询。
    *
@@ -214,6 +220,7 @@ export interface DytnsV20200217Api {
     req: PhoneNumberStatusForPublicRequest,
     opts?: AliCloudClientOptions,
   ): Promise<PhoneNumberStatusForPublicResponse>;
+
   /**
    * 获取手机号码实时在网状态，例如正常、停机、空号等状态。支持明文、MD5/SHA256加密方式的号码查询。
    *
@@ -233,6 +240,7 @@ export interface DytnsV20200217Api {
     req: PhoneNumberStatusForAccountRequest,
     opts?: AliCloudClientOptions,
   ): Promise<PhoneNumberStatusForAccountResponse>;
+
   /**
    * 获取手机号码实时在网状态，例如正常、停机、空号等状态。支持明文、MD5/SHA256加密方式的号码查询。
    *
@@ -252,6 +260,7 @@ export interface DytnsV20200217Api {
     req: PhoneNumberStatusForRealRequest,
     opts?: AliCloudClientOptions,
   ): Promise<PhoneNumberStatusForRealResponse>;
+
   /**
    * 获取手机号码实时在网状态，例如正常、停机、空号等状态。支持明文、MD5/SHA256加密方式的号码查询。
    *
@@ -271,6 +280,7 @@ export interface DytnsV20200217Api {
     req: PhoneNumberStatusForSmsRequest,
     opts?: AliCloudClientOptions,
   ): Promise<PhoneNumberStatusForSmsResponse>;
+
   /**
    * 获取手机号码实时在网状态，例如正常、停机、空号等状态。支持明文、MD5/SHA256加密方式的号码查询。
    *
@@ -290,6 +300,7 @@ export interface DytnsV20200217Api {
     req: PhoneNumberStatusForVoiceRequest,
     opts?: AliCloudClientOptions,
   ): Promise<PhoneNumberStatusForVoiceResponse>;
+
   /**
    * 获取手机号码虚拟号码（俗称小号）状态。支持明文、MD5/SHA256加密方式的号码查询。
    *
@@ -310,6 +321,7 @@ export interface DytnsV20200217Api {
     req: PhoneNumberStatusForVirtualRequest,
     opts?: AliCloudClientOptions,
   ): Promise<PhoneNumberStatusForVirtualResponse>;
+
   /**
    * 验证手机号是否为运营商二次放号的号码，支持在一次请求中快速检验号码是否为二次放号。
    *
@@ -333,6 +345,7 @@ export interface DytnsV20200217Api {
     req: DescribePhoneTwiceTelVerifyRequest,
     opts?: AliCloudClientOptions,
   ): Promise<DescribePhoneTwiceTelVerifyResponse>;
+
   /**
    * 查询手机用户在运营商侧的在网时长。
    *
@@ -351,6 +364,7 @@ export interface DytnsV20200217Api {
     req: DescribePhoneNumberOnlineTimeRequest,
     opts?: AliCloudClientOptions,
   ): Promise<DescribePhoneNumberOnlineTimeResponse>;
+
   /**
    * 获取号码分析返回结果。
    *
@@ -367,6 +381,7 @@ export interface DytnsV20200217Api {
     req: DescribePhoneNumberAnalysisAIRequest,
     opts?: AliCloudClientOptions,
   ): Promise<DescribePhoneNumberAnalysisAIResponse>;
+
   /**
    * 获取号码分析返回结果。
    *
@@ -389,6 +404,7 @@ export interface DytnsV20200217Api {
     req: DescribePhoneNumberAnalysisRequest,
     opts?: AliCloudClientOptions,
   ): Promise<DescribePhoneNumberAnalysisResponse>;
+
   /**
    * 通过AI算法，预测手机号是否为空号。
    *
@@ -413,6 +429,7 @@ export interface DytnsV20200217Api {
     req: DescribeEmptyNumberRequest,
     opts?: AliCloudClientOptions,
   ): Promise<DescribeEmptyNumberResponse>;
+
   /**
    * 二要素（姓名和手机号）核验。用于比对用户填写的姓名、手机号两项信息是否属于同一用户。
    *
@@ -433,6 +450,7 @@ export interface DytnsV20200217Api {
     req: TwoElementsVerificationRequest,
     opts?: AliCloudClientOptions,
   ): Promise<TwoElementsVerificationResponse>;
+
   /**
    * 三要素（姓名、手机号和身份证号）核验。用于比对用户填写的姓名、手机号、身份证号三个信息是否属于同一用户。
    *
@@ -453,6 +471,7 @@ export interface DytnsV20200217Api {
     req: ThreeElementsVerificationRequest,
     opts?: AliCloudClientOptions,
   ): Promise<ThreeElementsVerificationResponse>;
+
   /**
    * 将原始号码加密为一个140开头的虚拟号码。通过结合阿里云的通信服务，可以使用加密后的140号码发起语音呼叫。实现虚拟号码呼叫的效果。
    *
@@ -469,6 +488,7 @@ export interface DytnsV20200217Api {
    * @acs-operation-type read
    */
   PhoneNumberEncrypt(req: PhoneNumberEncryptRequest, opts?: AliCloudClientOptions): Promise<PhoneNumberEncryptResponse>;
+
   /**
    * 进行无效号码过滤操作。
    *
@@ -487,6 +507,7 @@ export interface DytnsV20200217Api {
     req: InvalidPhoneNumberFilterRequest,
     opts?: AliCloudClientOptions,
   ): Promise<InvalidPhoneNumberFilterResponse>;
+
   /**
    * 分页查询标签列表。
    *
@@ -496,6 +517,7 @@ export interface DytnsV20200217Api {
    * @acs-operation-type read
    */
   QueryTagListPage(req: QueryTagListPageRequest, opts?: AliCloudClientOptions): Promise<QueryTagListPageResponse>;
+
   /**
    * 查询标签信息。
    *
@@ -508,6 +530,7 @@ export interface DytnsV20200217Api {
     req: QueryTagInfoBySelectionRequest,
     opts?: AliCloudClientOptions,
   ): Promise<QueryTagInfoBySelectionResponse>;
+
   /**
    * 根据标签ID查询用量统计。
    *
@@ -520,6 +543,7 @@ export interface DytnsV20200217Api {
     req: QueryUsageStatisticsByTagIdRequest,
     opts?: AliCloudClientOptions,
   ): Promise<QueryUsageStatisticsByTagIdResponse>;
+
   /**
    * 查询标签申请规则。
    *
@@ -529,6 +553,7 @@ export interface DytnsV20200217Api {
    * @acs-operation-type read
    */
   QueryTagApplyRule(req: QueryTagApplyRuleRequest, opts?: AliCloudClientOptions): Promise<QueryTagApplyRuleResponse>;
+
   /**
    * 查询可用的授权码。
    *
@@ -542,6 +567,7 @@ export interface DytnsV20200217Api {
     opts?: AliCloudClientOptions,
   ): Promise<QueryAvailableAuthCodeResponse>;
 }
+
 export interface GetUAIDApplyTokenSignRequest {
   /**
    * 授权码。
@@ -590,29 +616,25 @@ export interface GetUAIDApplyTokenSignRequest {
    */
   Carrier: string;
 }
+
 export interface GetUAIDApplyTokenSignResponse {
   /**
-   * 访问被拒绝详细信息。
+   * 外部流水号。
    */
-  AccessDeniedDetail?: string;
+  OutId?: string;
   /**
-   * 请求ID。
+   * 签名值
    */
-  RequestId?: string;
+  Sign?: string;
   /**
-   * 返回状态码描述。
+   * 用户所处的运营商。取值：
+   * - **CM**：中国移动。
+   * - **CU**：中国联通。
+   * - **CT**：中国电信。
    */
-  Message?: string;
-  /**
-   * 返回结果。
-   */
-  Data?: object;
-  /**
-   * 请求状态码。取值：
-   * - **OK**：请求成功。
-   */
-  Code?: string;
+  Carrier?: string;
 }
+
 export interface UAIDVerificationRequest {
   /**
    * 外部流水号。
@@ -648,30 +670,14 @@ export interface UAIDVerificationRequest {
    */
   AuthCode: string;
 }
+
 export interface UAIDVerificationResponse {
   /**
-   * 访问被拒绝详细信息。
+   * 获取到的UAID的值。
    */
-  AccessDeniedDetail?: string;
-  /**
-   * 状态码的描述。
-   */
-  Message?: string;
-  /**
-   * 请求ID。
-   */
-  RequestId?: string;
-  /**
-   * 返回结果。
-   */
-  Data?: object;
-  /**
-   * 请求状态码。取值：
-   *
-   * - **OK**：成功。
-   */
-  Code?: string;
+  Uaid?: string;
 }
+
 export interface CompanyTwoElementsVerificationRequest {
   /**
    * 企业证件号。
@@ -691,28 +697,40 @@ export interface CompanyTwoElementsVerificationRequest {
    */
   AuthCode: string;
 }
+
 export interface CompanyTwoElementsVerificationResponse {
   /**
-   * 访问被拒绝详细信息。
+   * 企业详细信息。
    */
-  AccessDeniedDetail?: string;
+  DetailInfo?: {
+    /** 企业营业期限。 */
+    OpenTime?: string;
+    /** 企业经营状态。 */
+    EnterpriseStatus?: string;
+  };
   /**
-   * 公共参数，每个请求返回的ID都是唯一的，可用于排查和定位问题。
+   * 校验不一致的字段。
    */
-  RequestId?: string;
+  InconsistentData?: Array</** - EpCertName：企业名称
+   - EpCertNo：企业证件号 */ string>;
   /**
-   * 返回状态码描述。
+   * 核验结果。取值：
+   *
+   * - true：信息核验一致，且企业正常经营。
+   * - false：核验不通过。
    */
-  Message?: string;
+  VerifyResult?: string;
   /**
-   * 结构体。
+   * 核验结果编码。取值：
+   *
+   * - 0：核验一致
+   * - 1：核验一致，企业非正常营业
+   * - 3：企业二要素不通过
+   * - 4：查无企业
    */
-  Data?: object;
-  /**
-   * 请求状态码。
-   */
-  Code?: string;
+  ReasonCode?: string;
 }
+
 export interface CompanyThreeElementsVerificationRequest {
   /**
    * 企业证件号。
@@ -738,28 +756,43 @@ export interface CompanyThreeElementsVerificationRequest {
    */
   AuthCode: string;
 }
+
 export interface CompanyThreeElementsVerificationResponse {
   /**
-   * 访问被拒绝详细信息。
+   * 企业详细信息。
    */
-  AccessDeniedDetail?: string;
+  DetailInfo?: {
+    /** 企业营业期限。 */
+    OpenTime?: string;
+    /** 企业经营状态。 */
+    EnterpriseStatus?: string;
+  };
   /**
-   * 公共参数，每个请求返回的ID都是唯一的，可用于排查和定位问题。
+   * 校验不一致的字段
    */
-  RequestId?: string;
+  InconsistentData?: Array</** - EpCertName：企业名称
+   - EpCertNo：企业证件号
+   - CertName：企业法人姓名 */ string>;
   /**
-   * 返回状态码描述。
+   * 核验结果。取值：
+   *
+   * - true：信息核验一致，且企业正常经营。
+   * - false：核验不通过。
    */
-  Message?: string;
+  VerifyResult?: string;
   /**
-   * 结构体。
+   * 核验结果编码。取值：
+   *
+   * - 0：核验一致
+   * - 1：核验一致，企业非正常营业
+   * - 2：人企核验不一致
+   * - 3：企业二要素不通过
+   * - 4：查无企业
+   * - 5：人在库中不存在
    */
-  Data?: object;
-  /**
-   * 请求状态码。
-   */
-  Code?: string;
+  ReasonCode?: number;
 }
+
 export interface CompanyFourElementsVerificationRequest {
   /**
    * 企业证件号。
@@ -790,28 +823,43 @@ export interface CompanyFourElementsVerificationRequest {
    */
   AuthCode: string;
 }
+
 export interface CompanyFourElementsVerificationResponse {
   /**
-   * 访问被拒绝详细信息。
+   * 企业详细信息。
    */
-  AccessDeniedDetail?: string;
+  DetailInfo?: {
+    /** 企业营业期限。 */
+    OpenTime?: string;
+    /** 企业经营状态。 */
+    EnterpriseStatus?: string;
+  };
   /**
-   * 公共参数，每个请求返回的ID都是唯一的，可用于排查和定位问题。
+   * 校验不一致的字段
    */
-  RequestId?: string;
+  InconsistentData?: Array</** - EpCertName：企业名称
+   - EpCertNo：企业证件号
+   - CertName：企业法人姓名
+   - CertNo：企业法人证件号 */ string>;
   /**
-   * 返回状态码描述。
+   * 核验结果。取值：
+   * -   true：信息核验一致，且企业正常经营。
+   * -   false：核验不通过。
    */
-  Message?: string;
+  VerifyResult?: string;
   /**
-   * 结构体。
+   * 核验结果编码。取值：
+   *
+   * - 0：核验一致
+   * - 1：核验一致，企业非正常营业
+   * - 2：法人与企业信息核验不一致
+   * - 3：企业四要素不通过
+   * - 4：查无此企业
+   * - 5：库中无此法人
    */
-  Data?: object;
-  /**
-   * 请求状态码。
-   */
-  Code?: string;
+  ReasonCode?: number;
 }
+
 export interface DescribePhoneNumberOperatorAttributeRequest {
   /**
    * 授权码。
@@ -843,30 +891,43 @@ export interface DescribePhoneNumberOperatorAttributeRequest {
    */
   Mask: string;
 }
+
 export interface DescribePhoneNumberOperatorAttributeResponse {
   /**
-   * 请求状态码。取值：
+   * 基础运营商。取值：
    *
-   * - **OK**：成功。
-   * - **InvalidParameter**：传入的手机号错误或参数格式错误。
-   * - **PhoneNumberNotfound**：传入的手机号查不到归属结果。
-   * - **isp.UNKNOWN**：未知异常。
-   * - **RequestFrequencyLimit**：因运营商限制，禁止在短时间内高频对同一个号码进行反复查询，如返回此错误码，请您稍后再试。
+   * - **中国移动**。
+   * - **中国联通**。
+   * - **中国电信**。
+   * - **中国广电**。
    */
-  Code?: string;
+  BasicCarrier?: string;
   /**
-   * 状态码的描述。
+   * 实际运营商（含虚拟运营商），如果存在携号转网，则为携转后的运营商。
    */
-  Message?: string;
+  Carrier?: string;
   /**
-   * 请求ID。
+   * 是否携号转网。取值：
+   *
+   * - **true**：是
+   *
+   * - **false**：否
    */
-  RequestId?: string;
+  IsNumberPortability?: boolean;
   /**
-   * 结构体。
+   * 号码归属号段。
    */
-  Data?: object;
+  NumberSegment?: number;
+  /**
+   * 号码归属城市。
+   */
+  City?: string;
+  /**
+   * 号码归属省份。
+   */
+  Province?: string;
 }
+
 export interface PhoneNumberStatusForPublicRequest {
   /**
    * 授权码。
@@ -898,30 +959,36 @@ export interface PhoneNumberStatusForPublicRequest {
    */
   Mask: string;
 }
+
 export interface PhoneNumberStatusForPublicResponse {
   /**
-   * 公共参数，每个请求返回的ID都是唯一的，可用于排查和定位问题。
-   */
-  RequestId?: string;
-  /**
-   * 返回状态码描述。
-   */
-  Message?: string;
-  /**
-   * 结构体
-   */
-  Data?: object;
-  /**
-   * 请求状态码。取值：
+   * 检测手机号返回状态。取值：
    *
-   * - **OK**：成功。
-   * - **OperatorLimit**：运营商禁止查询的手机号。
-   * - **RequestFrequencyLimit**：因运营商限制，禁止在短时间内高频对同一个号码进行反复查询，如返回此错误码，请您稍后再试。
+   * - **NORMAL**：正常。
+   * - **SHUTDOWN**：停机。
+   * - **POWER_OFF**：关机。
+   * - **NOT_EXIST**：空号。
+   * - **SUSPECTED_POWER_OFF** ：疑似关机。
+   * - **BUSY**：忙。
+   * - **UNKNOWN**：未知。
    *
-   * > 请访问[错误码中心](https://next.api.aliyun.com/document/Dytnsapi/2020-02-17/errorCode)查看更多错误码。
+   * > 因运营商系统调整，中国电信的号码不支持返回：忙、疑似关机、关机状态。 [详见官网公告](https://help.aliyun.com/document_detail/2489709.html)
    */
-  Code?: string;
+  Status?: string;
+  /**
+   * 号码当前归属的基础运营商。如果查询的号码存在携号转网，则返回携号转网后的基础运营商。
+   *
+   * 取值：
+   *
+   * - **CMCC**：中国移动
+   * - **CUCC**：中国联通
+   * - **CTCC**：中国电信
+   *
+   * > 暂不支持中国广电的号码查询。
+   */
+  Carrier?: string;
 }
+
 export interface PhoneNumberStatusForAccountRequest {
   /**
    * 授权码。
@@ -952,28 +1019,32 @@ export interface PhoneNumberStatusForAccountRequest {
    */
   Mask: string;
 }
+
 export interface PhoneNumberStatusForAccountResponse {
   /**
-   * 请求状态码。取值：
+   * 检测手机号返回状态。取值：
    *
-   * - **OK**：成功。
-   * - **OperatorLimit**：运营商禁止查询的手机号。
-   * - **RequestFrequencyLimit**：因运营商限制，禁止在短时间内高频对同一个号码进行反复查询，如返回此错误码，请您稍后再试。
+   * - **NORMAL**：正常。
+   * - **SHUTDOWN**：停机。
+   * - **POWER_OFF**：关机。
+   * - **NOT_EXIST**：空号。
+   * - **DEFECT**：异常号码。
+   * - **UNKNOWN**：未知。
+   *
+   * >因运营商系统调整，中国电信的号码不支持返回：忙、关机状态。 [详见官网公告](https://help.aliyun.com/document_detail/2489709.html)
    */
-  Code?: string;
+  Status?: string;
   /**
-   * 返回状态码描述。
+   * 号码当前归属的基础运营商。如果查询的号码存在携号转网，则返回携号转网后的基础运营商。取值：
+   *
+   * - **CMCC**：中国移动
+   * - **CUCC**：中国联通
+   * - **CTCC**：中国电信
+   * > 暂不支持中国广电的号码查询。
    */
-  Message?: string;
-  /**
-   * 公共参数，每个请求返回的ID都是唯一的，可用于排查和定位问题。
-   */
-  RequestId?: string;
-  /**
-   * 结构体。
-   */
-  Data?: object;
+  Carrier?: string;
 }
+
 export interface PhoneNumberStatusForRealRequest {
   /**
    * 授权码。
@@ -1005,28 +1076,34 @@ export interface PhoneNumberStatusForRealRequest {
    */
   Mask: string;
 }
+
 export interface PhoneNumberStatusForRealResponse {
   /**
-   * 请求状态码。取值：
+   * 检测手机号返回状态。取值：
    *
-   * - **OK**：成功。
-   * - **OperatorLimit**：运营商禁止查询的手机号。
-   * - **RequestFrequencyLimit**：因运营商限制，禁止在短时间内高频对同一个号码进行反复查询，如返回此错误码，请您稍后再试。
+   * - **NORMAL**：正常。
+   * - **SHUTDOWN**：停机。
+   * - **POWER_OFF**：关机。
+   * - **NOT_EXIST**：空号。
+   * - **BUSY**：忙。
+   * - **SUSPECTED_POWER_OFF**：疑似关机。
+   * - **DEFECT**：异常号码。
+   * - **UNKNOWN**：未知。
+   *
+   * >因运营商系统调整，中国电信的号码不支持返回：忙、疑似关机、关机状态。 [详见官网公告](https://help.aliyun.com/document_detail/2489709.html)
    */
-  Code?: string;
+  Status?: string;
   /**
-   * 状态码的描述。
+   * 号码当前归属的基础运营商。如果查询的号码存在携号转网，则返回携号转网后的基础运营商。取值：
+   *
+   * - **CMCC**：中国移动
+   * - **CUCC**：中国联通
+   * - **CTCC**：中国电信
+   * > 暂不支持中国广电的号码查询。
    */
-  Message?: string;
-  /**
-   * 公共参数，每个请求返回的ID都是唯一的，可用于排查和定位问题。
-   */
-  RequestId?: string;
-  /**
-   * 结构体。
-   */
-  Data?: object;
+  Carrier?: string;
 }
+
 export interface PhoneNumberStatusForSmsRequest {
   /**
    * 授权码。
@@ -1058,28 +1135,32 @@ export interface PhoneNumberStatusForSmsRequest {
    */
   Mask: string;
 }
+
 export interface PhoneNumberStatusForSmsResponse {
   /**
-   * 请求状态码。取值：
+   * 检测手机号返回状态。取值：
    *
-   * - **OK**：请求成功。
-   * - **OperatorLimit**：运营商禁止查询的手机号。
-   * - **RequestFrequencyLimit**：因运营商限制，禁止在短时间内高频对同一个号码进行反复查询，如返回此错误码，请您稍后再试。
+   * - **NORMAL**：正常。
+   * - **SHUTDOWN**：停机。
+   * - **POWER_OFF**：关机。
+   * - **NOT_EXIST**：空号。
+   * - **DEFECT**：异常号码。
+   * - **UNKNOWN**：未知。
+   *
+   * >因运营商系统调整，中国电信的号码不支持返回：忙、疑似关机、关机状态。 [详见官网公告](https://help.aliyun.com/document_detail/2489709.html)
    */
-  Code?: string;
+  Status?: string;
   /**
-   * 状态码的描述。
+   * 号码当前归属的基础运营商。如果查询的号码存在携号转网，则返回携号转网后的基础运营商。取值：
+   *
+   * - **CMCC**：中国移动
+   * - **CUCC**：中国联通
+   * - **CTCC**：中国电信
+   * > 暂不支持中国广电的号码查询。
    */
-  Message?: string;
-  /**
-   * 公共参数，每个请求返回的ID都是唯一的，可用于排查和定位问题。
-   */
-  RequestId?: string;
-  /**
-   * 结构体
-   */
-  Data?: object;
+  Carrier?: string;
 }
+
 export interface PhoneNumberStatusForVoiceRequest {
   /**
    * 授权码。
@@ -1111,28 +1192,33 @@ export interface PhoneNumberStatusForVoiceRequest {
    */
   Mask: string;
 }
+
 export interface PhoneNumberStatusForVoiceResponse {
   /**
-   * 请求状态码。取值：
+   * 检测手机号返回状态。取值：
    *
-   * - **OK**：成功。
-   * - **OperatorLimit**：运营商禁止查询的手机号。
-   * - **RequestFrequencyLimit**：因运营商限制，禁止在短时间内高频对同一个号码进行反复查询，如返回此错误码，请您稍后再试。
+   * - **NORMAL**：正常。
+   * - **SHUTDOWN**：停机。
+   * - **POWER_OFF**：关机。
+   * - **NOT_EXIST**：空号。
+   * - **SUSPECTED_POWER_OFF** ：疑似关机。
+   * - **DEFECT**：异常号码。
+   * - **UNKNOWN**：未知。
+   *
+   * >因运营商系统调整，中国电信的号码不支持返回：忙、疑似关机、关机状态。 [详见官网公告](https://help.aliyun.com/document_detail/2489709.html)
    */
-  Code?: string;
+  Status?: string;
   /**
-   * 返回状态码描述。
+   * 号码当前归属的基础运营商。如果查询的号码存在携号转网，则返回携号转网后的基础运营商。取值：
+   *
+   * - **CMCC**：中国移动
+   * - **CUCC**：中国联通
+   * - **CTCC**：中国电信
+   * > 暂不支持中国广电的号码查询。
    */
-  Message?: string;
-  /**
-   * 公共参数，每个请求返回的ID都是唯一的，可用于排查和定位问题。
-   */
-  RequestId?: string;
-  /**
-   * 结构体。
-   */
-  Data?: object;
+  Carrier?: string;
 }
+
 export interface PhoneNumberStatusForVirtualRequest {
   /**
    * 授权码。
@@ -1164,28 +1250,18 @@ export interface PhoneNumberStatusForVirtualRequest {
    */
   Mask: string;
 }
+
 export interface PhoneNumberStatusForVirtualResponse {
   /**
-   * 请求状态码。取值：
+   * 是否是运营商的虚拟号码。取值：
    *
-   * - **OK**：成功。
-   * - **OperatorLimit**：运营商禁止查询的手机号。
-   * - **RequestFrequencyLimit**：因运营商限制，禁止在短时间内高频对同一个号码进行反复查询，如返回此错误码，请您稍后再试。
+   * - **true**：是
+   *
+   * - **false**：否
    */
-  Code?: string;
-  /**
-   * 返回状态码描述。
-   */
-  Message?: string;
-  /**
-   * 请求ID。
-   */
-  RequestId?: string;
-  /**
-   * 结构体
-   */
-  Data?: object;
+  IsPrivacyNumber?: boolean;
 }
+
 export interface DescribePhoneTwiceTelVerifyRequest {
   /**
    * 授权码。
@@ -1223,34 +1299,29 @@ export interface DescribePhoneTwiceTelVerifyRequest {
    */
   StartTime: string;
 }
+
 export interface DescribePhoneTwiceTelVerifyResponse {
   /**
-   * 公共参数，每个请求返回的ID都是唯一的，可用于排查和定位问题。
+   * 查询结果。取值：
+   *
+   * - **0**：无法判断。
+   * - **1**：是二次放号。
+   * - **2**：不是二次放号。
+   * - **3**：号码已注销。
    */
-  RequestId?: string;
+  VerifyResult?: string;
   /**
-   * 请求状态码。取值：
+   * 运营商。取值：
    *
-   * - **OK**：请求成功。
+   * - **CMCC**：中国移动。
+   * - **CUCC**：中国联通。
+   * - **CTCC**：中国电信。
    *
-   * - **PortabilityNumberNotSupported**：不支持的携号转网号码。
-   * - **RequestNumberNotSupported**：不支持中国广电号码（192开头）和虚拟运营商号码的查询。
-   *
-   * - **RequestFrequencyLimit**：因运营商限制，禁止在短时间内高频对同一个号码进行反复查询，如返回此错误码，请您稍后再试。
-   *
-   * > 当Code取值为OK，且VerifyResult值不为0时计费，计费文档请参见[号码百科定价](~~154751~~)。
-   * >
+   * > 返回当前号码的归属运营商，如果该号码存在携号转网的情况，则返回携号转网后的运营商。
    */
-  Code?: string;
-  /**
-   * 状态码的描述。
-   */
-  Message?: string;
-  /**
-   * 结构体。
-   */
-  Data?: object;
+  Carrier?: string;
 }
+
 export interface DescribePhoneNumberOnlineTimeRequest {
   /**
    * 授权码。
@@ -1290,31 +1361,30 @@ export interface DescribePhoneNumberOnlineTimeRequest {
    */
   Carrier?: string;
 }
+
 export interface DescribePhoneNumberOnlineTimeResponse {
   /**
-   * 请求ID。
-   */
-  RequestId?: string;
-  /**
-   * 请求状态码。取值：
+   * 在网时长枚举值。枚举值如下：
    *
-   * - **OK**：请求成功。
-   * - **PortabilityNumberNotSupported**：不支持的携号转网号码。
-   * - **RequestFrequencyLimit**：因运营商限制，禁止在短时间内高频对同一个号码进行反复查询，如返回此错误码，请您稍后再试。
-   *
-   * > 当Code取值为OK，且VerifyResult值不为-1时计费，计费文档请参见[号码百科定价](~~154751~~)。
-   * >
+   * - **-1**：查无时长。
+   * - **0**：手机状态异常，例如空号。
+   * - **1**：[0-3)月。
+   * - **2**：[3-6]月。
+   * - **3**：(6-12]月。
+   * - **4**：(12-24]月。
+   * - **5**：(24，+)月
    */
-  Code?: string;
+  VerifyResult?: string;
   /**
-   * 号码状态码的描述。
+   * 运营商短信状态码。取值：
+   * - **CMCC**：中国移动
+   * - **CUCC**：中国联通
+   * - **CTCC**：中国电信
+   * - **CBN**：中国广电
    */
-  Message?: string;
-  /**
-   * 结构体。
-   */
-  Data?: object;
+  CarrierCode?: string;
 }
+
 export interface DescribePhoneNumberAnalysisAIRequest {
   /**
    * 待查询的号码。
@@ -1341,25 +1411,22 @@ export interface DescribePhoneNumberAnalysisAIRequest {
    */
   ModelConfig?: string;
 }
+
 export interface DescribePhoneNumberAnalysisAIResponse {
   /**
-   * 请求ID。
+   * 传入的手机号。
    */
-  RequestId?: string;
+  Number?: string;
   /**
-   * 返回状态码描述。
-   */
-  Message?: string;
-  /**
-   * 返回结果。
-   */
-  Data?: object;
-  /**
-   * 请求状态码。取值：
-   * - OK：成功
+   * 返回的结果编码。
+   *
+   * - YES：有效
+   * - NO：无效
+   * - UNKNOWN：未知
    */
   Code?: string;
 }
+
 export interface DescribePhoneNumberAnalysisRequest {
   /**
    * 授权码。
@@ -1401,26 +1468,22 @@ export interface DescribePhoneNumberAnalysisRequest {
    */
   Rate?: number;
 }
+
 export interface DescribePhoneNumberAnalysisResponse {
   /**
-   * 请求ID。
+   * 数据列表
    */
-  RequestId?: string;
-  /**
-   * 号码状态的描述。
-   */
-  Message?: string;
-  /**
-   * 号码分析返回结果信息。
-   */
-  Data?: object;
-  /**
-   * 请求状态码。取值：
-   *
-   *  **OK**：成功。
-   */
-  Code?: string;
+  List?: Array<{
+    /** 传入的手机号。 */
+    Number?: string;
+    /** 返回的结果编码。
+     - YES：有效
+     - NO：无效
+     - UNKNOWN：未知 */
+    Code?: string;
+  }>;
 }
+
 export interface DescribeEmptyNumberRequest {
   /**
    * 授权码。
@@ -1449,28 +1512,26 @@ export interface DescribeEmptyNumberRequest {
    */
   Mask: string;
 }
+
 export interface DescribeEmptyNumberResponse {
   /**
-   * 公共参数，每个请求返回的ID都是唯一的，可用于排查和定位问题。
-   */
-  RequestId?: string;
-  /**
-   * 状态码的描述。
-   */
-  Message?: string;
-  /**
-   * 返回结果。
-   */
-  Data?: object;
-  /**
-   * 返回状态码。取值：
+   * 检测手机号返回状态。取值：
    *
-   * - **OK**：成功。
+   * - **EMPTY**：空号。
    *
-   * - **InvalidPhoneNumber.Check**：手机号非法。
+   * - **NORMAL**：正常。
+   *
+   * - **SUSPECT_EMPTY**：疑似空号。
+   *
+   * - **UNKNOWN**：未知。
    */
-  Code?: string;
+  Status?: string;
+  /**
+   * 传入的手机号。
+   */
+  Number?: string;
 }
+
 export interface TwoElementsVerificationRequest {
   /**
    * 授权码。
@@ -1513,29 +1574,41 @@ export interface TwoElementsVerificationRequest {
    */
   Name: string;
 }
+
 export interface TwoElementsVerificationResponse {
   /**
-   * 请求状态码。
+   * 验证结果是否一致。返回：
    *
-   * - **OK**：请求成功。
+   * - **1**：一致
    *
-   * - 其他错误码，请参见本章的错误码表。
-   * - **RequestFrequencyLimit**：因运营商限制，禁止在短时间内高频对同一个号码或姓名进行反复查询，如返回此错误码，请您稍后再试。
+   * - **0**：不一致
+   *
+   * - **2**：查无
+   *
+   * 不同运营商、不同城市的数据更新时效，通常在T+1至T+3之间。
+   * 不同的运营商手机号，在不同状态下，核验结果如下：
+   *
+   * |运营商/手机号状态|停机|空号|销号|
+   * |--|--|--|--|
+   * |中国移动|正常核验|查无|查无|
+   * |中国联通|正常核验|不一致|不一致|
+   * |中国电信|正常核验|查无|查无|
    */
-  Code?: string;
+  IsConsistent?: number;
   /**
-   * 状态码的描述。
+   * 基础运营商。取值：
+   *
+   * - **中国移动**。
+   *
+   * - **中国联通**。
+   *
+   * - **中国电信**。
+   *
+   * ><notice>暂时不支持中国广电的号码。></notice>
    */
-  Message?: string;
-  /**
-   * 请求ID。
-   */
-  RequestId?: string;
-  /**
-   * 结构体。
-   */
-  Data?: object;
+  BasicCarrier?: string;
 }
+
 export interface ThreeElementsVerificationRequest {
   /**
    * 授权码。
@@ -1589,28 +1662,36 @@ export interface ThreeElementsVerificationRequest {
    */
   Name: string;
 }
+
 export interface ThreeElementsVerificationResponse {
   /**
-   * 请求状态码。
+   * 基础运营商。取值：
    *
-   * - **OK**：请求成功。
-   * - 其他错误码，请参见本章的错误码表。
-   * - **RequestFrequencyLimit**：因运营商限制，禁止在短时间内高频对同一个号码进行反复查询，如返回此错误码，请您稍后再试。
+   * - **中国移动**。
+   *
+   * - **中国联通**。
+   *
+   * - **中国电信**。
    */
-  Code?: string;
+  BasicCarrier?: string;
   /**
-   * 状态码的描述。
+   * 验证结果是否一致。返回：
+   *
+   * - **1**：一致
+   * - **0**：不一致
+   * - **2**：查无
+   * >不同运营商、不同城市的数据更新时效，通常在T+1至T+3之间。
+   * 不同的运营商手机号，在不同状态下，核验结果如下：
+   *
+   * |运营商/手机号状态|停机|空号|销号|
+   * |--|--|--|--|
+   * |中国移动|正常核验|查无|查无|
+   * |中国联通|正常核验|不一致|不一致|
+   * |中国电信|正常核验|查无|查无|
    */
-  Message?: string;
-  /**
-   * 请求ID。
-   */
-  RequestId?: string;
-  /**
-   * 结构体。
-   */
-  Data?: object;
+  IsConsistent?: number;
 }
+
 export interface PhoneNumberEncryptRequest {
   /**
    * 授权码。
@@ -1635,28 +1716,16 @@ export interface PhoneNumberEncryptRequest {
    */
   Mask: string;
 }
-export interface PhoneNumberEncryptResponse {
-  /**
-   * 请求ID。
-   */
-  RequestId?: string;
-  /**
-   * 返回状态码描述。
-   */
-  Message?: string;
-  /**
-   * 数组。
-   */
-  Data?: Array</** 结构体。 */ object>;
-  /**
-   * 请求状态码。
-   *
-   * - 返回OK代表请求成功。
-   *
-   * - 其他错误码，请参见[错误码列表](~~109196~~)。
-   */
-  Code?: string;
-}
+
+export type PhoneNumberEncryptResponse = Array</** 结构体。 */ {
+  /** 原始号码。 */
+  OriginalNumber?: string;
+  /** 加密后的号码。 */
+  EncryptedNumber?: string;
+  /** 号码过期时间。 */
+  ExpireTime?: string;
+}>;
+
 export interface InvalidPhoneNumberFilterRequest {
   /**
    * 授权码。
@@ -1678,45 +1747,22 @@ export interface InvalidPhoneNumberFilterRequest {
    */
   Mask: string;
 }
-export interface InvalidPhoneNumberFilterResponse {
-  /**
-   * 请求ID。
-   */
-  RequestId?: string;
-  /**
-   * 请求状态码。取值：
-   *
-   * - **OK**：成功。
-   *
-   * - **MobileNumberIllegal**：手机号非法。
-   *
-   * - **EncyrptTypeIllegal**：加密类型非法。
-   *
-   * - **MobileNumberTypeNotMatch**：手机号码与加密类型不匹配。
-   *
-   * - **CarrierIllegal**：运营商类型非法。
-   *
-   * - **AuthCodeNotExist**：授权码不存在。
-   *
-   * - **PortabilityNumberNotSupported**：不支持携号转网。
-   *
-   * - **Unknown**：未知异常。
-   *
-   * - **AuthCodeAndApiNotMatch**：系统异常。
-   *
-   * - **AuthCodeAndApiNotMatch**：AuthCode与API接口不匹配。
-   * - **RequestFrequencyLimit**：因运营商限制，禁止在短时间内高频对同一个号码进行反复查询，如返回此错误码，请您稍后再试。
-   */
+
+export type InvalidPhoneNumberFilterResponse = Array</** 结构体。 */ {
+  /** 返回过滤的结果。
+
+   - **YES**：有效状态号码，返回映射关系。
+
+   - **NO**：无效状态号码，不返回映射关系。 */
   Code?: string;
-  /**
-   * 状态码的描述。
-   */
-  Message?: string;
-  /**
-   * 数组。
-   */
-  Data?: Array</** 结构体。 */ object>;
-}
+  /** 原始号码。 */
+  OriginalNumber?: string;
+  /** 加密后的号码。 */
+  EncryptedNumber?: string;
+  /** 号码过期时间。 */
+  ExpireTime?: string;
+}>;
+
 export interface QueryTagListPageRequest {
   /**
    * 页码。默认取值为**1**。
@@ -1729,32 +1775,57 @@ export interface QueryTagListPageRequest {
    */
   PageSize?: number;
 }
+
 export interface QueryTagListPageResponse {
   /**
-   * 请求ID。
+   * 总数。
    */
-  RequestId?: string;
+  TotalCount?: number;
   /**
-   * 返回状态码描述。
+   * 总页数。
    */
-  Message?: string;
+  TotalPage?: number;
   /**
-   * 返回数据。
+   * 分页大小。
    */
-  Data?: object;
+  PageSize?: number;
   /**
-   * 请求状态码。 **OK**为成功。
+   * 当前页码。
    */
-  Code?: string;
+  PageNo?: number;
   /**
-   * 是否成功。取值：
-   *
-   * - true：成功。
-   *
-   * - false：失败。
+   * 数据列表。
    */
-  Success?: boolean;
+  Records?: Array</** 数据。 */ {
+    /** 场景ID。 */
+    SceneId?: number;
+    /** 场景名称。 */
+    SceneName?: string;
+    /** 行业ID。 */
+    IndustryId?: number;
+    /** 标签介绍。 */
+    Introduction?: string;
+    /** - 0：隐藏
+
+     - 1：公开 */
+    SaleStatusStr?: string;
+    /** 前端调用的API名称。 */
+    ApiName?: string;
+    /** 标签ID。 */
+    Id?: number;
+    /** 行业名称。 */
+    IndustryName?: string;
+    /** Code */
+    Code?: string;
+    /** API文档链接。 */
+    DocAddress?: string;
+    /** 标签名称。 */
+    Name?: string;
+    /** 是否已经申请开通。 */
+    IsOpen?: number;
+  }>;
 }
+
 export interface QueryTagInfoBySelectionRequest {
   /**
    * 行业id
@@ -1775,32 +1846,52 @@ export interface QueryTagInfoBySelectionRequest {
    */
   TagId?: number;
 }
-export interface QueryTagInfoBySelectionResponse {
-  /**
-   * 请求ID。
-   */
-  RequestId?: string;
-  /**
-   * 返回状态码描述。
-   */
-  Message?: string;
-  /**
-   * 返回的数据内容。
-   */
-  Data?: Array</** 返回的数据内容。 */ object>;
-  /**
-   * 请求状态码。 **OK**为成功。
-   */
-  Code?: string;
-  /**
-   * 是否成功。取值：
-   *
-   * - true：成功。
-   *
-   * - false：失败。
-   */
-  Success?: boolean;
-}
+
+export type QueryTagInfoBySelectionResponse = Array</** 返回的数据内容。 */ {
+  /** 场景ID。 */
+  SceneId?: number;
+  /** 行业ID。 */
+  IndustryId?: number;
+  /** 场景名称。 */
+  SceneName?: string;
+  /** 标签名称。 */
+  TagName?: string;
+  /** 流程名称。 */
+  FlowName?: string;
+  /** 枚举值定义链接。 */
+  EnumDefinitionAddress?: string;
+  /** 标签ID。 */
+  TagId?: number;
+  /** 可用的授权码列表。 */
+  AuthCodeList?: Array</** 无 */ string>;
+  /** 行业名称。 */
+  IndustryName?: string;
+  /** API文档链接。 */
+  DocAddress?: string;
+  /** API demo链接。 */
+  DemoAddress?: string;
+  /** 标签参数列表。 */
+  ParamList?: Array</** 标签参数。 */ {
+    /** 枚举值定义，code：desc */
+    ValueDict?: Array</** 枚举值定义，code：desc */ {
+      /** 中文名。 */
+      Desc?: string;
+      /** 英文名。 */
+      Code?: string;
+    }>;
+    /** 类型，EnumUIWidgetTypes对应的code。 */
+    Type?: string;
+    /** 输入提示。 */
+    Hint?: string;
+    /** 参数英文名。 */
+    Code?: string;
+    /** 是否必填。 */
+    Must?: boolean;
+    /** 参数中文名。 */
+    Name?: string;
+  }>;
+}>;
+
 export interface QueryUsageStatisticsByTagIdRequest {
   /**
    * 开始时间
@@ -1831,30 +1922,32 @@ export interface QueryUsageStatisticsByTagIdRequest {
    */
   PageSize?: number;
 }
-export interface QueryUsageStatisticsByTagIdResponse {
-  /**
-   * 请求ID。
-   */
-  RequestId?: string;
-  /**
-   * 返回状态码描述。
-   */
-  Message?: string;
-  /**
-   * 返回的数据内容。
-   */
-  Data?: Array</** 返回的数据内容。 */ object>;
-  /**
-   * 请求状态码。 **OK**为成功。
-   */
-  Code?: string;
-  /**
-   * 表示是否调用成功。
-   * - true：调用成功。
-   *  - false：调用失败。
-   */
-  Success?: boolean;
-}
+
+export type QueryUsageStatisticsByTagIdResponse = Array</** 返回的数据内容。 */ {
+  /** 授权码。 */
+  AuthorizationCode?: string;
+  /** 查询成功号码数。 */
+  SuccessTotal?: number;
+  /** 查询失败号码数。 */
+  FailTotal?: number;
+  /** 标签名称。 */
+  TagName?: string;
+  /** 场景名称。 */
+  SceneName?: string;
+  /** 查询总号码数。 */
+  Total?: number;
+  /** 标签名称。 */
+  TagId?: number;
+  /** 客户pid。 */
+  PartnerId?: number;
+  /** 授权码使用记录ID。 */
+  Id?: number;
+  /** 创建时间。 */
+  GmtDateStr?: string;
+  /** 行业名称。 */
+  IndustryName?: string;
+}>;
+
 export interface QueryTagApplyRuleRequest {
   /**
    * 标签id
@@ -1863,32 +1956,40 @@ export interface QueryTagApplyRuleRequest {
    */
   TagId?: number;
 }
+
 export interface QueryTagApplyRuleResponse {
   /**
-   * 请求ID。
+   * 是否需要提供申请材料
+   * 是否需要提供申请材料。
    */
-  RequestId?: string;
+  NeedApplyMaterial?: number;
   /**
-   * 返回状态码描述。
+   * 是否支持加密查询
+   * 是否支持加密查询。
    */
-  Message?: string;
+  EncryptedQuery?: number;
   /**
-   * 返回的数据内容。
+   * 服务协议链接
+   * 服务协议链接。
    */
-  Data?: object;
+  SlaLink?: string;
   /**
-   * 请求状态码。 **OK**表示成功。
+   * 申请材料要求
+   * 申请材料要求。
    */
-  Code?: string;
+  ApplyMaterialDesc?: string;
   /**
-   * 是否成功。取值：
-   *
-   * - true：成功。
-   *
-   * - false：失败。
+   * 是否自动审批
+   * 是否自动审批。
    */
-  Success?: boolean;
+  AutoAudit?: number;
+  /**
+   * 计费标准说明链接
+   * 计费标准说明链接。
+   */
+  ChargingStandardLink?: string;
 }
+
 export interface QueryAvailableAuthCodeRequest {
   /**
    * 标签id
@@ -1897,29 +1998,5 @@ export interface QueryAvailableAuthCodeRequest {
    */
   TagId?: number;
 }
-export interface QueryAvailableAuthCodeResponse {
-  /**
-   * 请求ID。
-   */
-  RequestId?: string;
-  /**
-   * 返回状态码描述。
-   */
-  Message?: string;
-  /**
-   * 返回的数据内容。
-   */
-  Data?: Array</** 返回的数据内容。 */ string>;
-  /**
-   * 请求状态码。 **OK**为成功。
-   */
-  Code?: string;
-  /**
-   * 是否成功。取值：
-   *
-   * - true：成功。
-   *
-   * - false：失败。
-   */
-  Success?: boolean;
-}
+
+export type QueryAvailableAuthCodeResponse = Array</** 返回的数据内容。 */ string>;

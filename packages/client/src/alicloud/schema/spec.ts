@@ -49,10 +49,10 @@ export interface Security {
 export interface Parameter {
   name: string;
   in: 'query' | 'body';
-  schema: Schema;
+  schema: TypeSchema;
 }
 
-export interface Schema {
+export interface TypeSchema {
   title: string;
   description: string;
   type: string;
@@ -60,7 +60,8 @@ export interface Schema {
   example: string;
   maxLength?: number;
   format?: string;
-  items?: Schema;
+  items?: TypeSchema;
+  properties?: Record<string, TypeSchema>;
 }
 
 export interface Responses {
@@ -68,14 +69,14 @@ export interface Responses {
 }
 
 export interface N200 {
-  schema: Schema2;
+  schema: TypeSchema;
 }
 
 export interface Schema2 {
   title: string;
   description: string;
   type: string;
-  properties: Properties;
+  properties: Record<string, Schema2>;
 }
 
 export interface Properties {

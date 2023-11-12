@@ -1,7 +1,12 @@
 import { hmac, isDefined, randomUUID, sha256 } from '@wener/utils';
 
 export async function signv3(
-  { method, url, headers, body }: { method: string; url: string; headers: Record<string, any>; body?: string },
+  {
+    method,
+    url,
+    headers,
+    body,
+  }: { method: string; url: string; headers: Record<string, any>; body?: string | BufferSource },
   {
     accessKeyId,
     accessKeySecret,

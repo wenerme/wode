@@ -47,6 +47,7 @@ function binaryOf(s: BinaryLike) {
   if (typeof s === 'string') {
     return new TextEncoder().encode(s);
   }
+  //  ArrayBuffer, Buffer, TypedArray, DataView
   return s;
 }
 

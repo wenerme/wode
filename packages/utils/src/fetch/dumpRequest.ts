@@ -16,7 +16,11 @@ ${Array.from(new Headers(req.headers).entries())
 
   let done: Promise<string> | undefined;
   if (req.body) {
-    if (req.body instanceof ReadableStream) {
+    let hdr = new Headers(req.headers);
+    let ct = hdr.get('content-type');
+    if (ct === 'application/octet-stream') {
+      // skip
+    } else if (req.body instanceof ReadableStream) {
       const [a, b] = req.body.tee();
       req.body = a;
       const signal = req.signal;
