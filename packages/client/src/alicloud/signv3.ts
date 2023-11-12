@@ -1,17 +1,19 @@
-import { hex, hmac, isDefined, randomUUID, sha256 } from '@wener/utils';
+import { hmac, isDefined, randomUUID, sha256 } from '@wener/utils';
 
 export async function signv3(
-  { method, url, headers, body = '' }: { method: string; url: string; headers: Record<string, any>; body?: string },
+  { method, url, headers, body }: { method: string; url: string; headers: Record<string, any>; body?: string },
   {
     accessKeyId,
     accessKeySecret,
     date,
     nonce,
+    debug,
   }: {
     accessKeyId: string;
     accessKeySecret: string;
     date?: string;
     nonce?: string;
+    debug?: boolean;
   },
 ) {
   const u = new URL(url);
@@ -19,7 +21,7 @@ export async function signv3(
   // x-acs-content-sha256
   date = headers['x-acs-date'] ||= date || new Date().toJSON().replace(/[.]\d+Z$/, 'Z'); // 2023-11-11T20:41:07.364Z
   nonce = headers['x-acs-signature-nonce'] ||= nonce || randomUUID().replaceAll('-', '');
-  const contentHash = (headers['x-acs-content-sha256'] ||= hex(await sha256(body)));
+  const contentHash = (headers['x-acs-content-sha256'] ||= await sha256(body ?? '', 'hex'));
   let all = Object.entries({
     ...headers,
   });
@@ -46,9 +48,11 @@ export async function signv3(
   // const signature = createHmac('sha256', accessKeySecret).update([algorithm, hash].join('\n')).digest().toString('hex');
   const signature = await hmac('sha256', accessKeySecret, [algorithm, hash].join('\n'), 'hex');
 
-  // console.log(`> canonical\n${canonical}`);
-  // console.log(`> hash\n${hash}`);
-  // console.log(`> signature ${algorithm}\n${signature}`);
+  if (debug) {
+    console.log(`> canonical\n${canonical}`);
+    console.log(`> hash\n${hash}`);
+    console.log(`> signature ${algorithm}\n${signature}`);
+  }
 
   const authorization = `${algorithm} Credential=${accessKeyId},SignedHeaders=${signedHeaders},Signature=${signature}`;
   return {

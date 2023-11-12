@@ -17,6 +17,7 @@ export class AliCloudClient {
 
   static {
     this.registry({ product: 'Dytnsapi', version: '2020-02-17' }, { endpoint: 'dytnsapi.aliyuncs.com' });
+    this.registry({ product: 'ocr-api', version: '2021-07-07' }, { endpoint: 'ocr-api.cn-hangzhou.aliyuncs.com' });
   }
 
   static registry({ product, version }: { product: string; version: string }, val: { endpoint: string }) {
@@ -102,6 +103,10 @@ export class AliCloudClient {
 
         // fixme by explicit method check
         switch (key) {
+          case '$product':
+            return target.product;
+          case '$version':
+            return target.version;
           case 'then':
           case 'catch':
           case 'finally':
@@ -129,11 +134,18 @@ export class AliCloudClient {
         if (typeof key === 'string') {
           return (target.methods[key] ||= async (...args: any[]) => {
             const { version, endpoint } = target;
+            const { body, ...params } = args[0];
+            let override = (args[1] || {}) as AliCloudRequestOptions<any>;
             const req: AliCloudRequestOptions<any> = {
               version,
               endpoint,
               action: key,
-              ...((args[1] || {}) as AliCloudRequestOptions<any>),
+              body,
+              ...override,
+              params: {
+                ...params,
+                ...override.params,
+              },
             };
             return client.request(req);
           });
@@ -152,4 +164,38 @@ interface ProxyClientTarget {
   attrs: Map<string | symbol, any>;
   methods: Record<string, Function>;
   constructor?: Constructor<any>;
+}
+
+// https://www.unpkg.com/browse/@alicloud/endpoint-util@0.0.1/src/client.ts
+function getEndpoint({
+  product,
+  regionId,
+  endpointType = regionId?.length ? 'regional' : undefined,
+  network = 'public',
+  suffix = '',
+}: {
+  product: string;
+  regionId?: string;
+  endpointType?: 'regional';
+  network?: string;
+  suffix?: string;
+}): string {
+  let result;
+  if (network && network.length && network != 'public') {
+    network = '-' + network;
+  } else {
+    network = '';
+  }
+  if (suffix.length) {
+    suffix = '-' + suffix;
+  }
+  if (endpointType == 'regional') {
+    if (!regionId || !regionId.length) {
+      throw new Error('RegionId is empty, please set a valid RegionId');
+    }
+    result = `${product}${suffix}${network}.${regionId}.aliyuncs.com`;
+  } else {
+    result = `${product}${suffix}${network}.aliyuncs.com`;
+  }
+  return result;
 }

@@ -137,10 +137,11 @@ async function requirePayload(res: Response) {
     throw last;
   }
 
-  if (body && 'Success' in body) {
+  if (body && 'RequestId' in body) {
     return body as AliCloudResponse;
   }
-  throw new Error(`Invalid response: ${res.status} ${res.statusText} ${res.headers.get('content-type')} ${body}`);
+  console.error(`Invalid response`, body);
+  throw new Error(`Invalid response: ${res.status} ${res.statusText} ${res.headers.get('content-type')}`);
 }
 
 export class AliCloudClientError extends Error {
