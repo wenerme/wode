@@ -1,6 +1,6 @@
 {
   "name": "@wener/client",
-  "version": "1.0.18",
+  "version": "1.0.19",
   "type": "module",
   "description": "Client for Wechat, Wecom, Xunfei, etc.",
   "repository": {
@@ -47,6 +47,10 @@
       "types": "./openai.ts",
       "default": "./lib/openai/index.js"
     },
+    "./alicloud": {
+      "types": "./alicloud.ts",
+      "default": "./lib/alicloud/index.js"
+    },
     "./package.json": "./package.json"
   },
   "files": [
@@ -70,6 +74,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@alicloud/openapi-client": "^0.4.6",
     "@sinclair/typebox": "^0.31.23",
     "@wecom/jssdk": "^1.4.3",
     "fast-xml-parser": "^4.3.2",
