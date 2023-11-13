@@ -15,7 +15,7 @@ export function createFetchWith({
   }) => MaybePromise<Response | void>;
   onResponse?: (ctx: { url: string; req: RequestInit; res: Response }) => MaybePromise<Response>;
 }) {
-  return async (urlOrRequest: string | Request, init?: RequestInit & { fetch?: FetchLike }) => {
+  return async (urlOrRequest: string | URL | Request, init?: RequestInit & { fetch?: FetchLike }) => {
     const url = String(urlOrRequest);
     let req = init || {};
     const nextFetch = req.fetch || fetch;

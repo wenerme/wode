@@ -95,7 +95,15 @@ export { PEM } from './crypto/pem/pem';
 export { createRandom } from './maths/random';
 
 // network
-export { type FetchLike, createFetchWith, createFetchWithLogging, dumpResponse, dumpRequest } from './fetch';
+export {
+  type FetchLike,
+  createFetchWith,
+  createFetchWithLogging,
+  dumpResponse,
+  dumpRequest,
+  createFetchWithRetry,
+  type FetchWithRetryOptions,
+} from './fetch';
 
 // bundled
 export { default as ms } from './libs/ms';
