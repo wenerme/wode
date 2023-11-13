@@ -1,3 +1,6 @@
+/**
+ * @see https://help.aliyun.com/document_detail/442255.html#api-detail-40
+ */
 export interface RecognizeIdcardRoot {
   algo_version: string;
   data: RecognizeIdcardRootData;

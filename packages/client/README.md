@@ -27,7 +27,7 @@ npm install 'https://gitpkg.now.sh/wenerme/wode/packages/client?main'
 ```
 
 **基础**
- 
+
 - 所有客户端都支持
 
 ```ts
@@ -56,7 +56,7 @@ import { createFetchWithProxy } from '@wener/utils/server';
 
 ```ts
 import { createFetchWithProxy } from '@wener/utils/server';
-import { OpenAiClient } from '@wener/cleint/openai';
+import { OpenAiClient } from '@wener/client/openai';
 
 const fetch = createFetchWithProxy({
   proxy: process.env.OPENAI_PROXY,//e.g. 'http://127.0.0.1:7890',
@@ -79,24 +79,41 @@ console.log(await client.getModels());
   - 表明不需要什么依赖
 - 接口定义基于代码生成
   - 默认以 Proxy+Interface 为主 - size 非常小
-  - 可以考虑 stub method 方式
+  - 可以考虑 stub method 方式 - 增加 size，保留 schema，可以做类型校验，可以生成服务端 API
+    - 例如：二次暴露 API，提供兼容 API，基于元信息做权限校验
 
-> **Note** Why?
-> 1. 阿里云的客户端质量非常的差
->    - @alicloud/openapi-client 一个文件、一个包
->      - **19** 个依赖
->      - 最基础的依赖，可能要做非常多的兼容，所有都揉在一起，导致包很大 - 180kB/ gzip 42kB
->      - 代码质量非常差，非常多 Utils.xyz 调用
->        - https://www.unpkg.com/browse/@alicloud/openapi-client@0.4.6/src/client.ts 有 242 处 `Util.`
->    - @alicloud/openapi-utils 一个文件、一个包
-> 2. 阿里云的 API 文档质量非常的差
->    - 例如 https://help.aliyun.com/zh/sdk/product-overview/v3-request-structure-and-signature
->      - 签名文档里的 Demo 都对不上，最终产出的的 SignedHeaders 和 Signature 不一致
->      - 导致怀疑是自己的问题
->    - API explorer 质量差 - 我就只想要看到 curl 怎么执行的，但实际看不到请求目标、URL、头 等信息
->    - 返回的 DEBUG 链接当前用户 也打不开
-> 3. 我只想要发起一些简单的请求，按需封装结构，请求简单透明，客户端易用
+<details>
+<summary><b>动机/Why？</b></summary>
 
+1. 阿里云的客户端质量非常的差
+
+- @alicloud/openapi-client 一个文件、一个包
+  - **19** 个依赖
+  - 最基础的依赖，可能要做非常多的兼容，所有都揉在一起，导致包很大 - 180kB/ gzip 42kB
+  - 代码质量非常差，非常多 Utils.xyz 调用
+    - https://www.unpkg.com/browse/@alicloud/openapi-client@0.4.6/src/client.ts 有 242 处 `Util.`
+- @alicloud/openapi-utils 一个文件、一个包
+- 每个服务单独的包
+  - 但每个包内极少的内容 https://github.com/aliyun/alibabacloud-typescript-sdk/
+  - 大多都是校验/模型定义相关 - 非常冗长
+  - 例如 https://github.com/aliyun/alibabacloud-typescript-sdk/blob/master/ocr-api-20210707/src/client.ts
+    - 11404 行代码, 无文档, 编译后 288KB, minify 后 140KB, **21** 个依赖
+    -
+    对应 [src/alicloud/OcrV20210707.ts](https://github.com/wenerme/wode/blob/main/packages/client/src/alicloud/OcrV20210707.ts)
+      - 4419 行代码，主要是 markdown 文档，编译后 0KB （纯类型定义）
+- tea 校验我觉得很差 @alicloud/tea-util
+
+2. 阿里云的 API 文档质量非常的差
+
+- 例如 https://help.aliyun.com/zh/sdk/product-overview/v3-request-structure-and-signature
+  - 签名文档里的 Demo 都对不上，最终产出的的 SignedHeaders 和 Signature 不一致
+  - 导致怀疑是自己的问题
+- API explorer 质量差 - 我就只想要看到 curl 怎么执行的，但实际看不到请求目标、URL、头 等信息
+- 返回的 DEBUG 链接当前用户 也打不开
+
+3. 我只想要发起一些简单的请求，按需封装结构，请求简单透明，客户端易用
+
+</details>
 
 ### 使用 request
 
@@ -104,7 +121,7 @@ console.log(await client.getModels());
 - 极少的代码量，最小的 bundle size
 
 ```ts
-import { request } from '@wener/cleint/alicloud';
+import { request } from '@wener/client/alicloud';
 
 console.log(
   await request({
@@ -123,7 +140,7 @@ console.log(
 - 支持类型推导
 
 ```ts
-import { AliCloudClient } from '@wener/cleint/alicloud';
+import { AliCloudClient } from '@wener/client/alicloud';
 
 const aliCloudClient = new AliCloudClient({
   accessKeyId: process.env.ALIBABA_CLOUD_ACCESS_KEY_ID,
