@@ -30,7 +30,7 @@ export function sha512(s: BinaryLike, o?: DigestOptions) {
 
 function digestOf(a: string, s: BinaryLike, o?: DigestOptions) {
   let buffer = crypto.subtle.digest(a, binaryOf(s));
-  return o ? buffer.then((v) => encode(v, o)) : o;
+  return o ? buffer.then((v) => encode(v, o)) : buffer;
 }
 
 export type DigestOptions =
