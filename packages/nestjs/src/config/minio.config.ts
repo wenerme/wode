@@ -1,6 +1,6 @@
 import process from 'node:process';
-import { z } from 'zod';
 import { parseBoolean } from '@wener/utils';
+import { z } from 'zod';
 
 export const MinioConfig = z.object({
   endpoint: z.coerce.string().nonempty(),

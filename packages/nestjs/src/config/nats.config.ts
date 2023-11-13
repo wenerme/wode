@@ -1,6 +1,6 @@
 import process from 'node:process';
-import { z } from 'zod';
 import { parseBoolean } from '@wener/utils';
+import { z } from 'zod';
 
 export const NatsConfig = z.object({
   debug: z.coerce.boolean().optional(),

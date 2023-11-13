@@ -1,8 +1,8 @@
 import { applyDecorators, Injectable, Logger, SetMetadata } from '@nestjs/common';
 import type { Constructor } from '../../types';
-import type { MethodOptionsInit, ServiceOptions, ServiceOptionsInit, ServiceSchema, MethodSchema } from '../decorator';
+import type { MethodOptionsInit, MethodSchema, ServiceOptions, ServiceOptionsInit, ServiceSchema } from '../decorator';
 import { getServiceSchema, METHOD_METADATA_KEY, SERVICE_METADATA_KEY } from '../decorator';
-import { createResponse } from './createResponse';
+import { createResponseFromRequest } from './createResponseFromRequest';
 import type { ServerRequest, ServerRequestOptions, ServerResponse } from './types';
 
 export class ServiceRegistry {
@@ -65,7 +65,7 @@ export class ServiceRegistry {
       options: {},
     };
     if (!svc) {
-      return createResponse(req, {
+      return createResponseFromRequest(req, {
         status: 404,
         description: `Service ${req.service} not found`,
       });
@@ -77,7 +77,7 @@ export class ServiceRegistry {
       return req.method === name;
     });
     if (!methodSchema) {
-      return createResponse(req, {
+      return createResponseFromRequest(req, {
         status: 404,
         description: `Service ${req.service} method ${req.method} not found`,
       });
@@ -88,31 +88,24 @@ export class ServiceRegistry {
     ctx.options = methodSchema?.options ?? {};
 
     if (!method) {
-      return createResponse(req, {
+      return createResponseFromRequest(req, {
         status: 404,
         description: `Service ${req.service} method ${req.method} not found`,
       });
     }
 
     if (typeof method !== 'function') {
-      return createResponse(req, {
+      return createResponseFromRequest(req, {
         status: 500,
         description: `Service ${req.service} method ${req.method} invalid`,
       });
     }
 
-    try {
-      const output = await method.call(svc.target, req.body, ctx);
-      return createResponse(req, {
-        body: output,
-      });
-    } catch (error) {
-      this.log.error(`Handle ${req.service}#${req.method} error: ${error}`);
-      return createResponse(req, {
-        status: 500,
-        description: String(error),
-      });
-    }
+    // throw error out for middlewares
+    const output = await method.call(svc.target, req.body, ctx);
+    return createResponseFromRequest(req, {
+      body: output,
+    });
   };
 
   async handle(req: ServerRequest): Promise<ServerResponse> {
@@ -120,7 +113,18 @@ export class ServiceRegistry {
       (next, middleware) => middleware(next),
       this._handle,
     ));
-    return handler(req);
+
+    try {
+      return handler(req);
+    } catch (error) {
+      // handle uncaught error
+      this.log.error(`Handle ${req.service}#${req.method} error: ${error}`);
+      return createResponseFromRequest(req, {
+        error,
+        status: 500,
+        description: String(error),
+      });
+    }
   }
 }
 

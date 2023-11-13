@@ -1,5 +1,5 @@
-import type { ConnectionOptions, NatsConnection } from 'nats';
 import { ConfigurableModuleBuilder, Inject, Logger, Module } from '@nestjs/common';
+import type { ConnectionOptions, NatsConnection } from 'nats';
 import { getNatsOptions } from '../config';
 import { connect as defaultConnect } from './connect';
 

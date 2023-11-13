@@ -1,5 +1,5 @@
-import { Msg } from 'nats';
 import { Logger } from '@nestjs/common';
+import { Msg } from 'nats';
 import {
   ServerRequest,
   ServerResponse,
@@ -7,7 +7,7 @@ import {
   ServiceRequestPayloadSchema,
   ServiceResponsePayloadSchema,
 } from '../../service';
-import { createResponse } from '../../service/server/createResponse';
+import { createResponseFromRequest } from '../../service';
 import { fromMessageHeader, toMessageHeader } from './nats';
 import { KnownNatsServerMetadata } from './types';
 
@@ -29,7 +29,7 @@ export async function handleNatsServiceServerMessage({
   } catch (error) {
     msg.respond(
       JSON.stringify(
-        createResponse(
+        createResponseFromRequest(
           {},
           {
             code: 400,
@@ -54,12 +54,12 @@ export async function handleNatsServiceServerMessage({
   if (!res) {
     if (cause) {
       log.error(`Handle ${req.service}#${req.method} error: ${cause}`);
-      res = createResponse(req, {
+      res = createResponseFromRequest(req, {
         status: 500,
         description: String(cause),
       });
     } else if (!res) {
-      res = createResponse(req, {
+      res = createResponseFromRequest(req, {
         status: 500,
         description: 'Invalid Response',
       });
