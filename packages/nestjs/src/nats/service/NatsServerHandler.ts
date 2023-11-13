@@ -1,7 +1,7 @@
-import type { Subscription } from 'nats';
 import { Inject, Injectable, Logger, Optional } from '@nestjs/common';
 import { DiscoveryService, ModulesContainer } from '@nestjs/core';
 import { createLazyPromise } from '@wener/utils';
+import type { Subscription } from 'nats';
 import { App } from '../../app';
 import { EXPOSE_SERVICE_METADATA_KEY, ServiceRegistry } from '../../service';
 import { NatsConn } from '../nats.module';

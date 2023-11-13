@@ -1,5 +1,5 @@
-import type { NatsConnection } from 'nats';
 import { ConfigurableModuleBuilder, Module } from '@nestjs/common';
+import type { NatsConnection } from 'nats';
 import { NATS_CONNECTION, NatsModule } from '..';
 import { ServerRequest, SERVICE_CLIENT_CONNECTION } from '../../service';
 import { createNatsClientConnection } from './createNatsClientConnection';

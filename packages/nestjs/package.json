@@ -1,12 +1,10 @@
 {
   "name": "@wener/nestjs",
-  "version": "1.0.19",
+  "version": "1.0.20",
+  "type": "module",
   "description": "NestJS utils",
-  "scripts": {
-    "test": "make test",
-    "build": "make build",
-    "deploy": "make deploy"
-  },
+  "author": "wener",
+  "license": "ISC",
   "exports": {
     ".": {
       "types": "./src/index.ts",
@@ -51,20 +49,18 @@
     "./package.json": "./package.json"
   },
   "files": [
-    "lib",
-    "src",
-    "tsconfig.json",
     "*.ts",
-    "package.json"
+    "lib",
+    "package.json",
+    "src",
+    "tsconfig.json"
   ],
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
-  },
   "keywords": [],
-  "author": "wener",
-  "license": "ISC",
-  "type": "module",
+  "scripts": {
+    "build": "make build",
+    "deploy": "make deploy",
+    "test": "make test"
+  },
   "peerDependencies": {
     "@mikro-orm/core": "*",
     "@nestjs/common": "*",
@@ -73,21 +69,26 @@
     "fastify": "*"
   },
   "peerDependenciesMeta": {
-    "@nestjs/common": {
+    "@mikro-orm/core": {
       "optional": true
     },
-    "@nestjs/swagger": {
+    "@nestjs/common": {
       "optional": true
     },
     "@nestjs/core": {
       "optional": true
     },
-    "@mikro-orm/core": {
+    "@nestjs/swagger": {
       "optional": true
     },
     "fastify": {
       "optional": true
     }
+  },
+  "dependencies": {
+    "@wener/utils": "workspace:^",
+    "reflect-metadata": "^0.1.13",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@mikro-orm/core": "^5.9.2",
@@ -103,10 +104,9 @@
     "nats.ws": "^1.18.0",
     "vitest": "^0.34.6"
   },
-  "dependencies": {
-    "@wener/utils": "workspace:^",
-    "reflect-metadata": "^0.1.13",
-    "zod": "^3.22.4"
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   },
   "xo": {
     "envs": [

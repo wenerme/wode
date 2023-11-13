@@ -1,1 +1,1 @@
-export * from './src/mikro-orm'
+export * from './src/mikro-orm';

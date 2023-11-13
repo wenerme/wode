@@ -1,6 +1,6 @@
+import 'reflect-metadata';
 import process from 'node:process';
 import { inspect } from 'node:util';
-import 'reflect-metadata';
 import { MemoryCacheAdapter, ReflectMetadataProvider } from '@mikro-orm/core';
 import { type MikroORMOptions } from '@mikro-orm/core';
 import { defineConfig } from '@mikro-orm/postgresql';

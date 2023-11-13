@@ -11,3 +11,4 @@ export {
 export type * from './types';
 export { createServerLoggingMiddleware } from './createServerLoggingMiddleware';
 export { ServiceServerModule } from './ServiceServerModule';
+export { createResponseFromRequest } from './createResponseFromRequest';

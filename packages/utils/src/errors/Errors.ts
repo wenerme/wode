@@ -101,8 +101,29 @@ class DetailHolder implements ErrorDetail {
     }
   }
 
-  throw(o?: Partial<ErrorDetailInit>): never {
+  throw(o?: string | Partial<ErrorDetailInit>): never {
     throw this.asError(o);
+  }
+
+  toJSON() {
+    return {
+      code: this.code,
+      message: this.message,
+      status: this.status,
+      description: this.description,
+      cause: this.cause,
+      metadata: this.metadata,
+    };
+  }
+
+  asResponse(): Response {
+    return new Response(JSON.stringify(this.toJSON()), {
+      status: this.status,
+      statusText: this.description,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
   }
 }
 
@@ -118,11 +139,11 @@ export interface ErrorDetail {
 
   with(o?: Partial<ErrorDetailInit>): ErrorDetail;
 
-  asError(o?: Partial<ErrorDetailInit>): Error;
+  asError(o?: string | Partial<ErrorDetailInit>): Error;
 
-  asError(message: string): Error;
+  asResponse(): Response;
 
-  throw(o?: Partial<ErrorDetailInit>): never;
+  throw(o?: string | Partial<ErrorDetailInit>): never;
 
   require<T>(v: T | undefined, o?: Partial<ErrorDetailInit> | string): NonNullable<T>;
 
@@ -142,6 +163,8 @@ export class Errors {
   static InternalServerError: ErrorDetail = this.with({ status: 501 });
   static NotImplemented: ErrorDetail = this.with({ status: 501 });
   static ServiceUnavailable: ErrorDetail = this.with({ status: 503 });
+
+  static resolvers: ((e: any) => ErrorDetail | void)[] = [];
 
   static with(init: ErrorDetailInit): ErrorDetail {
     return new DetailHolder(init);
@@ -169,6 +192,13 @@ export class Errors {
 
     if (e instanceof DetailError) {
       return e.detail;
+    }
+
+    for (const resolver of this.resolvers) {
+      const r = resolver(e);
+      if (r) {
+        return r;
+      }
     }
 
     if (e instanceof Error) {
