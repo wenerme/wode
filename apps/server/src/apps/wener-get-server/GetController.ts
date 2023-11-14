@@ -2,9 +2,9 @@ import { createZodDto } from '@anatine/zod-nestjs';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
 import { FileInterceptor } from '@nest-lab/fastify-multer';
-import { Body, Controller, Get, Param, Post, Req, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Logger, Param, Post, Req, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { ApiBody, ApiConsumes, ApiOkResponse, ApiOperation, ApiProperty } from '@nestjs/swagger';
-import { Errors, isUUID } from '@wener/utils';
+import { Errors, firstOfMaybeArray, isUUID } from '@wener/utils';
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 import { Public } from '../../app/auth';
@@ -105,6 +105,7 @@ const GetServerAuditType = {
 @Controller()
 @Public()
 export class GetController {
+  private log = new Logger(this.constructor.name);
   constructor(
     protected readonly svc: StorageService,
     @InjectRepository(StorageItemEntity) protected readonly repo: EntityRepository<StorageItemEntity>,
@@ -183,12 +184,15 @@ export class GetController {
     let accessAllowed = true;
     if (entity.authToken) {
       accessAllowed = false;
+      // 2017 Chrome 59 不允许 embed basic auth subresource https://chromestatus.com/feature/5669008342777856
+      // 但应该是支持当前请求的
       let [type, token] = req.headers.authorization?.split(' ') ?? [];
       if (type === 'Basic') {
         const sp = atob(token).split(':');
         // treat user as token
         token = sp[0];
       }
+      token ||= firstOfMaybeArray((req.query as any)?.token);
       accessAllowed = token === entity.authToken;
     }
     if (!accessAllowed) {
