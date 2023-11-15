@@ -30,6 +30,7 @@ export const logger = () =>
       console.log(logStr.join(' '));
     })
     .onError(({ request, error, store }) => {
+      console.log('Error', error);
       const logStr: string[] = [];
 
       logStr.push(pc.red(methodString(request.method)));

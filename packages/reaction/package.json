@@ -66,11 +66,11 @@
     ]
   },
   "devDependencies": {
-    "@types/hoist-non-react-statics": "^3.3.4",
-    "@types/prop-types": "^15.7.9",
-    "@types/react": "^18.2.34",
-    "@types/react-dom": "^18.2.14",
-    "@types/react-is": "^18.2.3",
+    "@types/hoist-non-react-statics": "^3.3.5",
+    "@types/prop-types": "^15.7.10",
+    "@types/react": "^18.2.37",
+    "@types/react-dom": "^18.2.15",
+    "@types/react-is": "^18.2.4",
     "@wener/utils": "workspace:^"
   },
   "peerDependencies": {

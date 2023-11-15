@@ -52,6 +52,9 @@ export class BaseHttpRequestLogEntity<
   @Property({ type: types.string, nullable: true })
   contentType?: string;
 
+  @Property({ type: types.string, nullable: true })
+  requestId?: string;
+
   @Property({ type: types.boolean, nullable: true })
   ok?: boolean;
 
@@ -96,9 +99,11 @@ export class BaseHttpRequestLogEntity<
     } else {
       this.fromUrl(u.toString());
     }
+    let hdrs = Object.fromEntries(new Headers(init.headers).entries());
     this.assign({
       method: init.method || 'GET',
-      requestHeaders: Object.fromEntries(new Headers(init.headers).entries()),
+      requestHeaders: hdrs,
+      requestId: hdrs['x-request-id'] || hdrs['x-amzn-requestid'],
       // requestPayload: init.body,
     } as any);
     return this;
@@ -114,6 +119,7 @@ export class BaseHttpRequestLogEntity<
       contentType: headers['content-type'],
       // responsePayload: resp.body,
     } as any);
+    this.requestId ||= headers['x-request-id'] || headers['x-amzn-requestid'];
     return this;
   }
 

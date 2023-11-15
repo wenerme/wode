@@ -1,11 +1,12 @@
 import type { EventArgs, EventSubscriber, FlushEventArgs, TransactionEventArgs } from '@mikro-orm/core';
 import { Injectable, Logger } from '@nestjs/common';
-import { EventEmitter2 } from '@nestjs/event-emitter';
 import { StandardBaseEntity } from '../../entity/StandardBaseEntity';
 
 @Injectable()
-export class EntityEventSubscriber implements EventSubscriber<StandardBaseEntity<any>> {
-  private readonly log = new Logger(EntityEventSubscriber.name);
+export class EntityEventSubscriber<T extends StandardBaseEntity<any> = StandardBaseEntity<any>>
+  implements EventSubscriber<T>
+{
+  private readonly log = new Logger(this.constructor.name);
 
   readonly stats = {
     flush: 0,
@@ -18,28 +19,26 @@ export class EntityEventSubscriber implements EventSubscriber<StandardBaseEntity
     rollback: 0,
   };
 
-  constructor(private readonly emitter: EventEmitter2) {}
-
   afterFlush(args: FlushEventArgs): void | Promise<void> {
     this.stats.flush++;
   }
 
-  afterCreate(args: EventArgs<StandardBaseEntity<any>>): void | Promise<void> {
+  afterCreate(args: EventArgs<T>): void | Promise<void> {
     this.stats.create++;
     this.log.log(`create ${args.entity.id}`);
   }
 
-  afterUpdate(args: EventArgs<StandardBaseEntity<any>>): void | Promise<void> {
+  afterUpdate(args: EventArgs<T>): void | Promise<void> {
     this.stats.update++;
     this.log.log(`update ${args.entity.id}`);
   }
 
-  afterUpsert(args: EventArgs<StandardBaseEntity<any>>): void | Promise<void> {
+  afterUpsert(args: EventArgs<T>): void | Promise<void> {
     this.stats.upsert++;
     this.log.log(`upsert ${args.entity.id}`);
   }
 
-  afterDelete(args: EventArgs<StandardBaseEntity<any>>): void | Promise<void> {
+  afterDelete(args: EventArgs<T>): void | Promise<void> {
     this.stats.delete++;
     this.log.log(`delete ${args.entity.id}`);
   }
@@ -55,10 +54,4 @@ export class EntityEventSubscriber implements EventSubscriber<StandardBaseEntity
   afterTransactionStart(args: TransactionEventArgs): void | Promise<void> {
     this.stats.tx++;
   }
-
-  // 作为 唯一条件，需要前处理
-  // beforeUpsert(args: EventArgs<StandardBaseEntity<any>>): void | Promise<void> {
-  //   // args.meta check has tid
-  //   (args.entity as any).tid ||= getTenantId()
-  // }
 }
