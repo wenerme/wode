@@ -1,7 +1,7 @@
 import { FetchLike, getGlobalThis, MaybePromise } from '@wener/utils';
 import { CreateEmbeddingRequest } from './messages';
 import { OpenAiRequestOptions, request } from './request';
-import { ImageObject, ListObject, ModelObject } from './types';
+import { DeletedObject, ImageObject, ListObject, ModelObject } from './types';
 
 export interface OpenAiClientOptions {
   fetch: FetchLike;
@@ -11,12 +11,6 @@ export interface OpenAiClientOptions {
 }
 
 export interface OpenAiClientInit extends Partial<OpenAiClientOptions> {}
-
-export type DeletedObject<T extends string = string> = {
-  id: string;
-  object: T;
-  deleted: true;
-};
 
 /**
  * @see https://platform.openai.com/docs/api-reference

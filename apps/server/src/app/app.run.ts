@@ -14,6 +14,7 @@ const log = new Logger('RunApplication');
 
 export interface ApplicationOptions extends BootstrapOptions<NestFastifyApplication> {
   openapi?: boolean | ((builder: DocumentBuilder) => void);
+  helmet?: false;
 }
 
 export async function runApplication(opts: ApplicationOptions) {
