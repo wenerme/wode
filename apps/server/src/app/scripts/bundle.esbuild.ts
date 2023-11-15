@@ -1,3 +1,4 @@
+import fs from 'node:fs';
 import * as esbuild from 'esbuild';
 import { DynamicImport } from './DynamicImport';
 import esbuildPluginTsc from './esbuild-plugin-tsc';
@@ -14,9 +15,20 @@ await Promise.all(
 );
 
 async function bundle(server: string) {
+  const candicates = [`./src/apps/${server}/main.bun.ts`, `./src/apps/${server}/main.ts`];
+  const entry = candicates.find((v) => {
+    try {
+      fs.statSync(v);
+      return true;
+    } catch (e) {}
+    return false;
+  });
+  if (!entry) {
+    throw new Error(`No entry for ${server}`);
+  }
   const result = await esbuild.build({
     //entryPoints: [`./dist/out/apps/${server}/main.js`], // for swc handle decorator
-    entryPoints: [`./src/apps/${server}/main.ts`],
+    entryPoints: [entry],
     bundle: true,
     logLevel: 'info',
     banner: {

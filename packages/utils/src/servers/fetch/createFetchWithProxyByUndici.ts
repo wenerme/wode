@@ -1,5 +1,6 @@
 import { MaybePromise } from '../../asyncs/MaybePromise';
-import { FetchLike } from '../../fetch';
+import { createFetchWith, FetchLike } from '../../fetch';
+import { getGlobalThis } from '../../isomorphics/getGlobalThis';
 
 export function createFetchWithProxyByUndici({
   proxy,
@@ -15,6 +16,20 @@ export function createFetchWithProxyByUndici({
   if (!proxy) {
     return fetch || globalThis.fetch;
   }
+
+  if ((getGlobalThis() as any).Bun) {
+    return createFetchWith({
+      fetch,
+      onRequest: ({ url, req, next }) => {
+        return next(url, {
+          ...req,
+          // https://github.com/oven-sh/bun/issues/1829
+          proxy,
+        } as RequestInit);
+      },
+    });
+  }
+
   let agent: any;
   // https://github.com/nodejs/undici/blob/main/docs/best-practices/proxy.md
   return async (...args) => {
