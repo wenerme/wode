@@ -17,18 +17,18 @@
     "@wener/reaction": "workspace:^",
     "@wener/utils": "workspace:^",
     "immer": "^10.0.3",
-    "next": "^13.5.6",
+    "next": "^14.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-icons": "^4.11.0",
-    "react-router-dom": "6.16.0",
+    "react-icons": "^4.12.0",
+    "react-router-dom": "6.18.0",
     "use-immer": "^0.9.0",
-    "valtio": "^1.11.3",
+    "valtio": "^1.12.0",
     "zod": "^3.22.4",
-    "zustand": "^4.4.5"
+    "zustand": "^4.4.6"
   },
   "devDependencies": {
-    "@types/react": "^18.2.34",
-    "@types/react-dom": "^18.2.14"
+    "@types/react": "^18.2.37",
+    "@types/react-dom": "^18.2.15"
   }
 }

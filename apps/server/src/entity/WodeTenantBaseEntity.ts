@@ -22,7 +22,7 @@ export type TenantBaseEntityOptionalFields =
 @Entity({ abstract: true })
 @Filter(TidFilter)
 @Unique({ properties: ['tid', 'eid'] })
-export abstract class TenantBaseEntity<E extends TenantBaseEntity<any> = any> extends StandardBaseEntity<E> {
+export abstract class WodeTenantBaseEntity<E extends WodeTenantBaseEntity<any> = any> extends StandardBaseEntity<E> {
   @Property({ type: types.string, nullable: false, defaultRaw: 'public.current_tenant_id()' })
   tid!: string;
 

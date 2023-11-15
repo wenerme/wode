@@ -39,7 +39,7 @@ export function createFetchWithCache<T extends BaseHttpRequestLogEntity>({
     } = {},
   ) => {
     const config = Object.assign({}, _config, FetchCache.getConfig());
-    const e = repo.create({} as any, { persist: false });
+    const e = repo.create({} as any, { persist: false }) as BaseHttpRequestLogEntity;
     e.fromRequest(url, init);
     const ctx: FetchCacheHookContext = { entry: e, init, config: config || {}, hit: false };
     if (config.use === 'skip') {
@@ -67,36 +67,54 @@ export function createFetchWithCache<T extends BaseHttpRequestLogEntity>({
 
     if (init?.body) {
       const requestContentType = e.requestHeaders?.['content-type']?.split(';')[0];
-
       const body = init.body;
-      if (body instanceof FormData) {
-        e.requestBody = await readStreamToBuffer(new Response(body).body!);
-        e.requestPayload = Object.fromEntries(Array.from(body.entries()).filter(([k, v]) => typeof v === 'string'));
-      } else if (body instanceof ReadableStream) {
-        let rs;
-        [init.body, rs] = body.tee();
-        e.requestBody = await readStreamToBuffer(rs);
-      } else if (typeof body === 'string') {
-        switch (requestContentType) {
-          case 'application/x-www-form-urlencoded': {
-            e.requestPayload = parseForm(body);
-            break;
-          }
-          default:
-            if (body.startsWith('{') || requestContentType?.includes('json')) {
-              e.requestPayload = removeNullChar(JSON.parse(body));
-            } else {
-              e.requestBody = Buffer.from(body);
-            }
+
+      const getText = async () => {
+        if (typeof body === 'string') {
+          return body;
         }
-      } else if (requestContentType === 'multipart/form-data') {
+
         if (ArrayBuffers.isArrayBuffer(body)) {
-          e.requestBody = Buffer.from(body);
-        } else {
-          log.warn(`Unknown body type ContentType=${requestContentType} ${typeof body} ${classOf(body)}`);
+          return Buffer.from(body).toString('utf-8');
         }
-      } else {
-        log.warn(`Unknown body type ContentType=${requestContentType} ${typeof body} ${classOf(body)}`);
+      };
+      const getBinary = () => {
+        if (body instanceof ReadableStream) {
+          let rs;
+          [init.body, rs] = body.tee();
+          return readStreamToBuffer(rs);
+        }
+        if (ArrayBuffers.isArrayBuffer(body)) {
+          return Buffer.from(body);
+        }
+      };
+      switch (requestContentType) {
+        case 'application/json': {
+          {
+            const text = await new Response(init.body).text();
+            e.requestPayload = removeNullChar(JSON.parse(text));
+          }
+          break;
+        }
+        case 'application/x-www-form-urlencoded':
+          {
+            let text = await getText();
+            if (text) {
+              e.requestPayload = parseForm(text);
+            }
+            //   if (body instanceof FormData) {
+            //     e.requestBody = await readStreamToBuffer(new Response(body).body!);
+            //     e.requestPayload = Object.fromEntries(Array.from(body.entries()).filter(([k, v]) => typeof v === 'string'));
+            //   }
+          }
+          break;
+        case 'multipart/form-data':
+          e.requestBody = await getBinary();
+          break;
+      }
+
+      if (!e.requestBody && !e.requestPayload) {
+        log.warn(`skip body data ContentType=${requestContentType} ${typeof body} ${classOf(body)}`);
       }
     }
 

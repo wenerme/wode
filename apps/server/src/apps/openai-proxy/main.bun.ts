@@ -2,16 +2,23 @@ import { swagger } from '@elysiajs/swagger';
 import { MemoryCacheAdapter, ReflectMetadataProvider, RequestContext } from '@mikro-orm/core';
 import { MikroORM } from '@mikro-orm/postgresql';
 import { HttpException, Logger } from '@nestjs/common';
+import { Static } from '@sinclair/typebox';
+import { Value } from '@sinclair/typebox/value';
 import { Currents } from '@wener/nestjs';
 import { getServerConfig } from '@wener/nestjs/config';
-import { classOf, FetchLike, getGlobalThis, MaybePromise } from '@wener/utils';
+import { Errors, FetchLike, getGlobalThis, isUUID, MaybePromise, parseBoolean } from '@wener/utils';
 import { createFetchWithProxy } from '@wener/utils/server';
 import { Elysia, t } from 'elysia';
 import { inspect } from 'util';
+import { getEntityManager } from '../../app/mikro-orm';
+import { AccessTokenEntity } from '../../entity/AccessTokenEntity';
+import { ClientAgentEntity } from '../../entity/ClientAgentEntity';
 import { HttpRequestLogEntity } from '../../entity/HttpRequestLogEntity';
 import { createFetchWithCache } from '../../modules/FetchCache';
 import { loadEnvs } from '../../util/loadEnvs';
+import { EntityEventSubscriber } from '../wener-get-server/EntityEventSubscriber';
 import { logger } from './bun/logger';
+import { parseAuthorization } from './parseAuthorization';
 
 await loadEnvs();
 
@@ -22,7 +29,9 @@ const orm = await MikroORM.init({
     requireEntitiesArray: true,
   },
   clientUrl: process.env.DB_DSN || process.env.DATABASE_DSN,
-  entities: [HttpRequestLogEntity],
+  debug: parseBoolean(process.env.DATABASE_DEBUG),
+  entities: [HttpRequestLogEntity, ClientAgentEntity, AccessTokenEntity],
+  subscribers: [new EntityEventSubscriber()],
   metadataProvider: ReflectMetadataProvider,
   resultCache: {
     adapter: MemoryCacheAdapter,
@@ -61,9 +70,14 @@ fetch = createFetchWithCache({
   },
 });
 
+const isDev = process.env.NODE_ENV === 'development';
+
 const app = new Elysia()
   .use(swagger())
   .use(logger())
+  .get('/healthz', () => {
+    return 'OK';
+  })
   .get(
     '/ping',
     ({ body }) => {
@@ -85,15 +99,65 @@ const app = new Elysia()
     url.host = 'api.openai.com';
     url.port = '';
     return runContext(async () => {
+      let authorization = up.authorization;
+      let isSecretKey = false;
       let headers: Record<string, any> = {
-        authorization: up.authorization,
+        authorization: authorization,
         'content-type': up['content-type'],
         'openai-organization': up['openai-organization'],
-        'x-openai-organization': up['x-openai-organization'],
       };
+      {
+        let [type, token] = parseAuthorization(authorization);
+        switch (type?.toLowerCase()) {
+          case 'bearer':
+            if (token && (isUUID(token) || (token?.startsWith('sk-') && isUUID(token?.substring(3))))) {
+              // allow sk- prefix
+              // some client will detect sk-
+              if (token.startsWith('sk-')) {
+                token = token.slice(3);
+              }
+              let repo = getEntityManager().getRepository(AccessTokenEntity);
+              let at = await repo.findOne(
+                {
+                  $and: [
+                    {
+                      accessToken: token,
+                      clientAgent: {
+                        type: 'OpenAi',
+                        active: true,
+                      },
+                    },
+                    {
+                      $or: [{ expiresAt: { $gt: new Date() } }, { expiresAt: null }],
+                    },
+                  ],
+                },
+                {
+                  populate: ['clientAgent'],
+                  cache: 1000 * 60,
+                },
+              );
+              let ca = at?.clientAgent;
+              if (!at || !ca) {
+                return Errors.Unauthorized.with('Invalid Token').asResponse();
+              }
+              if (!Value.Check(OpenAiClientAgent, ca)) {
+                return Errors.BadRequest.with('Invalid Client Agent').asResponse();
+              }
+
+              headers.authorization = `Bearer ${ca.secrets.key}`;
+              headers['openai-organization'] ||= ca.secrets.organization;
+            } else if (token?.startsWith('sk-')) {
+              isSecretKey = true;
+            }
+        }
+      }
+
       // rm falsy headers
       headers = Object.fromEntries(Object.entries(headers).filter(([_, v]) => v));
-      console.log(`-> ${req.method} ${url.pathname}${url.search}`, up, classOf(body));
+      if (isDev) {
+        console.log(`-> ${req.method} ${url.pathname}${url.search}`, up);
+      }
       let res: Response;
       try {
         res = await fetch(url, {
@@ -110,7 +174,10 @@ const app = new Elysia()
           },
         });
       }
-      console.log(`<- ${req.method} ${url.pathname} ${res.status} ${res.statusText}\n`, res);
+
+      if (isDev) {
+        console.log(`<- ${req.method} ${url.pathname} ${res.status} ${res.statusText}`);
+      }
 
       let down = {
         ...Object.fromEntries(
@@ -120,16 +187,12 @@ const app = new Elysia()
               case 'x-request-id':
                 return true;
             }
-            // if (k.startsWith('cf-') || k.startsWith('alt-')) {
-            //   return false;
-            // }
-            // switch (k) {
-            //   case 'set-cookie':
-            //   case 'content-length':
-            //     return false;
-            //   default:
-            //     return true;
-            // }
+
+            if (isSecretKey) {
+              if (k.startsWith('openai-') || k.startsWith('x-ratelimit-')) {
+                return true;
+              }
+            }
           }),
         ),
         'cache-control': 'no-cache, must-revalidate',
@@ -166,3 +229,17 @@ export type App = typeof app;
 function runContext<T>(f: () => MaybePromise<T>) {
   return RequestContext.createAsync(orm.em, async () => Currents.run(f));
 }
+
+export type OpenAiClientAgent = Static<typeof OpenAiClientAgent>;
+export const OpenAiClientAgent = t.Object({
+  type: t.Literal('OpenAi'),
+  secrets: t.Object({
+    key: t.String(),
+    organization: t.Optional(t.String()),
+    endpoint: t.Optional(t.String()),
+  }),
+  config: t.Object({
+    defaults: t.Optional(t.Record(t.String(), t.Record(t.String(), t.Any()))),
+    overrides: t.Optional(t.Record(t.String(), t.Record(t.String(), t.Any()))),
+  }),
+});
