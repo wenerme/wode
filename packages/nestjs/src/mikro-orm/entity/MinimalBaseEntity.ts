@@ -1,6 +1,6 @@
 import { BaseEntity, Entity, PrimaryKey, Property, types } from '@mikro-orm/core';
 
-export type MinimalBaseOptionalEntityFields = 'id' | 'uid' | 'createdAt' | 'updatedAt' | 'sid';
+export type MinimalBaseEntityOptionalFields = 'id' | 'uid' | 'createdAt' | 'updatedAt' | 'sid';
 
 @Entity({ abstract: true })
 export abstract class MinimalBaseEntity<E extends MinimalBaseEntity<any>> extends BaseEntity<E, 'id'> {
