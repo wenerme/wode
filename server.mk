@@ -6,8 +6,15 @@ APP_NAME:=$(SERVER)
 IMAGE:=`cd builds && docker buildx bake --print $(SERVER) 2>/dev/null | jq -r '.target."$(SERVER)".tags[0]'`
 
 # NODE_ENV=development pnpm tsx watch ./dist/out/apps/$(SERVER)/main.js
+# detect main.bun.ts run by bun
+ifneq ($(wildcard src/apps/$(SERVER)/main.bun.ts),)
+dev:
+	NODE_ENV=development bun --watch ./src/apps/$(SERVER)/main.bun.ts
+else
 dev:
 	NODE_ENV=development pnpm node --loader ts-node/esm --watch ./src/apps/$(SERVER)/main.ts
+endif
+
 build: swc-build
 	pnpm tsx src/app/scripts/bundle.esbuild.ts
 	sha256sum dist/apps/$(SERVER)/main.mjs
@@ -80,6 +87,10 @@ run\:%:
 build\:%:
 	@echo "Building $*"
 	@make SERVER=$(*) build
+
+image\:%:
+	@echo "Building image $*"
+	@make SERVER=$(*) image
 
 deploy\:%:
 	@echo "Deploy $*"

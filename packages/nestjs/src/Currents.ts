@@ -44,7 +44,7 @@ export class Currents {
   static getStore(require = true) {
     const store = this.store;
     if (!store && require) {
-      throw Errors.InternalServerError.asException('Currents not ready');
+      throw Errors.InternalServerError.asError('Currents not ready');
       // store = new Map();
       // this.Store.enterWith(store);
     }
@@ -110,7 +110,7 @@ class Token<T> implements ContextToken<T> {
     const found = this.get();
     if (found === undefined) {
       this.log.warn('context value not found');
-      throw Errors.InternalServerError.asException('上下文不存在');
+      throw Errors.InternalServerError.asError('上下文不存在');
     }
 
     return found;

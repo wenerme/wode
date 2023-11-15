@@ -13,6 +13,7 @@
   "dependencies": {
     "@anatine/zod-nestjs": "^2.0.3",
     "@apollo/subgraph": "^2.5.6",
+    "@elysiajs/swagger": "^0.7.4",
     "@fastify/cookie": "^9.1.0",
     "@fastify/helmet": "^11.1.1",
     "@fastify/static": "^6.12.0",
@@ -51,6 +52,7 @@
     "dayjs": "^1.11.10",
     "dotenv": "^16.3.1",
     "duckdb": "^0.8.1",
+    "elysia": "^0.7.25",
     "eventsource-parser": "^1.1.1",
     "fast-glob": "^3.3.1",
     "fastify": "^4.24.3",
@@ -69,6 +71,7 @@
     "mercurius": "^13.2.2",
     "mime-types": "^2.1.35",
     "object-hash": "^3.0.0",
+    "picocolors": "^1.0.0",
     "qrcode": "^1.5.3",
     "reflect-metadata": "^0.1.13",
     "semver": "^7.5.4",
@@ -90,7 +93,9 @@
     "@types/qrcode": "^1.5.4",
     "@types/semver": "^7.5.4",
     "@types/tar": "^6.1.7",
-    "@types/zxcvbn": "^4.4.3"
+    "@types/zxcvbn": "^4.4.3",
+    "bun-types": "^1.0.11",
+    "openai": "^4.16.1"
   },
   "xo": {
     "envs": [
