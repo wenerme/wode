@@ -979,8 +979,8 @@ importers:
         specifier: ^4.4.4
         version: 4.4.4
       bun-types:
-        specifier: ^1.0.11
-        version: 1.0.11
+        specifier: ^1.0.12
+        version: 1.0.12
       openai:
         specifier: ^4.18.0
         version: 4.18.0
@@ -8398,7 +8398,7 @@ packages:
       prosemirror-dropcursor: 1.8.1
       prosemirror-gapcursor: 1.3.2
       prosemirror-history: 1.3.2
-      prosemirror-inputrules: 1.2.1
+      prosemirror-inputrules: 1.3.0
       prosemirror-keymap: 1.2.2
       prosemirror-markdown: 1.11.2
       prosemirror-menu: 1.2.4
@@ -10242,8 +10242,8 @@ packages:
       semver: 7.5.4
     dev: true
 
-  /bun-types@1.0.11:
-    resolution: {integrity: sha512-XaDwjnBlkdTOtBEAcXhDnPSKFMlwFK/526z0iyairYIDhZJMzZM1QU4D7XRiEI2SpKQWexn0S/LN9Mwx5xSJNg==}
+  /bun-types@1.0.12:
+    resolution: {integrity: sha512-jGXEQ9pkp1kwdgYY6X6SPP5V4kxEGGZQaZMEKUVeJ7T1/XFyrAwL4AeaM4lSvjYqwsPXIDdKCFgw5M1KLoK4qw==}
     dev: true
 
   /bundle-name@3.0.0:
@@ -16781,8 +16781,8 @@ packages:
       rope-sequence: 1.3.4
     dev: false
 
-  /prosemirror-inputrules@1.2.1:
-    resolution: {integrity: sha512-3LrWJX1+ULRh5SZvbIQlwZafOXqp1XuV21MGBu/i5xsztd+9VD15x6OtN6mdqSFI7/8Y77gYUbQ6vwwJ4mr6QQ==}
+  /prosemirror-inputrules@1.3.0:
+    resolution: {integrity: sha512-z1GRP2vhh5CihYMQYsJSa1cOwXb3SYxALXOIfAkX8nZserARtl9LiL+CEl+T+OFIsXc3mJIHKhbsmRzC0HDAXA==}
     dependencies:
       prosemirror-state: 1.4.3
       prosemirror-transform: 1.8.0
