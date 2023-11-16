@@ -94,7 +94,7 @@
     "@types/semver": "^7.5.5",
     "@types/tar": "^6.1.9",
     "@types/zxcvbn": "^4.4.4",
-    "bun-types": "^1.0.11",
+    "bun-types": "^1.0.12",
     "openai": "^4.18.0"
   },
   "xo": {
