@@ -55,6 +55,9 @@ export class BaseHttpRequestLogEntity<
   @Property({ type: types.string, nullable: true })
   requestId?: string;
 
+  @Property({ type: types.string, nullable: true })
+  responseId?: string;
+
   @Property({ type: types.boolean, nullable: true })
   ok?: boolean;
 
@@ -67,13 +70,13 @@ export class BaseHttpRequestLogEntity<
   @Property({ type: types.integer, nullable: true })
   duration?: number;
 
-  @Property({ type: types.json, nullable: false, default: '{}' })
+  @Property({ type: types.json, nullable: false, defaultRaw: '{}' })
   attributes!: Record<string, any>;
 
-  @Property({ type: types.json, nullable: false, default: '{}' })
+  @Property({ type: types.json, nullable: false, defaultRaw: '{}' })
   properties!: Record<string, any>;
 
-  @Property({ type: types.json, nullable: false, default: '{}' })
+  @Property({ type: types.json, nullable: false, defaultRaw: '{}' })
   extensions!: Record<string, any>;
 
   @Property({ type: types.integer, nullable: false, default: 0 })
@@ -119,7 +122,7 @@ export class BaseHttpRequestLogEntity<
       contentType: headers['content-type'],
       // responsePayload: resp.body,
     } as any);
-    this.requestId ||= headers['x-request-id'] || headers['x-amzn-requestid'];
+    this.responseId ||= headers['x-request-id'] || headers['x-amzn-requestid'];
     return this;
   }
 

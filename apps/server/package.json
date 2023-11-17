@@ -13,6 +13,8 @@
   "dependencies": {
     "@anatine/zod-nestjs": "^2.0.3",
     "@apollo/subgraph": "^2.5.6",
+    "@elysiajs/server-timing": "^0.7.1",
+    "@elysiajs/static": "^0.7.1",
     "@elysiajs/swagger": "^0.7.4",
     "@fastify/cookie": "^9.1.0",
     "@fastify/helmet": "^11.1.1",
