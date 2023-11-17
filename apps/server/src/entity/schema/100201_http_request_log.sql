@@ -23,6 +23,7 @@ create table if not exists http_request_log
   response_body    bytea,
 
   request_id       text,
+  response_id      text,
   content_type     text,
   content_length   int,
 

@@ -152,10 +152,30 @@ export function createFetchWithCache<T extends BaseHttpRequestLogEntity>({
     await onBeforeFetch();
 
     const start = Date.now();
+    const signal = init?.signal;
+    const abort = new Promise((resolve) => signal?.addEventListener('abort', resolve));
+    let res: Response;
     try {
-      const signal = init?.signal;
-      const abort = new Promise((resolve) => signal?.addEventListener('abort', resolve));
-      let res = await fetch(url, init);
+      res = await fetch(url, init);
+    } catch (error) {
+      e.duration = Date.now() - start;
+      e.ok = false;
+      e.statusCode = 0;
+      e.properties ||= {};
+      if (error instanceof Error) {
+        e.properties.error = {
+          message: error.message,
+          stack: error.stack,
+        };
+      } else {
+        e.properties.error = {
+          message: String(error),
+        };
+      }
+
+      throw e;
+    }
+    try {
       e.fromResponse(res);
       const contentType = res.headers.get('content-type')?.split(';')[0];
 

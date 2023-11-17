@@ -740,6 +740,12 @@ importers:
       '@apollo/subgraph':
         specifier: ^2.5.6
         version: 2.5.6(graphql@16.8.1)
+      '@elysiajs/server-timing':
+        specifier: ^0.7.1
+        version: 0.7.1(elysia@0.7.25)
+      '@elysiajs/static':
+        specifier: ^0.7.1
+        version: 0.7.1(elysia@0.7.25)
       '@elysiajs/swagger':
         specifier: ^0.7.4
         version: 0.7.4(elysia@0.7.25)
@@ -3367,6 +3373,22 @@ packages:
     resolution: {integrity: sha512-dBVuXR082gk3jsFp7Rd/JI4kytwGHecnCoTtXFb7DB6CNHp4rg5k1bhg0nWdLGLnOV71lmDzGQaLMy8iPLY0pw==}
     engines: {node: '>=10.0.0'}
     dev: true
+
+  /@elysiajs/server-timing@0.7.1(elysia@0.7.25):
+    resolution: {integrity: sha512-4iRAkPZZjh+lMX85vBfL4EKiY2sIkt25JXIhQogLfCN9MRZRt38QTOQL7w+oI3+BWJ//EQn37ENpI1schMX/mA==}
+    peerDependencies:
+      elysia: '>= 0.7.23'
+    dependencies:
+      elysia: 0.7.25(@sinclair/typebox@0.31.25)(typescript@5.2.2)
+    dev: false
+
+  /@elysiajs/static@0.7.1(elysia@0.7.25):
+    resolution: {integrity: sha512-cplVWo3fpHK+Iqatdel0ldoZPZYzxFX9i1pk+QyX45AoEFTAVX7EpGrWcK4PXufudg0GDQD7q2RM5kI/STwroQ==}
+    peerDependencies:
+      elysia: '>= 0.7.9'
+    dependencies:
+      elysia: 0.7.25(@sinclair/typebox@0.31.25)(typescript@5.2.2)
+    dev: false
 
   /@elysiajs/swagger@0.7.4(elysia@0.7.25):
     resolution: {integrity: sha512-dTZ2ucf9cBgol8X8ekq7dVJ7agw1bvB4ICMpOf7lihfIA8Te3Z0FpXPuGkog27qUKJC8LF5xLxcGwJtAFiVeSg==}
