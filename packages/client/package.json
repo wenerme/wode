@@ -78,7 +78,7 @@
     "@sinclair/typebox": "^0.31.25",
     "@wecom/jssdk": "^1.4.5",
     "fast-xml-parser": "^4.3.2",
-    "openai": "^4.18.0",
+    "openai": "^4.19.0",
     "undici": "^5.27.2",
     "ws": "^8.14.2"
   }
