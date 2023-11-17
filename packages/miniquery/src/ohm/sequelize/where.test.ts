@@ -153,7 +153,7 @@ test('sequelize association', async (t) => {
   }
 });
 
-async function assertQuery(t: TestContext, Model: ModelStatic<any>, query: string) {
+async function assertQuery(_t: TestContext, Model: ModelStatic<any>, query: string) {
   let where: WhereOptions;
   let include: Includeable[];
   try {
@@ -191,7 +191,7 @@ async function assertQuery(t: TestContext, Model: ModelStatic<any>, query: strin
   expect(sql, `Query: ${query}`).matchSnapshot();
 }
 
-test('sequelize incorrect', async (t) => {
+test('sequelize incorrect', async () => {
   const { User } = sequelize.models;
   for (const s of [
     '1 > 0',
@@ -216,7 +216,7 @@ test('sequelize incorrect', async (t) => {
   }
 });
 
-test('sequelize type', async (t) => {
+test('sequelize type', async () => {
   const { type } = sequelize.models.User.getAttributes().attributes as any;
   expect(type).toBeInstanceOf(DataTypes.JSON);
   // sqlite do not support json
