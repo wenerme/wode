@@ -1,6 +1,6 @@
-import { beforeAll, expect, test, TestContext } from 'vitest';
 import type { FindOptions, Includeable, ModelStatic, WhereOptions } from '@sequelize/core';
 import { DataTypes, Sequelize } from '@sequelize/core';
+import { beforeAll, expect, test, TestContext } from 'vitest';
 import { toMiniQueryAST } from '../ast';
 import { toSequelizeWhere } from './where';
 

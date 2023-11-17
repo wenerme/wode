@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import type { MatchResult } from 'ohm-js';
 import type {
   Association,
   DataType,
@@ -11,6 +10,7 @@ import type {
   WhereOptions,
 } from '@sequelize/core';
 import { col, DataTypes, fn, Op, where } from '@sequelize/core';
+import type { MatchResult } from 'ohm-js';
 import type { MiniQueryASTNode } from '../ast';
 import { toMiniQueryAST } from '../ast';
 

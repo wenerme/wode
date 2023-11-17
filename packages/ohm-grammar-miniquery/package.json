@@ -1,6 +1,6 @@
 {
   "name": "ohm-grammar-miniquery",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "type": "module",
   "description": "MiniQuery grammars for various editions of ORM/SQL.",
   "repository": {

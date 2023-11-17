@@ -1,3 +1,5 @@
+> Move to [@wener/miniquery](https://npmjs.com/package/@wener/miniquery)
+
 # ohm-grammar-miniquery
 
 SQL Where like filter expression for sequelize
