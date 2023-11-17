@@ -25,10 +25,10 @@
     "@wener/utils": "workspace:^"
   },
   "devDependencies": {
-    "@mikro-orm/core": "^5.9.3",
-    "@mikro-orm/sqlite": "^5.9.3",
-    "@sequelize/core": "7.0.0-alpha.27",
-    "ohm-js": "^17.1.0"
+    "@mikro-orm/core": "^5",
+    "@mikro-orm/sqlite": "^5",
+    "@sequelize/core": "7.0.0-alpha.29",
+    "ohm-js": "^17"
   },
   "publishConfig": {
     "exports": {
