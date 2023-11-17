@@ -186,7 +186,7 @@ MiniQuerySemantics.addOperation<MiniQueryASTNode>('toAST()', {
   bool: (v) => {
     return { type: 'bool', value: v.sourceString.toLowerCase() === 'true', v: 'bool' };
   },
-  ref(a, b, c: IterationNode) {
+  ref(a, _b, c: IterationNode) {
     return {
       type: 'ref',
       name: [a.sourceString].concat(
