@@ -79,8 +79,6 @@ export { getFileFromDataTransfer } from './browsers/getFileFromDataTransfer';
 // polyfills
 export { getGlobalThis } from './isomorphics/getGlobalThis';
 export { structuredClone } from './isomorphics/structuredClone';
-// should not export as sideEffect
-// export { globalThis } from './isomorphics/globalThis';
 
 // crypto
 export { randomUUID } from './crypto/randomUUID';
@@ -91,8 +89,9 @@ export { hex } from './crypto/base';
 export { isULID, createULID, ulid, parseULID } from './crypto/ulid';
 export { PEM } from './crypto/pem/pem';
 
-// misc
+// math
 export { createRandom } from './maths/random';
+export { clamp } from './maths/clamp';
 
 // network
 export {

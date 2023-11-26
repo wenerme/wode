@@ -1,7 +1,7 @@
 import { QueryOrder } from '@mikro-orm/core';
 import type { QueryBuilder } from '@mikro-orm/postgresql';
-import { normalizePagination } from './normalizePagination';
 import { parseOrder } from './parseOrder';
+import { resolveLimitOffset } from './resolveLimitOffset';
 import { toKnexOrder } from './toKnexOrder';
 
 export function applyListQuery<T extends QueryBuilder<any>>({
@@ -20,7 +20,7 @@ export function applyListQuery<T extends QueryBuilder<any>>({
   };
 }) {
   {
-    const { limit, offset } = normalizePagination(query);
+    const { limit, offset } = resolveLimitOffset(query);
     builder.limit(limit || 20).offset(offset);
   }
 

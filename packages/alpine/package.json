@@ -17,9 +17,9 @@
   "type": "module",
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",
-    "@types/semver": "^7.5.5",
-    "tsx": "^4.1.2",
-    "typescript": "^5.2.2",
+    "@types/semver": "^7.5.6",
+    "tsx": "^4.5.0",
+    "typescript": "^5.3.2",
     "zx": "^7.2.3"
   },
   "dependencies": {

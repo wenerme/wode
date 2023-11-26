@@ -64,11 +64,11 @@
     "test": "make test"
   },
   "devDependencies": {
-    "@types/better-sqlite3": "^7.6.7",
+    "@types/better-sqlite3": "^7.6.8",
     "@types/fs-extra": "^11.0.4",
     "@types/mime": "^3.0.4",
-    "@types/semver": "^7.5.5",
-    "@types/tar": "^6.1.9"
+    "@types/semver": "^7.5.6",
+    "@types/tar": "^6.1.10"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org",
@@ -97,7 +97,7 @@
   "dependencies": {
     "@wener/utils": "*",
     "better-sqlite3": "^9.1.1",
-    "lru-cache": "^10.0.2",
+    "lru-cache": "^10.1.0",
     "mime": "^3.0.0",
     "pino": "^8.16.2",
     "semver": "^7.5.4",
