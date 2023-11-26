@@ -1,3 +1,4 @@
+import { inspect } from 'node:util';
 import { swagger } from '@elysiajs/swagger';
 import { MemoryCacheAdapter, ReflectMetadataProvider, RequestContext } from '@mikro-orm/core';
 import { MikroORM } from '@mikro-orm/postgresql';
@@ -8,7 +9,6 @@ import { getServerConfig } from '@wener/nestjs/config';
 import { Errors, FetchLike, getGlobalThis, MaybePromise, parseBoolean } from '@wener/utils';
 import { createFetchWithProxy } from '@wener/utils/server';
 import { Elysia, t } from 'elysia';
-import { inspect } from 'util';
 import { AccessTokenEntity } from '../../entity/AccessTokenEntity';
 import { ClientAgentEntity } from '../../entity/ClientAgentEntity';
 import { HttpRequestLogEntity } from '../../entity/HttpRequestLogEntity';

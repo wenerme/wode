@@ -19,7 +19,7 @@ export default function () {
   return (
     <LoginPage
       onSubmit={doLogin}
-      showoof={
+      showoff={
         <Image
           className='absolute inset-0 h-full w-full object-cover'
           // https://images.unsplash.com/photo-1496917756835-20cb06e75b4e
