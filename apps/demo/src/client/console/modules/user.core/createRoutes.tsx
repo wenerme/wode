@@ -2,8 +2,8 @@ import React from 'react';
 import { HiColorSwatch, HiOutlineColorSwatch } from 'react-icons/hi';
 import type { RouteObject } from 'react-router-dom';
 import { Navigate } from 'react-router-dom';
-import { PageErrorState } from '@wener/console/console';
 import { lazyRoute } from '@wener/console/router';
+import { PageErrorState } from '@wener/console/web';
 
 export function createRoutes(): RouteObject[] {
   const routes: RouteObject[] = [];
@@ -50,7 +50,7 @@ export function createRoutes(): RouteObject[] {
           children: [
             {
               index: true,
-              lazy: lazyRoute(() => import('@wener/console/console/pages/setting/appearance/route')),
+              lazy: lazyRoute(() => import('@wener/console/web/pages/setting/appearance/route')),
               handle: {
                 title: '显示设置',
               },
@@ -71,7 +71,7 @@ export function createRoutes(): RouteObject[] {
             },
             {
               path: 'about',
-              lazy: lazyRoute(() => import('@wener/console/console/pages/setting/about/route')),
+              lazy: lazyRoute(() => import('@wener/console/web/pages/setting/about/route')),
               handle: {
                 title: '系统信息',
               },
@@ -83,7 +83,7 @@ export function createRoutes(): RouteObject[] {
           children: [
             {
               path: 'debug',
-              lazy: lazyRoute(() => import('@wener/console/console/pages/setting/dev/debug/route')),
+              lazy: lazyRoute(() => import('@wener/console/web/pages/setting/dev/debug/route')),
               handle: {
                 title: '调试设置',
               },

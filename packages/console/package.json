@@ -26,11 +26,11 @@
       "types": "./icons.ts",
       "default": "./lib/icons/index.js"
     },
-    "./console": {
-      "types": "./console.ts",
+    "./web": {
+      "types": "./web.ts",
       "default": "./lib/components/console/index.js"
     },
-    "./console/user": {
+    "./web/user": {
       "types": "./console/user.ts",
       "default": "./lib/components/console/user/index.js"
     },
@@ -42,15 +42,15 @@
       "types": "./console/pages.ts",
       "default": "./lib/components/toast/index.js"
     },
-    "./console/pages/setting/about/route": {
+    "./web/pages/setting/about/route": {
       "types": "./src/components/console/pages/setting/about/route.ts",
       "default": "./lib/components/console/pages/setting/about/route.js"
     },
-    "./console/pages/setting/appearance/route": {
+    "./web/pages/setting/appearance/route": {
       "types": "./src/components/console/pages/setting/appearance/route.ts",
       "default": "./lib/components/console/pages/setting/appearance/route.js"
     },
-    "./console/pages/setting/dev/debug/route": {
+    "./web/pages/setting/dev/debug/route": {
       "types": "./src/components/console/pages/setting/dev/debug/route.ts",
       "default": "./lib/components/console/pages/setting/dev/debug/route.js"
     },
@@ -71,7 +71,7 @@
   "files": [
     "*.ts",
     "components/**/*.ts",
-    "console/**/*.ts",
+    "web/**/*.ts",
     "lib",
     "postcss.config.cjs",
     "src",

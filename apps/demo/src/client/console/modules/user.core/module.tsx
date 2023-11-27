@@ -1,6 +1,6 @@
 import React from 'react';
 import { HiAdjustmentsHorizontal, HiOutlineAdjustmentsHorizontal } from 'react-icons/hi2';
-import { DynamicModule } from '@wener/console/console';
+import { DynamicModule } from '@wener/console/web';
 import { ConsoleLayoutContext } from '../../ConsoleLayoutContext';
 import { createRoutes } from './createRoutes';
 
