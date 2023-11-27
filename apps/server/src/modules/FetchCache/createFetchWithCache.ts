@@ -91,8 +91,10 @@ export function createFetchWithCache<T extends BaseHttpRequestLogEntity>({
       switch (requestContentType) {
         case 'application/json': {
           {
+            // avoid readable stream lock
             const text = await new Response(init.body).text();
             e.requestPayload = removeNullChar(JSON.parse(text));
+            init.body = text;
           }
           break;
         }

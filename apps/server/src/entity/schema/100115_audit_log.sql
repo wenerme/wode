@@ -1,36 +1,37 @@
 create table if not exists audit_log
 (
-    id                    text        not null default 'audlog_' || public.gen_ulid() primary key,
-    uid                   uuid        not null default gen_random_uuid() unique,
-    created_at            timestamptz not null default current_timestamp,
-    updated_at            timestamptz not null default current_timestamp,
-    deleted_at            timestamptz,
-    tid                   text        not null default public.current_tenant_id() references public.tenant (tid),
-    eid                   text,
+  id           text        not null default 'audlog_' || public.gen_ulid() primary key,
+  uid          uuid        not null default gen_random_uuid() unique,
+  created_at   timestamptz not null default current_timestamp,
+  updated_at   timestamptz not null default current_timestamp,
+  deleted_at   timestamptz,
+  tid          text        not null default public.current_tenant_id() references public.tenant (tid),
+  eid          text,
 
-    user_id               text,
-    session_id            text,
-    client_id             text,
-    instance_id           text,
-    title                 text,
-    description           text,
-    comment               text,
+  user_id      text,
+  session_id   text,
+  client_id    text,
+  instance_id  text,
+  title        text,
+  description  text,
+  comment      text,
 
-    entity_id   text,
-    entity_type text,
+  entity_id    text,
+  entity_type  text,
 
-    audit_time            timestamptz not null default current_timestamp,
-    client_agent          text,
-    client_ip             inet,
-    action_type           text, -- Create, Delete, Update, Login
-    before                jsonb,
-    after                 jsonb,
-    metadata              jsonb       not null default '{}',
+  audit_time   timestamptz not null default current_timestamp,
+  client_agent text,
+  client_ip    inet,
+  request_id   text,
+  action_type  text, -- Create, Delete, Update, Login
+  before       jsonb,
+  after        jsonb,
+  metadata     jsonb       not null default '{}',
 
-    attributes            jsonb       not null default '{}',
-    properties            jsonb       not null default '{}',
-    extensions            jsonb       not null default '{}',
-    unique (tid, eid)
+  attributes   jsonb       not null default '{}',
+  properties   jsonb       not null default '{}',
+  extensions   jsonb       not null default '{}',
+  unique (tid, eid)
 );
 insert into entity_schema(display_name, type_name, view_name, type_tag)
 values ('审计日志', 'AuditLog', 'audit_log', 'audlog')
