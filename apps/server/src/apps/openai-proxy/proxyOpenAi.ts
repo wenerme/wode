@@ -2,7 +2,7 @@ import { Value } from '@sinclair/typebox/value';
 import { classOf, Errors, FetchLike, getGlobalThis, isUUID } from '@wener/utils';
 import { getEntityManager } from '../../app/mikro-orm';
 import { AccessTokenEntity } from '../../entity/AccessTokenEntity';
-import { OpenAiClientAgent } from './main.bun';
+import { OpenAiClientAgent } from './OpenAiClientAgent';
 import { parseAuthorization } from './parseAuthorization';
 
 export async function proxyOpenAi({

@@ -2,10 +2,10 @@ import { inspect } from 'node:util';
 import { swagger } from '@elysiajs/swagger';
 import { MemoryCacheAdapter, ReflectMetadataProvider, RequestContext } from '@mikro-orm/core';
 import { MikroORM } from '@mikro-orm/postgresql';
-import { HttpException, Logger } from '@nestjs/common';
-import { Static } from '@sinclair/typebox';
-import { Currents } from '@wener/nestjs';
+import { HttpException, Logger, Module } from '@nestjs/common';
+import { createBootstrap, Currents } from '@wener/nestjs';
 import { getServerConfig } from '@wener/nestjs/config';
+import { OrmModule } from '@wener/nestjs/mikro-orm';
 import { Errors, FetchLike, getGlobalThis, MaybePromise, parseBoolean } from '@wener/utils';
 import { createFetchWithProxy } from '@wener/utils/server';
 import { Elysia, t } from 'elysia';
@@ -47,9 +47,26 @@ const orm = await MikroORM.init({
   },
 });
 
-let fetch: FetchLike = getGlobalThis().fetch;
-fetch = createFetchWithProxy({
-  fetch,
+// https://github.com/oven-sh/bun/issues?q=is%3Aissue+is%3Aopen+Segmentation+fault
+// Segmentation fault: 11
+@Module({
+  imports: [
+    OrmModule.forRoot({
+      clientUrl: process.env.DB_DSN || process.env.DATABASE_DSN,
+      debug: parseBoolean(process.env.DATABASE_DEBUG),
+      entities: [HttpRequestLogEntity, ClientAgentEntity, AccessTokenEntity],
+    }),
+  ],
+})
+export class AppModule {}
+
+const bootstrap = createBootstrap({
+  module: AppModule,
+});
+
+let proxyFetch: FetchLike = getGlobalThis().fetch;
+proxyFetch = createFetchWithProxy({
+  fetch: proxyFetch,
   proxy: process.env.OPENAI_PROXY || process.env.FETCH_PROXY,
 });
 // fetch = createFetchWith({
@@ -61,8 +78,8 @@ fetch = createFetchWithProxy({
 //     } as RequestInit);
 //   },
 // });
-fetch = createFetchWithCache({
-  fetch,
+proxyFetch = createFetchWithCache({
+  fetch: proxyFetch,
   repo: orm.em.getRepository(HttpRequestLogEntity),
   config: {
     use: 'request',
@@ -113,17 +130,19 @@ const app = new Elysia()
     // https://gms.tf/when-curl-sends-100-continue.html
     if (headers.expect === '100-continue') {
     }
-    return runContext(() => {
-      return proxyOpenAi({ headers, body, request, debug: isDev, fetch });
-    });
+    return proxyOpenAi({ headers, body, request, debug: isDev, fetch: proxyFetch });
   });
 
 {
-  const next = app.fetch;
-  app.fetch = (req) => {
-    console.log(`Hook middleware`);
-    return runContext(() => next(req));
-  };
+  // https://github.com/elysiajs/elysia/issues/315
+  app.onStart(({ app }) => {
+    app.server?.reload({
+      fetch: async (req) => {
+        console.log(`Hook by Reload`);
+        return runContext(() => app.fetch(req));
+      },
+    });
+  });
 }
 
 app.listen(getServerConfig().port, (server) => {
@@ -133,19 +152,6 @@ app.listen(getServerConfig().port, (server) => {
 export type App = typeof app;
 
 function runContext<T>(f: () => MaybePromise<T>) {
+  // return bootstrap().then(() => RequestContext.createAsync(orm.em, async () => Currents.run(f)));
   return RequestContext.createAsync(orm.em, async () => Currents.run(f));
 }
-
-export type OpenAiClientAgent = Static<typeof OpenAiClientAgent>;
-export const OpenAiClientAgent = t.Object({
-  type: t.Literal('OpenAi'),
-  secrets: t.Object({
-    key: t.String(),
-    organization: t.Optional(t.String()),
-    endpoint: t.Optional(t.String()),
-  }),
-  config: t.Object({
-    defaults: t.Optional(t.Record(t.String(), t.Record(t.String(), t.Any()))),
-    overrides: t.Optional(t.Record(t.String(), t.Record(t.String(), t.Any()))),
-  }),
-});

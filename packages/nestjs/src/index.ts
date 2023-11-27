@@ -8,3 +8,5 @@ export { requireFound } from './util/requireFound';
 export { getStaticRootPath } from './util/getStaticRootPath';
 
 export type * from './types';
+
+export * from './createBootstrap';

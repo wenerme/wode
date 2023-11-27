@@ -9,7 +9,7 @@ REPO_ROOT ?= $(shell git rev-parse --show-toplevel)
 build:
 	-rm -rf lib/*
 	pnpm swc ./src -d ./lib
-	npx -y ts-add-js-extension --dir=lib
+	pnpm dlx ts-add-js-extension --dir=lib
 
 publish: build
 	pnpm publish --registry https://registry.npmjs.org --access public --no-git-checks

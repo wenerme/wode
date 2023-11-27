@@ -8,6 +8,7 @@ import {
   type Options as PostgreSqlOptions,
 } from '@mikro-orm/postgresql';
 import { ConfigurableModuleBuilder, DynamicModule, Logger, Module } from '@nestjs/common';
+import { createLazyPromise } from '@wener/utils';
 import { getMikroOrmConfig } from '../config';
 import { createMikroOrmConfig } from './createMikroOrmConfig';
 
@@ -30,20 +31,23 @@ export const ORM_MODULE_OPTIONS_TOKEN = MODULE_OPTIONS_TOKEN;
 
 @Module({
   imports: [
-    MikroOrmModule.forRootAsync({
-      useFactory: (opts: OrmModuleOptions) => {
-        let config = createMikroOrmConfig({
-          entities: [],
-          ...getMikroOrmConfig(),
-          ...opts,
-        }) as PostgreSqlOptions;
-        // dedup
-        config.entities = Array.from(new Set(config.entities));
-        OrmModule.log.log(`Entities: ${config.entities?.map((v) => (v as any).name || v).join(', ')}`);
-        return config;
-      },
-      inject: [MODULE_OPTIONS_TOKEN],
-    }),
+    createLazyPromise(() =>
+      // forRootAsync will create EntityManager immediately
+      MikroOrmModule.forRootAsync({
+        useFactory: (opts: OrmModuleOptions) => {
+          let config = createMikroOrmConfig({
+            entities: [],
+            ...getMikroOrmConfig(),
+            ...opts,
+          }) as PostgreSqlOptions;
+          // dedup
+          config.entities = Array.from(new Set(config.entities));
+          OrmModule.log.log(`Entities: ${config.entities?.map((v) => (v as any).name || v).join(', ')}`);
+          return config;
+        },
+        inject: [MODULE_OPTIONS_TOKEN],
+      }),
+    ),
   ],
   providers: [
     {
