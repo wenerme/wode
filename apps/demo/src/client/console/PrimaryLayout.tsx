@@ -2,8 +2,8 @@ import type { PropsWithChildren, ReactNode } from 'react';
 import React from 'react';
 import { BiHomeHeart, BiHomeSmile } from 'react-icons/bi';
 import { useContextStore } from '@wener/console';
-import { SitePreferences } from '@wener/console/console';
-import { AutoNavLink, DockLayout, LeftSideMenuBarLayout } from '@wener/console/console';
+import { SitePreferences } from '@wener/console/web';
+import { AutoNavLink, DockLayout, LeftSideMenuBarLayout } from '@wener/console/web';
 import type { ConsoleLayoutContext, DashMenu } from './ConsoleLayoutContext';
 
 const { MenuBarItem } = LeftSideMenuBarLayout;

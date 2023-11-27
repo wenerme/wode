@@ -1,8 +1,8 @@
 'use client';
 
-import { getUserAction } from '@wener/console/console/user';
 import { LoginFormData } from '@wener/console/pages';
 import { showErrorToast, showSuccessToast } from '@wener/console/toast';
+import { getUserAction } from '@wener/console/web/user';
 import dynamic from 'next/dynamic';
 import { Authenticated } from '../../client/console/Authenticated';
 import { doPasswordLogin } from './actions';

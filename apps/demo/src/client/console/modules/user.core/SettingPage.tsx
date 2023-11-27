@@ -5,8 +5,8 @@ import { FaRegUser, FaUser } from 'react-icons/fa6';
 import { HiColorSwatch, HiOutlineColorSwatch } from 'react-icons/hi';
 import { HiOutlineCog } from 'react-icons/hi2';
 import { TiInfoLarge, TiInfoLargeOutline } from 'react-icons/ti';
-import type { ExpandableSideMenuItemProps } from '@wener/console/console';
-import { ExpandableSideMenuLayout, usePageLayoutState } from '@wener/console/console';
+import type { ExpandableSideMenuItemProps } from '@wener/console/web';
+import { ExpandableSideMenuLayout, usePageLayoutState } from '@wener/console/web';
 
 export const DefaultMenuItems: ExpandableSideMenuItemProps[] = [
   {

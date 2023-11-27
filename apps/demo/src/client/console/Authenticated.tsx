@@ -1,7 +1,7 @@
 import React, { PropsWithChildren } from 'react';
-import { getUserSessionState } from '@wener/console/console/user';
 import { LoginPage } from '@wener/console/pages';
 import { LoginFormData } from '@wener/console/pages';
+import { getUserSessionState } from '@wener/console/web/user';
 import Image from 'next/image';
 import { useSnapshot } from 'valtio';
 import Splash from './LoginSplash.jpg';
