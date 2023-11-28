@@ -857,6 +857,9 @@ importers:
       '@trpc/server':
         specifier: ^10.44.1
         version: 10.44.1
+      '@wener/console':
+        specifier: workspace:^
+        version: link:../../packages/console
       '@wener/miniquery':
         specifier: workspace:^
         version: link:../../packages/miniquery

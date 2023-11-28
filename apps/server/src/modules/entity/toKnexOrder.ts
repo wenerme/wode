@@ -1,14 +1,13 @@
-import type { OrderSort } from './parseOrder';
+import { OrderRule } from '@wener/console';
 
-export function toKnexOrder(order: OrderSort[]) {
+export function toKnexOrder(order: OrderRule[]): Record<string, string> {
   return Object.fromEntries(
-    order.map(([a, b, c]) => {
-      let sort: string = b;
-      if (c) {
-        sort = `${b} nulls ${c}`;
+    order.map(({ field, order, nulls }) => {
+      let o: string = order;
+      if (nulls) {
+        o = `${order} nulls ${nulls}`;
       }
-
-      return [a, sort];
+      return [field, o];
     }),
   );
 }
