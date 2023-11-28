@@ -10,6 +10,10 @@
   - https://github.com/lukeed/templite
   - https://github.com/lukeed/rosetta
   - https://github.com/sindresorhus/camelcase
+  - https://github.com/triggerdotdev/trigger.dev/blob/main/packages/core-backend/src/bloom.ts
+  - ohash
+  - humanlize-duration
+  - morgan
 - see also
   - https://github.com/Daninet/hash-wasm
 

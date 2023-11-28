@@ -43,6 +43,7 @@
     "@sinclair/typebox": "^0.31.28",
     "@trpc/client": "^10.44.1",
     "@trpc/server": "^10.44.1",
+    "@wener/console": "workspace:^",
     "@wener/miniquery": "workspace:^",
     "@wener/nestjs": "workspace:^",
     "@wener/unpkg": "workspace:^",
