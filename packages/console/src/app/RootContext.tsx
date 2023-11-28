@@ -14,7 +14,7 @@ import isToday from 'dayjs/plugin/isToday';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
-import { useExposeDebug } from '../hooks';
+import { useExposeDebug } from '../components/hooks';
 
 let init = false;
 

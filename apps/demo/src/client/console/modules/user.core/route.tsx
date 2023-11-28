@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, RouteObject } from 'react-router-dom';
 import { ErrorSuspenseBoundary } from '@wener/reaction';
 import SettingPage from './SettingPage';
 
@@ -11,4 +11,4 @@ export default {
       </ErrorSuspenseBoundary>
     </SettingPage>
   ),
-};
+} as RouteObject;

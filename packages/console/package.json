@@ -1,6 +1,6 @@
 {
   "name": "@wener/console",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "type": "module",
   "description": "Base console UI toolkit",
   "author": "wener",
@@ -21,6 +21,10 @@
     "./loader": {
       "types": "./loader.ts",
       "default": "./lib/components/loader/index.js"
+    },
+    "./components": {
+      "types": "./components.ts",
+      "default": "./lib/components/index.js"
     },
     "./icons": {
       "types": "./icons.ts",
@@ -71,11 +75,11 @@
   "files": [
     "*.ts",
     "components/**/*.ts",
-    "web/**/*.ts",
     "lib",
     "postcss.config.cjs",
     "src",
-    "tailwind.config.mjs"
+    "tailwind.config.mjs",
+    "web/**/*.ts"
   ],
   "keywords": [
     "admin",
@@ -117,6 +121,7 @@
     "@floating-ui/react": "^0.26.2",
     "@headlessui/react": "^1.7.17",
     "@nestjs/common": "^10.2.10",
+    "@remix-run/router": "^1.13.0",
     "@tailwindcss/forms": "^0.5.7",
     "@types/react": "^18.2.38",
     "@types/react-dom": "^18.2.17",
