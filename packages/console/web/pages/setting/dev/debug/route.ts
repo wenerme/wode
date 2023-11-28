@@ -1,1 +1,1 @@
-export { default } from '../../../../../src/components/console/pages/setting/dev/debug/route';
+export { default } from '../../../../../src/web/pages/setting/dev/debug/route';

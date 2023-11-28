@@ -1,1 +1,1 @@
-export * from './src/components/console/pages';
+export * from './src/web/pages';

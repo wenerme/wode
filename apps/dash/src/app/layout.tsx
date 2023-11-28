@@ -10,7 +10,7 @@ export default function RootLayout({
   params: { lang: string };
 }) {
   return (
-    <html lang={'zh-Hans'} data-theme={'corporate'}>
+    <html lang={'zh'} data-theme={'corporate'}>
       <head>
         <meta charSet='utf-8' />
         <meta

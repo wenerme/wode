@@ -1,1 +1,1 @@
-export * from './src/components/console';
+export * from './src/web';

@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
-import type { RouteObject, UIMatch } from 'react-router-dom';
+import type { LazyRouteFunction, RouteObject, UIMatch } from 'react-router-dom';
+import type { AgnosticRouteObject } from '@remix-run/router';
 
 export { useRouteTitles } from './useRouteTitles';
 export { usePrompt } from './usePrompt';
@@ -33,19 +34,17 @@ export interface KnownRouteObjectMeta {
 
 export type RouteObjects = RouteObject[];
 
-type ImmutableRouteKey = 'lazy' | 'caseSensitive' | 'path' | 'id' | 'index' | 'children';
+export type LazyRouteObject<R extends AgnosticRouteObject = RouteObject> = Awaited<ReturnType<LazyRouteFunction<R>>>;
 
-type DynamicRouteObject = Omit<RouteObject, ImmutableRouteKey>;
-type RequireOne<T, Key = keyof T> = Exclude<
-  {
-    [K in keyof T]: K extends Key ? Omit<T, K> & Required<Pick<T, K>> : never;
-  }[keyof T],
-  undefined
->;
-
-export function lazyRoute<R extends object = RequireOne<Omit<RouteObject, ImmutableRouteKey>>>(
-  loader: () => Promise<R | { default: R } | { route: R }>,
-): () => Promise<R> {
+export function lazyRoute<R extends AgnosticRouteObject>(
+  loader: () => Promise<
+    | Awaited<ReturnType<LazyRouteFunction<R>>>
+    | {
+        default: Awaited<ReturnType<LazyRouteFunction<R>>>;
+      }
+    | { route: Awaited<ReturnType<LazyRouteFunction<R>>> }
+  >,
+): LazyRouteFunction<R> {
   return () =>
     loader().then((v) => {
       if ('route' in v) {
