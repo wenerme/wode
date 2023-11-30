@@ -19,5 +19,8 @@ publish: build
 	pnpm version patch --no-workspaces-update
 	pnpm publish --registry https://registry.npmjs.org --access public --no-git-checks
 
+publint:
+	npx -y publint
+
 sync-css:
 	rsync ./src/ ./lib/ -avz --include="*.css" --include="*/" --exclude="*"

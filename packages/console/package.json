@@ -1,6 +1,6 @@
 {
   "name": "@wener/console",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "type": "module",
   "description": "Base console UI toolkit",
   "author": "wener",
@@ -32,31 +32,31 @@
     },
     "./web": {
       "types": "./web.ts",
-      "default": "./lib/components/console/index.js"
+      "default": "./lib/web/index.js"
     },
     "./web/user": {
-      "types": "./console/user.ts",
-      "default": "./lib/components/console/user/index.js"
+      "types": "./web/user.ts",
+      "default": "./lib/web/user/index.js"
     },
     "./pages": {
-      "types": "./console/pages.ts",
-      "default": "./lib/components/console/pages/index.js"
+      "types": "./web/pages.ts",
+      "default": "./lib/web/pages/index.js"
     },
     "./toast": {
-      "types": "./console/pages.ts",
+      "types": "./toast.ts",
       "default": "./lib/components/toast/index.js"
     },
     "./web/pages/setting/about/route": {
-      "types": "./src/components/console/pages/setting/about/route.ts",
-      "default": "./lib/components/console/pages/setting/about/route.js"
+      "types": "./web/pages/setting/about/route.ts",
+      "default": "./lib/web/pages/setting/about/route.js"
     },
     "./web/pages/setting/appearance/route": {
-      "types": "./src/components/console/pages/setting/appearance/route.ts",
-      "default": "./lib/components/console/pages/setting/appearance/route.js"
+      "types": "./web/pages/setting/appearance/route.ts",
+      "default": "./lib/web/pages/setting/appearance/route.js"
     },
     "./web/pages/setting/dev/debug/route": {
-      "types": "./src/components/console/pages/setting/dev/debug/route.ts",
-      "default": "./lib/components/console/pages/setting/dev/debug/route.js"
+      "types": "./web/pages/setting/dev/debug/route.ts",
+      "default": "./lib/web/pages/setting/dev/debug/route.js"
     },
     "./daisy": {
       "types": "./daisy.ts",
