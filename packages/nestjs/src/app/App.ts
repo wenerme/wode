@@ -3,20 +3,50 @@ import { getGlobalThis, randomUUID } from '@wener/utils';
 export interface App {
   readonly region?: string;
   readonly zone?: string;
+  readonly env: Record<string, any>;
+  readonly mode?: string;
   name: string;
   component: string;
   instanceId: string;
   readonly service: string;
+  readonly isProduction: boolean;
+  readonly isDevelopment: boolean;
 
   reset(): void;
 }
 
 class DefaultApp implements App {
+  private static readonly DEFAULT_NAME = 'app';
+  private static readonly DEFAULT_COMPONENT = typeof document !== 'undefined' ? 'web' : 'server';
+
   #region?: string;
   #zone?: string;
   #instanceId?: string;
   #name?: string;
   #component?: string;
+  #mode?: string;
+  #env: Record<string, any> = {};
+
+  toJSON() {
+    return {
+      region: this.region,
+      zone: this.zone,
+      mode: this.mode,
+      name: this.name,
+      component: this.component,
+      instanceId: this.instanceId,
+      service: this.service,
+      isProduction: this.isProduction,
+      isDevelopment: this.isDevelopment,
+    };
+  }
+
+  get env() {
+    if (typeof process === 'object' && 'env' in process) {
+      return process.env;
+    }
+    return this.#env;
+  }
 
   get region() {
     return (this.#region ||= process.env.APP_REGION);
@@ -26,12 +56,16 @@ class DefaultApp implements App {
     return (this.#zone ||= process.env.APP_ZONE);
   }
 
+  get mode() {
+    return (this.#mode ||= process.env.APP_ENV || process.env.NODE_ENV);
+  }
+
   get service() {
     return `${this.name}-${this.component}`;
   }
 
   get name() {
-    return (this.#name ||= process.env.APP_NAME || 'app');
+    return (this.#name ||= process.env.APP_NAME || DefaultApp.DEFAULT_NAME);
   }
 
   set name(name: string) {
@@ -39,7 +73,32 @@ class DefaultApp implements App {
     this.reset();
   }
 
+  get isProduction() {
+    switch (this.mode) {
+      case 'production':
+      case 'prod':
+      case 'prd':
+        return true;
+      default:
+        return false;
+    }
+  }
+
+  get isDevelopment() {
+    switch (this.mode) {
+      case 'development':
+      case 'dev':
+        return true;
+      default:
+        return false;
+    }
+  }
+
   get instanceId() {
+    if (this.#instanceId) {
+      return this.#instanceId;
+    }
+
     let prefix = this.service;
     let hostname = '';
     let pid = 0;
@@ -65,7 +124,7 @@ class DefaultApp implements App {
   }
 
   get component() {
-    return (this.#component ||= process.env.APP_COMPONENT || 'server');
+    return (this.#component ||= process.env.APP_COMPONENT || DefaultApp.DEFAULT_COMPONENT);
   }
 
   set component(v) {
@@ -81,6 +140,7 @@ class DefaultApp implements App {
     this.#component = undefined;
     this.#name = undefined;
     this.#instanceId = undefined;
+    this.#mode = undefined;
   }
 }
 
