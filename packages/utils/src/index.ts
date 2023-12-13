@@ -32,6 +32,7 @@ export { isPromise } from './asyncs/isPromise';
 // langs
 export { shallowEqual } from './langs/shallowEqual';
 export { deepEqual } from './langs/deepEqual';
+export { deepFreeze } from './langs/deepFreeze';
 export { classOf } from './langs/classOf';
 export { shallowClone } from './langs/shallowClone';
 export { isClass } from './langs/isClass';

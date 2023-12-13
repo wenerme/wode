@@ -4,12 +4,13 @@ export interface KnownServiceMessageHeaders {
   'x-tenant-id'?: string;
   'x-user-id'?: string;
   'x-session-id'?: string;
-  'x-client-send-at'?: string;
-  'x-client-recv-at'?: string;
-  'x-server-send-at'?: string;
-  'x-server-recv-at'?: string;
-  'x-execution-time'?: string;
-  'x-target-instance-id'?: string;
+  'x-client-id'?: string;
+  // 'x-client-send-at'?: string;
+  // 'x-client-recv-at'?: string;
+  // 'x-server-send-at'?: string;
+  // 'x-server-recv-at'?: string;
+  // 'x-execution-time'?: string;
+  // 'x-target-instance-id'?: string;
 }
 
 // export interface ServiceLocation {

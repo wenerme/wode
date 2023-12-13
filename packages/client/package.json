@@ -51,6 +51,10 @@
       "types": "./alicloud.ts",
       "default": "./lib/alicloud/index.js"
     },
+    "./cubejs": {
+      "types": "./cubejs.ts",
+      "default": "./lib/cubejs/index.js"
+    },
     "./package.json": "./package.json"
   },
   "files": [
