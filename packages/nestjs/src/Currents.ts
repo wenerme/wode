@@ -13,16 +13,16 @@ export class Currents {
     return this.#storage.getStore();
   }
 
-  static clear(key: Type | string | symbol) {
+  static clear(key: Type | string | symbol | any) {
     const store = Currents.getStore();
     return store?.delete(key) ?? false;
   }
 
-  static set<T>(key: Type<T> | string | symbol, value: T) {
+  static set<T>(key: Type<T> | string | symbol | any, value: T) {
     Currents.store?.set(key, value);
   }
 
-  static get<T>(key: Type<T> | string | symbol, def?: T | (() => T)) {
+  static get<T>(key: Type<T> | string | symbol | any, def?: T | (() => T)) {
     const store = Currents.getStore(false);
     const found = store?.get(key);
     if (found === undefined) {
@@ -56,21 +56,36 @@ export class Currents {
     f: () => T,
     {
       inherit = true,
-      init = inherit ? this.#storage.getStore() : new Map(),
+      store,
     }: {
       inherit?: boolean;
-      init?: Map<any, any>;
+      store?: Map<any, any>;
     } = {},
   ) {
-    return this.#storage.run(new Map(init), f);
+    let last = Currents.store;
+    if (inherit && last) {
+      if (store) {
+        const map = store;
+        last.forEach((v, k) => {
+          if (!map.has(k)) {
+            map.set(k, v);
+          }
+        });
+      } else {
+        // clone
+        store = new Map(last);
+      }
+    }
+    store ||= new Map();
+    return this.#storage.run(store, f);
   }
 
-  static create<T = unknown>(key: string | Type<T>): ContextToken<T> {
-    return new Token<T>(key);
+  static create<T = unknown, K = unknown>(key: K): ContextToken<T, K> {
+    return new Token<T, K>(key);
   }
 }
 
-export interface ContextToken<T> {
+export interface ContextToken<T, K> {
   get(def: T | (() => T)): T;
 
   get(): T | undefined;
@@ -80,12 +95,16 @@ export interface ContextToken<T> {
   clear(): boolean;
 
   require(): T;
+
+  ifPresent(f: (v: T) => void): void;
+
+  readonly key: K;
 }
 
-class Token<T> implements ContextToken<T> {
+class Token<T, K> implements ContextToken<T, K> {
   private readonly log;
 
-  constructor(readonly key: Type<T> | string | symbol) {
+  constructor(readonly key: K) {
     this.log = new Logger(this.toString());
   }
 
@@ -104,6 +123,13 @@ class Token<T> implements ContextToken<T> {
 
   get = (def?: any): any => {
     return Currents.get(this.key, def);
+  };
+
+  ifPresent = (f: (v: T) => void) => {
+    const found = this.get();
+    if (found !== undefined) {
+      f(found);
+    }
   };
 
   require = (): T => {

@@ -5,4 +5,5 @@ export type PartialRequired<T, K extends keyof T> = Partial<Omit<T, K>> & Requir
 
 /*
 https://github.com/total-typescript/ts-reset/blob/main/src/entrypoints/filter-boolean.d.ts
+https://github.com/sindresorhus/type-fest
  */
