@@ -11,10 +11,10 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
-    "axios": "^1.6.2",
+    "axios": "^1.6.5",
     "dotenv": "^16.3.1",
-    "eta": "^3.1.1",
-    "fs-extra": "^11.1.1",
+    "eta": "^3.2.0",
+    "fs-extra": "^11.2.0",
     "zod": "^3.22.4"
   },
   "devDependencies": {

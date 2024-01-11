@@ -45,12 +45,14 @@
     }
   },
   "devDependencies": {
+    "@sinclair/typebox": "^0.32.8",
     "@types/lodash": "^4.14.202",
     "@types/ws": "^8.5.10",
     "https-proxy-agent": "^7.0.2",
     "lodash": "^4.17.21",
     "node-fetch": "^3.3.2",
-    "undici": "^5.28.0"
+    "undici": "^6.3.0",
+    "zod": "^3.22.4"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org",
@@ -83,6 +85,14 @@
         "types": "./server/ws.ts",
         "default": "./lib/servers/ws.js"
       },
+      "./schema/typebox": {
+        "types": "./src/schema/typebox/index.ts",
+        "default": "./lib/schema/typebox/index.js"
+      },
+      "./schema/typebox/gen": {
+        "types": "./src/schema/typebox/gen/index.ts",
+        "default": "./lib/schema/typebox/gen/index.js"
+      },
       "./package.json": "./package.json"
     }
   },
@@ -93,7 +103,9 @@
       "./src/server.ts",
       "./src/servers/ws.ts",
       "./src/servers/jsdom.ts",
-      "./src/servers/node-fetch.ts"
+      "./src/servers/node-fetch.ts",
+      "./src/schema/typebox/index.ts",
+      "./src/schema/typebox/gen/index.ts"
     ],
     "external": [
       "crypto",
@@ -101,7 +113,10 @@
       "node-fetch",
       "ws",
       "https-proxy-agent",
-      "undici"
+      "undici",
+      "zod",
+      "typescript",
+      "@sinclair/typebox"
     ]
   }
 }

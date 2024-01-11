@@ -32,19 +32,19 @@ export type ResolveObjectPathType<
 > = Path extends keyof ObjectType
   ? ObjectType[Path]
   : Path extends `${infer LeftSide}.${infer RightSide}`
-  ? LeftSide extends keyof ObjectType
-    ? ResolveObjectPathType<ObjectType[LeftSide], RightSide, OrElse>
-    : Path extends `${infer LeftSide}[${number}].${infer RightSide}`
     ? LeftSide extends keyof ObjectType
-      ? ObjectType[LeftSide] extends Array<infer U>
-        ? ResolveObjectPathType<U, RightSide, OrElse>
+      ? ResolveObjectPathType<ObjectType[LeftSide], RightSide, OrElse>
+      : Path extends `${infer LeftSide}[${number}].${infer RightSide}`
+        ? LeftSide extends keyof ObjectType
+          ? ObjectType[LeftSide] extends Array<infer U>
+            ? ResolveObjectPathType<U, RightSide, OrElse>
+            : OrElse
+          : OrElse
         : OrElse
-      : OrElse
-    : OrElse
-  : Path extends `${infer LeftSide}[${number}]`
-  ? LeftSide extends keyof ObjectType
-    ? ObjectType[LeftSide] extends Array<infer U>
-      ? U
-      : OrElse
-    : OrElse
-  : OrElse;
+    : Path extends `${infer LeftSide}[${number}]`
+      ? LeftSide extends keyof ObjectType
+        ? ObjectType[LeftSide] extends Array<infer U>
+          ? U
+          : OrElse
+        : OrElse
+      : OrElse;

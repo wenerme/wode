@@ -23,6 +23,7 @@
     "strictNullChecks": true
   },
   "include": [
+    "tests/**/*.ts",
     "src/**/*.ts",
     "src/**/*.tsx"
   ],
