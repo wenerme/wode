@@ -79,11 +79,11 @@
   },
   "devDependencies": {
     "@alicloud/openapi-client": "^0.4.7",
-    "@sinclair/typebox": "^0.32.8",
+    "@sinclair/typebox": "^0.32.9",
     "@wecom/jssdk": "^1.4.5",
     "fast-xml-parser": "^4.3.3",
     "nats.ws": "^1.19.1",
-    "openai": "^4.24.3",
+    "openai": "^4.24.7",
     "undici": "^6.3.0",
     "ws": "^8.16.0"
   }

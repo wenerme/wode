@@ -51,3 +51,6 @@ image-verify:
 
 check-tokens:
 	npx ts-node -r tsconfig-paths/register ./src/scripts/check-tokens.ts
+
+verify:
+	npx esbuild --define:__DEV__=false  --define:process.env.NODE_ENV=\"production\" --minify-syntax --outfile=out/verify.mjs --target=node20 --platform=node --format=esm --banner:js="import { createRequire } from 'module';const require = createRequire(import.meta.url);var __filename;var __dirname;{const {fileURLToPath} = await import('url');const {dirname} = await import('path');var __filename = fileURLToPath(import.meta.url); __dirname = dirname(__filename)};" --bundle ./src/poc/netflix/verify.main.ts

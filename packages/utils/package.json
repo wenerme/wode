@@ -1,6 +1,6 @@
 {
   "name": "@wener/utils",
-  "version": "1.1.26",
+  "version": "1.1.32",
   "type": "module",
   "description": "Utils for daily use",
   "repository": {
@@ -15,6 +15,7 @@
     "index.ts",
     "lib",
     "server",
+    "schema",
     "server.ts",
     "src",
     "tsconfig.json",
@@ -45,7 +46,7 @@
     }
   },
   "devDependencies": {
-    "@sinclair/typebox": "^0.32.8",
+    "@sinclair/typebox": "^0.32.9",
     "@types/lodash": "^4.14.202",
     "@types/ws": "^8.5.10",
     "https-proxy-agent": "^7.0.2",
@@ -87,10 +88,12 @@
       },
       "./schema/typebox": {
         "types": "./src/schema/typebox/index.ts",
+        "typescript": "./src/schema/typebox/index.ts",
         "default": "./lib/schema/typebox/index.js"
       },
       "./schema/typebox/gen": {
         "types": "./src/schema/typebox/gen/index.ts",
+        "typescript": "./src/schema/typebox/gen/index.ts",
         "default": "./lib/schema/typebox/gen/index.js"
       },
       "./package.json": "./package.json"
