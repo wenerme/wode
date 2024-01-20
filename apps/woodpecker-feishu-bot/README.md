@@ -1,8 +1,7 @@
 ---
 name: Woodpecker Feishu Bot
-
 description: Send notify to feishu/飞书 in text or markdown format
-authors: Wener
+author: Wener
 tags: [notify]
 containerImage: wener/woodpecker-feishu-bot
 containerImageUrl: https://hub.docker.com/r/wener/woodpecker-feishu-bot
