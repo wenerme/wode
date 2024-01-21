@@ -1,0 +1,49 @@
+{
+  "RegistryDiamond": {
+    "extends": ["GeoWebParcel", "LicenseClaimer", "ERC721Token", "LicenseParamsStore"],
+    "abi": []
+  },
+  "GeoWebParcel": {
+    "abstract": true,
+    "abi": [
+      "function availabilityIndex(uint256 x, uint256 y) external view returns (uint256)",
+      "function getLandParcel(uint256 id) external view returns (uint64 baseCoordinate, uint256[] memory path)",
+      "function getLandParcelV2(uint256 id) external view returns (uint64 swCoordinate, uint256 latDim, uint256 lngDim)"
+    ]
+  },
+  "LicenseClaimer": {
+    "abstract": true,
+    "abi": [
+      "event ParcelClaimed(uint256 indexed _licenseId, address indexed _payer)",
+      "event ParcelClaimedV2(uint256 indexed _licenseId, address indexed _payer)",
+      "function initializeClaimer( uint256 auctionStart, uint256 auctionEnd, uint256 startingBid, uint256 endingBid, address beacon ) external",
+      "function setStartingBid(uint256 startingBid) external",
+      "function getStartingBid() external view returns (uint256)",
+      "function setEndingBid(uint256 endingBid) external",
+      "function getEndingBid() external view returns (uint256)",
+      "function setAuctionStart(uint256 auctionStart) external",
+      "function getAuctionStart() external view returns (uint256)",
+      "function setAuctionEnd(uint256 auctionEnd) external",
+      "function getAuctionEnd() external view returns (uint256)",
+      "function setBeacon(address beacon) external",
+      "function getBeacon() external view returns (address)",
+      "function requiredBid() external view returns (uint256)",
+      "function getBeaconProxy(uint256 licenseId) external view returns (address)",
+      "function getNextProxyAddress(address user) external view returns (address)",
+      "function claim( int96 initialContributionRate, uint256 initialForSalePrice, LandParcel memory parcel ) external",
+      "function claim( int96 initialContributionRate, uint256 initialForSalePrice, LandParcel memory parcel, bytes calldata contentHash ) external"
+    ]
+  },
+  "LicenseParamsStore": {
+    "abstract": true,
+    "abi": [
+      "function setBidPeriodLengthInSeconds(uint256 bidPeriodLengthInSeconds) external",
+      "function getMinForSalePrice() external view returns (uint256)",
+      "function setMinForSalePrice(uint256 minForSalePrice) external"
+    ]
+  },
+  "Estate": {
+    "_extends": ["ERC721", "ERC721Enumerable", "ERC721Pausable", "AccessControl", "ERC721Burnable"],
+    "abi": []
+  }
+}

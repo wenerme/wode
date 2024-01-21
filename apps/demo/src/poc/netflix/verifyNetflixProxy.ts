@@ -1,4 +1,5 @@
 import { FetchLike } from '@wener/utils';
+import { Closer } from '../../utils/Closer';
 
 export interface VerifyOptions {
   fetch?: FetchLike;
@@ -7,7 +8,7 @@ export interface VerifyOptions {
 
 export interface VerifyResult {
   check: VerifyCheckResult;
-  country: string;
+  country: string;// country code - sg
   config?: NetflixVerifyAppConfig;
 }
 
@@ -18,7 +19,8 @@ interface VerifyCheckResult {
 }
 
 
-export async function verify({ proxy, ...options }: VerifyOptions): Promise<VerifyResult> {
+export async function verifyNetflixProxy({ proxy, ...options }: VerifyOptions): Promise<VerifyResult> {
+  // DisposableStack
   using closer = new Closer();
   let { ProxyAgent, Pool } = await import('undici');
   const result: VerifyCheckResult = {
@@ -26,9 +28,14 @@ export async function verify({ proxy, ...options }: VerifyOptions): Promise<Veri
     SelfMade: false,
     NonSelfMade: false,
   };
+  const out: VerifyResult = {
+    country: '',
+    check: result,
+  };
   const init: Record<string, any> = {
     redirect: 'manual',
   };
+
   // https proxy not works
   if (proxy) {
     const u = new URL(proxy);
@@ -37,57 +44,29 @@ export async function verify({ proxy, ...options }: VerifyOptions): Promise<Veri
     uu.password = '';
     let agent = new ProxyAgent({
       proxyTls: {
-        // 避免 https 代理异常
+        // NOTE 避免 https 代理异常
         rejectUnauthorized: false,
       },
       // uri: u.origin + u.pathname,
       uri: uu.toString(),
       // same as proxy-authorization header
       token: (u.username || u.password) ? `Basic ${Buffer.from(`${decodeURIComponent(u.username)}:${decodeURIComponent(u.password)}`).toString('base64')}` : undefined,
+      // @ts-ignore
       protocol: u.protocol,
-      clientFactory: (origin, opts) => {
-        // console.log(`Create proxy factory to ${origin}`);
-        return new Pool(origin, {
-          ...opts,
-          connect: (...args) => {
-            // console.log(`Connect Proxy`, args[0]);
-            return opts.connect.apply(null, args);
-          },
-        });
-      },
+      // clientFactory: (origin, opts) => {
+      //   return new Pool(origin, {
+      //     ...opts,
+      //     connect: (...args) => {
+      //       return opts.connect.apply(null, args);
+      //     },
+      //   });
+      // },
     });
     // agent = new ProxyAgent(proxy)
-    closer.add(agent);
+    closer.defer(agent);
     init.dispatcher = agent;
   }
   let config: NetflixVerifyAppConfig | undefined;
-
-  try {
-    const res = await fetch('http://api-global.netflix.com/apps/applefuji/config', init);
-    if (!res.ok) {
-      // 403
-      return {
-        check: result,
-        country: '',
-      };
-    }
-
-    const { XMLParser } = await import('fast-xml-parser');
-    const parser = new XMLParser();
-    let text = await res.text();
-    let out = parser.parse(text) as { config: NetflixVerifyAppConfig };
-    if (!out.config) {
-      console.error(out);
-      throw new Error('Invalid config');
-    }
-    config = out.config;
-  } catch (e) {
-    console.error(e);
-    return {
-      check: result,
-      country: '',
-    };
-  }
 
   const checks = {
     Available: '80018499',
@@ -96,8 +75,6 @@ export async function verify({ proxy, ...options }: VerifyOptions): Promise<Veri
   };
   for (let [k, v] of Object.entries(checks)) {
     const res = await fetch(`https://www.netflix.com/title/${v}`, init);
-    // waste body
-    void res.text();
 
     let valid = res.status < 400;
     result[k as keyof VerifyCheckResult] = valid;
@@ -105,13 +82,55 @@ export async function verify({ proxy, ...options }: VerifyOptions): Promise<Veri
       // early
       break;
     }
+
+    // tw 不是 302，而是 200, 被识别为 US
+    out.country ||= res.headers.get('Location')?.split('/')[3] || '';
+    if (!out.country && res.status === 200) {
+      // us 不会重定向
+      out.country = 'us';
+    }
+    // waste body
+    void res.text();
+
+
+    // if (!out.country) {
+    //   console.log('Location:', res.headers.get('Location'), res.status);
+    // }
   }
 
-  return {
-    check: result,
-    country: config?.country,
-    config,
-  };
+  if (!out.country) {
+    try {
+      const res = await fetch('http://api-global.netflix.com/apps/applefuji/config', init);
+      if (!res.ok) {
+        // 403
+        return {
+          check: result,
+          country: '',
+        };
+      }
+
+      const { XMLParser } = await import('fast-xml-parser');
+      const parser = new XMLParser();
+      let text = await res.text();
+      let out = parser.parse(text) as { config: NetflixVerifyAppConfig };
+      if (!out.config) {
+        console.error(out);
+        throw new Error('Invalid config');
+      }
+      config = out.config;
+    } catch (e) {
+      console.error(e);
+      return {
+        check: result,
+        country: '',
+      };
+    }
+
+    out.country = config.country;
+  }
+
+
+  return out;
 }
 
 export interface NetflixVerifyAppConfig {
@@ -150,24 +169,3 @@ export interface NetflixVerifyAppConfig {
   geolocation: string;
 }
 
-class Closer implements Disposable {
-  closers: Array<{ close(): void } | Function> = [];
-
-  add(closer: { close(): void } | Function) {
-    this.closers.push(closer);
-  }
-
-  [Symbol.dispose]() {
-    for (let closer of this.closers) {
-      if (typeof closer === 'function') {
-        closer();
-      } else {
-        closer.close();
-      }
-    }
-  }
-
-  close() {
-    this[Symbol.dispose]();
-  }
-}

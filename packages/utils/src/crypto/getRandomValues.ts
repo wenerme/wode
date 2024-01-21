@@ -11,9 +11,11 @@ export let getRandomValues: <T extends Exclude<TypedArray, Float32Array | Float6
 
 function _getRandomValues<T extends Exclude<TypedArray, Float32Array | Float64Array>>(buf: T) {
   const nodeCrypto = getNodeCrypto();
-  if (nodeCrypto?.webcrypto?.getRandomValues) {
-    getRandomValues = nodeCrypto?.webcrypto?.getRandomValues?.bind(nodeCrypto?.webcrypto);
-    return nodeCrypto.webcrypto.getRandomValues(buf);
+  // avoid type error
+  let wc = nodeCrypto?.webcrypto as any;
+  if (wc?.getRandomValues) {
+    getRandomValues = wc.getRandomValues?.bind(nodeCrypto?.webcrypto);
+    return wc.getRandomValues(buf);
   }
   if (nodeCrypto?.randomBytes) {
     if (!(buf instanceof Uint8Array)) {

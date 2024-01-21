@@ -1,11 +1,11 @@
 import { test } from 'vitest';
-import { verify } from './verify';
+import { verifyNetflixProxy } from './verifyNetflixProxy';
 
 test(
   'verify',
   async () => {
     console.log(
-      await verify({
+      await verifyNetflixProxy({
         proxy: `http://127.0.0.1:7890`,
       }),
     );
