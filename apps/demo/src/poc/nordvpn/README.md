@@ -1,0 +1,6 @@
+- https://nordvpn.com/api/server/stats
+- https://nordvpn.com/api/server
+- https://api.nordvpn.com/v1/servers/countries
+- https://api.nordvpn.com/v1/servers
+  - ?limit=9999999
+- https://nordvpn.com/wp-admin/admin-ajax.php?action=servers_recommendations

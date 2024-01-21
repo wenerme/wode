@@ -1,0 +1,177 @@
+{
+  "Ownable": {
+    "extends": [],
+    "abi": [
+      "function owner() public view virtual returns (address)",
+      "function renounceOwnership() public virtual onlyOwner",
+      "function transferOwnership(address newOwner) public virtual onlyOwner"
+    ]
+  },
+  "ERC20": {
+    "extends": ["ERC20Metadata", "ERC20Safe"],
+    "abi": [
+      "function totalSupply() view returns (uint256)",
+      "function balanceOf(address owner) view returns (uint)",
+      "function transfer(address to, uint256 value) returns (bool success)",
+      "function transferFrom(address from, address to, uint256 value) returns (bool success)",
+      "function approve(address spender, uint256 value) returns (bool success)",
+      "function allowance(address owner, address spender)  view returns (uint256 remaining)",
+      "event Transfer(address indexed from, address indexed to, uint256 value)",
+      "event Approval(address indexed owner, address indexed spender, uint256 value)"
+    ]
+  },
+  "ERC20Metadata": {
+    "abstract": true,
+    "abi": [
+      "function name() view returns (string)",
+      "function symbol() view returns (string)",
+      "function decimals() view returns (uint8)"
+    ]
+  },
+  "ERC20Safe": {
+    "abstract": true,
+    "abi": [
+      "function safeTransfer(address to, uint256 amount) external returns(bool)",
+      "function safeTransfer(address to, uint256 amount, bytes memory data) external returns(bool)",
+      "function safeTransferFrom(address from, address to, uint256 amount) external returns(bool)",
+      "function safeTransferFrom(address from, address to, uint256 amount, bytes memory data) external returns(bool)"
+    ]
+  },
+  "ERC20Receiver": {
+    "id": "0x4fc35859",
+    "abstract": true,
+    "extends": ["ERC165"],
+    "abi": [
+      "function onERC20Received( address _operator, address _from, uint256 _amount, bytes _data ) external returns(bytes4)"
+    ]
+  },
+  "ERC721TokenReceiver": {
+    "id": "0x150b7a02",
+    "abstract": true,
+    "extends": ["ERC165"],
+    "abi": [
+      "function onERC721Received(address _operator, address _from, uint256 _tokenId, bytes _data) external returns(bytes4)function onERC721Received(address _operator, address _from, uint256 _tokenId, bytes _data) external returns(bytes4)"
+    ]
+  },
+  "ERC721Token": {
+    "id": "0x80ac58cd",
+    "extends": ["ERC165", "ERC721Metadata", "ERC721Enumerable", "ERC721Burnable", "ERC2981"],
+    "abi": [
+      "event Transfer(address indexed _from, address indexed _to, uint256 indexed _tokenId)",
+      "event Approval(address indexed _owner, address indexed _approved, uint256 indexed _tokenId)",
+      "event ApprovalForAll(address indexed _owner, address indexed _operator, bool _approved)",
+      "function balanceOf(address _owner) external view returns (uint256)",
+      "function ownerOf(uint256 _tokenId) external view returns (address)",
+      "function safeTransferFrom(address _from, address _to, uint256 _tokenId, bytes data) external payable",
+      "function safeTransferFrom(address _from, address _to, uint256 _tokenId) external payable",
+      "function transferFrom(address _from, address _to, uint256 _tokenId) external payable",
+      "function approve(address _approved, uint256 _tokenId) external payable",
+      "function setApprovalForAll(address _operator, bool _approved) external",
+      "function getApproved(uint256 _tokenId) external view returns (address)",
+      "function isApprovedForAll(address _owner, address _operator) external view returns (bool)"
+    ]
+  },
+  "ERC721Receiver": {
+    "abstract": true,
+    "abi": [
+      "function onERC721Received( address operator, address from, uint256 tokenId, bytes calldata data ) external returns (bytes4)"
+    ]
+  },
+  "ERC721Metadata": {
+    "id": "0x5b5e139f",
+    "abstract": true,
+    "abi": [
+      "function name() external view returns (string memory)",
+      "function symbol() external view returns (string memory)",
+      "function tokenURI(uint256 tokenId) external view returns (string memory)"
+    ]
+  },
+  "ERC721Enumerable": {
+    "id": "0x780e9d63",
+    "abstract": true,
+    "abi": [
+      "function totalSupply() external view returns (uint256)",
+      "function tokenOfOwnerByIndex(address owner, uint256 index) external view returns (uint256)",
+      "function tokenByIndex(uint256 index) external view returns (uint256)"
+    ]
+  },
+  "ERC721Burnable": {
+    "abstract": true,
+    "abi": ["function burn(uint256 tokenId) public"]
+  },
+  "ERC165": {
+    "id": "0x01ffc9a7",
+    "abi": ["function supportsInterface(bytes4 interfaceId) external view returns (bool)"]
+  },
+  "ERC1820Implementer": {
+    "abi": [
+      "function canImplementInterfaceForAddress(bytes32 interfaceHash, address account) external view returns (bytes32)"
+    ]
+  },
+  "ERC1820Registry": {
+    "abi": [
+      "event InterfaceImplementerSet(address indexed account, bytes32 indexed interfaceHash, address indexed implementer)",
+      "event ManagerChanged(address indexed account, address indexed newManager)",
+      "function setManager(address account, address newManager) external",
+      "function getManager(address account) external view returns (address)",
+      "function setInterfaceImplementer( address account, bytes32 _interfaceHash, address implementer ) external",
+      "function getInterfaceImplementer(address account, bytes32 _interfaceHash) external view returns (address)",
+      "function interfaceHash(string calldata interfaceName) external pure returns (bytes32)",
+      "function updateERC165Cache(address account, bytes4 interfaceId) external",
+      "function implementsERC165Interface(address account, bytes4 interfaceId) external view returns (bool)",
+      "function implementsERC165InterfaceNoCache(address account, bytes4 interfaceId) external view returns (bool)"
+    ]
+  },
+  "ERC2981": {
+    "id": "0x2a55205a",
+    "abstract": true,
+    "abi": [
+      "function royaltyInfo(uint256 tokenId, uint256 salePrice) external view returns (address receiver, uint256 royaltyAmount)"
+    ]
+  },
+  "ERC1155": {
+    "id": "0xd9b67a26",
+    "extends": ["ERC165", "ERC1155MetadataURI"],
+    "abi": [
+      "event TransferSingle(address indexed operator, address indexed from, address indexed to, uint256 id, uint256 value)",
+      "event TransferBatch(address indexed operator, address indexed from, address indexed to, uint256[] ids, uint256[] values)",
+      "event ApprovalForAll(address indexed account, address indexed operator, bool approved)",
+      "event URI(string value, uint256 indexed id)",
+      "function balanceOf(address account, uint256 id) external view returns (uint256)",
+      "function balanceOfBatch(address[] calldata accounts, uint256[] calldata ids) external view returns (uint256[] memory)",
+      "function setApprovalForAll(address operator, bool approved) external",
+      "function isApprovedForAll(address account, address operator) external view returns (bool)",
+      "function safeTransferFrom(address from, address to, uint256 id, uint256 amount, bytes calldata data ) external",
+      "function safeBatchTransferFrom( address from, address to, uint256[] calldata ids, uint256[] calldata amounts, bytes calldata data ) external"
+    ]
+  },
+  "ERC1155MinterPauser": {
+    "extends": ["ERC1155", "Pausable"],
+    "abi": [
+      "function mint(address to, uint256 id, uint256 amount, bytes memory data ) public",
+      "function mintBatch(address to, uint256[] memory ids, uint256[] memory amounts, bytes memory data ) public"
+    ]
+  },
+  "ERC1155TokenReceiver": {
+    "id": "0x4e2312e0",
+    "abstract": true,
+    "abi": [
+      "function onERC1155Received(address _operator, address _from, uint256 _id, uint256 _value, bytes calldata _data) external returns(bytes4)",
+      "function onERC1155BatchReceived(address _operator, address _from, uint256[] calldata _ids, uint256[] calldata _values, bytes calldata _data) external returns(bytes4)"
+    ]
+  },
+  "ERC1155MetadataURI": {
+    "abstract": true,
+    "abi": ["function uri(uint256 _id) external view returns (string memory)"]
+  },
+  "Pausable": {
+    "abstract": true,
+    "abi": [
+      "event Paused(address account)",
+      "event Unpaused(address account)",
+      "function paused() public view returns (bool)",
+      "function pause()",
+      "function unpause()"
+    ]
+  }
+}
