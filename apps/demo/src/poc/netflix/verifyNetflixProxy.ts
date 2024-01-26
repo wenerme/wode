@@ -74,7 +74,16 @@ export async function verifyNetflixProxy({ proxy, ...options }: VerifyOptions): 
     NonSelfMade: '70143836',
   };
   for (let [k, v] of Object.entries(checks)) {
-    const res = await fetch(`https://www.netflix.com/title/${v}`, init);
+    let res: Response;
+    try {
+      res = await fetch(`https://www.netflix.com/title/${v}`, init);
+    } catch (e) {
+      console.error(`Fetch ERROR: ${String(e)}`);
+      return {
+        check: result,
+        country: '',
+      };
+    }
 
     let valid = res.status < 400;
     result[k as keyof VerifyCheckResult] = valid;
