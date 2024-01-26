@@ -41,7 +41,7 @@ export interface RunOptions<O extends Record<string, any> = Record<string, any>>
 }
 
 export interface RunActionOptions<O extends Record<string, any> = Record<string, any>> {
-  run: (opts: RunOptions<O>) => void | Promise<void>;
+  run: (opts: RunOptions<O>) => MaybePromise<undefined | null | void>;
 }
 
 export async function run<T>(f: () => MaybePromise<T>, { command = getRootCommand() }: { command?: Command } = {}) {
@@ -56,18 +56,22 @@ export async function run<T>(f: () => MaybePromise<T>, { command = getRootComman
 }
 
 export function runAction<G extends GlobalOptions = GlobalOptions>(_run: RunActionOptions<G>['run']) {
-  return async (...args: any[]) => {
+  return async (...args: any[]): Promise<void> => {
     const command = args.pop() as Command;
-    // const options = args.pop() as O;
+    // const _ = args.pop();
     const options = command.optsWithGlobals() as G;
     return run(
-      () =>
-        _run({
+      async () => {
+        const out = await _run({
           command,
           options,
-          args,
+          args: command.args,
           closer: _ctx.closer,
-        }),
+        });
+        if (out) {
+          output(out);
+        }
+      },
       { command },
     );
   };

@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import process from 'node:process';
 import { createDynamicImportPlugin } from '@src/poc/esbuild/createDynamicImportPlugin';
 import { createEmbedPlugin } from '@src/poc/esbuild/createEmbedPlugin';

@@ -1,5 +1,5 @@
-import axios, { type AxiosRequestConfig } from 'axios';
 import { createHmac } from 'node:crypto';
+import axios, { type AxiosRequestConfig } from 'axios';
 import { z } from 'zod';
 
 export type FeishuBotMessagePayload = MessageTypeContent & {
@@ -98,7 +98,7 @@ export interface BotHookResponse {
 
 export const FeishuBotConfig = z.object({
   url: z.string(),
-  secret: z.string().min(1).optional(),
+  secret: z.string().optional(),
 });
 export type FeishuBotHookConfig = z.infer<typeof FeishuBotConfig>;
 
