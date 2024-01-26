@@ -1,3 +1,4 @@
+import { createFileCommand } from '@src/poc/cli/createFileCommand';
 import { createGostCommand } from '@src/poc/cli/createGostCommand';
 import { createMacosCommand } from '@src/poc/cli/createMacosCommand';
 import { createNetflixCommand } from '@src/poc/cli/createNetflixCommand';
@@ -12,7 +13,7 @@ export function createWecCommand() {
 
   root.addCommand(createNetflixCommand());
   root.addCommand(createGostCommand());
-
+  root.addCommand(createFileCommand());
   if (process.platform === 'darwin') {
     root.addCommand(createMacosCommand());
   }

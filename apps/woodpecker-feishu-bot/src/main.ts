@@ -1,12 +1,11 @@
 import axios from 'axios';
 import dotenv from 'dotenv';
-import * as Eta from 'eta';
-import type { EtaConfig } from 'eta/dist/types/config';
+import { Eta } from 'eta';
 import fs from 'fs-extra';
 import { z } from 'zod';
 import { createFeishuBotHookRequest } from './bot';
 
-let Envs = z.object({
+const Envs = z.object({
   PLUGIN_FEISHU_BOT_URL: z.string().url(),
   PLUGIN_FEISHU_BOT_SECRET: z.string().optional(),
   PLUGIN_CONTENT: z.string().optional(),
@@ -17,8 +16,8 @@ let Envs = z.object({
   PLUGIN_IMAGE: z.string().optional(),
   PLUGIN_DRY_RUN: z.coerce.boolean().optional(),
   PLUGIN_DEBUG: z.coerce.boolean().optional(),
-  PLUGIN_TEMPLATE: z.coerce.boolean().optional().default(true),
-  PLUGIN_FAILSAFE: z.coerce.boolean().optional().default(false),
+  PLUGIN_TEMPLATE: z.coerce.boolean().default(true),
+  PLUGIN_FAILSAFE: z.coerce.boolean().default(false),
 });
 
 async function main() {
@@ -122,40 +121,29 @@ async function run({
       env: { ...process.env },
       fs: Object.freeze(fs),
     };
-    let opts: EtaConfig = {
-      ...Eta.defaultConfig,
+
+    const eta = new Eta({
+      // ...Eta.defaultConfig,
       useWith: true,
       autoTrim: false,
-    };
+    });
     if (text) {
-      text = await Eta.renderAsync(
-        text,
-        {
-          ...ctx,
-          $: TextUtils,
-        },
-        opts,
-      );
+      text = await eta.renderAsync(text, {
+        ...ctx,
+        $: TextUtils,
+      });
     }
     if (markdown) {
-      markdown = await Eta.renderAsync(
-        markdown,
-        {
-          ...ctx,
-          $: MarkdownUtils,
-        },
-        opts,
-      );
+      markdown = await eta.renderAsync(markdown, {
+        ...ctx,
+        $: MarkdownUtils,
+      });
     }
     if (html) {
-      html = await Eta.renderAsync(
-        html,
-        {
-          ...ctx,
-          $: HTMLUtils,
-        },
-        opts,
-      );
+      html = await eta.renderAsync(html, {
+        ...ctx,
+        $: HTMLUtils,
+      });
     }
   }
 

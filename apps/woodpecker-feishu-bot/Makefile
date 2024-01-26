@@ -3,7 +3,7 @@
 clean:
 	rm -rf ./dist/*
 
-build:
+build: clean
 	pnpm esbuild --external:{jsdom,pg-native} \
  		--format=esm --platform=node --charset=utf8 --target=chrome90 --sourcemap --legal-comments=external --bundle \
 		--define:process.env.NODE_ENV=\"production\" --define:__DEV__=false \
