@@ -1,0 +1,12 @@
+- [glauth/glauth](https://github.com/glauth/glauth)
+  - MIT, Go
+  - LDAP server for development, home use, or CI
+  - 支持能力管理
+- [nitnelave/lldap](https://github.com/nitnelave/lldap)
+  - GPLv3, Rust
+  - GraphQL - https://github.com/nitnelave/lldap/blob/main/schema.graphql
+  - JWT Auth
+  - WebUI 管理用户
+  - 不支持 LDAPS, HTTPS
+- [majewsky/portunus](https://github.com/majewsky/portunus)
+  - GPLv3, Go

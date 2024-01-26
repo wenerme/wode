@@ -276,7 +276,12 @@ const banner: Record<string, string> = {
 };
 
 await esbuild.build({
-  plugins: [createEmbedPlugin(), createDynamicImportPlugin({})],
+  plugins: [
+    createEmbedPlugin(),
+    createDynamicImportPlugin({
+      transformExtensions: ['.js'],
+    }),
+  ],
   banner,
   ...eso,
 });
