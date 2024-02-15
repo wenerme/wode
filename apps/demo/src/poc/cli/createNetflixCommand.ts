@@ -1,6 +1,6 @@
-import { run } from '@src/poc/cli/run';
-import { runNetflixCheck } from '@src/poc/netflix/runNetflixCheck';
 import { Command, Option } from 'commander';
+import { runNetflixCheck } from '../netflix/runNetflixCheck';
+import { run } from './run';
 
 export function createNetflixCommand() {
   const nf = new Command('netflix').alias('nf').description('netflix related');

@@ -1,8 +1,8 @@
-import { createFileCommand } from '@src/poc/cli/createFileCommand';
-import { createGostCommand } from '@src/poc/cli/createGostCommand';
-import { createMacosCommand } from '@src/poc/cli/createMacosCommand';
-import { createNetflixCommand } from '@src/poc/cli/createNetflixCommand';
 import { Command } from 'commander';
+import { createFileCommand } from './createFileCommand';
+import { createGostCommand } from './createGostCommand';
+import { createMacosCommand } from './createMacosCommand';
+import { createNetflixCommand } from './createNetflixCommand';
 
 export function createWecCommand() {
   const root = new Command('wec');

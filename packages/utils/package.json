@@ -55,6 +55,19 @@
     "undici": "^6.4.0",
     "zod": "^3.22.4"
   },
+  "exports": {
+    ".": "./src/index.ts",
+    "./types": {
+      "types": "./types.d.ts"
+    },
+    "./server": "./src/server.ts",
+    "./server/node-fetch": "./server/node-fetch.ts",
+    "./server/jsdom": "./server/jsdom.ts",
+    "./server/ws": "./server/ws.ts",
+    "./schema/typebox": "./src/schema/typebox/index.ts",
+    "./schema/typebox/gen": "./src/schema/typebox/gen/index.ts",
+    "./package.json": "./package.json"
+  },
   "publishConfig": {
     "registry": "https://registry.npmjs.org",
     "access": "public",

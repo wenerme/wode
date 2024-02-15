@@ -1,8 +1,8 @@
-import { copy } from '@src/poc/cli/io';
-import { runAction } from '@src/poc/cli/run';
-import { runGostAutoSwitch } from '@src/poc/gost/runGostAutoSwitch';
 import { Command } from 'commander';
 import { $ } from 'execa';
+import { runGostAutoSwitch } from '../gost/runGostAutoSwitch';
+import { copy } from './io';
+import { runAction } from './run';
 
 export function createGostCommand() {
   const root = new Command('gost')
