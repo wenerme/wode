@@ -61,7 +61,7 @@
     "@types/zxcvbn": "^4.4.4",
     "@vitejs/plugin-react": "^4.2.1",
     "undici": "^6.4.0",
-    "vite": "^5.0.12",
+    "vite": "^5.1.2",
     "vite-plugin-dynamic-import": "^1.5.0"
   }
 }

@@ -1,5 +1,5 @@
-import { KeychainAccess } from '@src/poc/macos/KeychainAccess';
 import { Command } from 'commander';
+import { KeychainAccess } from '../macos/KeychainAccess';
 
 export function createMacosCommand() {
   const macos = new Command('macos').alias('mac');
