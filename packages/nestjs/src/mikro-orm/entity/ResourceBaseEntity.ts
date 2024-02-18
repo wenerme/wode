@@ -2,7 +2,7 @@ import { Entity, Property, types } from '@mikro-orm/core';
 import { MinimalBaseEntity } from './MinimalBaseEntity';
 
 @Entity({ abstract: true })
-export abstract class ResourceBaseEntity<E extends ResourceBaseEntity<any>> extends MinimalBaseEntity<E> {
+export abstract class ResourceBaseEntity extends MinimalBaseEntity {
   /**
    * External Resource ID
    */

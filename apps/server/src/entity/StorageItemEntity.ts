@@ -1,9 +1,9 @@
 import { Entity, OptionalProps, Property, types, Unique } from '@mikro-orm/core';
-import { WodeTenantBaseEntity, TenantBaseEntityOptionalFields } from './WodeTenantBaseEntity';
+import { TenantBaseEntity, TenantBaseEntityOptionalFields } from './base/TenantBaseEntity';
 
 @Entity({ tableName: 'storage_item' })
 @Unique({ properties: ['code'] })
-export class StorageItemEntity extends WodeTenantBaseEntity<StorageItemEntity> {
+export class StorageItemEntity extends TenantBaseEntity {
   [OptionalProps]?: TenantBaseEntityOptionalFields;
 
   @Property({ type: types.string, nullable: true })

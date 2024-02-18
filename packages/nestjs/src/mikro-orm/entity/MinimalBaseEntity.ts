@@ -3,7 +3,7 @@ import { BaseEntity, Entity, PrimaryKey, Property, types } from '@mikro-orm/core
 export type MinimalBaseEntityOptionalFields = 'id' | 'uid' | 'createdAt' | 'updatedAt' | 'sid';
 
 @Entity({ abstract: true })
-export abstract class MinimalBaseEntity<E extends MinimalBaseEntity<any>> extends BaseEntity<E, 'id'> {
+export abstract class MinimalBaseEntity extends BaseEntity {
   @PrimaryKey({ type: types.string, defaultRaw: 'public.gen_ulid()', nullable: false })
   id!: string;
 

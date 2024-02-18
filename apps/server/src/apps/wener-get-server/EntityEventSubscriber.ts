@@ -1,6 +1,6 @@
 import type { EventArgs, EventSubscriber, FlushEventArgs, TransactionEventArgs } from '@mikro-orm/core';
 import { Injectable, Logger } from '@nestjs/common';
-import { StandardBaseEntity } from '../../entity/StandardBaseEntity';
+import { StandardBaseEntity } from '../../entity/base/StandardBaseEntity';
 
 @Injectable()
 export class EntityEventSubscriber<T extends StandardBaseEntity<any> = StandardBaseEntity<any>>

@@ -1,10 +1,10 @@
 import { Entity, ManyToOne, OptionalProps, Property, type Rel, types } from '@mikro-orm/core';
 import { ClientAgentEntity } from './ClientAgentEntity';
-import type { TenantBaseEntityOptionalFields } from './WodeTenantBaseEntity';
-import { WodeTenantBaseEntity } from './WodeTenantBaseEntity';
+import type { TenantBaseEntityOptionalFields } from './base/TenantBaseEntity';
+import { TenantBaseEntity } from './base/TenantBaseEntity';
 
 @Entity({ tableName: 'access_token' })
-export class AccessTokenEntity extends WodeTenantBaseEntity<AccessTokenEntity> {
+export class AccessTokenEntity extends TenantBaseEntity {
   [OptionalProps]?: TenantBaseEntityOptionalFields | 'sessionId' | 'metadata' | 'scopes' | 'accessToken' | 'tokenType';
 
   @ManyToOne({ entity: () => ClientAgentEntity, nullable: true })

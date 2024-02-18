@@ -1,5 +1,5 @@
-import { BeforeCreate, Entity, Filter, Property, types, Unique } from '@mikro-orm/core';
-import { getTenantId } from '../modules/tenant';
+import { BeforeCreate, Entity, Filter, Opt, Property, types, Unique } from '@mikro-orm/core';
+import { getTenantId } from '../../modules/tenant';
 import { StandardBaseEntity } from './StandardBaseEntity';
 import { TidFilter } from './TidFilter';
 
@@ -22,9 +22,9 @@ export type TenantBaseEntityOptionalFields =
 @Entity({ abstract: true })
 @Filter(TidFilter)
 @Unique({ properties: ['tid', 'eid'] })
-export abstract class WodeTenantBaseEntity<E extends WodeTenantBaseEntity<any> = any> extends StandardBaseEntity<E> {
+export abstract class TenantBaseEntity extends StandardBaseEntity {
   @Property({ type: types.string, nullable: false, defaultRaw: 'public.current_tenant_id()' })
-  tid!: string;
+  tid!: string & Opt;
 
   @BeforeCreate()
   setTenantBeforeCreate() {
