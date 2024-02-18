@@ -78,13 +78,13 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@alicloud/openapi-client": "^0.4.7",
-    "@sinclair/typebox": "^0.32.13",
+    "@alicloud/openapi-client": "^0.4.8",
+    "@sinclair/typebox": "^0.32.14",
     "@wecom/jssdk": "^1.4.5",
-    "fast-xml-parser": "^4.3.3",
+    "fast-xml-parser": "^4.3.4",
     "nats.ws": "^1.19.1",
-    "openai": "^4.26.0",
-    "undici": "^6.4.0",
+    "openai": "^4.28.0",
+    "undici": "^6.6.2",
     "ws": "^8.16.0"
   }
 }

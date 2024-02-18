@@ -18,7 +18,7 @@
   "dependencies": {
     "@sequelize/core": "7.0.0-alpha.29",
     "@wener/utils": "workspace:^",
-    "https-proxy-agent": "^7.0.2"
+    "https-proxy-agent": "^7.0.4"
   },
   "devDependencies": {
     "lru-cache": "^10.2.0"
