@@ -1,6 +1,6 @@
 import type { FilterDef } from '@mikro-orm/core/typings';
 import { Logger } from '@nestjs/common';
-import { getTenantId } from '../modules/tenant';
+import { getTenantId } from '../../modules/tenant';
 
 const log = new Logger('TidFilter');
 export const TidFilter = {

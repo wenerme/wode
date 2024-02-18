@@ -1,9 +1,9 @@
 import type { EntityManager, EntityRepository, MikroORM } from '@mikro-orm/postgresql';
 import { QueryBuilder } from '@mikro-orm/postgresql';
 import { Logger } from '@nestjs/common';
-import { WodeTenantBaseEntity } from '../../entity/WodeTenantBaseEntity';
+import { TenantBaseEntity } from '../../entity/base/TenantBaseEntity';
 
-export class EntityBaseService<E extends WodeTenantBaseEntity> {
+export class EntityBaseService<E extends TenantBaseEntity> {
   protected readonly log = new Logger(this.constructor.name);
 
   constructor(

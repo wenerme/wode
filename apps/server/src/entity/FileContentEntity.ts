@@ -1,8 +1,8 @@
 import { Entity, OptionalProps, Property, types } from '@mikro-orm/core';
-import { WodeTenantBaseEntity, TenantBaseEntityOptionalFields } from './WodeTenantBaseEntity';
+import { TenantBaseEntity, TenantBaseEntityOptionalFields } from './base/TenantBaseEntity';
 
 @Entity({ tableName: 'file_content' })
-export class FileContentEntity extends WodeTenantBaseEntity<FileContentEntity> {
+export class FileContentEntity extends TenantBaseEntity {
   [OptionalProps]?: TenantBaseEntityOptionalFields | 'metadata';
 
   @Property({ type: types.string, nullable: true })

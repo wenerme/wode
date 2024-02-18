@@ -1,7 +1,8 @@
 # wode
 
-Wener Node Monorepo
+Wener NodeJS Monorepo
 
+- wode -> wener+node+demo
 - packages
   - @wener/system
     - hooks to lets systemjs work with npm registry & package.json
