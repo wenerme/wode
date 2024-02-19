@@ -13,8 +13,11 @@ test(
 
 test('apkindex', async () => {
   const rc = new RepoClient();
-  const ar = await parseApkIndexArchive(await fetch(rc.buildPackageIndexUrl()).then((v) => v.arrayBuffer()));
-  console.log(ar.description);
+  let data = await rc.request(rc.buildPackageIndexUrl()).then((v) => v.body!);
+  const ar = await parseApkIndexArchive(data, {
+    skip: ({ name }) => name === 'APKINDEX',
+  });
+  console.log(await rc.getLastUpdated(), ar.mtime, ar.description);
 });
 
 test('latest branch', async () => {

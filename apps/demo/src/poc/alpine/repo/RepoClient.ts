@@ -22,18 +22,18 @@ export class RepoClient {
     this.options = { url, branch, repo, arch, fetch };
   }
 
-  with(o: { url?: string; branch?: string; repo?: string; arch?: string }) {
-    return new RepoClient({ ...this, ...o });
+  with(o: Partial<RepoClientOptions> = {}) {
+    return new RepoClient({ ...this.options, ...o });
   }
 
-  private async request(o: { path: string } | string) {
+  request(o: { path: string } | string) {
     const opts = typeof o === 'string' ? { path: o } : o;
     const { path } = opts;
     const { fetch, url } = this.options;
-    let u = `${url}/${path}`;
-    return await fetch(u).then((res) => {
+    const u = new URL(path, url);
+    return fetch(u).then((res) => {
       if (!res.ok) {
-        throw Object.assign(new Error(`failed to fetch: ${res.status} ${res.statusText}`), { url: u, res });
+        throw Object.assign(new Error(`failed to fetch ${u}: ${res.status} ${res.statusText}`), { url: u, res });
       }
       return res;
     });
