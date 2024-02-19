@@ -42,5 +42,12 @@
   ],
   "exclude": [
     "node_modules"
-  ]
+  ],
+  "ts-node": {
+    "transpileOnly": true,
+    "swc": true,
+    "esm": true,
+    "files": true,
+    "experimentalSpecifierResolution": "node"
+  }
 }

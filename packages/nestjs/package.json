@@ -87,7 +87,7 @@
   },
   "dependencies": {
     "@wener/utils": "workspace:^",
-    "reflect-metadata": "^0.1.14",
+    "reflect-metadata": "^0.2.1",
     "zod": "^3.22.4"
   },
   "devDependencies": {

@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json.schemastore.org/swcrc",
+  "sourceMaps": true,
+  "module": {
+    "type": "es6"
+  },
+  "jsc": {
+    "target": "es2017",
+    "parser": {
+      "syntax": "typescript",
+      "decorators": true,
+      "dynamicImport": true
+    },
+    "transform": {
+      "legacyDecorator": true,
+      "decoratorMetadata": true
+    },
+    "keepClassNames": true,
+    "baseUrl": ".",
+    "paths": {
+         "@src/*": [
+           "src/*"
+         ],
+     "@/components/*": [
+       "src/components/*"
+     ],
+     "@/server/*": [
+       "src/server/*"
+     ],
+     "@/client/*": [
+       "src/client/*"
+     ],
+     "@/modules/*": [
+       "src/modules/*"
+     ],
+     "@/app/*": [
+       "src/app/*"
+     ],
+     "@/icons": [
+       "src/icons"
+     ]
+   }
+  },
+  "minify": false
+}

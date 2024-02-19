@@ -1,5 +1,5 @@
 import { Entity, Opt, Property, types } from '@mikro-orm/core';
-import { StandardBaseEntity } from '@src/entity/base/StandardBaseEntity';
+import { StandardBaseEntity } from '../../../entity/base/StandardBaseEntity';
 
 @Entity({ tableName: 'apk_index', schema: 'alpine' })
 export class ApkIndexEntity extends StandardBaseEntity {

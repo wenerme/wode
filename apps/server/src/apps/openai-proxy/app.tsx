@@ -9,6 +9,8 @@ import { createBootstrap, Currents } from '@wener/nestjs';
 import { getEntityManager, OrmModule } from '@wener/nestjs/mikro-orm';
 import { FetchLike, getGlobalThis, MaybePromise, parseBoolean } from '@wener/utils';
 import { createFetchWithProxy } from '@wener/utils/src/servers/fetch/createFetchWithProxy';
+import dotenv from 'dotenv';
+import { showRoutes } from 'hono/dev';
 import { jsx } from 'hono/jsx';
 import { AccessTokenEntity } from '../../entity/AccessTokenEntity';
 import { ClientAgentEntity } from '../../entity/ClientAgentEntity';
@@ -39,7 +41,7 @@ const bootstrap = createBootstrap({
 });
 
 function runContext<T>(f: () => MaybePromise<T>) {
-  return bootstrap().then(() => RequestContext.createAsync(getEntityManager(), async () => Currents.run(f)));
+  return bootstrap().then(() => RequestContext.create(getEntityManager(), async () => Currents.run(f)));
   // return RequestContext.createAsync(orm.em, async () => Currents.run(f));
 }
 
@@ -80,7 +82,7 @@ function getProxyFetch() {
 const app = new OpenAPIHono({
   defaultHook: (result, c) => {
     if (!result.success) {
-      return c.jsonT(
+      return c.json(
         {
           ok: false,
           errors: String(result),
@@ -115,7 +117,7 @@ app.openapi(
   }),
   (c) => {
     const { component } = c.req.valid('param');
-    return c.jsonT({
+    return c.json({
       message: `${component || 'PONG'}`,
       now: Math.floor(Date.now() / 1000),
       ok: true,
@@ -162,7 +164,7 @@ app.doc('/api-json', {
   },
 });
 
-app.showRoutes();
+showRoutes(app);
 
 let port = parseInt(process.env.PORT || '0') || 3000;
 

@@ -26,7 +26,7 @@
     "common": "workspace:^",
     "cors": "^2.8.5",
     "formidable": "^3.5.1",
-    "i18next": "^23.8.3",
+    "i18next": "^23.9.0",
     "i18next-browser-languagedetector": "^7.2.0",
     "i18next-resources-to-backend": "^1.2.0",
     "immer": "^10.0.3",

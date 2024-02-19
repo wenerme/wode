@@ -1,7 +1,7 @@
 import { MikroORM } from '@mikro-orm/postgresql';
 import { Injectable } from '@nestjs/common';
-import { ApkIndexEntity } from '@src/poc/alpine/entity/ApkIndexEntity';
-import { EntityBaseService } from '@wener/server/src/modules/entity/EntityBaseService';
+import { EntityBaseService } from '../../../entity/service/EntityBaseService';
+import { ApkIndexEntity } from '../entity/ApkIndexEntity';
 
 @Injectable()
 export class ApkIndexService extends EntityBaseService<ApkIndexEntity> {
