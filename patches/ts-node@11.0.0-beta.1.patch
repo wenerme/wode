@@ -1,0 +1,13 @@
+diff --git a/dist/transpilers/swc.js b/dist/transpilers/swc.js
+index c334bd3b18b292c3f865639dca4080ff3dfe53e8..26c37e4b45177554f4a79e311775dab3e9085a59 100644
+--- a/dist/transpilers/swc.js
++++ b/dist/transpilers/swc.js
+@@ -167,7 +167,7 @@ function createSwcOptions(compilerOptions, nodeModuleEmitKind, swcInstance, swcD
+                         : {}),
+                 }
+                 : undefined,
+-            swcrc: false,
++            swcrc: true,
+             jsc: {
+                 externalHelpers: importHelpers,
+                 parser: {

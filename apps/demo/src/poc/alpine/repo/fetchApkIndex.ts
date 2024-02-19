@@ -122,5 +122,6 @@ export async function fetchApkIndex({ variants, em, force }: FetchApkIndexOption
   return {
     stats,
     changed: changedEntities,
+    found: foundAll,
   };
 }

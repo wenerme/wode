@@ -58,3 +58,6 @@ verify:
 wec.mjs:
 	pnpm tsx ./src/poc/esbuild/esbuild.main.ts --outfile=out/wec.mjs ./src/poc/cli/wec.main.ts
 	du -sh out/wec.mjs
+
+dev-apki-server:
+	NODE_ENV=development pnpm node --loader ts-node/esm --watch ./src/poc/alpine/server.ts
