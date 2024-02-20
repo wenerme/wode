@@ -5,10 +5,7 @@ export type SessionRequestOptions<T> = RequestOptions<T> & {
   cookie?: MaybePromise<string | undefined> | (() => MaybePromise<string | undefined>);
 };
 
-export async function requestFromSession<T>(
-  { cookie, ...opts }: SessionRequestOptions<T>,
-  fetch = globalThis.fetch,
-): Promise<T> {
+export async function requestFromSession<T>({ cookie, ...opts }: SessionRequestOptions<T>): Promise<T> {
   const Cookie = await (cookie instanceof Function ? cookie() : cookie);
   if (!Cookie) {
     throw new Error('missing cookie');
@@ -40,7 +37,6 @@ export async function requestFromSession<T>(
       ...opts,
       headers,
     },
-    fetch,
   );
 }
 

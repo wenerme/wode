@@ -147,9 +147,6 @@ export interface ErrorDetail {
 
   require<T>(v: T | undefined, o?: Partial<ErrorDetailInit> | string): NonNullable<T>;
 
-  // 不支持 return value
-  // https://stackoverflow.com/a/73252858/1870054
-
   check(condition: boolean, o?: Partial<ErrorDetailInit> | string): asserts condition;
 
   check<T>(v: T | undefined | null, o?: Partial<ErrorDetailInit> | string): asserts v is NonNullable<T>;
