@@ -3,7 +3,6 @@ import { HttpBindings, serve } from '@hono/node-server';
 import { serveStatic } from '@hono/node-server/serve-static';
 import { RequestContext } from '@mikro-orm/core';
 import { Logger, Module } from '@nestjs/common';
-import { ApkIndexEntity, ApkIndexPkgEntity } from '@src/poc/alpine/entity/ApkIndexEntity';
 import { createBootstrap, Currents } from '@wener/nestjs';
 import { getEntityManager, OrmModule } from '@wener/nestjs/mikro-orm';
 import { MaybePromise, parseBoolean } from '@wener/utils';
@@ -12,6 +11,7 @@ import { createYoga } from 'graphql-yoga';
 import { Hono, MiddlewareHandler } from 'hono';
 import { showRoutes } from 'hono/dev';
 import { createGraphSchema } from './createGraphSchema';
+import { ApkIndexEntity, ApkIndexPkgEntity } from './entity/ApkIndexEntity';
 import { ApkIndexService } from './service/ApkIndexService';
 
 const yoga = createYoga({

@@ -70,7 +70,6 @@ class DefaultApp implements App {
 
   set name(name: string) {
     this.#name = name;
-    this.reset();
   }
 
   get isProduction() {
@@ -119,7 +118,6 @@ class DefaultApp implements App {
   }
 
   set instanceId(v) {
-    this.reset();
     this.#instanceId = v;
   }
 

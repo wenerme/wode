@@ -16,27 +16,27 @@
       "default": "./lib/index.js"
     },
     "./server": {
-      "types": "./server.ts",
+      "types": "./src/server/index.ts",
       "default": "./lib/server/index.js"
     },
     "./wechat": {
-      "types": "./wechat.ts",
+      "types": "./src/wechat/index.ts",
       "default": "./lib/wechat/index.js"
     },
     "./wechat/webhook": {
-      "types": "./wechat/webhook.ts",
+      "types": "./src/wechat/webhook/index.ts",
       "default": "./lib/wechat/webhook/index.js"
     },
     "./wecom": {
-      "types": "./wecom.ts",
+      "types": "./src/wecom/index.ts",
       "default": "./lib/wecom/index.js"
     },
     "./wecom/server": {
-      "types": "./wecom/server.ts",
+      "types": "./src/wecom/server/index.ts",
       "default": "./lib/wecom/server/index.js"
     },
     "./wecom/webhook": {
-      "types": "./wecom/webhook.ts",
+      "types": "./src/wecom/webhook/index.ts",
       "default": "./lib/wecom/webhook/index.js"
     },
     "./xunfei/spark": {
@@ -44,16 +44,28 @@
       "default": "./lib/xunfei/spark/index.js"
     },
     "./openai": {
-      "types": "./openai.ts",
+      "types": "./src/openai/index.ts",
       "default": "./lib/openai/index.js"
     },
     "./alicloud": {
-      "types": "./alicloud.ts",
+      "types": "./src/alicloud/index.ts",
       "default": "./lib/alicloud/index.js"
     },
     "./cubejs": {
-      "types": "./cubejs.ts",
+      "types": "./src/cubejs/index.ts",
       "default": "./lib/cubejs/index.js"
+    },
+    "./17dz": {
+      "types": "./src/17dz/index.ts",
+      "default": "./lib/17dz/index.js"
+    },
+    "./17dz/operator": {
+      "types": "./src/17dz/operator/index.ts",
+      "default": "./lib/17dz/operator/index.js"
+    },
+    "./17dz/crypto": {
+      "types": "./src/17dz/crypto/index.ts",
+      "default": "./lib/17dz/crypto/index.js"
     },
     "./package.json": "./package.json"
   },
@@ -80,11 +92,75 @@
   "devDependencies": {
     "@alicloud/openapi-client": "^0.4.8",
     "@sinclair/typebox": "^0.32.14",
+    "@types/crypto-js": "^4.2.2",
     "@wecom/jssdk": "^1.4.5",
+    "crypto-js": "^4.2.0",
     "fast-xml-parser": "^4.3.4",
     "nats.ws": "^1.19.1",
     "openai": "^4.28.0",
     "undici": "^6.6.2",
     "ws": "^8.16.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "exports": {
+      ".": {
+        "types": "./src/index.ts",
+        "default": "./lib/index.js"
+      },
+      "./server": {
+        "types": "./src/server/index.ts",
+        "default": "./lib/server/index.js"
+      },
+      "./wechat": {
+        "types": "./src/wechat/index.ts",
+        "default": "./lib/wechat/index.js"
+      },
+      "./wechat/webhook": {
+        "types": "./src/wechat/webhook/index.ts",
+        "default": "./lib/wechat/webhook/index.js"
+      },
+      "./wecom": {
+        "types": "./src/wecom/index.ts",
+        "default": "./lib/wecom/index.js"
+      },
+      "./wecom/server": {
+        "types": "./src/wecom/server/index.ts",
+        "default": "./lib/wecom/server/index.js"
+      },
+      "./wecom/webhook": {
+        "types": "./src/wecom/webhook/index.ts",
+        "default": "./lib/wecom/webhook/index.js"
+      },
+      "./xunfei/spark": {
+        "types": "./src/xunfei/spark/index.ts",
+        "default": "./lib/xunfei/spark/index.js"
+      },
+      "./openai": {
+        "types": "./src/openai/index.ts",
+        "default": "./lib/openai/index.js"
+      },
+      "./alicloud": {
+        "types": "./src/alicloud/index.ts",
+        "default": "./lib/alicloud/index.js"
+      },
+      "./cubejs": {
+        "types": "./src/cubejs/index.ts",
+        "default": "./lib/cubejs/index.js"
+      },
+      "./17dz": {
+        "types": "./src/17dz/index.ts",
+        "default": "./lib/17dz/index.js"
+      },
+      "./17dz/crypto": {
+        "types": "./src/17dz/crypto/index.ts",
+        "default": "./lib/17dz/crypto/index.js"
+      },
+      "./17dz/operator": {
+        "types": "./src/17dz/operator/index.ts",
+        "default": "./lib/17dz/operator/index.js"
+      },
+      "./package.json": "./package.json"
+    }
   }
 }

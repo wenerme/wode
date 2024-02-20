@@ -1,0 +1,5 @@
+- https://www.17dz.com/
+- https://www.17win.com/
+- 统计请求，可以屏蔽域名 https://mdtj.17win.com/mars/general/batch/collect
+- 区域代码
+  - https://openapi.17win.com/dict/dictFacade/getListByParentCode?parentCode=000000&type=taxArea

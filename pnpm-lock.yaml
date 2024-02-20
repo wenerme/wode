@@ -1565,9 +1565,15 @@ importers:
       '@sinclair/typebox':
         specifier: ^0.32.14
         version: 0.32.14
+      '@types/crypto-js':
+        specifier: ^4.2.2
+        version: 4.2.2
       '@wecom/jssdk':
         specifier: ^1.4.5
         version: 1.4.5
+      crypto-js:
+        specifier: ^4.2.0
+        version: 4.2.0
       fast-xml-parser:
         specifier: ^4.3.4
         version: 4.3.4
@@ -11037,6 +11043,10 @@ packages:
       '@types/node': 20.11.19
     dev: true
 
+  /@types/crypto-js@4.2.2:
+    resolution: {integrity: sha512-sDOLlVbHhXpAUAL0YHDUUwDZf3iN4Bwi4W6a0W0b+QcAezUbRtH4FVb+9J4h+XFPW7l/gQ9F8qC7P+Ec4k8QVQ==}
+    dev: true
+
   /@types/debug@4.1.12:
     resolution: {integrity: sha512-vIChWdVG3LG1SMxEvI/AK+FWJthlrqlTu7fbrlywTkkaONwk/UAGaULXRlf8vkzFBLVm0zkMdCquhL5aOjhXPQ==}
     dependencies:
@@ -14184,6 +14194,10 @@ packages:
     resolution: {integrity: sha512-mCxBlsHFYh9C+HVpiEacem8FEBnMXgU9gy4zmNC+SXAZNB/1idgp/aulFJ4FgCi7GPEVbfyng092GqL2k2rmow==}
     dev: true
 
+  /crypto-js@4.2.0:
+    resolution: {integrity: sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q==}
+    dev: true
+
   /crypto-random-string@2.0.0:
     resolution: {integrity: sha512-v1plID3y9r/lPhviJ1wrXpLeyUIGAZ2SHNYTEapm7/8A9nLPoyvVp3RK/EPFqn5kEznyWgYZNsRtYYIWbuG8KA==}
     engines: {node: '>=8'}
@@ -16414,7 +16428,6 @@ packages:
   /flow-parser@0.229.0:
     resolution: {integrity: sha512-mOYmMuvJwAo/CvnMFEq4SHftq7E5188hYMTTxJyQOXk2nh+sgslRdYMw3wTthH+FMcFaZLtmBPuMu6IwztdoUQ==}
     engines: {node: '>=0.4.0'}
-    dev: true
 
   /follow-redirects@1.15.5:
     resolution: {integrity: sha512-vSFWUON1B+yAw1VN4xMfxgn5fTUiaOzAJCKBwIIgT/+7CuGy9+r+5gITvP62j3RmaD5Ph65UaERdOSRGUzZtgw==}
@@ -18301,7 +18314,7 @@ packages:
       '@babel/register': 7.23.7(@babel/core@7.23.9)
       babel-core: 7.0.0-bridge.0(@babel/core@7.23.9)
       chalk: 4.1.2
-      flow-parser: 0.206.0
+      flow-parser: 0.229.0
       graceful-fs: 4.2.11
       micromatch: 4.0.5
       neo-async: 2.6.2
