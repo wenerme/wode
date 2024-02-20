@@ -1,4 +1,4 @@
-import type { DependencyList} from 'react';
+import type { DependencyList } from 'react';
 import { useEffect, useMemo } from 'react';
 
 /**
@@ -6,7 +6,7 @@ import { useEffect, useMemo } from 'react';
  * @param deps DependencyList when changed, will abort previous AbortController
  */
 export function useAbortController(deps?: DependencyList): AbortController {
-  const controller = useMemo(() => new AbortController(), deps);
+  const controller = useMemo(() => new AbortController(), deps ?? []);
   useEffect(() => {
     return () => controller.abort();
   }, deps);
