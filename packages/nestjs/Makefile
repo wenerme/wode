@@ -8,7 +8,7 @@ REPO_ROOT ?= $(shell git rev-parse --show-toplevel)
 
 build:
 	-rm -rf lib/*
-	pnpm swc ./src -d ./lib
+	pnpm swc ./src -d ./lib --strip-leading-paths
 	npx -y ts-add-js-extension --dir=lib
 
 publish: build

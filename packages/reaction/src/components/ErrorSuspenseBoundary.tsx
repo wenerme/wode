@@ -1,4 +1,4 @@
-import type { ReactNode} from 'react';
+import type { ReactNode } from 'react';
 import React, { Suspense } from 'react';
 import type { ErrorBoundaryProps } from './ErrorBoundary';
 import { ErrorBoundary } from './ErrorBoundary';
