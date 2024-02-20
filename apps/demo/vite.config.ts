@@ -1,9 +1,13 @@
 import process from 'node:process';
 import { webUpdateNotice } from '@plugin-web-update-notification/vite';
+import { unstable_vitePlugin as remix } from '@remix-run/dev';
+import { installGlobals } from '@remix-run/node';
 import react from '@vitejs/plugin-react';
 import million from 'million/compiler';
 import { defineConfig, loadEnv, PluginOption } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
+
+installGlobals();
 
 // https://vitejs.dev/config/
 export default ({ mode }: { mode: string }) => {
@@ -12,12 +16,21 @@ export default ({ mode }: { mode: string }) => {
 
   return defineConfig({
     plugins: [
-      million.vite({
-        auto: {
-          threshold: 0.3,
-        },
+      remix({
+        // ignoredRouteFiles: ['**/.*'],
+        appDirectory: './src/remix/app',
+        // routes(defineRoutes) {
+        //   return defineRoutes((route) => {
+        //     route('/about', 'about.tsx');
+        //   });
+        // },
       }),
-      react(),
+      // million.vite({
+      //   auto: {
+      //     threshold: 0.3,
+      //   },
+      // }),
+      // react(),
       tsconfigPaths(),
       webUpdateNotice({
         logVersion: true,
