@@ -1,12 +1,8 @@
-import { Entity, OptionalProps, Property, types } from '@mikro-orm/core';
-import { MinimalBaseEntity, type MinimalBaseEntityOptionalFields } from '@wener/nestjs/mikro-orm';
+import { Entity, Opt, Property, types } from '@mikro-orm/core';
+import { MinimalBaseEntity } from '@wener/nestjs/mikro-orm';
 
 @Entity({ abstract: true })
-export class BaseHttpRequestLogEntity<
-  T extends BaseHttpRequestLogEntity<any> = BaseHttpRequestLogEntity<any>,
-> extends MinimalBaseEntity<T> {
-  [OptionalProps]?: MinimalBaseEntityOptionalFields | 'attributes' | 'properties' | 'hit';
-
+export class BaseHttpRequestLogEntity extends MinimalBaseEntity {
   @Property({ type: types.string, nullable: true })
   tid?: string;
 
@@ -71,16 +67,16 @@ export class BaseHttpRequestLogEntity<
   duration?: number;
 
   @Property({ type: types.json, nullable: false, defaultRaw: '{}' })
-  attributes!: Record<string, any>;
+  attributes!: Record<string, any> & Opt;
 
   @Property({ type: types.json, nullable: false, defaultRaw: '{}' })
-  properties!: Record<string, any>;
+  properties!: Record<string, any> & Opt;
 
   @Property({ type: types.json, nullable: false, defaultRaw: '{}' })
-  extensions!: Record<string, any>;
+  extensions!: Record<string, any> & Opt;
 
   @Property({ type: types.integer, nullable: false, default: 0 })
-  hit!: number;
+  hit!: number & Opt;
 
   fromUrl(o: string) {
     const u = new URL(o);

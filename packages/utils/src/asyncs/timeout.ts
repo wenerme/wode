@@ -1,23 +1,26 @@
-export function timeout<T = any>(v: Promise<T>, ms: number): Promise<T> {
+export function timeout<T = any>(
+  v: Promise<T> | ((args: { signal: AbortSignal }) => Promise<T>),
+  ms: number,
+): Promise<T> {
   const error = new TimeoutError();
   let timeout: any;
-  return Promise.race([
+  let ac: AbortController | undefined;
+  if (typeof v === 'function') {
+    ac = new AbortController();
+    v = v({ signal: ac.signal });
+  }
+
+  return Promise.race<T>([
     v,
     new Promise((_resolve, reject) => {
       timeout = setTimeout(() => {
+        ac?.abort(error);
         reject(error);
       }, ms);
     }),
-  ]).then(
-    (v) => {
-      clearTimeout(timeout);
-      return v;
-    },
-    (e) => {
-      clearTimeout(timeout);
-      throw e;
-    },
-  ) as Promise<T>;
+  ]).finally(() => {
+    clearTimeout(timeout);
+  });
 }
 
 export class TimeoutError extends Error {

@@ -393,20 +393,20 @@ export interface Query {
   total?: boolean;
 }
 
-export type QueryRecordType<T extends DeeplyReadonly<Query | Query[]>> = T extends DeeplyReadonly<Query[]>
-  ? QueryArrayRecordType<T>
-  : T extends DeeplyReadonly<Query>
-    ? SingleQueryRecordType<T>
-    : never;
+export type QueryRecordType<T extends DeeplyReadonly<Query | Query[]>> =
+  T extends DeeplyReadonly<Query[]>
+    ? QueryArrayRecordType<T>
+    : T extends DeeplyReadonly<Query>
+      ? SingleQueryRecordType<T>
+      : never;
 
 type QueryArrayRecordType<T extends DeeplyReadonly<Query[]>> = T extends readonly [infer First, ...infer Rest]
   ? SingleQueryRecordType<DeeplyReadonly<First>> | QueryArrayRecordType<Rest & DeeplyReadonly<Query[]>>
   : never;
 
 // If we can't infer any members at all, then return any.
-type SingleQueryRecordType<T extends DeeplyReadonly<Query>> = ExtractMembers<T> extends never
-  ? any
-  : { [K in string & ExtractMembers<T>]: string | number | boolean | null };
+type SingleQueryRecordType<T extends DeeplyReadonly<Query>> =
+  ExtractMembers<T> extends never ? any : { [K in string & ExtractMembers<T>]: string | number | boolean | null };
 
 type ExtractMembers<T extends DeeplyReadonly<Query>> =
   | (T extends { dimensions: readonly (infer Names)[] } ? Names : never)

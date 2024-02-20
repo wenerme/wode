@@ -20,11 +20,20 @@
 - 讯飞火星 大模型 客户端
 - 百度 CE 客户端
 - 阿里云 大模型 客户端
+- 17dz
 
 ```bash
 # for dev version
 npm install 'https://gitpkg.now.sh/wenerme/wode/packages/client?main'
 ```
+
+<!--
+pnpm add https://github.com/indexzero/forever/tarball/v0.5.6
+github:user/repo
+
+https://pnpm.io/cli/add#install-from-git-repository
+wenerme/wode/packages/client#main
+-->
 
 **基础**
 
