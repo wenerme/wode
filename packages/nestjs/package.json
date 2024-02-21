@@ -8,43 +8,38 @@
   "exports": {
     ".": {
       "types": "./src/index.ts",
-      "import": "./lib/index.js",
       "default": "./lib/index.js"
     },
     "./mikro-orm": {
       "types": "./src/mikro-orm/index.ts",
-      "import": "./lib/mikro-orm/index.js",
       "default": "./lib/mikro-orm/index.js"
     },
     "./auth": {
       "types": "./src/auth/index.ts",
-      "import": "./lib/auth/index.js",
       "default": "./lib/auth/index.js"
     },
     "./app": {
       "types": "./src/app/index.ts",
-      "import": "./lib/app/index.js",
       "default": "./lib/app/index.js"
     },
     "./config": {
       "types": "./src/config/index.ts",
-      "import": "./lib/config/index.js",
       "default": "./lib/config/index.js"
     },
     "./service": {
       "types": "./src/service/index.ts",
-      "import": "./lib/service/index.js",
       "default": "./lib/service/index.js"
     },
     "./nats": {
       "types": "./src/nats/index.ts",
-      "import": "./lib/nats/index.js",
       "default": "./lib/nats/index.js"
     },
     "./actuator": {
       "types": "./src/actuator/index.ts",
-      "import": "./lib/actuator/index.js",
       "default": "./lib/actuator/index.js"
+    },
+    "./scripts/esbuild": {
+      "default": "./src/scripts/esbuild/index.ts"
     },
     "./package.json": "./package.json"
   },
@@ -87,6 +82,7 @@
   },
   "dependencies": {
     "@wener/utils": "workspace:^",
+    "dotenv": "^16.4.4",
     "reflect-metadata": "^0.2.1",
     "zod": "^3.22.4"
   },
@@ -100,9 +96,9 @@
     "@nestjs/swagger": "^7.3.0",
     "@nestjs/testing": "^10.3.3",
     "fastify": "^4.26.1",
+    "globby": "^14.0.1",
     "nats": "^2.19.0",
-    "nats.ws": "^1.19.1",
-    "vitest": "^1.3.0"
+    "nats.ws": "^1.19.1"
   },
   "publishConfig": {
     "access": "public",

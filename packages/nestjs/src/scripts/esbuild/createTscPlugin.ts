@@ -24,7 +24,7 @@ interface TscPluginOptions {
 /**
  * @see https://github.com/thomaschaaf/esbuild-plugin-tsc thomaschaaf/esbuild-plugin-tsc
  */
-const esbuildPluginTsc = ({
+export const createTscPlugin = ({
   tsconfigPath = path.join(process.cwd(), './tsconfig.json'),
   force: forceTsc = false,
   tsx = true,
@@ -100,5 +100,3 @@ function parseTsConfig(tsconfig?: string, cwd = process.cwd()) {
 function printDiagnostics(...args: any[]) {
   console.log(inspect(args, false, 10, true));
 }
-
-export default esbuildPluginTsc;
