@@ -1,4 +1,4 @@
-import { bundle } from '@wener/nestjs/scripts/esbuild';
+import { bundle } from './esbuild/bundle';
 
 const SERVER = process.env.SERVER;
 if (!SERVER) {

@@ -1,7 +1,7 @@
+import { promises as FsPromise } from 'node:fs';
+import Path from 'node:path';
 import { type Plugin } from 'esbuild';
-import FastGlob from 'fast-glob';
-import { promises as FsPromise } from 'fs';
-import Path from 'path';
+import { globby } from 'globby';
 
 export interface DynamicImportConfig {
   transformExtensions?: string[];
@@ -13,7 +13,7 @@ export interface DynamicImportConfig {
 /**
  * @see https://github.com/RTVision/esbuild-dynamic-import RTVision/esbuild-dynamic-import
  */
-export function DynamicImport(config: DynamicImportConfig): Plugin {
+export function createDynamicImportPlugin(config: DynamicImportConfig): Plugin {
   if (!Array.isArray(config.transformExtensions) && !config.changeRelativeToAbsolute) {
     throw new Error('Either transformExtensions needs to be supplied or changeRelativeToAbsolute needs to be true');
   }
@@ -69,9 +69,7 @@ async function replaceImports(fileContents: string, resolveDir: string, config: 
 
   if (globImports.length > 0) {
     const filenameImportPromises: Array<Promise<Array<string>>> = [];
-    for (const globImport of globImports) {
-      filenameImportPromises.push(FastGlob(globImport, { cwd: resolveDir }));
-    }
+    filenameImportPromises.push(globby(globImports, { cwd: resolveDir }));
     let importFilePaths: Array<string> = [];
     try {
       // Flatten array to array of filenames, filter out any rejected promises or duplicate entries
