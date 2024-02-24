@@ -1,2 +1,1 @@
-
-export * from './getBuildInfo'
+export { getBuildInfo, type BuildInfo } from './getBuildInfo';

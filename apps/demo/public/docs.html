@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang='en'>
+<head>
+  <meta charset='utf-8'>
+  <title>API Doc</title>
+  <script type="module" src="https://unpkg.com/rapidoc/dist/rapidoc-min.js"></script>
+<!-- DNS 污染 -->
+<!--  <script type='module' src='https://cdn.jsdelivr.net/npm/rapidoc/dist/rapidoc-min.js'></script>-->
+</head>
+<body>
+</body>
+<script>
+  {
+    function getSpecUrl() {
+      let href = new URL(location.href);
+      let url = href.searchParams.get('spec-url')
+      if (url) {
+        return url
+      }
+      let prefix = href.pathname.replace(/\/?docs.html$/, '');
+      let paths = [
+        'api-json',// nestjs
+        'api/openapi.json', // trpc
+        'swagger/doc.json', // go swagger
+      ]
+
+      let ac = new AbortController()
+      return new Promise((resolve, reject) => {
+        Promise.all(paths
+          .map(v => `${prefix}/${v}`)
+          .map(url => fetch(url, {signal: ac.signal}).then(v => v.ok ? resolve(url) : undefined))).then(() => reject())
+      }).finally(() => {
+        ac.abort()
+      })
+    }
+
+    function setup(attrs) {
+      let href = new URL(location.href);
+      let el = document.createElement('rapi-doc');
+
+      Object.entries(attrs).forEach(([k, v]) => {
+        attrs[k] = href.searchParams.get(k) || v;
+      });
+      console.info(`Render Docs with attrs:`, attrs);
+      for (let [key, value] of Object.entries(attrs)) {
+        el.setAttribute(key, value);
+      }
+      document.body.appendChild(el);
+      globalThis.$doc = el;
+    }
+
+    Promise.resolve(getSpecUrl()).then(url=>{
+      console.log(`Found spec-url:`, url)
+
+      let href = new URL(location.href);
+      let prefix = href.pathname.replace(/\/?docs.html$/, '');
+
+      // https://rapidocweb.com/api.html
+      let attrs = {
+        'spec-url': url,
+        'server-url': location.origin + prefix,
+        'default-api-server': location.origin + prefix,
+        'persist-auth': 'true',
+        'use-path-in-nav-bar': 'true',
+        'show-method-in-nav-bar': 'as-colored-block',
+      };
+      setup(attrs)
+    })
+  }
+</script>
+</html>

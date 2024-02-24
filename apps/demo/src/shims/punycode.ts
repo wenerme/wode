@@ -1,5 +1,3 @@
-// https://github.com/mathiasbynens/punycode.js
-
 /** Highest positive signed 32-bit float value */
 const maxInt = 2147483647; // aka. 0x7FFFFFFF or 2^31-1
 
@@ -15,7 +13,7 @@ const delimiter = '-'; // '\x2D'
 
 /** Regular expressions */
 const regexPunycode = /^xn--/;
-const regexNonASCII = /[^\0-\x7E]/; // non-ASCII chars
+const regexNonASCII = /[^\0-\x7F]/; // Note: U+007F DEL is excluded too.
 const regexSeparators = /[\x2E\u3002\uFF0E\uFF61]/g; // RFC 3490 separators
 
 /** Error messages */
@@ -30,7 +28,7 @@ const baseMinusTMin = base - tMin;
 const floor = Math.floor;
 const stringFromCharCode = String.fromCharCode;
 
-/* -------------------------------------------------------------------------- */
+/*--------------------------------------------------------------------------*/
 
 /**
  * A generic error utility function.
@@ -43,13 +41,30 @@ function error(type: keyof typeof errors) {
 }
 
 /**
+ * A generic `Array#map` utility function.
+ * @private
+ * @param {Array} array The array to iterate over.
+ * @param {Function} callback The function that gets called for every array
+ * item.
+ * @returns {Array} A new array of values returned by the callback function.
+ */
+function map<T, O = T>(array: T[], callback: (v: T) => O) {
+  const result = [];
+  let length = array.length;
+  while (length--) {
+    result[length] = callback(array[length]);
+  }
+  return result;
+}
+
+/**
  * A simple `Array#map`-like wrapper to work with domain name strings or email
  * addresses.
  * @private
  * @param {String} domain The domain name or email address.
  * @param {Function} callback The function that gets called for every
  * character.
- * @returns {Array} A new string of characters returned by the callback
+ * @returns {String} A new string of characters returned by the callback
  * function.
  */
 function mapDomain(domain: string, callback: (v: string) => string) {
@@ -64,7 +79,7 @@ function mapDomain(domain: string, callback: (v: string) => string) {
   // Avoid `split(regex)` for IE8 compatibility. See #17.
   domain = domain.replace(regexSeparators, '\x2E');
   const labels = domain.split('.');
-  const encoded = labels.map(callback).join('.');
+  const encoded = map(labels, callback).join('.');
   return result + encoded;
 }
 
@@ -126,13 +141,13 @@ const ucs2encode = (codePoints: number[]) => String.fromCodePoint(...codePoints)
  * the code point does not represent a value.
  */
 const basicToDigit = function (codePoint: number) {
-  if (codePoint - 0x30 < 0x0a) {
-    return codePoint - 0x16;
+  if (codePoint >= 0x30 && codePoint < 0x3a) {
+    return 26 + (codePoint - 0x30);
   }
-  if (codePoint - 0x41 < 0x1a) {
+  if (codePoint >= 0x41 && codePoint < 0x5b) {
     return codePoint - 0x41;
   }
-  if (codePoint - 0x61 < 0x1a) {
+  if (codePoint >= 0x61 && codePoint < 0x7b) {
     return codePoint - 0x61;
   }
   return base;
@@ -220,7 +235,10 @@ const decode = function (input: string) {
 
       const digit = basicToDigit(input.charCodeAt(index++));
 
-      if (digit >= base || digit > floor((maxInt - i) / w)) {
+      if (digit >= base) {
+        error('invalid-input');
+      }
+      if (digit > floor((maxInt - i) / w)) {
         error('overflow');
       }
 
@@ -262,7 +280,7 @@ const decode = function (input: string) {
  * Converts a string of Unicode symbols (e.g. a domain name label) to a
  * Punycode string of ASCII-only symbols.
  * @memberOf punycode
- * @param {String} inputStr The string of Unicode symbols.
+ * @param {String} input The string of Unicode symbols.
  * @returns {String} The resulting Punycode string of ASCII-only symbols.
  */
 const encode = function (inputStr: string) {
@@ -322,7 +340,7 @@ const encode = function (inputStr: string) {
       if (currentValue < n && ++delta > maxInt) {
         error('overflow');
       }
-      if (currentValue == n) {
+      if (currentValue === n) {
         // Represent delta as a generalized variable-length integer.
         let q = delta;
         for (let k = base /* no condition */; ; k += base) {
@@ -337,7 +355,7 @@ const encode = function (inputStr: string) {
         }
 
         output.push(stringFromCharCode(digitToBasic(q, 0)));
-        bias = adapt(delta, handledCPCountPlusOne, handledCPCount == basicLength);
+        bias = adapt(delta, handledCPCountPlusOne, handledCPCount === basicLength);
         delta = 0;
         ++handledCPCount;
       }
@@ -383,7 +401,7 @@ const toASCII = function (input: string) {
   });
 };
 
-/* -------------------------------------------------------------------------- */
+/*--------------------------------------------------------------------------*/
 
 /** Define the public API */
 export default {
@@ -392,7 +410,7 @@ export default {
    * @memberOf punycode
    * @type String
    */
-  version: '2.1.0',
+  version: '2.3.1',
   /**
    * An object of methods to convert from JavaScript's internal character
    * representation (UCS-2) to Unicode code points, and back.
@@ -404,8 +422,8 @@ export default {
     decode: ucs2decode,
     encode: ucs2encode,
   },
-  decode,
-  encode,
-  toASCII,
-  toUnicode,
+  decode: decode,
+  encode: encode,
+  toASCII: toASCII,
+  toUnicode: toUnicode,
 };

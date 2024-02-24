@@ -1810,12 +1810,6 @@ importers:
       '@tailwindcss/forms':
         specifier: ^0.5.7
         version: 0.5.7(tailwindcss@3.4.1)
-      '@types/react':
-        specifier: ^18.2.56
-        version: 18.2.56
-      '@types/react-dom':
-        specifier: ^18.2.19
-        version: 18.2.19
       '@wener/nestjs':
         specifier: workspace:^
         version: link:../nestjs
@@ -1936,9 +1930,6 @@ importers:
       fastify:
         specifier: ^4.26.1
         version: 4.26.1
-      globby:
-        specifier: ^14.0.1
-        version: 14.0.1
       nats:
         specifier: ^2.19.0
         version: 2.19.0

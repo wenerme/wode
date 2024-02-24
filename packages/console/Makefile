@@ -8,7 +8,7 @@ REPO_ROOT ?= $(shell git rev-parse --show-toplevel)
 
 build:
 	rm -rf lib2
-	pnpm swc ./src -d ./lib2
+	pnpm swc ./src -d ./lib2 --strip-leading-paths
 	npx -y ts-add-js-extension --dir=lib2
 	rsync ./src/ ./lib2/ -a --include="*.css" --include="*/" --exclude="*"
 	-mv lib lib3

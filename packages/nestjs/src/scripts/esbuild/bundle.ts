@@ -1,21 +1,37 @@
 import fs from 'node:fs';
+import path from 'node:path';
 import * as esbuild from 'esbuild';
 import { BuildOptions } from 'esbuild';
-import { createDynamicImportPlugin } from '../createDynamicImportPlugin';
-import { createExcludeVendorSourceMapPlugin } from '../createExcludeVendorSourceMapPlugin';
-import { createTscPlugin } from '../createTscPlugin';
+import { createDynamicImportPlugin } from './createDynamicImportPlugin';
+import { createExcludeVendorSourceMapPlugin } from './createExcludeVendorSourceMapPlugin';
+import { createTscPlugin } from './createTscPlugin';
 
 export async function bundle(server: string, opts?: BuildOptions) {
-  const candidates = [server, `./src/apps/${server}/main.bun.ts`, `./src/apps/${server}/main.ts`];
-  const entry = candidates.find((v) => {
-    try {
-      fs.statSync(v);
-      return true;
-    } catch (e) {}
-    return false;
-  });
-  if (!entry) {
-    throw new Error(`No entry for ${server}`);
+  let entry: string | undefined;
+  let name = server;
+  if (server.includes(':')) {
+    [name, entry] = server.split(':');
+  } else {
+    const candidates = [server, `./src/apps/${server}/main.bun.ts`, `./src/apps/${server}/main.ts`];
+    entry = candidates.find((v) => {
+      try {
+        fs.statSync(v);
+        return true;
+      } catch (e) {}
+      return false;
+    });
+    if (!entry) {
+      throw new Error(`No entry for ${server}`);
+    }
+  }
+
+  if (name.includes('/')) {
+    name = path.basename(entry);
+    name = name.replace(/main(\.bun)?\.[tj]s/, '');
+    if (!name) {
+      name = entry.split('/').at(-2) || '';
+    }
+    name ||= 'server';
   }
   const result = await esbuild.build({
     //entryPoints: [`./dist/out/apps/${server}/main.js`], // for swc handle decorator
@@ -31,7 +47,7 @@ export async function bundle(server: string, opts?: BuildOptions) {
     },
     keepNames: true,
     minifySyntax: true,
-    outfile: `dist/apps/${server}/main.mjs`,
+    outfile: `dist/apps/${name}/main.mjs`,
     format: 'esm',
     platform: 'node',
     charset: 'utf8',

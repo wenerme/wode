@@ -113,7 +113,7 @@ scrollbar-thumb:!bg-base-300 scrollbar-track:!rounded
 
 /* 角落 */
 ::-webkit-scrollbar-corner {
-  background: hsl(var(--b1));
+  background: oklch(var(--b1));
 }
 
 *::-webkit-scrollbar {
@@ -123,17 +123,17 @@ scrollbar-thumb:!bg-base-300 scrollbar-track:!rounded
 
 *::-webkit-scrollbar-track {
   @apply rounded;
-  background: hsl(var(--b1));
+  background: oklch(var(--b1));
 }
 
 *::-webkit-scrollbar-thumb {
   @apply rounded;
-  background: hsl(var(--b2));
+  background: oklch(var(--b2));
   transition: background-color 0.2s ease-in-out;
 }
 
 *::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--b3));
+  background: oklch(var(--b3));
 }
 
 /**
@@ -149,10 +149,10 @@ scrollbar-thumb:!bg-base-300 scrollbar-track:!rounded
 }
 
 .__dbk__gutter:hover {
-  background: hsl(var(--b2)) !important;
+  background: oklch(var(--b2)) !important;
 
   .__dbk__dragger {
-    background: hsl(var(--b3)) !important;
+    background: oklch(var(--b3)) !important;
   }
 }
 
