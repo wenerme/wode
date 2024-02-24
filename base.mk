@@ -34,9 +34,11 @@ export CI_COMMIT_SHORT_SHA
 # for reproducible build
 export SOURCE_DATE_EPOCH=$(shell git log -1 --pretty=%ct)
 
+PKG_ROOT ?= $(shell pnpm node -e 'process.stdout.write(path.resolve(__dirname))')
+
 -include $(REPO_ROOT)/local.mk
 -include $(REPO_ROOT)/ignored.mk
--include package.mk
+-include $(PKG_ROOT)/package.mk
 
 info:
 	@echo "APP_NAME:            $(APP_NAME)"

@@ -1,6 +1,6 @@
 {
   "name": "@wener/console",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "type": "module",
   "description": "Base console UI toolkit",
   "author": "wener",
@@ -123,8 +123,6 @@
     "@nestjs/common": "^10.3.3",
     "@remix-run/router": "^1.15.1",
     "@tailwindcss/forms": "^0.5.7",
-    "@types/react": "^18.2.56",
-    "@types/react-dom": "^18.2.19",
     "@wener/nestjs": "workspace:^",
     "@wener/reaction": "workspace:^",
     "@wener/utils": "workspace:^",

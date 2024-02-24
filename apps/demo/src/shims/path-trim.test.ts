@@ -1,6 +1,6 @@
 import { test, assert } from 'vitest';
 
-test('trim', (t) => {
+test('trim', () => {
   // for https://github.com/wenerme/wener/tree/master/site/patches
   const trim = (v: string) =>
     v

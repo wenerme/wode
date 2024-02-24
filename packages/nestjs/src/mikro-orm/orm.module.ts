@@ -1,6 +1,12 @@
 import { AnyEntity, MikroORM as CoreMikroORM } from '@mikro-orm/core';
 import { EntityName, MikroOrmModule, MikroOrmModuleFeatureOptions } from '@mikro-orm/nestjs';
-import { type AbstractSqlConnection, EntityManager, knex, MikroORM, type Options } from '@mikro-orm/postgresql';
+import {
+  type AbstractSqlConnection,
+  EntityManager,
+  knex,
+  MikroORM as PostgreSqlMikroORM,
+  type Options,
+} from '@mikro-orm/postgresql';
 import { ConfigurableModuleBuilder, DynamicModule, Logger, Module } from '@nestjs/common';
 import { createLazyPromise } from '@wener/utils';
 import { getMikroOrmConfig } from '../config';
@@ -49,24 +55,24 @@ export const ORM_MODULE_OPTIONS_TOKEN = MODULE_OPTIONS_TOKEN;
   providers: [
     {
       provide: EntityManager,
-      useFactory(orm: MikroORM) {
+      useFactory(orm: PostgreSqlMikroORM) {
         return orm.em;
       },
-      inject: [MikroORM],
+      inject: [PostgreSqlMikroORM],
     },
     {
       provide: CoreMikroORM,
-      useExisting: MikroORM,
+      useExisting: PostgreSqlMikroORM,
     },
     {
       provide: knex,
-      useFactory(orm: MikroORM) {
+      useFactory(orm: PostgreSqlMikroORM) {
         return (orm.em.getConnection() as AbstractSqlConnection).getKnex();
       },
-      inject: [MikroORM],
+      inject: [PostgreSqlMikroORM],
     },
   ],
-  exports: [EntityManager, MikroORM, CoreMikroORM, knex, MODULE_OPTIONS_TOKEN],
+  exports: [EntityManager, PostgreSqlMikroORM, CoreMikroORM, knex, MODULE_OPTIONS_TOKEN],
 })
 export class OrmModule extends ConfigurableModuleClass {
   protected static readonly log = new Logger(OrmModule.name);
