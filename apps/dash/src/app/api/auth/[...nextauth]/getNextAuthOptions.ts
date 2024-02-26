@@ -105,62 +105,6 @@ async function encodePassword({
   }
 }
 
-const Alias: Record<string, string> = {
-  sha: 'sha1',
-  ssha: 'ssha1',
-  1: 'md5',
-  5: 'sha256',
-  6: 'sha512',
-};
-
-// ^$(sha|sha(1|256|512)|md5|5|6)$(\d+$)?
-// ^$s(sha|sha(1|256|512)|md5)$(\d+$)?$(?<salt>[^$]+)$
-// base64 salt 16byte, hash 24byte
-// ^$(2a|2x|2y)$(?<cost>\d+)$(?<salt>[^$]+)$
-
-// https://github.com/P-H-C/phc-string-format/blob/master/phc-sf-spec.md
-// https://man7.org/linux/man-pages/man3/crypt.3.html
-interface Password {
-  variant: string;
-  salt?: string;
-  version?: number;
-  params: Record<string, string>;
-  hash: string;
-}
-
-function parsePassword(s: string) {
-  const sp = s.split('$');
-  let algorithm = sp[0];
-  // rounds=iterations
-  switch (algorithm) {
-    // 可能有 iterations
-    case 'sha':
-    case 'sha1':
-    case 'md5':
-      return {
-        algorithm: Alias[algorithm] ?? algorithm,
-        encode: sp[1],
-      };
-    case 'smd5':
-    case 'ssha':
-    case 'ssha1':
-      return {
-        algorithm: (Alias[algorithm] ?? algorithm).slice(1),
-        salt: sp[1],
-        encode: sp[2],
-      };
-    case 'aragon2':
-
-    case '2a':
-    case '2x':
-    case '2y':
-    case 'bcrypt':
-
-    case 'pbkdf2':
-    case 'scrypt':
-  }
-}
-
 function MikroOrmNextAuthAdapter({
   getEm = getEntityManager,
 }: { getEm?: () => MaybePromise<EntityManager> } = {}): Adapter {

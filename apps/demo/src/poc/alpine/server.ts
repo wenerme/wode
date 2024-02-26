@@ -1,12 +1,11 @@
-import fs from 'node:fs/promises';
 import { HttpBindings, serve } from '@hono/node-server';
 import { serveStatic } from '@hono/node-server/serve-static';
 import { RequestContext } from '@mikro-orm/core';
-import { Logger, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { createBootstrap, Currents } from '@wener/nestjs';
+import { loadEnvs } from '@wener/nestjs';
 import { getEntityManager, OrmModule } from '@wener/nestjs/mikro-orm';
 import { MaybePromise, parseBoolean } from '@wener/utils';
-import dotenv from 'dotenv';
 import { createYoga } from 'graphql-yoga';
 import { Hono, MiddlewareHandler } from 'hono';
 import { showRoutes } from 'hono/dev';
@@ -70,21 +69,3 @@ serve(
     console.log(`Listening on http://${address}:${port}`); // Listening on http://localhost:3000
   },
 );
-
-export async function loadEnvs({ log = new Logger('loadEnvs') }: { log?: Logger } = {}) {
-  const { NODE_ENV: mode = 'production' } = process.env;
-  Object.assign(process.env, {
-    NODE_ENV: mode,
-  });
-  const envs = [`.env.${mode}.local`, `.env.${mode}`, `.env.local`, `.env`];
-  for (const env of envs) {
-    try {
-      await fs.stat(env);
-    } catch (e) {
-      continue;
-    }
-    if (!dotenv.config({ path: env }).error) {
-      log.debug(`loaded env from \`${env}\``);
-    }
-  }
-}
