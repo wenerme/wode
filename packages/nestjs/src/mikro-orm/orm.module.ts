@@ -1,7 +1,13 @@
-import { AnyEntity, MikroORM as CoreMikroORM } from '@mikro-orm/core';
+import { AnyEntity, MikroORM as CoreMikroORM, EntityManager as CoreEntityManager } from '@mikro-orm/core';
 import { EntityName, MikroOrmModule, MikroOrmModuleFeatureOptions, MIKRO_ORM_MODULE_OPTIONS } from '@mikro-orm/nestjs';
 import type { MikroOrmModuleAsyncOptions } from '@mikro-orm/nestjs/typings';
-import { type AbstractSqlConnection, knex, MikroORM as PostgreSqlMikroORM, type Options } from '@mikro-orm/postgresql';
+import {
+  type AbstractSqlConnection,
+  knex,
+  MikroORM as PostgreSqlMikroORM,
+  EntityManager as PostgreSqlEntityManager,
+  type Options,
+} from '@mikro-orm/postgresql';
 import { DynamicModule, Logger } from '@nestjs/common';
 import { createLazyPromise, MaybePromise } from '@wener/utils';
 import { getMikroOrmConfig } from '../config';
@@ -91,6 +97,10 @@ function setup(module: DynamicModule) {
       provide: PostgreSqlMikroORM,
       useExisting: CoreMikroORM,
     },
+    {
+      provide: PostgreSqlEntityManager,
+      useExisting: CoreEntityManager,
+    },
   );
-  module.exports.push(PostgreSqlMikroORM, knex);
+  module.exports.push(PostgreSqlMikroORM, PostgreSqlEntityManager, knex);
 }
