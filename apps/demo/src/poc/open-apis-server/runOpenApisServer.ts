@@ -1,9 +1,6 @@
-import process from 'node:process';
 import { HttpBindings } from '@hono/node-server';
-import { loadEnvs } from '@wener/nestjs';
-import { MaybePromise } from '@wener/utils';
+import { runHonoServer } from '@src/poc/open-apis-server/runHonoServer';
 import { Hono } from 'hono';
-import { showRoutes } from 'hono/dev';
 import { logger } from 'hono/logger';
 
 export async function runOpenApisServer() {
@@ -11,9 +8,7 @@ export async function runOpenApisServer() {
     /* ... */
   };
   const app = new Hono<{ Bindings: Bindings }>();
-
   app.use(logger());
-  await loadEnvs();
 
   app.mount('/cors/', async (req) => {
     // https://github.com/Rob--W/cors-anywhere/blob/master/lib/cors-anywhere.js
@@ -135,32 +130,7 @@ export async function runOpenApisServer() {
     });
   });
 
-  let serve;
-  if (process.release.name === 'node') {
-    ({ serve } = await import('@hono/node-server'));
-  } else if (process.release.name === 'bun') {
-    serve = ({ fetch, port }: { fetch: (req: Request) => MaybePromise<Response>; port?: number }, cb: Function) => {
-      Bun.serve({
-        fetch,
-        port,
-      });
-    };
-  } else {
-    serve = () => {
-      throw new Error(`Unsupported platform: ${process.release.name}`);
-    };
-  }
-
-  serve(
-    {
-      fetch: app.fetch,
-      port: 8787,
-    },
-    ({ port, address }) => {
-      showRoutes(app);
-      console.log(`Listening on http://${address}:${port}`); // Listening on http://localhost:3000
-    },
-  );
+  return runHonoServer({ app });
 }
 
 function createHeaders(r: Record<string, string | string[]>) {

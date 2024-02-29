@@ -6,4 +6,4 @@ export { MinimalResourceBaseEntity } from './entity/MinimalResourceBaseEntity';
 export { MinimalTenantBaseEntity } from './entity/MinimalTenantBaseEntity';
 
 export { getMikroORM, getEntityManager, runInTransaction, requireContextEntityManager } from './context';
-export { OrmModule, type OrmModuleOptions, ORM_MODULE_OPTIONS_TOKEN } from './orm.module';
+export { OrmModule, type OrmModuleOptions } from './orm.module';

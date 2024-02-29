@@ -1,6 +1,6 @@
 {
   "name": "@wener/nestjs",
-  "version": "1.0.23",
+  "version": "1.0.26",
   "type": "module",
   "description": "NestJS utils",
   "author": "wener",
@@ -32,6 +32,9 @@
     },
     "./scripts/esbuild": {
       "default": "./src/scripts/esbuild/index.ts"
+    },
+    "./hono": {
+      "default": "./src/hono/index.ts"
     },
     "./package.json": "./package.json"
   },
@@ -79,6 +82,8 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@hono/node-server": "^1.8.2",
+    "@hono/zod-openapi": "^0.9.6",
     "@mikro-orm/core": "^6.1.4",
     "@mikro-orm/nestjs": "^5.2.3",
     "@mikro-orm/postgresql": "^6.1.4",
@@ -88,49 +93,56 @@
     "@nestjs/swagger": "^7.3.0",
     "@nestjs/testing": "^10.3.3",
     "fastify": "^4.26.1",
+    "hono": "^4.0.4",
     "nats": "^2.19.0",
     "nats.ws": "^1.19.1"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org",
     "access": "public",
-    ".": {
-      "types": "./src/index.ts",
-      "default": "./lib/index.js"
-    },
-    "./mikro-orm": {
-      "types": "./src/mikro-orm/index.ts",
-      "default": "./lib/mikro-orm/index.js"
-    },
-    "./auth": {
-      "types": "./src/auth/index.ts",
-      "default": "./lib/auth/index.js"
-    },
-    "./app": {
-      "types": "./src/app/index.ts",
-      "default": "./lib/app/index.js"
-    },
-    "./config": {
-      "types": "./src/config/index.ts",
-      "default": "./lib/config/index.js"
-    },
-    "./service": {
-      "types": "./src/service/index.ts",
-      "default": "./lib/service/index.js"
-    },
-    "./nats": {
-      "types": "./src/nats/index.ts",
-      "default": "./lib/nats/index.js"
-    },
-    "./actuator": {
-      "types": "./src/actuator/index.ts",
-      "default": "./lib/actuator/index.js"
-    },
-    "./scripts/esbuild": {
-      "types": "./src/scripts/esbuild/index.ts",
-      "default": "./lib/scripts/esbuild/index.js"
-    },
-    "./package.json": "./package.json"
+    "exports": {
+      ".": {
+        "types": "./src/index.ts",
+        "default": "./lib/index.js"
+      },
+      "./mikro-orm": {
+        "types": "./src/mikro-orm/index.ts",
+        "default": "./lib/mikro-orm/index.js"
+      },
+      "./auth": {
+        "types": "./src/auth/index.ts",
+        "default": "./lib/auth/index.js"
+      },
+      "./app": {
+        "types": "./src/app/index.ts",
+        "default": "./lib/app/index.js"
+      },
+      "./config": {
+        "types": "./src/config/index.ts",
+        "default": "./lib/config/index.js"
+      },
+      "./service": {
+        "types": "./src/service/index.ts",
+        "default": "./lib/service/index.js"
+      },
+      "./nats": {
+        "types": "./src/nats/index.ts",
+        "default": "./lib/nats/index.js"
+      },
+      "./actuator": {
+        "types": "./src/actuator/index.ts",
+        "default": "./lib/actuator/index.js"
+      },
+      "./hono": {
+        "types": "./src/hono/index.ts",
+        "default": "./lib/hono/index.js"
+      },
+      "./scripts/esbuild": {
+        "types": "./src/scripts/esbuild/index.ts",
+        "default": "./lib/scripts/esbuild/index.js"
+      },
+      "./package.json": "./package.json"
+    }
   },
   "xo": {
     "envs": [

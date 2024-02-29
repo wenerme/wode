@@ -1,14 +1,9 @@
 import { AnyEntity, MikroORM as CoreMikroORM } from '@mikro-orm/core';
-import { EntityName, MikroOrmModule, MikroOrmModuleFeatureOptions } from '@mikro-orm/nestjs';
-import {
-  type AbstractSqlConnection,
-  EntityManager,
-  knex,
-  MikroORM as PostgreSqlMikroORM,
-  type Options,
-} from '@mikro-orm/postgresql';
-import { ConfigurableModuleBuilder, DynamicModule, Logger, Module } from '@nestjs/common';
-import { createLazyPromise } from '@wener/utils';
+import { EntityName, MikroOrmModule, MikroOrmModuleFeatureOptions, MIKRO_ORM_MODULE_OPTIONS } from '@mikro-orm/nestjs';
+import type { MikroOrmModuleAsyncOptions } from '@mikro-orm/nestjs/typings';
+import { type AbstractSqlConnection, knex, MikroORM as PostgreSqlMikroORM, type Options } from '@mikro-orm/postgresql';
+import { DynamicModule, Logger } from '@nestjs/common';
+import { createLazyPromise, MaybePromise } from '@wener/utils';
 import { getMikroOrmConfig } from '../config';
 import { createMikroOrmConfig } from './createMikroOrmConfig';
 
@@ -16,66 +11,61 @@ export type OrmModuleOptions = Partial<Options> & {
   onConfig?: (config: Options) => void;
 };
 
-const { ConfigurableModuleClass, MODULE_OPTIONS_TOKEN } = new ConfigurableModuleBuilder<OrmModuleOptions>()
-  .setExtras(
-    {
-      isGlobal: true,
+export class OrmModule {
+  protected static readonly log = new Logger(OrmModule.name);
+
+  static forRootAsync(
+    opts: Omit<MikroOrmModuleAsyncOptions, 'useExisting' | 'useClass'> & {
+      onConfig?: (config: Options, ...args: any[]) => MaybePromise<void>;
     },
-    (definition, extras) => ({
-      ...definition,
-      global: extras.isGlobal,
-    }),
-  )
-  .setClassMethodName('forRoot')
-  .build();
+  ) {
+    return createLazyPromise(() => {
+      const { onConfig, useFactory, ...rest } = opts;
 
-export const ORM_MODULE_OPTIONS_TOKEN = MODULE_OPTIONS_TOKEN;
+      let module = MikroOrmModule.forRootAsync({
+        ...rest,
+        useFactory: async (...args) => {
+          let config = ((await useFactory?.(...args)) ||
+            createMikroOrmConfig({
+              entities: [],
+              ...getMikroOrmConfig(),
+            })) as Options;
+          // dedup
+          config.entities = Array.from(new Set(config.entities)).filter(Boolean);
+          await onConfig?.(config, ...args);
+          return config;
+        },
+      });
 
-@Module({
-  imports: [
-    createLazyPromise(() =>
+      setup(module);
+      return module;
+    });
+  }
+
+  static forRoot(opts: OrmModuleOptions) {
+    return createLazyPromise(() => {
+      const { onConfig, ...rest } = opts;
+
       // forRootAsync will create EntityManager immediately
-      MikroOrmModule.forRootAsync({
-        useFactory: (opts: OrmModuleOptions) => {
-          const { onConfig, ...rest } = opts;
+      let module = MikroOrmModule.forRootAsync({
+        useFactory: () => {
           let config = createMikroOrmConfig({
             entities: [],
             ...getMikroOrmConfig(),
-            ...opts,
+            ...rest,
           }) as Options;
           // dedup
           config.entities = Array.from(new Set(config.entities)).filter(Boolean);
           onConfig?.(config);
           return config;
         },
-        inject: [MODULE_OPTIONS_TOKEN],
-      }),
-    ),
-  ],
-  providers: [
-    {
-      provide: EntityManager,
-      useFactory(orm: PostgreSqlMikroORM) {
-        return orm.em;
-      },
-      inject: [PostgreSqlMikroORM],
-    },
-    {
-      provide: CoreMikroORM,
-      useExisting: PostgreSqlMikroORM,
-    },
-    {
-      provide: knex,
-      useFactory(orm: PostgreSqlMikroORM) {
-        return (orm.em.getConnection() as AbstractSqlConnection).getKnex();
-      },
-      inject: [PostgreSqlMikroORM],
-    },
-  ],
-  exports: [EntityManager, PostgreSqlMikroORM, CoreMikroORM, knex, MODULE_OPTIONS_TOKEN],
-})
-export class OrmModule extends ConfigurableModuleClass {
-  protected static readonly log = new Logger(OrmModule.name);
+        inject: [],
+      });
+
+      setup(module);
+      return module;
+    });
+  }
 
   static forFeature(
     options: EntityName<AnyEntity>[] | MikroOrmModuleFeatureOptions,
@@ -83,4 +73,24 @@ export class OrmModule extends ConfigurableModuleClass {
   ): DynamicModule {
     return MikroOrmModule.forFeature(options, contextName);
   }
+}
+
+function setup(module: DynamicModule) {
+  module.global ??= true;
+  module.exports ||= [];
+  module.providers ||= [];
+  module.providers.push(
+    {
+      provide: knex,
+      useFactory(orm: CoreMikroORM) {
+        return (orm.em.getConnection() as AbstractSqlConnection).getKnex();
+      },
+      inject: [CoreMikroORM],
+    },
+    {
+      provide: PostgreSqlMikroORM,
+      useExisting: CoreMikroORM,
+    },
+  );
+  module.exports.push(PostgreSqlMikroORM, knex);
 }
