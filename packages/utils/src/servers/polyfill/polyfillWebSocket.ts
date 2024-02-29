@@ -8,6 +8,11 @@ export function polyfillWebSocket(ws?: any): MaybePromise<boolean> {
   if ('WebSocket' in globalThis) {
     return false;
   }
+  if ('then' in ws) {
+    return ws.then((v: any) => {
+      return polyfillWebSocket(v?.default || v);
+    });
+  }
   if (ws) {
     const { WebSocket } = ws;
     Object.assign(globalThis, { WebSocket });

@@ -1,5 +1,5 @@
 import { RemoteMethodNotImplemented } from '../client';
-import { Method, Service } from '../decorator';
+import { Method, Service } from '../meta';
 
 @Service({
   name: 'wks.MetaService',

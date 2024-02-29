@@ -1,5 +1,5 @@
 import { HttpBindings } from '@hono/node-server';
-import { runHonoServer } from '@src/poc/open-apis-server/runHonoServer';
+import { runServer } from '@wener/nestjs/hono';
 import { Hono } from 'hono';
 import { logger } from 'hono/logger';
 
@@ -130,7 +130,7 @@ export async function runOpenApisServer() {
     });
   });
 
-  return runHonoServer({ app });
+  return runServer({ app });
 }
 
 function createHeaders(r: Record<string, string | string[]>) {

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import type { AbstractConstructor, Constructor } from '../../types';
-import type { ServiceSchema } from '../decorator';
-import { getServiceName, getServiceSchema } from '../decorator';
+import type { ServiceSchema } from '../meta';
+import { getServiceName, getServiceSchema } from '../meta';
 import { createRemoteServiceClient } from './createRemoteServiceClient';
 import type {
   ClientConnection,
@@ -30,7 +30,7 @@ export class ClientRegistry {
   private readonly clients = new Map<string, RemoteClientEntry>();
 
   private conn: ClientConnection = () => {
-    throw new Error('ServiceClientConnection not connected');
+    throw new Error('ClientConnection not ready');
   };
 
   private handler?: ClientConnection;

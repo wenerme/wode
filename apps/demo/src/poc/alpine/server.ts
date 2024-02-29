@@ -2,9 +2,9 @@ import { HttpBindings, serve } from '@hono/node-server';
 import { serveStatic } from '@hono/node-server/serve-static';
 import { RequestContext } from '@mikro-orm/core';
 import { Module } from '@nestjs/common';
-import { runHonoServer } from '@src/poc/open-apis-server/runHonoServer';
 import { createBootstrap, Currents } from '@wener/nestjs';
 import { loadEnvs } from '@wener/nestjs';
+import { runServer } from '@wener/nestjs/hono';
 import { getEntityManager, OrmModule } from '@wener/nestjs/mikro-orm';
 import { MaybePromise, parseBoolean } from '@wener/utils';
 import { createYoga } from 'graphql-yoga';
@@ -60,7 +60,7 @@ app.use('*', serveStatic({ root: './public' }));
 
 await bootstrap();
 
-await runHonoServer({
+await runServer({
   app,
   port: 8787,
 });

@@ -1,5 +1,5 @@
 import type { MaybePromise } from '@wener/utils';
-import type { MethodOptionsInit } from '../decorator';
+import type { MethodOptionsInit } from '../meta';
 import type { ServiceRequest, ServiceResponse } from '../schema';
 
 type IsValidArg<T> = T extends Record<string, unknown> ? (keyof T extends never ? false : true) : true;

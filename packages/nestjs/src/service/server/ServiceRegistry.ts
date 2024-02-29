@@ -1,7 +1,10 @@
 import { applyDecorators, Injectable, Logger, SetMetadata } from '@nestjs/common';
+import { Errors } from '@wener/utils';
 import type { Constructor } from '../../types';
-import type { MethodOptionsInit, MethodSchema, ServiceOptions, ServiceOptionsInit, ServiceSchema } from '../decorator';
-import { getServiceSchema, METHOD_METADATA_KEY, SERVICE_METADATA_KEY } from '../decorator';
+import type { ServiceOptionsInit, ServiceSchema } from '../meta';
+import { METHOD_METADATA_KEY, SERVICE_METADATA_KEY } from '../meta';
+import { getServerServiceSchema } from '../meta/getServerServiceSchema';
+import { ExposeMethodOptions, ServerServiceSchema } from '../meta/server.types';
 import { createResponseFromRequest } from './createResponseFromRequest';
 import type { ServerRequest, ServerRequestOptions, ServerResponse } from './types';
 
@@ -9,6 +12,12 @@ export class ServiceRegistry {
   private readonly log = new Logger(ServiceRegistry.name);
   private services: Record<string, Service> = {};
   private handler?: ServerHandler;
+
+  static #instance?: ServiceRegistry;
+
+  static get() {
+    return (this.#instance ||= new ServiceRegistry());
+  }
 
   getServiceNames() {
     return Object.keys(this.services);
@@ -39,7 +48,7 @@ export class ServiceRegistry {
   addService({ service, target }: RegisterServiceOptions) {
     const { log } = this;
     // log.log(`Register service=${reg.name} methods=${svc.methods.map((v) => v.name).join(',')}`);
-    const metadata = getServiceMetadata(target.constructor);
+    const metadata = getServerServiceSchema(target.constructor);
     const name = metadata?.name;
     if (!metadata || !name) {
       throw new Error(`Service ${name || target} metadata not found`);
@@ -66,7 +75,7 @@ export class ServiceRegistry {
     };
     if (!svc) {
       return createResponseFromRequest(req, {
-        status: 404,
+        status: Errors.NotImplemented.status,
         description: `Service ${req.service} not found`,
       });
     }
@@ -78,7 +87,7 @@ export class ServiceRegistry {
     });
     if (!methodSchema) {
       return createResponseFromRequest(req, {
-        status: 404,
+        status: Errors.NotImplemented.status,
         description: `Service ${req.service} method ${req.method} not found`,
       });
     }
@@ -89,14 +98,14 @@ export class ServiceRegistry {
 
     if (!method) {
       return createResponseFromRequest(req, {
-        status: 404,
+        status: Errors.NotImplemented.status,
         description: `Service ${req.service} method ${req.method} not found`,
       });
     }
 
     if (typeof method !== 'function') {
       return createResponseFromRequest(req, {
-        status: 500,
+        status: Errors.NotImplemented.status,
         description: `Service ${req.service} method ${req.method} invalid`,
       });
     }
@@ -144,16 +153,6 @@ export interface RegisterServiceOptions<T = any> {
   schema?: ServiceSchema;
 }
 
-export type ExposeServiceOptions = ServiceOptions;
-
-export type ExposeMethodOptions = MethodOptionsInit;
-
-interface ServerServiceSchema extends ServiceSchema {
-  name: string;
-  options: ExposeServiceOptions;
-  methods: MethodSchema[];
-}
-
 export const EXPOSE_SERVICE_METADATA_KEY = SERVICE_METADATA_KEY;
 export const EXPOSE_METHOD_METADATA_KEY = METHOD_METADATA_KEY;
 
@@ -163,20 +162,3 @@ export const ExposeService = (opts: ServiceOptionsInit = {}): ClassDecorator =>
 
 export const ExposeMethod = (opts: ExposeMethodOptions = {}): MethodDecorator =>
   Reflect.metadata(EXPOSE_METHOD_METADATA_KEY, opts); // target.prototype
-
-export function getServiceMetadata<T>(svc: Constructor<T>): ServerServiceSchema | undefined {
-  const schema = getServiceSchema(svc) as ServerServiceSchema;
-  if (!schema) {
-    return;
-  }
-
-  let base: undefined | ServiceSchema<T>;
-  if (schema.options?.as) {
-    base = getServiceSchema(svc);
-    if (!base) {
-      throw new Error(`Service ${svc} base ${schema.options.as} is invalid`);
-    }
-  }
-
-  return schema;
-}

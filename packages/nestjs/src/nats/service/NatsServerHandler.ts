@@ -6,7 +6,7 @@ import { App } from '../../app';
 import { EXPOSE_SERVICE_METADATA_KEY, ServiceRegistry } from '../../service';
 import { NatsConn } from '../nats.module';
 import ServerModule from './ServerModule';
-import { handleNatsServiceServerMessage } from './handleNatsServiceServerMessage';
+import { handleNatsServiceRequest } from './handleNatsServiceRequest';
 import { getSubscribeSubject } from './nats';
 import type { NatsServiceServerModuleOptions } from './types';
 
@@ -60,7 +60,7 @@ export class NatsServerHandler {
             log.debug(`No reply subject: ${msg.subject}`);
             return;
           }
-          return handleNatsServiceServerMessage({ msg, registry: svc, logger: log });
+          return handleNatsServiceRequest({ msg, registry: svc, logger: log });
         },
         queue,
       });

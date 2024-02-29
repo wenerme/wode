@@ -1,5 +1,5 @@
 import type { AbstractConstructor, Constructor } from '../../types';
-import { getServiceName, ServiceNameProp } from '../decorator/Service';
+import { getServiceName, ServiceNameProp } from '../meta';
 import type { RemoteService } from './types';
 
 /**
