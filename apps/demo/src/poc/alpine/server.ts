@@ -2,13 +2,13 @@ import { HttpBindings, serve } from '@hono/node-server';
 import { serveStatic } from '@hono/node-server/serve-static';
 import { RequestContext } from '@mikro-orm/core';
 import { Module } from '@nestjs/common';
+import { runHonoServer } from '@src/poc/open-apis-server/runHonoServer';
 import { createBootstrap, Currents } from '@wener/nestjs';
 import { loadEnvs } from '@wener/nestjs';
 import { getEntityManager, OrmModule } from '@wener/nestjs/mikro-orm';
 import { MaybePromise, parseBoolean } from '@wener/utils';
 import { createYoga } from 'graphql-yoga';
 import { Hono, MiddlewareHandler } from 'hono';
-import { showRoutes } from 'hono/dev';
 import { createGraphSchema } from './createGraphSchema';
 import { ApkIndexEntity, ApkIndexPkgEntity } from './entity/ApkIndexEntity';
 import { ApkIndexService } from './service/ApkIndexService';
@@ -59,13 +59,8 @@ app.use('/graphql', requestContext, (c) => {
 app.use('*', serveStatic({ root: './public' }));
 
 await bootstrap();
-serve(
-  {
-    fetch: app.fetch,
-    port: 8787,
-  },
-  ({ port, address }) => {
-    showRoutes(app);
-    console.log(`Listening on http://${address}:${port}`); // Listening on http://localhost:3000
-  },
-);
+
+await runHonoServer({
+  app,
+  port: 8787,
+});

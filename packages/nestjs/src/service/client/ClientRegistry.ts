@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import type { AbstractConstructor, Constructor } from '../../types';
 import type { ServiceSchema } from '../decorator';
-import { getServiceSchema } from '../decorator';
-import { getServiceName } from '../decorator';
+import { getServiceName, getServiceSchema } from '../decorator';
 import { createRemoteServiceClient } from './createRemoteServiceClient';
 import type {
   ClientConnection,

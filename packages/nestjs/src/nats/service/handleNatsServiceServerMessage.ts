@@ -1,13 +1,13 @@
 import { Logger } from '@nestjs/common';
 import { Msg } from 'nats';
 import {
+  createResponseFromRequest,
   ServerRequest,
   ServerResponse,
   ServiceRegistry,
   ServiceRequestPayloadSchema,
   ServiceResponsePayloadSchema,
 } from '../../service';
-import { createResponseFromRequest } from '../../service';
 import { fromMessageHeader, toMessageHeader } from './nats';
 import { KnownNatsServerMetadata } from './types';
 
