@@ -3,9 +3,9 @@ import { expect, test } from 'vitest';
 import { ClientRegistry, RemoteServiceOf } from './client';
 import { createProxyClient } from './client/createProxyClient';
 import { createRemoteServiceClient } from './client/createRemoteServiceClient';
-import { getServiceName, getServiceSchema, Service } from './decorator';
+import { getServiceName, getServiceSchema, Service } from './meta';
+import { getServerServiceSchema } from './meta/getServerServiceSchema';
 import { createServerLoggingMiddleware, ExposeMethod, ExposeService, ServiceRegistry } from './server';
-import { getServiceMetadata } from './server/ServiceRegistry';
 
 test('service in memory connect', async () => {
   const server = new ServiceRegistry();
@@ -16,7 +16,7 @@ test('service in memory connect', async () => {
   registry.addMiddleware((next) => next);
   registry.addMiddleware((next) => next);
 
-  console.log(getServiceMetadata(TestService));
+  console.log(getServerServiceSchema(TestService));
 
   registry.connect(server.handle.bind(server));
 

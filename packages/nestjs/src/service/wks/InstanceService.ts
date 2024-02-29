@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { App } from '../../app';
 import { RemoteMethodNotImplemented, RemoteServiceOf } from '../client';
-import { Method, Service } from '../decorator';
+import { Method, Service } from '../meta';
 import { ExposeService, LocalService } from '../server';
 
 @Service({

@@ -1,19 +1,9 @@
 import 'reflect-metadata';
+import { MethodOptions } from './client.types';
 
 export const METHOD_METADATA_KEY = 'Service:Method:Metadata:Options';
 
 export type MethodOptionsInit = Partial<MethodOptions>;
-
-export interface MethodOptions {
-  name: string;
-  summary?: string;
-  description?: string;
-  input?: any;
-  output?: any;
-  timeout?: number;
-  metadata?: Record<string, any>;
-  stream?: true;
-}
 
 export const Method = (opts: MethodOptionsInit = {}): MethodDecorator => Reflect.metadata(METHOD_METADATA_KEY, opts);
 

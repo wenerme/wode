@@ -1,18 +1,10 @@
 import 'reflect-metadata';
 import type { AbstractConstructor, Constructor } from '../../types';
+import { ServiceOptions } from './client.types';
 
 export const SERVICE_METADATA_KEY = 'Service:Metadata:Options';
 
 export type ServiceOptionsInit = Partial<ServiceOptions>;
-
-export interface ServiceOptions {
-  name: string;
-  summary?: string;
-  description?: string;
-  timeout?: number;
-  metadata?: Record<string, any>;
-  as?: Constructor | AbstractConstructor;
-}
 
 export const Service = (opts: ServiceOptionsInit): ClassDecorator => Reflect.metadata(SERVICE_METADATA_KEY, opts);
 export const ServiceNameProp = Symbol('$ServiceName');

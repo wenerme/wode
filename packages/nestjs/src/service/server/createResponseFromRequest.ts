@@ -12,6 +12,9 @@ export function createResponseFromRequest(
     code = detail.code;
     ok = false;
   } else {
+    if (typeof code === 'number') {
+      status = code;
+    }
     status ??= 200;
     description = getHttpStatusText(status) || 'Unknown';
   }

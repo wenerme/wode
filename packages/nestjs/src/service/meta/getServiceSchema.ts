@@ -1,9 +1,11 @@
 import type { AbstractConstructor, Constructor } from '../../types';
-import type { MethodOptions } from './Method';
 import { getMethodOptions } from './Method';
-import type { ServiceOptions } from './Service';
 import { getServiceOptions } from './Service';
+import { MethodOptions, ServiceOptions } from './client.types';
 
+/**
+ * Get client service schema
+ */
 export function getServiceSchema<T = unknown>(type: Constructor<T> | AbstractConstructor<T>) {
   let so = getServiceOptions(type);
   if (!so) {

@@ -23,6 +23,7 @@ export function createNatsErrorResponse({
         });
       }
 
+      case 503:
       case '503': {
         return createResponseFromRequest(req, {
           code: 503,

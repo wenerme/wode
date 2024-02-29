@@ -8,7 +8,7 @@ import type { ServerMiddleware } from './ServiceRegistry';
 import type { ServerRequest } from './types';
 
 export const createServerContextMiddleware = (): ServerMiddleware => (next) => async (req: ServerRequest) =>
-  RequestContext.createAsync(getEntityManager(), async () =>
+  RequestContext.create(getEntityManager(), async () =>
     Currents.run(async () => {
       const headers = req.headers as KnownServiceMessageHeaders;
       set(headers['x-request-id'], (v) => {

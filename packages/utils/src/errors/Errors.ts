@@ -157,7 +157,7 @@ export class Errors {
   static Unauthorized: ErrorDetail = this.with({ status: 403 });
   static Forbidden: ErrorDetail = this.with({ status: 403 });
   static NotFound: ErrorDetail = this.with({ status: 404 });
-  static InternalServerError: ErrorDetail = this.with({ status: 501 });
+  static InternalServerError: ErrorDetail = this.with({ status: 500 });
   static NotImplemented: ErrorDetail = this.with({ status: 501 });
   static ServiceUnavailable: ErrorDetail = this.with({ status: 503 });
 
