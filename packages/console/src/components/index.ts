@@ -1,2 +1,1 @@
-export * from './PortalContainer';
-export * from './hooks';
+export { usePortal, PortalProvider, Portal } from './PortalContainer';

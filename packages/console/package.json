@@ -1,85 +1,37 @@
 {
   "name": "@wener/console",
-  "version": "1.0.5",
+  "version": "1.0.7",
   "type": "module",
   "description": "Base console UI toolkit",
   "author": "wener",
   "license": "MIT",
   "exports": {
-    ".": {
-      "types": "./index.ts",
-      "default": "./lib/index.js"
-    },
-    "./valtio": {
-      "types": "./valtio.ts",
-      "default": "./lib/components/valtio/index.js"
-    },
-    "./buildinfo": {
-      "types": "./buildinfo.ts",
-      "default": "./lib/buildinfo/index.js"
-    },
-    "./loader": {
-      "types": "./loader.ts",
-      "default": "./lib/components/loader/index.js"
-    },
-    "./components": {
-      "types": "./components.ts",
-      "default": "./lib/components/index.js"
-    },
-    "./icons": {
-      "types": "./icons.ts",
-      "default": "./lib/icons/index.js"
-    },
-    "./web": {
-      "types": "./web.ts",
-      "default": "./lib/web/index.js"
-    },
-    "./web/user": {
-      "types": "./web/user.ts",
-      "default": "./lib/web/user/index.js"
-    },
-    "./pages": {
-      "types": "./web/pages.ts",
-      "default": "./lib/web/pages/index.js"
-    },
-    "./toast": {
-      "types": "./toast.ts",
-      "default": "./lib/components/toast/index.js"
-    },
-    "./web/pages/setting/about/route": {
-      "types": "./web/pages/setting/about/route.ts",
-      "default": "./lib/web/pages/setting/about/route.js"
-    },
-    "./web/pages/setting/appearance/route": {
-      "types": "./web/pages/setting/appearance/route.ts",
-      "default": "./lib/web/pages/setting/appearance/route.js"
-    },
-    "./web/pages/setting/dev/debug/route": {
-      "types": "./web/pages/setting/dev/debug/route.ts",
-      "default": "./lib/web/pages/setting/dev/debug/route.js"
-    },
-    "./daisy": {
-      "types": "./daisy.ts",
-      "default": "./lib/components/daisy/index.js"
-    },
-    "./router": {
-      "types": "./router.ts",
-      "default": "./lib/components/router/index.js"
-    },
-    "./floating": {
-      "types": "./floating.ts",
-      "default": "./lib/components/floating/index.js"
-    },
-    "./package.json": "./package.json"
+    ".": "./src/index.ts",
+    "./buildinfo": "./src/buildinfo/index.ts",
+    "./components": "./src/components/index.ts",
+    "./hooks": "./src/hooks/index.ts",
+    "./daisy": "./src/daisy/index.ts",
+    "./floating": "./src/floating/index.ts",
+    "./icons": "./src/icons/index.ts",
+    "./loader": "./src/loader/index.ts",
+    "./package.json": "./package.json",
+    "./pages": "./src/web/pages/index.ts",
+    "./router": "./src/router/index.ts",
+    "./toast": "./src/toast/index.ts",
+    "./valtio": "./src/valtio/index.ts",
+    "./web": "./src/web/index.ts",
+    "./web/pages": "./src/web/pages/index.ts",
+    "./web/pages/setting/about/route": "./src/web/pages/setting/about/route.tsx",
+    "./web/pages/setting/appearance/route": "./src/web/pages/setting/appearance/route.tsx",
+    "./web/pages/setting/dev/debug/route": "./src/web/pages/setting/dev/debug/route.tsx",
+    "./web/user": "./src/web/user/index.ts",
+    "./zustand": "./src/zustand/index.ts"
   },
   "files": [
-    "*.ts",
-    "components/**/*.ts",
     "lib",
     "postcss.config.cjs",
     "src",
-    "tailwind.config.mjs",
-    "web/**/*.ts"
+    "tailwind.config.ts"
   ],
   "keywords": [
     "admin",
@@ -108,7 +60,7 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.47.0",
     "react-hot-toast": "^2.4.1",
-    "react-icons": "^4.11.0",
+    "react-icons": "^5",
     "react-router-dom": "^6",
     "superjson": "^2",
     "use-immer": "^0.9.0",
@@ -121,16 +73,95 @@
     "@floating-ui/react": "^0.26.9",
     "@headlessui/react": "^1.7.18",
     "@nestjs/common": "^10.3.3",
-    "@remix-run/router": "^1.15.1",
+    "@remix-run/router": "^1.15.2",
     "@tailwindcss/forms": "^0.5.7",
+    "@types/react-is": "^18.2.4",
     "@wener/nestjs": "workspace:^",
     "@wener/reaction": "workspace:^",
     "@wener/utils": "workspace:^",
     "clsx": "^2.1.0",
     "immer": "^10.0.3",
-    "next": "^14.1.0",
-    "react-hook-form": "^7.50.1",
-    "react-icons": "^5.0.1"
+    "next": "^14.1.2",
+    "react-hook-form": "^7.51.0",
+    "react-icons": "^5.0.1",
+    "react-is": "^18.2.0"
+  },
+  "publishConfig": {
+    "exports": {
+      ".": {
+        "types": "./src/index.ts",
+        "default": "./lib/index.js"
+      },
+      "./buildinfo": {
+        "types": "./src/buildinfo/index.ts",
+        "default": "./lib/buildinfo/index.js"
+      },
+      "./components": {
+        "types": "./src/components/index.ts",
+        "default": "./lib/components/index.js"
+      },
+      "./daisy": {
+        "types": "./src/daisy/index.ts",
+        "default": "./lib/daisy/index.js"
+      },
+      "./floating": {
+        "types": "./src/floating/index.ts",
+        "default": "./lib/floating/index.js"
+      },
+      "./icons": {
+        "types": "./src/icons/index.ts",
+        "default": "./lib/icons/index.js"
+      },
+      "./loader": {
+        "types": "./src/loader/index.ts",
+        "default": "./lib/loader/index.js"
+      },
+      "./package.json": "./package.json",
+      "./pages": {
+        "types": "./src/web/pages/index.ts",
+        "default": "./lib/web/pages/index.js"
+      },
+      "./router": {
+        "types": "./src/router/index.ts",
+        "default": "./lib/router/index.js"
+      },
+      "./toast": {
+        "types": "./src/toast/index.ts",
+        "default": "./lib/toast/index.js"
+      },
+      "./valtio": {
+        "types": "./src/valtio/index.ts",
+        "default": "./lib/valtio/index.js"
+      },
+      "./web": {
+        "types": "./src/web/index.ts",
+        "default": "./lib/web/index.js"
+      },
+      "./web/pages": {
+        "types": "./src/web/pages/index.ts",
+        "default": "./lib/web/pages/index.js"
+      },
+      "./web/pages/setting/about/route": {
+        "types": "./src/web/pages/setting/about/route.tsx",
+        "default": "./lib/web/pages/setting/about/route.js"
+      },
+      "./web/pages/setting/appearance/route": {
+        "types": "./src/web/pages/setting/appearance/route.tsx",
+        "default": "./lib/web/pages/setting/appearance/route.js"
+      },
+      "./web/pages/setting/dev/debug/route": {
+        "types": "./src/web/pages/setting/dev/debug/route.tsx",
+        "default": "./lib/web/pages/setting/dev/debug/route.js"
+      },
+      "./web/user": {
+        "types": "./src/web/user/index.ts",
+        "default": "./lib/web/user/index.js"
+      },
+      "./zustand": {
+        "types": "./src/zustand/index.ts",
+        "default": "./lib/zustand/index.js"
+      }
+    }
   },
   "sideEffects": false
 }

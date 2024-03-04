@@ -1,7 +1,7 @@
 import type { FC, HTMLProps, ReactElement } from 'react';
 import React from 'react';
 import { clsx } from 'clsx';
-import { Tooltip } from '../../../components/floating';
+import { Tooltip } from '../../../floating';
 import { AutoNavLink } from '../../links';
 import type { BaseNavLink } from '../ExpandableSideMenuLayout/BaseNavLink';
 

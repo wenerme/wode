@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { structuredClone } from '@wener/utils';
-import { proxyWithCompare } from '../components/valtio';
+import { proxyWithCompare } from '../valtio';
 
 declare type Corner = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
 declare type Side = 'left' | 'right' | 'top' | 'bottom';

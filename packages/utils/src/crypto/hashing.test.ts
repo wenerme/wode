@@ -1,6 +1,6 @@
 import { assert, beforeAll, expect, test } from 'vitest';
 import { ArrayBuffers } from '../io/ArrayBuffers';
-import { polyfillCrypto } from '../servers/polyfill/polyfillCrypto';
+import { polyfillCrypto } from '../server/polyfill/polyfillCrypto';
 import { isUUID } from '../validations/isUUID';
 import { hex } from './base';
 import { hmac, sha1, sha256, sha384, sha512 } from './hashing';

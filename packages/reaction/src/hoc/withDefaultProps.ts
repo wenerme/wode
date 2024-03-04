@@ -1,7 +1,7 @@
 import type { ComponentType } from 'react';
 import React from 'react';
-import hoistNonReactStatics from 'hoist-non-react-statics';
 import { mergeProps as defaultMergeProps } from '../utils/mergeProps';
+import { hoistNonReactStatics } from './hoistNonReactStatics';
 
 const getComponentName = (Component: any) => Component.displayName || Component.name || 'Component';
 

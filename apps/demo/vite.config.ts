@@ -1,6 +1,6 @@
 import process from 'node:process';
 import { webUpdateNotice } from '@plugin-web-update-notification/vite';
-import { unstable_vitePlugin as remix } from '@remix-run/dev';
+import { vitePlugin as remix } from '@remix-run/dev';
 import { installGlobals } from '@remix-run/node';
 import react from '@vitejs/plugin-react';
 import million from 'million/compiler';

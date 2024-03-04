@@ -27,7 +27,7 @@
     "node_modules"
   ],
   "include": [
-    "types.d.ts",
+    "src/types.d.ts",
     "src"
   ]
 }

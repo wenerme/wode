@@ -2,8 +2,8 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { showErrorToast, showSuccessToast } from '../components/toast';
-import { LoginFormData, LoginPage } from '../web/pages/LoginPage';
+import { showErrorToast, showSuccessToast } from '../toast';
+import { LoginFormData, LoginPage } from '../web/pages';
 import Splash from './LoginSplash.jpg';
 import { doPasswordLogin } from './actions';
 

@@ -16,7 +16,7 @@ const nextConfig = {
   swcMinify: true,
   transpilePackages: ['server'],
   experimental: {
-    serverActions: true,
+    serverActions: {},
     outputFileTracingRoot: path.join(__dirname, '../../'),
     optimizePackageImports: ['react-icons', 'antd'],
     serverComponentsExternalPackages: [

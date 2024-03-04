@@ -1,6 +1,6 @@
 import { MaybePromise } from '@wener/utils';
+import { AsyncCloser } from '@wener/utils';
 import { Command } from 'commander';
-import { AsyncCloser } from '../../utils/AsyncCloser';
 
 interface RootContext {
   closer: AsyncCloser;

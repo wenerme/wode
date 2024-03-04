@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { HiArrowLeft, HiArrowPath, HiHome, HiOutlineExclamationCircle } from 'react-icons/hi2';
 import { useInRouterContext, useNavigate, useRouteError } from 'react-router-dom';
-import { Button, NonIdealState } from '../../../components/daisy';
+import { Button, NonIdealState } from '../../../daisy';
 
 export const PageErrorState: React.FC<{ error?: any; onReset?: () => void; title?: ReactNode }> = ({
   error,

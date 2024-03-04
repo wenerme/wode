@@ -1,7 +1,7 @@
 import React from 'react';
 import { RootContext } from './RootContext';
 import { WebVitals } from './WebVitals';
-import './styles/global.css';
+import './globals.css';
 
 export default async function RootLayout({ children, params }: { children: React.ReactNode; params?: any }) {
   const attrs: Record<string, any> = {};

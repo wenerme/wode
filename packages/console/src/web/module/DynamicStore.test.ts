@@ -1,4 +1,4 @@
-import { test, assert } from 'vitest';
+import { assert, test } from 'vitest';
 import { DynamicStore } from './DynamicStore';
 import { ModuleStore } from './types';
 

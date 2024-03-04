@@ -3,13 +3,14 @@ import { NatsConnection, NatsError, ServiceMsg } from 'nats';
 import { App } from '../../app';
 import { getServerServiceSchema, getServiceName, ServiceRegistry } from '../../service';
 import { handleNatsServiceRequest } from './handleNatsServiceRequest';
+import { getRequestSubject } from './nats';
 
 export async function addNatsService({
   registry = ServiceRegistry.get(),
   service,
   nc,
   logger,
-  getSubject = ({ service, method }) => `${service}.${method}`,
+  getSubject = getRequestSubject,
 }: {
   registry?: ServiceRegistry;
   nc: NatsConnection;

@@ -1,13 +1,13 @@
 import type { EntityManager, EntityName, QBFilterQuery } from '@mikro-orm/core';
 import { parse } from './miniquery';
 
-export function toMikroOrmQuery(
+export function toMikroOrmQuery<T>(
   query?: string,
   options?: {
     em?: EntityManager;
-    Entity?: EntityName<any>;
+    Entity?: EntityName<T>;
   },
-): QBFilterQuery<any> {
+): QBFilterQuery<T> {
   query = query?.trim();
   if (!query) {
     return [];

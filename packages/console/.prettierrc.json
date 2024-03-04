@@ -45,6 +45,6 @@
     "prettier-plugin-tailwindcss",
     "@trivago/prettier-plugin-sort-imports"
   ],
-  "tailwindConfig": "./tailwind.config.mjs"
+  "tailwindConfig": "./tailwind.config.ts"
 }
 
