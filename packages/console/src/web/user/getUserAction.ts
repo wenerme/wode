@@ -1,6 +1,6 @@
 import { MaybePromise } from '@wener/utils';
-import { getLogger } from '../../components/hooks';
-import { showSuccessToast } from '../../components/toast';
+import { getLogger } from '../../hooks';
+import { showSuccessToast } from '../../toast';
 import { getUserProfileState } from './getUserProfileState';
 import { getUserSessionState } from './getUserSessionState';
 

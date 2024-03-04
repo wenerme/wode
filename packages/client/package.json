@@ -91,15 +91,15 @@
   },
   "devDependencies": {
     "@alicloud/openapi-client": "^0.4.8",
-    "@sinclair/typebox": "^0.32.14",
+    "@sinclair/typebox": "^0.32.15",
     "@types/crypto-js": "^4.2.2",
     "@wecom/jssdk": "^1.4.5",
     "crypto-js": "^4.2.0",
     "dayjs": "^1.11.10",
-    "fast-xml-parser": "^4.3.4",
+    "fast-xml-parser": "^4.3.5",
     "nats.ws": "^1.19.1",
-    "openai": "^4.28.0",
-    "undici": "^6.6.2",
+    "openai": "^4.28.4",
+    "undici": "^6.7.0",
     "ws": "^8.16.0"
   },
   "publishConfig": {

@@ -3,7 +3,7 @@ import React from 'react';
 import { HiUsers } from 'react-icons/hi2';
 import { Popover, Transition } from '@headlessui/react';
 import { clsx } from 'clsx';
-import { Button } from '../../../components/daisy';
+import { Button } from '../../../daisy';
 
 export interface DockUserAvatarProps {
   hasNotification?: boolean;

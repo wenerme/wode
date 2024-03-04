@@ -15,6 +15,15 @@ export function createLazyPromise<T = any>(
     | ((resolve: LazyPromise<T>['resolve'], reject: LazyPromise<T>['reject']) => void)
     | ((resolve: LazyPromise<T>['resolve'], reject: LazyPromise<T>['reject']) => MaybePromise<T>),
 ): LazyPromise<T> {
+  if (!executor && 'withResolvers' in Promise) {
+    const { promise, resolve, reject } = (Promise as any).withResolvers();
+    return Object.assign(promise, {
+      resolve,
+      reject,
+      [Symbol.toStringTag]: 'LazyPromise',
+    }) as LazyPromise<T>;
+  }
+
   const holder = {
     resolve(_: any): void {
       throw new Error('pending resolve');
@@ -29,6 +38,7 @@ export function createLazyPromise<T = any>(
       holder.resolve = resolve;
     }),
     {
+      [Symbol.toStringTag]: 'LazyPromise',
       resolve(v: any) {
         holder.resolve(v);
       },

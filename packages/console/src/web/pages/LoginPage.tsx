@@ -3,10 +3,9 @@ import { useForm } from 'react-hook-form';
 import { CiLock, CiUser } from 'react-icons/ci';
 import { PiBuildingsThin } from 'react-icons/pi';
 import { clsx } from 'clsx';
-import Image from 'next/image';
-import { useContextStore } from '../../components/hooks';
-import { TODO } from '../../components/toast';
+import { useContextStore } from '../../hooks';
 import { WechatBrandIcon, WecomBrandIcon } from '../../icons';
+import { TODO } from '../../toast';
 import { SitePreferences } from '../prefs';
 import { SiteLogo } from '../site/SiteLogo';
 

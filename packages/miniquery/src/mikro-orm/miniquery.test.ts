@@ -12,11 +12,9 @@ import {
 } from '@mikro-orm/core';
 import { defineConfig } from '@mikro-orm/sqlite';
 import { test } from 'vitest';
-import { parse } from './miniquery';
+import { toMikroOrmQuery } from './toMikroOrmQuery';
 
-test('syntax', async () => {});
-
-test('miniquery', async () => {
+async function getOrm() {
   const orm = await MikroORM.init(
     defineConfig({
       entities: [UserProfileEntity, UserEntity, GroupEntity, GroupMemberEntity],
@@ -29,7 +27,6 @@ test('miniquery', async () => {
       // debug: true,
     }),
   );
-
   let em = orm.em.fork();
   {
     for (const schema of [
@@ -56,6 +53,27 @@ test('miniquery', async () => {
     }
   }
 
+  return { orm, em };
+}
+
+test('orm', async () => {
+  const { em } = await getOrm();
+
+  const repo = em.getRepository(UserEntity);
+
+  // works
+  await repo.findAll({ where: { attrs: { test: { $eq: true } } } });
+  // not work
+  await repo
+    .qb()
+    .where({ attrs: { test: { $eq: true } } })
+    .getResult();
+  // .getResultAndCount();
+});
+
+test('miniquery', async () => {
+  const { em } = await getOrm();
+
   const repo = em.getRepository(UserEntity);
 
   // https://github.com/wenerme/wode/blob/main/packages/ohm-grammar-miniquery/src/miniquery.test.ts
@@ -75,14 +93,20 @@ test('miniquery', async () => {
   ];
 
   for (const v of valid) {
-    const builder = repo.qb().where(parse(v));
-    console.log(`Query: ${v} \n\t ${builder.getQuery()}`);
-    await builder.getResultAndCount();
+    let query = toMikroOrmQuery(v, { em, Entity: UserEntity });
+    try {
+      const builder = repo.qb().where(query);
+      console.log(`Query: ${v} \n\t ${builder.getQuery()}`);
+      await builder.getResultAndCount();
+    } catch (e) {
+      console.log(`Query:`, query);
+      throw e;
+    }
   }
 });
 
 @Entity({ tableName: 'users' })
-class UserEntity extends BaseEntity<UserEntity, 'id'> {
+class UserEntity extends BaseEntity {
   @PrimaryKey({ type: types.bigint })
   id!: number;
 
@@ -94,7 +118,7 @@ class UserEntity extends BaseEntity<UserEntity, 'id'> {
   @Property({ type: types.json, nullable: true })
   attrs?: Record<string, any>;
 
-  @OneToOne(() => UserProfileEntity, 'user', { onDelete: 'cascade' })
+  @OneToOne(() => UserProfileEntity, 'user', { deleteRule: 'cascade' })
   profile?: UserProfileEntity;
 
   @ManyToMany(() => GroupEntity)
@@ -102,21 +126,23 @@ class UserEntity extends BaseEntity<UserEntity, 'id'> {
 }
 
 @Entity({ tableName: 'user_profile' })
-class UserProfileEntity extends BaseEntity<UserProfileEntity, 'id'> {
+class UserProfileEntity extends BaseEntity {
   @PrimaryKey({ type: types.bigint })
   id!: number;
   @Property({ type: types.bigint, nullable: true })
   age?: number;
 
-  @Property({ type: types.bigint, nullable: false })
-  userId!: number;
+  @Property({ type: types.bigint, nullable: false, persist: false })
+  get userId() {
+    return this.user?.id;
+  }
 
   @OneToOne(() => UserEntity)
   user!: UserEntity;
 }
 
 @Entity({ tableName: 'groups' })
-class GroupEntity extends BaseEntity<GroupEntity, 'id'> {
+class GroupEntity extends BaseEntity {
   @PrimaryKey({ type: types.bigint })
   id!: number;
 
@@ -128,7 +154,7 @@ class GroupEntity extends BaseEntity<GroupEntity, 'id'> {
 }
 
 @Entity({ tableName: 'group_member' })
-class GroupMemberEntity extends BaseEntity<GroupMemberEntity, 'id'> {
+class GroupMemberEntity extends BaseEntity {
   @PrimaryKey({ type: types.bigint })
   id!: number;
 

@@ -1,9 +1,9 @@
 import React from 'react';
 import { type RouteObject } from 'react-router-dom';
-import DevDebug from './DevDebug';
+import DevDebugPage from '../../../DevDebugPage';
 
 export default {
-  element: <DevDebug />,
+  element: <DevDebugPage />,
   handle: {
     title: '开发设置',
   },

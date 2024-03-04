@@ -1,8 +1,5 @@
 /* eslint no-proto:0 */
 import { classOf } from '../langs/classOf';
-import { getGlobalThis } from './getGlobalThis';
-
-const globalThis = getGlobalThis();
 
 /**
  * Clone an object using structured cloning algorithm

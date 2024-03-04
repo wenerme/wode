@@ -1,7 +1,37 @@
 {
   "name": "@wener/reaction",
   "version": "1.2.18",
+  "type": "module",
   "description": "React hooks, utils & reaction",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/wenerme/wode.git",
+    "directory": "packages/reaction"
+  },
+  "homepage": "https://github.com/wenerme/wode#readme",
+  "bugs": {
+    "url": "https://github.com/wenerme/wode/issues"
+  },
+  "license": "MIT",
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    },
+    "./valtio": {
+      "default": "./src/valtio/index.ts"
+    },
+    "./mutative/zustand": {
+      "default": "./src/mutative/zustand/index.ts"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "Makefile",
+    "dist",
+    "lib",
+    "src",
+    "tsconfig.json"
+  ],
   "keywords": [
     "components",
     "react",
@@ -9,76 +39,17 @@
     "util",
     "tool"
   ],
-  "homepage": "https://github.com/wenerme/wode#readme",
-  "bugs": {
-    "url": "https://github.com/wenerme/wode/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com/wenerme/wode.git",
-    "directory": "packages/reaction"
-  },
-  "license": "MIT",
-  "sideEffects": false,
-  "type": "module",
-  "exports": {
-    ".": {
-      "types": "./src/index.ts",
-      "typescript": "./src/index.ts",
-      "default": "./lib/index.js"
-    },
-    "./package.json": "./package.json"
-  },
-  "files": [
-    "src",
-    "lib",
-    "dist",
-    "tsconfig.json",
-    "Makefile"
-  ],
   "scripts": {
     "build": "make prepublish",
     "clean": "make clean",
     "dev": "make dev"
   },
-  "prettier": {
-    "printWidth": 120,
-    "singleQuote": true,
-    "trailingComma": "all",
-    "overrides": [
-      {
-        "files": [
-          "*.html",
-          "*.css"
-        ],
-        "options": {
-          "singleQuote": false
-        }
-      }
-    ]
-  },
-  "devDependencies": {
-    "@types/hoist-non-react-statics": "^3.3.5",
-    "@types/prop-types": "^15.7.11",
-    "@types/react": "^18.2.57",
-    "@types/react-dom": "^18.2.19",
-    "@types/react-is": "^18.2.4",
-    "@wener/utils": "workspace:^"
-  },
   "peerDependencies": {
-    "hoist-non-react-statics": ">=3",
-    "prop-types": ">=15",
     "react": ">=18",
     "react-dom": ">=18",
     "react-is": ">=18"
   },
   "peerDependenciesMeta": {
-    "hoist-non-react-statics": {
-      "optional": true
-    },
-    "prop-types": {
-      "optional": true
-    },
     "react": {
       "optional": true
     },
@@ -89,15 +60,34 @@
       "optional": true
     }
   },
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org",
-    "access": "public"
-  },
   "dependencies": {
-    "hoist-non-react-statics": "^3.3.2",
-    "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-is": "^18.2.0"
-  }
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.63",
+    "@types/react-dom": "^18.2.20",
+    "@types/react-is": "^18.2.4",
+    "@wener/utils": "workspace:^",
+    "mutative": "^1.0.3",
+    "valtio": "^1.13.2",
+    "zustand": "^4.5.2"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org",
+    "access": "public",
+    "exports": {
+      ".": {
+        "types": "./src/index.ts",
+        "default": "./lib/index.js"
+      },
+      "./valtio": {
+        "types": "./src/valtio/index.ts",
+        "default": "./lib/valtio/index.ts"
+      },
+      "./package.json": "./package.json"
+    }
+  },
+  "sideEffects": false
 }

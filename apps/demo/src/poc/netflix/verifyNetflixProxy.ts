@@ -1,5 +1,5 @@
 import { FetchLike } from '@wener/utils';
-import { Closer } from '../../utils/Closer';
+import { Closer } from '@wener/utils';
 
 export interface VerifyOptions {
   fetch?: FetchLike;
@@ -69,37 +69,40 @@ export async function verifyNetflixProxy({ proxy, ...options }: VerifyOptions): 
   let config: NetflixVerifyAppConfig | undefined;
 
   const checks = {
-    Available: '80018499',
-    SelfMade: '80197526',
-    NonSelfMade: '70143836',
+    Available: ['80018499'],
+    SelfMade: ['80197526'],
+    NonSelfMade: ['70143836','80027042','70140425','70283261','70143860','70202589','70305903'],
   };
-  for (let [k, v] of Object.entries(checks)) {
-    let res: Response;
-    try {
-      res = await fetch(`https://www.netflix.com/title/${v}`, init);
-    } catch (e) {
-      console.error(`Fetch ERROR: ${String(e)}`);
-      return {
-        check: result,
-        country: '',
-      };
+  for (let [k, ids] of Object.entries(checks)) {
+    for (let v of ids) {
+      let res: Response;
+      try {
+        res = await fetch(`https://www.netflix.com/title/${v}`, init);
+      } catch (e) {
+        console.error(`Fetch ERROR: ${String(e)}`);
+        return {
+          check: result,
+          country: '',
+        };
+      }
+
+      let valid = res.status < 400;
+      result[k as keyof VerifyCheckResult] = valid;
+      if (!valid) {
+        // early
+        break;
+      }
+
+      // tw 不是 302，而是 200, 被识别为 US
+      out.country ||= res.headers.get('Location')?.split('/')[3] || '';
+      if (!out.country && res.status === 200) {
+        // us 不会重定向
+        out.country = 'us';
+      }
+      // waste body
+      void res.text();
     }
 
-    let valid = res.status < 400;
-    result[k as keyof VerifyCheckResult] = valid;
-    if (!valid) {
-      // early
-      break;
-    }
-
-    // tw 不是 302，而是 200, 被识别为 US
-    out.country ||= res.headers.get('Location')?.split('/')[3] || '';
-    if (!out.country && res.status === 200) {
-      // us 不会重定向
-      out.country = 'us';
-    }
-    // waste body
-    void res.text();
 
 
     // if (!out.country) {

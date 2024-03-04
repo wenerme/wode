@@ -1,6 +1,6 @@
 import { GrSystem } from 'react-icons/gr';
 import { flexRender } from '@wener/reaction';
-import { useContextStore } from '../../components/hooks';
+import { useContextStore } from '../../hooks';
 import { SitePreferences } from '../prefs';
 
 export const SiteLogo = (props: any) => {

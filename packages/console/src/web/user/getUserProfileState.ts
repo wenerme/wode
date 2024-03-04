@@ -1,4 +1,4 @@
-import { proxyWith } from '../../components/valtio';
+import { proxyWith } from '../../valtio';
 
 export interface UserProfileState {
   id?: string;

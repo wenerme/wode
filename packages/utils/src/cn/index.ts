@@ -1,0 +1,1 @@
+export { parseChineseNumber } from './parseChineseNumber';

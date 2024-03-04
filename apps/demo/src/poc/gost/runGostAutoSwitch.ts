@@ -29,10 +29,26 @@ export async function runGostAutoSwitch(opts: RunAutoSwitchOptions) {
   // random pick from nordvpn
   const groups = [
     {
-      addrs: ['sg549.nordvpn.com:89', 'sg551.nordvpn.com:89'],
+      addrs: [
+        'sg531.nordvpn.com:89',
+        'sg546.nordvpn.com:89',
+        'sg547.nordvpn.com:89',
+        'sg548.nordvpn.com:89',
+        'sg549.nordvpn.com:89',
+        'sg550.nordvpn.com:89',
+        'sg551.nordvpn.com:89',
+        'sg552.nordvpn.com:89',
+      ],
     },
     {
-      addrs: ['tw179.nordvpn.com:89', 'tw178.nordvpn.com:89'],
+      addrs: [
+        //
+        'tw177.nordvpn.com:89',
+        'tw179.nordvpn.com:89',
+        'tw178.nordvpn.com:89',
+        'tw179.nordvpn.com:89',
+        //
+      ],
     },
     {
       addrs: ['kr85.nordvpn.com:89', 'kr83.nordvpn.com:89'],

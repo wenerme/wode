@@ -8,8 +8,8 @@ import {
   ServiceRequestPayloadSchema,
   ServiceResponsePayloadSchema,
 } from '../../service';
+import { createMsgHdrFromResponse } from './createMsgHdrFromResponse';
 import { createResponseFromMessageHeader } from './createResponseFromMessageHeader';
-import { toMessageHeader } from './nats';
 import { KnownNatsServerMetadata } from './types';
 
 export async function handleNatsServiceRequest({
@@ -81,7 +81,7 @@ export async function handleNatsServiceRequest({
   }
 
   const { headers: _, ...write } = ServiceResponsePayloadSchema.parse(res);
-  const hdr = toMessageHeader(res);
+  const hdr = createMsgHdrFromResponse(res);
   msg.respond(JSON.stringify(write), {
     headers: hdr,
   });

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { HiLockClosed, HiMiniLockOpen } from 'react-icons/hi2';
 import clsx from 'clsx';
 import { useSnapshot } from 'valtio';
-import { Button, NonIdealState } from '../../components/daisy';
+import { Button, NonIdealState } from '../../daisy';
 import { getUserAction } from './getUserAction';
 import { getUserSessionState } from './getUserSessionState';
 

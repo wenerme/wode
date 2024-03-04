@@ -1,5 +1,5 @@
-import * as React from 'react';
 import type { SVGProps } from 'react';
+import * as React from 'react';
 import { memo } from 'react';
 
 const SvgDingtalkBrandIcon = (props: SVGProps<SVGSVGElement>) => (

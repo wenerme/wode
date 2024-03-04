@@ -2,12 +2,12 @@ import React, { useEffect } from 'react';
 import { createHashRouter as createRouter, Outlet, RouterProvider, useInRouterContext } from 'react-router-dom';
 import { isDev } from '@wener/console';
 import { ContextStoreProvider, useExposeDebug, useLogger } from '@wener/console/components';
-import { LoadingIndicator } from '@wener/console/loader';
 import { lazyRoute, RouteObjects, useRouteTitles } from '@wener/console/router';
 import { DynamicModule, getConsoleContext, NotFoundPage, PageErrorState } from '@wener/console/web';
 import { UserAuthExpireOverlay, UserLockOverlay } from '@wener/console/web/user';
 import { ErrorSuspenseBoundary, useAsyncEffect } from '@wener/reaction';
 import { createStore, useStore } from 'zustand';
+import { LoadingIndicator } from '../../../../../packages/console/src/loader';
 import { PrimaryLayout } from './PrimaryLayout';
 
 export const ConsoleApp = () => {

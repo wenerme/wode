@@ -1,6 +1,6 @@
 {
   "name": "@wener/utils",
-  "version": "1.1.32",
+  "version": "1.1.35",
   "type": "module",
   "description": "Utils for daily use",
   "repository": {
@@ -10,16 +10,21 @@
   "homepage": "https://github.com/wenerme/wode#readme",
   "author": "wener",
   "license": "MIT",
+  "exports": {
+    ".": "./src/index.ts",
+    "./types": "./src/types.d.ts",
+    "./server": "./src/server/index.ts",
+    "./server/node-fetch": "./src/server/node-fetch.ts",
+    "./server/jsdom": "./src/server/jsdom.ts",
+    "./server/ws": "./src/server/ws.ts",
+    "./schema/typebox": "./src/schema/typebox/index.ts",
+    "./schema/typebox/gen": "./src/schema/typebox/gen/index.ts",
+    "./package.json": "./package.json"
+  },
   "files": [
-    "dist",
-    "index.ts",
     "lib",
-    "server",
-    "schema",
-    "server.ts",
     "src",
-    "tsconfig.json",
-    "types.d.ts"
+    "tsconfig.json"
   ],
   "keywords": [
     "utils",
@@ -46,27 +51,14 @@
     }
   },
   "devDependencies": {
-    "@sinclair/typebox": "^0.32.14",
+    "@sinclair/typebox": "^0.32.15",
     "@types/lodash": "^4.14.202",
     "@types/ws": "^8.5.10",
     "https-proxy-agent": "^7.0.4",
     "lodash": "^4.17.21",
     "node-fetch": "^3.3.2",
-    "undici": "^6.6.2",
+    "undici": "^6.7.0",
     "zod": "^3.22.4"
-  },
-  "exports": {
-    ".": "./src/index.ts",
-    "./types": {
-      "types": "./types.d.ts"
-    },
-    "./server": "./src/server.ts",
-    "./server/node-fetch": "./server/node-fetch.ts",
-    "./server/jsdom": "./server/jsdom.ts",
-    "./server/ws": "./server/ws.ts",
-    "./schema/typebox": "./src/schema/typebox/index.ts",
-    "./schema/typebox/gen": "./src/schema/typebox/gen/index.ts",
-    "./package.json": "./package.json"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org",
@@ -74,65 +66,35 @@
     "exports": {
       ".": {
         "types": "./src/index.ts",
-        "typescript": "./src/index.ts",
-        "system": "./dist/system/index.js",
-        "import": "./lib/index.js"
+        "default": "./lib/index.js"
       },
-      "./types": {
-        "types": "./types.d.ts"
-      },
+      "./types": "./src/types.d.ts",
       "./server": {
-        "types": "./src/server.ts",
-        "typescript": "./src/server.ts",
-        "system": "./dist/system/server.js",
-        "import": "./lib/server.js"
+        "types": "./src/server/index.ts",
+        "default": "./lib/server/index.js"
       },
       "./server/node-fetch": {
-        "types": "./server/node-fetch.ts",
-        "default": "./lib/servers/node-fetch.js"
+        "types": "./src/server/node-fetch.ts",
+        "default": "./lib/server/node-fetch.js"
       },
       "./server/jsdom": {
-        "types": "./server/jsdom.ts",
-        "default": "./lib/servers/jsdom.js"
+        "types": "./src/server/jsdom.ts",
+        "default": "./lib/server/jsdom.js"
       },
       "./server/ws": {
-        "types": "./server/ws.ts",
-        "default": "./lib/servers/ws.js"
+        "types": "./src/server/ws.ts",
+        "default": "./lib/server/ws.js"
       },
       "./schema/typebox": {
         "types": "./src/schema/typebox/index.ts",
-        "typescript": "./src/schema/typebox/index.ts",
         "default": "./lib/schema/typebox/index.js"
       },
       "./schema/typebox/gen": {
         "types": "./src/schema/typebox/gen/index.ts",
-        "typescript": "./src/schema/typebox/gen/index.ts",
         "default": "./lib/schema/typebox/gen/index.js"
       },
       "./package.json": "./package.json"
     }
   },
-  "sideEffects": false,
-  "rollup": {
-    "input": [
-      "./src/index.ts",
-      "./src/server.ts",
-      "./src/servers/ws.ts",
-      "./src/servers/jsdom.ts",
-      "./src/servers/node-fetch.ts",
-      "./src/schema/typebox/index.ts",
-      "./src/schema/typebox/gen/index.ts"
-    ],
-    "external": [
-      "crypto",
-      "jsdom",
-      "node-fetch",
-      "ws",
-      "https-proxy-agent",
-      "undici",
-      "zod",
-      "typescript",
-      "@sinclair/typebox"
-    ]
-  }
+  "sideEffects": false
 }

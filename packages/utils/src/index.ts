@@ -42,6 +42,8 @@ export { isPlainObject } from './langs/isPlainObject';
 export { parseBoolean } from './langs/parseBoolean';
 export { maybeFunction, type MaybeFunction } from './langs/MaybeFunction';
 export { memoize } from './langs/memoize';
+export { AsyncCloser } from './langs/AsyncCloser';
+export { Closer } from './langs/Closer';
 
 export { isUUID } from './validations/isUUID';
 export { parseTimestamp } from './validations/parseTimestamp';

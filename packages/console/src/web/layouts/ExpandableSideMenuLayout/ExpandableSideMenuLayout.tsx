@@ -4,7 +4,7 @@ import { HiChevronDown, HiChevronRight } from 'react-icons/hi2';
 import { PiCaretDoubleLeftThin, PiCaretDoubleRightThin } from 'react-icons/pi';
 import { useControllable } from '@wener/reaction';
 import { clsx } from 'clsx';
-import { Tooltip } from '../../../components/floating';
+import { Tooltip } from '../../../floating';
 import { AutoNavLink } from '../../links';
 import type { BaseNavLink } from './BaseNavLink';
 import styles from './ExpandableSideMenuLayout.module.css';

@@ -4,7 +4,7 @@ import { useCompareEffect } from '@wener/reaction';
 import { createStore } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 import { shallow } from 'zustand/shallow';
-import { createStoreContext } from '../../components/zustand';
+import { createStoreContext } from '../../zustand';
 
 export interface SlotProps<
   S extends Record<string, string> = {},

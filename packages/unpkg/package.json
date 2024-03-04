@@ -67,7 +67,7 @@
     "@types/better-sqlite3": "^7.6.9",
     "@types/fs-extra": "^11.0.4",
     "@types/mime": "^3.0.4",
-    "@types/semver": "^7.5.7",
+    "@types/semver": "^7.5.8",
     "@types/tar": "^6.1.11"
   },
   "publishConfig": {
@@ -96,7 +96,7 @@
   },
   "dependencies": {
     "@wener/utils": "*",
-    "better-sqlite3": "^9.4.1",
+    "better-sqlite3": "^9.4.3",
     "lru-cache": "^10.2.0",
     "mime": "^4.0.1",
     "pino": "^8.19.0",

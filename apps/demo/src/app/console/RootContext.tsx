@@ -1,7 +1,7 @@
 'use client';
 
 import { Toaster } from 'react-hot-toast';
-import { useExposeDebug } from '@wener/console';
+import { useExposeDebug } from '@wener/console/components';
 import { ThemeStateReactor } from '@wener/console/daisy';
 import dayjs from 'dayjs';
 import 'dayjs/locale/en';

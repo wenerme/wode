@@ -1,9 +1,9 @@
 import React from 'react';
 import { RouteObject } from 'react-router-dom';
-import AppearanceSetting from './AppearanceSetting';
+import AppearanceSettingPage from '../../AppearanceSettingPage';
 
 export default {
-  element: <AppearanceSetting />,
+  element: <AppearanceSettingPage />,
   handle: {
     title: '显示设置',
   },

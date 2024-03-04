@@ -1,9 +1,9 @@
 import React from 'react';
 import type { RouteObject } from 'react-router-dom';
-import { SystemAbout } from './SystemAbout';
+import { SystemAboutPage } from '../../SystemAboutPage';
 
 export default {
-  element: <SystemAbout />,
+  element: <SystemAboutPage />,
   handle: {
     title: '关于',
   },

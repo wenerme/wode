@@ -1,7 +1,7 @@
 'use server';
 
 import { sleep } from '@wener/utils';
-import { LoginFormData } from '../web/pages/LoginPage';
+import { LoginFormData } from '../web/pages';
 
 export async function doPasswordLogin(o: LoginFormData) {
   console.log(`Logging`, o);
