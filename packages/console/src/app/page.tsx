@@ -1,33 +1,42 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
+import dynamic from 'next/dynamic';
+import ConsoleApp from '../demo/ConsoleApp';
 import { showErrorToast, showSuccessToast } from '../toast';
-import { LoginFormData, LoginPage } from '../web/pages';
-import Splash from './LoginSplash.jpg';
-import { doPasswordLogin } from './actions';
+import { AppGlobalActor, getAppGlobalStore } from '../web/AppGlobalActor';
+import { LoginFormData } from '../web/pages';
+import { AuthenticatedOnce } from './AuthenticatedOnce';
+import { doPasswordLogin, doPing, doRefreshToken } from './actions';
 
 export default function () {
   const doLogin = async (o: LoginFormData) => {
+    let store = getAppGlobalStore();
     try {
-      const { message } = await doPasswordLogin(o);
-      showSuccessToast(message);
+      const out = await doPasswordLogin(o);
+      store.getState().setAuth({
+        accessToken: out.accessToken,
+        refreshToken: out.refreshToken,
+        expiresIn: out.expiresIn,
+        expiresAt: out.expiresAt,
+      });
+      showSuccessToast('登录成功');
     } catch (e) {
       showErrorToast(e);
     }
   };
+
   return (
-    <LoginPage
-      onSubmit={doLogin}
-      showoff={
-        <Image
-          className='absolute inset-0 h-full w-full object-cover'
-          // https://images.unsplash.com/photo-1496917756835-20cb06e75b4e
-          // src={'/static/login-splash.jpg'}
-          src={Splash}
-          alt={'splash'}
-        />
-      }
-    />
+    <>
+      <AppGlobalActor
+        actions={{
+          refresh: doRefreshToken,
+          ping: doPing,
+        }}
+      />
+      <AuthenticatedOnce onLogin={doLogin}>
+        <ConsoleApp />
+      </AuthenticatedOnce>
+    </>
   );
 }

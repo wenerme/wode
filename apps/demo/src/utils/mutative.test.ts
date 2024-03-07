@@ -3,7 +3,7 @@ import { produce } from 'immer';
 import { create, markSimpleObject } from 'mutative';
 import { test, expect } from 'vitest';
 import { createStore } from 'zustand';
-import { mutative as immer } from './zustand.mutative';
+import { mutative, mutative as immer } from './zustand.mutative';
 
 test('mutative', () => {
   const o: Record<string, any> = {
@@ -126,4 +126,35 @@ test('mutative custom', async () => {
     { op: 'add', path: ['simpleObject', 'a'], value: 'a' },
     { op: 'replace', path: ['version'], value: 2 },
   ]);
+});
+
+test('partial', () => {
+  let base = {
+    a: 1,
+    b: {
+      a: 2,
+      b: {
+        a: 3,
+      },
+    },
+  };
+  const store = createStore(mutative(() => structuredClone(base)));
+
+  store.setState({
+    a: 2,
+  });
+
+  let next = store.getState();
+  expect(next).toEqual({
+    a: 2,
+    b: base.b,
+  });
+
+  store.setState({
+    b: {
+      // 必须
+      ...base.b,
+      a: 3,
+    },
+  });
 });

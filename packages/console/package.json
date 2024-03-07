@@ -69,6 +69,7 @@
     "zustand": "^4.4.1"
   },
   "devDependencies": {
+    "@wener/console": "link:.",
     "@floating-ui/dom": "^1.6.3",
     "@floating-ui/react": "^0.26.9",
     "@headlessui/react": "^1.7.18",

@@ -1,6 +1,6 @@
 {
   "name": "@wener/reaction",
-  "version": "1.2.18",
+  "version": "1.2.19",
   "type": "module",
   "description": "React hooks, utils & reaction",
   "repository": {
@@ -14,16 +14,10 @@
   },
   "license": "MIT",
   "exports": {
-    ".": {
-      "default": "./src/index.ts"
-    },
-    "./valtio": {
-      "default": "./src/valtio/index.ts"
-    },
-    "./mutative/zustand": {
-      "default": "./src/mutative/zustand/index.ts"
-    },
-    "./package.json": "./package.json"
+    ".": "./src/index.ts",
+    "./mutative/zustand": "./src/mutative/zustand/index.ts",
+    "./package.json": "./package.json",
+    "./valtio": "./src/valtio/index.ts"
   },
   "files": [
     "Makefile",
@@ -82,11 +76,15 @@
         "types": "./src/index.ts",
         "default": "./lib/index.js"
       },
+      "./mutative/zustand": {
+        "types": "./src/mutative/zustand/index.ts",
+        "default": "./lib/mutative/zustand/index.js"
+      },
+      "./package.json": "./package.json",
       "./valtio": {
         "types": "./src/valtio/index.ts",
-        "default": "./lib/valtio/index.ts"
-      },
-      "./package.json": "./package.json"
+        "default": "./lib/valtio/index.js"
+      }
     }
   },
   "sideEffects": false

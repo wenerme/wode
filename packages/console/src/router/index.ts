@@ -38,11 +38,11 @@ export type LazyRouteObject<R extends AgnosticRouteObject = RouteObject> = Await
 
 export function lazyRoute<R extends AgnosticRouteObject>(
   loader: () => Promise<
-    | Awaited<ReturnType<LazyRouteFunction<R>>>
+    | Awaited<object>
     | {
-        default: Awaited<ReturnType<LazyRouteFunction<R>>>;
+        default: any;
       }
-    | { route: Awaited<ReturnType<LazyRouteFunction<R>>> }
+    | { route: object }
   >,
 ): LazyRouteFunction<R> {
   return () =>
