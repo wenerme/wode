@@ -1,7 +1,7 @@
 import React, { type ReactNode, useEffect } from 'react';
 import { useSnapshot } from 'valtio';
 import { derive, watch } from 'valtio/utils';
-import { getPrefersColorSchema } from '../../../utils/getPrefersColorSchema';
+import { getPrefersColorSchema } from '../../utils';
 import { proxyWithCompare } from '../../valtio';
 import { getSupportedThemes } from './getSupportedThemes';
 import { setElementThemeAttribute } from './setElementThemeAttribute';

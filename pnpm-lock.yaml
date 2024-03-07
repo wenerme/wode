@@ -639,6 +639,9 @@ importers:
       '@wener/utils':
         specifier: workspace:^
         version: link:../../packages/utils
+      '@xstate/react':
+        specifier: ^4.1.0
+        version: 4.1.0(@types/react@18.2.63)(react@18.2.0)(xstate@5.9.1)
       '@zxing/library':
         specifier: ^0.20.0
         version: 0.20.0
@@ -891,6 +894,9 @@ importers:
       ws:
         specifier: ^8.16.0
         version: 8.16.0
+      xstate:
+        specifier: ^5.9.1
+        version: 5.9.1
       yaml:
         specifier: ^2.4.1
         version: 2.4.1
@@ -1846,6 +1852,9 @@ importers:
       '@types/react-is':
         specifier: ^18.2.4
         version: 18.2.4
+      '@wener/console':
+        specifier: link:.
+        version: 'link:'
       '@wener/nestjs':
         specifier: workspace:^
         version: link:../nestjs
@@ -11808,7 +11817,7 @@ packages:
       '@babel/plugin-syntax-typescript': 7.23.3(@babel/core@7.24.0)
       '@vanilla-extract/babel-plugin-debug-ids': 1.0.5
       '@vanilla-extract/css': 1.14.1
-      esbuild: 0.17.6
+      esbuild: 0.19.12
       eval: 0.1.8
       find-up: 5.0.0
       javascript-stringify: 2.1.0
@@ -12511,6 +12520,23 @@ packages:
   /@xmldom/xmldom@0.8.10:
     resolution: {integrity: sha512-2WALfTl4xo2SkGCYRt6rDTFfk9R1czmBvUQy12gK2KuRKIpWEhcbbzy8EZXtz/jkRqHX8bFEc6FC1HjX4TUWYw==}
     engines: {node: '>=10.0.0'}
+    dev: false
+
+  /@xstate/react@4.1.0(@types/react@18.2.63)(react@18.2.0)(xstate@5.9.1):
+    resolution: {integrity: sha512-Fh89luCwuMXIVXIua67d8pNuVgdGpqke2jHfIIL+ZjkfNh6YFtPDSwNSZZDhdNUsOW1zZYSbtUzbC8MIUyTSHQ==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      xstate: ^5.6.2
+    peerDependenciesMeta:
+      xstate:
+        optional: true
+    dependencies:
+      react: 18.2.0
+      use-isomorphic-layout-effect: 1.1.2(@types/react@18.2.63)(react@18.2.0)
+      use-sync-external-store: 1.2.0(react@18.2.0)
+      xstate: 5.9.1
+    transitivePeerDependencies:
+      - '@types/react'
     dev: false
 
   /@xtuc/ieee754@1.2.0:
@@ -16565,7 +16591,6 @@ packages:
   /flow-parser@0.230.0:
     resolution: {integrity: sha512-ZAfKaarESYYcP/RoLdM91vX0u/1RR7jI5TJaFLnxwRlC2mp0o+Rw7ipIY7J6qpIpQYtAobWb/J6S0XPeu0gO8g==}
     engines: {node: '>=0.4.0'}
-    dev: true
 
   /follow-redirects@1.15.5:
     resolution: {integrity: sha512-vSFWUON1B+yAw1VN4xMfxgn5fTUiaOzAJCKBwIIgT/+7CuGy9+r+5gITvP62j3RmaD5Ph65UaERdOSRGUzZtgw==}
@@ -18458,7 +18483,7 @@ packages:
       '@babel/register': 7.23.7(@babel/core@7.24.0)
       babel-core: 7.0.0-bridge.0(@babel/core@7.24.0)
       chalk: 4.1.2
-      flow-parser: 0.206.0
+      flow-parser: 0.230.0
       graceful-fs: 4.2.11
       micromatch: 4.0.5
       neo-async: 2.6.2
@@ -25739,6 +25764,19 @@ packages:
       react: 18.2.0
     dev: false
 
+  /use-isomorphic-layout-effect@1.1.2(@types/react@18.2.63)(react@18.2.0):
+    resolution: {integrity: sha512-49L8yCO3iGT/ZF9QttjwLF/ZD9Iwto5LnH5LmEdk/6cFmXddqi2ulF0edxTwjj+7mqvpVVGQWvbXZdn32wRSHA==}
+    peerDependencies:
+      '@types/react': '*'
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+    dependencies:
+      '@types/react': 18.2.63
+      react: 18.2.0
+    dev: false
+
   /use-resize-observer@9.1.0(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-R25VqO9Wb3asSD4eqtcxk8sJalvIOYBqS8MNZlpDSQ4l4xMQxC/J7Id9HoTqPq8FwULIn0PVW+OAqF2dyYbjow==}
     peerDependencies:
@@ -26689,6 +26727,10 @@ packages:
       - eslint-import-resolver-typescript
       - supports-color
     dev: true
+
+  /xstate@5.9.1:
+    resolution: {integrity: sha512-85edx7iMqRJSRlEPevDwc98EWDYUlT5zEQ54AXuRVR+G76gFbcVTAUdtAeqOVxy8zYnUr9FBB5114iK6enljjw==}
+    dev: false
 
   /xtend@4.0.2:
     resolution: {integrity: sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==}
