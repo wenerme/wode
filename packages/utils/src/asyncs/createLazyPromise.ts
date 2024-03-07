@@ -20,7 +20,6 @@ export function createLazyPromise<T = any>(
     return Object.assign(promise, {
       resolve,
       reject,
-      [Symbol.toStringTag]: 'LazyPromise',
     }) as LazyPromise<T>;
   }
 
@@ -38,7 +37,6 @@ export function createLazyPromise<T = any>(
       holder.resolve = resolve;
     }),
     {
-      [Symbol.toStringTag]: 'LazyPromise',
       resolve(v: any) {
         holder.resolve(v);
       },
