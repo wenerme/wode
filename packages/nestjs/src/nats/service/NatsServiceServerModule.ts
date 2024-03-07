@@ -2,7 +2,7 @@ import type { OnApplicationBootstrap, OnApplicationShutdown } from '@nestjs/comm
 import { Inject, Module } from '@nestjs/common';
 import { ServiceServerModule } from '../../service';
 import { SERVICE_SERVER_MODULE_OPTIONS, ServiceServerModuleOptions } from '../../service/server/ServiceServerModule';
-import { NatsModule } from '../nats.module';
+import { NatsModule } from '../NatsModule';
 import { NatsServerHandler } from './NatsServerHandler';
 import { NatsServerRegistry } from './NatsServerRegistry';
 import ServerModule from './ServerModule';

@@ -4,7 +4,7 @@ import { createLazyPromise } from '@wener/utils';
 import type { Subscription } from 'nats';
 import { App } from '../../app';
 import { EXPOSE_SERVICE_METADATA_KEY, ServiceRegistry } from '../../service';
-import { NatsConn } from '../nats.module';
+import { NatsConn } from '../NatsModule';
 import ServerModule from './ServerModule';
 import { handleNatsServiceRequest } from './handleNatsServiceRequest';
 import { getSubscribeSubject } from './nats';
