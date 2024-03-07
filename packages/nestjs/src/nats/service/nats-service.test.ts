@@ -16,7 +16,7 @@ import {
   ServiceClientModule,
   ServiceRegistry,
 } from '../../service';
-import { InjectNatsClient, NatsConn, NatsModule } from '../nats.module';
+import { InjectNatsClient, NatsConn, NatsModule } from '../NatsModule';
 import { NatsServerHandler } from './NatsServerHandler';
 import { NatsServiceClientModule } from './NatsServiceClientModule';
 import { NatsServiceServerModule } from './NatsServiceServerModule';

@@ -6,40 +6,19 @@
   "author": "wener",
   "license": "ISC",
   "exports": {
-    ".": {
-      "default": "./src/index.ts"
-    },
-    "./mikro-orm": {
-      "default": "./src/mikro-orm/index.ts"
-    },
-    "./auth": {
-      "default": "./src/auth/index.ts"
-    },
-    "./app": {
-      "default": "./src/app/index.ts"
-    },
-    "./config": {
-      "default": "./src/config/index.ts"
-    },
-    "./service": {
-      "default": "./src/service/index.ts"
-    },
-    "./nats": {
-      "default": "./src/nats/index.ts"
-    },
-    "./actuator": {
-      "default": "./src/actuator/index.ts"
-    },
-    "./scripts/esbuild": {
-      "default": "./src/scripts/esbuild/index.ts"
-    },
-    "./hono": {
-      "default": "./src/hono/index.ts"
-    },
+    ".": "./src/index.ts",
+    "./actuator": "./src/actuator/index.ts",
+    "./app": "./src/app/index.ts",
+    "./auth": "./src/auth/index.ts",
+    "./config": "./src/config/index.ts",
+    "./hono": "./src/hono/index.ts",
+    "./mikro-orm": "./src/mikro-orm/index.ts",
+    "./nats": "./src/nats/index.ts",
+    "./scripts/esbuild": "./src/scripts/esbuild/index.ts",
+    "./service": "./src/service/index.ts",
     "./package.json": "./package.json"
   },
   "files": [
-    "*.ts",
     "lib",
     "package.json",
     "src",
@@ -106,41 +85,41 @@
         "types": "./src/index.ts",
         "default": "./lib/index.js"
       },
-      "./mikro-orm": {
-        "types": "./src/mikro-orm/index.ts",
-        "default": "./lib/mikro-orm/index.js"
-      },
-      "./auth": {
-        "types": "./src/auth/index.ts",
-        "default": "./lib/auth/index.js"
+      "./actuator": {
+        "types": "./src/actuator/index.ts",
+        "default": "./lib/actuator/index.js"
       },
       "./app": {
         "types": "./src/app/index.ts",
         "default": "./lib/app/index.js"
       },
+      "./auth": {
+        "types": "./src/auth/index.ts",
+        "default": "./lib/auth/index.js"
+      },
       "./config": {
         "types": "./src/config/index.ts",
         "default": "./lib/config/index.js"
-      },
-      "./service": {
-        "types": "./src/service/index.ts",
-        "default": "./lib/service/index.js"
-      },
-      "./nats": {
-        "types": "./src/nats/index.ts",
-        "default": "./lib/nats/index.js"
-      },
-      "./actuator": {
-        "types": "./src/actuator/index.ts",
-        "default": "./lib/actuator/index.js"
       },
       "./hono": {
         "types": "./src/hono/index.ts",
         "default": "./lib/hono/index.js"
       },
+      "./mikro-orm": {
+        "types": "./src/mikro-orm/index.ts",
+        "default": "./lib/mikro-orm/index.js"
+      },
+      "./nats": {
+        "types": "./src/nats/index.ts",
+        "default": "./lib/nats/index.js"
+      },
       "./scripts/esbuild": {
         "types": "./src/scripts/esbuild/index.ts",
         "default": "./lib/scripts/esbuild/index.js"
+      },
+      "./service": {
+        "types": "./src/service/index.ts",
+        "default": "./lib/service/index.js"
       },
       "./package.json": "./package.json"
     }

@@ -1,4 +1,4 @@
-export { NatsModule, InjectNatsClient, NATS_CONNECTION } from './nats.module';
+export { NatsModule, InjectNatsClient, NATS_CONNECTION } from './NatsModule';
 
 export * from './service';
 

@@ -1,6 +1,5 @@
 import type { EntityManager, IDatabaseDriver } from '@mikro-orm/core';
-import { MikroORM, RequestContext } from '@mikro-orm/core';
-import { type TransactionOptions } from '@mikro-orm/core/enums';
+import { MikroORM, RequestContext, type TransactionOptions } from '@mikro-orm/core';
 import { type MaybePromise } from '@wener/utils';
 import { getContext } from '../context';
 

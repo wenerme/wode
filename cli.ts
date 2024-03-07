@@ -41,14 +41,16 @@ function normalizePackageJson(pkg: any) {
 
 function map(obj: any, fn: (v: any, k: string) => any) {
   const all = Object.entries(obj).map(([k, v]) => [k, fn(v, k)] as [string, any]);
-  all.sort(([a], [b]) => {
-    if (a === 'package.json') {
-      return -1;
-    }
-    if (b === 'package.json') {
-      return 1;
-    }
-    return a.localeCompare(b);
-  });
+  all.sort(([a], [b]) => sort(a, b));
   return Object.fromEntries(all);
+}
+
+function sort(a: string, b: string) {
+  if (a.endsWith('/package.json')) {
+    return 1;
+  }
+  if (b.endsWith('/package.json')) {
+    return -1;
+  }
+  return a.localeCompare(b);
 }
