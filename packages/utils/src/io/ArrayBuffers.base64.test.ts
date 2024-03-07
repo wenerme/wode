@@ -60,3 +60,27 @@ test('base64: high byte', function () {
   const highByte = ArrayBuffers.from([128]);
   assert.deepEqual(ArrayBuffers.alloc(1, ArrayBuffers.toString(highByte, 'base64'), 'base64'), highByte);
 });
+
+test('fromBase64', () => {
+  const text = 'aoeu';
+  const buf = ArrayBuffers.from(text, 'utf8', Uint8Array);
+  expect(ArrayBuffers.fromBase64(ArrayBuffers.toBase64(buf))).toEqual(buf);
+});
+
+test('fromHex', () => {
+  const text = 'aoeu';
+  const buf = ArrayBuffers.from(text, 'utf8', Uint8Array);
+  expect(ArrayBuffers.fromHex(ArrayBuffers.toHex(buf))).toEqual(buf);
+});
+
+test('toHex', () => {
+  const text = 'aoeu';
+  const buf = ArrayBuffers.from(text, 'utf8', Uint8Array);
+  expect(ArrayBuffers.toHex(buf)).toEqual('616f6575');
+});
+
+test('toBase64', () => {
+  const text = 'aoeu';
+  const buf = ArrayBuffers.from(text, 'utf8', Uint8Array);
+  expect(ArrayBuffers.toBase64(buf)).toEqual('YW9ldQ==');
+});

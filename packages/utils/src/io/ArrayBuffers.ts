@@ -5,6 +5,9 @@ import { isBuffer } from './isBuffer';
 
 /**
  * Various utils to work with {@link ArrayBuffer}
+ *
+ * @see https://github.com/tc39/proposal-arraybuffer-base64
+ * @see https://github.com/tc39/proposal-resizablearraybuffer
  */
 export interface ArrayBuffers {
   /**
@@ -48,10 +51,26 @@ export interface ArrayBuffers {
    */
   from(v: string | BufferSource, encoding?: ToStringEncoding): ArrayBuffer;
 
+  from<C extends ArrayBufferViewConstructor<unknown>>(
+    v: string | BufferSource,
+    encoding: ToStringEncoding,
+    TypedArray: C,
+  ): C;
+
   /**
    * concat the given {@link BufferSource} to a new {@link ArrayBuffer}
    */
   concat(buffers: Array<BufferSource>, result?: ArrayBuffer, offset?: number): ArrayBuffer;
+
+  fromBase64(v: string): Uint8Array;
+
+  fromHex(v: string): Uint8Array;
+
+  toBase64(v: BufferSource): string;
+
+  toHex(v: BufferSource): string;
+
+  resize(v: ArrayBuffer, newByteLength: number): ArrayBuffer;
 }
 
 type ToStringEncoding =
@@ -87,6 +106,67 @@ export class ArrayBuffers {
 
   static isArrayBuffer = (v: any): v is ArrayBuffer => {
     return v instanceof ArrayBuffer;
+  };
+
+  static toArrayBuffer(v: BufferSource): ArrayBuffer {
+    return v instanceof ArrayBuffer ? v : (v.buffer as ArrayBuffer);
+  }
+
+  static toUint8Array(v: BufferSource) {
+    return ArrayBuffers.asView(Uint8Array, v);
+  }
+
+  static toBase64 = (v: BufferSource) => {
+    if ('toBase64' in Uint8Array.prototype) {
+      return this.toUint8Array(v).toBase64();
+    }
+
+    if (ArrayBuffers.isNativeBufferAllowed()) {
+      return Buffer.from(ArrayBuffers.asView(Uint8Array, v)).toString('base64');
+    }
+
+    return encodeArrayBufferToBase64(this.toArrayBuffer(v));
+  };
+
+  static toHex = (v: BufferSource) => {
+    if ('toHex' in Uint8Array.prototype) {
+      return this.toUint8Array(v).toHex();
+    }
+    if (ArrayBuffers.isNativeBufferAllowed()) {
+      return Buffer.from(ArrayBuffers.asView(Uint8Array, v)).toString('hex');
+    }
+    return ArrayBuffers.toString(v, 'hex');
+  };
+
+  static fromBase64 = (v: string) => {
+    if ('fromBase64' in Uint8Array) {
+      return Uint8Array.fromBase64(v);
+    }
+    if (ArrayBuffers.isNativeBufferAllowed()) {
+      return Buffer.from(v, 'base64');
+    }
+    return this.toUint8Array(decodeBase64ToArrayBuffer(v));
+  };
+
+  static fromHex = (v: string) => {
+    if ('fromHex' in Uint8Array) {
+      return Uint8Array.fromHex(v);
+    }
+    return this.toUint8Array(ArrayBuffers.from(v, 'hex'));
+  };
+
+  static resize = (v: ArrayBuffer, newByteLength: number): ArrayBuffer => {
+    if ('resize' in v) {
+      (v as any).resize(newByteLength);
+      return v;
+    }
+
+    const old = v;
+    const newBuf = new ArrayBuffer(newByteLength);
+    const oldView = new Uint8Array(old);
+    const newView = new Uint8Array(newBuf);
+    newView.set(oldView);
+    return newBuf;
   };
 
   static slice = (o: TypedArray, start?: number, end?: number) => {
@@ -195,7 +275,11 @@ export class ArrayBuffers {
   static from = (
     v: string | BufferSource | ArrayLike<number> | Iterable<number>,
     encoding: ToStringEncoding = 'utf8',
-  ): BufferSource => {
+    view?: any,
+  ): any => {
+    if (view) {
+      return this.asView(view, this.from(v, encoding));
+    }
     if (!v) {
       return new ArrayBuffer(0);
     }
@@ -212,8 +296,8 @@ export class ArrayBuffers {
         case 'base64':
           // replaceAll need higher version of nodejs
           return decodeBase64ToArrayBuffer(v.replace(/[^0-9a-zA-Z=+/_]/g, ''));
-        // error in nodejs 18
-        // return Uint8Array.from(atob(v.replace(/[^0-9a-zA-Z=+/_ \r\n]/g, '')), (c) => c.charCodeAt(0));
+        case 'hex':
+          return new Uint8Array(v.match(/.{1,2}/g)!.map((byte) => parseInt(byte, 16))).buffer;
         default:
           throw new Error(`[ArrayBuffers.from] Unknown encoding: ${encoding}`);
       }
@@ -303,3 +387,21 @@ const hexLookupTable = (function () {
   }
   return table;
 })();
+
+declare global {
+  interface ArrayBuffer {
+    // resize(newByteLength: number): void;
+  }
+
+  interface Uint8Array {
+    toBase64(): string;
+
+    toHex(): string;
+  }
+
+  interface Uint8ArrayConstructor {
+    fromBase64(v: string): Uint8Array;
+
+    fromHex(v: string): Uint8Array;
+  }
+}
