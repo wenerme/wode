@@ -3,9 +3,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { StandardBaseEntity } from '../../entity/base/StandardBaseEntity';
 
 @Injectable()
-export class EntityEventSubscriber<T extends StandardBaseEntity<any> = StandardBaseEntity<any>>
-  implements EventSubscriber<T>
-{
+export class EntityEventSubscriber<T extends StandardBaseEntity> implements EventSubscriber<T> {
   private readonly log = new Logger(this.constructor.name);
 
   readonly stats = {

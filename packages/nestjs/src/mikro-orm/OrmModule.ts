@@ -25,7 +25,7 @@ export class OrmModule {
       onConfig?: (config: Options, ...args: any[]) => MaybePromise<void>;
     },
   ) {
-    return createLazyPromise(() => {
+    return createLazyPromise(async () => {
       const { onConfig, useFactory, ...rest } = opts;
 
       let module = MikroOrmModule.forRootAsync({
@@ -49,27 +49,9 @@ export class OrmModule {
   }
 
   static forRoot(opts: OrmModuleOptions) {
-    return createLazyPromise(() => {
-      const { onConfig, ...rest } = opts;
-
-      // forRootAsync will create EntityManager immediately
-      let module = MikroOrmModule.forRootAsync({
-        useFactory: () => {
-          let config = createMikroOrmConfig({
-            entities: [],
-            ...getMikroOrmConfig(),
-            ...rest,
-          }) as Options;
-          // dedup
-          config.entities = Array.from(new Set(config.entities)).filter(Boolean);
-          onConfig?.(config);
-          return config;
-        },
-        inject: [],
-      });
-
-      setup(module);
-      return module;
+    return this.forRootAsync({
+      onConfig: opts.onConfig,
+      useFactory: () => createMikroOrmConfig(opts),
     });
   }
 
@@ -82,6 +64,7 @@ export class OrmModule {
 }
 
 function setup(module: DynamicModule) {
+  // const module = (dm.imports?.[0] || dm) as DynamicModule;
   module.global ??= true;
   module.exports ||= [];
   module.providers ||= [];

@@ -1,12 +1,12 @@
 import React, { useEffect, useRef } from 'react';
-import { Menubar } from '@src/components/TipTapWord/Menubar/Menubar';
-import { Statusbar } from '@src/components/TipTapWord/Statusbar/Statusbar';
-import { Toolbar } from '@src/components/TipTapWord/Toolbar/Toolbar';
-import { Viewer } from '@src/components/TipTapWord/Viewer';
-import type { EditorStore } from '@src/components/TipTapWord/useEditorStore';
-import { createEditorStore, EditorStoreProvider, useEditorStoreApi } from '@src/components/TipTapWord/useEditorStore';
 import type { Editor } from '@tiptap/react';
 import { EditorContent } from '@tiptap/react';
+import { Menubar } from '@/components/TipTapWord/Menubar/Menubar';
+import { Statusbar } from '@/components/TipTapWord/Statusbar/Statusbar';
+import { Toolbar } from '@/components/TipTapWord/Toolbar/Toolbar';
+import { Viewer } from '@/components/TipTapWord/Viewer';
+import type { EditorStore } from '@/components/TipTapWord/useEditorStore';
+import { createEditorStore, EditorStoreProvider, useEditorStoreApi } from '@/components/TipTapWord/useEditorStore';
 
 const EditorStoreConnector: React.FC<Partial<EditorStore>> = ({ editor, editorDomRef }) => {
   const api = useEditorStoreApi();

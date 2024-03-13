@@ -39,6 +39,7 @@ PKG_ROOT ?= $(shell pnpm node -e 'process.stdout.write(path.resolve(__dirname))'
 -include $(REPO_ROOT)/local.mk
 -include $(REPO_ROOT)/ignored.mk
 -include $(PKG_ROOT)/package.mk
+-include $(PKG_ROOT)/ignored.mk
 
 info:
 	@echo "APP_NAME:            $(APP_NAME)"

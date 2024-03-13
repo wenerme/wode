@@ -18,28 +18,10 @@
     "keepClassNames": true,
     "baseUrl": ".",
     "paths": {
-         "@src/*": [
-           "src/*"
-         ],
-     "@/components/*": [
-       "src/components/*"
-     ],
-     "@/server/*": [
-       "src/server/*"
-     ],
-     "@/client/*": [
-       "src/client/*"
-     ],
-     "@/modules/*": [
-       "src/modules/*"
-     ],
-     "@/app/*": [
-       "src/app/*"
-     ],
-     "@/icons": [
-       "src/icons"
-     ]
-   }
+      "@/*": [
+        "src/*"
+      ]
+    }
   },
   "minify": false
 }

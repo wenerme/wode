@@ -1,4 +1,4 @@
-import { CompareType, Opcode } from '@src/poc/bbvm/types';
+import { CompareType, Opcode } from '@/poc/bbvm/types';
 
 export function getOpcodeLength(op: Opcode) {
   switch (op) {

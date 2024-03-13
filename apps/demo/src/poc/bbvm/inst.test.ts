@@ -1,12 +1,12 @@
-import { BasicVm } from '@src/poc/bbvm/BBVM';
-import { compile } from '@src/poc/bbvm/bbasm/bbasm';
-import { hexdump } from '@src/poc/bbvm/bbasm/hexdump';
-import { parse } from '@src/poc/bbvm/bbasm/parser';
-import { formatInstruction } from '@src/poc/bbvm/format';
-import { marshalInstruction } from '@src/poc/bbvm/marshalInstruction';
-import { readInstruction } from '@src/poc/bbvm/readInstruction';
-import { getOpcodeLength } from '@src/poc/bbvm/rt';
 import { test, expect } from 'vitest';
+import { BasicVm } from '@/poc/bbvm/BBVM';
+import { compile } from '@/poc/bbvm/bbasm/bbasm';
+import { hexdump } from '@/poc/bbvm/bbasm/hexdump';
+import { parse } from '@/poc/bbvm/bbasm/parser';
+import { formatInstruction } from '@/poc/bbvm/format';
+import { marshalInstruction } from '@/poc/bbvm/marshalInstruction';
+import { readInstruction } from '@/poc/bbvm/readInstruction';
+import { getOpcodeLength } from '@/poc/bbvm/rt';
 
 test('vm', async () => {
   const out = parse(

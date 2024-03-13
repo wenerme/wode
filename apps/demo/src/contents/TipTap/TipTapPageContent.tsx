@@ -16,19 +16,19 @@ import {
   MdTagFaces,
   MdToc,
 } from 'react-icons/md';
-import type { CommandListRef } from '@src/components/TipTapWord/CommandList';
-import { CommandList } from '@src/components/TipTapWord/CommandList';
-import { CharacterCounter } from '@src/components/TipTapWord/Statusbar/CharacterCounter';
-import { DataViewer } from '@src/components/TipTapWord/Statusbar/DataViewer';
-import { TipTapWord } from '@src/components/TipTapWord/TipTapWord';
-import type { CommandSuggestionItem } from '@src/components/TipTapWord/extensions/commands';
-import { CommandExtension } from '@src/components/TipTapWord/extensions/commands';
 import { Placeholder } from '@tiptap/extension-placeholder';
 import { ReactRenderer } from '@tiptap/react';
 import { ColorHighlighterExtension, TipTapWordStarterKit } from '@wener/tiptap';
 import type { Instance } from 'tippy.js';
 import tippy from 'tippy.js';
 import { useImmer } from 'use-immer';
+import type { CommandListRef } from '@/components/TipTapWord/CommandList';
+import { CommandList } from '@/components/TipTapWord/CommandList';
+import { CharacterCounter } from '@/components/TipTapWord/Statusbar/CharacterCounter';
+import { DataViewer } from '@/components/TipTapWord/Statusbar/DataViewer';
+import { TipTapWord } from '@/components/TipTapWord/TipTapWord';
+import type { CommandSuggestionItem } from '@/components/TipTapWord/extensions/commands';
+import { CommandExtension } from '@/components/TipTapWord/extensions/commands';
 
 function useExtensions() {
   return [

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { SimpleFileInput } from '@src/components/TipTapWord/components/SimpleFileInput';
 import { useAsyncEffect } from '@wener/reaction';
 import classNames from 'classnames';
 import { convertToHtml, extractRawText } from 'mammoth';
@@ -7,6 +6,7 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { SimpleFileInput } from '@/components/TipTapWord/components/SimpleFileInput';
 
 const DemoMenu = () => {
   const [file, setFile] = useState<File>();

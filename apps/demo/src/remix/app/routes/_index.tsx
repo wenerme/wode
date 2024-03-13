@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { MetaFunction } from '@remix-run/node';
 import { Form, Link, useNavigate, useSearchParams } from '@remix-run/react';
-import { ApkiHeader } from '@src/remix/app/client/package/ApkiHeader';
+import { ApkiHeader } from '@/remix/app/client/package/ApkiHeader';
 
 export const meta: MetaFunction = () => {
   return [{ title: 'Alpine Package Index' }, { name: 'description', content: 'Welcome to apk index' }];

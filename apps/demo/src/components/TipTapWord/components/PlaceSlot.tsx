@@ -1,5 +1,5 @@
 import React, { memo, useCallback } from 'react';
-import { useEditorStore } from '@src/components/TipTapWord/useEditorStore';
+import { useEditorStore } from '@/components/TipTapWord/useEditorStore';
 
 export const PlaceSlot = memo<{ slot: string; placement?: string }>(({ slot, placement }) => {
   const children = useEditorStore(

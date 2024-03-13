@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { HiMagnifyingGlass, HiOutlineXCircle } from 'react-icons/hi2';
-import { ChinaCitizenIdDescription } from '@src/components/cn/ChinaCitizenIdDescription';
-import { ParserCard } from '@src/components/cn/ParserCard';
-import { Parsers } from '@src/components/cn/Parsers';
-import { UnifiedSocialCreditIdDescription } from '@src/components/cn/UnifiedSocialCreditIdDescription';
 import { isDefined } from '@wener/utils';
 import { useImmer } from 'use-immer';
+import { ChinaCitizenIdDescription } from '@/components/cn/ChinaCitizenIdDescription';
+import { ParserCard } from '@/components/cn/ParserCard';
+import { Parsers } from '@/components/cn/Parsers';
+import { UnifiedSocialCreditIdDescription } from '@/components/cn/UnifiedSocialCreditIdDescription';
 import type { ParseResult } from './parseIt';
 import { tryParse } from './parseIt';
 

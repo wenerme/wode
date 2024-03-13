@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ActionFunctionArgs, LoaderFunctionArgs, json } from '@remix-run/node';
 import { Form, useActionData, useLoaderData, useNavigate, useSearchParams } from '@remix-run/react';
-import { ApkiHeader } from '@src/remix/app/client/package/ApkiHeader';
+import { ApkiHeader } from '@/remix/app/client/package/ApkiHeader';
 
 // export async function action({ request }: ActionFunctionArgs) {
 //   const { q: search, p: page } = Object.fromEntries(new URL((request as Request).url).searchParams.entries());

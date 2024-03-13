@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { MdRefresh } from 'react-icons/md';
-import { nanoid } from '@src/shims/nanoid';
-import { ulid } from '@src/shims/ulid';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { useImmer } from 'use-immer';
+import { nanoid } from '@/shims/nanoid';
+import { ulid } from '@/shims/ulid';
 
 interface Spec {
   title: string;

@@ -25,7 +25,7 @@ export const UserAgentContent = () => {
   const randomUserAgent = async () => {
     setRandomLoading(true);
     try {
-      const { getRandom } = await import('@src/shims/random-useragent');
+      const { getRandom } = await import('@/shims/random-useragent');
       update({ ...state, ua: getRandom() || state.ua });
     } catch (e) {
       console.error(e);

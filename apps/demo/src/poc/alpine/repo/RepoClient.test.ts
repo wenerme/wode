@@ -1,7 +1,7 @@
-import { RepoClient } from '@src/poc/alpine/repo/RepoClient';
-import { getMirrorStatus } from '@src/poc/alpine/repo/getMirrorStatus';
-import { parseApkIndexArchive } from '@src/poc/alpine/repo/parseApkIndexArchive';
 import { test } from 'vitest';
+import { RepoClient } from '@/poc/alpine/repo/RepoClient';
+import { getMirrorStatus } from '@/poc/alpine/repo/getMirrorStatus';
+import { parseApkIndexArchive } from '@/poc/alpine/repo/parseApkIndexArchive';
 
 test(
   'mirror details',

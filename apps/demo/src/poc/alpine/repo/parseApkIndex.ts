@@ -1,4 +1,4 @@
-import { PackageIndexEntry } from '@src/poc/alpine/repo/types';
+import { PackageIndexEntry } from '@/poc/alpine/repo/types';
 
 const Short2Long: Record<string, keyof PackageIndexEntry> = {
   C: 'checksum',

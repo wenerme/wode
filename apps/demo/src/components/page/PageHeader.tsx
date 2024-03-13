@@ -1,7 +1,7 @@
 import React from 'react';
-import { NavLinks } from '@src/components/page/const';
 import classNames from 'classnames';
 import Link from 'next/link';
+import { NavLinks } from '@/components/page/const';
 import { ThemeSelectorButton } from '../../../../../packages/console/daisy';
 
 interface MenuSpec {
