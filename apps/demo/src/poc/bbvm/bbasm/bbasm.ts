@@ -1,6 +1,6 @@
-import { marshalInstruction } from '@src/poc/bbvm/marshalInstruction';
-import { getOpcodeLength } from '@src/poc/bbvm/rt';
-import { Instruction, Opcode } from '@src/poc/bbvm/types';
+import { marshalInstruction } from '@/poc/bbvm/marshalInstruction';
+import { getOpcodeLength } from '@/poc/bbvm/rt';
+import { Instruction, Opcode } from '@/poc/bbvm/types';
 import { parse, ParseOptions } from './parser';
 import { AsmOpCodes, Assembly } from './types';
 

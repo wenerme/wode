@@ -1,7 +1,7 @@
-import { createSchemaBuilder, SchemaBuilderType } from '@src/poc/alpine/graph/createSchemaBuilder';
-import { fetchApkIndex } from '@src/poc/alpine/repo/fetchApkIndex';
 import { getContext } from '@wener/nestjs';
 import { getEntityManager } from '@wener/nestjs/mikro-orm';
+import { createSchemaBuilder, SchemaBuilderType } from '@/poc/alpine/pothos/createSchemaBuilder';
+import { fetchApkIndex } from '@/poc/alpine/repo/fetchApkIndex';
 import { ApkIndexEntity } from './entity/ApkIndexEntity';
 import { ApkIndexService } from './service/ApkIndexService';
 

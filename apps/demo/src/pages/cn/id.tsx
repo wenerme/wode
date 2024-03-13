@@ -1,5 +1,5 @@
-import { ChinaIdInfoPage } from '@src/components/cn/ChinaIdInfoPage';
 import Head from 'next/head';
+import { ChinaIdInfoPage } from '@/components/cn/ChinaIdInfoPage';
 
 const CurrentPage = () => {
   return (

@@ -1,9 +1,9 @@
 import fs from 'node:fs/promises';
 import { Value } from '@sinclair/typebox/value';
-import { GostConfig } from '@src/poc/gost/types';
-import { verifyNetflixProxy } from '@src/poc/netflix/verifyNetflixProxy';
 import YAML from 'yaml';
 import { z } from 'zod';
+import { GostConfig } from '@/poc/gost/types';
+import { verifyNetflixProxy } from '@/poc/netflix/verifyNetflixProxy';
 
 const RunAutoSwitchOptions = z.object({
   gost: z
@@ -48,6 +48,15 @@ export async function runGostAutoSwitch(opts: RunAutoSwitchOptions) {
         'tw178.nordvpn.com:89',
         'tw179.nordvpn.com:89',
         //
+      ],
+    },
+    {
+      addrs: [
+        'us9767.nordvpn.com:89',
+        'us9754.nordvpn.com:89',
+        'us9824.nordvpn.com:89',
+        'us8247.nordvpn.com:89',
+        'us10434.nordvpn.com:89',
       ],
     },
     {

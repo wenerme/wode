@@ -1,5 +1,5 @@
-import { ParsedPackageId, parsePackageId } from '@src/poc/alpine/repo/parsePackageId';
 import { test, expect } from 'vitest';
+import { ParsedPackageId, parsePackageId } from '@/poc/alpine/repo/parsePackageId';
 
 test('parsePackageId', () => {
   for (const [a, b] of [

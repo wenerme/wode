@@ -1,6 +1,6 @@
 import React from 'react';
-import { PageHeader } from '@src/components/page/PageHeader';
 import { ThemeStateReactor } from '@wener/console/daisy';
+import { PageHeader } from '@/components/page/PageHeader';
 
 export const PageLayout: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
   return (

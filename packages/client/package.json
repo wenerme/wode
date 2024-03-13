@@ -99,7 +99,7 @@
     "fast-xml-parser": "^4.3.5",
     "nats.ws": "^1.19.1",
     "openai": "^4.28.4",
-    "undici": "^6.7.0",
+    "undici": "^6.7.1",
     "ws": "^8.16.0"
   },
   "publishConfig": {

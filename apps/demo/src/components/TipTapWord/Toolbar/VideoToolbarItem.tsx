@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { MdVideoLibrary } from 'react-icons/md';
-import { SimpleDialog } from '@src/components/TipTapWord/components/SimpleDialog';
-import { SimpleFileInput } from '@src/components/TipTapWord/components/SimpleFileInput';
-import { useCurrentEditor } from '@src/components/TipTapWord/hooks';
+import { SimpleDialog } from '@/components/TipTapWord/components/SimpleDialog';
+import { SimpleFileInput } from '@/components/TipTapWord/components/SimpleFileInput';
+import { useCurrentEditor } from '@/components/TipTapWord/hooks';
 
 export const VideoToolbarItem: React.FC<{}> = (props) => {
   const [open, setOpen] = useState(false);

@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises';
 import { EntityData } from '@mikro-orm/core';
 import { EntityManager } from '@mikro-orm/postgresql';
+import { getAlpineCacheDir } from '@/poc/alpine/repo/fs';
 import { ApkIndexEntity } from '../entity/ApkIndexEntity';
 import { RepoClient } from './RepoClient';
 import { parseApkIndexArchive } from './parseApkIndexArchive';
@@ -100,8 +101,12 @@ export async function fetchApkIndex({ variants, em, force }: FetchApkIndexOption
     if (!data.content) {
       throw new Error(`content is missing: ${data.path}`);
     }
-    await fs.mkdir(`/tmp/cache/alpine/${data.path}`, { recursive: true });
-    await fs.writeFile(`/tmp/cache/alpine/${data.path}/APKINDEX-${data.description}.txt`, data.content!);
+    if (!data.path) {
+      throw new Error(`path is missing: ${data.id}`);
+    }
+
+    await fs.mkdir(getAlpineCacheDir(data.path), { recursive: true });
+    await fs.writeFile(getAlpineCacheDir(`${data.path}/APKINDEX-${data.description}.txt`), data.content!);
   }
 
   let changedEntities: ApkIndexEntity[] = [];

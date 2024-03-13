@@ -38,16 +38,6 @@ import {
   MdUndo,
 } from 'react-icons/md';
 import { Listbox } from '@headlessui/react';
-import { ImageToolbarItem } from '@src/components/TipTapWord/Toolbar/ImageToolbarItem';
-import { isActive } from '@src/components/TipTapWord/Toolbar/IsActive';
-import { MarkColorToolbarItem } from '@src/components/TipTapWord/Toolbar/MarkColorToolbarItem';
-import { TextColorToolbarItem } from '@src/components/TipTapWord/Toolbar/TextColorToolbarItem';
-import { VideoToolbarItem } from '@src/components/TipTapWord/Toolbar/VideoToolbarItem';
-import { FakeInput } from '@src/components/TipTapWord/components/FakeInput';
-import type { MenuSpec } from '@src/components/TipTapWord/components/MenuToolItem';
-import { MenuToolItem } from '@src/components/TipTapWord/components/MenuToolItem';
-import { useEditorDerivedState } from '@src/components/TipTapWord/hooks';
-import { useEditorStore, useEditorStoreApi } from '@src/components/TipTapWord/useEditorStore';
 import type {} from '@tiptap/core';
 import type {} from '@tiptap/extension-blockquote';
 import type {} from '@tiptap/extension-bullet-list';
@@ -63,6 +53,16 @@ import type { ChainedCommands, Editor } from '@tiptap/react';
 import type { Argument } from 'classnames';
 import classNames from 'classnames';
 import styled from 'styled-components';
+import { ImageToolbarItem } from '@/components/TipTapWord/Toolbar/ImageToolbarItem';
+import { isActive } from '@/components/TipTapWord/Toolbar/IsActive';
+import { MarkColorToolbarItem } from '@/components/TipTapWord/Toolbar/MarkColorToolbarItem';
+import { TextColorToolbarItem } from '@/components/TipTapWord/Toolbar/TextColorToolbarItem';
+import { VideoToolbarItem } from '@/components/TipTapWord/Toolbar/VideoToolbarItem';
+import { FakeInput } from '@/components/TipTapWord/components/FakeInput';
+import type { MenuSpec } from '@/components/TipTapWord/components/MenuToolItem';
+import { MenuToolItem } from '@/components/TipTapWord/components/MenuToolItem';
+import { useEditorDerivedState } from '@/components/TipTapWord/hooks';
+import { useEditorStore, useEditorStoreApi } from '@/components/TipTapWord/useEditorStore';
 
 const FontFamilySet: OptionItem[] = [
   { label: '默认字体', value: '' },

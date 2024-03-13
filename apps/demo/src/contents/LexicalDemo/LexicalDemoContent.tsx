@@ -1,4 +1,4 @@
-import { DemoEditor } from '@src/contents/LexicalDemo/DemoEditor';
+import { DemoEditor } from '@/contents/LexicalDemo/DemoEditor';
 import styles from './Lexical.module.css';
 
 export const LexicalDemoContent = () => {

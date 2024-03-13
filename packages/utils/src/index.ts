@@ -71,7 +71,7 @@ export { isBuffer } from './io/isBuffer';
 export { isTransferable } from './io/isTransferable';
 export { ArrayBuffers } from './io/ArrayBuffers';
 export { Buffer } from './io/Buffer';
-export { parseDataUri } from './io/parseDataUri';
+export { parseDataUri, type ParsedDataUri } from './io/parseDataUri';
 export type { AbstractEncoding } from './io/AbstractEncoding';
 
 // browser

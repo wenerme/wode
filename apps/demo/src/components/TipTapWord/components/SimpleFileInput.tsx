@@ -1,8 +1,8 @@
 import React from 'react';
 import { MdUploadFile } from 'react-icons/md';
-import { useFileInput } from '@src/hooks/useFileInput';
 import { formatBytes } from '@wener/utils';
 import classNames from 'classnames';
+import { useFileInput } from '@/hooks/useFileInput';
 
 export const SimpleFileInput: React.FC<{
   src?: string;

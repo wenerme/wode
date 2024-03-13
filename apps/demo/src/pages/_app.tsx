@@ -1,9 +1,9 @@
 import React from 'react';
-import { PageHead } from '@src/components/page/PageHead';
-import { PageLayout } from '@src/components/page/PageLayout';
 import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import NextNProgress from 'nextjs-progressbar';
+import { PageHead } from '@/components/page/PageHead';
+import { PageLayout } from '@/components/page/PageLayout';
 import '../styles/globals.css';
 
 function App({ Component, pageProps }: AppPropsWithLayout) {

@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
-import { HSLToRGB } from '@src/utils/hsl';
 import { DaisyThemeDemo, ThemeListSelector, useThemeState } from '@wener/console/daisy';
 import clsx from 'clsx';
 import { useImmer } from 'use-immer';
 import { useSnapshot } from 'valtio';
+import { HSLToRGB } from '@/utils/hsl';
 
 const Page = () => {
   const state = useThemeState();

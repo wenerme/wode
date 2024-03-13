@@ -1,5 +1,5 @@
 import { Simulate } from 'react-dom/test-utils';
-import { BasicVm } from '@src/poc/bbvm/BBVM';
+import { BasicVm } from '@/poc/bbvm/BBVM';
 import { Float32, Handler, Int32, Runtime } from './types';
 
 export class BaseRuntime {

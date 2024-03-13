@@ -1,7 +1,7 @@
 import { OpenAPIHono } from '@hono/zod-openapi';
-import { createHelperRoute } from '@src/poc/alpine/createHelperRoute';
 import { testClient } from 'hono/testing';
 import { expect, test } from 'vitest';
+import { createHelperRoute } from '@/poc/alpine/createHelperRoute';
 
 test('hono', async () => {
   const app = new OpenAPIHono()

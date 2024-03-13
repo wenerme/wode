@@ -12,9 +12,9 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
-    "@mikro-orm/core": "^6.1.8",
+    "@mikro-orm/core": "^6.1.9",
     "@mikro-orm/nestjs": "^5.2.3",
-    "@mikro-orm/postgresql": "^6.1.8",
+    "@mikro-orm/postgresql": "^6.1.9",
     "@nestjs/common": "^10.3.3",
     "@nestjs/core": "^10.3.3",
     "@wener/console": "workspace:^",
@@ -23,13 +23,13 @@
     "@wener/server": "workspace:^",
     "@wener/utils": "workspace:^",
     "cors": "^2.8.5",
-    "immer": "^10.0.3",
-    "next": "^14.1.2",
-    "next-auth": "^4.24.6",
+    "immer": "^10.0.4",
+    "next": "^14.1.3",
+    "next-auth": "^4.24.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.0.1",
-    "react-router-dom": "6.22.2",
+    "react-router-dom": "6.22.3",
     "use-immer": "^0.9.0",
     "valtio": "^1.13.2",
     "zod": "^3.22.4",
@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
-    "@types/react": "^18.2.63",
-    "@types/react-dom": "^18.2.20"
+    "@types/react": "^18.2.65",
+    "@types/react-dom": "^18.2.21"
   }
 }
