@@ -4,6 +4,7 @@ import { getContext } from '@wener/nestjs';
 import { getEntityManager } from '@wener/nestjs/mikro-orm';
 import { Constructor } from '@wener/utils';
 import { GraphQLSchema } from 'graphql';
+import { GraphQLDateTime } from 'graphql-scalars';
 import {
   Args,
   ArgsType,
@@ -201,7 +202,7 @@ export async function createTypeGraphSchema() {
   let schema = await buildSchema({
     resolvers: resolvers,
     container: new NestContainer(),
-    scalarsMap: [{ type: Date, scalar: GraphQLTimestamp }],
+    scalarsMap: [{ type: Date, scalar: GraphQLDateTime }],
   });
 
   return {

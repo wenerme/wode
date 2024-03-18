@@ -1,7 +1,7 @@
 import React, { createContext, ReactNode, useCallback, useContext } from 'react';
 import type { ArrayPath, Path, PathValue } from 'react-hook-form';
 import { get, set } from '@wener/utils';
-import { produce } from 'immer';
+import { create as produce } from 'mutative';
 import { createStore, StoreApi, useStore } from 'zustand';
 
 const DefaultStore = createStore(() => {
@@ -18,9 +18,10 @@ export const ContextStoreProvider: React.FC<{ value: StoreApi<any>; children?: R
   return <Context.Provider value={value}>{children}</Context.Provider>;
 };
 
-export function useContextStore<O extends Record<string, any>>(): ModuleContextHooks<O> {
+export function useContextStore<O extends Record<string, any>>(): UseContextStoreReturn<O> {
   const store = useModuleStore();
   return {
+    store,
     set(path: string, value: any) {
       store.setState(
         produce((s: any) => {
@@ -40,7 +41,9 @@ export function useContextStore<O extends Record<string, any>>(): ModuleContextH
   };
 }
 
-export interface ModuleContextHooks<O extends Record<string, any> = Record<string, any>> {
+export interface UseContextStoreReturn<O extends Record<string, any> = Record<string, any>> {
+  store: StoreApi<any>;
+
   set<P extends Path<O> | ArrayPath<O>, V extends PathValue<O, P>>(type: P, payload: V): void;
 
   get<P extends Path<O> | ArrayPath<O>, V extends PathValue<O, P>>(path: P): V;

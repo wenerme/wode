@@ -8,9 +8,10 @@ import { createTscPlugin } from './createTscPlugin';
 
 export async function bundle(server: string, opts?: BuildOptions) {
   let entry: string | undefined;
+  let out: string | undefined;
   let name = server;
   if (server.includes(':')) {
-    [name, entry] = server.split(':');
+    [name, entry, out] = server.split(':');
   } else {
     const candidates = [server, `./src/apps/${server}/main.bun.ts`, `./src/apps/${server}/main.ts`];
     entry = candidates.find((v) => {
@@ -33,6 +34,9 @@ export async function bundle(server: string, opts?: BuildOptions) {
     }
     name ||= 'server';
   }
+  if (!out) {
+    out = `dist/apps/${name}/main.mjs`;
+  }
   const result = await esbuild.build({
     //entryPoints: [`./dist/out/apps/${server}/main.js`], // for swc handle decorator
     entryPoints: [entry],
@@ -47,7 +51,7 @@ export async function bundle(server: string, opts?: BuildOptions) {
     },
     keepNames: true,
     minifySyntax: true,
-    outfile: `dist/apps/${name}/main.mjs`,
+    outfile: out,
     format: 'esm',
     platform: 'node',
     charset: 'utf8',

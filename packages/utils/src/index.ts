@@ -12,6 +12,7 @@ export { arrayFromAsync } from './arrays/arrayFromAsync';
 export { get } from './objects/get';
 export { set } from './objects/set';
 export { parseObjectPath } from './objects/parseObjectPath';
+export { computeIfAbsent } from './objects/computeIfAbsent';
 export { merge, type MergeOptions } from './objects/merge';
 
 // async

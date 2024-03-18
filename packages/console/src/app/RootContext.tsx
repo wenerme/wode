@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { Toaster } from 'react-hot-toast';
 import dayjs from 'dayjs';
 import 'dayjs/locale/en';
@@ -14,7 +15,9 @@ import isToday from 'dayjs/plugin/isToday';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
+import { ThemeStateReactor } from '../daisy';
 import { useExposeDebug } from '../hooks';
+import { WebUpdateNotification } from './WebUpdateNotification';
 
 let init = false;
 
@@ -22,12 +25,13 @@ export const RootContext = () => {
   useExposeDebug({ dayjs });
   if (!init) {
     init = true;
-    console.log(`[RootContext] init`);
     setupDayjs();
   }
   return (
     <>
       <Toaster />
+      <ThemeStateReactor />
+      <WebUpdateNotification />
     </>
   );
 };

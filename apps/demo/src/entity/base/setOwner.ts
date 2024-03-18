@@ -1,5 +1,5 @@
 import { classOf } from '@wener/utils';
-import { parseTypeTag } from '../service/parseTypeTag';
+import { parseTypeId } from '../service/parseTypeId';
 import { StandardBaseEntity } from './StandardBaseEntity';
 
 export function setOwner<
@@ -14,7 +14,7 @@ export function setOwner<
     return out;
   }
   if (typeof entity === 'string') {
-    const [tag] = parseTypeTag(entity);
+    const [tag] = parseTypeId(entity);
     switch (tag) {
       case 'usr':
         out.ownerType = 'User';

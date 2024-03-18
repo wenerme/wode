@@ -1,6 +1,6 @@
 import type { QueryBuilder } from '@mikro-orm/postgresql';
 import { isULID, isUUID } from '@wener/utils';
-import { parseTypeTag } from './parseTypeTag';
+import { parseTypeId } from './parseTypeId';
 import { ResolveEntityRequest } from './types';
 
 function normalizeResolveQuery(output: ResolveEntityRequest) {
@@ -67,6 +67,6 @@ export function isPrimaryKey(s?: string): s is string {
   if (!s) {
     return false;
   }
-  const [type, id] = parseTypeTag(s);
+  const [type, id] = parseTypeId(s);
   return !!(type && (isULID(id) || isUUID(id)));
 }
