@@ -1,13 +1,16 @@
 import React, { ReactNode } from 'react';
 import { useForm } from 'react-hook-form';
+import { BiLogoChrome } from 'react-icons/bi';
 import { CiLock, CiUser } from 'react-icons/ci';
+import { HiMiniLanguage } from 'react-icons/hi2';
 import { PiBuildingsThin } from 'react-icons/pi';
+import { useMounted } from '@wener/reaction';
 import { clsx } from 'clsx';
-import { useContextStore } from '../../hooks';
-import { WechatBrandIcon, WecomBrandIcon } from '../../icons';
-import { TODO } from '../../toast';
-import { SitePreferences } from '../prefs';
-import { SiteLogo } from '../site/SiteLogo';
+import { useContextStore } from '../../../hooks';
+import { WechatBrandIcon, WecomBrandIcon } from '../../../icons';
+import { TODO } from '../../../toast';
+import { SitePreferences } from '../../prefs';
+import { SiteLogo } from '../../site/SiteLogo';
 
 export type LoginFormData = {
   org?: string;
@@ -17,7 +20,7 @@ export type LoginFormData = {
   remember: boolean;
 };
 
-export const LoginPage: React.FC<{
+export interface LoginPageProps {
   onSubmit?: (data: LoginFormData) => void;
   children?: ReactNode;
   defaultValues?: Partial<LoginFormData>;
@@ -25,7 +28,33 @@ export const LoginPage: React.FC<{
   showOrg?: boolean;
   showRegistry?: boolean;
   showoff?: ReactNode;
-}> = ({ onSubmit = () => undefined, showoff, children, defaultValues, showOrg, showRegistry, title }) => {
+
+  socials?: [
+    {
+      name: string;
+      icon?: ReactNode;
+      onClick: () => void;
+    },
+  ];
+
+  footer?: {
+    policyUrl?: string;
+    termsUrl?: string;
+    beian?: string;
+  };
+}
+
+export const LoginPage: React.FC<LoginPageProps> = ({
+  onSubmit = () => undefined,
+  showoff,
+  children,
+  defaultValues,
+  showOrg,
+  showRegistry,
+  title,
+  socials,
+  footer: { policyUrl, termsUrl, beian } = {},
+}) => {
   const methods = useForm<LoginFormData>({
     defaultValues,
   });
@@ -39,7 +68,7 @@ export const LoginPage: React.FC<{
   return (
     <>
       <div className='flex min-h-full flex-1'>
-        <div className='flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24'>
+        <div className='flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24 relative'>
           <div className='mx-auto w-full max-w-sm lg:w-96'>
             <div>
               <div className={'flex items-center gap-2'}>
@@ -121,7 +150,7 @@ export const LoginPage: React.FC<{
                     <div className='text-sm leading-6'>
                       <a
                         href='#'
-                        onClick={() => TODO()}
+                        onClick={() => TODO('忘了密码')}
                         className='font-semibold text-indigo-600 hover:text-indigo-500'
                       >
                         忘了密码？
@@ -142,11 +171,39 @@ export const LoginPage: React.FC<{
                 </form>
               </div>
 
-              {/*<SocialLogin />*/}
+              {socials && <SocialLogin />}
 
               {children}
             </div>
           </div>
+
+          <footer className={'absolute bottom-0 pb-2 flex justify-between items-center'}>
+            <div className='text-center text-sm leading-6 opacity-80'>
+              {joinNode(
+                [
+                  <span>© {new Date().getFullYear()}</span>,
+                  policyUrl && (
+                    <a href={policyUrl} target={'_blank'} className='hover:underline'>
+                      隐私政策
+                    </a>
+                  ),
+                  termsUrl && (
+                    <a href={termsUrl} target={'_blank'} className='hover:underline'>
+                      条款
+                    </a>
+                  ),
+                  beian && (
+                    <a href={'https://beian.miit.gov.cn/'} target={'_blank'} className='hover:underline'>
+                      {beian}
+                    </a>
+                  ),
+                ],
+                <span className='mx-1'>•</span>,
+              )}
+            </div>
+            <span className={'mr-2'}></span>
+            <UserAgentSummary />
+          </footer>
         </div>
         <div className='relative hidden w-0 flex-1 lg:block'>{showoff}</div>
       </div>
@@ -178,5 +235,46 @@ const SocialLogin = () => {
         </a>
       </div>
     </div>
+  );
+};
+
+function joinNode(nodes: ReactNode[], join: ReactNode) {
+  return nodes.filter(Boolean).map((n, i) => {
+    let last = i <= nodes.length - 1;
+    return (
+      <React.Fragment key={i}>
+        {n}
+        {last || join}
+      </React.Fragment>
+    );
+  });
+}
+
+function MaybeExternalLink({ href, children }: { href: string; children: ReactNode }) {}
+
+const UserAgentSummary = () => {
+  let mounted = useMounted();
+  if (!mounted) {
+    return null;
+  }
+  const { brand, version } = navigator.userAgent.match(/(?<brand>Chrom(e|ium))\/(?<version>[0-9]+)\./)?.groups ?? {};
+  if (!brand) {
+    return <small className={'text-xs text-error opacity-75'}>请使用最新版本的 Chrome 浏览器。</small>;
+  }
+  if (parseInt(version) < 90) {
+    return (
+      <small className={'text-xs text-warning opacity-75'}>
+        当前浏览器版本 {version} 过低，请下载使用新版本浏览器。
+      </small>
+    );
+  }
+  return (
+    <small className={'text-xs opacity-75 flex items-center'}>
+      <BiLogoChrome />
+      {brand} {version}
+      <span className={'mx-1'}></span>
+      <HiMiniLanguage />
+      {navigator.language}
+    </small>
   );
 };

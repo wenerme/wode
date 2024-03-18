@@ -96,10 +96,10 @@
     "@wecom/jssdk": "^1.4.5",
     "crypto-js": "^4.2.0",
     "dayjs": "^1.11.10",
-    "fast-xml-parser": "^4.3.5",
+    "fast-xml-parser": "^4.3.6",
     "nats.ws": "^1.19.1",
-    "openai": "^4.28.4",
-    "undici": "^6.7.1",
+    "openai": "^4.29.1",
+    "undici": "^6.9.0",
     "ws": "^8.16.0"
   },
   "publishConfig": {

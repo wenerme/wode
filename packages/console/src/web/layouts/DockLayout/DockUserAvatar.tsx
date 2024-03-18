@@ -39,14 +39,22 @@ export const DockUserAvatar: React.FC<DockUserAvatarProps> = ({
     <Popover className='relative'>
       {({ open }) => (
         <>
-          <Popover.Button type={'button'} className={clsx('btn btn-circle btn-ghost btn-md p-0', open && 'btn-active')}>
+          <Popover.Button
+            type={'button'}
+            className={clsx(
+              'btn btn-circle btn-ghost btn-sm p-0',
+              'bg-base-200 ring-2 ring-stone-300',
+              'h-10 w-10',
+              open && 'btn-active',
+            )}
+          >
             <div className={clsx('avatar', !avatarUrl && 'placeholder', hasNotification && 'online')}>
               {avatarUrl ? (
                 <div className='w-10 rounded-full'>
                   <img alt={fullName || 'user avatar'} src={avatarUrl} />
                 </div>
               ) : (
-                <div className='w-10 rounded-full bg-neutral-focus text-neutral-content'>{fullName?.slice(0, 1)}</div>
+                <div className='w-10 rounded-full'>{fullName?.slice(0, 1)}</div>
               )}
             </div>
           </Popover.Button>

@@ -12,9 +12,9 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
-    "@mikro-orm/core": "^6.1.9",
+    "@mikro-orm/core": "^6.1.10",
     "@mikro-orm/nestjs": "^5.2.3",
-    "@mikro-orm/postgresql": "^6.1.9",
+    "@mikro-orm/postgresql": "^6.1.10",
     "@nestjs/common": "^10.3.3",
     "@nestjs/core": "^10.3.3",
     "@wener/console": "workspace:^",
@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
-    "@types/react": "^18.2.65",
-    "@types/react-dom": "^18.2.21"
+    "@types/react": "^18.2.66",
+    "@types/react-dom": "^18.2.22"
   }
 }

@@ -13,10 +13,14 @@
     },
     "transform": {
       "legacyDecorator": true,
-      "decoratorMetadata": false
+      "decoratorMetadata": true
     },
-    "keepClassNames": true
+    "keepClassNames": true,
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["@/*"]
+    }
   },
-  "minify": false,
-  "exclude": ["\\.test\\.ts$"]
+  "exclude": ["\\.test\\.tsx?$", "^src/schema/codegen"],
+  "minify": false
 }
