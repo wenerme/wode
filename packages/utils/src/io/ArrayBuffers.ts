@@ -1,5 +1,5 @@
-import { getGlobalThis } from '../isomorphics/getGlobalThis';
 import { classOf } from '../langs/classOf';
+import { getGlobalThis } from '../runtime/getGlobalThis';
 import { decodeBase64ToArrayBuffer, encodeArrayBufferToBase64 } from './base64';
 import { isBuffer } from './isBuffer';
 

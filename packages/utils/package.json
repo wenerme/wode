@@ -12,6 +12,7 @@
   "license": "MIT",
   "exports": {
     ".": "./src/index.ts",
+    "./cn": "./src/cn/index.ts",
     "./schema/typebox": "./src/schema/typebox/index.ts",
     "./schema/typebox/gen": "./src/schema/typebox/gen/index.ts",
     "./server": "./src/server/index.ts",

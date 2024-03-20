@@ -1,5 +1,5 @@
 import { type FetchLike } from '../../fetch';
-import { getGlobalThis } from '../../isomorphics/getGlobalThis';
+import { getGlobalThis } from '../../runtime/getGlobalThis';
 
 export function createFetchWithProxyByNodeFetch({
   proxy,

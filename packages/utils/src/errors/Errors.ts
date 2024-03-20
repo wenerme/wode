@@ -1,4 +1,4 @@
-import { getHttpStatusText } from '../http/HttpStatus';
+import { getHttpStatusText } from '../fetch/HttpStatus';
 
 export interface ErrorDetailInit {
   message?: string;
