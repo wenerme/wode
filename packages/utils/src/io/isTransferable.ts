@@ -1,4 +1,4 @@
-import { getGlobalThis } from '../isomorphics/getGlobalThis';
+import { getGlobalThis } from '../runtime/getGlobalThis';
 
 const globalThis = getGlobalThis();
 

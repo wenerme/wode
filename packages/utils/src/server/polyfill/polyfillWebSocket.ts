@@ -1,5 +1,5 @@
 import type { MaybePromise } from '../../asyncs/MaybePromise';
-import { getGlobalThis } from '../../isomorphics/getGlobalThis';
+import { getGlobalThis } from '../../runtime/getGlobalThis';
 
 export function polyfillWebSocket(ws: any): boolean;
 export function polyfillWebSocket(ws?: undefined): Promise<boolean>;

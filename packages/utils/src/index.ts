@@ -43,8 +43,8 @@ export { isPlainObject } from './langs/isPlainObject';
 export { parseBoolean } from './langs/parseBoolean';
 export { maybeFunction, type MaybeFunction } from './langs/MaybeFunction';
 export { memoize } from './langs/memoize';
-export { AsyncCloser } from './langs/AsyncCloser';
-export { Closer } from './langs/Closer';
+export { AsyncCloser } from './runtime/AsyncCloser';
+export { Closer } from './runtime/Closer';
 
 export { isUUID } from './validations/isUUID';
 export { parseTimestamp } from './validations/parseTimestamp';
@@ -82,8 +82,8 @@ export { loadScripts, loadStyles } from './browsers/loaders';
 export { getFileFromDataTransfer } from './browsers/getFileFromDataTransfer';
 
 // polyfills
-export { getGlobalThis } from './isomorphics/getGlobalThis';
-export { structuredClone } from './isomorphics/structuredClone';
+export { getGlobalThis } from './runtime/getGlobalThis';
+export { structuredClone } from './runtime/structuredClone';
 
 // crypto
 export { randomUUID } from './crypto/randomUUID';
@@ -115,6 +115,6 @@ export { default as ms } from './libs/ms';
 // error
 export { Errors, DetailError, type ErrorDetail, type ErrorDetailInit } from './errors/Errors';
 // http
-export { getHttpStatusText, isRetryableHttpStatus } from './http/HttpStatus';
+export { getHttpStatusText, isRetryableHttpStatus } from './fetch/HttpStatus';
 
 export type * from './types';
