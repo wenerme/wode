@@ -7,13 +7,13 @@ import { Contexts } from '@wener/nestjs/app';
 import { getEntityManager } from '@wener/nestjs/mikro-orm';
 import { EntityAuditAction, writeEntityAuditLog } from '@wener/server/src/modules/audit';
 import { StandardBaseEntity } from '../base/StandardBaseEntity';
+import { getTenantId, getUserId } from '../base/context';
 import { setData } from '../base/setData';
 import { setOwner } from '../base/setOwner';
 import { applyListQuery } from './applyListQuery';
 import { applyQueryFilter } from './applyQueryFilter';
 import { applyResolveQuery, applySelection } from './applyResolveQuery';
 import { applySearch } from './applySearch';
-import { getTenantId, getUserId } from './context';
 import {
   AssignOwnerRequest,
   AssignOwnerResponse,

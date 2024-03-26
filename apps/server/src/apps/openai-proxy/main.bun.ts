@@ -4,6 +4,7 @@ import { MemoryCacheAdapter, ReflectMetadataProvider, RequestContext } from '@mi
 import { MikroORM } from '@mikro-orm/postgresql';
 import { HttpException, Logger, Module } from '@nestjs/common';
 import { createBootstrap, Currents } from '@wener/nestjs';
+import { loadEnvs } from '@wener/nestjs';
 import { getServerConfig } from '@wener/nestjs/config';
 import { OrmModule } from '@wener/nestjs/mikro-orm';
 import { Errors, FetchLike, getGlobalThis, MaybePromise, parseBoolean } from '@wener/utils';
@@ -13,7 +14,6 @@ import { AccessTokenEntity } from '../../entity/AccessTokenEntity';
 import { ClientAgentEntity } from '../../entity/ClientAgentEntity';
 import { HttpRequestLogEntity } from '../../entity/HttpRequestLogEntity';
 import { createFetchWithCache } from '../../modules/FetchCache';
-import { loadEnvs } from '../../util/loadEnvs';
 import { EntityEventSubscriber } from '../wener-get-server/EntityEventSubscriber';
 import { logger } from './bun/logger';
 import { proxyOpenAi } from './proxyOpenAi';

@@ -1,4 +1,4 @@
-import type { EntityManager, IDatabaseDriver } from '@mikro-orm/core';
+import type { EntityManager } from '@mikro-orm/core';
 import { MikroORM, RequestContext, type TransactionOptions } from '@mikro-orm/core';
 import { type MaybePromise } from '@wener/utils';
 import { getContext } from '../context';
@@ -11,41 +11,41 @@ import { getContext } from '../context';
 - https://github.com/vercel/next.js/issues/47494
  */
 
-export function getMikroORM<D extends IDatabaseDriver = IDatabaseDriver>() {
-  return getContext(MikroORM<D>);
+export function getMikroORM<M extends MikroORM = MikroORM>() {
+  return getContext(MikroORM) as M;
 }
 
-export function getEntityManager<D extends IDatabaseDriver = IDatabaseDriver>({
+export function getEntityManager<E extends EntityManager = EntityManager>({
   fork,
   em,
 }: {
   fork?: true;
-  em?: EntityManager<D>;
-} = {}): EntityManager<D> {
-  em ||= RequestContext.getEntityManager() as EntityManager<D>;
+  em?: E;
+} = {}): E {
+  em ||= RequestContext.getEntityManager() as E;
   if (em && !fork) {
     return em;
   }
-  const orm = getMikroORM<D>();
-  em = orm.em as EntityManager<D>;
+  const orm = getMikroORM();
+  em = orm.em as E;
   if (fork) {
-    em = em.fork() as EntityManager<D>;
+    em = em.fork() as E;
   }
-  return em as EntityManager<D>;
+  return em as E;
 }
 
-export function requireContextEntityManager<D extends IDatabaseDriver = IDatabaseDriver>() {
+export function requireContextEntityManager<E extends EntityManager = EntityManager>() {
   const context = RequestContext.getEntityManager();
   if (!context) {
     throw new Error('No entity manager context');
   }
 
-  return context as EntityManager<D>;
+  return context as E;
 }
 
-export function runInTransaction<R, D extends IDatabaseDriver = IDatabaseDriver>(
-  fn: (em: EntityManager<D>) => MaybePromise<R>,
-  { em, ...opts }: TransactionOptions & { em?: EntityManager } = {},
+export function runInTransaction<R, E extends EntityManager = EntityManager>(
+  fn: (em: E) => MaybePromise<R>,
+  { em, ...opts }: TransactionOptions & { em?: E } = {},
 ): Promise<R> {
   return getEntityManager({ em }).transactional(fn as any, opts);
 }

@@ -33,38 +33,60 @@ export class ResidentIdNumber {
     let d = parseInt(date.slice(6));
     return new IdNumber(
       s.slice(0, 6),
-      new Date(`${y}-${m}-${d}`), // YYYYMMDD
-      // new Date(y, m - 1, d, 0, 0, 0, 0), // 有时区问题
+      // new Date(`${y}-${m}-${d}`), // YYYYMMDD
+      new Date(Date.UTC(y, m - 1, d)), // 避免时区问题
       parseInt(s.slice(14, 17)),
       s.slice(17, 18).toUpperCase(),
     );
   }
 }
 
+interface ParseResidentIdNumberResult {
+  division: string;
+  birthDate: Date;
+  sequence: number;
+  checksum: string;
+
+  valid: boolean;
+  male: boolean;
+  female: boolean;
+  sex: 'Male' | 'Female';
+  age: number;
+}
+
 class IdNumber {
   constructor(
     public division: string,
-    public date: Date,
+    public birthDate: Date,
     public sequence: number,
     public checksum: string,
   ) {}
 
   toString() {
-    return this.subject + this.checksum;
+    return this.base + this.checksum;
   }
 
   toJSON() {
     return this.toString();
   }
 
-  toObject() {
-    const { division, date, sequence, checksum } = this;
+  toObject(): ParseResidentIdNumberResult {
+    const { division, birthDate, sequence, checksum, age, valid, male, female, sex } = this;
     return {
       division,
-      date,
+      birthDate,
       sequence,
       checksum,
+      age,
+      valid,
+      male,
+      female,
+      sex,
     };
+  }
+
+  get valid() {
+    return ResidentIdNumber.get().verify(this.toString());
   }
 
   get male() {
@@ -76,15 +98,19 @@ class IdNumber {
   }
 
   get age() {
-    return new Date().getFullYear() - this.date.getFullYear();
+    return new Date().getFullYear() - this.birthDate.getFullYear();
   }
 
-  get gender(): 'male' | 'female' {
-    return this.sequence % 2 === 1 ? 'male' : 'female';
+  get sex(): 'Male' | 'Female' {
+    return this.sequence % 2 === 1 ? 'Male' : 'Female';
   }
 
-  get subject() {
-    return [this.division, formatDate(this.date, 'YYYYMMDD'), this.sequence.toString().padStart(3, '0')].join('');
+  /**
+   * base for checksum
+   * @private
+   */
+  private get base() {
+    return [this.division, formatDate(this.birthDate, 'YYYYMMDD'), this.sequence.toString().padStart(3, '0')].join('');
   }
 }
 
