@@ -43,6 +43,9 @@ export { isPlainObject } from './langs/isPlainObject';
 export { parseBoolean } from './langs/parseBoolean';
 export { maybeFunction, type MaybeFunction } from './langs/MaybeFunction';
 export { memoize } from './langs/memoize';
+export { mixin } from './langs/mixin';
+export type { MixinFunction, MixinInstance, MixinReturnValue } from './langs/mixin';
+
 export { AsyncCloser } from './runtime/AsyncCloser';
 export { Closer } from './runtime/Closer';
 

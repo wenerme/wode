@@ -1,14 +1,23 @@
 import 'reflect-metadata';
 import { type INestApplicationContext, Logger, type Type } from '@nestjs/common';
+import { createLazyPromise, LazyPromise } from '@wener/utils';
 
 const log = new Logger('ApplicationContext');
 
 let _context: INestApplicationContext;
+let _$context: LazyPromise<INestApplicationContext>;
 
 export function setAppContext(ctx: INestApplicationContext) {
   _context = ctx;
-  // _$context = Promise.resolve(ctx);
+  _$context?.resolve(ctx);
   log.log('setAppContext');
+}
+
+export function getAppContextAsync() {
+  if (_context) {
+    return Promise.resolve(_context);
+  }
+  return (_$context ||= createLazyPromise());
 }
 
 export function getAppContext() {

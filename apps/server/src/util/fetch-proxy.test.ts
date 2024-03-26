@@ -1,6 +1,6 @@
+import { loadEnvs } from '@wener/nestjs';
 import { assert, beforeAll, test } from 'vitest';
 import { createFetchWithProxyByUndici } from './createFetchWithProxyByUndici';
-import { loadEnvs } from './loadEnvs';
 import { requireResponseOk } from './requireResponseOk';
 
 beforeAll(async () => {

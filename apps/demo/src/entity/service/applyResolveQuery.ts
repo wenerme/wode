@@ -1,6 +1,6 @@
 import type { QueryBuilder } from '@mikro-orm/postgresql';
 import { isULID, isUUID } from '@wener/utils';
-import { parseTypeId } from './parseTypeId';
+import { parseTypeId } from '../base/parseTypeId';
 import { ResolveEntityRequest } from './types';
 
 function normalizeResolveQuery(output: ResolveEntityRequest) {

@@ -1,6 +1,6 @@
 import { classOf } from '@wener/utils';
-import { parseTypeId } from '../service/parseTypeId';
 import { StandardBaseEntity } from './StandardBaseEntity';
+import { parseTypeId } from './parseTypeId';
 
 export function setOwner<
   T extends {
