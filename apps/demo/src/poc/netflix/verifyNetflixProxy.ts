@@ -1,5 +1,4 @@
-import { FetchLike } from '@wener/utils';
-import { Closer } from '@wener/utils';
+import { Closer, FetchLike } from '@wener/utils';
 
 export interface VerifyOptions {
   fetch?: FetchLike;
@@ -24,9 +23,9 @@ export async function verifyNetflixProxy({ proxy, ...options }: VerifyOptions): 
   using closer = new Closer();
   let { ProxyAgent, Pool } = await import('undici');
   const result: VerifyCheckResult = {
-    Available: false,
-    SelfMade: false,
-    NonSelfMade: false,
+    Available: true,
+    SelfMade: true,
+    NonSelfMade: true,
   };
   const out: VerifyResult = {
     country: '',
@@ -69,17 +68,20 @@ export async function verifyNetflixProxy({ proxy, ...options }: VerifyOptions): 
   let config: NetflixVerifyAppConfig | undefined;
 
 
-  await Promise.resolve().then(async () => {
+  {
     const checks = {
-      Available: ['80018499'],
-      SelfMade: ['80197526'],
+      // 乐观的顺序
       NonSelfMade: [
-        '70143836', '80027042',
+        '81726714',// 葬送的
+        '80027042', //闪电侠
+        '70143836',
         // 可能会变
         // '70140425', // 越狱
         // '70283261', // 始祖家族
         // '70143860', '70202589', '70305903',
       ],
+      SelfMade: ['80197526'],
+      Available: ['80018499'],
     };
 
     for (let [type, ids] of Object.entries(checks)) {
@@ -96,13 +98,14 @@ export async function verifyNetflixProxy({ proxy, ...options }: VerifyOptions): 
         }
 
         let valid = res.status < 400;
-        result[type as keyof VerifyCheckResult] = valid;
+        result[type as keyof VerifyCheckResult] &&= valid;
+
+        console.log(`CHECK ${type}: ${id} ${valid ? '✅' : '❌'}`);
+
         if (!valid) {
-          // early
-          // break;
-          console.warn(`${type}: ${id}`);
-          return;
+          break;
         }
+
 
         // tw 不是 302，而是 200, 被识别为 US
         out.country ||= res.headers.get('Location')?.split('/')[3] || '';
@@ -112,14 +115,24 @@ export async function verifyNetflixProxy({ proxy, ...options }: VerifyOptions): 
         }
         // waste body
         void res.text();
+
+        // fixme 暂时只检测一个
+        break;
       }
 
-
-      // if (!out.country) {
-      //   console.log('Location:', res.headers.get('Location'), res.status);
-      // }
+      // 成功就停止
+      if (result[type as keyof VerifyCheckResult]) {
+        break;
+      }
     }
-  });
+  }
+
+  if (result.NonSelfMade) {
+    result.SelfMade = true;
+  }
+  if (result.SelfMade) {
+    result.Available = true;
+  }
 
   if (!out.country) {
     try {

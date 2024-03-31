@@ -1,5 +1,4 @@
-import type { ObjectKey } from './parseObjectPath';
-import { parseObjectPath } from './parseObjectPath';
+import { parseObjectPath, type ObjectKey } from './parseObjectPath';
 
 /**
  * get by path

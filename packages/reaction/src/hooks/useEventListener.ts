@@ -1,5 +1,4 @@
-import type { DependencyList } from 'react';
-import { useEffect } from 'react';
+import { useEffect, type DependencyList } from 'react';
 
 export type HandlersOfEventMap<T extends object> = {
   [k in keyof T]?: (e: T[k]) => void;

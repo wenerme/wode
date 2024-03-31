@@ -1,5 +1,4 @@
-import type { EntityManager } from '@mikro-orm/core';
-import { MikroORM, RequestContext, type TransactionOptions } from '@mikro-orm/core';
+import { MikroORM, RequestContext, type EntityManager, type TransactionOptions } from '@mikro-orm/core';
 import { type MaybePromise } from '@wener/utils';
 import { getContext } from '../context';
 

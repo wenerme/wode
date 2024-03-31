@@ -1,5 +1,5 @@
-import type { Logger, LoggerWithChild } from './Logger';
 import { createLogger } from './createLogger';
+import type { Logger, LoggerWithChild } from './Logger';
 
 export function createChildLogger(l: Logger, ctx: object): LoggerWithChild {
   if (l.child) {

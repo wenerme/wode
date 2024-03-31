@@ -1,7 +1,7 @@
 import { RequestContext } from '@mikro-orm/core';
 import { firstOfMaybeArray } from '@wener/utils';
-import { Currents } from '../../Currents';
 import { App, Contexts } from '../../app';
+import { Currents } from '../../Currents';
 import { getEntityManager } from '../../mikro-orm';
 import type { KnownServiceMessageHeaders } from '../types';
 import type { ServerMiddleware } from './ServiceRegistry';

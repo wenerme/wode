@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { type INestApplicationContext, Logger, type Type } from '@nestjs/common';
+import { Logger, type INestApplicationContext, type Type } from '@nestjs/common';
 import { createLazyPromise, LazyPromise } from '@wener/utils';
 
 const log = new Logger('ApplicationContext');

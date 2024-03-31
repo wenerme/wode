@@ -1,5 +1,4 @@
-import type { DependencyList } from 'react';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, type DependencyList } from 'react';
 
 /**
  * useAsyncEffect accept async function call, which can accept an AbortController and return a Promise

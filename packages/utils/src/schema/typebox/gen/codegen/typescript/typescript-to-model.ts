@@ -23,7 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 ---------------------------------------------------------------------------*/
-import { Type, Kind, CloneType, type TSchema } from '@sinclair/typebox';
+import { CloneType, Kind, Type, type TSchema } from '@sinclair/typebox';
 import * as ts from 'typescript';
 import { TypeBoxModel } from '../model/model';
 import { TypeScriptToTypeBox } from './typescript-to-typebox';

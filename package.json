@@ -34,14 +34,15 @@
     "preinstall": "npx only-allow pnpm"
   },
   "devDependencies": {
+    "@ianvs/prettier-plugin-sort-imports": "^4.2.1",
     "@plugin-web-update-notification/vite": "^1.7.1",
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@swc/cli": "^0.3.10",
     "@tailwindcss/container-queries": "^0.1.1",
+    "@tailwindcss/forms": "^0.5.7",
     "@tailwindcss/typography": "^0.5.10",
-    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@types/jsdom": "^21.1.6",
     "@types/node": "^20.11.28",
     "@types/react": "^18.2.66",

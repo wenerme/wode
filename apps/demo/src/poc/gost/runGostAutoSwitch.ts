@@ -1,5 +1,6 @@
 import fs from 'node:fs/promises';
 import { Value } from '@sinclair/typebox/value';
+import { createFetchWithProxy } from '@wener/utils/server';
 import YAML from 'yaml';
 import { z } from 'zod';
 import { GostConfig } from '@/poc/gost/types';
@@ -91,6 +92,7 @@ export async function runGostAutoSwitch(opts: RunAutoSwitchOptions) {
         u.username = node.connector.auth.username;
         u.password = node.connector.auth.password ?? '';
       }
+
       const out = await verifyNetflixProxy({
         proxy: u.toString(),
       });

@@ -1,5 +1,5 @@
 /* eslint no-proto:0 no-prototype-builtins:0 */
-import { describe, expect, test, it } from 'vitest';
+import { describe, expect, it, test } from 'vitest';
 import { set } from './set';
 
 test('set basics', () => {

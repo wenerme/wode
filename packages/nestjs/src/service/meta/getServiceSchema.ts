@@ -1,7 +1,7 @@
 import type { AbstractConstructor, Constructor } from '../../types';
+import { MethodOptions, ServiceOptions } from './client.types';
 import { getMethodOptions } from './Method';
 import { getServiceOptions } from './Service';
-import { MethodOptions, ServiceOptions } from './client.types';
 
 /**
  * Get client service schema

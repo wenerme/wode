@@ -1,5 +1,4 @@
-import type { ComponentType } from 'react';
-import React from 'react';
+import React, { type ComponentType } from 'react';
 import { mergeProps as defaultMergeProps } from '../utils/mergeProps';
 import { hoistNonReactStatics } from './hoistNonReactStatics';
 

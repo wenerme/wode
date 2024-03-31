@@ -1,6 +1,5 @@
 import process from 'node:process';
-import type { INestApplication } from '@nestjs/common';
-import { Inject, Injectable, Module } from '@nestjs/common';
+import { Inject, Injectable, Module, type INestApplication } from '@nestjs/common';
 import { FastifyAdapter } from '@nestjs/platform-fastify';
 import { Test } from '@nestjs/testing';
 import { afterAll, beforeAll, describe, expect, test } from 'vitest';
@@ -8,13 +7,13 @@ import {
   createServerLoggingMiddleware,
   ExposeMethod,
   ExposeService,
-  type LocalService,
   Method,
   RemoteMethodNotImplemented,
-  type ServerRequestOptions,
   Service,
   ServiceClientModule,
   ServiceRegistry,
+  type LocalService,
+  type ServerRequestOptions,
 } from '../../service';
 import { InjectNatsClient, NatsConn, NatsModule } from '../NatsModule';
 import { NatsServerHandler } from './NatsServerHandler';

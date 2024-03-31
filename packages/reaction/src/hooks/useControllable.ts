@@ -1,5 +1,4 @@
-import type { Dispatch, SetStateAction } from 'react';
-import { useState } from 'react';
+import { useState, type Dispatch, type SetStateAction } from 'react';
 import { useEvent } from './useEvent';
 
 /**

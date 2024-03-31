@@ -12,3 +12,5 @@ export { USCC } from './uscc/USCC';
 export { ResidentIdNumber } from './id/ResidentIdNumber';
 
 export { DivisionCode } from './division/DivisionCode';
+
+export { toPinyinPure, toPinyinPureFirst, getCharToPinyinTable } from './pinyin/toPinyinPure';

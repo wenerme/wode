@@ -1,5 +1,4 @@
-import type { EffectCallback } from 'react';
-import React from 'react';
+import React, { type EffectCallback } from 'react';
 
 /**
  * useEffectOnce only run effect one

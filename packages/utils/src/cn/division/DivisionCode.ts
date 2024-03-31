@@ -1,36 +1,46 @@
+const DivisionCodeLevels = [
+  {
+    level: 1,
+    code: 'Province',
+    length: 2,
+    label: '省',
+  },
+  {
+    level: 2,
+    code: 'City',
+    length: 4,
+    label: '市',
+  },
+  {
+    level: 3,
+    code: 'County',
+    length: 6,
+    label: '区县',
+  },
+  {
+    level: 4,
+    code: 'Town',
+    length: 9,
+    label: '乡镇',
+  },
+  {
+    level: 5,
+    code: 'Village',
+    length: 12,
+    label: '村',
+  },
+] as const;
+
+// String(Number.MAX_SAFE_INTEGER).length=16
+// 12 is safe int
+
 /**
  * Codes for the administrative divisions of the People's Republic of China
  *
  * @see https://zh.wikipedia.org/wiki/GB/T_2260 中华人民共和国行政区划代码
  */
 export class DivisionCode {
-  static Levels = {
-    Province: {
-      level: 1,
-      code: 'Province',
-      length: 2,
-    },
-    City: {
-      level: 2,
-      code: 'City',
-      length: 4,
-    },
-    County: {
-      level: 3,
-      code: 'County',
-      length: 6,
-    },
-    Town: {
-      level: 4,
-      code: 'Town',
-      length: 9,
-    },
-    Village: {
-      level: 5,
-      code: 'Village',
-      length: 12,
-    },
-  } as const;
+  static Levels = DivisionCodeLevels;
 
   private static instance: DivisionCode;
 
@@ -77,23 +87,6 @@ export class DivisionCode {
     [82, '澳门特别行政区'],
     // 9 国外
   ];
-}
-
-export function binarySearch<T, S = number>(arr: T[], value: S, compare: (a: T, b: S) => number) {
-  let low = 0;
-  let high = arr.length - 1;
-  while (low <= high) {
-    const mid = (low + high) >> 1;
-    const cmp = compare(arr[mid], value);
-    if (cmp < 0) {
-      low = mid + 1;
-    } else if (cmp > 0) {
-      high = mid - 1;
-    } else {
-      return mid;
-    }
-  }
-  return -1;
 }
 
 // export function getSimpleProvinceLabel(value: string) {

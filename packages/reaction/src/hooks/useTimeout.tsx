@@ -1,5 +1,4 @@
-import type { DependencyList } from 'react';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, type DependencyList } from 'react';
 
 /**
  * useTimeout will set up a timer to call the {@param handler} after the {@param delay}

@@ -1,8 +1,7 @@
 import { applyDecorators, Injectable, Logger, SetMetadata } from '@nestjs/common';
 import { Errors } from '@wener/utils';
 import type { Constructor } from '../../types';
-import type { ServiceOptionsInit, ServiceSchema } from '../meta';
-import { METHOD_METADATA_KEY, SERVICE_METADATA_KEY } from '../meta';
+import { METHOD_METADATA_KEY, SERVICE_METADATA_KEY, type ServiceOptionsInit, type ServiceSchema } from '../meta';
 import { getServerServiceSchema } from '../meta/getServerServiceSchema';
 import { ExposeMethodOptions, ServerServiceSchema } from '../meta/server.types';
 import { createResponseFromRequest } from './createResponseFromRequest';

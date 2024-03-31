@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
+import { getServiceSchema } from './getServiceSchema';
 import { Method } from './Method';
 import { Service } from './Service';
-import { getServiceSchema } from './getServiceSchema';
 
 test('base service schema', () => {
   function checkTest1(cls: any) {

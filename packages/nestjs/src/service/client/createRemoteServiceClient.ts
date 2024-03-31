@@ -1,5 +1,4 @@
-import type { ServiceSchema } from '../meta';
-import { ServiceNameProp } from '../meta';
+import { ServiceNameProp, type ServiceSchema } from '../meta';
 import type { IRemoteServiceClient } from './ClientRegistry';
 import { handleResponse } from './handleResponse';
 import type { ClientRequest, ClientRequestOptions, ClientResponse } from './types';

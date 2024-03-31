@@ -1,5 +1,4 @@
-import type { DynamicModule, Provider } from '@nestjs/common';
-import { ConfigurableModuleBuilder, Module } from '@nestjs/common';
+import { ConfigurableModuleBuilder, Module, type DynamicModule, type Provider } from '@nestjs/common';
 import { ClientMiddleware, ClientRegistry } from './ClientRegistry';
 import type { ClientConnection } from './types';
 
