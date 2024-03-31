@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import process from 'node:process';
 import { inspect } from 'node:util';
-import { MemoryCacheAdapter, type MikroORMOptions, ReflectMetadataProvider } from '@mikro-orm/core';
+import { MemoryCacheAdapter, ReflectMetadataProvider, type MikroORMOptions } from '@mikro-orm/core';
 import { defineConfig, type Options } from '@mikro-orm/postgresql';
 import { HttpException } from '@nestjs/common';
 

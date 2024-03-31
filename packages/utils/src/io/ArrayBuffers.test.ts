@@ -1,4 +1,4 @@
-import { test, expect } from 'vitest';
+import { expect, test } from 'vitest';
 import { ArrayBuffers } from './ArrayBuffers';
 
 test('concat', () => {

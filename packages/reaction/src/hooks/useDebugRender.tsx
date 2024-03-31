@@ -1,6 +1,5 @@
 import { useMemo, useRef } from 'react';
-import type { Logger } from '@wener/utils';
-import { createLogger, createNoopLogger } from '@wener/utils';
+import { createLogger, createNoopLogger, type Logger } from '@wener/utils';
 
 /**
  * useDebugRender will log a message when component render with render count

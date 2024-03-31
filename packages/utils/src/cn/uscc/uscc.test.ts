@@ -1,7 +1,7 @@
-import { test, expect } from 'vitest';
+import { expect, test } from 'vitest';
+import { isUSCC } from './isUSCC';
 import { Mod31Checksum } from './Mod31Checksum';
 import { USCC } from './USCC';
-import { isUSCC } from './isUSCC';
 
 test('uscc', () => {
   let cs = Mod31Checksum.get();

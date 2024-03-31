@@ -1,4 +1,4 @@
-import { test, assert, expect } from 'vitest';
+import { assert, expect, test } from 'vitest';
 import { Mod11Checksum } from './Mod11Checksum';
 import { ResidentIdNumber } from './ResidentIdNumber';
 

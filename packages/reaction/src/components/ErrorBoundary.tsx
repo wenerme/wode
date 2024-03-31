@@ -1,5 +1,4 @@
-import type { ErrorInfo, ReactElement } from 'react';
-import React from 'react';
+import React, { type ErrorInfo, type ReactElement } from 'react';
 
 export interface ErrorBoundaryProps {
   /**

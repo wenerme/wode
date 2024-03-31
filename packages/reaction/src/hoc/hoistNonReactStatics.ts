@@ -1,6 +1,6 @@
 // https://github.com/mridgway/hoist-non-react-statics/blob/main/src/index.js
 import React from 'react';
-import { ForwardRef, Memo, isMemo } from 'react-is';
+import { ForwardRef, isMemo, Memo } from 'react-is';
 
 const REACT_STATICS = {
   childContextTypes: true,

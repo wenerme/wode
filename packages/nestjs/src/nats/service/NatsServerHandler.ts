@@ -5,9 +5,9 @@ import type { Subscription } from 'nats';
 import { App } from '../../app';
 import { EXPOSE_SERVICE_METADATA_KEY, ServiceRegistry } from '../../service';
 import { NatsConn } from '../NatsModule';
-import ServerModule from './ServerModule';
 import { handleNatsServiceRequest } from './handleNatsServiceRequest';
 import { getSubscribeSubject } from './nats';
+import ServerModule from './ServerModule';
 import type { NatsServiceServerModuleOptions } from './types';
 
 const { MODULE_OPTIONS_TOKEN } = ServerModule;

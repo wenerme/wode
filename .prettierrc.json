@@ -1,0 +1,50 @@
+{
+  "bracketSameLine": false,
+  "trailingComma": "all",
+  "printWidth": 120,
+  "singleQuote": true,
+  "jsxSingleQuote": true,
+  "overrides": [
+    {
+      "files": [
+        "*.html",
+        "*.css"
+      ],
+      "options": {
+        "singleQuote": false
+      }
+    },
+    {
+      "files": [
+        "*.sql"
+      ],
+      "options": {
+        "tabWidth": 4
+      }
+    }
+  ],
+  "importOrder": [
+    "reflect-metadata",
+    "^node:",
+    "^react",
+    "^@[a-z]",
+    "^[a-z]",
+    "^@",
+    "^[.][.]",
+    "^[.][/]"
+  ],
+  "importOrderParserPlugins": [
+    "typescript",
+    "jsx",
+    "decorators-legacy",
+    "importAttributes"
+  ],
+  "importOrderTypeScriptVersion": "5.4.2",
+  "plugins": [
+    "prettier-plugin-pkg",
+    "prettier-plugin-tailwindcss",
+    "@ianvs/prettier-plugin-sort-imports"
+  ],
+  "tailwindConfig": "./tailwind.config.mjs"
+}
+

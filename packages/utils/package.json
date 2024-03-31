@@ -1,6 +1,6 @@
 {
   "name": "@wener/utils",
-  "version": "1.1.39",
+  "version": "1.1.40",
   "type": "module",
   "description": "Utils for daily use",
   "repository": {
@@ -55,6 +55,7 @@
     "@sinclair/typebox": "^0.32.15",
     "@types/lodash": "^4.17.0",
     "@types/ws": "^8.5.10",
+    "@wener/utils": "link:.",
     "https-proxy-agent": "^7.0.4",
     "lodash": "^4.17.21",
     "node-fetch": "^3.3.2",

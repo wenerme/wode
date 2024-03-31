@@ -1,9 +1,8 @@
 import { test } from 'vitest';
 import { z } from 'zod';
+import { getServiceSchema, type ServiceSchema } from './getServiceSchema';
 import { Method } from './Method';
 import { Service } from './Service';
-import type { ServiceSchema } from './getServiceSchema';
-import { getServiceSchema } from './getServiceSchema';
 
 test('gen php', () => {
   const schema = getServiceSchema(HelloService);

@@ -1,5 +1,4 @@
-import { create } from 'mutative';
-import type { Draft } from 'mutative';
+import { create, type Draft } from 'mutative';
 import type { StateCreator, StoreMutatorIdentifier } from 'zustand/vanilla';
 
 type Mutative = <

@@ -1,6 +1,6 @@
 import { typeOf } from 'react-is';
 import { deepEqual } from '@wener/utils';
-import { unstable_buildProxyFunction, getVersion } from 'valtio';
+import { getVersion, unstable_buildProxyFunction } from 'valtio';
 
 /*
 https://github.com/pmndrs/valtio/blob/main/src/vanilla.ts#L70

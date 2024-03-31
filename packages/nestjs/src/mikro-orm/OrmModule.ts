@@ -2,10 +2,10 @@ import { AnyEntity, EntityManager as CoreEntityManager, MikroORM as CoreMikroORM
 import { EntityName, MikroOrmModule, MikroOrmModuleFeatureOptions } from '@mikro-orm/nestjs';
 import type { MikroOrmModuleAsyncOptions } from '@mikro-orm/nestjs/typings';
 import {
-  type AbstractSqlConnection,
-  EntityManager as PostgreSqlEntityManager,
   knex,
+  EntityManager as PostgreSqlEntityManager,
   MikroORM as PostgreSqlMikroORM,
+  type AbstractSqlConnection,
   type Options,
 } from '@mikro-orm/postgresql';
 import { DynamicModule, Logger } from '@nestjs/common';

@@ -1,5 +1,5 @@
-import type { MaybePromise } from './MaybePromise';
 import { isPromise } from './isPromise';
+import type { MaybePromise } from './MaybePromise';
 
 export type LazyPromise<T> = Promise<T> & {
   reject(reason?: any): void;

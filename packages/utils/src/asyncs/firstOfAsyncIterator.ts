@@ -1,5 +1,5 @@
-import { MaybePromise } from './MaybePromise';
 import { isPromise } from './isPromise';
+import { MaybePromise } from './MaybePromise';
 import { nextOfAsyncIterator } from './nextOfAsyncIterator';
 
 export function firstOfAsyncIterator<T>(it: MaybePromise<AsyncIterator<T> | Iterator<T> | T>): MaybePromise<T> {

@@ -1,4 +1,4 @@
-import { test, expect } from 'vitest';
+import { expect, test } from 'vitest';
 import { createChildLogger } from './createChildLogger';
 import { createLogger } from './createLogger';
 
