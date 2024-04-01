@@ -1,10 +1,10 @@
-import { FetchLike } from '@wener/utils';
+import { type FetchLike } from '@wener/utils';
 import { requestFromSession } from './requestFromSession';
-import { GetLoginSessionResponse } from './types';
+import { type GetLoginSessionResponse } from './types';
 
-export function getLoginSession({ fetch, cookie }: { fetch?: FetchLike; cookie: string }) {
+export async function getLoginSession({ fetch, cookie }: { fetch?: FetchLike; cookie: string }) {
   return requestFromSession<GetLoginSessionResponse>({
-    url: `https://17dz.com/xqy-portal-web/activity/activity/login/getLoginSession`,
+    url: 'https://17dz.com/xqy-portal-web/activity/activity/login/getLoginSession',
     cookie,
     fetch,
   });

@@ -1,5 +1,5 @@
-import { MaybePromise } from '@wener/utils';
-import { request, RequestOptions } from '../request';
+import { type MaybePromise } from '@wener/utils';
+import { request, type RequestOptions } from '../request';
 
 export type SessionRequestOptions<T> = RequestOptions<T> & {
   cookie?: MaybePromise<string | undefined> | (() => MaybePromise<string | undefined>);
@@ -10,8 +10,9 @@ export async function requestFromSession<T>({ cookie, ...opts }: SessionRequestO
   if (!Cookie) {
     throw new Error('missing cookie');
   }
+
   // extract xsrf-token
-  const xsrfToken = Cookie.match(/xsrf-token=([0-9A-F]+)/i)?.[1];
+  const xsrfToken = /xsrf-token=([\da-f]+)/i.exec(Cookie)?.[1];
   const headers: Record<string, any> = {
     Accept: 'application/json, text/plain, */*',
     'User-Agent':
@@ -32,12 +33,10 @@ export async function requestFromSession<T>({ cookie, ...opts }: SessionRequestO
     headers['xsrf-token'] = xsrfToken;
   }
   // eslint-disable-next-line
-  return request<T>(
-    {
-      ...opts,
-      headers,
-    },
-  );
+  return request<T>({
+    ...opts,
+    headers,
+  });
 }
 
 function serializeCookie(o: Record<string, any>) {

@@ -1,0 +1,3 @@
+- id
+  - https://zh.wikipedia.org/wiki/中华人民共和国外国人永久居留身份证
+  - https://learn.microsoft.com/en-us/purview/sit-defn-china-resident-identity-card-number

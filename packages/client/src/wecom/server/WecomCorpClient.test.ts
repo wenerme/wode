@@ -9,12 +9,12 @@ test('WecomCorpClient demo', async () => {
 
   let client: WecomCorpClient;
   client = new WecomCorpClient({
-    corpId: process.env.WECOM_CORP_ID!,
+    corpId: process.env.WECOM_CORP_ID,
     corpSecret: process.env.WECOM_CORP_SECRET!,
     // 缓存 token 到文件或别的地方
     accessToken: createFileExpiryValue<string>({
       path: 'wechat.token.json',
-      loader: async () => {
+      async loader() {
         const { access_token, expires_at } = await client.getAccessToken();
         return {
           value: access_token,
@@ -25,6 +25,6 @@ test('WecomCorpClient demo', async () => {
   });
 
   // 复用
-  console.log(`AccessToken`, await client.options.accessToken.get());
-  console.log(`AccessToken`, await client.options.accessToken.get());
+  console.log('AccessToken', await client.options.accessToken.get());
+  console.log('AccessToken', await client.options.accessToken.get());
 });

@@ -1,4 +1,4 @@
-import { AliCloudClientOptions } from './AliCloudClient';
+import { type AliCloudClientOptions } from './AliCloudClient';
 import { type RecognizeIdcardRoot } from './OcrV20210707.types';
 
 export interface OcrV20210707Api {
@@ -2567,7 +2567,7 @@ export interface RecognizeAdvancedRequest {
   Row?: boolean;
 }
 
-export type RecognizeAdvancedResponse = string | object;
+export type RecognizeAdvancedResponse = string | Record<string, unknown>;
 
 export interface RecognizeHandwritingRequest {
   /**
@@ -2616,7 +2616,7 @@ export interface RecognizeHandwritingRequest {
   NeedSortPage?: boolean;
 }
 
-export type RecognizeHandwritingResponse = string | object;
+export type RecognizeHandwritingResponse = string | Record<string, unknown>;
 
 export interface RecognizeBasicRequest {
   /**
@@ -2637,7 +2637,7 @@ export interface RecognizeBasicRequest {
   body?: string | BufferSource;
 }
 
-export type RecognizeBasicResponse = string | object;
+export type RecognizeBasicResponse = string | Record<string, unknown>;
 
 export interface RecognizeGeneralRequest {
   /**
@@ -2658,7 +2658,7 @@ export interface RecognizeGeneralRequest {
   body?: string | BufferSource;
 }
 
-export type RecognizeGeneralResponse = string | object;
+export type RecognizeGeneralResponse = string | Record<string, unknown>;
 
 export interface RecognizeTableOcrRequest {
   /**
@@ -2707,7 +2707,7 @@ export interface RecognizeTableOcrRequest {
   IsHandWriting?: string;
 }
 
-export type RecognizeTableOcrResponse = string | object;
+export type RecognizeTableOcrResponse = string | Record<string, unknown>;
 
 export interface RecognizeHealthCodeRequest {
   /**
@@ -2728,7 +2728,7 @@ export interface RecognizeHealthCodeRequest {
   body?: string | BufferSource;
 }
 
-export type RecognizeHealthCodeResponse = string | object;
+export type RecognizeHealthCodeResponse = string | Record<string, unknown>;
 
 export interface RecognizeDocumentStructureRequest {
   /**
@@ -2805,7 +2805,7 @@ export interface RecognizeDocumentStructureRequest {
   UseNewStyleOutput?: boolean;
 }
 
-export type RecognizeDocumentStructureResponse = string | object;
+export type RecognizeDocumentStructureResponse = string | Record<string, unknown>;
 
 export interface RecognizeIdcardRequest {
   /**
@@ -2862,7 +2862,7 @@ export interface RecognizePassportRequest {
   body?: string | BufferSource;
 }
 
-export type RecognizePassportResponse = string | object;
+export type RecognizePassportResponse = string | Record<string, unknown>;
 
 export interface RecognizeHouseholdRequest {
   /**
@@ -2889,7 +2889,7 @@ export interface RecognizeHouseholdRequest {
   IsResidentPage?: boolean;
 }
 
-export type RecognizeHouseholdResponse = string | object;
+export type RecognizeHouseholdResponse = string | Record<string, unknown>;
 
 export interface RecognizeEstateCertificationRequest {
   /**
@@ -2910,7 +2910,7 @@ export interface RecognizeEstateCertificationRequest {
   body?: string | BufferSource;
 }
 
-export type RecognizeEstateCertificationResponse = string | object;
+export type RecognizeEstateCertificationResponse = string | Record<string, unknown>;
 
 export interface RecognizeBankCardRequest {
   /**
@@ -2931,7 +2931,7 @@ export interface RecognizeBankCardRequest {
   body?: string | BufferSource;
 }
 
-export type RecognizeBankCardResponse = string | object;
+export type RecognizeBankCardResponse = string | Record<string, unknown>;
 
 export interface RecognizeBirthCertificationRequest {
   /**
@@ -2952,7 +2952,7 @@ export interface RecognizeBirthCertificationRequest {
   body?: string | BufferSource;
 }
 
-export type RecognizeBirthCertificationResponse = string | object;
+export type RecognizeBirthCertificationResponse = string | Record<string, unknown>;
 
 export interface RecognizeChinesePassportRequest {
   /**
@@ -2975,7 +2975,7 @@ export interface RecognizeChinesePassportRequest {
   OutputFigure?: boolean;
 }
 
-export type RecognizeChinesePassportResponse = string | object;
+export type RecognizeChinesePassportResponse = string | Record<string, unknown>;
 
 export interface RecognizeExitEntryPermitToMainlandRequest {
   /**
@@ -3003,7 +3003,7 @@ export interface RecognizeExitEntryPermitToMainlandRequest {
   OutputFigure?: boolean;
 }
 
-export type RecognizeExitEntryPermitToMainlandResponse = string | object;
+export type RecognizeExitEntryPermitToMainlandResponse = string | Record<string, unknown>;
 
 export interface RecognizeExitEntryPermitToHKRequest {
   /**
@@ -3026,7 +3026,7 @@ export interface RecognizeExitEntryPermitToHKRequest {
   OutputFigure?: boolean;
 }
 
-export type RecognizeExitEntryPermitToHKResponse = string | object;
+export type RecognizeExitEntryPermitToHKResponse = string | Record<string, unknown>;
 
 export interface RecognizeHKIdcardRequest {
   /**
@@ -3047,7 +3047,7 @@ export interface RecognizeHKIdcardRequest {
   body?: string | BufferSource;
 }
 
-export type RecognizeHKIdcardResponse = string | object;
+export type RecognizeHKIdcardResponse = string | Record<string, unknown>;
 
 export interface RecognizeSocialSecurityCardVersionIIRequest {
   /**
@@ -3068,7 +3068,7 @@ export interface RecognizeSocialSecurityCardVersionIIRequest {
   body?: string | BufferSource;
 }
 
-export type RecognizeSocialSecurityCardVersionIIResponse = string | object;
+export type RecognizeSocialSecurityCardVersionIIResponse = string | Record<string, unknown>;
 
 export interface RecognizeInternationalIdcardRequest {
   /**
@@ -3096,7 +3096,7 @@ export interface RecognizeInternationalIdcardRequest {
   Country: string;
 }
 
-export type RecognizeInternationalIdcardResponse = string | object;
+export type RecognizeInternationalIdcardResponse = string | Record<string, unknown>;
 
 export interface RecognizeMixedInvoicesRequest {
   /**
@@ -3124,7 +3124,7 @@ export interface RecognizeMixedInvoicesRequest {
   PageNo?: number;
 }
 
-export type RecognizeMixedInvoicesResponse = string | object;
+export type RecognizeMixedInvoicesResponse = string | Record<string, unknown>;
 
 export interface RecognizeInvoiceRequest {
   /**
@@ -3152,7 +3152,7 @@ export interface RecognizeInvoiceRequest {
   PageNo?: number;
 }
 
-export type RecognizeInvoiceResponse = string | object;
+export type RecognizeInvoiceResponse = string | Record<string, unknown>;
 
 export interface RecognizeCarInvoiceRequest {
   /**
@@ -3173,7 +3173,7 @@ export interface RecognizeCarInvoiceRequest {
   body?: string | BufferSource;
 }
 
-export type RecognizeCarInvoiceResponse = string | object;
+export type RecognizeCarInvoiceResponse = string | Record<string, unknown>;
 
 export interface RecognizeQuotaInvoiceRequest {
   /**
@@ -3190,7 +3190,7 @@ export interface RecognizeQuotaInvoiceRequest {
   body?: string | BufferSource;
 }
 
-export type RecognizeQuotaInvoiceResponse = string | object;
+export type RecognizeQuotaInvoiceResponse = string | Record<string, unknown>;
 
 export interface RecognizeAirItineraryRequest {
   /**
@@ -3211,7 +3211,7 @@ export interface RecognizeAirItineraryRequest {
   body?: string | BufferSource;
 }
 
-export type RecognizeAirItineraryResponse = string | object;
+export type RecognizeAirItineraryResponse = string | Record<string, unknown>;
 
 export interface RecognizeTrainInvoiceRequest {
   /**
@@ -3232,7 +3232,7 @@ export interface RecognizeTrainInvoiceRequest {
   body?: string | BufferSource;
 }
 
-export type RecognizeTrainInvoiceResponse = string | object;
+export type RecognizeTrainInvoiceResponse = string | Record<string, unknown>;
 
 export interface RecognizeTaxiInvoiceRequest {
   /**
@@ -3253,7 +3253,7 @@ export interface RecognizeTaxiInvoiceRequest {
   body?: string | BufferSource;
 }
 
-export type RecognizeTaxiInvoiceResponse = string | object;
+export type RecognizeTaxiInvoiceResponse = string | Record<string, unknown>;
 
 export interface RecognizeRollTicketRequest {
   /**
@@ -3270,7 +3270,7 @@ export interface RecognizeRollTicketRequest {
   body?: string | BufferSource;
 }
 
-export type RecognizeRollTicketResponse = string | object;
+export type RecognizeRollTicketResponse = string | Record<string, unknown>;
 
 export interface RecognizeBankAcceptanceRequest {
   /**
@@ -3291,7 +3291,7 @@ export interface RecognizeBankAcceptanceRequest {
   body?: string | BufferSource;
 }
 
-export type RecognizeBankAcceptanceResponse = string | object;
+export type RecognizeBankAcceptanceResponse = string | Record<string, unknown>;
 
 export interface RecognizeBusShipTicketRequest {
   /**
@@ -3308,7 +3308,7 @@ export interface RecognizeBusShipTicketRequest {
   body?: string | BufferSource;
 }
 
-export type RecognizeBusShipTicketResponse = string | object;
+export type RecognizeBusShipTicketResponse = string | Record<string, unknown>;
 
 export interface RecognizeNonTaxInvoiceRequest {
   /**
@@ -3329,7 +3329,7 @@ export interface RecognizeNonTaxInvoiceRequest {
   body?: string | BufferSource;
 }
 
-export type RecognizeNonTaxInvoiceResponse = string | object;
+export type RecognizeNonTaxInvoiceResponse = string | Record<string, unknown>;
 
 export interface RecognizeCommonPrintedInvoiceRequest {
   /**
@@ -3346,7 +3346,7 @@ export interface RecognizeCommonPrintedInvoiceRequest {
   body?: string | BufferSource;
 }
 
-export type RecognizeCommonPrintedInvoiceResponse = string | object;
+export type RecognizeCommonPrintedInvoiceResponse = string | Record<string, unknown>;
 
 export interface RecognizeHotelConsumeRequest {
   /**
@@ -3363,7 +3363,7 @@ export interface RecognizeHotelConsumeRequest {
   body?: string | BufferSource;
 }
 
-export type RecognizeHotelConsumeResponse = string | object;
+export type RecognizeHotelConsumeResponse = string | Record<string, unknown>;
 
 export interface RecognizePaymentRecordRequest {
   /**
@@ -3384,7 +3384,7 @@ export interface RecognizePaymentRecordRequest {
   body?: string | BufferSource;
 }
 
-export type RecognizePaymentRecordResponse = string | object;
+export type RecognizePaymentRecordResponse = string | Record<string, unknown>;
 
 export interface RecognizePurchaseRecordRequest {
   /**
@@ -3413,7 +3413,7 @@ export interface RecognizePurchaseRecordRequest {
   OutputMultiOrders?: boolean;
 }
 
-export type RecognizePurchaseRecordResponse = string | object;
+export type RecognizePurchaseRecordResponse = string | Record<string, unknown>;
 
 export interface RecognizeRideHailingItineraryRequest {
   /**
@@ -3430,7 +3430,7 @@ export interface RecognizeRideHailingItineraryRequest {
   body?: string | BufferSource;
 }
 
-export type RecognizeRideHailingItineraryResponse = string | object;
+export type RecognizeRideHailingItineraryResponse = string | Record<string, unknown>;
 
 export interface RecognizeShoppingReceiptRequest {
   /**
@@ -3447,7 +3447,7 @@ export interface RecognizeShoppingReceiptRequest {
   body?: string | BufferSource;
 }
 
-export type RecognizeShoppingReceiptResponse = string | object;
+export type RecognizeShoppingReceiptResponse = string | Record<string, unknown>;
 
 export interface RecognizeSocialSecurityCardRequest {
   /**
@@ -3464,7 +3464,7 @@ export interface RecognizeSocialSecurityCardRequest {
   body?: string | BufferSource;
 }
 
-export type RecognizeSocialSecurityCardResponse = string | object;
+export type RecognizeSocialSecurityCardResponse = string | Record<string, unknown>;
 
 export interface RecognizeTollInvoiceRequest {
   /**
@@ -3481,7 +3481,7 @@ export interface RecognizeTollInvoiceRequest {
   body?: string | BufferSource;
 }
 
-export type RecognizeTollInvoiceResponse = string | object;
+export type RecognizeTollInvoiceResponse = string | Record<string, unknown>;
 
 export interface RecognizeTaxClearanceCertificateRequest {
   /**
@@ -3502,7 +3502,7 @@ export interface RecognizeTaxClearanceCertificateRequest {
   body?: string | BufferSource;
 }
 
-export type RecognizeTaxClearanceCertificateResponse = string | object;
+export type RecognizeTaxClearanceCertificateResponse = string | Record<string, unknown>;
 
 export interface RecognizeUsedCarInvoiceRequest {
   /**
@@ -3519,7 +3519,7 @@ export interface RecognizeUsedCarInvoiceRequest {
   body?: string | BufferSource;
 }
 
-export type RecognizeUsedCarInvoiceResponse = string | object;
+export type RecognizeUsedCarInvoiceResponse = string | Record<string, unknown>;
 
 export interface RecognizeBusinessLicenseRequest {
   /**
@@ -3540,7 +3540,7 @@ export interface RecognizeBusinessLicenseRequest {
   body?: string | BufferSource;
 }
 
-export type RecognizeBusinessLicenseResponse = string | object;
+export type RecognizeBusinessLicenseResponse = string | Record<string, unknown>;
 
 export interface RecognizeBankAccountLicenseRequest {
   /**
@@ -3561,7 +3561,7 @@ export interface RecognizeBankAccountLicenseRequest {
   body?: string | BufferSource;
 }
 
-export type RecognizeBankAccountLicenseResponse = string | object;
+export type RecognizeBankAccountLicenseResponse = string | Record<string, unknown>;
 
 export interface RecognizeTradeMarkCertificationRequest {
   /**
@@ -3578,7 +3578,7 @@ export interface RecognizeTradeMarkCertificationRequest {
   body?: string | BufferSource;
 }
 
-export type RecognizeTradeMarkCertificationResponse = string | object;
+export type RecognizeTradeMarkCertificationResponse = string | Record<string, unknown>;
 
 export interface RecognizeFoodProduceLicenseRequest {
   /**
@@ -3599,7 +3599,7 @@ export interface RecognizeFoodProduceLicenseRequest {
   body?: string | BufferSource;
 }
 
-export type RecognizeFoodProduceLicenseResponse = string | object;
+export type RecognizeFoodProduceLicenseResponse = string | Record<string, unknown>;
 
 export interface RecognizeFoodManageLicenseRequest {
   /**
@@ -3620,7 +3620,7 @@ export interface RecognizeFoodManageLicenseRequest {
   body?: string | BufferSource;
 }
 
-export type RecognizeFoodManageLicenseResponse = string | object;
+export type RecognizeFoodManageLicenseResponse = string | Record<string, unknown>;
 
 export interface RecognizeMedicalDeviceManageLicenseRequest {
   /**
@@ -3637,7 +3637,7 @@ export interface RecognizeMedicalDeviceManageLicenseRequest {
   body?: string | BufferSource;
 }
 
-export type RecognizeMedicalDeviceManageLicenseResponse = string | object;
+export type RecognizeMedicalDeviceManageLicenseResponse = string | Record<string, unknown>;
 
 export interface RecognizeMedicalDeviceProduceLicenseRequest {
   /**
@@ -3654,7 +3654,7 @@ export interface RecognizeMedicalDeviceProduceLicenseRequest {
   body?: string | BufferSource;
 }
 
-export type RecognizeMedicalDeviceProduceLicenseResponse = string | object;
+export type RecognizeMedicalDeviceProduceLicenseResponse = string | Record<string, unknown>;
 
 export interface RecognizeCtwoMedicalDeviceManageLicenseRequest {
   /**
@@ -3675,7 +3675,7 @@ export interface RecognizeCtwoMedicalDeviceManageLicenseRequest {
   body?: string | BufferSource;
 }
 
-export type RecognizeCtwoMedicalDeviceManageLicenseResponse = string | object;
+export type RecognizeCtwoMedicalDeviceManageLicenseResponse = string | Record<string, unknown>;
 
 export interface RecognizeCosmeticProduceLicenseRequest {
   /**
@@ -3692,7 +3692,7 @@ export interface RecognizeCosmeticProduceLicenseRequest {
   body?: string | BufferSource;
 }
 
-export type RecognizeCosmeticProduceLicenseResponse = string | object;
+export type RecognizeCosmeticProduceLicenseResponse = string | Record<string, unknown>;
 
 export interface RecognizeInternationalBusinessLicenseRequest {
   /**
@@ -3715,7 +3715,7 @@ export interface RecognizeInternationalBusinessLicenseRequest {
   Country: string;
 }
 
-export type RecognizeInternationalBusinessLicenseResponse = string | object;
+export type RecognizeInternationalBusinessLicenseResponse = string | Record<string, unknown>;
 
 export interface RecognizeVehicleLicenseRequest {
   /**
@@ -3736,7 +3736,7 @@ export interface RecognizeVehicleLicenseRequest {
   body?: string | BufferSource;
 }
 
-export type RecognizeVehicleLicenseResponse = string | object;
+export type RecognizeVehicleLicenseResponse = string | Record<string, unknown>;
 
 export interface RecognizeDrivingLicenseRequest {
   /**
@@ -3757,7 +3757,7 @@ export interface RecognizeDrivingLicenseRequest {
   body?: string | BufferSource;
 }
 
-export type RecognizeDrivingLicenseResponse = string | object;
+export type RecognizeDrivingLicenseResponse = string | Record<string, unknown>;
 
 export interface RecognizeWaybillRequest {
   /**
@@ -3778,7 +3778,7 @@ export interface RecognizeWaybillRequest {
   body?: string | BufferSource;
 }
 
-export type RecognizeWaybillResponse = string | object;
+export type RecognizeWaybillResponse = string | Record<string, unknown>;
 
 export interface RecognizeCarNumberRequest {
   /**
@@ -3799,7 +3799,7 @@ export interface RecognizeCarNumberRequest {
   body?: string | BufferSource;
 }
 
-export type RecognizeCarNumberResponse = string | object;
+export type RecognizeCarNumberResponse = string | Record<string, unknown>;
 
 export interface RecognizeCarVinCodeRequest {
   /**
@@ -3820,7 +3820,7 @@ export interface RecognizeCarVinCodeRequest {
   body?: string | BufferSource;
 }
 
-export type RecognizeCarVinCodeResponse = string | object;
+export type RecognizeCarVinCodeResponse = string | Record<string, unknown>;
 
 export interface RecognizeVehicleRegistrationRequest {
   /**
@@ -3841,7 +3841,7 @@ export interface RecognizeVehicleRegistrationRequest {
   body?: string | BufferSource;
 }
 
-export type RecognizeVehicleRegistrationResponse = string | object;
+export type RecognizeVehicleRegistrationResponse = string | Record<string, unknown>;
 
 export interface RecognizeVehicleCertificationRequest {
   /**
@@ -3862,7 +3862,7 @@ export interface RecognizeVehicleCertificationRequest {
   body?: string | BufferSource;
 }
 
-export type RecognizeVehicleCertificationResponse = string | object;
+export type RecognizeVehicleCertificationResponse = string | Record<string, unknown>;
 
 export interface RecognizeEduFormulaRequest {
   /**
@@ -3883,7 +3883,7 @@ export interface RecognizeEduFormulaRequest {
   body?: string | BufferSource;
 }
 
-export type RecognizeEduFormulaResponse = string | object;
+export type RecognizeEduFormulaResponse = string | Record<string, unknown>;
 
 export interface RecognizeEduOralCalculationRequest {
   /**
@@ -3904,7 +3904,7 @@ export interface RecognizeEduOralCalculationRequest {
   body?: string | BufferSource;
 }
 
-export type RecognizeEduOralCalculationResponse = string | object;
+export type RecognizeEduOralCalculationResponse = string | Record<string, unknown>;
 
 export interface RecognizeEduPaperOcrRequest {
   /**
@@ -3946,7 +3946,7 @@ export interface RecognizeEduPaperOcrRequest {
   OutputOricoord?: boolean;
 }
 
-export type RecognizeEduPaperOcrResponse = string | object;
+export type RecognizeEduPaperOcrResponse = string | Record<string, unknown>;
 
 export interface RecognizeEduPaperCutRequest {
   /**
@@ -3988,7 +3988,7 @@ export interface RecognizeEduPaperCutRequest {
   Subject?: string;
 }
 
-export type RecognizeEduPaperCutResponse = string | object;
+export type RecognizeEduPaperCutResponse = string | Record<string, unknown>;
 
 export interface RecognizeEduQuestionOcrRequest {
   /**
@@ -4016,7 +4016,7 @@ export interface RecognizeEduQuestionOcrRequest {
   NeedRotate?: boolean;
 }
 
-export type RecognizeEduQuestionOcrResponse = string | object;
+export type RecognizeEduQuestionOcrResponse = string | Record<string, unknown>;
 
 export interface RecognizeEduPaperStructedRequest {
   /**
@@ -4051,7 +4051,7 @@ export interface RecognizeEduPaperStructedRequest {
   NeedRotate?: boolean;
 }
 
-export type RecognizeEduPaperStructedResponse = string | object;
+export type RecognizeEduPaperStructedResponse = string | Record<string, unknown>;
 
 export interface RecognizeMultiLanguageRequest {
   /**
@@ -4075,8 +4075,7 @@ export interface RecognizeMultiLanguageRequest {
    * * 支持语言列表。
    * @acs-in query
    */
-  Languages: Array</** * chn：中文，eng：英文，ja：日文，lading：拉丁，kor：韩文，sx：手写，tai：泰文，rus：俄文，mys：马来文，idn：印尼文，viet：越南文，ukr：乌克兰文，tur：土耳其文，tamil：泰米尔文。
-   * 其中**lading**支持以下语言：葡萄牙语、意大利语、德语、法语、西班牙语。 */ string>;
+  Languages: string[];
   /**
    * 是否输出单字识别结果
    * * 是否输出单字识别结果，默认不需要。
@@ -4107,7 +4106,7 @@ export interface RecognizeMultiLanguageRequest {
   NeedSortPage?: boolean;
 }
 
-export type RecognizeMultiLanguageResponse = string | object;
+export type RecognizeMultiLanguageResponse = string | Record<string, unknown>;
 
 export interface RecognizeEnglishRequest {
   /**
@@ -4142,7 +4141,7 @@ export interface RecognizeEnglishRequest {
   OutputTable?: boolean;
 }
 
-export type RecognizeEnglishResponse = string | object;
+export type RecognizeEnglishResponse = string | Record<string, unknown>;
 
 export interface RecognizeThaiRequest {
   /**
@@ -4177,7 +4176,7 @@ export interface RecognizeThaiRequest {
   OutputTable?: boolean;
 }
 
-export type RecognizeThaiResponse = string | object;
+export type RecognizeThaiResponse = string | Record<string, unknown>;
 
 export interface RecognizeJanpaneseRequest {
   /**
@@ -4212,7 +4211,7 @@ export interface RecognizeJanpaneseRequest {
   OutputTable?: boolean;
 }
 
-export type RecognizeJanpaneseResponse = string | object;
+export type RecognizeJanpaneseResponse = string | Record<string, unknown>;
 
 export interface RecognizeKoreanRequest {
   /**
@@ -4247,7 +4246,7 @@ export interface RecognizeKoreanRequest {
   OutputTable?: boolean;
 }
 
-export type RecognizeKoreanResponse = string | object;
+export type RecognizeKoreanResponse = string | Record<string, unknown>;
 
 export interface RecognizeLatinRequest {
   /**
@@ -4282,7 +4281,7 @@ export interface RecognizeLatinRequest {
   OutputTable?: boolean;
 }
 
-export type RecognizeLatinResponse = string | object;
+export type RecognizeLatinResponse = string | Record<string, unknown>;
 
 export interface RecognizeRussianRequest {
   /**
@@ -4317,7 +4316,7 @@ export interface RecognizeRussianRequest {
   OutputTable?: boolean;
 }
 
-export type RecognizeRussianResponse = string | object;
+export type RecognizeRussianResponse = string | Record<string, unknown>;
 
 export interface RecognizeCovidTestReportRequest {
   /**
@@ -4344,7 +4343,7 @@ export interface RecognizeCovidTestReportRequest {
   MultipleResult?: boolean;
 }
 
-export type RecognizeCovidTestReportResponse = string | object;
+export type RecognizeCovidTestReportResponse = string | Record<string, unknown>;
 
 export interface VerifyBusinessLicenseRequest {
   /**

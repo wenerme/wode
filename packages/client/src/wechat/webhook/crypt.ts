@@ -10,12 +10,14 @@ export async function parseAesKey({ key, iv }: { key: CryptoKey | string; iv?: U
     if (key.length !== 43) {
       throw new Error('Invalid EncodingAESKey length');
     }
-    let raw = ArrayBuffers.asView(Uint8Array, ArrayBuffers.from(key, 'base64'));
+
+    const raw = ArrayBuffers.asView(Uint8Array, ArrayBuffers.from(key, 'base64'));
     key = await crypto.subtle.importKey('raw', raw, 'AES-CBC', false, ['decrypt']);
     iv = raw.slice(0, 16);
   } else if (!iv) {
     throw new Error('iv is required');
   }
+
   return { key, iv };
 }
 
@@ -26,7 +28,7 @@ export async function decrypt({ key, iv, data }: { key: CryptoKey | string; iv?:
   // The "data" argument must be of type string or an instance of Buffer, TypedArray, or DataView. Received an instance of ArrayBuffer
   const decipher = createDecipheriv('aes-256-cbc', key as any, iv);
   decipher.setAutoPadding(false);
-  let buf = ArrayBuffers.concat([decipher.update(data as any), decipher.final()]);
+  const buf = ArrayBuffers.concat([decipher.update(data as any), decipher.final()]);
   let dec = ArrayBuffers.asView(Uint8Array, buf);
 
   // 有时候会失败 The operation failed for an operation-specific reason

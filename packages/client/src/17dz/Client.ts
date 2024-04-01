@@ -1,6 +1,6 @@
 import { requireSuccessResponse } from './request';
 import { sign } from './sign';
-import { QueryCustomerItem, ListResponse } from './types';
+import { type ListResponse, type QueryCustomerItem } from './types';
 
 export class Client {
   readonly options: ClientOptions;
@@ -43,7 +43,7 @@ export class Client {
     return fetch(url, r).then(requireSuccessResponse);
   }
 
-  customerQuery({
+  async customerQuery({
     pageNo = 1,
     pageSize = 200,
     ...rest
@@ -68,7 +68,7 @@ export class Client {
     });
   }
 
-  customerUpdate({
+  async customerUpdate({
     ...rest
   }: {
     customerId: string;
@@ -89,7 +89,7 @@ export class Client {
     });
   }
 
-  customerAdd({
+  async customerAdd({
     ...rest
   }: {
     customerName: string;
@@ -109,12 +109,12 @@ export class Client {
     });
   }
 
-  customerUpdateStatus({
+  async customerUpdateStatus({
     ...rest
   }: {
     customerId: string;
     operatorLoginName: string;
-    status: number; //客户状态 1 正常 2 暂停 传数字
+    status: number; // 客户状态 1 正常 2 暂停 传数字
   }) {
     return this.request<QueryCustomerItem>({
       url: '/manage/customer/updateCustomerStatus',
@@ -122,7 +122,7 @@ export class Client {
     });
   }
 
-  customerBatchAssignRoles(body: {
+  async customerBatchAssignRoles(body: {
     operatorLoginName: string; // 操作人手机号(必须存在于亿企代账)
     customerIdList: string[]; // 客户Id列表
     roleAssignmentList: Array<{

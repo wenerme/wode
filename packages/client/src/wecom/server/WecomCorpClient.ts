@@ -1,18 +1,22 @@
-import { FetchLike } from '@wener/utils';
-import { createExpireValueHolder, CreateExpireValueHolderOptions, ExpiryValueHolder } from '../../ExpiryValue';
-import { getValue, MaybeValueHolder } from '../../ValueHolder';
-import { createJsSdkSignature } from '../../wechat';
-import { CreateUserRequest, DepartmentInput, DepartmentOutput, GeneralResponse } from './api';
-import { request, RequestOptions } from './request';
+import { type FetchLike } from '@wener/utils';
 import {
-  BatchGetExternalContactByUserResponse,
-  ExternalContactTagGroup,
-  GetExternalContactGroupChat,
-  GetExternalContactResponse,
-  GetExternalContactTagsResponse,
-  GetMessageAuditGroupChatResponse,
-  GetUserResponse,
-  SendMessageRequest,
+  createExpireValueHolder,
+  type CreateExpireValueHolderOptions,
+  type ExpiryValueHolder,
+} from '../../ExpiryValue';
+import { getValue, type MaybeValueHolder } from '../../ValueHolder';
+import { createJsSdkSignature } from '../../wechat';
+import { type CreateUserRequest, type DepartmentInput, type DepartmentOutput, type GeneralResponse } from './api';
+import { request, type RequestOptions } from './request';
+import {
+  type BatchGetExternalContactByUserResponse,
+  type ExternalContactTagGroup,
+  type GetExternalContactGroupChat,
+  type GetExternalContactResponse,
+  type GetExternalContactTagsResponse,
+  type GetMessageAuditGroupChatResponse,
+  type GetUserResponse,
+  type SendMessageRequest,
 } from './types';
 
 export interface WecomCorpClientInitOptions {
@@ -92,7 +96,7 @@ export class WecomCorpClient {
    *
    * @see https://developer.work.weixin.qq.com/document/path/91039
    */
-  getAccessToken() {
+  async getAccessToken() {
     return this.request<GetAccessTokenResponse>({
       url: '/cgi-bin/gettoken',
       params: {
@@ -108,7 +112,7 @@ export class WecomCorpClient {
   /**
    * https://qyapi.weixin.qq.com/cgi-bin/get_jsapi_ticket?access_token=ACCESS_TOKEN
    */
-  getJsApiTicket() {
+  async getJsApiTicket() {
     return this.request<GetJsApiTicketResponse>({
       url: '/cgi-bin/get_jsapi_ticket',
       params: {
@@ -123,7 +127,7 @@ export class WecomCorpClient {
   /**
    * https://qyapi.weixin.qq.com/cgi-bin/ticket/get?access_token=ACCESS_TOKEN&type=agent_config
    */
-  getAgentJsApiTicket() {
+  async getAgentJsApiTicket() {
     return this.request<GetJsApiTicketResponse>({
       url: '/cgi-bin/ticket/get',
       params: {
@@ -139,7 +143,7 @@ export class WecomCorpClient {
   /**
    * @see  https://developer.work.weixin.qq.com/document/path/92521 获取企业微信服务器的ip段
    */
-  getCallbackIps() {
+  async getCallbackIps() {
     return this.request<{
       ip_list: string[];
     }>({
@@ -153,7 +157,7 @@ export class WecomCorpClient {
   /**
    * @see https://developer.work.weixin.qq.com/document/path/92520 获取企业微信接口IP段
    */
-  getApiDomainIps() {
+  async getApiDomainIps() {
     return this.request<{
       ip_list: string[];
     }>({
@@ -194,6 +198,7 @@ export class WecomCorpClient {
         o.params[k] = await getValue(v());
       }
     }
+
     o.fetch ||= this.options.fetch;
     return request<T>(o);
   }
@@ -201,7 +206,7 @@ export class WecomCorpClient {
   /**
    * @see https://developer.work.weixin.qq.com/document/path/91023
    */
-  getUserInfoByAuthCode({ code }: { code: string }) {
+  async getUserInfoByAuthCode({ code }: { code: string }) {
     return this.request<{
       userid?: string;
       user_ticket?: string; // snsapi_privateinfo, 1800s
@@ -220,7 +225,7 @@ export class WecomCorpClient {
   /**
    * @see https://developer.work.weixin.qq.com/document/path/95833
    */
-  getUserDetailByUserTicket({ user_ticket }: { user_ticket: string }) {
+  async getUserDetailByUserTicket({ user_ticket }: { user_ticket: string }) {
     return this.request<{
       gender: string; // 1 男 2 女 0 未知
       avatar: string;
@@ -243,7 +248,7 @@ export class WecomCorpClient {
   /**
    * @see https://developer.work.weixin.qq.com/document/path/90196
    */
-  getUser({ userid }: { userid: string }) {
+  async getUser({ userid }: { userid: string }) {
     return this.request<GetUserResponse>({
       url: '/cgi-bin/user/get',
       params: {
@@ -256,7 +261,7 @@ export class WecomCorpClient {
   /**
    * @see https://developer.work.weixin.qq.com/document/path/90202 userid转openid
    */
-  convertUserIdToOpenId(body: { userid: string }) {
+  async convertUserIdToOpenId(body: { userid: string }) {
     return this.request<{ openid: string }>({
       method: 'POST',
       url: '/cgi-bin/user/convert_to_openid',
@@ -267,7 +272,7 @@ export class WecomCorpClient {
     });
   }
 
-  convertOpenIdToUserId(body: { openid: string }) {
+  async convertOpenIdToUserId(body: { openid: string }) {
     return this.request<{ userid: string }>({
       method: 'POST',
       url: '/cgi-bin/user/convert_to_userid',
@@ -281,7 +286,7 @@ export class WecomCorpClient {
   /**
    * @see https://developer.work.weixin.qq.com/document/path/92951 获取会话内容存档内部群信息
    */
-  getMessageAuditGroupChat(body: { roomid: string }) {
+  async getMessageAuditGroupChat(body: { roomid: string }) {
     return this.request<GetMessageAuditGroupChatResponse>({
       method: 'POST',
       url: '/cgi-bin/msgaudit/groupchat/get',
@@ -295,7 +300,7 @@ export class WecomCorpClient {
   /**
    * @see https://developer.work.weixin.qq.com/document/path/91614 获取会话内容存档开启成员列表
    */
-  getMessageAuditPermitUsers(
+  async getMessageAuditPermitUsers(
     params: {
       // 拉取对应版本的开启成员列表。1表示办公版；2表示服务版；3表示企业版。非必填，不填写的时候返回全量成员列表。
       type?: number;
@@ -313,7 +318,7 @@ export class WecomCorpClient {
   /**
    * @see https://developer.work.weixin.qq.com/document/path/91774 获取机器人信息
    */
-  getMessageAuditRobotInfo(params: { access_token?: string; robot_id: string }) {
+  async getMessageAuditRobotInfo(params: { access_token?: string; robot_id: string }) {
     return this.request<{
       data: {
         name: string;
@@ -332,7 +337,7 @@ export class WecomCorpClient {
   /**
    * @see https://developer.work.weixin.qq.com/document/path/95327 转换external-userid
    */
-  getExternalContactNewExternalUserId({
+  async getExternalContactNewExternalUserId({
     access_token,
     ...body
   }: {
@@ -352,7 +357,7 @@ export class WecomCorpClient {
   /**
    * @see https://developer.work.weixin.qq.com/document/path/96721 外部联系人openid转换
    */
-  convertExternalContactUserIdToOpenId(body: { external_userid: string }) {
+  async convertExternalContactUserIdToOpenId(body: { external_userid: string }) {
     return this.request({
       method: 'POST',
       url: '/cgi-bin/externalcontact/convert_to_openid',
@@ -366,7 +371,7 @@ export class WecomCorpClient {
   /**
    * @see https://developer.work.weixin.qq.com/document/path/90198
    */
-  deleteUser({ userid }: { userid: string }) {
+  async deleteUser({ userid }: { userid: string }) {
     return this.request<GeneralResponse>({
       url: '/cgi-bin/user/delete',
       params: {
@@ -379,7 +384,7 @@ export class WecomCorpClient {
   /**
    * @see https://developer.work.weixin.qq.com/document/path/90199
    */
-  batchDeleteUser({ useridlist }: { useridlist: string[] }) {
+  async batchDeleteUser({ useridlist }: { useridlist: string[] }) {
     return this.request<GeneralResponse>({
       url: '/cgi-bin/user/delete',
       params: {
@@ -394,7 +399,7 @@ export class WecomCorpClient {
   /**
    * @see https://developer.work.weixin.qq.com/document/path/90195
    */
-  createUser(data: CreateUserRequest) {
+  async createUser(data: CreateUserRequest) {
     return this.request<GeneralResponse>({
       url: '/cgi-bin/user/create',
       params: {
@@ -407,7 +412,7 @@ export class WecomCorpClient {
   /**
    * @see https://developer.work.weixin.qq.com/document/path/90197
    */
-  updateUser(data: CreateUserRequest) {
+  async updateUser(data: CreateUserRequest) {
     return this.request<GeneralResponse>({
       url: '/cgi-bin/user/update',
       params: {
@@ -420,7 +425,7 @@ export class WecomCorpClient {
   /**
    * @see https://developer.work.weixin.qq.com/document/path/96021
    */
-  getUserIds({ cursor, limit }: { limit?: number; cursor?: string }) {
+  async getUserIds({ cursor, limit }: { limit?: number; cursor?: string }) {
     return this.request<{
       next_cursor: string;
       dept_user: Array<{
@@ -441,7 +446,7 @@ export class WecomCorpClient {
   /**
    * @see https://developer.work.weixin.qq.com/document/path/95350
    */
-  getDepartmentIds({ id }: { id?: string | number }) {
+  async getDepartmentIds({ id }: { id?: string | number }) {
     return this.request<{
       department_id: Array<{
         id: number;
@@ -460,7 +465,7 @@ export class WecomCorpClient {
   /**
    * @see https://developer.work.weixin.qq.com/document/path/90205
    */
-  createDepartment(data: DepartmentInput) {
+  async createDepartment(data: DepartmentInput) {
     return this.request<GeneralResponse & { id: number }>({
       url: '/cgi-bin/department/create',
       params: {
@@ -473,7 +478,7 @@ export class WecomCorpClient {
   /**
    * @see https://developer.work.weixin.qq.com/document/path/90206
    */
-  updateDepartment(data: DepartmentInput & { id: string | number }) {
+  async updateDepartment(data: DepartmentInput & { id: string | number }) {
     return this.request<GeneralResponse & { id: number }>({
       url: '/cgi-bin/department/update',
       params: {
@@ -486,7 +491,7 @@ export class WecomCorpClient {
   /**
    * @see https://developer.work.weixin.qq.com/document/path/90207
    */
-  deleteDepartment({ id }: { id: number | string }) {
+  async deleteDepartment({ id }: { id: number | string }) {
     return this.request<GeneralResponse>({
       url: '/cgi-bin/department/delete',
       params: {
@@ -499,7 +504,7 @@ export class WecomCorpClient {
   /**
    * @see https://developer.work.weixin.qq.com/document/path/95351
    */
-  getDepartment({ id }: { id: number | string }) {
+  async getDepartment({ id }: { id: number | string }) {
     return this.request<{
       department: DepartmentOutput;
     }>({
@@ -515,12 +520,12 @@ export class WecomCorpClient {
    * @see https://developer.work.weixin.qq.com/document/path/90200
    * @deprecated
    */
-  getDepartmentMembers({ department_id }: { department_id: string | number }) {
+  async getDepartmentMembers({ department_id }: { department_id: string | number }) {
     return this.request<{
       userlist: Array<{
         userid: string;
         name: string;
-        department: Array<number>;
+        department: number[];
         open_userid: string;
       }>;
     }>({
@@ -535,7 +540,7 @@ export class WecomCorpClient {
   /**
    * @see https://developer.work.weixin.qq.com/document/path/92122 获取客户群详情
    */
-  getExternalContactGroupChat(body: { access_token?: string; chat_id?: string; need_name?: number }) {
+  async getExternalContactGroupChat(body: { access_token?: string; chat_id?: string; need_name?: number }) {
     return this.request<GetExternalContactGroupChat>({
       method: 'POST',
       url: '/cgi-bin/externalcontact/groupchat/get',
@@ -550,10 +555,10 @@ export class WecomCorpClient {
    *
    * @see https://developer.work.weixin.qq.com/document/path/92113 获取客户列表
    */
-  getExternalContacts(params: {
+  async getExternalContacts(params: {
     userid?: string; // 企业成员的userid
   }) {
-    return this.request<{ external_userid: Array<string> }>({
+    return this.request<{ external_userid: string[] }>({
       method: 'GET',
       url: '/cgi-bin/externalcontact/list',
       params: {
@@ -566,7 +571,7 @@ export class WecomCorpClient {
   /**
    * @see https://developer.work.weixin.qq.com/document/path/92120 获取客户群列表
    */
-  getExternalContactGroupChats(body: {
+  async getExternalContactGroupChats(body: {
     status_filter?: number;
     // 最大 1000
     limit?: number;
@@ -603,7 +608,7 @@ export class WecomCorpClient {
   /**
    * @see https://developer.work.weixin.qq.com/document/path/92114 获取客户详情
    */
-  getExternalContact(params: { external_userid: string }) {
+  async getExternalContact(params: { external_userid: string }) {
     return this.request<GetExternalContactResponse>({
       url: '/cgi-bin/externalcontact/get',
       params: {
@@ -616,7 +621,7 @@ export class WecomCorpClient {
   /**
    * @see https://developer.work.weixin.qq.com/document/path/92994 批量获取客户详情
    */
-  batchGetExternalContactByUser(body: {
+  async batchGetExternalContactByUser(body: {
     access_token?: string;
     userid_list: string[];
     cursor?: string;
@@ -632,7 +637,7 @@ export class WecomCorpClient {
     });
   }
 
-  getExternalContactFollowUsers() {
+  async getExternalContactFollowUsers() {
     // https://developer.work.weixin.qq.com/document/path/92571
     return this.request<{ follow_user: string[] }>({
       url: '/cgi-bin/externalcontact/get_follow_user_list',
@@ -645,7 +650,7 @@ export class WecomCorpClient {
   /**
    * @see https://developer.work.weixin.qq.com/document/path/92117 获取企业标签库
    */
-  getExternalContactTags(body: { tag_id?: string[]; group_id?: string[] }) {
+  async getExternalContactTags(body: { tag_id?: string[]; group_id?: string[] }) {
     return this.request<GetExternalContactTagsResponse>({
       url: '/cgi-bin/externalcontact/get_corp_tag_list',
       params: {
@@ -658,7 +663,7 @@ export class WecomCorpClient {
   /**
    * @see https://developer.work.weixin.qq.com/document/path/92117 删除企业客户标签
    */
-  deleteExternalContactTags(body: { tag_id?: string[]; group_id?: string[]; agentid?: number }) {
+  async deleteExternalContactTags(body: { tag_id?: string[]; group_id?: string[]; agentid?: number }) {
     return this.request<GeneralResponse>({
       url: '/cgi-bin/externalcontact/del_corp_tag',
       params: {
@@ -671,7 +676,7 @@ export class WecomCorpClient {
   /**
    * @see https://developer.work.weixin.qq.com/document/path/92117 添加企业客户标签
    */
-  createExternalContactTag(body: {
+  async createExternalContactTag(body: {
     group_id?: string;
     group_name?: string;
     order?: number;
@@ -690,7 +695,7 @@ export class WecomCorpClient {
   /**
    * @see https://developer.work.weixin.qq.com/document/path/92117 编辑企业客户标签
    */
-  updateExternalContactTag(body: { id: string; name?: string; order?: number; agentid?: number }) {
+  async updateExternalContactTag(body: { id: string; name?: string; order?: number; agentid?: number }) {
     return this.request<GeneralResponse>({
       url: '/cgi-bin/externalcontact/edit_corp_tag',
       params: {
@@ -700,7 +705,7 @@ export class WecomCorpClient {
     });
   }
 
-  convertOpenGidToChatId(body: { opengid: string }) {
+  async convertOpenGidToChatId(body: { opengid: string }) {
     return this.request<{ chat_id: string }>({
       url: '/cgi-bin/externalcontact/opengid_to_chatid',
       params: {
@@ -713,7 +718,7 @@ export class WecomCorpClient {
   /**
    * @see https://developer.work.weixin.qq.com/document/path/90247
    */
-  getAppChat(params: { chatid: string }) {
+  async getAppChat(params: { chatid: string }) {
     return this.request<{
       chat_info: {
         chatid: string;
@@ -730,12 +735,12 @@ export class WecomCorpClient {
     });
   }
 
-  getTags() {
+  async getTags() {
     return this.request<{
-      taglist: {
+      taglist: Array<{
         tagid: number;
         tagname: string;
-      }[];
+      }>;
     }>({
       url: '/cgi-bin/tag/list',
       params: {
@@ -744,7 +749,7 @@ export class WecomCorpClient {
     });
   }
 
-  createTag(body: { tagname: string; tagid?: number }) {
+  async createTag(body: { tagname: string; tagid?: number }) {
     return this.request<{
       tagid: number;
     }>({
@@ -756,8 +761,8 @@ export class WecomCorpClient {
     });
   }
 
-  updateTag(body: { tagname: string; tagid: number }) {
-    return this.request<{}>({
+  async updateTag(body: { tagname: string; tagid: number }) {
+    return this.request<Record<string, unknown>>({
       url: '/cgi-bin/tag/update',
       params: {
         access_token: true,
@@ -766,8 +771,8 @@ export class WecomCorpClient {
     });
   }
 
-  deleteTag(params: { tagid: number }) {
-    return this.request<{}>({
+  async deleteTag(params: { tagid: number }) {
+    return this.request<Record<string, unknown>>({
       url: '/cgi-bin/tag/update',
       params: {
         ...params,
@@ -776,7 +781,7 @@ export class WecomCorpClient {
     });
   }
 
-  getTagMembers(params: { tagid: number }) {
+  async getTagMembers(params: { tagid: number }) {
     return this.request<{
       tagname: string;
       userlist: Array<{
@@ -793,12 +798,12 @@ export class WecomCorpClient {
     });
   }
 
-  addTagMembers(body: {
+  async addTagMembers(body: {
     tagid: number;
-    /*单次不超过 1000*/ userlist?: string[];
-    /*单次不超过 100*/ partylist?: number[];
+    /* 单次不超过 1000 */ userlist?: string[];
+    /* 单次不超过 100 */ partylist?: number[];
   }) {
-    return this.request<{}>({
+    return this.request<Record<string, unknown>>({
       url: '/cgi-bin/tag/addtagusers',
       params: {
         access_token: true,
@@ -807,12 +812,12 @@ export class WecomCorpClient {
     });
   }
 
-  deleteTagMembers(body: {
+  async deleteTagMembers(body: {
     tagid: number;
-    /*单次不超过 1000*/ userlist?: string[];
-    /*单次不超过 100*/ partylist?: number[];
+    /* 单次不超过 1000 */ userlist?: string[];
+    /* 单次不超过 100 */ partylist?: number[];
   }) {
-    return this.request<{}>({
+    return this.request<Record<string, unknown>>({
       url: '/cgi-bin/tag/deltagusers',
       params: {
         access_token: true,
@@ -821,7 +826,7 @@ export class WecomCorpClient {
     });
   }
 
-  sendMessage(body: SendMessageRequest) {
+  async sendMessage(body: SendMessageRequest) {
     return this.request<{
       invaliduser: string; // | 分割
       invalidparty: string;
@@ -838,7 +843,7 @@ export class WecomCorpClient {
     });
   }
 
-  recallMessage(body: { msgid: string }) {
+  async recallMessage(body: { msgid: string }) {
     return this.request<GeneralResponse>({
       url: '/cgi-bin/message/recall',
       params: {
@@ -870,22 +875,22 @@ export interface GetJsApiTicketResponse {
 // }
 
 const AgentTypes = {
-  3010185: {
+  3_010_185: {
     title: '人事助手',
   },
-  3010115: {
+  3_010_115: {
     title: '对外收款',
   },
-  3010011: {
+  3_010_011: {
     title: '打卡',
   },
-  3010040: {
+  3_010_040: {
     title: '审批',
   },
-  3010041: {
+  3_010_041: {
     title: '汇报',
   },
-  3010097: { title: '直播' }, // https://developer.work.weixin.qq.com/document/path/93633
+  3_010_097: { title: '直播' }, // https://developer.work.weixin.qq.com/document/path/93633
   // : { title: '公费电话' }, // https://work.weixin.qq.com/api/doc/14744
   // 企业微信服务商助手
   // 会议室

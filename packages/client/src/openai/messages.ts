@@ -1,5 +1,3 @@
-import { ListObject } from './types';
-
 export type CreateEmbeddingRequest = {
   input: string | string[];
   model: string;

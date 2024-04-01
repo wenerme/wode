@@ -35,7 +35,7 @@ test('crypto', async () => {
 <AgentID><![CDATA[218]]></AgentID>
 </xml>
 `;
-  let c = await createWechatWebhookHandler({ encodingAesKey, token, appId: corpId });
+  const c = await createWechatWebhookHandler({ encodingAesKey, token, appId: corpId });
   const out = c.parse(body);
 
   {
@@ -46,11 +46,18 @@ test('crypto', async () => {
     const sign = hex(await sha1(s.sort().join('')));
     assert.equal(sign, msg_signature);
 
-    assert.isTrue(await c.verify({ timestamp, nonce, signature: msg_signature, message: out.Encrypt }));
+    assert.isTrue(
+      await c.verify({
+        timestamp,
+        nonce,
+        signature: msg_signature,
+        message: out.Encrypt,
+      }),
+    );
   }
 
   console.log(out);
-  let { receiverId, payload, content } = await c.decryptPayload(out);
+  const { receiverId, payload, content } = await c.decryptPayload(out);
   console.log(payload);
   assert.equal(corpId, receiverId);
 });

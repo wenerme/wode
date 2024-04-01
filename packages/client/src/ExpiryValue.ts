@@ -1,5 +1,5 @@
-import { MaybePromise } from '@wener/utils';
-import { isValueHolder, ReadonlyValueHolder } from './ValueHolder';
+import { type MaybePromise } from '@wener/utils';
+import { isValueHolder, type ReadonlyValueHolder } from './ValueHolder';
 
 export interface ExpiryValueHolder<T> extends ReadonlyValueHolder<T> {
   getExpiryValue(): Promise<ExpiryValue<T>>;
@@ -48,9 +48,9 @@ export function createExpireValueHolder<T>({
     return opts.value;
   }
 
-  let reload = (value?: ExpiryValue<T>): MaybePromise<ExpiryValue<T>> => {
+  const reload = (value?: ExpiryValue<T>): MaybePromise<ExpiryValue<T>> => {
     if (!value || isExpired(value)) {
-      let next: Promise<{ value: T; expiresAt: Date }> = loader().then(async ({ value, expiresAt }) => {
+      const next: Promise<{ value: T; expiresAt: Date }> = loader().then(async ({ value, expiresAt }) => {
         expiresAt = tryParseDate(expiresAt);
         const out = { value, expiresAt };
         return (await onLoad?.(out)) ?? out;
@@ -58,6 +58,7 @@ export function createExpireValueHolder<T>({
       val$ = next;
       return next;
     }
+
     return value;
   };
 
@@ -66,18 +67,17 @@ export function createExpireValueHolder<T>({
     // use the callback to wrap the loader
     const realLoader = loader;
     const cb = opts.value;
-    loader = () => {
-      return cb({ loader: realLoader, onLoad, isExpired });
-    };
+    loader = async () => cb({ loader: realLoader, onLoad, isExpired });
   } else if (opts.value) {
     // delay ?
     val$ = Promise.resolve(opts.value).then((v) => coerceValue(v));
   }
+
   val$ ||= Promise.resolve(undefined);
 
   return {
-    get: () => val$.then(reload).then((v) => v.value),
-    getExpiryValue: () => val$.then(reload),
+    get: async () => val$.then(reload).then((v) => v.value),
+    getExpiryValue: async () => val$.then(reload),
   };
 }
 
@@ -85,6 +85,7 @@ function coerceValue<T>(o: { value: T; expiresAt: number | Date } | undefined): 
   if (!o) {
     return;
   }
+
   return {
     value: o.value,
     expiresAt: tryParseDate(o.expiresAt),
@@ -92,22 +93,26 @@ function coerceValue<T>(o: { value: T; expiresAt: number | Date } | undefined): 
 }
 
 function tryParseDate(v: number | Date): Date;
-function tryParseDate(v: number | Date | undefined | null): Date | undefined;
+function tryParseDate(v: number | Date | undefined): Date | undefined;
 function tryParseDate(v?: any): Date | undefined {
   if (!v) {
     return undefined;
   }
+
   if (typeof v === 'string') {
-    let d = new Date(v);
+    const d = new Date(v);
     if (!isNaN(d.getTime())) {
       return d;
     }
   }
+
   if (typeof v === 'number') {
     return new Date(v);
   }
+
   if (v instanceof Date) {
     return v;
   }
+
   return undefined;
 }

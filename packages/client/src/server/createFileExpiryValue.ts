@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises';
 import { z } from 'zod';
-import { createExpireValueHolder, CreateExpireValueHolderOptions } from '../ExpiryValue';
+import { createExpireValueHolder, type CreateExpireValueHolderOptions } from '../ExpiryValue';
 
 export function createFileExpiryValue<T>({
   path,
@@ -11,13 +11,13 @@ export function createFileExpiryValue<T>({
     ...opts,
     value: Promise.resolve().then(async () => {
       try {
-        let val = ExpiryValueSchema.parse(JSON.parse(await fs.readFile(path, 'utf8')));
+        const val = ExpiryValueSchema.parse(JSON.parse(await fs.readFile(path, 'utf8')));
         if (val.expiresAt > new Date()) {
           return val as any;
         }
-      } catch (e) {}
+      } catch {}
     }),
-    onLoad: async (v) => {
+    async onLoad(v) {
       await fs.writeFile(path, JSON.stringify(v, null, 2));
       return onLoad?.(v);
     },

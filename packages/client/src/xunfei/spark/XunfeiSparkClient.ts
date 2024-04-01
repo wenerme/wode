@@ -1,6 +1,6 @@
 import { createAsyncIterator, merge } from '@wener/utils';
 import { buildAuthUrl } from './buildAuthParams';
-import { RequestPayload, ResponsePayload } from './types';
+import { type RequestPayload, type ResponsePayload } from './types';
 
 export interface ClientOptionsInit extends Partial<ClientOptions> {}
 
@@ -25,9 +25,11 @@ export class XunfeiSparkClient {
     if (!apiKey || !apiSecret) {
       throw new Error('Missing API Key or Secret');
     }
+
     if (!appId) {
       throw new Error('Missing App ID');
     }
+
     this.options = {
       url,
       apiSecret,
@@ -59,7 +61,7 @@ export class XunfeiSparkClient {
       },
       _req,
     );
-    if (!req.payload.message.text.length) {
+    if (req.payload.message.text.length === 0) {
       throw new Error('Missing message');
     }
 
@@ -77,24 +79,24 @@ export class XunfeiSparkClient {
         });
         ws.addEventListener('message', (e) => {
           const data = JSON.parse(e.data as string) as ResponsePayload;
-          if (!data.header.code) {
-            next([data, data.header.status === 2]);
-          } else {
+          if (data.header.code) {
             const { code, message, sid } = data.header;
             next([undefined, true], new Error(`[${code}] ${message} ${sid}`));
+          } else {
+            next([data, data.header.status === 2]);
           }
         });
 
         ws.send(JSON.stringify(req));
-      } catch (e) {
-        next([undefined, true], e);
+      } catch (error) {
+        next([undefined, true], error);
       }
     });
   }
 
-  private _connect() {
+  private async _connect() {
     const url = buildAuthUrl(this.options);
-    let ws = new WebSocket(url);
+    const ws = new WebSocket(url);
     return new Promise<WebSocket>((resolve, reject) => {
       ws.addEventListener('open', (_e) => {
         resolve(ws);
@@ -103,7 +105,7 @@ export class XunfeiSparkClient {
         console.log(`close ${e.code} ${e.reason} ${e.wasClean}`);
       });
       ws.addEventListener('error', (e) => {
-        console.log(`error`, e);
+        console.log('error', e);
         reject(e);
       });
     });

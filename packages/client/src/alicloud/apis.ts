@@ -1,7 +1,5 @@
-import * as DytnsV20200217 from './DytnsV20200217';
-import * as OcrV20210707 from './OcrV20210707';
-
-export { type OcrV20210707, type DytnsV20200217 };
+import type * as DytnsV20200217 from './DytnsV20200217';
+import type * as OcrV20210707 from './OcrV20210707';
 
 export interface AliCloudApis {
   Dytnsapi: {
@@ -11,3 +9,6 @@ export interface AliCloudApis {
     '2021-07-07': OcrV20210707.OcrV20210707Api;
   };
 }
+
+export * as OcrV20210707 from './OcrV20210707';
+export * as DytnsV20200217 from './DytnsV20200217';

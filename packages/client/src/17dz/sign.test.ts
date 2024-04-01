@@ -1,14 +1,16 @@
 import { ArrayBuffers } from '@wener/utils';
-import { test, expect, assert } from 'vitest';
+import { assert, test } from 'vitest';
 import { sign } from './sign';
 
 test('sign', async () => {
-  if (!globalThis.crypto) (globalThis as any).crypto = await import('crypto').then((v) => v.webcrypto);
+  if (!globalThis.crypto) {
+    (globalThis as any).crypto = await import('node:crypto').then((v) => v.webcrypto);
+  }
 
   const params = {
     appKey: 'NURDNkVCMDY3MzJBNDM3RjlGNDFFRjM2NjNCMUE0RTY=',
     appSecret: '9sbAv4xfdcN7lzVr3PugRg==',
-    timestamp: 1544252223384,
+    timestamp: 1_544_252_223_384,
     version: '1.0.0',
     xReqNonce: '97972162d1b14076b19ff75a9ba431d9',
   };

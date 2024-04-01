@@ -1,7 +1,7 @@
 export type WecomSdk = typeof import('@wecom/jssdk');
 
 export function getWecomJsSdk() {
-  return globalThis.window?.ww as WecomSdk;
+  return globalThis.window?.ww;
 }
 
 declare global {

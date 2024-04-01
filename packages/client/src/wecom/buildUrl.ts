@@ -1,4 +1,4 @@
-import { buildAuthorizeUrl as _buildAuthorizeUrl, BuildAuthorizeUrlOptions } from '../wechat/buildUrl';
+import { buildAuthorizeUrl as _buildAuthorizeUrl, type BuildAuthorizeUrlOptions } from '../wechat/buildUrl';
 
 export function buildAuthorizeUrl(
   o: BuildAuthorizeUrlOptions & {

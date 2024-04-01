@@ -1,16 +1,16 @@
 import { test } from 'vitest';
 import { CubeClient } from './CubeClient';
 
-test('CubeClient', async () => {
+test.skipIf(true)('CubeClient', async () => {
   const client = new CubeClient({
     endpoint: 'http://127.0.0.1:4000',
-    fetch: fetch,
+    fetch,
   });
 
   try {
     console.log(await client.livez());
-  } catch (e) {
-    console.warn(`CubeClient: skip`);
+  } catch {
+    console.warn('CubeClient: skip');
     return;
   }
 
