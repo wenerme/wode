@@ -13,14 +13,14 @@ export interface QueryCustomerItem {
   // 属行业 中小类
   industryType?: string;
   locationCode: string;
-  address?: null;
+  address?: string;
   // 增值税类型 1：一般纳税人， 2：小规模纳税人
   taxType: string;
   createDate: number;
   accountList?: CustomerAccountList[];
   // 客户状态（1未签约、2已签约、3暂停服务、4正常、 -1未知）
   status: number;
-  level?: null;
+  level?: any;
   departmentId: number;
 }
 

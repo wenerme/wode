@@ -1,7 +1,7 @@
 import { ArrayBuffers, hex, sha1 } from '@wener/utils';
 import { XMLBuilder, XMLParser } from 'fast-xml-parser';
 import { decrypt } from './crypt';
-import { WechatWebhookEncryptPayload, WechatWebhookPayload } from './types';
+import { type WechatWebhookEncryptPayload, type WechatWebhookPayload } from './types';
 
 export interface WechatWebhookHandlerCreateOptions {
   token?: string;
@@ -13,7 +13,8 @@ export async function createWechatWebhookHandler({ encodingAesKey, ...rest }: We
   if (encodingAesKey.length !== 43) {
     throw new Error('Invalid AESKey');
   }
-  let raw = ArrayBuffers.asView(Uint8Array, ArrayBuffers.from(encodingAesKey, 'base64'));
+
+  const raw = ArrayBuffers.asView(Uint8Array, ArrayBuffers.from(encodingAesKey, 'base64'));
   const key = await crypto.subtle.importKey(
     'raw',
     raw,
@@ -24,8 +25,14 @@ export async function createWechatWebhookHandler({ encodingAesKey, ...rest }: We
     false,
     ['encrypt', 'decrypt'],
   );
-  let iv = raw.slice(0, 16);
-  return new WechatWebhookHandler({ key, iv, parser: new XMLParser(), builder: new XMLBuilder({}), ...rest });
+  const iv = raw.slice(0, 16);
+  return new WechatWebhookHandler({
+    key,
+    iv,
+    parser: new XMLParser(),
+    builder: new XMLBuilder({}),
+    ...rest,
+  });
 }
 
 /**
@@ -53,6 +60,7 @@ export class WechatWebhookHandler {
     if (!token) {
       throw new Error('token is required for verify');
     }
+
     const s = [token, timestamp, nonce, message].filter(Boolean).sort().join('');
     return signature === hex(await sha1(s));
   }
@@ -68,7 +76,7 @@ export class WechatWebhookHandler {
   async decryptPayload(xml: string | WechatWebhookEncryptPayload): Promise<WechatMessageDecryptResult> {
     const { iv, key, parser } = this.options;
     const data = this.parse(xml);
-    let enc = Buffer.from(data.Encrypt, 'base64');
+    const enc = Buffer.from(data.Encrypt, 'base64');
 
     const { nonce, receiverId, data: content } = await this.decrypt(enc);
 
@@ -80,14 +88,12 @@ export class WechatWebhookHandler {
     const out = {
       nonce,
       content,
-      receiverId: receiverId,
+      receiverId,
       payload: parsed,
     };
 
-    if (this.options.receiverId) {
-      if (out.receiverId !== this.options.receiverId) {
-        throw new Error(`Invalid appId: expected ${this.options.receiverId} got ${out.receiverId}`);
-      }
+    if (this.options.receiverId && out.receiverId !== this.options.receiverId) {
+      throw new Error(`Invalid appId: expected ${this.options.receiverId} got ${out.receiverId}`);
     }
 
     return out;

@@ -28,12 +28,14 @@ export class WecomClientError extends Error {
       } else {
         body = res.body;
       }
-    } catch (e) {
-      last = e;
+    } catch (error) {
+      last = error;
     }
+
     if (last) {
       throw last;
     }
+
     if (res.status >= 400 || body?.errcode) {
       let err: Error;
       if (typeof body === 'object' && body) {
@@ -49,8 +51,10 @@ export class WecomClientError extends Error {
           body,
         });
       }
+
       throw err;
     }
+
     return body;
   }
 }

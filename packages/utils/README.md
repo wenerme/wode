@@ -17,6 +17,30 @@
 - see also
   - https://github.com/Daninet/hash-wasm
 
+# 日用工具集
+
+- 默认 0 依赖
+- 默认 ESM
+- 面向 bundler
+  - 又 bundler 来做 tree shaking 
+  - 目前不提供 bundle 的 dist js
+- 提供 中国 相关的工具
+  - 身份证解析 解析/校验/生成
+  - 行政区划代码 解析/查询
+    - 提供三级 json data - 约 100kb 的 JSON
+  - 统一社会信用代码 解析/校验/生成
+  - 拼音 查询 - 约 145kb 的 JSON
+- 合并了一些小工具包或者替代品，进行现代化和改进
+  - randomUUID
+  - ULID
+  - ms
+  - dlv
+  - is-buffer
+  - dset
+  - templite
+  - rosetta
+  - camelcase
+
 <!-- LINK:BEGIN -->
 
 # Links

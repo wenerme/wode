@@ -1,5 +1,5 @@
-import { FetchLike } from '@wener/utils';
-import { CubeLoadRequest, CubeLoadResponse } from './service';
+import { type FetchLike } from '@wener/utils';
+import { type CubeLoadRequest, type CubeLoadResponse } from './service';
 
 /**
  * https://cube.dev/docs/reference/rest-api
@@ -7,7 +7,7 @@ import { CubeLoadRequest, CubeLoadResponse } from './service';
 export class CubeClient {
   constructor(readonly options: CubeClientOptions) {}
 
-  load(req: CubeLoadRequest) {
+  async load(req: CubeLoadRequest) {
     return this.request<CubeLoadResponse>({
       path: '/v1/load',
       body: req,
@@ -28,9 +28,10 @@ export class CubeClient {
     if (path.startsWith('/v1')) {
       path = '/cubejs-api' + path;
     }
+
     const url = `${endpoint}${path}`;
 
-    let init: Record<string, any> = {
+    const init: Record<string, any> = {
       method,
       headers: {},
     };
@@ -40,26 +41,27 @@ export class CubeClient {
       init.headers['Content-Type'] = 'application/json';
     }
 
-    let res = await fetch(url, init);
+    const res = await fetch(url, init);
 
     if (!res.ok) {
       let out;
       try {
         out = await res.text();
-      } catch (e) {}
+      } catch {}
+
       throw new Error(`Request ${method} ${url}: ${res.status} ${res.statusText} ${out}`);
     }
 
     return res.json();
   }
 
-  readyz() {
+  async readyz() {
     return this.request<{ health: 'HEALTH' | 'DOWN' }>({
       path: '/readyz',
     });
   }
 
-  livez() {
+  async livez() {
     return this.request<{ health: 'HEALTH' | 'DOWN' }>({
       path: '/livez',
     });

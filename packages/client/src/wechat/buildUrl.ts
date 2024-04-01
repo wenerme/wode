@@ -16,22 +16,23 @@ export function buildAuthorizeUrl({
 }: BuildAuthorizeUrlOptions = {}) {
   const u = new URL('https://open.weixin.qq.com/connect/oauth2/authorize#wechat_redirect');
   if (!appid) {
-    throw new Error(`buildAuthorizeUrl: appid is required`);
+    throw new Error('buildAuthorizeUrl: appid is required');
   }
+
   if (!redirect_uri) {
-    throw new Error(`buildAuthorizeUrl: redirect_uri is required`);
+    throw new Error('buildAuthorizeUrl: redirect_uri is required');
   }
-  Object.entries({
+
+  for (const v of Object.entries({
     appid,
     redirect_uri,
     response_type: 'code',
     scope: 'snsapi_base',
     ...o,
-  })
-    .filter((v) => v[1])
-    .forEach((v) => {
-      u.searchParams.append(v[0], String(v[1]));
-    });
+  }).filter((v) => v[1])) {
+    u.searchParams.append(v[0], String(v[1]));
+  }
+
   return u.toString();
 }
 
@@ -41,13 +42,15 @@ export function buildOfficialAccountProfileUrl({
   if (!uin) {
     throw new Error('buildOfficialAccountProfileUrl: uin required');
   }
+
   return `https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=${btoa(uin)}&scene=124#wechat_redirect`;
 }
 
 export function buildShowQrcodeUrl(o: { ticket: string }) {
-  const url = new URL(`https://mp.weixin.qq.com/cgi-bin/showqrcode`);
-  Object.entries(o).forEach(([k, v]) => {
+  const url = new URL('https://mp.weixin.qq.com/cgi-bin/showqrcode');
+  for (const [k, v] of Object.entries(o)) {
     url.searchParams.append(k, v);
-  });
+  }
+
   return url.toString();
 }

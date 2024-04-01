@@ -1,7 +1,6 @@
-import { FetchLike, getGlobalThis, MaybePromise } from '@wener/utils';
-import { CreateEmbeddingRequest } from './messages';
-import { OpenAiRequestOptions, request } from './request';
-import { DeletedObject, ImageObject, ListObject, ModelObject } from './types';
+import { type FetchLike, getGlobalThis, type MaybePromise } from '@wener/utils';
+import { type OpenAiRequestOptions, request } from './request';
+import { type DeletedObject, type ImageObject, type ListObject, type ModelObject } from './types';
 
 export interface OpenAiClientOptions {
   fetch: FetchLike;
@@ -34,26 +33,26 @@ export class OpenAiClient {
     };
   }
 
-  getModels() {
+  async getModels() {
     return this.request<ListObject<ModelObject>>({
       url: 'models',
     });
   }
 
-  getModel(id: string) {
+  async getModel(id: string) {
     return this.request<ModelObject>({
       url: `models/${id}`,
     });
   }
 
-  deleteModel(id: string) {
+  async deleteModel(id: string) {
     return this.request<DeletedObject<'model'>>({
       method: 'DELETE',
       url: `models/${id}`,
     });
   }
 
-  request<T>(opts: OpenAiRequestOptions<T>) {
+  async request<T>(opts: OpenAiRequestOptions<T>) {
     const { fetch, baseUrl, headers } = this.options;
     return request({
       fetch,

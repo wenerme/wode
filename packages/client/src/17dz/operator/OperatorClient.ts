@@ -1,32 +1,36 @@
-import { type MaybePromise } from '@wener/utils';
+import { FetchLike, type MaybePromise } from '@wener/utils';
 import dayjs from 'dayjs';
 import { decrypt } from '../crypto';
-import { requestFromSession, SessionRequestOptions } from './requestFromSession';
-import type {
-  FinanceAccDocsListItem,
-  FinanceAccountSetResponse,
-  FinanceCheckFinanceAuthResponse,
-  FinanceGetAccountSetInfoResponse,
-  FinanceQueryCustomerResponseItem,
-  GetCustomerResponse,
-  GetIitCustomerSettingResponse,
-  GetIitSingleCustomerResponse,
-  GetIrcAccountInfoResponse,
-  GetLoginSessionResponse,
-  GetSocinsCustomerByIdResponse,
-  InvoiceInputDetailResponse,
-  InvoiceInputGeneralQueryResponseItem,
-  InvoiceInputListResponseItem,
-  InvoiceInputStatistics,
-  InvoiceOutputDetailResponse,
-  InvoiceOutputListResponseItem,
-  InvoiceOutputStatisticsResponse,
-  ListEmployeeItem,
-  ListResponse,
-  ManageListCustomerItem,
-  PageQueryCollectResult,
-  XyqPortalWebManageUserQueryResponse,
-  IitSingleReportQueryListResponse,
+import { requestFromSession, type SessionRequestOptions } from './requestFromSession';
+import {
+  ChangeGroupResponse,
+  type CustomerProgressQueryResponse,
+  type FinanceAccDocsListItem,
+  type FinanceAccountSetResponse,
+  type FinanceCheckFinanceAuthResponse,
+  type FinanceGetAccountSetInfoResponse,
+  type FinanceQueryCustomerResponseItem,
+  type GetCustomerResponse,
+  GetGroupResponse,
+  type GetIitCustomerSettingResponse,
+  type GetIitSingleCustomerResponse,
+  type GetIrcAccountInfoResponse,
+  type GetLoginSessionResponse,
+  type GetMemberListResponseItem,
+  type GetSocinsCustomerByIdResponse,
+  type IitSingleReportQueryListResponse,
+  type InvoiceInputDetailResponse,
+  type InvoiceInputGeneralQueryResponseItem,
+  type InvoiceInputListResponseItem,
+  type InvoiceInputStatistics,
+  type InvoiceOutputDetailResponse,
+  type InvoiceOutputListResponseItem,
+  type InvoiceOutputStatisticsResponse,
+  type ListEmployeeItem,
+  type ListResponse,
+  type ManageListCustomerItem,
+  type PageQueryCollectResult,
+  type XyqPortalWebManageUserQueryResponse,
 } from './types';
 
 export class OperatorClient {
@@ -44,19 +48,64 @@ export class OperatorClient {
     return this.options.cookie();
   }
 
-  getCustomer(params: { customerId: string }) {
+  async getCustomer(params: { customerId: string }) {
     return this.request<GetCustomerResponse>({
-      url: `https://17dz.com/xqy-portal-web/manage/v2/customer/getCustomer`,
+      url: 'https://17dz.com/xqy-portal-web/manage/v2/customer/getCustomer',
       params,
+    });
+  }
+
+  async getCustomerProgressQuery(params: {
+    accountId?: string;
+    key?: string;
+    pageNo?: number;
+    pageSize?: number;
+    period: string;
+    taxType?: string;
+  }) {
+    return this.request<CustomerProgressQueryResponse>({
+      url: 'https://www.17dz.com/xmanage/manage/customer/progress/query',
+      body: {
+        pageNo: 1,
+        pageSize: 100,
+        ...params,
+      },
+    });
+  }
+
+  /**
+   * 部门成员
+   */
+  async getMemberList(params: {
+    admin?: string;
+    available?: boolean; // true 为在职员工
+    key?: number;
+    nameInitial?: number;
+  }) {
+    return this.request<GetMemberListResponseItem[]>({
+      url: 'https://www.17dz.com/xmanage/manage/team/members/getMemberList',
+      body: {
+        admin: '',
+        available: '',
+        key: '',
+        nameInitial: '',
+        ...params,
+      },
+    }).then((v) => {
+      for (const vv of v) {
+        vv.mobile = decrypt(vv.mobile);
+      }
+
+      return v;
     });
   }
 
   /**
    * 社保信息+税务
    */
-  getSocinsCustomerById(params: { customerId: string }) {
+  async getSocinsCustomerById(params: { customerId: string }) {
     return this.request<GetSocinsCustomerByIdResponse>({
-      url: `https://17dz.com/socinsweb/imposition/customerInfo/getByCustomerId`,
+      url: 'https://17dz.com/socinsweb/imposition/customerInfo/getByCustomerId',
       params,
     }).then((v) => {
       v.socinsPassword = decrypt(v.socinsPassword);
@@ -67,33 +116,31 @@ export class OperatorClient {
   /**
    * 网报账号
    */
-  getIrcTaxAccountInfo(params: {
+  async getIrcTaxAccountInfo(params: {
     companyId: string; // 同 customerId
     taxAccountType?: number; // 105,107,305 - 企业登录 CA登录 证书登录
     bizType?: number; // 4
     bizCode?: string; // dz-taxSetting
   }) {
     return this.request<string>({
-      url: `https://irc.17win.com/irc/tax/getAccountInfo`,
+      url: 'https://irc.17win.com/irc/tax/getAccountInfo',
       params: {
         taxAccountType: 105,
         bizType: 4,
         bizCode: 'dz-taxSetting',
         ...params,
       },
-    }).then((v) => {
-      return JSON.parse(decrypt(v)) as GetIrcAccountInfoResponse;
-    });
+    }).then((v) => JSON.parse(decrypt(v)) as GetIrcAccountInfoResponse);
   }
 
   /**
    * 个税申报设置
    */
-  getIitCustomerSetting(params: { customerId: string }) {
+  async getIitCustomerSetting(params: { customerId: string }) {
     return this.request<GetIitCustomerSettingResponse>({
-      url: `https://17dz.com/iitweb/iitweb/yqdz/customer/getCustomerSetting`,
+      url: 'https://17dz.com/iitweb/iitweb/yqdz/customer/getCustomerSetting',
       params,
-      transform: ({ data }) => {
+      transform({ data }) {
         data.keyPassword = decrypt(data.keyPassword);
         data.realNamePassword = decrypt(data.realNamePassword);
         return data;
@@ -102,7 +149,7 @@ export class OperatorClient {
   }
 
   // 常用所得 正常工资薪金 declarationType 1 reportType 0101
-  iitSingleReportQueryList(params: {
+  async iitSingleReportQueryList(params: {
     customerId: string | number;
     period: string;
     declarationType?: string | number;
@@ -113,7 +160,7 @@ export class OperatorClient {
     // sortColumn=&sortMode=&declarationTypeCode=1
   }) {
     return this.request<IitSingleReportQueryListResponse>({
-      url: `https://17dz.com/iitweb/iit/v2/single/report/zhsds/queryList`,
+      url: 'https://17dz.com/iitweb/iit/v2/single/report/zhsds/queryList',
       params: {
         deptId: '0',
         reportType: '0101',
@@ -130,14 +177,14 @@ export class OperatorClient {
     });
   }
 
-  getIitSingleCustomer({ deptId = 0, ...params }: { customerId: string; deptId?: string | number }) {
+  async getIitSingleCustomer({ deptId = 0, ...params }: { customerId: string; deptId?: string | number }) {
     return this.request<GetIitSingleCustomerResponse>({
-      url: `https://17dz.com/iitweb/iit/v2/single/singleCustomer/getCustomer`,
+      url: 'https://17dz.com/iitweb/iit/v2/single/singleCustomer/getCustomer',
       params: {
         deptId,
         ...params,
       },
-      transform: ({ data }) => {
+      transform({ data }) {
         data.keyPassword = decrypt(data.keyPassword);
         data.oldPassward = decrypt(data.oldPassward);
         data.realNamePassword = decrypt(data.realNamePassword);
@@ -146,7 +193,7 @@ export class OperatorClient {
     });
   }
 
-  listCustomer(params: {
+  async listCustomer(params: {
     key?: string;
     newStatusList?: string[];
     pageNo?: number;
@@ -155,7 +202,7 @@ export class OperatorClient {
     toCreateDate?: string;
   }) {
     return this.request<{ list: ManageListCustomerItem[]; total: number }>({
-      url: `https://17dz.com/xqy-portal-web/manage/v2/customer/queryCustomers`,
+      url: 'https://17dz.com/xqy-portal-web/manage/v2/customer/queryCustomers',
       body: {
         // fromCreateDate:"2022-12-21"
         // toCreateDate:"2022-12-21"
@@ -173,7 +220,7 @@ export class OperatorClient {
   /**
    * 包含 accountSetId
    */
-  financeQueryCustomer(params: {
+  async financeQueryCustomer(params: {
     period?: string;
     includeSubordinate?: boolean;
     pageNo?: number;
@@ -181,7 +228,7 @@ export class OperatorClient {
     relationshipType?: string;
   }) {
     return this.request<ListResponse<FinanceQueryCustomerResponseItem>>({
-      url: `https://17dz.com/xmanage-finance/manage/v2/finance/queryCustomer`,
+      url: 'https://17dz.com/xmanage-finance/manage/v2/finance/queryCustomer',
       body: {
         pageNo: 1,
         pageSize: 1000,
@@ -196,7 +243,7 @@ export class OperatorClient {
   /**
    * 查凭证
    */
-  financeAccDocsList(params: {
+  async financeAccDocsList(params: {
     beginPeriod: string; // begin 和 end 相同
     endPeriod: string;
     titleCode?: string;
@@ -211,7 +258,7 @@ export class OperatorClient {
     [k: string]: any;
   }) {
     return this.request<{ totalCount: number; docDtoList: FinanceAccDocsListItem[] }>({
-      url: `https://17dz.com/xqy-portal-web/finance/accDocs/list`,
+      url: 'https://17dz.com/xqy-portal-web/finance/accDocs/list',
       body: {
         pageNo: 0,
         pageSize: 1000,
@@ -223,15 +270,15 @@ export class OperatorClient {
   /**
    * 获取帐套信息
    */
-  financeGetAccountSet(params: { token: string }) {
+  async financeGetAccountSet(params: { token: string }) {
     // 88880003 从Session获取客户账套信息失败！
     // CW000032 账套令牌已过期，请重新进入账套！
     return this.request<FinanceAccountSetResponse>({
-      url: `https://17dz.com/xqy-portal-web/finance/account/session/accountSet`,
+      url: 'https://17dz.com/xqy-portal-web/finance/account/session/accountSet',
       headers: {
         Accountsettoken: params.token,
       },
-      transform: ({ data }) => {
+      transform({ data }) {
         data.iv = decrypt(data.iv);
         data.key = decrypt(data.key);
         return data;
@@ -242,7 +289,7 @@ export class OperatorClient {
   /**
    * 设置帐套信息
    */
-  financePutAccountSet(params: {
+  async financePutAccountSet(params: {
     accountSetId: string | number;
     customerId: string | number;
     customerName?: string;
@@ -250,14 +297,15 @@ export class OperatorClient {
     platform?: string;
   }) {
     const data = new URLSearchParams();
-    Object.entries({ platform: 'yqdz', ...params }).forEach(([key, value]) => {
+    for (const [key, value] of Object.entries({ platform: 'yqdz', ...params })) {
       data.append(key, String(value));
-    });
+    }
+
     return this.request<FinanceAccountSetResponse>({
       method: 'PUT',
-      url: `https://17dz.com/xqy-portal-web/finance/account/session/accountSet`,
+      url: 'https://17dz.com/xqy-portal-web/finance/account/session/accountSet',
       body: data,
-      transform: ({ data }) => {
+      transform({ data }) {
         data.iv = decrypt(data.iv);
         data.key = decrypt(data.key);
         return data;
@@ -265,16 +313,16 @@ export class OperatorClient {
     });
   }
 
-  financeCheckFinanceAuth(params: string[]) {
+  async financeCheckFinanceAuth(params: string[]) {
     return this.request<FinanceCheckFinanceAuthResponse>({
-      url: `https://17dz.com/xmanage-finance/manage/v2/bill/checkFinanceAuth`,
+      url: 'https://17dz.com/xmanage-finance/manage/v2/bill/checkFinanceAuth',
       body: params,
     });
   }
 
-  financeGetAccountSetInfo(params: { customerId: string; period?: string }) {
+  async financeGetAccountSetInfo(params: { customerId: string; period?: string }) {
     return this.request<FinanceGetAccountSetInfoResponse>({
-      url: `https://17dz.com/xmanage-finance/manage/v2/finance/getAccountSetInfo`,
+      url: 'https://17dz.com/xmanage-finance/manage/v2/finance/getAccountSetInfo',
       params: {
         period: dayjs().subtract(1, 'm').format('YYYYMM'),
         ...params,
@@ -282,19 +330,19 @@ export class OperatorClient {
     });
   }
 
-  whoami() {
+  async whoami() {
     return this.request<XyqPortalWebManageUserQueryResponse>({
-      url: `https://17dz.com/xqy-portal-web/manage/user/query`,
+      url: 'https://17dz.com/xqy-portal-web/manage/user/query',
     });
   }
 
-  getLoginSession() {
+  async getLoginSession() {
     return this.request<GetLoginSessionResponse>({
-      url: `https://17dz.com/xqy-portal-web/activity/activity/login/getLoginSession`,
+      url: 'https://17dz.com/xqy-portal-web/activity/activity/login/getLoginSession',
     });
   }
 
-  listEmployee({
+  async listEmployee({
     customerId,
     pageNumber = 1,
     deptId = 0,
@@ -329,7 +377,7 @@ export class OperatorClient {
   }) {
     // 201 居民身份证 208 外国护照 210 港澳居民来往内地通行证 213 台湾居民来往大陆通行证 227 中国护照
     return this.request<ListResponse<ListEmployeeItem>>({
-      url: `https://17dz.com/employeeweb/v2/employee/pageEmployee`,
+      url: 'https://17dz.com/employeeweb/v2/employee/pageEmployee',
       params: { customerId },
       body: {
         pageNum: pageNumber,
@@ -370,25 +418,26 @@ export class OperatorClient {
           b[a] = decrypt(b[a]);
         }
       }
+
       return v;
     });
   }
 
-  invoiceInputStatistics(params: {
+  async invoiceInputStatistics(params: {
     beginDate: string; // 2023-04-01
     endDate: string;
     customerId: string | number; // 561000000000
     [k: string]: any;
   }) {
     return this.request<InvoiceInputStatistics>({
-      url: `https://17dz.com/invoiceweb/invoice/input/statistics`,
+      url: 'https://17dz.com/invoiceweb/invoice/input/statistics',
       body: {
         ...params,
       },
     });
   }
 
-  invoiceInputList(params: {
+  async invoiceInputList(params: {
     beginDate: string; // 2023-04-01
     endDate: string;
     customerId: string | number;
@@ -396,8 +445,8 @@ export class OperatorClient {
     pageSize?: number;
     [k: string]: any;
   }) {
-    return this.request<Array<InvoiceInputListResponseItem>>({
-      url: `https://17dz.com/invoiceweb/invoice/input/list`,
+    return this.request<InvoiceInputListResponseItem[]>({
+      url: 'https://17dz.com/invoiceweb/invoice/input/list',
       body: {
         page: 1,
         pageSize: 1000,
@@ -406,30 +455,30 @@ export class OperatorClient {
     });
   }
 
-  invoiceInputDetail(params: { customerId: string | number; invoiceId: string | number; [k: string]: any }) {
+  async invoiceInputDetail(params: { customerId: string | number; invoiceId: string | number; [k: string]: any }) {
     return this.request<InvoiceInputDetailResponse>({
-      url: `https://17dz.com/invoiceweb/invoice/input/general/detail`,
+      url: 'https://17dz.com/invoiceweb/invoice/input/general/detail',
       params: {
         ...params,
       },
     });
   }
 
-  invoiceOutputStatistics(params: {
+  async invoiceOutputStatistics(params: {
     beginDate: string; // 2023-04-01
     endDate: string;
     customerId: string | number; // 561000000000
     [k: string]: any;
   }) {
     return this.request<InvoiceOutputStatisticsResponse>({
-      url: `https://17dz.com/invoiceweb/invoice/output/statistics`,
+      url: 'https://17dz.com/invoiceweb/invoice/output/statistics',
       body: {
         ...params,
       },
     });
   }
 
-  invoiceOutputList(params: {
+  async invoiceOutputList(params: {
     beginDate: string; // 2023-04-01
     endDate: string;
     customerId: string | number;
@@ -437,8 +486,8 @@ export class OperatorClient {
     pageSize?: number;
     [k: string]: any;
   }) {
-    return this.request<Array<InvoiceOutputListResponseItem>>({
-      url: `https://17dz.com/invoiceweb/invoice/output/list`,
+    return this.request<InvoiceOutputListResponseItem[]>({
+      url: 'https://17dz.com/invoiceweb/invoice/output/list',
       body: {
         page: 1,
         pageSize: 1000,
@@ -450,22 +499,22 @@ export class OperatorClient {
     });
   }
 
-  invoiceOutputDetail(params: { customerId: string | number; id: string | number; [k: string]: any }) {
+  async invoiceOutputDetail(params: { customerId: string | number; id: string | number; [k: string]: any }) {
     return this.request<InvoiceOutputDetailResponse>({
-      url: `https://17dz.com/invoiceweb/invoice/output/general/detail`,
+      url: 'https://17dz.com/invoiceweb/invoice/output/general/detail',
       params: {
         ...params,
       },
     });
   }
 
-  invoicewebCollectPageQueryCollectResult(params: {
+  async invoicewebCollectPageQueryCollectResult(params: {
     customerId: string | number;
     pageSize?: number;
     currentPage?: number;
   }) {
     return this.request<PageQueryCollectResult>({
-      url: `https://17dz.com/invoiceweb/invoice/collect/pageQueryCollectResult`,
+      url: 'https://17dz.com/invoiceweb/invoice/collect/pageQueryCollectResult',
       body: {
         pageSize: 100,
         currentPage: 1,
@@ -474,7 +523,7 @@ export class OperatorClient {
     });
   }
 
-  invoicewebInvoiceCollectAcquireV4(params: {
+  async invoicewebInvoiceCollectAcquireV4(params: {
     customerId: string | number;
     accountId: string;
     nsrsbh: string;
@@ -484,7 +533,7 @@ export class OperatorClient {
     [k: string]: any;
   }) {
     return this.request<{ success: boolean; errorContext: any }>({
-      url: `https://17dz.com/invoiceweb/invoice/collect/acquire/v4`,
+      url: 'https://17dz.com/invoiceweb/invoice/collect/acquire/v4',
       body: {
         // nsrsbh: '913101165867881482',
         addedType: '1',
@@ -505,7 +554,7 @@ export class OperatorClient {
     });
   }
 
-  invoicewebInvoiceCollectAcquireV3(params: {
+  async invoicewebInvoiceCollectAcquireV3(params: {
     customerId: string | number;
     accountId: string;
     areaCode: string;
@@ -522,7 +571,7 @@ export class OperatorClient {
   }) {
     // 请在提取成功后，点开单张发票详情，补充校验码（后六位），以进行发票查验补全，判断抵扣状态
     return this.request<{ success: boolean; errorContext: any }>({
-      url: `https://17dz.com/invoiceweb/invoice/collect/acquire/v3`,
+      url: 'https://17dz.com/invoiceweb/invoice/collect/acquire/v3',
       body: {
         addedType: '2',
         // period: '202304',
@@ -536,7 +585,7 @@ export class OperatorClient {
     });
   }
 
-  invoiceInputGeneralQuery(params: {
+  async invoiceInputGeneralQuery(params: {
     companyId: string | number; // customerId
     bizBeginDate: string; // 2023-01-01
     bizEndDate: string;
@@ -544,7 +593,7 @@ export class OperatorClient {
     pageSize?: number;
   }) {
     return this.request<InvoiceInputGeneralQueryResponseItem[]>({
-      url: `https://17dz.com/invoiceweb/invoice/input/general/query`,
+      url: 'https://17dz.com/invoiceweb/invoice/input/general/query',
       body: {
         pageSize: 1000,
         pageNumber: 1,
@@ -553,13 +602,40 @@ export class OperatorClient {
     });
   }
 
+  /**
+   * 组织列表
+   */
+  getGroupList() {
+    return this.request<
+      Array<{
+        id: string;
+        name: string;
+      }>
+    >({
+      url: 'https://www.17dz.com/xactivity/activity/group/getGroupList',
+    });
+  }
+
+  changeGroup(params: { groupId: string }) {
+    return this.request<ChangeGroupResponse>({
+      method: 'POST',
+      url: 'https://www.17dz.com/xactivity/activity/group/changeGroup',
+      params,
+    });
+  }
+
+  getGroup() {
+    return this.request<GetGroupResponse>({
+      url: 'https://www.17dz.com/xactivity/activity/group/getGroup',
+    });
+  }
+
   async request<T>(opts: SessionRequestOptions<T>): Promise<T> {
-    // eslint-disable-next-line @typescript-eslint/return-await
     return requestFromSession<T>({ cookie: this.cookie.bind(this), fetch, ...opts });
   }
 }
 
-export interface OperatorClientOptions {
-  fetch: typeof globalThis.fetch;
+export interface OperatorClientOptions extends Pick<SessionRequestOptions<any>, 'onSuccess' | 'onResponse'> {
+  fetch: FetchLike;
   cookie: () => MaybePromise<string | undefined>;
 }

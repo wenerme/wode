@@ -14,9 +14,10 @@ export function buildRequest({
   headers?: Record<string, any>;
 }) {
   const url = new URL(path, baseUrl);
-  Object.entries(params).forEach(([k, v]) => {
+  for (const [k, v] of Object.entries(params)) {
     url.searchParams.set(k, v);
-  });
+  }
+
   url.searchParams.sort();
   if (body) {
     if (body instanceof ReadableStream) {
@@ -40,8 +41,9 @@ export function buildRequest({
 
 export function buildFormData(o: Record<string, any>) {
   const fd = new FormData();
-  Object.entries(o).forEach(([k, v]) => {
+  for (const [k, v] of Object.entries(o)) {
     fd.append(k, v);
-  });
+  }
+
   return fd;
 }

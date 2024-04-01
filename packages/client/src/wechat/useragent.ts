@@ -13,11 +13,14 @@ export function isWechatMiniAppUserAgent(ua?: string) {
     if (typeof window === 'undefined') {
       return false;
     }
+
     if ((window as any).__wxjs_environment === 'miniprogram') {
       return true;
     }
+
     ua = window.navigator.userAgent;
   }
+
   // https://developers.weixin.qq.com/miniprogram/dev/component/web-view.html
   return ua.includes('miniProgram');
 }

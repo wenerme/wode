@@ -4,7 +4,7 @@ import type { JsSdkSignature } from './server/types';
 /**
  * object will build as Search Params
  */
-function signature(s: string | string[] | Record<string, any>) {
+async function signature(s: string | string[] | Record<string, any>) {
   let input: string;
   if (Array.isArray(s)) {
     input = s.sort((a, b) => a.localeCompare(b)).join('');
@@ -18,6 +18,7 @@ function signature(s: string | string[] | Record<string, any>) {
   } else {
     throw new Error('Invalid signature input');
   }
+
   return sha1(input).then((v) => hex(v));
 }
 
@@ -25,7 +26,7 @@ export async function createJsSdkSignature({
   ticket,
   url,
   timestamp = Math.round(Date.now() / 1000),
-  nonce = String(Math.random()).substring(2),
+  nonce = String(Math.random()).slice(2),
 }: {
   ticket: string; // https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=ACCESS_TOKEN&type=jsapi
   url: string;

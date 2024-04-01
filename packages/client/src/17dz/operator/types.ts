@@ -1397,3 +1397,129 @@ export interface IitSingleReportQueryListResponseTotalIncome {
   employee: number;
   total: any;
 }
+
+export interface CustomerProgressQueryResponse {
+  list: CustomerProgressQueryResponseList[];
+  total: number;
+  customerNoteAtTotalNum: number;
+  customerNoteUnreadTotalNum: number;
+}
+
+export interface CustomerProgressQueryResponseList {
+  customerId: string;
+  customerName: string;
+  customerNo?: string;
+  fullName: string;
+  // 理票 - 已完成、未完成、无业务
+  invoiceArrangeStatus: string | 'DONE' | 'UNDONE' | 'NO';
+  // 记账
+  accountStatus: string;
+  // 申报
+  taxDeclareStatus: string;
+  // 缴款
+  paymentStatus: string;
+  // 清卡
+  clearCardStatus: string;
+  // 抄税
+  copyTaxStatus: string;
+  latestNote: any;
+  customerNoteStatus: string;
+  managerName: string;
+  journalName: string;
+  taxerName: string;
+  taxType: string;
+  taxNo?: string;
+  locationCode: string;
+  // 装订凭证、打印凭证
+  customDataDTOMap: Record<
+    string,
+    {
+      id: number;
+      companyId: string;
+      customerId: string;
+      code: string;
+      value: string;
+      reportId: string;
+      period: string;
+    }
+  >;
+  accountSetId?: number;
+  atEmitName: any;
+  maxProfitLossMonth: string;
+  topFlag: boolean;
+  labelList?: string[];
+  taxRegionCode: string;
+  customerPendingNum: number;
+  pendingContent: any;
+}
+
+export interface GetMemberListResponseItem {
+  name: string;
+  mobile: string;
+  departmentRole?: string;
+  department?: string;
+  available: string;
+  activated: string;
+  systemRole?: number;
+  employeeId: number;
+  accountId: string;
+  admin: boolean;
+}
+
+export interface ChangeGroupResponse {
+  accountId: string;
+  accountName: string;
+  loginName: string;
+  companyId: string;
+  companyName: string;
+  activation: boolean;
+  imageUrl: string;
+  guide: boolean;
+  customerId: string;
+  taxNo: any;
+  appId: string;
+}
+
+export interface GetGroupResponse {
+  id: string;
+  name: string;
+  fullName: string;
+  accoutLicense: any;
+  businessLicense: string;
+  corporation: any;
+  contacter: any;
+  contact: any;
+  locationCode: string;
+  address: any;
+  area: any;
+  content: any;
+  licenseImgPath: any;
+  memo: any;
+  logoImgPath: string;
+  type: any;
+  customerServerPhone: string;
+  admins: string;
+  departmentHeads: GetGroupResponseDepartmentHead[];
+  companyAdmin: GetGroupResponseCompanyAdmin[];
+  email: any;
+  activated: string;
+  province: string;
+  city: string;
+  district: string;
+  institutionType: string;
+  shxydm: string;
+  adminMobileList: string[];
+  marketingImgUrl: any;
+  marketingImgName: any;
+  cyCompany: boolean;
+}
+
+export interface GetGroupResponseDepartmentHead {
+  id: string;
+  name: string;
+}
+
+export interface GetGroupResponseCompanyAdmin {
+  id: string;
+  name: string;
+}

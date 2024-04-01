@@ -1,4 +1,4 @@
-import { Errors, FetchLike, getGlobalThis } from '@wener/utils';
+import { Errors, type FetchLike, getGlobalThis } from '@wener/utils';
 
 export async function getAccessToken({
   fetch = getGlobalThis().fetch,
@@ -12,10 +12,10 @@ export async function getAccessToken({
   Errors.BadRequest.check(clientId && clientSecret, 'Missing clientId or clientSecret');
   // https://cloud.baidu.com/doc/WENXINWORKSHOP/s/Ilkkrb0i5
   // 默认有效期30天
-  let u = new URL('https://aip.baidubce.com/oauth/2.0/token');
+  const u = new URL('https://aip.baidubce.com/oauth/2.0/token');
   u.searchParams.set('grant_type', 'client_credentials');
-  u.searchParams.set('client_id', clientId!);
-  u.searchParams.set('client_secret', clientSecret!);
+  u.searchParams.set('client_id', clientId);
+  u.searchParams.set('client_secret', clientSecret);
   const res = await fetch(u.toString(), {
     method: 'POST',
     headers: {
@@ -35,8 +35,8 @@ async function requireResOk(res: Response) {
   if (res.headers.get('content-type')?.includes('json')) {
     try {
       payload = await res.json();
-    } catch (e) {
-      cause = e;
+    } catch (error) {
+      cause = error;
     }
   }
 
@@ -46,7 +46,7 @@ async function requireResOk(res: Response) {
     // ok with unexpected resource
     throw Errors.ServiceUnavailable.asError({
       message: `Failed to get token payload: ${res.headers.get('content-type')})}`,
-      cause: cause,
+      cause,
     });
   }
 
@@ -62,6 +62,7 @@ async function requireResOk(res: Response) {
         },
       });
     }
+
     if (e.error) {
       throw Errors.ServiceUnavailable.asError({
         message: `(${e.error}) ${e.error_description}`,

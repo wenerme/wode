@@ -24,20 +24,18 @@ export async function signv3(
   const u = new URL(url);
   headers.host ||= u.host;
   // x-acs-content-sha256
-  date = headers['x-acs-date'] ||= date || new Date().toJSON().replace(/[.]\d+Z$/, 'Z'); // 2023-11-11T20:41:07.364Z
+  date = headers['x-acs-date'] ||= date || new Date().toJSON().replace(/\.\d+Z$/, 'Z'); // 2023-11-11T20:41:07.364Z
   nonce = headers['x-acs-signature-nonce'] ||= nonce || randomUUID().replaceAll('-', '');
   const contentHash = (headers['x-acs-content-sha256'] ||= await sha256(body ?? '', 'hex'));
-  let all = Object.entries({
+  const all = Object.entries({
     ...headers,
   });
-  let entries = all
+  const entries = all
     .filter(([k, v]) => (k.startsWith('x-acs-') || k === 'host' || k === 'content-type') && isDefined(v))
     .sort(([a], [b]) => a.localeCompare(b))
-    .map(([k, v]) => {
-      return [k.toLowerCase(), String(v).trim()];
-    });
-  let signedHeaders = entries.map(([k]) => k).join(';');
-  let parts = [
+    .map(([k, v]) => [k.toLowerCase(), String(v).trim()]);
+  const signedHeaders = entries.map(([k]) => k).join(';');
+  const parts = [
     method,
     u.pathname,
     u.search.slice(1),
@@ -46,7 +44,7 @@ export async function signv3(
     // empty sha256 to e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
     contentHash,
   ];
-  let canonical = parts.join('\n');
+  const canonical = parts.join('\n');
   const hash = await sha256(canonical, 'hex');
   const algorithm = 'ACS3-HMAC-SHA256';
   // const { createHmac } = await import('node:crypto');

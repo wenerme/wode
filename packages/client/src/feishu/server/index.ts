@@ -1,5 +1,3 @@
-export {};
-
 export class FeishuCliet {}
 
 export function request() {}
@@ -17,7 +15,7 @@ export async function getTenantAccessTokenInternal(body: { app_id: string; app_s
     },
     body: JSON.stringify(body),
   });
-  return await res.json();
+  return res.json();
 }
 
 export async function getAppAccessTokenInternal(body: { app_id: string; app_secret: string }): Promise<{
@@ -33,5 +31,5 @@ export async function getAppAccessTokenInternal(body: { app_id: string; app_secr
     },
     body: JSON.stringify(body),
   });
-  return await res.json();
+  return res.json();
 }

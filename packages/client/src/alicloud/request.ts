@@ -1,7 +1,7 @@
 /*
 https://help.aliyun.com/zh/sdk/product-overview/v3-request-structure-and-signature
 */
-import { ArrayBuffers, FetchLike, getGlobalThis, MaybePromise } from '@wener/utils';
+import { ArrayBuffers, type FetchLike, getGlobalThis, type MaybePromise } from '@wener/utils';
 import { signv3 } from './signv3';
 
 export interface AliCloudRequestOptions<T> {
@@ -60,17 +60,21 @@ export async function request<T>(options: AliCloudRequestOptions<T>) {
   {
     if (!url) {
       if (!endpoint) {
-        throw new Error(`Missing endpoint`);
+        throw new Error('Missing endpoint');
       }
+
       url = `https://${endpoint}`;
     }
+
     u = new URL(url);
   }
+
   if (params) {
-    Object.entries(params).forEach(([k, v]) => {
+    for (const [k, v] of Object.entries(params)) {
       u.searchParams.append(k, v);
-    });
+    }
   }
+
   headers = {
     'user-agent': 'github.com/wenerme/wode',
     accept: 'application/json; charset=utf-8',
@@ -78,7 +82,7 @@ export async function request<T>(options: AliCloudRequestOptions<T>) {
     'x-acs-version': version,
     ...headers,
   };
-  let init: {
+  const init: {
     method: string;
     headers: Record<string, any>;
     body?: string | BufferSource;
@@ -96,6 +100,7 @@ export async function request<T>(options: AliCloudRequestOptions<T>) {
     headers['content-type'] ||= 'application/json; charset=utf-8';
     body = JSON.stringify(body);
   }
+
   init.body = body;
 
   {
@@ -113,16 +118,27 @@ export async function request<T>(options: AliCloudRequestOptions<T>) {
   let payload: AliCloudResponse<T> | undefined;
   try {
     payload = await requirePayload(res);
-  } catch (e) {
+  } catch (error) {
     if (onResponse) {
-      await onResponse({ res, req: init, payload, error: e });
+      await onResponse({
+        res,
+        req: init,
+        payload,
+        error,
+      });
     }
-    throw e;
+
+    throw error;
   }
 
-  await onResponse?.({ res, req: init, payload, data: payload?.Data });
+  await onResponse?.({
+    res,
+    req: init,
+    payload,
+    data: payload?.Data,
+  });
   if (!res.ok || ('Success' in payload && !payload.Success)) {
-    console.error(`Error`, payload);
+    console.error('Error', payload);
     throw new AliCloudClientError(payload.Code, payload.Message, payload.RequestId);
   }
 
@@ -133,7 +149,13 @@ export async function request<T>(options: AliCloudRequestOptions<T>) {
     data = JSON.parse(data);
   }
 
-  data = (await onSuccess?.({ res, req: init, payload, data: data })) ?? data;
+  data =
+    (await onSuccess?.({
+      res,
+      req: init,
+      payload,
+      data,
+    })) ?? data;
   return data;
 }
 
@@ -149,9 +171,10 @@ async function requirePayload(res: Response) {
     } else {
       body = res.body;
     }
-  } catch (e) {
-    last = e;
+  } catch (error) {
+    last = error;
   }
+
   if (last) {
     throw last;
   }
@@ -159,7 +182,8 @@ async function requirePayload(res: Response) {
   if (body && 'RequestId' in body) {
     return body as AliCloudResponse;
   }
-  console.error(`Invalid response`, body);
+
+  console.error('Invalid response', body);
   throw new Error(`Invalid response: ${res.status} ${res.statusText} ${res.headers.get('content-type')}`);
 }
 
@@ -206,9 +230,11 @@ export function stringOfMultipartFormData(data: FormData): { body: string; heade
       body += 'Content-Transfer-Encoding: base64';
       content = ArrayBuffers.toString(v, 'base64');
     }
+
     body += `Content-Disposition: form-data; name="${k}"\r\n\r\n`;
     body += `${content}\r\n`;
   }
+
   body += `--${boundary}--\r\n`;
   return { headers, body };
 }

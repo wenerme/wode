@@ -19,6 +19,7 @@ export async function sign(headers: Record<string, any>, ctx?: Record<string, st
   if (!o.appSecret) {
     throw new Error('appSecret is required to sign');
   }
+
   const key = await crypto.subtle.importKey(
     'raw',
     new TextEncoder().encode(o.appSecret),

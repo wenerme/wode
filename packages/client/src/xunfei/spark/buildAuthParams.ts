@@ -19,7 +19,7 @@ export function buildAuthParams({
 }) {
   const hmac = createHmac('sha256', apiSecret);
   hmac.update([`host: ${host}`, `date: ${date.toUTCString()}`, `${method} ${path} HTTP/1.1`].join('\n'));
-  let sign = hmac.digest('base64');
+  const sign = hmac.digest('base64');
   const origin = `api_key="${apiKey}", algorithm="hmac-sha256", headers="host date request-line", signature="${sign}"`;
   return {
     authorization: btoa(origin),
@@ -30,8 +30,9 @@ export function buildAuthParams({
 
 export function buildAuthUrl({ url, apiKey, apiSecret }: { url: string | URL; apiSecret?: string; apiKey?: string }) {
   const u = new URL(url);
-  Object.entries(buildAuthParams({ url: u, apiKey, apiSecret })).forEach(([k, v]) => {
+  for (const [k, v] of Object.entries(buildAuthParams({ url: u, apiKey, apiSecret }))) {
     u.searchParams.set(k, v);
-  });
+  }
+
   return u;
 }

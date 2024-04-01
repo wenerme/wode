@@ -1,11 +1,11 @@
-import { FetchLike } from '@wener/utils';
+import { type FetchLike } from '@wener/utils';
 import { request } from './request';
-import { SendWebhookRequest } from './types';
+import { type SendWebhookRequest } from './types';
 
 export class WebhookClient {
   constructor(readonly options: { key: string; fetch?: FetchLike }) {}
 
-  sendMessage(body: SendWebhookRequest) {
+  async sendMessage(body: SendWebhookRequest) {
     const { key, fetch } = this.options;
     return request({
       url: '/cgi-bin/webhook/send',
@@ -18,7 +18,7 @@ export class WebhookClient {
   /**
    * @param type 普通文件(file)：文件大小不超过20M; 语音(voice)：文件大小不超过2M，播放长度不超过60s，仅支持AMR格式
    */
-  uploadMedia({ type, blob }: { type: 'file' | 'voice'; blob: Blob }) {
+  async uploadMedia({ type, blob }: { type: 'file' | 'voice'; blob: Blob }) {
     const { key, fetch } = this.options;
     // multipart/form-data
     const formData = new FormData();

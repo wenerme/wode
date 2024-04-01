@@ -5,7 +5,8 @@ export function getRedirectUri(u?: string) {
   if (!u) {
     return;
   }
-  let url = new URL(u);
+
+  const url = new URL(u);
   url.search = '';
   url.hash = '';
   return url.toString();

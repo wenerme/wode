@@ -10,15 +10,14 @@ export function buildAppInstallUrl({
   redirect_uri?: string;
   state?: string;
 }) {
-  const u = new URL(`https://open.work.weixin.qq.com/3rdapp/install`);
-  Object.entries({
+  const u = new URL('https://open.work.weixin.qq.com/3rdapp/install');
+  for (const v of Object.entries({
     redirect_uri,
     ...opts,
-  })
-    .filter((v) => v[1])
-    .forEach((v) => {
-      u.searchParams.append(v[0], String(v[1]));
-    });
+  }).filter((v) => v[1])) {
+    u.searchParams.append(v[0], String(v[1]));
+  }
+
   // callback with auth code
   // redirect_uri?auth_code=xxx&expires_in=600&state=xx
   return u.toString();

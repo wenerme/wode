@@ -1,4 +1,4 @@
-import { AliCloudClientOptions } from './AliCloudClient';
+import { type AliCloudClientOptions } from './AliCloudClient';
 
 export interface DytnsV20200217Api {
   $product: 'Dytnsapi';
@@ -711,8 +711,7 @@ export interface CompanyTwoElementsVerificationResponse {
   /**
    * 校验不一致的字段。
    */
-  InconsistentData?: Array</** - EpCertName：企业名称
-   - EpCertNo：企业证件号 */ string>;
+  InconsistentData?: string[];
   /**
    * 核验结果。取值：
    *
@@ -770,9 +769,7 @@ export interface CompanyThreeElementsVerificationResponse {
   /**
    * 校验不一致的字段
    */
-  InconsistentData?: Array</** - EpCertName：企业名称
-   - EpCertNo：企业证件号
-   - CertName：企业法人姓名 */ string>;
+  InconsistentData?: string[];
   /**
    * 核验结果。取值：
    *
@@ -837,10 +834,7 @@ export interface CompanyFourElementsVerificationResponse {
   /**
    * 校验不一致的字段
    */
-  InconsistentData?: Array</** - EpCertName：企业名称
-   - EpCertNo：企业证件号
-   - CertName：企业法人姓名
-   - CertNo：企业法人证件号 */ string>;
+  InconsistentData?: string[];
   /**
    * 核验结果。取值：
    * -   true：信息核验一致，且企业正常经营。
@@ -1863,7 +1857,7 @@ export type QueryTagInfoBySelectionResponse = Array</** 返回的数据内容。
   /** 标签ID。 */
   TagId?: number;
   /** 可用的授权码列表。 */
-  AuthCodeList?: Array</** 无 */ string>;
+  AuthCodeList?: string[];
   /** 行业名称。 */
   IndustryName?: string;
   /** API文档链接。 */
@@ -1999,4 +1993,4 @@ export interface QueryAvailableAuthCodeRequest {
   TagId?: number;
 }
 
-export type QueryAvailableAuthCodeResponse = Array</** 返回的数据内容。 */ string>;
+export type QueryAvailableAuthCodeResponse = string[];

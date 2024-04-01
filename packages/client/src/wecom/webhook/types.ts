@@ -1,4 +1,4 @@
-import { WechatWebhookQuery } from '../../wechat/webhook';
+import { type WechatWebhookQuery } from '../../wechat/webhook';
 
 export interface WecomWebhookEncryptPayload {
   ToUserName: string;

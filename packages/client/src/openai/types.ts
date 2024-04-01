@@ -14,7 +14,7 @@ export type CreateCompletionResponse = {
   /** @description A unique identifier for the completion. */
   id: string;
   /** @description The list of completion choices the model generated for the input prompt. */
-  choices: {
+  choices: Array<{
     /**
      * @description The reason the model stopped generating tokens. This will be `stop` if the model hit a natural stop point or a provided stop sequence,
      * `length` if the maximum number of tokens specified in the request was reached,
@@ -24,16 +24,16 @@ export type CreateCompletionResponse = {
      */
     finish_reason: 'stop' | 'length' | 'content_filter';
     index: number;
-    logprobs: {
-      text_offset?: number[];
-      token_logprobs?: number[];
-      tokens?: string[];
-      top_logprobs?: {
-        [key: string]: number;
-      }[];
-    } | null;
+    logprobs:
+      | {
+          text_offset?: number[];
+          token_logprobs?: number[];
+          tokens?: string[];
+          top_logprobs?: Array<Record<string, number>>;
+        }
+      | undefined;
     text: string;
-  }[];
+  }>;
   /** @description The Unix timestamp (in seconds) of when the completion was created. */
   created: number;
   /** @description The model used for completion. */
@@ -75,7 +75,7 @@ export type CreateCompletionRequest = {
    *
    * @default <|endoftext|>
    */
-  prompt: string | string[] | number[] | number[][] | null;
+  prompt: string | string[] | number[] | number[][] | undefined;
   /**
    * @description Generates `best_of` completions server-side and returns the "best" (the one with the highest log probability per token). Results cannot be streamed.
    *
@@ -85,13 +85,13 @@ export type CreateCompletionRequest = {
    *
    * @default 1
    */
-  best_of?: number | null;
+  best_of?: number | undefined;
   /**
    * @description Echo back the prompt in addition to the completion
    *
    * @default false
    */
-  echo?: boolean | null;
+  echo?: boolean | undefined;
   /**
    * @description Number between -2.0 and 2.0. Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim.
    *
@@ -99,7 +99,7 @@ export type CreateCompletionRequest = {
    *
    * @default 0
    */
-  frequency_penalty?: number | null;
+  frequency_penalty?: number | undefined;
   /**
    * @description Modify the likelihood of specified tokens appearing in the completion.
    *
@@ -109,9 +109,7 @@ export type CreateCompletionRequest = {
    *
    * @default null
    */
-  logit_bias?: {
-    [key: string]: number;
-  } | null;
+  logit_bias?: Record<string, number> | undefined;
   /**
    * @description Include the log probabilities on the `logprobs` most likely tokens, as well the chosen tokens. For example, if `logprobs` is 5, the API will return a list of the 5 most likely tokens. The API will always return the `logprob` of the sampled token, so there may be up to `logprobs+1` elements in the response.
    *
@@ -119,7 +117,7 @@ export type CreateCompletionRequest = {
    *
    * @default null
    */
-  logprobs?: number | null;
+  logprobs?: number | undefined;
   /**
    * @description The maximum number of [tokens](/tokenizer) to generate in the completion.
    *
@@ -128,7 +126,7 @@ export type CreateCompletionRequest = {
    * @default 16
    * @example 16
    */
-  max_tokens?: number | null;
+  max_tokens?: number | undefined;
   /**
    * @description How many completions to generate for each prompt.
    *
@@ -137,7 +135,7 @@ export type CreateCompletionRequest = {
    * @default 1
    * @example 1
    */
-  n?: number | null;
+  n?: number | undefined;
   /**
    * @description Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics.
    *
@@ -145,31 +143,31 @@ export type CreateCompletionRequest = {
    *
    * @default 0
    */
-  presence_penalty?: number | null;
+  presence_penalty?: number | undefined;
   /**
    * @description If specified, our system will make a best effort to sample deterministically, such that repeated requests with the same `seed` and parameters should return the same result.
    *
    * Determinism is not guaranteed, and you should refer to the `system_fingerprint` response parameter to monitor changes in the backend.
    */
-  seed?: number | null;
+  seed?: number | undefined;
   /**
    * @description Up to 4 sequences where the API will stop generating further tokens. The returned text will not contain the stop sequence.
    *
    * @default null
    */
-  stop?: (string | null) | string[] | null;
+  stop?: (string | undefined) | string[] | undefined;
   /**
    * @description Whether to stream back partial progress. If set, tokens will be sent as data-only [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#Event_stream_format) as they become available, with the stream terminated by a `data: [DONE]` message. [Example Python code](https://cookbook.openai.com/examples/how_to_stream_completions).
    *
    * @default false
    */
-  stream?: boolean | null;
+  stream?: boolean | undefined;
   /**
    * @description The suffix that comes after a completion of inserted text.
    * @default null
    * @example test.
    */
-  suffix?: string | null;
+  suffix?: string | undefined;
   /**
    * @description What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.
    *
@@ -178,7 +176,7 @@ export type CreateCompletionRequest = {
    * @default 1
    * @example 1
    */
-  temperature?: number | null;
+  temperature?: number | undefined;
   /**
    * @description An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.
    *
@@ -187,7 +185,7 @@ export type CreateCompletionRequest = {
    * @default 1
    * @example 1
    */
-  top_p?: number | null;
+  top_p?: number | undefined;
   /**
    * @description A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn more](/docs/guides/safety-best-practices/end-user-ids).
    *
@@ -204,7 +202,7 @@ export type DeletedObject<T extends string = string> = {
 
 export type ListObject<T> = {
   object: 'list';
-  data: Array<T>;
+  data: T[];
 };
 
 export type EmbeddingObject = {
@@ -234,10 +232,10 @@ export type AssistantObject = {
   id: string;
   object: 'assistant';
   created_at: number;
-  name: string | null;
-  description: string | null;
+  name: string | undefined;
+  description: string | undefined;
   model: string;
-  instructions: string | null;
+  instructions: string | undefined;
   tools: Array<
     | {
         type: 'code_interpreter';
@@ -254,7 +252,7 @@ export type AssistantObject = {
         };
       }
   >;
-  file_ids: Array<string>;
+  file_ids: string[];
   metadata: Record<string, any>;
 };
 
@@ -306,7 +304,7 @@ export interface ChatCompletionChunkObjectChoiceDelta {
 export interface ChatCompletionChunkObjectChoice {
   index: number;
   delta: ChatCompletionChunkObjectChoiceDelta;
-  finish_reason: null | 'stop' | 'length' | 'content_filter' | 'tool_calls' | 'function_call';
+  finish_reason: undefined | 'stop' | 'length' | 'content_filter' | 'tool_calls' | 'function_call';
 }
 
 export interface ChatCompletionChunkObject {

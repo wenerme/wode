@@ -1,6 +1,6 @@
-import { Constructor, FetchLike } from '@wener/utils';
-import { AliCloudApis } from './apis';
-import { AliCloudRequestOptions, request } from './request';
+import { type Constructor, type FetchLike } from '@wener/utils';
+import { type AliCloudApis } from './apis';
+import { type AliCloudRequestOptions, request } from './request';
 
 export interface AliCloudClientOptions {
   endpoint?: string;
@@ -27,14 +27,19 @@ export class AliCloudClient {
   }
 
   static registry({ product, version }: { product: string; version: string }, val: { endpoint: string }) {
-    this.APIS[`${product}/${version}`] = { ...this.APIS[`${product}/${version}`], ...val, product, version };
+    this.APIS[`${product}/${version}`] = {
+      ...this.APIS[`${product}/${version}`],
+      ...val,
+      product,
+      version,
+    };
   }
 
   static getService(svc: { product: string; version: string }) {
     return this.APIS[`${svc.product}/${svc.version}`];
   }
 
-  request<T>(options: AliCloudRequestOptions<T>) {
+  async request<T>(options: AliCloudRequestOptions<T>) {
     return request({
       ...this.options,
       ...options,
@@ -58,6 +63,7 @@ export class AliCloudClient {
     if (!endpoint) {
       throw new Error(`No endpoint for ${product}/${version}`);
     }
+
     const ctx: ProxyClientTarget = {
       product,
       version,
@@ -103,10 +109,14 @@ export class AliCloudClient {
 
         // fixme by explicit method check
         switch (key) {
-          case '$product':
+          case '$product': {
             return target.product;
-          case '$version':
+          }
+
+          case '$version': {
             return target.version;
+          }
+
           case 'then':
           case 'catch':
           case 'finally':
@@ -135,7 +145,7 @@ export class AliCloudClient {
           return (target.methods[key] ||= async (...args: any[]) => {
             const { version, endpoint } = target;
             const { body, ...params } = args[0];
-            let override = (args[1] || {}) as AliCloudRequestOptions<any>;
+            const override = (args[1] || {}) as AliCloudRequestOptions<any>;
             const req: AliCloudRequestOptions<any> = {
               version,
               endpoint,
@@ -181,21 +191,20 @@ function getEndpoint({
   suffix?: string;
 }): string {
   let result;
-  if (network && network.length && network != 'public') {
-    network = '-' + network;
-  } else {
-    network = '';
-  }
-  if (suffix.length) {
+  network = network && network.length > 0 && network != 'public' ? '-' + network : '';
+  if (suffix.length > 0) {
     suffix = '-' + suffix;
   }
+
   if (endpointType == 'regional') {
-    if (!regionId || !regionId.length) {
+    if (!regionId?.length) {
       throw new Error('RegionId is empty, please set a valid RegionId');
     }
+
     result = `${product}${suffix}${network}.${regionId}.aliyuncs.com`;
   } else {
     result = `${product}${suffix}${network}.aliyuncs.com`;
   }
+
   return result;
 }

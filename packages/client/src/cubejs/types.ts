@@ -103,7 +103,7 @@ export type CubeJSApiOptions = {
 
 export type QueryOrder = 'asc' | 'desc';
 
-export type TQueryOrderObject = { [key: string]: QueryOrder };
+export type TQueryOrderObject = Record<string, QueryOrder>;
 export type TQueryOrderArray = Array<[string, QueryOrder]>;
 
 export type Annotation = {
@@ -144,7 +144,7 @@ export type TransformedQuery = {
   sortedTimeDimensions: [[string, string]];
   measureToLeafMeasures?: Record<string, LeafMeasure[]>;
   ownedDimensions: string[];
-  ownedTimeDimensionsAsIs: [[string, string | null]];
+  ownedTimeDimensionsAsIs: [[string, string | undefined]];
   ownedTimeDimensionsWithRollupGranularity: [[string, string]];
 };
 
@@ -160,7 +160,7 @@ type LoadResponseResult<T> = {
   lastRefreshTime: string;
   query: Query;
   data: T[];
-  external: boolean | null;
+  external: boolean | undefined;
   dbType: string;
   extDbType: string;
   requestId?: string;
@@ -171,7 +171,7 @@ type LoadResponseResult<T> = {
 
 export type LoadResponse<T> = {
   queryType: QueryType;
-  results: LoadResponseResult<T>[];
+  results: Array<LoadResponseResult<T>>;
   pivotQuery: PivotQuery;
   [key: string]: any;
 };
@@ -243,7 +243,7 @@ export type PivotConfig = {
   /**
    * If `true` missing dates on the time dimensions will be filled with `0` for all measures.Note: the `fillMissingDates` option set to `true` will override any **order** applied to the query
    */
-  fillMissingDates?: boolean | null;
+  fillMissingDates?: boolean | undefined;
   /**
    * Give each series a prefix alias. Should have one entry for each query:measure. See [chartPivot](#result-set-chart-pivot)
    */
@@ -361,7 +361,7 @@ export interface TimeDimensionBase {
 }
 
 type TimeDimensionComparisonFields = {
-  compareDateRange: Array<DateRange>;
+  compareDateRange: DateRange[];
   dateRange?: never;
 };
 export type TimeDimensionComparison = TimeDimensionBase & TimeDimensionComparisonFields;
@@ -383,7 +383,7 @@ export interface Query {
   filters?: Filter[];
   timeDimensions?: TimeDimension[];
   segments?: string[];
-  limit?: null | number;
+  limit?: undefined | number;
   offset?: number;
   order?: TQueryOrderObject | TQueryOrderArray;
   timezone?: string;
@@ -406,11 +406,11 @@ type QueryArrayRecordType<T extends DeeplyReadonly<Query[]>> = T extends readonl
 
 // If we can't infer any members at all, then return any.
 type SingleQueryRecordType<T extends DeeplyReadonly<Query>> =
-  ExtractMembers<T> extends never ? any : { [K in string & ExtractMembers<T>]: string | number | boolean | null };
+  ExtractMembers<T> extends never ? any : { [K in string & ExtractMembers<T>]: string | number | boolean | undefined };
 
 type ExtractMembers<T extends DeeplyReadonly<Query>> =
-  | (T extends { dimensions: readonly (infer Names)[] } ? Names : never)
-  | (T extends { measures: readonly (infer Names)[] } ? Names : never)
+  | (T extends { dimensions: ReadonlyArray<infer Names> } ? Names : never)
+  | (T extends { measures: ReadonlyArray<infer Names> } ? Names : never)
   | (T extends { timeDimensions: infer U } ? ExtractTimeMembers<U> : never);
 
 type ExtractTimeMembers<T> = T extends readonly [infer First, ...infer Rest]
@@ -517,7 +517,7 @@ type TDryRunResponse = {
   queryType: QueryType;
   normalizedQueries: Query[];
   pivotQuery: PivotQuery;
-  queryOrder: Array<{ [k: string]: QueryOrder }>;
+  queryOrder: Array<Record<string, QueryOrder>>;
   transformedQueries: TransformedQuery[];
 };
 
@@ -525,7 +525,7 @@ export type DryRunResponse = {
   queryType: QueryType;
   normalizedQueries: Query[];
   pivotQuery: PivotQuery;
-  queryOrder: Array<{ [k: string]: QueryOrder }>;
+  queryOrder: Array<Record<string, QueryOrder>>;
   transformedQueries: TransformedQuery[];
 };
 
