@@ -2,7 +2,7 @@ import fs from 'node:fs/promises';
 import { z } from 'zod';
 import { createExpireValueHolder, type CreateExpireValueHolderOptions } from '../ExpiryValue';
 
-export function createFileExpiryValue<T>({
+export function createFileExpiryValue<T = string>({
   path,
   onLoad,
   ...opts

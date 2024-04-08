@@ -1,7 +1,7 @@
 import type { FetchLike, MaybePromise } from '@wener/utils';
-import { isPlainObject } from '@wener/utils';
+import { isPlainObject, dumpRequest } from '@wener/utils';
 
-type Context = {
+type DoRequestContext = {
   url: string;
   req: RequestInit;
   res: Response;
@@ -16,19 +16,21 @@ export type DoRequestOptions<OUT = any, IN = OUT> = {
   baseUrl?: string;
   body?: any;
   params?: any;
-  transform?: (ctx: { data: IN } & Context) => MaybePromise<OUT>;
+  transform?: (ctx: { data: IN } & DoRequestContext) => MaybePromise<OUT>;
   onRequest?: (ctx: { url: string; req: DoRequestInit }) => MaybePromise<void>;
-  onSuccess?: (ctx: { data: OUT } & Context) => MaybePromise<void>;
-  onError?: (ctx: { error: any } & Context) => MaybePromise<void>;
-  onResponse?: (ctx: { data?: OUT; error?: any } & Context) => MaybePromise<void>;
-  parseResponse?: (res: Response, ctx: Context) => MaybePromise<IN>;
+  onSuccess?: (ctx: { data: OUT } & DoRequestContext) => MaybePromise<void>;
+  onError?: (ctx: { error: any } & DoRequestContext) => MaybePromise<void>;
+  onResponse?: (ctx: { data?: OUT; error?: any } & DoRequestContext) => MaybePromise<void>;
+  parseResponse?: (res: Response, ctx: DoRequestContext) => MaybePromise<IN>;
   headers?: Record<string, any>;
   fetch?: FetchLike;
+  debug?: boolean;
 } & Omit<RequestInit, 'body' | 'headers'>;
 
 export async function doRequest<OUT = any, IN = OUT>(opts: DoRequestOptions<OUT, IN>) {
   const {
     //
+    debug,
     fetch = globalThis.fetch,
     onSuccess,
     onResponse,
@@ -42,10 +44,13 @@ export async function doRequest<OUT = any, IN = OUT>(opts: DoRequestOptions<OUT,
 
   onRequest && (await onRequest({ url, req }));
 
+  debug && (await dumpRequest({ url, req }));
   const res = await fetch(url, req);
+  debug && (await dumpResponse({ url, req: new Response(res.body, res), res }));
+
   let input: IN;
   let output: OUT;
-  let ctx = { res, req, url } as Context & { data: any; error: any };
+  let ctx = { res, req, url } as DoRequestContext & { data: any; error: any };
   try {
     input = await parseResponse(ctx.res, ctx);
   } catch (e) {
@@ -83,7 +88,7 @@ export async function doRequest<OUT = any, IN = OUT>(opts: DoRequestOptions<OUT,
 
 export function buildRequest({
   body,
-  method,
+  method = body ? 'POST' : 'GET',
   url,
   baseUrl,
   params,
@@ -144,4 +149,31 @@ function _parseResponse(res: Response): Promise<any> {
     });
   }
   return res.json();
+}
+
+async function dumpResponse({
+  res,
+  url,
+  req,
+  log = console.log,
+}: {
+  res: Response;
+  url: string;
+  req: RequestInit;
+  log?: (s: string) => void;
+}) {
+  res = res.clone();
+  let out = `<- ${res.status} ${res.statusText} ${req.method} ${url}
+${Array.from(res.headers.entries())
+  .map(([k, v]) => `${k}: ${v}`)
+  .join('\n')}
+   `;
+  let contentType = res.headers.get('content-type');
+  // TODO text/event-stream
+  if (contentType?.includes('application/json') || contentType?.includes('text/plain')) {
+    const body = await res.text();
+    out += `\n${body}\n`;
+  }
+
+  log(out);
 }

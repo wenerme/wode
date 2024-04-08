@@ -1,20 +1,14 @@
 import { cartesianProduct } from './cartesianProduct';
-// import CharToPinyins from './pinyin.json' with { type: 'json' };
-import PyToChar from './data.json' with { type: 'json' };
 
-let CharToPinyinTable: Record<string, string[]>;
+let CharToPinyinTable: Record<string, string[]> | undefined;
+
+export function setCharToPinyinTable(table: Record<string, string[]>) {
+  CharToPinyinTable = table;
+}
 
 export function getCharToPinyinTable() {
   if (!CharToPinyinTable) {
-    CharToPinyinTable = {};
-    for (let [py, chars] of Object.entries(PyToChar)) {
-      for (let c of chars) {
-        if (!CharToPinyinTable[c]) {
-          CharToPinyinTable[c] = [];
-        }
-        CharToPinyinTable[c].push(py);
-      }
-    }
+    return {};
   }
   return CharToPinyinTable;
 }
@@ -28,12 +22,10 @@ export function toPinyinPureFirst(s: string, sep = ','): string {
     .join(sep);
 }
 
-
 export function toPinyinPure(s: string, sep = ','): string[] {
   let tab = getCharToPinyinTable();
   // ensure order
-  return cartesianProduct(s.split('')
-    .map((c) => tab[c] || ''))
+  return cartesianProduct(s.split('').map((c) => tab[c] || ''))
     .sort((a, b) => {
       for (let i = 0; i < a.length; i++) {
         let x = a[i];
@@ -49,4 +41,3 @@ export function toPinyinPure(s: string, sep = ','): string[] {
 // export function lookupPinyinPure(s: string): Array<Array<string>> {
 //   return cartesianProductOfArray(s.split('').map(c => Lookup[c]));
 // }
-

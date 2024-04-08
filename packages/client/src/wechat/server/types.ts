@@ -57,3 +57,33 @@ export interface SnsUserInfoResponse {
   privilege: string[];
   unionid: string;
 }
+
+export interface GetOpenAPIQuotaResponse {
+  quota: OpenAPIQuotaResponseQuota;
+  rate_limit: OpenAPIQuotaResponseRateLimit;
+  component_rate_limit: OpenAPIQuotaResponseComponentRateLimit;
+}
+
+export interface OpenAPIQuotaResponseQuota {
+  daily_limit: number;
+  used: number;
+  remain: number;
+}
+
+export interface OpenAPIQuotaResponseRateLimit {
+  call_count: number;
+  refresh_second: number;
+}
+
+export interface OpenAPIQuotaResponseComponentRateLimit {
+  call_count: number;
+  refresh_second: number;
+}
+
+export interface GetDomainInfoResponse {
+  requestdomain: string[];
+  wsrequestdomain: string[];
+  uploaddomain: any[];
+  downloaddomain: string[];
+  udpdomain: string[];
+}
