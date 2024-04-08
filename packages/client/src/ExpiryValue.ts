@@ -1,7 +1,7 @@
 import { type MaybePromise } from '@wener/utils';
 import { isValueHolder, type ReadonlyValueHolder } from './ValueHolder';
 
-export interface ExpiryValueHolder<T> extends ReadonlyValueHolder<T> {
+export interface ExpiryValueHolder<T = string> extends ReadonlyValueHolder<T> {
   getExpiryValue(): Promise<ExpiryValue<T>>;
 }
 
@@ -16,29 +16,31 @@ export type ExpiryValueFactory<T> = (
   expiresAt: number | Date;
 }>;
 
-export type ExpiryValue<T> = {
+export type ExpiryValue<T = string> = {
   expiresAt: Date;
   value: T;
 };
 type PartialRequired<T, K extends keyof T> = Partial<Omit<T, K>> & Required<Pick<T, K>>;
 
-export interface CreateExpireValueHolderOptions<T> {
-  value?:
-    | MaybePromise<
-        | {
-            value: T;
-            expiresAt: number | Date;
-          }
-        | undefined
-      >
-    | ExpiryValueFactory<T>
-    | ExpiryValueHolder<T>;
+export type ExpireValueHolderInit<T = string> =
+  | MaybePromise<
+      | {
+          value: T;
+          expiresAt: number | Date;
+        }
+      | undefined
+    >
+  | ExpiryValueFactory<T>
+  | ExpiryValueHolder<T>;
+
+export interface CreateExpireValueHolderOptions<T = string> {
+  value?: ExpireValueHolderInit<T>;
   loader: () => Promise<{ value: T; expiresAt: number | Date }>;
   onLoad?: (data: ExpiryValue<T>) => MaybePromise<void | ExpiryValue<T>>;
   isExpired?: (data: ExpiryValue<T>) => boolean;
 }
 
-export function createExpireValueHolder<T>({
+export function createExpireValueHolder<T = string>({
   loader,
   onLoad,
   isExpired = (data) => data.expiresAt.getTime() - Date.now() < 30 * 1000, // 30s

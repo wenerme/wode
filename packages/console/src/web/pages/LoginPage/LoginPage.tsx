@@ -6,11 +6,9 @@ import { HiMiniLanguage } from 'react-icons/hi2';
 import { PiBuildingsThin } from 'react-icons/pi';
 import { useMounted } from '@wener/reaction';
 import { clsx } from 'clsx';
-import { useContextStore } from '../../../hooks';
 import { WechatBrandIcon, WecomBrandIcon } from '../../../icons';
 import { TODO } from '../../../toast';
-import { SitePreferences } from '../../prefs';
-import { SiteLogo } from '../../site/SiteLogo';
+import { GrSystem } from 'react-icons/gr';
 
 export type LoginFormData = {
   org?: string;
@@ -28,6 +26,7 @@ export interface LoginPageProps {
   showOrg?: boolean;
   showRegistry?: boolean;
   showoff?: ReactNode;
+  logo?: ReactNode;
 
   socials?: [
     {
@@ -54,6 +53,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
   title,
   socials,
   footer: { policyUrl, termsUrl, beian } = {},
+  logo = <GrSystem className={'w-10 h-10'} />,
 }) => {
   const methods = useForm<LoginFormData>({
     defaultValues,
@@ -63,8 +63,8 @@ export const LoginPage: React.FC<LoginPageProps> = ({
     handleSubmit,
     formState: { isValid, isSubmitting },
   } = methods;
-  const { get } = useContextStore<SitePreferences>();
-  title ||= get('site.title');
+  // const { get } = useContextStore<SitePreferences>();
+  // title ||= get('site.title');
   return (
     <>
       <div className='flex min-h-full flex-1'>
@@ -72,7 +72,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({
           <div className='mx-auto w-full max-w-sm lg:w-96'>
             <div>
               <div className={'flex items-center gap-2'}>
-                <SiteLogo className={'w-10 h-10'} /> <span className={'text-xl font-medium'}>{title}</span>
+                {logo} <span className={'text-xl font-medium'}>{title}</span>
               </div>
               <h2 className='mt-8 text-2xl font-bold leading-9 tracking-tight opacity-80'>登录系统</h2>
               {showRegistry && (
