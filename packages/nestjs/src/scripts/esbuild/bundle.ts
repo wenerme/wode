@@ -6,7 +6,7 @@ import { createDynamicImportPlugin } from './createDynamicImportPlugin';
 import { createExcludeVendorSourceMapPlugin } from './createExcludeVendorSourceMapPlugin';
 import { createTscPlugin } from './createTscPlugin';
 
-export async function bundle(server: string, opts?: BuildOptions) {
+export async function bundle(server: string, opts?: BuildOptions | ((o: BuildOptions) => BuildOptions | void)) {
   let entry: string | undefined;
   let out: string | undefined;
   let name = server;
@@ -37,7 +37,7 @@ export async function bundle(server: string, opts?: BuildOptions) {
   if (!out) {
     out = `dist/apps/${name}/main.mjs`;
   }
-  const result = await esbuild.build({
+  let options: BuildOptions = {
     //entryPoints: [`./dist/out/apps/${server}/main.js`], // for swc handle decorator
     entryPoints: [entry],
     bundle: true,
@@ -107,7 +107,11 @@ export async function bundle(server: string, opts?: BuildOptions) {
       }),
       createTscPlugin(),
     ],
-    ...opts,
-  });
-  return result;
+  };
+  if (typeof opts === 'function') {
+    options = opts(options) || options;
+  } else if (opts) {
+    Object.assign(options, opts);
+  }
+  return await esbuild.build(options);
 }

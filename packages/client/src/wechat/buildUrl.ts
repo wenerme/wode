@@ -36,6 +36,9 @@ export function buildAuthorizeUrl({
   return u.toString();
 }
 
+/**
+ * 跳转到公众号页面
+ */
 export function buildOfficialAccountProfileUrl({
   uin = process.env.WECHAT_OA_UIN || process.env.NEXT_PUBLIC_WECHAT_OA_UIN,
 }: { uin?: string } = {}) {
@@ -46,6 +49,9 @@ export function buildOfficialAccountProfileUrl({
   return `https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=${btoa(uin)}&scene=124#wechat_redirect`;
 }
 
+/**
+ * @see https://developers.weixin.qq.com/doc/offiaccount/Account_Management/Generating_a_Parametric_QR_Code.html 生成带参数的二维码
+ */
 export function buildShowQrcodeUrl(o: { ticket: string }) {
   const url = new URL('https://mp.weixin.qq.com/cgi-bin/showqrcode');
   for (const [k, v] of Object.entries(o)) {
