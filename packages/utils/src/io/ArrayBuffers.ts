@@ -71,6 +71,8 @@ export interface ArrayBuffers {
   toHex(v: BufferSource): string;
 
   resize(v: ArrayBuffer, newByteLength: number): ArrayBuffer;
+
+  // truncate(v: ArrayBufferLike, len?: number): ArrayBufferLike;
 }
 
 type ToStringEncoding =
@@ -155,8 +157,12 @@ export class ArrayBuffers {
     return this.toUint8Array(ArrayBuffers.from(v, 'hex'));
   };
 
-  static resize = (v: ArrayBuffer, newByteLength: number): ArrayBuffer => {
-    if ('resize' in v) {
+  static resize = (v: ArrayBufferLike, newByteLength?: number) => {
+    if (newByteLength === undefined || newByteLength === null) {
+      return v;
+    }
+
+    if ('resize' in v && (v as any).resizable) {
       (v as any).resize(newByteLength);
       return v;
     }
@@ -339,6 +345,23 @@ export class ArrayBuffers {
     }
   };
 
+  // static truncate = (a: ArrayBufferLike, len?: number) => {
+  //   if (len === 0) {
+  //     return new ArrayBuffer(0);
+  //   }
+  //   if (!len) {
+  //     return a;
+  //   }
+  //   if (a.byteLength > len) {
+  //     return a.slice(0, len);
+  //   } else if (a.byteLength < len) {
+  //     let b = new Uint8Array(len);
+  //     b.set(new Uint8Array(a));
+  //     return b;
+  //   }
+  //   return a;
+  // };
+
   static concat = (buffers: Array<BufferSource>, result?: ArrayBuffer, offset = 0) => {
     // https://stackoverflow.com/questions/10786128/appending-arraybuffers
 
@@ -390,7 +413,13 @@ const hexLookupTable = (function () {
 
 declare global {
   interface ArrayBuffer {
-    // resize(newByteLength: number): void;
+    resize?: (newByteLength: number) => void;
+    resizable?: boolean;
+  }
+
+  interface SharedArrayBuffer {
+    resize?: (newByteLength: number) => void;
+    resizable?: boolean;
   }
 
   interface Uint8Array {
