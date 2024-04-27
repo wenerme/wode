@@ -36,7 +36,7 @@ function asBuffer(o: AnyBuffer) {
  * @see https://www.egret.uk/docs/egretengine/engine/egret.ByteArray
  * @see https://netty.io/4.1/api/io/netty/buffer/ByteBuf.html
  */
-export class ByteArray {
+export class ByteBuffer {
   position = 0;
 
   #buffer: ArrayBufferLike;
@@ -69,7 +69,7 @@ export class ByteArray {
     this.resize(length);
   }
 
-  private ensureSpace(length: number) {
+  private willWrite(length: number) {
     if (this.remaining() < length) {
       this.resize(this.length + length);
     }
@@ -88,72 +88,72 @@ export class ByteArray {
   }
 
   writeByte(value: number) {
-    this.ensureSpace(1);
+    this.willWrite(1);
     this.view.setUint8(this.position++, value);
   }
 
   writeBytes(bytes: ArrayBufferLike) {
-    this.ensureSpace(bytes.byteLength);
+    this.willWrite(bytes.byteLength);
     new Uint8Array(this.buffer).set(new Uint8Array(bytes), this.position);
     this.position += bytes.byteLength;
   }
 
   writeInt8(value: number) {
-    this.ensureSpace(1);
+    this.willWrite(1);
     this.view.setInt8(this.position, value);
     this.position += 1;
   }
 
   writeUint8(value: number) {
-    this.ensureSpace(1);
+    this.willWrite(1);
     this.view.setUint8(this.position, value);
     this.position += 1;
   }
 
   writeInt16(value: number) {
-    this.ensureSpace(2);
+    this.willWrite(2);
     this.view.setInt16(this.position, value);
     this.position += 2;
   }
 
   writeUint16(value: number) {
-    this.ensureSpace(2);
+    this.willWrite(2);
     this.view.setUint16(this.position, value);
     this.position += 2;
   }
 
   writeInt32(value: number) {
-    this.ensureSpace(4);
+    this.willWrite(4);
     this.view.setInt32(this.position, value);
     this.position += 4;
   }
 
   writeUint32(value: number) {
-    this.ensureSpace(4);
+    this.willWrite(4);
     this.view.setUint32(this.position, value);
     this.position += 4;
   }
 
   writeInt64(value: bigint) {
-    this.ensureSpace(8);
+    this.willWrite(8);
     this.view.setBigInt64(this.position, value);
     this.position += 8;
   }
 
   writeUint64(value: bigint) {
-    this.ensureSpace(8);
+    this.willWrite(8);
     this.view.setBigUint64(this.position, value);
     this.position += 8;
   }
 
   writeFloat32(value: number) {
-    this.ensureSpace(4);
+    this.willWrite(4);
     this.view.setFloat32(this.position, value);
     this.position += 4;
   }
 
   writeFloat64(value: number) {
-    this.ensureSpace(8);
+    this.willWrite(8);
     this.view.setFloat64(this.position, value);
     this.position += 8;
   }
