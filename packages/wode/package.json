@@ -13,7 +13,6 @@
   },
   "author": "wener",
   "license": "MIT",
-  "packageManager": "pnpm@7.12.0+",
   "files": [
     "*.cjs",
     "*.mjs",
