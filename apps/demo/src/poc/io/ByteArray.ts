@@ -4,11 +4,33 @@ import { ArrayBuffers, isDefined } from '@wener/utils';
 type AnyBuffer = BufferSource | ArrayBufferLike
 
 function asBuffer(o: AnyBuffer) {
+  if (o instanceof ArrayBuffer) {
+    return o;
+  }
   if (ArrayBuffer.isView(o)) {
+    // 保留 offset&length
+    if (o.byteLength !== o.buffer.byteLength) {
+      // ArrayBuffer 没有 subarray
+      // if ('subarray' in o.buffer) {
+      //   return (o.buffer as any).subarray(o.byteOffset, o.byteOffset + o.byteLength);
+      // }
+      return o.buffer.slice(o.byteOffset, o.byteOffset + o.byteLength);
+    }
     return o.buffer;
   }
   return o;
 }
+
+// function asView(o: AnyBuffer) {
+//   if (o instanceof DataView) {
+//     return o;
+//   }
+//   if (ArrayBuffer.isView(o)) {
+//     // 不 clone 也能保留 offset&length
+//     return new DataView(o.buffer, o.byteOffset, o.byteLength);
+//   }
+//   return new DataView(o);
+// }
 
 /**
  * @see https://www.egret.uk/docs/egretengine/engine/egret.ByteArray
@@ -22,6 +44,7 @@ export class ByteArray {
 
   constructor(buffer: AnyBuffer = new ArrayBuffer(0, { maxByteLength: 1024 })) {
     this.#buffer = asBuffer(buffer);
+    // note prefer view over buffer, avoid the slice overhead ?
     this.#view = new DataView(this.#buffer);
   }
 
@@ -39,7 +62,7 @@ export class ByteArray {
   }
 
   get length() {
-    return this.buffer.byteLength;
+    return this.view.byteLength;
   }
 
   set length(length: number) {
@@ -225,7 +248,12 @@ export class ByteArray {
   readString(length: number) {
     let bytes = this.readBytes(length);
     let decoder = new TextDecoder();
-    return decoder.decode(bytes).replace(/\0+$/, '');
+    let a = new Uint8Array(bytes);
+    let idx = a.indexOf(0);
+    if (idx !== -1) {
+      bytes = bytes.slice(0, idx);
+    }
+    return decoder.decode(bytes);
   }
 
   readHexString(length: number) {
@@ -305,7 +333,7 @@ export class ByteArray {
   }
 
   remaining() {
-    return this.buffer.byteLength - this.position;
+    return this.view.byteLength - this.position;
   }
 
   toUint8Array() {

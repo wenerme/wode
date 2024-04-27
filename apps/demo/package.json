@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "type": "module",
   "private": true,
-  "packageManager": "pnpm@8.8.0+",
   "engines": {
     "node": "18||20",
     "pnpm": ">=7"
@@ -35,6 +34,7 @@
     "@lexical/selection": "^0.14.5",
     "@lexical/table": "^0.14.5",
     "@lexical/utils": "^0.14.5",
+    "@mikro-orm/better-sqlite": "^6.2.3",
     "@mikro-orm/core": "^6.2.3",
     "@mikro-orm/nestjs": "^5.2.3",
     "@mikro-orm/postgresql": "^6.2.3",
@@ -137,6 +137,7 @@
     "jimp": "^0.22.12",
     "json5": "^2.2.3",
     "jsqr": "^1.4.0",
+    "knex": "^3.1.0",
     "ky": "^1.2.4",
     "ldapjs": "^3.0.7",
     "lexical": "^0.14.5",
@@ -201,6 +202,7 @@
     "@types/bcrypt": "^5.0.2",
     "@types/bun": "^1.1.0",
     "@types/cookie": "^0.6.0",
+    "@types/har-format": "^1.2.15",
     "@types/ldapjs": "^3.0.6",
     "@types/lodash": "^4.17.0",
     "@types/markdown-it": "^14.0.1",

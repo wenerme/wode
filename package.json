@@ -19,7 +19,6 @@
     "components/*",
     "packages/*"
   ],
-  "packageManager": "pnpm@8.5.0+",
   "engines": {
     "node": ">=18",
     "npm": ">=9.0.0",

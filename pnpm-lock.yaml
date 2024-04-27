@@ -81,7 +81,7 @@ importers:
         version: 14.0.1
       jsdom:
         specifier: ^24.0.0
-        version: 24.0.0(bufferutil@4.0.8)(canvas@2.11.2)(utf-8-validate@6.0.3)
+        version: 24.0.0(bufferutil@4.0.8)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@6.0.3)
       million:
         specifier: ^3.0.6
         version: 3.0.6(rollup@4.16.4)
@@ -150,7 +150,7 @@ importers:
         version: 4.3.2(typescript@5.4.5)(vite@5.2.10(@types/node@20.12.7)(sass@1.75.0)(terser@5.30.4))
       vitest:
         specifier: ^1.5.2
-        version: 1.5.2(@types/node@20.12.7)(@vitest/ui@1.5.2)(jsdom@24.0.0(bufferutil@4.0.8)(canvas@2.11.2)(utf-8-validate@6.0.3))(sass@1.75.0)(terser@5.30.4)
+        version: 1.5.2(@types/node@20.12.7)(@vitest/ui@1.5.2)(jsdom@24.0.0(bufferutil@4.0.8)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@6.0.3))(sass@1.75.0)(terser@5.30.4)
       xo:
         specifier: ^0.58.0
         version: 0.58.0(@types/eslint@8.56.10)(webpack@5.91.0(@swc/core@1.4.15(@swc/helpers@0.5.5))(esbuild@0.20.2))
@@ -219,7 +219,7 @@ importers:
         version: 10.0.4
       jsdom:
         specifier: ^24.0.0
-        version: 24.0.0(bufferutil@4.0.8)(canvas@2.11.2)(utf-8-validate@6.0.3)
+        version: 24.0.0(bufferutil@4.0.8)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@6.0.3)
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -453,6 +453,9 @@ importers:
       '@lexical/utils':
         specifier: ^0.14.5
         version: 0.14.5
+      '@mikro-orm/better-sqlite':
+        specifier: ^6.2.3
+        version: 6.2.3(@mikro-orm/core@6.2.3)(pg@8.11.5)
       '@mikro-orm/core':
         specifier: ^6.2.3
         version: 6.2.3
@@ -759,6 +762,9 @@ importers:
       jsqr:
         specifier: ^1.4.0
         version: 1.4.0
+      knex:
+        specifier: ^3.1.0
+        version: 3.1.0(better-sqlite3@9.5.0)(pg@8.11.5)(sqlite3@5.1.7)
       ky:
         specifier: ^1.2.4
         version: 1.2.4
@@ -946,6 +952,9 @@ importers:
       '@types/cookie':
         specifier: ^0.6.0
         version: 0.6.0
+      '@types/har-format':
+        specifier: ^1.2.15
+        version: 1.2.15
       '@types/ldapjs':
         specifier: ^3.0.6
         version: 3.0.6
@@ -1170,7 +1179,7 @@ importers:
         version: 5.2.4
       jsdom:
         specifier: ^24.0.0
-        version: 24.0.0(bufferutil@4.0.8)(canvas@2.11.2)(utf-8-validate@6.0.3)
+        version: 24.0.0(bufferutil@4.0.8)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@6.0.3)
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -2086,7 +2095,7 @@ importers:
         version: link:../utils
       jsdom:
         specifier: ^24.0.0
-        version: 24.0.0(bufferutil@4.0.8)(canvas@2.11.2)(utf-8-validate@6.0.3)
+        version: 24.0.0(bufferutil@4.0.8)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@6.0.3)
       react:
         specifier: ^18.3.0
         version: 18.3.0
@@ -4389,6 +4398,12 @@ packages:
   '@microsoft/tsdoc@0.14.2':
     resolution: {integrity: sha512-9b8mPpKrfeGRuhFH5iO1iwCLeIIsV6+H1sRfxbkoGXIyQE2BTsPd9zqSqQJ+pv5sJ/hT5M1zvOFL02MnEezFug==}
 
+  '@mikro-orm/better-sqlite@6.2.3':
+    resolution: {integrity: sha512-dCCofe7EIYroMLtiPVHH5bLIs/fH8wNAEwxX164tKmCtrTudOpBYvEDLzIvUEMJmkSg47Md5nSmwQUXWhHq+aA==}
+    engines: {node: '>= 18.12.0'}
+    peerDependencies:
+      '@mikro-orm/core': ^6.0.0
+
   '@mikro-orm/core@6.2.3':
     resolution: {integrity: sha512-FtUZ7xlmEwC1Kk4fZ2Coy6e79WlKYF4cGrEeE1k+n9g1TJpuBSzaXzF3kmXsy6cv0yiR9W6unJVFyIOGIr4X5Q==}
     engines: {node: '>= 18.12.0'}
@@ -6399,6 +6414,9 @@ packages:
 
   '@types/glob@7.2.0':
     resolution: {integrity: sha512-ZUxbzKl0IfJILTS6t7ip5fQQM/J3TJYubDm3nMbgubNNYS62eXeUpoLUC8/7fJNiFYHTrGPQn7hspDUzIHX3UA==}
+
+  '@types/har-format@1.2.15':
+    resolution: {integrity: sha512-RpQH4rXLuvTXKR0zqHq3go0RVXYv/YVqv4TnPH95VbwUxZdQlK1EtcMvQvMpDngHbt13Csh9Z4qT9AbkiQH5BA==}
 
   '@types/hast@2.3.10':
     resolution: {integrity: sha512-McWspRw8xx8J9HurkVBfYj0xKoE25tOFlHGdx4MJ5xORQrMGZNqJhVQWaIbm6Oyla5kYOXtDiopzKRJzEOkwJw==}
@@ -17532,6 +17550,22 @@ snapshots:
 
   '@microsoft/tsdoc@0.14.2': {}
 
+  '@mikro-orm/better-sqlite@6.2.3(@mikro-orm/core@6.2.3)(pg@8.11.5)':
+    dependencies:
+      '@mikro-orm/core': 6.2.3
+      '@mikro-orm/knex': 6.2.3(@mikro-orm/core@6.2.3)(better-sqlite3@9.5.0)(pg@8.11.5)(sqlite3@5.1.7)
+      better-sqlite3: 9.5.0
+      fs-extra: 11.2.0
+      sqlstring-sqlite: 0.1.1
+    transitivePeerDependencies:
+      - mysql
+      - mysql2
+      - pg
+      - pg-native
+      - sqlite3
+      - supports-color
+      - tedious
+
   '@mikro-orm/core@6.2.3':
     dependencies:
       dataloader: 2.2.2
@@ -19762,7 +19796,7 @@ snapshots:
       lodash: 4.17.21
       redent: 3.0.0
     optionalDependencies:
-      vitest: 1.5.2(@types/node@20.12.7)(@vitest/ui@1.5.2)(jsdom@24.0.0(bufferutil@4.0.8)(canvas@2.11.2)(utf-8-validate@6.0.3))(sass@1.75.0)(terser@5.30.4)
+      vitest: 1.5.2(@types/node@20.12.7)(@vitest/ui@1.5.2)(jsdom@24.0.0(bufferutil@4.0.8)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@6.0.3))(sass@1.75.0)(terser@5.30.4)
 
   '@testing-library/user-event@14.5.2(@testing-library/dom@9.3.4)':
     dependencies:
@@ -20224,6 +20258,8 @@ snapshots:
       '@types/minimatch': 5.1.2
       '@types/node': 20.12.7
 
+  '@types/har-format@1.2.15': {}
+
   '@types/hast@2.3.10':
     dependencies:
       '@types/unist': 2.0.10
@@ -20576,7 +20612,7 @@ snapshots:
       '@babel/plugin-syntax-typescript': 7.24.1(@babel/core@7.24.4)
       '@vanilla-extract/babel-plugin-debug-ids': 1.0.5
       '@vanilla-extract/css': 1.14.2
-      esbuild: 0.17.6
+      esbuild: 0.19.12
       eval: 0.1.8
       find-up: 5.0.0
       javascript-stringify: 2.1.0
@@ -20649,7 +20685,7 @@ snapshots:
       pathe: 1.1.2
       picocolors: 1.0.0
       sirv: 2.0.4
-      vitest: 1.5.2(@types/node@20.12.7)(@vitest/ui@1.5.2)(jsdom@24.0.0(bufferutil@4.0.8)(canvas@2.11.2)(utf-8-validate@6.0.3))(sass@1.75.0)(terser@5.30.4)
+      vitest: 1.5.2(@types/node@20.12.7)(@vitest/ui@1.5.2)(jsdom@24.0.0(bufferutil@4.0.8)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@6.0.3))(sass@1.75.0)(terser@5.30.4)
 
   '@vitest/utils@1.3.1':
     dependencies:
@@ -24955,7 +24991,7 @@ snapshots:
       '@babel/register': 7.23.7(@babel/core@7.24.4)
       babel-core: 7.0.0-bridge.0(@babel/core@7.24.4)
       chalk: 4.1.2
-      flow-parser: 0.206.0
+      flow-parser: 0.235.1
       graceful-fs: 4.2.11
       micromatch: 4.0.5
       neo-async: 2.6.2
@@ -24993,7 +25029,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  jsdom@24.0.0(bufferutil@4.0.8)(canvas@2.11.2)(utf-8-validate@6.0.3):
+  jsdom@24.0.0(bufferutil@4.0.8)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@6.0.3):
     dependencies:
       cssstyle: 4.0.1
       data-urls: 5.0.0
@@ -29793,7 +29829,7 @@ snapshots:
       sass: 1.75.0
       terser: 5.30.4
 
-  vitest@1.5.2(@types/node@20.12.7)(@vitest/ui@1.5.2)(jsdom@24.0.0(bufferutil@4.0.8)(canvas@2.11.2)(utf-8-validate@6.0.3))(sass@1.75.0)(terser@5.30.4):
+  vitest@1.5.2(@types/node@20.12.7)(@vitest/ui@1.5.2)(jsdom@24.0.0(bufferutil@4.0.8)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@6.0.3))(sass@1.75.0)(terser@5.30.4):
     dependencies:
       '@vitest/expect': 1.5.2
       '@vitest/runner': 1.5.2
@@ -29818,7 +29854,7 @@ snapshots:
     optionalDependencies:
       '@types/node': 20.12.7
       '@vitest/ui': 1.5.2(vitest@1.5.2)
-      jsdom: 24.0.0(bufferutil@4.0.8)(canvas@2.11.2)(utf-8-validate@6.0.3)
+      jsdom: 24.0.0(bufferutil@4.0.8)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@6.0.3)
     transitivePeerDependencies:
       - less
       - lightningcss
