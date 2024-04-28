@@ -33,8 +33,9 @@ function asBuffer(o: AnyBuffer) {
 // }
 
 /**
- * @see https://www.egret.uk/docs/egretengine/engine/egret.ByteArray
- * @see https://netty.io/4.1/api/io/netty/buffer/ByteBuf.html
+ * @see {@link https://www.egret.uk/docs/egretengine/engine/egret.ByteArray egret.ByteArray}
+ * @see {@link https://github.com/protobufjs/bytebuffer.js protobufjs/bytebuffer.js}
+ * @see {@link https://netty.io/4.1/api/io/netty/buffer/ByteBuf.html ByteBuf}
  */
 export class ByteBuffer {
   position = 0;
@@ -341,6 +342,10 @@ export class ByteBuffer {
   toHex() {
     return ArrayBuffers.toHex(this.buffer);
   }
+
+  toBase64() {
+    return ArrayBuffers.toBase64(this.buffer);
+  }
 }
 
 export interface TypedValue {
@@ -359,40 +364,6 @@ export interface TypedValue {
     | 'boolean';
   value: any;
   length?: number;
-}
-
-export function toDump(data: BufferSource) {
-  return Array.from(ArrayBuffers.toHex(data).match(/.{1,32}/g) ?? [])
-    .map((v, i) => {
-      let idxPrefix = `${i.toString(16).padStart(8, '0')}:`;
-      let content = Array.from(v.match(/.{4}/g) ?? []).join(' ');
-      let chars = Array.from(new Uint8Array(ArrayBuffers.fromHex(v).buffer)).map((v) => {
-        let c = String.fromCharCode(v);
-        if (v < 32 || v > 126) {
-          c = '.';
-        }
-        return c;
-      });
-      return [idxPrefix, content.padEnd(40, ' '), chars.join('')].join(' ');
-    })
-    .join('\n');
-}
-
-/**
- * Chrome Websocket Binary format
- * ```
- * 00000000: 0000 0000 0000 0000 0000 0000 0000 0000  ................
- * ```
- */
-export function fromDump(dump: string) {
-  return ArrayBuffers.fromHex(
-    dump
-      .split('\n')
-      .map((v) => {
-        return v.substring(10, 10 + 41).replaceAll(' ', '');
-      })
-      .join(''),
-  );
 }
 
 function safeNumber(n: bigint) {
