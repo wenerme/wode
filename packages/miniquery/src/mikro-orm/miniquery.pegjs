@@ -5,6 +5,7 @@ a > 1 or
 (b < 2 or c.d.e = true )
 --
 and a not in [1,2,3,]
+and a between 1 and 2
 */
 {{
 /* eslint-disable @typescript-eslint/interface-name-prefix,@typescript-eslint/no-empty-interface,no-case-declarations,no-control-regex,prefer-const */
@@ -37,6 +38,7 @@ const OPERATORS = {
   // $overlap	&&
   // https://www.postgresql.org/docs/current/functions-textsearch.html
   // $fulltext
+  'between': '$between',
 }
 }}
 
@@ -51,19 +53,27 @@ function _compound(op,a,b){
   if(b[op])return {[op]:[a,...b[op]]}
   return {[op]:[a,b]}
 }
-function _make(a,op,b){
+function _make(field, op, a, b) {
   // NOTE 如果做了 join 支持 {'a.b':{$gt:1}}
-  const o = {}
-  let c = o
-  if(Array.isArray(a)){
-    for(const v of a){
-      c = c[v] ||= {}
+  const out = {};
+  let cur = out;
+  if (Array.isArray(field)) {
+    for (const v of field) {
+      cur = cur[v] ||= {};
     }
   } else {
-    c = o[a] ||= {}
+    cur = out[field] ||= {};
   }
-  c[_op(op)]=b
-  return o
+  switch (op) {
+    case '$between':
+      cur['$gte'] = a;
+      cur['$lte'] = b;
+      break;
+    default:
+      cur[_op(op)] = a;
+      break;
+  }
+  return out;
 }
 }
 
@@ -84,6 +94,7 @@ CompoundExpr
 RelExpr
   = '(' next:Expr ')' {return next} // NOTE: and > or
   / '!' next:RelExpr {return {'$not':next}}
+  / field:Field __ 'between' __ value1:literal __ 'and' __ value2:literal { return _make(field, '$between', value1, value2); }
   / field:Field _ op:('>=' / '<='/ '<>' /  '>' / '<' / '===' / '==' / '!='  / '=' / ':') _ value:literal {return _make(field,op,value)}
   / field:Field _ op:('~') _ value:string {return _make(field,op,value)}
   / field:Field __ op:(is __ null) {return _make(field,'=',null)}

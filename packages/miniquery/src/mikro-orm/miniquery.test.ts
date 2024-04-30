@@ -87,6 +87,8 @@ test('miniquery', async () => {
     'a is null AND a is not null',
     //
     'profile.age > 1',
+    'profile.age between 18 and 28',
+    'b between "a" and "z"',
     // json works as expected
     'attrs.test = true',
     'attrs.vendor.code = "wener"',
