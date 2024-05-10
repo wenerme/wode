@@ -77,15 +77,7 @@ export class ByteBuffer {
   }
 
   resize(newLength: number) {
-    // Chrome 111, Nodejs 20
-    let buf = this.buffer;
-    if (buf.resize && (!isDefined(buf.resizable) || buf.resizable)) {
-      buf.resize(newLength);
-    } else {
-      let newBuffer = new ArrayBuffer(newLength);
-      new Uint8Array(newBuffer).set(new Uint8Array(buf));
-      this.buffer = newBuffer;
-    }
+    this.buffer = ArrayBuffers.resize(this.buffer, newLength, Math.ceil(newLength * 1.2));
   }
 
   writeByte(value: number) {
