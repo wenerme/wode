@@ -157,18 +157,23 @@ export class ArrayBuffers {
     return this.toUint8Array(ArrayBuffers.from(v, 'hex'));
   };
 
-  static resize = (v: ArrayBufferLike, newByteLength?: number) => {
+  static resize = (v: ArrayBufferLike, newByteLength?: number, maxByteLength?: number): ArrayBuffer => {
     if (newByteLength === undefined || newByteLength === null) {
       return v;
     }
 
-    if ('resize' in v && (v as any).resizable) {
-      (v as any).resize(newByteLength);
-      return v;
+    // Chrome 111, Nodejs 20
+    if ('resize' in v && typeof v.resize === 'function') {
+      if ('resizable' in v && v.resizable) {
+        if ('maxByteLength' in v && typeof v.maxByteLength === 'number' && v.maxByteLength >= newByteLength) {
+          v.resize(newByteLength);
+          return v;
+        }
+      }
     }
 
     const old = v;
-    const newBuf = new ArrayBuffer(newByteLength);
+    const newBuf = new ArrayBuffer(newByteLength, { maxByteLength: maxByteLength });
     const oldView = new Uint8Array(old);
     const newView = new Uint8Array(newBuf);
     newView.set(oldView);
