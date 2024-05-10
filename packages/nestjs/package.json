@@ -58,24 +58,25 @@
     "@wener/utils": "workspace:^",
     "dotenv": "^16.4.5",
     "reflect-metadata": "^0.2.2",
-    "zod": "^3.23.4"
+    "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@hono/node-server": "^1.11.0",
+    "@hono/node-server": "^1.11.1",
     "@hono/zod-openapi": "^0.11.0",
-    "@mikro-orm/core": "^6.2.3",
+    "@mikro-orm/core": "^6.2.5",
     "@mikro-orm/nestjs": "^5.2.3",
-    "@mikro-orm/postgresql": "^6.2.3",
+    "@mikro-orm/postgresql": "^6.2.5",
     "@nestjs/common": "^10.3.8",
     "@nestjs/core": "^10.3.8",
     "@nestjs/platform-fastify": "^10.3.8",
     "@nestjs/swagger": "^7.3.1",
     "@nestjs/testing": "^10.3.8",
-    "@sinclair/typebox": "^0.32.24",
-    "fastify": "^4.26.2",
-    "hono": "^4.2.7",
-    "nats": "^2.23.0",
-    "nats.ws": "^1.24.0"
+    "@sinclair/typebox": "^0.32.29",
+    "fastify": "^4.27.0",
+    "hono": "^4.3.4",
+    "ioredis": "^5.4.1",
+    "nats": "^2.25.0",
+    "nats.ws": "^1.26.0"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org",

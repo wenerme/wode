@@ -19,16 +19,16 @@
     "common": "workspace:^"
   },
   "devDependencies": {
-    "@storybook/addon-essentials": "^8.0.9",
-    "@storybook/addon-interactions": "^8.0.9",
-    "@storybook/addon-links": "^8.0.9",
-    "@storybook/blocks": "^8.0.9",
-    "@storybook/react": "^8.0.9",
-    "@storybook/react-vite": "^8.0.9",
+    "@storybook/addon-essentials": "^8.0.10",
+    "@storybook/addon-interactions": "^8.0.10",
+    "@storybook/addon-links": "^8.0.10",
+    "@storybook/blocks": "^8.0.10",
+    "@storybook/react": "^8.0.10",
+    "@storybook/react-vite": "^8.0.10",
     "@storybook/testing-library": "0.2.2",
     "prop-types": "^15.8.1",
-    "react": "^18.3.0",
-    "react-dom": "^18.3.0",
-    "storybook": "^8.0.9"
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "storybook": "^8.0.10"
   }
 }

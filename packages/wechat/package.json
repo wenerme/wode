@@ -6,10 +6,6 @@
   "homepage": "https://github.com/wenerme/wode#readme",
   "author": "wener",
   "license": "MIT",
-  "engines": {
-    "node": "16||18",
-    "npm": "8"
-  },
   "main": "index.js",
   "keywords": [],
   "scripts": {
@@ -21,7 +17,7 @@
     "https-proxy-agent": "^7.0.4"
   },
   "devDependencies": {
-    "lru-cache": "^10.2.1"
+    "lru-cache": "^10.2.2"
   },
   "ava": {
     "extensions": {

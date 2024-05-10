@@ -55,14 +55,14 @@
     }
   },
   "dependencies": {
-    "react": "^18.3.0",
-    "react-dom": "^18.3.0",
-    "react-is": "^18.3.0"
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-is": "^18.3.1"
   },
   "devDependencies": {
-    "@types/react": "^18.2.79",
-    "@types/react-dom": "^18.2.25",
-    "@types/react-is": "^18.2.4",
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.0",
+    "@types/react-is": "^18.3.0",
     "@wener/utils": "workspace:^",
     "mutative": "^1.0.5",
     "valtio": "^1.13.2",
