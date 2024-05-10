@@ -45,7 +45,7 @@ export class ByteBuffer {
 
   constructor(buffer: AnyBuffer = new ArrayBuffer(0, { maxByteLength: 1024 })) {
     this.#buffer = asBuffer(buffer);
-    // note prefer view over buffer, avoid the slice overhead ?
+    // NOTE prefer view over buffer, avoid the slice overhead ?
     this.#view = new DataView(this.#buffer);
   }
 
@@ -93,8 +93,9 @@ export class ByteBuffer {
     this.view.setUint8(this.position++, value);
   }
 
-  writeBytes(bytes: ArrayBufferLike) {
-    this.willWrite(bytes.byteLength);
+  writeBytes(bytes: ArrayBufferLike, len: number = bytes.byteLength) {
+    this.willWrite(len);
+    if (len !== bytes.byteLength) bytes = bytes.slice(0, len);
     new Uint8Array(this.buffer).set(new Uint8Array(bytes), this.position);
     this.position += bytes.byteLength;
   }
@@ -168,7 +169,7 @@ export class ByteBuffer {
   writeString(value: string, len?: number) {
     let encoder = new TextEncoder();
     let bytes = encoder.encode(value);
-    this.writeBytes(ArrayBuffers.resize(bytes.buffer, len));
+    this.writeBytes(bytes, len);
   }
 
   readByte() {

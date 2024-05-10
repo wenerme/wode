@@ -10,10 +10,6 @@
   "homepage": "https://github.com/wenerme/wode#readme",
   "author": "wener",
   "license": "MIT",
-  "engines": {
-    "node": "16||18",
-    "npm": "8"
-  },
   "main": "dist/cjs/index.cjs",
   "module": "lib/index.js",
   "exports": {
@@ -95,12 +91,12 @@
   },
   "dependencies": {
     "@wener/utils": "*",
-    "better-sqlite3": "^9.5.0",
-    "lru-cache": "^10.2.1",
+    "better-sqlite3": "^9.6.0",
+    "lru-cache": "^10.2.2",
     "mime": "^4.0.3",
     "pino": "^9.0.0",
-    "semver": "^7.6.0",
-    "tar": "^7.0.1"
+    "semver": "^7.6.2",
+    "tar": "^7.1.0"
   },
   "optionalDependencies": {
     "@wener/utils": "workspace:^"

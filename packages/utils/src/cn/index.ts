@@ -5,7 +5,7 @@
  */
 
 export { parseChineseNumber } from './parseChineseNumber';
-
+export { formatChineseAmount } from './formatChineseAmount';
 export { isUSCC } from './uscc/isUSCC';
 export { USCC } from './uscc/USCC';
 

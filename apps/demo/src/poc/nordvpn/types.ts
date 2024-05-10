@@ -1,20 +1,32 @@
-export interface Server {
+export interface ServerCountry {
   id: number;
-  created_at: string;
-  updated_at: string;
   name: string;
-  station: string;
-  ipv6_station: string;
-  hostname: string;
-  load: number;
-  status: string;
-  cpt: number;
-  locations: Location[];
-  services: Service[];
-  technologies: Technology[];
-  groups: Group[];
-  specifications: Specification[];
-  ips: Ip[];
+  code: string;
+  serverCount: number;
+  cities: ServerCountryCity[];
+}
+
+export interface ServerCountryCity extends City {
+  serverCount: number;
+}
+
+export interface Server {
+  id: number
+  created_at: string
+  updated_at: string
+  name: string
+  station: string
+  ipv6_station: string
+  hostname: string
+  load: number
+  status: string
+  type: string
+  locations: Location[]
+  services: Service[]
+  technologies: Technology[]
+  groups: Group[]
+  specifications: Specification[]
+  ips: Ip[]
 }
 
 export interface Location {
@@ -56,11 +68,11 @@ export interface Technology {
   identifier: string;
   created_at: string;
   updated_at: string;
-  metadata: Metadaum[];
+  metadata: NameValuePair[];
   pivot: Pivot;
 }
 
-export interface Metadaum {
+export interface NameValuePair {
   name: string;
   value: string;
 }

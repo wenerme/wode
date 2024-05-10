@@ -18,15 +18,15 @@
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",
     "@types/semver": "^7.5.8",
-    "tsx": "^4.7.3",
+    "tsx": "^4.9.3",
     "typescript": "^5.4.5",
     "zx": "^8.0.2"
   },
   "dependencies": {
     "@wener/utils": "workspace:^",
     "calver": "^22.9.1",
-    "dayjs": "^1.11.10",
+    "dayjs": "^1.11.11",
     "fs-extra": "^11.2.0",
-    "semver": "^7.6.0"
+    "semver": "^7.6.2"
   }
 }
