@@ -1,6 +1,5 @@
 import { DynamicModule, Injectable } from '@nestjs/common';
 import { ModuleRef, ModulesContainer } from '@nestjs/core';
-import { getContext } from '@wener/nestjs';
 import { getEntityManager } from '@wener/nestjs/mikro-orm';
 import { Constructor } from '@wener/utils';
 import { GraphQLSchema } from 'graphql';
@@ -9,21 +8,18 @@ import {
   Args,
   ArgsType,
   buildSchema,
-  ContainerType,
   Field,
   Float,
-  GraphQLTimestamp,
   Mutation,
   NonEmptyArray,
   ObjectType,
   Resolver,
-  ResolverData,
 } from 'type-graphql';
 import { ApkIndexEntity } from '@/poc/alpine/entity/ApkIndexEntity';
 import { ApkIndexPkgEntity } from '@/poc/alpine/entity/ApkIndexPkgEntity';
 import { AlpineArchitectures, AlpineRepos, getLatestAlpineBranch } from '@/poc/alpine/repo/const';
 import { fetchApkIndex } from '@/poc/alpine/repo/fetchApkIndex';
-import { BaseObject } from '@/type-graphql';
+import { BaseObject, NestContainerType } from '@wener/nestjs/type-graphql';
 import { BaseResolverOf } from '@/type-graphql/BaseResolver';
 import { PageResponseOf } from '@/type-graphql/PageResponse';
 
@@ -201,7 +197,7 @@ export async function createTypeGraphSchema() {
   let resolvers: NonEmptyArray<Constructor> = [ApkIndexResolver, ApkIndexPkgResolver];
   let schema = await buildSchema({
     resolvers: resolvers,
-    container: new NestContainer(),
+    container: new NestContainerType(),
     scalarsMap: [{ type: Date, scalar: GraphQLDateTime }],
   });
 
@@ -228,10 +224,3 @@ class TypeGraphSchemaModule {
 }
 
 function resolverContainer({ moduleRef, container }: { moduleRef: ModuleRef; container: ModulesContainer }) {}
-
-class NestContainer implements ContainerType {
-  get(someClass: any, resolverData: ResolverData<any>): any | Promise<any> {
-    let ref = getContext(ModuleRef);
-    return ref.get(someClass, { strict: false });
-  }
-}

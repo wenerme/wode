@@ -1,6 +1,6 @@
 {
   "name": "@wener/nestjs",
-  "version": "1.0.29",
+  "version": "1.0.31",
   "type": "module",
   "description": "NestJS utils",
   "author": "wener",
@@ -20,6 +20,7 @@
     "./nats": "./src/nats/index.ts",
     "./scripts/esbuild": "./src/scripts/esbuild/index.ts",
     "./service": "./src/service/index.ts",
+    "./type-graphql": "./src/type-graphql/index.ts",
     "./package.json": "./package.json"
   },
   "files": [
@@ -77,11 +78,14 @@
     "@nestjs/testing": "^10.3.8",
     "@sinclair/typebox": "^0.32.29",
     "@wener/miniquery": "^0.0.5",
+    "class-validator": "^0.14.1",
     "fastify": "^4.27.0",
+    "graphql": "^16.8.1",
     "hono": "^4.3.4",
     "ioredis": "^5.4.1",
     "nats": "^2.25.0",
-    "nats.ws": "^1.26.0"
+    "nats.ws": "^1.26.0",
+    "type-graphql": "2.0.0-rc.1"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org",
@@ -142,6 +146,10 @@
       "./service": {
         "types": "./src/service/index.ts",
         "default": "./lib/service/index.js"
+      },
+      "./type-graphql": {
+        "types": "./src/type-graphql/index.ts",
+        "default": "./lib/type-graphql/index.js"
       },
       "./package.json": "./package.json"
     }

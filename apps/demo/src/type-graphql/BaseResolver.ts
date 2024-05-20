@@ -9,7 +9,7 @@ import { PageResponseOf } from './PageResponse';
 import { computeIfAbsent } from './computeIfAbsent';
 import { getTypeCache } from './getTypeCache';
 import { normalizePagination } from './normalizePagination';
-import { resolveGraphQLJSON } from './resolveGraphQLJSON';
+import { resolveGraphQLJSON } from '@wener/nestjs/type-graphql';
 import { EntityClass, ObjectClass, PageResponse } from './types';
 
 export interface BaseResolver<O, E> {
