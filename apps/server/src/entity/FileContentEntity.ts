@@ -1,10 +1,8 @@
-import { Entity, OptionalProps, Property, types } from '@mikro-orm/core';
-import { TenantBaseEntity, TenantBaseEntityOptionalFields } from './base/TenantBaseEntity';
+import { Entity, Opt, OptionalProps, Property, types } from '@mikro-orm/core';
+import { TenantBaseEntity } from '@wener/nestjs/entity';
 
 @Entity({ tableName: 'file_content' })
 export class FileContentEntity extends TenantBaseEntity {
-  [OptionalProps]?: TenantBaseEntityOptionalFields | 'metadata';
-
   @Property({ type: types.string, nullable: true })
   fileName?: string;
 
@@ -45,5 +43,5 @@ export class FileContentEntity extends TenantBaseEntity {
   content!: Buffer;
 
   @Property({ type: types.json, nullable: false, default: '{}' })
-  metadata!: Record<string, any>;
+  metadata!: Record<string, any> & Opt;
 }

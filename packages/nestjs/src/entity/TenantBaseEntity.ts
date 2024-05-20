@@ -1,7 +1,7 @@
 import { BeforeCreate, Entity, Filter, Opt, Property, types, Unique } from '@mikro-orm/core';
-import { getTenantId } from '../../modules/tenant';
+import { getCurrentTenantId } from '../app';
+import { CurrentTenantIdFilter } from './CurrentTenantIdFilter';
 import { StandardBaseEntity } from './StandardBaseEntity';
-import { TidFilter } from './TidFilter';
 
 export type TenantBaseEntityOptionalFields =
   | 'id'
@@ -20,16 +20,16 @@ export type TenantBaseEntityOptionalFields =
   | 'ownerTeamId';
 
 @Entity({ abstract: true })
-@Filter(TidFilter)
+@Filter(CurrentTenantIdFilter)
 @Unique({ properties: ['tid', 'eid'] })
-export abstract class TenantBaseEntity extends StandardBaseEntity {
+export class TenantBaseEntity extends StandardBaseEntity {
   @Property({ type: types.string, nullable: false, defaultRaw: 'public.current_tenant_id()' })
   tid!: string & Opt;
 
   @BeforeCreate()
   setTenantBeforeCreate() {
     // TidFilter 不会处理 create
-    this.tid ||= getTenantId() || this.tid;
+    this.tid ||= getCurrentTenantId() || this.tid;
   }
 
   // upsert bind 有问题

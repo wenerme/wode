@@ -1,10 +1,8 @@
 import { Entity, OptionalProps, Property, types } from '@mikro-orm/core';
-import { TenantBaseEntity, type TenantBaseEntityOptionalFields } from './base/TenantBaseEntity';
+import { TenantBaseEntity } from '@wener/nestjs/entity';
 
 @Entity({ tableName: 'audit_log' })
 export class AuditLogEntity extends TenantBaseEntity {
-  [OptionalProps]?: TenantBaseEntityOptionalFields;
-
   @Property({ type: types.string, nullable: true })
   requestId?: string;
 

@@ -1,4 +1,3 @@
-import { isDefined } from '../langs/isDefined';
 import { ArrayBuffers } from './ArrayBuffers';
 
 type AnyBuffer = BufferSource | ArrayBufferLike;
@@ -72,7 +71,7 @@ export class ByteBuffer {
 
   private willWrite(length: number) {
     if (this.remaining() < length) {
-      this.resize(this.length + length);
+      this.resize(this.position + length);
     }
   }
 
@@ -89,7 +88,7 @@ export class ByteBuffer {
     this.willWrite(len);
     if (len !== bytes.byteLength) bytes = bytes.slice(0, len);
     new Uint8Array(this.buffer).set(new Uint8Array(bytes), this.position);
-    this.position += bytes.byteLength;
+    this.position += len;
   }
 
   writeInt8(value: number) {
@@ -325,7 +324,7 @@ export class ByteBuffer {
   }
 
   remaining() {
-    return this.view.byteLength - this.position;
+    return this.length - this.position;
   }
 
   toUint8Array() {

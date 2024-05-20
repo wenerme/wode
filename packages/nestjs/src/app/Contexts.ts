@@ -43,3 +43,29 @@ export function getCurrentContext() {
     request: Contexts.request.get(),
   };
 }
+
+export function getStaticTenantId() {
+  return process.env.TENANT_ID;
+}
+
+let _FALLBACK_TENANT_ID = 'org_00000000000000000000000000';
+
+export function getFallbackTenantId() {
+  return _FALLBACK_TENANT_ID;
+}
+
+export function setFallbackTenantId(id: string) {
+  _FALLBACK_TENANT_ID = id;
+}
+
+export function getCurrentTenantId() {
+  return Contexts.tenantId.get() || getStaticTenantId();
+}
+
+export function getCurrentFallbackTenantId() {
+  return getCurrentTenantId() || getFallbackTenantId();
+}
+
+export function getCurrentUserId() {
+  return Contexts.userId.get();
+}

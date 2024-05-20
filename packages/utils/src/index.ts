@@ -1,3 +1,5 @@
+import { Promises } from './asyncs/Promises';
+
 // arrays
 export {
   firstOfMaybeArray,
@@ -25,10 +27,10 @@ export { firstOfAsyncIterator } from './asyncs/firstOfAsyncIterator';
 export { nextOfAsyncIterator } from './asyncs/nextOfAsyncIterator';
 export { isIterator } from './asyncs/isIterator';
 
-export { sleep } from './asyncs/sleep';
+export { Promises } from './asyncs/Promises';
+export const sleep = Promises.sleep;
+export const isPromise = Promises.isPromise;
 export { timeout, TimeoutError } from './asyncs/timeout';
-export { isPromise } from './asyncs/isPromise';
-// export * from './async/promiseOfCallback';
 
 // langs
 export { shallowEqual } from './langs/shallowEqual';

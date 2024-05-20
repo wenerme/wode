@@ -1,7 +1,7 @@
-import { Entity, ManyToOne, OptionalProps, Property, type Rel, types } from '@mikro-orm/core';
-import { ClientAgentEntity } from './ClientAgentEntity';
+import { Entity, ManyToOne, OptionalProps, Property, types, type Rel } from '@mikro-orm/core';
+import { TenantBaseEntity } from '@wener/nestjs/entity';
 import type { TenantBaseEntityOptionalFields } from './base/TenantBaseEntity';
-import { TenantBaseEntity } from './base/TenantBaseEntity';
+import { ClientAgentEntity } from './ClientAgentEntity';
 
 @Entity({ tableName: 'access_token' })
 export class AccessTokenEntity extends TenantBaseEntity {

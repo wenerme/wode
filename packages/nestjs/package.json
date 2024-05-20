@@ -11,7 +11,11 @@
     "./app": "./src/app/index.ts",
     "./auth": "./src/auth/index.ts",
     "./config": "./src/config/index.ts",
+    "./entity": "./src/entity/index.ts",
+    "./entity/audit": "./src/entity/audit/index.ts",
+    "./entity/service": "./src/entity/service/index.ts",
     "./hono": "./src/hono/index.ts",
+    "./knex": "./src/knex/index.ts",
     "./mikro-orm": "./src/mikro-orm/index.ts",
     "./nats": "./src/nats/index.ts",
     "./scripts/esbuild": "./src/scripts/esbuild/index.ts",
@@ -72,6 +76,7 @@
     "@nestjs/swagger": "^7.3.1",
     "@nestjs/testing": "^10.3.8",
     "@sinclair/typebox": "^0.32.29",
+    "@wener/miniquery": "^0.0.5",
     "fastify": "^4.27.0",
     "hono": "^4.3.4",
     "ioredis": "^5.4.1",
@@ -102,9 +107,25 @@
         "types": "./src/config/index.ts",
         "default": "./lib/config/index.js"
       },
+      "./entity": {
+        "types": "./src/entity/index.ts",
+        "default": "./lib/entity/index.js"
+      },
+      "./entity/audit": {
+        "types": "./src/entity/audit/index.ts",
+        "default": "./lib/entity/audit/index.js"
+      },
+      "./entity/service": {
+        "types": "./src/entity/service/index.ts",
+        "default": "./lib/entity/service/index.js"
+      },
       "./hono": {
         "types": "./src/hono/index.ts",
         "default": "./lib/hono/index.js"
+      },
+      "./knex": {
+        "types": "./src/knex/index.ts",
+        "default": "./lib/knex/index.js"
       },
       "./mikro-orm": {
         "types": "./src/mikro-orm/index.ts",
