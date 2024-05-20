@@ -1,0 +1,1 @@
+export { parseKnexUri } from './parseKnexUri';

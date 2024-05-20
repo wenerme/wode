@@ -1,14 +1,4 @@
-import {
-  BaseEntity,
-  Config,
-  DefineConfig,
-  Entity,
-  Opt,
-  PrimaryKey,
-  PrimaryKeyProp,
-  Property,
-  types,
-} from '@mikro-orm/core';
+import { BaseEntity, Entity, Opt, PrimaryKey, Property, types } from '@mikro-orm/core';
 
 export type MinimalBaseEntityOptionalFields =
   | 'id'
@@ -26,9 +16,6 @@ export type MinimalBaseEntityOptionalFields =
  */
 @Entity({ abstract: true })
 export abstract class MinimalBaseEntity extends BaseEntity {
-  [PrimaryKeyProp]?: 'id';
-  [Config]?: DefineConfig<{ forceObject: true }>;
-
   @PrimaryKey({ type: types.string, defaultRaw: 'public.gen_ulid()', nullable: false })
   id!: string & Opt;
 
