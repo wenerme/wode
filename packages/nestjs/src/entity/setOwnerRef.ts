@@ -1,10 +1,6 @@
-import { BaseEntity } from '@mikro-orm/core';
 import { Errors } from '@wener/utils';
 import { getEntityDef } from './defineEntity';
-
-export interface IdentifiableEntity extends BaseEntity {
-  id: string;
-}
+import { IdentifiableEntity } from './types';
 
 export function setOwnerRef<
   T extends {

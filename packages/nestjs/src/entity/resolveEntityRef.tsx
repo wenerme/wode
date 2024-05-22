@@ -2,7 +2,7 @@ import type { Opt, Ref } from '@mikro-orm/core';
 import { Errors } from '@wener/utils';
 import { getEntityManager } from '../mikro-orm';
 import { getEntityDef } from './defineEntity';
-import { IdentifiableEntity } from './setOwnerRef';
+import { IdentifiableEntity } from './types';
 
 export function resolveEntityRef<E = IdentifiableEntity>(o: { entityId: string; entityType?: string }): Ref<E> & Opt;
 export function resolveEntityRef<E = IdentifiableEntity>(o: {
