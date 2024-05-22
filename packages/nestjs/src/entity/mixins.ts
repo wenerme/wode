@@ -1,8 +1,12 @@
 import { Ref } from 'react';
-import { BaseEntity, Entity, Opt, Property, types } from '@mikro-orm/core';
+import { BaseEntity, Collection, Entity, Opt, Property, types } from '@mikro-orm/core';
 import { Constructor } from '@wener/utils';
 import { Feature } from '../Feature';
 import { EntityFeature } from './enum';
+
+export interface HasTidEntity {
+  tid: string;
+}
 
 export interface HasSidEntity {
   sid: number;
@@ -18,19 +22,12 @@ export interface HasStateStatusEntity {
   status: string & Opt;
 }
 
-export interface HasRelEntity {
-  entityId: string;
-  entityType?: string;
-
-  get entity(): Ref<BaseEntity> & Opt;
-}
-
-export interface HasTidEntity {
-  tid: string & Opt;
-}
-
 export interface HasTagsEntity {
   tags?: string[];
+}
+
+export interface HasLabelsEntity<E extends BaseEntity> {
+  labels: Collection<E>;
 }
 
 export interface HasNotesEntity {
@@ -39,6 +36,16 @@ export interface HasNotesEntity {
 
 export interface HasCodeEntity {
   code?: string;
+}
+
+export interface HasEntityRefEntity {
+  entityId?: string;
+  entityType?: string;
+}
+
+export interface HasOwnerRefEntity {
+  ownerId?: string;
+  ownerType?: string;
 }
 
 export function withEntityRefEntity<TBase extends Constructor>(Base: TBase) {
@@ -53,6 +60,20 @@ export function withEntityRefEntity<TBase extends Constructor>(Base: TBase) {
   }
 
   return HasEntityRefEntity;
+}
+
+export function withOwnerRefEntity<TBase extends Constructor>(Base: TBase) {
+  @Feature([EntityFeature.HasOwnerRef])
+  @Entity({ abstract: true })
+  class HasOwnerRefEntity extends Base {
+    @Property({ type: types.string, nullable: true })
+    ownerId?: string;
+
+    @Property({ type: types.string, nullable: true })
+    ownerType?: string;
+  }
+
+  return HasOwnerRefEntity;
 }
 
 export function withVendorRefEntity<TBase extends Constructor>(Base: TBase) {
@@ -71,9 +92,9 @@ export function withVendorRefEntity<TBase extends Constructor>(Base: TBase) {
 }
 
 export function withStateStatusEntity<TBase extends Constructor>(Base: TBase) {
-  @Feature([EntityFeature.HasStatus])
+  @Feature([EntityFeature.HasStateStatus])
   @Entity({ abstract: true })
-  class HasStatusEntity extends Base {
+  class HasStateStatusEntity extends Base {
     @Property({ type: types.string, nullable: false })
     state!: string & Opt;
 
@@ -81,7 +102,7 @@ export function withStateStatusEntity<TBase extends Constructor>(Base: TBase) {
     status!: string & Opt;
   }
 
-  return HasStatusEntity;
+  return HasStateStatusEntity;
 }
 
 export function withTagsEntity<TBase extends Constructor>(Base: TBase) {
@@ -89,6 +110,14 @@ export function withTagsEntity<TBase extends Constructor>(Base: TBase) {
   abstract class HasTagsEntity extends Base {
     @Property({ type: types.array, nullable: true, default: [] })
     tags?: string[] = [];
+
+    hasTags(tags: string[]) {
+      return tags.every((tag) => this.tags?.includes(tag));
+    }
+
+    hasTag(tag: string) {
+      return this.tags?.includes(tag);
+    }
   }
 
   return HasTagsEntity;
@@ -99,6 +128,16 @@ export function withNotesEntity<TBase extends Constructor>(Base: TBase) {
   abstract class HasNotesEntity extends Base {
     @Property({ type: types.string, nullable: true })
     notes?: string;
+  }
+
+  return HasNotesEntity;
+}
+
+export function withMetadataEntity<TBase extends Constructor>(Base: TBase) {
+  @Feature([EntityFeature.HasNotes])
+  abstract class HasNotesEntity extends Base {
+    @Property({ type: types.string, nullable: true })
+    metadata?: string;
   }
 
   return HasNotesEntity;
@@ -122,4 +161,14 @@ export function withSidEntity<TBase extends Constructor>(Base: TBase) {
   }
 
   return HasSidEntity;
+}
+
+export function withTidEntity<TBase extends Constructor>(Base: TBase) {
+  @Feature([EntityFeature.HasTid])
+  abstract class HasTidEntity extends Base {
+    @Property({ type: types.string, nullable: false })
+    tid!: string & Opt;
+  }
+
+  return HasTidEntity;
 }

@@ -15,7 +15,11 @@ export { ListQueryInput } from './ListQueryInput';
 export { createBaseEntityResolver } from './createBaseEntityResolver';
 export { withBaseQuery } from './withBaseQuery';
 
+export { getObjectName, getInputName } from './getObjectName';
+
 export { RelayNode, RelayPageInfo, RelayMutationPayload, RelayMutationInput, runRelayClientMutation } from './relay';
 export type * from './relay';
 
 export type * from './types';
+
+export * from './mixins';

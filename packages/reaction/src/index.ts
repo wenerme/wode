@@ -17,6 +17,7 @@ export { useRenderCount } from './hooks/useRenderCount';
 export { useTimeout } from './hooks/useTimeout';
 export { useEventListener, createEventListenerHook } from './hooks/useEventListener';
 export { useMediaQuery } from './hooks/useMediaQuery';
+export { usePromise } from './hooks/usePromise';
 export { useWindowEventListener, useDocumentEventListener, useBodyEventListener } from './hooks/useDomEventListener';
 export type { HandlersOfEventMap } from './hooks/useEventListener';
 export { usePrevious } from './hooks/usePrevious';

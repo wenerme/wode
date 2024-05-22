@@ -1,9 +1,10 @@
 export enum EntityFeature {
   HasAuditor = 'HasAuditor',
-  HasOwner = 'HasOwner',
-  HasStatus = 'HasStatus',
+  HasOwnerRef = 'HasOwnerRef',
+  HasStateStatus = 'HasStateStatus',
   HasCustomer = 'HasCustomer',
   HasLabels = 'HasLabels',
+  HasTid = 'HasTid',
   HasSid = 'HasSid',
   HasActivity = 'HasActivity',
   HasTags = 'HasTags',

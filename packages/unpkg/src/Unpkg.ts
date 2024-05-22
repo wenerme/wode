@@ -1,12 +1,11 @@
-import { LRUCache } from 'lru-cache';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { Readable } from 'node:stream';
 import zlib from 'node:zlib';
+import { createLazyPromise, parseModuleId, type FetchLike, type Logger } from '@wener/utils';
+import { LRUCache } from 'lru-cache';
 import semver from 'semver';
 import tar, { type ReadEntry } from 'tar';
-import type { Logger } from '@wener/utils';
-import { createLazyPromise, parseModuleId } from '@wener/utils';
 import type { RegistryPackage, RegistryPackageJson } from './RegistryPackage';
 import type { UnpkgStorage } from './UnpkgStorage';
 
@@ -15,7 +14,7 @@ export interface InitUnpkgOptions {
   storage: UnpkgStorage;
   logger?: Logger;
   tmp?: string;
-  fetch?: SimpleFetch;
+  fetch?: FetchLike;
   lru?: LRUCache<string, any>;
 }
 
@@ -25,11 +24,9 @@ interface UnpkgOptions {
   packageVersionTtlMs: number;
 }
 
-export type SimpleFetch = (url: string, init?: RequestInit) => Promise<Response>;
-
 export class Unpkg {
   url: string;
-  fetch: SimpleFetch;
+  fetch: FetchLike;
   readonly storage: UnpkgStorage;
   readonly logger;
   // pkg -> package list meta
