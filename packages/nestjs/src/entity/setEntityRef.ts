@@ -1,6 +1,6 @@
 import { Errors } from '@wener/utils';
 import { getEntityDef } from './defineEntity';
-import { IdentifiableEntity } from './setOwnerRef';
+import { IdentifiableEntity } from './types';
 
 export function setEntityRef<
   T extends {

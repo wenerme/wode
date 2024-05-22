@@ -6,4 +6,7 @@ export { defineEntity, getEntityDef, getEntityDefs } from './defineEntity';
 export { resolveEntityRef } from './resolveEntityRef';
 export { setEntityRef } from './setEntityRef';
 export { setOwnerRef } from './setOwnerRef';
+export { EntityFeature, type EntityFeatureCode } from './enum';
+export { BaseHttpRequestLogEntity } from './BaseHttpRequestLogEntity';
 export * from './mixins';
+export * from './types';
