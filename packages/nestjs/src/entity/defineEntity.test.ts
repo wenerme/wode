@@ -7,8 +7,10 @@ import { StandardBaseEntity } from './StandardBaseEntity';
 test('defineEntity', () => {
   defineEntity([{ Entity: UserEntity, idType: 'usr' }]);
   let metadata = MetadataStorage.getMetadataFromDecorator(UserEntity);
+  // fixme no tableName why?
   console.log(metadata);
   expect(getEntityDef(UserEntity)).toBeTruthy();
+  expect(getEntityDef(new UserEntity())).toBeTruthy();
   expect(getEntityDef('usr_123')).toBeTruthy();
 });
 

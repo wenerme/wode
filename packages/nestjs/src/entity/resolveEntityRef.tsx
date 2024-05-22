@@ -2,13 +2,13 @@ import type { Opt, Ref } from '@mikro-orm/core';
 import { Errors } from '@wener/utils';
 import { getEntityManager } from '../mikro-orm';
 import { getEntityDef } from './defineEntity';
-import { StandardBaseEntity } from './StandardBaseEntity';
+import { IdentifiableEntity } from './setOwnerRef';
 
-export function resolveEntityRef<E = StandardBaseEntity>(o: { entityId: string; entityType?: string }): Ref<E> & Opt;
-export function resolveEntityRef<E = StandardBaseEntity>(o: {
+export function resolveEntityRef<E = IdentifiableEntity>(o: { entityId: string; entityType?: string }): Ref<E> & Opt;
+export function resolveEntityRef<E = IdentifiableEntity>(o: {
   entityId?: string;
   entityType?: string;
-}): Opt<Ref<E> | undefined>;
+}): (undefined | Ref<E>) & Opt;
 export function resolveEntityRef({ entityId, entityType }: { entityId?: string; entityType?: string }) {
   if (!entityId) {
     return;
