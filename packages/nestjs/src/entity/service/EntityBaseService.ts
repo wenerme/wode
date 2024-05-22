@@ -7,7 +7,7 @@ import { Errors } from '@wener/utils';
 import { getCurrentTenantId, getCurrentUserId } from '../../app';
 import { EntityAuditAction, writeEntityAuditLog } from '../audit';
 import { setData } from '../setData';
-import { setOwner } from '../setOwner';
+import { setOwnerRef } from '../setOwnerRef';
 import { StandardBaseEntity } from '../StandardBaseEntity';
 import { applyListQuery } from './applyListQuery';
 import { applyQueryFilter } from './applyQueryFilter';
@@ -385,7 +385,7 @@ export class EntityBaseService<E extends StandardBaseEntity> {
     const ent = await this.get(req);
     Errors.BadRequest.check(isOwnableBaseEntity(ent), '资源不支持归属');
     Errors.Forbidden.check(!ent.ownerId, '资源已经被分配');
-    setOwner(userId, ent);
+    setOwnerRef(ent, userId);
     await this.em.persistAndFlush(ent);
     return {
       data: ent,
@@ -396,7 +396,7 @@ export class EntityBaseService<E extends StandardBaseEntity> {
     const userId = Contexts.userId.require();
     const ent = await this.get(req);
     Errors.BadRequest.check(isOwnableBaseEntity(ent), '资源不支持归属');
-    setOwner(ownerId, ent);
+    setOwnerRef(ent, ownerId);
     await this.em.persistAndFlush(ent);
     return {
       data: ent,
@@ -408,7 +408,7 @@ export class EntityBaseService<E extends StandardBaseEntity> {
     const ent = await this.get(req);
     Errors.BadRequest.check(isOwnableBaseEntity(ent), '资源不支持归属');
     Errors.Forbidden.check(ent.ownerId === userId, '资源不属于当前用户');
-    setOwner(null, ent);
+    setOwnerRef(ent, null);
     await this.em.persistAndFlush(ent);
     return {
       data: ent,

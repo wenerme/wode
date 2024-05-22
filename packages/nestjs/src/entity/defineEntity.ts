@@ -1,4 +1,4 @@
-import { EntityClass, MetadataStorage } from '@mikro-orm/core';
+import { BaseEntity, EntityClass, MetadataStorage } from '@mikro-orm/core';
 import { getTypeOfEntityTypeId } from './parseEntityTypeId';
 
 interface DefineEntityOptions {
@@ -6,6 +6,7 @@ interface DefineEntityOptions {
   idType?: string;
   tableName?: string;
   typeName?: string;
+  schema?: string;
   title?: string;
   metadata?: Record<string, any>;
 }
@@ -14,8 +15,9 @@ interface EntityDef {
   Entity: EntityClass<any>;
   idType?: string;
   typeName: string;
-  tableName?: string;
   metadata: Record<string, any>;
+  tableName?: string;
+  schema?: string;
 }
 
 let _map = new Map<EntityClass<any> | string, EntityDef>();
@@ -31,6 +33,7 @@ export function defineEntity(o: DefineEntityOptions | DefineEntityOptions[]) {
 
   def.metadata ||= {};
   def.tableName ||= meta.tableName;
+  def.schema ||= meta.schema;
   def.typeName ||= meta.className.replace(/Entity$/, '');
 
   _map.get(o.Entity) && console.warn(`Entity already defined: ${def.typeName}`);
@@ -41,12 +44,15 @@ export function defineEntity(o: DefineEntityOptions | DefineEntityOptions[]) {
   _map.set(def.typeName, def);
   def.idType && _map.set(def.idType, def);
   // _map.set(def.tableName, def);
-  return o;
+  return def;
 }
 
-export function getEntityDef(key: EntityClass<any> | string | null | undefined) {
+export function getEntityDef(key: Function | BaseEntity | string | null | undefined) {
   if (!key) {
     return undefined;
+  }
+  if (key instanceof BaseEntity) {
+    key = key.constructor;
   }
   let found = _map.get(key);
   if (!found && typeof key === 'string') {

@@ -1,8 +1,10 @@
-import { Ref } from 'react';
-import { BaseEntity, Collection, Entity, Opt, Property, types } from '@mikro-orm/core';
+import { BaseEntity, Collection, Entity, Opt, Property, Ref, types } from '@mikro-orm/core';
 import { Constructor } from '@wener/utils';
 import { Feature } from '../Feature';
 import { EntityFeature } from './enum';
+import { resolveEntityRef } from './resolveEntityRef';
+import { setEntityRef } from './setEntityRef';
+import { IdentifiableEntity, setOwnerRef } from './setOwnerRef';
 
 export interface HasTidEntity {
   tid: string;
@@ -41,11 +43,13 @@ export interface HasCodeEntity {
 export interface HasEntityRefEntity {
   entityId?: string;
   entityType?: string;
+  entity?: Ref<IdentifiableEntity>;
 }
 
 export interface HasOwnerRefEntity {
   ownerId?: string;
   ownerType?: string;
+  owner?: Ref<IdentifiableEntity>;
 }
 
 export function withEntityRefEntity<TBase extends Constructor>(Base: TBase) {
@@ -57,6 +61,18 @@ export function withEntityRefEntity<TBase extends Constructor>(Base: TBase) {
 
     @Property({ type: types.string, nullable: true })
     entityType?: string;
+
+    setEntityRef(entity?: IdentifiableEntity | string | null) {
+      setEntityRef(this, entity);
+    }
+
+    set entity(entity: IdentifiableEntity | string | null) {
+      this.setEntityRef(entity);
+    }
+
+    get entity(): Ref<IdentifiableEntity> & Opt {
+      return resolveEntityRef(this);
+    }
   }
 
   return HasEntityRefEntity;
@@ -71,6 +87,18 @@ export function withOwnerRefEntity<TBase extends Constructor>(Base: TBase) {
 
     @Property({ type: types.string, nullable: true })
     ownerType?: string;
+
+    setOwnerRef(entity?: IdentifiableEntity | string | null) {
+      setOwnerRef(this, entity);
+    }
+
+    set owner(entity: IdentifiableEntity | string | null) {
+      this.setOwnerRef(entity);
+    }
+
+    get owner(): Ref<IdentifiableEntity> & Opt {
+      return resolveEntityRef({ entityId: this.ownerId, entityType: this.ownerType });
+    }
   }
 
   return HasOwnerRefEntity;
