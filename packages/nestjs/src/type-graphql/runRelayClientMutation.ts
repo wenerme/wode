@@ -12,8 +12,16 @@ export function runRelayClientMutation<
   }
   // fixme dedup
   let out = f(input);
+  let attache = (data: O) => {
+    if (typeof data === 'object' && data) {
+      (data as any)['clientMutationId'] = clientMutationId;
+    } else if (data === undefined) {
+      (data as any) = { clientMutationId };
+    }
+    return data;
+  };
   if ('then' in out) {
-    return out.then((data) => ({ ...data, clientMutationId: clientMutationId }));
+    return out.then((data) => attache(data));
   }
-  return { ...out, clientMutationId: clientMutationId };
+  return attache(out);
 }

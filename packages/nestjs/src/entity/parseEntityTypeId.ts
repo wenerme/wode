@@ -16,3 +16,8 @@ export function isEntityTypeId(s?: string): s is string {
   const [type, id] = parseEntityTypeId(s);
   return !!(type && (isULID(id) || isUUID(id)));
 }
+
+export function getTypeOfEntityTypeId(id: string | undefined | null) {
+  if (!id) return undefined;
+  return parseEntityTypeId(id)[0];
+}
