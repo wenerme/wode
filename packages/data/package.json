@@ -16,12 +16,12 @@
   },
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",
-    "commander": "^12.0.0",
-    "csv-parse": "^5.5.5",
+    "commander": "^12.1.0",
+    "csv-parse": "^5.5.6",
     "fs-extra": "^11.2.0",
     "import-meta-resolve": "^4.1.0",
     "lodash": "^4.17.21",
-    "tsx": "^4.9.3",
-    "zx": "^8.0.2"
+    "tsx": "^4.11.0",
+    "zx": "^8.1.2"
   }
 }

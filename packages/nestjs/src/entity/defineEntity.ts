@@ -1,7 +1,8 @@
 import { BaseEntity, EntityClass, MetadataStorage } from '@mikro-orm/core';
+import { Features } from '../Feature';
 import { getTypeOfEntityTypeId } from './parseEntityTypeId';
 
-interface DefineEntityOptions {
+export interface DefineEntityOptions {
   Entity: EntityClass<any>;
   idType?: string;
   tableName?: string;
@@ -9,18 +10,22 @@ interface DefineEntityOptions {
   schema?: string;
   title?: string;
   metadata?: Record<string, any>;
+  features?: string[];
 }
 
-interface EntityDef {
+export interface EntityDef {
   Entity: EntityClass<any>;
   idType?: string;
   typeName: string;
+  title: string;
   metadata: Record<string, any>;
   tableName?: string;
   schema?: string;
+  features: string[];
 }
 
-let _map = new Map<EntityClass<any> | string, EntityDef>();
+let _index = new Map<EntityClass<any> | string, EntityDef>();
+let _map = new Map<EntityClass<any>, EntityDef>();
 
 export function defineEntity(o: DefineEntityOptions): EntityDef;
 export function defineEntity(o: DefineEntityOptions[]): EntityDef[];
@@ -35,15 +40,19 @@ export function defineEntity(o: DefineEntityOptions | DefineEntityOptions[]) {
   def.tableName ||= meta.tableName;
   def.schema ||= meta.schema;
   def.typeName ||= meta.className.replace(/Entity$/, '');
+  def.title ||= def.typeName;
+  def.features = Array.from(new Set((def.features || []).concat(Features.getFeatures(o.Entity))));
 
-  _map.get(o.Entity) && console.warn(`Entity already defined: ${def.typeName}`);
-  _map.get(def.typeName) && console.warn(`Entity already defined: ${def.typeName}`);
-  def.idType && _map.get(def.idType) && console.warn(`Entity already defined: ${def.idType}`);
+  _index.get(o.Entity) && console.warn(`Entity already defined: ${def.typeName}`);
+  _index.get(def.typeName) && console.warn(`Entity already defined: ${def.typeName}`);
+  def.idType && _index.get(def.idType) && console.warn(`Entity already defined: ${def.idType}`);
+
+  _index.set(def.Entity, def);
+  _index.set(def.typeName, def);
+  def.idType && _index.set(def.idType, def);
 
   _map.set(def.Entity, def);
-  _map.set(def.typeName, def);
-  def.idType && _map.set(def.idType, def);
-  // _map.set(def.tableName, def);
+
   return def;
 }
 
@@ -54,11 +63,11 @@ export function getEntityDef(key: Function | BaseEntity | string | null | undefi
   if (key instanceof BaseEntity) {
     key = key.constructor;
   }
-  let found = _map.get(key);
+  let found = _index.get(key);
   if (!found && typeof key === 'string') {
     let idType = getTypeOfEntityTypeId(key);
     if (idType) {
-      found = _map.get(idType);
+      found = _index.get(idType);
     }
   }
   return found;

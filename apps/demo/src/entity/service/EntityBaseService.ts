@@ -2,7 +2,7 @@ import { EntityData, LockMode } from '@mikro-orm/core';
 import type { EntityManager, EntityRepository, MikroORM } from '@mikro-orm/postgresql';
 import { QueryBuilder } from '@mikro-orm/postgresql';
 import { Logger } from '@nestjs/common';
-import { Errors } from '@wener/nestjs';
+import { Errors } from '@wener/utils';
 import { Contexts } from '@wener/nestjs/app';
 import { getEntityManager } from '@wener/nestjs/mikro-orm';
 import { EntityAuditAction, writeEntityAuditLog } from '@wener/server/src/modules/audit';

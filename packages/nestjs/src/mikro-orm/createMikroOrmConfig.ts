@@ -4,6 +4,7 @@ import { inspect } from 'node:util';
 import { MemoryCacheAdapter, ReflectMetadataProvider, type MikroORMOptions } from '@mikro-orm/core';
 import { defineConfig, type Options } from '@mikro-orm/postgresql';
 import { HttpException } from '@nestjs/common';
+import { parseBoolean } from '@wener/utils';
 
 export function createMikroOrmConfig(opts: Partial<Options>) {
   return defineConfig({
@@ -12,17 +13,24 @@ export function createMikroOrmConfig(opts: Partial<Options>) {
   });
 }
 
-export function getDefaultMikroOrmOptions() {
+export function getDefaultMikroOrmOptions({
+  env = process.env,
+}: {
+  readonly env?: Record<string, string | undefined>;
+} = {}) {
+  const { DATABASE_DSN, DB_DSN, DB_DEBUG, DATABASE_DEBUG } = env;
+  const clientUrl = DB_DSN || DATABASE_DSN;
+  const debug = parseBoolean(DB_DEBUG || DATABASE_DEBUG);
   return {
     forceUndefined: true, // null -> undefined - 减少序列化后的内容
-    clientUrl: process.env.DB_DSN,
-    debug: Boolean(process.env.DB_DEBUG),
+    clientUrl,
+    debug,
     discovery: {
       disableDynamicFileAccess: true, // 不要扫描文件
       requireEntitiesArray: true,
     },
     serialization: {
-      forceObject: true, // 未 load 的对象，序列化为 `{id:'123'}` 而不是 `123`
+      forceObject: true, // 未 load 的对象，序列化为 `{id:'123'}` 而不是 `123`, 统一对象格式
     },
     metadataProvider: ReflectMetadataProvider,
     resultCache: {
