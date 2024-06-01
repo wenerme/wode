@@ -18,9 +18,9 @@
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",
     "@types/semver": "^7.5.8",
-    "tsx": "^4.9.3",
+    "tsx": "^4.11.0",
     "typescript": "^5.4.5",
-    "zx": "^8.0.2"
+    "zx": "^8.1.2"
   },
   "dependencies": {
     "@wener/utils": "workspace:^",

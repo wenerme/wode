@@ -7,7 +7,7 @@ export function showErrorToast(error: Error | any) {
   toast.error(resolveErrorMessage(error));
 }
 
-function resolveErrorMessage(error: Error | any) {
+export function resolveErrorMessage(error: Error | any) {
   if (isZodError(error)) {
     return error.issues.map((v) => v.message).join(';');
   }
@@ -75,15 +75,17 @@ interface GraphQLError extends Error {
   readonly nodes: ReadonlyArray<any> | undefined;
   readonly source:
     | {
-        body: string;
-        name: string;
-        locationOffset: {
-          line: number;
-          column: number;
-        };
-      }
+    body: string;
+    name: string;
+    locationOffset: {
+      line: number;
+      column: number;
+    };
+  }
     | undefined;
   readonly positions: ReadonlyArray<number> | undefined;
   readonly originalError: Error | undefined;
   readonly extensions: Record<string, any>;
 }
+
+

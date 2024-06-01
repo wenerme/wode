@@ -9,12 +9,11 @@
     ".": "./src/index.ts",
     "./buildinfo": "./src/buildinfo/index.ts",
     "./components": "./src/components/index.ts",
-    "./hooks": "./src/hooks/index.ts",
     "./daisy": "./src/daisy/index.ts",
     "./floating": "./src/floating/index.ts",
+    "./hooks": "./src/hooks/index.ts",
     "./icons": "./src/icons/index.ts",
     "./loader": "./src/loader/index.ts",
-    "./package.json": "./package.json",
     "./pages": "./src/web/pages/index.ts",
     "./router": "./src/router/index.ts",
     "./toast": "./src/toast/index.ts",
@@ -25,7 +24,8 @@
     "./web/pages/setting/appearance/route": "./src/web/pages/setting/appearance/route.tsx",
     "./web/pages/setting/dev/debug/route": "./src/web/pages/setting/dev/debug/route.tsx",
     "./web/user": "./src/web/user/index.ts",
-    "./zustand": "./src/zustand/index.ts"
+    "./zustand": "./src/zustand/index.ts",
+    "./package.json": "./package.json"
   },
   "files": [
     "lib",
@@ -70,10 +70,10 @@
   },
   "devDependencies": {
     "@floating-ui/dom": "^1.6.5",
-    "@floating-ui/react": "^0.26.13",
-    "@headlessui/react": "^2.0.3",
+    "@floating-ui/react": "^0.26.16",
+    "@headlessui/react": "^2.0.4",
     "@nestjs/common": "^10.3.8",
-    "@remix-run/router": "^1.16.0",
+    "@remix-run/router": "^1.16.1",
     "@tailwindcss/forms": "^0.5.7",
     "@types/react-is": "^18.3.0",
     "@wener/console": "link:",
@@ -82,8 +82,9 @@
     "@wener/utils": "workspace:^",
     "clsx": "^2.1.1",
     "immer": "^10.1.1",
+    "mutative": "^1.0.5",
     "next": "^14.2.3",
-    "react-hook-form": "^7.51.4",
+    "react-hook-form": "^7.51.5",
     "react-icons": "^5.2.1",
     "react-is": "^18.3.1"
   },
@@ -109,6 +110,10 @@
         "types": "./src/floating/index.ts",
         "default": "./lib/floating/index.js"
       },
+      "./hooks": {
+        "types": "./src/hooks/index.ts",
+        "default": "./lib/hooks/index.js"
+      },
       "./icons": {
         "types": "./src/icons/index.ts",
         "default": "./lib/icons/index.js"
@@ -117,7 +122,6 @@
         "types": "./src/loader/index.ts",
         "default": "./lib/loader/index.js"
       },
-      "./package.json": "./package.json",
       "./pages": {
         "types": "./src/web/pages/index.ts",
         "default": "./lib/web/pages/index.js"
@@ -161,11 +165,9 @@
       "./zustand": {
         "types": "./src/zustand/index.ts",
         "default": "./lib/zustand/index.js"
-      }
+      },
+      "./package.json": "./package.json"
     }
   },
-  "sideEffects": false,
-  "dependencies": {
-    "mutative": "^1.0.5"
-  }
+  "sideEffects": false
 }
