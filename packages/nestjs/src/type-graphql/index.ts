@@ -5,6 +5,8 @@ export { GraphQLJSONObjectScalar, GraphQLJSONScalar } from './GraphQLJSONScalar'
 export { JSONArgs } from './JSONArgs';
 export { resolveGraphQLJSON } from './resolveGraphQLJSON';
 
+export { FileScalar } from './FileScalar';
+
 export { NestContainerType } from './NestContainerType';
 
 export { GeneralResponseObject, GeneralResponseResolver } from './GeneralResponseResolver';
