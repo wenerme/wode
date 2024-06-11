@@ -18,8 +18,8 @@ export function getDefaultMikroOrmOptions({
 }: {
   readonly env?: Record<string, string | undefined>;
 } = {}) {
-  const { DATABASE_DSN, DB_DSN, DB_DEBUG, DATABASE_DEBUG } = env;
-  const clientUrl = DB_DSN || DATABASE_DSN;
+  const { DATABASE_DSN, DB_URL, DATABASE_URL, DB_DSN, DB_DEBUG, DATABASE_DEBUG } = env;
+  const clientUrl = DB_DSN || DATABASE_DSN || DB_URL || DATABASE_URL;
   const debug = parseBoolean(DB_DEBUG || DATABASE_DEBUG);
   return {
     forceUndefined: true, // null -> undefined - 减少序列化后的内容
