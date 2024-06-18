@@ -53,7 +53,7 @@
   },
   "devDependencies": {
     "@alicloud/openapi-client": "^0.4.9",
-    "@sinclair/typebox": "^0.32.31",
+    "@sinclair/typebox": "^0.32.33",
     "@types/cookie": "^0.6.0",
     "@types/crypto-js": "^4.2.2",
     "@wecom/jssdk": "^1.4.5",
@@ -62,10 +62,10 @@
     "dayjs": "^1.11.11",
     "fast-xml-parser": "^4.4.0",
     "nats.ws": "^1.27.0",
-    "openai": "^4.47.3",
-    "puppeteer": "^22.10.0",
-    "undici": "^6.18.2",
-    "ws": "^8.17.0"
+    "openai": "^4.51.0",
+    "puppeteer": "^22.11.1",
+    "undici": "^6.19.2",
+    "ws": "^8.17.1"
   },
   "publishConfig": {
     "access": "public",

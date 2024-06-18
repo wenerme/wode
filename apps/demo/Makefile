@@ -65,3 +65,14 @@ ndev.mjs:
 
 dev-apki-server:
 	NODE_ENV=development pnpm node --loader ts-node/esm --watch ./src/poc/alpine/server.ts
+
+dev-web: dev-web-vite
+
+dev-web-next:
+	PORT=3166 NODE_ENV=development pnpm next dev --turbo
+
+dev-web-vite:
+	NODE_ENV=development pnpm vite --port 3166 --host
+
+dev-server:
+	NODE_ENV=development pnpm node --loader ts-node/esm --watch ./src/server/main.ts

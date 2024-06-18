@@ -5,6 +5,7 @@ export enum EntityFeature {
   HasCustomer = 'HasCustomer',
   HasLabels = 'HasLabels',
   HasTid = 'HasTid',
+  HasDisplayOrder = 'HasDisplayOrder',
   HasSid = 'HasSid',
   HasActivity = 'HasActivity',
   HasTags = 'HasTags',
@@ -19,6 +20,7 @@ export enum EntityFeature {
   IsStatus = 'IsStatus',
   IsSystemType = 'IsSystemType',
   IsTenantType = 'IsTenantType',
+  IsHierarchy = 'IsHierarchy',
 }
 
 export type EntityFeatureCode = keyof typeof EntityFeature;
