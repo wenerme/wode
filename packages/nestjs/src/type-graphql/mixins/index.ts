@@ -1,3 +1,4 @@
+export { withMetadataType } from './withMetadataType';
 export { withNotesType } from './withNotesType';
 export { withTagsType } from './withTagsType';
 export { createDataType } from './createDataType';
