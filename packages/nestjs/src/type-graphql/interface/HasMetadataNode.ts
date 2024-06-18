@@ -1,5 +1,6 @@
 import { Field, InterfaceType } from 'type-graphql';
 import { BaseNode } from '../BaseNode';
+import { GraphQLJSONScalar } from '../GraphQLJSONScalar';
 import { RelayNode } from '../relay';
 
 @InterfaceType({
@@ -10,7 +11,7 @@ import { RelayNode } from '../relay';
   },
 })
 export class HasMetadataNode extends BaseNode {
-  @Field(() => Object, { nullable: true })
+  @Field(() => GraphQLJSONScalar, { nullable: true })
   metadata?: any;
 
   static resolveType = RelayNode.resolveType;
