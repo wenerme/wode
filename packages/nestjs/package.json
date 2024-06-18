@@ -1,6 +1,6 @@
 {
   "name": "@wener/nestjs",
-  "version": "1.0.38",
+  "version": "1.0.39",
   "type": "module",
   "description": "NestJS utils",
   "author": "wener",
@@ -26,6 +26,7 @@
     "./type-graphql/mixins": "./src/type-graphql/mixins/index.ts",
     "./type-graphql/resolver": "./src/type-graphql/resolver/index.ts",
     "./type-graphql/resource": "./src/type-graphql/resource/index.ts",
+    "./type-graphql/entity": "./src/type-graphql/entity/index.ts",
     "./package.json": "./package.json"
   },
   "files": [
