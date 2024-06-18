@@ -20,6 +20,7 @@ export { withBaseQuery } from './withBaseQuery';
 export { getObjectName, getInputName } from './getObjectName';
 
 export { RelayNode, RelayPageInfo, RelayMutationPayload, RelayMutationInput, runRelayClientMutation } from './relay';
-export type * from './relay';
+export { getTypeCache } from './getTypeCache';
 
+export type * from './relay';
 export type * from './types';
