@@ -1,6 +1,6 @@
 {
   "name": "@wener/nestjs",
-  "version": "1.0.37",
+  "version": "1.0.38",
   "type": "module",
   "description": "NestJS utils",
   "author": "wener",
@@ -13,7 +13,7 @@
     "./config": "./src/config/index.ts",
     "./entity": "./src/entity/index.ts",
     "./entity/audit": "./src/entity/audit/index.ts",
-    "./entity/mxins": "./src/entity/mxins/index.ts",
+    "./entity/mixins": "./src/entity/mixins/index.ts",
     "./entity/service": "./src/entity/service/index.ts",
     "./hono": "./src/hono/index.ts",
     "./knex": "./src/knex/index.ts",
@@ -23,7 +23,7 @@
     "./service": "./src/service/index.ts",
     "./type-graphql": "./src/type-graphql/index.ts",
     "./type-graphql/interface": "./src/type-graphql/interface/index.ts",
-    "./type-graphql/mxins": "./src/type-graphql/mxins/index.ts",
+    "./type-graphql/mixins": "./src/type-graphql/mixins/index.ts",
     "./type-graphql/resolver": "./src/type-graphql/resolver/index.ts",
     "./type-graphql/resource": "./src/type-graphql/resource/index.ts",
     "./package.json": "./package.json"
@@ -125,9 +125,9 @@
         "types": "./src/entity/audit/index.ts",
         "default": "./lib/entity/audit/index.js"
       },
-      "./entity/mxins": {
-        "types": "./src/entity/mxins/index.ts",
-        "default": "./lib/entity/mxins/index.js"
+      "./entity/mixins": {
+        "types": "./src/entity/mixins/index.ts",
+        "default": "./lib/entity/mixins/index.js"
       },
       "./entity/service": {
         "types": "./src/entity/service/index.ts",
@@ -165,9 +165,9 @@
         "types": "./src/type-graphql/interface/index.ts",
         "default": "./lib/type-graphql/interface/index.js"
       },
-      "./type-graphql/mxins": {
-        "types": "./src/type-graphql/mxins/index.ts",
-        "default": "./lib/type-graphql/mxins/index.js"
+      "./type-graphql/mixins": {
+        "types": "./src/type-graphql/mixins/index.ts",
+        "default": "./lib/type-graphql/mixins/index.js"
       },
       "./type-graphql/resolver": {
         "types": "./src/type-graphql/resolver/index.ts",

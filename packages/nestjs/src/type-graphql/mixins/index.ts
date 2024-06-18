@@ -1,3 +1,4 @@
-export { withNotesObject } from './withNotesObject';
-export { withTagsObject } from './withTagsObject';
-export { withDisplayOrderObject } from './withDisplayOrderObject';
+export { withNotesType } from './withNotesType';
+export { withTagsType } from './withTagsType';
+export { createDataType } from './createDataType';
+export { withDisplayOrderType } from './withDisplayOrderType';

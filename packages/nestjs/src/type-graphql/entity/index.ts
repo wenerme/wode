@@ -1,0 +1,1 @@
+export { resolveNodeType } from './resolveNodeType';

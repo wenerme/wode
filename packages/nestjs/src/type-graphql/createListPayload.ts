@@ -1,5 +1,4 @@
-import type { AbstractConstructor, Constructor } from '@wener/nestjs';
-import { computeIfAbsent } from '@wener/utils';
+import { computeIfAbsent, type AbstractConstructor, type Constructor } from '@wener/utils';
 import { Field, Int, ObjectType } from 'type-graphql';
 import { getObjectName } from './getObjectName';
 import { getTypeCache } from './getTypeCache';

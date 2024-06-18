@@ -13,4 +13,5 @@ export { withDisplayOrderEntity } from './withDisplayOrderEntity';
 export { createStateStatusEntity } from './createStateStatusEntity';
 export { withRequiredEntityRefEntity } from './withRequiredEntityRefEntity';
 export { createHierarchyEntity } from './createHierarchyEntity';
+export { withSystemManagedEntity } from './withSystemManagedEntity';
 export type * from './types';

@@ -1,13 +1,13 @@
 import { Constructor } from '@wener/utils';
 import { Field, InputType, ObjectType } from 'type-graphql';
 
-export function withNotesObject<TBase extends Constructor>(Base: TBase) {
+export function withNotesType<TBase extends Constructor>(Base: TBase) {
   @InputType()
   @ObjectType()
-  class HasNotesMixinObject extends Base {
+  class HasNotesMixinType extends Base {
     @Field(() => String, { nullable: true })
     notes?: string;
   }
 
-  return HasNotesMixinObject;
+  return HasNotesMixinType;
 }
