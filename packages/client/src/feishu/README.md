@@ -10,3 +10,7 @@
   - 基于 Schema 生成的 Go SDK
 - https://open.feishu.cn/document/server-docs/api-call-guide/server-api-list
   - 所有 API
+- 云文档
+  - https://open.feishu.cn/document/server-docs/docs/docs-overview
+  - Block 数据结构
+    - https://open.feishu.cn/document/ukTMukTMukTM/uUDN04SN0QjL1QDN/document-docx/docx-v1/data-structure/block

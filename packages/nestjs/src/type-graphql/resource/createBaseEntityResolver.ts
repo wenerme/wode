@@ -1,13 +1,14 @@
 import { EntityManager, EntityRepository, MikroORM } from '@mikro-orm/postgresql';
 import { Inject, Injectable, Logger } from '@nestjs/common';
-import type { Constructor } from '@wener/nestjs';
-import { ArgsType, Field, ID, Resolver } from 'type-graphql';
-import { StandardBaseEntity } from '../entity';
-import { EntityBaseService } from '../entity/service';
-import { BaseObject } from './BaseObject';
+import { Constructor } from '@wener/utils';
+import { Resolver } from 'type-graphql';
+import { StandardBaseEntity } from '../../entity';
+import { EntityBaseService } from '../../entity/service';
+import { BaseObject } from '../BaseObject';
+import { getObjectName } from '../getObjectName';
+import { EntityClass, ObjectClass } from '../types';
 import { createListPayload } from './createListPayload';
-import { getObjectName } from './getObjectName';
-import { EntityClass, ObjectClass, PageResponse } from './types';
+import { PageResponse } from './types';
 
 export interface BaseEntityResolver<O, E extends StandardBaseEntity, SVC extends EntityBaseService<E>> {
   readonly EntityType: EntityClass<E>;
@@ -78,34 +79,4 @@ export function createBaseEntityResolver<
   }
 
   return BaseEntityResolver;
-}
-
-@ArgsType()
-export class ResolveArgs {
-  @Field(() => ID, { nullable: true })
-  id?: string;
-  @Field(() => String, { nullable: true })
-  uid?: string;
-  @Field(() => Number, { nullable: true })
-  sid?: number;
-  @Field(() => String, { nullable: true })
-  eid?: string;
-  @Field(() => String, { nullable: true })
-  cid?: string;
-  @Field(() => String, { nullable: true })
-  rid?: string;
-  @Field(() => Boolean, { nullable: true })
-  deleted?: boolean;
-}
-
-@ArgsType()
-export class GetArgs {
-  @Field(() => ID, { nullable: true })
-  id!: string;
-}
-
-@ArgsType()
-export class DeleteArgs {
-  @Field(() => ID, { nullable: true })
-  id!: string;
 }

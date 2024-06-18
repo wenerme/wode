@@ -1,6 +1,6 @@
 {
   "name": "@wener/nestjs",
-  "version": "1.0.40",
+  "version": "1.0.48",
   "type": "module",
   "description": "NestJS utils",
   "author": "wener",
@@ -19,14 +19,15 @@
     "./knex": "./src/knex/index.ts",
     "./mikro-orm": "./src/mikro-orm/index.ts",
     "./nats": "./src/nats/index.ts",
+    "./remote": "./src/remote/index.ts",
     "./scripts/esbuild": "./src/scripts/esbuild/index.ts",
     "./service": "./src/service/index.ts",
     "./type-graphql": "./src/type-graphql/index.ts",
+    "./type-graphql/entity": "./src/type-graphql/entity/index.ts",
     "./type-graphql/interface": "./src/type-graphql/interface/index.ts",
     "./type-graphql/mixins": "./src/type-graphql/mixins/index.ts",
     "./type-graphql/resolver": "./src/type-graphql/resolver/index.ts",
     "./type-graphql/resource": "./src/type-graphql/resource/index.ts",
-    "./type-graphql/entity": "./src/type-graphql/entity/index.ts",
     "./package.json": "./package.json"
   },
   "files": [
@@ -150,6 +151,10 @@
         "types": "./src/nats/index.ts",
         "default": "./lib/nats/index.js"
       },
+      "./remote": {
+        "types": "./src/remote/index.ts",
+        "default": "./lib/remote/index.js"
+      },
       "./scripts/esbuild": {
         "types": "./src/scripts/esbuild/index.ts",
         "default": "./lib/scripts/esbuild/index.js"
@@ -161,6 +166,10 @@
       "./type-graphql": {
         "types": "./src/type-graphql/index.ts",
         "default": "./lib/type-graphql/index.js"
+      },
+      "./type-graphql/entity": {
+        "types": "./src/type-graphql/entity/index.ts",
+        "default": "./lib/type-graphql/entity/index.js"
       },
       "./type-graphql/interface": {
         "types": "./src/type-graphql/interface/index.ts",

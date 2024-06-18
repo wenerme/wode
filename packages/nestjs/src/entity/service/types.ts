@@ -1,3 +1,5 @@
+// fixme this is for rpc service, e.g. has select, exclude, include related fields for partial response
+
 /**
  * @$id: ResolveEntityRequest
  */

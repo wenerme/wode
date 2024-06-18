@@ -29,12 +29,15 @@ export {
 } from './hooks/useDeepCompareHooks';
 export * from './hooks/useContainer';
 
+export { DevOnly } from './components/DevOnly';
+export { ProdOnly } from './components/ProdOnly';
 export { MountedOnly } from './components/MountedOnly';
 export { ErrorSuspenseBoundary } from './components/ErrorSuspenseBoundary';
 export { ErrorBoundary } from './components/ErrorBoundary';
 export { ReactShadowRoot } from './components/ReactShadowRoot';
 
 export { flexRender, type FlexRenderable } from './render/flexRender';
+export { renderAlternative, type AlternativeRendererProps } from './render/renderAlternative';
 export { isReactComponent } from './render/isReactComponent';
 
 export { createDeepCompareHooks } from './utils/createDeepCompareHooks';
@@ -44,3 +47,4 @@ export { mergeProps } from './utils/mergeProps';
 export type { Equivalence, Selector, UseSelector, Optional, PartialRequired } from './typing';
 
 export { withDefaultProps } from './hoc/withDefaultProps';
+export { ClientOnly } from './components/ClientOnly';

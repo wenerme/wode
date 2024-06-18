@@ -12,10 +12,14 @@ export { NestContainerType } from './NestContainerType';
 export { GeneralResponseObject, GeneralResponseResolver } from './GeneralResponseResolver';
 export { GeneralRequestPayload } from './GeneralRequestPayload';
 
-export { createListPayload } from './createListPayload';
-export { ListQueryInput } from './ListQueryInput';
-export { createBaseEntityResolver } from './createBaseEntityResolver';
-export { withBaseQuery } from './withBaseQuery';
+// fixme: move to resource
+export {
+  type PageResponse,
+  createListPayload,
+  ListQueryInput,
+  withBaseQuery,
+  createBaseEntityResolver,
+} from './resource';
 
 export { getObjectName, getInputName } from './getObjectName';
 

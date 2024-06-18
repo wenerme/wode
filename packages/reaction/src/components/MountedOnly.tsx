@@ -1,15 +1,13 @@
 'use client';
 
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { useMounted } from '../hooks/useMounted';
+import { AlternativeRendererProps, renderAlternative } from '../render/renderAlternative';
 
 /**
  * Only render when mounted or client side
  */
-export const MountedOnly: React.FC<{ children?: ReactNode }> = ({ children }) => {
+export const MountedOnly: React.FC<AlternativeRendererProps> = (props) => {
   const mounted = useMounted();
-  if (!mounted) {
-    return null;
-  }
-  return children;
+  return renderAlternative(mounted, props);
 };

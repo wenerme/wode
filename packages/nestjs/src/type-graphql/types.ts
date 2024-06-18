@@ -5,8 +5,3 @@ export type EntityClass<T> = Function & {
 export type ObjectClass<T> = Function & {
   prototype: T;
 };
-
-export interface PageResponse<T> {
-  total: number;
-  data: T[];
-}

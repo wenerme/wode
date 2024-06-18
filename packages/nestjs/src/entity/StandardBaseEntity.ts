@@ -23,7 +23,7 @@ export type StandardBaseEntityOptionalFields =
   | 'extensions';
 
 @Entity({ abstract: true })
-export abstract class StandardBaseEntity extends BaseEntity {
+export class StandardBaseEntity extends BaseEntity {
   [PrimaryKeyProp]?: 'id';
   [Config]?: DefineConfig<{ forceObject: true }>;
 

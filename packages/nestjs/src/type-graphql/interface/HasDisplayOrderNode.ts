@@ -10,8 +10,8 @@ import { RelayNode } from '../relay';
   },
 })
 export class HasDisplayOrderNode extends BaseNode {
+  static resolveType = RelayNode.resolveType;
+
   @Field(() => Number)
   displayOrder!: number;
-
-  static resolveType = RelayNode.resolveType;
 }

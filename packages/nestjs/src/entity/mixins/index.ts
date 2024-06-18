@@ -14,4 +14,5 @@ export { createStateStatusEntity } from './createStateStatusEntity';
 export { withRequiredEntityRefEntity } from './withRequiredEntityRefEntity';
 export { createHierarchyEntity } from './createHierarchyEntity';
 export { withSystemManagedEntity } from './withSystemManagedEntity';
+export { withTitleDescriptionEntity } from './withTitleDescriptionEntity';
 export type * from './types';

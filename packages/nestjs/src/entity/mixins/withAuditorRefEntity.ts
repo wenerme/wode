@@ -4,13 +4,14 @@ import { getCurrentUserId } from '../../app';
 import { Feature } from '../../Feature';
 import { EntityFeature } from '../enum';
 import { resolveEntityRef } from '../resolveEntityRef';
+import { HasAuditorRefEntity } from './types';
 
 export function withAuditorRefEntity<TBase extends Constructor>(Base: TBase) {
   // AuditorAware
 
-  @Feature([EntityFeature.HasAuditor])
+  @Feature([EntityFeature.HasAuditorRef])
   @Entity({ abstract: true })
-  class HasAuditorRefMixinEntity extends Base {
+  class HasAuditorRefMixinEntity extends Base implements HasAuditorRefEntity {
     @Property({ type: types.string, nullable: true })
     createdById?: string;
 

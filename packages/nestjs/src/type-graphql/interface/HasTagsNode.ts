@@ -10,8 +10,7 @@ import { RelayNode } from '../relay';
   },
 })
 export class HasTagsNode extends BaseNode {
+  static resolveType = RelayNode.resolveType;
   @Field(() => [String], { defaultValue: [], nullable: true })
   tags: string[] = [];
-
-  static resolveType = RelayNode.resolveType;
 }
