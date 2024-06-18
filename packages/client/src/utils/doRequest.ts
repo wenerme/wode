@@ -44,9 +44,15 @@ export async function doRequest<OUT = any, IN = OUT>(opts: DoRequestOptions<OUT,
 
   onRequest && (await onRequest({ url, req }));
 
-  debug && (await dumpRequest({ url, req }));
+  if (debug) {
+    await dumpRequest({ url, req });
+  }
+
   const res = await fetch(url, req);
-  debug && (await dumpResponse({ url, req: new Response(res.body, res), res }));
+
+  if (debug) {
+    await dumpResponse({ url, req: new Response(res.body, res), res });
+  }
 
   let input: IN;
   let output: OUT;

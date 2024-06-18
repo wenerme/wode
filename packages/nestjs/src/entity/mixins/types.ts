@@ -67,6 +67,20 @@ export interface HasOwnerRefEntity {
   owner?: Ref<IdentifiableEntity>;
 }
 
+export interface HasAuditorRefEntity {
+  createdById?: string;
+  updatedById?: string;
+  deletedById?: string;
+}
+
+export interface HasAuditorEntity<E extends IsUserEntity> extends HasAuditorRefEntity {
+  get createdBy(): Ref<E>;
+
+  get updatedBy(): Ref<E>;
+
+  get deletedBy(): Ref<E>;
+}
+
 export interface IsHierarchyEntity<E extends IsHierarchyEntity<any>> extends IdentifiableEntity {
   parent?: E;
   children: Collection<E>;
@@ -74,7 +88,12 @@ export interface IsHierarchyEntity<E extends IsHierarchyEntity<any>> extends Ide
   parentId?: string;
 }
 
-interface IsConnectionEntity {
+export interface HasTitleDescriptionEntity {
+  title: string;
+  description?: string;
+}
+
+interface IsConnectionEntity extends IdentifiableEntity {
   entity1Id?: string;
   entity1Type?: string;
   entity1?: Ref<IdentifiableEntity>;
@@ -92,4 +111,18 @@ interface IsConnectionEntity {
   entityImage?: string;
 }
 
+interface IsRelationEntity<R extends IdentifiableEntity> extends IdentifiableEntity {
+  entityId: string;
+  entityType: string;
+  entity: Ref<IdentifiableEntity>;
+
+  relatedId: string;
+  relatedType: string;
+  related: Ref<R>;
+
+  displayOrder: number;
+}
+
 // Connection Association  Link, Join, Relation
+
+interface IsUserEntity extends IdentifiableEntity {}

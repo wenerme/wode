@@ -1,0 +1,3 @@
+- 面向 RPC 场景
+- 请求和返回强调序列化
+- 支持 Partial 或 OnDemand 的查询

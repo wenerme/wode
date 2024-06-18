@@ -1,5 +1,5 @@
 import { Arg, FieldResolver, Resolver, Root } from 'type-graphql';
-import { HasTagsNode } from '../interface/HasTagsNode';
+import { HasTagsNode } from '../interface';
 
 @Resolver(() => HasTagsNode)
 export class HasTagsResolver {

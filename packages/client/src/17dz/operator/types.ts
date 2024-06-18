@@ -330,127 +330,135 @@ export interface ListResponse<T> {
   total: number;
 }
 
-export interface ListEmployeeItem {
-  id: number;
-  customerId: number;
-  deptId: number;
-  deptName: any;
-  isManyDeptEmp: boolean;
-  employeeNumber: string;
-  name: string;
-  chineseName?: string;
-  licenseTypeCode: string;
-  licenseTypeName: string;
-  licenseNumber: string;
-  nationalityCode: string;
-  nationalityName: string;
-  phone: string;
-  employedDate: string;
-  resignDate?: string;
-  gender: string;
-  birthday: string;
-  nativeProvinceCode: any;
-  nativeProvinceName: string;
-  nativeCityCode: any;
-  nativeCityName: string;
-  nation: any;
-  marriageState: any;
-  politicStatus: any;
-  jobType?: string;
-  chargeType?: string;
-  positionId: any;
-  positionName: any;
-  workingYears: any;
-  probationState: any;
-  probation?: string;
-  regularDate: any;
-  qq: any;
-  email: string;
-  emergencyContact: any;
-  emergencyPhone: any;
-  organizationId: any;
-  organizationName: any;
-  state: string;
-  employmentType: string;
-  firstEmploymentSituation: string;
-  isDisabled: string;
-  isMartyr: string;
-  isBereavedGaffer: string;
-  isDeductDeduction: string;
-  censusKind: any;
-  insureProvinceCode: any;
-  insureProvinceName: any;
-  insureCityCode: any;
-  insureCityName: any;
-  insurancePlanUuid: any;
-  insurancePlanName: any;
-  insurancePayState: any;
-  insuranceIndividualNum: any;
-  insuranceAccount: any;
-  insuranceStartMonth: any;
-  insuranceEndMonth: any;
-  insuranceRepayMonths: any;
-  providentFundPayState: any;
-  providentFundStartMonth: any;
-  providentFundEndMonth: any;
-  providentFundRepayMonths: any;
-  providentFundAccount: any;
-  period: any;
-  otherLicenseTypeCode: string;
-  otherLicenseTypeName: any;
-  otherLicenseNumber: string;
-  submissionState: string;
-  authenticationState: string;
-  declarationResult: any;
-  birthplaceCode?: string;
-  birthplaceName: any;
-  taxRelatedReason?: string;
-  firstEntryDate?: string;
-  estimatedDepartureDate?: string;
-  depositBankCode: string;
-  depositBankName: any;
-  bankAccount: string;
-  depositBankProvince: string;
-  depositBankProvinceName: string;
-  bankAccountState: string;
-  bankAccountAuthResult: string;
-  educationType: string;
-  personInvestment?: number;
-  personInvestmentRatio?: number;
-  disableCardNumber: string;
-  martyrCardNumber: string;
-  postLevel: any;
-  taxNo: string;
-  registrationNumber: string;
-  archiveNumber: string;
-  mainArchiveNumber: any;
-  otherArchiveNumbers: string;
-  archiveResult: any;
-  residentProvinceCode: string;
-  residentProvinceName: string;
-  residentCityCode: string;
-  residentCityName: string;
-  residentDistrictCode: string;
-  residentDistrictName: string;
-  residentStreet: string;
-  residentAddress: string;
-  censusProvinceCode: string;
-  censusProvinceName: string;
-  censusCityCode: string;
-  censusCityName: string;
-  censusDistrictCode: string;
-  censusDistrictName: string;
-  censusStreet: string;
-  censusAddress: string;
-  contactProvinceCode: string;
-  contactProvinceName: string;
-  contactCityCode: string;
-  contactCityName: string;
-  contactDistrictCode: string;
-  contactDistrictName: string;
-  contactStreet: string;
-  contactAddress: string;
-  remark: string;
+export interface ListCustomerEmployeeItem {
+  archiveNumber: string; // 档案编号
+  archiveResult: any; // 档案结果
+  authenticationState: string; // 认证状态
+  bankAccount?: string; // 银行账号
+  bankAccountAuthResult: string; // 银行账号认证结果
+  bankAccountState: string; // 银行账户状态
+  birthday: string; // 出生日期
+  birthplaceCode?: string; // 出生地代码
+  birthplaceName: any; // 出生地名称
+  businessModifyDate: string; // 业务修改日期
+  censusAddress?: string; // 户籍地址
+  censusCityCode?: string; // 户籍城市代码
+  censusCityName: string; // 户籍城市名称
+  censusDistrictCode?: string; // 户籍区域代码
+  censusDistrictName: string; // 户籍区域名称
+  censusKind: any; // 户籍类型
+  censusProvinceCode?: string; // 户籍省份代码
+  censusProvinceName: string; // 户籍省份名称
+  censusStreet?: string; // 户籍街道
+  chargeType: any; // 收费类型
+  chineseName?: string; // 中文名
+  contactAddress?: string; // 联系地址
+  contactCityCode?: string; // 联系城市代码
+  contactCityName: string; // 联系城市名称
+  contactDistrictCode?: string; // 联系区域代码
+  contactDistrictName: string; // 联系区域名称
+  contactProvinceCode?: string; // 联系省份代码
+  contactProvinceName: string; // 联系省份名称
+  contactStreet?: string; // 联系街道
+  customerId: number; // 客户ID
+  declarationResult: any; // 申报结果
+  depositBankCode?: string; // 存款银行代码
+  depositBankName: any; // 存款银行名称
+  depositBankProvince?: string; // 存款银行省份
+  depositBankProvinceName: string; // 存款银行省份名称
+  deptId: number; // 部门ID
+  deptName: any; // 部门名称
+  disableCardNumber?: string; // 残疾人证号
+  educationType?: string; // 教育类型
+  email?: string; // 电子邮件地址
+  emergencyContact: any; // 紧急联系人
+  emergencyPhone: any; // 紧急联系电话
+  employedDate: string; // 雇佣日期
+  employeeNumber: string; // 员工编号
+  employmentType: string; // 雇佣类型
+  estimatedDepartureDate?: string; // 预计离职日期
+  firstEmploymentSituation: string; // 首次就业情况
+  firstEntryDate?: string; // 首次入职日期
+  fspDownLoadFailed: boolean; // FSP下载失败
+  fspMessage: any; // FSP消息
+  fspModifyDate: any; // FSP修改日期
+  fspStatus: any; // FSP状态
+  gender: string; // 性别
+  id: number; // ID
+  insuranceAccount: any; // 保险账户
+  insuranceEndMonth: any; // 保险结束月份
+  insuranceIndividualNum: any; // 个人保险号
+  insurancePayState: any; // 保险缴费状态
+  insurancePlanName: any; // 保险计划名称
+  insurancePlanUuid: any; // 保险计划唯一标识符
+  insuranceRepayMonths: any; // 保险补缴月数
+  insuranceStartMonth: any; // 保险开始月份
+  insureCityCode: any; // 保险城市代码
+  insureCityName: any; // 保险城市名称
+  insureProvinceCode: any; // 保险省份代码
+  insureProvinceName: any; // 保险省份名称
+  isBereavedGaffer: string; // 是否孤老
+  isDeductDeduction: string; // 是否扣除抵扣
+  isDisabled: string; // 是否残疾
+  isManyDeptEmp: boolean; // 是否多部门员工
+  isMartyr: string; // 是否烈士
+  jobType: any; // 工作类型
+  licenseNumber: string; // 许可证号
+  licenseTypeCode: string; // 许可证类型代码
+  licenseTypeName: string; // 许可证类型名称
+  mainArchiveNumber: any; // 主档案编号
+  marriageState: any; // 婚姻状况
+  martyrCardNumber?: string; // 烈士证号
+  name: string; // 姓名
+  nation: any; // 民族
+  nationalityCode: string; // 国籍代码
+  nationalityName: string; // 国籍名称
+  nativeCityCode: any; // 籍贯城市代码
+  nativeCityName: string; // 籍贯城市名称
+  nativeProvinceCode: any; // 籍贯省份代码
+  nativeProvinceName: string; // 籍贯省份名称
+  organizationId: any; // 组织ID
+  organizationName: any; // 组织名称
+  otherArchiveNumbers?: string; // 其他档案编号
+  otherLicenseNumber?: string; // 其他许可证号
+  otherLicenseTypeCode?: string; // 其他许可证类型代码
+  otherLicenseTypeName: any; // 其他许可证类型名称
+  period: any; // 周期
+  personInvestment?: number; // 个人投资
+  personInvestmentRatio?: number; // 个人投资比例
+  phone: string; // 电话号码
+  politicStatus: any; // 政治面貌
+  positionId: any; // 职位ID
+  positionName: any; // 职位名称
+  postLevel: any; // 职级
+  probation: any; // 试用期
+  probationState: any; // 试用期状态
+  providentFundAccount: any; // 公积金账户
+  providentFundEndMonth: any; // 公积金结束月份
+  providentFundPayState: any; // 公积金缴纳状态
+  providentFundRepayMonths: any; // 公积金补缴月数
+  providentFundStartMonth: any; // 公积金开始月份
+  qq: any; // QQ号
+  registrationNumber?: string; // 注册号
+  regularDate: any; // 转正日期
+  remark?: string; // 备注
+  residentAddress?: string; // 居住地址
+  residentCityCode?: string; // 居住城市代码
+  residentCityName: string; // 居住城市名称
+  residentDistrictCode?: string; // 居住区域代码
+  residentDistrictName: string; // 居住区域名称
+  residentProvinceCode?: string; // 居住省份代码
+  residentProvinceName: string; // 居住省份名称
+  residentStreet?: string; // 居住街道
+  resignDate?: string; // 离职日期
+  settlementRequired: any; // 结算要求
+  state: string; // 状态
+  submissionState: string; // 提交状态
+  taxNo: string; // 税号
+  taxRefundType: any; // 税收退款类型
+  taxRelatedReason: any; // 税务相关原因
+  wechatBindStatus: boolean; // 微信绑定状态
+  workingYears: any; // 工作年限
 }
 
 export interface InvoiceOutputStatisticsResponse {
@@ -467,51 +475,65 @@ export interface InvoiceOutputStatisticsResponse {
 }
 
 export interface InvoiceOutputListResponseItem {
-  balance: any;
-  billingMachineNumber: string;
   bizDate: string; // 开票日期 2023-01-12
-  buyerName: string;
-  buyerTaxpayerCode: string;
-  cargoName: string;
-  cargoPrice: number;
   complement: string; // 已补全
-  completedErrorMsg: any;
   documentCode?: string; // 凭证号 202301-记-001
-  documentId?: string;
-  exitInvoice: string;
-  hasCustomWithdrawal: any;
-  hasOriginal: number;
+
+  invoiceId: number; // 发票ID
+  invoiceCode: string; // 发票代码
+  invoiceNumber: string; // 发票号码
+  invoiceNumberEnd: string | null; // 发票结束号码
+  cargoName: string; // 货物或服务名称
+  cargoPrice: number; // 货物或服务价格
+  taxRates: string; // 税率
+  taxPrice: number; // 税额
+  taxItem: string; // 税目
+  withdrawal: string; // 提现标识
   invalid: boolean; // 是否作废
-  invoiceClass: string;
-  invoiceCode: string;
-  invoiceId: number;
-  invoiceNumber: string;
-  invoiceNumberEnd: any;
-  lastPrintTime: any;
-  lastPrintTimeStr: any;
-  officialPdfUrl: any;
-  packageInovice: string;
-  receiptCode: any;
-  receiptId: any;
-  remark: string;
-  riskDetailList: any;
-  sourceCode: number;
-  sourceName: string;
-  suBalance: any;
-  summaryInput: any;
-  systemPdfUrl: any;
-  taxItem: string;
-  taxMode: string;
-  taxPrice: number;
-  taxRates: string;
-  totalPrice: number;
-  transferStatus: string;
-  verifyStatus: string;
-  withdrawal: string;
-  yhssm: any;
-  yhssmName: any;
-  yhszm: any;
-  yhszmName: any;
+  balance: number | null; // 余额
+  suBalance: number | null; // 特定余额
+  taxMode: string; // 税收模式
+  sourceCode: number; // 来源代码
+  sourceName: string; // 来源名称
+  buyerTaxpayerCode: string; // 购买方纳税人识别号
+  buyerName: string; // 购买方名称
+  totalPrice: number; // 总价
+  invoiceClass: string; // 发票类别
+  documentId: string; // 文件ID
+  receiptId: string | null; // 收据ID
+  receiptCode: string | null; // 收据代码
+  summaryInput: string | null; // 摘要输入
+  completedErrorMsg: string | null; // 完成错误消息
+  hasCustomWithdrawal: string | null; // 是否有自定义提现
+  packageInvoice: string; // 包装发票标识
+  riskDetailList: any | null; // 风险详情列表
+  remark: string; // 备注
+  exitInvoice: string; // 出口发票标识
+  verifyStatus: string; // 验证状态
+  billingMachineNumber: string; // 开票机号码
+  transferStatus: string; // 转移状态
+  hasOriginal: number; // 是否有原件
+  lastPrintTime: string | null; // 最后打印时间
+  lastPrintTimeStr: string | null; // 最后打印时间字符串
+  yhssm: string | null; // 优惠税收码
+  yhssmName: string | null; // 优惠税收名称
+  yhszm: string | null; // 应征税种码
+  yhszmName: string | null; // 应征税种名称
+  officialPdfUrl: string; // 官方PDF URL
+  systemPdfUrl: string | null; // 系统PDF URL
+  completed: string; // 完成标识
+  checkComplementCode: string | null; // 核对补充代码
+  checkComplementMessage: string | null; // 核对补充消息
+  hasRealOriginal: string; // 是否有实际原件
+  originalPreviewFlag: string; // 原件预览标志
+  pdfUrl: string | null; // PDF URL
+  ofdUrl: string | null; // OFD URL
+  xmlUrl: string | null; // XML URL
+  identityNumber: string | null; // 身份编号
+  specificFeatureTypeCode: string | null; // 特定特征类型代码
+  drawerName: string; // 开票人名称
+  buildServiceLocation: string | null; // 建筑服务位置
+  buildServiceProjectName: string | null; // 建筑服务项目名称
 }
 
 export interface InvoiceOutputDetailResponse {
@@ -654,57 +676,189 @@ export interface InvoiceInputStatistics {
   unKnownCertificationTotalPrice: number;
 }
 
-export interface InvoiceInputListResponseItem {
-  customerId: string;
-  taxPeriod: string;
-  taxItem: string;
-  invoiceId: number;
-  invoiceClass: string;
-  invoiceCode: string;
-  invoiceNumber: string;
+/**
+ * InputInvoiceResponseItem 接口定义了进项发票响应的数据结构。
+ * 包含了发票的各种信息，如发票代码、发票号码、购买方名称、购买方纳税人识别号等。
+ */
+export interface InputInvoiceListResponseItem {
+  accountsDate?: string; // 账目日期
+  accountsSource?: string; // 账目来源
+  bizDate: string; // 业务日期
+  buildServiceLocation: any; // 建筑服务位置
+  buildServiceProjectName: any; // 建筑服务项目名称
+  buyerName: string; // 购买方名称
+  buyerTaxpayerCode: string; // 购买方纳税人识别号
+  cargoName: string; // 货物或服务名称
+  cargoPrice: number; // 货物或服务价格
+  certificationDate: string; // 认证日期
+  certificationType: string; // 认证类型
+  checkComplementCode: any; // 核对补充代码
+  checkComplementMessage: any; // 核对补充消息
+  checkMode: string; // 核对模式
+  checkStatus: string; // 核对状态
+  compared: string; // 比较结果
+  completed: string; // 完成状态
+  customerId: number; // 客户ID
+  deductiveMonth?: string; // 抵扣月份
+  deductiveStatus: string; // 抵扣状态
+  documentCode?: string; // 文档代码
+  documentId?: number; // 文档ID
+  elecInvoice: boolean; // 是否为电子发票
+  farmExtraDeductPeriod: string; // 农业额外抵扣期
+  farmExtraDeductTax: any; // 农业额外抵扣税
+  fillCode: any; // 填充代码
+  fillMessage: any; // 填充消息
+  hasRealOriginal: string; // 是否有实际原件
+  id: number; // ID
+  identityNumber: any; // 身份编号
+  invoiceClass: string; // 发票类别
+  invoiceCode: string; // 发票代码
+  invoiceNumber: string; // 发票号码
+  invoiceStatus: string; // 发票状态
+  invoiceTag: any; // 发票标签
+  lastPrintTime: any; // 最后打印时间
+  lastPrintTimeStr: any; // 最后打印时间字符串
+  managementStatus: string; // 管理状态
+  officialPdfUrl?: string; // 官方PDF URL
+  originalPreviewFlag: string; // 原件预览标志
+  receiptCode: any; // 收据代码
+  receiptId: any; // 收据ID
+  remark?: string; // 备注
+  sdInvoice: boolean; // 是否为数电票
+  source: string; // 来源
+  specificFeatureTypeCode: any; // 特定特征类型代码
+  summaryInput?: string; // 摘要输入
+  suplierName: string; // 供应商名称
+  suplierTax: string; // 供应商税号
+  systemPdfUrl: any; // 系统PDF URL
+  taxItem: string; // 税目
+  taxItemStr: any; // 税目字符串
+  taxPeriod: string; // 税期
+  taxPrice: number; // 税额
+  taxRates: string; // 税率
+  totalPrice: number; // 总价
+  transferStatus: string; // 转移状态
+  validTaxPrice?: number; // 有效税额
+  verifyStatus: string; // 验证状态
+  verifyTime: any; // 验证时间
+  withdrawal: string; // 提现标识
+}
+
+export interface _InvoiceInputListResponseItem {
+  acquisitionType: string;
   bizDate: string;
   cargoName: string;
   cargoPrice: number;
-  taxRates: string;
-  taxPrice: number;
-  validTaxPrice: number;
-  totalPrice: number;
-  deductiveMonth: string;
-  deductiveStatus: string;
   certificationDate: string;
   certificationType: string;
   certificationTypeCode: string;
-  hasfixasserts: string;
-  withdrawal: string;
-  suplierTax: string;
-  suplierName: string;
+  checkMode: string;
+  checkModeName: string;
   compared: string;
   completed: string;
   completedErrorMsg: any;
+  createDate: string;
+  customerId: string;
+  deductiveMonth: string;
+  deductiveStatus: string;
   documentCode: string;
-  vehicleId: any;
-  source: string;
-  sourceName: string;
-  acquisitionType: string;
-  saleAddress: any;
-  taxAuthorityCode: any;
-  taxAuthorityName: any;
+  documentId: number;
+  hasCustomFixedAsset: any;
+  hasCustomWithdrawal: any;
+  hasfixasserts: string;
+  inCounselingPeriod: string;
+  invoiceClass: string;
+  invoiceCode: string;
+  invoiceId: number;
+  invoiceNumber: string;
   invoiceStatus: string;
   remark: string;
-  createDate: string;
-  inCounselingPeriod: string;
-  summaryInput: any;
-  hasCustomWithdrawal: any;
-  hasCustomFixedAsset: any;
   riskDetailList: any;
-  documentId: number;
-  checkMode: string;
-  checkModeName: string;
+  saleAddress: any;
+  source: string;
+  sourceName: string;
+  summaryInput: any;
+  suplierName: string;
+  suplierTax: string;
+  taxAuthorityCode: any;
+  taxAuthorityName: any;
+  taxItem: string;
+  taxPeriod: string;
+  taxPrice: number;
+  taxRates: string;
+  totalPrice: number;
+  validTaxPrice: number;
+  vehicleId: any;
   verifyStatus: string;
+  withdrawal: string;
   yhssm: any;
   yhssmName: any;
   yhszm: any;
   yhszmName: any;
+}
+
+interface InputInvoice {
+  customerId: number; // 客户ID
+  id: number; // 发票唯一标识ID
+  invoiceClass: string; // 发票分类代码
+  elecInvoice: boolean; // 是否为电子发票
+  sdInvoice: boolean; // 是否为服务类发票
+  invoiceCode: string; // 发票代码
+  invoiceNumber: string; // 发票号码
+  bizDate: string; // 业务日期
+  completed: string; // 完成状态码
+  fillCode: string | null; // 填充代码
+  fillMessage: string | null; // 填充信息
+  certificationType: string; // 认证类型
+  certificationDate: string; // 认证日期
+  taxPeriod: string; // 税务期
+  deductiveStatus: string; // 扣税状态
+  deductiveMonth: string | null; // 扣税月份
+  checkMode: string; // 核对模式
+  suplierTax: string; // 供应商纳税人识别号
+  suplierName: string; // 供应商名称
+  cargoName: string; // 货物或服务名称
+  taxItem: string; // 税目
+  taxItemStr: string | null; // 税目描述字符串
+  cargoPrice: number; // 货物或服务价格
+  taxRates: string; // 税率
+  taxPrice: number; // 税额
+  validTaxPrice: number | null; // 有效税额
+  totalPrice: number; // 总价
+  invoiceStatus: string; // 发票状态
+  verifyStatus: string; // 验证状态
+  verifyTime: string | null; // 验证时间
+  withdrawal: string; // 提现状态
+  source: string; // 来源代码
+  remark: string | null; // 备注
+  documentId: number; // 文档ID
+  documentCode: string; // 文档代码
+  receiptId: string | null; // 收据ID
+  receiptCode: string | null; // 收据代码
+  compared: string; // 对比状态
+  transferStatus: string; // 转移状态
+  summaryInput: string | null; // 摘要输入
+  lastPrintTime: string | null; // 最后打印时间
+  lastPrintTimeStr: string | null; // 最后打印时间字符串
+  invoiceTag: string | null; // 发票标签
+  managementStatus: string; // 管理状态
+  officialPdfUrl: string | null; // 官方PDF URL
+  systemPdfUrl: string | null; // 系统PDF URL
+  checkStatus: string; // 核查状态
+  checkComplementCode: string | null; // 核查补充代码
+  checkComplementMessage: string | null; // 核查补充消息
+  hasRealOriginal: string; // 是否有真实原件
+  originalPreviewFlag: string; // 原件预览标志
+  accountsDate: string; // 入账日期
+  accountsSource: string; // 入账来源
+  farmExtraDeductPeriod: string; // 农业额外扣除期
+  farmExtraDeductTax: number | null; // 农业额外扣除税额
+  buyerTaxpayerCode: string; // 买方纳税人识别号
+  buyerName: string; // 买方名称
+  identityNumber: string | null; // 身份编号
+  specificFeatureTypeCode: string | null; // 特定特征类型代码
+  buildServiceLocation: string | null; // 建设服务位置
+  buildServiceProjectName: string | null; // 建设服务项目名称
 }
 
 export interface InvoiceInputDetailResponse {
@@ -989,7 +1143,7 @@ export interface FinanceQueryCustomerResponseItem {
   taxType: string;
 }
 
-export interface FinanceAccDocsListItem {
+export interface ListFinanceAccDocItem {
   accountDocument: FinanceAccDocsListItemAccountDocument;
   entryDtoList: FinanceAccDocsListItemEntryDtoList[];
   carryOverType: any;
@@ -1189,213 +1343,213 @@ export interface FinanceGetAccountSetInfoResponseRiskScanResultGroup {
   riskResults: any[];
 }
 
-export interface IitSingleReportQueryListResponse {
-  showList: IitSingleReportQueryListResponseShowList[];
-  totalIncome: IitSingleReportQueryListResponseTotalIncome;
+export interface ListPersonalIncomeTaxReportResponse {
+  showList: ListPersonalIncomeTaxReportShowList[];
+  totalIncome: ListPersonalIncomeTaxReportResponseTotalIncome;
 }
 
-export interface IitSingleReportQueryListResponseShowList {
-  id: number;
-  declarationId: number;
-  customerId: number;
-  deptName: any;
-  deptId: number;
-  employeeId: number;
-  period: string;
-  income: number;
-  formula: any;
-  incomeDetailId: any;
-  domesticWorkingDays: number;
-  abroadWorkingDays: number;
-  calendarDays: number;
-  domesticIncome: number;
-  abroadIncome: number;
-  incomeAmount: number;
-  taxedPayCost: number;
-  allPayCost: number;
-  apportionMonths: number;
-  onceReceipt: any;
-  annuityReceiptTypeCode: any;
-  annuityReceiptTypeName: any;
-  annuityReceiptReasonCode: any;
-  annuityReceiptReasonName: any;
-  monthlyApportionedIncome: number;
-  currentSalary: number;
-  exemptIncome: number;
-  monthDeduction: number;
-  yearDeduction: number;
-  exhibitionCost: number;
-  endowmentInsurance: number;
-  medicalInsurance: number;
-  unemploymentInsurance: number;
-  houseProvidentFund: number;
-  specDeductionSum: number;
-  childEducationExpenditure: number;
-  seriousIllnessExpenditure: number;
-  continueEducationExpenditure: number;
-  houseRentExpenditure: number;
-  houseLoanExpenditure: number;
-  supportElderExpenditure: number;
-  babyCareExpenditure: number;
-  specAttachDeductionSum: number;
-  annuity: number;
-  commercialHealthInsurance: number;
-  extensionEndowmentInsurance: number;
-  other: number;
-  remark?: string;
-  deductionAmount: number;
-  otherDeductionSum: number;
-  taxableIncome: number;
-  payableAmount: number;
-  taxDeduction: number;
-  paidAmount: number;
-  withholdingAmount: number;
-  taxRate: number;
-  quickDeduction: number;
-  incomeItemCode: string;
-  incomeItemName: string;
-  refundTax: number;
-  accumulatedIncome: number;
-  accumulatedExemptIncome: number;
-  accumulatedMonthDeduction: number;
-  accumulatedSpecDeduction: number;
-  accumulatedSpecAttachDeduction: number;
-  accumulatedOtherDeduction: number;
-  accumulatedTaxDeduction: number;
-  accumulatedDeductionAmount: number;
-  accumulatedTaxableIncome: number;
-  accumulatedPayableAmount: number;
-  accumulatedWithholdingAmount: number;
-  accumulatedChildEducation: number;
-  accumulatedSeriousIllness: number;
-  accumulatedContinueEducation: number;
-  accumulatedHouseRent: number;
-  accumulatedHouseLoan: number;
-  accumulatedSupportElder: number;
-  accumulatedBabyCare: number;
-  accumulatedDeductibleDonation: number;
-  accumulatedPaidAmount: number;
-  pastDataType: any;
-  deductibleDonation: number;
-  salaryDeductionBalance: number;
-  backupType: string;
-  taxDeductible: number;
-  incomePeriodStart: string;
-  incomePeriodEnd: string;
-  apportionYears: number;
-  accumulatedPersonalPension: number;
-  creatorId: any;
-  modifierId: any;
-  createDate: any;
-  modifyDate: any;
-  changeType: any;
-  employeeNumber: string;
-  name: string;
-  licenseTypeCode: string;
-  licenseTypeName: string;
-  licenseNumber: string;
-  employedDate: string;
-  resignDate?: string;
-  isManyDeptEmp: boolean;
+export interface ListPersonalIncomeTaxReportShowList {
+  abroadIncome: number; // 海外收入
+  abroadWorkingDays: number; // 海外工作天数
+  accumulatedBabyCare: number; // 累计托幼支出抵扣
+  accumulatedChildEducation: number; // 累计子女教育支出抵扣
+  accumulatedContinueEducation: number; // 累计继续教育支出抵扣
+  accumulatedDeductibleDonation: number; // 累计可抵扣捐赠支出
+  accumulatedDeductionAmount: number; // 累计扣除额
+  accumulatedExemptIncome: number; // 累计免税收入
+  accumulatedHouseLoan: number; // 累计住房贷款利息支出抵扣
+  accumulatedHouseRent: number; // 累计住房租金支出抵扣
+  accumulatedIncome: number; // 累计收入总额
+  accumulatedMonthDeduction: number; // 累计月度扣除总额
+  accumulatedOtherDeduction: number; // 累计其他扣除
+  accumulatedPaidAmount: number; // 累计已支付税额
+  accumulatedPayableAmount: number; // 累计应纳税额
+  accumulatedPersonalPension: number; // 累计个人养老金支出抵扣
+  accumulatedSeriousIllness: number; // 累计大病医疗支出抵扣
+  accumulatedSpecAttachDeduction: number; // 累计专项附加扣除总额
+  accumulatedSpecDeduction: number; // 累计专项扣除总额
+  accumulatedSupportElder: number; // 累计赡养老人支出抵扣
+  accumulatedTaxDeduction: number; // 累计税收减免
+  accumulatedTaxableIncome: number; // 累计应纳税所得额
+  accumulatedWithholdingAmount: number; // 累计预扣预缴税额
+  allPayCost: number; // 总支出
+  annuity: number; // 年金
+  annuityReceiptReasonCode: any; // 年金收据原因代码
+  annuityReceiptReasonName: any; // 年金收据原因名称
+  annuityReceiptTypeCode: any; // 年金收据类型代码
+  annuityReceiptTypeName: any; // 年金收据类型名称
+  apportionMonths: number; // 分摊月数
+  apportionYears: number; // 分摊年数
+  babyCareExpenditure: number; // 托幼支出
+  backupType: string; // 备份类型
+  calendarDays: number; // 日历天数
+  changeType: any; // 变更类型
+  childEducationExpenditure: number; // 子女教育支出
+  commercialHealthInsurance: number; // 商业健康保险
+  continueEducationExpenditure: number; // 继续教育支出
+  createDate: any; // 创建日期
+  creatorId: any; // 创建者ID
+  currentSalary: number; // 当前薪资
+  customerId: number; // 客户ID
+  declarationId: number; // 申报ID
+  deductibleDonation: number; // 可抵扣捐赠支出
+  deductionAmount: number; // 扣除金额
+  deptId: number; // 部门ID
+  deptName: any; // 部门名称
+  domesticIncome: number; // 国内收入
+  domesticWorkingDays: number; // 国内工作天数
+  employedDate: string; // 雇佣日期
+  employeeId: number; // 员工ID
+  employeeNumber: string; // 员工编号
+  endowmentInsurance: number; // 养老保险
+  exemptIncome: number; // 免税收入
+  exhibitionCost: number; // 展览成本
+  extensionEndowmentInsurance: number; // 延期养老保险
+  formula: any; // 公式
+  houseLoanExpenditure: number; // 住房贷款利息支出
+  houseProvidentFund: number; // 住房公积金
+  houseRentExpenditure: number; // 住房租金支出
+  id: number; // 标识ID
+  income: number; // 收入
+  incomeAmount: number; // 收入金额
+  incomeDetailId: any; // 收入明细ID
+  incomeItemCode: string; // 收入项目代码
+  incomeItemName: string; // 收入项目名称
+  incomePeriodEnd: string; // 收入期间结束日期
+  incomePeriodStart: string; // 收入期间开始日期
+  isManyDeptEmp: boolean; // 是否多部门员工
+  licenseNumber: string; // 许可证号
+  licenseTypeCode: string; // 许可证类型代码
+  licenseTypeName: string; // 许可证类型名称
+  medicalInsurance: number; // 医疗保险
+  modifierId: any; // 修改者ID
+  modifyDate: any; // 修改日期
+  monthDeduction: number; // 月扣除
+  monthlyApportionedIncome: number; // 按月分摊收入
+  name: string; // 姓名
+  onceReceipt: any; // 一次性收据
+  other: number; // 其他
+  otherDeductionSum: number; // 其他扣除总额
+  paidAmount: number; // 已支付金额
+  pastDataType: any; // 过去数据类型
+  payableAmount: number; // 应付金额
+  period: string; // 期间
+  quickDeduction: number; // 快速扣除
+  refundTax: number; // 退税
+  remark?: string; // 备注
+  resignDate?: string; // 离职日期
+  salaryDeductionBalance: number; // 薪资扣除余额
+  seriousIllnessExpenditure: number; // 大病支出
+  specAttachDeductionSum: number; // 特定附加扣除总额
+  specDeductionSum: number; // 特定扣除总额
+  supportElderExpenditure: number; // 赡养老人支出
+  taxDeductible: number; // 税收减免
+  taxDeduction: number; // 税收扣减
+  taxRate: number; // 税率
+  taxableIncome: number; // 应税收入
+  taxedPayCost: number; // 已税支付成本
+  unemploymentInsurance: number; // 失业保险
+  withholdingAmount: number; // 预扣金额
+  yearDeduction: number; // 年度扣除
 }
 
-export interface IitSingleReportQueryListResponseTotalIncome {
-  id: any;
-  declarationId: any;
-  customerId: any;
-  deptName: any;
-  deptId: any;
-  employeeId: any;
-  period: any;
-  income: number;
-  formula: any;
-  incomeDetailId: any;
-  domesticWorkingDays: any;
-  abroadWorkingDays: any;
-  calendarDays: any;
-  domesticIncome: any;
-  abroadIncome: any;
-  incomeAmount: any;
-  taxedPayCost: number;
-  allPayCost: number;
-  apportionMonths: any;
-  onceReceipt: any;
-  annuityReceiptTypeCode: any;
-  annuityReceiptTypeName: any;
-  annuityReceiptReasonCode: any;
-  annuityReceiptReasonName: any;
-  monthlyApportionedIncome: any;
-  currentSalary: number;
-  exemptIncome: number;
-  monthDeduction: any;
-  yearDeduction: number;
-  exhibitionCost: number;
-  endowmentInsurance: number;
-  medicalInsurance: number;
-  unemploymentInsurance: number;
-  houseProvidentFund: number;
-  specDeductionSum: number;
-  childEducationExpenditure: any;
-  seriousIllnessExpenditure: any;
-  continueEducationExpenditure: any;
-  houseRentExpenditure: any;
-  houseLoanExpenditure: any;
-  supportElderExpenditure: any;
-  babyCareExpenditure: any;
-  specAttachDeductionSum: any;
-  annuity: number;
-  commercialHealthInsurance: number;
-  extensionEndowmentInsurance: number;
-  other: number;
-  remark: any;
-  deductionAmount: number;
-  otherDeductionSum: number;
-  taxableIncome: number;
-  payableAmount: number;
-  taxDeduction: number;
-  paidAmount: number;
-  withholdingAmount: number;
-  taxRate: any;
-  quickDeduction: any;
-  incomeItemCode: any;
-  incomeItemName: any;
-  refundTax: number;
-  accumulatedIncome: number;
-  accumulatedExemptIncome: any;
-  accumulatedMonthDeduction: any;
-  accumulatedSpecDeduction: any;
-  accumulatedSpecAttachDeduction: number;
-  accumulatedOtherDeduction: any;
-  accumulatedTaxDeduction: any;
-  accumulatedDeductionAmount: any;
-  accumulatedTaxableIncome: any;
-  accumulatedPayableAmount: any;
-  accumulatedWithholdingAmount: any;
-  accumulatedChildEducation: number;
-  accumulatedSeriousIllness: number;
-  accumulatedContinueEducation: number;
-  accumulatedHouseRent: number;
-  accumulatedHouseLoan: number;
-  accumulatedSupportElder: number;
-  accumulatedBabyCare: number;
-  accumulatedDeductibleDonation: any;
-  accumulatedPaidAmount: any;
-  pastDataType: any;
-  deductibleDonation: number;
-  salaryDeductionBalance: number;
-  backupType: any;
-  taxDeductible: any;
-  incomePeriodStart: any;
-  incomePeriodEnd: any;
-  apportionYears: any;
-  accumulatedPersonalPension: number;
-  creatorId: any;
-  modifierId: any;
-  createDate: any;
-  modifyDate: any;
-  changeType: any;
-  employee: number;
-  total: any;
+export interface ListPersonalIncomeTaxReportResponseTotalIncome {
+  abroadIncome: any; // 海外收入总计
+  abroadWorkingDays: any; // 海外工作天数总计
+  accumulatedBabyCare: number; // 累计托幼支出抵扣总额
+  accumulatedChildEducation: number; // 累计子女教育支出抵扣总额
+  accumulatedContinueEducation: number; // 累计继续教育支出抵扣总额
+  accumulatedDeductibleDonation: any; // 累计可抵扣捐赠支出总额
+  accumulatedDeductionAmount: any; // 累计扣除额总计
+  accumulatedExemptIncome: any; // 累计免税收入总额
+  accumulatedHouseLoan: number; // 累计住房贷款利息支出抵扣总额
+  accumulatedHouseRent: number; // 累计住房租金支出抵扣总额
+  accumulatedIncome: number; // 累计收入总额
+  accumulatedMonthDeduction: any; // 累计月度扣除总额
+  accumulatedOtherDeduction: any; // 累计其他扣除总额
+  accumulatedPaidAmount: any; // 累计已支付税额总额
+  accumulatedPayableAmount: any; // 累计应纳税额总额
+  accumulatedPersonalPension: number; // 累计个人养老金支出抵扣总额
+  accumulatedSeriousIllness: number; // 累计大病医疗支出抵扣总额
+  accumulatedSpecAttachDeduction: number; // 累计专项附加扣除总额
+  accumulatedSpecDeduction: any; // 累计专项扣除总额
+  accumulatedSupportElder: number; // 累计赡养老人支出抵扣总额
+  accumulatedTaxDeduction: any; // 累计税收减免总额
+  accumulatedTaxableIncome: any; // 累计应纳税所得额总额
+  accumulatedWithholdingAmount: any; // 累计预扣预缴税额总额
+  allPayCost: number; // 总支出
+  annuity: number; // 年金总额
+  annuityReceiptReasonCode: any; // 年金收据原因代码
+  annuityReceiptReasonName: any; // 年金收据原因名称
+  annuityReceiptTypeCode: any; // 年金收据类型代码
+  annuityReceiptTypeName: any; // 年金收据类型名称
+  apportionMonths: any; // 分摊月数总计
+  apportionYears: any; // 分摊年数总计
+  babyCareExpenditure: any; // 托幼支出总额
+  backupType: any; // 备份类型
+  calendarDays: any; // 日历天数总计
+  changeType: any; // 变更类型
+  childEducationExpenditure: any; // 子女教育支出总额
+  commercialHealthInsurance: number; // 商业健康保险总额
+  continueEducationExpenditure: any; // 继续教育支出总额
+  createDate: any; // 创建日期
+  creatorId: any; // 创建者ID
+  currentSalary: number; // 当前薪资总额
+  customerId: any; // 客户ID
+  declarationId: any; // 申报ID
+  deductibleDonation: number; // 可抵扣捐赠支出
+  deductionAmount: number; // 扣除金额总计
+  deptId: any; // 部门ID
+  deptName: any; // 部门名称
+  domesticIncome: any; // 国内收入总计
+  domesticWorkingDays: any; // 国内工作天数总计
+  employee: number; // 员工总数
+  employeeId: any; // 员工ID
+  endowmentInsurance: number; // 养老保险总额
+  exemptIncome: number; // 免税收入总额
+  exhibitionCost: number; // 展览成本总额
+  extensionEndowmentInsurance: number; // 延期养老保险总额
+  formula: any; // 公式
+  houseLoanExpenditure: any; // 住房贷款利息支出总额
+  houseProvidentFund: number; // 住房公积金总额
+  houseRentExpenditure: any; // 住房租金支出总额
+  id: any; // 标识ID
+  income: number; // 收入总额
+  incomeAmount: any; // 收入金额总计
+  incomeDetailId: any; // 收入明细ID
+  incomeItemCode: any; // 收入项目代码
+  incomeItemName: any; // 收入项目名称
+  incomePeriodEnd: any; // 收入期间结束日期
+  incomePeriodStart: any; // 收入期间开始日期
+  medicalInsurance: number; // 医疗保险总额
+  modifierId: any; // 修改者ID
+  modifyDate: any; // 修改日期
+  monthDeduction: any; // 月度扣除总额
+  monthlyApportionedIncome: number; // 按月分摊的收入总额
+  onceReceipt: any; // 一次性收据
+  other: number; // 其他总额
+  otherDeductionSum: number; // 其他扣除总和
+  paidAmount: number; // 已支付金额总额
+  pastDataType: any; // 过去数据类型
+  payableAmount: number; // 应付金额总额
+  period: any; // 期间
+  quickDeduction: any; // 快速扣除总额
+  refundTax: number; // 退税总额
+  remark: any; // 备注
+  salaryDeductionBalance: number; // 薪资扣除余额
+  seriousIllnessExpenditure: any; // 大病支出总额
+  specAttachDeductionSum: any; // 特定附加扣除总和
+  specDeductionSum: number; // 特定扣除总和
+  supportElderExpenditure: any; // 赡养老人支出总额
+  taxDeductible: any; // 税收减免总额
+  taxDeduction: number; // 税收扣减总额
+  taxRate: any; // 税率
+  taxableIncome: number; // 应税收入总额
+  taxedPayCost: number; // 已税支付成本总额
+  total: any; // 总计
+  unemploymentInsurance: number; // 失业保险总额
+  withholdingAmount: number; // 预扣金额总额
+  yearDeduction: number; // 年度扣除总额
 }
 
 export interface CustomerProgressQueryResponse {
@@ -1522,4 +1676,85 @@ export interface GetGroupResponseDepartmentHead {
 export interface GetGroupResponseCompanyAdmin {
   id: string;
   name: string;
+}
+
+export interface GetTaxDeclarationStatusResponse {
+  declarationJO: GetTaxDeclarationStatusResponseDeclarationJo[]; // 申报状态信息数组
+  addedType: string; // 添加类型
+  upFollow: number; // 上游跟进数
+  emptyList: boolean; // 是否为空列表
+  simpleDeclareInitFlag: boolean; // 简易申报初始化标志
+}
+
+export interface GetTaxDeclarationStatusResponseDeclarationJo {
+  bizCode: any; // 业务代码
+  collectionItemCode: any; // 收集项目代码
+  createSource?: number; // 创建来源
+  creditTax: string; // 应纳税额
+  cxsFlag: boolean; // 查询标志
+  deadlineDate: string; // 截止日期
+  declarationChannel: any; // 申报渠道
+  declarationPaymentFeedBack?: GetTaxDeclarationStatusResponseDeclarationPaymentFeedBack; // 申报付款反馈信息
+  declarationSerialNumber?: string; // 申报序列号
+  declarationState: string; // 申报状态
+  flowState?: string; // 流程状态
+  id: number; // 标识ID
+  iframeCode: any; // iframe代码
+  infoMsg: any; // 信息消息
+  isIgnored: any; // 是否忽略
+  localSbxh?: string; // 本地申报序号
+  operations: GetTaxDeclarationStatusResponseOperation[]; // 操作选项数组
+  optional: boolean; // 是否可选
+  optionalTag?: string; // 可选标签
+  paidAmt: string; // 已支付金额
+  paymentState: string; // 支付状态
+  periodBegin: string; // 期间开始
+  periodEnd: string; // 期间结束
+  plannedDate: any; // 计划日期
+  postDate: string; // 提交日期
+  reduceAmount?: string; // 减少金额
+  reportCode: any; // 报告代码
+  reportRelation: any; // 报告关系
+  serialNumber: number; // 序列号
+  showOptionalTag?: string; // 显示可选标签
+  showTips?: string; // 显示提示
+  simpleDeclareInitFlag: boolean; // 简易申报初始化标志
+  taskRetryCount: any; // 任务重试次数
+  taskStatus: any; // 任务状态
+  taxCode: string; // 税种代码
+  taxCodeType: any; // 税种代码类型
+  taxName: string; // 税种名称
+  taxType: any; // 税种类型
+  ycxxms: any; // 异常信息描述
+  zsxmmc: any; // 税务项目名称
+}
+
+export interface GetTaxDeclarationStatusResponseOperation {
+  routeUrl: any; // 路由URL
+  operName: string; // 操作名称
+  eventName: string; // 事件名称
+  message: any; // 消息内容
+}
+
+export interface GetTaxDeclarationStatusResponseDeclarationPaymentFeedBack {
+  feedbackResultList: GetTaxDeclarationStatusResponseFeedbackResultList[]; // 反馈结果列表
+  needPay: boolean; // 需要支付
+  messageTips: any; // 消息提示
+  alertCompulsoryForNotYetToMust: any; // 未达到必须状态的强制警告
+}
+
+export interface GetTaxDeclarationStatusResponseFeedbackResultList {
+  creditTax?: string; // 应纳税额
+  declarationState: string; // 申报状态
+  declarationTime: string; // 申报时间
+  drawbackShowFlag: any; // 退税显示标志
+  feedbackMsg: string; // 反馈信息
+  paymentAmount: any; // 支付金额
+  paymentStatus: any; // 支付状态
+  paymentTime: any; // 支付时间
+  ssdId: number; // 特定ID
+  taxCode: string; // 税种代码
+  taxName: string; // 税种名称
+  unPaidAssert: boolean; // 未支付断言
+  vatAdditionalfeedbackMsg: any; // 增值税附加反馈信息
 }

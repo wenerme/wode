@@ -1,10 +1,9 @@
 import { EntityData, LockMode, type RequiredEntityData } from '@mikro-orm/core';
 import { QueryBuilder, type EntityManager, type EntityRepository, type MikroORM } from '@mikro-orm/postgresql';
 import { Logger } from '@nestjs/common';
-import { Contexts } from '@wener/nestjs/app';
-import { getEntityManager, getMikroORM } from '@wener/nestjs/mikro-orm';
 import { Errors } from '@wener/utils';
-import { getCurrentTenantId, getCurrentUserId } from '../../app';
+import { Contexts, getCurrentTenantId, getCurrentUserId } from '../../app';
+import { getEntityManager, getMikroORM } from '../../mikro-orm';
 import { EntityAuditAction, writeEntityAuditLog } from '../audit';
 import { setData } from '../setData';
 import { setOwnerRef } from '../setOwnerRef';
@@ -13,6 +12,8 @@ import { applyListQuery } from './applyListQuery';
 import { applyQueryFilter } from './applyQueryFilter';
 import { applyResolveQuery, applySelection } from './applyResolveQuery';
 import { applySearch } from './applySearch';
+import { resolveEntity, ResolveEntityOptions } from './resolveEntity';
+import { EntityService } from './services';
 import {
   AssignOwnerRequest,
   AssignOwnerResponse,
@@ -52,13 +53,21 @@ interface StatefulBaseEntity extends StandardBaseEntity {
   status: string;
 }
 
-export class EntityBaseService<E extends StandardBaseEntity> {
+interface EntityServiceOptions {
+  softDelete?: boolean;
+}
+
+export class EntityBaseService<E extends StandardBaseEntity> implements EntityService<E> {
   protected readonly log = new Logger(this.constructor.name);
+
+  protected readonly options: EntityServiceOptions = {
+    softDelete: false,
+  };
 
   constructor(
     protected readonly orm: MikroORM,
-    protected readonly Entity: EntityClass<E>,
-    protected readonly em: EntityManager = orm.em,
+    readonly Entity: EntityClass<E>,
+    readonly em: EntityManager = orm.em,
     readonly repo: EntityRepository<E> = em.getRepository(Entity),
   ) {
     if (EntityBaseService.#services.has(Entity)) {
@@ -75,7 +84,7 @@ export class EntityBaseService<E extends StandardBaseEntity> {
   static #services = new Map<EntityClass<any> | string, EntityBaseService<any>>();
 
   static getService<T>(entity: EntityClass<T> | string) {
-    return this.#services.get(entity);
+    return this.#services.get(entity) as T;
   }
 
   static requireService<T extends StandardBaseEntity>(entity: EntityClass<T>): EntityBaseService<T> {
@@ -154,7 +163,7 @@ export class EntityBaseService<E extends StandardBaseEntity> {
   //   return { items: data, total };
   // }
 
-  async find(req: ListEntityRequest) {
+  async find(req: ListEntityRequest): Promise<E[]> {
     let { builder } = await this.createQueryBuilder();
     this.applyListQuery({ builder, query: req });
 
@@ -167,12 +176,11 @@ export class EntityBaseService<E extends StandardBaseEntity> {
     return data;
   }
 
-  async count(query: CountEntityRequest) {
+  async count(query: CountEntityRequest): Promise<number> {
     let { builder } = await this.createQueryBuilder();
     this.applyListQuery({ builder, query: query });
 
-    const total = await builder.getCount();
-    return { total };
+    return await builder.getCount();
   }
 
   protected async createQueryBuilder(): Promise<{ builder: QueryBuilder<E> }> {
@@ -299,6 +307,45 @@ export class EntityBaseService<E extends StandardBaseEntity> {
     });
   }
 
+  async requireEntity(req: { entity?: E; id?: string }): Promise<{ entity: E }> {
+    let { entity } = await this.resolveEntity(req);
+    Errors.NotFound.check(entity, 'entity not found');
+    return { entity };
+  }
+
+  async resolveEntity(req: ResolveEntityOptions<E>): Promise<{ entity?: E | null }> {
+    return resolveEntity(req, this);
+  }
+
+  hasFeature(code: string) {}
+
+  async deleteEntity(req: ResolveEntityOptions<E>): Promise<{ entity?: E }> {
+    const { em } = this;
+    const { entity } = await this.resolveEntity(req);
+    if (!entity) {
+      return {};
+    }
+
+    entity.deletedAt = new Date();
+    if (isUserAuditableBaseEntity(entity)) {
+      entity.deletedById = getCurrentUserId();
+    }
+
+    if (this.options.softDelete) {
+      em.persist(entity);
+    } else {
+      em.remove(entity);
+    }
+
+    writeEntityAuditLog({
+      entity,
+      action: EntityAuditAction.Delete,
+      em,
+    });
+    await em.flush();
+    return { entity };
+  }
+
   async delete(r: DeleteEntityRequest): Promise<GeneralResponse<E>> {
     const { repo, em } = this;
     // todo 允许不存在
@@ -310,16 +357,23 @@ export class EntityBaseService<E extends StandardBaseEntity> {
         message: '资源不存在',
       };
     }
-    entity.deletedAt = new Date();
-    if (isUserAuditableBaseEntity(entity)) {
-      entity.deletedById = getCurrentUserId();
+    // fixme 临时关闭 softDelete
+    if (this.options.softDelete) {
+      entity.deletedAt = new Date();
+      if (isUserAuditableBaseEntity(entity)) {
+        entity.deletedById = getCurrentUserId();
+      }
+      em.persist(entity);
+    } else {
+      em.remove(entity);
     }
+
     writeEntityAuditLog({
       entity,
       action: EntityAuditAction.Delete,
       em,
     });
-    await em.persistAndFlush(entity);
+    await em.flush();
     return {
       status: 200,
       message: '已删除',
@@ -415,32 +469,32 @@ export class EntityBaseService<E extends StandardBaseEntity> {
     };
   }
 
-  async setEntityState<T extends StatefulBaseEntity>(
-    entity: T,
-    {
-      state,
-      status,
-    }: {
-      status?: string;
-      state?: string;
-    },
-  ) {
-    if (!status && !state) {
-      return false;
-    }
-    if (state && entity.state === state && !status) {
-      return false;
-    }
-    if (status && entity.status === status) {
-      return false;
-    }
-
-    // fixme resolve state & status from db
-
-    entity.state = state || entity.state;
-    entity.status = status || entity.status;
-    return true;
-  }
+  // async setEntityState<T extends StatefulBaseEntity>(
+  //   entity: T,
+  //   {
+  //     state,
+  //     status,
+  //   }: {
+  //     status?: string;
+  //     state?: string;
+  //   },
+  // ) {
+  //   if (!status && !state) {
+  //     return false;
+  //   }
+  //   if (state && entity.state === state && !status) {
+  //     return false;
+  //   }
+  //   if (status && entity.status === status) {
+  //     return false;
+  //   }
+  //
+  //   // fixme resolve state & status from db
+  //
+  //   entity.state = state || entity.state;
+  //   entity.status = status || entity.status;
+  //   return true;
+  // }
 }
 
 function resolveState<T extends StatefulBaseEntity>(

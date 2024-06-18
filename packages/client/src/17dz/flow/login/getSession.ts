@@ -1,5 +1,5 @@
 import { createChildLogger, type Logger } from '@wener/utils';
-import { type Browser, type Frame, type Page } from 'puppeteer';
+import { type Browser, type Frame, type Page } from 'puppeteer-core';
 import { getLoginSession } from '../../operator';
 import { YqdzUrls } from './const';
 import { cookieToString } from './cookieToString';

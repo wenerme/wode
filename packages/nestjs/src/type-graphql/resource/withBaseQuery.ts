@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import type { GraphQLResolveInfo } from 'graphql/type';
 import { Arg, Args, Authorized, Ctx, FieldResolver, Info, Query, Resolver, Root } from 'type-graphql';
-import { BaseEntityResolverConstructor, GetArgs } from './createBaseEntityResolver';
-import { GraphQLJSONScalar } from './GraphQLJSONScalar';
-import { JSONArgs } from './JSONArgs';
+import { GraphQLJSONScalar } from '../GraphQLJSONScalar';
+import { JSONArgs } from '../JSONArgs';
+import { resolveGraphQLJSON } from '../resolveGraphQLJSON';
+import { GetResourceArgs } from './args';
+import { BaseEntityResolverConstructor } from './createBaseEntityResolver';
 import { ListQueryInput } from './ListQueryInput';
-import { resolveGraphQLJSON } from './resolveGraphQLJSON';
 
 export function withBaseQuery<TBase extends BaseEntityResolverConstructor<any, any, any>>(Base: TBase) {
   @Injectable()
@@ -41,7 +42,7 @@ export function withBaseQuery<TBase extends BaseEntityResolverConstructor<any, a
 
     @Authorized()
     @Query(() => Base.ObjectType, { name: `get${Base.ObjectName}` })
-    async get(@Args(() => GetArgs) args: GetArgs, @Ctx() ctx: any) {
+    async get(@Args(() => GetResourceArgs) args: GetResourceArgs, @Ctx() ctx: any) {
       return this.svc.get(args);
     }
 

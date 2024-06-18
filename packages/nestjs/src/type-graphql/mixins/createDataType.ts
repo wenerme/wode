@@ -5,11 +5,11 @@ export function createDataType<T extends object>(Type: Constructor<T>) {
   return function withDataType<TBase extends Constructor>(Base: TBase) {
     @InputType()
     @ObjectType()
-    class HasDataMixinObject extends Base {
+    class HasDataMixinType extends Base {
       @Field(() => Type)
       data!: T;
     }
 
-    return HasDataMixinObject;
+    return HasDataMixinType;
   };
 }

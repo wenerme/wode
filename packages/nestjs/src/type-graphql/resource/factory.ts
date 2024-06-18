@@ -1,6 +1,8 @@
 import { computeIfAbsent, type Constructor } from '@wener/utils';
 import { Field, InputType, ObjectType } from 'type-graphql';
+import { getObjectName } from '../getObjectName';
 import { getTypeCache } from '../getTypeCache';
+import { RelayMutationInput, RelayMutationPayload } from '../relay';
 import { BaseCreateResourceInput } from './BaseCreateResourceInput';
 import { BaseUpdateResourceInput } from './BaseUpdateResourceInput';
 
@@ -12,6 +14,11 @@ export interface UpdateResourceInput<T> extends BaseUpdateResourceInput {
   data: T;
 }
 
+export interface MutationResourcePayload<T> extends RelayMutationInput {
+  data: T;
+  clientMutationId?: string;
+}
+
 export function createCreateResourceInput<T extends object>(Type: Constructor<T>): Constructor<CreateResourceInput<T>> {
   // ResourceCreateInput
   let name = Type.name.replace(/(Update|Creare)?Input$/, '');
@@ -20,12 +27,12 @@ export function createCreateResourceInput<T extends object>(Type: Constructor<T>
   let key = `Create${name}Input`;
   return computeIfAbsent(getTypeCache(), key, () => {
     @InputType(key)
-    class CreateInput extends BaseCreateResourceInput {
+    class CreateResourceInput extends BaseCreateResourceInput {
       @Field((type) => Type)
       data!: T;
     }
 
-    return CreateInput;
+    return CreateResourceInput;
   });
 }
 
@@ -36,11 +43,27 @@ export function createUpdateResourceInput<T extends object>(Type: Constructor<T>
   let key = `Update${name}Input`;
   return computeIfAbsent(getTypeCache(), key, () => {
     @InputType(key)
-    class UpdateInput extends BaseUpdateResourceInput {
+    class UpdateResourceInput extends BaseUpdateResourceInput {
       @Field((type) => Type)
       data!: T;
     }
 
-    return UpdateInput;
+    return UpdateResourceInput;
+  });
+}
+
+export function createMutationResourcePayload<T extends object>(
+  Type: Constructor<T>,
+): Constructor<MutationResourcePayload<T>> {
+  let name = getObjectName(Type);
+  let key = `Mutation${name}Payload`;
+  return computeIfAbsent(getTypeCache(), key, () => {
+    @ObjectType(key)
+    class MutationResourcePayload extends RelayMutationPayload {
+      @Field((type) => Type)
+      data!: T;
+    }
+
+    return MutationResourcePayload;
   });
 }

@@ -11,8 +11,8 @@ import { RelayNode } from '../relay';
   },
 })
 export class HasMetadataNode extends BaseNode {
+  static resolveType = RelayNode.resolveType;
+
   @Field(() => GraphQLJSONScalar, { nullable: true })
   metadata?: any;
-
-  static resolveType = RelayNode.resolveType;
 }

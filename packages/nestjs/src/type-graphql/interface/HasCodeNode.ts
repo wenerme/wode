@@ -10,8 +10,8 @@ import { RelayNode } from '../relay';
   },
 })
 export class HasCodeNode extends BaseNode {
+  static resolveType = RelayNode.resolveType;
+
   @Field(() => String, { nullable: true })
   code?: any;
-
-  static resolveType = RelayNode.resolveType;
 }

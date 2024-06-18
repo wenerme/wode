@@ -10,3 +10,4 @@
 - getGroupList 获取所有组织
 - 会话里有 bizId 和 companyId
 - changeGroup 切换组织 - 切换后 companyId 会变
+- AccountSet - 账套
