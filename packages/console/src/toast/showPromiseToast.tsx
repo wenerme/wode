@@ -1,5 +1,5 @@
 import { Renderable, toast, ValueOrFunction } from 'react-hot-toast';
-import { resolveErrorMessage } from '@/toast/showErrorToast';
+import { resolveErrorMessage } from '@/toast/resolveErrorMessage';
 
 export function showPromiseToast<T>(
   p: Promise<T>,

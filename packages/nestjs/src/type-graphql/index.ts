@@ -23,5 +23,3 @@ export { RelayNode, RelayPageInfo, RelayMutationPayload, RelayMutationInput, run
 export type * from './relay';
 
 export type * from './types';
-
-export * from './mixins';

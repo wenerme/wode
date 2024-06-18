@@ -2,7 +2,7 @@ import { Field, ID, InterfaceType } from 'type-graphql';
 import { GraphQLJSONScalar } from './GraphQLJSONScalar';
 import { RelayNode } from './relay';
 
-@InterfaceType('BaseNode', {
+@InterfaceType({
   autoRegisterImplementations: false,
   implements: [RelayNode],
   resolveType: (...args) => {

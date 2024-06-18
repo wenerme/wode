@@ -1,6 +1,6 @@
 {
   "name": "@wener/nestjs",
-  "version": "1.0.35",
+  "version": "1.0.37",
   "type": "module",
   "description": "NestJS utils",
   "author": "wener",
@@ -13,6 +13,7 @@
     "./config": "./src/config/index.ts",
     "./entity": "./src/entity/index.ts",
     "./entity/audit": "./src/entity/audit/index.ts",
+    "./entity/mxins": "./src/entity/mxins/index.ts",
     "./entity/service": "./src/entity/service/index.ts",
     "./hono": "./src/hono/index.ts",
     "./knex": "./src/knex/index.ts",
@@ -21,6 +22,10 @@
     "./scripts/esbuild": "./src/scripts/esbuild/index.ts",
     "./service": "./src/service/index.ts",
     "./type-graphql": "./src/type-graphql/index.ts",
+    "./type-graphql/interface": "./src/type-graphql/interface/index.ts",
+    "./type-graphql/mxins": "./src/type-graphql/mxins/index.ts",
+    "./type-graphql/resolver": "./src/type-graphql/resolver/index.ts",
+    "./type-graphql/resource": "./src/type-graphql/resource/index.ts",
     "./package.json": "./package.json"
   },
   "files": [
@@ -66,23 +71,23 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@hono/node-server": "^1.11.2",
-    "@hono/zod-openapi": "^0.11.1",
+    "@hono/node-server": "^1.11.3",
+    "@hono/zod-openapi": "^0.14.5",
     "@mikro-orm/core": "^6.2.9",
-    "@mikro-orm/nestjs": "^5.2.3",
+    "@mikro-orm/nestjs": "^6.0.2",
     "@mikro-orm/postgresql": "^6.2.9",
     "@mikro-orm/sqlite": "^6.2.9",
-    "@nestjs/common": "^10.3.8",
-    "@nestjs/core": "^10.3.8",
-    "@nestjs/platform-fastify": "^10.3.8",
+    "@nestjs/common": "^10.3.9",
+    "@nestjs/core": "^10.3.9",
+    "@nestjs/platform-fastify": "^10.3.9",
     "@nestjs/swagger": "^7.3.1",
-    "@nestjs/testing": "^10.3.8",
-    "@sinclair/typebox": "^0.32.31",
+    "@nestjs/testing": "^10.3.9",
+    "@sinclair/typebox": "^0.32.33",
     "@wener/miniquery": "^0.0.5",
     "class-validator": "^0.14.1",
-    "fastify": "^4.27.0",
-    "graphql": "^16.8.1",
-    "hono": "^4.4.2",
+    "fastify": "^4.28.0",
+    "graphql": "^16.8.2",
+    "hono": "^4.4.6",
     "ioredis": "^5.4.1",
     "nats": "^2.26.0",
     "nats.ws": "^1.27.0",
@@ -120,6 +125,10 @@
         "types": "./src/entity/audit/index.ts",
         "default": "./lib/entity/audit/index.js"
       },
+      "./entity/mxins": {
+        "types": "./src/entity/mxins/index.ts",
+        "default": "./lib/entity/mxins/index.js"
+      },
       "./entity/service": {
         "types": "./src/entity/service/index.ts",
         "default": "./lib/entity/service/index.js"
@@ -151,6 +160,22 @@
       "./type-graphql": {
         "types": "./src/type-graphql/index.ts",
         "default": "./lib/type-graphql/index.js"
+      },
+      "./type-graphql/interface": {
+        "types": "./src/type-graphql/interface/index.ts",
+        "default": "./lib/type-graphql/interface/index.js"
+      },
+      "./type-graphql/mxins": {
+        "types": "./src/type-graphql/mxins/index.ts",
+        "default": "./lib/type-graphql/mxins/index.js"
+      },
+      "./type-graphql/resolver": {
+        "types": "./src/type-graphql/resolver/index.ts",
+        "default": "./lib/type-graphql/resolver/index.js"
+      },
+      "./type-graphql/resource": {
+        "types": "./src/type-graphql/resource/index.ts",
+        "default": "./lib/type-graphql/resource/index.js"
       },
       "./package.json": "./package.json"
     }
