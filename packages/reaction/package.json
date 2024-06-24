@@ -69,7 +69,7 @@
     "@types/react-reconciler": "^0.28.8",
     "@wener/utils": "workspace:^",
     "clsx": "^2.1.1",
-    "mutative": "^1.0.5",
+    "mutative": "^1.0.6",
     "next": "^14.2.4",
     "react-reconciler": "^0.29.2",
     "react-router-dom": "^6.23.1",

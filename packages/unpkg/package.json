@@ -96,7 +96,7 @@
     "mime": "^4.0.3",
     "pino": "^9.2.0",
     "semver": "^7.6.2",
-    "tar": "^7.2.0"
+    "tar": "^7.4.0"
   },
   "optionalDependencies": {
     "@wener/utils": "workspace:^"

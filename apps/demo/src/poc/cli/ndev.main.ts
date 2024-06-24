@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { sha256 } from '@wener/utils';
@@ -100,7 +102,8 @@ export function createPkgCommand() {
   });
 
   root.command('scan-dup').action(async () => {
-    await scanPnpmLockDup();
+    const out = await scanPnpmLockDup();
+    console.log(JSON.stringify(out, null, 2));
   });
 
   return root;

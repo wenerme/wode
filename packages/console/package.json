@@ -71,7 +71,7 @@
   "devDependencies": {
     "@floating-ui/dom": "^1.6.5",
     "@floating-ui/react": "^0.26.17",
-    "@headlessui/react": "^2.0.4",
+    "@headlessui/react": "^2.1.0",
     "@nestjs/common": "^10.3.9",
     "@remix-run/router": "^1.16.1",
     "@tailwindcss/forms": "^0.5.7",
@@ -82,7 +82,7 @@
     "@wener/utils": "workspace:^",
     "clsx": "^2.1.1",
     "immer": "^10.1.1",
-    "mutative": "^1.0.5",
+    "mutative": "^1.0.6",
     "next": "^14.2.4",
     "react-hook-form": "^7.52.0",
     "react-icons": "^5.2.1",

@@ -1,6 +1,12 @@
 import { Constructor } from '@wener/utils';
 import { Field, ID, InputType, InterfaceType, ObjectType } from 'type-graphql';
-import { HasAuditorRefNode, HasCustomerRefNode, HasOwnerRefNode, HasVendorRefNode } from '../interface';
+import {
+  HasAuditorRefNode,
+  HasCustomerRefNode,
+  HasOwnerRefNode,
+  HasStateStatusNode,
+  HasVendorRefNode,
+} from '../interface';
 import { HasTitleDescriptionNode } from '../interface/HasTitleDescriptionNode';
 
 export { withMetadataType } from './withMetadataType';
@@ -88,4 +94,18 @@ export function withCustomerRefType<TBase extends Constructor>(Base: TBase) {
   }
 
   return HasCustomerRefMixinType;
+}
+
+export function withStateStatusType<TBase extends Constructor>(Base: TBase) {
+  @ObjectType({ implements: [HasStateStatusNode] })
+  @InterfaceType({ implements: [HasStateStatusNode] })
+  @InputType()
+  class HasStateStatusMixinType extends Base {
+    @Field(() => String, { nullable: false })
+    state!: string;
+    @Field(() => String, { nullable: false })
+    status!: string;
+  }
+
+  return HasStateStatusMixinType;
 }

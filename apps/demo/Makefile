@@ -60,8 +60,9 @@ wec.mjs:
 	du -sh out/wec.mjs
 
 ndev.mjs:
-	pnpm tsx ./src/poc/esbuild/esbuild.main.ts --outfile=out/ndev.mjs ./src/poc/cli/ndev.main.ts --external esbuild
+	pnpm tsx ./src/poc/esbuild/esbuild.main.ts --outfile=out/ndev.mjs ./src/poc/cli/ndev.main.ts # --external esbuild
 	du -sh out/ndev.mjs
+	cp out/ndev.mjs $(HOME)/bin/
 
 dev-apki-server:
 	NODE_ENV=development pnpm node --loader ts-node/esm --watch ./src/poc/alpine/server.ts

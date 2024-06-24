@@ -1,4 +1,4 @@
-import { Field, InterfaceType } from 'type-graphql';
+import { Field, ID, InterfaceType } from 'type-graphql';
 import { BaseNode } from '../BaseNode';
 import { RelayNode } from '../relay';
 
@@ -10,11 +10,11 @@ import { RelayNode } from '../relay';
   },
 })
 export class HasOwnerRefNode extends BaseNode {
-  @Field(() => String, { nullable: true })
+  @Field(() => ID, { nullable: true })
   ownerId?: string;
   @Field(() => String, { nullable: true })
   ownerType?: string;
-  @Field(() => String, { nullable: true })
+  @Field(() => ID, { nullable: true })
   ownerUserId?: string;
 
   static resolveType = RelayNode.resolveType;
