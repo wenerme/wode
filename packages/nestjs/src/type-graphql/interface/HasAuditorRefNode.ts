@@ -1,4 +1,4 @@
-import { Field, InterfaceType } from 'type-graphql';
+import { Field, ID, InterfaceType } from 'type-graphql';
 import { BaseNode } from '../BaseNode';
 import { RelayNode } from '../relay';
 
@@ -12,10 +12,10 @@ import { RelayNode } from '../relay';
 export class HasAuditorRefNode extends BaseNode {
   static resolveType = RelayNode.resolveType;
 
-  @Field(() => String, { nullable: true })
+  @Field(() => ID, { nullable: true })
   createdById?: string;
-  @Field(() => String, { nullable: true })
+  @Field(() => ID, { nullable: true })
   updatedById?: string;
-  @Field(() => String, { nullable: true })
+  @Field(() => ID, { nullable: true })
   deletedById?: string;
 }

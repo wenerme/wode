@@ -46,7 +46,7 @@
     "test": "make test"
   },
   "devDependencies": {
-    "@sinclair/typebox": "^0.32.33",
+    "@sinclair/typebox": "^0.32.34",
     "@types/lodash": "^4.17.5",
     "@types/ws": "^8.5.10",
     "@wener/utils": "link:",
