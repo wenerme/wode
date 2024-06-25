@@ -1,8 +1,9 @@
 import type { EntityManager, EntityRepository, QueryBuilder } from '@mikro-orm/postgresql';
+import { MaybePromise } from '@wener/utils';
 import { getEntityManager } from '../../mikro-orm';
 import { EntityDef, getEntityDef } from '../defineEntity';
 import { StandardBaseEntity } from '../StandardBaseEntity';
-import { EntityClass } from './EntityBaseService';
+import { EntityClass } from './EntityClass';
 
 export interface ResolveEntityContextOptions<E extends StandardBaseEntity> {
   Entity: EntityClass<E>;
@@ -11,7 +12,7 @@ export interface ResolveEntityContextOptions<E extends StandardBaseEntity> {
   def?: EntityDef;
 
   builder?: QueryBuilder<E>;
-  createQueryBuilder?: () => QueryBuilder<E>;
+  createQueryBuilder?: () => MaybePromise<{ builder: QueryBuilder<E> }>; // avoid async cause exec
 }
 
 export interface EntityContext<E extends StandardBaseEntity> {
@@ -20,7 +21,8 @@ export interface EntityContext<E extends StandardBaseEntity> {
   em: EntityManager;
   def?: EntityDef;
 
-  builder: QueryBuilder<E>;
+  // builder: QueryBuilder<E>;
+  createQueryBuilder(): Promise<{ builder: QueryBuilder<E> }>;
 }
 
 export function resolveEntityContext<E extends StandardBaseEntity>(
@@ -39,14 +41,15 @@ export function resolveEntityContext<E extends StandardBaseEntity>(
     repo,
     em,
     def,
-    get builder(): QueryBuilder<E> {
-      if (builder) {
-        return builder;
+    async createQueryBuilder() {
+      let v = builder;
+      if (!v && createQueryBuilder) {
+        ({ builder: v } = await createQueryBuilder.call(ctx));
       }
-      if (createQueryBuilder) {
-        return createQueryBuilder.call(ctx);
+      if (!v) {
+        v = repo.qb();
       }
-      return repo.qb();
+      return { builder: v };
     },
   };
 }

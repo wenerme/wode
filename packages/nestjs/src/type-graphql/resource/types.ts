@@ -1,4 +1,6 @@
-import { Field, InputType } from 'type-graphql';
+import { Field, ID, InputType, ObjectType } from 'type-graphql';
+import { RelayMutationInput, RelayMutationPayload, RelayNode } from '../relay';
+import { OnConflictInput } from './OnConflictInput';
 
 export interface PageResponse<T> {
   total: number;
@@ -11,21 +13,36 @@ export class BaseResourceUpdateInput {}
 @InputType()
 export class BaseResourceCreateInput {}
 
-// @ObjectType()
-// export class CreateResourcePayload extends RelayMutationPayload {}
-//
-// @ObjectType()
-// export class UpdateResourcePayload extends RelayMutationPayload {}
-//
-// @ObjectType()
-// export class DeleteResourcePayload extends RelayMutationPayload {}
-//
-// @ObjectType()
-// export class MutationResourcePayload extends RelayMutationPayload {}
+@InputType()
+export class MutationResourceInput extends RelayMutationInput {
+  @Field(() => ID, { nullable: true })
+  id!: string;
+}
+
+@ObjectType()
+export class MutationNodePayload extends RelayMutationPayload {
+  @Field(() => RelayNode)
+  data!: RelayNode;
+}
+
+@ObjectType()
+export class DeleteResourceInput extends MutationResourceInput {}
+
+@InputType()
+export class BaseUpdateResourceInput extends RelayMutationInput {
+  @Field(() => ID)
+  id!: string;
+}
+
+@InputType()
+export class BaseCreateResourceInput extends RelayMutationInput {
+  @Field(() => OnConflictInput, { nullable: true })
+  onConflict?: OnConflictInput;
+}
 
 @InputType()
 export class ResolveResourceQueryInput {
-  @Field(() => String, { nullable: true })
+  @Field(() => ID, { nullable: true })
   id?: string;
   @Field(() => String, { nullable: true })
   uid?: string;

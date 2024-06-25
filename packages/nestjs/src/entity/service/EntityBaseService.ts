@@ -1,10 +1,10 @@
 import { EntityData, LockMode, type RequiredEntityData } from '@mikro-orm/core';
 import { QueryBuilder, type EntityManager, type EntityRepository, type MikroORM } from '@mikro-orm/postgresql';
-import { Logger } from '@nestjs/common';
 import { Errors } from '@wener/utils';
 import { Contexts, getCurrentTenantId, getCurrentUserId } from '../../app';
-import { getEntityManager, getMikroORM } from '../../mikro-orm';
+import { getMikroORM } from '../../mikro-orm';
 import { EntityAuditAction, writeEntityAuditLog } from '../audit';
+import { EntityFeature } from '../enum';
 import { setData } from '../setData';
 import { setOwnerRef } from '../setOwnerRef';
 import { StandardBaseEntity } from '../StandardBaseEntity';
@@ -12,7 +12,9 @@ import { applyListQuery } from './applyListQuery';
 import { applyQueryFilter } from './applyQueryFilter';
 import { applyResolveQuery, applySelection } from './applyResolveQuery';
 import { applySearch } from './applySearch';
-import { resolveEntity, ResolveEntityOptions } from './resolveEntity';
+import { BaseEntityService } from './BaseEntityService';
+import { EntityClass } from './EntityClass';
+import { hasEntityFeature } from './hasEntityFeature';
 import { EntityService } from './services';
 import {
   AssignOwnerRequest,
@@ -35,41 +37,20 @@ import {
   UpdateEntityRequest,
 } from './types';
 
-interface UserAuditableBaseEntity extends StandardBaseEntity {
-  createdById?: string;
-  updatedById?: string;
-  deletedById?: string;
-}
-
-interface OwnableBaseEntity {
-  ownerId?: string;
-  ownerType?: string;
-  ownerUser?: StandardBaseEntity;
-  ownerTeam?: StandardBaseEntity;
-}
-
 interface StatefulBaseEntity extends StandardBaseEntity {
   state: string;
   status: string;
 }
 
-interface EntityServiceOptions {
-  softDelete?: boolean;
-}
-
-export class EntityBaseService<E extends StandardBaseEntity> implements EntityService<E> {
-  protected readonly log = new Logger(this.constructor.name);
-
-  protected readonly options: EntityServiceOptions = {
-    softDelete: false,
-  };
-
+export class EntityBaseService<E extends StandardBaseEntity> extends BaseEntityService<E> implements EntityService<E> {
   constructor(
     protected readonly orm: MikroORM,
     readonly Entity: EntityClass<E>,
     readonly em: EntityManager = orm.em,
     readonly repo: EntityRepository<E> = em.getRepository(Entity),
   ) {
+    super(orm, Entity, em, repo);
+
     if (EntityBaseService.#services.has(Entity)) {
       let last = EntityBaseService.#services.get(Entity);
       this.log.error(
@@ -91,12 +72,11 @@ export class EntityBaseService<E extends StandardBaseEntity> implements EntitySe
     return this.#services.get(entity) || new EntityBaseService(getMikroORM(), entity);
   }
 
-  protected applySearch<T extends QueryBuilder<E>>({ builder, search }: { builder: T; search: string }): T {
+  protected applySearch({ builder, search }: { builder: QueryBuilder<E>; search: string }) {
     applySearch({
       search,
       builder,
     });
-    return builder;
   }
 
   protected applyResolve<T extends QueryBuilder<E>, Q extends ResolveEntityRequest>({
@@ -132,7 +112,7 @@ export class EntityBaseService<E extends StandardBaseEntity> implements EntitySe
     {
       const search = query.search?.trim();
       if (search) {
-        builder = this.applySearch({ builder, search });
+        this.applySearch({ builder, search });
       }
     }
   }
@@ -181,10 +161,6 @@ export class EntityBaseService<E extends StandardBaseEntity> implements EntitySe
     this.applyListQuery({ builder, query: query });
 
     return await builder.getCount();
-  }
-
-  protected async createQueryBuilder(): Promise<{ builder: QueryBuilder<E> }> {
-    return createQueryBuilder(this.em, this.Entity);
   }
 
   async getEntity(
@@ -307,45 +283,6 @@ export class EntityBaseService<E extends StandardBaseEntity> implements EntitySe
     });
   }
 
-  async requireEntity(req: { entity?: E; id?: string }): Promise<{ entity: E }> {
-    let { entity } = await this.resolveEntity(req);
-    Errors.NotFound.check(entity, 'entity not found');
-    return { entity };
-  }
-
-  async resolveEntity(req: ResolveEntityOptions<E>): Promise<{ entity?: E | null }> {
-    return resolveEntity(req, this);
-  }
-
-  hasFeature(code: string) {}
-
-  async deleteEntity(req: ResolveEntityOptions<E>): Promise<{ entity?: E }> {
-    const { em } = this;
-    const { entity } = await this.resolveEntity(req);
-    if (!entity) {
-      return {};
-    }
-
-    entity.deletedAt = new Date();
-    if (isUserAuditableBaseEntity(entity)) {
-      entity.deletedById = getCurrentUserId();
-    }
-
-    if (this.options.softDelete) {
-      em.persist(entity);
-    } else {
-      em.remove(entity);
-    }
-
-    writeEntityAuditLog({
-      entity,
-      action: EntityAuditAction.Delete,
-      em,
-    });
-    await em.flush();
-    return { entity };
-  }
-
   async delete(r: DeleteEntityRequest): Promise<GeneralResponse<E>> {
     const { repo, em } = this;
     // todo 允许不存在
@@ -360,7 +297,7 @@ export class EntityBaseService<E extends StandardBaseEntity> implements EntitySe
     // fixme 临时关闭 softDelete
     if (this.options.softDelete) {
       entity.deletedAt = new Date();
-      if (isUserAuditableBaseEntity(entity)) {
+      if (hasEntityFeature(entity, EntityFeature.HasAuditorRef)) {
         entity.deletedById = getCurrentUserId();
       }
       em.persist(entity);
@@ -385,7 +322,7 @@ export class EntityBaseService<E extends StandardBaseEntity> implements EntitySe
     const { repo, em } = this;
     const entity = await this.get({ ...r, deleted: true });
     entity.deletedAt = undefined;
-    if (isUserAuditableBaseEntity(entity)) {
+    if (hasEntityFeature(entity, EntityFeature.HasAuditorRef)) {
       entity.deletedById = undefined;
     }
     writeEntityAuditLog({
@@ -437,7 +374,8 @@ export class EntityBaseService<E extends StandardBaseEntity> implements EntitySe
   async claimOwner({ ...req }: ClaimOwnerRequest): Promise<ClaimOwnerResponse> {
     const userId = Contexts.userId.require();
     const ent = await this.get(req);
-    Errors.BadRequest.check(isOwnableBaseEntity(ent), '资源不支持归属');
+
+    Errors.BadRequest.check(hasEntityFeature(ent, EntityFeature.HasOwnerRef), '资源不支持归属');
     Errors.Forbidden.check(!ent.ownerId, '资源已经被分配');
     setOwnerRef(ent, userId);
     await this.em.persistAndFlush(ent);
@@ -449,7 +387,7 @@ export class EntityBaseService<E extends StandardBaseEntity> implements EntitySe
   async assignOwner({ ownerId, ...req }: AssignOwnerRequest): Promise<AssignOwnerResponse> {
     const userId = Contexts.userId.require();
     const ent = await this.get(req);
-    Errors.BadRequest.check(isOwnableBaseEntity(ent), '资源不支持归属');
+    Errors.BadRequest.check(hasEntityFeature(ent, EntityFeature.HasOwnerRef), '资源不支持归属');
     setOwnerRef(ent, ownerId);
     await this.em.persistAndFlush(ent);
     return {
@@ -460,7 +398,7 @@ export class EntityBaseService<E extends StandardBaseEntity> implements EntitySe
   async releaseOwner({ ...req }: ReleaseOwnerRequest): Promise<ReleaseOwnerResponse> {
     const userId = Contexts.userId.require();
     const ent = await this.get(req);
-    Errors.BadRequest.check(isOwnableBaseEntity(ent), '资源不支持归属');
+    Errors.BadRequest.check(hasEntityFeature(ent, EntityFeature.HasOwnerRef), '资源不支持归属');
     Errors.Forbidden.check(ent.ownerId === userId, '资源不属于当前用户');
     setOwnerRef(ent, null);
     await this.em.persistAndFlush(ent);
@@ -497,41 +435,6 @@ export class EntityBaseService<E extends StandardBaseEntity> implements EntitySe
   // }
 }
 
-function resolveState<T extends StatefulBaseEntity>(
-  entity: T,
-  {
-    state = entity.state,
-    status = entity.status,
-  }: {
-    status?: string;
-    state?: string;
-  },
-) {
-  const em = getEntityManager();
-  if ('StateEntity' in entity) {
-    const StateEntity = entity.StateEntity as EntityClass<any>;
-    if (StateEntity) {
-      const repo = em.getRepository(StateEntity);
-      repo.findAll();
-    }
-  }
-}
-
-export type EntityClass<T> = Function & {
-  prototype: T;
-
-  StateEntity?: EntityClass<any>;
-  StatusEntity?: EntityClass<any>;
-};
-
-function isOwnableBaseEntity(entity: any): entity is OwnableBaseEntity {
-  return 'ownerId' in entity;
-}
-
-function isUserAuditableBaseEntity(entity: any): entity is UserAuditableBaseEntity {
-  return 'createdById' in entity;
-}
-
 function findByCursor<E extends EntityClass<any>>(o: {
   em: EntityManager;
   builder: QueryBuilder<E>;
@@ -547,21 +450,4 @@ function trimUndefined(o: any) {
     }
   }
   return o;
-}
-
-export async function createQueryBuilder<E extends StandardBaseEntity>(
-  em: EntityManager,
-  Entity: EntityClass<E>,
-): Promise<{
-  builder: QueryBuilder<E>;
-}> {
-  // 使用 qb 必须手动 applyFilter
-  // 让 TidFilter 生效
-  const builder = em.createQueryBuilder(Entity, undefined, undefined, {
-    // enabled: getDatabaseContext().debug,
-  });
-  let cond = await em.applyFilters<E>(Entity.name, {}, {}, 'read');
-  cond && builder.andWhere(cond);
-  // await builder will execute
-  return { builder };
 }

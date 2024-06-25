@@ -1,4 +1,4 @@
-import { EntityClass, EntityProps, FilterQuery } from '@mikro-orm/postgresql';
+import { EntityClass, EntityProps, FilterQuery, FindOneOptions } from '@mikro-orm/postgresql';
 import { Features } from '../../Feature';
 import { EntityFeature } from '../enum';
 import { StandardBaseEntity } from '../StandardBaseEntity';
@@ -52,29 +52,30 @@ export function buildResolveEntityWhere<E>(
 }
 
 export async function resolveEntity<E extends StandardBaseEntity>(
-  req: ResolveEntityOptions<E>,
-  opts: ResolveEntityContextOptions<E>,
+  opts: ResolveEntityOptions<E>,
+  contextOptions: ResolveEntityContextOptions<E>,
+  pass?: FindOneOptions<E>,
 ): Promise<ResolveEntityResult<E>> {
-  const { repo, def, Entity } = resolveEntityContext(opts);
-  if (req.entity) {
-    return { entity: req.entity };
+  const { repo, def, Entity } = resolveEntityContext(contextOptions);
+  if (opts.entity) {
+    return { entity: opts.entity };
   }
 
   let entity: E | null;
 
   const where: FilterQuery<E> = [];
   {
-    const out = buildResolveEntityWhere(Entity, req);
+    const out = buildResolveEntityWhere(Entity, opts);
     if (out.hasWhere) {
       where.push(out.where);
-      if (req.where) {
-        where.push(req.where);
+      if (opts.where) {
+        where.push(opts.where);
       }
     }
   }
 
   if (where.length) {
-    entity = await repo.findOne(where);
+    entity = await repo.findOne(where, pass);
   } else {
     return {};
   }
