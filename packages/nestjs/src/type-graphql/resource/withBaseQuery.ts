@@ -28,16 +28,11 @@ export function withBaseQuery<TBase extends BaseEntityResolverConstructor<any, a
         info.fieldNodes[0].selectionSet?.selections.map((selection) => (selection as any).name.value) || [];
       let includeTotal = fields.includes('total');
       let includeData = fields.includes('data');
-      if (includeTotal && !includeData) {
-        const total = await this.svc.count(input);
-        return { total, data: [] };
-      }
-      if (!includeTotal && includeData) {
-        const data = await this.svc.find(input);
-        return { total: 0, data };
-      }
-      const { total, data } = await this.svc.list(input);
-      return { total, data };
+      return await this.svc.findAllEntity({
+        count: includeTotal,
+        find: includeData,
+        ...input,
+      });
     }
 
     @Authorized()

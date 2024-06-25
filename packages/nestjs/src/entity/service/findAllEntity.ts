@@ -39,12 +39,11 @@ export interface FindAllEntityResult<E extends StandardBaseEntity> {
 export async function findAllEntity<E extends StandardBaseEntity>(
   opts: FindAllEntityOptions<E>,
   resolveCtx: ResolveEntityContextOptions<E> & {
-    createQueryBuilder?: () => QueryBuilder<E>;
-    applySearch?: (opts: { builder: QueryBuilder<E>; search: string }) => QueryBuilder<E>;
+    applySearch?: (opts: { builder: QueryBuilder<E>; search: string }) => MaybePromise<void>;
   },
 ): Promise<FindAllEntityResult<E>> {
-  const { builder } = resolveEntityContext(resolveCtx);
-
+  const { createQueryBuilder } = resolveEntityContext(resolveCtx);
+  const { builder } = await createQueryBuilder();
   let out: FindAllEntityResult<E> = {
     data: [],
     total: -1,
@@ -77,7 +76,7 @@ export async function findAllEntity<E extends StandardBaseEntity>(
     }
     if (search) {
       if (resolveCtx.applySearch) {
-        resolveCtx.applySearch({ builder, search });
+        await resolveCtx.applySearch({ builder, search });
       } else {
         const { and, or } = simpleSearch({ search });
         and.length && builder.andWhere({ $and: and });

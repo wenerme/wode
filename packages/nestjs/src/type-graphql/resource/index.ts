@@ -1,5 +1,3 @@
-export { BaseCreateResourceInput } from './BaseCreateResourceInput';
-export { BaseUpdateResourceInput } from './BaseUpdateResourceInput';
 export { OnConflictInput } from './OnConflictInput';
 export { ListQueryInput } from './ListQueryInput';
 export { createListPayload } from './createListPayload';
