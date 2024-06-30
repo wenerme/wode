@@ -25,7 +25,7 @@ export class MutationNodePayload extends RelayMutationPayload {
   data!: RelayNode;
 }
 
-@ObjectType()
+@InputType()
 export class DeleteResourceInput extends MutationResourceInput {}
 
 @InputType()

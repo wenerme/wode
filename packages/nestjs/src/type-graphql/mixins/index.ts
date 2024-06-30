@@ -7,6 +7,7 @@ import {
   HasStateStatusNode,
   HasVendorRefNode,
 } from '../interface';
+import { HasEntityRefNode } from '../interface/HasEntityRefNode';
 import { HasTitleDescriptionNode } from '../interface/HasTitleDescriptionNode';
 
 export { withMetadataType } from './withMetadataType';
@@ -108,4 +109,19 @@ export function withStateStatusType<TBase extends Constructor>(Base: TBase) {
   }
 
   return HasStateStatusMixinType;
+}
+
+export function withEntityRefType<TBase extends Constructor>(Base: TBase) {
+  @InterfaceType({ implements: HasEntityRefNode })
+  @ObjectType({ implements: HasEntityRefNode })
+  @InputType()
+  class HasEntityRefMixinType extends Base {
+    @Field(() => ID, { nullable: true })
+    entityId?: string;
+
+    @Field(() => String, { nullable: true })
+    entityType?: string;
+  }
+
+  return HasEntityRefMixinType;
 }
