@@ -10,21 +10,28 @@ export interface ResolveFileObjectOptions {
   content?: string;
   base64?: string;
   text?: string;
-  name?: string;
+
+  filename?: string;
   size?: number;
-  sha256sum?: string;
-  md5sum?: string;
+  sha256?: string;
+  md5?: string;
 }
 
 export interface FileObject {
-  buffer: Buffer;
-  size: number;
-  type: string;
-  ext: string;
+  content: Buffer;
+  text?: string;
+
   filename?: string;
-  sha256sum: string;
-  md5sum: string;
-  metadata?: Record<string, unknown>;
+  size: number;
+  sha256: string;
+  md5: string;
+
+  ext: string;
+  mimeType: string;
+
+  metadata?: Record<string, any>;
+  width?: number;
+  height?: number;
 }
 
 const OctetStream = 'application/octet-stream';
@@ -33,7 +40,12 @@ export async function resolveFileObject(opts: ResolveFileObjectOptions): Promise
   let buffer = opts.buffer;
   let type = '';
 
-  let filename = opts.name;
+  let filename = opts.filename;
+  if (!buffer && opts.file) {
+    buffer = Buffer.from(await opts.file.arrayBuffer());
+    type = opts.file.type;
+    filename ||= opts.file.name;
+  }
   if (!buffer && opts.base64) {
     buffer = Buffer.from(opts.base64, 'base64');
   }
@@ -51,11 +63,7 @@ export async function resolveFileObject(opts: ResolveFileObjectOptions): Promise
     buffer = Buffer.from(opts.text);
     type = 'text/plain';
   }
-  if (!buffer && opts.file) {
-    buffer = Buffer.from(await opts.file.arrayBuffer());
-    type = opts.file.type;
-    filename ||= opts.file.name;
-  }
+
   if (!buffer) {
     throw new Error('invalid file object');
   }
@@ -65,18 +73,21 @@ export async function resolveFileObject(opts: ResolveFileObjectOptions): Promise
   const md5sum = md5(buffer);
 
   isDefined(opts.size) && Errors.BadRequest.check(opts.size === size, 'size mismatch');
-  opts.sha256sum && Errors.BadRequest.check(opts.sha256sum === sha256sum, 'sha256sum mismatch');
-  opts.md5sum && Errors.BadRequest.check(opts.md5sum === md5sum, 'md5sum mismatch');
-  let ext = filename ? path.extname(filename).slice(1) : 'bin';
+  opts.sha256 && Errors.BadRequest.check(opts.sha256 === sha256sum, 'sha256 mismatch');
+  opts.md5 && Errors.BadRequest.check(opts.md5 === md5sum, 'md5 mismatch');
+  let ext = filename ? path.extname(filename).slice(1) : '';
 
   if (type === OctetStream) {
     type = '';
   }
   if (filename && !type) {
     type = MIME.lookup(filename) || type;
-  } else if (type && !ext) {
+  }
+  if (type && !ext) {
     ext = MIME.extension(type) || ext;
   }
+
+  ext ||= 'bin';
 
   {
     const fileType = await fileTypeFromBuffer(buffer);
@@ -91,33 +102,39 @@ export async function resolveFileObject(opts: ResolveFileObjectOptions): Promise
 
   type ||= OctetStream;
 
-  return {
-    buffer,
-    type,
+  const fo: FileObject = {
+    content: buffer,
+    mimeType: type,
     ext,
     filename,
     size,
-    sha256sum,
-    md5sum,
+    sha256: sha256sum,
+    md5: md5sum,
   };
+
+  if (fo.mimeType.startsWith('text/')) {
+    fo.text = buffer.toString('utf-8');
+  }
+
+  // image metadata
+  await resolveImageFileObject(fo);
+
+  return fo;
 }
 
 function md5(input: BinaryLike | string) {
   return createHash('md5').update(input).digest('hex');
 }
 
-export async function resolveImageFileObject(fo: FileObject): Promise<FileObject & {
-  width?: number;
-  height?: number;
-}> {
-  const { type, buffer } = fo;
-  if (type.startsWith('image/')) {
+async function resolveImageFileObject(fo: FileObject): Promise<FileObject> {
+  const { mimeType, content } = fo;
+  if (mimeType.startsWith('image/')) {
     const { default: sharp } = await import('sharp');
-    const md = await sharp(buffer).metadata();
+    const md = await sharp(content).metadata();
     fo.metadata ||= {};
     fo.metadata.image = md;
-    (fo as any).width = md.width;
-    (fo as any).height = md.height;
+    fo.width = md.width;
+    fo.height = md.height;
   }
   return fo;
 }

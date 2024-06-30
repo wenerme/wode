@@ -1,6 +1,7 @@
+import type { TypeResolver } from 'type-graphql';
 import { getEntityDef, parseEntityTypeId } from '../../entity';
 
-export function resolveNodeType(value: any) {
+export const resolveNodeType: TypeResolver<any, any> = (value: any) => {
   if ('id' in value) {
     const [type] = parseEntityTypeId(value.id);
     if (!type) {
@@ -15,4 +16,4 @@ export function resolveNodeType(value: any) {
   }
   console.error(`Unknown node type`, value);
   throw new Error(`Unknown node type ${value}`);
-}
+};

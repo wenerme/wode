@@ -19,7 +19,16 @@ export abstract class RelayNode {
   @Field((type) => ID)
   id!: string;
 
-  static resolveType: TypeResolver<any, any> = (value: any) => {
+  static resolvers: TypeResolver<any, any>[] = [];
+
+  static resolveType: TypeResolver<any, any> = async (...args) => {
+    for (const resolver of RelayNode.resolvers) {
+      const resolved = await resolver(...args);
+      if (resolved) {
+        return resolved;
+      }
+    }
+    const [value] = args;
     throw new Error(`Unknown node type ${value}`);
   };
 }
