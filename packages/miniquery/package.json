@@ -1,6 +1,6 @@
 {
   "name": "@wener/miniquery",
-  "version": "0.0.5",
+  "version": "0.0.7",
   "type": "module",
   "description": "SQL Where like **safe** filter expression for ORM.",
   "author": "wener",

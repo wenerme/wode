@@ -12,6 +12,9 @@ export function toMikroOrmQuery<T>(
   if (!query) {
     return [];
   }
+
+  // https://mikro-orm.io/docs/query-conditions
+
   // console.log(`Query ${query}`);
   let out = parse(query, options);
   // console.log(`Query ${query}:`, out);
