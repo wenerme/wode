@@ -11,7 +11,7 @@ import {
   types,
 } from '@mikro-orm/core';
 import { defineConfig } from '@mikro-orm/sqlite';
-import { test } from 'vitest';
+import { expect, test } from 'vitest';
 import { toMikroOrmQuery } from './toMikroOrmQuery';
 
 async function getOrm() {
@@ -83,6 +83,7 @@ test('miniquery', async () => {
     '!a>1',
     ' a > 1 ',
     'a > 1 and b > "1" AND a > 1 or a > 1 OR a>1',
+    'a > 1 && b > "1" and a > 1 || a > 1 || a>1',
     //
     'a is null AND a is not null',
     //
@@ -107,6 +108,20 @@ test('miniquery', async () => {
   }
 });
 
+test('syntax', () => {
+  for (const [a, b] of [
+    // pg array
+    ['tags @> ["1","2"]', { tags: { $contains: ['1', '2'] } }],
+    ['tags @> [1,2,3]', { tags: { $contains: [1, 2, 3] } }],
+    ['tags && [1,2,3]', { tags: { $overlap: [1, 2, 3] } }],
+    ['tags <@ ["1"]', { tags: { $contained: ['1'] } }],
+    // mikroorm collection $some, $every, $none
+    // some(authors, title = 'a')
+  ] as Array<[string, any]>) {
+    expect(toMikroOrmQuery(a), `Query: ${a}`).toStrictEqual(b);
+  }
+});
+
 @Entity({ tableName: 'users' })
 class UserEntity extends BaseEntity {
   @PrimaryKey({ type: types.bigint })
@@ -116,6 +131,9 @@ class UserEntity extends BaseEntity {
   a?: number;
   @Property({ type: types.string, nullable: true })
   b?: string;
+
+  @Property({ type: types.array, nullable: true })
+  tags?: string[];
 
   @Property({ type: types.json, nullable: true })
   attrs?: Record<string, any>;

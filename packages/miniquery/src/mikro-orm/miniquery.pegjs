@@ -10,6 +10,8 @@ and a between 1 and 2
 {{
 /* eslint-disable @typescript-eslint/interface-name-prefix,@typescript-eslint/no-empty-interface,no-case-declarations,no-control-regex,prefer-const */
 // ts-nocheck
+const pick = (obj, keys) => keys.reduce((o, k) => (o[k] = obj[k], o), {})
+// https://mikro-orm.io/docs/query-conditions
 const OPERATORS = {
   ">=":"$gte",
   "<=":"$lte",
@@ -33,17 +35,20 @@ const OPERATORS = {
   'like' : '$like',
   'ilike' : '$ilike',
   // https://www.postgresql.org/docs/current/functions-json.html
-  '@>' : '@contains',
-  '@<' : '@contained',
+  '@>' : '$contains',
+  '<@' : '$contained',
   // $overlap	&&
   // https://www.postgresql.org/docs/current/functions-textsearch.html
   // $fulltext
   'between': '$between',
 }
+// https://www.postgresql.org/docs/current/functions-array.html
+const ARRAY_OPERATORS = Object.assign({'&&':'$overlap'},pick(OPERATORS,['@>','<@']))
 }}
 
 {
 function _op(op){
+  if(typeof op === 'string' && op.startsWith('$')) return op;
   op = !Array.isArray(op)?op:op.flat().filter(v=>v && v.trim()).join(' ').toLowerCase()
   return OPERATORS[op] || (console.error('unexpected op',op),op)
 }
@@ -87,7 +92,7 @@ Expr = _ next:CompoundExpr _ {return next}
 CompoundExpr
   = left:RelExpr
     rest:(
-      op:(('&&'/'||')/(__ (and/or) __))
+      op:(_('&&'/'||')_/(__ (and/or) __))
       right:CompoundExpr {return {op,right}}
     )? {return rest?.right?_compound(rest?.op,left,rest?.right):left}
 
@@ -96,6 +101,7 @@ RelExpr
   / '!' next:RelExpr {return {'$not':next}}
   / field:Field __ 'between' __ value1:literal __ 'and' __ value2:literal { return _make(field, '$between', value1, value2); }
   / field:Field _ op:('>=' / '<='/ '<>' /  '>' / '<' / '===' / '==' / '!='  / '=' / ':') _ value:literal {return _make(field,op,value)}
+  / field:Field _ op:('@>' / '<@' / '&&' ) _ value:Array {return _make(field,ARRAY_OPERATORS[op],value)}
   / field:Field _ op:('~') _ value:string {return _make(field,op,value)}
   / field:Field __ op:(is __ null) {return _make(field,'=',null)}
   / field:Field __ op:(is __ not __ null) {return _make(field,'!=',null)}
