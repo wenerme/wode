@@ -6,7 +6,7 @@ import { defineConfig, type Options } from '@mikro-orm/postgresql';
 import { HttpException } from '@nestjs/common';
 import { parseBoolean } from '@wener/utils';
 
-export function createMikroOrmConfig(opts: Partial<Options>) {
+export function defineMikroOrmOptions(opts: Partial<Options>) {
   return defineConfig({
     ...getDefaultMikroOrmOptions(),
     ...opts,

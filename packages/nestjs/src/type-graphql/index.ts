@@ -26,5 +26,7 @@ export { getObjectName, getInputName } from './getObjectName';
 export { RelayNode, RelayPageInfo, RelayMutationPayload, RelayMutationInput, runRelayClientMutation } from './relay';
 export { getTypeCache } from './getTypeCache';
 
+export { buildGraphModule } from './buildGraphModule';
+
 export type * from './relay';
 export type * from './types';

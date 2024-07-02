@@ -11,7 +11,7 @@ import {
 import { DynamicModule, Logger } from '@nestjs/common';
 import { createLazyPromise, MaybePromise } from '@wener/utils';
 import { getMikroOrmConfig } from '../config';
-import { createMikroOrmConfig } from './createMikroOrmConfig';
+import { defineMikroOrmOptions } from './defineMikroOrmOptions';
 
 export type OrmModuleOptions = Partial<Options> & {
   onConfig?: (config: Options) => void;
@@ -32,7 +32,7 @@ export class OrmModule {
         ...rest,
         useFactory: async (...args) => {
           let config = ((await useFactory?.(...args)) ||
-            createMikroOrmConfig({
+            defineMikroOrmOptions({
               entities: [],
               ...getMikroOrmConfig(),
             })) as Options;
@@ -51,7 +51,7 @@ export class OrmModule {
   static forRoot(opts: OrmModuleOptions) {
     return this.forRootAsync({
       onConfig: opts.onConfig,
-      useFactory: () => createMikroOrmConfig(opts),
+      useFactory: () => defineMikroOrmOptions(opts),
     });
   }
 

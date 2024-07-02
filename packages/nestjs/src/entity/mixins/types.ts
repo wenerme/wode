@@ -73,6 +73,10 @@ export interface HasAuditorRefEntity {
   deletedById?: string;
 }
 
+export interface HasSlugEntity {
+  slug?: string;
+}
+
 export interface HasAuditorEntity<E extends IsUserEntity> extends HasAuditorRefEntity {
   get createdBy(): Ref<E>;
 

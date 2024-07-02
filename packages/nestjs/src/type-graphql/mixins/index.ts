@@ -4,6 +4,7 @@ import {
   HasAuditorRefNode,
   HasCustomerRefNode,
   HasOwnerRefNode,
+  HasSlugNode,
   HasStateStatusNode,
   HasVendorRefNode,
 } from '../interface';
@@ -124,4 +125,16 @@ export function withEntityRefType<TBase extends Constructor>(Base: TBase) {
   }
 
   return HasEntityRefMixinType;
+}
+
+export function withSlugType<TBase extends Constructor>(Base: TBase) {
+  @InterfaceType({ implements: HasSlugNode })
+  @ObjectType({ implements: HasSlugNode })
+  @InputType()
+  class HasSlugMixinType extends Base {
+    @Field(() => ID, { nullable: true })
+    slug?: string;
+  }
+
+  return HasSlugMixinType;
 }
