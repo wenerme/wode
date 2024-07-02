@@ -25,7 +25,7 @@ export interface EntityDef {
 }
 
 let _index = new Map<EntityClass<any> | string, EntityDef>();
-let _map = new Map<EntityClass<any>, EntityDef>();
+let _resource = new Map<EntityClass<any>, EntityDef>();
 
 export function defineEntity(o: DefineEntityOptions): EntityDef;
 export function defineEntity(o: DefineEntityOptions[]): EntityDef[];
@@ -51,7 +51,7 @@ export function defineEntity(o: DefineEntityOptions | DefineEntityOptions[]) {
   _index.set(def.typeName, def);
   def.idType && _index.set(def.idType, def);
 
-  _map.set(def.Entity, def);
+  _resource.set(def.Entity, def);
 
   return def;
 }
@@ -74,5 +74,5 @@ export function getEntityDef(key: Function | BaseEntity | string | null | undefi
 }
 
 export function getEntityDefs() {
-  return _map.values();
+  return _resource.values();
 }

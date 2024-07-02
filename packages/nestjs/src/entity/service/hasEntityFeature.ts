@@ -2,22 +2,32 @@ import { Features } from '../../Feature';
 import { EntityFeature } from '../enum';
 import {
   HasAuditorRefEntity,
+  HasCodeEntity,
   HasCustomerRefEntity,
+  HasDisplayOrderEntity,
   HasEntityRefEntity,
+  HasMetadataEntity,
+  HasNotesEntity,
   HasOwnerRefEntity,
+  HasSlugEntity,
   HasStateStatusEntity,
   HasTagsEntity,
   HasVendorRefEntity,
 } from '../mixins';
 
 type FeatureTypes = {
-  [EntityFeature.HasEntityRef]: HasEntityRefEntity;
-  [EntityFeature.HasStateStatus]: HasStateStatusEntity;
-  [EntityFeature.HasVendorRef]: HasVendorRefEntity;
-  [EntityFeature.HasTags]: HasTagsEntity;
   [EntityFeature.HasAuditorRef]: HasAuditorRefEntity;
-  [EntityFeature.HasOwnerRef]: HasOwnerRefEntity;
+  [EntityFeature.HasCode]: HasCodeEntity;
   [EntityFeature.HasCustomer]: HasCustomerRefEntity;
+  [EntityFeature.HasDisplayOrder]: HasDisplayOrderEntity;
+  [EntityFeature.HasEntityRef]: HasEntityRefEntity;
+  [EntityFeature.HasMetadata]: HasMetadataEntity;
+  [EntityFeature.HasNotes]: HasNotesEntity;
+  [EntityFeature.HasOwnerRef]: HasOwnerRefEntity;
+  [EntityFeature.HasSlug]: HasSlugEntity;
+  [EntityFeature.HasStateStatus]: HasStateStatusEntity;
+  [EntityFeature.HasTags]: HasTagsEntity;
+  [EntityFeature.HasVendorRef]: HasVendorRefEntity;
 };
 
 export function hasEntityFeature<E, F extends keyof FeatureTypes>(

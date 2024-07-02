@@ -10,6 +10,7 @@ export { HasCodeNode } from './HasCodeNode';
 export { HasOwnerRefNode } from './HasOwnerRefNode';
 export { HasAuditorRefNode } from './HasAuditorRefNode';
 export { HasStateStatusNode } from './HasStateStatusNode';
+export { HasSlugNode } from './HasSlugNode';
 
 @InterfaceType({
   implements: [BaseNode],

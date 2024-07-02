@@ -11,3 +11,4 @@ export { BaseHttpRequestLogEntity } from './BaseHttpRequestLogEntity';
 export * from './mixins';
 export * from './types';
 export { withSystemManagedEntity } from './mixins/withSystemManagedEntity';
+export { withSlugEntity } from './mixins/withSlugEntity';

@@ -5,7 +5,7 @@ import { EntityFeature } from '../enum';
 import { HasMetadataEntity } from './types';
 
 export function withMetadataEntity<TBase extends Constructor>(Base: TBase) {
-  @Feature([EntityFeature.HasNotes])
+  @Feature([EntityFeature.HasMetadata])
   @Entity({ abstract: true })
   abstract class HasMetadataMixinEntity extends Base implements HasMetadataEntity {
     @Property({ type: types.json, nullable: true })
