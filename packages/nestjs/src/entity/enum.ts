@@ -16,6 +16,7 @@ export enum EntityFeature {
   HasTags = 'HasTags',
   HasTid = 'HasTid',
   HasTitleDescription = 'HasTitleDescription',
+  HasUSCC = 'HasUSCC',
   HasVendorRef = 'HasVendorRef',
   IsUser = 'IsUser',
   IsCustomer = 'IsCustomer',

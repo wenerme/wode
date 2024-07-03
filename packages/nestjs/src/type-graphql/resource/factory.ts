@@ -35,7 +35,7 @@ export function createCreateResourceInput<T extends object>(Type: Constructor<T>
   });
 }
 
-export function createUpdateResourceInput<T extends object>(Type: Constructor<T>): Constructor<CreateResourceInput<T>> {
+export function createUpdateResourceInput<T extends object>(Type: Constructor<T>): Constructor<UpdateResourceInput<T>> {
   // ResourceCreateInput
   let name = Type.name.replace(/(Update|Creare)?Input$/, '');
   // CreateResourceInput
@@ -64,5 +64,37 @@ export function createMutationResourcePayload<T extends object>(
     }
 
     return MutationResourcePayload;
+  });
+}
+
+export function createUpdateResourcePayload<T extends object>(
+  Type: Constructor<T>,
+): Constructor<MutationResourcePayload<T>> {
+  let name = getObjectName(Type);
+  let key = `Update${name}Payload`;
+  return computeIfAbsent(getTypeCache(), key, () => {
+    @ObjectType(key)
+    class UpdateResourcePayload extends RelayMutationPayload {
+      @Field((type) => Type)
+      data!: T;
+    }
+
+    return UpdateResourcePayload;
+  });
+}
+
+export function createCreateResourcePayload<T extends object>(
+  Type: Constructor<T>,
+): Constructor<MutationResourcePayload<T>> {
+  let name = getObjectName(Type);
+  let key = `Create${name}Payload`;
+  return computeIfAbsent(getTypeCache(), key, () => {
+    @ObjectType(key)
+    class CreateResourcePayload extends RelayMutationPayload {
+      @Field((type) => Type)
+      data!: T;
+    }
+
+    return CreateResourcePayload;
   });
 }

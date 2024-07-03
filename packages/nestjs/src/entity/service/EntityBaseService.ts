@@ -72,13 +72,6 @@ export class EntityBaseService<E extends StandardBaseEntity> extends BaseEntityS
     return this.#services.get(entity) || new EntityBaseService(getMikroORM(), entity);
   }
 
-  protected applySearch({ builder, search }: { builder: QueryBuilder<E>; search: string }) {
-    applySearch({
-      search,
-      builder,
-    });
-  }
-
   protected applyResolve<T extends QueryBuilder<E>, Q extends ResolveEntityRequest>({
     builder,
     query,
