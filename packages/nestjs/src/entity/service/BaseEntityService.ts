@@ -9,6 +9,7 @@ import { HasEntityRefEntity } from '../mixins';
 import { resolveEntityRef2 } from '../resolveEntityRef';
 import { setOwnerRef } from '../setOwnerRef';
 import { StandardBaseEntity } from '../StandardBaseEntity';
+import { resolveSimpleSearch } from './applySearch';
 import { createQueryBuilder } from './createQueryBuilder';
 import { EntityClass } from './EntityClass';
 import { findAllEntity, FindAllEntityOptions, FindAllEntityResult } from './findAllEntity';
@@ -24,6 +25,7 @@ import {
   HasOwnerEntityService,
   HasStatusEntityService,
   ReleaseEntityOwnerOptions,
+  SetEntityNotesOptions,
   SetEntityStatusOptions,
 } from './services';
 
@@ -54,6 +56,33 @@ export class BaseEntityService<E extends StandardBaseEntity>
     //   EntityBaseService.#services.set(Entity, this);
     //   EntityBaseService.#services.set(Entity.name, this);
     // }
+  }
+
+  applySearch({ builder, search }: { builder: QueryBuilder<E>; search: string }) {
+    const { and, or } = this.resolveSearch({ search });
+    and?.length && builder.andWhere(and);
+    or?.length && builder.orWhere(or);
+  }
+
+  resolveSearch(opts: { search: string }) {
+    return resolveSimpleSearch({
+      ...opts,
+      onSearch: (search, { and, or }) => {
+        if (this.hasFeature(EntityFeature.HasCode)) {
+          or.push({ code: { $ilike: `%${search}%` } });
+        }
+        if (this.hasFeature(EntityFeature.HasNotes)) {
+          or.push({ notes: { $ilike: `%${search}%` } });
+        }
+        if (this.hasFeature(EntityFeature.HasTitleDescription)) {
+          or.push(
+            { title: { $ilike: `%${search}%` } },
+            //
+            { description: { $ilike: `%${search}%` } },
+          );
+        }
+      },
+    });
   }
 
   async claimEntityOwner(ent: ResolveEntityOptions<E>, opts: ClaimEntityOwnerOptions): Promise<EntityResult<E>> {
@@ -202,7 +231,18 @@ export class BaseEntityService<E extends StandardBaseEntity>
     const { entity } = await this.requireEntity(ent);
     Errors.BadRequest.check(hasEntityFeature(entity, EntityFeature.HasStateStatus), '资源不支持状态');
     entity.status = opts.status;
+    entity.state = opts.state || entity.state;
     await this.em.persistAndFlush(entity);
     return { entity };
+  }
+
+  async setEntityNotes(ent: ResolveEntityOptions<E>, opts: SetEntityNotesOptions) {
+    let { entity } = await this.requireEntity(ent);
+    Errors.BadRequest.check(hasEntityFeature(entity, EntityFeature.HasNotes), '资源不支持备注');
+    entity.notes = opts.notes;
+    await this.em.persistAndFlush(entity);
+    return {
+      entity,
+    };
   }
 }

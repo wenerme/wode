@@ -5,10 +5,12 @@ import { StandardBaseEntity } from '../StandardBaseEntity';
 import { AnyStandardEntity } from '../types';
 import { resolveEntityContext, ResolveEntityContextOptions } from './resolveEntityContext';
 
-export interface ResolveEntityOptions<E extends StandardBaseEntity> extends BuildResolveEntityOptions {
-  entity?: E;
-  where?: FilterQuery<E>;
-}
+export type ResolveEntityOptions<E extends StandardBaseEntity> =
+  | (BuildResolveEntityOptions & {
+      entity?: E;
+      where?: FilterQuery<E>;
+    })
+  | E;
 
 export interface ResolveEntityResult<E extends StandardBaseEntity> {
   entity?: E | null;
@@ -56,6 +58,9 @@ export async function resolveEntity<E extends StandardBaseEntity>(
   contextOptions: ResolveEntityContextOptions<E>,
   pass?: FindOneOptions<E>,
 ): Promise<ResolveEntityResult<E>> {
+  if (opts instanceof StandardBaseEntity) {
+    return { entity: opts };
+  }
   const { repo, def, Entity } = resolveEntityContext(contextOptions);
   if (opts.entity) {
     return { entity: opts.entity };

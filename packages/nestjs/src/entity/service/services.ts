@@ -24,21 +24,24 @@ import {
 } from './types';
 
 export interface EntityService2<E extends StandardBaseEntity> {
-  applySearch?: (opts: { builder: QueryBuilder<E>; search: string }) => MaybePromise<void>;
+  applySearch: (opts: { builder: QueryBuilder<E>; search: string }) => MaybePromise<void>;
+  resolveSearch: (opts: { search: string }) => MaybePromise<{ and: any[]; or: any[] }>;
 
   createQueryBuilder({ em }: { em?: EntityManager }): Promise<{ builder: QueryBuilder<E> }>;
 
-  requireEntity(req: ResolveEntityOptions<E>, ext?: FindOneOptions<E>): Promise<EntityResult<E>>;
+  requireEntity(ent: ResolveEntityOptions<E>, ext?: FindOneOptions<E>): Promise<EntityResult<E>>;
 
-  resolveEntity(req: ResolveEntityOptions<E>, ext?: FindOneOptions<E>): Promise<ResolveEntityResult<E>>;
+  resolveEntity(ent: ResolveEntityOptions<E>, ext?: FindOneOptions<E>): Promise<ResolveEntityResult<E>>;
 
-  findAllEntity(req: FindAllEntityOptions<E>): Promise<FindAllEntityResult<E>>;
+  findAllEntity(ent: FindAllEntityOptions<E>): Promise<FindAllEntityResult<E>>;
 
-  deleteEntity(req: ResolveEntityOptions<E>): Promise<{ entity?: E }>;
+  deleteEntity(ent: ResolveEntityOptions<E>): Promise<{ entity?: E }>;
 
-  undeleteEntity(req: ResolveEntityOptions<E>): Promise<{ entity?: E }>;
+  undeleteEntity(ent: ResolveEntityOptions<E>): Promise<{ entity?: E }>;
 
-  purgeEntity(req: ResolveEntityOptions<E>): Promise<{ entity?: E }>;
+  purgeEntity(ent: ResolveEntityOptions<E>): Promise<{ entity?: E }>;
+
+  setEntityNotes(ent: ResolveEntityOptions<E>, req: SetEntityNotesOptions): Promise<EntityResult<E>>;
 }
 
 export interface EntityService<E extends StandardBaseEntity> extends EntityService2<E> {
@@ -109,7 +112,12 @@ export interface HasOwnerEntityService<E extends StandardBaseEntity> {
 
 export type SetEntityStatusOptions = {
   status: string;
+  state?: string;
   comment?: string;
+};
+
+export type SetEntityNotesOptions = {
+  notes: string;
 };
 
 export interface HasStatusEntityService<E extends StandardBaseEntity> {

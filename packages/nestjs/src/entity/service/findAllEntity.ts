@@ -3,7 +3,7 @@ import type { QueryBuilder } from '@mikro-orm/postgresql';
 import { toMikroOrmQuery } from '@wener/miniquery/mikro-orm';
 import { Errors, MaybePromise } from '@wener/utils';
 import { StandardBaseEntity } from '../StandardBaseEntity';
-import { simpleSearch } from './applySearch';
+import { resolveSimpleSearch } from './applySearch';
 import { normalizePagination } from './normalizePagination';
 import { parseOrder } from './parseOrder';
 import { resolveEntityContext, ResolveEntityContextOptions } from './resolveEntityContext';
@@ -40,15 +40,15 @@ export async function findAllEntity<E extends StandardBaseEntity>(
   opts: FindAllEntityOptions<E>,
   resolveCtx: ResolveEntityContextOptions<E> & {
     applySearch?: (opts: { builder: QueryBuilder<E>; search: string }) => MaybePromise<void>;
+    resolveSearch?: (opts: { search: string }) => MaybePromise<{
+      and: any[];
+      or: any[];
+    }>;
   },
 ): Promise<FindAllEntityResult<E>> {
+  const { resolveSearch = resolveSimpleSearch } = resolveCtx;
   const { createQueryBuilder } = resolveEntityContext(resolveCtx);
   const { builder } = await createQueryBuilder();
-  let out: FindAllEntityResult<E> = {
-    data: [],
-    total: -1,
-    builder,
-  };
 
   // where
   {
@@ -77,13 +77,14 @@ export async function findAllEntity<E extends StandardBaseEntity>(
     if (search) {
       if (resolveCtx.applySearch) {
         await resolveCtx.applySearch({ builder, search });
-      } else {
-        const { and, or } = simpleSearch({ search });
+      } else if (resolveSearch) {
+        const { and = [], or = [] } = await resolveSearch({ search });
         and.length && builder.andWhere({ $and: and });
         or.length && builder.andWhere({ $or: or });
       }
     }
 
+    // soft delete
     if (deleted === false) {
       builder.andWhere({
         deletedAt: null,
@@ -121,6 +122,11 @@ export async function findAllEntity<E extends StandardBaseEntity>(
   }
 
   // execute
+  let out: FindAllEntityResult<E> = {
+    data: [],
+    total: -1,
+    builder,
+  };
   {
     const { count: needTotal = true, data: needData = true } = opts;
     if (needTotal && needData) {

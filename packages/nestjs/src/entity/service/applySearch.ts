@@ -9,7 +9,7 @@ export interface ApplySearchOptions
   search?: string;
 }
 
-export function simpleSearch(opts: ApplySearchOptions) {
+export function resolveSimpleSearch(opts: ApplySearchOptions) {
   const ctx: { and: any[]; or: any[] } = { or: [], and: [] };
   const {
     search,
