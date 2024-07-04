@@ -1,14 +1,17 @@
+import { EntityData, LockMode, RequiredEntityData } from '@mikro-orm/core';
 import { EntityManager, EntityRepository, FindOneOptions, MikroORM, QueryBuilder } from '@mikro-orm/postgresql';
 import { Logger } from '@nestjs/common';
 import { Errors, MaybeArray } from '@wener/utils';
-import { Contexts, getCurrentUserId } from '../../app';
+import { Contexts, getCurrentTenantId, getCurrentUserId } from '../../app';
 import { Features } from '../../Feature';
 import { EntityAuditAction, writeEntityAuditLog } from '../audit';
 import { EntityFeature } from '../enum';
 import { HasEntityRefEntity } from '../mixins';
 import { resolveEntityRef2 } from '../resolveEntityRef';
+import { setData } from '../setData';
 import { setOwnerRef } from '../setOwnerRef';
 import { StandardBaseEntity } from '../StandardBaseEntity';
+import { AnyStandardEntity } from '../types';
 import { resolveSimpleSearch } from './applySearch';
 import { createQueryBuilder } from './createQueryBuilder';
 import { EntityClass } from './EntityClass';
@@ -19,6 +22,7 @@ import {
   AssignEntityOwnerOptions,
   BindEntityOptions,
   ClaimEntityOwnerOptions,
+  CreateEntityOptions,
   EntityResult,
   EntityService2,
   HasEntityRefService,
@@ -27,6 +31,7 @@ import {
   ReleaseEntityOwnerOptions,
   SetEntityNotesOptions,
   SetEntityStatusOptions,
+  UpdateEntityOptions,
 } from './services';
 
 export interface EntityServiceOptions {
@@ -202,6 +207,106 @@ export class BaseEntityService<E extends StandardBaseEntity>
     return Features.hasFeature(this.Entity, code);
   }
 
+  async createEntity(opts: CreateEntityOptions<RequiredEntityData<E>>) {
+    const { repo, em } = this;
+    let entity: E;
+    const { data, upsert } = opts;
+    (data as any).tid = getCurrentTenantId();
+    if (upsert) {
+      const {
+        fields: onConflictFields,
+        exclude: onConflictExcludeFields = [],
+        merge: onConflictMergeFields,
+        action: onConflictAction,
+      } = opts.onConflict || {};
+      try {
+        entity = await this.em.upsert(this.Entity, data as any, {
+          onConflictFields,
+          onConflictMergeFields,
+          onConflictExcludeFields: [...onConflictExcludeFields, 'id', 'uid', 'tid', 'createdAt', 'deletedAt'],
+          onConflictAction,
+        });
+      } catch (e) {
+        this.log.error(`[${getCurrentTenantId()}] upsert ${this.Entity.name} ${JSON.stringify(opts)} ${e}`);
+        throw e;
+      }
+      writeEntityAuditLog({
+        entity,
+        action: EntityAuditAction.Upsert,
+        before: data,
+        em,
+      });
+    } else {
+      entity = repo.create(data as any);
+      await em.persistAndFlush(entity);
+      writeEntityAuditLog({
+        entity,
+        action: EntityAuditAction.Create,
+        after: entity.toPOJO(),
+      });
+      await em.flush();
+    }
+
+    return {
+      entity,
+    };
+  }
+
+  async updateEntity(ent: ResolveEntityOptions<E>, opts: UpdateEntityOptions<any>): Promise<EntityResult<E>> {
+    return this.em.transactional(async (em) => {
+      const { data } = opts;
+      const { entity } = await this.requireEntity(ent, {
+        lockMode: LockMode.PESSIMISTIC_WRITE,
+      });
+      const before = entity.toPOJO();
+      {
+        const { attributes, properties, extensions, ...rest } = data as EntityData<AnyStandardEntity>;
+        entity.assign(trimUndefined(rest));
+        entity.attributes = setData(entity.attributes, { data: attributes, partial: true });
+        entity.properties = setData(entity.properties, { data: properties, partial: true });
+        entity.extensions = setData(entity.extensions, { data: extensions, partial: true });
+      }
+      writeEntityAuditLog({
+        entity,
+        action: EntityAuditAction.Update,
+        em,
+        before,
+        after: entity.toPOJO(),
+      });
+      await em.persistAndFlush(entity);
+      return { entity };
+    });
+  }
+
+  async patchEntity(ent: ResolveEntityOptions<E>, opts: UpdateEntityOptions<any>): Promise<EntityResult<E>> {
+    return this.em.transactional(async (em) => {
+      const { data } = opts;
+      const { entity } = await this.requireEntity(ent, {
+        lockMode: LockMode.PESSIMISTIC_WRITE,
+      });
+      const before = entity.toPOJO();
+      {
+        const { attributes, properties, extensions, metadata, ...rest } = data as EntityData<AnyStandardEntity>;
+        entity.assign(trimUndefined(rest));
+        entity.attributes = setData(entity.attributes, { data: attributes, partial: true });
+        entity.properties = setData(entity.properties, { data: properties, partial: true });
+        entity.extensions = setData(entity.extensions, { data: extensions, partial: true });
+        if (hasEntityFeature(entity, EntityFeature.HasMetadata)) {
+          entity.metadata = setData(entity.metadata, { data: metadata, partial: true });
+        }
+      }
+      writeEntityAuditLog({
+        entity,
+        action: EntityAuditAction.Patch,
+        em,
+        before,
+        after: entity.toPOJO(),
+      });
+      await em.persistAndFlush(entity);
+      return { entity };
+    });
+  }
+
   async bindEntity(ent: ResolveEntityOptions<E>, ref: BindEntityOptions) {
     const { entity } = await this.requireEntity(ent);
 
@@ -245,4 +350,13 @@ export class BaseEntityService<E extends StandardBaseEntity>
       entity,
     };
   }
+}
+
+function trimUndefined(o: any) {
+  for (const k in o) {
+    if (o[k] === undefined) {
+      delete o[k];
+    }
+  }
+  return o;
 }
