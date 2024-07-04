@@ -41,7 +41,31 @@ export interface EntityService2<E extends StandardBaseEntity> {
 
   purgeEntity(ent: ResolveEntityOptions<E>): Promise<{ entity?: E }>;
 
+  createEntity(req: CreateEntityOptions<RequiredEntityData<E>>): Promise<EntityResult<E>>;
+
+  updateEntity(ent: ResolveEntityOptions<E>, opts: UpdateEntityOptions<any>): Promise<EntityResult<E>>;
+
+  patchEntity(ent: ResolveEntityOptions<E>, opts: UpdateEntityOptions<any>): Promise<EntityResult<E>>;
+
   setEntityNotes(ent: ResolveEntityOptions<E>, req: SetEntityNotesOptions): Promise<EntityResult<E>>;
+}
+
+export interface CreateEntityOptions<T> {
+  data: T;
+  upsert?: boolean;
+  onConflict?: {
+    fields?: string[];
+
+    action?: 'ignore' | 'merge';
+
+    merge?: string[];
+
+    exclude?: string[];
+  };
+}
+
+export interface UpdateEntityOptions<T> {
+  data: T;
 }
 
 export interface EntityService<E extends StandardBaseEntity> extends EntityService2<E> {
