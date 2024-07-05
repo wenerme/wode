@@ -24,16 +24,16 @@
     }
   ],
   "importOrder": [
-    "reflect-metadata",
     "^node:",
-    "^react",
-    "^@[a-z]",
-    "^[a-z]",
-    "^@",
+    "<BUILTIN_MODULES>",
+    "[.](polyfill|shim)$",
+    "reflect-metadata",
+    "^react(-dom)?",
+    "<THIRD_PARTY_MODULES>",
+    "^@/",
     "^[.][.]",
     "^[.][/]"
   ],
-  "importOrderSeparation": false,
   "importOrderParserPlugins": [
     "typescript",
     "jsx",
@@ -42,9 +42,13 @@
   ],
   "plugins": [
     "prettier-plugin-pkg",
-    "prettier-plugin-tailwindcss",
-    "@trivago/prettier-plugin-sort-imports"
+    "@ianvs/prettier-plugin-sort-imports",
+    "prettier-plugin-tailwindcss"
+  ],
+  "tailwindFunctions": [
+    "clsx",
+    "tw",
+    "cn"
   ],
   "tailwindConfig": "./tailwind.config.ts"
 }
-

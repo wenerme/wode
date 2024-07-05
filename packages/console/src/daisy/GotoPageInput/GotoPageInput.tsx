@@ -17,13 +17,13 @@ export const GotoPageInput: React.FC<{
     onGoto?.(n - 1);
   };
   return (
-    <div className={'flex items-center gap-1.5 text-xs text-xs'}>
+    <div className={'flex items-center gap-1.5 text-xs'}>
       <Button className={'btn-ghost btn-xs'} disabled={disabled} onClick={goto}>
         前往
       </Button>
       <input
         type='number'
-        className={'input input-bordered input-xs w-[8ch]'}
+        className={'input input-xs input-bordered w-[8ch]'}
         value={val}
         onKeyUp={(e) => {
           if (e.code === 'Enter') {

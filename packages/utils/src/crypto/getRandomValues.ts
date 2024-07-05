@@ -4,10 +4,15 @@ import { getGlobalThis } from '../runtime/getGlobalThis';
 import { getNodeCrypto } from './getNodeCrypto';
 
 const globalThis = getGlobalThis();
+
+// chrome 11+, safari 5+, nodejs 17.4+
+// https://developer.mozilla.org/en-US/docs/Web/API/Crypto/getRandomValues
 export let getRandomValues: <T extends Exclude<TypedArray, Float32Array | Float64Array>>(typedArray: T) => T =
   globalThis.crypto?.getRandomValues?.bind(globalThis.crypto) ||
   (globalThis as any).msCrypto?.getRandomValues?.bind((globalThis as any).msCrypto) ||
-  _getRandomValues;
+  (() => {
+    throw new Error('[getRandomValues]: No secure random number generator available.');
+  });
 
 function _getRandomValues<T extends Exclude<TypedArray, Float32Array | Float64Array>>(buf: T) {
   const nodeCrypto = getNodeCrypto();

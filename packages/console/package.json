@@ -8,7 +8,10 @@
   "exports": {
     ".": "./src/index.ts",
     "./buildinfo": "./src/buildinfo/index.ts",
+    "./client/graphql": "./src/client/graphql/index.ts",
     "./components": "./src/components/index.ts",
+    "./console": "./src/console/index.ts",
+    "./console/pages": "./src/console/pages/index.ts",
     "./daisy": "./src/daisy/index.ts",
     "./floating": "./src/floating/index.ts",
     "./hooks": "./src/hooks/index.ts",
@@ -16,6 +19,7 @@
     "./loader": "./src/loader/index.ts",
     "./pages": "./src/web/pages/index.ts",
     "./router": "./src/router/index.ts",
+    "./state": "./src/state/index.ts",
     "./toast": "./src/toast/index.ts",
     "./valtio": "./src/valtio/index.ts",
     "./web": "./src/web/index.ts",
@@ -43,7 +47,10 @@
   ],
   "scripts": {
     "build": "make build",
+    "build-storybook": "storybook build",
     "deploy": "make deploy",
+    "preview": "vite dev --host 0.0.0.0",
+    "storybook": "storybook dev -p 6006",
     "test": "make test"
   },
   "peerDependencies": {
@@ -68,25 +75,55 @@
     "zod": "^3.22.2",
     "zustand": "^4.4.1"
   },
+  "dependencies": {
+    "tailwind-merge": "^2.3.0"
+  },
   "devDependencies": {
+    "@emotion/styled": "^11.11.5",
     "@floating-ui/dom": "^1.6.5",
     "@floating-ui/react": "^0.26.17",
+    "@graphql-typed-document-node/core": "^3.2.0",
     "@headlessui/react": "^2.1.0",
+    "@mdx-js/rollup": "^3.0.1",
     "@nestjs/common": "^10.3.9",
     "@remix-run/router": "^1.16.1",
-    "@tailwindcss/forms": "^0.5.7",
+    "@storybook/addon-essentials": "^8.1.11",
+    "@storybook/addon-interactions": "^8.1.11",
+    "@storybook/addon-links": "^8.1.11",
+    "@storybook/blocks": "^8.1.11",
+    "@storybook/builder-vite": "^8.1.11",
+    "@storybook/react": "^8.1.11",
+    "@storybook/react-vite": "^8.1.11",
+    "@storybook/test": "^8.1.11",
+    "@types/lodash": "^4.17.5",
     "@types/react-is": "^18.3.0",
+    "@urql/core": "^5.0.4",
+    "@urql/devtools": "^2.0.3",
+    "@urql/exchange-graphcache": "^7.1.2",
+    "@urql/exchange-persisted": "^4.3.0",
+    "@urql/exchange-retry": "^1.3.0",
     "@wener/console": "link:",
     "@wener/nestjs": "workspace:^",
     "@wener/reaction": "workspace:^",
     "@wener/utils": "workspace:^",
     "clsx": "^2.1.1",
+    "dataloader": "^2.2.2",
+    "graphql-request": "^7.1.0",
     "immer": "^10.1.1",
+    "lodash": "^4.17.21",
+    "lru-cache": "^10.2.2",
     "mutative": "^1.0.6",
     "next": "^14.2.4",
+    "overlayscrollbars": "^2.9.2",
+    "overlayscrollbars-react": "^0.5.6",
     "react-hook-form": "^7.52.0",
     "react-icons": "^5.2.1",
-    "react-is": "^18.3.1"
+    "react-is": "^18.3.1",
+    "react-rnd": "^10.4.11",
+    "storybook": "^8.1.11",
+    "urql": "^4.1.0",
+    "web-vitals": "^4.2.1",
+    "wonka": "^6.3.4"
   },
   "publishConfig": {
     "exports": {
@@ -98,9 +135,21 @@
         "types": "./src/buildinfo/index.ts",
         "default": "./lib/buildinfo/index.js"
       },
+      "./client/graphql": {
+        "types": "./src/client/graphql/index.ts",
+        "default": "./lib/client/graphql/index.js"
+      },
       "./components": {
         "types": "./src/components/index.ts",
         "default": "./lib/components/index.js"
+      },
+      "./console": {
+        "types": "./src/console/index.ts",
+        "default": "./lib/console/index.js"
+      },
+      "./console/pages": {
+        "types": "./src/console/pages/index.ts",
+        "default": "./lib/console/pages/index.js"
       },
       "./daisy": {
         "types": "./src/daisy/index.ts",
@@ -130,6 +179,10 @@
         "types": "./src/router/index.ts",
         "default": "./lib/router/index.js"
       },
+      "./state": {
+        "types": "./src/state/index.ts",
+        "default": "./lib/state/index.js"
+      },
       "./toast": {
         "types": "./src/toast/index.ts",
         "default": "./lib/toast/index.js"
@@ -141,22 +194,6 @@
       "./web": {
         "types": "./src/web/index.ts",
         "default": "./lib/web/index.js"
-      },
-      "./web/pages": {
-        "types": "./src/web/pages/index.ts",
-        "default": "./lib/web/pages/index.js"
-      },
-      "./web/pages/setting/about/route": {
-        "types": "./src/web/pages/setting/about/route.tsx",
-        "default": "./lib/web/pages/setting/about/route.js"
-      },
-      "./web/pages/setting/appearance/route": {
-        "types": "./src/web/pages/setting/appearance/route.tsx",
-        "default": "./lib/web/pages/setting/appearance/route.js"
-      },
-      "./web/pages/setting/dev/debug/route": {
-        "types": "./src/web/pages/setting/dev/debug/route.tsx",
-        "default": "./lib/web/pages/setting/dev/debug/route.js"
       },
       "./web/user": {
         "types": "./src/web/user/index.ts",

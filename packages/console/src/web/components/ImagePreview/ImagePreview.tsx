@@ -11,12 +11,12 @@ import {
   PiDownloadSimple,
 } from 'react-icons/pi';
 import { TbTextRecognition } from 'react-icons/tb';
+import { showErrorToast, showSuccessToast } from '@wener/console/toast';
 import { useAbortController } from '@wener/reaction';
 import { mutative } from '@wener/reaction/mutative/zustand';
 import { copy, download, formatBytes, getGlobalThis, loadScripts } from '@wener/utils';
 import clsx from 'clsx';
 import { createStore, useStore } from 'zustand';
-import { showErrorToast, showSuccessToast } from '@/toast';
 
 interface ImagePreviewState {
   detail: boolean;
@@ -73,13 +73,13 @@ const DetailButton = () => {
   };
   return (
     <ActionButton
-      className={'z-10 absolute right-4 top-4'}
+      className={'absolute right-4 top-4 z-10'}
       onClick={() => {
         setShowDetail(!showDetail);
       }}
     >
-      {showDetail && <HiChevronDoubleRight className={'w-6 h-6 text-white/75'} />}
-      {!showDetail && <HiChevronDoubleLeft className={'w-6 h-6 text-white/75'} />}
+      {showDetail && <HiChevronDoubleRight className={'h-6 w-6 text-white/75'} />}
+      {!showDetail && <HiChevronDoubleLeft className={'h-6 w-6 text-white/75'} />}
     </ActionButton>
   );
 };
@@ -99,18 +99,18 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({ onOpenChange, info, 
 
   return (
     <Context.Provider value={store}>
-      <div className={'relative w-full h-full overflow-hidden bg-black/90 z-10'}>
+      <div className={'relative z-10 h-full w-full overflow-hidden bg-black/90'}>
         <div className={'absolute inset-0'}>
           <div className={'flex h-full'}>
-            <div className={'flex-1 h-full relative flex flex-col'}>
-              <ActionButton className={'z-10 absolute left-4 top-4'} onClick={() => onOpenChange?.(false)}>
-                <HiXMark className={'w-6 h-6 text-white/75'} />
+            <div className={'relative flex h-full flex-1 flex-col'}>
+              <ActionButton className={'absolute left-4 top-4 z-10'} onClick={() => onOpenChange?.(false)}>
+                <HiXMark className={'h-6 w-6 text-white/75'} />
               </ActionButton>
               <DetailButton />
-              <div className={'flex-1 flex justify-center items-center relative overflow-hidden'}>
+              <div className={'relative flex flex-1 items-center justify-center overflow-hidden'}>
                 <_Image />
               </div>
-              <div className={'text-white flex justify-center pb-4'}>
+              <div className={'flex justify-center pb-4 text-white'}>
                 <Actions />
               </div>
             </div>
@@ -131,7 +131,7 @@ const _Image = () => {
   return (
     <img
       crossOrigin='anonymous'
-      className={'object-contain'}
+      className={'max-h-full object-contain'}
       src={src}
       alt={'preview image'}
       ref={(imgRef) => {
@@ -166,8 +166,8 @@ const Actions = () => {
           store.setState({ enlarge: !enlarge });
         }}
       >
-        {!enlarge && <PiCornersOut className={'w-6 h-6'} />}
-        {enlarge && <PiCornersIn className={'w-6 h-6'} />}
+        {!enlarge && <PiCornersOut className={'h-6 w-6'} />}
+        {enlarge && <PiCornersIn className={'h-6 w-6'} />}
       </FuncButton>
       <FuncButton
         onClick={() => {
@@ -176,7 +176,7 @@ const Actions = () => {
           });
         }}
       >
-        <PiArrowCounterClockwise className={'w-6 h-6'} />
+        <PiArrowCounterClockwise className={'h-6 w-6'} />
       </FuncButton>
       <FuncButton
         onClick={() => {
@@ -185,7 +185,7 @@ const Actions = () => {
           });
         }}
       >
-        <PiArrowClockwise className={'w-6 h-6'} />
+        <PiArrowClockwise className={'h-6 w-6'} />
       </FuncButton>
       {src && (
         <FuncButton
@@ -193,7 +193,7 @@ const Actions = () => {
             download('img.jpg', src);
           }}
         >
-          <PiDownloadSimple className={'w-6 h-6'} />
+          <PiDownloadSimple className={'h-6 w-6'} />
         </FuncButton>
       )}
       {/*
@@ -208,12 +208,12 @@ const Actions = () => {
 const DetailPanel = () => {
   let store = useContext(Context);
   const showDetail = useStore(store, (s) => s.detail);
-  const { width, height, size, mimeType, format } = useStore(store, (s) => s.info);
+  const { width, height, size, mimeType, format } = useStore(store, (s) => s.info || {});
   if (!showDetail) {
     return;
   }
   return (
-    <div className={'bg-base-100 w-60'}>
+    <div className={'w-60 bg-base-100'}>
       <header className={'px-2 py-4'}>
         <h2 className={'text-lg font-semibold'}>图片信息</h2>
       </header>
@@ -221,7 +221,7 @@ const DetailPanel = () => {
       <div>
         <div
           className={clsx(
-            'px-2 py-2 flex gap-2 flex-col',
+            'flex flex-col gap-2 px-2 py-2',
             '[&>div>span:first-child]:inline-block',
             '[&>div>span:first-child]:w-[5ch]',
             '[&>div>span:last-child]:font-semibold',
@@ -285,12 +285,12 @@ const _ExtraInfo = () => {
                   }
                 }}
               >
-                <PiCopy className={'w-4 h-4'} />
+                <PiCopy className={'h-4 w-4'} />
                 复制
               </button>
             </span>
           </div>
-          <textarea className={'textarea textarea-bordered textarea-sm w-full h-24'} value={text} readOnly />
+          <textarea className={'textarea textarea-bordered textarea-sm h-24 w-full'} value={text} readOnly />
         </label>
       )}
     </div>
@@ -318,7 +318,7 @@ const _TextRecognitionButton = () => {
         }
       }}
     >
-      <TbTextRecognition className={clsx('w-4 h-4', loading && 'loading loading-spinner')} />
+      <TbTextRecognition className={clsx('h-4 w-4', loading && 'loading loading-spinner')} />
       文字识别
     </button>
   );
@@ -328,7 +328,7 @@ const ActionButton: React.FC<HTMLProps<HTMLButtonElement>> = ({ className, type,
   return (
     <button
       type={'button'}
-      className={clsx('bg-black/20 hover:bg-black/75 btn btn-circle border-none', className)}
+      className={clsx('btn btn-circle border-none bg-black/20 hover:bg-black/75', className)}
       {...props}
     />
   );
@@ -339,7 +339,7 @@ const FuncButton: React.FC<HTMLProps<HTMLButtonElement>> = ({ className, type, .
   return (
     <A
       type={'button'}
-      className={clsx('bg-black/45  hover:bg-black/85 btn btn-circle border-none text-white', className)}
+      className={clsx('btn btn-circle border-none bg-black/45 text-white hover:bg-black/85', className)}
       {...props}
     />
   );

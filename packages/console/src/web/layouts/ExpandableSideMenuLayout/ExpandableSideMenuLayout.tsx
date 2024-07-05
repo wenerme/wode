@@ -2,12 +2,14 @@ import type { HTMLProps, ReactElement, ReactNode } from 'react';
 import React, { forwardRef, useState } from 'react';
 import { HiChevronDown, HiChevronRight } from 'react-icons/hi2';
 import { PiCaretDoubleLeftThin, PiCaretDoubleRightThin } from 'react-icons/pi';
-import { useControllable } from '@wener/reaction';
+import { AutoNavLink } from '@wener/console/web';
+import { flexRender, FlexRenderable, useControllable } from '@wener/reaction';
 import { clsx } from 'clsx';
-import { Tooltip } from '../../../floating';
-import { AutoNavLink } from '../../links';
+import { Tooltip } from '@/floating';
+import { HeaderContentFooterLayout } from '@/web/components/HeaderContentFooterLayout';
+import { LeftContentRightLayout } from '@/web/components/LeftContentRightLayout';
+import { OverlayScrollbar } from '@/web/components/OverlayScrollbar';
 import type { BaseNavLink } from './BaseNavLink';
-import styles from './ExpandableSideMenuLayout.module.css';
 
 interface ExpandableSideMenuTitle {
   type: 'title';
@@ -19,8 +21,8 @@ interface ExpandableSideMenuTitle {
 interface ExpandableSideMenuItem {
   type?: 'item';
   label?: string;
-  icon?: ReactElement;
-  iconActive?: ReactElement;
+  icon?: FlexRenderable<any>;
+  iconActive?: FlexRenderable<any>;
   href: string;
   end?: boolean;
 }
@@ -37,7 +39,7 @@ interface ExpandableSideMenuGroup {
 export type ExpandableSideMenuItemProps = ExpandableSideMenuItem | ExpandableSideMenuGroup | ExpandableSideMenuTitle;
 
 export interface ExpandableSideMenuLayoutProps extends Omit<HTMLProps<HTMLDivElement>, 'title'> {
-  header?: React.ReactNode | ((o: { expanded: boolean }) => React.ReactNode);
+  header?: FlexRenderable<{ expanded: boolean }>;
   title?: ReactNode;
   icon?: ReactElement;
 
@@ -121,7 +123,11 @@ const SideMenuItem: React.FC<{ item: ExpandableSideMenuItemProps; expanded?: boo
 
   if (item.type === 'title') {
     if (!expanded) {
-      return null;
+      return (
+        <li className={'menu-title w-full px-0.5 py-0'}>
+          <span className={'w-full truncate text-center text-[10px]'}>{item.label}</span>
+        </li>
+      );
     }
     return (
       <li className={'menu-title'}>
@@ -133,114 +139,134 @@ const SideMenuItem: React.FC<{ item: ExpandableSideMenuItemProps; expanded?: boo
   const { href, icon, end, iconActive, label } = item;
   // data-tooltip 由于 overflow 实际无法显示
   return (
-    <li>
-      <Tooltip portal placement={'right'} content={!expanded && label} className={'hidden md:block'}>
+    <Tooltip portal content={!expanded && label} placement={'right'} className={'hidden md:block'}>
+      <li>
         <NavLink
           href={href}
           end={end}
+          title={label}
           className={({ isActive }) => clsx(expanded ? '' : 'justify-center p-2', isActive ? 'active' : 'inactive')}
         >
-          {({ isActive }) => {
+          {({ isActive: active }) => {
+            let ico = flexRender(
+              active ? iconActive || icon : icon,
+              {
+                active,
+                className: 'w-6 h-6',
+              },
+              true,
+            );
+
             return (
               <>
-                {isActive ? iconActive || icon : icon}
+                {ico}
                 {expanded && label}
               </>
             );
           }}
         </NavLink>
-      </Tooltip>
-    </li>
+      </li>
+    </Tooltip>
   );
 };
 
-export const ExpandableSideMenuLayout = /* @__PURE__ */ forwardRef<HTMLDivElement, ExpandableSideMenuLayoutProps>(
-  ({ children, header: _header, title, icon, items, NavLink = AutoNavLink, ...props }, ref) => {
+export const ExpandableMenu: React.FC<ExpandableSideMenuLayoutProps> = ({
+  expanded,
+  title,
+  header: _header,
+  icon,
+  items,
+  onExpandedChange,
+  children,
+}) => {
+  return (
+    <HeaderContentFooterLayout
+      className={clsx('z-30 border-r border-base-300', 'transition-[width]', expanded ? 'w-[200px]' : 'w-[49px]')}
+      header={
+        <header
+          className={clsx('flex flex-wrap items-center py-4 text-xl font-light', expanded ? 'px-4' : 'justify-center')}
+        >
+          {icon}
+          {expanded && title && <span className={'pl-2'}>{title}</span>}
+          {flexRender(_header, { expanded })}
+        </header>
+      }
+      footer={
+        <div
+          data-tip={expanded ? '收起侧边栏' : '展开侧边栏'}
+          className={clsx(
+            'flex flex-col items-stretch',
+            'font-thin opacity-75',
+            // 都通过 tooltip 提示
+            // !expanded && 'tooltip tooltip-right',
+            'tooltip tooltip-right',
+          )}
+        >
+          <button
+            type={'button'}
+            onClick={() => {
+              onExpandedChange?.(!expanded);
+            }}
+            className={'flex h-12 items-center p-4 hover:bg-base-300'}
+          >
+            {expanded ? <PiCaretDoubleLeftThin /> : <PiCaretDoubleRightThin />}
+            {/*{expanded && <span>收起侧边栏</span>}*/}
+          </button>
+        </div>
+      }
+    >
+      <OverlayScrollbar className={'h-full'}>
+        <ul className={clsx('menu gap-0.5 bg-base-100', expanded ? 'p-2' : 'p-0')}>
+          {items.map((item, i) => {
+            return <SideMenuItem item={item} expanded={expanded} key={i} />;
+          })}
+        </ul>
+        {children}
+      </OverlayScrollbar>
+    </HeaderContentFooterLayout>
+  );
+};
+
+export const ExpandableSideMenuLayout = forwardRef<HTMLDivElement, ExpandableSideMenuLayoutProps>(
+  (
+    {
+      children,
+      header: _header,
+      title,
+      icon,
+      items,
+      NavLink = AutoNavLink,
+      expanded: _expanded,
+      onExpandedChange: _onExpandedChange,
+      initialExpanded: _initialExpanded,
+      ...props
+    },
+    ref,
+  ) => {
     const [expanded, setExpanded] = useControllable(
-      props.expanded,
-      props.onExpandedChange,
+      _expanded,
+      _onExpandedChange,
       () =>
-        props.initialExpanded ??
-        (typeof window === 'undefined' ? true : window.matchMedia('(min-width: 768px)').matches),
+        _initialExpanded ?? (typeof window === 'undefined' ? true : window.matchMedia('(min-width: 768px)').matches),
     );
 
     return (
-      <div className={'flex h-full'} ref={ref}>
-        <aside
-          className={clsx(
-            'relative z-30 border-r border-base-300',
-            'transition-[width]',
-            expanded ? 'w-[200px]' : 'w-[49px]',
-          )}
-        >
-          <div
-            className={clsx(
-              'absolute inset-0',
-              // 避免展开一下子出现，折叠后 tooltip 需要 overflow 才能显示
-              expanded && 'overflow-hidden',
-            )}
-          >
-            <div
-              className={clsx(
-                'flex h-full flex-col',
-                // 固定宽度，避免 child wrap
-                expanded ? 'w-[199px]' : 'w-[48px]',
-              )}
-            >
-              <header
-                className={clsx(
-                  'flex flex-wrap items-center border-b border-base-300 py-4 text-xl font-light',
-                  expanded ? 'px-4' : 'justify-center',
-                )}
-              >
-                {icon}
-                {expanded && title && <span className={'pl-2'}>{title}</span>}
-                {typeof _header === 'function' ? _header({ expanded }) : _header}
-              </header>
-              <div className={`${styles.ScrollShadow} relative flex flex-1 flex-col`}>
-                <div className={'scrollbar-thin absolute inset-0'}>
-                  <div className={'scroll-shadows max-h-full overflow-y-auto overflow-x-hidden'}>
-                    <ul
-                      className={clsx(
-                        // 不知道为什么里外都要加 scroll-shadows 才能生效
-                        styles.ScrollShadow,
-                        'menu gap-0.5 bg-base-100',
-                        expanded ? 'p-2' : 'p-0',
-                      )}
-                    >
-                      {items.map((item, i) => {
-                        return <SideMenuItem item={item} expanded={expanded} key={i} />;
-                      })}
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              <div
-                data-tip={'收起侧边栏'}
-                className={clsx(
-                  'flex flex-col items-stretch',
-                  'font-thin opacity-75',
-                  !expanded && 'tooltip tooltip-right',
-                )}
-              >
-                <button
-                  type={'button'}
-                  onClick={() => {
-                    setExpanded(!expanded);
-                  }}
-                  className={'flex h-12 items-center p-4 hover:bg-base-300'}
-                >
-                  {expanded ? <PiCaretDoubleLeftThin /> : <PiCaretDoubleRightThin />}
-                  {expanded && <span>收起侧边栏</span>}
-                </button>
-              </div>
-            </div>
-          </div>
-        </aside>
-        <main className={'relative flex-1'}>
-          <div className={'absolute inset-0 overflow-auto'}>{children}</div>
-        </main>
-      </div>
+      <LeftContentRightLayout
+        className={'h-full'}
+        left={
+          <ExpandableMenu
+            expanded={expanded}
+            onExpandedChange={setExpanded}
+            title={title}
+            items={items}
+            icon={icon}
+            header={_header}
+          />
+        }
+        ref={ref}
+      >
+        {children}
+      </LeftContentRightLayout>
     );
   },
 );

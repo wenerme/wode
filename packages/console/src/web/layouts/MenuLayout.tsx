@@ -11,7 +11,7 @@ export const MenuLayout: React.FC<{
         <header className={'border-color flex items-center border-b px-2 py-4'}>
           <div className={'text-lg font-medium'}>{title}</div>
         </header>
-        <ul className='menu-compact menu bg-base-100 py-2 '>
+        <ul className='menu-compact menu bg-base-100 py-2'>
           {menu.map(({ href, label }, i) => {
             // fixme
             return (

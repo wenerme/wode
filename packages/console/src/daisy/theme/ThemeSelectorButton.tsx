@@ -4,8 +4,8 @@ import { MdSettings } from 'react-icons/md';
 import { Listbox, Transition } from '@headlessui/react';
 import classNames from 'clsx';
 import { useSnapshot } from 'valtio';
-import { ThemePreviewCard } from './ThemePreviewCard';
 import { getSupportedThemes } from './getSupportedThemes';
+import { ThemePreviewCard } from './ThemePreviewCard';
 import { useThemeState } from './useTheme';
 
 export const ThemeSelectorButton = () => {

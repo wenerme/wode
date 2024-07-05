@@ -1,0 +1,68 @@
+import React, { PropsWithChildren, useEffect, useState } from 'react';
+import Splash from '@/assets/LoginSplash.jpg';
+import { LoginFormData, LoginPage } from '@/console/pages/LoginPage';
+import { AuthStatus, getAppState, getAppStore } from '@/state';
+import { SiteLogo } from '@/web';
+import { AutoImage } from '@/web/components/AutoImage';
+
+export const Authenticated: React.FC<
+  PropsWithChildren & {
+    onLogin?: (o: LoginFormData) => void;
+  }
+> = ({ children, onLogin }) => {
+  const [authed, setAuthed] = useState(() => {
+    return getAppState().auth.status === AuthStatus.Authenticated;
+  });
+
+  useEffect(() => {
+    if (authed) return;
+    let store = getAppStore();
+    let unsub = store.subscribe((s) => {
+      if (s.auth.status === AuthStatus.Authenticated) {
+        setAuthed(true);
+        unsub();
+      }
+    });
+    return unsub;
+  }, []);
+
+  // useAsyncEffect(async () => {
+  //   try {
+  //     await setup();
+  //     setState({ init: true });
+  //   } catch (e) {
+  //     showErrorToast(e);
+  //   }
+  // }, []);
+  // if (!init) {
+  //   return <LoadingIndicator />;
+  // }
+
+  if (!authed) {
+    return <Auth onLogin={onLogin} />;
+  }
+  return <>{children}</>;
+};
+
+const Auth: React.FC<{ onLogin?: (o: LoginFormData) => void }> = ({ onLogin }) => {
+  const { title } = getAppState();
+  return (
+    <LoginPage
+      title={title}
+      logo={<SiteLogo className={'h-10 w-10'} />}
+      showRegistry={false}
+      onSubmit={onLogin}
+      showoff={
+        // <img src={Splash} alt='splash' className='absolute inset-0 h-full w-full object-cover' />
+        <AutoImage
+          className='absolute inset-0 h-full w-full object-cover'
+          // https://images.unsplash.com/photo-1496917756835-20cb06e75b4e
+          // src={'/static/login-splash.jpg'}
+          src={Splash}
+          // src={'https://images.unsplash.com/photo-1496917756835-20cb06e75b4e'}
+          alt={'splash'}
+        />
+      }
+    />
+  );
+};

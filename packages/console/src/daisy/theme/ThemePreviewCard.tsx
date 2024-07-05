@@ -23,7 +23,7 @@ export const ThemePreviewCard: React.FC<{ title?: string }> = ({ title }) => {
             <div
               key={name}
               title={name}
-              className={classNames('flex aspect-square w-5 items-center justify-center rounded bg-primary lg:w-6', bg)}
+              className={classNames('bg-primary flex aspect-square w-5 items-center justify-center rounded lg:w-6', bg)}
             >
               <div className={classNames('text-sm font-bold', content)}>{name[0].toUpperCase()}</div>
             </div>

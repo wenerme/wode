@@ -1,16 +1,26 @@
 export function resolveErrorMessage(error: Error | any) {
-  if (isZodError(error)) {
-    return error.issues.map((v) => v.message).join(';');
+  if (!error) {
+    return;
   }
-  if (isTypeBoxError(error)) {
-    const { path, type, message } = error.error;
-    return `${path}: ${message} (${type})`;
-  }
-  if (isCombinedError(error)) {
-    return error.response.errors.map((v: any) => v.message).join(';');
-  }
-  if (typeof error === 'object' && 'message' in error) {
-    return error.message;
+
+  if (error instanceof Error) {
+    try {
+      if (isZodError(error)) {
+        return error.issues.map((v) => `${v.path.join('.')}: ${v.message}`).join(';');
+      }
+      if (isTypeBoxError(error)) {
+        const { path, type, message } = error.error;
+        return `${path}: ${message} (${type})`;
+      }
+      if (isCombinedError(error)) {
+        return error.response.errors.map((v: any) => v.message).join(';');
+      }
+      if (typeof error === 'object' && 'message' in error) {
+        return error.message;
+      }
+    } catch (e) {
+      console.error('resolveErrorMessage', e);
+    }
   }
   return String(error);
 }
@@ -32,11 +42,13 @@ interface TransformDecodeCheckError extends Error {
 }
 
 function isZodError(error: any): error is ZodError {
-  return Array.isArray(error.issues) && error instanceof Error;
+  return error instanceof Error && Array.isArray((error as any).issues);
 }
 
 interface ZodIssue {
   fatal?: boolean;
+  code: any;
+  path: (string | number)[];
   message: string;
 }
 
@@ -66,17 +78,15 @@ interface GraphQLError extends Error {
   readonly nodes: ReadonlyArray<any> | undefined;
   readonly source:
     | {
-    body: string;
-    name: string;
-    locationOffset: {
-      line: number;
-      column: number;
-    };
-  }
+        body: string;
+        name: string;
+        locationOffset: {
+          line: number;
+          column: number;
+        };
+      }
     | undefined;
   readonly positions: ReadonlyArray<number> | undefined;
   readonly originalError: Error | undefined;
   readonly extensions: Record<string, any>;
 }
-
-

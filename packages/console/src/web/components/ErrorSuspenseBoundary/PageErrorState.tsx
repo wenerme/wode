@@ -20,7 +20,7 @@ export const PageErrorState: React.FC<{ error?: any; onReset?: () => void; title
 
   return (
     <NonIdealState
-      icon={<HiOutlineExclamationCircle className={'w-12 h-12'} />}
+      icon={<HiOutlineExclamationCircle className={'h-12 w-12'} />}
       title={title}
       description={
         <div>
@@ -35,40 +35,40 @@ export const PageErrorState: React.FC<{ error?: any; onReset?: () => void; title
         <div className={'flex gap-2 opacity-95'}>
           {onReset && (
             <Button
-              className={'btn-sm btn-outline'}
+              className={'btn-outline btn-sm'}
               onClick={() => {
                 onReset();
               }}
             >
-              <HiArrowPath className={'w-4 h-4'} />
+              <HiArrowPath className={'h-4 w-4'} />
               重置
             </Button>
           )}
           <Button
-            className={'btn-sm btn-outline'}
+            className={'btn-outline btn-sm'}
             onClick={() => {
               navigate('/');
             }}
           >
-            <HiHome className={'w-4 h-4'} />
+            <HiHome className={'h-4 w-4'} />
             首页
           </Button>
           <Button
-            className={'btn-sm btn-outline'}
+            className={'btn-outline btn-sm'}
             onClick={() => {
               navigate(-1);
             }}
           >
-            <HiArrowLeft className={'w-4 h-4'} />
+            <HiArrowLeft className={'h-4 w-4'} />
             返回
           </Button>
           <Button
-            className={'btn-sm btn-outline'}
+            className={'btn-outline btn-sm'}
             onClick={() => {
               window.location.reload();
             }}
           >
-            <HiArrowPath className={'w-4 h-4'} />
+            <HiArrowPath className={'h-4 w-4'} />
             刷新
           </Button>
         </div>

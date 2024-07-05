@@ -1,6 +1,4 @@
-// const plugin = require('tailwindcss/plugin');
 import containerQueries from '@tailwindcss/container-queries';
-import forms from '@tailwindcss/forms';
 import typography from '@tailwindcss/typography';
 import daisyuiPlugin from 'daisyui';
 import type { Config } from 'tailwindcss';
@@ -113,7 +111,6 @@ export function createConfig(opts: { daisyui?: any } = {}): Config {
     plugins: [
       typography,
       containerQueries,
-      forms,
       animatePlugin,
       // https://github.com/tailwindlabs/tailwindcss.com/blob/ceb07ba4d7694ef48e108e66598a20ae31cced19/tailwind.config.js#L280-L284
       function ({ addVariant }) {
@@ -163,7 +160,7 @@ export function createConfig(opts: { daisyui?: any } = {}): Config {
         'winter',
         'dim',
         'nord',
-        'subset',
+        'sunset',
       ],
       ...(daisyui && typeof daisyui === 'object' ? daisyui : {}),
     },

@@ -23,9 +23,9 @@ export const UserLockOverlay = () => {
   return (
     <div
       className={clsx(
-        'z-50 absolute inset-0 flex items-center justify-center',
+        'absolute inset-0 z-50 flex items-center justify-center',
         'transition duration-500',
-        locked ? 'opacity-100 backdrop-blur-sm' : 'opacity-0 backdrop-blur-none pointer-events-none',
+        locked ? 'opacity-100 backdrop-blur-sm' : 'pointer-events-none opacity-0 backdrop-blur-none',
         hidden && !locked && 'hidden',
       )}
       onAnimationEnd={() => {
@@ -34,9 +34,9 @@ export const UserLockOverlay = () => {
         }
       }}
     >
-      <div className={'bg-base-100 rounded px-8 py-4 border-base-200 shadow-xl'}>
+      <div className={'rounded border-base-200 bg-base-100 px-8 py-4 shadow-xl'}>
         <NonIdealState
-          icon={<HiLockClosed className='w-12 h-12' />}
+          icon={<HiLockClosed className='h-12 w-12' />}
           title={
             <div className={'flex flex-col gap-1'}>
               <span>系统已锁定</span>
@@ -46,8 +46,8 @@ export const UserLockOverlay = () => {
           description={'点击解锁进入系统'}
           action={
             <div className={'flex gap-2 opacity-95'}>
-              <Button autoFocus className={'btn-sm btn-success'} onClick={unlock}>
-                <HiMiniLockOpen className={'w-4 h-4'} />
+              <Button autoFocus className={'btn-success btn-sm'} onClick={unlock}>
+                <HiMiniLockOpen className={'h-4 w-4'} />
                 解锁
               </Button>
             </div>

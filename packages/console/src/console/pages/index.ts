@@ -1,0 +1,1 @@
+export { SystemAboutPage } from './SystemAboutPage';
