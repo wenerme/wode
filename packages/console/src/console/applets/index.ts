@@ -1,0 +1,1 @@
+export { ClockWidget } from './ClockWidget';

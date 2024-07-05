@@ -22,7 +22,7 @@
 - 默认 0 依赖
 - 默认 ESM
 - 面向 bundler
-  - 又 bundler 来做 tree shaking 
+  - 又 bundler 来做 tree shaking
   - 目前不提供 bundle 的 dist js
 - 提供 中国 相关的工具
   - 身份证解析 解析/校验/生成
@@ -40,6 +40,14 @@
   - templite
   - rosetta
   - camelcase
+
+## References
+
+- Events
+  - [mitt](https://github.com/developit/mitt) MIT
+    - < 200b - 因此功能有限
+    - .once https://github.com/developit/mitt/issues/136
+  - https://nodejs.org/api/events.html
 
 <!-- LINK:BEGIN -->
 

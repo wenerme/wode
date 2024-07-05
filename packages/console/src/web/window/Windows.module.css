@@ -1,0 +1,16 @@
+.WindowController {
+  @apply flex h-full;
+
+  & > button {
+    @apply flex items-center justify-center;
+    width: 42px;
+
+    &[data-action="close"]:hover {
+      @apply bg-error;
+    }
+
+    &:hover {
+      @apply bg-base-300;
+    }
+  }
+}

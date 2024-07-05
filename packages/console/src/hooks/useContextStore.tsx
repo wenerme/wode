@@ -4,22 +4,22 @@ import { get, set } from '@wener/utils';
 import { create as produce } from 'mutative';
 import { createStore, StoreApi, useStore } from 'zustand';
 
-const DefaultStore = createStore(() => {
+const DefaultContextStore = createStore(() => {
   return {};
 });
 
 const Context = createContext<StoreApi<any> | undefined>(undefined);
 
-function useModuleStore() {
-  return useContext(Context) ?? DefaultStore;
-}
-
 export const ContextStoreProvider: React.FC<{ value: StoreApi<any>; children?: ReactNode }> = ({ value, children }) => {
   return <Context.Provider value={value}>{children}</Context.Provider>;
 };
 
+function getContextStore() {
+  return DefaultContextStore;
+}
+
 export function useContextStore<O extends Record<string, any>>(): UseContextStoreReturn<O> {
-  const store = useModuleStore();
+  const store = useContext(Context) ?? DefaultContextStore;
   return {
     store,
     set(path: string, value: any) {

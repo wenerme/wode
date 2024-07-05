@@ -1,5 +1,4 @@
-import * as React from 'react';
-import { createContext, ReactNode, useId, useMemo } from 'react';
+import React, { createContext, ReactNode, useId, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 
 export const PortalProvider: React.FC<{

@@ -1,4 +1,4 @@
-export { LoginPage, type LoginFormData } from './LoginPage/LoginPage';
-export { SystemAboutPage } from './SystemAboutPage';
-export { DevDebugPage } from './DevDebugPage';
-export { AppearanceSettingPage } from './AppearanceSettingPage';
+export { LoginPage, type LoginFormData } from '@/console/pages/LoginPage/LoginPage';
+export { SystemAboutPage } from '../../console/pages/SystemAboutPage/SystemAboutPage';
+export { DevDebugPage } from '../../demo/pages/DevDebugPage';
+export { AppearanceSettingPage } from '../../console/pages/AppearanceSettingPage/AppearanceSettingPage';

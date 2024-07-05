@@ -10,7 +10,7 @@ export const LoadingIndicator: React.FC<{ title?: string; className?: string; st
 }) => {
   return (
     <div
-      className={clsx('relative flex min-h-[inherit] h-full w-full items-center justify-center', className)}
+      className={clsx('relative flex h-full min-h-[inherit] w-full items-center justify-center', className)}
       style={style}
     >
       <DotsFadeLoader />

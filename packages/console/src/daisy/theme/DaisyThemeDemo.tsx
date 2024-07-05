@@ -17,7 +17,7 @@ export const DaisyThemeDemo = () => {
           <label tabIndex={0} className='btn btn-outline btn-sm m-1'>
             {state.size || 'Size'}
           </label>
-          <ul tabIndex={0} className='menu dropdown-content rounded-box w-52 bg-base-100 p-2 shadow'>
+          <ul tabIndex={0} className='menu dropdown-content w-52 rounded-box bg-base-100 p-2 shadow'>
             <li
               onClick={() => {
                 update({ ...state, size: undefined });
@@ -43,7 +43,7 @@ export const DaisyThemeDemo = () => {
           <label tabIndex={0} className={`btn btn-outline btn-sm m-1 ${daisy('btn', { intent })}`}>
             {state.intent || 'Intent'}
           </label>
-          <ul tabIndex={0} className='menu dropdown-content rounded-box w-52 bg-base-100 p-2 shadow'>
+          <ul tabIndex={0} className='menu dropdown-content w-52 rounded-box bg-base-100 p-2 shadow'>
             <li
               onClick={() => {
                 update({ ...state, intent: undefined });
@@ -163,10 +163,10 @@ export const DaisyThemeDemo = () => {
           <div className='divider'>link</div>
           <div className={'flex flex-col items-start'}>
             <a className='link'>link</a>
-            <a className='link-primary link'>link-primary</a>
-            <a className='link-secondary link'>link-secondary</a>
-            <a className='link-accent link'>link-accent</a>
-            <a className='link-neutral link'>link-neutral</a>
+            <a className='link link-primary'>link-primary</a>
+            <a className='link link-secondary'>link-secondary</a>
+            <a className='link link-accent'>link-accent</a>
+            <a className='link link-neutral'>link-neutral</a>
             <a className='link-hover link'>link-hover</a>
           </div>
         </div>
@@ -180,14 +180,14 @@ export const DaisyThemeDemo = () => {
               <a className='tab'>Tab 3</a>
             </div>
             <div className='tabs'>
-              <a className='tab tab-bordered'>tab-bordered</a>
-              <a className='tab tab-active tab-bordered'>Tab 2</a>
-              <a className='tab tab-bordered'>Tab 3</a>
+              <a className='tab-bordered tab'>tab-bordered</a>
+              <a className='tab-bordered tab tab-active'>Tab 2</a>
+              <a className='tab-bordered tab'>Tab 3</a>
             </div>
             <div className='tabs'>
-              <a className='tab tab-lifted'>tab-lifted</a>
-              <a className='tab tab-active tab-lifted'>Tab 2</a>
-              <a className='tab tab-lifted'>Tab 3</a>
+              <a className='tab-lifted tab'>tab-lifted</a>
+              <a className='tab-lifted tab tab-active'>Tab 2</a>
+              <a className='tab-lifted tab'>Tab 3</a>
             </div>
             <div className='tabs-boxed tabs'>
               <a className='tab'>tabs-boxed</a>
@@ -196,24 +196,24 @@ export const DaisyThemeDemo = () => {
             </div>
             {/*  size */}
             <div className='tabs'>
-              <a className='tab tab-lifted tab-xs'>tab-xs</a>
-              <a className='tab tab-active tab-lifted tab-xs'>Tiny</a>
-              <a className='tab tab-lifted tab-xs'>Tiny</a>
+              <a className='tab-lifted tab-xs tab'>tab-xs</a>
+              <a className='tab-lifted tab-xs tab tab-active'>Tiny</a>
+              <a className='tab-lifted tab-xs tab'>Tiny</a>
             </div>
             <div className='tabs'>
-              <a className='tab tab-lifted tab-sm'>tab-sm</a>
-              <a className='tab tab-active tab-lifted tab-sm'>Small</a>
-              <a className='tab tab-lifted tab-sm'>Small</a>
+              <a className='tab-lifted tab-sm tab'>tab-sm</a>
+              <a className='tab-lifted tab-sm tab tab-active'>Small</a>
+              <a className='tab-lifted tab-sm tab'>Small</a>
             </div>
             <div className='tabs'>
-              <a className='tab tab-lifted'>Normal</a>
-              <a className='tab tab-active tab-lifted'>Normal</a>
-              <a className='tab tab-lifted'>Normal</a>
+              <a className='tab-lifted tab'>Normal</a>
+              <a className='tab-lifted tab tab-active'>Normal</a>
+              <a className='tab-lifted tab'>Normal</a>
             </div>
             <div className='tabs'>
-              <a className='tab tab-lifted tab-lg'>tab-lg</a>
-              <a className='tab tab-active tab-lifted tab-lg'>Large</a>
-              <a className='tab tab-lifted tab-lg'>Large</a>
+              <a className='tab-lifted tab-lg tab'>tab-lg</a>
+              <a className='tab-lifted tab-lg tab tab-active'>Large</a>
+              <a className='tab-lifted tab-lg tab'>Large</a>
             </div>
           </div>
         </div>
@@ -240,11 +240,11 @@ export const DaisyThemeDemo = () => {
             <div className='radial-progress' style={{ '--value': 10 }}>
               10%
             </div>
-            <div className='radial-progress text-primary' style={{ '--value': 30 }}>
+            <div className='text-primary radial-progress' style={{ '--value': 30 }}>
               primary
             </div>
             <div
-              className='radial-progress border-4 border-primary bg-primary text-primary-content'
+              className='border-primary bg-primary radial-progress border-4 text-primary-content'
               style={{ '--value': 35 }}
             >
               35%

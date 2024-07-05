@@ -1,4 +1,4 @@
-import { DynamicModule, SitePreferences } from '@wener/console/web';
+import { DynamicModule, SitePreferences } from '@/web';
 import { WenerLogo } from './WenerLogo';
 
 export default {
