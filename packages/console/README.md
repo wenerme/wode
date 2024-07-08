@@ -28,3 +28,10 @@
 - ./router
 - ./toast
 - ./valtio
+
+## Demo
+
+```bash
+pnpm add @wener/console
+pnpm add overlayscrollbars overlayscrollbars-react tailwind-merge clsx
+```

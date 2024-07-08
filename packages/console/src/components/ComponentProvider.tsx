@@ -8,8 +8,8 @@ export interface DefineComponentOptions<P extends {} = {}> {
   schema?: any;
   metadata?: Record<string, any>;
 
-  Component?: React.ComponentType;
-  load?: () => Promise<React.ComponentType | { default: React.ComponentType }>;
+  Component?: React.ComponentType<P>;
+  load?: () => Promise<React.ComponentType<P> | { default: React.ComponentType<P> }>;
 }
 
 export interface ComponentDef {
@@ -23,14 +23,14 @@ export interface ComponentDef {
 
 let _components: ComponentDef[] = [];
 
-export function defineComponent<P extends {}>({
+export function defineComponent<P extends {} = {}>({
   Component: _Component,
   load,
   ...opts
 }: DefineComponentOptions<P>): ContextComponentType<P> {
   {
     const Component = createComponent({
-      Component: _Component,
+      Component: _Component as any,
       load,
     });
     // if (Component === Fragment) {

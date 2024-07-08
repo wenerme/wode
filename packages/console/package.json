@@ -1,6 +1,6 @@
 {
   "name": "@wener/console",
-  "version": "1.0.8",
+  "version": "1.0.9-beta.3",
   "type": "module",
   "description": "Base console UI toolkit",
   "author": "wener",
@@ -21,6 +21,7 @@
     "./router": "./src/router/index.ts",
     "./state": "./src/state/index.ts",
     "./toast": "./src/toast/index.ts",
+    "./tw": "./src/tw/index.ts",
     "./valtio": "./src/valtio/index.ts",
     "./web": "./src/web/index.ts",
     "./web/components": "./src/web/components/index.ts",
@@ -185,6 +186,10 @@
       "./toast": {
         "types": "./src/toast/index.ts",
         "default": "./lib/toast/index.js"
+      },
+      "./tw": {
+        "types": "./src/tw/index.ts",
+        "default": "./lib/tw/index.js"
       },
       "./valtio": {
         "types": "./src/valtio/index.ts",

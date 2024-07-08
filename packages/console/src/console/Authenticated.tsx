@@ -3,7 +3,7 @@ import Splash from '@/assets/LoginSplash.jpg';
 import { LoginFormData, LoginPage } from '@/console/pages/LoginPage';
 import { AuthStatus, getAppState, getAppStore } from '@/state';
 import { SiteLogo } from '@/web';
-import { AutoImage } from '@/web/components/AutoImage';
+import { Image } from '@/web/components/Image';
 
 export const Authenticated: React.FC<
   PropsWithChildren & {
@@ -54,7 +54,7 @@ const Auth: React.FC<{ onLogin?: (o: LoginFormData) => void }> = ({ onLogin }) =
       onSubmit={onLogin}
       showoff={
         // <img src={Splash} alt='splash' className='absolute inset-0 h-full w-full object-cover' />
-        <AutoImage
+        <Image
           className='absolute inset-0 h-full w-full object-cover'
           // https://images.unsplash.com/photo-1496917756835-20cb06e75b4e
           // src={'/static/login-splash.jpg'}
