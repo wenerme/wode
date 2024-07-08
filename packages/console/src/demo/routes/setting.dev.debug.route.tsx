@@ -1,6 +1,6 @@
 import React from 'react';
 import { type RouteObject } from 'react-router-dom';
-import { DevDebugPage } from '@/web/pages';
+import { DevDebugPage } from '@/demo/pages/DevDebugPage';
 
 export default {
   element: <DevDebugPage />,

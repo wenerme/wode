@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { getUrqlClient } from '@wener/console/client/graphql';
+import { ComponentProvider } from '@wener/console/components';
+import { AppActor, Authenticated, AuthReady, SiteLogo, StaticRootReactor } from '@wener/console/console';
+import { ContextStoreProvider } from '@wener/console/hooks';
+import { LoginFormData } from '@wener/console/pages';
+import { AppActions, getAppStore } from '@wener/console/state';
+import { showErrorToast, showSuccessToast } from '@wener/console/toast';
+import { ErrorSuspenseBoundary, getConsoleContext } from '@wener/console/web';
 import dayjs from 'dayjs';
 import { Provider } from 'urql';
-import { getUrqlClient } from '@/client/graphql';
-import { ComponentProvider } from '@/components/ComponentProvider';
-import { AppActor, Authenticated, AuthReady, SiteLogo } from '@/console';
-import { LoginFormData } from '@/console/pages/LoginPage';
-import { DemoConsole } from '@/demo/DemoConsole';
 import { WenerLogo } from '@/demo/modules/site.core/WenerLogo';
-import { ContextStoreProvider } from '@/hooks';
-import { AppActions, getAppStore } from '@/state';
-import { showErrorToast, showSuccessToast } from '@/toast';
-import { getConsoleContext } from '@/web';
 
 const doPasswordLogin = async ({ username, password }: LoginFormData) => {
   if (username !== 'admin' || password !== 'admin') {
@@ -75,30 +74,36 @@ const ReactQueryClientProvider: React.FC<{ children?: React.ReactNode; url?: str
   return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
 };
 
-export const DemoApp = () => {
+const Content = React.lazy(async () => import('./ConsoleContent'));
+// Content.displayName = 'Content';
+export const ConsoleApp = () => {
   return (
     <>
-      <ComponentProvider
-        components={[
-          {
-            provide: SiteLogo,
-            Component: WenerLogo,
-          },
-        ]}
-      >
-        <AppActor actions={getAppActorActions()} />
-        <AuthReady>
-          <ReactQueryClientProvider>
-            <Provider value={getUrqlClient()}>
-              <ContextStoreProvider value={getConsoleContext().getModuleService().store}>
-                <Authenticated onLogin={doLogin}>
-                  <DemoConsole />
-                </Authenticated>
-              </ContextStoreProvider>
-            </Provider>
-          </ReactQueryClientProvider>
-        </AuthReady>
-      </ComponentProvider>
+      <ErrorSuspenseBoundary>
+        <ComponentProvider
+          components={[
+            {
+              provide: SiteLogo,
+              Component: WenerLogo,
+              // Component: withDefaultProps(ActiveToggleIcon, { icon: WenerLogo, inactiveClassName: 'opacity-75' }),
+            },
+          ]}
+        >
+          <StaticRootReactor />
+          <AppActor actions={getAppActorActions()} />
+          <AuthReady>
+            <ReactQueryClientProvider>
+              <Provider value={getUrqlClient()}>
+                <ContextStoreProvider value={getConsoleContext().getModuleService().store}>
+                  <Authenticated onLogin={doLogin}>
+                    <Content />
+                  </Authenticated>
+                </ContextStoreProvider>
+              </Provider>
+            </ReactQueryClientProvider>
+          </AuthReady>
+        </ComponentProvider>
+      </ErrorSuspenseBoundary>
     </>
   );
 };

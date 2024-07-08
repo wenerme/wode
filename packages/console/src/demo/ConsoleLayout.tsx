@@ -1,6 +1,6 @@
 import type { PropsWithChildren, ReactNode } from 'react';
 import React from 'react';
-import { SiteLogo } from '@/console';
+import { SiteLogo } from '@wener/console/console';
 import { useContextStore } from '@/hooks';
 import { AutoNavLink, DockLayout, LeftSideMenuBarLayout } from '@/web';
 import type { ConsoleLayoutContext, DashMenu } from './ConsoleLayoutContext';
@@ -35,7 +35,7 @@ const TopItems = [
   },
 ];
 
-export const DemoConsoleLayout: React.FC<{ children?: ReactNode }> = ({ children }) => {
+export const ConsoleLayout: React.FC<{ children?: ReactNode }> = ({ children }) => {
   const { useWatch } = useContextStore<ConsoleLayoutContext>();
   const { top = [], center = [], bottom = [] } = useWatch('console.menu') ?? {};
   return (

@@ -1,7 +1,7 @@
 import { DynamicModule } from '@wener/console/web';
 import { isDev } from '@/const';
 
-export function loadDemoModule(name: string): Promise<DynamicModule> {
+export function loadModule(name: string): Promise<DynamicModule> {
   // vite 没问题
   let dyn = (name: string) => import(`./modules/${name}/module.tsx`);
   return dyn(name)

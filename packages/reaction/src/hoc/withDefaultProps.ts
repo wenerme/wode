@@ -4,7 +4,7 @@ import { hoistNonReactStatics } from './hoistNonReactStatics';
 
 const getComponentName = (Component: any) => Component.displayName || Component.name || 'Component';
 
-export function withDefaultProps<P extends object, D extends object>(
+export function withDefaultProps<P extends object, D extends Partial<P>>(
   Component: ComponentType<P>,
   defaultProps: D,
   mergeProps: (a: any, b: any) => any = defaultMergeProps,

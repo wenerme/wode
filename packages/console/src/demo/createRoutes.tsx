@@ -2,8 +2,8 @@ import React from 'react';
 import { HiColorSwatch, HiOutlineColorSwatch } from 'react-icons/hi';
 import type { RouteObject } from 'react-router-dom';
 import { Navigate } from 'react-router-dom';
-import { lazyRoute } from '@/router';
-import { PageErrorState } from '@/web';
+import { lazyRoute } from '@wener/console/router';
+import { PageErrorState } from '@wener/console/web';
 
 export function createRoutes(): RouteObject[] {
   const routes: RouteObject[] = [];
