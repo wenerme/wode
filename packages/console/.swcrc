@@ -2,13 +2,15 @@
   "$schema": "https://json.schemastore.org/swcrc",
   "sourceMaps": true,
   "module": {
-    "type": "es6"
+    "type": "es6",
+    "strict": true,
+    "noInterop": false
   },
   "jsc": {
     "target": "es2022",
     "parser": {
       "syntax": "typescript",
-      "decorators": true,
+      "tsx": true,
       "dynamicImport": true
     },
     "transform": {
@@ -18,9 +20,9 @@
     "keepClassNames": true,
     "baseUrl": "./",
     "paths": {
-      "@/*": ["@/*"]
+      "@/*": ["./src/*"]
     }
   },
-  "exclude": ["\\.test\\.tsx?$", "^src/schema/codegen"],
+  "exclude": ["\\.test\\.tsx?$", "\\.stories\\.tsx?$", "^src/schema/codegen"],
   "minify": false
 }

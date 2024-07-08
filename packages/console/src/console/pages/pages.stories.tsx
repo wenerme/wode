@@ -3,7 +3,7 @@ import { Meta } from '@storybook/react';
 import AppearanceSettingPage from '@/console/pages/AppearanceSettingPage/AppearanceSettingPage';
 import { LoginPage } from '@/console/pages/LoginPage';
 import { SystemAboutPage } from '@/console/pages/SystemAboutPage';
-import { AutoImage } from '@/web/components/AutoImage';
+import { Image } from '@/web/components/Image';
 
 const meta: Meta = {
   title: 'console/pages',
@@ -36,7 +36,7 @@ export const LoginPageDemo = () => {
         },
       }}
       showoff={
-        <AutoImage
+        <Image
           className='absolute inset-0 h-full w-full object-cover'
           src={'https://images.unsplash.com/photo-1496917756835-20cb06e75b4e'}
           // src={'https://images.unsplash.com/photo-1496917756835-20cb06e75b4e'}

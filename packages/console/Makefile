@@ -24,3 +24,7 @@ publint:
 
 sync-css:
 	rsync ./src/ ./lib/ -avz --include="*.css" --include="*/" --exclude="*"
+
+next: build
+	pnpm version prerelease --preid=beta --no-workspaces-update
+	pnpm publish --registry https://registry.npmjs.org --access public --no-git-checks --tag next
