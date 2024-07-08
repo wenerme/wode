@@ -1,6 +1,6 @@
 import React from 'react';
+import styled from '@emotion/styled';
 import { darken } from 'polished';
-import styled from 'styled-components';
 
 const cbox = (props: any) => `
 position: absolute;
@@ -44,41 +44,6 @@ const BoxShuffleContainer = styled.div<{ size?: string; colors?: string[] }>`
     }
   }
 
-  ${(props: BoxShuffleProps) =>
-    (props.colors || ['#1FBCD3', '#CBE2B4', '#F6B6CA']).map(
-      (color, i) => `
-    .holder:nth-child(${i + 1}){
-      .box{
-        background-color: ${color};
-        &:before{
-          background-color: ${darken(0.2, color)};
-        }
-        &:after{
-          background-color: ${darken(0.1, color)};
-        }
-      }
-    }
-  }
-`,
-    )}
-  .info {
-    ${cbox};
-    padding-top: 180px;
-
-    .title {
-      font-size: 20px;
-      font-weight: 400;
-      text-align: center;
-      color: #212121;
-    }
-
-    .detail {
-      font-size: 14px;
-      font-weight: 200;
-      text-align: center;
-    }
-  }
-
   .box {
     ${cbox};
     transform-style: preserve-3d;
@@ -86,6 +51,7 @@ const BoxShuffleContainer = styled.div<{ size?: string; colors?: string[] }>`
     width: var(--size);
     height: var(--size);
     //opacity: .9;
+
     &:before,
     &:after {
       position: absolute;
@@ -106,6 +72,24 @@ const BoxShuffleContainer = styled.div<{ size?: string; colors?: string[] }>`
       bottom: 100%;
       transform: rotateX(90deg);
       transform-origin: 0 100%;
+    }
+  }
+
+  .info {
+    ${cbox};
+    padding-top: 180px;
+
+    .title {
+      font-size: 20px;
+      font-weight: 400;
+      text-align: center;
+      color: #212121;
+    }
+
+    .detail {
+      font-size: 14px;
+      font-weight: 200;
+      text-align: center;
     }
   }
 
@@ -147,6 +131,23 @@ const BoxShuffleContainer = styled.div<{ size?: string; colors?: string[] }>`
       transform: translate3d(-50%, -50%, 0) scaleX(1);
     }
   }
+  ${(props: BoxShuffleProps) =>
+    (props.colors || ['#1FBCD3', '#CBE2B4', '#F6B6CA']).map(
+      (color, i) => `
+    .holder:nth-child(${i + 1}){
+      .box{
+        background-color: ${color};
+        &:before{
+          background-color: ${darken(0.2, color)};
+        }
+        &:after{
+          background-color: ${darken(0.1, color)};
+        }
+      }
+    }
+  }
+`,
+    )}
 `;
 
 export interface BoxShuffleProps {

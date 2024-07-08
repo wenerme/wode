@@ -3,7 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { Provider } from 'urql';
 import { getUrqlClient } from '@/client/graphql';
-import { ComponentProvider } from '@/components/ComponentRegistry';
+import { ComponentProvider } from '@/components/ComponentProvider';
 import { AppActor, Authenticated, AuthReady, SiteLogo } from '@/console';
 import { LoginFormData } from '@/console/pages/LoginPage';
 import { DemoConsole } from '@/demo/DemoConsole';
@@ -81,7 +81,7 @@ export const DemoApp = () => {
       <ComponentProvider
         components={[
           {
-            name: SiteLogo,
+            provide: SiteLogo,
             Component: WenerLogo,
           },
         ]}

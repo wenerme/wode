@@ -116,11 +116,13 @@
     "next": "^14.2.4",
     "overlayscrollbars": "^2.9.2",
     "overlayscrollbars-react": "^0.5.6",
+    "polished": "^4.3.1",
     "react-hook-form": "^7.52.0",
     "react-icons": "^5.2.1",
     "react-is": "^18.3.1",
     "react-rnd": "^10.4.11",
     "storybook": "^8.1.11",
+    "styled-components": "^6.1.11",
     "urql": "^4.1.0",
     "web-vitals": "^4.2.1",
     "wonka": "^6.3.4"

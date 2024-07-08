@@ -1,6 +1,6 @@
 import type { HTMLAttributes } from 'react';
 import React from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 const GooeyLoaderContainer = styled.div`
   width: 200px;
