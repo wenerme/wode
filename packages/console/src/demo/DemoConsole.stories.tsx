@@ -1,6 +1,6 @@
 import React from 'react';
 import { Meta } from '@storybook/react';
-import { DemoApp } from '@/demo/DemoApp';
+import { ConsoleApp } from '@/demo/ConsoleApp';
 
 const meta: Meta = {
   title: 'console/demo',
@@ -13,7 +13,7 @@ export default meta;
 export const Demo = () => {
   return (
     <div className={'absolute inset-0'}>
-      <DemoApp />
+      <ConsoleApp />
     </div>
   );
 };

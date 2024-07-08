@@ -35,7 +35,9 @@ function getLauncherStore() {
   return getGlobalStates('LauncherStore', createLauncherStore);
 }
 
-export const Launcher = memo<ComponentPropsWithoutRef<'div'>>(() => {
+export type ConsoleLauncherProps = ComponentPropsWithoutRef<'div'>;
+
+export const ConsoleLauncher = memo<ComponentPropsWithoutRef<'div'>>(() => {
   let store = getLauncherStore();
   let open = useStore(store, (s) => s.open);
   if (!open) {

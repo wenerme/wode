@@ -30,7 +30,7 @@ export const SystemAboutPage: React.FC<{
 }> = ({
   children,
   title = '控制台',
-  logo = <SiteLogo />,
+  logo = <SiteLogo className={'h-6 w-6'} />,
   build = {
     title: title,
     info: getBuildInfo(),

@@ -1,6 +1,6 @@
 {
   "name": "@wener/console",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "type": "module",
   "description": "Base console UI toolkit",
   "author": "wener",
@@ -11,24 +11,24 @@
     "./client/graphql": "./src/client/graphql/index.ts",
     "./components": "./src/components/index.ts",
     "./console": "./src/console/index.ts",
-    "./console/pages": "./src/console/pages/index.ts",
+    "./console/globals.css": "./src/console/globals.css",
     "./daisy": "./src/daisy/index.ts",
     "./floating": "./src/floating/index.ts",
     "./hooks": "./src/hooks/index.ts",
     "./icons": "./src/icons/index.ts",
     "./loader": "./src/loader/index.ts",
-    "./pages": "./src/web/pages/index.ts",
+    "./pages": "./src/console/pages/index.ts",
     "./router": "./src/router/index.ts",
     "./state": "./src/state/index.ts",
     "./toast": "./src/toast/index.ts",
     "./valtio": "./src/valtio/index.ts",
     "./web": "./src/web/index.ts",
+    "./web/components": "./src/web/components/index.ts",
     "./web/pages": "./src/web/pages/index.ts",
-    "./web/pages/setting/about/route": "./src/web/pages/setting/about/route.tsx",
-    "./web/pages/setting/appearance/route": "./src/web/pages/setting/appearance/route.tsx",
-    "./web/pages/setting/dev/debug/route": "./src/web/pages/setting/dev/debug/route.tsx",
     "./web/user": "./src/web/user/index.ts",
+    "./web/window": "./src/web/window/index.ts",
     "./zustand": "./src/zustand/index.ts",
+    "./*": "./src/*/index.ts",
     "./package.json": "./package.json"
   },
   "files": [
@@ -149,10 +149,7 @@
         "types": "./src/console/index.ts",
         "default": "./lib/console/index.js"
       },
-      "./console/pages": {
-        "types": "./src/console/pages/index.ts",
-        "default": "./lib/console/pages/index.js"
-      },
+      "./console/globals.css": "./src/console/globals.css",
       "./daisy": {
         "types": "./src/daisy/index.ts",
         "default": "./lib/daisy/index.js"
@@ -174,8 +171,8 @@
         "default": "./lib/loader/index.js"
       },
       "./pages": {
-        "types": "./src/web/pages/index.ts",
-        "default": "./lib/web/pages/index.js"
+        "types": "./src/console/pages/index.ts",
+        "default": "./lib/console/pages/index.js"
       },
       "./router": {
         "types": "./src/router/index.ts",
@@ -197,13 +194,29 @@
         "types": "./src/web/index.ts",
         "default": "./lib/web/index.js"
       },
+      "./web/components": {
+        "types": "./src/web/components/index.ts",
+        "default": "./lib/web/components/index.js"
+      },
+      "./web/pages": {
+        "types": "./src/web/pages/index.ts",
+        "default": "./lib/web/pages/index.js"
+      },
       "./web/user": {
         "types": "./src/web/user/index.ts",
         "default": "./lib/web/user/index.js"
       },
+      "./web/window": {
+        "types": "./src/web/window/index.ts",
+        "default": "./lib/web/window/index.js"
+      },
       "./zustand": {
         "types": "./src/zustand/index.ts",
         "default": "./lib/zustand/index.js"
+      },
+      "./*": {
+        "types": "./src/*/index.ts",
+        "default": "./lib/*/index.js"
       },
       "./package.json": "./package.json"
     }

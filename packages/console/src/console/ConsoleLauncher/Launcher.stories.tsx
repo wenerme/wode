@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { PiClock } from 'react-icons/pi';
 import { Meta } from '@storybook/react';
-import { addLaunchItems, Launcher, toggleLauncher } from './Launcher';
+import { addLaunchItems, ConsoleLauncher, toggleLauncher } from './ConsoleLauncher';
 
 const meta: Meta = {
   title: 'console/Launcher',
@@ -32,7 +32,7 @@ export const Demo = () => {
       >
         打开
       </button>
-      <Launcher />
+      <ConsoleLauncher />
     </div>
   );
 };

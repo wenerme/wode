@@ -1,6 +1,6 @@
 import React from 'react';
 import { RouteObject } from 'react-router-dom';
-import AppearanceSettingPage from '@/console/pages/AppearanceSettingPage/AppearanceSettingPage';
+import { AppearanceSettingPage } from '@wener/console/pages';
 
 export default {
   element: <AppearanceSettingPage />,

@@ -27,7 +27,7 @@ export function defineComponent<P extends {}>({
   Component: _Component,
   load,
   ...opts
-}: DefineComponentOptions<P>): RegisteredComponentType<P> {
+}: DefineComponentOptions<P>): ContextComponentType<P> {
   {
     const Component = createComponent({
       Component: _Component,
@@ -57,12 +57,12 @@ export function defineComponent<P extends {}>({
   const name = opts.name;
   let component = Object.assign(
     forwardRef<any, Record<string, any>>((props, ref) => {
-      return <RegisteredComponent $name={name} {...props} ref={ref} />;
+      return <ConsumeComponent $name={name} {...props} ref={ref} />;
     }),
     {
-      $RegisteredComponent: name,
+      [ComponentNamePropKey]: name,
     },
-  ) as RegisteredComponentType<P>;
+  ) as ContextComponentType<P>;
   return component;
 }
 
@@ -70,33 +70,33 @@ export function getComponents() {
   return _components;
 }
 
-export const RegisteredComponent = forwardRef<any, { $name: string } & Record<string, any>>(
-  ({ $name, ...props }, ref) => {
-    const [Component] = useComponent<any>($name);
+export const ConsumeComponent = forwardRef<any, { $name: string } & Record<string, any>>(({ $name, ...props }, ref) => {
+  const [Component] = useComponent<any>($name);
 
-    return <Component {...props} ref={ref} />;
-  },
-);
+  return <Component {...props} ref={ref} />;
+});
 
-export type RegisteredComponentType<P> = React.ComponentType<P> & { $RegisteredComponent: string };
+const ComponentNamePropKey = '$ContextComponentName';
 
-export function createRegisteredComponent<P extends {}>(name: string): RegisteredComponentType<P> {
+export type ContextComponentType<P> = React.ComponentType<P> & { [ComponentNamePropKey]: string };
+
+export function createContextComponent<P extends {}>(name: string): ContextComponentType<P> {
   let component = Object.assign(
     forwardRef<any, Record<string, any>>((props, ref) => {
-      return <RegisteredComponent $name={name} {...props} ref={ref} />;
+      return <ConsumeComponent $name={name} {...props} ref={ref} />;
     }),
     {
-      $RegisteredComponent: name,
+      [ComponentNamePropKey]: name,
     },
-  ) as RegisteredComponentType<P>;
-  component.displayName = `RegisteredComponent(${name})`;
+  ) as ContextComponentType<P>;
+  component.displayName = `${ComponentNamePropKey}(${name})`;
   return component;
 }
 
 type LoadableComponent<P> = () => MaybePromise<React.ComponentType<P> | { default: React.ComponentType<P> }>;
 
 type ProvideComponentOptions<P extends {} = {}> = {
-  provide: string | RegisteredComponentType<P>;
+  provide: string | ContextComponentType<P>;
   Component?: React.ComponentType<P>;
   load?: LoadableComponent<P>;
 };
@@ -106,7 +106,7 @@ export type ComponentProviderProps = {
   children?: React.ReactNode;
 };
 
-type NameLike<P> = string | RegisteredComponentType<P>;
+type NameLike<P> = string | ContextComponentType<P>;
 
 type ComponentContextObject = {
   parent?: ComponentContextObject;
@@ -129,7 +129,7 @@ const RootValue: ComponentContextObject = {
 const ComponentContext = React.createContext<ComponentContextObject>(RootValue);
 
 function resolveName<P>(def: NameLike<P>) {
-  let name = typeof def === 'string' ? def : def.$RegisteredComponent;
+  let name = typeof def === 'string' ? def : def[ComponentNamePropKey];
   return { name };
 }
 
