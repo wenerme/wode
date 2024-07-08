@@ -1,9 +1,10 @@
 import { Meta } from '@storybook/react';
-import { RegisteredComponent, useComponentRegistry } from '@/components/ComponentRegistry';
+import { ComponentProvider } from '@/components/ComponentProvider';
 import { SiteLogo } from '@/console/components/KnownDefinedComponent';
+import { WenerLogo } from '@/demo/modules/site.core/WenerLogo';
 
 const meta: Meta = {
-  title: 'Components/Registry',
+  title: 'React/ComponentProvider',
   parameters: {
     layout: 'fullscreen',
   },
@@ -11,21 +12,16 @@ const meta: Meta = {
 export default meta;
 
 export const Demo = () => {
-  const reg = useComponentRegistry();
+  // const reg = useComponentRegistry();
 
   return (
     <div>
-      <div>Component</div>
-      <SiteLogo />
-      <div>Component Lists</div>
-      {reg.getComponentNames().map((name) => {
-        return (
-          <div className={'flex flex-col'}>
-            <h2>{name}</h2>
-            <RegisteredComponent $name={name} />
-          </div>
-        );
-      })}
+      <div>Default SiteLogo</div>
+      <SiteLogo className={'h-6 w-6'} />
+      <div>Provided SiteLogo</div>
+      <ComponentProvider components={[{ provide: SiteLogo, Component: WenerLogo }]}>
+        <SiteLogo className={'h-6 w-6'} />
+      </ComponentProvider>
     </div>
   );
 };
