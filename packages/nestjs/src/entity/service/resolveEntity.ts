@@ -5,11 +5,12 @@ import { StandardBaseEntity } from '../StandardBaseEntity';
 import { AnyStandardEntity } from '../types';
 import { resolveEntityContext, ResolveEntityContextOptions } from './resolveEntityContext';
 
-export type ResolveEntityOptions<E extends StandardBaseEntity> =
+export type ResolveEntityOptions<E extends StandardBaseEntity, O extends {} = {}> =
   | (BuildResolveEntityOptions & {
       entity?: E;
       where?: FilterQuery<E>;
-    })
+      resolve?: (o: O & BuildResolveEntityOptions, ctx: { where: FilterQuery<E>[] }) => void;
+    } & O)
   | E;
 
 export interface ResolveEntityResult<E extends StandardBaseEntity> {
@@ -23,6 +24,7 @@ interface BuildResolveEntityOptions {
   eid?: string;
   cid?: string;
   rid?: string;
+  code?: string;
 }
 
 export function buildResolveEntityWhere<E>(
@@ -41,9 +43,11 @@ export function buildResolveEntityWhere<E>(
     where['eid'] = opts.eid;
   } else if (opts.sid && Features.hasFeature(Entity, EntityFeature.HasSid)) {
     where['sid'] = opts.sid;
-  } else if (opts.cid && opts.rid && Features.hasFeature(Entity, EntityFeature.HasVendorRef)) {
-    where['cid'] = opts.cid;
-    where['rid'] = opts.rid;
+  } else if (opts.code && Features.hasFeature(Entity, EntityFeature.HasCode)) {
+    where['code'] = opts.code;
+  } else if ((opts.cid || opts.rid) && Features.hasFeature(Entity, EntityFeature.HasVendorRef)) {
+    opts.cid && (where['cid'] = opts.cid);
+    opts.rid && (where['rid'] = opts.rid);
   } else {
     return {
       where: where as any,
@@ -68,14 +72,17 @@ export async function resolveEntity<E extends StandardBaseEntity>(
 
   let entity: E | null;
 
-  const where: FilterQuery<E> = [];
+  const where: FilterQuery<E>[] = [];
   {
     const out = buildResolveEntityWhere(Entity, opts);
     if (out.hasWhere) {
       where.push(out.where);
-      if (opts.where) {
-        where.push(opts.where);
-      }
+    }
+    if (opts.where) {
+      where.push(opts.where);
+    }
+    if (opts.resolve) {
+      opts.resolve(opts, { where });
     }
   }
 

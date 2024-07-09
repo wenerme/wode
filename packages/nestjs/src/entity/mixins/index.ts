@@ -15,4 +15,5 @@ export { withRequiredEntityRefEntity } from './withRequiredEntityRefEntity';
 export { createHierarchyEntity } from './createHierarchyEntity';
 export { withSystemManagedEntity } from './withSystemManagedEntity';
 export { withTitleDescriptionEntity } from './withTitleDescriptionEntity';
+export { withVersionEntity } from './withVersionEntity';
 export type * from './types';
