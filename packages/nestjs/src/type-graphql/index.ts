@@ -10,7 +10,7 @@ export { FileScalar } from './FileScalar';
 export { NestContainerType } from './NestContainerType';
 
 export { GeneralResponseObject, GeneralResponseResolver } from './GeneralResponseResolver';
-export { GeneralRequestPayload } from './GeneralRequestPayload';
+export { GeneralRequestInput } from './GeneralRequestInput';
 
 // fixme: move to resource
 export {
