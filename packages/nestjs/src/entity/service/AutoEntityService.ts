@@ -12,12 +12,15 @@ import {
   AssignEntityOwnerOptions,
   BindEntityOptions,
   ClaimEntityOwnerOptions,
+  CreateEntityOptions,
   EntityResult,
   EntityService,
   HasOwnerEntityService,
   HasStatusEntityService,
   ReleaseEntityOwnerOptions,
+  SetEntityNotesOptions,
   SetEntityStatusOptions,
+  UpdateEntityOptions,
 } from './services';
 import {
   AssignOwnerRequest,
@@ -46,6 +49,35 @@ export class AutoEntityService
     protected readonly orm: MikroORM,
     readonly em: EntityManager = orm.em,
   ) {}
+
+  applySearch() {}
+
+  resolveSearch() {
+    return {
+      and: [],
+      or: [],
+    };
+  }
+
+  createEntity<E extends StandardBaseEntity>(
+    req: CreateEntityOptions<RequiredEntityData<E>>,
+  ): Promise<EntityResult<E>> {
+    throw Errors.NotImplemented.throw();
+  }
+
+  updateEntity<E extends StandardBaseEntity>(
+    ent: ResolveEntityOptions<E>,
+    opts: UpdateEntityOptions<any>,
+  ): Promise<EntityResult<E>> {
+    throw Errors.NotImplemented.throw();
+  }
+
+  patchEntity<E extends StandardBaseEntity>(
+    ent: ResolveEntityOptions<E>,
+    opts: UpdateEntityOptions<any>,
+  ): Promise<EntityResult<E>> {
+    throw Errors.NotImplemented.throw();
+  }
 
   createQueryBuilder({ em }: { em?: EntityManager }): Promise<{ builder: QueryBuilder<StandardBaseEntity> }> {
     throw Errors.NotImplemented.throw();
@@ -183,5 +215,12 @@ export class AutoEntityService
     opts: ReleaseEntityOwnerOptions,
   ): Promise<EntityResult<E>> {
     return this.getEntityService(ent).releaseEntityOwner(ent, opts);
+  }
+
+  setEntityNotes<E extends StandardBaseEntity>(
+    ent: ResolveEntityOptions<E>,
+    req: SetEntityNotesOptions,
+  ): Promise<EntityResult<E>> {
+    return this.getEntityService(ent).setEntityNotes(ent, req);
   }
 }

@@ -23,9 +23,13 @@ import {
   UpdateEntityRequest,
 } from './types';
 
+export type ResolveSearchOptions = {
+  search: string;
+};
+
 export interface EntityService2<E extends StandardBaseEntity> {
   applySearch: (opts: { builder: QueryBuilder<E>; search: string }) => MaybePromise<void>;
-  resolveSearch: (opts: { search: string }) => MaybePromise<{ and: any[]; or: any[] }>;
+  resolveSearch: (opts: ResolveSearchOptions) => MaybePromise<{ and: any[]; or: any[] }>;
 
   createQueryBuilder({ em }: { em?: EntityManager }): Promise<{ builder: QueryBuilder<E> }>;
 

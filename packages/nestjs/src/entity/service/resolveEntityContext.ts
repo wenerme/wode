@@ -15,7 +15,7 @@ export interface ResolveEntityContextOptions<E extends StandardBaseEntity> {
   createQueryBuilder?: () => MaybePromise<{ builder: QueryBuilder<E> }>; // avoid async cause exec
 }
 
-export interface EntityContext<E extends StandardBaseEntity> {
+export interface ResolvedEntityContext<E extends StandardBaseEntity> {
   Entity: EntityClass<E>;
   repo: EntityRepository<E>;
   em: EntityManager;
@@ -27,7 +27,7 @@ export interface EntityContext<E extends StandardBaseEntity> {
 
 export function resolveEntityContext<E extends StandardBaseEntity>(
   ctx: ResolveEntityContextOptions<E>,
-): EntityContext<E> {
+): ResolvedEntityContext<E> {
   const {
     Entity,
     em = getEntityManager() as EntityManager,
