@@ -12,7 +12,7 @@ import { setData } from '../setData';
 import { setOwnerRef } from '../setOwnerRef';
 import { StandardBaseEntity } from '../StandardBaseEntity';
 import { AnyStandardEntity } from '../types';
-import { resolveSimpleSearch } from './applySearch';
+import { resolveEntitySearch } from './applySearch';
 import { createQueryBuilder } from './createQueryBuilder';
 import { EntityClass } from './EntityClass';
 import { findAllEntity, FindAllEntityOptions, FindAllEntityResult } from './findAllEntity';
@@ -29,6 +29,7 @@ import {
   HasOwnerEntityService,
   HasStatusEntityService,
   ReleaseEntityOwnerOptions,
+  ResolveSearchOptions,
   SetEntityNotesOptions,
   SetEntityStatusOptions,
   UpdateEntityOptions,
@@ -66,27 +67,17 @@ export class BaseEntityService<E extends StandardBaseEntity>
   applySearch({ builder, search }: { builder: QueryBuilder<E>; search: string }) {
     const { and, or } = this.resolveSearch({ search });
     and?.length && builder.andWhere(and);
-    or?.length && builder.orWhere(or);
+    or?.length &&
+      builder.andWhere({
+        $or: or,
+      });
   }
 
-  resolveSearch(opts: { search: string }) {
-    return resolveSimpleSearch({
+  resolveSearch(opts: ResolveSearchOptions) {
+    return resolveEntitySearch({
       ...opts,
-      onSearch: (search, { and, or }) => {
-        if (this.hasFeature(EntityFeature.HasCode)) {
-          or.push({ code: { $ilike: `%${search}%` } });
-        }
-        if (this.hasFeature(EntityFeature.HasNotes)) {
-          or.push({ notes: { $ilike: `%${search}%` } });
-        }
-        if (this.hasFeature(EntityFeature.HasTitleDescription)) {
-          or.push(
-            { title: { $ilike: `%${search}%` } },
-            //
-            { description: { $ilike: `%${search}%` } },
-          );
-        }
-      },
+      Entity: this.Entity,
+      hasFeature: this.hasFeature,
     });
   }
 
@@ -203,9 +194,9 @@ export class BaseEntityService<E extends StandardBaseEntity>
     });
   }
 
-  hasFeature(code: MaybeArray<string>) {
+  hasFeature = (code: MaybeArray<string>) => {
     return Features.hasFeature(this.Entity, code);
-  }
+  };
 
   async createEntity(opts: CreateEntityOptions<RequiredEntityData<E>>) {
     const { repo, em } = this;

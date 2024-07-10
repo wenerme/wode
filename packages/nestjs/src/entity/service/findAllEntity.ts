@@ -1,9 +1,9 @@
-import { QBFilterQuery, QueryOrder, type FilterQuery } from '@mikro-orm/core';
+import { EntityClass, QBFilterQuery, QueryOrder, type FilterQuery } from '@mikro-orm/core';
 import type { QueryBuilder } from '@mikro-orm/postgresql';
 import { toMikroOrmQuery } from '@wener/miniquery/mikro-orm';
 import { Errors, MaybePromise } from '@wener/utils';
 import { StandardBaseEntity } from '../StandardBaseEntity';
-import { resolveSimpleSearch } from './applySearch';
+import { resolveEntitySearch } from './applySearch';
 import { normalizePagination } from './normalizePagination';
 import { parseOrder } from './parseOrder';
 import { resolveEntityContext, ResolveEntityContextOptions } from './resolveEntityContext';
@@ -39,6 +39,7 @@ export interface FindAllEntityResult<E extends StandardBaseEntity> {
 export async function findAllEntity<E extends StandardBaseEntity>(
   opts: FindAllEntityOptions<E>,
   resolveCtx: ResolveEntityContextOptions<E> & {
+    Entity?: EntityClass<any>;
     applySearch?: (opts: { builder: QueryBuilder<E>; search: string }) => MaybePromise<void>;
     resolveSearch?: (opts: { search: string }) => MaybePromise<{
       and: any[];
@@ -46,7 +47,7 @@ export async function findAllEntity<E extends StandardBaseEntity>(
     }>;
   },
 ): Promise<FindAllEntityResult<E>> {
-  const { resolveSearch = resolveSimpleSearch } = resolveCtx;
+  const { Entity, resolveSearch = ({ search }) => resolveEntitySearch({ search, Entity }) } = resolveCtx;
   const { createQueryBuilder } = resolveEntityContext(resolveCtx);
   const { builder } = await createQueryBuilder();
 

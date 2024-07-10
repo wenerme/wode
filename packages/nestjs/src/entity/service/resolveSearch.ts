@@ -11,6 +11,10 @@ export interface ResolveSearchOptions<C = any> {
   onSearch?: (s: string, ctx: C) => void;
   isKeyLike?: (s: string) => boolean;
   isMobilePhone?: (s: string) => boolean;
+  isMd5?: (s: string) => boolean;
+  onMd5?: (s: string, ctx: C) => void;
+  isSha256?: (s: string) => boolean;
+  onSha256?: (s: string, ctx: C) => void;
 }
 
 export function resolveSearch<C = Record<string, any>>(
@@ -21,7 +25,12 @@ export function resolveSearch<C = Record<string, any>>(
   if (!s) {
     return;
   }
-  const { isMobilePhone, isKeyLike } = { isKeyLike: _isMobilePhone, isMobilePhone: _isMobilePhone, ...o };
+  const {
+    isMobilePhone,
+    isKeyLike,
+    isMd5 = (s: string) => s.length === 32 && /^[0-9a-f]+$/.test(s),
+    isSha256 = (s: string) => s.length === 64 && /^[0-9a-f]+$/.test(s),
+  } = { isKeyLike: _isMobilePhone, isMobilePhone: _isMobilePhone, ...o };
   const ctx = (o.context || {}) as C;
   if (o.onTypedKey) {
     const sp = s.split('_');
@@ -48,6 +57,12 @@ export function resolveSearch<C = Record<string, any>>(
   }
   if (o.onMobilePhone && isMobilePhone(s)) {
     o.onMobilePhone(s, ctx);
+  }
+  if (o.onMd5 && isMd5(s)) {
+    o.onMd5(s, ctx);
+  }
+  if (o.onSha256 && isSha256(s)) {
+    o.onSha256(s, ctx);
   }
   o.onSearch?.(s, ctx);
 }

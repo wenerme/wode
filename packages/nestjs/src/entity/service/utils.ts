@@ -1,12 +1,12 @@
 import { Collection, type FilterQuery } from '@mikro-orm/core';
 import { StandardBaseEntity } from '../StandardBaseEntity';
-import { EntityContext } from './resolveEntityContext';
+import { ResolvedEntityContext } from './resolveEntityContext';
 
-interface LoadTypeOptions<E extends StandardBaseEntity> extends EntityContext<E> {}
+interface LoadTypeOptions<E extends StandardBaseEntity> extends ResolvedEntityContext<E> {}
 
 export function loadType<E extends StandardBaseEntity>(opts: LoadTypeOptions<E>) {}
 
-interface FindCollectionOptions<E extends StandardBaseEntity> extends EntityContext<E> {
+interface FindCollectionOptions<E extends StandardBaseEntity> extends ResolvedEntityContext<E> {
   refresh?: boolean;
   where?: FilterQuery<E>;
 }

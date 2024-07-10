@@ -1,4 +1,8 @@
+import { EntityClass } from '@mikro-orm/core';
 import { QueryBuilder } from '@mikro-orm/postgresql';
+import { Features } from '../../Feature';
+import { EntityFeature } from '../enum';
+import { StandardBaseEntity } from '../StandardBaseEntity';
 import { resolveSearch, ResolveSearchOptions } from './resolveSearch';
 
 export interface ApplySearchOptions
@@ -9,7 +13,21 @@ export interface ApplySearchOptions
   search?: string;
 }
 
-export function resolveSimpleSearch(opts: ApplySearchOptions) {
+export interface ResolveEntitySearchOptions
+  extends ResolveSearchOptions<{
+    and: any[];
+    or: any[];
+  }> {
+  search?: string;
+  Entity?: EntityClass<any>;
+  hasFeature?: (s: string) => boolean;
+}
+
+export function resolveEntitySearch({
+  Entity = StandardBaseEntity,
+  hasFeature = (s: string) => Features.hasFeature(Entity, s),
+  ...opts
+}: ResolveEntitySearchOptions) {
   const ctx: { and: any[]; or: any[] } = { or: [], and: [] };
   const {
     search,
@@ -22,8 +40,31 @@ export function resolveSimpleSearch(opts: ApplySearchOptions) {
     onUUID = (s, ctx) => {
       ctx.and.push({ uid: s });
     },
-    onKeyLike = (s, ctx) => {
-      ctx.or.push({ rid: s }, { eid: s });
+    onKeyLike = (s, { or }) => {
+      or.push({ eid: s });
+      if (hasFeature(EntityFeature.HasVendorRef)) {
+        or.push({ rid: s });
+      }
+      if (hasFeature(EntityFeature.HasCode)) {
+        or.push({ code: { $eq: search } });
+      }
+    },
+    onUSCC = (uscc, { and, or }) => {
+      if (hasFeature(EntityFeature.HasUSCC)) {
+        and.push({ uscc: { $eq: uscc } });
+      }
+    },
+    onSearch = (search, { and, or }) => {
+      if (hasFeature(EntityFeature.HasNotes)) {
+        or.push({ notes: { $ilike: `%${search}%` } });
+      }
+      if (hasFeature(EntityFeature.HasTitleDescription)) {
+        or.push(
+          { title: { $ilike: `%${search}%` } },
+          //
+          { description: { $ilike: `%${search}%` } },
+        );
+      }
     },
     ...rest
   } = opts;
@@ -33,6 +74,8 @@ export function resolveSimpleSearch(opts: ApplySearchOptions) {
     onULID,
     onUUID,
     onKeyLike,
+    onUSCC,
+    onSearch,
     context: ctx,
     ...rest,
   });
@@ -40,6 +83,9 @@ export function resolveSimpleSearch(opts: ApplySearchOptions) {
   return ctx;
 }
 
+/**
+ * @deprecated
+ */
 export function applySearch<T extends QueryBuilder<any>>(
   o: {
     builder: T;
