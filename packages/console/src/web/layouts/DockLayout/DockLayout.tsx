@@ -4,10 +4,11 @@ import { HiOutlineLogout } from 'react-icons/hi';
 import { HiLockClosed, HiOutlineIdentification, HiQuestionMarkCircle } from 'react-icons/hi2';
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
-import { useSnapshot } from 'valtio';
+import { useStore } from 'zustand';
+import { getConsoleStore } from '@/console';
+import { getUserStore } from '@/console/container';
+import { getUserAction } from '@/console/user/getUserAction';
 import { isDev } from '../../../const';
-import { getUserProfileState, getUserSessionState } from '../../user';
-import { getUserAction } from '../../user/getUserAction';
 import { DockClock } from './DockClock';
 import { DockUserAvatar } from './DockUserAvatar';
 
@@ -31,7 +32,8 @@ export const DockLayout: React.FC<{ children?: ReactNode; dock?: ReactNode }> = 
 };
 
 const UserAvatar = () => {
-  const { id, loginName, fullName, avatarUrl, hasNotification } = useSnapshot(getUserProfileState());
+  const { id, loginName, fullName, photoUrl, avatarUrl = photoUrl } = useStore(getUserStore());
+  const hasNotification = false;
   const { signOut, signIn, lock, refreshProfile } = getUserAction();
   return (
     <DockUserAvatar {...{ loginName, fullName, avatarUrl, hasNotification, onSignIn: signIn, onSignOut: signOut }}>
@@ -70,7 +72,7 @@ const UserAvatar = () => {
             <button
               type={'button'}
               onClick={() => {
-                getUserSessionState().expired = true;
+                getConsoleStore().setState({ expired: true });
               }}
             >
               <HiQuestionMarkCircle />

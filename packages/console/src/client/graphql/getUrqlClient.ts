@@ -1,6 +1,7 @@
 import { Client } from '@urql/core';
 import { getGraphQLUrl } from '@/client/graphql/getGraphQLUrl';
-import { getAccessToken, getGlobalStates } from '@/state';
+import { getAccessToken } from '@/console';
+import { getGlobalStates } from '@/state';
 import { createUrqlClient } from '@/urql';
 
 export function getUrqlClient(): Client {

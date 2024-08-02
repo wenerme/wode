@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { HiMiniArrowPath, HiOutlineNoSymbol, HiMiniArrowRightOnRectangle as LoginIcon } from 'react-icons/hi2';
 import clsx from 'clsx';
-import { useSnapshot } from 'valtio';
+import { useStore } from 'zustand';
+import { getConsoleStore } from '@/console/container';
 import { Button, NonIdealState } from '../../daisy';
 import { getUserAction } from './getUserAction';
-import { getUserSessionState } from './getUserSessionState';
 
 export const UserAuthExpireOverlay = () => {
   const { signIn } = getUserAction();
-  const { expired } = useSnapshot(getUserSessionState());
+  const expired = useStore(getConsoleStore(), (s) => s.expired);
   const [hidden, setHidden] = useState(!expired);
   useEffect(() => {
     if (expired) {

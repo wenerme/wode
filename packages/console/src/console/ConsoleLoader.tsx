@@ -6,12 +6,11 @@ import { shallow } from 'zustand/shallow';
 import { useStoreWithEqualityFn } from 'zustand/traditional';
 import { LoadingIndicator } from '@/console/components/KnownDefinedComponent';
 import { RootRouterReactor } from '@/console/components/RootRouterReactor';
-import { getAppState } from '@/state';
+import { getAppState, getRouteStore } from '@/console/container';
 import { isDev } from '../const';
 import { useLogger } from '../hooks';
 import { RouteObjects } from '../router';
 import { DynamicModule, getConsoleContext, NotFoundPage, PageErrorState } from '../web';
-import { getRootRouteStore } from './state';
 
 enum ServiceState {
   New = 'New',
@@ -46,7 +45,7 @@ export const ConsoleLoader: React.FC<ConsoleLoaderProps> = ({
     v7_startTransition: true,
   },
 }) => {
-  const [router] = useStoreWithEqualityFn(getRootRouteStore(), ({ router }) => [router], shallow);
+  const [router] = useStoreWithEqualityFn(getRouteStore(), ({ router }) => [router], shallow);
   useDebugRender(`ConsoleAppContent`);
   const log = useLogger('ConsoleContent');
   const [state, _setState] = useState(ServiceState.New);
@@ -87,7 +86,7 @@ export const ConsoleLoader: React.FC<ConsoleLoaderProps> = ({
         render,
       }),
     );
-    getRootRouteStore().setState({ router, routes });
+    getRouteStore().setState({ router, routes });
     setState(ServiceState.Done);
     log('Initialized');
 

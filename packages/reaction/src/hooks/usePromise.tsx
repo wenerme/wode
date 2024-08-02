@@ -1,27 +1,64 @@
 import { useEffect, useState } from 'react';
 
 export function usePromise<T>(f: (opts: { signal: AbortSignal }) => Promise<T>, deps: any[]) {
-  const [state, setState] = useState(() => ({
+  const [counter, setCounter] = useState(0);
+  const [state, setState] = useState<{
+    loading: boolean;
+    data?: T;
+    error?: any;
+    state: 'pending' | 'fulfilled' | 'rejected';
+    refetch: () => void;
+  }>(() => ({
     loading: true,
-    data: null,
-    error: null,
     state: 'pending',
+    refetch: () => {
+      setCounter(counter + 1);
+    },
   }));
   useEffect(() => {
-    setState({ loading: true, data: null, error: null, state: 'pending' });
+    setState((last) => {
+      return {
+        ...last,
+        loading: true,
+        data: undefined,
+        error: undefined,
+        state: 'pending',
+      };
+    });
     const ac = new AbortController();
     f({
       signal: ac.signal,
     })
       .then((data) => {
-        setState({ loading: false, data: data as any, error: null, state: 'fulfilled' });
+        if (ac.signal.aborted) {
+          return;
+        }
+        setState((last) => {
+          return {
+            ...last,
+            loading: false,
+            data: data as any,
+            error: null,
+            state: 'fulfilled',
+          };
+        });
       })
       .catch((error) => {
-        setState({ loading: false, data: null, error, state: 'rejected' });
+        if (ac.signal.aborted) {
+          return;
+        }
+        setState((last) => {
+          return {
+            ...last,
+            loading: false,
+            error,
+            state: 'rejected',
+          };
+        });
       });
     return () => {
       ac.abort();
     };
-  }, deps);
+  }, [counter, ...deps]);
   return state;
 }

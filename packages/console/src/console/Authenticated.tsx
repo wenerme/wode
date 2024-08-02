@@ -1,7 +1,9 @@
 import React, { PropsWithChildren, useEffect, useState } from 'react';
+import { useStore } from 'zustand';
 import Splash from '@/assets/LoginSplash.jpg';
+import { getAppState, getAppStore } from '@/console/container';
 import { LoginFormData, LoginPage } from '@/console/pages/LoginPage';
-import { AuthStatus, getAppState, getAppStore } from '@/state';
+import { AuthStatus } from '@/state';
 import { SiteLogo } from '@/web';
 import { Image } from '@/web/components/Image';
 
@@ -15,12 +17,13 @@ export const Authenticated: React.FC<
   });
 
   useEffect(() => {
-    if (authed) return;
+    // if (authed) return;
     let store = getAppStore();
     let unsub = store.subscribe((s) => {
       if (s.auth.status === AuthStatus.Authenticated) {
         setAuthed(true);
-        unsub();
+      } else if (s.auth.status === AuthStatus.Unauthenticated) {
+        setAuthed(false);
       }
     });
     return unsub;

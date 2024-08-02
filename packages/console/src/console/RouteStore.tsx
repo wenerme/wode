@@ -1,10 +1,8 @@
 import { createMemoryRouter, RouteObject } from 'react-router-dom';
 import { Router } from '@remix-run/router';
 import { mutative } from '@wener/reaction/mutative/zustand';
-import { computeIfAbsent } from '@wener/utils';
 import { createStore } from 'zustand';
-import { LoadingIndicator } from '@/console';
-import { getGlobalStates } from '@/state/getGlobalStates';
+import { LoadingIndicator } from '@/console/index';
 
 interface RouteState {
   // content
@@ -14,7 +12,7 @@ interface RouteState {
   // history: RemixHistory;
 }
 
-function createRouteStore() {
+export function createRouteStore() {
   return createStore(
     mutative<RouteState>((setState, getState, store) => {
       const router = createMemoryRouter([
@@ -32,8 +30,4 @@ function createRouteStore() {
   );
 }
 
-type RouteStore = ReturnType<typeof createRouteStore>;
-
-export function getRootRouteStore(): RouteStore {
-  return computeIfAbsent(getGlobalStates(), 'RootRouteStore', createRouteStore);
-}
+export type RouteStore = ReturnType<typeof createRouteStore>;

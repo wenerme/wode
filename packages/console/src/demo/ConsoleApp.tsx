@@ -2,13 +2,22 @@ import React, { useState } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { getUrqlClient } from '@wener/console/client/graphql';
 import { ComponentProvider } from '@wener/console/components';
-import { AppActor, AppConfLoader, Authenticated, AuthReady, SiteLogo, StaticRootReactor } from '@wener/console/console';
+import {
+  AppActor,
+  AppConfLoader,
+  Authenticated,
+  AuthReady,
+  getAppStore,
+  SiteLogo,
+  StaticRootReactor,
+} from '@wener/console/console';
 import { ContextStoreProvider } from '@wener/console/hooks';
 import { LoginFormData } from '@wener/console/pages';
-import { getAppStore } from '@wener/console/state';
 import { showErrorToast, showSuccessToast } from '@wener/console/toast';
 import { ErrorSuspenseBoundary, getConsoleContext } from '@wener/console/web';
 import { Provider } from 'urql';
+import { UserLoader } from '@/console/user/UserLoader';
+import { UserProfileData } from '@/console/UserStore';
 import { getAppActorActions } from '@/demo/getAppActorActions';
 import { getAuthActions } from '@/demo/getAuthActions';
 import { WenerLogo } from '@/demo/modules/site.core/WenerLogo';
@@ -56,11 +65,31 @@ export const ConsoleApp = () => {
             <AuthReady>
               <ReactQueryClientProvider>
                 <Provider value={getUrqlClient()}>
-                  <ContextStoreProvider value={getConsoleContext().getModuleService().store}>
-                    <Authenticated onLogin={doLogin}>
-                      <Content />
-                    </Authenticated>
-                  </ContextStoreProvider>
+                  <UserLoader
+                    load={async () => {
+                      return {
+                        id: 'usr_1',
+                        displayName: 'Wener',
+                        fullName: '文儿',
+                        loginName: 'wenerme',
+                        photoUrl: '',
+                        email: 'wener@wener.me',
+                        roles: [
+                          {
+                            id: 'ro_1',
+                            code: 'admin',
+                            title: 'Admin',
+                          },
+                        ],
+                      } as UserProfileData;
+                    }}
+                  >
+                    <ContextStoreProvider value={getConsoleContext().getModuleService().store}>
+                      <Authenticated onLogin={doLogin}>
+                        <Content />
+                      </Authenticated>
+                    </ContextStoreProvider>
+                  </UserLoader>
                 </Provider>
               </ReactQueryClientProvider>
             </AuthReady>

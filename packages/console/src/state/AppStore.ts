@@ -2,7 +2,6 @@ import { mutative } from '@wener/reaction/mutative/zustand';
 import _ from 'lodash';
 import { z } from 'zod';
 import { createStore } from 'zustand';
-import { getGlobalStates } from '@/state/index';
 
 interface SetAuthOptions {
   accessToken: string;
@@ -35,6 +34,7 @@ export interface AppState {
   };
 
   setAuth(o: SetAuthOptions): void;
+
   loadConf(o: AppConf): void;
 
   logout(): void;
@@ -75,7 +75,7 @@ export const AppConf = z.object({
 });
 export type AppConf = z.infer<typeof AppConf>;
 
-function createAppStore() {
+export function createAppStore() {
   return createStore(
     mutative<AppState>((setState, getState, store) => {
       return {
@@ -118,6 +118,10 @@ function createAppStore() {
           setState((s) => {
             s.auth = {
               status: AuthStatus.Unauthenticated,
+              accessToken: undefined,
+              refreshToken: undefined,
+              expiresIn: undefined,
+              expiresAt: undefined,
             };
           });
         },
@@ -127,11 +131,3 @@ function createAppStore() {
 }
 
 export type AppStore = ReturnType<typeof createAppStore>;
-
-export function getAppState(): AppState {
-  return getAppStore().getState();
-}
-
-export function getAppStore(): AppStore {
-  return getGlobalStates('AppStore', createAppStore);
-}
