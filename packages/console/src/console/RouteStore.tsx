@@ -2,7 +2,7 @@ import { createMemoryRouter, RouteObject } from 'react-router-dom';
 import { Router } from '@remix-run/router';
 import { mutative } from '@wener/reaction/mutative/zustand';
 import { createStore } from 'zustand';
-import { LoadingIndicator } from '@/console/index';
+import { LoadingIndicator } from './components';
 
 interface RouteState {
   // content

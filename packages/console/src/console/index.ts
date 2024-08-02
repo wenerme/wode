@@ -17,4 +17,4 @@ export {
   setConsoleContainer,
   getConsoleStore,
   type ConsoleContext,
-} from '@/console/container';
+} from './container';

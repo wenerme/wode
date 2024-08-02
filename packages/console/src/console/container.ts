@@ -1,16 +1,15 @@
 import { asFunction, AwilixContainer, createContainer, InjectionMode } from 'awilix';
-import { getGraphQLUrl } from '@/client/graphql';
-import { clearAuthToken } from '@/console/AppActor';
-import { createLauncherStore, LauncherStore } from '@/console/ConsoleLauncher/LauncherStore';
-import { ConsoleStore, createConsoleStore } from '@/console/ConsoleStore';
-import { createRouteStore, RouteStore } from '@/console/RouteStore';
-import { UserAction } from '@/console/user/getUserAction';
-import { createUserStore, UserStore } from '@/console/UserStore';
-import { getLogger } from '@/hooks';
-import { getGlobalStates } from '@/state';
-import { AppState, AppStore, createAppStore } from '@/state/AppStore';
-import { showSuccessToast } from '@/toast';
-import { DynamicModule } from '@/web';
+import { getGraphQLUrl } from '../client/graphql';
+import { getLogger } from '../hooks';
+import { AppState, AppStore, createAppStore, getGlobalStates } from '../state';
+import { showSuccessToast } from '../toast';
+import { DynamicModule } from '../web';
+import { clearAuthToken } from './AppActor';
+import { createLauncherStore, LauncherStore } from './ConsoleLauncher/LauncherStore';
+import { ConsoleStore, createConsoleStore } from './ConsoleStore';
+import { createRouteStore, RouteStore } from './RouteStore';
+import { UserAction } from './user/getUserAction';
+import { createUserStore, UserStore } from './UserStore';
 
 export type ConsoleContext = {
   appStore: AppStore;
