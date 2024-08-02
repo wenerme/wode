@@ -1,12 +1,21 @@
 import React, { ReactNode, useCallback, useEffect, useRef } from 'react';
 import { useStore } from 'zustand';
 import { LoadingIndicator } from '@/loader';
-import { AppActions, AppStore, AuthStatus, getAppStore } from '@/state/AppStore';
+import { AppStore, AuthStatus, getAppStore } from '@/state/AppStore';
 
 interface Storage {
   getItem: (key: string) => string | null;
   setItem: (key: string, value: string) => void;
   removeItem?: (key: string) => void;
+}
+
+export interface AppActions {
+  refresh: (o: { accessToken: string; refreshToken?: string }) => Promise<{
+    accessToken: string;
+    refreshToken?: string;
+    expiresAt: Date | string;
+  }>;
+  ping: () => Promise<any>;
 }
 
 export const AppActor: React.FC<{

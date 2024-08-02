@@ -3,7 +3,7 @@ import { GrSystem } from 'react-icons/gr';
 import { ContextComponentType, defineComponent } from '@/components/ComponentProvider';
 import { LoadingIndicator as _LoadingIndicator } from '@/loader';
 import { ErrorSuspenseBoundary as _ErrorSuspenseBoundary, LinkProps } from '@/web';
-import { Image as _Image, Link as _Link, ImageProps } from '@/web/components';
+import { Image as _Image, Link as _Link } from '@/web/components';
 import { EmptyPlaceholder as _EmptyPlaceholder } from '../../web/formats/EmptyPlaceholder';
 
 export enum KnownDefinedComponent {
@@ -21,8 +21,13 @@ export const SiteLogo = defineComponent<ComponentPropsWithoutRef<'svg'>>({
   Component: GrSystem,
 });
 
-type LoadingIndicator = ContextComponentType<ComponentPropsWithoutRef<'div'>>;
-export const LoadingIndicator = defineComponent({
+export type LoadingIndicatorProps = ComponentPropsWithoutRef<'div'> & {
+  title?: ReactNode;
+  error?: Error;
+};
+
+type LoadingIndicator = ContextComponentType<LoadingIndicatorProps>;
+export const LoadingIndicator = defineComponent<LoadingIndicatorProps>({
   name: KnownDefinedComponent.LoadingIndicator,
   Component: _LoadingIndicator,
 });

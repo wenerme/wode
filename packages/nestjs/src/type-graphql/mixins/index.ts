@@ -64,7 +64,7 @@ export function withOwnerRefType<TBase extends Constructor>(Base: TBase) {
   return HasVendorRefMixinType;
 }
 
-export function withAuditorRefObject<TBase extends Constructor>(Base: TBase) {
+export function withAuditorRefType<TBase extends Constructor>(Base: TBase) {
   @InterfaceType({ implements: HasAuditorRefNode })
   @ObjectType({ implements: HasAuditorRefNode })
   @InputType()

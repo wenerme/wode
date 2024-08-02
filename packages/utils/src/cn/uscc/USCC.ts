@@ -1,4 +1,4 @@
-import { Mod31Checksum } from './Mod31Checksum';
+import { Mod31 } from './Mod31';
 
 /**
  * - GB 32100-2015 法人和其他组织统一社会信用代码编码规则
@@ -8,7 +8,7 @@ import { Mod31Checksum } from './Mod31Checksum';
  *
  * @see https://en.wikipedia.org/wiki/Unified_Social_Credit_Identifier
  */
-export class USCC {
+export class UnifiedSocialCreditCodeFormat {
   registryCodeLabels: Record<string, Code> = {
     1: {
       label: '机构编制',
@@ -47,13 +47,7 @@ export class USCC {
 
   /* 16 位 */
   regex = /^([159][1239]|Y1)[0-9]{6}[0-9A-HJ-NP-RTUWXY]{10}$/; // 无 I O Z S V
-  checksum = Mod31Checksum.get();
-
-  static instance: USCC;
-
-  static get() {
-    return (this.instance ||= new USCC());
-  }
+  checksum = Mod31;
 
   parse(s: string): ParsedUSCC {
     let registryCode = s[0];
@@ -71,8 +65,8 @@ export class USCC {
     };
   }
 
-  verify(s: string) {
-    return this.regex.test(s) && this.checksum.verify(s);
+  validate(s: string) {
+    return this.regex.test(s) && this.checksum.validate(s);
   }
 }
 
@@ -96,3 +90,5 @@ interface ParsedUSCC {
   // 校验码
   checksum: string;
 }
+
+export const USCC = new UnifiedSocialCreditCodeFormat();

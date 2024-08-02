@@ -14,8 +14,8 @@ export const OverlayScrollbar = forwardRef<OverlayScrollbarsComponentRef<'div'>,
         options={{
           scrollbars: {
             visibility: 'auto',
-            autoHide: 'scroll',
-            autoHideDelay: 500,
+            autoHide: 'leave',
+            autoHideDelay: 1000,
             autoHideSuspend: true,
           },
         }}

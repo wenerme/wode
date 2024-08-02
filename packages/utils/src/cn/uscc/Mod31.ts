@@ -14,12 +14,6 @@ export class Mod31Checksum {
     {} as Record<string, number>,
   );
 
-  private static instance: Mod31Checksum;
-
-  static get() {
-    return this.instance || (this.instance = new Mod31Checksum());
-  }
-
   toChar(n: number) {
     return this.chars[n];
   }
@@ -28,7 +22,7 @@ export class Mod31Checksum {
     return this.numbers[c];
   }
 
-  verify(s: string) {
+  validate(s: string) {
     return s.at(-1) === this.generate(s.slice(0, s.length - 1));
   }
 
@@ -40,3 +34,5 @@ export class Mod31Checksum {
     return this.toChar(31 - (sum % 31));
   }
 }
+
+export const Mod31 = new Mod31Checksum();

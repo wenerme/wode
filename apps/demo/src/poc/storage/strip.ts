@@ -28,7 +28,7 @@ export function isSemanticZero(v: any) {
   return false;
 }
 
-export function trim(
+export function strip(
   o: any,
   by: <V = any>(v: V) => V | undefined | boolean = (v: any) => {
     switch (v) {
@@ -47,11 +47,11 @@ export function trim(
     return o;
   }
   if (Array.isArray(o)) {
-    o = o.map((v) => trim(v, by)).filter((v) => v !== undefined);
+    o = o.map((v) => strip(v, by)).filter((v) => v !== undefined);
     return falsy(by(o), o);
   }
   for (const k in o) {
-    const v = (o[k] = trim(o[k], by));
+    const v = (o[k] = strip(o[k], by));
     if (v === undefined) {
       delete o[k];
     }

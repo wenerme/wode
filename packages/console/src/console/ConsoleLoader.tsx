@@ -1,5 +1,6 @@
 import React, { ReactNode, useState } from 'react';
-import { createHashRouter, Outlet, RouterProvider } from 'react-router-dom';
+import { createHashRouter, Outlet, RouterProvider, RouterProviderProps } from 'react-router-dom';
+import { Router } from '@remix-run/router';
 import { ErrorSuspenseBoundary, useAsyncEffect, useDebugRender } from '@wener/reaction';
 import { shallow } from 'zustand/shallow';
 import { useStoreWithEqualityFn } from 'zustand/traditional';
@@ -22,19 +23,28 @@ enum ServiceState {
 let _state = ServiceState.New;
 
 export type ConsoleLoaderProps = {
-  // createRootRoutes?: (children: RouteObjects) => RouteObjects;
+  /**
+   * Render root content
+   * @param content
+   */
   render?: (content: ReactNode) => ReactNode;
   loadModule: (name: string) => Promise<DynamicModule>;
   modules?: string[];
   children?: React.ReactNode;
+  createRouter?: (children: RouteObjects) => Router;
+  future?: RouterProviderProps['future'];
 };
 
 export const ConsoleLoader: React.FC<ConsoleLoaderProps> = ({
   loadModule,
   modules = [],
   render,
+  createRouter = createHashRouter,
   // createRootRoutes = _createRootRoutes,
   children,
+  future = {
+    v7_startTransition: true,
+  },
 }) => {
   const [router] = useStoreWithEqualityFn(getRootRouteStore(), ({ router }) => [router], shallow);
   useDebugRender(`ConsoleAppContent`);
@@ -71,7 +81,7 @@ export const ConsoleLoader: React.FC<ConsoleLoaderProps> = ({
     }
 
     const routes: RouteObjects = await moduleService.createRoutes();
-    const router = createHashRouter(
+    const router = createRouter(
       createRootRoutes({
         children: routes,
         render,
@@ -93,13 +103,7 @@ export const ConsoleLoader: React.FC<ConsoleLoaderProps> = ({
   return (
     <>
       {children}
-      <RouterProvider
-        router={router}
-        fallbackElement={<LoadingIndicator />}
-        future={{
-          v7_startTransition: true,
-        }}
-      />
+      <RouterProvider router={router} fallbackElement={<LoadingIndicator />} future={future} />
     </>
   );
 };

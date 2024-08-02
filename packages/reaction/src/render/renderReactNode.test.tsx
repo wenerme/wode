@@ -4,8 +4,8 @@ import Reconciler, { HostConfig } from 'react-reconciler';
 import { DefaultEventPriority } from 'react-reconciler/constants';
 import { sleep } from '@wener/utils';
 import { expect, test } from 'vitest';
-import { renderMarkdown } from './renderMarkdown';
-import { renderText } from './renderText';
+import { renderReactNodeToMarkdown } from './renderReactNodeToMarkdown';
+import { renderReactNodeToText } from './renderReactNodeToText';
 
 type Element = {
   type: any;
@@ -143,7 +143,7 @@ const PlainObjectReconciler = Reconciler(hostConfig);
 
 test('renderText', async () => {
   expect(
-    renderText(
+    renderReactNodeToText(
       <>
         Hello World!
         <br />
@@ -152,7 +152,7 @@ test('renderText', async () => {
     ),
   ).toBe('Hello World!\nMy name is Wener.');
   expect(
-    renderMarkdown(
+    renderReactNodeToMarkdown(
       <>
         Hello World!
         <br />

@@ -9,6 +9,7 @@ export interface DefineEntityOptions {
   typeName?: string;
   schema?: string;
   title?: string;
+  description?: string;
   metadata?: Record<string, any>;
   features?: string[];
 }
@@ -18,6 +19,7 @@ export interface EntityDef {
   idType?: string;
   typeName: string;
   title: string;
+  description?: string;
   metadata: Record<string, any>;
   tableName?: string;
   schema?: string;
