@@ -24,4 +24,4 @@ export const HeaderContentFooterLayout = forwardRef<HTMLDivElement, HeaderConten
       </As>
     );
   },
-) as <E extends React.ElementType = 'div'>(props: HeaderContentFooterLayoutProps<E>) => JSX.Element;
+) as <E extends React.ElementType = 'div'>(props: HeaderContentFooterLayoutProps<E>) => React.ReactElement;

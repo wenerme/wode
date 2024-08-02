@@ -1,6 +1,6 @@
 /// javascript pseudo random
 export function createRandom(o: { seed?: string | number } = {}) {
-  let seed = typeof o.seed === 'string' ? 0 : o.seed ?? 0;
+  let seed = typeof o.seed === 'string' ? 0 : (o.seed ?? 0);
   if (typeof o.seed === 'string') {
     let sum = 0;
     for (let i = 0; i < o.seed.length; i++) {

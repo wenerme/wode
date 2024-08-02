@@ -1,6 +1,6 @@
 {
   "name": "@wener/utils",
-  "version": "1.1.47",
+  "version": "1.1.48",
   "type": "module",
   "description": "Utils for daily use",
   "repository": {
@@ -46,14 +46,14 @@
     "test": "make test"
   },
   "devDependencies": {
-    "@sinclair/typebox": "^0.32.34",
-    "@types/lodash": "^4.17.5",
-    "@types/ws": "^8.5.10",
+    "@sinclair/typebox": "^0.32.35",
+    "@types/lodash": "^4.17.7",
+    "@types/ws": "^8.5.12",
     "@wener/utils": "link:",
-    "https-proxy-agent": "^7.0.4",
+    "https-proxy-agent": "^7.0.5",
     "lodash": "^4.17.21",
     "node-fetch": "^3.3.2",
-    "undici": "^6.19.2",
+    "undici": "^6.19.5",
     "zod": "^3.23.8"
   },
   "publishConfig": {

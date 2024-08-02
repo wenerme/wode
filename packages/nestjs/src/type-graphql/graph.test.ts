@@ -21,7 +21,7 @@ import { resolveNodeType } from './entity';
 import { FileScalar } from './FileScalar';
 import { GraphQLJSONObjectScalar, GraphQLJSONScalar } from './GraphQLJSONScalar';
 import { HasNotesNode, HasOwnerRefNode, HasStateStatusNode, HasTagsNode } from './interface';
-import { withAuditorRefObject, withOwnerRefType, withStateStatusType } from './mixins';
+import { withAuditorRefType, withOwnerRefType, withStateStatusType } from './mixins';
 import { NestContainerType } from './NestContainerType';
 import { RelayNode } from './relay';
 import { createBaseEntityResolver, createListPayload, withBaseQuery } from './resource';
@@ -46,7 +46,7 @@ test('build', async () => {
     return RelayNode.resolveType(...args);
   },
 })
-export class ResourceNode extends mixin(BaseNode, withStateStatusType, withOwnerRefType, withAuditorRefObject) {
+export class ResourceNode extends mixin(BaseNode, withStateStatusType, withOwnerRefType, withAuditorRefType) {
   // @Field(() => OwnerNode, { nullable: true })
   // owner?: OwnerNode;
   //
@@ -59,7 +59,7 @@ export class ResourceNode extends mixin(BaseNode, withStateStatusType, withOwner
 }
 
 @ObjectType({ implements: [ResourceNode] })
-export class ResourceObject extends mixin(BaseObject, withStateStatusType, withOwnerRefType, withAuditorRefObject) {
+export class ResourceObject extends mixin(BaseObject, withStateStatusType, withOwnerRefType, withAuditorRefType) {
   // @Field(() => OwnerNode, { nullable: true })
   // owner?: OwnerNode;
   //

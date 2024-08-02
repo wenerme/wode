@@ -1,7 +1,7 @@
-import { Mod11Checksum } from './Mod11Checksum';
+import { Mod11 } from './Mod11';
 
-export class ResidentIdNumber {
-  checksum = Mod11Checksum.get();
+class ResidentIdNumberFormat {
+  checksum = Mod11;
 
   // 9 https://zh.wikipedia.org/wiki/中华人民共和国外国人永久居留身份证
   // 9 标识码
@@ -11,19 +11,15 @@ export class ResidentIdNumber {
   regex =
     /^(?<division>[1-9]\d{5})(?<year>18|19|20)\d{2}(?<month>0[1-9]|1[0-2])(?<day>0[1-9]|[12]\d|3[01])(?<sequence>\d{3})(?<checksum>[0-9Xx])$/;
 
-  private static instance: ResidentIdNumber;
-
-  static get() {
-    return (this.instance ||= new ResidentIdNumber());
-  }
-
-  verify(s: string) {
+  validate(s: string) {
     if (!s) return false;
-    return this.regex.test(s) && this.checksum.verify(s.toUpperCase());
+    return this.regex.test(s) && this.checksum.validate(s.toUpperCase());
   }
+
+  generate(opts: { sex?: 'Male' | 'Female'; age?: number; birthDate?: Date; division?: string }) {}
 
   parse(s: string): IdNumber | undefined {
-    if (!this.verify(s)) {
+    if (!this.validate(s)) {
       return;
     }
 
@@ -86,7 +82,7 @@ class IdNumber {
   }
 
   get valid() {
-    return ResidentIdNumber.get().verify(this.toString());
+    return ResidentIdNumber.validate(this.toString());
   }
 
   get male() {
@@ -126,3 +122,5 @@ function formatDate(date: Date, format = 'YYYYMMDD') {
       throw new Error(`Invalid format`);
   }
 }
+
+export const ResidentIdNumber = new ResidentIdNumberFormat();

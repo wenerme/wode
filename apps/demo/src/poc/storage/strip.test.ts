@@ -1,9 +1,9 @@
-import { test, expect } from 'vitest';
-import { isSemanticZero, trim } from './trim.js';
+import { expect, test } from 'vitest';
+import { isSemanticZero, strip } from './strip.js';
 
-test('trim', () => {
+test('prune', () => {
   expect(
-    trim({
+    strip({
       a: undefined,
       b: null,
       c: NaN,
@@ -14,7 +14,7 @@ test('trim', () => {
     d: new Date('abc'),
   });
   expect(
-    trim(
+    strip(
       {
         a: undefined,
         b: null,
@@ -23,5 +23,5 @@ test('trim', () => {
       },
       isSemanticZero,
     ),
-  ).toEqual();
+  ).toEqual(undefined);
 });

@@ -1,11 +1,16 @@
-import { MikroORM, RequestContext } from '@mikro-orm/core';
-import { type TransactionOptions } from '@mikro-orm/core/enums';
+import { MikroORM, RequestContext, type TransactionOptions } from '@mikro-orm/core';
 import { type EntityManager, type PostgreSqlDriver } from '@mikro-orm/postgresql';
-import { type MaybePromise } from '@wener/utils';
+import { MaybeFunction, type MaybePromise } from '@wener/utils';
 import { getContext } from '../app.context';
 
-export function getMikroORM() {
-  return getContext(MikroORM<PostgreSqlDriver>);
+let _provider = () => getContext(MikroORM);
+
+export function setMikroORM(orm: MaybeFunction<MikroORM<any>>) {
+  _provider = typeof orm === 'function' ? orm : () => orm;
+}
+
+export function getMikroORM(): MikroORM<PostgreSqlDriver> {
+  return _provider() as MikroORM<PostgreSqlDriver>;
 }
 
 export function getEntityManager({ fork }: { fork?: true } = {}) {

@@ -1,28 +1,32 @@
 import { useState } from 'react';
 import {
   autoPlacement,
-  AutoPlacementOptions,
   autoUpdate,
   flip,
   offset,
-  OffsetOptions,
-  Placement,
   shift,
   useClick,
+  UseClickProps,
   useDismiss,
+  UseDismissProps,
   useFloating,
   useFloatingNodeId,
   useHover,
-  UseHoverProps,
   useInteractions,
   useRole,
-  UseRoleProps,
+  type AutoPlacementOptions,
+  type OffsetOptions,
+  type Placement,
+  type UseHoverProps,
+  type UseRoleProps,
 } from '@floating-ui/react';
 
 export function usePopover(
   props: {
     hover?: boolean | UseHoverProps;
     role?: boolean | UseRoleProps;
+    click?: boolean | UseClickProps;
+    dismiss?: boolean | UseDismissProps;
     placement?: Placement;
     autoPlacement?: AutoPlacementOptions;
     offset?: OffsetOptions;
@@ -51,10 +55,16 @@ export function usePopover(
     whileElementsMounted: autoUpdate,
   });
 
-  const click = useClick(context);
-  const dismiss = useDismiss(context);
+  let list = [];
 
-  let list = [click, dismiss];
+  if (props.dismiss ?? true) {
+    const dismiss = useDismiss(context, typeof props.dismiss === 'object' ? props.dismiss : {});
+    list.push(dismiss);
+  }
+  if (props.click ?? true) {
+    const click = useClick(context, typeof props.click === 'object' ? props.click : {});
+    list.push(click);
+  }
   if (props.role ?? true) {
     const role = useRole(context, typeof props.role === 'object' ? props.role : {});
     list.push(role);

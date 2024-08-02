@@ -1,7 +1,11 @@
-import { ReactNode } from 'react';
-import { isReactElement } from './renderText';
+import { ReactElement, ReactNode } from 'react';
 
-export function renderMarkdown(node: ReactNode) {
+export function isReactElement(node: any): node is ReactElement {
+  // node.$$typeof = REACT_ELEMENT_TYPE
+  return typeof node === 'object' && node !== null && typeof node.type !== 'undefined';
+}
+
+export function renderReactNodeToText(node: ReactNode) {
   const walk = (_node: any): string => {
     if (!_node) return '';
     if (!isReactElement(_node)) return String(_node);
@@ -21,25 +25,6 @@ export function renderMarkdown(node: ReactNode) {
         case 'br':
         case 'div':
           return children + '\n';
-        case 'a':
-          return `[${children}](${_node.props.href})`;
-        case 'strong':
-        case 'b':
-          return `**${children}**`;
-        case 'em':
-        case 'i':
-          return `*${children}*`;
-        case 'code':
-          return `\`${children}\``;
-        case 'pre':
-          return `\`\`\`\n${children}\n\`\`\``;
-        case 'ul':
-        case 'ol':
-          return children + '\n';
-        case 'li':
-          return `- ${children}\n`;
-        case 'img':
-          return `![${_node.props.alt}](${_node.props.src})`;
         default:
           return children;
       }

@@ -62,19 +62,19 @@
     "react-is": "^18.3.1"
   },
   "devDependencies": {
-    "@remix-run/router": "^1.16.1",
+    "@remix-run/router": "^1.19.0",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@types/react-is": "^18.3.0",
     "@types/react-reconciler": "^0.28.8",
     "@wener/utils": "workspace:^",
     "clsx": "^2.1.1",
-    "mutative": "^1.0.6",
-    "next": "^14.2.4",
+    "mutative": "^1.0.8",
+    "next": "^14.2.5",
     "react-reconciler": "^0.29.2",
-    "react-router-dom": "^6.23.1",
+    "react-router-dom": "^6.26.0",
     "valtio": "^1.13.2",
-    "zustand": "^4.5.2"
+    "zustand": "^4.5.4"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org",

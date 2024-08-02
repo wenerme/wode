@@ -63,7 +63,7 @@
     "@wener/utils": "workspace:^"
   },
   "devDependencies": {
-    "@types/lodash": "^4.17.5",
+    "@types/lodash": "^4.17.7",
     "lodash": "^4.17.21"
   },
   "publishConfig": {

@@ -39,14 +39,8 @@ const DivisionCodeLevels = [
  *
  * @see https://zh.wikipedia.org/wiki/GB/T_2260 中华人民共和国行政区划代码
  */
-export class DivisionCode {
-  static Levels = DivisionCodeLevels;
-
-  private static instance: DivisionCode;
-
-  static get() {
-    return this.instance || (this.instance = new DivisionCode());
-  }
+export class DivisionCodeFormat {
+  static levels = DivisionCodeLevels;
 
   regex = /^(?<province>\d{2})(?<city>\d{2})?(?<county>\d{2})?(?<town>\d{3})?(?<village>\d{3})?$/;
 
@@ -87,6 +81,63 @@ export class DivisionCode {
     [82, '澳门特别行政区'],
     // 9 国外
   ];
+
+  parse(code: string) {
+    if (!code) return;
+    const { regex } = this;
+    const match = regex.exec(code);
+    if (!match) return;
+    const { province, city, county, town, village } = match.groups ?? {};
+    if (!province) return;
+
+    return {
+      province,
+      city,
+      county,
+      town,
+      village,
+    };
+  }
+}
+
+interface DivisionTreeNode {
+  sub: string; // sub code
+  children?: Record<string, DivisionTreeNode>;
+
+  code: string; // full code
+  name?: string; // name of division
+}
+
+export type DivisionCodeLevel = 'Village' | 'Town' | 'County' | 'City' | 'Province';
+
+export interface ParsedDivisionCode {
+  level: DivisionCodeLevel;
+  code: string;
+  name?: string;
+  fullName?: string;
+  names: string[];
+  // 村级（村委会、居委会）
+  // 12 位
+  village?: CodeName;
+  // 乡级（乡镇、街道）
+  // 9 位
+  town?: CodeName;
+  // 县级（区县）
+  // 6 位 - 常用 - 2985 个
+  county?: CodeName;
+  // 地级（城市）
+  // 4 位 - 343 个
+  city?: CodeName;
+  // 省级（省份、直辖市、自治区）
+  // 2 位 - 32 个
+  province: CodeName;
+
+  children?: Array<{ code: string; name?: string }>;
+}
+
+export interface CodeName {
+  code: string;
+  name: string;
 }
 
 // export function getSimpleProvinceLabel(value: string) {
@@ -100,3 +151,5 @@ export class DivisionCode {
 //   }
 //   return label.replace(/省|市|(回族|维吾尔|壮族)?自治区|特别行政区$/, '');
 // }
+
+export const DivisionCode = new DivisionCodeFormat();

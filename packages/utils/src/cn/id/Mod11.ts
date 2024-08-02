@@ -3,13 +3,8 @@
  */
 export class Mod11Checksum {
   weights = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2, 1];
-  private static instance: Mod11Checksum;
 
-  static get() {
-    return this.instance || (this.instance = new Mod11Checksum());
-  }
-
-  verify(s: string) {
+  validate(s: string) {
     return s.at(-1) === this.generate(s.slice(0, s.length - 1));
   }
 
@@ -27,3 +22,5 @@ export class Mod11Checksum {
     }
   }
 }
+
+export const Mod11 = new Mod11Checksum();
