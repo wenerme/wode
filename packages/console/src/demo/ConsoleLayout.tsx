@@ -1,8 +1,8 @@
 import type { PropsWithChildren, ReactNode } from 'react';
 import React from 'react';
 import { SiteLogo } from '@wener/console/console';
-import { useContextStore } from '@/hooks';
-import { AutoNavLink, DockLayout, LeftSideMenuBarLayout } from '@/web';
+import { useContextStore } from '../hooks';
+import { AutoNavLink, DockLayout, LeftSideMenuBarLayout } from '../web';
 import type { ConsoleLayoutContext, DashMenu } from './ConsoleLayoutContext';
 
 const { MenuBarItem } = LeftSideMenuBarLayout;

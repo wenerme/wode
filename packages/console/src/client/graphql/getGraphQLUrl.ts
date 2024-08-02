@@ -1,4 +1,4 @@
-import { getAppState } from '@/console';
+import { getAppState } from '../../console';
 
 export function getGraphQLUrl() {
   let url = typeof window === 'undefined' ? 'http://127.0.0.1:3000/graphql' : '/graphql';

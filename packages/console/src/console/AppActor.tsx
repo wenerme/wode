@@ -1,8 +1,8 @@
 import React, { ReactNode, useCallback, useEffect, useRef } from 'react';
 import { useStore } from 'zustand';
-import { getAppStore } from '@/console/container';
-import { LoadingIndicator } from '@/loader';
-import { AppStore, AuthStatus } from '@/state/AppStore';
+import { LoadingIndicator } from '../loader';
+import { AppStore, AuthStatus } from '../state';
+import { getAppStore } from './container';
 
 interface Storage {
   getItem: (key: string) => string | null;

@@ -1,7 +1,7 @@
 import { TypedDocumentNode } from '@graphql-typed-document-node/core';
 import request from 'graphql-request';
-import { getGraphQLUrl } from '@/client/graphql/getGraphQLUrl';
-import { getAccessToken } from '@/console';
+import { getAccessToken } from '../../console';
+import { getGraphQLUrl } from './getGraphQLUrl';
 
 export function gqlr<TResult, TVariables>(
   document: TypedDocumentNode<TResult, TVariables>,

@@ -3,9 +3,8 @@ import { useStore } from 'zustand';
 import Splash from '@/assets/LoginSplash.jpg';
 import { getAppState, getAppStore } from '@/console/container';
 import { LoginFormData, LoginPage } from '@/console/pages/LoginPage';
-import { AuthStatus } from '@/state';
-import { SiteLogo } from '@/web';
-import { Image } from '@/web/components/Image';
+import { AuthStatus } from '../state';
+import { Image, SiteLogo } from '../web';
 
 export const Authenticated: React.FC<
   PropsWithChildren & {
