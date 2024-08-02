@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { HiLockClosed, HiMiniLockOpen } from 'react-icons/hi2';
 import clsx from 'clsx';
-import { useSnapshot } from 'valtio';
+import { useStore } from 'zustand';
+import { getConsoleStore } from '@/console';
 import { Button, NonIdealState } from '../../daisy';
 import { getUserAction } from './getUserAction';
-import { getUserSessionState } from './getUserSessionState';
 
 export const UserLockOverlay = () => {
   const { unlock } = getUserAction();
-  const { expired, locked } = useSnapshot(getUserSessionState());
+  const { expired, locked } = useStore(getConsoleStore(), ({ expired, locked }) => ({ expired, locked }));
   const [hidden, setHidden] = useState(!expired);
   const [pin, setPin] = useState('');
   useEffect(() => {

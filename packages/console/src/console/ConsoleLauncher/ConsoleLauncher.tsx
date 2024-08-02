@@ -1,39 +1,9 @@
-import React, { ComponentPropsWithoutRef, memo, ReactNode } from 'react';
+import React, { ComponentPropsWithoutRef, memo } from 'react';
 import { createPortal } from 'react-dom';
 import { PiBrowser } from 'react-icons/pi';
-import { mutative } from '@wener/reaction/mutative/zustand';
-import _ from 'lodash';
-import { createStore, useStore } from 'zustand';
-import { getGlobalStates } from '@/state';
-
-interface LauncherItem {
-  key: string;
-  title: string;
-  icon?: ReactNode;
-  onLaunch?: () => void;
-}
-
-interface LauncherStoreState {
-  open: boolean;
-  items: Array<LauncherItem>;
-}
-
-function createLauncherStore() {
-  return createStore(
-    mutative<LauncherStoreState>(() => {
-      return {
-        open: false,
-        items: [],
-      };
-    }),
-  );
-}
-
-export type LauncherStore = ReturnType<typeof createLauncherStore>;
-
-function getLauncherStore() {
-  return getGlobalStates('LauncherStore', createLauncherStore);
-}
+import { useStore } from 'zustand';
+import { getLauncherStore } from '@/console/container';
+import { LauncherItem } from './LauncherStore';
 
 export type ConsoleLauncherProps = ComponentPropsWithoutRef<'div'>;
 
@@ -110,15 +80,3 @@ const LauncherContent: React.FC<{ onLaunch?: (v: LauncherItem) => void }> = ({ o
     </div>
   );
 };
-
-export function toggleLauncher(open?: boolean) {
-  getLauncherStore().setState((s) => {
-    s.open = open ?? !s.open;
-  });
-}
-
-export function addLaunchItems(items: LauncherItem[]) {
-  getLauncherStore().setState((s) => {
-    s.items = _.uniqBy(s.items.concat(items), 'key').sort((a, b) => a.title.localeCompare(b.title));
-  });
-}

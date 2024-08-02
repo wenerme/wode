@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { PiClock } from 'react-icons/pi';
 import { Meta } from '@storybook/react';
-import { addLaunchItems, ConsoleLauncher, toggleLauncher } from './ConsoleLauncher';
+import { ConsoleLauncher } from './ConsoleLauncher';
+import { addLaunchItems, toggleLauncher } from './LauncherStore';
 
 const meta: Meta = {
   title: 'console/Launcher',

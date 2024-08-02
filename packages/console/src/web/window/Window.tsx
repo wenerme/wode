@@ -1,10 +1,8 @@
 import React, { ComponentPropsWithRef } from 'react';
-import { mutative } from '@wener/reaction/mutative/zustand';
-import { computeIfAbsent } from '@wener/utils';
-import { createStore, useStore } from 'zustand';
-import { getGlobalStates } from '@/state';
+import { useStore } from 'zustand';
 import { MacOSWindowController } from '@/web/window/MacOS';
 import { WindowsWindowController } from '@/web/window/Windows';
+import { getWindowStyleStore } from '@/web/window/WindowStyleStore';
 
 export const WindowController: React.FC<{
   close?: ComponentPropsWithRef<'button'>;
@@ -17,26 +15,6 @@ export const WindowController: React.FC<{
   }
   return <WindowsWindowController {...props} />;
 };
-
-interface WindowStyleState {
-  theme?: 'macos' | 'windows' | 'system';
-}
-
-export function getWindowStyleStore(): WindowStyleStore {
-  return computeIfAbsent(getGlobalStates(), 'WindowStyleStore', createWindowStyleStore);
-}
-
-function createWindowStyleStore() {
-  return createStore(
-    mutative<WindowStyleState>(() => {
-      return {
-        theme: 'system',
-      };
-    }),
-  );
-}
-
-type WindowStyleStore = ReturnType<typeof createWindowStyleStore>;
 
 export function useWindowTheme() {
   const theme = useStore(getWindowStyleStore(), (s) => s.theme);

@@ -4,7 +4,7 @@ import { isDev } from '@wener/console';
 import { ContextStoreProvider, useExposeDebug, useLogger } from '@wener/console/components';
 import { lazyRoute, RouteObjects, useRouteTitles } from '@wener/console/router';
 import { DynamicModule, getConsoleContext, NotFoundPage, PageErrorState } from '@wener/console/web';
-import { UserAuthExpireOverlay, UserLockOverlay } from '@wener/console/web/user';
+import { UserAuthExpireOverlay, UserLockOverlay } from '../../../../../packages/console/src/console/user';
 import { ErrorSuspenseBoundary, useAsyncEffect } from '@wener/reaction';
 import { createStore, useStore } from 'zustand';
 import { LoadingIndicator } from '../../../../../packages/console/src/loader';

@@ -4,9 +4,9 @@ import { RouteObject } from 'react-router-dom';
 import { Meta } from '@storybook/react';
 import { useStore } from 'zustand';
 import { useWindow } from '@/web/window/ReactWindow';
-import { getWindowStyleStore } from '@/web/window/Window';
 import { WindowFrame } from '@/web/window/WindowFrame';
 import { WindowHost } from '@/web/window/WindowHost';
+import { getWindowStyleStore } from '@/web/window/WindowStyleStore';
 import { WindowTest } from '@/web/window/WindowTest';
 
 const meta: Meta = {

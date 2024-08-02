@@ -1,7 +1,8 @@
 import React, { ReactNode, useCallback, useEffect, useRef } from 'react';
 import { useStore } from 'zustand';
+import { getAppStore } from '@/console/container';
 import { LoadingIndicator } from '@/loader';
-import { AppStore, AuthStatus, getAppStore } from '@/state/AppStore';
+import { AppStore, AuthStatus } from '@/state/AppStore';
 
 interface Storage {
   getItem: (key: string) => string | null;
@@ -218,3 +219,7 @@ export const AuthReady: React.FC<{ children?: ReactNode }> = ({ children }) => {
   }
   return <LoadingIndicator />;
 };
+
+export function clearAuthToken(storage: Storage = localStorage) {
+  deleteItem(storage, 'accessToken');
+}
