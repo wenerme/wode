@@ -1,10 +1,10 @@
 import React from 'react';
 import { Meta } from '@storybook/react';
-import { GradientSpinner, PlantRotating, PulseBubble, SolarSystemSpinner } from '@/loader/AlexWarnesCssLoader';
-import { BarsSpinner } from '@/loader/BarsSpinner';
-import { BoxShuffle } from '@/loader/BoxShuffle';
-import { DotsFadeLoader } from '@/loader/DotsFadeLoader/DotsFadeLoader';
-import { GooeyLoader } from '@/loader/GooeyLoader';
+import { GradientSpinner, PlantRotating, PulseBubble, SolarSystemSpinner } from './AlexWarnesCssLoader';
+import { BarsSpinner } from './BarsSpinner';
+import { BoxShuffle } from './BoxShuffle';
+import { DotsFadeLoader } from './DotsFadeLoader/DotsFadeLoader';
+import { GooeyLoader } from './GooeyLoader';
 
 const meta: Meta = {
   title: 'web/loaders',

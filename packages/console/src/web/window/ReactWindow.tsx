@@ -2,7 +2,7 @@ import React, { createContext, ReactNode, useContext } from 'react';
 import { mutative } from '@wener/reaction/mutative/zustand';
 import { clamp, computeIfAbsent, randomUUID } from '@wener/utils';
 import { createStore } from 'zustand';
-import { getGlobalStates } from '@/state';
+import { getGlobalStates } from '../../state';
 
 export const WindowContext = createContext<ReactWindow | null>(null);
 

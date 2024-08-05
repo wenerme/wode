@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { HiMiniArrowPath, HiOutlineNoSymbol, HiMiniArrowRightOnRectangle as LoginIcon } from 'react-icons/hi2';
 import clsx from 'clsx';
 import { useStore } from 'zustand';
-import { getConsoleStore } from '@/console/container';
 import { Button, NonIdealState } from '../../daisy';
+import { getConsoleStore } from '../container';
 import { getUserAction } from './getUserAction';
 
 export const UserAuthExpireOverlay = () => {

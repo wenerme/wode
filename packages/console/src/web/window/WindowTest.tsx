@@ -1,6 +1,6 @@
 import React from 'react';
 import { useStore } from 'zustand';
-import { useWindow } from '@/web/window/ReactWindow';
+import { useWindow } from './ReactWindow';
 
 export const WindowTest = () => {
   let win = useWindow();

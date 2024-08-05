@@ -1,6 +1,6 @@
 import React from 'react';
 import { Meta } from '@storybook/react';
-import { ConsoleApp } from '@/demo/ConsoleApp';
+import { ConsoleApp } from './ConsoleApp';
 
 const meta: Meta = {
   title: 'console/demo',

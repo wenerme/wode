@@ -5,11 +5,11 @@ import { ImLab } from 'react-icons/im';
 import { useWindowEventListener } from '@wener/reaction';
 import dayjs from 'dayjs';
 import { useImmer } from 'use-immer';
-import { SiteLogo } from '@/console';
 import type { BuildInfo } from '../../../buildinfo';
 import { getBuildInfo } from '../../../buildinfo';
 import { Button } from '../../../daisy';
 import { getPrefersColorSchema } from '../../../web/utils';
+import { SiteLogo } from '../../components';
 
 export const SystemAboutPage: React.FC<{
   title?: string;

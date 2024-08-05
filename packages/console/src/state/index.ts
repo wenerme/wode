@@ -1,2 +1,2 @@
-export { getGlobalStates, setGlobalStates } from './getGlobalStates';
+export { getGlobalStates, setGlobalStates } from '../utils/getGlobalStates';
 export * from './AppStore';

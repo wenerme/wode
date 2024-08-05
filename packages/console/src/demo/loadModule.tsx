@@ -1,6 +1,6 @@
 import { DynamicModule } from '@wener/console/web';
-import { isDev } from '@/const';
-import { loadRoute } from '@/demo/loadRoute';
+import { isDev } from '../const';
+import { loadRoute } from './loadRoute';
 
 export function loadModule(name: string): Promise<DynamicModule> {
   // vite 没问题

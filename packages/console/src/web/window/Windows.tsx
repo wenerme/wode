@@ -1,9 +1,9 @@
 import React, { ComponentPropsWithRef, forwardRef } from 'react';
 import { PiAppWindowLight, PiMinusThin, PiSquareThin, PiXThin } from 'react-icons/pi';
 import { clsx } from 'clsx';
-import { cn } from '@/lib/utils';
-import { getWindowDragCancelClassname, getWindowDragHandleClassname } from '@/web/window/const';
-import { WindowFrameProps } from '@/web/window/WindowFrame';
+import { cn } from '../../lib/utils';
+import { getWindowDragCancelClassname, getWindowDragHandleClassname } from './const';
+import { WindowFrameProps } from './WindowFrame';
 import styles from './Windows.module.css';
 
 export const WindowsWindowFrame = forwardRef<HTMLDivElement, WindowFrameProps>(

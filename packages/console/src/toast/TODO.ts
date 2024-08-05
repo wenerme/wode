@@ -1,5 +1,5 @@
 import { toast } from 'react-hot-toast';
-import { warn } from '@/toast/warn';
+import { warn } from './warn';
 
 export function TODO(msg = 'TODO') {
   // once

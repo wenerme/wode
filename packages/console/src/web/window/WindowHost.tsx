@@ -1,8 +1,8 @@
 import React, { memo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useStoreWithEqualityFn } from 'zustand/traditional';
-import { getRootWindow } from '@/web/window/ReactWindow';
-import { WindowGuest } from '@/web/window/WindowGuest';
+import { getRootWindow } from './ReactWindow';
+import { WindowGuest } from './WindowGuest';
 
 export const WindowHost = memo(() => {
   const [host$] = useState(() => {

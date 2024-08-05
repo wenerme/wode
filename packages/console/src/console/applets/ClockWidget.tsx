@@ -1,8 +1,8 @@
 import React from 'react';
 import { PiClockLight } from 'react-icons/pi';
-import { Clock } from '@/console/applets/Clock/Clock';
-import { defineApplet } from '@/console/applets/defineApplet';
-import { getWindowDragHandleClassname } from '@/web/window';
+import { getWindowDragHandleClassname } from '../../web/window';
+import { Clock } from './Clock/Clock';
+import { defineApplet } from './defineApplet';
 
 export const ClockWidget = defineApplet({
   name: 'clock',

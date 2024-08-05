@@ -1,10 +1,9 @@
 import React, { PropsWithChildren, useEffect, useState } from 'react';
-import { useStore } from 'zustand';
-import Splash from '@/assets/LoginSplash.jpg';
-import { getAppState, getAppStore } from '@/console/container';
-import { LoginFormData, LoginPage } from '@/console/pages/LoginPage';
+import Splash from '../../assets/LoginSplash.jpg';
 import { AuthStatus } from '../state';
 import { Image, SiteLogo } from '../web';
+import { getAppState, getAppStore } from './container';
+import { LoginFormData, LoginPage } from './pages';
 
 export const Authenticated: React.FC<
   PropsWithChildren & {

@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import { mutative } from '@wener/reaction/mutative/zustand';
 import _ from 'lodash';
 import { createStore } from 'zustand';
-import { getLauncherStore } from '@/console/container';
+import { getLauncherStore } from '../container';
 
 export interface LauncherItem {
   key: string;

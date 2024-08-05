@@ -1,6 +1,6 @@
 import React from 'react';
 import { Meta } from '@storybook/react';
-import { ImagePreview } from '@/web/components/ImagePreview/ImagePreview';
+import { ImagePreview } from './ImagePreview';
 
 const meta: Meta = {
   title: 'web/components/ImagePreview',

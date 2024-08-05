@@ -2,13 +2,11 @@ import type { HTMLProps, ReactElement, ReactNode } from 'react';
 import React, { forwardRef, useState } from 'react';
 import { HiChevronDown, HiChevronRight } from 'react-icons/hi2';
 import { PiCaretDoubleLeftThin, PiCaretDoubleRightThin } from 'react-icons/pi';
-import { AutoNavLink } from '@wener/console/web';
 import { flexRender, FlexRenderable, useControllable } from '@wener/reaction';
 import { clsx } from 'clsx';
-import { Tooltip } from '@/floating';
-import { HeaderContentFooterLayout } from '@/web/components/HeaderContentFooterLayout';
-import { LeftContentRightLayout } from '@/web/components/LeftContentRightLayout';
-import { OverlayScrollbar } from '@/web/components/OverlayScrollbar';
+import { Tooltip } from '../../../floating';
+import { HeaderContentFooterLayout, LeftContentRightLayout, OverlayScrollbar } from '../../components';
+import { AutoNavLink } from '../../links';
 import type { BaseNavLink } from './BaseNavLink';
 
 interface ExpandableSideMenuTitle {

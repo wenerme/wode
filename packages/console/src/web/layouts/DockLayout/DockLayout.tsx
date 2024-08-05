@@ -5,9 +5,8 @@ import { HiLockClosed, HiOutlineIdentification, HiQuestionMarkCircle } from 'rea
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import { useStore } from 'zustand';
-import { getConsoleStore } from '@/console';
-import { getUserStore } from '@/console/container';
-import { getUserAction } from '@/console/user/getUserAction';
+import { getConsoleStore, getUserStore } from '../../../console';
+import { getUserAction } from '../../../console/user';
 import { isDev } from '../../../const';
 import { DockClock } from './DockClock';
 import { DockUserAvatar } from './DockUserAvatar';

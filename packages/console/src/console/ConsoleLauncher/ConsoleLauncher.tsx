@@ -2,7 +2,7 @@ import React, { ComponentPropsWithoutRef, memo } from 'react';
 import { createPortal } from 'react-dom';
 import { PiBrowser } from 'react-icons/pi';
 import { useStore } from 'zustand';
-import { getLauncherStore } from '@/console/container';
+import { getLauncherStore } from '../container';
 import { LauncherItem } from './LauncherStore';
 
 export type ConsoleLauncherProps = ComponentPropsWithoutRef<'div'>;

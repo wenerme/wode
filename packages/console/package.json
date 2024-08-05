@@ -19,7 +19,6 @@
     "./loader": "./src/loader/index.ts",
     "./pages": "./src/console/pages/index.ts",
     "./router": "./src/router/index.ts",
-    "./state": "./src/state/index.ts",
     "./toast": "./src/toast/index.ts",
     "./tw": "./src/tw/index.ts",
     "./valtio": "./src/valtio/index.ts",
@@ -29,7 +28,7 @@
     "./web/user": "./src/web/user/index.ts",
     "./web/window": "./src/web/window/index.ts",
     "./zustand": "./src/zustand/index.ts",
-    "./*": "./src/*/index.ts",
+    "./console/*": "./src/console/*/index.ts",
     "./package.json": "./package.json"
   },
   "files": [
@@ -180,10 +179,6 @@
         "types": "./src/router/index.ts",
         "default": "./lib/router/index.js"
       },
-      "./state": {
-        "types": "./src/state/index.ts",
-        "default": "./lib/state/index.js"
-      },
       "./toast": {
         "types": "./src/toast/index.ts",
         "default": "./lib/toast/index.js"
@@ -220,9 +215,9 @@
         "types": "./src/zustand/index.ts",
         "default": "./lib/zustand/index.js"
       },
-      "./*": {
-        "types": "./src/*/index.ts",
-        "default": "./lib/*/index.js"
+      "./console/*": {
+        "types": "./src/console/*/index.ts",
+        "default": "./lib/console/*/index.js"
       },
       "./package.json": "./package.json"
     }

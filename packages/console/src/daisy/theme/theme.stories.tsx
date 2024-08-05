@@ -1,6 +1,7 @@
 import React from 'react';
 import { Meta } from '@storybook/react';
-import { DaisyThemeDemo, ThemeListSelector } from '@/daisy';
+import { DaisyThemeDemo } from './DaisyThemeDemo';
+import { ThemeListSelector } from './ThemeListSelector';
 
 const meta: Meta = {
   title: 'daisy/theme',

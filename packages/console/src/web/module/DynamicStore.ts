@@ -17,7 +17,7 @@ export class DynamicStore implements ModuleStore {
   }
 
   add(type: string, payload: any) {
-    this.store.setState((s) => {
+    this.store.setState((s: any) => {
       let last = get(s, type, []);
       if (!Array.isArray(last)) {
         last = [last];
@@ -35,8 +35,8 @@ export class DynamicStore implements ModuleStore {
     return found;
   }
 
-  set(key: string, value: any, { merge } = {}) {
-    this.store.setState((s) => {
+  set(key: string, value: any, { merge }: { merge?: boolean } = {}) {
+    this.store.setState((s: any) => {
       set(s, key, value, merge);
     });
   }

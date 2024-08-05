@@ -1,8 +1,8 @@
 import React, { ComponentPropsWithRef } from 'react';
 import { useStore } from 'zustand';
-import { MacOSWindowController } from '@/web/window/MacOS';
-import { WindowsWindowController } from '@/web/window/Windows';
-import { getWindowStyleStore } from '@/web/window/WindowStyleStore';
+import { MacOSWindowController } from './MacOS';
+import { WindowsWindowController } from './Windows';
+import { getWindowStyleStore } from './WindowStyleStore';
 
 export const WindowController: React.FC<{
   close?: ComponentPropsWithRef<'button'>;

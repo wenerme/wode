@@ -1,8 +1,8 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { z } from 'zod';
-import { useUserPreferenceState } from '@/console/hooks/useUserPreferenceState';
-import { ExpandableSideMenuLayout, ExpandableSideMenuLayoutProps } from '@/web';
+import { ExpandableSideMenuLayout, ExpandableSideMenuLayoutProps } from '../../web';
+import { useUserPreferenceState } from '../hooks';
 
 const ModuleLayoutState = z.object({
   expanded: z.boolean().optional().default(true),

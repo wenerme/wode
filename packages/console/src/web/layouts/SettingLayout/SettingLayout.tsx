@@ -1,8 +1,8 @@
 import type { HTMLProps } from 'react';
 import React from 'react';
 import { clsx } from 'clsx';
-import { cn } from '@/lib/utils';
-import { TitleTabLayout } from '@/web/components/TitleTabLayout';
+import { cn } from '../../../lib/utils';
+import { TitleTabLayout } from '../../components';
 
 export const SettingLayout: React.FC<
   { title?: React.ReactNode; action?: React.ReactNode; children?: React.ReactNode } & Omit<

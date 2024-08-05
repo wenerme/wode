@@ -1,7 +1,7 @@
 import { mutative } from '@wener/reaction/mutative/zustand';
 import { computeIfAbsent } from '@wener/utils';
 import { createStore } from 'zustand';
-import { getGlobalStates } from '@/state';
+import { getGlobalStates } from '../../state';
 
 export interface WindowStyleState {
   theme?: 'macos' | 'windows' | 'system';

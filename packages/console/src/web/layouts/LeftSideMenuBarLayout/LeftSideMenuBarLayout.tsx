@@ -1,12 +1,10 @@
 import type { ComponentPropsWithoutRef, FC, HTMLProps, ReactElement } from 'react';
 import React from 'react';
-import { AutoNavLink } from '@wener/console/web';
 import { clsx } from 'clsx';
-import { Tooltip } from '@/floating';
-import { cn } from '@/lib/utils';
-import { HeaderContentFooterLayout } from '@/web/components/HeaderContentFooterLayout';
-import { LeftContentRightLayout } from '@/web/components/LeftContentRightLayout';
-import { OverlayScrollbar } from '@/web/components/OverlayScrollbar';
+import { Tooltip } from '../../../floating';
+import { cn } from '../../../lib/utils';
+import { HeaderContentFooterLayout, LeftContentRightLayout, OverlayScrollbar } from '../../components';
+import { AutoNavLink } from '../../links';
 
 type BaseNavLink = React.ComponentType<BaseNavLinkProps>;
 

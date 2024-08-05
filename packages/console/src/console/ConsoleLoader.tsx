@@ -4,13 +4,13 @@ import { Router } from '@remix-run/router';
 import { ErrorSuspenseBoundary, useAsyncEffect, useDebugRender } from '@wener/reaction';
 import { shallow } from 'zustand/shallow';
 import { useStoreWithEqualityFn } from 'zustand/traditional';
-import { LoadingIndicator } from '@/console/components/KnownDefinedComponent';
-import { RootRouterReactor } from '@/console/components/RootRouterReactor';
-import { getAppState, getRouteStore } from '@/console/container';
 import { isDev } from '../const';
 import { useLogger } from '../hooks';
 import { RouteObjects } from '../router';
 import { DynamicModule, getConsoleContext, NotFoundPage, PageErrorState } from '../web';
+import { LoadingIndicator } from './components';
+import { RootRouterReactor } from './components/RootRouterReactor';
+import { getAppState, getRouteStore } from './container';
 
 enum ServiceState {
   New = 'New',

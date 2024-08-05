@@ -1,11 +1,11 @@
-import React, { ComponentPropsWithoutRef, ComponentPropsWithRef, forwardRef, ReactNode } from 'react';
+import React, { ComponentPropsWithRef, forwardRef } from 'react';
 import { CgExpand } from 'react-icons/cg';
 import { HiMiniMinus, HiMiniXMark } from 'react-icons/hi2';
 import { clsx } from 'clsx';
-import { cn } from '@/lib/utils';
-import { getWindowDragCancelClassname, getWindowDragHandleClassname } from '@/web/window/const';
-import { WindowFrameProps } from '@/web/window/WindowFrame';
+import { cn } from '../../lib/utils';
+import { getWindowDragCancelClassname, getWindowDragHandleClassname } from './const';
 import styles from './macOS.module.css';
+import { WindowFrameProps } from './WindowFrame';
 
 export const MacOSWindowFrame = forwardRef<HTMLDivElement, WindowFrameProps>(
   ({ className, controller, title, children, ...props }, ref) => {

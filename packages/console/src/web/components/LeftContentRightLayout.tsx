@@ -1,5 +1,5 @@
 import React, { forwardRef, ReactNode } from 'react';
-import { cn } from '@/lib/utils';
+import { cn } from '../../lib/utils';
 
 export type LeftContentRightLayoutProps<E extends React.ElementType = 'div'> = Omit<React.ComponentProps<E>, 'as'> & {
   as?: E;

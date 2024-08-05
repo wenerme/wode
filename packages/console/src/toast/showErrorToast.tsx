@@ -1,5 +1,5 @@
 import { toast } from 'react-hot-toast';
-import { resolveErrorMessage } from '@/toast/resolveErrorMessage';
+import { resolveErrorMessage } from './resolveErrorMessage';
 
 export function showErrorToast(error: Error | any) {
   if (!error) {
