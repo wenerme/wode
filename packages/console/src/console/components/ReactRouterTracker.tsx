@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useInRouterContext, useLocation } from 'react-router-dom';
-import { useRouteTitles } from '@/router';
+import { useRouteTitles } from '../../router';
 
 export const ReactRouterTracker = () => {
   if (!useInRouterContext()) {

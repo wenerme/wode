@@ -1,7 +1,7 @@
 import { Meta } from '@storybook/react';
-import { ComponentProvider } from '@/components/ComponentProvider';
-import { SiteLogo } from '@/console/components/KnownDefinedComponent';
-import { WenerLogo } from '@/demo/modules/site.core/WenerLogo';
+import { SiteLogo } from '../console';
+import { WenerLogo } from '../demo/modules/site.core/WenerLogo';
+import { ComponentProvider } from './ComponentProvider';
 
 const meta: Meta = {
   title: 'React/ComponentProvider',

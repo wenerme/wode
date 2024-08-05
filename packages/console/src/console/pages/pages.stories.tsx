@@ -1,9 +1,9 @@
 import React from 'react';
 import { Meta } from '@storybook/react';
-import AppearanceSettingPage from '@/console/pages/AppearanceSettingPage/AppearanceSettingPage';
-import { LoginPage } from '@/console/pages/LoginPage';
-import { SystemAboutPage } from '@/console/pages/SystemAboutPage';
-import { Image } from '@/web/components/Image';
+import { AppearanceSettingPage } from '../../console/pages/AppearanceSettingPage/AppearanceSettingPage';
+import { Image } from '../../web';
+import { LoginPage } from './LoginPage';
+import { SystemAboutPage } from './SystemAboutPage';
 
 const meta: Meta = {
   title: 'console/pages',

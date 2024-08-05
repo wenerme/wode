@@ -6,20 +6,20 @@ import { showSuccessToast } from '../toast';
 import { DynamicModule } from '../web';
 import { clearAuthToken } from './AppActor';
 import { createLauncherStore, LauncherStore } from './ConsoleLauncher/LauncherStore';
-import { ConsoleStore, createConsoleStore } from './ConsoleStore';
+import { ConsoleStore, ConsoleStoreState, createConsoleStore } from './ConsoleStore';
 import { createRouteStore, RouteStore } from './RouteStore';
 import { UserAction } from './user/getUserAction';
-import { createUserStore, UserStore } from './UserStore';
+import { createUserStore, UserState, UserStore } from './UserStore';
 
 export type ConsoleContext = {
   appStore: AppStore;
-  appState: ReturnType<AppStore['getState']>;
+  appState: AppState;
 
   consoleStore: ConsoleStore;
-  consoleState: ReturnType<ConsoleStore['getState']>;
+  consoleState: ConsoleStoreState;
 
   userStore: UserStore;
-  userState: ReturnType<UserStore['getState']>;
+  userState: UserState;
 
   userAction: UserAction;
 
@@ -124,6 +124,10 @@ export function getConsoleStore(): ConsoleStore {
 
 export function getUserStore(): UserStore {
   return getConsoleContext().userStore;
+}
+
+export function getUserState(): UserState {
+  return getConsoleContext().userState;
 }
 
 function createFakeUserAction(): UserAction {

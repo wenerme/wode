@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import React, { ErrorInfo } from 'react';
 import { ErrorSuspenseBoundary as _ErrorSuspenseBoundary } from '@wener/reaction';
-import { LoadingIndicator } from '@/loader';
+import { LoadingIndicator } from '../../../loader';
 import { PageErrorState } from './PageErrorState';
 
 export const ErrorSuspenseBoundary: React.FC<{

@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import '@wener/console/console/globals.css';
-import { ConsoleApp } from '@/demo/ConsoleApp';
-import { UpdateNotification } from '@/web';
-import { WebVitals } from '@/web/components/WebVitals';
+import { UpdateNotification } from '../web';
+import { WebVitals } from '../web/components/WebVitals';
+import { ConsoleApp } from './ConsoleApp';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

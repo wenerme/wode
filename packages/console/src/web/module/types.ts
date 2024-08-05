@@ -14,7 +14,7 @@ export interface ModuleStore<O extends Record<string, any> = Record<string, any>
 
   add<P extends Path<O> | ArrayPath<O>, V extends PathValue<O, P>>(
     type: P,
-    payload: V extends Array ? V | V[number] : V,
+    payload: V extends Array<any> ? V | V[number] : V,
   ): void;
 
   collect<P extends Path<O> | ArrayPath<O>, V extends PathValue<O, P>>(path: P): V;

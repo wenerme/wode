@@ -16,11 +16,11 @@ import { LoginFormData } from '@wener/console/pages';
 import { showErrorToast, showSuccessToast } from '@wener/console/toast';
 import { ErrorSuspenseBoundary, getConsoleContext } from '@wener/console/web';
 import { Provider } from 'urql';
-import { UserLoader } from '@/console/user/UserLoader';
-import { UserProfileData } from '@/console/UserStore';
-import { getAppActorActions } from '@/demo/getAppActorActions';
-import { getAuthActions } from '@/demo/getAuthActions';
-import { WenerLogo } from '@/demo/modules/site.core/WenerLogo';
+import { UserLoader } from '../console/user';
+import { UserProfileData } from '../console/UserStore';
+import { getAppActorActions } from './getAppActorActions';
+import { getAuthActions } from './getAuthActions';
+import { WenerLogo } from './modules/site.core/WenerLogo';
 
 const doLogin = async (o: LoginFormData) => {
   let store = getAppStore();

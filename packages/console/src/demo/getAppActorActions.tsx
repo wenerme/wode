@@ -1,5 +1,5 @@
-import { AppActions } from '@/console';
-import { doPasswordLogin } from '@/demo/getAuthActions';
+import { AppActions } from '../console';
+import { doPasswordLogin } from './getAuthActions';
 
 export function getAppActorActions(): AppActions {
   return {

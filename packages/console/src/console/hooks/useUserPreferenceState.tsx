@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from 'react';
 import { ZodType } from 'zod';
-import { useLocalStorageState } from '@/web/hooks';
+import { useLocalStorageState } from '../../web/hooks';
 
 export function useUserPreferenceState<T extends {}>({
   key,

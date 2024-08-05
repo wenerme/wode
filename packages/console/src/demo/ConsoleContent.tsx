@@ -1,9 +1,9 @@
 import React from 'react';
 import { ConsoleLauncher, ConsoleLoader } from '@wener/console/console';
-import { WindowHost } from '@wener/console/web/window';
-import { ConsoleLayout } from '@/demo/ConsoleLayout';
-import { loadModule } from '@/demo/loadModule';
 import { UserAuthExpireOverlay, UserLockOverlay } from '../console/user';
+import { WindowHost } from '../web/window';
+import { ConsoleLayout } from './ConsoleLayout';
+import { loadModule } from './loadModule';
 
 export const ConsoleContent = () => {
   return (

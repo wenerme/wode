@@ -3,7 +3,7 @@
 import React, { PropsWithChildren } from 'react';
 import { Toaster } from 'react-hot-toast';
 import dayjs from 'dayjs';
-import { ThemeStateReactor } from '@/daisy';
+import { ThemeStateReactor } from '../../daisy';
 import 'dayjs/locale/en';
 import 'dayjs/locale/zh';
 import 'dayjs/locale/zh-cn';
@@ -16,7 +16,7 @@ import isToday from 'dayjs/plugin/isToday';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
-import { useExposeDebug } from '@/hooks';
+import { useExposeDebug } from '../../hooks';
 
 let init = false;
 

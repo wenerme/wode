@@ -5,8 +5,8 @@ import { FaRegUser, FaUser } from 'react-icons/fa6';
 import { HiColorSwatch, HiOutlineColorSwatch } from 'react-icons/hi';
 import { HiOutlineCog } from 'react-icons/hi2';
 import { TiInfoLarge, TiInfoLargeOutline } from 'react-icons/ti';
-import { ModuleMainLayout } from '@/console';
-import type { ExpandableSideMenuItemProps } from '@/web';
+import { ModuleMainLayout } from '../../console';
+import type { ExpandableSideMenuItemProps } from '../../web';
 
 const SettingItems: ExpandableSideMenuItemProps[] = [
   {

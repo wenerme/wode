@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { LoginFormData } from '@/console/pages';
+import { LoginFormData } from '../console/pages';
 
 export const doPasswordLogin = async ({ username, password }: LoginFormData) => {
   if (username !== 'admin' || password !== 'admin') {

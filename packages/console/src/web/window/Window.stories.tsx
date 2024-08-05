@@ -3,11 +3,11 @@ import { PiAppleLogo, PiWindowsLogo } from 'react-icons/pi';
 import { RouteObject } from 'react-router-dom';
 import { Meta } from '@storybook/react';
 import { useStore } from 'zustand';
-import { useWindow } from '@/web/window/ReactWindow';
-import { WindowFrame } from '@/web/window/WindowFrame';
-import { WindowHost } from '@/web/window/WindowHost';
-import { getWindowStyleStore } from '@/web/window/WindowStyleStore';
-import { WindowTest } from '@/web/window/WindowTest';
+import { useWindow } from './ReactWindow';
+import { WindowFrame } from './WindowFrame';
+import { WindowHost } from './WindowHost';
+import { getWindowStyleStore } from './WindowStyleStore';
+import { WindowTest } from './WindowTest';
 
 const meta: Meta = {
   title: 'Web/Window',

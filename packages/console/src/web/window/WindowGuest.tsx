@@ -5,9 +5,9 @@ import { clsx } from 'clsx';
 import { useStore } from 'zustand';
 import { shallow } from 'zustand/shallow';
 import { useStoreWithEqualityFn } from 'zustand/traditional';
-import { getRootWindow, ReactWindow, WindowContext } from '@/web/window/ReactWindow';
-import { WindowController } from '@/web/window/Window';
-import { WindowFrame } from '@/web/window/WindowFrame';
+import { getRootWindow, ReactWindow, WindowContext } from './ReactWindow';
+import { WindowController } from './Window';
+import { WindowFrame } from './WindowFrame';
 
 export const WindowGuest = memo<{ win: ReactWindow }>(({ win }) => {
   const { store } = win;

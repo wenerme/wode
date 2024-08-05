@@ -1,5 +1,4 @@
 // https://gist.github.com/reconbot/c888c0f5c4cc1ac60db14fa389259cec
-import { md5 } from '@wener/utils';
 import DataLoader from 'dataloader';
 import { LRUCache } from 'lru-cache';
 import { Exchange, Operation } from 'urql';

@@ -1,5 +1,5 @@
 import { MaybePromise } from '@wener/utils';
-import { getConsoleContext } from '@/console';
+import { getConsoleContext } from '../container';
 
 export function getUserAction(): UserAction {
   return getConsoleContext().userAction;

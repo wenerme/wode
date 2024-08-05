@@ -1,10 +1,10 @@
 import { PropsWithChildren } from 'react';
 import { usePromise } from '@wener/reaction';
-import { UserProfileData } from '@/console/UserStore';
-import { NonIdealState } from '@/daisy';
-import { resolveErrorMessage } from '@/toast';
+import { NonIdealState } from '../../daisy';
+import { resolveErrorMessage } from '../../toast';
 import { LoadingIndicator } from '../components';
 import { getUserStore } from '../container';
+import { UserProfileData } from '../UserStore';
 
 export const UserLoader: React.FC<
   PropsWithChildren & {
