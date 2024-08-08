@@ -1,6 +1,6 @@
 export type * from './types';
 export * from './const';
-export * from './web/utils';
+export { getPrefersColorSchema } from './web/utils';
 
 export { cn } from './lib/utils';
 

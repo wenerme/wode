@@ -1,17 +1,17 @@
 export function timeout<T = any>(
-  v: Promise<T> | ((args: { signal: AbortSignal }) => Promise<T>),
+  pending: Promise<T> | ((args: { signal: AbortSignal }) => Promise<T>),
   ms: number,
 ): Promise<T> {
   const error = new TimeoutError();
   let timeout: any;
   let ac: AbortController | undefined;
-  if (typeof v === 'function') {
+  if (typeof pending === 'function') {
     ac = new AbortController();
-    v = v({ signal: ac.signal });
+    pending = pending({ signal: ac.signal });
   }
 
   return Promise.race<T>([
-    v,
+    pending,
     new Promise((_resolve, reject) => {
       timeout = setTimeout(() => {
         ac?.abort(error);

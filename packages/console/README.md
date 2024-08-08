@@ -35,3 +35,18 @@
 pnpm add @wener/console
 pnpm add overlayscrollbars overlayscrollbars-react tailwind-merge clsx
 ```
+
+## Notes
+
+- WebStorm can not resolve tsconfig path import when used by npm
+
+```json
+{
+  "baseUrl": ".",
+  "paths": {
+    "@/*": [
+      "./src/*"
+    ]
+  }
+}
+```

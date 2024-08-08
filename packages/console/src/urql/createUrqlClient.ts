@@ -1,6 +1,6 @@
 import { Client, fetchExchange } from '@urql/core';
 import { devtoolsExchange } from '@urql/devtools';
-import { cacheExchange, KeyingConfig } from '@urql/exchange-graphcache';
+import { cacheExchange, CacheExchangeOpts, KeyingConfig } from '@urql/exchange-graphcache';
 import { persistedExchange } from '@urql/exchange-persisted';
 import { retryExchange } from '@urql/exchange-retry';
 import { ms } from '@wener/utils';
@@ -12,12 +12,16 @@ export function createUrqlClient({
   persisted = false,
   batch = true,
   schema,
+  cache,
+  resolveTypeNameFromKey,
 }: {
   url: string;
   getToken?: () => string | undefined | null;
   batch?: boolean;
   persisted?: boolean;
   schema?: any;
+  cache?: Partial<CacheExchangeOpts>;
+  resolveTypeNameFromKey?: (key: string) => string | null | undefined;
 }): Client {
   const client = new Client({
     url,
@@ -26,6 +30,7 @@ export function createUrqlClient({
     exchanges: [
       process.env.NODE_ENV === 'development' && devtoolsExchange,
       cacheExchange({
+        ...cache,
         schema,
         keys: new Proxy({} as KeyingConfig, {
           get(target, prop, receiver) {
@@ -47,19 +52,21 @@ export function createUrqlClient({
         resolvers: {
           Query: {
             node: (parent, args, cache, info) => {
-              let __typename = '';
+              let __typename;
               let id = args.id;
-              if (typeof id === 'string') {
-                const idType = id.split('_')[0];
-                __typename = (
-                  {
-                    usr: 'User',
-                  } as Record<string, string>
-                )[idType];
+              if (typeof id === 'string' && resolveTypeNameFromKey) {
+                // const idType = id.split('_')[0];
+                // __typename = (
+                //   {
+                //     usr: 'User',
+                //   } as Record<string, string>
+                // )[idType];
+                __typename = resolveTypeNameFromKey(id);
               }
               return __typename ? { __typename, id } : cache.resolve(parent as any, info.parentFieldKey);
             },
           },
+          ...cache?.resolvers,
         },
       }),
       // scalarExchange({

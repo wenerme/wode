@@ -1,7 +1,7 @@
 import React from 'react';
 import { Meta } from '@storybook/react';
-import { AppearanceSettingPage } from '../../console/pages/AppearanceSettingPage/AppearanceSettingPage';
 import { Image } from '../../web';
+import { AppearanceSettingPage } from './AppearanceSettingPage/AppearanceSettingPage';
 import { LoginPage } from './LoginPage';
 import { SystemAboutPage } from './SystemAboutPage';
 

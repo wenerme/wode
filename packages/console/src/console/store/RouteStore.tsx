@@ -2,9 +2,9 @@ import { createMemoryRouter, RouteObject } from 'react-router-dom';
 import { Router } from '@remix-run/router';
 import { mutative } from '@wener/reaction/mutative/zustand';
 import { createStore } from 'zustand';
-import { LoadingIndicator } from './components';
+import { LoadingIndicator } from '../components';
 
-interface RouteState {
+export interface RouteState {
   // content
   routes: RouteObject[];
   // root router
