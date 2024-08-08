@@ -6,10 +6,10 @@ import { showSuccessToast } from '../toast';
 import { DynamicModule } from '../web';
 import { clearAuthToken } from './AppActor';
 import { createLauncherStore, LauncherStore } from './ConsoleLauncher/LauncherStore';
-import { ConsoleStore, ConsoleStoreState, createConsoleStore } from './ConsoleStore';
-import { createRouteStore, RouteStore } from './RouteStore';
+import { ConsoleStore, ConsoleStoreState, createConsoleStore } from './store/ConsoleStore';
+import { createRouteStore, RouteStore } from './store/RouteStore';
+import { createUserStore, UserState, UserStore } from './store/UserStore';
 import { UserAction } from './user/getUserAction';
-import { createUserStore, UserState, UserStore } from './UserStore';
 
 export type ConsoleContext = {
   appStore: AppStore;
@@ -39,7 +39,9 @@ export function setConsoleContainer(container: AwilixContainer) {
   getGlobalStates()['ConsoleContainer'] = container;
 }
 
-export function getConsoleContainer<T extends object = ConsoleContext>(creator?: () => AwilixContainer<T>) {
+export function getConsoleContainer<T extends object = ConsoleContext>(
+  creator?: () => AwilixContainer<T>,
+): AwilixContainer<T> {
   creator ||= createConsoleContainer as () => AwilixContainer<T>;
   return getGlobalStates('ConsoleContainer', creator);
 }

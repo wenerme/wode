@@ -1,18 +1,25 @@
-import { MaybePromise } from '@wener/utils';
+import { isPromise, MaybePromise } from '@wener/utils';
 
 export function runRelayClientMutation<
   I extends {
     clientMutationId?: string;
   },
   O extends object,
->(input: I | undefined = {} as I, f: (input: I) => MaybePromise<O>) {
-  let clientMutationId = input.clientMutationId;
+>(
+  input: I | undefined = {} as I,
+  f: (input: I) => MaybePromise<O>,
+): MaybePromise<
+  O & {
+    clientMutationId?: string;
+  }
+> {
+  // 不需要去重、客户端没有传递不需要生成
+  const clientMutationId = input.clientMutationId;
   if (!clientMutationId) {
     return f(input);
   }
-  // fixme dedup
-  let out = f(input);
-  let attache = (data: O) => {
+  const out = f(input);
+  const attach = (data: O) => {
     if (typeof data === 'object' && data) {
       (data as any)['clientMutationId'] = clientMutationId;
     } else if (data === undefined) {
@@ -20,8 +27,8 @@ export function runRelayClientMutation<
     }
     return data;
   };
-  if ('then' in out) {
-    return out.then((data) => attache(data));
+  if (isPromise(out)) {
+    return out.then((data) => attach(data));
   }
-  return attache(out);
+  return attach(out);
 }

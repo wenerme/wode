@@ -4,7 +4,7 @@ import { NonIdealState } from '../../daisy';
 import { resolveErrorMessage } from '../../toast';
 import { LoadingIndicator } from '../components';
 import { getUserStore } from '../container';
-import { UserProfileData } from '../UserStore';
+import { UserProfileData } from '../store/UserStore';
 
 export const UserLoader: React.FC<
   PropsWithChildren & {

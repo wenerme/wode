@@ -40,8 +40,18 @@ export class Promises {
    * Returns `true` if the given value is a Promise.
    * @param v The value to check.
    */
-  static isPromise<T>(v: any): v is Promise<T> {
-    return v && (v instanceof Promise || (v.then && v.catch));
+  static isPromise<T>(v: any): v is PromiseLike<T> {
+    return v && (v instanceof Promise || typeof v.then === 'function');
+  }
+
+  /**
+   * Returns a Promise that resolves when the given signal is aborted.
+   */
+  static aborted(signal: AbortSignal): Promise<void> {
+    // https://nodejs.org/api/util.html#utilabortedsignal-resource
+    return new Promise((_, reject) => {
+      signal.addEventListener('abort', () => reject(new DOMException('Aborted', 'AbortError')));
+    });
   }
 }
 

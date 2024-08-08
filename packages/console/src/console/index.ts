@@ -25,14 +25,16 @@ export { ConsoleLoader, type ConsoleLoaderProps } from './ConsoleLoader';
 export { ConsoleLauncher, type ConsoleLauncherProps } from './ConsoleLauncher';
 export { useUserPreferenceState } from './hooks';
 export {
-  getAccessToken,
-  getAppStore,
-  getRouteStore,
-  getLauncherStore,
-  getAppState,
+  createConsoleContainer,
   getConsoleContainer,
   getConsoleContext,
   setConsoleContainer,
+  //
+  getAppStore,
+  getAccessToken,
+  getRouteStore,
+  getLauncherStore,
+  getAppState,
   getConsoleStore,
   getUserStore,
   getUserState,
@@ -40,4 +42,5 @@ export {
 } from './container';
 
 export { type AppStore, type AppState, type AuthStatus, createAppStore } from '../state/AppStore';
-export { type UserStore, type UserState, type UserProfileData, createUserStore } from './UserStore';
+export { type UserStore, type UserState, type UserProfileData, createUserStore } from './store/UserStore';
+export { type RouteStore, type RouteState, createRouteStore } from './store/RouteStore';

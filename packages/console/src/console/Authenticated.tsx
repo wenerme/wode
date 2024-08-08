@@ -1,5 +1,5 @@
 import React, { PropsWithChildren, useEffect, useState } from 'react';
-import Splash from '../../assets/LoginSplash.jpg';
+import Splash from '../assets/LoginSplash.jpg';
 import { AuthStatus } from '../state';
 import { Image, SiteLogo } from '../web';
 import { getAppState, getAppStore } from './container';
