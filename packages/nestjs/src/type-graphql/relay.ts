@@ -35,13 +35,13 @@ export abstract class RelayNode {
 
 @InputType()
 export abstract class RelayMutationInput {
-  @Field(() => ID, { nullable: true })
+  @Field(() => String, { nullable: true })
   clientMutationId?: string;
 }
 
 @ObjectType()
 export abstract class RelayMutationPayload {
-  @Field(() => ID, { nullable: true })
+  @Field(() => String, { nullable: true })
   clientMutationId?: string;
 }
 
