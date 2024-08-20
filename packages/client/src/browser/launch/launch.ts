@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { createChildLogger, createLogger, type Logger } from '@wener/utils';
-import type { Browser, PuppeteerLaunchOptions } from 'puppeteer';
+import type { Browser, PuppeteerLaunchOptions } from 'puppeteer-core';
 import { connect } from './connect';
 
 export interface LaunchOptions {
@@ -23,7 +23,7 @@ export async function launch({
   plugins: { adblock = false } = {},
   args = [],
   ...options
-}: LaunchOptions) {
+}: LaunchOptions): Promise<{ browser: Browser; reuse?: boolean }> {
   const logger = createChildLogger(options.logger ?? createLogger(), { uid });
   const userDataDir = path.join(dataDir, uid);
 
@@ -37,7 +37,7 @@ export async function launch({
         ...options,
       });
       if (browser) {
-        return { browser, reuse: true };
+        return { browser: browser as any as Browser, reuse: true };
       }
     } catch (error) {
       logger.debug(`Failed to connect browser: ${error}`);
@@ -71,7 +71,7 @@ export async function launch({
     ...(options.options?.args || []),
   ];
 
-  const { default: puppeteer } = await import('puppeteer');
+  const { default: puppeteer, launch } = await import('puppeteer');
   let browser: Browser;
   try {
     const launchOptions: PuppeteerLaunchOptions = {
@@ -88,7 +88,7 @@ export async function launch({
       args: finalArgs,
     };
     logger.info(launchOptions, 'launching browser');
-    browser = await puppeteer.launch(launchOptions);
+    browser = (await puppeteer.launch(launchOptions as any)) as any as Browser;
     logger.info(
       {
         uid,

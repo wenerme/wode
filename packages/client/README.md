@@ -109,7 +109,7 @@ console.log(await client.getModels());
     - 11404 行代码, 无文档, 编译后 288KB, minify 后 140KB, **21** 个依赖
     -
     对应 [src/alicloud/OcrV20210707.ts](https://github.com/wenerme/wode/blob/main/packages/client/src/alicloud/OcrV20210707.ts)
-      - 4419 行代码，主要是 markdown 文档，编译后 0KB （纯类型定义）
+    - 4419 行代码，主要是 markdown 文档，编译后 0KB （纯类型定义）
 - tea 校验我觉得很差 @alicloud/tea-util
 
 2. 阿里云的 API 文档质量非常的差
@@ -204,6 +204,14 @@ console.log(`AccessToken`, await client.options.accessToken.get());
 ## xunfei/spark
 
 ## wechat
+
+- bun
+  - 企业微信会话存档
+
+## funasr
+
+- AI, ASR, 语音识别
+- https://github.com/modelscope/FunASR/blob/main/runtime/docs/websocket_protocol_zh.md
 
 ## 参考
 

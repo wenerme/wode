@@ -8,7 +8,7 @@ export { withSidEntity } from './withSidEntity';
 export { withCodeEntity } from './withCodeEntity';
 export { withMetadataEntity } from './withMetadataEntity';
 export { withTagsEntity } from './withTagsEntity';
-export { withVendorRefEntity } from './withVendorRefEntity';
+export { withVendorRefEntity, requireVendorRefEntity } from './withVendorRefEntity';
 export { withDisplayOrderEntity } from './withDisplayOrderEntity';
 export { createStateStatusEntity } from './createStateStatusEntity';
 export { withRequiredEntityRefEntity } from './withRequiredEntityRefEntity';
