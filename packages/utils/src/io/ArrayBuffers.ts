@@ -157,7 +157,7 @@ export class ArrayBuffers {
     return this.toUint8Array(ArrayBuffers.from(v, 'hex'));
   };
 
-  static resize = (v: ArrayBufferLike, newByteLength?: number, maxByteLength?: number): ArrayBuffer => {
+  static resize = (v: ArrayBuffer, newByteLength?: number, maxByteLength?: number): ArrayBuffer => {
     if (newByteLength === undefined || newByteLength === null) {
       return v;
     }
@@ -167,7 +167,7 @@ export class ArrayBuffers {
       if ('resizable' in v && v.resizable) {
         if ('maxByteLength' in v && typeof v.maxByteLength === 'number' && v.maxByteLength >= newByteLength) {
           v.resize(newByteLength);
-          return v;
+          return v as ArrayBuffer;
         }
       }
     }
@@ -420,6 +420,10 @@ declare global {
   interface ArrayBuffer {
     resize?: (newByteLength: number) => void;
     resizable?: boolean;
+  }
+
+  interface ArrayBufferConstructor {
+    new (byteLength: number, opts?: { maxByteLength?: number }): ArrayBuffer;
   }
 
   interface SharedArrayBuffer {

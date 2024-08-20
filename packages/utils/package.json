@@ -46,14 +46,14 @@
     "test": "make test"
   },
   "devDependencies": {
-    "@sinclair/typebox": "^0.32.35",
+    "@sinclair/typebox": "^0.33.7",
     "@types/lodash": "^4.17.7",
     "@types/ws": "^8.5.12",
     "@wener/utils": "link:",
     "https-proxy-agent": "^7.0.5",
     "lodash": "^4.17.21",
     "node-fetch": "^3.3.2",
-    "undici": "^6.19.5",
+    "undici": "^6.19.8",
     "zod": "^3.23.8"
   },
   "publishConfig": {

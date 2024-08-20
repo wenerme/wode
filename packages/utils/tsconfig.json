@@ -21,7 +21,9 @@
     "removeComments": false,
     "stripInternal": true,
     "isolatedModules": true,
-    "outDir": "lib"
+    "outDir": "lib",
+    "baseUrl": ".",
+    "rootDir": "./src",
   },
   "exclude": [
     "node_modules"

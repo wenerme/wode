@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "moduleResolution": "node",
     "target": "ESNext",
     "module": "ESNext",
     "lib": [
@@ -8,9 +7,15 @@
       "dom.iterable",
       "ESNext"
     ],
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": false,
+    "verbatimModuleSyntax": true,
+    "noEmit": true,
     "strict": true,
-    "sourceMap": true,
     "skipLibCheck": true,
+    "noFallthroughCasesInSwitch": true,
+    "moduleDetection": "force",
+    "sourceMap": true,
     "esModuleInterop": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,

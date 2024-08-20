@@ -1,6 +1,6 @@
 import { AsyncLocalStorage } from 'node:async_hooks';
 import { Logger, type Type } from '@nestjs/common';
-import { Errors } from './Errors';
+import { Errors, Promises } from '@wener/utils';
 
 export class Currents {
   static readonly #storage = new AsyncLocalStorage<Map<any, any>>();
@@ -136,7 +136,7 @@ class Token<T, K> implements ContextToken<T, K> {
     const found = this.get();
     if (found === undefined) {
       this.log.warn('context value not found');
-      throw Errors.InternalServerError.asError('上下文不存在');
+      throw Errors.InternalServerError.asError(`Context not found: ${this.key}`);
     }
 
     return found;
