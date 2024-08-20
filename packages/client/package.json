@@ -24,22 +24,19 @@
     "./wechat": "./src/wechat/index.ts",
     "./wechat/webhook": "./src/wechat/webhook/index.ts",
     "./wecom": "./src/wecom/index.ts",
+    "./wecom/archive": "./src/wecom/archive/index.ts",
+    "./wecom/archive/bun": "./src/wecom/archive/bun/index.ts",
     "./wecom/server": "./src/wecom/server/index.ts",
     "./wecom/webhook": "./src/wecom/webhook/index.ts",
     "./xunfei/spark": "./src/xunfei/spark/index.ts",
     "./yzf": "./src/yzf/index.ts",
-    "./*": "./src/*/index.ts",
     "./package.json": "./package.json"
   },
   "files": [
-    "*.js",
-    "*.ts",
-    "lib",
+    "lib.d.ts",
     "src",
-    "wechat/*.ts",
-    "wecom/*.ts",
-    "xunfei/*.ts",
-    "xunfei/spark/*.ts"
+    "lib",
+    "libs"
   ],
   "keywords": [],
   "scripts": {
@@ -54,22 +51,24 @@
   "devDependencies": {
     "@alicloud/openapi-client": "^0.4.11",
     "@sinclair/typebox": "^0.33.7",
+    "@types/bun": "^1.1.6",
     "@types/cookie": "^0.6.0",
     "@types/crypto-js": "^4.2.2",
+    "@types/jsdom": "^21.1.7",
     "@wecom/jssdk": "^1.4.5",
     "cookie": "^0.6.0",
     "crypto-js": "^4.2.0",
     "dayjs": "^1.11.12",
     "fast-xml-parser": "^4.4.1",
+    "jsdom": "^24.1.1",
     "nats.ws": "^1.29.2",
     "openai": "^4.56.0",
-    "puppeteer": "^22.15.0",
-    "puppeteer-core": "^22.15.0",
+    "puppeteer": "^23.1.0",
+    "puppeteer-core": "^23.1.0",
     "undici": "^6.19.8",
     "ws": "^8.18.0"
   },
   "publishConfig": {
-    "access": "public",
     "exports": {
       ".": {
         "types": "./src/index.ts",
@@ -123,6 +122,14 @@
         "types": "./src/wecom/index.ts",
         "default": "./lib/wecom/index.js"
       },
+      "./wecom/archive": {
+        "types": "./src/wecom/archive/index.ts",
+        "default": "./lib/wecom/archive/index.js"
+      },
+      "./wecom/archive/bun": {
+        "types": "./src/wecom/archive/bun/index.ts",
+        "default": "./lib/wecom/archive/bun/index.js"
+      },
       "./wecom/server": {
         "types": "./src/wecom/server/index.ts",
         "default": "./lib/wecom/server/index.js"
@@ -139,7 +146,6 @@
         "types": "./src/yzf/index.ts",
         "default": "./lib/yzf/index.js"
       },
-      "./*": "./src/*/index.js",
       "./package.json": "./package.json"
     }
   }

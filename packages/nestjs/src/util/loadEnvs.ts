@@ -16,12 +16,18 @@ export async function loadEnvs({
   profiles?: string[];
   log?: Logger;
 } = {}) {
+  profiles = profiles.filter(Boolean);
+
   const files = [`.env.${env}.local`, `.env.${env}`, `.env.local`, '.env'];
-  for (let profile of profiles.filter(Boolean)) {
+  for (let profile of profiles) {
     files.unshift(`.env.${profile}.local`, `.env.${profile}`);
   }
   if (name) {
     files.unshift(`.env.${name}.${env}.local`, `.env.${name}.${env}`, `.env.${name}.local`, `.env.${name}`);
+
+    for (let profile of profiles) {
+      files.unshift(`.env.${name}.${profile}.local`, `.env.${name}.${profile}`);
+    }
   }
   for (const v of files) {
     try {

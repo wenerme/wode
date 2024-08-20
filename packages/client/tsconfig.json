@@ -21,7 +21,8 @@
     "strictNullChecks": true
   },
   "include": [
-    "tests/**/*.ts",
+    "lib.d.ts",
+    "ignored/**/*.ts",
     "src/**/*.ts",
     "src/**/*.tsx"
   ],
