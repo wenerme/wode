@@ -69,6 +69,13 @@ export async function bundle(server: string, opts?: BuildOptions | ((o: BuildOpt
       'canvas',
       'bcrypt',
       'sharp',
+      // opt in
+      '@nestjs/platform-express',
+      '@nestjs/microservices',
+      '@nestjs/websockets',
+      '@fastify/view',
+      'ts-morph',
+      // SQL Driver Module
       // https://mikro-orm.io/docs/next/deployment#excluding-dependencies-from-esbuild
       // 没有用到的依赖，以前版本会都依赖进来，但依赖可能不存在
       '@mikro-orm/mongodb',
@@ -78,22 +85,18 @@ export async function bundle(server: string, opts?: BuildOptions | ((o: BuildOpt
       '@mikro-orm/entity-generator',
       '@mikro-orm/migrations',
       '@mikro-orm/seeder',
-      // 没用到的功能模块
-      '@nestjs/platform-express',
-      '@nestjs/microservices',
-      '@nestjs/websockets',
-      '@fastify/view',
-      'ts-morph',
-      // binary
+      // SQL Driver
       '@vscode/sqlite3',
       'sqlite3',
       'better-sqlite3',
+      'libsql',
       'mysql2',
       'mysql',
       'oracledb',
       'tedious',
       'pg-native',
       'pg-query-stream',
+      // binary
       'fsevents',
       // 有问题
       'class-transformer',

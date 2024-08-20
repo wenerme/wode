@@ -2,6 +2,9 @@ import fs from 'node:fs/promises';
 import { Logger } from '@nestjs/common';
 import dotenv from 'dotenv';
 
+/**
+ * Load `.env[.{name.env|name|profile|env}][.local]`
+ */
 export async function loadEnvs({
   log = new Logger(loadEnvs.name),
   name,
@@ -15,7 +18,7 @@ export async function loadEnvs({
 } = {}) {
   const files = [`.env.${env}.local`, `.env.${env}`, `.env.local`, '.env'];
   for (let profile of profiles.filter(Boolean)) {
-    files.unshift(`.env.${profile}`);
+    files.unshift(`.env.${profile}.local`, `.env.${profile}`);
   }
   if (name) {
     files.unshift(`.env.${name}.${env}.local`, `.env.${name}.${env}`, `.env.${name}.local`, `.env.${name}`);
