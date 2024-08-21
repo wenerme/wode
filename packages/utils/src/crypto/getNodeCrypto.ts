@@ -1,3 +1,4 @@
+// import type * as NodeCrypto from 'node:crypto';
 import { getGlobalThis } from '../runtime/getGlobalThis';
 
 let nodeCrypto;

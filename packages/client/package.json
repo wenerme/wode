@@ -2,7 +2,7 @@
   "name": "@wener/client",
   "version": "1.0.19",
   "type": "module",
-  "description": "Client for Wechat, Wecom, Xunfei, etc.",
+  "description": "Client for Wechat, Wecom, Xunfei, FunAsr, etc.",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/wener/wode.git"
@@ -19,6 +19,7 @@
     "./alicloud": "./src/alicloud/index.ts",
     "./browser/launch": "./src/browser/launch/index.ts",
     "./cubejs": "./src/cubejs/index.ts",
+    "./funasr": "./src/funasr/index.ts",
     "./openai": "./src/openai/index.ts",
     "./server": "./src/server/index.ts",
     "./wechat": "./src/wechat/index.ts",
@@ -101,6 +102,10 @@
       "./cubejs": {
         "types": "./src/cubejs/index.ts",
         "default": "./lib/cubejs/index.js"
+      },
+      "./funasr": {
+        "types": "./src/funasr/index.ts",
+        "default": "./lib/funasr/index.js"
       },
       "./openai": {
         "types": "./src/openai/index.ts",
