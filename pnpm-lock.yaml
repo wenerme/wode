@@ -228,7 +228,7 @@ importers:
         version: 4.24.7(next@14.2.5(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       next-superjson-plugin:
         specifier: ^0.6.3
-        version: 0.6.3(next@14.2.5(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8))(superjson@2.2.1)
+        version: 0.6.3(next@14.2.5(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8))(superjson@2.2.1)
       object-hash:
         specifier: ^3.0.0
         version: 3.0.0
@@ -721,7 +721,7 @@ importers:
         version: 14.2.5(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8)
       next-superjson-plugin:
         specifier: ^0.6.3
-        version: 0.6.3(next@14.2.5(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8))(superjson@2.2.1)
+        version: 0.6.3(next@14.2.5(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8))(superjson@2.2.1)
       nextjs-progressbar:
         specifier: ^0.0.16
         version: 0.0.16(next@14.2.5(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8))(react@18.3.1)
@@ -1511,12 +1511,18 @@ importers:
       '@sinclair/typebox':
         specifier: ^0.33.7
         version: 0.33.7
+      '@types/bun':
+        specifier: ^1.1.6
+        version: 1.1.6
       '@types/cookie':
         specifier: ^0.6.0
         version: 0.6.0
       '@types/crypto-js':
         specifier: ^4.2.2
         version: 4.2.2
+      '@types/jsdom':
+        specifier: ^21.1.7
+        version: 21.1.7
       '@wecom/jssdk':
         specifier: ^1.4.5
         version: 1.4.5
@@ -1532,6 +1538,9 @@ importers:
       fast-xml-parser:
         specifier: ^4.4.1
         version: 4.4.1
+      jsdom:
+        specifier: ^24.1.1
+        version: 24.1.1(bufferutil@4.0.8)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@6.0.4)
       nats.ws:
         specifier: ^1.29.2
         version: 1.29.2
@@ -1539,11 +1548,11 @@ importers:
         specifier: ^4.56.0
         version: 4.56.0(encoding@0.1.13)(zod@3.23.8)
       puppeteer:
-        specifier: ^22.15.0
-        version: 22.15.0(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)
+        specifier: ^23.1.0
+        version: 23.1.0(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4)
       puppeteer-core:
-        specifier: ^22.15.0
-        version: 22.15.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+        specifier: ^23.1.0
+        version: 23.1.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       undici:
         specifier: ^6.19.8
         version: 6.19.8
@@ -1934,6 +1943,12 @@ importers:
       fontmin:
         specifier: ^1.1.0
         version: 1.1.0
+
+  packages/foundation:
+    dependencies:
+      '@wener/utils':
+        specifier: workspace:^
+        version: link:../utils
 
   packages/miniquery:
     dependencies:
@@ -5060,8 +5075,8 @@ packages:
       graphql: ^16.8.1
       zod: '*'
 
-  '@puppeteer/browsers@2.3.0':
-    resolution: {integrity: sha512-ioXoq9gPxkss4MYhD+SFaU9p1IHFUX0ILAWFPyjGaBdjLsYAlZw6j1iLA0N/m12uVHLFDfSYNF7EQccjinIMDA==}
+  '@puppeteer/browsers@2.3.1':
+    resolution: {integrity: sha512-uK7o3hHkK+naEobMSJ+2ySYyXtQkBxIH8Gn4MK9ciePjNV+Pf+PgY/W7iPzn2MTjl3stcYB5AlcTmPYw7AXDwA==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -7736,8 +7751,8 @@ packages:
     engines: {node: '>=12.13.0'}
     hasBin: true
 
-  chromium-bidi@0.6.3:
-    resolution: {integrity: sha512-qXlsCmpCZJAnoTYI83Iu6EdYQpMYdVkCfq08KDh2pmlVqK5t5IA9mGs4/LwCwp4fqisSOMXZxP3HIh8w8aRn0A==}
+  chromium-bidi@0.6.4:
+    resolution: {integrity: sha512-8zoq6ogmhQQkAKZVKO2ObFTl4uOkqoX1PlKQX3hZQ5E9cbUotcAb7h4pTNVAGGv8Z36PF3CtdOriEp/Rz82JqQ==}
     peerDependencies:
       devtools-protocol: '*'
 
@@ -12415,12 +12430,12 @@ packages:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
     engines: {node: '>=6'}
 
-  puppeteer-core@22.15.0:
-    resolution: {integrity: sha512-cHArnywCiAAVXa3t4GGL2vttNxh7GqXtIYGym99egkNJ3oG//wL9LkvO4WE8W1TJe95t1F1ocu9X4xWaGsOKOA==}
+  puppeteer-core@23.1.0:
+    resolution: {integrity: sha512-SvAsu+xnLN2FMXE/59bp3s3WXp8ewqUGzVV4AQtml/2xmsciZnU/bXcCW+eETHPWQ6Agg2vTI7QzWXPpEARK2g==}
     engines: {node: '>=18'}
 
-  puppeteer@22.15.0:
-    resolution: {integrity: sha512-XjCY1SiSEi1T7iSYuxS82ft85kwDJUS7wj1Z0eGVXKdtr5g4xnVcbjwxhq5xBnpK/E7x1VZZoJDxpjAOasHT4Q==}
+  puppeteer@23.1.0:
+    resolution: {integrity: sha512-m+CyicDlGN1AVUeOsCa6/+KQydJzxfsPowL7fQy+VGNeaWafB0m8G5aGfXdfZztKMxzCsdz7KNNzbJPeG9wwFw==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -14030,6 +14045,9 @@ packages:
     hasBin: true
     peerDependencies:
       typescript: '>=4.3.0'
+
+  typed-query-selector@2.12.0:
+    resolution: {integrity: sha512-SbklCd1F0EiZOyPiW192rrHZzZ5sBijB6xM+cpmrwDqObvdtunOHHIk9fCGsoK5JVIYXoyEp4iEdE3upFH3PAg==}
 
   typedarray@0.0.6:
     resolution: {integrity: sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==}
@@ -18339,7 +18357,7 @@ snapshots:
       graphql: 16.9.0
       zod: 3.23.8
 
-  '@puppeteer/browsers@2.3.0':
+  '@puppeteer/browsers@2.3.1':
     dependencies:
       debug: 4.3.6
       extract-zip: 2.0.1
@@ -20513,7 +20531,7 @@ snapshots:
   '@types/body-parser@1.19.5':
     dependencies:
       '@types/connect': 3.4.38
-      '@types/node': 22.4.1
+      '@types/node': 20.16.1
 
   '@types/bun@1.1.6':
     dependencies:
@@ -20528,7 +20546,7 @@ snapshots:
 
   '@types/connect@3.4.38':
     dependencies:
-      '@types/node': 22.4.1
+      '@types/node': 20.16.1
 
   '@types/cookie@0.6.0': {}
 
@@ -20566,7 +20584,7 @@ snapshots:
 
   '@types/express-serve-static-core@4.19.5':
     dependencies:
-      '@types/node': 22.4.1
+      '@types/node': 20.16.1
       '@types/qs': 6.9.15
       '@types/range-parser': 1.2.7
       '@types/send': 0.17.4
@@ -20592,7 +20610,7 @@ snapshots:
   '@types/glob@7.2.0':
     dependencies:
       '@types/minimatch': 5.1.2
-      '@types/node': 22.4.1
+      '@types/node': 20.16.1
 
   '@types/har-format@1.2.15': {}
 
@@ -20625,7 +20643,7 @@ snapshots:
 
   '@types/jsdom@21.1.7':
     dependencies:
-      '@types/node': 22.4.1
+      '@types/node': 20.16.1
       '@types/tough-cookie': 4.0.5
       parse5: 7.1.2
 
@@ -20769,19 +20787,19 @@ snapshots:
 
   '@types/secp256k1@4.0.6':
     dependencies:
-      '@types/node': 22.4.1
+      '@types/node': 20.16.1
 
   '@types/semver@7.5.8': {}
 
   '@types/send@0.17.4':
     dependencies:
       '@types/mime': 1.3.5
-      '@types/node': 22.4.1
+      '@types/node': 20.16.1
 
   '@types/serve-static@1.15.7':
     dependencies:
       '@types/http-errors': 2.0.4
-      '@types/node': 22.4.1
+      '@types/node': 20.16.1
       '@types/send': 0.17.4
 
   '@types/stack-utils@2.0.3': {}
@@ -20829,7 +20847,7 @@ snapshots:
 
   '@types/xml2js@0.4.14':
     dependencies:
-      '@types/node': 22.4.1
+      '@types/node': 20.16.1
 
   '@types/yargs-parser@21.0.3': {}
 
@@ -20843,7 +20861,7 @@ snapshots:
 
   '@types/yauzl@2.10.3':
     dependencies:
-      '@types/node': 22.4.1
+      '@types/node': 20.16.1
     optional: true
 
   '@types/zxcvbn@4.4.4': {}
@@ -22299,7 +22317,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  chromium-bidi@0.6.3(devtools-protocol@0.0.1312386):
+  chromium-bidi@0.6.4(devtools-protocol@0.0.1312386):
     dependencies:
       devtools-protocol: 0.0.1312386
       mitt: 3.0.1
@@ -23346,7 +23364,7 @@ snapshots:
 
   eval@0.1.8:
     dependencies:
-      '@types/node': 22.4.1
+      '@types/node': 20.16.1
       require-like: 0.1.2
 
   event-target-shim@5.0.1: {}
@@ -26694,7 +26712,7 @@ snapshots:
       react-dom: 18.3.1(react@18.3.1)
       uuid: 8.3.2
 
-  next-superjson-plugin@0.6.3(next@14.2.5(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8))(superjson@2.2.1):
+  next-superjson-plugin@0.6.3(next@14.2.5(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8))(superjson@2.2.1):
     dependencies:
       hoist-non-react-statics: 3.3.2
       next: 14.2.5(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8)
@@ -27999,24 +28017,27 @@ snapshots:
 
   punycode@2.3.1: {}
 
-  puppeteer-core@22.15.0(bufferutil@4.0.8)(utf-8-validate@6.0.4):
+  puppeteer-core@23.1.0(bufferutil@4.0.8)(utf-8-validate@6.0.4):
     dependencies:
-      '@puppeteer/browsers': 2.3.0
-      chromium-bidi: 0.6.3(devtools-protocol@0.0.1312386)
+      '@puppeteer/browsers': 2.3.1
+      chromium-bidi: 0.6.4(devtools-protocol@0.0.1312386)
       debug: 4.3.6
       devtools-protocol: 0.0.1312386
+      typed-query-selector: 2.12.0
       ws: 8.18.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)
     transitivePeerDependencies:
       - bufferutil
       - supports-color
       - utf-8-validate
 
-  puppeteer@22.15.0(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4):
+  puppeteer@23.1.0(bufferutil@4.0.8)(typescript@5.5.4)(utf-8-validate@6.0.4):
     dependencies:
-      '@puppeteer/browsers': 2.3.0
+      '@puppeteer/browsers': 2.3.1
+      chromium-bidi: 0.6.4(devtools-protocol@0.0.1312386)
       cosmiconfig: 9.0.0(typescript@5.5.4)
       devtools-protocol: 0.0.1312386
-      puppeteer-core: 22.15.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      puppeteer-core: 23.1.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      typed-query-selector: 2.12.0
     transitivePeerDependencies:
       - bufferutil
       - supports-color
@@ -29935,6 +29956,8 @@ snapshots:
       typescript: 5.5.4
     transitivePeerDependencies:
       - supports-color
+
+  typed-query-selector@2.12.0: {}
 
   typedarray@0.0.6: {}
 

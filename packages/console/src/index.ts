@@ -1,3 +1,5 @@
+export { getGlobalStates, setGlobalStates } from './utils/getGlobalStates';
+
 export type * from './types';
 export * from './const';
 export { getPrefersColorSchema } from './web/utils';
