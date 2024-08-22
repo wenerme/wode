@@ -1,5 +1,5 @@
 export function normalizePagination({
-  pageSize = normalizePagination.pageSize || 20,
+  pageSize = normalizePagination.defaultPageSize || 20,
   pageNumber = 1,
   pageIndex = pageNumber - 1,
   limit,
@@ -11,13 +11,20 @@ export function normalizePagination({
   limit?: number;
   offset?: number;
 } = {}) {
+  limit = Math.max(limit || pageSize, 0);
+  offset = Math.max(offset ?? pageIndex * pageSize, 0);
+  pageNumber = Math.floor(offset / limit) + 1;
+
   return {
-    limit: Math.max(limit || pageSize, 0),
-    offset: Math.max(offset ?? pageIndex * pageSize, 0),
+    limit: limit,
+    offset: offset,
+    pageSize: limit,
+    pageNumber: pageNumber,
+    pageIndex: pageNumber - 1,
   };
 }
 
 /**
  * default page size
  */
-normalizePagination.pageSize = undefined as undefined | number;
+normalizePagination.defaultPageSize = undefined as undefined | number;

@@ -1,7 +1,7 @@
 /*
 https://help.aliyun.com/zh/sdk/product-overview/v3-request-structure-and-signature
 */
-import { ArrayBuffers, type FetchLike, getGlobalThis, type MaybePromise } from '@wener/utils';
+import { ArrayBuffers, getGlobalThis, type FetchLike, type MaybePromise } from '@wener/utils';
 import { signv3 } from './signv3';
 
 export interface AliCloudRequestOptions<T> {

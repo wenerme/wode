@@ -1,4 +1,5 @@
 import { asFunction, AwilixContainer, createContainer, InjectionMode } from 'awilix';
+import type { NameAndRegistrationPair } from 'awilix/lib/container';
 import { getGraphQLUrl } from '../client/graphql';
 import { getLogger } from '../hooks';
 import { AppState, AppStore, createAppStore, getGlobalStates } from '../state';
@@ -50,7 +51,7 @@ export function getConsoleContext() {
   return getConsoleContainer<ConsoleContext>().cradle;
 }
 
-export function createConsoleContainer() {
+export function createConsoleContainer<T extends ConsoleContext = ConsoleContext>(reg: NameAndRegistrationPair<T>) {
   const container = createContainer<ConsoleContext>({
     injectionMode: InjectionMode.PROXY,
     strict: true,
@@ -95,9 +96,10 @@ export function createConsoleContainer() {
         throw new Error(`failed load module ${name}: Not implemented`);
       };
     }).singleton(),
+    ...reg,
   });
 
-  return container;
+  return container as AwilixContainer<T>;
 }
 
 export function getAccessToken() {

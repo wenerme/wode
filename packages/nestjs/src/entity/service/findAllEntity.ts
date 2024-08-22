@@ -10,8 +10,8 @@ import { resolveEntityContext, ResolveEntityContextOptions } from './resolveEnti
 import { toKnexOrder } from './toKnexOrder';
 
 export interface FindAllEntityOptions<E extends StandardBaseEntity> {
-  count?: boolean;
-  data?: boolean;
+  count?: boolean; // should count total
+  data?: boolean; // should fetch data
 
   pageSize?: number;
   pageIndex?: number;
@@ -20,8 +20,9 @@ export interface FindAllEntityOptions<E extends StandardBaseEntity> {
   offset?: number;
   order?: string[];
 
-  ids?: string[];
   search?: string;
+
+  ids?: string[];
   filter?: string;
   filters?: string[];
   deleted?: boolean;
@@ -53,28 +54,17 @@ export async function findAllEntity<E extends StandardBaseEntity>(
 
   // where
   {
-    const { where, filter, filters = [], ids, search, deleted } = opts;
+    const { where, search } = opts;
 
     if (where) {
       builder.andWhere(where);
     }
 
-    for (let q of [filter, ...filters].map((v) => v?.trim()).filter(Boolean)) {
-      try {
-        builder.andWhere(toMikroOrmQuery(q) as QBFilterQuery);
-      } catch (error: any) {
-        throw Errors.BadRequest.asError({
-          message: 'Invalid filter',
-          description: error?.message as string,
-        });
-      }
+    {
+      const and = buildFilterQuery(opts);
+      and.length && builder.andWhere({ $and: and });
     }
 
-    if (ids?.length) {
-      builder.andWhere({
-        id: { $in: ids },
-      });
-    }
     if (search) {
       if (resolveCtx.applySearch) {
         await resolveCtx.applySearch({ builder, search });
@@ -83,17 +73,6 @@ export async function findAllEntity<E extends StandardBaseEntity>(
         and.length && builder.andWhere({ $and: and });
         or.length && builder.andWhere({ $or: or });
       }
-    }
-
-    // soft delete
-    if (deleted === false) {
-      builder.andWhere({
-        deletedAt: null,
-      });
-    } else if (deleted === true) {
-      builder.andWhere({
-        deletedAt: { $ne: null },
-      });
     }
   }
 
@@ -142,4 +121,50 @@ export async function findAllEntity<E extends StandardBaseEntity>(
   }
 
   return out;
+}
+
+function buildFilterQuery({
+  ids,
+  filters = [],
+  filter,
+  deleted,
+}: {
+  ids?: string[];
+  filter?: string;
+  filters?: string[];
+  deleted?: boolean;
+}) {
+  let all: FilterQuery<{
+    id: string;
+    deletedAt?: Date;
+  }>[] = [];
+  if (ids?.length) {
+    all.push({
+      id: { $in: ids },
+    });
+  }
+  if (filter) {
+    filters = [filter, ...filters];
+  }
+  for (let q of filters.map((v) => v?.trim()).filter(Boolean)) {
+    try {
+      all.push(toMikroOrmQuery(q) as QBFilterQuery);
+    } catch (error: any) {
+      throw Errors.BadRequest.asError({
+        message: 'Invalid filter',
+        description: error?.message as string,
+      });
+    }
+  }
+
+  if (deleted === false) {
+    all.push({
+      deletedAt: null,
+    });
+  } else if (deleted === true) {
+    all.push({
+      deletedAt: { $ne: null },
+    });
+  }
+  return all;
 }

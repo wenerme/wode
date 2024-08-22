@@ -1,4 +1,3 @@
-
 export enum MessageAction {
   Send = 'send',
   Recall = 'recall',

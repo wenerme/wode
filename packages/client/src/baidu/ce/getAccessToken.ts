@@ -1,4 +1,4 @@
-import { Errors, type FetchLike, getGlobalThis } from '@wener/utils';
+import { Errors, getGlobalThis, type FetchLike } from '@wener/utils';
 
 export async function getAccessToken({
   fetch = getGlobalThis().fetch,
@@ -8,7 +8,7 @@ export async function getAccessToken({
   fetch?: FetchLike;
   clientId: string;
   clientSecret: string;
-}) {
+}): Promise<GetAccessTokenPayload> {
   Errors.BadRequest.check(clientId && clientSecret, 'Missing clientId or clientSecret');
   // https://cloud.baidu.com/doc/WENXINWORKSHOP/s/Ilkkrb0i5
   // 默认有效期30天
@@ -23,7 +23,7 @@ export async function getAccessToken({
     },
   });
   const payload = await requireResOk(res);
-  const out = payload as GetTokenPayload;
+  const out = payload as GetAccessTokenPayload;
   out.expires_at = new Date(Date.now() + out.expires_in * 1000);
   return out;
 }
@@ -78,7 +78,7 @@ async function requireResOk(res: Response) {
   return payload;
 }
 
-export interface GetTokenPayload {
+export interface GetAccessTokenPayload {
   refresh_token: string;
   expires_in: number;
   session_key: string;

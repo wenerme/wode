@@ -480,7 +480,13 @@ function loadLibrarySymbols() {
 }
 
 function getLibraryPath() {
-  return [`./libs`, process.env.WWF_LIBRARY_PATH, process.env.LD_LIBRARY_PATH].filter(Boolean);
+  return [
+    //
+    `./libs/WeWorkFinanceSdk`,
+    `./libs`,
+    process.env.WWF_LIBRARY_PATH,
+    process.env.LD_LIBRARY_PATH,
+  ].filter(Boolean);
 }
 
 export function createWeWorkFinanceClientFromEnv({
@@ -489,12 +495,18 @@ export function createWeWorkFinanceClientFromEnv({
 }: Partial<CreateWeWorkFinanceClientOptions> & {
   env?: Record<string, any>;
 } = {}) {
+  let file = env.WWF_PRIVATE_KEY_FILE;
+  let privateKey;
+  if (file) {
+    privateKey = fs.readFileSync(file, 'utf8');
+  }
   return WeWorkFinanceClient.create({
     corpId: env.WWF_CORP_ID || '',
     corpSecret: env.WWF_CORP_SECRET || '',
     proxyCredential: env.WWF_PROXY_CREDENTIAL || '',
     proxy: env.WWF_PROXY || '',
     timeout: Number(env.WWF_TIMEOUT) || 0,
+    privateKey,
     ...opts,
   });
 }

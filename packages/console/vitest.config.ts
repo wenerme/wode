@@ -1,7 +1,7 @@
 import process from 'node:process';
 import react from '@vitejs/plugin-react';
-import { loadEnv, PluginOption } from 'vite';
-import { defineConfig } from 'vitest/config';
+import { loadEnv, type PluginOption } from 'vite';
+import { configDefaults, defineConfig } from 'vitest/config';
 
 // https://vitejs.dev/config/
 export default ({ mode }: { mode: string }) => {
@@ -16,6 +16,7 @@ export default ({ mode }: { mode: string }) => {
       },
     },
     test: {
+      exclude: [...configDefaults.exclude, '**/*.bun.test.ts'],
       server: {
         deps: {
           // fix .css extension error

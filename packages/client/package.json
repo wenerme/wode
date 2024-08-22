@@ -18,6 +18,7 @@
     "./17dz/operator": "./src/17dz/operator/index.ts",
     "./alicloud": "./src/alicloud/index.ts",
     "./browser/launch": "./src/browser/launch/index.ts",
+    "./browserless": "./src/browserless/index.ts",
     "./cubejs": "./src/cubejs/index.ts",
     "./funasr": "./src/funasr/index.ts",
     "./openai": "./src/openai/index.ts",
@@ -98,6 +99,10 @@
       "./browser/launch": {
         "types": "./src/browser/launch/index.ts",
         "default": "./lib/browser/launch/index.js"
+      },
+      "./browserless": {
+        "types": "./src/browserless/index.ts",
+        "default": "./lib/browserless/index.js"
       },
       "./cubejs": {
         "types": "./src/cubejs/index.ts",

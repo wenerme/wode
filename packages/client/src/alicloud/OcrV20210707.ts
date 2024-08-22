@@ -1,4 +1,4 @@
-import { type AliCloudClientOptions } from './AliCloudClient';
+import { AliCloudClientOptions } from './AliCloudClient';
 import { type RecognizeIdcardRoot } from './OcrV20210707.types';
 
 export interface OcrV20210707Api {
@@ -47,7 +47,6 @@ export interface OcrV20210707Api {
    * @acs-operation-type read
    */
   RecognizeAdvanced(req: RecognizeAdvancedRequest, opts?: AliCloudClientOptions): Promise<RecognizeAdvancedResponse>;
-
   /**
    * 通用手写体识别。
    *
@@ -94,7 +93,6 @@ export interface OcrV20210707Api {
     req: RecognizeHandwritingRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizeHandwritingResponse>;
-
   /**
    * 电商图片文字识别。
    *
@@ -137,7 +135,6 @@ export interface OcrV20210707Api {
    * @acs-operation-type read
    */
   RecognizeBasic(req: RecognizeBasicRequest, opts?: AliCloudClientOptions): Promise<RecognizeBasicResponse>;
-
   /**
    * 通用文字识别。
    *
@@ -180,7 +177,6 @@ export interface OcrV20210707Api {
    * @acs-operation-type read
    */
   RecognizeGeneral(req: RecognizeGeneralRequest, opts?: AliCloudClientOptions): Promise<RecognizeGeneralResponse>;
-
   /**
    * 表格识别。
    *
@@ -225,7 +221,6 @@ export interface OcrV20210707Api {
    * @acs-operation-type read
    */
   RecognizeTableOcr(req: RecognizeTableOcrRequest, opts?: AliCloudClientOptions): Promise<RecognizeTableOcrResponse>;
-
   /**
    * 防疫健康码识别。
    *
@@ -271,7 +266,6 @@ export interface OcrV20210707Api {
     req: RecognizeHealthCodeRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizeHealthCodeResponse>;
-
   /**
    * 文档结构化识别。
    *
@@ -284,7 +278,6 @@ export interface OcrV20210707Api {
     req: RecognizeDocumentStructureRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizeDocumentStructureResponse>;
-
   /**
    * 身份证识别。
    *
@@ -329,7 +322,6 @@ export interface OcrV20210707Api {
    * @acs-operation-type read
    */
   RecognizeIdcard(req: RecognizeIdcardRequest, opts?: AliCloudClientOptions): Promise<RecognizeIdcardResponse>;
-
   /**
    * 护照识别。
    *
@@ -372,7 +364,6 @@ export interface OcrV20210707Api {
    * @acs-operation-type read
    */
   RecognizePassport(req: RecognizePassportRequest, opts?: AliCloudClientOptions): Promise<RecognizePassportResponse>;
-
   /**
    * 户口本识别，支持户口本户主页和常住人口页识别。
    *
@@ -413,7 +404,6 @@ export interface OcrV20210707Api {
    * @acs-operation-type read
    */
   RecognizeHousehold(req: RecognizeHouseholdRequest, opts?: AliCloudClientOptions): Promise<RecognizeHouseholdResponse>;
-
   /**
    * 不动产权证识别。
    *
@@ -459,7 +449,6 @@ export interface OcrV20210707Api {
     req: RecognizeEstateCertificationRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizeEstateCertificationResponse>;
-
   /**
    * 银行卡识别。
    *
@@ -502,7 +491,6 @@ export interface OcrV20210707Api {
    * @acs-operation-type read
    */
   RecognizeBankCard(req: RecognizeBankCardRequest, opts?: AliCloudClientOptions): Promise<RecognizeBankCardResponse>;
-
   /**
    * 出生证明。
    *
@@ -548,7 +536,6 @@ export interface OcrV20210707Api {
     req: RecognizeBirthCertificationRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizeBirthCertificationResponse>;
-
   /**
    * 中国护照识别。
    *
@@ -561,7 +548,6 @@ export interface OcrV20210707Api {
     req: RecognizeChinesePassportRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizeChinesePassportResponse>;
-
   /**
    * 来往大陆（内地）通行证识别。
    *
@@ -617,7 +603,6 @@ export interface OcrV20210707Api {
     req: RecognizeExitEntryPermitToMainlandRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizeExitEntryPermitToMainlandResponse>;
-
   /**
    * 往来港澳台通行证识别。
    *
@@ -630,7 +615,6 @@ export interface OcrV20210707Api {
     req: RecognizeExitEntryPermitToHKRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizeExitEntryPermitToHKResponse>;
-
   /**
    * 中国香港身份证识别。
    *
@@ -660,7 +644,6 @@ export interface OcrV20210707Api {
    * @acs-operation-type read
    */
   RecognizeHKIdcard(req: RecognizeHKIdcardRequest, opts?: AliCloudClientOptions): Promise<RecognizeHKIdcardResponse>;
-
   /**
    * 社保卡识别。
    *
@@ -705,7 +688,6 @@ export interface OcrV20210707Api {
     req: RecognizeSocialSecurityCardVersionIIRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizeSocialSecurityCardVersionIIResponse>;
-
   /**
    * 国际身份证识别。
    *
@@ -751,7 +733,6 @@ export interface OcrV20210707Api {
     req: RecognizeInternationalIdcardRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizeInternationalIdcardResponse>;
-
   /**
    * 混贴发票识别。
    *
@@ -799,7 +780,6 @@ export interface OcrV20210707Api {
     req: RecognizeMixedInvoicesRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizeMixedInvoicesResponse>;
-
   /**
    * 增值税发票。
    *
@@ -844,7 +824,6 @@ export interface OcrV20210707Api {
    * @acs-operation-type read
    */
   RecognizeInvoice(req: RecognizeInvoiceRequest, opts?: AliCloudClientOptions): Promise<RecognizeInvoiceResponse>;
-
   /**
    * 机动车统一销售发票。
    *
@@ -893,7 +872,6 @@ export interface OcrV20210707Api {
     req: RecognizeCarInvoiceRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizeCarInvoiceResponse>;
-
   /**
    * 定额发票。
    *
@@ -906,7 +884,6 @@ export interface OcrV20210707Api {
     req: RecognizeQuotaInvoiceRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizeQuotaInvoiceResponse>;
-
   /**
    * 航空行程单识别。
    *
@@ -951,7 +928,6 @@ export interface OcrV20210707Api {
     req: RecognizeAirItineraryRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizeAirItineraryResponse>;
-
   /**
    * 火车票识别。
    *
@@ -1000,7 +976,6 @@ export interface OcrV20210707Api {
     req: RecognizeTrainInvoiceRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizeTrainInvoiceResponse>;
-
   /**
    * 出租车发票识别。
    *
@@ -1045,7 +1020,6 @@ export interface OcrV20210707Api {
     req: RecognizeTaxiInvoiceRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizeTaxiInvoiceResponse>;
-
   /**
    * 增值税发票卷票。
    *
@@ -1058,7 +1032,6 @@ export interface OcrV20210707Api {
     req: RecognizeRollTicketRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizeRollTicketResponse>;
-
   /**
    * 银行承兑汇票识别。
    *
@@ -1107,7 +1080,6 @@ export interface OcrV20210707Api {
     req: RecognizeBankAcceptanceRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizeBankAcceptanceResponse>;
-
   /**
    * 客运车船票识别。
    *
@@ -1120,7 +1092,6 @@ export interface OcrV20210707Api {
     req: RecognizeBusShipTicketRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizeBusShipTicketResponse>;
-
   /**
    * 非税收入发票识别。
    *
@@ -1165,7 +1136,6 @@ export interface OcrV20210707Api {
     req: RecognizeNonTaxInvoiceRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizeNonTaxInvoiceResponse>;
-
   /**
    * 通用机打发票识别。
    *
@@ -1178,7 +1148,6 @@ export interface OcrV20210707Api {
     req: RecognizeCommonPrintedInvoiceRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizeCommonPrintedInvoiceResponse>;
-
   /**
    * 酒店流水识别。
    *
@@ -1191,7 +1160,6 @@ export interface OcrV20210707Api {
     req: RecognizeHotelConsumeRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizeHotelConsumeResponse>;
-
   /**
    * 支付详情页识别。
    *
@@ -1236,7 +1204,6 @@ export interface OcrV20210707Api {
     req: RecognizePaymentRecordRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizePaymentRecordResponse>;
-
   /**
    * 电商订单页识别。
    *
@@ -1249,7 +1216,6 @@ export interface OcrV20210707Api {
     req: RecognizePurchaseRecordRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizePurchaseRecordResponse>;
-
   /**
    * 网约车行程单识别。
    *
@@ -1262,7 +1228,6 @@ export interface OcrV20210707Api {
     req: RecognizeRideHailingItineraryRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizeRideHailingItineraryResponse>;
-
   /**
    * 购物小票识别。
    *
@@ -1275,7 +1240,6 @@ export interface OcrV20210707Api {
     req: RecognizeShoppingReceiptRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizeShoppingReceiptResponse>;
-
   /**
    * 社会保障卡识别。
    *
@@ -1292,7 +1256,6 @@ export interface OcrV20210707Api {
     req: RecognizeSocialSecurityCardRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizeSocialSecurityCardResponse>;
-
   /**
    * 过路过桥费发票识别。
    *
@@ -1305,7 +1268,6 @@ export interface OcrV20210707Api {
     req: RecognizeTollInvoiceRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizeTollInvoiceResponse>;
-
   /**
    * 税收完税证明识别。
    *
@@ -1350,7 +1312,6 @@ export interface OcrV20210707Api {
     req: RecognizeTaxClearanceCertificateRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizeTaxClearanceCertificateResponse>;
-
   /**
    * 二手车统一销售发票识别。
    *
@@ -1363,7 +1324,6 @@ export interface OcrV20210707Api {
     req: RecognizeUsedCarInvoiceRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizeUsedCarInvoiceResponse>;
-
   /**
    * 营业执照识别。
    *
@@ -1411,7 +1371,6 @@ export interface OcrV20210707Api {
     req: RecognizeBusinessLicenseRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizeBusinessLicenseResponse>;
-
   /**
    * 银行开户许可证识别。
    *
@@ -1457,7 +1416,6 @@ export interface OcrV20210707Api {
     req: RecognizeBankAccountLicenseRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizeBankAccountLicenseResponse>;
-
   /**
    * 商标注册证。
    *
@@ -1470,7 +1428,6 @@ export interface OcrV20210707Api {
     req: RecognizeTradeMarkCertificationRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizeTradeMarkCertificationResponse>;
-
   /**
    * 食品生产许可证。
    *
@@ -1514,7 +1471,6 @@ export interface OcrV20210707Api {
     req: RecognizeFoodProduceLicenseRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizeFoodProduceLicenseResponse>;
-
   /**
    * 食品经营许可证。
    *
@@ -1561,7 +1517,6 @@ export interface OcrV20210707Api {
     req: RecognizeFoodManageLicenseRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizeFoodManageLicenseResponse>;
-
   /**
    * 医疗器械经营许可证。
    *
@@ -1574,7 +1529,6 @@ export interface OcrV20210707Api {
     req: RecognizeMedicalDeviceManageLicenseRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizeMedicalDeviceManageLicenseResponse>;
-
   /**
    * 医疗器械生产许可证。
    *
@@ -1587,7 +1541,6 @@ export interface OcrV20210707Api {
     req: RecognizeMedicalDeviceProduceLicenseRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizeMedicalDeviceProduceLicenseResponse>;
-
   /**
    * 第二类医疗器械经营备案凭证。
    *
@@ -1631,7 +1584,6 @@ export interface OcrV20210707Api {
     req: RecognizeCtwoMedicalDeviceManageLicenseRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizeCtwoMedicalDeviceManageLicenseResponse>;
-
   /**
    * 化妆品生产许可证识别。
    *
@@ -1644,7 +1596,6 @@ export interface OcrV20210707Api {
     req: RecognizeCosmeticProduceLicenseRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizeCosmeticProduceLicenseResponse>;
-
   /**
    * 国际企业执照识别。
    *
@@ -1657,7 +1608,6 @@ export interface OcrV20210707Api {
     req: RecognizeInternationalBusinessLicenseRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizeInternationalBusinessLicenseResponse>;
-
   /**
    * 行驶证识别。
    *
@@ -1707,7 +1657,6 @@ export interface OcrV20210707Api {
     req: RecognizeVehicleLicenseRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizeVehicleLicenseResponse>;
-
   /**
    * 驾驶证识别。
    *
@@ -1756,7 +1705,6 @@ export interface OcrV20210707Api {
     req: RecognizeDrivingLicenseRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizeDrivingLicenseResponse>;
-
   /**
    * 电子面单识别。
    *
@@ -1801,7 +1749,6 @@ export interface OcrV20210707Api {
    * @acs-operation-type read
    */
   RecognizeWaybill(req: RecognizeWaybillRequest, opts?: AliCloudClientOptions): Promise<RecognizeWaybillResponse>;
-
   /**
    * 车牌识别。
    *
@@ -1846,7 +1793,6 @@ export interface OcrV20210707Api {
    * @acs-operation-type read
    */
   RecognizeCarNumber(req: RecognizeCarNumberRequest, opts?: AliCloudClientOptions): Promise<RecognizeCarNumberResponse>;
-
   /**
    * 车辆vin码识别。
    *
@@ -1894,7 +1840,6 @@ export interface OcrV20210707Api {
     req: RecognizeCarVinCodeRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizeCarVinCodeResponse>;
-
   /**
    * 机动车注册登记证识别。
    *
@@ -1941,7 +1886,6 @@ export interface OcrV20210707Api {
     req: RecognizeVehicleRegistrationRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizeVehicleRegistrationResponse>;
-
   /**
    * 车辆合格证识别。
    *
@@ -1987,7 +1931,6 @@ export interface OcrV20210707Api {
     req: RecognizeVehicleCertificationRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizeVehicleCertificationResponse>;
-
   /**
    * 印刷体数学公式识别。
    *
@@ -2032,7 +1975,6 @@ export interface OcrV20210707Api {
     req: RecognizeEduFormulaRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizeEduFormulaResponse>;
-
   /**
    * 口算判题识别。
    *
@@ -2078,7 +2020,6 @@ export interface OcrV20210707Api {
     req: RecognizeEduOralCalculationRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizeEduOralCalculationResponse>;
-
   /**
    * 整页试卷识别。
    *
@@ -2123,7 +2064,6 @@ export interface OcrV20210707Api {
     req: RecognizeEduPaperOcrRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizeEduPaperOcrResponse>;
-
   /**
    * 试卷切题识别。
    *
@@ -2170,7 +2110,6 @@ export interface OcrV20210707Api {
     req: RecognizeEduPaperCutRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizeEduPaperCutResponse>;
-
   /**
    * 题目识别。
    *
@@ -2216,7 +2155,6 @@ export interface OcrV20210707Api {
     req: RecognizeEduQuestionOcrRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizeEduQuestionOcrResponse>;
-
   /**
    * 精细版结构化识别。
    *
@@ -2262,7 +2200,6 @@ export interface OcrV20210707Api {
     req: RecognizeEduPaperStructedRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizeEduPaperStructedResponse>;
-
   /**
    * 通用多语言识别。
    *
@@ -2308,7 +2245,6 @@ export interface OcrV20210707Api {
     req: RecognizeMultiLanguageRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizeMultiLanguageResponse>;
-
   /**
    * 英语作文识别。
    *
@@ -2351,7 +2287,6 @@ export interface OcrV20210707Api {
    * @acs-operation-type read
    */
   RecognizeEnglish(req: RecognizeEnglishRequest, opts?: AliCloudClientOptions): Promise<RecognizeEnglishResponse>;
-
   /**
    * 泰语识别。
    *
@@ -2361,7 +2296,6 @@ export interface OcrV20210707Api {
    * @acs-operation-type read
    */
   RecognizeThai(req: RecognizeThaiRequest, opts?: AliCloudClientOptions): Promise<RecognizeThaiResponse>;
-
   /**
    * 日语识别。
    *
@@ -2371,7 +2305,6 @@ export interface OcrV20210707Api {
    * @acs-operation-type read
    */
   RecognizeJanpanese(req: RecognizeJanpaneseRequest, opts?: AliCloudClientOptions): Promise<RecognizeJanpaneseResponse>;
-
   /**
    * 韩语识别。
    *
@@ -2381,7 +2314,6 @@ export interface OcrV20210707Api {
    * @acs-operation-type read
    */
   RecognizeKorean(req: RecognizeKoreanRequest, opts?: AliCloudClientOptions): Promise<RecognizeKoreanResponse>;
-
   /**
    * 拉丁语识别。
    *
@@ -2391,7 +2323,6 @@ export interface OcrV20210707Api {
    * @acs-operation-type read
    */
   RecognizeLatin(req: RecognizeLatinRequest, opts?: AliCloudClientOptions): Promise<RecognizeLatinResponse>;
-
   /**
    * 俄语识别。
    *
@@ -2401,7 +2332,6 @@ export interface OcrV20210707Api {
    * @acs-operation-type read
    */
   RecognizeRussian(req: RecognizeRussianRequest, opts?: AliCloudClientOptions): Promise<RecognizeRussianResponse>;
-
   /**
    * 核酸检测报告识别。
    *
@@ -2447,7 +2377,6 @@ export interface OcrV20210707Api {
     req: RecognizeCovidTestReportRequest,
     opts?: AliCloudClientOptions,
   ): Promise<RecognizeCovidTestReportResponse>;
-
   /**
    * 营业执照三要素核验支持通过输入营业执照的统一信用社会代码（工商注册号）、企业名称、法人姓名做一致性验证。
    *
@@ -2470,7 +2399,6 @@ export interface OcrV20210707Api {
     req: VerifyBusinessLicenseRequest,
     opts?: AliCloudClientOptions,
   ): Promise<VerifyBusinessLicenseResponse>;
-
   /**
    * 发票核验接口支持包括：增值税专用发票、增值税普通发票（折叠票）、增值税普通发票（卷票）、增值税电子普通发票（含收费公路通行费增值税电子普通发票）、机动车销售统一发票、二手车销售统一发票多种类型发票核验。您可以通过输入发票的关键验证字段，返回真实的票面信息，包括发票类型、发票代码、发票号码、作废标志、开票日期、购方税号及其他发票信息等。当天开具发票当日可查验（T+0）。注意：可能有几小时到十几小时的延迟。
    *
@@ -2491,7 +2419,6 @@ export interface OcrV20210707Api {
    */
   VerifyVATInvoice(req: VerifyVATInvoiceRequest, opts?: AliCloudClientOptions): Promise<VerifyVATInvoiceResponse>;
 }
-
 export interface RecognizeAdvancedRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -2566,9 +2493,7 @@ export interface RecognizeAdvancedRequest {
    */
   Row?: boolean;
 }
-
-export type RecognizeAdvancedResponse = string | Record<string, unknown>;
-
+export type RecognizeAdvancedResponse = string | object;
 export interface RecognizeHandwritingRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -2615,9 +2540,7 @@ export interface RecognizeHandwritingRequest {
    */
   NeedSortPage?: boolean;
 }
-
-export type RecognizeHandwritingResponse = string | Record<string, unknown>;
-
+export type RecognizeHandwritingResponse = string | object;
 export interface RecognizeBasicRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -2636,9 +2559,7 @@ export interface RecognizeBasicRequest {
    */
   body?: string | BufferSource;
 }
-
-export type RecognizeBasicResponse = string | Record<string, unknown>;
-
+export type RecognizeBasicResponse = string | object;
 export interface RecognizeGeneralRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -2657,9 +2578,7 @@ export interface RecognizeGeneralRequest {
    */
   body?: string | BufferSource;
 }
-
-export type RecognizeGeneralResponse = string | Record<string, unknown>;
-
+export type RecognizeGeneralResponse = string | object;
 export interface RecognizeTableOcrRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -2706,9 +2625,7 @@ export interface RecognizeTableOcrRequest {
    */
   IsHandWriting?: string;
 }
-
-export type RecognizeTableOcrResponse = string | Record<string, unknown>;
-
+export type RecognizeTableOcrResponse = string | object;
 export interface RecognizeHealthCodeRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -2727,9 +2644,7 @@ export interface RecognizeHealthCodeRequest {
    */
   body?: string | BufferSource;
 }
-
-export type RecognizeHealthCodeResponse = string | Record<string, unknown>;
-
+export type RecognizeHealthCodeResponse = string | object;
 export interface RecognizeDocumentStructureRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -2804,9 +2719,7 @@ export interface RecognizeDocumentStructureRequest {
    */
   UseNewStyleOutput?: boolean;
 }
-
-export type RecognizeDocumentStructureResponse = string | Record<string, unknown>;
-
+export type RecognizeDocumentStructureResponse = string | object;
 export interface RecognizeIdcardRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -2840,9 +2753,7 @@ export interface RecognizeIdcardRequest {
    */
   OutputQualityInfo?: boolean;
 }
-
 export type RecognizeIdcardResponse = RecognizeIdcardRoot;
-
 export interface RecognizePassportRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -2861,9 +2772,7 @@ export interface RecognizePassportRequest {
    */
   body?: string | BufferSource;
 }
-
-export type RecognizePassportResponse = string | Record<string, unknown>;
-
+export type RecognizePassportResponse = string | object;
 export interface RecognizeHouseholdRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -2888,9 +2797,7 @@ export interface RecognizeHouseholdRequest {
    */
   IsResidentPage?: boolean;
 }
-
-export type RecognizeHouseholdResponse = string | Record<string, unknown>;
-
+export type RecognizeHouseholdResponse = string | object;
 export interface RecognizeEstateCertificationRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -2909,9 +2816,7 @@ export interface RecognizeEstateCertificationRequest {
    */
   body?: string | BufferSource;
 }
-
-export type RecognizeEstateCertificationResponse = string | Record<string, unknown>;
-
+export type RecognizeEstateCertificationResponse = string | object;
 export interface RecognizeBankCardRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -2930,9 +2835,7 @@ export interface RecognizeBankCardRequest {
    */
   body?: string | BufferSource;
 }
-
-export type RecognizeBankCardResponse = string | Record<string, unknown>;
-
+export type RecognizeBankCardResponse = string | object;
 export interface RecognizeBirthCertificationRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -2951,9 +2854,7 @@ export interface RecognizeBirthCertificationRequest {
    */
   body?: string | BufferSource;
 }
-
-export type RecognizeBirthCertificationResponse = string | Record<string, unknown>;
-
+export type RecognizeBirthCertificationResponse = string | object;
 export interface RecognizeChinesePassportRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -2974,9 +2875,7 @@ export interface RecognizeChinesePassportRequest {
    */
   OutputFigure?: boolean;
 }
-
-export type RecognizeChinesePassportResponse = string | Record<string, unknown>;
-
+export type RecognizeChinesePassportResponse = string | object;
 export interface RecognizeExitEntryPermitToMainlandRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -3002,9 +2901,7 @@ export interface RecognizeExitEntryPermitToMainlandRequest {
    */
   OutputFigure?: boolean;
 }
-
-export type RecognizeExitEntryPermitToMainlandResponse = string | Record<string, unknown>;
-
+export type RecognizeExitEntryPermitToMainlandResponse = string | object;
 export interface RecognizeExitEntryPermitToHKRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -3025,9 +2922,7 @@ export interface RecognizeExitEntryPermitToHKRequest {
    */
   OutputFigure?: boolean;
 }
-
-export type RecognizeExitEntryPermitToHKResponse = string | Record<string, unknown>;
-
+export type RecognizeExitEntryPermitToHKResponse = string | object;
 export interface RecognizeHKIdcardRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -3046,9 +2941,7 @@ export interface RecognizeHKIdcardRequest {
    */
   body?: string | BufferSource;
 }
-
-export type RecognizeHKIdcardResponse = string | Record<string, unknown>;
-
+export type RecognizeHKIdcardResponse = string | object;
 export interface RecognizeSocialSecurityCardVersionIIRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -3067,9 +2960,7 @@ export interface RecognizeSocialSecurityCardVersionIIRequest {
    */
   body?: string | BufferSource;
 }
-
-export type RecognizeSocialSecurityCardVersionIIResponse = string | Record<string, unknown>;
-
+export type RecognizeSocialSecurityCardVersionIIResponse = string | object;
 export interface RecognizeInternationalIdcardRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -3095,9 +2986,7 @@ export interface RecognizeInternationalIdcardRequest {
    */
   Country: string;
 }
-
-export type RecognizeInternationalIdcardResponse = string | Record<string, unknown>;
-
+export type RecognizeInternationalIdcardResponse = string | object;
 export interface RecognizeMixedInvoicesRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -3123,9 +3012,7 @@ export interface RecognizeMixedInvoicesRequest {
    */
   PageNo?: number;
 }
-
-export type RecognizeMixedInvoicesResponse = string | Record<string, unknown>;
-
+export type RecognizeMixedInvoicesResponse = string | object;
 export interface RecognizeInvoiceRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -3151,9 +3038,7 @@ export interface RecognizeInvoiceRequest {
    */
   PageNo?: number;
 }
-
-export type RecognizeInvoiceResponse = string | Record<string, unknown>;
-
+export type RecognizeInvoiceResponse = string | object;
 export interface RecognizeCarInvoiceRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -3172,9 +3057,7 @@ export interface RecognizeCarInvoiceRequest {
    */
   body?: string | BufferSource;
 }
-
-export type RecognizeCarInvoiceResponse = string | Record<string, unknown>;
-
+export type RecognizeCarInvoiceResponse = string | object;
 export interface RecognizeQuotaInvoiceRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -3189,9 +3072,7 @@ export interface RecognizeQuotaInvoiceRequest {
    */
   body?: string | BufferSource;
 }
-
-export type RecognizeQuotaInvoiceResponse = string | Record<string, unknown>;
-
+export type RecognizeQuotaInvoiceResponse = string | object;
 export interface RecognizeAirItineraryRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -3210,9 +3091,7 @@ export interface RecognizeAirItineraryRequest {
    */
   body?: string | BufferSource;
 }
-
-export type RecognizeAirItineraryResponse = string | Record<string, unknown>;
-
+export type RecognizeAirItineraryResponse = string | object;
 export interface RecognizeTrainInvoiceRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -3231,9 +3110,7 @@ export interface RecognizeTrainInvoiceRequest {
    */
   body?: string | BufferSource;
 }
-
-export type RecognizeTrainInvoiceResponse = string | Record<string, unknown>;
-
+export type RecognizeTrainInvoiceResponse = string | object;
 export interface RecognizeTaxiInvoiceRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -3252,9 +3129,7 @@ export interface RecognizeTaxiInvoiceRequest {
    */
   body?: string | BufferSource;
 }
-
-export type RecognizeTaxiInvoiceResponse = string | Record<string, unknown>;
-
+export type RecognizeTaxiInvoiceResponse = string | object;
 export interface RecognizeRollTicketRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -3269,9 +3144,7 @@ export interface RecognizeRollTicketRequest {
    */
   body?: string | BufferSource;
 }
-
-export type RecognizeRollTicketResponse = string | Record<string, unknown>;
-
+export type RecognizeRollTicketResponse = string | object;
 export interface RecognizeBankAcceptanceRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -3290,9 +3163,7 @@ export interface RecognizeBankAcceptanceRequest {
    */
   body?: string | BufferSource;
 }
-
-export type RecognizeBankAcceptanceResponse = string | Record<string, unknown>;
-
+export type RecognizeBankAcceptanceResponse = string | object;
 export interface RecognizeBusShipTicketRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -3307,9 +3178,7 @@ export interface RecognizeBusShipTicketRequest {
    */
   body?: string | BufferSource;
 }
-
-export type RecognizeBusShipTicketResponse = string | Record<string, unknown>;
-
+export type RecognizeBusShipTicketResponse = string | object;
 export interface RecognizeNonTaxInvoiceRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -3328,9 +3197,7 @@ export interface RecognizeNonTaxInvoiceRequest {
    */
   body?: string | BufferSource;
 }
-
-export type RecognizeNonTaxInvoiceResponse = string | Record<string, unknown>;
-
+export type RecognizeNonTaxInvoiceResponse = string | object;
 export interface RecognizeCommonPrintedInvoiceRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -3345,9 +3212,7 @@ export interface RecognizeCommonPrintedInvoiceRequest {
    */
   body?: string | BufferSource;
 }
-
-export type RecognizeCommonPrintedInvoiceResponse = string | Record<string, unknown>;
-
+export type RecognizeCommonPrintedInvoiceResponse = string | object;
 export interface RecognizeHotelConsumeRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -3362,9 +3227,7 @@ export interface RecognizeHotelConsumeRequest {
    */
   body?: string | BufferSource;
 }
-
-export type RecognizeHotelConsumeResponse = string | Record<string, unknown>;
-
+export type RecognizeHotelConsumeResponse = string | object;
 export interface RecognizePaymentRecordRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -3383,9 +3246,7 @@ export interface RecognizePaymentRecordRequest {
    */
   body?: string | BufferSource;
 }
-
-export type RecognizePaymentRecordResponse = string | Record<string, unknown>;
-
+export type RecognizePaymentRecordResponse = string | object;
 export interface RecognizePurchaseRecordRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -3412,9 +3273,7 @@ export interface RecognizePurchaseRecordRequest {
    */
   OutputMultiOrders?: boolean;
 }
-
-export type RecognizePurchaseRecordResponse = string | Record<string, unknown>;
-
+export type RecognizePurchaseRecordResponse = string | object;
 export interface RecognizeRideHailingItineraryRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -3429,9 +3288,7 @@ export interface RecognizeRideHailingItineraryRequest {
    */
   body?: string | BufferSource;
 }
-
-export type RecognizeRideHailingItineraryResponse = string | Record<string, unknown>;
-
+export type RecognizeRideHailingItineraryResponse = string | object;
 export interface RecognizeShoppingReceiptRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -3446,9 +3303,7 @@ export interface RecognizeShoppingReceiptRequest {
    */
   body?: string | BufferSource;
 }
-
-export type RecognizeShoppingReceiptResponse = string | Record<string, unknown>;
-
+export type RecognizeShoppingReceiptResponse = string | object;
 export interface RecognizeSocialSecurityCardRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -3463,9 +3318,7 @@ export interface RecognizeSocialSecurityCardRequest {
    */
   body?: string | BufferSource;
 }
-
-export type RecognizeSocialSecurityCardResponse = string | Record<string, unknown>;
-
+export type RecognizeSocialSecurityCardResponse = string | object;
 export interface RecognizeTollInvoiceRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -3480,9 +3333,7 @@ export interface RecognizeTollInvoiceRequest {
    */
   body?: string | BufferSource;
 }
-
-export type RecognizeTollInvoiceResponse = string | Record<string, unknown>;
-
+export type RecognizeTollInvoiceResponse = string | object;
 export interface RecognizeTaxClearanceCertificateRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -3501,9 +3352,7 @@ export interface RecognizeTaxClearanceCertificateRequest {
    */
   body?: string | BufferSource;
 }
-
-export type RecognizeTaxClearanceCertificateResponse = string | Record<string, unknown>;
-
+export type RecognizeTaxClearanceCertificateResponse = string | object;
 export interface RecognizeUsedCarInvoiceRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -3518,9 +3367,7 @@ export interface RecognizeUsedCarInvoiceRequest {
    */
   body?: string | BufferSource;
 }
-
-export type RecognizeUsedCarInvoiceResponse = string | Record<string, unknown>;
-
+export type RecognizeUsedCarInvoiceResponse = string | object;
 export interface RecognizeBusinessLicenseRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -3539,9 +3386,7 @@ export interface RecognizeBusinessLicenseRequest {
    */
   body?: string | BufferSource;
 }
-
-export type RecognizeBusinessLicenseResponse = string | Record<string, unknown>;
-
+export type RecognizeBusinessLicenseResponse = string | object;
 export interface RecognizeBankAccountLicenseRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -3560,9 +3405,7 @@ export interface RecognizeBankAccountLicenseRequest {
    */
   body?: string | BufferSource;
 }
-
-export type RecognizeBankAccountLicenseResponse = string | Record<string, unknown>;
-
+export type RecognizeBankAccountLicenseResponse = string | object;
 export interface RecognizeTradeMarkCertificationRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -3577,9 +3420,7 @@ export interface RecognizeTradeMarkCertificationRequest {
    */
   body?: string | BufferSource;
 }
-
-export type RecognizeTradeMarkCertificationResponse = string | Record<string, unknown>;
-
+export type RecognizeTradeMarkCertificationResponse = string | object;
 export interface RecognizeFoodProduceLicenseRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -3598,9 +3439,7 @@ export interface RecognizeFoodProduceLicenseRequest {
    */
   body?: string | BufferSource;
 }
-
-export type RecognizeFoodProduceLicenseResponse = string | Record<string, unknown>;
-
+export type RecognizeFoodProduceLicenseResponse = string | object;
 export interface RecognizeFoodManageLicenseRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -3619,9 +3458,7 @@ export interface RecognizeFoodManageLicenseRequest {
    */
   body?: string | BufferSource;
 }
-
-export type RecognizeFoodManageLicenseResponse = string | Record<string, unknown>;
-
+export type RecognizeFoodManageLicenseResponse = string | object;
 export interface RecognizeMedicalDeviceManageLicenseRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -3636,9 +3473,7 @@ export interface RecognizeMedicalDeviceManageLicenseRequest {
    */
   body?: string | BufferSource;
 }
-
-export type RecognizeMedicalDeviceManageLicenseResponse = string | Record<string, unknown>;
-
+export type RecognizeMedicalDeviceManageLicenseResponse = string | object;
 export interface RecognizeMedicalDeviceProduceLicenseRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -3653,9 +3488,7 @@ export interface RecognizeMedicalDeviceProduceLicenseRequest {
    */
   body?: string | BufferSource;
 }
-
-export type RecognizeMedicalDeviceProduceLicenseResponse = string | Record<string, unknown>;
-
+export type RecognizeMedicalDeviceProduceLicenseResponse = string | object;
 export interface RecognizeCtwoMedicalDeviceManageLicenseRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -3674,9 +3507,7 @@ export interface RecognizeCtwoMedicalDeviceManageLicenseRequest {
    */
   body?: string | BufferSource;
 }
-
-export type RecognizeCtwoMedicalDeviceManageLicenseResponse = string | Record<string, unknown>;
-
+export type RecognizeCtwoMedicalDeviceManageLicenseResponse = string | object;
 export interface RecognizeCosmeticProduceLicenseRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -3691,9 +3522,7 @@ export interface RecognizeCosmeticProduceLicenseRequest {
    */
   body?: string | BufferSource;
 }
-
-export type RecognizeCosmeticProduceLicenseResponse = string | Record<string, unknown>;
-
+export type RecognizeCosmeticProduceLicenseResponse = string | object;
 export interface RecognizeInternationalBusinessLicenseRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -3714,9 +3543,7 @@ export interface RecognizeInternationalBusinessLicenseRequest {
    */
   Country: string;
 }
-
-export type RecognizeInternationalBusinessLicenseResponse = string | Record<string, unknown>;
-
+export type RecognizeInternationalBusinessLicenseResponse = string | object;
 export interface RecognizeVehicleLicenseRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -3735,9 +3562,7 @@ export interface RecognizeVehicleLicenseRequest {
    */
   body?: string | BufferSource;
 }
-
-export type RecognizeVehicleLicenseResponse = string | Record<string, unknown>;
-
+export type RecognizeVehicleLicenseResponse = string | object;
 export interface RecognizeDrivingLicenseRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -3756,9 +3581,7 @@ export interface RecognizeDrivingLicenseRequest {
    */
   body?: string | BufferSource;
 }
-
-export type RecognizeDrivingLicenseResponse = string | Record<string, unknown>;
-
+export type RecognizeDrivingLicenseResponse = string | object;
 export interface RecognizeWaybillRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -3777,9 +3600,7 @@ export interface RecognizeWaybillRequest {
    */
   body?: string | BufferSource;
 }
-
-export type RecognizeWaybillResponse = string | Record<string, unknown>;
-
+export type RecognizeWaybillResponse = string | object;
 export interface RecognizeCarNumberRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -3798,9 +3619,7 @@ export interface RecognizeCarNumberRequest {
    */
   body?: string | BufferSource;
 }
-
-export type RecognizeCarNumberResponse = string | Record<string, unknown>;
-
+export type RecognizeCarNumberResponse = string | object;
 export interface RecognizeCarVinCodeRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -3819,9 +3638,7 @@ export interface RecognizeCarVinCodeRequest {
    */
   body?: string | BufferSource;
 }
-
-export type RecognizeCarVinCodeResponse = string | Record<string, unknown>;
-
+export type RecognizeCarVinCodeResponse = string | object;
 export interface RecognizeVehicleRegistrationRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -3840,9 +3657,7 @@ export interface RecognizeVehicleRegistrationRequest {
    */
   body?: string | BufferSource;
 }
-
-export type RecognizeVehicleRegistrationResponse = string | Record<string, unknown>;
-
+export type RecognizeVehicleRegistrationResponse = string | object;
 export interface RecognizeVehicleCertificationRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -3861,9 +3676,7 @@ export interface RecognizeVehicleCertificationRequest {
    */
   body?: string | BufferSource;
 }
-
-export type RecognizeVehicleCertificationResponse = string | Record<string, unknown>;
-
+export type RecognizeVehicleCertificationResponse = string | object;
 export interface RecognizeEduFormulaRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -3882,9 +3695,7 @@ export interface RecognizeEduFormulaRequest {
    */
   body?: string | BufferSource;
 }
-
-export type RecognizeEduFormulaResponse = string | Record<string, unknown>;
-
+export type RecognizeEduFormulaResponse = string | object;
 export interface RecognizeEduOralCalculationRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -3903,9 +3714,7 @@ export interface RecognizeEduOralCalculationRequest {
    */
   body?: string | BufferSource;
 }
-
-export type RecognizeEduOralCalculationResponse = string | Record<string, unknown>;
-
+export type RecognizeEduOralCalculationResponse = string | object;
 export interface RecognizeEduPaperOcrRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -3945,9 +3754,7 @@ export interface RecognizeEduPaperOcrRequest {
    */
   OutputOricoord?: boolean;
 }
-
-export type RecognizeEduPaperOcrResponse = string | Record<string, unknown>;
-
+export type RecognizeEduPaperOcrResponse = string | object;
 export interface RecognizeEduPaperCutRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -3987,9 +3794,7 @@ export interface RecognizeEduPaperCutRequest {
    */
   Subject?: string;
 }
-
-export type RecognizeEduPaperCutResponse = string | Record<string, unknown>;
-
+export type RecognizeEduPaperCutResponse = string | object;
 export interface RecognizeEduQuestionOcrRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -4015,9 +3820,7 @@ export interface RecognizeEduQuestionOcrRequest {
    */
   NeedRotate?: boolean;
 }
-
-export type RecognizeEduQuestionOcrResponse = string | Record<string, unknown>;
-
+export type RecognizeEduQuestionOcrResponse = string | object;
 export interface RecognizeEduPaperStructedRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -4050,9 +3853,7 @@ export interface RecognizeEduPaperStructedRequest {
    */
   NeedRotate?: boolean;
 }
-
-export type RecognizeEduPaperStructedResponse = string | Record<string, unknown>;
-
+export type RecognizeEduPaperStructedResponse = string | object;
 export interface RecognizeMultiLanguageRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -4075,7 +3876,8 @@ export interface RecognizeMultiLanguageRequest {
    * * 支持语言列表。
    * @acs-in query
    */
-  Languages: string[];
+  Languages: Array</** * chn：中文，eng：英文，ja：日文，lading：拉丁，kor：韩文，sx：手写，tai：泰文，rus：俄文，mys：马来文，idn：印尼文，viet：越南文，ukr：乌克兰文，tur：土耳其文，tamil：泰米尔文。
+   * 其中**lading**支持以下语言：葡萄牙语、意大利语、德语、法语、西班牙语。 */ string>;
   /**
    * 是否输出单字识别结果
    * * 是否输出单字识别结果，默认不需要。
@@ -4105,9 +3907,7 @@ export interface RecognizeMultiLanguageRequest {
    */
   NeedSortPage?: boolean;
 }
-
-export type RecognizeMultiLanguageResponse = string | Record<string, unknown>;
-
+export type RecognizeMultiLanguageResponse = string | object;
 export interface RecognizeEnglishRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -4140,9 +3940,7 @@ export interface RecognizeEnglishRequest {
    */
   OutputTable?: boolean;
 }
-
-export type RecognizeEnglishResponse = string | Record<string, unknown>;
-
+export type RecognizeEnglishResponse = string | object;
 export interface RecognizeThaiRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -4175,9 +3973,7 @@ export interface RecognizeThaiRequest {
    */
   OutputTable?: boolean;
 }
-
-export type RecognizeThaiResponse = string | Record<string, unknown>;
-
+export type RecognizeThaiResponse = string | object;
 export interface RecognizeJanpaneseRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -4210,9 +4006,7 @@ export interface RecognizeJanpaneseRequest {
    */
   OutputTable?: boolean;
 }
-
-export type RecognizeJanpaneseResponse = string | Record<string, unknown>;
-
+export type RecognizeJanpaneseResponse = string | object;
 export interface RecognizeKoreanRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -4245,9 +4039,7 @@ export interface RecognizeKoreanRequest {
    */
   OutputTable?: boolean;
 }
-
-export type RecognizeKoreanResponse = string | Record<string, unknown>;
-
+export type RecognizeKoreanResponse = string | object;
 export interface RecognizeLatinRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -4280,9 +4072,7 @@ export interface RecognizeLatinRequest {
    */
   OutputTable?: boolean;
 }
-
-export type RecognizeLatinResponse = string | Record<string, unknown>;
-
+export type RecognizeLatinResponse = string | object;
 export interface RecognizeRussianRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -4315,9 +4105,7 @@ export interface RecognizeRussianRequest {
    */
   OutputTable?: boolean;
 }
-
-export type RecognizeRussianResponse = string | Record<string, unknown>;
-
+export type RecognizeRussianResponse = string | object;
 export interface RecognizeCovidTestReportRequest {
   /**
    * 图片链接（长度不超 2048，不支持 base64）
@@ -4342,9 +4130,7 @@ export interface RecognizeCovidTestReportRequest {
    */
   MultipleResult?: boolean;
 }
-
-export type RecognizeCovidTestReportResponse = string | Record<string, unknown>;
-
+export type RecognizeCovidTestReportResponse = string | object;
 export interface VerifyBusinessLicenseRequest {
   /**
    * 工商注册号/统一社会信用代码
@@ -4365,7 +4151,6 @@ export interface VerifyBusinessLicenseRequest {
    */
   LegalPerson: string;
 }
-
 export interface VerifyBusinessLicenseResponse {
   /**
    * 请求唯一 ID
@@ -4376,7 +4161,6 @@ export interface VerifyBusinessLicenseResponse {
    */
   Data?: string;
 }
-
 export interface VerifyVATInvoiceRequest {
   /**
    * 发票代码。数电发票（发票类型代码为31，32）时可为空（发票类型代码见**发票类型代码说明**）
@@ -4405,7 +4189,6 @@ export interface VerifyVATInvoiceRequest {
    */
   VerifyCode?: string;
 }
-
 export interface VerifyVATInvoiceResponse {
   /**
    * 请求唯一 ID
