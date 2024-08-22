@@ -41,4 +41,7 @@ export class ListQueryInput {
 
   @Field((type) => [String], { nullable: true, description: '顺序' })
   order?: string[];
+
+  @Field((type) => [String], { nullable: true, description: 'Filter by ids' })
+  ids?: string[];
 }

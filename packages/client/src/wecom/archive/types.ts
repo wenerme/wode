@@ -1,6 +1,5 @@
 // 平均约 1k, 最大群消息约 50k
 
-
 export type SwitchMessage = {
   msgid: string;
   action: 'switch';

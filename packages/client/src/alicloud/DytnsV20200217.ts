@@ -1,4 +1,4 @@
-import { type AliCloudClientOptions } from './AliCloudClient';
+import { AliCloudClientOptions } from './AliCloudClient';
 
 export interface DytnsV20200217Api {
   $product: 'Dytnsapi';
@@ -102,7 +102,6 @@ export interface DytnsV20200217Api {
     req: GetUAIDApplyTokenSignRequest,
     opts?: AliCloudClientOptions,
   ): Promise<GetUAIDApplyTokenSignResponse>;
-
   /**
    * 根据运营商授权Token获取UAID。
    * 获取授权Token及其签名值请参考GetUAIDApplyTokenSign API文档。
@@ -122,7 +121,6 @@ export interface DytnsV20200217Api {
    * @acs-operation-type read
    */
   UAIDVerification(req: UAIDVerificationRequest, opts?: AliCloudClientOptions): Promise<UAIDVerificationResponse>;
-
   /**
    * 用于核验企业名称和企业证件号，名称和证件必须全部一致且企业经营状态为在营才会判定核验通过。
    *
@@ -141,7 +139,6 @@ export interface DytnsV20200217Api {
     req: CompanyTwoElementsVerificationRequest,
     opts?: AliCloudClientOptions,
   ): Promise<CompanyTwoElementsVerificationResponse>;
-
   /**
    * 用于核验企业名称、企业证件号和企业法人姓名，必须全部一致且企业经营状态为在营才会判定核验通过。
    *
@@ -160,7 +157,6 @@ export interface DytnsV20200217Api {
     req: CompanyThreeElementsVerificationRequest,
     opts?: AliCloudClientOptions,
   ): Promise<CompanyThreeElementsVerificationResponse>;
-
   /**
    * 用于核验企业名称、企业证件号、企业法人姓名和企业法人身份证号，必须全部一致且企业经营状态为在营才会判定核验通过。
    *
@@ -179,7 +175,6 @@ export interface DytnsV20200217Api {
     req: CompanyFourElementsVerificationRequest,
     opts?: AliCloudClientOptions,
   ): Promise<CompanyFourElementsVerificationResponse>;
-
   /**
    * 查询手机号码的归属信息，包括：所属省份、所属城市、所属基础运营商（中国移动、中国联通、中国电信、中国广电）、移动转售企业（阿里通信等）、是否携号转网、归属号码段等。
    *
@@ -199,7 +194,6 @@ export interface DytnsV20200217Api {
     req: DescribePhoneNumberOperatorAttributeRequest,
     opts?: AliCloudClientOptions,
   ): Promise<DescribePhoneNumberOperatorAttributeResponse>;
-
   /**
    * 获取手机号码实时在网状态，例如正常、停机、空号等状态。支持明文、MD5/SHA256加密方式的号码查询。
    *
@@ -220,7 +214,6 @@ export interface DytnsV20200217Api {
     req: PhoneNumberStatusForPublicRequest,
     opts?: AliCloudClientOptions,
   ): Promise<PhoneNumberStatusForPublicResponse>;
-
   /**
    * 获取手机号码实时在网状态，例如正常、停机、空号等状态。支持明文、MD5/SHA256加密方式的号码查询。
    *
@@ -240,7 +233,6 @@ export interface DytnsV20200217Api {
     req: PhoneNumberStatusForAccountRequest,
     opts?: AliCloudClientOptions,
   ): Promise<PhoneNumberStatusForAccountResponse>;
-
   /**
    * 获取手机号码实时在网状态，例如正常、停机、空号等状态。支持明文、MD5/SHA256加密方式的号码查询。
    *
@@ -260,7 +252,6 @@ export interface DytnsV20200217Api {
     req: PhoneNumberStatusForRealRequest,
     opts?: AliCloudClientOptions,
   ): Promise<PhoneNumberStatusForRealResponse>;
-
   /**
    * 获取手机号码实时在网状态，例如正常、停机、空号等状态。支持明文、MD5/SHA256加密方式的号码查询。
    *
@@ -280,7 +271,6 @@ export interface DytnsV20200217Api {
     req: PhoneNumberStatusForSmsRequest,
     opts?: AliCloudClientOptions,
   ): Promise<PhoneNumberStatusForSmsResponse>;
-
   /**
    * 获取手机号码实时在网状态，例如正常、停机、空号等状态。支持明文、MD5/SHA256加密方式的号码查询。
    *
@@ -300,7 +290,6 @@ export interface DytnsV20200217Api {
     req: PhoneNumberStatusForVoiceRequest,
     opts?: AliCloudClientOptions,
   ): Promise<PhoneNumberStatusForVoiceResponse>;
-
   /**
    * 获取手机号码虚拟号码（俗称小号）状态。支持明文、MD5/SHA256加密方式的号码查询。
    *
@@ -321,7 +310,6 @@ export interface DytnsV20200217Api {
     req: PhoneNumberStatusForVirtualRequest,
     opts?: AliCloudClientOptions,
   ): Promise<PhoneNumberStatusForVirtualResponse>;
-
   /**
    * 验证手机号是否为运营商二次放号的号码，支持在一次请求中快速检验号码是否为二次放号。
    *
@@ -345,7 +333,6 @@ export interface DytnsV20200217Api {
     req: DescribePhoneTwiceTelVerifyRequest,
     opts?: AliCloudClientOptions,
   ): Promise<DescribePhoneTwiceTelVerifyResponse>;
-
   /**
    * 查询手机用户在运营商侧的在网时长。
    *
@@ -364,7 +351,6 @@ export interface DytnsV20200217Api {
     req: DescribePhoneNumberOnlineTimeRequest,
     opts?: AliCloudClientOptions,
   ): Promise<DescribePhoneNumberOnlineTimeResponse>;
-
   /**
    * 获取号码分析返回结果。
    *
@@ -381,7 +367,6 @@ export interface DytnsV20200217Api {
     req: DescribePhoneNumberAnalysisAIRequest,
     opts?: AliCloudClientOptions,
   ): Promise<DescribePhoneNumberAnalysisAIResponse>;
-
   /**
    * 获取号码分析返回结果。
    *
@@ -404,7 +389,6 @@ export interface DytnsV20200217Api {
     req: DescribePhoneNumberAnalysisRequest,
     opts?: AliCloudClientOptions,
   ): Promise<DescribePhoneNumberAnalysisResponse>;
-
   /**
    * 通过AI算法，预测手机号是否为空号。
    *
@@ -429,7 +413,6 @@ export interface DytnsV20200217Api {
     req: DescribeEmptyNumberRequest,
     opts?: AliCloudClientOptions,
   ): Promise<DescribeEmptyNumberResponse>;
-
   /**
    * 二要素（姓名和手机号）核验。用于比对用户填写的姓名、手机号两项信息是否属于同一用户。
    *
@@ -450,7 +433,6 @@ export interface DytnsV20200217Api {
     req: TwoElementsVerificationRequest,
     opts?: AliCloudClientOptions,
   ): Promise<TwoElementsVerificationResponse>;
-
   /**
    * 三要素（姓名、手机号和身份证号）核验。用于比对用户填写的姓名、手机号、身份证号三个信息是否属于同一用户。
    *
@@ -471,7 +453,6 @@ export interface DytnsV20200217Api {
     req: ThreeElementsVerificationRequest,
     opts?: AliCloudClientOptions,
   ): Promise<ThreeElementsVerificationResponse>;
-
   /**
    * 将原始号码加密为一个140开头的虚拟号码。通过结合阿里云的通信服务，可以使用加密后的140号码发起语音呼叫。实现虚拟号码呼叫的效果。
    *
@@ -488,7 +469,6 @@ export interface DytnsV20200217Api {
    * @acs-operation-type read
    */
   PhoneNumberEncrypt(req: PhoneNumberEncryptRequest, opts?: AliCloudClientOptions): Promise<PhoneNumberEncryptResponse>;
-
   /**
    * 进行无效号码过滤操作。
    *
@@ -507,7 +487,6 @@ export interface DytnsV20200217Api {
     req: InvalidPhoneNumberFilterRequest,
     opts?: AliCloudClientOptions,
   ): Promise<InvalidPhoneNumberFilterResponse>;
-
   /**
    * 分页查询标签列表。
    *
@@ -517,7 +496,6 @@ export interface DytnsV20200217Api {
    * @acs-operation-type read
    */
   QueryTagListPage(req: QueryTagListPageRequest, opts?: AliCloudClientOptions): Promise<QueryTagListPageResponse>;
-
   /**
    * 查询标签信息。
    *
@@ -530,7 +508,6 @@ export interface DytnsV20200217Api {
     req: QueryTagInfoBySelectionRequest,
     opts?: AliCloudClientOptions,
   ): Promise<QueryTagInfoBySelectionResponse>;
-
   /**
    * 根据标签ID查询用量统计。
    *
@@ -543,7 +520,6 @@ export interface DytnsV20200217Api {
     req: QueryUsageStatisticsByTagIdRequest,
     opts?: AliCloudClientOptions,
   ): Promise<QueryUsageStatisticsByTagIdResponse>;
-
   /**
    * 查询标签申请规则。
    *
@@ -553,7 +529,6 @@ export interface DytnsV20200217Api {
    * @acs-operation-type read
    */
   QueryTagApplyRule(req: QueryTagApplyRuleRequest, opts?: AliCloudClientOptions): Promise<QueryTagApplyRuleResponse>;
-
   /**
    * 查询可用的授权码。
    *
@@ -567,7 +542,6 @@ export interface DytnsV20200217Api {
     opts?: AliCloudClientOptions,
   ): Promise<QueryAvailableAuthCodeResponse>;
 }
-
 export interface GetUAIDApplyTokenSignRequest {
   /**
    * 授权码。
@@ -616,7 +590,6 @@ export interface GetUAIDApplyTokenSignRequest {
    */
   Carrier: string;
 }
-
 export interface GetUAIDApplyTokenSignResponse {
   /**
    * 外部流水号。
@@ -634,7 +607,6 @@ export interface GetUAIDApplyTokenSignResponse {
    */
   Carrier?: string;
 }
-
 export interface UAIDVerificationRequest {
   /**
    * 外部流水号。
@@ -670,14 +642,12 @@ export interface UAIDVerificationRequest {
    */
   AuthCode: string;
 }
-
 export interface UAIDVerificationResponse {
   /**
    * 获取到的UAID的值。
    */
   Uaid?: string;
 }
-
 export interface CompanyTwoElementsVerificationRequest {
   /**
    * 企业证件号。
@@ -697,7 +667,6 @@ export interface CompanyTwoElementsVerificationRequest {
    */
   AuthCode: string;
 }
-
 export interface CompanyTwoElementsVerificationResponse {
   /**
    * 企业详细信息。
@@ -711,7 +680,8 @@ export interface CompanyTwoElementsVerificationResponse {
   /**
    * 校验不一致的字段。
    */
-  InconsistentData?: string[];
+  InconsistentData?: Array</** - EpCertName：企业名称
+- EpCertNo：企业证件号 */ string>;
   /**
    * 核验结果。取值：
    *
@@ -729,7 +699,6 @@ export interface CompanyTwoElementsVerificationResponse {
    */
   ReasonCode?: string;
 }
-
 export interface CompanyThreeElementsVerificationRequest {
   /**
    * 企业证件号。
@@ -755,7 +724,6 @@ export interface CompanyThreeElementsVerificationRequest {
    */
   AuthCode: string;
 }
-
 export interface CompanyThreeElementsVerificationResponse {
   /**
    * 企业详细信息。
@@ -769,7 +737,9 @@ export interface CompanyThreeElementsVerificationResponse {
   /**
    * 校验不一致的字段
    */
-  InconsistentData?: string[];
+  InconsistentData?: Array</** - EpCertName：企业名称
+- EpCertNo：企业证件号
+- CertName：企业法人姓名 */ string>;
   /**
    * 核验结果。取值：
    *
@@ -789,7 +759,6 @@ export interface CompanyThreeElementsVerificationResponse {
    */
   ReasonCode?: number;
 }
-
 export interface CompanyFourElementsVerificationRequest {
   /**
    * 企业证件号。
@@ -820,7 +789,6 @@ export interface CompanyFourElementsVerificationRequest {
    */
   AuthCode: string;
 }
-
 export interface CompanyFourElementsVerificationResponse {
   /**
    * 企业详细信息。
@@ -834,7 +802,10 @@ export interface CompanyFourElementsVerificationResponse {
   /**
    * 校验不一致的字段
    */
-  InconsistentData?: string[];
+  InconsistentData?: Array</** - EpCertName：企业名称
+- EpCertNo：企业证件号
+- CertName：企业法人姓名
+- CertNo：企业法人证件号 */ string>;
   /**
    * 核验结果。取值：
    * -   true：信息核验一致，且企业正常经营。
@@ -853,7 +824,6 @@ export interface CompanyFourElementsVerificationResponse {
    */
   ReasonCode?: number;
 }
-
 export interface DescribePhoneNumberOperatorAttributeRequest {
   /**
    * 授权码。
@@ -885,7 +855,6 @@ export interface DescribePhoneNumberOperatorAttributeRequest {
    */
   Mask: string;
 }
-
 export interface DescribePhoneNumberOperatorAttributeResponse {
   /**
    * 基础运营商。取值：
@@ -921,7 +890,6 @@ export interface DescribePhoneNumberOperatorAttributeResponse {
    */
   Province?: string;
 }
-
 export interface PhoneNumberStatusForPublicRequest {
   /**
    * 授权码。
@@ -953,7 +921,6 @@ export interface PhoneNumberStatusForPublicRequest {
    */
   Mask: string;
 }
-
 export interface PhoneNumberStatusForPublicResponse {
   /**
    * 检测手机号返回状态。取值：
@@ -982,7 +949,6 @@ export interface PhoneNumberStatusForPublicResponse {
    */
   Carrier?: string;
 }
-
 export interface PhoneNumberStatusForAccountRequest {
   /**
    * 授权码。
@@ -1013,7 +979,6 @@ export interface PhoneNumberStatusForAccountRequest {
    */
   Mask: string;
 }
-
 export interface PhoneNumberStatusForAccountResponse {
   /**
    * 检测手机号返回状态。取值：
@@ -1038,7 +1003,6 @@ export interface PhoneNumberStatusForAccountResponse {
    */
   Carrier?: string;
 }
-
 export interface PhoneNumberStatusForRealRequest {
   /**
    * 授权码。
@@ -1070,7 +1034,6 @@ export interface PhoneNumberStatusForRealRequest {
    */
   Mask: string;
 }
-
 export interface PhoneNumberStatusForRealResponse {
   /**
    * 检测手机号返回状态。取值：
@@ -1097,7 +1060,6 @@ export interface PhoneNumberStatusForRealResponse {
    */
   Carrier?: string;
 }
-
 export interface PhoneNumberStatusForSmsRequest {
   /**
    * 授权码。
@@ -1129,7 +1091,6 @@ export interface PhoneNumberStatusForSmsRequest {
    */
   Mask: string;
 }
-
 export interface PhoneNumberStatusForSmsResponse {
   /**
    * 检测手机号返回状态。取值：
@@ -1154,7 +1115,6 @@ export interface PhoneNumberStatusForSmsResponse {
    */
   Carrier?: string;
 }
-
 export interface PhoneNumberStatusForVoiceRequest {
   /**
    * 授权码。
@@ -1186,7 +1146,6 @@ export interface PhoneNumberStatusForVoiceRequest {
    */
   Mask: string;
 }
-
 export interface PhoneNumberStatusForVoiceResponse {
   /**
    * 检测手机号返回状态。取值：
@@ -1212,7 +1171,6 @@ export interface PhoneNumberStatusForVoiceResponse {
    */
   Carrier?: string;
 }
-
 export interface PhoneNumberStatusForVirtualRequest {
   /**
    * 授权码。
@@ -1244,7 +1202,6 @@ export interface PhoneNumberStatusForVirtualRequest {
    */
   Mask: string;
 }
-
 export interface PhoneNumberStatusForVirtualResponse {
   /**
    * 是否是运营商的虚拟号码。取值：
@@ -1255,7 +1212,6 @@ export interface PhoneNumberStatusForVirtualResponse {
    */
   IsPrivacyNumber?: boolean;
 }
-
 export interface DescribePhoneTwiceTelVerifyRequest {
   /**
    * 授权码。
@@ -1293,7 +1249,6 @@ export interface DescribePhoneTwiceTelVerifyRequest {
    */
   StartTime: string;
 }
-
 export interface DescribePhoneTwiceTelVerifyResponse {
   /**
    * 查询结果。取值：
@@ -1315,7 +1270,6 @@ export interface DescribePhoneTwiceTelVerifyResponse {
    */
   Carrier?: string;
 }
-
 export interface DescribePhoneNumberOnlineTimeRequest {
   /**
    * 授权码。
@@ -1355,7 +1309,6 @@ export interface DescribePhoneNumberOnlineTimeRequest {
    */
   Carrier?: string;
 }
-
 export interface DescribePhoneNumberOnlineTimeResponse {
   /**
    * 在网时长枚举值。枚举值如下：
@@ -1378,7 +1331,6 @@ export interface DescribePhoneNumberOnlineTimeResponse {
    */
   CarrierCode?: string;
 }
-
 export interface DescribePhoneNumberAnalysisAIRequest {
   /**
    * 待查询的号码。
@@ -1405,7 +1357,6 @@ export interface DescribePhoneNumberAnalysisAIRequest {
    */
   ModelConfig?: string;
 }
-
 export interface DescribePhoneNumberAnalysisAIResponse {
   /**
    * 传入的手机号。
@@ -1420,7 +1371,6 @@ export interface DescribePhoneNumberAnalysisAIResponse {
    */
   Code?: string;
 }
-
 export interface DescribePhoneNumberAnalysisRequest {
   /**
    * 授权码。
@@ -1462,7 +1412,6 @@ export interface DescribePhoneNumberAnalysisRequest {
    */
   Rate?: number;
 }
-
 export interface DescribePhoneNumberAnalysisResponse {
   /**
    * 数据列表
@@ -1471,13 +1420,12 @@ export interface DescribePhoneNumberAnalysisResponse {
     /** 传入的手机号。 */
     Number?: string;
     /** 返回的结果编码。
-     - YES：有效
-     - NO：无效
-     - UNKNOWN：未知 */
+- YES：有效
+- NO：无效
+- UNKNOWN：未知 */
     Code?: string;
   }>;
 }
-
 export interface DescribeEmptyNumberRequest {
   /**
    * 授权码。
@@ -1506,7 +1454,6 @@ export interface DescribeEmptyNumberRequest {
    */
   Mask: string;
 }
-
 export interface DescribeEmptyNumberResponse {
   /**
    * 检测手机号返回状态。取值：
@@ -1525,7 +1472,6 @@ export interface DescribeEmptyNumberResponse {
    */
   Number?: string;
 }
-
 export interface TwoElementsVerificationRequest {
   /**
    * 授权码。
@@ -1568,7 +1514,6 @@ export interface TwoElementsVerificationRequest {
    */
   Name: string;
 }
-
 export interface TwoElementsVerificationResponse {
   /**
    * 验证结果是否一致。返回：
@@ -1602,7 +1547,6 @@ export interface TwoElementsVerificationResponse {
    */
   BasicCarrier?: string;
 }
-
 export interface ThreeElementsVerificationRequest {
   /**
    * 授权码。
@@ -1656,7 +1600,6 @@ export interface ThreeElementsVerificationRequest {
    */
   Name: string;
 }
-
 export interface ThreeElementsVerificationResponse {
   /**
    * 基础运营商。取值：
@@ -1685,7 +1628,6 @@ export interface ThreeElementsVerificationResponse {
    */
   IsConsistent?: number;
 }
-
 export interface PhoneNumberEncryptRequest {
   /**
    * 授权码。
@@ -1710,7 +1652,6 @@ export interface PhoneNumberEncryptRequest {
    */
   Mask: string;
 }
-
 export type PhoneNumberEncryptResponse = Array</** 结构体。 */ {
   /** 原始号码。 */
   OriginalNumber?: string;
@@ -1719,7 +1660,6 @@ export type PhoneNumberEncryptResponse = Array</** 结构体。 */ {
   /** 号码过期时间。 */
   ExpireTime?: string;
 }>;
-
 export interface InvalidPhoneNumberFilterRequest {
   /**
    * 授权码。
@@ -1741,13 +1681,12 @@ export interface InvalidPhoneNumberFilterRequest {
    */
   Mask: string;
 }
-
 export type InvalidPhoneNumberFilterResponse = Array</** 结构体。 */ {
   /** 返回过滤的结果。
 
-   - **YES**：有效状态号码，返回映射关系。
+- **YES**：有效状态号码，返回映射关系。
 
-   - **NO**：无效状态号码，不返回映射关系。 */
+- **NO**：无效状态号码，不返回映射关系。 */
   Code?: string;
   /** 原始号码。 */
   OriginalNumber?: string;
@@ -1756,7 +1695,6 @@ export type InvalidPhoneNumberFilterResponse = Array</** 结构体。 */ {
   /** 号码过期时间。 */
   ExpireTime?: string;
 }>;
-
 export interface QueryTagListPageRequest {
   /**
    * 页码。默认取值为**1**。
@@ -1769,7 +1707,6 @@ export interface QueryTagListPageRequest {
    */
   PageSize?: number;
 }
-
 export interface QueryTagListPageResponse {
   /**
    * 总数。
@@ -1800,8 +1737,8 @@ export interface QueryTagListPageResponse {
     /** 标签介绍。 */
     Introduction?: string;
     /** - 0：隐藏
-
-     - 1：公开 */
+ 
+- 1：公开 */
     SaleStatusStr?: string;
     /** 前端调用的API名称。 */
     ApiName?: string;
@@ -1819,7 +1756,6 @@ export interface QueryTagListPageResponse {
     IsOpen?: number;
   }>;
 }
-
 export interface QueryTagInfoBySelectionRequest {
   /**
    * 行业id
@@ -1840,7 +1776,6 @@ export interface QueryTagInfoBySelectionRequest {
    */
   TagId?: number;
 }
-
 export type QueryTagInfoBySelectionResponse = Array</** 返回的数据内容。 */ {
   /** 场景ID。 */
   SceneId?: number;
@@ -1857,7 +1792,7 @@ export type QueryTagInfoBySelectionResponse = Array</** 返回的数据内容。
   /** 标签ID。 */
   TagId?: number;
   /** 可用的授权码列表。 */
-  AuthCodeList?: string[];
+  AuthCodeList?: Array</** 无 */ string>;
   /** 行业名称。 */
   IndustryName?: string;
   /** API文档链接。 */
@@ -1885,7 +1820,6 @@ export type QueryTagInfoBySelectionResponse = Array</** 返回的数据内容。
     Name?: string;
   }>;
 }>;
-
 export interface QueryUsageStatisticsByTagIdRequest {
   /**
    * 开始时间
@@ -1916,7 +1850,6 @@ export interface QueryUsageStatisticsByTagIdRequest {
    */
   PageSize?: number;
 }
-
 export type QueryUsageStatisticsByTagIdResponse = Array</** 返回的数据内容。 */ {
   /** 授权码。 */
   AuthorizationCode?: string;
@@ -1941,7 +1874,6 @@ export type QueryUsageStatisticsByTagIdResponse = Array</** 返回的数据内�
   /** 行业名称。 */
   IndustryName?: string;
 }>;
-
 export interface QueryTagApplyRuleRequest {
   /**
    * 标签id
@@ -1950,7 +1882,6 @@ export interface QueryTagApplyRuleRequest {
    */
   TagId?: number;
 }
-
 export interface QueryTagApplyRuleResponse {
   /**
    * 是否需要提供申请材料
@@ -1983,7 +1914,6 @@ export interface QueryTagApplyRuleResponse {
    */
   ChargingStandardLink?: string;
 }
-
 export interface QueryAvailableAuthCodeRequest {
   /**
    * 标签id
@@ -1992,5 +1922,4 @@ export interface QueryAvailableAuthCodeRequest {
    */
   TagId?: number;
 }
-
-export type QueryAvailableAuthCodeResponse = string[];
+export type QueryAvailableAuthCodeResponse = Array</** 返回的数据内容。 */ string>;

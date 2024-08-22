@@ -15,12 +15,14 @@
   - 服务端客户端
   - JS SDK
   - WebHook
-  - 消息归档
+  - 会话内容存档
 - OpenAI 客户端
 - 讯飞火星 大模型 客户端
 - 百度 CE 客户端
 - 阿里云 大模型 客户端
 - 17dz
+- funasr
+- browserless
 
 ```bash
 # for dev version
@@ -205,8 +207,41 @@ console.log(`AccessToken`, await client.options.accessToken.get());
 
 ## wechat
 
-- bun
-  - 企业微信会话存档
+## wechat/archive/bun
+
+- 企业微信会话存档
+- 使用 bun:ffi 调用
+- 需要 glibc, amd64, linux 环境
+  - 未测试过 Windows
+
+```bash
+make run-bun
+# 执行测试，会输出 10 条消息
+WWF_CORP_ID=ID WWF_CORP_SECRET=SECRET bun test ./src/wecom/archive/bun/WeWorkFinanceClient.bun.test.ts  
+```
+
+```ts
+if (process.env.WWF_PRIVATE_KEY_FILE) {
+  privateKey = await fs.readFile(process.env.WWF_PRIVATE_KEY_FILE, 'utf-8');
+}
+
+const client = createWeWorkFinanceClientFromEnv({
+  corpId: process.env.WWF_CORP_ID,
+  corpSecret: process.env.WWF_CORP_SECRET,
+  privateKey,
+});
+// the original data
+const data = client.getChatData({ limit: 10 });
+console.log(data);
+
+// the decrypted data
+if (privateKey) {
+  console.log(client.getMessage({ limit: 10 }));
+}
+
+// get file
+client.getMediaData({ fileId: '' });
+```
 
 ## funasr
 

@@ -1,5 +1,4 @@
-import type { FetchLike, MaybePromise } from '@wener/utils';
-import { isPlainObject, dumpRequest } from '@wener/utils';
+import { dumpRequest, isPlainObject, type FetchLike, type MaybePromise } from '@wener/utils';
 
 type DoRequestContext = {
   url: string;

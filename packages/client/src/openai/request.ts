@@ -1,6 +1,6 @@
-import { type FetchLike, getGlobalThis } from '@wener/utils';
-import { OpenAiClientError } from './OpenAiClientError';
+import { getGlobalThis, type FetchLike } from '@wener/utils';
 import { buildRequest } from './buildRequest';
+import { OpenAiClientError } from './OpenAiClientError';
 
 export interface OpenAiRequestOptions<T> {
   fetch?: FetchLike;
