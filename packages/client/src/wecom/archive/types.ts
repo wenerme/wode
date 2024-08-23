@@ -1,5 +1,3 @@
-// 平均约 1k, 最大群消息约 50k
-
 export type SwitchMessage = {
   msgid: string;
   action: 'switch';
@@ -141,6 +139,7 @@ export type MixedMessageItem = {
 export interface MixedMessage extends SendMessage {
   msgtype: 'mixed';
   mixed: {
+    // 消息内容。可包含图片、文字、表情等多种消息
     item: MixedMessageItem[];
   };
 }
@@ -254,8 +253,17 @@ export interface TodoMessage extends SendMessage {
   };
 }
 
+type ChatRecordMessageItemType =
+  | 'ChatRecordText'
+  | 'ChatRecordFile'
+  | 'ChatRecordImage'
+  | 'ChatRecordVideo'
+  | 'ChatRecordLink'
+  | 'ChatRecordLocation'
+  | 'ChatRecordMixed'
+  | 'chatrecord';
+
 export type ChatRecordMessageItem = {
-  // ChatRecordText/ ChatRecordFile/ ChatRecordImage/ ChatRecordVideo/ ChatRecordLink/ ChatRecordLocation/ ChatRecordMixed
   type: string;
   msgtime: number;
   content: string;
@@ -297,6 +305,7 @@ export interface FileMessage extends SendMessage {
     filename: string;
     filesize: number;
     sdkfileid: string;
+    fileext: string;
   };
 }
 
@@ -376,7 +385,9 @@ export interface RevokeMessage extends SendMessage {
 
 export interface TextMessage extends SendMessage {
   msgtype: 'text'; // 消息类型，文本消息为text
-  content: string; // 消息内容
+  text: {
+    content: string;
+  }; // 消息内容
 }
 
 export type AnySendMessage =
@@ -422,14 +433,128 @@ export type AnyArchiveMessage = {
   roomid?: string;
   msgtime?: number;
   msgtype?: string;
-  // switch
-  user?: string;
-  time?: number;
+
+  user?: SwitchMessage['user'];
+  time?: SwitchMessage['time'];
+
+  // 24 types
+
+  revoke?: RevokeMessage['revoke'];
+  redpacket?: RedPacketMessage['redpacket'] | ExternalRedPacketMessage['redpacket'];
+  link?: LinkMessage['link'];
+  location?: LocationMessage['location'];
+  file?: FileMessage['file'];
+  image?: ImageMessage['image'];
+  emotion?: EmotionMessage['emotion'];
+  card?: CardMessage['card'];
+  video?: VideoMessage['video'];
+  voice?: VoiceMessage['voice'];
+  text?: TextMessage['text'];
+  chatrecord?: ChatRecordMessage['chatrecord'];
+  info?:
+    | NewsMessage['info']
+    | MarkdownMessage['info']
+    | CorpDiskFileMessage['info']
+    | VoipTextMessage['info']
+    | MeetingNotificationMessage['info'];
+  weapp?: WeAppMessage['weapp'];
+  mixed?: MixedMessage['mixed'];
+  disagree?: DisagreeMessage['disagree'];
+  agree?: AggreeMessage['agree'];
+  voip_doc_share?: VoipDocShareMessage['voip_doc_share'];
+  meeting_voice_call?: MettingVoiceCallMessage['meeting_voice_call'];
+  sphfeed?: WeChatChannelMessage['sphfeed'];
+  vote?: VoteMessage['vote'];
+  collect?: CollectFormMessage['collect'];
+  calendar?: CalendarMessage['calendar'];
+  meeting?: MeetingMessage['meeting'];
+  doc?: DocumentMessage['doc'];
+  todo?: TodoMessage['todo'];
+};
+
+type TypeContent = {
+  // special
+  revoke: RevokeMessage['revoke'];
+  switch: never;
+
+  // text
+  text: TextMessage['text'];
+  markdown: MarkdownMessage['info'];
+
+  // file
+  emotion: EmotionMessage['emotion'];
+  file: FileMessage['file'];
+  image: ImageMessage['image'];
+  voice: VoiceMessage['voice'];
+  video: VideoMessage['video'];
+
+  // structure
+  mixed: MixedMessage['mixed'];
+  chatrecord: ChatRecordMessage['chatrecord'];
+
+  redpacket: RedPacketMessage['redpacket'];
+  external_redpacket: ExternalRedPacketMessage['redpacket'];
+  link: LinkMessage['link'];
+  location: LocationMessage['location'];
+  card: CardMessage['card'];
+  weapp: WeAppMessage['weapp'];
+  agree: AggreeMessage['agree'];
+  disagree: DisagreeMessage['disagree'];
+  voip_doc_share: VoipDocShareMessage['voip_doc_share'];
+  meeting_voice_call: MettingVoiceCallMessage['meeting_voice_call'];
+  sphfeed: WeChatChannelMessage['sphfeed'];
+  vote: VoteMessage['vote'];
+  collect: CollectFormMessage['collect'];
+  calendar: CalendarMessage['calendar'];
+  meeting: MeetingMessage['meeting'];
+  docmsg: DocumentMessage['doc'];
+  todo: TodoMessage['todo'];
+  news: NewsMessage['info'];
+  qydiskfile: CorpDiskFileMessage['info'];
+  voiptext: VoipTextMessage['info'];
+  meeting_notification: MeetingNotificationMessage['info'];
 };
 
 export type MessageTypeContent = {
-  text: { content: string };
-  image: ImageMessage['image'];
-  file: FileMessage['file'];
-  emotion: EmotionMessage['emotion'];
+  [K in keyof TypeContent]: {
+    type: K;
+    content: TypeContent[K];
+  };
 };
+
+type ChatRecordMessageTypeContentMapping = Pick<
+  TypeContent,
+  'text' | 'file' | 'image' | 'video' | 'link' | 'location' | 'mixed' | 'chatrecord'
+>;
+
+const ChatRecordMessageTypeToMessageType = {
+  ChatRecordText: 'text',
+  ChatRecordFile: 'file',
+  ChatRecordImage: 'image',
+  ChatRecordVideo: 'video',
+  ChatRecordLink: 'link',
+  ChatRecordLocation: 'location',
+  ChatRecordMixed: 'mixed',
+  chatrecord: 'chatrecord',
+} as const;
+
+export type ParsedChatRecordMessageItem = {
+  [K in keyof ChatRecordMessageTypeContentMapping]: {
+    type: K;
+    content: ChatRecordMessageTypeContentMapping[K];
+  };
+} & {
+  msgtime: number;
+  from_chatroom: boolean;
+};
+
+// 目前只遇到 text 和 image
+export type ParsedMixedMessageItem =
+  | {
+      type: 'text';
+      content: TextMessage['text'];
+    }
+  | {
+      type: 'image';
+      content: ImageMessage['image'];
+    };

@@ -367,7 +367,7 @@ export class ArrayBuffers {
   //   return a;
   // };
 
-  static concat = (buffers: Array<BufferSource>, result?: ArrayBuffer, offset = 0) => {
+  static concat = (buffers: Array<BufferSource>, result?: ArrayBuffer, offset = 0): ArrayBuffer => {
     // https://stackoverflow.com/questions/10786128/appending-arraybuffers
 
     const length = buffers.reduce((a, b) => a + b.byteLength, 0);
