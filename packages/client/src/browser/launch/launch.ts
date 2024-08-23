@@ -71,7 +71,7 @@ export async function launch({
     ...(options.options?.args || []),
   ];
 
-  const { default: puppeteer, launch } = await import('puppeteer');
+  const { default: puppeteer } = await import('puppeteer');
   let browser: Browser;
   try {
     const launchOptions: PuppeteerLaunchOptions = {

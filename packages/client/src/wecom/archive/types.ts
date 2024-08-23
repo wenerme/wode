@@ -520,7 +520,7 @@ export type MessageTypeContent = {
     type: K;
     content: TypeContent[K];
   };
-};
+}[keyof TypeContent];
 
 type ChatRecordMessageTypeContentMapping = Pick<
   TypeContent,
@@ -543,18 +543,10 @@ export type ParsedChatRecordMessageItem = {
     type: K;
     content: ChatRecordMessageTypeContentMapping[K];
   };
-} & {
+}[keyof ChatRecordMessageTypeContentMapping] & {
   msgtime: number;
   from_chatroom: boolean;
 };
 
 // 目前只遇到 text 和 image
-export type ParsedMixedMessageItem =
-  | {
-      type: 'text';
-      content: TextMessage['text'];
-    }
-  | {
-      type: 'image';
-      content: ImageMessage['image'];
-    };
+export type ParsedMixedMessageItem = MessageTypeContent;

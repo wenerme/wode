@@ -1,4 +1,4 @@
-import Emotions from './emotions.json';
+import Emotions from './emotions.json' with { type: 'json' };
 
 export function getEmotions(): Array<Emotion> {
   return Emotions;
