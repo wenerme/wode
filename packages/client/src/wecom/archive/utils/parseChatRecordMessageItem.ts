@@ -1,4 +1,4 @@
-import { ChatRecordMessageItem, MixedMessageItem, ParsedChatRecordMessageItem, ParsedMixedMessageItem } from './types';
+import type { ChatRecordMessageItem, ParsedChatRecordMessageItem } from '../types';
 
 const ChatRecordMessageTypeToMessageType = {
   ChatRecordText: 'text',
@@ -18,13 +18,5 @@ export function parseChatRecordMessageItem(v: ChatRecordMessageItem): ParsedChat
     content: typeof content === 'string' ? JSON.parse(content) : content,
     msgtime,
     from_chatroom,
-  } as any;
-}
-
-export function parseMixedMessageItem(v: MixedMessageItem | ParsedMixedMessageItem): ParsedMixedMessageItem {
-  const { type, content } = v;
-  return {
-    type,
-    content: typeof content === 'string' ? JSON.parse(content) : content,
   } as any;
 }

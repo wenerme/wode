@@ -1,6 +1,6 @@
 {
   "name": "@wener/client",
-  "version": "1.0.21",
+  "version": "1.0.23",
   "type": "module",
   "description": "Client for Wechat, Wecom, Xunfei, FunAsr, etc.",
   "repository": {
@@ -22,6 +22,7 @@
     "./cubejs": "./src/cubejs/index.ts",
     "./funasr": "./src/funasr/index.ts",
     "./openai": "./src/openai/index.ts",
+    "./qq": "./src/qq/index.ts",
     "./server": "./src/server/index.ts",
     "./wechat": "./src/wechat/index.ts",
     "./wechat/webhook": "./src/wechat/webhook/index.ts",
@@ -47,23 +48,21 @@
     "test": "make test"
   },
   "dependencies": {
-    "@wener/utils": "workspace:^",
+    "@wener/utils": "^1.1.48",
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "ts-pattern": "^5.3.1",
     "@alicloud/openapi-client": "^0.4.11",
     "@sinclair/typebox": "^0.33.7",
     "@types/bun": "^1.1.6",
     "@types/cookie": "^0.6.0",
     "@types/crypto-js": "^4.2.2",
-    "@types/jsdom": "^21.1.7",
     "@wecom/jssdk": "^1.4.5",
     "cookie": "^0.6.0",
     "crypto-js": "^4.2.0",
     "dayjs": "^1.11.12",
     "fast-xml-parser": "^4.4.1",
-    "jsdom": "^24.1.1",
-    "nats.ws": "^1.29.2",
     "openai": "^4.56.0",
     "puppeteer": "^23.1.0",
     "puppeteer-core": "^23.1.0",
@@ -115,6 +114,10 @@
       "./openai": {
         "types": "./src/openai/index.ts",
         "default": "./lib/openai/index.js"
+      },
+      "./qq": {
+        "types": "./src/qq/index.ts",
+        "default": "./lib/qq/index.js"
       },
       "./server": {
         "types": "./src/server/index.ts",

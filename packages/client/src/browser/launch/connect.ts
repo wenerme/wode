@@ -41,7 +41,7 @@ export async function connect({
 
       const { webSocketDebuggerUrl } = await res.json();
       logger.info(`Reusing browser ${uid} at ${webSocketDebuggerUrl}`);
-      const { default: puppeteer } = await import('puppeteer');
+      const { default: puppeteer } = await import('puppeteer-core');
       const browser = await puppeteer.connect({ browserWSEndpoint: webSocketDebuggerUrl });
       return browser;
     }
