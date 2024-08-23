@@ -18,7 +18,7 @@ export function isWechatMiniAppUserAgent(ua?: string) {
       return true;
     }
 
-    ua = window.navigator.userAgent;
+    ua = window.navigator?.userAgent;
   }
 
   // https://developers.weixin.qq.com/miniprogram/dev/component/web-view.html

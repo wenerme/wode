@@ -1,7 +1,3 @@
-export function getWxJsSdk(): WxJsSdk {
-  return globalThis.window?.wx;
-}
-
 declare global {
   interface Window {
     wx: WxJsSdk;
