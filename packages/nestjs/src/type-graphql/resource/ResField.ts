@@ -1,4 +1,4 @@
-import { Field, FieldOptions } from 'type-graphql';
+import { Field, type FieldOptions } from 'type-graphql';
 
 export type MethodAndPropDecorator = PropertyDecorator & MethodDecorator;
 

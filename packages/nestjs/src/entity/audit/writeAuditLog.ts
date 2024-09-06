@@ -1,4 +1,4 @@
-import { RequiredEntityData, type EntityManager } from '@mikro-orm/core';
+import type { RequiredEntityData, EntityManager } from '@mikro-orm/core';
 import { getEntityManager, runInTransaction } from '@wener/nestjs/mikro-orm';
 import { AuditLogEntity } from './AuditLogEntity';
 import { collectAuditData } from './collectAuditData';

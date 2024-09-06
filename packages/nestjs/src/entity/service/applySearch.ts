@@ -1,9 +1,9 @@
-import { EntityClass } from '@mikro-orm/core';
-import { QueryBuilder } from '@mikro-orm/postgresql';
+import type { EntityClass } from '@mikro-orm/core';
+import type { QueryBuilder } from '@mikro-orm/postgresql';
 import { Features } from '../../Feature';
 import { EntityFeature } from '../enum';
 import { StandardBaseEntity } from '../StandardBaseEntity';
-import { resolveSearch, ResolveSearchOptions } from './resolveSearch';
+import { resolveSearch, type ResolveSearchOptions } from './resolveSearch';
 
 export interface ApplySearchOptions
   extends ResolveSearchOptions<{

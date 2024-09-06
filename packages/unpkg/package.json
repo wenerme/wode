@@ -91,10 +91,10 @@
   },
   "dependencies": {
     "@wener/utils": "*",
-    "better-sqlite3": "^11.1.2",
-    "lru-cache": "^11.0.0",
+    "better-sqlite3": "^11.2.1",
+    "lru-cache": "^11.0.1",
     "mime": "^4.0.4",
-    "pino": "^9.3.2",
+    "pino": "^9.4.0",
     "semver": "^7.6.3",
     "tar": "^7.4.3"
   },

@@ -1,4 +1,4 @@
-import { BaseEntity, Entity, Opt, PrimaryKey, Property, types } from '@mikro-orm/core';
+import { BaseEntity, Entity, type Opt, PrimaryKey, Property, types } from '@mikro-orm/core';
 
 export type MinimalBaseEntityOptionalFields =
   | 'id'

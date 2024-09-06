@@ -1,8 +1,8 @@
 import { Entity, Property, types } from '@mikro-orm/core';
-import { Constructor } from '@wener/utils';
+import type { Constructor } from '@wener/utils';
 import { Feature } from '../../Feature';
 import { EntityFeature } from '../enum';
-import { HasTagsEntity } from './types';
+import type { HasTagsEntity } from './types';
 
 export function withTagsEntity<TBase extends Constructor>(Base: TBase) {
   @Feature([EntityFeature.HasTags])

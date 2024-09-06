@@ -1,6 +1,6 @@
 import type { Constructor } from '../../types';
 import { getServiceSchema, type ServiceSchema } from './index';
-import { type ServerServiceSchema } from './server.types';
+import type { ServerServiceSchema } from './server.types';
 
 export function getServerServiceSchema<T>(svc: Constructor<T>): ServerServiceSchema | undefined {
   const schema = getServiceSchema(svc) as ServerServiceSchema;

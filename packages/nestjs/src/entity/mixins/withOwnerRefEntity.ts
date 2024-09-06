@@ -1,11 +1,11 @@
-import { Entity, Opt, Property, Ref, types } from '@mikro-orm/core';
-import { Constructor } from '@wener/utils';
+import { Entity, type Opt, Property, type Ref, types } from '@mikro-orm/core';
+import type { Constructor } from '@wener/utils';
 import { Feature } from '../../Feature';
 import { EntityFeature } from '../enum';
 import { resolveEntityRef } from '../resolveEntityRef';
 import { setOwnerRef } from '../setOwnerRef';
-import { IdentifiableEntity } from '../types';
-import { HasOwnerRefEntity } from './types';
+import type { IdentifiableEntity } from '../types';
+import type { HasOwnerRefEntity } from './types';
 
 export function withOwnerRefEntity<TBase extends Constructor>(Base: TBase) {
   @Feature([EntityFeature.HasOwnerRef])

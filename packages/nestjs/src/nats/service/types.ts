@@ -1,5 +1,5 @@
-import { Msg } from 'nats';
-import { ServerMiddleware } from '../../service';
+import type { Msg } from 'nats';
+import type { ServerMiddleware } from '../../service';
 
 export interface NatsServiceServerModuleOptions {
   getServiceSubject?: (o: { service: string }) => string[];

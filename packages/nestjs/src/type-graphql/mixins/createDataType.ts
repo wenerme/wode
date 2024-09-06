@@ -1,4 +1,4 @@
-import { Constructor } from '@wener/utils';
+import type { Constructor } from '@wener/utils';
 import { Field, InputType, ObjectType } from 'type-graphql';
 
 export function createDataType<T extends object>(Type: Constructor<T>) {

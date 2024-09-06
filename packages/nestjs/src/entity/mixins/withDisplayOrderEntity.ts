@@ -1,8 +1,8 @@
-import { Entity, Opt, Property, types } from '@mikro-orm/core';
-import { Constructor } from '@wener/utils';
+import { Entity, type Opt, Property, types } from '@mikro-orm/core';
+import type { Constructor } from '@wener/utils';
 import { Feature } from '../../Feature';
 import { EntityFeature } from '../enum';
-import { HasDisplayOrderEntity } from './types';
+import type { HasDisplayOrderEntity } from './types';
 
 export function withDisplayOrderEntity<TBase extends Constructor>(Base: TBase) {
   @Feature([EntityFeature.HasDisplayOrder])

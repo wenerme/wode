@@ -1,14 +1,14 @@
-import { EntityManager, EntityRepository, MikroORM } from '@mikro-orm/postgresql';
+import { type EntityManager, type EntityRepository, MikroORM } from '@mikro-orm/postgresql';
 import { Inject, Injectable, Logger } from '@nestjs/common';
-import { Constructor } from '@wener/utils';
+import type { Constructor } from '@wener/utils';
 import { Resolver } from 'type-graphql';
-import { StandardBaseEntity } from '../../entity';
+import type { StandardBaseEntity } from '../../entity';
 import { EntityBaseService } from '../../entity/service';
-import { BaseObject } from '../BaseObject';
+import type { BaseObject } from '../BaseObject';
 import { getObjectName } from '../getObjectName';
-import { EntityClass, ObjectClass } from '../types';
+import type { EntityClass, ObjectClass } from '../types';
 import { createListPayload } from './createListPayload';
-import { PageResponse } from './types';
+import type { PageResponse } from './types';
 
 export interface BaseEntityResolver<O, E extends StandardBaseEntity, SVC extends EntityBaseService<E>> {
   readonly EntityType: EntityClass<E>;

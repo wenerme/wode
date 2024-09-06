@@ -1,5 +1,5 @@
-import { type EntityManager } from '@mikro-orm/postgresql';
-import { type AuditContext } from './types';
+import type { EntityManager } from '@mikro-orm/postgresql';
+import type { AuditContext } from './types';
 import { writeAuditLog } from './writeAuditLog';
 
 export interface WriteSystemAuditLogOptions {

@@ -1,6 +1,6 @@
 import { promises as FsPromise } from 'node:fs';
 import Path from 'node:path';
-import { type Plugin } from 'esbuild';
+import type { Plugin } from 'esbuild';
 import { globby } from 'globby';
 
 export interface DynamicImportConfig {

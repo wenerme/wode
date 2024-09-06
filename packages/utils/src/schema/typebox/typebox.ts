@@ -1,4 +1,4 @@
-import { TSchema } from '@sinclair/typebox';
+import type { TSchema } from '@sinclair/typebox';
 import { Value } from '@sinclair/typebox/value';
 
 // works like zod parse

@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { MethodOptions } from './client.types';
+import type { MethodOptions } from './client.types';
 
 export const METHOD_METADATA_KEY = 'Service:Method:Metadata:Options';
 

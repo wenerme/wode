@@ -1,5 +1,5 @@
 import { assert, describe, test } from 'vitest';
-import { merge, MergeOptions } from './merge';
+import { merge, type MergeOptions } from './merge';
 
 describe('custom-array-merge', () => {
   test('custom merge array', () => {

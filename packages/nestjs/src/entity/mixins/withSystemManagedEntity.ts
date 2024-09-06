@@ -1,5 +1,5 @@
-import { Entity, Opt, Property, types } from '@mikro-orm/core';
-import { Constructor } from '@wener/utils';
+import { Entity, type Opt, Property, types } from '@mikro-orm/core';
+import type { Constructor } from '@wener/utils';
 
 export function withSystemManagedEntity<TBase extends Constructor>(Base: TBase) {
   @Entity({ abstract: true })

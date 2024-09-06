@@ -1,7 +1,7 @@
 import React, { PropsWithChildren, useState } from 'react';
 import { getAppState, LoadingIndicator } from '@wener/console/console';
-import { AppConf } from '@wener/console/state';
 import { useAsyncEffect } from '@wener/reaction';
+import { AppConf } from '../state';
 
 export const AppConfLoader: React.FC<
   PropsWithChildren & {

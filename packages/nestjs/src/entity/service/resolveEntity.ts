@@ -1,9 +1,9 @@
-import { EntityClass, EntityProps, FilterQuery, FindOneOptions } from '@mikro-orm/postgresql';
+import type { EntityClass, EntityProps, FilterQuery, FindOneOptions } from '@mikro-orm/postgresql';
 import { Features } from '../../Feature';
 import { EntityFeature } from '../enum';
 import { StandardBaseEntity } from '../StandardBaseEntity';
-import { AnyStandardEntity } from '../types';
-import { resolveEntityContext, ResolveEntityContextOptions } from './resolveEntityContext';
+import type { AnyStandardEntity } from '../types';
+import { resolveEntityContext, type ResolveEntityContextOptions } from './resolveEntityContext';
 
 export type ResolveEntityOptions<E extends StandardBaseEntity, O extends {} = {}> =
   | (BuildResolveEntityOptions & {

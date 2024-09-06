@@ -1,12 +1,12 @@
-import { EntityManager, QueryBuilder } from '@mikro-orm/postgresql';
-import { StandardBaseEntity } from '../StandardBaseEntity';
-import { EntityClass } from './EntityClass';
+import type { EntityManager, QueryBuilder } from '@mikro-orm/postgresql';
+import type { StandardBaseEntity } from '../StandardBaseEntity';
+import type { EntityClass } from './EntityClass';
 
 export async function createQueryBuilder<E extends StandardBaseEntity>(
   em: EntityManager,
   Entity: EntityClass<E>,
 ): Promise<{
-  builder: QueryBuilder<E>;
+  builder: QueryBuilder<E, string>;
 }> {
   // 使用 qb 必须手动 applyFilter
   // 让 TidFilter 生效

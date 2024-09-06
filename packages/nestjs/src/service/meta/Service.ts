@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import type { AbstractConstructor, Constructor } from '../../types';
-import { ServiceOptions } from './client.types';
+import type { ServiceOptions } from './client.types';
 
 export const SERVICE_METADATA_KEY = 'Service:Metadata:Options';
 

@@ -3,7 +3,7 @@ import type { QueryBuilder } from '@mikro-orm/postgresql';
 import { normalizePagination } from './normalizePagination';
 import { parseOrder } from './parseOrder';
 import { toKnexOrder } from './toKnexOrder';
-import { ListEntityRequest } from './types';
+import type { ListEntityRequest } from './types';
 
 export function applyListQuery<T extends QueryBuilder<any>>({
   builder,

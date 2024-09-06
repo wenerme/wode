@@ -1,6 +1,6 @@
 import { App, Contexts } from '@wener/nestjs/app';
 import { firstOfMaybeArray } from '@wener/utils';
-import { AuditData } from './types';
+import type { AuditData } from './types';
 
 export function collectAuditData<T extends AuditData>(data: T): T {
   data.requestId ||= Contexts.requestId.get();

@@ -1,6 +1,6 @@
 import { Features } from '../../Feature';
 import { EntityFeature } from '../enum';
-import {
+import type {
   HasAuditorRefEntity,
   HasCodeEntity,
   HasCustomerRefEntity,

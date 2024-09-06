@@ -1,8 +1,8 @@
 import { Entity, Property, types } from '@mikro-orm/core';
-import { Constructor } from '@wener/utils';
+import type { Constructor } from '@wener/utils';
 import { Feature } from '../../Feature';
 import { EntityFeature } from '../enum';
-import { HasTitleDescriptionEntity } from './types';
+import type { HasTitleDescriptionEntity } from './types';
 
 export function withTitleDescriptionEntity<TBase extends Constructor>(Base: TBase) {
   @Feature([EntityFeature.HasTitleDescription])

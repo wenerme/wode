@@ -1,5 +1,5 @@
-import { BaseEntity, Collection, Opt, Ref } from '@mikro-orm/core';
-import { IdentifiableEntity } from '../types';
+import type { BaseEntity, Collection, Opt, Ref } from '@mikro-orm/core';
+import type { IdentifiableEntity } from '../types';
 
 export interface HasTidEntity {
   tid: string;

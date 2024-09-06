@@ -1,6 +1,6 @@
-import { Logger } from '@nestjs/common';
-import { NatsConnection } from 'nats';
-import { ClientConnection, ServerRequest } from '../../service';
+import type { Logger } from '@nestjs/common';
+import type { NatsConnection } from 'nats';
+import type { ClientConnection, ServerRequest } from '../../service';
 import { getRequestSubject } from './nats';
 import { requestNatsService } from './requestNatsService';
 

@@ -1,5 +1,5 @@
-import { DynamicModule, Module, ModuleMetadata } from '@nestjs/common';
-import { Constructor } from '@wener/utils';
+import { type DynamicModule, Module, type ModuleMetadata } from '@nestjs/common';
+import type { Constructor } from '@wener/utils';
 import { OrmModule } from '../mikro-orm';
 
 export interface BuildGraphModuleOptions {

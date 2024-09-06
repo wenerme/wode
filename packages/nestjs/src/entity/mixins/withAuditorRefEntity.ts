@@ -1,10 +1,10 @@
 import { BeforeCreate, BeforeUpdate, Entity, Property, types } from '@mikro-orm/core';
-import { Constructor } from '@wener/utils';
+import type { Constructor } from '@wener/utils';
 import { getCurrentUserId } from '../../app';
 import { Feature } from '../../Feature';
 import { EntityFeature } from '../enum';
 import { resolveEntityRef } from '../resolveEntityRef';
-import { HasAuditorRefEntity } from './types';
+import type { HasAuditorRefEntity } from './types';
 
 export function withAuditorRefEntity<TBase extends Constructor>(Base: TBase) {
   // AuditorAware

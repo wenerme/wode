@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { App } from '../../app';
 import { RemoteMethodNotImplemented, RemoteServiceOf } from '../client';
 import { Method, Service } from '../meta';
-import { ExposeService, LocalService } from '../server';
+import { ExposeService, type LocalService } from '../server';
 
 @Service({
   name: 'wks.InstanceService',

@@ -1,5 +1,5 @@
-import { AnyEntity, EntityManager as CoreEntityManager, MikroORM as CoreMikroORM } from '@mikro-orm/core';
-import { EntityName, MikroOrmModule, MikroOrmModuleFeatureOptions } from '@mikro-orm/nestjs';
+import { type AnyEntity, EntityManager as CoreEntityManager, MikroORM as CoreMikroORM } from '@mikro-orm/core';
+import { type EntityName, MikroOrmModule, type MikroOrmModuleFeatureOptions } from '@mikro-orm/nestjs';
 import type { MikroOrmModuleAsyncOptions } from '@mikro-orm/nestjs/typings';
 import {
   knex,
@@ -8,8 +8,8 @@ import {
   type AbstractSqlConnection,
   type Options,
 } from '@mikro-orm/postgresql';
-import { DynamicModule, Logger } from '@nestjs/common';
-import { createLazyPromise, MaybePromise } from '@wener/utils';
+import { type DynamicModule, Logger } from '@nestjs/common';
+import { createLazyPromise, type MaybePromise } from '@wener/utils';
 import { getMikroOrmConfig } from '../config';
 import { defineMikroOrmOptions } from './defineMikroOrmOptions';
 

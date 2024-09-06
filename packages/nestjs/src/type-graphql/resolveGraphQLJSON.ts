@@ -1,5 +1,5 @@
 import { get } from '@wener/utils';
-import { JSONArgs } from './JSONArgs';
+import type { JSONArgs } from './JSONArgs';
 
 export function resolveGraphQLJSON(a: any, args: JSONArgs) {
   let o = a;

@@ -1,6 +1,6 @@
 import type { Filter } from '@mikro-orm/core';
 import { Logger } from '@nestjs/common';
-import { ArgumentsType } from 'vitest';
+import type { ArgumentsType } from 'vitest';
 import { getCurrentTenantId } from '../app';
 
 type FilterDef = ArgumentsType<typeof Filter>[0];

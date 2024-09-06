@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { inspect } from 'node:util';
-import { type Plugin } from 'esbuild';
+import type { Plugin } from 'esbuild';
 import typescript from 'typescript';
 
 const theFinder = new RegExp(/((?<![\(\s]\s*['"])@\w*[\w\d]\s*(?![;])[\((?=\s)])/);

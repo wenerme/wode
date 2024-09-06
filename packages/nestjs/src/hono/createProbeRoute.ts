@@ -1,5 +1,5 @@
 import { createRoute, OpenAPIHono } from '@hono/zod-openapi';
-import { MaybePromise } from '@wener/utils';
+import type { MaybePromise } from '@wener/utils';
 import { z } from 'zod';
 
 export function createProbeRoute({
