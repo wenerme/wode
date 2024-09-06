@@ -1,6 +1,6 @@
 {
   "name": "@wener/nestjs",
-  "version": "1.0.49",
+  "version": "1.0.50",
   "type": "module",
   "description": "NestJS utils",
   "author": "wener",

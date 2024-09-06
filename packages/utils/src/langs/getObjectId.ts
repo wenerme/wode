@@ -3,7 +3,7 @@ import { getGlobalStates } from './getGlobalStates';
 export function getObjectId(k: any): number {
   const state = getGlobalStates('ObjectId', () => {
     return {
-      id: 0,
+      id: 1,
       map: new WeakMap(),
     };
   });
