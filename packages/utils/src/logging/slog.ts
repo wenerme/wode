@@ -1,4 +1,4 @@
-import { Logger, LogLevel } from './Logger';
+import type { Logger, LogLevel } from './Logger';
 
 enum Level {
   trace = -8,

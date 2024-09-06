@@ -1,6 +1,6 @@
 import { Logger } from '@nestjs/common';
-import { headers, NatsConnection } from 'nats';
-import { ClientRequest, ClientResponse, ServiceResponsePayloadSchema } from '../../service';
+import { headers, type NatsConnection } from 'nats';
+import { type ClientRequest, type ClientResponse, ServiceResponsePayloadSchema } from '../../service';
 import { createNatsErrorResponse } from './createNatsErrorResponse';
 import { createResponseFromMessageHeader } from './createResponseFromMessageHeader';
 

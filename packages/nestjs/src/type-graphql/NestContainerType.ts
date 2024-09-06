@@ -1,6 +1,6 @@
 import { ModuleRef } from '@nestjs/core';
 import { getContext } from '@wener/nestjs';
-import { ContainerType, ResolverData } from 'type-graphql';
+import type { ContainerType, ResolverData } from 'type-graphql';
 
 export class NestContainerType implements ContainerType {
   private moduleRef?: ModuleRef;

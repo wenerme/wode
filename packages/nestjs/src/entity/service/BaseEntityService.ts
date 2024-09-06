@@ -1,24 +1,24 @@
-import { EntityData, LockMode, RequiredEntityData } from '@mikro-orm/core';
-import { EntityManager, EntityRepository, FindOneOptions, MikroORM, QueryBuilder } from '@mikro-orm/postgresql';
+import { LockMode, type EntityData, type RequiredEntityData } from '@mikro-orm/core';
+import type { EntityManager, EntityRepository, FindOneOptions, MikroORM, QueryBuilder } from '@mikro-orm/postgresql';
 import { Logger } from '@nestjs/common';
-import { Errors, MaybeArray } from '@wener/utils';
+import { Errors, type MaybeArray } from '@wener/utils';
 import { Contexts, getCurrentTenantId, getCurrentUserId } from '../../app';
 import { Features } from '../../Feature';
 import { EntityAuditAction, writeEntityAuditLog } from '../audit';
 import { EntityFeature } from '../enum';
-import { HasEntityRefEntity } from '../mixins';
+import type { HasEntityRefEntity } from '../mixins';
 import { resolveEntityRef2 } from '../resolveEntityRef';
 import { setData } from '../setData';
 import { setOwnerRef } from '../setOwnerRef';
-import { StandardBaseEntity } from '../StandardBaseEntity';
-import { AnyStandardEntity } from '../types';
+import type { StandardBaseEntity } from '../StandardBaseEntity';
+import type { AnyStandardEntity } from '../types';
 import { resolveEntitySearch } from './applySearch';
 import { createQueryBuilder } from './createQueryBuilder';
-import { EntityClass } from './EntityClass';
-import { findAllEntity, FindAllEntityOptions, FindAllEntityResult } from './findAllEntity';
+import type { EntityClass } from './EntityClass';
+import { findAllEntity, type FindAllEntityOptions, type FindAllEntityResult } from './findAllEntity';
 import { hasEntityFeature } from './hasEntityFeature';
-import { resolveEntity, ResolveEntityOptions, ResolveEntityResult } from './resolveEntity';
-import {
+import { resolveEntity, type ResolveEntityOptions, type ResolveEntityResult } from './resolveEntity';
+import type {
   AssignEntityOwnerOptions,
   BindEntityOptions,
   ClaimEntityOwnerOptions,
@@ -213,7 +213,9 @@ export class BaseEntityService<E extends StandardBaseEntity>
       try {
         entity = await this.em.upsert(this.Entity, data as any, {
           onConflictFields,
+          // @ts-ignore
           onConflictMergeFields,
+          // @ts-ignore
           onConflictExcludeFields: [...onConflictExcludeFields, 'id', 'uid', 'tid', 'createdAt', 'deletedAt'],
           onConflictAction,
         });

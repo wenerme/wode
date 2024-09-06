@@ -1,4 +1,4 @@
-import { isPromise, MaybePromise } from '@wener/utils';
+import { isPromise, type MaybePromise } from '@wener/utils';
 
 export function runRelayClientMutation<
   I extends {

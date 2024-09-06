@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import * as esbuild from 'esbuild';
-import { BuildOptions } from 'esbuild';
+import type { BuildOptions } from 'esbuild';
 import { createDynamicImportPlugin } from './createDynamicImportPlugin';
 import { createExcludeVendorSourceMapPlugin } from './createExcludeVendorSourceMapPlugin';
 import { createTscPlugin } from './createTscPlugin';

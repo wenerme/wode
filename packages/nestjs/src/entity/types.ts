@@ -1,5 +1,5 @@
-import { BaseEntity } from '@mikro-orm/core';
-import {
+import type { BaseEntity } from '@mikro-orm/core';
+import type {
   HasCodeEntity,
   HasCustomerRefEntity,
   HasMetadataEntity,
@@ -10,7 +10,7 @@ import {
   HasTagsEntity,
   HasVendorRefEntity,
 } from './mixins';
-import { StandardBaseEntity } from './StandardBaseEntity';
+import type { StandardBaseEntity } from './StandardBaseEntity';
 
 export interface IdentifiableEntity extends BaseEntity {
   id: string;

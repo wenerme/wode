@@ -47,6 +47,8 @@ export { maybeFunction, type MaybeFunction } from './langs/MaybeFunction';
 export { memoize } from './langs/memoize';
 export { mixin } from './langs/mixin';
 export type { MixinFunction, MixinInstance, MixinReturnValue } from './langs/mixin';
+export { getObjectId } from './langs/getObjectId';
+export { getGlobalStates, setGlobalStates } from './langs/getGlobalStates';
 
 export { AsyncCloser } from './runtime/AsyncCloser';
 export { Closer } from './runtime/Closer';

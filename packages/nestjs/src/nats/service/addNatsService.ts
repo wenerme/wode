@@ -1,5 +1,5 @@
 import { Logger } from '@nestjs/common';
-import { NatsConnection, NatsError, ServiceMsg } from 'nats';
+import type { NatsConnection, NatsError, ServiceMsg } from 'nats';
 import { App } from '../../app';
 import { getServerServiceSchema, getServiceName, ServiceRegistry } from '../../service';
 import { handleNatsServiceRequest } from './handleNatsServiceRequest';

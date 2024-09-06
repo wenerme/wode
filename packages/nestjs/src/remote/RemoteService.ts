@@ -1,1 +1,1 @@
-export interface RemoteService {}
+export type RemoteService = {}

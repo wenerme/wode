@@ -1,9 +1,9 @@
 import type { EntityManager, EntityRepository, QueryBuilder } from '@mikro-orm/postgresql';
-import { MaybePromise } from '@wener/utils';
+import type { MaybePromise } from '@wener/utils';
 import { getEntityManager } from '../../mikro-orm';
-import { EntityDef, getEntityDef } from '../defineEntity';
-import { StandardBaseEntity } from '../StandardBaseEntity';
-import { EntityClass } from './EntityClass';
+import { type EntityDef, getEntityDef } from '../defineEntity';
+import type { StandardBaseEntity } from '../StandardBaseEntity';
+import type { EntityClass } from './EntityClass';
 
 export interface ResolveEntityContextOptions<E extends StandardBaseEntity> {
   Entity: EntityClass<E>;

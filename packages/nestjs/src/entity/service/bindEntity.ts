@@ -1,7 +1,7 @@
 import { Errors } from '@wener/utils';
 import { getEntityDef } from '../defineEntity';
-import { HasEntityRefEntity } from '../mixins';
-import { IdentifiableEntity } from '../types';
+import type { HasEntityRefEntity } from '../mixins';
+import type { IdentifiableEntity } from '../types';
 
 export interface BindEntityOptions {
   entity: HasEntityRefEntity;

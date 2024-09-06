@@ -1,5 +1,5 @@
 import { ConfigurableModuleBuilder, Module, type DynamicModule, type Provider } from '@nestjs/common';
-import { ClientMiddleware, ClientRegistry } from './ClientRegistry';
+import { type ClientMiddleware, ClientRegistry } from './ClientRegistry';
 import type { ClientConnection } from './types';
 
 export const SERVICE_CLIENT_CONNECTION = Symbol('SERVICE_CLIENT_CONNECTION');

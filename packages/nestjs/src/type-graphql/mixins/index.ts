@@ -1,4 +1,4 @@
-import { Constructor } from '@wener/utils';
+import type { Constructor } from '@wener/utils';
 import { Field, ID, InputType, InterfaceType, ObjectType } from 'type-graphql';
 import {
   HasAuditorRefNode,

@@ -1,7 +1,7 @@
 import type { QueryBuilder } from '@mikro-orm/postgresql';
 import { isUUID } from '@wener/utils';
 import { isEntityTypeId } from '../parseEntityTypeId';
-import { ResolveEntityRequest } from './types';
+import type { ResolveEntityRequest } from './types';
 
 function normalizeResolveQuery(output: ResolveEntityRequest) {
   if (isUUID(output.id) && !output.uid) {

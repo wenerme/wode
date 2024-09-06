@@ -1,6 +1,6 @@
 {
   "name": "@wener/utils",
-  "version": "1.1.48",
+  "version": "1.1.49",
   "type": "module",
   "description": "Utils for daily use",
   "repository": {
@@ -46,7 +46,7 @@
     "test": "make test"
   },
   "devDependencies": {
-    "@sinclair/typebox": "^0.33.7",
+    "@sinclair/typebox": "^0.33.9",
     "@types/lodash": "^4.17.7",
     "@types/ws": "^8.5.12",
     "@wener/utils": "link:",

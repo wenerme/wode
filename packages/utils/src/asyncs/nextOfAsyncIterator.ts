@@ -1,6 +1,6 @@
 import { isIterator } from './isIterator';
 import { isPromise } from './isPromise';
-import { MaybePromise } from './MaybePromise';
+import type { MaybePromise } from './MaybePromise';
 
 type IteratorLike<T> = Iterable<T> | Iterator<T>;
 type AsyncIteratorLike<T> = AsyncIterable<T> | AsyncIterator<T> | AsyncIterableIterator<T> | IteratorLike<T>;

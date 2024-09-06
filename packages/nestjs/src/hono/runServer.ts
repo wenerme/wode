@@ -1,8 +1,8 @@
 import process from 'node:process';
 import { loadEnvs } from '@wener/nestjs';
 import { App } from '@wener/nestjs/app';
-import { MaybePromise } from '@wener/utils';
-import { Hono } from 'hono';
+import type { MaybePromise } from '@wener/utils';
+import type { Hono } from 'hono';
 import { showRoutes } from 'hono/dev';
 import { createHono } from './createHono';
 import { serve } from './serve';
@@ -40,7 +40,7 @@ export async function runServer<T extends Hono<any>>(opts: RunHonoServerOptions<
   return serve(
     {
       fetch: app.fetch,
-      port: typeof port === 'string' ? parseInt(port) : port,
+      port: typeof port === 'string' ? Number.parseInt(port) : port,
     },
     onServe,
   );

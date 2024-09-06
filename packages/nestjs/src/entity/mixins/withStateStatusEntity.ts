@@ -1,11 +1,11 @@
-import { Entity, Opt, Property, types } from '@mikro-orm/core';
-import { Constructor } from '@wener/utils';
+import { Entity, type Opt, Property, types } from '@mikro-orm/core';
+import type { Constructor } from '@wener/utils';
 import { Feature } from '../../Feature';
 import { EntityFeature } from '../enum';
-import { HasStateStatusEntity } from './types';
+import type { HasStateStatusEntity } from './types';
 
-export function createStateStatusEntity({ status, state }: { status: string; state: string }) {
-  return function withStateStatusEntity<TBase extends Constructor>(Base: TBase) {
+export function withStateStatusEntity({ status, state }: { status: string; state: string }) {
+  return <TBase extends Constructor>(Base: TBase) => {
     @Feature([EntityFeature.HasStateStatus])
     @Entity({ abstract: true })
     class HasStateStatusMixinEntity extends Base implements HasStateStatusEntity {

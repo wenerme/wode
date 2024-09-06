@@ -1,5 +1,5 @@
 import { ConfigurableModuleBuilder } from '@nestjs/common';
-import { NatsServiceServerModuleOptions } from './types';
+import type { NatsServiceServerModuleOptions } from './types';
 
 export default new ConfigurableModuleBuilder<NatsServiceServerModuleOptions>()
   .setExtras(

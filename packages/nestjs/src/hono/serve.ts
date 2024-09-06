@@ -1,4 +1,4 @@
-import { MaybePromise } from '@wener/utils';
+import type { MaybePromise } from '@wener/utils';
 
 type ServeFn = (
   o: { fetch: (request: Request) => MaybePromise<Response>; port?: number },

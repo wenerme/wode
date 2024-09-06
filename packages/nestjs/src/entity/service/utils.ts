@@ -1,6 +1,6 @@
-import { Collection, type FilterQuery } from '@mikro-orm/core';
-import { StandardBaseEntity } from '../StandardBaseEntity';
-import { ResolvedEntityContext } from './resolveEntityContext';
+import type { Collection, FilterQuery } from '@mikro-orm/core';
+import type { StandardBaseEntity } from '../StandardBaseEntity';
+import type { ResolvedEntityContext } from './resolveEntityContext';
 
 interface LoadTypeOptions<E extends StandardBaseEntity> extends ResolvedEntityContext<E> {}
 

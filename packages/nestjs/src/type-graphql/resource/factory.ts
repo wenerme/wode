@@ -2,7 +2,7 @@ import { computeIfAbsent, type Constructor } from '@wener/utils';
 import { Field, InputType, ObjectType } from 'type-graphql';
 import { getObjectName } from '../getObjectName';
 import { getTypeCache } from '../getTypeCache';
-import { RelayMutationInput, RelayMutationPayload } from '../relay';
+import { type RelayMutationInput, RelayMutationPayload } from '../relay';
 import { BaseCreateResourceInput, BaseUpdateResourceInput } from './types';
 
 export interface CreateResourceInput<T> extends BaseCreateResourceInput {

@@ -1,13 +1,13 @@
-import { RequiredEntityData } from '@mikro-orm/core';
-import { EntityManager, EntityRepository, FindOneOptions, MikroORM, QueryBuilder } from '@mikro-orm/postgresql';
+import type { RequiredEntityData } from '@mikro-orm/core';
+import type { EntityManager, EntityRepository, FindOneOptions, MikroORM, QueryBuilder } from '@mikro-orm/postgresql';
 import { Injectable } from '@nestjs/common';
 import { Errors } from '@wener/utils';
 import { getEntityDef } from '../defineEntity';
 import { StandardBaseEntity } from '../StandardBaseEntity';
 import { EntityBaseService } from './EntityBaseService';
-import { FindAllEntityOptions, FindAllEntityResult } from './findAllEntity';
-import { ResolveEntityOptions, ResolveEntityResult } from './resolveEntity';
-import {
+import type { FindAllEntityOptions, FindAllEntityResult } from './findAllEntity';
+import type { ResolveEntityOptions, ResolveEntityResult } from './resolveEntity';
+import type {
   AnyEntityService,
   AssignEntityOwnerOptions,
   BindEntityOptions,
@@ -22,7 +22,7 @@ import {
   SetEntityStatusOptions,
   UpdateEntityOptions,
 } from './services';
-import {
+import type {
   AssignOwnerRequest,
   ClaimOwnerRequest,
   CountEntityRequest,

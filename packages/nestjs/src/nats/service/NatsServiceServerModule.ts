@@ -1,6 +1,6 @@
 import { Inject, Module, type OnApplicationBootstrap, type OnApplicationShutdown } from '@nestjs/common';
 import { ServiceServerModule } from '../../service';
-import { SERVICE_SERVER_MODULE_OPTIONS, ServiceServerModuleOptions } from '../../service/server/ServiceServerModule';
+import { SERVICE_SERVER_MODULE_OPTIONS, type ServiceServerModuleOptions } from '../../service/server/ServiceServerModule';
 import { NatsModule } from '../NatsModule';
 import { NatsServerHandler } from './NatsServerHandler';
 import { NatsServerRegistry } from './NatsServerRegistry';

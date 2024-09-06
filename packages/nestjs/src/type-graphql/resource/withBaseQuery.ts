@@ -5,7 +5,7 @@ import { GraphQLJSONScalar } from '../GraphQLJSONScalar';
 import { JSONArgs } from '../JSONArgs';
 import { resolveGraphQLJSON } from '../resolveGraphQLJSON';
 import { GetResourceArgs } from './args';
-import { BaseEntityResolverConstructor } from './createBaseEntityResolver';
+import type { BaseEntityResolverConstructor } from './createBaseEntityResolver';
 import { ListQueryInput } from './ListQueryInput';
 
 export function withBaseQuery<TBase extends BaseEntityResolverConstructor<any, any, any>>(Base: TBase) {

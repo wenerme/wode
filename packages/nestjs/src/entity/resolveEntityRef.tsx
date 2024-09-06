@@ -2,8 +2,8 @@ import type { EntityClass, Opt, Ref } from '@mikro-orm/core';
 import { Errors } from '@wener/utils';
 import { getEntityManager } from '../mikro-orm';
 import { getEntityDef } from './defineEntity';
-import { StandardBaseEntity } from './StandardBaseEntity';
-import { IdentifiableEntity } from './types';
+import type { StandardBaseEntity } from './StandardBaseEntity';
+import type { IdentifiableEntity } from './types';
 
 export function resolveEntityRef<E = IdentifiableEntity>(o: { entityId: string; entityType?: string }): Ref<E> & Opt;
 export function resolveEntityRef<E = IdentifiableEntity>(Entity: EntityClass<E>, id?: string): Ref<E> & Opt;

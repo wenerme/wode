@@ -1,8 +1,8 @@
 import { Entity, Property, types } from '@mikro-orm/core';
-import { Constructor } from '@wener/utils';
+import type { Constructor } from '@wener/utils';
 import { Feature } from '../../Feature';
 import { EntityFeature } from '../enum';
-import { HasVendorRefEntity } from './types';
+import type { HasVendorRefEntity } from './types';
 
 export function withVendorRefEntity<TBase extends Constructor>(Base: TBase) {
   @Feature([EntityFeature.HasVendorRef])

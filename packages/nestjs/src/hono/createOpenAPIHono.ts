@@ -1,5 +1,5 @@
 import process from 'node:process';
-import { HttpBindings } from '@hono/node-server';
+import type { HttpBindings } from '@hono/node-server';
 import { OpenAPIHono } from '@hono/zod-openapi';
 import { Errors } from '@wener/utils';
 import { logger } from 'hono/logger';

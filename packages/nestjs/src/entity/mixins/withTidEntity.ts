@@ -1,8 +1,8 @@
-import { Entity, Opt, Property, types } from '@mikro-orm/core';
-import { Constructor } from '@wener/utils';
+import { Entity, type Opt, Property, types } from '@mikro-orm/core';
+import type { Constructor } from '@wener/utils';
 import { Feature } from '../../Feature';
 import { EntityFeature } from '../enum';
-import { HasTidEntity } from './types';
+import type { HasTidEntity } from './types';
 
 export function withTidEntity<TBase extends Constructor>(Base: TBase) {
   @Feature([EntityFeature.HasTid])

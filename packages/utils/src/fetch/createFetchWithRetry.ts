@@ -1,5 +1,5 @@
 import { getGlobalThis } from '../runtime/getGlobalThis';
-import { FetchLike } from './types';
+import type { FetchLike } from './types';
 
 type RequestDelayFunction = (attempt: number, error: Error | null, response: Response | null) => number;
 type RequestRetryOnFunction = (

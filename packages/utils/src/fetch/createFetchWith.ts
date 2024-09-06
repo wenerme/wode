@@ -1,4 +1,4 @@
-import { MaybePromise } from '../asyncs/MaybePromise';
+import type { MaybePromise } from '../asyncs/MaybePromise';
 import { getGlobalThis } from '../runtime/getGlobalThis';
 import { type FetchLike } from './types';
 

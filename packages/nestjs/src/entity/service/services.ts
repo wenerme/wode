@@ -1,11 +1,11 @@
 import type { RequiredEntityData } from '@mikro-orm/core';
-import { EntityManager, EntityRepository, FindOneOptions, QueryBuilder } from '@mikro-orm/postgresql';
-import { MaybePromise } from '@wener/utils';
-import { StandardBaseEntity } from '../StandardBaseEntity';
-import { EntityClass } from './EntityClass';
-import { FindAllEntityOptions, FindAllEntityResult } from './findAllEntity';
-import { ResolveEntityOptions, ResolveEntityResult } from './resolveEntity';
-import {
+import type { EntityManager, EntityRepository, FindOneOptions, QueryBuilder } from '@mikro-orm/postgresql';
+import type { MaybePromise } from '@wener/utils';
+import type { StandardBaseEntity } from '../StandardBaseEntity';
+import type { EntityClass } from './EntityClass';
+import type { FindAllEntityOptions, FindAllEntityResult } from './findAllEntity';
+import type { ResolveEntityOptions, ResolveEntityResult } from './resolveEntity';
+import type {
   AssignOwnerRequest,
   AssignOwnerResponse,
   ClaimOwnerRequest,
@@ -95,7 +95,7 @@ export interface EntityService<E extends StandardBaseEntity> extends EntityServi
 
   get(req: GetEntityRequest): Promise<E>;
 
-  resolve(req: ResolveEntityRequest): Promise<E>;
+  resolve(req: ResolveEntityRequest): Promise<E | undefined>;
 
   claimOwner(req: ClaimOwnerRequest): Promise<ClaimOwnerResponse>;
 
@@ -120,13 +120,13 @@ export interface HasSoftDeleteEntityService<E extends StandardBaseEntity> {
   purgeEntity(req: ResolveEntityOptions<E>): Promise<{ entity?: E }>;
 }
 
-export interface ClaimEntityOwnerOptions {}
+export type ClaimEntityOwnerOptions = {};
 
 export interface AssignEntityOwnerOptions {
   ownerId: string;
 }
 
-export interface ReleaseEntityOwnerOptions {}
+export type ReleaseEntityOwnerOptions = {};
 
 export type EntityResult<E> = { entity: E };
 

@@ -32,7 +32,7 @@ export function parseKnexUri(uri: string, o: Knex.Config = {}): Knex.Config {
 
       host: url.hostname,
       server: url.hostname,
-      port: parseInt(url.port),
+      port: Number.parseInt(url.port),
       user: url.username,
       password: url.password || undefined,
       database: url.pathname.substring(1) || undefined,

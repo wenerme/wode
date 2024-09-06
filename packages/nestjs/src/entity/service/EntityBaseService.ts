@@ -1,5 +1,5 @@
-import { EntityData, LockMode, type RequiredEntityData } from '@mikro-orm/core';
-import { QueryBuilder, type EntityManager, type EntityRepository, type MikroORM } from '@mikro-orm/postgresql';
+import { LockMode, type EntityData, type RequiredEntityData } from '@mikro-orm/core';
+import type { EntityManager, EntityRepository, MikroORM, QueryBuilder } from '@mikro-orm/postgresql';
 import { Errors } from '@wener/utils';
 import { Contexts, getCurrentTenantId, getCurrentUserId } from '../../app';
 import { getMikroORM } from '../../mikro-orm';
@@ -7,16 +7,15 @@ import { EntityAuditAction, writeEntityAuditLog } from '../audit';
 import { EntityFeature } from '../enum';
 import { setData } from '../setData';
 import { setOwnerRef } from '../setOwnerRef';
-import { StandardBaseEntity } from '../StandardBaseEntity';
+import type { StandardBaseEntity } from '../StandardBaseEntity';
 import { applyListQuery } from './applyListQuery';
 import { applyQueryFilter } from './applyQueryFilter';
 import { applyResolveQuery, applySelection } from './applyResolveQuery';
-import { applySearch } from './applySearch';
 import { BaseEntityService } from './BaseEntityService';
-import { EntityClass } from './EntityClass';
+import type { EntityClass } from './EntityClass';
 import { hasEntityFeature } from './hasEntityFeature';
-import { EntityService } from './services';
-import {
+import type { EntityService } from './services';
+import type {
   AssignOwnerRequest,
   AssignOwnerResponse,
   ClaimOwnerRequest,
@@ -82,10 +81,10 @@ export class EntityBaseService<E extends StandardBaseEntity> extends BaseEntityS
     return applyResolveQuery({ builder, query });
   }
 
-  async resolve(req: ResolveEntityRequest & { [key: string]: any }): Promise<E | null> {
+  async resolve(req: ResolveEntityRequest & { [key: string]: any }): Promise<E | undefined> {
     let { builder } = await this.createQueryBuilder();
     if (!this.applyResolve({ builder, query: req })) {
-      return null;
+      return undefined;
     }
 
     builder = applySelection({ builder, query: req });
@@ -96,7 +95,7 @@ export class EntityBaseService<E extends StandardBaseEntity> extends BaseEntityS
     if (!found) {
       this.log.log(`resolve not found ${this.Entity.name} ${JSON.stringify(req)}`);
     }
-    return found;
+    return found ?? undefined;
   }
 
   applyListQuery<T extends QueryBuilder<E>, Q extends ListEntityRequest>({ builder, query }: { builder: T; query: Q }) {
@@ -205,7 +204,9 @@ export class EntityBaseService<E extends StandardBaseEntity> extends BaseEntityS
       try {
         entity = await this.em.upsert(this.Entity, data as any, {
           onConflictFields,
+          // @ts-ignore
           onConflictMergeFields,
+          // @ts-ignore
           onConflictExcludeFields: [...onConflictExcludeFields, 'id', 'uid', 'tid', 'createdAt', 'deletedAt'],
           onConflictAction,
         });
@@ -353,7 +354,9 @@ export class EntityBaseService<E extends StandardBaseEntity> extends BaseEntityS
     const entities = await em.transactional(async (em) => {
       const entities = await em.upsertMany(this.Entity, data, {
         onConflictFields,
+        // @ts-ignore
         onConflictMergeFields,
+        // @ts-ignore
         onConflictExcludeFields: [...onConflictExcludeFields, 'id', 'tid', 'createdAt', 'deletedAt'],
         onConflictAction,
       });

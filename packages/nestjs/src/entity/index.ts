@@ -9,6 +9,6 @@ export { setOwnerRef } from './setOwnerRef';
 export { EntityFeature, type EntityFeatureCode } from './enum';
 export { BaseHttpRequestLogEntity } from './BaseHttpRequestLogEntity';
 export * from './mixins';
-export * from './types';
-export { withSystemManagedEntity } from './mixins/withSystemManagedEntity';
-export { withSlugEntity } from './mixins/withSlugEntity';
+export type * from './types';
+
+export { checkMikroOrmEnv } from './env';

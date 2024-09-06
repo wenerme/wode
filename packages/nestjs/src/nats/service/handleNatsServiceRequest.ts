@@ -1,16 +1,16 @@
 import { Logger } from '@nestjs/common';
-import { Msg, NatsError } from 'nats';
+import type { Msg, NatsError } from 'nats';
 import {
   createResponseFromRequest,
-  ServerRequest,
-  ServerResponse,
-  ServiceRegistry,
+  type ServerRequest,
+  type ServerResponse,
+  type ServiceRegistry,
   ServiceRequestPayloadSchema,
   ServiceResponsePayloadSchema,
 } from '../../service';
 import { createMsgHdrFromResponse } from './createMsgHdrFromResponse';
 import { createResponseFromMessageHeader } from './createResponseFromMessageHeader';
-import { KnownNatsServerMetadata } from './types';
+import type { KnownNatsServerMetadata } from './types';
 
 export async function handleNatsServiceRequest({
   msg,

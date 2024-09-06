@@ -1,4 +1,4 @@
-import { BaseEntity, EntityClass, MetadataStorage } from '@mikro-orm/core';
+import { BaseEntity, type EntityClass, MetadataStorage } from '@mikro-orm/core';
 import { Features } from '../Feature';
 import { getTypeOfEntityTypeId } from './parseEntityTypeId';
 

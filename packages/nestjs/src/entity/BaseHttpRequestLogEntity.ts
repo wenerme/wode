@@ -1,4 +1,4 @@
-import { Entity, Opt, Property, types } from '@mikro-orm/core';
+import { Entity, type Opt, Property, types } from '@mikro-orm/core';
 import { StandardBaseEntity } from './StandardBaseEntity';
 
 @Entity({ abstract: true })
@@ -102,7 +102,7 @@ export class BaseHttpRequestLogEntity extends StandardBaseEntity {
       statusCode: resp.status,
       statusText: resp.statusText,
       responseHeaders: headers,
-      contentLength: headers['content-length'] ? parseInt(headers['content-length']) : undefined,
+      contentLength: headers['content-length'] ? Number.parseInt(headers['content-length']) : undefined,
       contentType: headers['content-type'],
       // responsePayload: resp.body,
     } as any);

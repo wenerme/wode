@@ -1,5 +1,5 @@
 import type { AbstractConstructor, Constructor } from '../../types';
-import { MethodOptions, ServiceOptions } from './client.types';
+import type { MethodOptions, ServiceOptions } from './client.types';
 import { getMethodOptions } from './Method';
 import { getServiceOptions } from './Service';
 

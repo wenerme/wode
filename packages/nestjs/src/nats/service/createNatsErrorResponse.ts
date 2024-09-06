@@ -1,7 +1,7 @@
 import { Logger } from '@nestjs/common';
 import { getHttpStatusText } from '@wener/utils';
-import { NatsError } from 'nats';
-import { ClientRequest, createResponseFromRequest } from '../../service';
+import type { NatsError } from 'nats';
+import { type ClientRequest, createResponseFromRequest } from '../../service';
 
 export function createNatsErrorResponse({
   error: e,
