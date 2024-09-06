@@ -12,3 +12,4 @@ export * from './mixins';
 export type * from './types';
 
 export { checkMikroOrmEnv } from './env';
+export { patchMikroORMMetadataStorage } from './patchMikroORMMetadataStorage';
