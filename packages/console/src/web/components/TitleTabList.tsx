@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import { NavLink } from 'react-router-dom';
 import { flexRender, FlexRenderable, useControllable } from '@wener/reaction';
 import { clsx } from 'clsx';
-import { cn } from '../../lib/utils';
+import { cn } from '../../tw/cn';
 
 export interface TitleTabItem {
   label: ReactNode;

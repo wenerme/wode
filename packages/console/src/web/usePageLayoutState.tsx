@@ -1,4 +1,4 @@
-import { proxyWith } from '../valtio';
+import { proxyWith } from '@wener/reaction/valtio';
 
 // export interface PageLayoutState {
 //   expanded?: boolean;

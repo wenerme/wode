@@ -1,7 +1,7 @@
 import type { HTMLProps } from 'react';
 import React from 'react';
 import { clsx } from 'clsx';
-import { cn } from '../../../lib/utils';
+import { cn } from '../../../tw/cn';
 import { TitleTabLayout } from '../../components';
 
 export const SettingLayout: React.FC<

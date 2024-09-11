@@ -1,4 +1,4 @@
-import { getGlobalThis } from '@wener/utils';
+import { getGlobalStates, getGlobalThis } from '@wener/utils';
 import { snapshot, subscribe } from 'valtio';
 import { proxyWithCompare } from './proxyWithCompare';
 
@@ -21,9 +21,10 @@ export function proxyWith<T extends Record<string, any>>({
   broadcast,
   proxy = proxyWithCompare,
 }: ProxyWithOptions<T>): T {
-  let globalHolder;
+  let globalHolder: Record<string, any> | undefined;
+
   if (global === true) {
-    globalHolder = globalThis.__GLOBAL_STATES__ ||= {};
+    globalHolder = getGlobalStates('GlobalValtio', () => ({}));
   } else if (global && typeof global === 'object') {
     globalHolder = global;
   }

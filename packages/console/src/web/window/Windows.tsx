@@ -1,7 +1,7 @@
 import React, { ComponentPropsWithRef, forwardRef } from 'react';
 import { PiAppWindowLight, PiMinusThin, PiSquareThin, PiXThin } from 'react-icons/pi';
 import { clsx } from 'clsx';
-import { cn } from '../../lib/utils';
+import { cn } from '../../tw/cn';
 import { getWindowDragCancelClassname, getWindowDragHandleClassname } from './const';
 import { WindowFrameProps } from './WindowFrame';
 import styles from './Windows.module.css';

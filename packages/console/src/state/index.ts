@@ -1,2 +1,2 @@
-export { getGlobalStates, setGlobalStates } from '../utils/getGlobalStates';
+export { getGlobalStates, setGlobalStates } from '@wener/utils';
 export * from './AppStore';

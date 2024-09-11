@@ -2,7 +2,7 @@ import type { ComponentPropsWithoutRef, FC, HTMLProps, ReactElement } from 'reac
 import React from 'react';
 import { clsx } from 'clsx';
 import { Tooltip } from '../../../floating';
-import { cn } from '../../../lib/utils';
+import { cn } from '../../../tw/cn';
 import { HeaderContentFooterLayout, LeftContentRightLayout, OverlayScrollbar } from '../../components';
 import { AutoNavLink } from '../../links';
 
