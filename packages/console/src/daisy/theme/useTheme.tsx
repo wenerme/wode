@@ -1,7 +1,8 @@
 import React, { useEffect, type ReactNode } from 'react';
+import { proxyWithCompare } from '@wener/reaction/valtio';
+import { derive } from 'derive-valtio';
 import { useSnapshot } from 'valtio';
-import { derive, watch } from 'valtio/utils';
-import { proxyWithCompare } from '../../valtio';
+import { watch } from 'valtio/utils';
 import { getPrefersColorSchema } from '../../web/utils';
 import { getSupportedThemes } from './getSupportedThemes';
 import { setElementThemeAttribute } from './setElementThemeAttribute';
@@ -30,6 +31,7 @@ export function createThemeState(o: Partial<ThemeState> = {}): ThemeState {
   } as any); // as any for readonly active
   // 考虑修改为 Class
   // https://github.com/pmndrs/valtio/pull/647/files
+  // fixme avoid using derive
   return derive(
     {
       active: (get) => {

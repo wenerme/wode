@@ -1,5 +1,5 @@
 import React, { forwardRef, ReactNode } from 'react';
-import { cn } from '../../lib/utils';
+import { cn } from '../../tw/cn';
 
 export type HeaderContentFooterLayoutProps<E extends React.ElementType = 'div'> = Omit<
   React.ComponentProps<E>,

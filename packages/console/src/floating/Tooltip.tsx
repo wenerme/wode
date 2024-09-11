@@ -1,7 +1,7 @@
 import { cloneElement, Fragment, type CSSProperties, type ReactNode } from 'react';
 import { FloatingPortal, Placement } from '@floating-ui/react';
 import { UseFloatingInteractionsOptions } from '@wener/console/floating';
-import { cn } from '../lib/utils';
+import { cn } from '../tw/cn';
 import { usePopover } from './usePopover';
 
 export interface TooltipProps extends UseFloatingInteractionsOptions {

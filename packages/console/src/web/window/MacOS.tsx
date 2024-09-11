@@ -2,7 +2,7 @@ import React, { ComponentPropsWithRef, forwardRef } from 'react';
 import { CgExpand } from 'react-icons/cg';
 import { HiMiniMinus, HiMiniXMark } from 'react-icons/hi2';
 import { clsx } from 'clsx';
-import { cn } from '../../lib/utils';
+import { cn } from '../../tw/cn';
 import { getWindowDragCancelClassname, getWindowDragHandleClassname } from './const';
 import styles from './macOS.module.css';
 import { WindowFrameProps } from './WindowFrame';

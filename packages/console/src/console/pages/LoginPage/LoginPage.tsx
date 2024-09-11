@@ -9,8 +9,8 @@ import { PiBuildingsThin } from 'react-icons/pi';
 import { useMounted } from '@wener/reaction';
 import { clsx } from 'clsx';
 import { WechatBrandIcon, WecomBrandIcon } from '../../../icons';
-import { cn } from '../../../lib/utils';
 import { TODO } from '../../../toast';
+import { cn } from '../../../tw';
 
 export type LoginFormData = {
   org?: string;
