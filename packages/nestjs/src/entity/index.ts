@@ -2,7 +2,14 @@ export { StandardBaseEntity } from './StandardBaseEntity';
 export { TenantBaseEntity } from './TenantBaseEntity';
 export { CurrentTenantIdFilter } from './CurrentTenantIdFilter';
 export { parseEntityTypeId, isEntityTypeId, getTypeOfEntityTypeId } from './parseEntityTypeId';
-export { defineEntity, getEntityDef, getEntityDefs, type EntityDef, type DefineEntityOptions } from './defineEntity';
+export {
+  defineEntity,
+  getEntityDef,
+  getEntityDefs,
+  requireEntityDef,
+  type EntityDef,
+  type DefineEntityOptions,
+} from './defineEntity';
 export { resolveEntityRef } from './resolveEntityRef';
 export { setEntityRef } from './setEntityRef';
 export { setOwnerRef } from './setOwnerRef';

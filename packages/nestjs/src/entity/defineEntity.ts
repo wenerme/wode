@@ -1,4 +1,5 @@
-import { BaseEntity, type EntityClass, MetadataStorage } from '@mikro-orm/core';
+import { BaseEntity, MetadataStorage, type EntityClass } from '@mikro-orm/core';
+import { Errors } from '@wener/utils';
 import { Features } from '../Feature';
 import { getTypeOfEntityTypeId } from './parseEntityTypeId';
 
@@ -26,8 +27,8 @@ export interface EntityDef {
   features: string[];
 }
 
+let _all: EntityDef[] = [];
 let _index = new Map<EntityClass<any> | string, EntityDef>();
-let _resource = new Map<EntityClass<any>, EntityDef>();
 
 export function defineEntity(o: DefineEntityOptions): EntityDef;
 export function defineEntity(o: DefineEntityOptions[]): EntityDef[];
@@ -45,20 +46,23 @@ export function defineEntity(o: DefineEntityOptions | DefineEntityOptions[]) {
   def.title ||= def.typeName;
   def.features = Array.from(new Set((def.features || []).concat(Features.getFeatures(o.Entity))));
 
-  _index.get(o.Entity) && console.warn(`Entity already defined: ${def.typeName}`);
-  _index.get(def.typeName) && console.warn(`Entity already defined: ${def.typeName}`);
-  def.idType && _index.get(def.idType) && console.warn(`Entity already defined: ${def.idType}`);
+  let last = _index.get(o.Entity) || _index.get(def.typeName) || (def.idType ? _index.get(def.idType) : undefined);
+  if (last) {
+    console.warn(
+      `Entity already defined: idType=${def.idType} typeName=${def.typeName} -> ${last.idType} ${last.typeName}`,
+    );
+  }
 
   _index.set(def.Entity, def);
   _index.set(def.typeName, def);
   def.idType && _index.set(def.idType, def);
 
-  _resource.set(def.Entity, def);
+  _all.push(def);
 
   return def;
 }
 
-export function getEntityDef(key: Function | BaseEntity | string | null | undefined) {
+export function getEntityDef(key: Function | BaseEntity | string | null | undefined): EntityDef | undefined {
   if (!key) {
     return undefined;
   }
@@ -75,6 +79,11 @@ export function getEntityDef(key: Function | BaseEntity | string | null | undefi
   return found;
 }
 
+export function requireEntityDef(key: Function | BaseEntity | string | null | undefined): EntityDef {
+  return Errors.BadRequest.require(getEntityDef(key), 'Entity def not found');
+}
+
 export function getEntityDefs() {
-  return _resource.values();
+  return _all;
+  // return Iterator.from(_all);
 }
