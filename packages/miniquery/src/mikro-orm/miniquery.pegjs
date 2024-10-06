@@ -6,6 +6,9 @@ a > 1 or
 --
 and a not in [1,2,3,]
 and a between 1 and 2
+-- contains
+and tags @> ['Hello']
+and !( tags @> ['Hello'] )
 */
 {{
 /* eslint-disable @typescript-eslint/interface-name-prefix,@typescript-eslint/no-empty-interface,no-case-declarations,no-control-regex,prefer-const */

@@ -5,7 +5,7 @@ author: Wener
 tags: [notify]
 containerImage: wener/woodpecker-feishu-bot
 containerImageUrl: https://hub.docker.com/r/wener/woodpecker-feishu-bot
-url: https://github.com/wenerme/wode/tree/main/apps/woodpecker-feishu-bot
+url: https://github.com/wenerme/woodpecker-feishu-bot
 ---
 
 ## Example
