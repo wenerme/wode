@@ -1,4 +1,4 @@
-import { type DynamicModule, Logger, type Type } from '@nestjs/common';
+import { Logger, type DynamicModule, type Type } from '@nestjs/common';
 import { type MaybePromise } from '@wener/utils';
 
 export class ModuleLoader {

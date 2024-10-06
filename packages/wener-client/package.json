@@ -1,0 +1,165 @@
+{
+  "name": "@wener/client",
+  "version": "1.0.23",
+  "type": "module",
+  "description": "Client for Wechat, Wecom, Xunfei, FunAsr, etc.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wener/wode.git"
+  },
+  "homepage": "https://github.com/wenerme/wode#readme",
+  "author": "wener",
+  "license": "MIT",
+  "exports": {
+    ".": "./src/index.ts",
+    "./17dz": "./src/17dz/index.ts",
+    "./17dz/crypto": "./src/17dz/crypto/index.ts",
+    "./17dz/flow": "./src/17dz/flow/index.ts",
+    "./17dz/operator": "./src/17dz/operator/index.ts",
+    "./alicloud": "./src/alicloud/index.ts",
+    "./browser/launch": "./src/browser/launch/index.ts",
+    "./browserless": "./src/browserless/index.ts",
+    "./cubejs": "./src/cubejs/index.ts",
+    "./funasr": "./src/funasr/index.ts",
+    "./openai": "./src/openai/index.ts",
+    "./qq": "./src/qq/index.ts",
+    "./server": "./src/server/index.ts",
+    "./wechat": "./src/wechat/index.ts",
+    "./wechat/webhook": "./src/wechat/webhook/index.ts",
+    "./wecom": "./src/wecom/index.ts",
+    "./wecom/archive": "./src/wecom/archive/index.ts",
+    "./wecom/archive/bun": "./src/wecom/archive/bun/index.ts",
+    "./wecom/server": "./src/wecom/server/index.ts",
+    "./wecom/webhook": "./src/wecom/webhook/index.ts",
+    "./xunfei/spark": "./src/xunfei/spark/index.ts",
+    "./yzf": "./src/yzf/index.ts",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib.d.ts",
+    "src",
+    "lib",
+    "libs"
+  ],
+  "keywords": [],
+  "scripts": {
+    "build": "make build",
+    "deploy": "make deploy",
+    "test": "make test"
+  },
+  "dependencies": {
+    "@wener/utils": "^1.1.50",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@alicloud/openapi-client": "^0.4.12",
+    "@sinclair/typebox": "^0.33.16",
+    "@types/bun": "^1.1.11",
+    "@types/cookie": "^0.6.0",
+    "@types/crypto-js": "^4.2.2",
+    "@wecom/jssdk": "^1.4.5",
+    "cookie": "^1.0.1",
+    "crypto-js": "^4.2.0",
+    "dayjs": "^1.11.13",
+    "fast-xml-parser": "^4.5.0",
+    "openai": "^4.67.3",
+    "puppeteer": "^23.5.3",
+    "puppeteer-core": "^23.5.3",
+    "ts-pattern": "^5.5.0",
+    "undici": "^6.20.0",
+    "ws": "^8.18.0"
+  },
+  "publishConfig": {
+    "exports": {
+      ".": {
+        "types": "./src/index.ts",
+        "default": "./lib/index.js"
+      },
+      "./17dz": {
+        "types": "./src/17dz/index.ts",
+        "default": "./lib/17dz/index.js"
+      },
+      "./17dz/crypto": {
+        "types": "./src/17dz/crypto/index.ts",
+        "default": "./lib/17dz/crypto/index.js"
+      },
+      "./17dz/flow": {
+        "types": "./src/17dz/flow/index.ts",
+        "default": "./lib/17dz/flow/index.js"
+      },
+      "./17dz/operator": {
+        "types": "./src/17dz/operator/index.ts",
+        "default": "./lib/17dz/operator/index.js"
+      },
+      "./alicloud": {
+        "types": "./src/alicloud/index.ts",
+        "default": "./lib/alicloud/index.js"
+      },
+      "./browser/launch": {
+        "types": "./src/browser/launch/index.ts",
+        "default": "./lib/browser/launch/index.js"
+      },
+      "./browserless": {
+        "types": "./src/browserless/index.ts",
+        "default": "./lib/browserless/index.js"
+      },
+      "./cubejs": {
+        "types": "./src/cubejs/index.ts",
+        "default": "./lib/cubejs/index.js"
+      },
+      "./funasr": {
+        "types": "./src/funasr/index.ts",
+        "default": "./lib/funasr/index.js"
+      },
+      "./openai": {
+        "types": "./src/openai/index.ts",
+        "default": "./lib/openai/index.js"
+      },
+      "./qq": {
+        "types": "./src/qq/index.ts",
+        "default": "./lib/qq/index.js"
+      },
+      "./server": {
+        "types": "./src/server/index.ts",
+        "default": "./lib/server/index.js"
+      },
+      "./wechat": {
+        "types": "./src/wechat/index.ts",
+        "default": "./lib/wechat/index.js"
+      },
+      "./wechat/webhook": {
+        "types": "./src/wechat/webhook/index.ts",
+        "default": "./lib/wechat/webhook/index.js"
+      },
+      "./wecom": {
+        "types": "./src/wecom/index.ts",
+        "default": "./lib/wecom/index.js"
+      },
+      "./wecom/archive": {
+        "types": "./src/wecom/archive/index.ts",
+        "default": "./lib/wecom/archive/index.js"
+      },
+      "./wecom/archive/bun": {
+        "types": "./src/wecom/archive/bun/index.ts",
+        "default": "./lib/wecom/archive/bun/index.js"
+      },
+      "./wecom/server": {
+        "types": "./src/wecom/server/index.ts",
+        "default": "./lib/wecom/server/index.js"
+      },
+      "./wecom/webhook": {
+        "types": "./src/wecom/webhook/index.ts",
+        "default": "./lib/wecom/webhook/index.js"
+      },
+      "./xunfei/spark": {
+        "types": "./src/xunfei/spark/index.ts",
+        "default": "./lib/xunfei/spark/index.js"
+      },
+      "./yzf": {
+        "types": "./src/yzf/index.ts",
+        "default": "./lib/yzf/index.js"
+      },
+      "./package.json": "./package.json"
+    }
+  }
+}

@@ -3,8 +3,7 @@ import { createNoopLogger } from '@wener/utils';
 import { assert, beforeAll, expect, test, TestContext } from 'vitest';
 import { loadBrowserSystem } from '../loaders/loadBrowserSystem';
 import { addPreload } from '../utils/addPreload';
-import type { SystemJS } from '../utils/getGlobalSystem';
-import { getGlobalSystem } from '../utils/getGlobalSystem';
+import { getGlobalSystem, type SystemJS } from '../utils/getGlobalSystem';
 import { polyfillBrowser } from './react-remote.test';
 
 beforeAll(async () => {

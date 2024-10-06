@@ -2,20 +2,20 @@ import path from 'node:path';
 import { EntityManager as CoreEntityManager, MikroORM as CoreMikroORM } from '@mikro-orm/core';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import {
-  type AbstractSqlConnection,
   EntityManager,
   knex,
   MikroORM,
+  type AbstractSqlConnection,
   type Options as PostgreSqlOptions,
 } from '@mikro-orm/postgresql';
-import { type DynamicModule, Logger, type Provider } from '@nestjs/common';
+import { Logger, type DynamicModule, type Provider } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { MercuriusDriver, type MercuriusDriverConfig } from '@nestjs/mercurius';
 import dayjs from 'dayjs';
 import { getPackageDir } from '../util/getPackageDir';
 import { ActuatorModule } from './actuator/actuator.module';
-import { type DatabaseConfig, databaseConfig } from './config/database.config';
+import { databaseConfig, type DatabaseConfig } from './config/database.config';
 import { redisConfig } from './config/redis.config';
 import { serverConfig } from './config/server.config';
 import { getDayjs } from './dayjs';

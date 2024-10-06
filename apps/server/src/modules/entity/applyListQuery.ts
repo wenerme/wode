@@ -1,7 +1,6 @@
 import { QueryOrder } from '@mikro-orm/core';
 import type { QueryBuilder } from '@mikro-orm/postgresql';
-import { normalizePagination } from '@wener/console';
-import { parseOrder } from '@wener/console';
+import { normalizePagination, parseOrder } from '@wener/console';
 import { toKnexOrder } from './toKnexOrder';
 
 export function applyListQuery<T extends QueryBuilder<any>>({

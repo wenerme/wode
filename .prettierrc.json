@@ -24,12 +24,13 @@
     }
   ],
   "importOrder": [
-    "reflect-metadata",
     "^node:",
-    "^react",
-    "^@[a-z]",
-    "^[a-z]",
-    "^@",
+    "<BUILTIN_MODULES>",
+    "[.](polyfill|shim)$",
+    "reflect-metadata",
+    "^react(-dom)?",
+    "<THIRD_PARTY_MODULES>",
+    "^@/",
     "^[.][.]",
     "^[.][/]"
   ],
@@ -42,9 +43,13 @@
   "importOrderTypeScriptVersion": "5.4.2",
   "plugins": [
     "prettier-plugin-pkg",
-    "prettier-plugin-tailwindcss",
-    "@ianvs/prettier-plugin-sort-imports"
+    "@ianvs/prettier-plugin-sort-imports",
+    "prettier-plugin-tailwindcss"
   ],
-  "tailwindConfig": "./tailwind.config.mjs"
+  "tailwindFunctions": [
+    "clsx",
+    "tw",
+    "cn"
+  ],
+  "tailwindConfig": "./tailwind.config.ts"
 }
-

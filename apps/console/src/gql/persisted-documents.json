@@ -1,0 +1,8 @@
+{
+  "7b14183e61851378096c226ed335714bca24a767": "fragment AccessTokenFragment on AccessTokenResponse { __typename accessToken expiresAt expiresIn refreshToken } mutation refreshAccessToken($input: RefreshAccessTokenInput!) { __typename data: refreshAccessToken(input: $input) { __typename data { __typename ...AccessTokenFragment } } }",
+  "6f271077e8e54835056c94dea5aa5f1b6be3e045": "fragment AccessTokenFragment on AccessTokenResponse { __typename accessToken expiresAt expiresIn refreshToken } mutation SignInByPasswordMutation($input: SignInByPasswordInput!) { __typename data: signInByPassword(input: $input) { __typename data { __typename ...AccessTokenFragment } } }",
+  "5f2d2f4780afb85043174adccc8ae6ba39068ed4": "mutation signOut($input: SignOutInput) { __typename data: signOut(input: $input) { __typename clientMutationId } }",
+  "7707e5e82f95fb5ebd4a36e24df0a9585e1f451b": "query PingQuery { __typename data: ping { __typename message } }",
+  "28a01feb8952d4e1f6372133e7574ea7a63cbd58": "mutation ResolveSiteConfMutation($input: ResolveSiteConfInput!) { __typename data: resolveSiteConf(input: $input) { __typename data { __typename baseUrl features metadata serverUrl tid title } } }",
+  "79501c9d17db61eb4b14c5d1e69d397393709c03": "fragment CurrentUserFragment on CurrentUser { __typename displayName email fullName id joinDate loginName photoUrl } query CurrentUserQuery { __typename data: currentUser { __typename id ...CurrentUserFragment } }"
+}

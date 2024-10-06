@@ -1,9 +1,9 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { type DynamicModule } from '@nestjs/common';
 import { type FetchLike } from '@wener/utils';
-import { HttpRequestLog } from './HttpRequestLog';
 import { KeyOfFetchCacheModuleOptions } from './const';
 import { FetchCacheService } from './fetch-cache.service';
+import { HttpRequestLog } from './HttpRequestLog';
 import { RequestController } from './request.controller';
 
 export class FetchCacheModule {

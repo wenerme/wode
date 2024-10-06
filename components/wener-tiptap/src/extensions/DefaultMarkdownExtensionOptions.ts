@@ -7,8 +7,7 @@ import { TableRow } from '@tiptap/extension-table-row';
 import { TaskItem } from '@tiptap/extension-task-item';
 import { TaskList } from '@tiptap/extension-task-list';
 import { Underline } from '@tiptap/extension-underline';
-import type { ExtensionOptions } from './Extensions';
-import { DefaultExtensionBundleOptions } from './Extensions';
+import { DefaultExtensionBundleOptions, type ExtensionOptions } from './Extensions';
 import { ImageNode } from './ImageNode';
 
 export const DefaultMarkdownExtensionOptions: ExtensionOptions = {

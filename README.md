@@ -2,10 +2,8 @@
 
 Wener NodeJS Monorepo
 
-- wode -> wener+node+demo
+- WODE -> Wener nODE & DEMO
 - packages
-  - @wener/system
-    - hooks to lets systemjs work with npm registry & package.json
   - @wener/reaction
     - React hooks & utils
   - @wener/utils
@@ -36,9 +34,14 @@ Wener NodeJS Monorepo
     - mikro-orm utils
   - ethers - WIP
     - Web3 utils
+  - @wener/system
+    - hooks to lets systemjs work with npm registry & package.json
 - apps
-  - demo https://wode.vercel.app/
-    - [ ] WindowManager
+  - [wenerme/wode-stub](https://github.com/wenerme/wode-stub)
+    - Template for web + console + server project
+  - web
+  - console https://wode.vercel.app/
+  - server
 
 ## Dev
 

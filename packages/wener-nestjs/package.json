@@ -1,0 +1,226 @@
+{
+  "name": "@wener/nestjs",
+  "version": "1.0.51",
+  "type": "module",
+  "description": "NestJS utils",
+  "author": "wener",
+  "license": "ISC",
+  "exports": {
+    ".": "./src/index.ts",
+    "./actuator": "./src/actuator/index.ts",
+    "./app": "./src/app/index.ts",
+    "./auth": "./src/auth/index.ts",
+    "./config": "./src/config/index.ts",
+    "./entity": "./src/entity/index.ts",
+    "./entity/audit": "./src/entity/audit/index.ts",
+    "./entity/mixins": "./src/entity/mixins/index.ts",
+    "./entity/service": "./src/entity/service/index.ts",
+    "./hono": "./src/hono/index.ts",
+    "./knex": "./src/knex/index.ts",
+    "./mikro-orm": "./src/mikro-orm/index.ts",
+    "./nats": "./src/nats/index.ts",
+    "./remote": "./src/remote/index.ts",
+    "./scripts/esbuild": "./src/scripts/esbuild/index.ts",
+    "./service": "./src/service/index.ts",
+    "./type-graphql": "./src/type-graphql/index.ts",
+    "./type-graphql/entity": "./src/type-graphql/entity/index.ts",
+    "./type-graphql/interface": "./src/type-graphql/interface/index.ts",
+    "./type-graphql/mixins": "./src/type-graphql/mixins/index.ts",
+    "./type-graphql/resolver": "./src/type-graphql/resolver/index.ts",
+    "./type-graphql/resource": "./src/type-graphql/resource/index.ts",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "package.json",
+    "src",
+    "tsconfig.json"
+  ],
+  "keywords": [],
+  "scripts": {
+    "build": "make build",
+    "deploy": "make deploy",
+    "test": "make test"
+  },
+  "peerDependencies": {
+    "@mikro-orm/core": "*",
+    "@nestjs/common": "*",
+    "@nestjs/core": "*",
+    "@nestjs/swagger": "*",
+    "fastify": "*"
+  },
+  "peerDependenciesMeta": {
+    "@mikro-orm/core": {
+      "optional": true
+    },
+    "@nestjs/common": {
+      "optional": true
+    },
+    "@nestjs/core": {
+      "optional": true
+    },
+    "@nestjs/swagger": {
+      "optional": true
+    },
+    "fastify": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "@wener/utils": "workspace:^",
+    "dotenv": "^16.4.5",
+    "reflect-metadata": "^0.2.2",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@hono/node-server": "^1.13.2",
+    "@hono/zod-openapi": "^0.16.4",
+    "@mikro-orm/core": "^6.3.13",
+    "@mikro-orm/nestjs": "^6.0.2",
+    "@mikro-orm/postgresql": "^6.3.13",
+    "@mikro-orm/sqlite": "^6.3.13",
+    "@nestjs/common": "^10.4.4",
+    "@nestjs/core": "^10.4.4",
+    "@nestjs/platform-fastify": "^10.4.4",
+    "@nestjs/swagger": "^7.4.2",
+    "@nestjs/testing": "^10.4.4",
+    "@sinclair/typebox": "^0.33.16",
+    "@types/bun": "^1.1.11",
+    "@wener/miniquery": "^0.0.7",
+    "class-validator": "^0.14.1",
+    "fastify": "^4.28.1",
+    "graphql": "^16.9.0",
+    "graphql-scalars": "^1.23.0",
+    "hono": "^4.6.4",
+    "ioredis": "^5.4.1",
+    "knex": "^3.1.0",
+    "nats": "^2.28.2",
+    "nats.ws": "^1.29.2",
+    "type-graphql": "2.0.0-rc.2"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org",
+    "access": "public",
+    "exports": {
+      ".": {
+        "types": "./src/index.ts",
+        "default": "./lib/index.js"
+      },
+      "./actuator": {
+        "types": "./src/actuator/index.ts",
+        "default": "./lib/actuator/index.js"
+      },
+      "./app": {
+        "types": "./src/app/index.ts",
+        "default": "./lib/app/index.js"
+      },
+      "./auth": {
+        "types": "./src/auth/index.ts",
+        "default": "./lib/auth/index.js"
+      },
+      "./config": {
+        "types": "./src/config/index.ts",
+        "default": "./lib/config/index.js"
+      },
+      "./entity": {
+        "types": "./src/entity/index.ts",
+        "default": "./lib/entity/index.js"
+      },
+      "./entity/audit": {
+        "types": "./src/entity/audit/index.ts",
+        "default": "./lib/entity/audit/index.js"
+      },
+      "./entity/mixins": {
+        "types": "./src/entity/mixins/index.ts",
+        "default": "./lib/entity/mixins/index.js"
+      },
+      "./entity/service": {
+        "types": "./src/entity/service/index.ts",
+        "default": "./lib/entity/service/index.js"
+      },
+      "./hono": {
+        "types": "./src/hono/index.ts",
+        "default": "./lib/hono/index.js"
+      },
+      "./knex": {
+        "types": "./src/knex/index.ts",
+        "default": "./lib/knex/index.js"
+      },
+      "./mikro-orm": {
+        "types": "./src/mikro-orm/index.ts",
+        "default": "./lib/mikro-orm/index.js"
+      },
+      "./nats": {
+        "types": "./src/nats/index.ts",
+        "default": "./lib/nats/index.js"
+      },
+      "./remote": {
+        "types": "./src/remote/index.ts",
+        "default": "./lib/remote/index.js"
+      },
+      "./scripts/esbuild": {
+        "types": "./src/scripts/esbuild/index.ts",
+        "default": "./lib/scripts/esbuild/index.js"
+      },
+      "./service": {
+        "types": "./src/service/index.ts",
+        "default": "./lib/service/index.js"
+      },
+      "./type-graphql": {
+        "types": "./src/type-graphql/index.ts",
+        "default": "./lib/type-graphql/index.js"
+      },
+      "./type-graphql/entity": {
+        "types": "./src/type-graphql/entity/index.ts",
+        "default": "./lib/type-graphql/entity/index.js"
+      },
+      "./type-graphql/interface": {
+        "types": "./src/type-graphql/interface/index.ts",
+        "default": "./lib/type-graphql/interface/index.js"
+      },
+      "./type-graphql/mixins": {
+        "types": "./src/type-graphql/mixins/index.ts",
+        "default": "./lib/type-graphql/mixins/index.js"
+      },
+      "./type-graphql/resolver": {
+        "types": "./src/type-graphql/resolver/index.ts",
+        "default": "./lib/type-graphql/resolver/index.js"
+      },
+      "./type-graphql/resource": {
+        "types": "./src/type-graphql/resource/index.ts",
+        "default": "./lib/type-graphql/resource/index.js"
+      },
+      "./package.json": "./package.json"
+    }
+  },
+  "xo": {
+    "envs": [
+      "es2022",
+      "node"
+    ],
+    "rules": {
+      "import/no-unassigned-import": "off",
+      "@typescript-eslint/no-unsafe-assignment": "off",
+      "@typescript-eslint/no-unsafe-return": "off",
+      "@typescript-eslint/no-redeclare": "off",
+      "@typescript-eslint/no-empty-function": 1,
+      "@typescript-eslint/consistent-type-definitions": "off",
+      "@typescript-eslint/indent": "off",
+      "@typescript-eslint/naming-convention": "off",
+      "@typescript-eslint/no-unsafe-argument": 1,
+      "@typescript-eslint/object-curly-spacing": "off",
+      "@typescript-eslint/prefer-nullish-coalescing": "off",
+      "@typescript-eslint/restrict-template-expressions": 1,
+      "@typescript-eslint/switch-exhaustiveness-check": "off",
+      "arrow-parens": "off",
+      "capitalized-comments": "off",
+      "import/extensions": "off",
+      "n/file-extension-in-import": "off",
+      "new-cap": "off",
+      "no-await-in-loop": "off",
+      "prettier/prettier": "off",
+      "unicorn/filename-case": "off",
+      "unicorn/prevent-abbreviations": "off"
+    }
+  }
+}

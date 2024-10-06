@@ -1,7 +1,7 @@
-import { type CanActivate, type ExecutionContext, Injectable } from '@nestjs/common';
+import { Injectable, type CanActivate, type ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { type AuthPrincipal } from './AuthPrincipal';
-import { type AuthAbility, CHECK_POLICIES_KEY, type PolicyHandler } from './check-policies.decorator';
+import { CHECK_POLICIES_KEY, type AuthAbility, type PolicyHandler } from './check-policies.decorator';
 
 interface AuthAbilityFactory {
   createForPrincipal(principal: AuthPrincipal): AuthAbility;

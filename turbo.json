@@ -5,7 +5,7 @@
     "rollup.config.ts",
     "rollup.config.js"
   ],
-  "pipeline": {
+  "tasks": {
     "deploy": {
       "dependsOn": [
         "build"

@@ -6,8 +6,7 @@ import { polyfillWebSocket } from '@wener/utils/server/ws';
 import { assert, beforeAll, expect, test, TestContext } from 'vitest';
 import { loadBrowserSystem } from '../loaders/loadBrowserSystem';
 import { addPreload } from '../utils/addPreload';
-import type { SystemJS } from '../utils/getGlobalSystem';
-import { getGlobalSystem } from '../utils/getGlobalSystem';
+import { getGlobalSystem, type SystemJS } from '../utils/getGlobalSystem';
 
 export async function polyfillBrowser() {
   await polyfillJsDom();

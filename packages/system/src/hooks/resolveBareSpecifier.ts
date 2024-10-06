@@ -1,6 +1,5 @@
-import { type Logger, parseModuleId } from '@wener/utils';
-import type { SystemJS } from '../utils/getGlobalSystem';
-import { getGlobalSystem } from '../utils/getGlobalSystem';
+import { parseModuleId, type Logger } from '@wener/utils';
+import { getGlobalSystem, type SystemJS } from '../utils/getGlobalSystem';
 
 export function resolveBareSpecifier({
   protocol = 'package',

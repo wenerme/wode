@@ -1,4 +1,4 @@
-import { Catch, type ExceptionFilter, Logger } from '@nestjs/common';
+import { Catch, Logger, type ExceptionFilter } from '@nestjs/common';
 import { type ArgumentsHost } from '@nestjs/common/interfaces/features/arguments-host.interface';
 import { AxiosError } from 'axios';
 
