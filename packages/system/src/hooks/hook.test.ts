@@ -1,5 +1,5 @@
-import { assert, beforeAll, expect, test } from 'vitest';
 import { createNoopLogger } from '@wener/utils';
+import { assert, beforeAll, expect, test } from 'vitest';
 import { loadServerSystem } from '../loaders/loadServerSystem';
 import { addPreload } from '../utils/addPreload';
 import { DeclareFn, getGlobalSystem } from '../utils/getGlobalSystem';

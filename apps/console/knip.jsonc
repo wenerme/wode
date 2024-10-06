@@ -1,0 +1,33 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "entry": [
+    "src/console/main.tsx!",
+    "src/server/main.ts!",
+    "src/scripts/*.ts",
+    "src/web/instance/routes/*.{tsx}",
+    "src/console/routes/*.{tsx}",
+    "src/icons/index.ts",
+    "src/labs/*/index.ts"
+  ],
+  "project": [
+    "src/**/*.{ts,tsx}"
+  ],
+  "paths": {
+    "@/*": [
+      "./src/*"
+    ]
+  },
+  // by codegen
+  "ignore": [
+    "src/gql/*"
+  ],
+  "vitest": {
+    "config": [
+      "vitest*.config.{js,mjs,ts,cjs,mts,cts}",
+      "vitest.{workspace,projects}.{ts,js,json}"
+    ],
+    "entry": [
+      "src/**/*.{bench,test,test-d,spec}.?(c|m)[jt]s?(x)"
+    ]
+  }
+}

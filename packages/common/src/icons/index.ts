@@ -26,5 +26,6 @@ export { default as WebTorrentBrandIcon } from './WebTorrentBrandIcon';
 export { default as WechatBrandIcon } from './WechatBrandIcon';
 export { default as WecomBrandIcon } from './WecomBrandIcon';
 export { default as WecomOutlineIcon } from './WecomOutlineIcon';
+export { default as WenerAvatarIcon } from './WenerAvatarIcon';
 export { default as WikipediaOutlined } from './WikipediaOutlined';
 export { default as WomenWithMicroPhoneFilled } from './WomenWithMicroPhoneFilled';

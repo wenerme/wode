@@ -1,6 +1,5 @@
 import type { Logger } from '@wener/utils';
-import type { SystemJS } from '../utils/getGlobalSystem';
-import { getGlobalSystem } from '../utils/getGlobalSystem';
+import { getGlobalSystem, type SystemJS } from '../utils/getGlobalSystem';
 import { legacy, resolve } from '../utils/resolve';
 
 interface PackageResolveOptions {

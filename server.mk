@@ -16,7 +16,7 @@ dev:
 endif
 
 build: swc-build
-	pnpm tsx src/app/scripts/bundle.esbuild.ts
+	pnpm tsx src/scripts/bundle.esbuild.ts
 	sha256sum dist/apps/$(SERVER)/main.mjs
 
 # --enable-source-maps
@@ -60,7 +60,7 @@ list:
 
 build:
 	@echo Building all
-	SERVER=`ls src/apps/* -d | xargs -n 1 basename | paste -sd,` pnpm tsx src/app/scripts/bundle.esbuild.ts
+	SERVER=`ls src/apps/* -d | xargs -n 1 basename | paste -sd,` pnpm tsx src/scripts/bundle.esbuild.ts
 
 image-build-prepare:
 	ls src/apps/* -d | xargs -n 1 basename | xargs -I {} make SERVER={} image-build-prepare

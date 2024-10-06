@@ -1,8 +1,0 @@
-{
-  "name": "app",
-  "version": "1.0.0",
-  "type": "module",
-  "dependencies": {
-    "canvas": "^2"
-  }
-}

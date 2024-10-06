@@ -17,15 +17,15 @@ import { BoldExtension } from './BoldExtension';
 import { ClassNameExtension } from './ClassNameExtension';
 import { CssColumnsExtension } from './CssColumnsExtension';
 import { ImageNode as ImageExtension } from './ImageNode';
+import { IndentExtension } from './indent';
 import { ItalicExtension } from './ItalicExtension';
 import MarkdownExtension from './MarkdownExtension';
 import { StrikeExtension } from './StrikeExtension';
 import { TaskItemExtension, TaskListExtension } from './TaskListExtension';
+import { BlockStyles, TextFormats, TextIndent } from './text-styles';
 import { TextStyleExtension } from './TextStyleExtension';
 import { UnderlineExtension } from './UnderlineExtension';
 import { VideoNode } from './VideoNode';
-import { IndentExtension } from './indent';
-import { BlockStyles, TextFormats, TextIndent } from './text-styles';
 
 export interface TipTapWordStarterKitOptions extends StarterKitOptions {
   underline?: false;

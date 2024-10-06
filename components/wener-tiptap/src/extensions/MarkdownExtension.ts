@@ -1,7 +1,7 @@
-import { defaultMarkdownSerializer, MarkdownSerializer, MarkdownSerializerState } from 'prosemirror-markdown';
-import type { MarkType, Node as ProsemirrorNode, NodeType, Schema } from 'prosemirror-model';
 import { Extension, getExtensionField, Mark, MarkConfig, Node } from '@tiptap/core';
 import type { NodeConfig } from '@tiptap/react';
+import { defaultMarkdownSerializer, MarkdownSerializer, MarkdownSerializerState } from 'prosemirror-markdown';
+import type { MarkType, NodeType, Node as ProsemirrorNode, Schema } from 'prosemirror-model';
 import { createMarkdownParser } from './parseMarkdown';
 
 // https://github.com/nextcloud/text/blob/master/src/extensions/Markdown.js

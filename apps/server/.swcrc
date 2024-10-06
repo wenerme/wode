@@ -5,7 +5,7 @@
     "type": "es6"
   },
   "jsc": {
-    "target": "es2017",
+    "target": "es2022",
     "parser": {
       "syntax": "typescript",
       "decorators": true,
@@ -15,7 +15,13 @@
       "legacyDecorator": true,
       "decoratorMetadata": true
     },
-    "keepClassNames": true
+    "keepClassNames": true,
+    "baseUrl": "./",
+     "paths": {
+       "@/*": [
+         "src/*"
+       ]
+     }
   },
   "minify": false
 }

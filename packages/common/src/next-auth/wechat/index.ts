@@ -1,1 +1,0 @@
-export { WechatWebProvider } from './WechatWebProvider';

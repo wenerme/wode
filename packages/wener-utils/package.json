@@ -1,0 +1,105 @@
+{
+  "name": "@wener/utils",
+  "version": "1.1.50",
+  "type": "module",
+  "description": "Utils for daily use",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wener/wode.git"
+  },
+  "homepage": "https://github.com/wenerme/wode#readme",
+  "author": "wener",
+  "license": "MIT",
+  "exports": {
+    ".": "./src/index.ts",
+    "./cn": "./src/cn/index.ts",
+    "./cn/pinyin/data.json": "./src/cn/pinyin/data.json",
+    "./cn/pinyin/preload": "./src/cn/pinyin/preload.ts",
+    "./schema/typebox": "./src/schema/typebox/index.ts",
+    "./schema/typebox/gen": "./src/schema/typebox/gen/index.ts",
+    "./server": "./src/server/index.ts",
+    "./server/jsdom": "./src/server/jsdom.ts",
+    "./server/node-fetch": "./src/server/node-fetch.ts",
+    "./server/ws": "./src/server/ws.ts",
+    "./types": "./src/types.d.ts",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "src",
+    "tsconfig.json"
+  ],
+  "keywords": [
+    "utils",
+    "core library",
+    "helper",
+    "camelcase",
+    "get",
+    "set",
+    "template",
+    "lodash"
+  ],
+  "scripts": {
+    "build": "make build",
+    "clean": "make clean",
+    "dev": "make dev",
+    "test": "make test"
+  },
+  "devDependencies": {
+    "@sinclair/typebox": "^0.33.16",
+    "@types/ws": "^8.5.12",
+    "https-proxy-agent": "^7.0.5",
+    "node-fetch": "^3.3.2",
+    "undici": "^6.20.0",
+    "zod": "^3.23.8"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org",
+    "access": "public",
+    "exports": {
+      ".": {
+        "types": "./src/index.ts",
+        "default": "./lib/index.js"
+      },
+      "./cn": {
+        "types": "./src/cn/index.ts",
+        "default": "./lib/cn/index.js"
+      },
+      "./cn/pinyin/data.json": "./src/cn/pinyin/data.json",
+      "./cn/pinyin/preload": {
+        "types": "./src/cn/pinyin/preload.ts",
+        "default": "./lib/cn/pinyin/preload.js"
+      },
+      "./schema/typebox": {
+        "types": "./src/schema/typebox/index.ts",
+        "default": "./lib/schema/typebox/index.js"
+      },
+      "./schema/typebox/gen": {
+        "types": "./src/schema/typebox/gen/index.ts",
+        "default": "./lib/schema/typebox/gen/index.js"
+      },
+      "./server": {
+        "types": "./src/server/index.ts",
+        "default": "./lib/server/index.js"
+      },
+      "./server/jsdom": {
+        "types": "./src/server/jsdom.ts",
+        "default": "./lib/server/jsdom.js"
+      },
+      "./server/node-fetch": {
+        "types": "./src/server/node-fetch.ts",
+        "default": "./lib/server/node-fetch.js"
+      },
+      "./server/ws": {
+        "types": "./src/server/ws.ts",
+        "default": "./lib/server/ws.js"
+      },
+      "./types": {
+        "types": "./src/types.d.ts",
+        "default": "./lib/types.d.js"
+      },
+      "./package.json": "./package.json"
+    }
+  },
+  "sideEffects": false
+}

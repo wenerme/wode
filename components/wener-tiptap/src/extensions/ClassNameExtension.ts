@@ -1,5 +1,5 @@
-import classNames from 'classnames';
 import { Extension } from '@tiptap/core';
+import classNames from 'classnames';
 
 export interface ClassNameOptions {
   types: string[];

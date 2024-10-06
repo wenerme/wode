@@ -47,7 +47,7 @@ import { MarkdownExtension } from './MarkdownExtension';
 import { VideoNode } from './VideoNode';
 
 export type ExtensionOptions = {
-  [key in Extract<keyof typeof Extensions, string>]?: ExtensionOptionOf<typeof Extensions[key]>;
+  [key in Extract<keyof typeof Extensions, string>]?: ExtensionOptionOf<(typeof Extensions)[key]>;
 };
 
 type ExtensionOptionOf<T extends Mark | Extension | Node> =
@@ -55,10 +55,10 @@ type ExtensionOptionOf<T extends Mark | Extension | Node> =
   | (T extends Mark<infer O>
       ? Partial<O> | AnyExtension
       : T extends Extension<infer O>
-      ? Partial<O> | AnyExtension
-      : T extends Node<infer O>
-      ? Partial<O> | AnyExtension
-      : never);
+        ? Partial<O> | AnyExtension
+        : T extends Node<infer O>
+          ? Partial<O> | AnyExtension
+          : never);
 
 export function addExtensions(o: ExtensionOptions): AnyExtension[] {
   const out = [];

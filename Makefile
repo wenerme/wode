@@ -24,9 +24,7 @@ test:
 fmt:
 	$(EXEC) turbo run fmt
 build:
-	$(EXEC) turbo run build --filter=@wener/demo --filter=@wener/apis
-build-force:
-	$(EXEC) turbo run build --filter=@wener/demo --filter=@wener/apis --force
+	$(EXEC) turbo run build --filter=web --filter=console --filter=server
 dev:
 	$(EXEC) turbo run dev --parallel
 clean:

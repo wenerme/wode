@@ -1,8 +1,6 @@
-import type { Logger } from '@wener/utils';
-import { createChildLogger } from '@wener/utils';
+import { createChildLogger, type Logger } from '@wener/utils';
 import { getGlobalSystem } from '../utils/getGlobalSystem';
-import type { SystemHookOption } from './hookSystem';
-import { hookSystem } from './hookSystem';
+import { hookSystem, type SystemHookOption } from './hookSystem';
 
 export async function loadServerSystem({
   hooks = true,

@@ -1,5 +1,4 @@
-import type { Logger } from '@wener/utils';
-import { createChildLogger } from '@wener/utils';
+import { createChildLogger, type Logger } from '@wener/utils';
 import { instantiatePackageProtocol } from '../hooks/instantiatePackageProtocol';
 import { resolveBareSpecifier } from '../hooks/resolveBareSpecifier';
 import type { SystemJS } from '../utils/getGlobalSystem';

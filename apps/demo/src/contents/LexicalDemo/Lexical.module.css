@@ -1,7 +1,0 @@
-.Container {
-  @apply prose-gray;
-
-  &:global([data-lexical-editor]) {
-    @apply rounded border p-2;
-  }
-}

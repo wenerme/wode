@@ -1,5 +1,4 @@
-import type { EntityManager, EntityRepository, MikroORM } from '@mikro-orm/postgresql';
-import { QueryBuilder } from '@mikro-orm/postgresql';
+import { QueryBuilder, type EntityManager, type EntityRepository, type MikroORM } from '@mikro-orm/postgresql';
 import { Logger } from '@nestjs/common';
 import { StandardBaseEntity } from '../../entity/base/StandardBaseEntity';
 

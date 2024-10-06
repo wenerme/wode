@@ -1,10 +1,10 @@
 import {
-  type CanActivate,
-  type ExecutionContext,
   Inject,
   Injectable,
   Logger,
   UnauthorizedException,
+  type CanActivate,
+  type ExecutionContext,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { type FastifyRequest } from 'fastify';

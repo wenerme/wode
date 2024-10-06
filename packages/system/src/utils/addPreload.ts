@@ -1,5 +1,4 @@
-import type { SystemJS } from './getGlobalSystem';
-import { getGlobalSystem } from './getGlobalSystem';
+import { getGlobalSystem, type SystemJS } from './getGlobalSystem';
 
 export function addPreload(
   id: string,
