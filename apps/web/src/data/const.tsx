@@ -1,15 +1,31 @@
 import { FaHtml5 } from 'react-icons/fa6';
-import { PiPassword } from 'react-icons/pi';
+import { PiBaby, PiPassword } from 'react-icons/pi';
 import { HashLockOutlined, IpfsOutlined } from 'common/icons';
-import { defineEntry, getDefineEntry } from './defineEntry';
+import { defineEntry, defineTags, getDefineEntry } from './defineEntry';
 import RiddleJson from './riddle.json';
+
+defineTags({
+  icon: <IpfsOutlined />,
+  name: 'ipfs',
+  title: 'IPFS',
+});
+
+defineTags({
+  icon: <PiBaby />,
+  name: 'children',
+  title: '儿童',
+});
+defineTags({
+  icon: <FaHtml5 />,
+  name: 'web',
+  title: 'Web',
+});
 
 defineEntry([
   {
     href: '/ipfs/gateway/check',
     title: 'IPFS Gateway Checker',
-    icon: <IpfsOutlined />,
-    tags: ['ipfs', 'network', 'checker'],
+    tags: ['network', 'checker'],
   },
   {
     href: '/zxcvbn/check',
@@ -34,34 +50,29 @@ defineEntry([
     href: '/web/Intl.Segmenter',
     title: 'Intl.Segmenter',
     description: '',
-    icon: <FaHtml5 />,
-    tags: ['web', 'spec'],
+    tags: ['spec'],
   },
   {
     href: '/web/html-to-react',
     title: 'HTML to React',
     description: '',
-    icon: <FaHtml5 />,
-    tags: ['web', 'parser', 'transform'],
+    tags: ['parser', 'transform'],
   },
   {
     href: '/sucrase/transform',
     title: 'Sucrase Transform',
     description: '',
-    icon: <FaHtml5 />,
     tags: ['parser', 'transform'],
   },
   {
     href: '/eta/render',
     title: 'ETA Template render',
     description: '',
-    icon: <FaHtml5 />,
     tags: ['render'],
   },
   {
     href: '/daisy/theme',
     title: 'DaisyUI theme',
-    icon: <FaHtml5 />,
     tags: ['design'],
   },
   {
@@ -89,7 +100,6 @@ defineEntry([
 defineEntry({
   href: '/cn/tax/voucher-binder-cover',
   title: '记账凭证封面生成',
-  icon: <FaHtml5 />,
   tags: ['generator', 'pdf'],
   metadata: {
     disabled: true,
@@ -99,6 +109,7 @@ defineEntry({
 export function getHomeEntryItems() {
   return getDefineEntry().filter((v) => !v.metadata?.disabled);
 }
+
 export function getChildrenRiddles() {
   return RiddleJson.items;
 }

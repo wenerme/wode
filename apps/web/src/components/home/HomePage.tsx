@@ -1,16 +1,53 @@
 import React, { type ReactNode } from 'react';
+import { cn } from '@wener/console';
 import { flexRender } from '@wener/reaction/universal';
 import Link from 'next/link';
 import { getHomeEntryItems } from '@/data/const';
+import { getEntryTags } from '@/data/defineEntry';
 
-export const HomePage = () => {
+export const HomePage: React.FC<{ tags?: string[] }> = ({ tags = [] }) => {
+  let all = getHomeEntryItems();
+  if (tags.length) {
+    all = all.filter((v) => {
+      return tags.every((tag) => v.tags.includes(tag));
+    });
+  }
   return (
     <>
       <Hero />
 
       <div className={'container mx-auto py-8'}>
-        <h3 className={'py-2 text-2xl'}>Entrypoint</h3>
-        <ModuleListCard items={getHomeEntryItems()} />
+        <header className={'pb-4'}>
+          <h3 className={'py-2 text-2xl'}>Entrypoint</h3>
+          <div className={'flex gap-2'}>
+            <Link href={'/'} className={cn('badge', !tags.length && 'badge-primary')}>
+              所有
+            </Link>
+            {getEntryTags().map(({ name, title, icon }) => {
+              const active = tags.includes(name);
+              let next = active ? tags.filter((v) => v !== name) : [name];
+              return (
+                <Link
+                  key={name}
+                  href={{
+                    query: { tags: next?.length ? next : null },
+                  }}
+                  className={cn('badge', active && 'badge-primary')}
+                >
+                  {flexRender(
+                    icon,
+                    {
+                      className: cn('size-4'),
+                    },
+                    true,
+                  )}{' '}
+                  {title}
+                </Link>
+              );
+            })}
+          </div>
+        </header>
+        <ModuleListCard items={all} />
       </div>
     </>
   );
