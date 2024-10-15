@@ -1,5 +1,5 @@
 import React from 'react';
-import { SucraseTransformPage } from '@/app/sucrase/transform/SucraseTransformPage';
+import { EtaRenderPage } from '@/app/[lang]/eta/render/EtaRenderPage';
 import { PageContainer } from '@/components/pages/PageContainer';
 import { PageLayout } from '@/components/pages/PageLayout';
 import type { NextPageProps } from '@/types';
@@ -7,8 +7,8 @@ import type { NextPageProps } from '@/types';
 export default async function (props: NextPageProps) {
   return (
     <PageLayout>
-      <PageContainer>
-        <SucraseTransformPage />
+      <PageContainer className={'py-4'}>
+        <EtaRenderPage />
       </PageContainer>
     </PageLayout>
   );

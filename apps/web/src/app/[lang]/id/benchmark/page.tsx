@@ -1,14 +1,12 @@
-import React from 'react';
-import { DaisyThemePage } from '@/app/daisy/theme/DaisyThemePage';
+import { IdBenchmarkPage } from '@/app/[lang]/id/benchmark/IdBenchmarkPage';
 import { PageContainer } from '@/components/pages/PageContainer';
 import { PageLayout } from '@/components/pages/PageLayout';
-import type { NextPageProps } from '@/types';
 
-export default async function (props: NextPageProps) {
+export default function () {
   return (
     <PageLayout>
       <PageContainer>
-        <DaisyThemePage />
+        <IdBenchmarkPage />
       </PageContainer>
     </PageLayout>
   );

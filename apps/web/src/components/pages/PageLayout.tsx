@@ -2,8 +2,18 @@ import React, { type FC, type PropsWithChildren } from 'react';
 import { PiGithubLogoFill, PiListLight, PiMagnifyingGlassBold, PiXLogoFill } from 'react-icons/pi';
 import { WenerAvatarIcon } from 'common/icons';
 import Link from 'next/link';
+import { loadI18n } from '@/i18n/loadI18n';
+import type { NextPageProps } from '@/types';
 
-export const PageLayout: FC<PropsWithChildren> = ({ children }) => {
+export const PageLayout: FC<PropsWithChildren & Partial<NextPageProps>> = async ({
+  children,
+  searchParams,
+  params,
+}) => {
+  await loadI18n({
+    lang: params?.lang || searchParams?.lang,
+    source: 'PageLayout',
+  });
   return (
     <div className={'flex min-h-screen flex-col'}>
       <Nav />

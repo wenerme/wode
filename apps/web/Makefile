@@ -42,3 +42,8 @@ gql-gen-dl: gql-gen
 
 rev:
 	curl -X POST 'http://127.0.0.1:3000/actions/revalidate?path=/&type=layout'
+
+i18n-extract:
+	pnpm lingui extract
+i18n-compile:
+	pnpm lingui compile --namespace es

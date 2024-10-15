@@ -10,7 +10,11 @@
     "start": "next start"
   },
   "dependencies": {
+    "@formatjs/intl-localematcher": "^0.5.5",
     "@graphql-typed-document-node/core": "^3.2.0",
+    "@lingui/core": "^4.12.0",
+    "@lingui/macro": "^4.12.0",
+    "@lingui/react": "^4.12.0",
     "@react-pdf/renderer": "^4.0.0",
     "@react-pdf/types": "^2.7.0",
     "@sinclair/typebox": "^0.32.35",
@@ -37,6 +41,7 @@
     "lodash": "^4.17.21",
     "lru-cache": "^11.0.1",
     "mutative": "^1.0.11",
+    "negotiator": "^0.6.3",
     "next": "^14.2.15",
     "pinyin": "^4.0.0-alpha.2",
     "react": "^18.3.1",
@@ -66,7 +71,9 @@
     "@graphql-codegen/typescript-document-nodes": "^4.0.10",
     "@graphql-codegen/typescript-graphql-request": "^6.2.0",
     "@graphql-codegen/urql-introspection": "^3.0.0",
-    "@types/lodash": "^4.17.10",
+    "@lingui/cli": "^4.12.0",
+    "@lingui/swc-plugin": "4.0.8",
+    "@types/negotiator": "^0.6.3",
     "@types/react-scroll": "^1.8.10",
     "@types/semver": "^7.5.8",
     "@types/zxcvbn": "^4.4.5"

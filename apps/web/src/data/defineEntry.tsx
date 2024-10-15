@@ -1,11 +1,11 @@
-import type { ReactElement } from 'react';
+import type { ReactElement, ReactNode } from 'react';
 import { PiBrowserLight } from 'react-icons/pi';
 import type { MaybeArray } from '@wener/utils';
 import { startCase } from 'lodash';
 
 type DefineEntryOptions = {
   href: string;
-  title: string;
+  title: ReactNode;
   description?: string;
   icon?: ReactElement;
   tags?: string[];
@@ -13,7 +13,7 @@ type DefineEntryOptions = {
 };
 type EntryDef = {
   href: string;
-  title: string;
+  title: ReactNode;
   icon: ReactElement;
   tags: string[];
   metadata: Record<string, any>;
@@ -37,7 +37,7 @@ export function defineEntry(opts: DefineEntryOptions | DefineEntryOptions[]): En
 
   // treat first segment as tag if exists
   {
-    const [, first] = opts.href.split('/');
+    const [, first] = def.href.split('/');
     let found = _tags.find((v) => v.name === first);
     if (found) {
       if (!def.tags.includes(found.name)) {
@@ -49,8 +49,8 @@ export function defineEntry(opts: DefineEntryOptions | DefineEntryOptions[]): En
   // find icon from tags
   {
     let icon = opts.icon;
-    if (!icon && opts.tags) {
-      for (const tag of opts.tags) {
+    if (!icon && def.tags.length) {
+      for (const tag of def.tags) {
         let found = _tags.find((v) => v.name === tag && v.icon);
         if (found) {
           icon = found.icon;
@@ -72,7 +72,7 @@ export function getDefineEntry() {
 
 type DefineTagOptions = {
   name: string;
-  title?: string;
+  title?: ReactNode;
   description?: string;
   icon?: ReactElement;
   metadata?: Record<string, any>;
@@ -81,7 +81,7 @@ type DefineTagOptions = {
 const _tags: DefineTagOptions[] = [];
 type TagDef = {
   name: string;
-  title: string;
+  title: ReactNode;
   description?: string;
   icon?: ReactElement;
   metadata: Record<string, any>;

@@ -1,0 +1,1 @@
+/*eslint-disable*/export const messages=JSON.parse("{\"eHK0D4\":\"IPFS 网关检测\",\"tags.web\":\"Web技术\",\"sCUSes\":\"Zxcvbn 密码强度检测\",\"home.hero.more\":\"了解更多\",\"tags.children\":\"儿童\",\"home.entrypoint.title\":\"入口\",\"home.hero.intro\":\"我喜欢编写代码和探索新技术。这是<0>wenerme/wode</0>的游乐场。\",\"home.tag.all\":\"所有\"}");

@@ -1,4 +1,6 @@
 import React, { type ReactNode } from 'react';
+import { Trans } from '@lingui/macro';
+import { useLingui } from '@lingui/react';
 import { cn } from '@wener/console';
 import { flexRender } from '@wener/reaction/universal';
 import Link from 'next/link';
@@ -18,10 +20,19 @@ export const HomePage: React.FC<{ tags?: string[] }> = ({ tags = [] }) => {
 
       <div className={'container mx-auto py-8'}>
         <header className={'pb-4'}>
-          <h3 className={'py-2 text-2xl'}>Entrypoint</h3>
+          <h3 className={'py-2 text-2xl'}>
+            <Trans comment={'Entrypoint'} id={'home.entrypoint.title'}>
+              入口
+            </Trans>
+          </h3>
           <div className={'flex gap-2'}>
-            <Link href={'/'} className={cn('badge', !tags.length && 'badge-primary')}>
-              所有
+            <Link
+              href={{
+                query: { tags: null },
+              }}
+              className={cn('badge', !tags.length && 'badge-primary')}
+            >
+              <Trans id={'home.tag.all'}>所有</Trans>
             </Link>
             {getEntryTags().map(({ name, title, icon }) => {
               const active = tags.includes(name);
@@ -91,19 +102,29 @@ const ModuleListCard: React.FC<{
 };
 
 const Hero = () => {
+  let { i18n } = useLingui();
   return (
     <div className='hero min-h-96 flex-1 bg-base-200'>
       <div className='hero-content text-center'>
         <div className='max-w-md'>
           <h1 className='text-5xl font-bold'>Wener APIs</h1>
           <p className='py-6'>
-            I like writing code and exploring new technologies. This is the playground for{' '}
-            <a target={'_blank'} rel={'noreferrer noopener'} href='https://github.com/wenerme/wode' className={'link'}>
-              wenerme/wode
-            </a>
-            .
+            <Trans id={'home.hero.intro'}>
+              我喜欢编写代码和探索新技术。这是
+              <a
+                target={'_blank'}
+                rel={'noreferrer noopener'}
+                href='https://github.com/wenerme/wode'
+                className={'link'}
+              >
+                wenerme/wode
+              </a>
+              的游乐场。
+            </Trans>
           </p>
-          <button className='btn btn-primary'>Learn more</button>
+          <button className='btn btn-primary'>
+            <Trans id={'home.hero.more'}>了解更多</Trans>
+          </button>
         </div>
       </div>
     </div>

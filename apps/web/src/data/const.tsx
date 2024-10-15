@@ -1,5 +1,6 @@
 import { FaHtml5 } from 'react-icons/fa6';
 import { PiBaby, PiPassword } from 'react-icons/pi';
+import { Trans } from '@lingui/macro';
 import { HashLockOutlined, IpfsOutlined } from 'common/icons';
 import { defineEntry, defineTags, getDefineEntry } from './defineEntry';
 import RiddleJson from './riddle.json';
@@ -13,23 +14,23 @@ defineTags({
 defineTags({
   icon: <PiBaby />,
   name: 'children',
-  title: '儿童',
+  title: <Trans id={'tags.children'}>儿童</Trans>,
 });
 defineTags({
   icon: <FaHtml5 />,
   name: 'web',
-  title: 'Web',
+  title: <Trans id={'tags.web'}>Web技术</Trans>,
 });
 
 defineEntry([
   {
     href: '/ipfs/gateway/check',
-    title: 'IPFS Gateway Checker',
+    title: <Trans comment={'IPFS Gateway Checker'}>IPFS 网关检测</Trans>,
     tags: ['network', 'checker'],
   },
   {
     href: '/zxcvbn/check',
-    title: 'Zxcvbn Password Strength',
+    title: <Trans comment={'Zxcvbn Password Strength'}>Zxcvbn 密码强度检测</Trans>,
     icon: <PiPassword />,
     tags: ['password', 'checker'],
   },

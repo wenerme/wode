@@ -3,15 +3,16 @@
 import { useEffect } from 'react';
 import { DaisyTheme } from '@wener/console/daisy';
 import { WindowHost } from '@wener/console/web/window';
+import { ClientOnly } from '@wener/reaction';
 import { throttle } from 'es-toolkit';
 
 export const SiteSidecar = () => {
   useRefreshScrollRestoration();
   return (
-    <>
+    <ClientOnly>
       <DaisyTheme.Sidecar />
       <WindowHost />
-    </>
+    </ClientOnly>
   );
 };
 

@@ -11,7 +11,7 @@ export default function (props: NextPageProps) {
     .map((v: string) => v.trim())
     .filter(Boolean);
   return (
-    <PageLayout>
+    <PageLayout {...props}>
       <HomePage tags={tags} />
     </PageLayout>
   );
