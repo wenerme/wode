@@ -1,22 +1,30 @@
 import { match } from '@formatjs/intl-localematcher';
 import Negotiator from 'negotiator';
 import { NextRequest, NextResponse, userAgent } from 'next/server';
-import { getLocales } from '@/i18n/resolveLocale';
+import { getLocales, resolveLocale } from '@/i18n/resolveLocale';
 
-function getLocale({ headers }: NextRequest) {
-  const locales = getLocales();
-  let accept = headers.get('accept-language');
+function getLocale({
+  accept,
+  defaultLocale,
+  locales,
+}: {
+  accept?: string | null;
+  locales: string[];
+  defaultLocale: string;
+}) {
+  if (!accept) {
+    return undefined;
+  }
   let languages = new Negotiator({
     headers: {
       'accept-language': accept || '',
     },
   }).languages();
-  const defaultLocale = 'zh-CN';
   try {
-    return match(locales, languages, defaultLocale);
+    return match(languages, locales, defaultLocale);
   } catch (e) {
     // languages=['*']
-    console.error(`[getLocale] `, headers.get('accept-language'), locales, languages, String(e));
+    console.error(`[getLocale] `, accept, locales, languages, String(e));
     return defaultLocale;
   }
 }
@@ -25,14 +33,28 @@ export async function middleware(req: NextRequest) {
   // middleware 的 Runtime 为 Edge  Runtime
   // https://github.com/vercel/next.js/discussions/34179
 
-  let locales = getLocales();
-  const { pathname } = req.nextUrl;
-  const pathnameHasLocale = locales.some((locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`);
-  if (!pathnameHasLocale) {
-    const locale = getLocale(req);
-    req.nextUrl.pathname = `/${locale}${pathname}`;
-    console.log(`> Redirect to ${req.nextUrl}`);
-    return NextResponse.redirect(req.nextUrl);
+  {
+    const { locales, defaultLocale } = getLocales();
+    const { pathname } = req.nextUrl;
+    const [, loc] = pathname.split('/');
+    const pathnameHasLocale = locales.includes(loc);
+    if (!pathnameHasLocale) {
+      let locale: string | undefined;
+      if (loc) {
+        try {
+          [locale] = Intl.getCanonicalLocales(loc);
+        } catch (e) {}
+      }
+      locale ||= getLocale({
+        defaultLocale,
+        locales: locales,
+        accept: req.headers.get('accept-language'),
+      });
+      ({ locale } = resolveLocale(locale));
+      req.nextUrl.pathname = `/${locale}${pathname}`;
+      console.log(`> Redirect to locale ${locale} ${req.nextUrl}`);
+      return NextResponse.redirect(req.nextUrl);
+    }
   }
 
   const { url, method, nextUrl } = req;

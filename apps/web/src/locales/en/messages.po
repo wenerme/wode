@@ -29,7 +29,7 @@ msgid "Zxcvbn 密码强度检测"
 msgstr "Zxcvbn Password Strength"
 
 #. js-lingui-explicit-id
-#: src/components/home/HomePage.tsx:126
+#: src/components/home/HomePage.tsx:127
 msgid "home.hero.more"
 msgstr "Learn more"
 
@@ -40,19 +40,25 @@ msgstr "Children"
 
 #. Entrypoint
 #. js-lingui-explicit-id
-#: src/components/home/HomePage.tsx:24
+#: src/components/home/HomePage.tsx:25
 msgid "home.entrypoint.title"
 msgstr "Entrypoint"
 
 #. js-lingui-explicit-id
-#: src/components/home/HomePage.tsx:112
+#: src/components/home/HomePage.tsx:113
 msgid "home.hero.intro"
 msgstr "I like writing code and exploring new technologies. This is the playground for <0>wenerme/wode</0>."
 
 #. js-lingui-explicit-id
-#: src/components/home/HomePage.tsx:35
+#: src/components/home/HomePage.tsx:36
 msgid "home.tag.all"
 msgstr "All"
+
+#. Semantic Versioning
+#. js-lingui-explicit-id
+#: src/data/const.tsx:47
+msgid "entry.semver.title"
+msgstr "Semantic Versioning"
 
 #. js-lingui-explicit-id
 #: src/components/pages/PageLayout/PageLayout.tsx:132

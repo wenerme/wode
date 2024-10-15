@@ -1,6 +1,8 @@
 import React, { Suspense } from 'react';
+import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
-import { I18nLayout } from '@/app/I18nLayout';
+import { ProdOnly } from '@wener/reaction/universal';
+import { NextI18nProvider } from '@/app/NextI18nProvider';
 import { SiteSidecar } from '@/components/site/SiteSidecar';
 import { getSiteData } from '@/data/getSiteData';
 import type { NextLayoutProps } from '@/types';
@@ -28,9 +30,11 @@ export function NextRootLayout({ children, params }: NextLayoutProps) {
         <title>{title}</title>
       </head>
       <body>
-        {lang && <I18nLayout params={params}>{content}</I18nLayout>}
-        {!lang && content}
-        <SpeedInsights />
+        <NextI18nProvider params={params}>{content}</NextI18nProvider>
+        <ProdOnly>
+          <SpeedInsights />
+          <Analytics />
+        </ProdOnly>
       </body>
     </html>
   );
