@@ -1,7 +1,8 @@
 'use client';
 
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { DaisyTheme } from '@wener/console/daisy';
+import { WebVitals } from '@wener/console/web';
 import { WindowHost } from '@wener/console/web/window';
 import { ClientOnly } from '@wener/reaction';
 import { throttle } from 'es-toolkit';
@@ -12,6 +13,7 @@ export const SiteSidecar = () => {
     <ClientOnly>
       <DaisyTheme.Sidecar />
       <WindowHost />
+      <WebVitals />
     </ClientOnly>
   );
 };
