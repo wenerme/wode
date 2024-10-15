@@ -6,9 +6,11 @@ const isDev = process.env.NODE_ENV === 'development';
 const nextConfig = {
   reactStrictMode: true,
   output: 'standalone',
+  trailingSlash: true,
   transpilePackages: ['@wener/reaction', '@wener/console', 'common'],
   experimental: {
     swrDelta: 60,
+    swcPlugins: [['@lingui/swc-plugin', {}]],
   },
   eslint: {
     ignoreDuringBuilds: true,
