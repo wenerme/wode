@@ -6,6 +6,7 @@ import { flexRender } from '@wener/reaction/universal';
 import Link from 'next/link';
 import { getHomeEntryItems } from '@/data/const';
 import { getEntryTags } from '@/data/defineEntry';
+import { ExternalLink } from '../ExternalLink';
 
 export const HomePage: React.FC<{ tags?: string[] }> = ({ tags = [] }) => {
   let all = getHomeEntryItems();
@@ -122,9 +123,9 @@ const Hero = () => {
               的游乐场。
             </Trans>
           </p>
-          <button className='btn btn-primary'>
+          <ExternalLink href={'https://wener.me'} className='btn btn-primary px-4'>
             <Trans id={'home.hero.more'}>了解更多</Trans>
-          </button>
+          </ExternalLink>
         </div>
       </div>
     </div>
