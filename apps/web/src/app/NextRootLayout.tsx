@@ -1,4 +1,6 @@
 import React, { Suspense } from 'react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
+import { WebVitals } from '@wener/console/web';
 import { I18nLayout } from '@/app/I18nLayout';
 import { SiteSidecar } from '@/components/site/SiteSidecar';
 import { getSiteData } from '@/data/getSiteData';
@@ -12,6 +14,7 @@ export function NextRootLayout({ children, params }: NextLayoutProps) {
     <>
       <Suspense>{children}</Suspense>
       <SiteSidecar />
+      <WebVitals />
     </>
   );
   return (
@@ -29,6 +32,7 @@ export function NextRootLayout({ children, params }: NextLayoutProps) {
       <body>
         {lang && <I18nLayout params={params}>{content}</I18nLayout>}
         {!lang && content}
+        <SpeedInsights />
       </body>
     </html>
   );
