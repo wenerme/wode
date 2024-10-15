@@ -29,7 +29,7 @@ msgid "Zxcvbn 密码强度检测"
 msgstr "Zxcvbn 密码强度检测"
 
 #. js-lingui-explicit-id
-#: src/components/home/HomePage.tsx:121
+#: src/components/home/HomePage.tsx:126
 msgid "home.hero.more"
 msgstr "了解更多"
 
@@ -45,11 +45,16 @@ msgid "home.entrypoint.title"
 msgstr "入口"
 
 #. js-lingui-explicit-id
-#: src/components/home/HomePage.tsx:107
+#: src/components/home/HomePage.tsx:112
 msgid "home.hero.intro"
 msgstr "我喜欢编写代码和探索新技术。这是<0>wenerme/wode</0>的游乐场。"
 
 #. js-lingui-explicit-id
-#: src/components/home/HomePage.tsx:30
+#: src/components/home/HomePage.tsx:35
 msgid "home.tag.all"
 msgstr "所有"
+
+#. js-lingui-explicit-id
+#: src/components/pages/PageLayout/PageLayout.tsx:132
+msgid "page.nav.language"
+msgstr "语言"
