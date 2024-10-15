@@ -43,7 +43,11 @@ defineEntry([
   },
   {
     href: '/semver',
-    title: 'Semantic Versioning',
+    title: (
+      <Trans id={'entry.semver.title'} comment={'Semantic Versioning'}>
+        语义版本
+      </Trans>
+    ),
     icon: <div className={'flex items-center text-2xl font-semibold normal-case'}>Ver.</div>,
     tags: ['parser'],
   },

@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Button } from '@wener/console/daisy';
 import { useSnapshot } from 'valtio';
-import { ExternalLink } from '@/components/ExternalLink';
+import { FootNoteLink } from '@/components/FootNoteLink';
 import { FootNote } from '@/components/FootNote';
 import { useIpfsGatewayState } from '../gateway';
 import { checkGateways, compareCheckState, OnScriptloaded, type GatewayCheckNodeState } from './checker';
@@ -104,7 +104,7 @@ export const IpfsGatewayCheck = () => {
 
       <FootNote>
         基础检测逻辑和网关列表来源于
-        <ExternalLink href='https://github.com/ipfs/public-gateway-checker'>ipfs/public-gateway-checker</ExternalLink>。
+        <FootNoteLink href='https://github.com/ipfs/public-gateway-checker'>ipfs/public-gateway-checker</FootNoteLink>。
         扩展了部分额外的异常检测。
       </FootNote>
     </div>

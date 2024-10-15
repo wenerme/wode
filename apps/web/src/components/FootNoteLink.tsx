@@ -2,7 +2,7 @@ import React from 'react';
 import { BiLinkExternal } from 'react-icons/bi';
 import { clsx } from 'clsx';
 
-export const ExternalLink: React.FC<
+export const FootNoteLink: React.FC<
   React.DetailedHTMLProps<React.AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>
 > = ({ className, children, ...props }) => {
   return (
