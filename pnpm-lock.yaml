@@ -1105,6 +1105,9 @@ importers:
       '@lingui/cli':
         specifier: ^4.12.0
         version: 4.12.0(typescript@5.6.3)
+      '@lingui/conf':
+        specifier: ^4.13.0
+        version: 4.13.0(typescript@5.6.3)
       '@lingui/swc-plugin':
         specifier: 4.0.8
         version: 4.0.8(@lingui/macro@4.12.0(@lingui/react@4.12.0(react@18.3.1))(babel-plugin-macros@3.1.0)(typescript@5.6.3))(@swc/core@1.7.28(@swc/helpers@0.5.13))(next@14.2.15(@babel/core@7.25.8)(@opentelemetry/api@1.9.0)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.79.4))
@@ -4050,6 +4053,10 @@ packages:
 
   '@lingui/conf@4.12.0':
     resolution: {integrity: sha512-RExMUKnIUNEt91yFlBxklXCMC8ZgFX0eEF066hPIEX8NXCqowm7pbiNy+UlRfxgB7mdIlPDqXCkN94CH9jnpHw==}
+    engines: {node: '>=16.0.0'}
+
+  '@lingui/conf@4.13.0':
+    resolution: {integrity: sha512-7NSinlzgSMKBezLsSM7DMwr0IpTHKr8nuSDpTZpI79+BhW+Xq38jPRQqMXdzItW8Cl/Lsdr3Y3MnYJIl8tADsQ==}
     engines: {node: '>=16.0.0'}
 
   '@lingui/core@4.12.0':
@@ -16884,6 +16891,17 @@ snapshots:
       - typescript
 
   '@lingui/conf@4.12.0(typescript@5.6.3)':
+    dependencies:
+      '@babel/runtime': 7.25.7
+      chalk: 4.1.2
+      cosmiconfig: 8.3.6(typescript@5.6.3)
+      jest-validate: 29.7.0
+      jiti: 1.21.6
+      lodash.get: 4.4.2
+    transitivePeerDependencies:
+      - typescript
+
+  '@lingui/conf@4.13.0(typescript@5.6.3)':
     dependencies:
       '@babel/runtime': 7.25.7
       chalk: 4.1.2

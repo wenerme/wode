@@ -1,5 +1,6 @@
 import React, { type FC, type PropsWithChildren } from 'react';
-import { PiGithubLogoFill, PiListLight, PiMagnifyingGlassBold, PiXLogoFill } from 'react-icons/pi';
+import { PiGithubLogoFill, PiGlobeLight, PiListLight, PiMagnifyingGlassBold, PiXLogoFill } from 'react-icons/pi';
+import { Trans } from '@lingui/macro';
 import { WenerAvatarIcon } from 'common/icons';
 import Link from 'next/link';
 import { loadI18n } from '@/i18n/loadI18n';
@@ -76,7 +77,7 @@ const Nav = () => {
       <div className='navbar-start'>
         <div className='dropdown'>
           <div tabIndex={0} role='button' className='btn btn-circle btn-ghost'>
-            <PiListLight />
+            <PiListLight className={'size-6'} />
           </div>
           <ul tabIndex={0} className='menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box bg-base-100 p-2 shadow'>
             <li>
@@ -97,10 +98,48 @@ const Nav = () => {
         </Link>
       </div>
       <div className='navbar-end'>
-        <button className='btn btn-circle btn-ghost'>
-          <PiMagnifyingGlassBold />
-        </button>
+        <SearchButton />
+        <LanguageSwitch />
       </div>
+    </div>
+  );
+};
+
+const SearchButton = () => {
+  return (
+    <button type={'button'} className='btn btn-circle btn-ghost'>
+      <PiMagnifyingGlassBold className={'size-6'} />
+    </button>
+  );
+};
+
+const LanguageSwitch = () => {
+  const options = [
+    {
+      label: '简体中文',
+      value: 'zh-CN',
+    },
+    {
+      label: 'English',
+      value: 'en',
+    },
+  ];
+  return (
+    <div className='dropdown dropdown-end'>
+      <div tabIndex={0} role='button' className='btn btn-ghost'>
+        <span className={'flex items-center'}>
+          <PiGlobeLight className={'size-6'} />
+          <Trans id={'page.nav.language'}>语言</Trans>
+          <span className='ml-2 text-xs'>▼</span>
+        </span>
+      </div>
+      <ul tabIndex={0} className='menu dropdown-content w-32 rounded-box bg-base-100 shadow-lg'>
+        {options.map((item, index) => (
+          <li key={index}>
+            <Link href={`/${item.value}`}>{item.label}</Link>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };
