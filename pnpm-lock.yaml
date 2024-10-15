@@ -975,6 +975,9 @@ importers:
       domhandler:
         specifier: ^5.0.3
         version: 5.0.3
+      es-toolkit:
+        specifier: ^1.25.0
+        version: 1.25.0
       eta:
         specifier: ^3.5.0
         version: 3.5.0

@@ -3,6 +3,19 @@
 Wener NodeJS Monorepo
 
 - WODE -> Wener nODE & DEMO
+- apps
+  - web http://apis.wener.me
+    - React, NextJS, Playground for experiments
+  - console https://wode.wener.me
+    - React, ViteJS, Console for Homelab, CRM, etc.
+  - server
+    - wode-api-server
+      - HonoJS, MikroORM, GraphQL, RESTful
+      - backend for web & console
+    - wode-worker
+      - BullMQ worker
+  - [wenerme/wode-stub](https://github.com/wenerme/wode-stub)
+    - Template for web + console + server project
 - packages
   - @wener/reaction
     - React hooks & utils
@@ -36,21 +49,7 @@ Wener NodeJS Monorepo
     - Web3 utils
   - @wener/system
     - hooks to lets systemjs work with npm registry & package.json
-- apps
-  - [wenerme/wode-stub](https://github.com/wenerme/wode-stub)
-    - Template for web + console + server project
-  - web
-  - console https://wode.vercel.app/
-  - server
 
-## Dev
-
-- Node 16+
-- turbo
-
-```bash
-make build
-```
 
 ## TODO
 
@@ -73,7 +72,7 @@ make build
 **Summary**
 
 | Repository                       | NPM                                   | Info                                                                                         |
-| -------------------------------- | ------------------------------------- | -------------------------------------------------------------------------------------------- |
+|----------------------------------|---------------------------------------|----------------------------------------------------------------------------------------------|
 | [@wener/utils][utils-repo]       | [![][utils-version]][utils-npm]       | [Doc][utils-doc]<br/> ![][utils-license]<br/>![][utils-size]<br/>![][utils-deps]             |
 | [@wener/system][system-repo]     | [![][system-version]][system-npm]     | [Doc][system-doc]<br/> ![][system-license]<br/>![][system-size]<br/>![][system-deps]         |
 | [@wener/reaction][reaction-repo] | [![][reaction-version]][reaction-npm] | [Doc][reaction-doc]<br/> ![][reaction-license]<br/>![][reaction-size]<br/>![][reaction-deps] |
@@ -83,45 +82,85 @@ make build
 
 [utils-repo]: https://github.com/wenerme/wode/tree/main/packages/utils
 [utils-npm]: https://www.npmjs.com/package/@wener/utils
+
 [utils-version]: https://img.shields.io/npm/v/@wener/utils
+
 [utils-license]: https://img.shields.io/npm/l/@wener/utils
+
 [utils-size]: https://badgen.net/bundlephobia/minzip/@wener/utils
+
 [utils-deps]: https://badgen.net/bundlephobia/dependency-count/@wener/utils
+
 [utils-doc]: https://wode.vercel.app/docs/modules/_wener_utils.html
+
 [system-repo]: https://github.com/wenerme/wode/tree/main/packages/system
+
 [system-npm]: https://www.npmjs.com/package/@wener/system
+
 [system-version]: https://img.shields.io/npm/v/@wener/system
+
 [system-license]: https://img.shields.io/npm/l/@wener/system
+
 [system-size]: https://badgen.net/bundlephobia/minzip/@wener/system
+
 [system-deps]: https://badgen.net/bundlephobia/dependency-count/@wener/system
+
 [system-doc]: https://wode.vercel.app/docs/modules/_wener_system.html
+
 [reaction-repo]: https://github.com/wenerme/wode/tree/main/packages/reaction
+
 [reaction-npm]: https://www.npmjs.com/package/@wener/reaction
+
 [reaction-version]: https://img.shields.io/npm/v/@wener/reaction
+
 [reaction-license]: https://img.shields.io/npm/l/@wener/reaction
+
 [reaction-size]: https://badgen.net/bundlephobia/minzip/@wener/reaction
+
 [reaction-deps]: https://badgen.net/bundlephobia/dependency-count/@wener/reaction
+
 [reaction-doc]: https://wode.vercel.app/docs/modules/_wener_reaction.html
+
 [torrent-repo]: https://github.com/wenerme/wode/tree/main/packages/torrent
+
 [torrent-npm]: https://www.npmjs.com/package/@wener/torrent
+
 [torrent-version]: https://img.shields.io/npm/v/@wener/torrent
+
 [torrent-license]: https://img.shields.io/npm/l/@wener/torrent
+
 [torrent-size]: https://badgen.net/bundlephobia/minzip/@wener/torrent
+
 [torrent-deps]: https://badgen.net/bundlephobia/dependency-count/@wener/torrent
+
 [torrent-doc]: https://wode.vercel.app/docs/modules/_wener_torrent.html
+
 [unpkg-repo]: https://github.com/wenerme/wode/tree/main/packages/unpkg
+
 [unpkg-npm]: https://www.npmjs.com/package/@wener/unpkg
+
 [unpkg-version]: https://img.shields.io/npm/v/@wener/unpkg
+
 [unpkg-license]: https://img.shields.io/npm/l/@wener/unpkg
+
 [unpkg-size]: https://badgen.net/bundlephobia/minzip/@wener/unpkg
+
 [unpkg-deps]: https://badgen.net/bundlephobia/dependency-count/@wener/unpkg
+
 [unpkg-doc]: https://wode.vercel.app/docs/modules/_wener_unpkg.html
+
 [wode-repo]: https://github.com/wenerme/wode/tree/main/packages/wode
+
 [wode-npm]: https://www.npmjs.com/package/@wener/wode
+
 [wode-version]: https://img.shields.io/npm/v/@wener/wode
+
 [wode-license]: https://img.shields.io/npm/l/@wener/wode
+
 [wode-size]: https://badgen.net/bundlephobia/minzip/@wener/wode
+
 [wode-deps]: https://badgen.net/bundlephobia/dependency-count/@wener/wode
+
 [wode-doc]: https://wode.vercel.app/docs/modules/_wener_wode.html
 
 - Site

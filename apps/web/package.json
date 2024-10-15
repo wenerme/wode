@@ -28,6 +28,7 @@
     "dataloader": "^2.2.2",
     "dayjs": "^1.11.13",
     "domhandler": "^5.0.3",
+    "es-toolkit": "^1.25.0",
     "eta": "^3.5.0",
     "graphql": "^16.9.0",
     "graphql-request": "^7.1.0",
