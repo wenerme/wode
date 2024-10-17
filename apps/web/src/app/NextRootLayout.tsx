@@ -2,6 +2,7 @@ import React, { Suspense } from 'react';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { ProdOnly } from '@wener/reaction/universal';
+import { cookies } from 'next/headers';
 import { NextI18nProvider } from '@/app/NextI18nProvider';
 import { SiteSidecar } from '@/components/site/SiteSidecar';
 import { getSiteData } from '@/data/getSiteData';
@@ -10,7 +11,14 @@ import type { NextLayoutProps } from '@/types';
 export function NextRootLayout({ children, params }: NextLayoutProps) {
   const { title } = getSiteData();
   const attrs: Record<string, any> = {};
-  const lang = params.lang;
+
+  const cookieStore = cookies();
+  let lang = cookieStore.get('lang')?.value || params.lang;
+  let theme = cookieStore.get('theme')?.value || 'corporate';
+  let colorSchema = cookieStore.get('colorSchema')?.value || 'white';
+
+  attrs['data-theme'] = theme;
+
   let content = (
     <>
       <Suspense>{children}</Suspense>
@@ -18,7 +26,7 @@ export function NextRootLayout({ children, params }: NextLayoutProps) {
     </>
   );
   return (
-    <html lang={lang || 'zh-CN'} className='white' data-theme='corporate' {...attrs}>
+    <html lang={lang || 'zh-CN'} className='white' {...attrs}>
       <head>
         <meta charSet='utf-8' />
         <meta

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { PiAppleLogo, PiWindowsLogo } from 'react-icons/pi';
 import type { RouteObject } from 'react-router-dom';
 import type { Meta } from '@storybook/react';

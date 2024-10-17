@@ -1,12 +1,11 @@
-import type React from 'react';
-import type { ComponentPropsWithoutRef, ReactNode } from 'react';
+import type { ComponentPropsWithoutRef, FC, ReactNode } from 'react';
 import { useControllable } from '@wener/reaction';
 import { HeaderContentFooterLayout } from './HeaderContentFooterLayout';
 import { getTitleTabItemKey, TitleTabList, type TitleTabItem } from './TitleTabList';
 
 export type TitleTabContentItem = TitleTabItem & { content?: ReactNode };
 
-export const TitleTabLayout: React.FC<
+export const TitleTabLayout: FC<
   {
     children?: ReactNode;
     action?: ReactNode;

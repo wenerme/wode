@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import { forwardRef } from 'react';
 import { NavLink, useInRouterContext } from 'react-router-dom';
 import type { BaseNavLinkProps } from './BaseNavLink';
 import { StaticNavLink } from './StaticNavLink';

@@ -1,5 +1,12 @@
-import type React from 'react';
-import { forwardRef, useState, type ComponentPropsWithoutRef, type ComponentPropsWithRef, type FC } from 'react';
+import {
+  forwardRef,
+  useState,
+  type ComponentPropsWithoutRef,
+  type ComponentPropsWithRef,
+  type FC,
+  type MouseEvent,
+  type ReactNode,
+} from 'react';
 import { HiExclamationCircle } from 'react-icons/hi2';
 import {
   PiArrowsCounterClockwiseLight,
@@ -17,13 +24,13 @@ import { cn } from '../tw';
 
 export namespace FunctionButton {
   export type RefreshButtonProps = ComponentPropsWithoutRef<'button'> & {
-    onRefresh?: (e?: React.MouseEvent) => void;
+    onRefresh?: (e?: MouseEvent) => void;
     loading?: boolean;
     error?: any;
     size?: Daisy.SizeType;
   };
 
-  export const Refresh: React.FC<RefreshButtonProps> = ({
+  export const Refresh: FC<RefreshButtonProps> = ({
     className,
     children,
     onClick,
@@ -77,7 +84,7 @@ export namespace FunctionButton {
     loading?: boolean;
   };
 
-  export const Submit: React.FC<SubmitButtonProps> = ({ children = <>提交</>, loading, ...props }) => {
+  export const Submit: FC<SubmitButtonProps> = ({ children = <>提交</>, loading, ...props }) => {
     const sz = Daisy.getSize(props.size);
     return (
       <Button type={'submit'} {...props}>
@@ -88,10 +95,10 @@ export namespace FunctionButton {
   };
 
   export type PopupButtonProps = ButtonProps & {
-    onPopup?: (e: React.MouseEvent) => void;
+    onPopup?: (e: MouseEvent) => void;
   };
 
-  export const Popup: React.FC<PopupButtonProps> = ({ onPopup, children, className, ...props }) => {
+  export const Popup: FC<PopupButtonProps> = ({ onPopup, children, className, ...props }) => {
     return (
       <Button {...props} className={cn(!children && 'btn-square', className)} onClick={onPopup}>
         {children ?? <PiArrowSquareOutLight />}
@@ -102,7 +109,7 @@ export namespace FunctionButton {
   export type DeleteButtonProps = ButtonProps & {
     onDelete?: () => void;
   };
-  export const Delete: React.FC<DeleteButtonProps> = ({ onDelete, children, className, ...props }) => {
+  export const Delete: FC<DeleteButtonProps> = ({ onDelete, children, className, ...props }) => {
     /*
     <button
                         type={'button'}
@@ -144,9 +151,9 @@ export namespace FunctionButton {
   export type ButtonProps = ComponentPropsWithRef<'button'> & {
     size?: Daisy.SizeType;
     asChild?: boolean;
-    onAction?: (e: React.MouseEvent) => MaybePromise<any>;
+    onAction?: (e: MouseEvent) => MaybePromise<any>;
     icon?: FlexRenderable<any>;
-    text?: React.ReactNode;
+    text?: ReactNode;
     loading?: boolean;
   };
 
@@ -158,7 +165,7 @@ export namespace FunctionButton {
 
       const Comp = asChild ? Slot : 'button';
       if (!onClick && onAction) {
-        onClick = (e: React.MouseEvent) => {
+        onClick = (e: MouseEvent) => {
           if (loading) {
             return;
           }

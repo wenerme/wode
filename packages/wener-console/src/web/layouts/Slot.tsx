@@ -1,5 +1,5 @@
 import type { FC, PropsWithChildren, ReactNode } from 'react';
-import React, { memo, useCallback, useDebugValue, useEffect, useId } from 'react';
+import { memo, useCallback, useDebugValue, useEffect, useId } from 'react';
 import { useCompareEffect } from '@wener/reaction';
 import { createStore } from 'zustand';
 import { immer } from 'zustand/middleware/immer';

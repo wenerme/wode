@@ -1,10 +1,9 @@
 'use client';
 
-import type React from 'react';
-import { useEffect } from 'react';
+import { useEffect, type FC } from 'react';
 import { TrackerStore } from './MatomoTrackerStore';
 
-export const MatomoTracker: React.FC<{ siteId: string; url: string; useUserId?: () => string | undefined }> = ({
+export const MatomoTracker: FC<{ siteId: string; url: string; useUserId?: () => string | undefined }> = ({
   siteId,
   url,
   useUserId = () => undefined,

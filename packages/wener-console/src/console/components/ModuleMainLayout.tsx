@@ -1,4 +1,4 @@
-import type React from 'react';
+import type { FC } from 'react';
 import { Outlet } from 'react-router-dom';
 import { z } from 'zod';
 import { ExpandableSideMenuLayout, type ExpandableSideMenuLayoutProps } from '../../web';
@@ -15,7 +15,7 @@ function useModuleLayoutState({ path }: { path: string }) {
   });
 }
 
-export const ModuleMainLayout: React.FC<
+export const ModuleMainLayout: FC<
   ExpandableSideMenuLayoutProps & {
     path?: string;
   }

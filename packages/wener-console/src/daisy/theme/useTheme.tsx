@@ -1,4 +1,4 @@
-import React, { useEffect, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, type FC, type ReactNode } from 'react';
 import { proxyWithCompare } from '@wener/reaction/valtio';
 import { derive } from 'derive-valtio';
 import { useSnapshot } from 'valtio';
@@ -45,10 +45,10 @@ export function createThemeState(o: Partial<ThemeState> = {}): ThemeState {
 }
 
 const DefaultThemeState = createThemeState();
-const ThemeStateContext = React.createContext(DefaultThemeState);
+const ThemeStateContext = createContext(DefaultThemeState);
 
 export function useThemeState() {
-  return React.useContext(ThemeStateContext);
+  return useContext(ThemeStateContext);
 }
 
 function getActiveTheme(s: ThemeState) {
@@ -169,7 +169,7 @@ export const ThemeStateReactor = () => {
   return <></>;
 };
 
-export const ThemeProvider: React.FC<{ children?: ReactNode; state?: ThemeState }> = ({
+export const ThemeProvider: FC<{ children?: ReactNode; state?: ThemeState }> = ({
   children,
   state = DefaultThemeState,
 }) => {

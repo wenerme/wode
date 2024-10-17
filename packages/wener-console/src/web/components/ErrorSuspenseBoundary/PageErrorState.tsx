@@ -1,10 +1,9 @@
-import type React from 'react';
-import type { ReactNode } from 'react';
+import type { FC, ReactNode } from 'react';
 import { HiArrowLeft, HiArrowPath, HiHome, HiOutlineExclamationCircle } from 'react-icons/hi2';
 import { useInRouterContext, useNavigate, useRouteError } from 'react-router-dom';
 import { Button, NonIdealState } from '../../../daisy';
 
-export const PageErrorState: React.FC<{ error?: any; onReset?: () => void; title?: ReactNode }> = ({
+export const PageErrorState: FC<{ error?: any; onReset?: () => void; title?: ReactNode }> = ({
   error,
   onReset,
   title = '页面出错啦!',

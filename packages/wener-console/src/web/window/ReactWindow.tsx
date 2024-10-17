@@ -1,4 +1,3 @@
-import type React from 'react';
 import { createContext, useContext, type ReactNode } from 'react';
 import { mutative } from '@wener/reaction/mutative/zustand';
 import { clamp, computeIfAbsent, randomUUID } from '@wener/utils';
@@ -59,7 +58,7 @@ interface WindowBaseState {
 
   title?: string;
   icon?: ReactNode;
-  render?: () => React.ReactNode;
+  render?: () => ReactNode;
 
   meta: Record<string, any>;
   attributes: Record<string, any>;

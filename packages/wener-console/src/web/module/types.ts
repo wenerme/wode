@@ -1,4 +1,4 @@
-import type React from 'react';
+import type { ReactElement } from 'react';
 import type { ArrayPath, Path, PathValue } from 'react-hook-form';
 import type { RouteObject } from 'react-router-dom';
 import type { MaybePromise } from '@wener/utils';
@@ -40,6 +40,6 @@ export interface ModuleContext extends ModuleStore {}
 export interface DynamicModule {
   onModuleInit?: (ctx: ModuleContext) => MaybePromise<void>;
   createRoutes?: (ctx: ModuleContext) => MaybePromise<RouteObject[]>;
-  element?: React.ReactElement;
+  element?: ReactElement;
   metadata?: KnownDynamicModuleMetadata;
 }

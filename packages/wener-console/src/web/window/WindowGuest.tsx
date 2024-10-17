@@ -1,5 +1,4 @@
-import type React from 'react';
-import { memo, useEffect, type ComponentPropsWithoutRef, type ReactNode } from 'react';
+import { memo, useEffect, type ComponentPropsWithoutRef, type FC, type ReactNode } from 'react';
 import { Rnd } from 'react-rnd';
 import { Closer } from '@wener/utils';
 import { clsx } from 'clsx';
@@ -98,7 +97,7 @@ export const WindowGuest = memo<{ win: ReactWindow }>(({ win }) => {
   );
 });
 
-const WinContent: React.FC<{ win: ReactWindow }> = memo(({ win }) => {
+const WinContent: FC<{ win: ReactWindow }> = memo(({ win }) => {
   const store = win.store;
   const [frameless, minimized, canMinimize, canMaximize, title, render] = useStoreWithEqualityFn(
     store,
@@ -144,7 +143,7 @@ const WinContent: React.FC<{ win: ReactWindow }> = memo(({ win }) => {
   return <WinFrameContent win={win} />;
 });
 
-const WinFramelessContent: React.FC<{ win: ReactWindow }> = ({ win }) => {
+const WinFramelessContent: FC<{ win: ReactWindow }> = ({ win }) => {
   const store = win.store;
   const [minimized, render] = useStoreWithEqualityFn(
     store,
@@ -170,7 +169,7 @@ const WinFramelessContent: React.FC<{ win: ReactWindow }> = ({ win }) => {
     </div>
   );
 };
-const WinFrameContent: React.FC<{ win: ReactWindow }> = memo(({ win }) => {
+const WinFrameContent: FC<{ win: ReactWindow }> = memo(({ win }) => {
   const store = win.store;
   const [minimized, canMinimize, canMaximize, title, render] = useStoreWithEqualityFn(
     store,
@@ -228,7 +227,7 @@ const WinFrameContent: React.FC<{ win: ReactWindow }> = memo(({ win }) => {
   );
 });
 
-const WindowRenderer: React.FC<{ render?: () => ReactNode }> = ({ render }) => {
+const WindowRenderer: FC<{ render?: () => ReactNode }> = ({ render }) => {
   return render?.();
 };
 

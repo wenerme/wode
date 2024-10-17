@@ -1,4 +1,4 @@
-import { type FetchLike, type MaybePromise } from '@wener/utils';
+import type { FetchLike, MaybePromise } from '@wener/utils';
 import { WecomClientError } from './WecomClientError';
 
 export interface RequestOptions<T> {

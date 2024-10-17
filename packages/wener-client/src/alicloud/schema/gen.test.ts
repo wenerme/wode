@@ -3,7 +3,7 @@ import fs from 'node:fs/promises';
 import { pascalCase } from '@wener/utils';
 import { test } from 'vitest';
 import { RecognizeIdcardRoot } from '../OcrV20210707.types';
-import { type ApiDoc, type TypeSchema } from './spec';
+import type { ApiDoc, TypeSchema } from './spec';
 
 const alias: Record<string, string> = {
   RecognizeIdcardResponse: 'RecognizeIdcardRoot',

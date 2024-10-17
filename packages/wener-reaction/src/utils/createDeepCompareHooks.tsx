@@ -1,4 +1,4 @@
-import React from 'react';
+import { useCallback, useEffect, useMemo, useRef, type DependencyList, type EffectCallback } from 'react';
 import type { Equivalence } from '../typing';
 
 /**
@@ -7,36 +7,36 @@ import type { Equivalence } from '../typing';
  * @see {@link https://github.com/sandiiarov/use-deep-compare sandiiarov/use-deep-compare}
  */
 export function createDeepCompareHooks(eq: Equivalence<any | undefined>) {
-  function useDeepCompareMemoize(value: React.DependencyList) {
-    const ref = React.useRef<React.DependencyList>([]);
+  function useDeepCompareMemoize(value: DependencyList) {
+    const ref = useRef<DependencyList>([]);
     if (!eq(value, ref.current)) {
       ref.current = value;
     }
     return ref.current;
   }
 
-  function useDeepCompareCallback<T extends (...args: any[]) => any>(callback: T, dependencies: React.DependencyList) {
+  function useDeepCompareCallback<T extends (...args: any[]) => any>(callback: T, dependencies: DependencyList) {
     if (process.env.NODE_ENV !== 'production') {
       checkDeps(dependencies, 'useDeepCompareCallback');
     }
 
-    return React.useCallback(callback, useDeepCompareMemoize(dependencies));
+    return useCallback(callback, useDeepCompareMemoize(dependencies));
   }
 
-  function useDeepCompareEffect(effect: React.EffectCallback, dependencies: React.DependencyList) {
+  function useDeepCompareEffect(effect: EffectCallback, dependencies: DependencyList) {
     if (process.env.NODE_ENV !== 'production') {
       checkDeps(dependencies, 'useDeepCompareEffect');
     }
 
-    React.useEffect(effect, useDeepCompareMemoize(dependencies));
+    useEffect(effect, useDeepCompareMemoize(dependencies));
   }
 
-  function useDeepCompareMemo<T>(factory: () => T, dependencies: React.DependencyList) {
+  function useDeepCompareMemo<T>(factory: () => T, dependencies: DependencyList) {
     if (process.env.NODE_ENV !== 'production') {
       checkDeps(dependencies, 'useDeepCompareMemo');
     }
 
-    return React.useMemo(factory, useDeepCompareMemoize(dependencies));
+    return useMemo(factory, useDeepCompareMemoize(dependencies));
   }
 
   return {
@@ -47,7 +47,7 @@ export function createDeepCompareHooks(eq: Equivalence<any | undefined>) {
   };
 }
 
-function checkDeps(deps: React.DependencyList, name: string) {
+function checkDeps(deps: DependencyList, name: string) {
   const reactHookName = `React.${name.replace(/DeepCompare/, '')}`;
 
   if (!deps || deps.length === 0) {

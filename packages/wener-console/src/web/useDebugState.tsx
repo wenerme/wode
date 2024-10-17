@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { createContext, useContext } from 'react';
 import { proxyWithCompare } from '@wener/reaction/valtio';
 import { structuredClone } from '@wener/utils';
 
@@ -35,7 +35,7 @@ const InitialState: DebugState = {
   },
 };
 const DefaultDebugState = proxyWithCompare(structuredClone(InitialState));
-const DebugStateContext = React.createContext(DefaultDebugState);
+const DebugStateContext = createContext(DefaultDebugState);
 
 export function useDebugState() {
   return useContext(DebugStateContext);

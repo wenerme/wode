@@ -1,6 +1,6 @@
-import { type FetchLike } from '@wener/utils';
+import type { FetchLike } from '@wener/utils';
 import { request } from './request';
-import { type SendWebhookRequest } from './types';
+import type { SendWebhookRequest } from './types';
 
 export class WebhookClient {
   constructor(readonly options: { key: string; fetch?: FetchLike }) {}

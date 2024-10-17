@@ -1,15 +1,8 @@
 'use client';
 
-import type React from 'react';
-import type { PropsWithChildren } from 'react';
+import type { FC, PropsWithChildren } from 'react';
 import { Toaster } from 'react-hot-toast';
 import dayjs from 'dayjs';
-import { ThemeStateReactor } from '../../daisy';
-import 'dayjs/locale/en';
-import 'dayjs/locale/zh';
-import 'dayjs/locale/zh-cn';
-import 'dayjs/locale/zh-hk';
-import 'dayjs/locale/zh-tw';
 import advancedFormat from 'dayjs/plugin/advancedFormat';
 import dayOfYear from 'dayjs/plugin/dayOfYear';
 import duration from 'dayjs/plugin/duration';
@@ -17,11 +10,12 @@ import isToday from 'dayjs/plugin/isToday';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
+import { ThemeStateReactor } from '../../daisy';
 import { useExposeDebug } from '../../hooks';
 
 let init = false;
 
-export const StaticRootReactor: React.FC<PropsWithChildren> = () => {
+export const StaticRootReactor: FC<PropsWithChildren> = () => {
   useExposeDebug({ dayjs });
   if (!init) {
     init = true;

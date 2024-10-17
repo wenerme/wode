@@ -1,7 +1,7 @@
 import { createFetchWith } from './createFetchWith';
 import { dumpRequest } from './dumpRequest';
 import { dumpResponse } from './dumpResponse';
-import { type FetchLike } from './types';
+import type { FetchLike } from './types';
 
 export function createFetchWithLogging({
   fetch,

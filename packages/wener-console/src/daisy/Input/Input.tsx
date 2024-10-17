@@ -1,5 +1,5 @@
 import type { HTMLProps } from 'react';
-import React, { forwardRef } from 'react';
+import { forwardRef } from 'react';
 import classNames from 'clsx';
 import type { DaisyModifierProps } from '../utils/daisy';
 import { daisy, omitDaisyModifiers } from '../utils/daisy';

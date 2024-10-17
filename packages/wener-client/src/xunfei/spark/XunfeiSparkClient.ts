@@ -1,6 +1,6 @@
 import { createAsyncIterator, merge } from '@wener/utils';
 import { buildAuthUrl } from './buildAuthParams';
-import { type RequestPayload, type ResponsePayload } from './types';
+import type { RequestPayload, ResponsePayload } from './types';
 
 export interface ClientOptionsInit extends Partial<ClientOptions> {}
 

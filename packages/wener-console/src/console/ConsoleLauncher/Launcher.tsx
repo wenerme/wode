@@ -1,4 +1,12 @@
-import React, { type ComponentPropsWithoutRef, type ReactNode } from 'react';
+import {
+  cloneElement,
+  isValidElement,
+  useEffect,
+  useRef,
+  type ComponentPropsWithoutRef,
+  type FC,
+  type ReactNode,
+} from 'react';
 import { createPortal } from 'react-dom';
 import { PiBrowser } from 'react-icons/pi';
 import { getGlobalStates } from '@wener/utils';
@@ -53,11 +61,11 @@ export type ConsoleLauncherProps = ComponentPropsWithoutRef<'div'>;
  */
 export const ConsoleLauncher = LauncherHost;
 
-const LauncherContent: React.FC<{ onLaunch?: (v: LauncherItem) => void }> = ({ onLaunch }) => {
+const LauncherContent: FC<{ onLaunch?: (v: LauncherItem) => void }> = ({ onLaunch }) => {
   let store = Launcher.useStore();
   const { items } = store.getState();
-  const ref = React.useRef<HTMLDivElement>(null);
-  React.useEffect(() => {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
     ref.current?.focus();
   }, [ref.current]);
   // note 左侧留出来 dock 的位置
@@ -83,8 +91,8 @@ const LauncherContent: React.FC<{ onLaunch?: (v: LauncherItem) => void }> = ({ o
           {items.map((v) => {
             const { key, title, icon } = v;
             let ico = icon || <PiBrowser />;
-            if (React.isValidElement(ico)) {
-              ico = React.cloneElement(ico, {
+            if (isValidElement(ico)) {
+              ico = cloneElement(ico, {
                 className: 'w-24 h-24 drop-shadow-lg',
               } as any);
             }

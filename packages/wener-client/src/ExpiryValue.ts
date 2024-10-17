@@ -1,4 +1,4 @@
-import { type MaybePromise } from '@wener/utils';
+import type { MaybePromise } from '@wener/utils';
 import { isValueHolder, type ReadonlyValueHolder } from './ValueHolder';
 
 export interface ExpiryValueHolder<T = string> extends ReadonlyValueHolder<T> {

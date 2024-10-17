@@ -1,5 +1,4 @@
 import type { SVGProps } from 'react';
-import * as React from 'react';
 import { memo } from 'react';
 
 const SvgWecomOutlineIcon = (props: SVGProps<SVGSVGElement>) => (

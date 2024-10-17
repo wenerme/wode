@@ -1,12 +1,11 @@
-import type React from 'react';
-import { forwardRef, type ReactNode } from 'react';
+import { forwardRef, type ComponentProps, type ElementType, type ReactNode } from 'react';
 import { cn } from '../../tw/cn';
 
-export type LeftContentRightLayoutProps<E extends React.ElementType = 'div'> = Omit<React.ComponentProps<E>, 'as'> & {
+export type LeftContentRightLayoutProps<E extends ElementType = 'div'> = Omit<ComponentProps<E>, 'as'> & {
   as?: E;
   left?: ReactNode;
   right?: ReactNode;
-  children?: React.ReactNode;
+  children?: ReactNode;
 };
 export const LeftContentRightLayout = forwardRef<HTMLDivElement, LeftContentRightLayoutProps>(
   ({ left, right, children, className, ...props }, ref) => {
@@ -20,4 +19,4 @@ export const LeftContentRightLayout = forwardRef<HTMLDivElement, LeftContentRigh
       </div>
     );
   },
-) as <E extends React.ElementType = 'div'>(props: LeftContentRightLayoutProps<E>) => JSX.Element;
+) as <E extends ElementType = 'div'>(props: LeftContentRightLayoutProps<E>) => JSX.Element;

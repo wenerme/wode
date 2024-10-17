@@ -1,5 +1,4 @@
-import type React from 'react';
-import { useCallback, useEffect, useRef, type ReactNode } from 'react';
+import { useCallback, useEffect, useRef, type FC, type ReactNode } from 'react';
 import { useStore } from 'zustand';
 import { LoadingIndicator } from '../loader';
 import { AuthStatus, type AppStore } from '../state';
@@ -20,7 +19,7 @@ export interface AppActions {
   ping: () => Promise<any>;
 }
 
-export const AppActor: React.FC<{
+export const AppActor: FC<{
   store?: AppStore;
   actions: AppActions;
   storage?: Storage;
@@ -210,7 +209,7 @@ function useServerStatusWatch(store: AppStore, checkServer: () => Promise<any>) 
   }, [serverOnline]);
 }
 
-export const AuthReady: React.FC<{ children?: ReactNode }> = ({ children }) => {
+export const AuthReady: FC<{ children?: ReactNode }> = ({ children }) => {
   const ready = useStore(
     getAppStore(),
     useCallback((s) => s.auth.status !== AuthStatus.Init, []),

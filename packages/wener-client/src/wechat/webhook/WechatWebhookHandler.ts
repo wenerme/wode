@@ -1,7 +1,7 @@
 import { ArrayBuffers, hex, sha1 } from '@wener/utils';
 import { XMLBuilder, XMLParser } from 'fast-xml-parser';
 import { decrypt } from './crypt';
-import { type WechatWebhookEncryptPayload, type WechatWebhookPayload } from './types';
+import type { WechatWebhookEncryptPayload, WechatWebhookPayload } from './types';
 
 export interface WechatWebhookHandlerCreateOptions {
   token?: string;

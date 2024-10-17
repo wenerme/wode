@@ -1,4 +1,4 @@
-import { type Query } from './types';
+import type { Query } from './types';
 
 export interface CubeLoadResponse {}
 

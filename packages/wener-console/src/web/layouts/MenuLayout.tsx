@@ -1,8 +1,8 @@
-import type React from 'react';
+import type { FC, ReactNode } from 'react';
 
-export const MenuLayout: React.FC<{
-  children?: React.ReactNode;
-  title?: React.ReactNode;
+export const MenuLayout: FC<{
+  children?: ReactNode;
+  title?: ReactNode;
   menu?: Array<{ href: string; label: string }>;
 }> = ({ children, title, menu = [] }) => {
   return (

@@ -1,4 +1,4 @@
-import { type ExtAttr, type ExternalProfile } from './types';
+import type { ExtAttr, ExternalProfile } from './types';
 
 export interface GeneralResponse {
   errcode: number;

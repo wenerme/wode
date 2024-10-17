@@ -1,11 +1,10 @@
-import type React from 'react';
-import { useState, type PropsWithChildren } from 'react';
+import { useState, type FC, type PropsWithChildren } from 'react';
 import { useAsyncEffect } from '@wener/reaction';
 import type { AppConf } from '../state';
 import { LoadingIndicator } from './components';
 import { getAppState } from './container';
 
-export const AppConfLoader: React.FC<
+export const AppConfLoader: FC<
   PropsWithChildren & {
     load?: () => Promise<AppConf | undefined>;
   }

@@ -1,4 +1,4 @@
-import { type FetchLike } from '@wener/utils';
+import type { FetchLike } from '@wener/utils';
 import {
   createExpireValueHolder,
   type CreateExpireValueHolderOptions,
@@ -6,17 +6,17 @@ import {
 } from '../../ExpiryValue';
 import { getValue, type MaybeValueHolder } from '../../ValueHolder';
 import { createJsSdkSignature } from '../../wechat';
-import { type CreateUserRequest, type DepartmentInput, type DepartmentOutput, type GeneralResponse } from './api';
+import type { CreateUserRequest, DepartmentInput, DepartmentOutput, GeneralResponse } from './api';
 import { request, type RequestOptions } from './request';
-import {
-  type BatchGetExternalContactByUserResponse,
-  type ExternalContactTagGroup,
-  type GetExternalContactGroupChat,
-  type GetExternalContactResponse,
-  type GetExternalContactTagsResponse,
-  type GetMessageAuditGroupChatResponse,
-  type GetUserResponse,
-  type SendMessageRequest,
+import type {
+  BatchGetExternalContactByUserResponse,
+  ExternalContactTagGroup,
+  GetExternalContactGroupChat,
+  GetExternalContactResponse,
+  GetExternalContactTagsResponse,
+  GetMessageAuditGroupChatResponse,
+  GetUserResponse,
+  SendMessageRequest,
 } from './types';
 
 export interface WecomCorpClientInitOptions {

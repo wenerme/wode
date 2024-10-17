@@ -1,4 +1,4 @@
-import React, { type ErrorInfo, type ReactElement } from 'react';
+import { Component, type ErrorInfo, type ReactElement, type ReactNode } from 'react';
 
 export interface ErrorBoundaryProps {
   /**
@@ -11,13 +11,13 @@ export interface ErrorBoundaryProps {
    * @param e error context
    */
   onError?: (e: { error: Error; errorInfo: ErrorInfo }) => void;
-  children?: React.ReactNode;
+  children?: ReactNode;
 }
 
 /**
  * ErrorBoundary will catch the error and invoke the renderError to render the content
  */
-export class ErrorBoundary extends React.Component<ErrorBoundaryProps, { error?: any }> {
+export class ErrorBoundary extends Component<ErrorBoundaryProps, { error?: any }> {
   static defaultProps: ErrorBoundaryProps = {
     onError: ({ error, errorInfo }) => console.error(`ErrorBoundary catch:`, error, errorInfo),
   };

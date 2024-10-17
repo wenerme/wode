@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useContext, useEffect, useState, type HTMLProps } from 'react';
+import { createContext, useContext, useEffect, useState, type FC, type HTMLProps } from 'react';
 import { HiChevronDoubleLeft, HiChevronDoubleRight, HiXMark } from 'react-icons/hi2';
 import {
   PiArrowClockwise,
@@ -54,7 +54,7 @@ export interface ImagePreviewProps {
   onOpenChange?: (show: boolean) => void;
 }
 
-const Context = React.createContext(createImagePreviewStore());
+const Context = createContext(createImagePreviewStore());
 
 export function useImagePreviewStore() {
   return useContext(Context);
@@ -84,7 +84,7 @@ const DetailButton = () => {
   );
 };
 
-export const ImagePreview: React.FC<ImagePreviewProps> = ({ onOpenChange, info, src }) => {
+export const ImagePreview: FC<ImagePreviewProps> = ({ onOpenChange, info, src }) => {
   const [store] = useState(() => createImagePreviewStore({ src, info: info, detail: true }));
 
   useEffect(() => {
@@ -324,7 +324,7 @@ const _TextRecognitionButton = () => {
   );
 };
 
-const ActionButton: React.FC<HTMLProps<HTMLButtonElement>> = ({ className, type, ...props }) => {
+const ActionButton: FC<HTMLProps<HTMLButtonElement>> = ({ className, type, ...props }) => {
   return (
     <button
       type={'button'}
@@ -334,7 +334,7 @@ const ActionButton: React.FC<HTMLProps<HTMLButtonElement>> = ({ className, type,
   );
 };
 
-const FuncButton: React.FC<HTMLProps<HTMLButtonElement>> = ({ className, type, ...props }) => {
+const FuncButton: FC<HTMLProps<HTMLButtonElement>> = ({ className, type, ...props }) => {
   const A = (props.href ? 'a' : 'button') as 'button';
   return (
     <A

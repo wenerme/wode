@@ -1,8 +1,8 @@
-import React, { PropsWithChildren, useEffect } from 'react';
+import React, { useEffect, type PropsWithChildren } from 'react';
 import type { Decorator, Preview } from '@storybook/react';
 import { getSupportedThemes, useThemeState } from '../src/daisy';
 import '@/console/globals.css';
-import { StaticRootReactor } from '@/console/components/StaticRootReactor';
+import { StaticRootReactor } from '../src/console';
 
 const ClientContext: React.FC<PropsWithChildren> = ({ children }) => {
   return children;

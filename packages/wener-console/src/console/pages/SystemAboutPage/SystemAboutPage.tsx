@@ -1,5 +1,4 @@
-import type React from 'react';
-import type { ReactNode } from 'react';
+import type { FC, ReactNode } from 'react';
 import { GrSystem } from 'react-icons/gr';
 import { HiCheck } from 'react-icons/hi';
 import { ImLab } from 'react-icons/im';
@@ -12,7 +11,7 @@ import { Button } from '../../../daisy';
 import { useUserAgentPreferences } from '../../../utils/UserAgentPreference';
 import { SiteLogo } from '../../components';
 
-export const SystemAboutPage: React.FC<{
+export const SystemAboutPage: FC<{
   title?: string;
   children?: ReactNode;
   logo?: ReactNode;
@@ -51,7 +50,7 @@ export const SystemAboutPage: React.FC<{
   );
 };
 
-const AuthorInfo: React.FC<{ title?: string; author?: { name?: string; link?: string } }> = (props) => {
+const AuthorInfo: FC<{ title?: string; author?: { name?: string; link?: string } }> = (props) => {
   const { title = '控制台', author: { name = 'Wener', link = 'https://wener.me' } = {} } = props;
   return (
     <div className={'rounded-lg border p-4 text-sm shadow'}>
@@ -69,7 +68,7 @@ const AuthorInfo: React.FC<{ title?: string; author?: { name?: string; link?: st
   );
 };
 
-const AppBuildInfo: React.FC<{ logo?: ReactNode; title?: ReactNode; info: BuildInfo }> = ({ logo, title, info }) => {
+const AppBuildInfo: FC<{ logo?: ReactNode; title?: ReactNode; info: BuildInfo }> = ({ logo, title, info }) => {
   return (
     <div className={'rounded-lg border shadow'}>
       <ul className={'divide-color flex flex-col divide-y [&>li]:flex [&>li]:items-center [&>li]:gap-2 [&>li]:p-3'}>

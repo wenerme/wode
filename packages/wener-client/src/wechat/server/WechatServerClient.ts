@@ -1,8 +1,13 @@
-import { Errors, FetchLike } from '@wener/utils';
-import { createExpireValueHolder, ExpireValueHolderInit, ExpiryValue, ExpiryValueHolder } from '../../ExpiryValue';
+import { Errors, type FetchLike } from '@wener/utils';
+import {
+  createExpireValueHolder,
+  type ExpireValueHolderInit,
+  type ExpiryValue,
+  type ExpiryValueHolder,
+} from '../../ExpiryValue';
 import { getAccessToken, getStableAccessToken } from './getAccessToken';
-import { request, RequestOptions } from './request';
-import { GetDomainInfoResponse, GetOpenAPIQuotaResponse } from './types';
+import { request, type RequestOptions } from './request';
+import type { GetDomainInfoResponse, GetOpenAPIQuotaResponse } from './types';
 
 export interface WechatServerClientInit {
   fetch?: FetchLike;

@@ -1,5 +1,5 @@
-import { AliCloudClientOptions } from './AliCloudClient';
-import { type RecognizeIdcardRoot } from './OcrV20210707.types';
+import type { AliCloudClientOptions } from './AliCloudClient';
+import type { RecognizeIdcardRoot } from './OcrV20210707.types';
 
 export interface OcrV20210707Api {
   $product: 'ocr-api';

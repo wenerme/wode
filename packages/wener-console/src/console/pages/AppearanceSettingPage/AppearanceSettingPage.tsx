@@ -1,6 +1,5 @@
 'use client';
 
-import React from 'react';
 import { useSnapshot } from 'valtio';
 import { DaisyThemeDemo, ThemeListSelector, useThemeState } from '../../../daisy';
 import { SettingLayout } from '../../../web';

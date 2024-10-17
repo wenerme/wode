@@ -1,5 +1,4 @@
-import type { HTMLAttributes } from 'react';
-import type React from 'react';
+import type { FC, HTMLAttributes } from 'react';
 import styled from '@emotion/styled';
 
 const GooeyLoaderContainer = styled.div`
@@ -152,7 +151,7 @@ function loadSvgFilter() {
  *
  * @see https://codepen.io/Izumenko/pen/MpWyXK
  */
-export const GooeyLoader: React.FC<HTMLAttributes<HTMLDivElement>> = (props) => {
+export const GooeyLoader: FC<HTMLAttributes<HTMLDivElement>> = (props) => {
   loadSvgFilter();
   return (
     <GooeyLoaderContainer {...props}>

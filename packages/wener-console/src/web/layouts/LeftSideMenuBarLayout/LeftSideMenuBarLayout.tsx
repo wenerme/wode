@@ -1,12 +1,11 @@
-import type { ComponentPropsWithoutRef, FC, HTMLProps, ReactElement } from 'react';
-import type React from 'react';
+import type { ComponentPropsWithoutRef, ComponentType, FC, HTMLProps, ReactElement, ReactNode } from 'react';
 import { clsx } from 'clsx';
 import { Tooltip } from '../../../floating';
 import { cn } from '../../../tw/cn';
 import { HeaderContentFooterLayout, LeftContentRightLayout, OverlayScrollbar } from '../../components';
 import { AutoNavLink } from '../../links';
 
-type BaseNavLink = React.ComponentType<BaseNavLinkProps>;
+type BaseNavLink = ComponentType<BaseNavLinkProps>;
 
 interface BaseNavLinkProps extends Record<string, any> {
   children: ReactElement | ((o: { isActive: boolean }) => ReactElement);
@@ -15,9 +14,9 @@ interface BaseNavLinkProps extends Record<string, any> {
 
 const Layout: FC<
   HTMLProps<HTMLDivElement> & {
-    top?: React.ReactNode;
-    bottom?: React.ReactNode;
-    center?: React.ReactNode;
+    top?: ReactNode;
+    bottom?: ReactNode;
+    center?: ReactNode;
   }
 > = ({ className, top, bottom, center, children, ...props }) => {
   // bp 为 md
@@ -50,7 +49,7 @@ export type NavItem =
       iconActive?: ReactElement;
     });
 
-const MenuBarItem: React.FC<{ item: NavItem; NavLink?: BaseNavLink }> = ({
+const MenuBarItem: FC<{ item: NavItem; NavLink?: BaseNavLink }> = ({
   item: { title, href, icon, iconActive, className, ...props },
   NavLink = AutoNavLink,
 }) => {
@@ -85,11 +84,11 @@ const MenuBarItem: React.FC<{ item: NavItem; NavLink?: BaseNavLink }> = ({
   );
 };
 
-export const IconMenu: React.FC<
+export const IconMenu: FC<
   {
-    top?: React.ReactNode;
-    bottom?: React.ReactNode;
-    center?: React.ReactNode;
+    top?: ReactNode;
+    bottom?: ReactNode;
+    center?: ReactNode;
   } & ComponentPropsWithoutRef<'aside'>
 > = ({ top, bottom, children, center = children, className, ...props }) => {
   return (

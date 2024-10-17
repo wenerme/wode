@@ -1,4 +1,4 @@
-import { type MaybePromise } from '@wener/utils';
+import type { MaybePromise } from '@wener/utils';
 import { request, type RequestOptions } from '../request';
 
 export type SessionRequestOptions<T> = RequestOptions<T> & {

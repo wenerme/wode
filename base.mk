@@ -75,14 +75,19 @@ package-scripts-set: ## install scripts in package.json
 	yq '.scripts.build="make build" | .scripts.deploy="make deploy" | .scripts.test="make test"' -i package.json
 fix-use-import-type: ## fix useImportType
 	npx -y @biomejs/biome lint --only=style/useImportType ./src --write
+fix-unused-imports: ## fix unused imports
+	npx -y @biomejs/biome lint --only=lint/correctness/noUnusedImports ./src --write
+fix-react-default-import:
+	grit apply react_named_imports ./src
 endif
 
-ifneq ($(FRAMEWORK_INFER),none)
+FRAMEWORK ?= infer
+ifeq ($(FRAMEWORK),infer)
 ifneq ($(wildcard next.config.*),)
 build: ## build project
 	pnpm next build
 dev: ## start dev server
-	pnpm next dev
+	pnpm next dev --turbo
 else ifneq ($(wildcard vite.config.*),)
 build:
 	pnpm vite build
@@ -94,7 +99,7 @@ endif
 fmt: ## format code
 	pnpm prettier --cache --cache-strategy metadata --write ./src package.json $(wildcard *.ts postcss.config.* tailwind.config.* next.config.*)
 
-help: ## 帮助
+help: ## show help message
 	@grep -E -h '\s##\s' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
 ifneq ($(wildcard docker-bake.hcl),)

@@ -1,4 +1,4 @@
-import { type MaybePromise } from '@wener/utils';
+import type { MaybePromise } from '@wener/utils';
 
 export interface ValueHolder<T> {
   get(): MaybePromise<T>;

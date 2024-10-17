@@ -1,5 +1,4 @@
-import type React from 'react';
-import { createContext, useCallback, useContext, type ReactNode } from 'react';
+import { createContext, useCallback, useContext, type FC, type ReactNode } from 'react';
 import type { ArrayPath, Path, PathValue } from 'react-hook-form';
 import { get, set } from '@wener/utils';
 import { create as produce } from 'mutative';
@@ -11,7 +10,7 @@ const DefaultContextStore = createStore(() => {
 
 const Context = createContext<StoreApi<any> | undefined>(undefined);
 
-export const ContextStoreProvider: React.FC<{ value: StoreApi<any>; children?: ReactNode }> = ({ value, children }) => {
+export const ContextStoreProvider: FC<{ value: StoreApi<any>; children?: ReactNode }> = ({ value, children }) => {
   return <Context.Provider value={value}>{children}</Context.Provider>;
 };
 

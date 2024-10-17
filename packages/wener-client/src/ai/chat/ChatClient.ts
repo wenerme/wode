@@ -1,4 +1,4 @@
-import { type ChatParameter } from './schema';
+import type { ChatParameter } from './schema';
 
 export interface RequestOptions {
   signal?: AbortSignal;

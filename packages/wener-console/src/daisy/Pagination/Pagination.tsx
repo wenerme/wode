@@ -1,9 +1,9 @@
-import type React from 'react';
+import type { FC } from 'react';
 import { HiChevronLeft, HiChevronRight } from 'react-icons/hi2';
 import classNames from 'clsx';
 import { Button } from '../Button/Button';
 
-export const Pagination: React.FC<{
+export const Pagination: FC<{
   pageIndex: number;
   onPageIndexChange?: (v: number) => void;
   href?: (v: number) => string;

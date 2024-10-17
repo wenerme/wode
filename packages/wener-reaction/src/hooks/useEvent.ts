@@ -1,4 +1,4 @@
-import React from 'react';
+import { useCallback } from 'react';
 import { useLatestValue } from './useLatestValue';
 
 /**
@@ -10,5 +10,5 @@ export const useEvent = function useEvent<
   R = ReturnType<F>,
 >(cb: (...args: P) => R) {
   const cache = useLatestValue(cb);
-  return React.useCallback((...args: P) => cache.current(...args), [cache]);
+  return useCallback((...args: P) => cache.current(...args), [cache]);
 };

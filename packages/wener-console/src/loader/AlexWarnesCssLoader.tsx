@@ -1,4 +1,4 @@
-import type React from 'react';
+import type { FC } from 'react';
 import styled from '@emotion/styled';
 
 // loader from https://codepen.io/AlexWarnes/pen/jXYYKL
@@ -79,7 +79,7 @@ const PulseBubbleBox = styled(SpinnerBox)`
   }
 `;
 
-export const GradientSpinner: React.FC = () => {
+export const GradientSpinner: FC = () => {
   return (
     <GradientSpinnerBox>
       <div className='circle-border'>
@@ -89,7 +89,7 @@ export const GradientSpinner: React.FC = () => {
   );
 };
 
-export const PulseBubble: React.FC = () => {
+export const PulseBubble: FC = () => {
   return (
     <PulseBubbleBox>
       <div className='pulse-container'>
@@ -154,7 +154,7 @@ const SolarSystemBox = styled(SpinnerBox)`
   }
 `;
 
-export const SolarSystemSpinner: React.FC = () => {
+export const SolarSystemSpinner: FC = () => {
   return (
     <SolarSystemBox>
       <div className='solar-system'>
@@ -241,7 +241,7 @@ const PlanetRotatingBox = styled(SpinnerBox)`
   }
 `;
 
-export const PlantRotating: React.FC = () => {
+export const PlantRotating: FC = () => {
   return (
     <PlanetRotatingBox>
       <div className='blue-orbit leo' />

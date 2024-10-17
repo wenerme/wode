@@ -1,4 +1,4 @@
-import React, { useEffect, type DependencyList, type EffectCallback } from 'react';
+import { useEffect, useRef, type DependencyList, type EffectCallback } from 'react';
 import { shallowEqual } from '@wener/utils';
 
 /**
@@ -12,8 +12,8 @@ export function useCompareEffect<D = DependencyList>(
   deps: D,
   eq: (a: D, b: D) => boolean = useCompareEffect.defaultComparator,
 ) {
-  const counter = React.useRef(0);
-  const prev = React.useRef(deps);
+  const counter = useRef(0);
+  const prev = useRef(deps);
   if (!eq(deps, prev.current)) {
     counter.current++;
     prev.current = deps;

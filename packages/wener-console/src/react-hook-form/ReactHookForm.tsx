@@ -1,4 +1,13 @@
-import React, { useContext, useId, useRef, useState, type ComponentPropsWithoutRef } from 'react';
+import {
+  createContext,
+  useContext,
+  useId,
+  useRef,
+  useState,
+  type ComponentPropsWithoutRef,
+  type FC,
+  type ReactNode,
+} from 'react';
 import {
   FormProvider,
   useForm,
@@ -16,11 +25,11 @@ import { getDirtyFields } from './getDirtyFields';
 import { getFieldErrors } from './getFieldErrors';
 
 type ReactHookFormProviderProps<TFieldValues extends FieldValues = FieldValues, TContext = any> = {
-  children?: React.ReactNode;
+  children?: ReactNode;
   onSubmit?: (data: TFieldValues) => MaybePromise<any>;
 } & UseFormProps<TFieldValues, TContext>;
 
-const Context = React.createContext<ContextState | undefined>(undefined);
+const Context = createContext<ContextState | undefined>(undefined);
 
 type ContextState = {
   id: string;
@@ -31,7 +40,7 @@ type ContextState = {
 
 export namespace ReactHookForm {
   export let handleInvalid = _handleInvalid;
-  export const Root: React.FC<ReactHookFormProviderProps> = (props) => {
+  export const Root: FC<ReactHookFormProviderProps> = (props) => {
     return null;
   };
 
@@ -61,7 +70,7 @@ export namespace ReactHookForm {
     );
   }
 
-  export const Form: React.FC<ComponentPropsWithoutRef<'form'> & { asChild?: boolean }> = ({
+  export const Form: FC<ComponentPropsWithoutRef<'form'> & { asChild?: boolean }> = ({
     asChild,
     children,
     ...props
@@ -80,7 +89,7 @@ export namespace ReactHookForm {
     );
   };
 
-  export const SubmitButton: React.FC<
+  export const SubmitButton: FC<
     FunctionButton.SubmitButtonProps & {
       dirty?: boolean;
     }
@@ -114,7 +123,7 @@ export namespace ReactHookForm {
     );
   };
 
-  export const DebugButton: React.FC<FunctionButton.ButtonProps> = (props) => {
+  export const DebugButton: FC<FunctionButton.ButtonProps> = (props) => {
     return (
       <DevOnly>
         <_DebugButton {...props} />

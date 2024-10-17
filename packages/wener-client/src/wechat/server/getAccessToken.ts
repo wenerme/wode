@@ -1,4 +1,4 @@
-import { request, RequestOptions } from './request';
+import { request, type RequestOptions } from './request';
 
 interface AccessTokenResponse {
   // 至少保留 512 字节

@@ -1,5 +1,5 @@
-import { type CreateEmbeddingRequest } from './messages';
-import { type ListObject } from './types';
+import type { CreateEmbeddingRequest } from './messages';
+import type { ListObject } from './types';
 
 export const CreateEmbeddingEndpoint = {
   input: undefined as CreateEmbeddingRequest | undefined,

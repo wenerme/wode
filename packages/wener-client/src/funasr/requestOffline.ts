@@ -1,5 +1,5 @@
 import { createLazyPromise, randomUUID, timeout } from '@wener/utils';
-import { OfflineRequestMessage, OfflineResponseMessage } from './types';
+import type { OfflineRequestMessage, OfflineResponseMessage } from './types';
 
 function toSrt(msg: OfflineResponseMessage) {
   if (!msg.stamp_sents) {

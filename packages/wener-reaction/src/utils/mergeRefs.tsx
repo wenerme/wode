@@ -1,13 +1,13 @@
-import type React from 'react';
+import type { LegacyRef, MutableRefObject, RefCallback } from 'react';
 
 /**
  * mergeRefs help handling multi refs
  * @see {@link https://github.com/gregberge/react-merge-refs/blob/main/src/index.tsx gregberge/react-merge-refs}
  */
 export function mergeRefs<T = any>(
-  ...refs: Array<undefined | null | React.MutableRefObject<T | null | undefined> | React.RefCallback<T> | string>
-): React.LegacyRef<T> | React.MutableRefObject<T> | undefined {
-  const valid = refs.filter(Boolean) as Array<React.MutableRefObject<T | null | undefined> | ((v: T) => void)>;
+  ...refs: Array<undefined | null | MutableRefObject<T | null | undefined> | RefCallback<T> | string>
+): LegacyRef<T> | MutableRefObject<T> | undefined {
+  const valid = refs.filter(Boolean) as Array<MutableRefObject<T | null | undefined> | ((v: T) => void)>;
   if (valid.length === 0) {
     return undefined;
   } else if (valid.length === 1) {

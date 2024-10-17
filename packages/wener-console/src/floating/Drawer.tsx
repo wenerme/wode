@@ -1,4 +1,4 @@
-import { cloneElement, isValidElement, useEffect, useId, useState } from 'react';
+import { cloneElement, isValidElement, useEffect, useId, useState, type ReactNode } from 'react';
 import {
   FloatingFocusManager,
   FloatingOverlay,
@@ -11,8 +11,8 @@ import {
 } from '@floating-ui/react';
 
 interface Props {
-  render: (data: { close: () => void; labelId: string; descriptionId: string }) => React.ReactNode;
-  children?: React.ReactNode;
+  render: (data: { close: () => void; labelId: string; descriptionId: string }) => ReactNode;
+  children?: ReactNode;
 }
 
 function useMediaQuery({ query }: { query: string }) {
