@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react';
-import type React from 'react';
-import { memo } from 'react';
+import { memo, type FC } from 'react';
 import { HiOutlineLogout } from 'react-icons/hi';
 import { HiLockClosed, HiOutlineIdentification, HiQuestionMarkCircle } from 'react-icons/hi2';
 import { Link } from 'react-router-dom';
@@ -12,7 +11,7 @@ import { isDev } from '../../../const';
 import { DockClock } from './DockClock';
 import { DockUserAvatar } from './DockUserAvatar';
 
-export const DockLayout: React.FC<{ children?: ReactNode; dock?: ReactNode }> = ({ children, dock = <Dock /> }) => {
+export const DockLayout: FC<{ children?: ReactNode; dock?: ReactNode }> = ({ children, dock = <Dock /> }) => {
   return (
     <div className={clsx('flex h-screen w-full overflow-hidden', 'flex-col md:flex-row')}>
       <main className={'relative order-5 h-full flex-1 overflow-auto'}>

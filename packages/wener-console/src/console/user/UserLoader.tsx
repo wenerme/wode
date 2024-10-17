@@ -1,4 +1,4 @@
-import type { PropsWithChildren } from 'react';
+import type { FC, PropsWithChildren } from 'react';
 import { usePromise } from '@wener/reaction';
 import { NonIdealState } from '../../daisy';
 import { resolveErrorMessage } from '../../toast';
@@ -6,7 +6,7 @@ import { LoadingIndicator } from '../components';
 import { getUserStore } from '../container';
 import type { UserProfileData } from '../store/UserStore';
 
-export const UserLoader: React.FC<
+export const UserLoader: FC<
   PropsWithChildren & {
     load?: () => Promise<UserProfileData>;
   }

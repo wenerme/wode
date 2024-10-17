@@ -1,14 +1,10 @@
-import type { HTMLProps } from 'react';
-import type React from 'react';
+import type { FC, HTMLProps, ReactNode } from 'react';
 import { clsx } from 'clsx';
 import { cn } from '../../../tw/cn';
 import { TitleTabLayout } from '../../components';
 
-export const SettingLayout: React.FC<
-  { title?: React.ReactNode; action?: React.ReactNode; children?: React.ReactNode } & Omit<
-    HTMLProps<HTMLDivElement>,
-    'title' | 'action'
-  >
+export const SettingLayout: FC<
+  { title?: ReactNode; action?: ReactNode; children?: ReactNode } & Omit<HTMLProps<HTMLDivElement>, 'title' | 'action'>
 > = ({ title, children, className, action, ...props }) => {
   return (
     <TitleTabLayout title={title || '设置'} tabs={[]} className={cn('h-full', className)} action={action} {...props}>

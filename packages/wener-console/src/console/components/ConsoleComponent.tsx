@@ -1,5 +1,4 @@
-import type React from 'react';
-import type { ComponentPropsWithoutRef, ComponentPropsWithRef, ErrorInfo, ReactNode } from 'react';
+import type { ComponentPropsWithoutRef, ComponentPropsWithRef, ElementType, ErrorInfo, ReactNode } from 'react';
 import { GrSystem } from 'react-icons/gr';
 import { defineComponent, type ContextComponentType } from '../../components/ComponentProvider';
 import { LoadingIndicator as _LoadingIndicator } from '../../loader';
@@ -33,11 +32,11 @@ export const LoadingIndicator = defineComponent<LoadingIndicatorProps>({
   Component: _LoadingIndicator,
 });
 
-export type EmptyPlaceholderProps<E extends React.ElementType> = Omit<React.ComponentPropsWithoutRef<E>, 'as'> & {
+export type EmptyPlaceholderProps<E extends ElementType> = Omit<ComponentPropsWithoutRef<E>, 'as'> & {
   as?: E;
-  children?: React.ReactNode;
+  children?: ReactNode;
 };
-type EmptyPlaceholder<E extends React.ElementType = 'div'> = ContextComponentType<EmptyPlaceholderProps<E>>;
+type EmptyPlaceholder<E extends ElementType = 'div'> = ContextComponentType<EmptyPlaceholderProps<E>>;
 export const EmptyPlaceholder = defineComponent({
   name: ConsoleComponentName.EmptyPlaceholder,
   Component: _EmptyPlaceholder,
@@ -61,11 +60,11 @@ export const Image = defineComponent({
   Component: _Image,
 });
 
-export type LinkProps<E extends React.ElementType = 'a'> = Omit<ComponentPropsWithRef<E>, 'href'> & {
+export type LinkProps<E extends ElementType = 'a'> = Omit<ComponentPropsWithRef<E>, 'href'> & {
   as?: E;
   href: string;
 };
-type Link<E extends React.ElementType = 'a'> = ContextComponentType<LinkProps<E>>;
+type Link<E extends ElementType = 'a'> = ContextComponentType<LinkProps<E>>;
 export const Link = defineComponent<LinkProps>({
   name: ConsoleComponentName.Link,
   Component: _Link,

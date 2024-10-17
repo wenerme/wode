@@ -1,10 +1,9 @@
-import React, { forwardRef } from 'react';
+import { forwardRef } from 'react';
 import {
   OverlayScrollbarsComponent,
   type OverlayScrollbarsComponentProps,
   type OverlayScrollbarsComponentRef,
 } from 'overlayscrollbars-react';
-import 'overlayscrollbars/overlayscrollbars.css';
 
 export const OverlayScrollbar = forwardRef<OverlayScrollbarsComponentRef<'div'>, OverlayScrollbarsComponentProps>(
   ({ children, ...props }, ref) => {

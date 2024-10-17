@@ -1,12 +1,12 @@
-import type React from 'react';
+import type { ComponentProps, ElementType, ReactNode } from 'react';
 import { clsx } from 'clsx';
 
-export type EmptyPlaceholderProps<E extends React.ElementType> = Omit<React.ComponentProps<E>, 'as'> & {
+export type EmptyPlaceholderProps<E extends ElementType> = Omit<ComponentProps<E>, 'as'> & {
   as?: E;
-  children?: React.ReactNode;
+  children?: ReactNode;
 };
 
-export function EmptyPlaceholder<T extends React.ElementType = 'span'>({
+export function EmptyPlaceholder<T extends ElementType = 'span'>({
   as,
   className,
   children = '无',

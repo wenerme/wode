@@ -1,6 +1,6 @@
 import type { MaybePromise } from '../asyncs/MaybePromise';
 import { getGlobalThis } from '../runtime/getGlobalThis';
-import { type FetchLike } from './types';
+import type { FetchLike } from './types';
 
 export function createFetchWith({
   fetch = getGlobalThis().fetch,

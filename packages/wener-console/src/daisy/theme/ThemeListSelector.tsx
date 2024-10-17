@@ -1,11 +1,11 @@
-import type React from 'react';
+import type { FC, HTMLAttributes } from 'react';
 import classNames from 'clsx';
 import { useSnapshot } from 'valtio';
 import { getSupportedThemes } from './getSupportedThemes';
 import { ThemePreviewCard } from './ThemePreviewCard';
 import { useThemeState } from './useTheme';
 
-export const ThemeListSelector: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ className, style, ...props }) => {
+export const ThemeListSelector: FC<HTMLAttributes<HTMLDivElement>> = ({ className, style, ...props }) => {
   const state = useThemeState();
   const { theme } = useSnapshot(state);
   const setTheme = (v: string) => {

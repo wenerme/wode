@@ -1,5 +1,4 @@
-import type React from 'react';
-import { forwardRef, type ComponentPropsWithRef } from 'react';
+import { forwardRef, type ComponentPropsWithRef, type FC } from 'react';
 import { PiAppWindowLight, PiMinusThin, PiSquareThin, PiXThin } from 'react-icons/pi';
 import { clsx } from 'clsx';
 import { cn } from '../../tw/cn';
@@ -38,7 +37,7 @@ export const WindowsWindowFrame = forwardRef<HTMLDivElement, WindowFrameProps>(
   },
 );
 
-export const WindowsWindowController: React.FC<{
+export const WindowsWindowController: FC<{
   close?: ComponentPropsWithRef<'button'>;
   minimize?: ComponentPropsWithRef<'button'>;
   maximize?: ComponentPropsWithRef<'button'>;

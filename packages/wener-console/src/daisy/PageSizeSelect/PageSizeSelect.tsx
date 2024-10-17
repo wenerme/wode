@@ -1,6 +1,6 @@
-import type React from 'react';
+import type { FC } from 'react';
 
-export const PageSizeSelect: React.FC<{
+export const PageSizeSelect: FC<{
   value: number;
   onChange?: (size: number) => void;
   options?: number[];

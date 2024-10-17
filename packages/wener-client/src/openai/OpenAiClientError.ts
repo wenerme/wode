@@ -1,4 +1,4 @@
-import { type ErrorResponse } from './request';
+import type { ErrorResponse } from './request';
 
 export class OpenAiClientError extends Error {
   readonly type: string;

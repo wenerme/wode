@@ -1,4 +1,4 @@
-import type React from 'react';
+import type { FC, ReactNode } from 'react';
 import styled from '@emotion/styled';
 import { darken } from 'polished';
 
@@ -152,12 +152,12 @@ const BoxShuffleContainer = styled.div<{ size?: string; colors?: string[] }>`
 
 export interface BoxShuffleProps {
   size?: string;
-  title?: React.ReactNode;
-  detail?: React.ReactNode;
+  title?: ReactNode;
+  detail?: ReactNode;
   colors?: string[];
 }
 
-export const BoxShuffle: React.FC<BoxShuffleProps> = (props) => {
+export const BoxShuffle: FC<BoxShuffleProps> = (props) => {
   const { title, detail, ...rest } = props;
   return (
     <BoxShuffleContainer {...rest}>

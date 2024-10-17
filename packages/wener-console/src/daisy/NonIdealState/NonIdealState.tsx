@@ -1,17 +1,16 @@
-import type { HTMLAttributes } from 'react';
-import type React from 'react';
+import type { FC, HTMLAttributes, ReactNode } from 'react';
 import classNames from 'clsx';
 import type { IntentType } from '../const';
 
 export interface NonIdealStateProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
-  title?: React.ReactNode;
-  icon?: React.ReactNode;
-  description?: React.ReactNode;
-  action?: React.ReactNode;
+  title?: ReactNode;
+  icon?: ReactNode;
+  description?: ReactNode;
+  action?: ReactNode;
   intent?: IntentType;
 }
 
-export const NonIdealState: React.FC<NonIdealStateProps> = ({
+export const NonIdealState: FC<NonIdealStateProps> = ({
   icon,
   title,
   description,

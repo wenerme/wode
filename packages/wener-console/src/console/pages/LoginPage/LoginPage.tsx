@@ -1,4 +1,4 @@
-import React, { type ComponentPropsWithoutRef, type ReactNode } from 'react';
+import { Fragment, type ComponentPropsWithoutRef, type FC, type ReactNode } from 'react';
 import { useForm } from 'react-hook-form';
 import { BiLogoChrome } from 'react-icons/bi';
 import { CiLock, CiUser } from 'react-icons/ci';
@@ -56,7 +56,7 @@ export interface LoginPageProps extends Omit<ComponentPropsWithoutRef<'div'>, 't
   };
 }
 
-export const LoginPage: React.FC<LoginPageProps> = ({
+export const LoginPage: FC<LoginPageProps> = ({
   onSubmit = () => undefined,
   showoff,
   hero = showoff,
@@ -266,10 +266,10 @@ function joinNode(nodes: ReactNode[], join: ReactNode) {
   return nodes.filter(Boolean).map((n, i) => {
     let last = i <= nodes.length - 1;
     return (
-      <React.Fragment key={i}>
+      <Fragment key={i}>
         {n}
         {last || join}
-      </React.Fragment>
+      </Fragment>
     );
   });
 }

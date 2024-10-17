@@ -1,6 +1,5 @@
 import type { HTMLProps, ReactElement, ReactNode } from 'react';
-import type React from 'react';
-import { forwardRef, useState } from 'react';
+import { forwardRef, useState, type FC } from 'react';
 import { HiChevronDown, HiChevronRight } from 'react-icons/hi2';
 import { PiCaretDoubleLeftThin, PiCaretDoubleRightThin } from 'react-icons/pi';
 import { flexRender, useControllable, type FlexRenderable } from '@wener/reaction';
@@ -42,7 +41,7 @@ export interface ExpandableSideMenuLayoutProps extends Omit<HTMLProps<HTMLDivEle
   title?: ReactNode;
   icon?: ReactElement;
 
-  children?: React.ReactNode;
+  children?: ReactNode;
   items: Array<ExpandableSideMenuItemProps>;
   expanded?: boolean;
   initialExpanded?: boolean;
@@ -50,7 +49,7 @@ export interface ExpandableSideMenuLayoutProps extends Omit<HTMLProps<HTMLDivEle
   NavLink?: BaseNavLink;
 }
 
-const SideMenuItem: React.FC<{ item: ExpandableSideMenuItemProps; expanded?: boolean; NavLink?: BaseNavLink }> = ({
+const SideMenuItem: FC<{ item: ExpandableSideMenuItemProps; expanded?: boolean; NavLink?: BaseNavLink }> = ({
   item,
   expanded,
   NavLink = AutoNavLink,
@@ -169,7 +168,7 @@ const SideMenuItem: React.FC<{ item: ExpandableSideMenuItemProps; expanded?: boo
   );
 };
 
-export const ExpandableMenu: React.FC<ExpandableSideMenuLayoutProps> = ({
+export const ExpandableMenu: FC<ExpandableSideMenuLayoutProps> = ({
   expanded,
   title,
   header: _header,

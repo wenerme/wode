@@ -1,4 +1,4 @@
-import { type FetchLike } from '@wener/utils';
+import type { FetchLike } from '@wener/utils';
 import Cookie from 'cookie';
 import { request } from './request';
 

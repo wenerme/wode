@@ -1,4 +1,4 @@
-import { AliCloudClientOptions } from './AliCloudClient';
+import type { AliCloudClientOptions } from './AliCloudClient';
 
 export interface DytnsV20200217Api {
   $product: 'Dytnsapi';

@@ -1,6 +1,6 @@
 import { requireSuccessResponse } from './request';
 import { sign } from './sign';
-import { type ListResponse, type QueryCustomerItem } from './types';
+import type { ListResponse, QueryCustomerItem } from './types';
 
 export class Client {
   readonly options: ClientOptions;

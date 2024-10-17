@@ -1,4 +1,4 @@
-import React from 'react';
+import { createRef, PureComponent, type ReactNode, type RefObject } from 'react';
 import ReactDOM from 'react-dom';
 
 const hasWindow = typeof window !== 'undefined';
@@ -15,14 +15,14 @@ export interface ReactShadowRootProps {
   delegatesFocus?: boolean;
   mode?: ShadowRootMode;
   stylesheets?: CSSStyleSheet[];
-  children?: React.ReactNode;
+  children?: ReactNode;
 }
 
 /**
  * ReactShadowRoot place children in shadow-root
  * @see {@link https://github.com/apearce/react-shadow-root}
  */
-export class ReactShadowRoot extends React.PureComponent<ReactShadowRootProps> {
+export class ReactShadowRoot extends PureComponent<ReactShadowRootProps> {
   static constructableStylesheetsSupported = constructableStylesheetsSupported;
   static defaultProps = {
     delegatesFocus: false,
@@ -33,7 +33,7 @@ export class ReactShadowRoot extends React.PureComponent<ReactShadowRootProps> {
   static propTypes = {};
   static shadowRootSupported = shadowRootSupported;
   private shadowRoot?: ShadowRoot;
-  private readonly placeholder: React.RefObject<HTMLElement>;
+  private readonly placeholder: RefObject<HTMLElement>;
   state = { initialized: false };
 
   /**
@@ -44,7 +44,7 @@ export class ReactShadowRoot extends React.PureComponent<ReactShadowRootProps> {
    */
   constructor(props: ReactShadowRootProps) {
     super(props);
-    this.placeholder = React.createRef();
+    this.placeholder = createRef();
   }
 
   componentDidMount() {

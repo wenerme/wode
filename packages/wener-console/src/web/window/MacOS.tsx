@@ -1,5 +1,4 @@
-import type React from 'react';
-import { forwardRef, type ComponentPropsWithRef } from 'react';
+import { forwardRef, type ComponentPropsWithRef, type FC } from 'react';
 import { CgExpand } from 'react-icons/cg';
 import { HiMiniMinus, HiMiniXMark } from 'react-icons/hi2';
 import { clsx } from 'clsx';
@@ -40,7 +39,7 @@ export const MacOSWindowFrame = forwardRef<HTMLDivElement, WindowFrameProps>(
   },
 );
 
-export const MacOSWindowController: React.FC<{
+export const MacOSWindowController: FC<{
   close?: ComponentPropsWithRef<'button'>;
   minimize?: ComponentPropsWithRef<'button'>;
   maximize?: ComponentPropsWithRef<'button'>;

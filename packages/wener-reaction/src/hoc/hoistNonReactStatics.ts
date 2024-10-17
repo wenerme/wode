@@ -1,5 +1,4 @@
-// https://github.com/mridgway/hoist-non-react-statics/blob/main/src/index.js
-import type React from 'react';
+import type { ComponentType, ForwardRefExoticComponent, MemoExoticComponent } from 'react';
 import { ForwardRef, isMemo, Memo } from 'react-is';
 
 const REACT_STATICS = {
@@ -107,24 +106,24 @@ interface FORWARD_REF_STATICS {
 }
 
 type NonReactStatics<
-  S extends React.ComponentType<any>,
+  S extends ComponentType<any>,
   C extends {
     [key: string]: true;
   } = {},
 > = {
   [key in Exclude<
     keyof S,
-    S extends React.MemoExoticComponent<any>
+    S extends MemoExoticComponent<any>
       ? keyof MEMO_STATICS | keyof C
-      : S extends React.ForwardRefExoticComponent<any>
+      : S extends ForwardRefExoticComponent<any>
         ? keyof FORWARD_REF_STATICS | keyof C
         : keyof REACT_STATICS | keyof KNOWN_STATICS | keyof C
   >]: S[key];
 };
 
 export function hoistNonReactStatics<
-  T extends React.ComponentType<any>,
-  S extends React.ComponentType<any>,
+  T extends ComponentType<any>,
+  S extends ComponentType<any>,
   C extends {
     [key: string | symbol]: true;
   } = {},

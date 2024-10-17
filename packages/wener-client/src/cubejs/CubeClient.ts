@@ -1,5 +1,5 @@
-import { type FetchLike } from '@wener/utils';
-import { type CubeLoadRequest, type CubeLoadResponse } from './service';
+import type { FetchLike } from '@wener/utils';
+import type { CubeLoadRequest, CubeLoadResponse } from './service';
 
 /**
  * https://cube.dev/docs/reference/rest-api

@@ -1,4 +1,4 @@
-import React, { type ReactElement, type ReactNode } from 'react';
+import { cloneElement, type ComponentType, type ReactElement, type ReactNode } from 'react';
 import { mergeProps as defaultMergeProps } from '../utils/mergeProps';
 import { isReactComponent } from './isReactComponent';
 
@@ -7,7 +7,7 @@ import { isReactComponent } from './isReactComponent';
  *
  * The Component doesn't have to match the props type
  */
-export type FlexRenderable<TProps> = React.ReactNode | React.ComponentType<Partial<TProps>>;
+export type FlexRenderable<TProps> = ReactNode | ComponentType<Partial<TProps>>;
 
 /**
  * flexRender will try to render a component or a React node
@@ -34,7 +34,7 @@ export function flexRender<TProps extends object>(
   if (mergeProps) {
     const merge = mergeProps === true ? flexRender.mergeProps : mergeProps;
     if (typeof Comp === 'object' && 'props' in Comp) {
-      return React.cloneElement(Comp, merge(Comp.props, props));
+      return cloneElement(Comp, merge(Comp.props, props));
     }
   }
   // various ReactNode types

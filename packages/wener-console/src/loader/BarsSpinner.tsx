@@ -1,4 +1,4 @@
-import type React from 'react';
+import type { FC } from 'react';
 import styled from '@emotion/styled';
 
 const BarsSpinnerBox = styled.div<{ bars: number }>`
@@ -35,7 +35,7 @@ const BarsSpinnerBox = styled.div<{ bars: number }>`
   }
 `;
 
-export const BarsSpinner: React.FC<{ bars?: number }> = ({ bars = 16 }) => {
+export const BarsSpinner: FC<{ bars?: number }> = ({ bars = 16 }) => {
   return (
     <BarsSpinnerBox bars={bars}>
       {Array(bars)

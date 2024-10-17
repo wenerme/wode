@@ -1,5 +1,4 @@
-import type React from 'react';
-import { useState, type ReactNode } from 'react';
+import { useState, type FC, type ReactNode } from 'react';
 import { createHashRouter, Outlet, RouterProvider, type RouterProviderProps } from 'react-router-dom';
 import type { Router } from '@remix-run/router';
 import { ErrorSuspenseBoundary, useAsyncEffect, useDebugRender } from '@wener/reaction';
@@ -30,12 +29,12 @@ export type ConsoleLoaderProps = {
   render?: (content: ReactNode) => ReactNode;
   loadModule: (name: string) => Promise<DynamicModule>;
   modules?: string[];
-  children?: React.ReactNode;
+  children?: ReactNode;
   createRouter?: (children: RouteObjects) => Router;
   future?: RouterProviderProps['future'];
 };
 
-export const ConsoleLoader: React.FC<ConsoleLoaderProps> = ({
+export const ConsoleLoader: FC<ConsoleLoaderProps> = ({
   loadModule,
   modules = [],
   render,

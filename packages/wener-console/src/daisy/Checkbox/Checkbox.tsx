@@ -1,5 +1,5 @@
 import type { HTMLProps } from 'react';
-import React, { forwardRef } from 'react';
+import { forwardRef, useEffect, useRef } from 'react';
 import { mergeRefs } from '@wener/reaction';
 import classNames from 'clsx';
 import type { DaisyModifierProps } from '../utils/daisy';
@@ -10,9 +10,9 @@ export type CheckboxProps = HTMLProps<HTMLInputElement> & {
 } & Pick<DaisyModifierProps, 'intent' | 'size'>;
 
 export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(({ indeterminate, className, ...props }, _ref) => {
-  const ref = React.useRef<HTMLInputElement>(null);
+  const ref = useRef<HTMLInputElement>(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (typeof indeterminate === 'boolean' && ref.current) {
       ref.current.indeterminate = !props.checked && indeterminate;
     }

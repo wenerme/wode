@@ -1,12 +1,11 @@
-import type { ReactNode } from 'react';
-import type React from 'react';
+import type { FC, ReactNode } from 'react';
 import { BiError } from 'react-icons/bi';
 import { GrDocumentMissing } from 'react-icons/gr';
 import { HiMiniArrowLeft, HiMiniArrowPath, HiMiniHome } from 'react-icons/hi2';
 import { useInRouterContext, useNavigate } from 'react-router-dom';
 import { Button, NonIdealState } from '../daisy';
 
-export const NonIdealPage: React.FC<{ icon?: ReactNode; title?: ReactNode; description?: ReactNode }> = ({
+export const NonIdealPage: FC<{ icon?: ReactNode; title?: ReactNode; description?: ReactNode }> = ({
   title,
   icon,
   description,
@@ -71,7 +70,7 @@ export const NotFoundPage = () => {
   );
 };
 
-export const ServerErrorPage: React.FC<{ statusCode?: string }> = ({ statusCode }) => {
+export const ServerErrorPage: FC<{ statusCode?: string }> = ({ statusCode }) => {
   return (
     <NonIdealPage
       icon={<BiError className={'h-12 w-12'} />}

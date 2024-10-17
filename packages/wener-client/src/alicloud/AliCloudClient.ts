@@ -1,5 +1,5 @@
-import { type Constructor, type FetchLike } from '@wener/utils';
-import { type AliCloudApis } from './apis';
+import type { Constructor, FetchLike } from '@wener/utils';
+import type { AliCloudApis } from './apis';
 import { request, type AliCloudRequestOptions } from './request';
 
 export interface AliCloudClientOptions {

@@ -1,4 +1,4 @@
-import type React from 'react';
+import type { FC } from 'react';
 import classNames from 'clsx';
 
 const Colors = {
@@ -11,7 +11,7 @@ const Colors = {
   warning: ['bg-warning', 'text-warning-content'],
   error: ['bg-error', 'text-error-content'],
 };
-export const ThemePreviewCard: React.FC<{ title?: string }> = ({ title }) => {
+export const ThemePreviewCard: FC<{ title?: string }> = ({ title }) => {
   return (
     <div className='grid grid-cols-5 grid-rows-4'>
       <div className='col-start-1 row-span-2 row-start-1 bg-base-200'></div>

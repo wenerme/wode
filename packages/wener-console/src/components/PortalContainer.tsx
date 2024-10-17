@@ -1,7 +1,7 @@
-import React, { createContext, useId, useMemo, type ReactNode } from 'react';
+import { createContext, useContext, useId, useMemo, type FC, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 
-export const PortalProvider: React.FC<{
+export const PortalProvider: FC<{
   children?: ReactNode;
   id?: string;
   container: HTMLElement;
@@ -16,7 +16,7 @@ export const PortalProvider: React.FC<{
 const Context = createContext<PortalContext | undefined>(undefined);
 
 function usePortalContext() {
-  const context = React.useContext(Context);
+  const context = useContext(Context);
   if (!context) {
     return {
       id: '__ROOT__',
@@ -26,7 +26,7 @@ function usePortalContext() {
   return context;
 }
 
-export const Portal: React.FC<{ children?: ReactNode; id?: string }> = ({ children, id }) => {
+export const Portal: FC<{ children?: ReactNode; id?: string }> = ({ children, id }) => {
   const _id = useId();
   return createPortal(children, usePortalContext().container, id || _id);
 };

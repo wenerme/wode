@@ -1,4 +1,4 @@
-import { doRequest, DoRequestOptions } from '../utils/doRequest';
+import { doRequest, type DoRequestOptions } from '../utils/doRequest';
 import { UnauthenticatedError } from './errors';
 
 export type RequestOptions<OUT = any, IN = OUT> = DoRequestOptions<OUT, IN>;

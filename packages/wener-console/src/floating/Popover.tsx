@@ -1,6 +1,13 @@
 import type { CSSProperties } from 'react';
-import type React from 'react';
-import { cloneElement, isValidElement, useMemo, useState } from 'react';
+import {
+  cloneElement,
+  isValidElement,
+  useMemo,
+  useState,
+  type HTMLProps,
+  type ReactElement,
+  type ReactNode,
+} from 'react';
 import { autoUpdate } from '@floating-ui/dom';
 import type { Placement } from '@floating-ui/react';
 import {
@@ -126,10 +133,10 @@ export const Popover = ({
 };
 
 interface Props {
-  render: (data: { close: () => void; labelId: string; descriptionId: string }) => React.ReactNode;
+  render: (data: { close: () => void; labelId: string; descriptionId: string }) => ReactNode;
   placement?: Placement;
   modal?: boolean;
-  children?: React.ReactElement<HTMLElement>;
+  children?: ReactElement<HTMLElement>;
   bubbles?: boolean;
 }
 
@@ -166,7 +173,7 @@ function PopoverComponent({ children, render, placement, modal = true, bubbles =
           getReferenceProps({
             ref: refs.setReference,
             'data-open': open ? '' : undefined,
-          } as React.HTMLProps<Element>),
+          } as HTMLProps<Element>),
         )}
       <FloatingPortal>
         {open && (

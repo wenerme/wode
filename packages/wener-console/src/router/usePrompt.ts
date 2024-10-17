@@ -6,13 +6,13 @@
  * We're using a workaround from the gist https://gist.github.com/MarksCode/64e438c82b0b2a1161e01c88ca0d0355 with some modifications
  * Thanks to @MarksCode(https://github.com/MarksCode) for the workaround.
  */
-import React from 'react';
+import { useCallback, useContext, useEffect } from 'react';
 import { UNSAFE_NavigationContext as NavigationContext } from 'react-router-dom';
 
 function useConfirmExit(confirmExit: () => boolean, when = true) {
-  const { navigator } = React.useContext(NavigationContext);
+  const { navigator } = useContext(NavigationContext);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!when) {
       return;
     }
@@ -42,7 +42,7 @@ function useConfirmExit(confirmExit: () => boolean, when = true) {
 }
 
 export function usePrompt(message: string, when = true, onConfirm?: () => void, legacy = false) {
-  const warnWhenListener = React.useCallback(
+  const warnWhenListener = useCallback(
     (e: { preventDefault: () => void; returnValue: string }) => {
       e.preventDefault();
 
@@ -53,7 +53,7 @@ export function usePrompt(message: string, when = true, onConfirm?: () => void, 
     [message],
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (when && !legacy) {
       window.addEventListener('beforeunload', warnWhenListener);
     }
@@ -63,7 +63,7 @@ export function usePrompt(message: string, when = true, onConfirm?: () => void, 
     };
   }, [warnWhenListener, when, legacy]);
 
-  const confirmExit = React.useCallback(() => {
+  const confirmExit = useCallback(() => {
     const confirm = window.confirm(message);
     if (confirm && onConfirm) {
       onConfirm();

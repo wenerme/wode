@@ -1,9 +1,8 @@
-import type { CSSProperties } from 'react';
-import type React from 'react';
+import type { CSSProperties, FC } from 'react';
 import clsx from 'clsx';
 import { DotsFadeLoader } from './DotsFadeLoader/DotsFadeLoader';
 
-export const LoadingIndicator: React.FC<{ title?: string; className?: string; style?: CSSProperties }> = ({
+export const LoadingIndicator: FC<{ title?: string; className?: string; style?: CSSProperties }> = ({
   title,
   className,
   style,

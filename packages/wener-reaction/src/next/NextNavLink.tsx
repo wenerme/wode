@@ -1,7 +1,6 @@
 'use client';
 
-import type React from 'react';
-import { type ComponentProps, forwardRef, type ReactNode } from 'react'
+import { forwardRef, type ComponentProps, type FC, type ReactNode } from 'react';
 import { maybeFunction, type MaybeFunction } from '@wener/utils';
 import { clsx } from 'clsx';
 import Link from 'next/link';
@@ -14,7 +13,7 @@ export interface NextNavLinkProps extends Omit<ComponentProps<typeof Link>, 'chi
   inactiveClassName?: string;
 }
 
-export const NextNavLink: React.FC<NextNavLinkProps> = forwardRef(
+export const NextNavLink: FC<NextNavLinkProps> = forwardRef(
   ({ children, activeClassName, inactiveClassName, className, ...props }, ref) => {
     let pathname = usePathname();
     let isActive = pathname === props.href;

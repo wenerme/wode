@@ -1,9 +1,9 @@
 'use server';
 
-import type React from 'react';
-import { type AlternativeRendererProps, renderAlternative } from '../render/renderAlternative';
+import type { FC } from 'react';
+import { renderAlternative, type AlternativeRendererProps } from '../render/renderAlternative';
 
-export const ServerOnly: React.FC<AlternativeRendererProps> = (props) => {
+export const ServerOnly: FC<AlternativeRendererProps> = (props) => {
   let isServer = typeof window === 'undefined';
   return renderAlternative(isServer, props);
 };

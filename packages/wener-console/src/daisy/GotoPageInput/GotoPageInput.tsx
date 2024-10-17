@@ -1,8 +1,7 @@
-import type React from 'react';
-import { useState } from 'react';
+import { useState, type FC } from 'react';
 import { Button } from '../Button/Button';
 
-export const GotoPageInput: React.FC<{
+export const GotoPageInput: FC<{
   count?: number;
   onGoto?: (v: number) => void;
   disabled?: boolean;

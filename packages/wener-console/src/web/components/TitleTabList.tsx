@@ -1,4 +1,4 @@
-import React, { type ReactNode } from 'react';
+import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 import { NavLink } from 'react-router-dom';
 import { flexRender, useControllable, type FlexRenderable } from '@wener/reaction';
 import { clsx } from 'clsx';
@@ -16,9 +16,9 @@ export function getTitleTabItemKey(item: TitleTabItem, index: number) {
   return item.key ?? String(index);
 }
 
-export const TitleTabList = React.forwardRef<
+export const TitleTabList = forwardRef<
   HTMLDivElement,
-  Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> & {
+  Omit<HTMLAttributes<HTMLDivElement>, 'title'> & {
     title?: ReactNode;
     action?: ReactNode;
     tabs: Array<TitleTabItem>;

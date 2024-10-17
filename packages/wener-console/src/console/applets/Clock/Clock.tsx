@@ -1,5 +1,4 @@
-import type React from 'react';
-import { useEffect, useReducer, type ComponentPropsWithoutRef } from 'react';
+import { useEffect, useReducer, type ComponentPropsWithoutRef, type FC } from 'react';
 import styled from '@emotion/styled';
 import { clsx } from 'clsx';
 
@@ -244,7 +243,7 @@ const Container = styled.div`
   }
 `;
 
-export const Clock: React.FC<ComponentPropsWithoutRef<'div'>> = ({ className, children, ...props }) => {
+export const Clock: FC<ComponentPropsWithoutRef<'div'>> = ({ className, children, ...props }) => {
   // src https://www.cssscript.com/modern-clock-ui/
 
   let date = new Date();

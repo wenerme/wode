@@ -1,4 +1,4 @@
-import type React from 'react';
+import type { ReactNode } from 'react';
 
 export interface NextPageProps<P = Record<string, any>, S = Record<string, any>> {
   params: P;
@@ -7,5 +7,5 @@ export interface NextPageProps<P = Record<string, any>, S = Record<string, any>>
 
 export interface NextLayoutProps<P = Record<string, any>> {
   params: P;
-  children?: React.ReactNode;
+  children?: ReactNode;
 }

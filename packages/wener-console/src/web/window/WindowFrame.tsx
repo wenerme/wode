@@ -1,4 +1,4 @@
-import React, { forwardRef, type ComponentPropsWithoutRef, type ReactNode } from 'react';
+import { forwardRef, type ComponentPropsWithoutRef, type ReactNode } from 'react';
 import { MacOSWindowFrame } from './MacOS';
 import { useWindowTheme } from './Window';
 import { WindowsWindowFrame } from './Windows';

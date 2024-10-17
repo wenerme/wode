@@ -1,10 +1,9 @@
-import type React from 'react';
-import { useEffect, type PropsWithChildren } from 'react';
+import { useEffect, type FC, type PropsWithChildren } from 'react';
 import { useInRouterContext } from 'react-router-dom';
 import { useRouteTitles } from '../../router';
 import { ReactRouterTracker } from './ReactRouterTracker';
 
-export const RootRouterReactor: React.FC<PropsWithChildren> = ({ children }) => {
+export const RootRouterReactor: FC<PropsWithChildren> = ({ children }) => {
   return (
     <>
       <RouterReactor />

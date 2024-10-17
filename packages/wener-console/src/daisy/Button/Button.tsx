@@ -1,12 +1,11 @@
 import type { ReactNode, Ref } from 'react';
-import type React from 'react';
-import { useMemo, useState } from 'react';
+import { useMemo, useState, type ComponentProps, type ElementType } from 'react';
 import { isPromise } from '@wener/utils';
 import { clsx } from 'clsx';
 import type { IntentType, SizeType } from '../const';
 import { daisy, omitDaisyModifiers } from '../utils/daisy';
 
-export type ButtonProps<E extends React.ElementType> = Omit<React.ComponentProps<E>, 'as'> & {
+export type ButtonProps<E extends ElementType> = Omit<ComponentProps<E>, 'as'> & {
   as?: E;
   // 是否为激活状态
   active?: boolean;
@@ -22,7 +21,7 @@ export type ButtonProps<E extends React.ElementType> = Omit<React.ComponentProps
   children?: ReactNode;
 };
 
-export const Button = <E extends React.ElementType>({
+export const Button = <E extends ElementType>({
   className,
   onClick,
   as,
@@ -47,7 +46,7 @@ export const Button = <E extends React.ElementType>({
       const r = raw(...args);
       if (isPromise(r)) {
         setLoading(true);
-        r.finally(() => {
+        (r as Promise<any>).finally(() => {
           setLoading(false);
         });
       }

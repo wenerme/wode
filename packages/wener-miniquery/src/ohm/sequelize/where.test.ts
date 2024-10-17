@@ -6,7 +6,7 @@ import {
   type ModelStatic,
   type WhereOptions,
 } from '@sequelize/core';
-import { beforeAll, expect, test, TestContext } from 'vitest';
+import { beforeAll, expect, test, type TestContext } from 'vitest';
 import { toMiniQueryAST } from '../ast';
 import { toSequelizeWhere } from './where';
 

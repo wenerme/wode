@@ -1,4 +1,15 @@
-import React, { forwardRef, Fragment, useContext, useMemo, useRef, type ComponentType } from 'react';
+import {
+  createContext,
+  forwardRef,
+  Fragment,
+  lazy,
+  useContext,
+  useMemo,
+  useRef,
+  type ComponentType,
+  type FC,
+  type ReactNode,
+} from 'react';
 import type { MaybePromise } from '@wener/utils';
 
 export interface DefineComponentOptions<P extends {} = {}> {
@@ -8,8 +19,8 @@ export interface DefineComponentOptions<P extends {} = {}> {
   schema?: any;
   metadata?: Record<string, any>;
 
-  Component?: React.ComponentType<P>;
-  load?: () => Promise<React.ComponentType<P> | { default: React.ComponentType<P> }>;
+  Component?: ComponentType<P>;
+  load?: () => Promise<ComponentType<P> | { default: ComponentType<P> }>;
 }
 
 export interface ComponentDef {
@@ -17,7 +28,7 @@ export interface ComponentDef {
   title: string;
   props?: Record<string, any>;
   schema?: any;
-  Component: React.ComponentType;
+  Component: ComponentType;
   metadata: Record<string, any>;
 }
 
@@ -78,7 +89,7 @@ export const ConsumeComponent = forwardRef<any, { $name: string } & Record<strin
 
 const ComponentNamePropKey = '$ContextComponentName';
 
-export type ContextComponentType<P> = React.ComponentType<P> & { [ComponentNamePropKey]: string };
+export type ContextComponentType<P> = ComponentType<P> & { [ComponentNamePropKey]: string };
 
 export function createContextComponent<P extends {}>(name: string): ContextComponentType<P> {
   let component = Object.assign(
@@ -93,17 +104,17 @@ export function createContextComponent<P extends {}>(name: string): ContextCompo
   return component;
 }
 
-type LoadableComponent<P> = () => MaybePromise<React.ComponentType<P> | { default: React.ComponentType<P> }>;
+type LoadableComponent<P> = () => MaybePromise<ComponentType<P> | { default: ComponentType<P> }>;
 
 type ProvideComponentOptions<P extends {} = {}> = {
   provide: string | ContextComponentType<P>;
-  Component?: React.ComponentType<P>;
+  Component?: ComponentType<P>;
   load?: LoadableComponent<P>;
 };
 
 export type ComponentProviderProps = {
   components: Array<ProvideComponentOptions>;
-  children?: React.ReactNode;
+  children?: ReactNode;
 };
 
 type NameLike<P> = string | ContextComponentType<P>;
@@ -126,7 +137,7 @@ const RootValue: ComponentContextObject = {
   useComponent: (name) => resolveComponent(name, RootValue),
 };
 
-const ComponentContext = React.createContext<ComponentContextObject>(RootValue);
+const ComponentContext = createContext<ComponentContextObject>(RootValue);
 
 function resolveName<P>(def: NameLike<P>) {
   let name = typeof def === 'string' ? def : def[ComponentNamePropKey];
@@ -138,7 +149,7 @@ export function useComponent<P extends {}>(comp: NameLike<P>) {
   return useComponent<P>(comp);
 }
 
-export const ComponentProvider: React.FC<ComponentProviderProps> = ({ components, children }) => {
+export const ComponentProvider: FC<ComponentProviderProps> = ({ components, children }) => {
   const parent = useContext(ComponentContext);
   const provideRef = useRef(components);
   const parentRef = useRef(parent);
@@ -197,18 +208,18 @@ function createComponent({
   Component,
   load,
 }: {
-  Component?: React.ComponentType;
+  Component?: ComponentType;
   load?: LoadableComponent<any>;
 }): ComponentType<any> {
   if (Component) {
     return Component;
   }
   if (load) {
-    return React.lazy(async () => {
+    return lazy(async () => {
       try {
         const v = await load();
         if ('default' in v) {
-          return v as { default: React.ComponentType };
+          return v as { default: ComponentType };
         }
         if (!v) {
           throw new Error(`Component not found`);

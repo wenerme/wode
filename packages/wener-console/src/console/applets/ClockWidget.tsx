@@ -1,4 +1,3 @@
-import React from 'react';
 import { PiClockLight } from 'react-icons/pi';
 import { getWindowDragHandleClassname } from '../../web/window';
 import { Clock } from './Clock/Clock';

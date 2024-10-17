@@ -1,6 +1,6 @@
-import type React from 'react';
-import { type AlternativeRendererProps, renderAlternative } from '../render/renderAlternative';
+import type { FC } from 'react';
+import { renderAlternative, type AlternativeRendererProps } from '../render/renderAlternative';
 
-export const ClientOnly: React.FC<AlternativeRendererProps> = (props) => {
+export const ClientOnly: FC<AlternativeRendererProps> = (props) => {
   return renderAlternative(typeof window !== 'undefined', props);
 };

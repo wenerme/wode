@@ -1,6 +1,6 @@
 import { getGlobalThis, type FetchLike, type MaybePromise } from '@wener/utils';
 import { request, type OpenAiRequestOptions } from './request';
-import { type DeletedObject, type ImageObject, type ListObject, type ModelObject } from './types';
+import type { DeletedObject, ImageObject, ListObject, ModelObject } from './types';
 
 export interface OpenAiClientOptions {
   fetch: FetchLike;

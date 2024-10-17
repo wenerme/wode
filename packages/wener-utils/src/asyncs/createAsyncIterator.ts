@@ -1,5 +1,5 @@
 import { createLazyPromise, type LazyPromise } from './createLazyPromise';
-import { type MaybePromise } from './MaybePromise';
+import type { MaybePromise } from './MaybePromise';
 
 type Val<T> = [val: MaybePromise<T> | undefined, done: boolean, err?: any];
 

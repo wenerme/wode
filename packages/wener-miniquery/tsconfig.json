@@ -3,6 +3,7 @@
     "moduleResolution": "bundler",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "verbatimModuleSyntax": true,
     "strict": true
   },
   "include": [

@@ -1,5 +1,4 @@
-import type React from 'react';
-import type { ComponentPropsWithoutRef } from 'react';
+import type { ComponentPropsWithoutRef, FC } from 'react';
 import { flexRender, type FlexRenderable } from '@wener/reaction';
 import { isDefined, parseBoolean } from '@wener/utils';
 import { cn } from '../../tw/cn';
@@ -14,7 +13,7 @@ export type ActiveToggleIconProps = Omit<ComponentPropsWithoutRef<'div'>, 'class
   pass?: { active?: boolean; activeClassName?: boolean; inactiveClassName: boolean };
 };
 
-export const ActiveToggleIcon: React.FC<ActiveToggleIconProps> = ({
+export const ActiveToggleIcon: FC<ActiveToggleIconProps> = ({
   icon,
   pass,
   activeClassName,

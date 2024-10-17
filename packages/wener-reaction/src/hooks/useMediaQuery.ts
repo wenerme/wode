@@ -1,8 +1,8 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 
 export function useMediaQuery(query: string): boolean | undefined {
   // Keep track of the preference in state, start with the current match
-  const [matches, setMatches] = React.useState(() => {
+  const [matches, setMatches] = useState(() => {
     if (typeof window !== 'undefined') {
       return window.matchMedia(query).matches;
     }
@@ -10,7 +10,7 @@ export function useMediaQuery(query: string): boolean | undefined {
   });
 
   // Watch for changes
-  React.useEffect(() => {
+  useEffect(() => {
     if (typeof window === 'undefined') {
       return;
     }

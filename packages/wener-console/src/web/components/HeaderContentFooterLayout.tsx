@@ -1,15 +1,11 @@
-import type React from 'react';
-import { forwardRef, type ReactNode } from 'react';
+import { forwardRef, type ComponentProps, type ElementType, type ReactElement, type ReactNode } from 'react';
 import { cn } from '../../tw/cn';
 
-export type HeaderContentFooterLayoutProps<E extends React.ElementType = 'div'> = Omit<
-  React.ComponentProps<E>,
-  'as'
-> & {
+export type HeaderContentFooterLayoutProps<E extends ElementType = 'div'> = Omit<ComponentProps<E>, 'as'> & {
   as?: E;
   header?: ReactNode;
   footer?: ReactNode;
-  children?: React.ReactNode;
+  children?: ReactNode;
 };
 
 export const HeaderContentFooterLayout = forwardRef<HTMLDivElement, HeaderContentFooterLayoutProps>(
@@ -25,4 +21,4 @@ export const HeaderContentFooterLayout = forwardRef<HTMLDivElement, HeaderConten
       </As>
     );
   },
-) as <E extends React.ElementType = 'div'>(props: HeaderContentFooterLayoutProps<E>) => React.ReactElement;
+) as <E extends ElementType = 'div'>(props: HeaderContentFooterLayoutProps<E>) => ReactElement;

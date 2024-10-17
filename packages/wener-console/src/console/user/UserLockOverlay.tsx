@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { HiLockClosed, HiMiniLockOpen } from 'react-icons/hi2';
 import { clsx } from 'clsx';
 import { useStore } from 'zustand';

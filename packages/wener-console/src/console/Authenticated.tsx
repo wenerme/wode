@@ -1,12 +1,11 @@
-import type React from 'react';
-import { useEffect, useState, type PropsWithChildren } from 'react';
+import { useEffect, useState, type FC, type PropsWithChildren } from 'react';
 import Splash from '../assets/LoginSplash.jpg';
 import { AuthStatus } from '../state';
 import { Image, SiteLogo } from '../web';
 import { getAppState, getAppStore } from './container';
 import { LoginPage, type LoginFormData } from './pages';
 
-export const Authenticated: React.FC<
+export const Authenticated: FC<
   PropsWithChildren & {
     onLogin?: (o: LoginFormData) => void;
   }
@@ -34,7 +33,7 @@ export const Authenticated: React.FC<
   return <>{children}</>;
 };
 
-const Auth: React.FC<{ onLogin?: (o: LoginFormData) => void }> = ({ onLogin }) => {
+const Auth: FC<{ onLogin?: (o: LoginFormData) => void }> = ({ onLogin }) => {
   const { title } = getAppState();
   return (
     <LoginPage
