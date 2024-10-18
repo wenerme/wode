@@ -2,10 +2,10 @@ import React, { Suspense } from 'react';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { ProdOnly } from '@wener/reaction/universal';
-import { cookies, headers } from 'next/headers';
+import { cookies } from 'next/headers';
 import { SiteSidecar } from '@/components/site/SiteSidecar';
 import { getSiteData } from '@/data/getSiteData';
-import { I18N } from '@/i18n/I18N';
+import { loadI18n } from '@/i18n/exports';
 import { Provider } from '@/i18n/Provider';
 import { setServerNonce } from '@/server/createServerContext';
 import type { NextLayoutProps } from '@/types';
@@ -13,7 +13,7 @@ import type { NextLayoutProps } from '@/types';
 export async function NextRootLayout({ children, params }: NextLayoutProps) {
   setServerNonce();
   // let locale = hdr.get('x-locale');
-  const { i18n } = await I18N.load({
+  const { i18n } = await loadI18n({
     reason: 'RootLayout',
   });
   const { title } = getSiteData();
