@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 import { BiLinkExternal } from 'react-icons/bi';
 import { clsx } from 'clsx';
 

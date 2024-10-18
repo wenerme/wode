@@ -14,6 +14,7 @@ export const PageLayout: FC<PropsWithChildren & Partial<NextPageProps>> = async 
   await I18N.load({
     reason: 'PageLayout',
   });
+
   return (
     <div className={'flex min-h-screen flex-col'}>
       <Nav />

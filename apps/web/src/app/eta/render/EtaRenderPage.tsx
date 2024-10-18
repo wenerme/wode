@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import type { FC } from 'react';
 import { useCompareEffect } from '@wener/reaction';
 import { deepEqual } from '@wener/utils';
 import { Eta } from 'eta';
@@ -70,7 +70,7 @@ export const EtaRenderPage = () => {
   );
 };
 
-const DataInput: React.FC<{ initialData?: any; onDataChange?: (v: any) => void }> = ({ initialData, onDataChange }) => {
+const DataInput: FC<{ initialData?: any; onDataChange?: (v: any) => void }> = ({ initialData, onDataChange }) => {
   const [{ value, data }, update] = useMutative(() => {
     return {
       value: initialData ? JSON.stringify(initialData, null, 2) : '{}',

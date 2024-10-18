@@ -12,12 +12,14 @@ import type { NextLayoutProps } from '@/types';
 
 export async function NextRootLayout({ children, params }: NextLayoutProps) {
   setServerNonce();
+  // let locale = hdr.get('x-locale');
+  const { i18n } = await I18N.load({
+    reason: 'RootLayout',
+  });
   const { title } = getSiteData();
   const attrs: Record<string, any> = {};
   const cookieStore = cookies();
-  let hdr = headers();
-  let locale = hdr.get('x-locale');
-
+  // let hdr = headers();
   // let query: Record<string, string> = {};
   // {
   //   let u = hdr.get('x-url');
@@ -32,10 +34,6 @@ export async function NextRootLayout({ children, params }: NextLayoutProps) {
   //   }
   // }
 
-  await I18N.load({
-    reason: 'RootLayout',
-  });
-
   let theme = cookieStore.get('theme')?.value || 'corporate';
   let colorSchema = cookieStore.get('colorSchema')?.value || 'white';
 
@@ -48,9 +46,11 @@ export async function NextRootLayout({ children, params }: NextLayoutProps) {
     </>
   );
   return (
-    <html lang={I18N.resolveLocale(locale).locale} className='white' {...attrs}>
+    <html lang={i18n.locale} className='white' {...attrs}>
       <head>
+        {/* NextJS already add these
         <meta charSet='utf-8' />
+        */}
         <meta
           name='viewport'
           content='width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover'

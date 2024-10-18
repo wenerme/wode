@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState, type FC } from 'react';
+import type React from 'react';
+import { useState, type FC } from 'react';
 import { Button } from '@wener/console/daisy';
 import * as semver from 'semver';
 import { SemVer } from 'semver';

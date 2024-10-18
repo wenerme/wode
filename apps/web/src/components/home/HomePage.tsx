@@ -1,4 +1,5 @@
-import React, { type ReactNode } from 'react';
+import type React from 'react';
+import type { ReactNode } from 'react';
 import { Trans } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { cn } from '@wener/console';
