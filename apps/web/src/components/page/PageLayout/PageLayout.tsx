@@ -3,7 +3,7 @@ import { PiGithubLogoFill, PiListLight, PiMagnifyingGlassBold, PiXLogoFill } fro
 import { WenerAvatarIcon } from 'common/icons';
 import Link from 'next/link';
 import { LanguageSwitch } from '@/components/page/PageLayout/LanguageSwitch';
-import { loadI18n } from '@/i18n/exports';
+import { loadI18n } from '@/i18n';
 import type { NextPageProps } from '@/types';
 
 export const PageLayout: FC<PropsWithChildren & Partial<NextPageProps>> = async ({
