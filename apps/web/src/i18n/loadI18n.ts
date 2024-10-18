@@ -31,7 +31,7 @@ function createI18nStore() {
 
 const [_getI18n, _setI18n] = createServerContext<I18n | null>(() => null);
 
-export async function load(opts?: { reason?: string }) {
+export async function loadI18n(opts?: { reason?: string }) {
   let i18n = _getI18n();
   const log = (msg: string) => {
     console.log(`[I18N.load] nonce=${getServerNonce()} reason=${opts?.reason || ''} ${msg}`);
