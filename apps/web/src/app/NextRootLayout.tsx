@@ -2,18 +2,40 @@ import React, { Suspense } from 'react';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { ProdOnly } from '@wener/reaction/universal';
-import { cookies } from 'next/headers';
-import { NextI18nProvider } from '@/app/NextI18nProvider';
+import { cookies, headers } from 'next/headers';
 import { SiteSidecar } from '@/components/site/SiteSidecar';
 import { getSiteData } from '@/data/getSiteData';
+import { I18N } from '@/i18n/I18N';
+import { Provider } from '@/i18n/Provider';
+import { setServerNonce } from '@/server/createServerContext';
 import type { NextLayoutProps } from '@/types';
 
-export function NextRootLayout({ children, params }: NextLayoutProps) {
+export async function NextRootLayout({ children, params }: NextLayoutProps) {
+  setServerNonce();
   const { title } = getSiteData();
   const attrs: Record<string, any> = {};
-
   const cookieStore = cookies();
-  let lang = cookieStore.get('lang')?.value || params.lang;
+  let hdr = headers();
+  let locale = hdr.get('x-locale');
+
+  // let query: Record<string, string> = {};
+  // {
+  //   let u = hdr.get('x-url');
+  //   if (u) {
+  //     try {
+  //       new URL(u).searchParams.forEach((v, k) => {
+  //         query[k] = v;
+  //       });
+  //     } catch (e) {
+  //       console.error(`[NextRootLayout] parse x-url`, String(e));
+  //     }
+  //   }
+  // }
+
+  await I18N.load({
+    reason: 'RootLayout',
+  });
+
   let theme = cookieStore.get('theme')?.value || 'corporate';
   let colorSchema = cookieStore.get('colorSchema')?.value || 'white';
 
@@ -26,7 +48,7 @@ export function NextRootLayout({ children, params }: NextLayoutProps) {
     </>
   );
   return (
-    <html lang={lang || 'zh-CN'} className='white' {...attrs}>
+    <html lang={I18N.resolveLocale(locale).locale} className='white' {...attrs}>
       <head>
         <meta charSet='utf-8' />
         <meta
@@ -38,7 +60,7 @@ export function NextRootLayout({ children, params }: NextLayoutProps) {
         <title>{title}</title>
       </head>
       <body>
-        <NextI18nProvider params={params}>{content}</NextI18nProvider>
+        <Provider>{content}</Provider>
         <ProdOnly>
           <SpeedInsights />
           <Analytics />

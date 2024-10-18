@@ -77,6 +77,8 @@ fix-use-import-type: ## fix useImportType
 	npx -y @biomejs/biome lint --only=style/useImportType ./src --write
 fix-unused-imports: ## fix unused imports
 	npx -y @biomejs/biome lint --only=lint/correctness/noUnusedImports ./src --write
+fix-noReExportAll: ## fix unused imports
+	npx -y @biomejs/biome lint --only=lint/performance/noReExportAll ./src/**/index.ts --write
 fix-react-default-import:
 	grit apply react_named_imports ./src
 endif

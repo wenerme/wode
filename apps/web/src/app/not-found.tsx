@@ -1,8 +1,8 @@
 'use client';
 
 import React from 'react';
-import { PageContainer } from '@/components/pages/PageContainer';
-import { PageLayout } from '@/components/pages/PageLayout';
+import { PageContainer } from '@/components/page/PageContainer';
+import { PageLayout } from '@/components/page/PageLayout';
 
 export default function ErrorPage() {
   return (

@@ -984,6 +984,9 @@ importers:
       common:
         specifier: ^1.0.0
         version: link:../../packages/common
+      cookie:
+        specifier: ^1.0.1
+        version: 1.0.1
       dataloader:
         specifier: ^2.2.2
         version: 2.2.2
