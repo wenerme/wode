@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse, userAgent } from 'next/server';
+import { NextResponse, userAgent, type NextRequest } from 'next/server';
 import { resolveCurrentLocale } from '@/i18n/resolveCurrentLocale';
 
 export async function middleware(req: NextRequest) {

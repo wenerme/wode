@@ -1,4 +1,5 @@
-import React, { type ReactNode } from 'react';
+import type React from 'react';
+import type { ReactNode } from 'react';
 import { BsSearch } from 'react-icons/bs';
 import { flexRender, type FlexRenderable } from '@wener/reaction';
 import { clsx } from 'clsx';

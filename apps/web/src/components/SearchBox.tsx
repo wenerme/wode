@@ -1,4 +1,5 @@
-import React, { useEffect, useState, type ReactNode } from 'react';
+import type React from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { HiMagnifyingGlass } from 'react-icons/hi2';
 import { Button } from '@wener/console/daisy';
 import { isDefined } from '@wener/utils';

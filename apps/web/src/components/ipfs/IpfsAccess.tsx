@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 import { HiCog } from 'react-icons/hi2';
 import { Form, Link } from 'react-router-dom';
 import { IpfsOutlined } from 'common/icons';

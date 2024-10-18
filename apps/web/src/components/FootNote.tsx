@@ -1,4 +1,5 @@
-import React, { type ReactNode } from 'react';
+import type React from 'react';
+import type { ReactNode } from 'react';
 
 export const FootNote: React.FC<{ children?: ReactNode }> = ({ children }) => {
   return (

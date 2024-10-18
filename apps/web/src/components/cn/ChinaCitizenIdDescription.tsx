@@ -1,5 +1,5 @@
 import { DivisionFormat, GenderFormat, ValidFormat } from './Formats';
-import { ChinaCitizenId } from './gb11643/ChinaCitizenId';
+import type { ChinaCitizenId } from './gb11643/ChinaCitizenId';
 import { mod11 } from './gb11643/mod11';
 
 export const ChinaCitizenIdDescription: React.FC<{ item: ChinaCitizenId }> = ({ item }) => {

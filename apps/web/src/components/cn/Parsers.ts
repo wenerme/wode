@@ -1,7 +1,7 @@
 import { parseULID, randomUUID, ulid } from '@wener/utils';
 import { ChinaCitizenId } from './gb11643/ChinaCitizenId';
 import { UnifiedSocialCreditId } from './gb31200/UnifiedSocialCreditId';
-import { Parser } from './parseIt';
+import type { Parser } from './parseIt';
 
 export const Parsers: Parser[] = [
   {
