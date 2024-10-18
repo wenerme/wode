@@ -31,6 +31,7 @@
     "@wener/utils": "workspace:*",
     "clsx": "^2.1.1",
     "common": "^1.0.0",
+    "cookie": "^1.0.1",
     "dataloader": "^2.2.2",
     "dayjs": "^1.11.13",
     "domhandler": "^5.0.3",

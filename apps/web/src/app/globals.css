@@ -5,31 +5,32 @@
 @font-face {
   font-family: "color-emoji";
   src: local("Apple Color Emoji"), local("Twemoji Mozilla"), local("Segoe UI Emoji"), local("Segoe UI Symbol"),
-  local("Noto Color Emoji"), local("EmojiOne Color"), local("Android Emoji");
+    local("Noto Color Emoji"), local("EmojiOne Color"), local("Android Emoji");
 
   /* Emoji unicode blocks */
   unicode-range: U+00A9, U+00AE, U+200D, U+203C, U+2049, U+20E3, U+2122, U+2139, U+2194-2199, U+21A9-21AA, U+231A,
-  U+231B, U+2328, U+23CF, U+23E9-23F3, U+23F8-23FA, U+24C2, U+25AA, U+25AB, U+25B6, U+25C0, U+25FB-25FE, U+2600-27EF,
-  U+2934, U+2935, U+2B00-2BFF, U+3030, U+303D, U+3297, U+3299, U+1F000-1F02F, U+1F0A0-1F0FF, U+1F100-1F64F,
-  U+1F680-1F6FF, U+1F910-1F96B, U+1F980-1F9E0;
+    U+231B, U+2328, U+23CF, U+23E9-23F3, U+23F8-23FA, U+24C2, U+25AA, U+25AB, U+25B6, U+25C0, U+25FB-25FE, U+2600-27EF,
+    U+2934, U+2935, U+2B00-2BFF, U+3030, U+303D, U+3297, U+3299, U+1F000-1F02F, U+1F0A0-1F0FF, U+1F100-1F64F,
+    U+1F680-1F6FF, U+1F910-1F96B, U+1F980-1F9E0;
 }
 
 html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system,
-  color-emoji,
-  BlinkMacSystemFont,
-  Segoe UI,
-  Roboto,
-  Oxygen,
-  Ubuntu,
-  Cantarell,
-  Fira Sans,
-  Droid Sans,
-  Helvetica Neue,
-  sans-serif;
+  font-family:
+    -apple-system,
+    color-emoji,
+    BlinkMacSystemFont,
+    Segoe UI,
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    Fira Sans,
+    Droid Sans,
+    Helvetica Neue,
+    sans-serif;
 }
 
 html {
@@ -40,7 +41,8 @@ body {
   min-height: 100%;
   display: flex;
   flex-direction: column;
-  overflow-x: auto;
+  /* fixme why there is overflow */
+  overflow-x: hidden;
 }
 
 /**

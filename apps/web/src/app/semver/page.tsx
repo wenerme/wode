@@ -1,14 +1,14 @@
-'use client';
-
 import React from 'react';
 import { PageContainer } from '@/components/page/PageContainer';
 import { PageLayout } from '@/components/page/PageLayout';
+import { SemverTool } from '@/components/semver/SemverTool';
+import type { NextPageProps } from '@/types';
 
-export default function ErrorPage() {
+export default async function (props: NextPageProps) {
   return (
     <PageLayout>
       <PageContainer>
-        <h2 className={'text-2xl font-bold'}>Not found</h2>
+        <SemverTool />
       </PageContainer>
     </PageLayout>
   );

@@ -1,14 +1,12 @@
-'use client';
-
-import React from 'react';
+import { IdBenchmarkPage } from '@/app/id/benchmark/IdBenchmarkPage';
 import { PageContainer } from '@/components/page/PageContainer';
 import { PageLayout } from '@/components/page/PageLayout';
 
-export default function ErrorPage() {
+export default function () {
   return (
     <PageLayout>
       <PageContainer>
-        <h2 className={'text-2xl font-bold'}>Not found</h2>
+        <IdBenchmarkPage />
       </PageContainer>
     </PageLayout>
   );

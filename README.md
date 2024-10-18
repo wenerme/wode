@@ -64,6 +64,8 @@ Wener NodeJS Monorepo
 - Typedoc
   - package multi entryPoints
     https://github.com/TypeStrong/typedoc/issues/1937
+- Web
+  - [ ] i18n need a refresh to works properly
 
 <!-- LINK:BEGIN -->
 

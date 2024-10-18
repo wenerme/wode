@@ -1,6 +1,6 @@
 import pinyin from 'pinyin';
+import { PageContainer } from '@/components/page/PageContainer';
 import { getChildrenRiddles } from '@/data/const';
-import { PageContainer } from '../pages/PageContainer';
 
 export const RiddlePrintPage = () => {
   return (

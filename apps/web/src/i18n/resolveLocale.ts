@@ -1,9 +1,8 @@
 import { match } from '@formatjs/intl-localematcher';
+import { getLocales } from '@/i18n/getLocales';
 
-const locales = ['zh-CN', 'en'];
-const defaultLocale = 'zh-CN';
-
-export function resolveLocale(locale?: string) {
+export function resolveLocale(locale?: string | null) {
+  const { locales, defaultLocale } = getLocales();
   try {
     locale = match([locale || locales[0]], locales, defaultLocale);
   } catch (e) {
@@ -12,12 +11,5 @@ export function resolveLocale(locale?: string) {
   return {
     locale,
     locales,
-  };
-}
-
-export function getLocales() {
-  return {
-    locales,
-    defaultLocale,
   };
 }
