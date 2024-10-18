@@ -5,8 +5,8 @@ import { ProdOnly } from '@wener/reaction/universal';
 import { cookies } from 'next/headers';
 import { SiteSidecar } from '@/components/site/SiteSidecar';
 import { getSiteData } from '@/data/getSiteData';
-import { loadI18n } from '@/i18n/exports';
-import { Provider } from '@/i18n/Provider';
+import { loadI18n } from '@/i18n';
+import { I18nServerProvider } from '@/i18n/I18nServerProvider';
 import { setServerNonce } from '@/server/createServerContext';
 import type { NextLayoutProps } from '@/types';
 
@@ -60,7 +60,7 @@ export async function NextRootLayout({ children, params }: NextLayoutProps) {
         <title>{title}</title>
       </head>
       <body>
-        <Provider>{content}</Provider>
+        <I18nServerProvider>{content}</I18nServerProvider>
         <ProdOnly>
           <SpeedInsights />
           <Analytics />
