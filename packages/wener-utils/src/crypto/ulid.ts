@@ -1,4 +1,4 @@
-import { getRandomValues } from './getRandomValues';
+import { getRandomValues } from '../web/getRandomValues';
 
 type PRNG = () => number;
 

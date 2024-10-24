@@ -1,5 +1,5 @@
 import { computeIfAbsent } from '../objects/computeIfAbsent';
-import { getGlobalThis } from '../runtime/getGlobalThis';
+import { getGlobalThis } from '../web/getGlobalThis';
 
 let _holder: any;
 

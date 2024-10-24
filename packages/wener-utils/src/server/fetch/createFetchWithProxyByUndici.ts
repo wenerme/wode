@@ -1,6 +1,6 @@
 import type { MaybePromise } from '../../asyncs/MaybePromise';
 import { createFetchWith, type FetchLike } from '../../fetch';
-import { getGlobalThis } from '../../runtime/getGlobalThis';
+import { getGlobalThis } from '../../web/getGlobalThis';
 
 export function createFetchWithProxyByUndici({
   proxy,

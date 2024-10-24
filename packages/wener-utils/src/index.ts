@@ -42,6 +42,7 @@ export { isClass } from './langs/isClass';
 export { isDefined } from './langs/isDefined';
 export { isEmptyObject } from './langs/isEmptyObject';
 export { isPlainObject } from './langs/isPlainObject';
+export { ifPresent } from './langs/ifPresent';
 export { parseBoolean } from './langs/parseBoolean';
 export { maybeFunction, type MaybeFunction } from './langs/MaybeFunction';
 export { memoize } from './langs/memoize';
@@ -50,8 +51,8 @@ export type { MixinFunction, MixinInstance, MixinReturnValue } from './langs/mix
 export { getObjectId } from './langs/getObjectId';
 export { getGlobalStates, setGlobalStates } from './langs/getGlobalStates';
 
-export { AsyncCloser } from './runtime/AsyncCloser';
-export { Closer } from './runtime/Closer';
+export { AsyncCloser } from './langs/AsyncCloser';
+export { Closer } from './langs/Closer';
 
 export { isUUID } from './validations/isUUID';
 export { parseTimestamp } from './validations/parseTimestamp';
@@ -89,14 +90,14 @@ export { copy } from './browsers/copy';
 export { download } from './browsers/download';
 export { loadScripts, loadStyles } from './browsers/loaders';
 export { getFileFromDataTransfer } from './browsers/getFileFromDataTransfer';
-
-// polyfills
-export { getGlobalThis } from './runtime/getGlobalThis';
-export { structuredClone } from './runtime/structuredClone';
+// web & spec
+export { requestIdleCallback, cancelIdleCallback } from './web/requestIdleCallback';
+export { randomUUID } from './web/randomUUID';
+export { getRandomValues } from './web/getRandomValues';
+export { getGlobalThis } from './web/getGlobalThis';
+export { structuredClone } from './web/structuredClone';
 
 // crypto
-export { randomUUID } from './crypto/randomUUID';
-export { getRandomValues } from './crypto/getRandomValues';
 export { sha1, sha256, sha384, sha512, hmac, type DigestOptions } from './crypto/hashing';
 export { md5 } from './crypto/md5';
 export { hex } from './crypto/base';

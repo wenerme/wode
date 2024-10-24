@@ -1,4 +1,4 @@
-import { getGlobalThis } from '../runtime/getGlobalThis';
+import { getGlobalThis } from '../web/getGlobalThis';
 import type { FetchLike } from './types';
 
 type RequestDelayFunction = (attempt: number, error: Error | null, response: Response | null) => number;

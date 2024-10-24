@@ -1,4 +1,4 @@
-import { getGlobalThis } from '../runtime/getGlobalThis';
+import { getGlobalThis } from './getGlobalThis';
 
 const globalThis = getGlobalThis();
 
