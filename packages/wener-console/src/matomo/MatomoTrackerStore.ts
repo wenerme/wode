@@ -1,6 +1,6 @@
-import { mutative } from '@wener/reaction/mutative/zustand';
 import { getGlobalThis } from '@wener/utils';
 import { createStore } from 'zustand';
+import { mutative } from 'zustand-mutative';
 import type { MatomoTracker } from './types';
 
 function setupMatomo({

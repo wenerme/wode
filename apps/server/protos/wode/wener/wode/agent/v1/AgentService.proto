@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package wener.wode.agent.v1;
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+message AgentInfoRequest {}
+
+message AgentInfoResponse {
+  google.protobuf.Timestamp now = 1;
+  google.protobuf.Timestamp started_at = 2;
+  double uptime = 3;
+  string timezone = 4;
+  string locale = 5;
+}
+
+message AgentReloadRequest {
+  string reason = 1;
+}
+
+message AgentReloadResponse {
+  string message = 1;
+}
+
+service AgentService {
+  rpc Info(AgentInfoRequest) returns (AgentInfoResponse);
+  rpc Reload(AgentReloadRequest) returns (AgentReloadResponse);
+}

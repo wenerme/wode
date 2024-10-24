@@ -1,8 +1,9 @@
 import { describe, expect, test } from 'vitest';
-import { createArgon2PasswordAlgorithm } from '@/utils/password/createArgon2PasswordAlgorithm';
-import { createBase64PasswordAlgorithm } from '@/utils/password/createBase64PasswordAlgorithm';
-import { createBcryptPasswordAlgorithm } from '@/utils/password/createBcryptPasswordAlgorithm';
-import { Password } from '@/utils/password/Password';
+import { createArgon2PasswordAlgorithm } from './createArgon2PasswordAlgorithm';
+import { createBase64PasswordAlgorithm } from './createBase64PasswordAlgorithm';
+import { createBcryptPasswordAlgorithm } from './createBcryptPasswordAlgorithm';
+import { createScryptPasswordAlgorithm } from './createScryptPasswordAlgorithm';
+import { Password } from './Password';
 
 describe('Password', () => {
   const check = async ({
@@ -12,14 +13,15 @@ describe('Password', () => {
     password?: string;
   }) => {
     let out = await Password.hash(password, rest);
+    console.log(`${rest.algorithm || 'default'}: hash ${out}`);
     let result = await Password.verify(password, out);
     expect(result).toBe(true);
-    console.log(`${rest.algorithm || 'default'}: hash: ${out}`);
   };
 
   Password.addAlgorithm(createBcryptPasswordAlgorithm());
   Password.addAlgorithm(createBase64PasswordAlgorithm());
   Password.addAlgorithm(createArgon2PasswordAlgorithm());
+  // Password.addAlgorithm(createScryptPasswordAlgorithm());
 
   test('base', async () => {
     await check({});
@@ -32,6 +34,7 @@ describe('Password', () => {
 
     await check({ algorithm: '5' });
     await check({ algorithm: '6' });
+    await check({ algorithm: '7' });
   });
 
   test('case', async () => {

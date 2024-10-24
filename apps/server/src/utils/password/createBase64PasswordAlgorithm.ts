@@ -1,5 +1,5 @@
 import { ArrayBuffers } from '@wener/utils';
-import { Password } from '@/utils/password/Password';
+import { Password } from './Password';
 
 export function createBase64PasswordAlgorithm({ id = 'base64' }: { id?: string } = {}): Password.PasswordAlgorithm {
   return {

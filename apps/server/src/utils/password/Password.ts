@@ -1,7 +1,17 @@
 import { Errors } from '@wener/utils';
-import { PHC } from '@/utils/password/PHC';
+import { createScryptPasswordAlgorithm } from '@/utils/password/createScryptPasswordAlgorithm';
+import { createPBKDF2PasswordAlgorithm } from './createPBKDF2PasswordAlgorithm';
+import { PHC } from './PHC';
 
 export namespace Password {
+  export interface ParsedPassword {
+    id: string;
+    version?: number;
+    params?: Record<string, string | number>;
+    salt?: Uint8Array;
+    hash?: Uint8Array;
+  }
+
   type PasswordAlgorithmHashOptions = {
     rounds?: number;
     salt?: Uint8Array;
@@ -25,7 +35,7 @@ export namespace Password {
     6: 'sha512',
     7: 'scrypt',
   };
-  let DefaultAlgorithm: string = '6';
+  let DefaultAlgorithm: string = '7';
 
   export function setDefaultAlgorithm(algorithm: string) {
     Errors.BadRequest.check(Algorithms[algorithm], `Unknown algorithm ${algorithm}`);
@@ -45,93 +55,19 @@ export namespace Password {
     }
   }
 
-  function createPBKDF2Algorithm({
-    id,
-    digest,
-    iterations = 100000,
-    saltlen = 16,
-    keylen = digest === 'SHA-256' ? 32 : 64,
-  }: {
-    id: string;
-    digest: 'SHA-256' | 'SHA-512';
-    iterations?: number;
-    keylen?: number;
-    saltlen?: number;
-  }): PasswordAlgorithm {
-    return {
-      name: id,
-      async hash(password: string, opts) {
-        let salt: Uint8Array;
-
-        if (opts?.salt) {
-          salt = opts.salt;
-        } else {
-          salt = new Uint8Array(saltlen);
-          crypto.getRandomValues(salt);
-        }
-
-        const rounds = opts?.rounds ?? iterations;
-
-        let key = await crypto.subtle.importKey('raw', new TextEncoder().encode(password), 'PBKDF2', false, [
-          'deriveBits',
-        ]);
-        let hash = await crypto.subtle.deriveBits(
-          { name: 'PBKDF2', iterations: rounds, salt, hash: digest },
-          key,
-          keylen * 8,
-        );
-        return PHC.serialize({
-          id: opts?.id ?? id,
-          params: {
-            rounds,
-          },
-          salt,
-          hash: new Uint8Array(hash),
-        });
-      },
-      async verify(password: string, _: string, opts: PasswordAlgorithmVerifyOptions) {
-        const rounds = opts?.params?.rounds ?? iterations;
-        const salt = opts.salt;
-        const storedHash = opts.hash;
-        Errors.BadRequest.check(typeof rounds === 'number', 'Invalid rounds');
-        Errors.BadRequest.check(salt instanceof Uint8Array, 'Invalid salt');
-        Errors.BadRequest.check(storedHash instanceof Uint8Array, 'Invalid hash');
-
-        let key = await crypto.subtle.importKey('raw', new TextEncoder().encode(password), 'PBKDF2', false, [
-          'deriveBits',
-        ]);
-        let hash = await crypto.subtle.deriveBits(
-          {
-            name: 'PBKDF2',
-            iterations: rounds,
-            salt,
-            hash: digest,
-          },
-          key,
-          storedHash.length * 8,
-        );
-        return new Uint8Array(hash).every((v, i) => v === storedHash![i]);
-      },
-    };
-  }
-
-  Algorithms['sha256'] = createPBKDF2Algorithm({
-    id: 'sha256',
-    digest: 'SHA-256',
-  });
-
-  Algorithms['sha512'] = createPBKDF2Algorithm({
-    id: 'sha512',
-    digest: 'SHA-512',
-  });
-
-  export interface ParsedPassword {
-    id: string;
-    version?: number;
-    params?: Record<string, string | number>;
-    salt?: Uint8Array;
-    hash?: Uint8Array;
-  }
+  addAlgorithm(
+    createPBKDF2PasswordAlgorithm({
+      id: 'sha256',
+      digest: 'SHA-256',
+    }),
+  );
+  addAlgorithm(
+    createPBKDF2PasswordAlgorithm({
+      id: 'sha512',
+      digest: 'SHA-512',
+    }),
+  );
+  addAlgorithm(createScryptPasswordAlgorithm({}));
 
   export async function parse(hash: string) {
     return PHC.deserialize(hash);

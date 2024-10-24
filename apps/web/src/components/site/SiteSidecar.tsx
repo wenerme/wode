@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import * as LocaleMatcher from '@formatjs/intl-localematcher';
 import { DaisyTheme } from '@wener/console/daisy';
 import { WebVitals } from '@wener/console/web';
 import { WindowHost } from '@wener/console/web/window';
@@ -14,6 +15,12 @@ import { resolveClientLocale } from '@/i18n/resolveClientLocale';
 
 export const SiteSidecar = () => {
   useRefreshScrollRestoration();
+  useState(() => {
+    // polyfill for testing
+    (Intl as any).LocaleMatcher ||= LocaleMatcher;
+    console.log(`polyfill Intl.LocaleMatcher`, (Intl as any).LocaleMatcher);
+    return {};
+  });
   return (
     <ClientOnly>
       <DaisyTheme.Sidecar />

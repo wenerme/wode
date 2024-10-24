@@ -18,6 +18,11 @@ import { createRouteStore, type RouteStore } from './store/RouteStore';
 import { createUserStore, type UserState, type UserStore } from './store/UserStore';
 import type { UserAction } from './user/getUserAction';
 
+type ConsoleContext2 = {
+  getAccessToken: () => string | undefined;
+  loadModule: (name: string) => Promise<DynamicModule>;
+};
+
 export type ConsoleContext = {
   appStore: AppStore;
   appState: AppState;

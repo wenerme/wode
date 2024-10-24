@@ -32,6 +32,8 @@
     }
   },
   "include": [
+    "vitest.config.ts",
+    "vite.config.ts",
     "lib.d.ts",
     "src/**/*.ts",
     "src/**/*.tsx"

@@ -17,6 +17,7 @@
     "./hooks": "./src/hooks/index.ts",
     "./icons": "./src/icons/index.ts",
     "./loader": "./src/loader/index.ts",
+    "./matomo": "./src/matomo/index.ts",
     "./pages": "./src/console/pages/index.ts",
     "./router": "./src/router/index.ts",
     "./toast": "./src/toast/index.ts",
@@ -174,6 +175,10 @@
       "./loader": {
         "types": "./src/loader/index.ts",
         "default": "./lib/loader/index.js"
+      },
+      "./matomo": {
+        "types": "./src/matomo/index.ts",
+        "default": "./lib/matomo/index.js"
       },
       "./pages": {
         "types": "./src/console/pages/index.ts",
