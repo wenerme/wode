@@ -1,9 +1,5 @@
 import type { MaybePromise } from '@wener/utils';
-import { getConsoleContext } from '../container';
-
-export function getUserAction(): UserAction {
-  return getConsoleContext().userAction;
-}
+import { ConsoleEvents, getConsoleContext } from '../context';
 
 export interface UserAction {
   refreshProfile: () => MaybePromise<void>;
@@ -11,4 +7,25 @@ export interface UserAction {
   signOut: () => MaybePromise<void>;
   lock: () => MaybePromise<void>;
   unlock: (options?: { pin?: string }) => MaybePromise<void>;
+}
+
+export function getUserAction(): UserAction {
+  const { emit } = getConsoleContext().getEmitter();
+  return {
+    refreshProfile: () => {
+      return emit(ConsoleEvents.RefreshProfile, {});
+    },
+    signIn: () => {
+      return emit(ConsoleEvents.SignIn, {});
+    },
+    signOut: () => {
+      return emit(ConsoleEvents.SignOut, {});
+    },
+    lock: () => {
+      return emit(ConsoleEvents.Lock, {});
+    },
+    unlock: (options?: { pin?: string }) => {
+      return emit(ConsoleEvents.Unlock, { ...options });
+    },
+  };
 }

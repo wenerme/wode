@@ -3,7 +3,7 @@ import { usePromise } from '@wener/reaction';
 import { NonIdealState } from '../../daisy';
 import { resolveErrorMessage } from '../../toast';
 import { LoadingIndicator } from '../components';
-import { getUserStore } from '../container';
+import { getUserStore } from '../context';
 import type { UserProfileData } from '../store/UserStore';
 
 export const UserLoader: FC<

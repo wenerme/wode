@@ -1,7 +1,8 @@
 import React from 'react';
-import { MatomoTracker } from '@wener/console/matomo';
+import { ProdOnly } from '@wener/reaction';
 import { useShallow } from 'zustand/react/shallow';
-import { ProdOnly } from '@/components/ProdOnly';
+import { useUserId } from '../../console/context';
+import { MatomoTracker } from '../../matomo';
 import { useSiteStore } from './SiteStore';
 
 export const SiteSidecar = () => {
@@ -20,8 +21,3 @@ export const SiteSidecar = () => {
     </>
   );
 };
-
-function useUserId() {
-  // fixme
-  return undefined;
-}

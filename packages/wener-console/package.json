@@ -14,6 +14,8 @@
     "./console/globals.css": "./src/console/globals.css",
     "./daisy": "./src/daisy/index.ts",
     "./floating": "./src/floating/index.ts",
+    "./foundation/auth": "./src/foundation/auth/index.ts",
+    "./foundation/site": "./src/foundation/site/index.ts",
     "./hooks": "./src/hooks/index.ts",
     "./icons": "./src/icons/index.ts",
     "./loader": "./src/loader/index.ts",
@@ -81,6 +83,7 @@
     "@radix-ui/react-slot": "^1.1.0",
     "awilix": "^12.0.2",
     "derive-valtio": "^0.2.0",
+    "emittery": "^1.0.3",
     "es-toolkit": "^1.25.0",
     "tailwind-merge": "^2.5.3",
     "zustand-mutative": "^1.0.5"
@@ -163,6 +166,14 @@
       "./floating": {
         "types": "./src/floating/index.ts",
         "default": "./lib/floating/index.js"
+      },
+      "./foundation/auth": {
+        "types": "./src/foundation/auth/index.ts",
+        "default": "./lib/foundation/auth/index.js"
+      },
+      "./foundation/site": {
+        "types": "./src/foundation/site/index.ts",
+        "default": "./lib/foundation/site/index.js"
       },
       "./hooks": {
         "types": "./src/hooks/index.ts",

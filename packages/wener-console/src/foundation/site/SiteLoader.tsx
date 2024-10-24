@@ -1,7 +1,7 @@
 import type React from 'react';
 import { useState, type PropsWithChildren } from 'react';
-import { LoadingIndicator } from '@wener/console/loader';
 import { useAsyncEffect } from '@wener/reaction';
+import { LoadingIndicator } from '../../console';
 import { getSiteStore, type SiteConfInit } from './SiteStore';
 
 export const SiteLoader: React.FC<

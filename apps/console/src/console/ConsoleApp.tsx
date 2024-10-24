@@ -5,23 +5,21 @@ import type { Client } from '@urql/core';
 import { getGraphQLUrl } from '@wener/console/client/graphql';
 import { ComponentProvider } from '@wener/console/components';
 import { ErrorSuspenseBoundary, getAccessToken, SiteLogo } from '@wener/console/console';
+import { AuthBlock, AuthReady, AuthSidecar, getAuthState } from '@wener/console/foundation/auth';
 import { createUrqlClient } from '@wener/console/urql';
 import { getGlobalStates } from '@wener/utils';
 import { Provider as UrqlProvider } from 'urql';
 import { AuthActions } from '@/foundation/Auth/AuthActions';
-import { AuthBlock } from '@/foundation/Auth/AuthBlock';
-import { AuthReady } from '@/foundation/Auth/AuthReady';
-import { AuthSidecar, getAuthState } from '@/foundation/Auth/AuthStore';
 import schema from '@/gql/urql.schema.json' with { type: 'json' };
 import { WenerLogo } from '@/instance/WenerLogo';
 import { resolveResourceSchema } from '@/resource';
 import './globals.css';
+import { getSiteStore } from '@wener/console/console';
 import { ContextStoreProvider } from '@wener/console/hooks';
 import { LoginPage, type LoginFormData } from '@wener/console/pages';
 import { showErrorToast, showSuccessToast } from '@wener/console/toast';
 import { getConsoleContext, Image } from '@wener/console/web';
 import Splash from '@/assets/LoginSplash.jpg';
-import { getSiteState } from '@/foundation/Site/SiteStore';
 import { Instance } from '@/instance/Instance';
 
 const Content = lazy(() => import('./ConsoleAppContent'));
@@ -43,7 +41,7 @@ export const ConsoleApp = () => {
       showErrorToast(e);
     }
   };
-  const { title } = getSiteState();
+  const { title } = getSiteStore().getState();
   return (
     <Instance.Provide>
       <ComponentProvider components={[{ provide: SiteLogo, Component: WenerLogo }]}>

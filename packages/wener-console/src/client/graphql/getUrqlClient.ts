@@ -1,5 +1,5 @@
 import type { Client } from '@urql/core';
-import { getAccessToken } from '../../console/container';
+import { getAccessToken } from '../../console/context';
 import { getGlobalStates } from '../../state';
 import { createUrqlClient } from '../../urql';
 import { getGraphQLUrl } from './getGraphQLUrl';

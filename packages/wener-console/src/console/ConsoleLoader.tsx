@@ -10,7 +10,7 @@ import type { RouteObjects } from '../router';
 import { getConsoleContext, NotFoundPage, PageErrorState, type DynamicModule } from '../web';
 import { LoadingIndicator } from './components';
 import { RootRouterReactor } from './components/RootRouterReactor';
-import { getAppState, getRouteStore } from './container';
+import { getRouteStore, getSiteStore } from './context';
 
 enum ServiceState {
   New = 'New',
@@ -128,7 +128,7 @@ function createRootRoutes({
       ),
       errorElement: <PageErrorState />,
       handle: {
-        title: getAppState().title,
+        title: getSiteStore().getState().title,
       },
       children: [
         ...children,
