@@ -1,4 +1,4 @@
-import { Password } from '@/utils/password';
+import { Password } from './Password';
 
 export function createArgon2PasswordAlgorithm({
   type,

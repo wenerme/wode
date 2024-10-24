@@ -9,6 +9,7 @@ import { SiteActions } from '@/foundation/Site/SiteActions';
 import { SiteLoader } from '@/foundation/Site/SiteLoader';
 import './base.init';
 import '../instance/instance.init';
+import { SiteSidecar } from '@/foundation/Site/SiteSidecar';
 
 // web-vitals.js may block by client
 const WebVitals = lazy(() => import('@/components/WebVitals').then((m) => ({ default: m.WebVitals })));
@@ -21,6 +22,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         }}
       >
         <ConsoleApp />
+        <SiteSidecar />
       </SiteLoader>
       <ProdOnly>
         <UpdateNotification
@@ -30,8 +32,10 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             return data.date || data.version;
           }}
         />
-        <WebVitals />
       </ProdOnly>
     </RootContext>
+    <ProdOnly>
+      <WebVitals />
+    </ProdOnly>
   </React.StrictMode>,
 );

@@ -168,14 +168,14 @@ export class WeWorkFinanceClient {
     return new WeWorkFinanceClient({ sdk, corpId, ...options });
   }
 
-  decrypt(opts: { decryptKey?: string | Buffer; randomKey?: string; privateKey?: string; encrypted: string }) {
+  decrypt(opts: { decryptKey?: string | Buffer; randomKey?: string; privateKey?: string; encrypted: string }): string {
     return decrypt({
       privateKey: this.options.privateKey,
       ...opts,
     });
   }
 
-  getMessage(req: GetChatDataRequest) {
+  getMessage(req: GetChatDataRequest): GetArchiveMessageItem[] {
     const res = this.getChatData(req);
     let out: GetArchiveMessageItem[] = [];
     for (let ele of res.chatdata) {
@@ -224,7 +224,7 @@ export class WeWorkFinanceClient {
     timeout = this.options.timeout ?? 0,
     proxy = this.options.proxy || '',
     proxyCredential = this.options.proxyCredential || '',
-  }: GetMediaDataRequest) {
+  }: GetMediaDataRequest): { data: Buffer } {
     this.debug(() => {
       return [
         `getMediaData #${fileId}`,
@@ -525,7 +525,7 @@ export function decrypt({
   randomKey?: string | Buffer;
   privateKey?: string;
   encrypted: string;
-}) {
+}): string {
   if (!decryptKey && randomKey && privateKey) {
     decryptKey = crypto.privateDecrypt(
       {

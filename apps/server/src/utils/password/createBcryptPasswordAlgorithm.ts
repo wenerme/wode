@@ -1,4 +1,4 @@
-import { Password } from '@/utils/password/Password';
+import { Password } from './Password';
 
 type ProviderType = () => Promise<Pick<typeof import('bcrypt'), 'hash' | 'compare'>>;
 

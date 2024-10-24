@@ -14,6 +14,9 @@
     "@anatine/zod-nestjs": "^2.0.9",
     "@anatine/zod-openapi": "^2.2.6",
     "@apidevtools/json-schema-ref-parser": "^11.7.2",
+    "@bufbuild/protobuf": "^2.2.0",
+    "@connectrpc/connect": "2.0.0-rc.1",
+    "@connectrpc/connect-node": "^1.6.1",
     "@graphql-yoga/plugin-defer-stream": "^3.7.0",
     "@graphql-yoga/plugin-disable-introspection": "^2.7.0",
     "@graphql-yoga/plugin-graphql-sse": "^3.7.0",
@@ -107,6 +110,8 @@
     "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
+    "@bufbuild/protoc-gen-es": "^2.2.0",
+    "@connectrpc/protoc-gen-connect-es": "^1.6.1",
     "@cspotcode/source-map-support": "^0.8.1",
     "@nestjs/testing": "^10.4.4",
     "@types/bcrypt": "^5.0.2",

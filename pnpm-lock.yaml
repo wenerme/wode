@@ -81,7 +81,7 @@ importers:
         version: 14.0.2
       jsdom:
         specifier: ^25.0.1
-        version: 25.0.1(bufferutil@4.0.8)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@6.0.4)
+        version: 25.0.1(bufferutil@4.0.8)(canvas@2.11.2)(utf-8-validate@6.0.4)
       million:
         specifier: ^3.1.11
         version: 3.1.11(rollup@4.24.0)(webpack-sources@3.2.3)
@@ -135,7 +135,7 @@ importers:
         version: 5.0.1(typescript@5.6.3)(vite@5.4.8(@types/node@20.16.11)(sass@1.79.4)(terser@5.34.1))
       vitest:
         specifier: ^2.1.2
-        version: 2.1.2(@types/node@20.16.11)(@vitest/ui@2.1.2)(jsdom@25.0.1(bufferutil@4.0.8)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@6.0.4))(sass@1.79.4)(terser@5.34.1)
+        version: 2.1.2(@types/node@20.16.11)(@vitest/ui@2.1.2)(jsdom@25.0.1(bufferutil@4.0.8)(canvas@2.11.2)(utf-8-validate@6.0.4))(sass@1.79.4)(terser@5.34.1)
 
   apps/console:
     dependencies:
@@ -611,6 +611,15 @@ importers:
       '@apidevtools/json-schema-ref-parser':
         specifier: ^11.7.2
         version: 11.7.2
+      '@bufbuild/protobuf':
+        specifier: ^2.2.0
+        version: 2.2.0
+      '@connectrpc/connect':
+        specifier: 2.0.0-rc.1
+        version: 2.0.0-rc.1(@bufbuild/protobuf@2.2.0)
+      '@connectrpc/connect-node':
+        specifier: ^1.6.1
+        version: 1.6.1(@bufbuild/protobuf@2.2.0)(@connectrpc/connect@2.0.0-rc.1(@bufbuild/protobuf@2.2.0))
       '@graphql-yoga/plugin-defer-stream':
         specifier: ^3.7.0
         version: 3.7.0(graphql-yoga@5.7.0(graphql@16.9.0))(graphql@16.9.0)
@@ -793,7 +802,7 @@ importers:
         version: 5.9.4
       jsdom:
         specifier: ^25.0.1
-        version: 25.0.1(bufferutil@4.0.8)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@6.0.4)
+        version: 25.0.1(bufferutil@4.0.8)(canvas@2.11.2)(utf-8-validate@6.0.4)
       jsondiffpatch:
         specifier: ^0.6.0
         version: 0.6.0
@@ -802,7 +811,7 @@ importers:
         version: 5.0.1
       knex:
         specifier: ^3.1.0
-        version: 3.1.0(better-sqlite3@11.3.0)(mysql2@3.11.3)(pg@8.13.0)
+        version: 3.1.0(better-sqlite3@11.3.0)(pg@8.13.0)(sqlite3@5.1.7)
       knex-schema-inspector:
         specifier: ^3.1.0
         version: 3.1.0
@@ -885,6 +894,12 @@ importers:
         specifier: ^4.4.2
         version: 4.4.2
     devDependencies:
+      '@bufbuild/protoc-gen-es':
+        specifier: ^2.2.0
+        version: 2.2.0(@bufbuild/protobuf@2.2.0)
+      '@connectrpc/protoc-gen-connect-es':
+        specifier: ^1.6.1
+        version: 1.6.1(@bufbuild/protoc-gen-es@2.2.0(@bufbuild/protobuf@2.2.0))(@connectrpc/connect@2.0.0-rc.1(@bufbuild/protobuf@2.2.0))
       '@cspotcode/source-map-support':
         specifier: ^0.8.1
         version: 0.8.1
@@ -1389,7 +1404,7 @@ importers:
         version: link:../wener-utils
       jsdom:
         specifier: ^25.0.1
-        version: 25.0.1(bufferutil@4.0.8)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@6.0.4)
+        version: 25.0.1(bufferutil@4.0.8)(canvas@2.11.2)(utf-8-validate@6.0.4)
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -1759,7 +1774,7 @@ importers:
         version: 5.4.1
       knex:
         specifier: ^3.1.0
-        version: 3.1.0(better-sqlite3@11.3.0)(mysql2@3.11.3)(pg@8.13.0)
+        version: 3.1.0(better-sqlite3@11.3.0)(pg@8.13.0)(sqlite3@5.1.7)
       nats:
         specifier: ^2.28.2
         version: 2.28.2
@@ -2640,6 +2655,28 @@ packages:
   '@base2/pretty-print-object@1.0.1':
     resolution: {integrity: sha512-4iri8i1AqYHJE2DstZYkyEprg6Pq6sKx3xn5FpySk9sNhH7qN2LLlHJCfDTZRILNwQNPD7mATWM0TBui7uC1pA==}
 
+  '@bufbuild/protobuf@1.10.0':
+    resolution: {integrity: sha512-QDdVFLoN93Zjg36NoQPZfsVH9tZew7wKDKyV5qRdj8ntT4wQCOradQjRaTdwMhWUYsgKsvCINKKm87FdEk96Ag==}
+
+  '@bufbuild/protobuf@2.2.0':
+    resolution: {integrity: sha512-+imAQkHf7U/Rwvu0wk1XWgsP3WnpCWmK7B48f0XqSNzgk64+grljTKC7pnO/xBiEMUziF7vKRfbBnOQhg126qQ==}
+
+  '@bufbuild/protoc-gen-es@2.2.0':
+    resolution: {integrity: sha512-PmUTtbJJfgcabTsoF59W0bsAr7xO5aGcMe69G8vOq0ogYV1aWmvFKhHKHDtn295pOLhTXmfrDSUNi/OTHuDdpw==}
+    engines: {node: '>=14'}
+    hasBin: true
+    peerDependencies:
+      '@bufbuild/protobuf': 2.2.0
+    peerDependenciesMeta:
+      '@bufbuild/protobuf':
+        optional: true
+
+  '@bufbuild/protoplugin@1.10.0':
+    resolution: {integrity: sha512-u6NE4vL0lw1+EK4/PiE/SQB7fKO4LRJNTEScIXVOi2x88K/c8WKc/k0KyEaA0asVBMpwekJQZGnRyj04ZtN5Gg==}
+
+  '@bufbuild/protoplugin@2.2.0':
+    resolution: {integrity: sha512-ijsCHuhtXbfTiffoBRve2uCPR7gy6cwJsMe8z5bYQtczGiZVVfiyAze55gk1J/1ruqkr40oZ9BwKAGOzz69f0g==}
+
   '@casl/ability@6.7.1':
     resolution: {integrity: sha512-e+Vgrehd1/lzOSwSqKHtmJ6kmIuZbGBlM2LBS5IuYGGKmVHuhUuyh3XgTn1VIw9+TO4gqU+uptvxfIRBUEdJuw==}
 
@@ -2648,6 +2685,31 @@ packages:
     peerDependencies:
       '@casl/ability': ^3.0.0 || ^4.0.0 || ^5.1.0 || ^6.0.0
       react: ^16.0.0 || ^17.0.0 || ^18.0.0
+
+  '@connectrpc/connect-node@1.6.1':
+    resolution: {integrity: sha512-DxcD1wsF/aX9GegjAtl7VbpiZNjVJozy87VbaFoN6AF0Ln1Q757r5dgV59Gz0wmlk5f17txUsrEr1f2inlnnAg==}
+    engines: {node: '>=16.0.0'}
+    peerDependencies:
+      '@bufbuild/protobuf': ^1.10.0
+      '@connectrpc/connect': 1.6.1
+
+  '@connectrpc/connect@2.0.0-rc.1':
+    resolution: {integrity: sha512-AupiGDh2Ht0wgslatfdU/Jp8zDPHwvsCrLcChi7Ea3zZT/biSpPMqj8LiaR5ri/EHexZ58jYvtBbTNqCP7H3fg==}
+    peerDependencies:
+      '@bufbuild/protobuf': ^2.2.0
+
+  '@connectrpc/protoc-gen-connect-es@1.6.1':
+    resolution: {integrity: sha512-0fHcaADd+GKM0I/koIQpmKg7b+QL18bXlggTUYEAlMFzsd4zN/ApG3235hdUcRyhrAOAItTXxh8ZAV/nNd43Gg==}
+    engines: {node: '>=16.0.0'}
+    hasBin: true
+    peerDependencies:
+      '@bufbuild/protoc-gen-es': ^1.10.0
+      '@connectrpc/connect': 1.6.1
+    peerDependenciesMeta:
+      '@bufbuild/protoc-gen-es':
+        optional: true
+      '@connectrpc/connect':
+        optional: true
 
   '@cspotcode/source-map-support@0.8.1':
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
@@ -3295,6 +3357,10 @@ packages:
 
   '@fastify/ajv-compiler@3.6.0':
     resolution: {integrity: sha512-LwdXQJjmMD+GwLOkP7TVC68qa+pSSogeWWmznRJ/coyTcfe9qA05AHFSe1eZFwK6q+xVRpChnvFUkf1iYaSZsQ==}
+
+  '@fastify/busboy@2.1.1':
+    resolution: {integrity: sha512-vBZP4NlzfOlerQTnba4aqZoMhE/a9HY7HRqoOPaETQcSQuWEIyZMHGfVu6w9wGtGK5fED5qRs2DteVCjOH60sA==}
+    engines: {node: '>=14'}
 
   '@fastify/cors@9.0.1':
     resolution: {integrity: sha512-YY9Ho3ovI+QHIL2hW+9X4XqQjXLjJqsU+sMV/xFsxZkE8p3GNnYVFpoOxF7SsP5ZL76gwvbo3V9L+FIekBGU4Q==}
@@ -6978,6 +7044,11 @@ packages:
 
   '@types/zxcvbn@4.4.5':
     resolution: {integrity: sha512-FZJgC5Bxuqg7Rhsm/bx6gAruHHhDQ55r+s0JhDh8CQ16fD7NsJJ+p8YMMQDhSQoIrSmjpqqYWA96oQVMNkjRyA==}
+
+  '@typescript/vfs@1.6.0':
+    resolution: {integrity: sha512-hvJUjNVeBMp77qPINuUvYXj4FyWeeMMKZkxEATEU3hqBAQ7qdTBCUFT7Sp0Zu0faeEtFf+ldXxMEDr/bk73ISg==}
+    peerDependencies:
+      typescript: '*'
 
   '@ucast/core@1.10.2':
     resolution: {integrity: sha512-ons5CwXZ/51wrUPfoduC+cO7AS1/wRb0ybpQJ9RrssossDxVy4t49QxWoWgfBDvVKsz9VXzBk9z0wqTdZ+Cq8g==}
@@ -13536,6 +13607,16 @@ packages:
     peerDependencies:
       typescript: 4.6.x || 4.7.x || 4.8.x || 4.9.x || 5.0.x || 5.1.x || 5.2.x || 5.3.x || 5.4.x
 
+  typescript@4.5.2:
+    resolution: {integrity: sha512-5BlMof9H1yGt0P8/WF+wPNw6GfctgGjXp5hkblpyT+8rkASSmkUKMXrxR0Xg8ThVCi/JnHQiKXeBaEwCeQwMFw==}
+    engines: {node: '>=4.2.0'}
+    hasBin: true
+
+  typescript@5.4.5:
+    resolution: {integrity: sha512-vcI4UpRgg81oIRUFwR0WSIHKt11nJ7SAVlYNIu+QpqeyXP+gpQJy/Z4+F0aGxSE4MqwjyXvW/TzgkLAx2AGHwQ==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+
   typescript@5.6.3:
     resolution: {integrity: sha512-hjcS1mhfuyi4WW8IWtjP7brDrG2cuDZukyrYrSauoXGNgx0S7zceP07adYkJycEr56BOUTNPzbInooiN3fn1qw==}
     engines: {node: '>=14.17'}
@@ -13575,6 +13656,10 @@ packages:
 
   undici-types@6.19.8:
     resolution: {integrity: sha512-ve2KP6f/JnbPBFyobGHuerC9g1FYGn/F8n1LWTwNxCEzd6IfqTwUQcNXgEtmmQ6DlRrC1hrSrBnCZPokRrDHjw==}
+
+  undici@5.28.4:
+    resolution: {integrity: sha512-72RFADWFqKmUb2hmmvNODKL3p9hcB6Gt2DOQMis1SEBaV6a4MH8soBvzg+95CYhCKPFedut2JY9bMfrDl9D23g==}
+    engines: {node: '>=14.0'}
 
   undici@6.20.0:
     resolution: {integrity: sha512-AITZfPuxubm31Sx0vr8bteSalEbs9wQb/BOBi9FPlD9Qpd6HxZ4Q0+hI742jBhkPb4RT2v5MQzaW5VhRVyj+9A==}
@@ -15332,6 +15417,34 @@ snapshots:
 
   '@base2/pretty-print-object@1.0.1': {}
 
+  '@bufbuild/protobuf@1.10.0': {}
+
+  '@bufbuild/protobuf@2.2.0': {}
+
+  '@bufbuild/protoc-gen-es@2.2.0(@bufbuild/protobuf@2.2.0)':
+    dependencies:
+      '@bufbuild/protoplugin': 2.2.0
+    optionalDependencies:
+      '@bufbuild/protobuf': 2.2.0
+    transitivePeerDependencies:
+      - supports-color
+
+  '@bufbuild/protoplugin@1.10.0':
+    dependencies:
+      '@bufbuild/protobuf': 1.10.0
+      '@typescript/vfs': 1.6.0(typescript@4.5.2)
+      typescript: 4.5.2
+    transitivePeerDependencies:
+      - supports-color
+
+  '@bufbuild/protoplugin@2.2.0':
+    dependencies:
+      '@bufbuild/protobuf': 2.2.0
+      '@typescript/vfs': 1.6.0(typescript@5.4.5)
+      typescript: 5.4.5
+    transitivePeerDependencies:
+      - supports-color
+
   '@casl/ability@6.7.1':
     dependencies:
       '@ucast/mongo2js': 1.3.4
@@ -15340,6 +15453,26 @@ snapshots:
     dependencies:
       '@casl/ability': 6.7.1
       react: 18.3.1
+
+  '@connectrpc/connect-node@1.6.1(@bufbuild/protobuf@2.2.0)(@connectrpc/connect@2.0.0-rc.1(@bufbuild/protobuf@2.2.0))':
+    dependencies:
+      '@bufbuild/protobuf': 2.2.0
+      '@connectrpc/connect': 2.0.0-rc.1(@bufbuild/protobuf@2.2.0)
+      undici: 5.28.4
+
+  '@connectrpc/connect@2.0.0-rc.1(@bufbuild/protobuf@2.2.0)':
+    dependencies:
+      '@bufbuild/protobuf': 2.2.0
+
+  '@connectrpc/protoc-gen-connect-es@1.6.1(@bufbuild/protoc-gen-es@2.2.0(@bufbuild/protobuf@2.2.0))(@connectrpc/connect@2.0.0-rc.1(@bufbuild/protobuf@2.2.0))':
+    dependencies:
+      '@bufbuild/protobuf': 1.10.0
+      '@bufbuild/protoplugin': 1.10.0
+    optionalDependencies:
+      '@bufbuild/protoc-gen-es': 2.2.0(@bufbuild/protobuf@2.2.0)
+      '@connectrpc/connect': 2.0.0-rc.1(@bufbuild/protobuf@2.2.0)
+    transitivePeerDependencies:
+      - supports-color
 
   '@cspotcode/source-map-support@0.8.1':
     dependencies:
@@ -15739,6 +15872,8 @@ snapshots:
       ajv: 8.17.1
       ajv-formats: 2.1.1(ajv@8.17.1)
       fast-uri: 2.4.0
+
+  '@fastify/busboy@2.1.1': {}
 
   '@fastify/cors@9.0.1':
     dependencies:
@@ -17094,7 +17229,7 @@ snapshots:
   '@mikro-orm/migrations@6.3.13(@mikro-orm/core@6.3.13)(@types/node@22.7.5)(better-sqlite3@11.3.0)(pg@8.13.0)':
     dependencies:
       '@mikro-orm/core': 6.3.13
-      '@mikro-orm/knex': 6.3.13(@mikro-orm/core@6.3.13)(better-sqlite3@11.3.0)(mysql2@3.11.3)(pg@8.13.0)
+      '@mikro-orm/knex': 6.3.13(@mikro-orm/core@6.3.13)(better-sqlite3@11.3.0)(pg@8.13.0)(sqlite3@5.1.7)
       fs-extra: 11.2.0
       umzug: 3.8.2(@types/node@22.7.5)
     transitivePeerDependencies:
@@ -17135,7 +17270,7 @@ snapshots:
   '@mikro-orm/postgresql@6.3.13(@mikro-orm/core@6.3.13)(better-sqlite3@11.3.0)':
     dependencies:
       '@mikro-orm/core': 6.3.13
-      '@mikro-orm/knex': 6.3.13(@mikro-orm/core@6.3.13)(better-sqlite3@11.3.0)(mysql2@3.11.3)(pg@8.13.0)
+      '@mikro-orm/knex': 6.3.13(@mikro-orm/core@6.3.13)(better-sqlite3@11.3.0)(pg@8.13.0)(sqlite3@5.1.7)
       pg: 8.13.0
       postgres-array: 3.0.2
       postgres-date: 2.1.0
@@ -20363,6 +20498,20 @@ snapshots:
 
   '@types/zxcvbn@4.4.5': {}
 
+  '@typescript/vfs@1.6.0(typescript@4.5.2)':
+    dependencies:
+      debug: 4.3.7
+      typescript: 4.5.2
+    transitivePeerDependencies:
+      - supports-color
+
+  '@typescript/vfs@1.6.0(typescript@5.4.5)':
+    dependencies:
+      debug: 4.3.7
+      typescript: 5.4.5
+    transitivePeerDependencies:
+      - supports-color
+
   '@ucast/core@1.10.2': {}
 
   '@ucast/js@3.0.4':
@@ -20683,7 +20832,7 @@ snapshots:
       sirv: 2.0.4
       tinyglobby: 0.2.9
       tinyrainbow: 1.2.0
-      vitest: 2.1.2(@types/node@20.16.11)(@vitest/ui@2.1.2)(jsdom@25.0.1(bufferutil@4.0.8)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@6.0.4))(sass@1.79.4)(terser@5.34.1)
+      vitest: 2.1.2(@types/node@20.16.11)(@vitest/ui@2.1.2)(jsdom@25.0.1(bufferutil@4.0.8)(canvas@2.11.2)(utf-8-validate@6.0.4))(sass@1.79.4)(terser@5.34.1)
 
   '@vitest/utils@2.0.5':
     dependencies:
@@ -23931,7 +24080,7 @@ snapshots:
 
   jsdoc-type-pratt-parser@4.1.0: {}
 
-  jsdom@25.0.1(bufferutil@4.0.8)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@6.0.4):
+  jsdom@25.0.1(bufferutil@4.0.8)(canvas@2.11.2)(utf-8-validate@6.0.4):
     dependencies:
       cssstyle: 4.1.0
       data-urls: 5.0.0
@@ -28230,6 +28379,10 @@ snapshots:
       shiki: 0.14.7
       typescript: 5.6.3
 
+  typescript@4.5.2: {}
+
+  typescript@5.4.5: {}
+
   typescript@5.6.3: {}
 
   ua-parser-js@1.0.39: {}
@@ -28264,6 +28417,10 @@ snapshots:
   undici-types@5.26.5: {}
 
   undici-types@6.19.8: {}
+
+  undici@5.28.4:
+    dependencies:
+      '@fastify/busboy': 2.1.1
 
   undici@6.20.0: {}
 
@@ -28571,7 +28728,7 @@ snapshots:
       sass: 1.79.4
       terser: 5.34.1
 
-  vitest@2.1.2(@types/node@20.16.11)(@vitest/ui@2.1.2)(jsdom@25.0.1(bufferutil@4.0.8)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@6.0.4))(sass@1.79.4)(terser@5.34.1):
+  vitest@2.1.2(@types/node@20.16.11)(@vitest/ui@2.1.2)(jsdom@25.0.1(bufferutil@4.0.8)(canvas@2.11.2)(utf-8-validate@6.0.4))(sass@1.79.4)(terser@5.34.1):
     dependencies:
       '@vitest/expect': 2.1.2
       '@vitest/mocker': 2.1.2(@vitest/spy@2.1.2)(vite@5.4.8(@types/node@20.16.11)(sass@1.79.4)(terser@5.34.1))
@@ -28595,7 +28752,7 @@ snapshots:
     optionalDependencies:
       '@types/node': 20.16.11
       '@vitest/ui': 2.1.2(vitest@2.1.2)
-      jsdom: 25.0.1(bufferutil@4.0.8)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@6.0.4)
+      jsdom: 25.0.1(bufferutil@4.0.8)(canvas@2.11.2)(utf-8-validate@6.0.4)
     transitivePeerDependencies:
       - less
       - lightningcss
