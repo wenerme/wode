@@ -1,5 +1,5 @@
 // import type * as NodeCrypto from 'node:crypto';
-import { getGlobalThis } from '../runtime/getGlobalThis';
+import { getGlobalThis } from '../web/getGlobalThis';
 
 let nodeCrypto;
 // globalThis.process?.release?.name

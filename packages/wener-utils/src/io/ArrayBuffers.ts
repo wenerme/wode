@@ -1,5 +1,5 @@
 import { classOf } from '../langs/classOf';
-import { getGlobalThis } from '../runtime/getGlobalThis';
+import { getGlobalThis } from '../web/getGlobalThis';
 import { decodeBase64ToUint8Array, encodeArrayBufferToBase64 } from './base64';
 import { isBuffer } from './isBuffer';
 

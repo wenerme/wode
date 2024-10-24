@@ -1,4 +1,4 @@
-import { getGlobalThis } from '../../runtime/getGlobalThis';
+import { getGlobalThis } from '../../web/getGlobalThis';
 
 export async function polyfillCrypto() {
   const globalThis = getGlobalThis();

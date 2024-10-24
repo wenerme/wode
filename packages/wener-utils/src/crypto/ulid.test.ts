@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { randomUUID } from './randomUUID';
+import { randomUUID } from '../web/randomUUID';
 import { createULID, isULID, parseULID, ulid } from './ulid';
 
 test('isULID', () => {

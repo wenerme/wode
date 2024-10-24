@@ -2,10 +2,10 @@ import { assert, beforeAll, expect, test } from 'vitest';
 import { ArrayBuffers } from '../io/ArrayBuffers';
 import { polyfillCrypto } from '../server/polyfill/polyfillCrypto';
 import { isUUID } from '../validations/isUUID';
+import { _randomUUID } from '../web/randomUUID';
 import { hex } from './base';
 import { hmac, sha1, sha256, sha384, sha512 } from './hashing';
 import { md5 } from './md5';
-import { _randomUUID } from './randomUUID';
 
 beforeAll(async () => {
   await polyfillCrypto();
