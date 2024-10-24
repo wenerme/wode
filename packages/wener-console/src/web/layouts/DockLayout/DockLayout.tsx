@@ -5,7 +5,7 @@ import { HiLockClosed, HiOutlineIdentification, HiQuestionMarkCircle } from 'rea
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import { useStore } from 'zustand';
-import { getConsoleStore, getUserStore } from '../../../console/container';
+import { getUserStore } from '../../../console/context';
 import { getUserAction } from '../../../console/user';
 import { isDev } from '../../../const';
 import { DockClock } from './DockClock';
@@ -71,7 +71,7 @@ const UserAvatar = () => {
             <button
               type={'button'}
               onClick={() => {
-                getConsoleStore().setState({ expired: true });
+                // getConsoleStore().setState({ expired: true });
               }}
             >
               <HiQuestionMarkCircle />

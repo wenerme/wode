@@ -14,7 +14,7 @@ import 'dayjs/locale/zh-hk';
 import 'dayjs/locale/zh-tw';
 import React from 'react';
 
-const EnvironmentInit = defineInit({
+export const EnvironmentInit = defineInit({
   name: 'Environment',
   onInit: () => {
     // avoid potential dependency
@@ -22,7 +22,7 @@ const EnvironmentInit = defineInit({
   },
 });
 
-const DayJSInit = defineInit({
+export const DayJSInit = defineInit({
   name: 'DayJS',
   onInit: () => {
     dayjs.extend(relativeTime);

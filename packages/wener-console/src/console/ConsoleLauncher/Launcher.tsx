@@ -13,6 +13,7 @@ import { getGlobalStates } from '@wener/utils';
 import { uniqBy } from 'es-toolkit';
 import { createStore, useStore } from 'zustand';
 import { mutative } from 'zustand-mutative';
+import { ConsoleEvents, getConsoleContext } from '../context';
 
 export interface LauncherItem {
   key: string;
@@ -38,6 +39,13 @@ function createLauncherStore() {
 }
 
 function LauncherHost() {
+  const emitter = getConsoleContext().getEmitter();
+  useEffect(() => {
+    return emitter.on(ConsoleEvents.LauncherToggle, ({ open }) => {
+      Launcher.toggle(open);
+    });
+  }, [emitter]);
+
   let store = Launcher.useStore();
   let open = useStore(store, (s) => s.open);
   if (!open) {

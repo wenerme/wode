@@ -1,13 +1,13 @@
 import type React from 'react';
 import { useEffect, useState, type PropsWithChildren } from 'react';
-import { AuthStatus, useAuthStore } from '@/foundation/Auth/AuthStore';
+import { AuthStatus, getAuthStore, useAuthStore } from './AuthStore';
 
 export const AuthBlock: React.FC<
   PropsWithChildren & {
     fallback?: React.ReactNode;
   }
 > = ({ children, fallback }) => {
-  let store = useAuthStore();
+  let store = getAuthStore();
   const [authed, setAuthed] = useState(() => {
     return store.getState().status === AuthStatus.Authenticated;
   });

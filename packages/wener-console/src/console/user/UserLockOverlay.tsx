@@ -1,14 +1,17 @@
 import { useEffect, useState } from 'react';
 import { HiLockClosed, HiMiniLockOpen } from 'react-icons/hi2';
 import { clsx } from 'clsx';
-import { useStore } from 'zustand';
 import { Button, NonIdealState } from '../../daisy';
-import { getConsoleStore } from '../container';
+import { useAuthStore } from '../../foundation/auth/AuthStore';
+import { ConsoleEvents, getConsoleContext } from '../context';
 import { getUserAction } from './getUserAction';
 
 export const UserLockOverlay = () => {
   const { unlock } = getUserAction();
-  const { expired, locked } = useStore(getConsoleStore(), ({ expired, locked }) => ({ expired, locked }));
+  const [locked, setLock] = useState(false);
+  const expired = useAuthStore((s) => {
+    return s.status === 'Expired';
+  });
   const [hidden, setHidden] = useState(!expired);
   const [pin, setPin] = useState('');
   useEffect(() => {
@@ -17,6 +20,13 @@ export const UserLockOverlay = () => {
       setHidden(false);
     }
   }, [locked]);
+  const emitter = getConsoleContext().getEmitter();
+  useEffect(() => {
+    return emitter.on(ConsoleEvents.Lock, () => {
+      setLock(true);
+    });
+  }, [emitter]);
+
   if (hidden || expired) {
     return null;
   }

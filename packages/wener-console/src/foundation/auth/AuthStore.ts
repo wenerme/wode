@@ -1,8 +1,9 @@
 import { useEffect, useRef, type FC } from 'react';
-import { useNetworkStatus } from '@wener/console';
 import { getGlobalStates } from '@wener/utils';
 import { createStore } from 'zustand';
 import { mutative } from 'zustand-mutative';
+import { useNetworkStatus } from '../../utils/NetworkStatus';
+import { createStoreSelectorHook } from '../../zustand';
 
 export const AuthStatus = {
   Init: 'Init',
@@ -151,7 +152,7 @@ function useAuthSidecar({ store, actions: { refresh }, storage = localStorage }:
 const AuthStoreStateKey = 'AuthStore';
 
 export const AuthSidecar: FC<Omit<AuthSidecarProps, 'store'>> = (props) => {
-  let store = useAuthStore();
+  let store = getAuthStore();
   useAuthSidecar({
     store,
     ...props,
@@ -181,11 +182,6 @@ function useAuthTokenPersist(store: AuthStore, storage: Storage) {
   }, [store]);
 }
 
-export function useAuthStore() {
-  // return useContext(Context) ?? getAuthStore();
-  return getAuthStore();
-}
-
 export function getAuthStore() {
   return getGlobalStates(AuthStoreStateKey, () => {
     return createAuthStore();
@@ -207,3 +203,5 @@ function deleteItem(s: any, key: string) {
     delete s[key];
   }
 }
+
+export const useAuthStore = createStoreSelectorHook(getAuthStore);

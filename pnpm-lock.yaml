@@ -81,7 +81,7 @@ importers:
         version: 14.0.2
       jsdom:
         specifier: ^25.0.1
-        version: 25.0.1(bufferutil@4.0.8)(canvas@2.11.2)(utf-8-validate@6.0.4)
+        version: 25.0.1(bufferutil@4.0.8)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@6.0.4)
       million:
         specifier: ^3.1.11
         version: 3.1.11(rollup@4.24.0)(webpack-sources@3.2.3)
@@ -135,7 +135,7 @@ importers:
         version: 5.0.1(typescript@5.6.3)(vite@5.4.8(@types/node@20.16.11)(sass@1.79.4)(terser@5.34.1))
       vitest:
         specifier: ^2.1.2
-        version: 2.1.2(@types/node@20.16.11)(@vitest/ui@2.1.2)(jsdom@25.0.1(bufferutil@4.0.8)(canvas@2.11.2)(utf-8-validate@6.0.4))(sass@1.79.4)(terser@5.34.1)
+        version: 2.1.2(@types/node@20.16.11)(@vitest/ui@2.1.2)(jsdom@25.0.1(bufferutil@4.0.8)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@6.0.4))(sass@1.79.4)(terser@5.34.1)
 
   apps/console:
     dependencies:
@@ -802,7 +802,7 @@ importers:
         version: 5.9.4
       jsdom:
         specifier: ^25.0.1
-        version: 25.0.1(bufferutil@4.0.8)(canvas@2.11.2)(utf-8-validate@6.0.4)
+        version: 25.0.1(bufferutil@4.0.8)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@6.0.4)
       jsondiffpatch:
         specifier: ^0.6.0
         version: 0.6.0
@@ -811,7 +811,7 @@ importers:
         version: 5.0.1
       knex:
         specifier: ^3.1.0
-        version: 3.1.0(better-sqlite3@11.3.0)(pg@8.13.0)(sqlite3@5.1.7)
+        version: 3.1.0(better-sqlite3@11.3.0)(mysql2@3.11.3)(pg@8.13.0)
       knex-schema-inspector:
         specifier: ^3.1.0
         version: 3.1.0
@@ -1404,7 +1404,7 @@ importers:
         version: link:../wener-utils
       jsdom:
         specifier: ^25.0.1
-        version: 25.0.1(bufferutil@4.0.8)(canvas@2.11.2)(utf-8-validate@6.0.4)
+        version: 25.0.1(bufferutil@4.0.8)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@6.0.4)
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -1502,6 +1502,9 @@ importers:
       derive-valtio:
         specifier: ^0.2.0
         version: 0.2.0(valtio@2.0.0(@types/react@18.3.11)(react@18.3.1))
+      emittery:
+        specifier: ^1.0.3
+        version: 1.0.3
       es-toolkit:
         specifier: ^1.25.0
         version: 1.25.0
@@ -1774,7 +1777,7 @@ importers:
         version: 5.4.1
       knex:
         specifier: ^3.1.0
-        version: 3.1.0(better-sqlite3@11.3.0)(pg@8.13.0)(sqlite3@5.1.7)
+        version: 3.1.0(better-sqlite3@11.3.0)(mysql2@3.11.3)(pg@8.13.0)
       nats:
         specifier: ^2.28.2
         version: 2.28.2
@@ -17229,7 +17232,7 @@ snapshots:
   '@mikro-orm/migrations@6.3.13(@mikro-orm/core@6.3.13)(@types/node@22.7.5)(better-sqlite3@11.3.0)(pg@8.13.0)':
     dependencies:
       '@mikro-orm/core': 6.3.13
-      '@mikro-orm/knex': 6.3.13(@mikro-orm/core@6.3.13)(better-sqlite3@11.3.0)(pg@8.13.0)(sqlite3@5.1.7)
+      '@mikro-orm/knex': 6.3.13(@mikro-orm/core@6.3.13)(better-sqlite3@11.3.0)(mysql2@3.11.3)(pg@8.13.0)
       fs-extra: 11.2.0
       umzug: 3.8.2(@types/node@22.7.5)
     transitivePeerDependencies:
@@ -17270,7 +17273,7 @@ snapshots:
   '@mikro-orm/postgresql@6.3.13(@mikro-orm/core@6.3.13)(better-sqlite3@11.3.0)':
     dependencies:
       '@mikro-orm/core': 6.3.13
-      '@mikro-orm/knex': 6.3.13(@mikro-orm/core@6.3.13)(better-sqlite3@11.3.0)(pg@8.13.0)(sqlite3@5.1.7)
+      '@mikro-orm/knex': 6.3.13(@mikro-orm/core@6.3.13)(better-sqlite3@11.3.0)(mysql2@3.11.3)(pg@8.13.0)
       pg: 8.13.0
       postgres-array: 3.0.2
       postgres-date: 2.1.0
@@ -20832,7 +20835,7 @@ snapshots:
       sirv: 2.0.4
       tinyglobby: 0.2.9
       tinyrainbow: 1.2.0
-      vitest: 2.1.2(@types/node@20.16.11)(@vitest/ui@2.1.2)(jsdom@25.0.1(bufferutil@4.0.8)(canvas@2.11.2)(utf-8-validate@6.0.4))(sass@1.79.4)(terser@5.34.1)
+      vitest: 2.1.2(@types/node@20.16.11)(@vitest/ui@2.1.2)(jsdom@25.0.1(bufferutil@4.0.8)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@6.0.4))(sass@1.79.4)(terser@5.34.1)
 
   '@vitest/utils@2.0.5':
     dependencies:
@@ -24080,7 +24083,7 @@ snapshots:
 
   jsdoc-type-pratt-parser@4.1.0: {}
 
-  jsdom@25.0.1(bufferutil@4.0.8)(canvas@2.11.2)(utf-8-validate@6.0.4):
+  jsdom@25.0.1(bufferutil@4.0.8)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@6.0.4):
     dependencies:
       cssstyle: 4.1.0
       data-urls: 5.0.0
@@ -28728,7 +28731,7 @@ snapshots:
       sass: 1.79.4
       terser: 5.34.1
 
-  vitest@2.1.2(@types/node@20.16.11)(@vitest/ui@2.1.2)(jsdom@25.0.1(bufferutil@4.0.8)(canvas@2.11.2)(utf-8-validate@6.0.4))(sass@1.79.4)(terser@5.34.1):
+  vitest@2.1.2(@types/node@20.16.11)(@vitest/ui@2.1.2)(jsdom@25.0.1(bufferutil@4.0.8)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@6.0.4))(sass@1.79.4)(terser@5.34.1):
     dependencies:
       '@vitest/expect': 2.1.2
       '@vitest/mocker': 2.1.2(@vitest/spy@2.1.2)(vite@5.4.8(@types/node@20.16.11)(sass@1.79.4)(terser@5.34.1))
@@ -28752,7 +28755,7 @@ snapshots:
     optionalDependencies:
       '@types/node': 20.16.11
       '@vitest/ui': 2.1.2(vitest@2.1.2)
-      jsdom: 25.0.1(bufferutil@4.0.8)(canvas@2.11.2)(utf-8-validate@6.0.4)
+      jsdom: 25.0.1(bufferutil@4.0.8)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@6.0.4)
     transitivePeerDependencies:
       - less
       - lightningcss

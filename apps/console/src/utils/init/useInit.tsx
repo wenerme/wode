@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import { runInit } from '@/utils/init/defineInit';
+import { runInit, type InitDef } from './defineInit';
 
-export function useInit() {
+export function useInit(init?: InitDef[]) {
   const [state, setState] = useState({ done: false });
   useEffect(() => {
-    runInit().finally(() => {
+    runInit(init).finally(() => {
       setState({ done: true });
     });
   }, []);

@@ -7,7 +7,7 @@ type DefineInitOptions = {
   onInit?: () => any;
   metadata?: Record<string, any>;
 };
-type InitDef = {
+export type InitDef = {
   name: string;
   title: string;
   onInit?: () => any;
@@ -39,8 +39,8 @@ type InitResult = {
   error?: any;
 };
 
-export async function runInit() {
-  for (let init of _all) {
+export async function runInit(inits = _all) {
+  for (let init of inits) {
     if (result.get(init)) {
       return;
     }
