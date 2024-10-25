@@ -1,3 +1,4 @@
+import React from 'react';
 import { createMemoryRouter, type RouteObject } from 'react-router-dom';
 import type { Router } from '@remix-run/router';
 import { LoadingIndicator } from '@wener/console/loader';

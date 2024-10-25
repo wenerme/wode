@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useEffect, useState, type FC, type HTMLProps } from 'react';
+import React, { createContext, useContext, useEffect, useState, type FC, type HTMLProps } from 'react';
 import { HiChevronDoubleLeft, HiChevronDoubleRight, HiXMark } from 'react-icons/hi2';
 import {
   PiArrowClockwise,
@@ -12,10 +12,10 @@ import {
 } from 'react-icons/pi';
 import { TbTextRecognition } from 'react-icons/tb';
 import { useAbortController } from '@wener/reaction';
-import { mutative } from '@wener/reaction/mutative/zustand';
 import { copy, download, formatBytes, getGlobalThis, loadScripts } from '@wener/utils';
 import clsx from 'clsx';
 import { createStore, useStore } from 'zustand';
+import { mutative } from 'zustand-mutative';
 import { showErrorToast, showSuccessToast } from '../../../toast';
 
 interface ImagePreviewState {

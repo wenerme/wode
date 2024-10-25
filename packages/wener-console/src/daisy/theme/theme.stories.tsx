@@ -1,3 +1,4 @@
+import React from 'react';
 import type { Meta } from '@storybook/react';
 import { DaisyThemeDemo } from './DaisyThemeDemo';
 import { ThemeListSelector } from './ThemeListSelector';

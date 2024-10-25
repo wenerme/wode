@@ -1,5 +1,5 @@
-import { mutative } from '@wener/reaction/mutative/zustand';
 import { createStore } from 'zustand';
+import { mutative } from 'zustand-mutative';
 
 export interface ConsoleStoreState {
   expired: boolean;

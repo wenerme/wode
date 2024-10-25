@@ -1,5 +1,4 @@
-import type { SVGProps } from 'react';
-import { memo } from 'react';
+import React, { memo, type SVGProps } from 'react';
 
 const SvgChinaResidentIdentityCardFront = (props: SVGProps<SVGSVGElement>) => (
   <svg

@@ -1,8 +1,9 @@
-import { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { PiAppleLogo, PiWindowsLogo } from 'react-icons/pi';
 import type { RouteObject } from 'react-router-dom';
 import type { Meta } from '@storybook/react';
 import { useStore } from 'zustand';
+import { ComponentProvider } from '../components';
 import { useWindow } from './ReactWindow';
 import { WindowFrame } from './WindowFrame';
 import { WindowHost } from './WindowHost';
@@ -10,7 +11,7 @@ import { getWindowStyleStore } from './WindowStyleStore';
 import { WindowTest } from './WindowTest';
 
 const meta: Meta = {
-  title: 'Web/Window',
+  title: 'console/window',
   parameters: {
     layout: 'fullscreen',
   },
@@ -63,25 +64,27 @@ export const Windows = () => {
 export const Demo = () => {
   let win = useWindow();
   return (
-    <div className={'h-full w-full'}>
-      <div className={'flex'}>
-        <button
-          type={'button'}
-          className={'btn btn-ghost'}
-          onClick={() => {
-            win.open({
-              title: 'Test Title',
-              render: () => {
-                return <WindowTest />;
-              },
-            });
-          }}
-        >
-          打开窗口
-        </button>
-        <input type='text' placeholder={'Can input here, the window will not trap the focus'} />
+    <ComponentProvider components={[]}>
+      <div className={'h-full w-full'}>
+        <div className={'flex'}>
+          <button
+            type={'button'}
+            className={'btn btn-ghost'}
+            onClick={() => {
+              win.open({
+                title: 'Test Title',
+                render: () => {
+                  return <WindowTest />;
+                },
+              });
+            }}
+          >
+            打开窗口
+          </button>
+          <input type='text' placeholder={'Can input here, the window will not trap the focus'} />
+        </div>
+        <WindowHost />
       </div>
-      <WindowHost />
-    </div>
+    </ComponentProvider>
   );
 };

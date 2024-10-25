@@ -1,4 +1,4 @@
-import { forwardRef, type ComponentPropsWithRef, type ElementType, type FC } from 'react';
+import React, { forwardRef, type ComponentPropsWithRef, type ElementType, type FC } from 'react';
 import { Link as _Link, useInRouterContext } from 'react-router-dom';
 
 export type LinkProps<E extends ElementType = 'a'> = Omit<ComponentPropsWithRef<E>, 'href'> & {

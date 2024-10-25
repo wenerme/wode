@@ -8,4 +8,4 @@ export { Link, type LinkProps } from './Link';
 export { TitleTabLayout, type TitleTabContentItem } from './TitleTabLayout';
 export { TitleTabList, getTitleTabItemKey, type TitleTabItem } from './TitleTabList';
 export { ActiveToggleIcon, type ActiveToggleIconProps } from './ActiveToggleIcon';
-export { WebVitals } from './WebVitals';
+export { WebVitals } from '../../components/WebVitals';

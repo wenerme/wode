@@ -1,4 +1,4 @@
-import type { FC, ReactNode } from 'react';
+import React, { type FC, type ReactNode } from 'react';
 import { BiError } from 'react-icons/bi';
 import { GrDocumentMissing } from 'react-icons/gr';
 import { HiMiniArrowLeft, HiMiniArrowPath, HiMiniHome } from 'react-icons/hi2';

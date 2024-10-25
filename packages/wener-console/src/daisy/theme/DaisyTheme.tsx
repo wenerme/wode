@@ -1,3 +1,4 @@
+import React from 'react';
 import { ThemeStateReactor } from './useTheme';
 
 export namespace DaisyTheme {

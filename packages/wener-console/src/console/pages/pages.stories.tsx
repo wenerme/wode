@@ -1,3 +1,4 @@
+import React from 'react';
 import type { Meta } from '@storybook/react';
 import { Image } from '../../web';
 import { AppearanceSettingPage } from './AppearanceSettingPage/AppearanceSettingPage';

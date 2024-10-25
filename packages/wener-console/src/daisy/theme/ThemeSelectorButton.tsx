@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import React, { Fragment } from 'react';
 import { HiChevronDown, HiColorSwatch } from 'react-icons/hi';
 import { MdSettings } from 'react-icons/md';
 import { Listbox, Transition } from '@headlessui/react';

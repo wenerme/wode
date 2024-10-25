@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import type { Decorator, Preview } from '@storybook/react';
 import { getSupportedThemes, useThemeState } from '@wener/console/daisy';
 import '@/web/globals.css';

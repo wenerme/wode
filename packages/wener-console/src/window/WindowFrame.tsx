@@ -1,7 +1,7 @@
-import { forwardRef, type ComponentPropsWithoutRef, type ReactNode } from 'react';
-import { MacOSWindowFrame } from './MacOS';
+import React, { forwardRef, type ComponentPropsWithoutRef, type ReactNode } from 'react';
+import { MacOSWindowFrame } from './macos/MacOSWindowFrame';
 import { useWindowTheme } from './Window';
-import { WindowsWindowFrame } from './Windows';
+import { WindowsWindowFrame } from './windows/WindowsWindowFrame';
 
 export type WindowFrameProps = Omit<ComponentPropsWithoutRef<'div'>, 'title'> & {
   icon?: ReactNode;

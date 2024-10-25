@@ -1,3 +1,4 @@
+import React from 'react';
 import { DivisionFormat, GenderFormat, ValidFormat } from './Formats';
 import type { ChinaCitizenId } from './gb11643/ChinaCitizenId';
 import { mod11 } from './gb11643/mod11';

@@ -1,4 +1,4 @@
-import type { FC, ReactNode } from 'react';
+import React, { type FC, type ReactNode } from 'react';
 import styled from '@emotion/styled';
 import { darken } from 'polished';
 

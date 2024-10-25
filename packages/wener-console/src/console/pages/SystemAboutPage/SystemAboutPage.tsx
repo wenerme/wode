@@ -1,4 +1,4 @@
-import type { FC, ReactNode } from 'react';
+import React, { type FC, type ReactNode } from 'react';
 import { GrSystem } from 'react-icons/gr';
 import { HiCheck } from 'react-icons/hi';
 import { ImLab } from 'react-icons/im';

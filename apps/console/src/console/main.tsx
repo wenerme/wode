@@ -1,7 +1,7 @@
 import React, { lazy } from 'react';
 import ReactDOM from 'react-dom/client';
 import type { BuildInfo } from '@wener/console/buildinfo';
-import { SiteLoader } from '@wener/console/foundation/site';
+import { SiteLoader, SiteSidecar } from '@wener/console/foundation/site';
 import { UpdateNotification } from '@wener/console/web';
 import { ProdOnly } from '@/components/ProdOnly';
 import { ConsoleApp } from '@/console/ConsoleApp';
@@ -9,7 +9,6 @@ import { RootContext } from '@/console/RootContext';
 import { SiteActions } from '@/foundation/Site/SiteActions';
 import './base.init';
 import '../instance/instance.init';
-import { SiteSidecar } from '@wener/console/foundation/site';
 import { DayJSInit, EnvironmentInit } from '@/console/base.init';
 import { InstanceInit } from '@/instance/instance.init';
 

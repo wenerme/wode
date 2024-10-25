@@ -1,4 +1,4 @@
-import { forwardRef, type ComponentProps, type ElementType, type ReactElement, type ReactNode } from 'react';
+import React, { forwardRef, type ComponentProps, type ElementType, type ReactElement, type ReactNode } from 'react';
 import { cn } from '../../tw/cn';
 
 export type HeaderContentFooterLayoutProps<E extends ElementType = 'div'> = Omit<ComponentProps<E>, 'as'> & {

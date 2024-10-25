@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import React, { type FC } from 'react';
 import { HiMiniArrowLeft, HiMiniArrowPath, HiMiniHome, HiOutlineExclamationCircle } from 'react-icons/hi2';
 import { useInRouterContext, useNavigate, useRouteError } from 'react-router-dom';
 import { Button, NonIdealState } from '../daisy';

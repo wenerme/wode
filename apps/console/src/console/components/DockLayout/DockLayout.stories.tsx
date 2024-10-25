@@ -1,3 +1,4 @@
+import React from 'react';
 import type { Meta } from '@storybook/react';
 import { WindowHost } from '@wener/console/web/window';
 import { DockLayout } from './DockLayout';

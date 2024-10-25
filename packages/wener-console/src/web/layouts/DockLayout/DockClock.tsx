@@ -1,4 +1,4 @@
-import { memo, useMemo, useState } from 'react';
+import React, { memo, useMemo, useState } from 'react';
 import { useInterval } from '@wener/reaction';
 import dayjs from 'dayjs';
 

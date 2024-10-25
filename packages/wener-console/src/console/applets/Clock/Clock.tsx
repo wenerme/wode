@@ -1,4 +1,4 @@
-import { useEffect, useReducer, type ComponentPropsWithoutRef, type FC } from 'react';
+import React, { useEffect, useReducer, type ComponentPropsWithoutRef, type FC } from 'react';
 import styled from '@emotion/styled';
 import { clsx } from 'clsx';
 

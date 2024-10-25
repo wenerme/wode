@@ -1,5 +1,5 @@
 import * as util from 'node:util';
-import { act, useEffect, useState } from 'react';
+import React, { act, useEffect, useState } from 'react';
 import Reconciler, { type HostConfig } from 'react-reconciler';
 import { DefaultEventPriority } from 'react-reconciler/constants';
 import { sleep } from '@wener/utils';

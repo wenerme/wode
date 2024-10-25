@@ -31,6 +31,7 @@
     "./web/pages": "./src/web/pages/index.ts",
     "./web/user": "./src/web/user/index.ts",
     "./web/window": "./src/web/window/index.ts",
+    "./window": "./src/window/index.ts",
     "./zustand": "./src/zustand/index.ts",
     "./console/*": "./src/console/*/index.ts",
     "./package.json": "./package.json"
@@ -119,6 +120,7 @@
     "mutative": "^1.0.11",
     "overlayscrollbars": "^2.10.0",
     "overlayscrollbars-react": "^0.5.6",
+    "polished": "^4.3.1",
     "react-hook-form": "^7.53.0",
     "react-icons": "^5.3.0",
     "react-is": "^18.3.1",
@@ -227,6 +229,10 @@
       "./web/window": {
         "types": "./src/web/window/index.ts",
         "default": "./lib/web/window/index.js"
+      },
+      "./window": {
+        "types": "./src/window/index.ts",
+        "default": "./lib/window/index.js"
       },
       "./zustand": {
         "types": "./src/zustand/index.ts",
