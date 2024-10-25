@@ -10,6 +10,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@floating-ui/react": "^0.26.25",
     "@formatjs/intl-localematcher": "^0.5.5",
     "@graphql-typed-document-node/core": "^3.2.0",
     "@lingui/core": "^4.12.0",

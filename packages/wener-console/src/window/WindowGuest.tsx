@@ -6,7 +6,7 @@ import { useStore } from 'zustand';
 import { shallow } from 'zustand/shallow';
 import { useStoreWithEqualityFn } from 'zustand/traditional';
 import { getRootWindow, WindowContext, type ReactWindow } from './ReactWindow';
-import { WindowController } from './Window';
+import { WindowController } from './WindowController';
 import { WindowFrame } from './WindowFrame';
 
 export const WindowGuest = memo<{ win: ReactWindow }>(({ win }) => {

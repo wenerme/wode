@@ -1,7 +1,9 @@
-import React, { createContext, useContext, type ReactNode } from 'react';
+import { createContext, useContext, type ReactNode } from 'react';
 import { clamp, getGlobalStates, randomUUID } from '@wener/utils';
 import { createStore } from 'zustand';
 import { mutative } from 'zustand-mutative';
+
+// import { Window } from './Window';
 
 export const WindowContext = createContext<ReactWindow | null>(null);
 
@@ -59,17 +61,17 @@ interface WindowBaseState {
   icon?: ReactNode;
   render?: () => ReactNode;
 
-  meta: Record<string, any>;
+  metadata: Record<string, any>;
   attributes: Record<string, any>;
   properties: Record<string, any>;
+
+  windows: ReactWindow[];
 }
 
 export interface WindowState extends WindowBaseState {
-  // single level
-  // windows: ReactWindow[];
-
   windowElement?: HTMLElement | null;
   bodyElement?: HTMLElement | null;
+  childrenElement?: HTMLElement | null; // for windows
 }
 
 const WindowSizes = {
@@ -99,12 +101,14 @@ function normalize(init: Partial<WindowBaseState>): WindowBaseState {
     canDrag: true,
     minWidth: 200,
     minHeight: 200,
-    meta: {},
+    metadata: {},
     attributes: {},
     properties: {},
     frameless: false,
     canFullscreen: true,
     fullscreen: false,
+
+    windows: [],
     ...init,
     ...normalizeCoordinate(init),
   };
@@ -124,7 +128,13 @@ function normalizeCoordinate(
   },
   { center }: { center?: boolean } = {},
 ) {
-  const { innerWidth: ww, innerHeight: wh } = window;
+  const { innerWidth: ww, innerHeight: wh } =
+    typeof window === 'undefined'
+      ? {
+          innerWidth: 800,
+          innerHeight: 600,
+        }
+      : window;
 
   width = clamp(width, WindowSizes.xs.width, ww);
   height = clamp(height, WindowSizes.xs.height, wh);
@@ -273,12 +283,10 @@ export class ReactWindow extends EventTarget {
 
 class ReactRootWindow extends ReactWindow {
   private zIndex = 1;
-  readonly root: RootWindowStore;
   current?: ReactWindow;
 
   constructor() {
     super({ id: 'root' });
-    this.root = createRootWindowStore();
   }
 
   get top(): ReactWindow | undefined {
@@ -289,7 +297,7 @@ class ReactRootWindow extends ReactWindow {
   }
 
   get windows() {
-    return this.root.getState().windows;
+    return this.state.windows;
   }
 
   private handleFocusIn = (e: Event, win: ReactWindow) => {
@@ -332,7 +340,7 @@ class ReactRootWindow extends ReactWindow {
 
   open = (opts: WindowOpenOptions) => {
     if (opts.key) {
-      let existing = this.root.getState().windows.find((v) => v.key === opts.key);
+      let existing = this.windows.find((v) => v.key === opts.key);
       if (existing) {
         this.setActive(existing);
         return existing;
@@ -358,7 +366,9 @@ class ReactRootWindow extends ReactWindow {
         }
       }
     }
-    let root = this.root;
+
+    let root = (this.parent || getRootWindow()).store;
+    // let root = this.root;
 
     let store = createWindowStore({
       ...opts,
@@ -394,20 +404,10 @@ class ReactRootWindow extends ReactWindow {
   };
 
   close = () => {
-    console.error('Cannot close root window');
+    this.windows.forEach((v) => v.close());
   };
 }
 
 export interface WindowOpenOptions extends Partial<WindowBaseState> {
   key?: string;
-}
-
-export namespace ReactWindows {
-  export function closeAll() {
-    getRootWindow().windows.forEach((v) => v.close());
-  }
-
-  export function minimizeAll() {
-    getRootWindow().windows.forEach((v) => v.minimize(true));
-  }
 }

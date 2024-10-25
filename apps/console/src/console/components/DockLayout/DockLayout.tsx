@@ -9,7 +9,7 @@ import { getUserStore } from '@wener/console/console';
 import { getUserAction } from '@wener/console/console/user';
 import { usePopover } from '@wener/console/floating';
 import { cn } from '@wener/console/tw';
-import { getRootWindow, ReactWindows, type ReactWindow } from '@wener/console/web/window';
+import { getRootWindow, Window, type ReactWindow } from '@wener/console/web/window';
 import clsx from 'clsx';
 import { useStore } from 'zustand';
 import { shallow } from 'zustand/shallow';
@@ -148,7 +148,7 @@ const WindowControlPopoverContent: React.FC<ComponentPropsWithoutRef<'ul'>> = (p
       <li>
         <a
           onClick={() => {
-            ReactWindows.closeAll();
+            Window.closeAll();
           }}
         >
           <VscCloseAll />
@@ -158,7 +158,7 @@ const WindowControlPopoverContent: React.FC<ComponentPropsWithoutRef<'ul'>> = (p
       <li>
         <a
           onClick={() => {
-            ReactWindows.minimizeAll();
+            Window.minimizeAll();
           }}
         >
           <HiMiniArrowsPointingIn />
@@ -168,7 +168,6 @@ const WindowControlPopoverContent: React.FC<ComponentPropsWithoutRef<'ul'>> = (p
     </ul>
   );
 };
-
 const WindowControl = memo(() => {
   const { refs, getFloatingProps, getReferenceProps, open, setOpen, floatingStyles, context, nodeId } = usePopover({
     placement: 'left-start',
@@ -264,7 +263,7 @@ const WindowDock = memo<{ win: ReactWindow }>(({ win }) => {
   );
 });
 const WindowDocks = memo(() => {
-  const windows = useStoreWithEqualityFn(getRootWindow().root, (s) => s.windows, shallow);
+  const windows = useStoreWithEqualityFn(getRootWindow().store, (s) => s.windows, shallow);
   return (
     <div className={'flex flex-col items-center gap-0.5'}>
       {windows.map((win) => {

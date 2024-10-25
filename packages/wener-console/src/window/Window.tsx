@@ -1,39 +1,73 @@
-import type { ComponentPropsWithRef, FC } from 'react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useStore } from 'zustand';
-import { MacOSWindowController } from './macos/MacOSWindowController';
-import { WindowsWindowController } from './windows/WindowsWindowController';
-import { getWindowStyleStore } from './WindowStyleStore';
+import { useShallow } from 'zustand/react/shallow';
+import { getRootWindow, ReactWindow, type WindowOpenOptions } from './ReactWindow';
+import { WindowGuest } from './WindowGuest';
 
-export const WindowController: FC<{
-  close?: ComponentPropsWithRef<'button'>;
-  minimize?: ComponentPropsWithRef<'button'>;
-  maximize?: ComponentPropsWithRef<'button'>;
-}> = (props) => {
-  let theme = useWindowTheme();
-  if (theme === 'macos') {
-    return <MacOSWindowController {...props} />;
-  }
-  return <WindowsWindowController {...props} />;
-};
-
-export function useWindowTheme() {
-  const theme = useStore(getWindowStyleStore(), (s) => s.theme);
-  if (theme && theme !== 'system') {
-    return theme;
+export namespace Window {
+  export function closeAll() {
+    getRootWindow().windows.forEach((v) => v.close());
   }
 
-  let ua = navigator.userAgent;
-  if (ua.indexOf('Win') !== -1) {
-    return 'windows';
-  } else if (ua.indexOf('Mac') !== -1) {
-    return 'macos';
+  export function minimizeAll() {
+    getRootWindow().windows.forEach((v) => v.minimize(true));
   }
 
-  // if (ua.indexOf('Linux') !== -1 || ua.indexOf('X11') !== -1) {
-  //   return 'linux';
-  // } else {
-  //   return 'unknown';
-  // }
-  return 'macos';
+  function createWindowContainer(win: ReactWindow) {
+    let id = `react-window-container-${win.id}`;
+    let host = document.getElementById(id);
+    if (host) {
+      return host;
+    }
+    host = document.createElement('div');
+    // host.setAttribute('data-react-window-id', win.id);
+    host.id = id;
+    host.className = 'fixed overflow-hidden w-screen h-screen left-0 top-0 pointer-events-none isolate z-40';
+    document.body.appendChild(host);
+    return host;
+  }
+
+  export const Host = () => {
+    const window = getRootWindow();
+    const [container, setContainer] = useState<HTMLElement | null>(null);
+    let store = window.store;
+
+    // works in ssr
+    useEffect(() => {
+      let ele = createWindowContainer(window);
+      setContainer(ele);
+      store.setState({ childrenElement: ele });
+      return () => {
+        ele.remove();
+      };
+    }, [window.id]);
+
+    const windows = useStore(
+      store,
+      useShallow(({ windows }) => {
+        return windows;
+      }),
+    );
+
+    return (
+      <>
+        {container &&
+          windows.map((win) => {
+            return createPortal(<WindowGuest key={win.id} win={win} />, container, win.id);
+          })}
+      </>
+    );
+  };
+
+  // Host.displayName = 'Window.Host';
+
+  export function getRoot(): ReactWindow;
+  export function getRoot() {
+    return getRootWindow();
+  }
+
+  export function open(opts: WindowOpenOptions) {
+    getRootWindow().open(opts);
+  }
 }
