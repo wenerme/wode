@@ -1,8 +1,9 @@
+import React from 'react';
 import type { Meta } from '@storybook/react';
 import { Clock } from './Clock';
 
 const meta: Meta = {
-  title: 'Applet/Clock',
+  title: 'console/applet/Clock',
   parameters: {
     layout: 'fullscreen',
   },

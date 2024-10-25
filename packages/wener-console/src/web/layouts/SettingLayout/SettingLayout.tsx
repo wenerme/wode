@@ -1,4 +1,4 @@
-import type { FC, HTMLProps, ReactNode } from 'react';
+import React, { type FC, type HTMLProps, type ReactNode } from 'react';
 import { clsx } from 'clsx';
 import { cn } from '../../../tw/cn';
 import { TitleTabLayout } from '../../components';

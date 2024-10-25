@@ -1,6 +1,6 @@
 'use client';
 
-import type { FC } from 'react';
+import React, { type FC } from 'react';
 import { useCompareEffect } from '@wener/reaction';
 import { deepEqual } from '@wener/utils';
 import { Eta } from 'eta';

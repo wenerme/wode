@@ -1,4 +1,4 @@
-import { createRef, PureComponent, type ReactNode, type RefObject } from 'react';
+import React, { createRef, PureComponent, type ReactNode, type RefObject } from 'react';
 import ReactDOM from 'react-dom';
 
 const hasWindow = typeof window !== 'undefined';

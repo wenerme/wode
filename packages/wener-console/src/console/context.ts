@@ -1,7 +1,7 @@
+import { getGlobalStates, setGlobalStates } from '@wener/utils';
 import Emittery from 'emittery';
 import { useStore } from 'zustand';
 import { getSiteStore as _getSiteStore, type SiteStore } from '../foundation/site/SiteStore';
-import { getGlobalStates, setGlobalStates } from '../state';
 import { createRouteStore, type RouteStore } from './store/RouteStore';
 import { createUserStore, type UserStore } from './store/UserStore';
 

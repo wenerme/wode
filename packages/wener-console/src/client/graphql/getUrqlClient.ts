@@ -1,6 +1,6 @@
 import type { Client } from '@urql/core';
+import { getGlobalStates } from '@wener/utils';
 import { getAccessToken } from '../../console/context';
-import { getGlobalStates } from '../../state';
 import { createUrqlClient } from '../../urql';
 import { getGraphQLUrl } from './getGraphQLUrl';
 

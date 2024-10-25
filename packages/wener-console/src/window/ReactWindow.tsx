@@ -1,8 +1,7 @@
-import { createContext, useContext, type ReactNode } from 'react';
-import { mutative } from '@wener/reaction/mutative/zustand';
-import { clamp, computeIfAbsent, randomUUID } from '@wener/utils';
+import React, { createContext, useContext, type ReactNode } from 'react';
+import { clamp, getGlobalStates, randomUUID } from '@wener/utils';
 import { createStore } from 'zustand';
-import { getGlobalStates } from '../../state';
+import { mutative } from 'zustand-mutative';
 
 export const WindowContext = createContext<ReactWindow | null>(null);
 
@@ -11,7 +10,7 @@ export function useWindow(): ReactWindow {
 }
 
 export function getRootWindow(): ReactRootWindow {
-  return computeIfAbsent(getGlobalStates(), 'ReactRootWindow', () => new ReactRootWindow());
+  return getGlobalStates('ReactRootWindow', () => new ReactRootWindow());
 }
 
 interface RootWindowState {

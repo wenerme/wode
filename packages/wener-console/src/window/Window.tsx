@@ -1,7 +1,8 @@
 import type { ComponentPropsWithRef, FC } from 'react';
+import React from 'react';
 import { useStore } from 'zustand';
-import { MacOSWindowController } from './MacOS';
-import { WindowsWindowController } from './Windows';
+import { MacOSWindowController } from './macos/MacOSWindowController';
+import { WindowsWindowController } from './windows/WindowsWindowController';
 import { getWindowStyleStore } from './WindowStyleStore';
 
 export const WindowController: FC<{

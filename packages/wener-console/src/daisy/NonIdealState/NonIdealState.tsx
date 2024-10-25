@@ -1,4 +1,4 @@
-import type { FC, HTMLAttributes, ReactNode } from 'react';
+import React, { type FC, type HTMLAttributes, type ReactNode } from 'react';
 import classNames from 'clsx';
 import type { IntentType } from '../const';
 

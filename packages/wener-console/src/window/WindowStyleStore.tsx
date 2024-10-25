@@ -1,14 +1,13 @@
-import { mutative } from '@wener/reaction/mutative/zustand';
-import { computeIfAbsent } from '@wener/utils';
+import { getGlobalStates } from '@wener/utils';
 import { createStore } from 'zustand';
-import { getGlobalStates } from '../../state';
+import { mutative } from 'zustand-mutative';
 
 export interface WindowStyleState {
   theme?: 'macos' | 'windows' | 'system';
 }
 
 export function getWindowStyleStore(): WindowStyleStore {
-  return computeIfAbsent(getGlobalStates(), 'WindowStyleStore', createWindowStyleStore);
+  return getGlobalStates('WindowStyleStore', createWindowStyleStore);
 }
 
 export function createWindowStyleStore() {

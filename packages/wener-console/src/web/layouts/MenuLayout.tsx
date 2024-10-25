@@ -1,4 +1,4 @@
-import type { FC, ReactNode } from 'react';
+import React, { type FC, type ReactNode } from 'react';
 
 export const MenuLayout: FC<{
   children?: ReactNode;

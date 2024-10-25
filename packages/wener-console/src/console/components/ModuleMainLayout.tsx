@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import React, { type FC } from 'react';
 import { Outlet } from 'react-router-dom';
 import { z } from 'zod';
 import { ExpandableSideMenuLayout, type ExpandableSideMenuLayoutProps } from '../../web';

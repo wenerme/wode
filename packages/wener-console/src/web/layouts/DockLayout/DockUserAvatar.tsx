@@ -1,5 +1,4 @@
-import type { ReactNode } from 'react';
-import { Fragment, type FC } from 'react';
+import React, { Fragment, type FC, type ReactNode } from 'react';
 import { HiUsers } from 'react-icons/hi2';
 import { Popover, Transition } from '@headlessui/react';
 import { clsx } from 'clsx';

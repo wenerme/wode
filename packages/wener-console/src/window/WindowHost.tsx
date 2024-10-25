@@ -1,4 +1,4 @@
-import { memo, useState } from 'react';
+import React, { memo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useStoreWithEqualityFn } from 'zustand/traditional';
 import { getRootWindow } from './ReactWindow';

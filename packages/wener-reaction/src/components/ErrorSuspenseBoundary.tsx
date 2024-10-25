@@ -1,4 +1,4 @@
-import { Suspense, type FC, type ReactNode } from 'react';
+import React, { Suspense, type FC, type ReactNode } from 'react';
 import { ErrorBoundary, type ErrorBoundaryProps } from './ErrorBoundary';
 
 export const ErrorSuspenseBoundary: FC<{ fallback?: ReactNode } & ErrorBoundaryProps> = ({

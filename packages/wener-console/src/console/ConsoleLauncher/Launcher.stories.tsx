@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { PiClock } from 'react-icons/pi';
 import type { Meta } from '@storybook/react';
 import { Launcher } from './Launcher';

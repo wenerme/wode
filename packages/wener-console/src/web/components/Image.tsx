@@ -1,4 +1,4 @@
-import { forwardRef, type ComponentPropsWithoutRef } from 'react';
+import React, { forwardRef, type ComponentPropsWithoutRef } from 'react';
 
 export type ImageProps = Omit<ComponentPropsWithoutRef<'img'>, 'src'> & {
   src: string | StaticImport;

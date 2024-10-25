@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { lazy } from 'react';
 import { ProdOnly } from '@wener/reaction';
 import { useShallow } from 'zustand/react/shallow';
 import { useUserId } from '../../console/context';
-import { MatomoTracker } from '../../matomo';
 import { useSiteStore } from './SiteStore';
+
+// avoid browser block the js cause app failed to load
+const MatomoTracker = lazy(() => import('../../matomo/MatomoTracker').then((m) => ({ default: m.MatomoTracker })));
 
 export const SiteSidecar = () => {
   const { url, siteId } = useSiteStore(

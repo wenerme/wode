@@ -1,3 +1,4 @@
+import React from 'react';
 import pinyin from 'pinyin';
 import { PageContainer } from '@/components/page/PageContainer';
 import { getChildrenRiddles } from '@/data/const';

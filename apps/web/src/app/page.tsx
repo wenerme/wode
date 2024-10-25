@@ -1,3 +1,4 @@
+import React from 'react';
 import { arrayOfMaybeArray } from '@wener/utils';
 import { HomePage } from '@/components/home/HomePage';
 import { PageLayout } from '@/components/page/PageLayout';

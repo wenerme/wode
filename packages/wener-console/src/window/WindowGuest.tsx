@@ -1,4 +1,4 @@
-import { memo, useEffect, type ComponentPropsWithoutRef, type FC, type ReactNode } from 'react';
+import React, { memo, useEffect, type ComponentPropsWithoutRef, type FC, type ReactNode } from 'react';
 import { Rnd } from 'react-rnd';
 import { Closer } from '@wener/utils';
 import { clsx } from 'clsx';

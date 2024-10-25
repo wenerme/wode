@@ -1,4 +1,4 @@
-import type { PropsWithChildren } from 'react';
+import React, { type PropsWithChildren } from 'react';
 import { I18nClientProvider } from '@/i18n/LinguiClientProvider';
 import { loadI18n } from './loadI18n';
 

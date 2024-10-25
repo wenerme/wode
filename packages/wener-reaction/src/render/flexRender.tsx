@@ -1,4 +1,4 @@
-import { cloneElement, type ComponentType, type ReactElement, type ReactNode } from 'react';
+import React, { cloneElement, type ComponentType, type ReactElement, type ReactNode } from 'react';
 import { mergeProps as defaultMergeProps } from '../utils/mergeProps';
 import { isReactComponent } from './isReactComponent';
 

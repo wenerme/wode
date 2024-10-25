@@ -1,3 +1,4 @@
+import React from 'react';
 import { useImmer } from 'use-immer';
 import type { IntentType, SizeType } from '../const';
 import { daisy } from '../utils/daisy';

@@ -1,4 +1,11 @@
-import type { ComponentPropsWithoutRef, ComponentType, FC, HTMLProps, ReactElement, ReactNode } from 'react';
+import React, {
+  type ComponentPropsWithoutRef,
+  type ComponentType,
+  type FC,
+  type HTMLProps,
+  type ReactElement,
+  type ReactNode,
+} from 'react';
 import { clsx } from 'clsx';
 import { Tooltip } from '../../../floating';
 import { cn } from '../../../tw/cn';

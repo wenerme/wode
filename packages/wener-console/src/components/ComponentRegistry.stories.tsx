@@ -1,3 +1,5 @@
+import React from 'react';
+import { PiHeart } from 'react-icons/pi';
 import type { Meta } from '@storybook/react';
 import { SiteLogo } from '../console/components';
 import { ComponentProvider } from './ComponentProvider';
@@ -18,7 +20,14 @@ export const Demo = () => {
       <div>Default SiteLogo</div>
       <SiteLogo className={'h-6 w-6'} />
       <div>Provided SiteLogo</div>
-      <ComponentProvider components={[]}>
+      <ComponentProvider
+        components={[
+          {
+            provide: SiteLogo,
+            Component: PiHeart,
+          },
+        ]}
+      >
         <SiteLogo className={'h-6 w-6'} />
       </ComponentProvider>
     </div>

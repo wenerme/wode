@@ -1,6 +1,6 @@
-import { mutative } from '@wener/reaction/mutative/zustand';
 import { getGlobalStates } from '@wener/utils';
 import { createStore, useStore } from 'zustand';
+import { mutative } from 'zustand-mutative';
 
 export interface UserAgentPreferences {
   colorTheme: 'light' | 'dark';

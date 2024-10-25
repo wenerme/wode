@@ -1,4 +1,4 @@
-import type { ComponentPropsWithoutRef, FC, ReactNode } from 'react';
+import React, { type ComponentPropsWithoutRef, type FC, type ReactNode } from 'react';
 import { useControllable } from '@wener/reaction';
 import { HeaderContentFooterLayout } from './HeaderContentFooterLayout';
 import { getTitleTabItemKey, TitleTabList, type TitleTabItem } from './TitleTabList';

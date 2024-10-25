@@ -1,4 +1,4 @@
-import { forwardRef, type ComponentProps, type ElementType, type ReactNode } from 'react';
+import React, { forwardRef, type ComponentProps, type ElementType, type ReactNode } from 'react';
 import { cn } from '../../tw/cn';
 
 export type LeftContentRightLayoutProps<E extends ElementType = 'div'> = Omit<ComponentProps<E>, 'as'> & {

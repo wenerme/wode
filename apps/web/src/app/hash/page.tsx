@@ -1,3 +1,4 @@
+import React from 'react';
 import { HashPage } from '@/components/hash/HashPage';
 import { PageContainer } from '@/components/page/PageContainer';
 import { PageLayout } from '@/components/page/PageLayout';

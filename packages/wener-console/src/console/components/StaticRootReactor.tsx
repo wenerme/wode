@@ -1,6 +1,6 @@
 'use client';
 
-import type { FC, PropsWithChildren } from 'react';
+import React, { type FC, type PropsWithChildren } from 'react';
 import { Toaster } from 'react-hot-toast';
 import dayjs from 'dayjs';
 import advancedFormat from 'dayjs/plugin/advancedFormat';

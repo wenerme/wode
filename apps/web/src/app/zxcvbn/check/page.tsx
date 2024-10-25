@@ -1,3 +1,4 @@
+import React from 'react';
 import { firstOfMaybeArray } from '@wener/utils';
 import type { ZXCVBNResult } from 'zxcvbn';
 import { PageContainer } from '@/components/page/PageContainer';

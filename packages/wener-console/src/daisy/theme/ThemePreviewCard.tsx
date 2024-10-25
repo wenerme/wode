@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import React, { type FC } from 'react';
 import classNames from 'clsx';
 
 const Colors = {

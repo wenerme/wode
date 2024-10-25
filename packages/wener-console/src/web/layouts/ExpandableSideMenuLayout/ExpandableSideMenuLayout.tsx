@@ -1,5 +1,4 @@
-import type { HTMLProps, ReactElement, ReactNode } from 'react';
-import { forwardRef, useState, type FC } from 'react';
+import React, { forwardRef, useState, type FC, type HTMLProps, type ReactElement, type ReactNode } from 'react';
 import { HiChevronDown, HiChevronRight } from 'react-icons/hi2';
 import { PiCaretDoubleLeftThin, PiCaretDoubleRightThin } from 'react-icons/pi';
 import { flexRender, useControllable, type FlexRenderable } from '@wener/reaction';

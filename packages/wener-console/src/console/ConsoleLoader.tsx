@@ -1,4 +1,4 @@
-import { useState, type FC, type ReactNode } from 'react';
+import React, { useState, type FC, type ReactNode } from 'react';
 import { createHashRouter, Outlet, RouterProvider, type RouterProviderProps } from 'react-router-dom';
 import type { Router } from '@remix-run/router';
 import { ErrorSuspenseBoundary, useAsyncEffect, useDebugRender } from '@wener/reaction';

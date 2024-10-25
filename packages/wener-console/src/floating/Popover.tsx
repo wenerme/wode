@@ -1,9 +1,9 @@
-import type { CSSProperties } from 'react';
-import {
+import React, {
   cloneElement,
   isValidElement,
   useMemo,
   useState,
+  type CSSProperties,
   type HTMLProps,
   type ReactElement,
   type ReactNode,

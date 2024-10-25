@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useInterval } from '@wener/reaction';
 import type { MaybePromise } from '@wener/utils';
 import { UpdateNotificationToast } from './UpdateNotificationToast';

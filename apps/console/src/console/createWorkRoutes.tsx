@@ -1,3 +1,4 @@
+import React from 'react';
 import type { RouteObject } from 'react-router-dom';
 
 export function createWorkRoutes(): RouteObject[] {
