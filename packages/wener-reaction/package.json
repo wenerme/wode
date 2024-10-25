@@ -18,6 +18,7 @@
     "./mutative/zustand": "./src/mutative/zustand/index.ts",
     "./next": "./src/next/index.ts",
     "./router": "./src/router/index.ts",
+    "./store": "./src/store/index.ts",
     "./universal": "./src/universal.ts",
     "./valtio": "./src/valtio/index.ts",
     "./package.json": "./package.json"
@@ -96,6 +97,10 @@
       "./router": {
         "types": "./src/router/index.ts",
         "default": "./lib/router/index.js"
+      },
+      "./store": {
+        "types": "./src/store/index.ts",
+        "default": "./lib/store/index.js"
       },
       "./universal": {
         "types": "./src/universal.ts",

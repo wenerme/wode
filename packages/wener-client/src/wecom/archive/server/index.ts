@@ -1,0 +1,1 @@
+export { decryptRandomKey } from './decryptRandomKey';
