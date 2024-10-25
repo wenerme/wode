@@ -299,7 +299,8 @@ https://github.com/tc39/proposal-resizablearraybuffer
     if (isNativeBufferAllowed()) {
       return Buffer.from(v, 'hex');
     }
-    return new Uint8Array(v.match(/.{1,2}/g)!.map((byte) => parseInt(byte, 16)));
+    const num = v.match(/.{1,2}/g)!.map((byte) => parseInt(byte, 16));
+    return new Uint8Array(num);
   }
 
   /**
@@ -319,7 +320,10 @@ https://github.com/tc39/proposal-resizablearraybuffer
     return encodeArrayBufferToBase64(toArrayBuffer(source));
   }
 
-  export function toHex(v: BufferSource): string {
+  export function toHex(v: BufferSource | string): string {
+    if (typeof v === 'string') {
+      v = new TextEncoder().encode(v);
+    }
     if ('toHex' in Uint8Array.prototype) {
       return toUint8Array(v).toHex();
     }

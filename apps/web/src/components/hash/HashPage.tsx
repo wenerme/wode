@@ -5,7 +5,7 @@ import { useMemo, useState } from 'react';
 import { HiDuplicate } from 'react-icons/hi';
 import { Button } from '@wener/console/daisy';
 import { useAsyncEffect } from '@wener/reaction';
-import { ArrayBuffers, copy } from '@wener/utils';
+import { ArrayBuffers, copy, md5 } from '@wener/utils';
 import { HashLockOutlined } from 'common/icons';
 import { SearchPageLayout } from '@/components/SearchPageLayout';
 
@@ -49,6 +49,12 @@ const ContentHashResult: React.FC<{ content: string }> = ({ content }) => {
       title: 'Hex',
       content: ArrayBuffers.toString(data, 'hex'),
       tags: [{ title: 'Encoding', className: 'badge-info' }],
+    });
+    r.push({
+      id: 'md5',
+      title: 'MD5',
+      content: md5(ArrayBuffers.toString(data)),
+      // tags: [{ title: 'Encoding', className: 'badge-info' }],
     });
     setResult(r);
 

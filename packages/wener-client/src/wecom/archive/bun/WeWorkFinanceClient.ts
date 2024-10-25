@@ -1,7 +1,7 @@
-import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import { dlopen, FFIType, ptr, suffix, toBuffer, type Library, type Pointer, type Symbols } from 'bun:ffi';
+import { decryptRandomKey, maybeBase64 } from '../server/decryptRandomKey';
 import type { ArchiveMessage } from './../types';
 
 type Handler = Pointer;
@@ -511,10 +511,6 @@ export function createWeWorkFinanceClientFromEnv({
   });
 }
 
-function maybeBase64(v: string | Buffer) {
-  return typeof v === 'string' ? Buffer.from(v, 'base64') : v;
-}
-
 export function decrypt({
   randomKey,
   decryptKey,
@@ -527,13 +523,11 @@ export function decrypt({
   encrypted: string;
 }): string {
   if (!decryptKey && randomKey && privateKey) {
-    decryptKey = crypto.privateDecrypt(
-      {
-        key: privateKey,
-        padding: crypto.constants.RSA_PKCS1_PADDING,
-      },
-      maybeBase64(randomKey),
-    );
+    decryptKey = decryptRandomKey({
+      randomKey,
+      privateKey,
+      native: true,
+    });
   }
   if (!decryptKey) {
     throw new Error(`No decrypt key`);
@@ -546,17 +540,15 @@ export function decrypt({
   const slice = getSlicePtr();
 
   try {
-    throwIfError(DecryptData(ptr(decryptKey), ptrOfStr(encrypted), slice), `DecryptData`);
-    // console.log(
-    //   `A`,
-    //   slice,
-    //   //
-    //   `B`,
-    //   GetContentFromSlice(slice).ptr,
-    //   `C`,
-    //   read.ptr(slice, 0),
-    //   read.u32(slice, 8), // len
-    // );
+    // 解析encrypt_key出错
+    // 使用 NodeRSA 得到的 decryptKey 会出错
+    // 相同内容重复调用也会出错
+    // new Uint8Array(decryptKey) 300 次
+    // decryptKey 100 次
+    // throwIfError(DecryptData(ptr(decryptKey), ptrOfStr(encrypted), slice), `DecryptData`);
+
+    // 使用 ptrOfStr 没有再出现错误
+    throwIfError(DecryptData(ptrOfStr(decryptKey.toString('utf8')), ptrOfStr(encrypted), slice), `DecryptData`);
     const content = GetContentFromSlice(slice);
     return String(content);
   } catch (e) {
