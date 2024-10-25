@@ -39,12 +39,6 @@ export async function NextRootLayout({ children, params }: NextLayoutProps) {
 
   attrs['data-theme'] = theme;
 
-  let content = (
-    <>
-      <Suspense>{children}</Suspense>
-      <SiteSidecar />
-    </>
-  );
   return (
     <html lang={i18n.locale} className='white' {...attrs}>
       <head>
@@ -60,7 +54,10 @@ export async function NextRootLayout({ children, params }: NextLayoutProps) {
         <title>{title}</title>
       </head>
       <body>
-        <I18nServerProvider>{content}</I18nServerProvider>
+        <I18nServerProvider>
+          <Suspense>{children}</Suspense>
+          <SiteSidecar />
+        </I18nServerProvider>
         <ProdOnly>
           <SpeedInsights />
           <Analytics />
