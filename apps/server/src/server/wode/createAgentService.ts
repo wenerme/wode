@@ -1,8 +1,8 @@
 import { timestampFromDate } from '@bufbuild/protobuf/wkt';
+import { ifPresent } from '@wener/utils';
 import dayjs from 'dayjs';
 import { AgentInfoResponse, AgentReloadResponse, AgentService } from '@/gen/pb/wener/wode/agent/v1/AgentService_pb';
 import { createService } from '@/server/connect/createService';
-import { ifPresent } from '@/utils/ifPresent';
 
 export function createAgentService() {
   return createService(AgentService, {

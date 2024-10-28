@@ -46,6 +46,23 @@ https://github.com/tc39/proposal-resizablearraybuffer
 
   let nativeBufferAllowed: boolean = true;
   let isBufferAvailable: undefined | boolean;
+  let textEncoder: TextEncoder;
+  let textDecoder: TextDecoder;
+
+  function decode(v: AllowSharedBufferSource): string {
+    // need icu full data
+    // if (encoding) return new TextDecoder(encoding).decode(v);
+    return (textDecoder ||= new TextDecoder()).decode(v);
+  }
+
+  function encode(v: string): Uint8Array;
+  function encode<T>(v: string | T): T | Uint8Array;
+  function encode<T>(v: string | T): T | Uint8Array {
+    if (typeof v === 'string') {
+      return (textEncoder ||= new TextEncoder()).encode(v);
+    }
+    return v;
+  }
 
   /**
    * isNativeBufferAvailable check if the native {@link Buffer} is available
@@ -140,7 +157,7 @@ https://github.com/tc39/proposal-resizablearraybuffer
       case 'utf8':
       // falls through
       case 'utf-8':
-        return new TextDecoder().decode(source);
+        return decode(source);
       case 'ascii': {
         return String.fromCharCode(...u8.map((v) => v & 0x7f));
       }
@@ -241,7 +258,7 @@ https://github.com/tc39/proposal-resizablearraybuffer
         case 'utf-8':
         // falls through
         case 'utf8':
-          return new TextEncoder().encode(src).buffer;
+          return encode(src).buffer;
         case 'base64':
           // replaceAll need higher version of nodejs
           // return decodeBase64ToArrayBuffer(v.replace(/[^0-9a-zA-Z=+/_]/g, ''));
@@ -308,9 +325,7 @@ https://github.com/tc39/proposal-resizablearraybuffer
    * @param source if string, will be encoded as utf8
    */
   export function toBase64(source: BufferSource | string): string {
-    if (typeof source === 'string') {
-      source = new TextEncoder().encode(source);
-    }
+    source = encode(source);
     if ('toBase64' in Uint8Array.prototype) {
       return toUint8Array(source).toBase64();
     }
@@ -321,9 +336,7 @@ https://github.com/tc39/proposal-resizablearraybuffer
   }
 
   export function toHex(v: BufferSource | string): string {
-    if (typeof v === 'string') {
-      v = new TextEncoder().encode(v);
-    }
+    v = encode(v);
     if ('toHex' in Uint8Array.prototype) {
       return toUint8Array(v).toHex();
     }

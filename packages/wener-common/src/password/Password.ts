@@ -1,5 +1,5 @@
 import { Errors } from '@wener/utils';
-import { createScryptPasswordAlgorithm } from '@/utils/password/createScryptPasswordAlgorithm';
+import { createScryptPasswordAlgorithm } from './createScryptPasswordAlgorithm';
 import { createPBKDF2PasswordAlgorithm } from './createPBKDF2PasswordAlgorithm';
 import { PHC } from './PHC';
 

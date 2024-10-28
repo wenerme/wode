@@ -1,5 +1,5 @@
+import { Password } from '@wener/common/password';
 import { md5 } from '@wener/utils';
-import { Password } from '@/utils/password';
 
 export function verifyPassword({ password, hash }: { password: string; hash?: string }) {
   return checkPassword({ password, hash }).then((v) => v.match);
