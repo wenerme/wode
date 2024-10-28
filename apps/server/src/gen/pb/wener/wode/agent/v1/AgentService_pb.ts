@@ -2,35 +2,44 @@
 // @generated from file wener/wode/agent/v1/AgentService.proto (package wener.wode.agent.v1, syntax proto3)
 /* eslint-disable */
 
-import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv1";
-import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv1";
-import type { Timestamp } from "@bufbuild/protobuf/wkt";
-import { file_google_protobuf_empty, file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
-import type { Message } from "@bufbuild/protobuf";
+import type { Message } from '@bufbuild/protobuf';
+import {
+  fileDesc,
+  messageDesc,
+  serviceDesc,
+  type GenFile,
+  type GenMessage,
+  type GenService,
+} from '@bufbuild/protobuf/codegenv1';
+import { file_google_protobuf_empty, file_google_protobuf_timestamp, type Timestamp } from '@bufbuild/protobuf/wkt';
 
 /**
  * Describes the file wener/wode/agent/v1/AgentService.proto.
  */
-export const file_wener_wode_agent_v1_AgentService: GenFile = /*@__PURE__*/
-  fileDesc("CiZ3ZW5lci93b2RlL2FnZW50L3YxL0FnZW50U2VydmljZS5wcm90bxITd2VuZXIud29kZS5hZ2VudC52MSISChBBZ2VudEluZm9SZXF1ZXN0Ip4BChFBZ2VudEluZm9SZXNwb25zZRInCgNub3cYASABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi4KCnN0YXJ0ZWRfYXQYAiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEg4KBnVwdGltZRgDIAEoARIQCgh0aW1lem9uZRgEIAEoCRIOCgZsb2NhbGUYBSABKAkiJAoSQWdlbnRSZWxvYWRSZXF1ZXN0Eg4KBnJlYXNvbhgBIAEoCSImChNBZ2VudFJlbG9hZFJlc3BvbnNlEg8KB21lc3NhZ2UYASABKAkywgEKDEFnZW50U2VydmljZRJVCgRJbmZvEiUud2VuZXIud29kZS5hZ2VudC52MS5BZ2VudEluZm9SZXF1ZXN0GiYud2VuZXIud29kZS5hZ2VudC52MS5BZ2VudEluZm9SZXNwb25zZRJbCgZSZWxvYWQSJy53ZW5lci53b2RlLmFnZW50LnYxLkFnZW50UmVsb2FkUmVxdWVzdBooLndlbmVyLndvZGUuYWdlbnQudjEuQWdlbnRSZWxvYWRSZXNwb25zZWIGcHJvdG8z", [file_google_protobuf_empty, file_google_protobuf_timestamp]);
+export const file_wener_wode_agent_v1_AgentService: GenFile =
+  /*@__PURE__*/
+  fileDesc(
+    'CiZ3ZW5lci93b2RlL2FnZW50L3YxL0FnZW50U2VydmljZS5wcm90bxITd2VuZXIud29kZS5hZ2VudC52MSISChBBZ2VudEluZm9SZXF1ZXN0Ip4BChFBZ2VudEluZm9SZXNwb25zZRInCgNub3cYASABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi4KCnN0YXJ0ZWRfYXQYAiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEg4KBnVwdGltZRgDIAEoARIQCgh0aW1lem9uZRgEIAEoCRIOCgZsb2NhbGUYBSABKAkiJAoSQWdlbnRSZWxvYWRSZXF1ZXN0Eg4KBnJlYXNvbhgBIAEoCSImChNBZ2VudFJlbG9hZFJlc3BvbnNlEg8KB21lc3NhZ2UYASABKAkywgEKDEFnZW50U2VydmljZRJVCgRJbmZvEiUud2VuZXIud29kZS5hZ2VudC52MS5BZ2VudEluZm9SZXF1ZXN0GiYud2VuZXIud29kZS5hZ2VudC52MS5BZ2VudEluZm9SZXNwb25zZRJbCgZSZWxvYWQSJy53ZW5lci53b2RlLmFnZW50LnYxLkFnZW50UmVsb2FkUmVxdWVzdBooLndlbmVyLndvZGUuYWdlbnQudjEuQWdlbnRSZWxvYWRSZXNwb25zZWIGcHJvdG8z',
+    [file_google_protobuf_empty, file_google_protobuf_timestamp],
+  );
 
 /**
  * @generated from message wener.wode.agent.v1.AgentInfoRequest
  */
-export type AgentInfoRequest = Message<"wener.wode.agent.v1.AgentInfoRequest"> & {
-};
+export type AgentInfoRequest = Message<'wener.wode.agent.v1.AgentInfoRequest'> & {};
 
 /**
  * Describes the message wener.wode.agent.v1.AgentInfoRequest.
  * Use `create(AgentInfoRequestSchema)` to create a new message.
  */
-export const AgentInfoRequestSchema: GenMessage<AgentInfoRequest> = /*@__PURE__*/
+export const AgentInfoRequestSchema: GenMessage<AgentInfoRequest> =
+  /*@__PURE__*/
   messageDesc(file_wener_wode_agent_v1_AgentService, 0);
 
 /**
  * @generated from message wener.wode.agent.v1.AgentInfoResponse
  */
-export type AgentInfoResponse = Message<"wener.wode.agent.v1.AgentInfoResponse"> & {
+export type AgentInfoResponse = Message<'wener.wode.agent.v1.AgentInfoResponse'> & {
   /**
    * @generated from field: google.protobuf.Timestamp now = 1;
    */
@@ -61,13 +70,14 @@ export type AgentInfoResponse = Message<"wener.wode.agent.v1.AgentInfoResponse">
  * Describes the message wener.wode.agent.v1.AgentInfoResponse.
  * Use `create(AgentInfoResponseSchema)` to create a new message.
  */
-export const AgentInfoResponseSchema: GenMessage<AgentInfoResponse> = /*@__PURE__*/
+export const AgentInfoResponseSchema: GenMessage<AgentInfoResponse> =
+  /*@__PURE__*/
   messageDesc(file_wener_wode_agent_v1_AgentService, 1);
 
 /**
  * @generated from message wener.wode.agent.v1.AgentReloadRequest
  */
-export type AgentReloadRequest = Message<"wener.wode.agent.v1.AgentReloadRequest"> & {
+export type AgentReloadRequest = Message<'wener.wode.agent.v1.AgentReloadRequest'> & {
   /**
    * @generated from field: string reason = 1;
    */
@@ -78,13 +88,14 @@ export type AgentReloadRequest = Message<"wener.wode.agent.v1.AgentReloadRequest
  * Describes the message wener.wode.agent.v1.AgentReloadRequest.
  * Use `create(AgentReloadRequestSchema)` to create a new message.
  */
-export const AgentReloadRequestSchema: GenMessage<AgentReloadRequest> = /*@__PURE__*/
+export const AgentReloadRequestSchema: GenMessage<AgentReloadRequest> =
+  /*@__PURE__*/
   messageDesc(file_wener_wode_agent_v1_AgentService, 2);
 
 /**
  * @generated from message wener.wode.agent.v1.AgentReloadResponse
  */
-export type AgentReloadResponse = Message<"wener.wode.agent.v1.AgentReloadResponse"> & {
+export type AgentReloadResponse = Message<'wener.wode.agent.v1.AgentReloadResponse'> & {
   /**
    * @generated from field: string message = 1;
    */
@@ -95,7 +106,8 @@ export type AgentReloadResponse = Message<"wener.wode.agent.v1.AgentReloadRespon
  * Describes the message wener.wode.agent.v1.AgentReloadResponse.
  * Use `create(AgentReloadResponseSchema)` to create a new message.
  */
-export const AgentReloadResponseSchema: GenMessage<AgentReloadResponse> = /*@__PURE__*/
+export const AgentReloadResponseSchema: GenMessage<AgentReloadResponse> =
+  /*@__PURE__*/
   messageDesc(file_wener_wode_agent_v1_AgentService, 3);
 
 /**
@@ -106,18 +118,16 @@ export const AgentService: GenService<{
    * @generated from rpc wener.wode.agent.v1.AgentService.Info
    */
   info: {
-    methodKind: "unary";
+    methodKind: 'unary';
     input: typeof AgentInfoRequestSchema;
     output: typeof AgentInfoResponseSchema;
-  },
+  };
   /**
    * @generated from rpc wener.wode.agent.v1.AgentService.Reload
    */
   reload: {
-    methodKind: "unary";
+    methodKind: 'unary';
     input: typeof AgentReloadRequestSchema;
     output: typeof AgentReloadResponseSchema;
-  },
-}> = /*@__PURE__*/
-  serviceDesc(file_wener_wode_agent_v1_AgentService, 0);
-
+  };
+}> = /*@__PURE__*/ serviceDesc(file_wener_wode_agent_v1_AgentService, 0);

@@ -4,6 +4,12 @@ import { serveStatic } from '@hono/node-server/serve-static';
 import { DataloaderType, MemoryCacheAdapter } from '@mikro-orm/core';
 import { defineConfig, EntityManager } from '@mikro-orm/postgresql';
 import { Logger, Module } from '@nestjs/common';
+import {
+  createArgon2PasswordAlgorithm,
+  createBase64PasswordAlgorithm,
+  createBcryptPasswordAlgorithm,
+  Password,
+} from '@wener/common/password';
 import { createBootstrap } from '@wener/nestjs';
 import { createOpenAPIHono, runServer } from '@wener/nestjs/hono';
 import { getEntityManager, OrmModule } from '@wener/nestjs/mikro-orm';
@@ -19,10 +25,6 @@ import { createBaseRoute } from '@/server/routes/createBaseRoute';
 import { buildGraphQLSchema, ContextGraphAuthChecker } from '@/server/yoga/buildGraphQLSchema';
 import { createYogaServer } from '@/server/yoga/createYogaServer';
 import { serveYoga } from '@/server/yoga/serveYoga';
-import { Password } from '@/utils/password';
-import { createArgon2PasswordAlgorithm } from '@/utils/password/createArgon2PasswordAlgorithm';
-import { createBase64PasswordAlgorithm } from '@/utils/password/createBase64PasswordAlgorithm';
-import { createBcryptPasswordAlgorithm } from '@/utils/password/createBcryptPasswordAlgorithm';
 import { getInstanceGraphModule } from './getInstanceGraphModule';
 import { setupDayjs } from './setupDayjs';
 
@@ -55,7 +57,11 @@ export async function runDemoApiServer() {
   }
 
   Password.addAlgorithm(createBcryptPasswordAlgorithm());
-  Password.addAlgorithm(createArgon2PasswordAlgorithm());
+  Password.addAlgorithm(
+    createArgon2PasswordAlgorithm({
+      provide: () => import('argon2'),
+    }),
+  );
   Password.setDefaultAlgorithm('argon2i');
 
   if (isDev()) {

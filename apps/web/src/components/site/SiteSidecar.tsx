@@ -12,7 +12,7 @@ import { usePopover } from '@wener/console/floating';
 import { useExposeDebug } from '@wener/console/hooks';
 import { WebVitals } from '@wener/console/web';
 import { getRootWindow, Window, type ReactWindow } from '@wener/console/window';
-import { ClientOnly, DevOnly, useDebugRender, useEventListener } from '@wener/reaction';
+import { ClientOnly, DevOnly, MountedOnly, useDebugRender, useEventListener } from '@wener/reaction';
 import { clsx } from 'clsx';
 import { parse as parseCookie } from 'cookie';
 import { throttle } from 'es-toolkit';
@@ -51,7 +51,7 @@ export const SiteSidecar = () => {
   }, [initial]);
 
   return (
-    <ClientOnly>
+    <MountedOnly>
       <DaisyTheme.Sidecar />
       <Window.Host />
       <WebVitals />
@@ -113,7 +113,7 @@ export const SiteSidecar = () => {
           </button>
         </DevOnly>
       </div>
-    </ClientOnly>
+    </MountedOnly>
   );
 };
 

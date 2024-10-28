@@ -8,6 +8,7 @@
   "exports": {
     ".": "./src/index.ts",
     "./meta": "./src/meta/index.ts",
+    "./password": "./src/password/index.ts",
     "./package.json": "./package.json"
   },
   "files": [
@@ -23,5 +24,15 @@
   "dependencies": {
     "@wener/utils": "^1.1.50",
     "es-toolkit": "^1.25.0"
+  },
+  "devDependencies": {
+    "@types/argon2": "^0.15.4",
+    "@types/argon2-browser": "^1.18.4",
+    "@types/bcrypt": "^5.0.2",
+    "@types/bcryptjs": "^2.4.6",
+    "argon2": "^0.41.1",
+    "argon2-browser": "^1.18.0",
+    "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3"
   }
 }

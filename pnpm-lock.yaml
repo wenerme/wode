@@ -81,7 +81,7 @@ importers:
         version: 14.0.2
       jsdom:
         specifier: ^25.0.1
-        version: 25.0.1(bufferutil@4.0.8)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@6.0.4)
+        version: 25.0.1(bufferutil@4.0.8)(canvas@2.11.2)(utf-8-validate@6.0.4)
       million:
         specifier: ^3.1.11
         version: 3.1.11(rollup@4.24.0)(webpack-sources@3.2.3)
@@ -135,7 +135,7 @@ importers:
         version: 5.0.1(typescript@5.6.3)(vite@5.4.8(@types/node@20.16.11)(sass@1.79.4)(terser@5.34.1))
       vitest:
         specifier: ^2.1.2
-        version: 2.1.2(@types/node@20.16.11)(@vitest/ui@2.1.2)(jsdom@25.0.1(bufferutil@4.0.8)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@6.0.4))(sass@1.79.4)(terser@5.34.1)
+        version: 2.1.2(@types/node@20.16.11)(@vitest/ui@2.1.2)(jsdom@25.0.1(bufferutil@4.0.8)(canvas@2.11.2)(utf-8-validate@6.0.4))(sass@1.79.4)(terser@5.34.1)
 
   apps/console:
     dependencies:
@@ -683,6 +683,9 @@ importers:
       '@wener/client':
         specifier: ^1.0.23
         version: link:../../packages/wener-client
+      '@wener/common':
+        specifier: ^1.0.0
+        version: link:../../packages/wener-common
       '@wener/console':
         specifier: ^1.0.11
         version: link:../../packages/wener-console
@@ -802,7 +805,7 @@ importers:
         version: 5.9.4
       jsdom:
         specifier: ^25.0.1
-        version: 25.0.1(bufferutil@4.0.8)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@6.0.4)
+        version: 25.0.1(bufferutil@4.0.8)(canvas@2.11.2)(utf-8-validate@6.0.4)
       jsondiffpatch:
         specifier: ^0.6.0
         version: 0.6.0
@@ -811,7 +814,7 @@ importers:
         version: 5.0.1
       knex:
         specifier: ^3.1.0
-        version: 3.1.0(better-sqlite3@11.3.0)(mysql2@3.11.3)(pg@8.13.0)
+        version: 3.1.0(better-sqlite3@11.3.0)(pg@8.13.0)(sqlite3@5.1.7)
       knex-schema-inspector:
         specifier: ^3.1.0
         version: 3.1.0
@@ -954,6 +957,9 @@ importers:
       '@lingui/react':
         specifier: ^4.12.0
         version: 4.12.0(react@18.3.1)
+      '@radix-ui/react-tabs':
+        specifier: ^1.1.1
+        version: 1.1.1(@types/react-dom@18.3.1)(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@react-pdf/renderer':
         specifier: ^4.0.0
         version: 4.0.0(encoding@0.1.13)(react@18.3.1)
@@ -987,6 +993,9 @@ importers:
       '@vercel/speed-insights':
         specifier: ^1.0.12
         version: 1.0.12(next@14.2.15(@babel/core@7.25.8)(@opentelemetry/api@1.9.0)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.79.4))(react@18.3.1)
+      '@wener/common':
+        specifier: ^1.0.0
+        version: link:../../packages/wener-common
       '@wener/console':
         specifier: workspace:*
         version: link:../../packages/wener-console
@@ -1407,7 +1416,7 @@ importers:
         version: link:../wener-utils
       jsdom:
         specifier: ^25.0.1
-        version: 25.0.1(bufferutil@4.0.8)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@6.0.4)
+        version: 25.0.1(bufferutil@4.0.8)(canvas@2.11.2)(utf-8-validate@6.0.4)
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -1487,6 +1496,31 @@ importers:
       es-toolkit:
         specifier: ^1.25.0
         version: 1.25.0
+    devDependencies:
+      '@types/argon2':
+        specifier: ^0.15.4
+        version: 0.15.4
+      '@types/argon2-browser':
+        specifier: ^1.18.4
+        version: 1.18.4
+      '@types/bcrypt':
+        specifier: ^5.0.2
+        version: 5.0.2
+      '@types/bcryptjs':
+        specifier: ^2.4.6
+        version: 2.4.6
+      argon2:
+        specifier: ^0.41.1
+        version: 0.41.1
+      argon2-browser:
+        specifier: ^1.18.0
+        version: 1.18.0
+      bcrypt:
+        specifier: ^5.1.1
+        version: 5.1.1(encoding@0.1.13)
+      bcryptjs:
+        specifier: ^2.4.3
+        version: 2.4.3
 
   packages/wener-console:
     dependencies:
@@ -1768,7 +1802,7 @@ importers:
         version: 5.4.1
       knex:
         specifier: ^3.1.0
-        version: 3.1.0(better-sqlite3@11.3.0)(mysql2@3.11.3)(pg@8.13.0)
+        version: 3.1.0(better-sqlite3@11.3.0)(pg@8.13.0)(sqlite3@5.1.7)
       nats:
         specifier: ^2.28.2
         version: 2.28.2
@@ -5165,6 +5199,19 @@ packages:
       '@types/react':
         optional: true
 
+  '@radix-ui/react-tabs@1.1.1':
+    resolution: {integrity: sha512-3GBUDmP2DvzmtYLMsHmpA1GtR46ZDZ+OreXM/N+kkQJOPIgytFWWTfDQmBQKBvaFS0Vno0FktdbVzN28KGrMdw==}
+    peerDependencies:
+      '@types/react': '*'
+      '@types/react-dom': '*'
+      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+      react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      '@types/react-dom':
+        optional: true
+
   '@radix-ui/react-use-callback-ref@1.0.1':
     resolution: {integrity: sha512-D94LjX4Sp0xJFVaoQOd3OO9k7tpBYNOXdVhkltUbGv2Qb9OXdrg/CpsjlZv7ia14Sylv398LswWBVVu5nqKzAQ==}
     peerDependencies:
@@ -6707,6 +6754,13 @@ packages:
     resolution: {integrity: sha512-Lc+t/D4IyB/iV70DNALN851yPcqP/FYp1prA3jQHM2vn0OicA7qpFjMaM+1/XRDkeF2b75gDGHRfw8S4sVjs8g==}
     engines: {node: '>=16'}
 
+  '@types/argon2-browser@1.18.4':
+    resolution: {integrity: sha512-K/PHAEKzdCY4mCRhgUTBcuTxeaJyLoPcd5pJ1UFSTb/FAPjj3TCK4EM/DvNmVtDzkQBMD5peJjtch3kVQDf4YQ==}
+
+  '@types/argon2@0.15.4':
+    resolution: {integrity: sha512-fZPJNvZTvoyt/okKhbyj99UsDOwqzEXYPvKqfK26mViH9JB/hOwzUwDUn5qbwq9XJkLw0kDcFNu6+bnb3u5a0A==}
+    deprecated: This is a stub types definition. argon2 provides its own type definitions, so you do not need this installed.
+
   '@types/argparse@1.0.38':
     resolution: {integrity: sha512-ebDJ9b0e702Yr7pWgB0jzm+CX4Srzz8RcXtLJDJB+BSccqMa36uyH/zUsSYao5+BD1ytv3k3rPYCq4mAE1hsXA==}
 
@@ -6727,6 +6781,9 @@ packages:
 
   '@types/bcrypt@5.0.2':
     resolution: {integrity: sha512-6atioO8Y75fNcbmj0G7UjI9lXN2pQ/IGJ2FWT4a/btd0Lk9lQalHLKhkgKVZ3r+spnmWUKfbMi1GEe9wyHQfNQ==}
+
+  '@types/bcryptjs@2.4.6':
+    resolution: {integrity: sha512-9xlo6R2qDs5uixm0bcIqCeMCE6HiQsIyel9KQySStiyqNl2tnj2mP3DX1Nf56MD6KMenNNlBBsy3LJ7gUEQPXQ==}
 
   '@types/body-parser@1.19.5':
     resolution: {integrity: sha512-fB3Zu92ucau0iQ0JMCFQE7b/dv8Ot07NI3KaZIkIUNXq82k4eBAqUaneXfleGY9JWskeS9y+u0nXMyspcuQrCg==}
@@ -7504,6 +7561,9 @@ packages:
   arg@5.0.2:
     resolution: {integrity: sha512-PYjyFOLKQ9y57JvQ6QLo8dAgNqswh8M1RMJYdQduT6xbWSgK36P/Z/v+p888pM69jMMfS8Xd8F6I1kQ/I9HUGg==}
 
+  argon2-browser@1.18.0:
+    resolution: {integrity: sha512-ImVAGIItnFnvET1exhsQB7apRztcoC5TnlSqernMJDUjbc/DLq3UEYeXFrLPrlaIl8cVfwnXb6wX2KpFf2zxHw==}
+
   argon2@0.41.1:
     resolution: {integrity: sha512-dqCW8kJXke8Ik+McUcMDltrbuAWETPyU6iq+4AhxqKphWi7pChB/Zgd/Tp/o8xRLbg8ksMj46F/vph9wnxpTzQ==}
     engines: {node: '>=16.17.0'}
@@ -7680,6 +7740,9 @@ packages:
   bcrypt@5.1.1:
     resolution: {integrity: sha512-AGBHOG5hPYZ5Xl9KXzU5iKq9516yEmvCKDg3ecP5kX2aB6UqTeXZxk2ELnDgDm6BQSMlLt9rDB4LoSMx0rYwww==}
     engines: {node: '>= 10.0.0'}
+
+  bcryptjs@2.4.3:
+    resolution: {integrity: sha512-V/Hy/X9Vt7f3BbPJEi8BdVFMByHi+jNXrYkW3huaybV/kQ0KJg0Y6PkEMbn+zeT+i+SiKZ/HMqJGIIt4LZDqNQ==}
 
   before-after-hook@2.2.3:
     resolution: {integrity: sha512-NzUnlZexiaH/46WDhANlyR2bXRopNg4F/zuSA3OpZnllCUgRaOF2znDioDWrmbNVsuZk6l9pMquQB38cfBZwkQ==}
@@ -17115,7 +17178,7 @@ snapshots:
   '@mikro-orm/migrations@6.3.13(@mikro-orm/core@6.3.13)(@types/node@22.7.5)(better-sqlite3@11.3.0)(pg@8.13.0)':
     dependencies:
       '@mikro-orm/core': 6.3.13
-      '@mikro-orm/knex': 6.3.13(@mikro-orm/core@6.3.13)(better-sqlite3@11.3.0)(mysql2@3.11.3)(pg@8.13.0)
+      '@mikro-orm/knex': 6.3.13(@mikro-orm/core@6.3.13)(better-sqlite3@11.3.0)(pg@8.13.0)(sqlite3@5.1.7)
       fs-extra: 11.2.0
       umzug: 3.8.2(@types/node@22.7.5)
     transitivePeerDependencies:
@@ -17156,7 +17219,7 @@ snapshots:
   '@mikro-orm/postgresql@6.3.13(@mikro-orm/core@6.3.13)(better-sqlite3@11.3.0)':
     dependencies:
       '@mikro-orm/core': 6.3.13
-      '@mikro-orm/knex': 6.3.13(@mikro-orm/core@6.3.13)(better-sqlite3@11.3.0)(mysql2@3.11.3)(pg@8.13.0)
+      '@mikro-orm/knex': 6.3.13(@mikro-orm/core@6.3.13)(better-sqlite3@11.3.0)(pg@8.13.0)(sqlite3@5.1.7)
       pg: 8.13.0
       postgres-array: 3.0.2
       postgres-date: 2.1.0
@@ -18073,6 +18136,22 @@ snapshots:
       react: 18.3.1
     optionalDependencies:
       '@types/react': 18.3.11
+
+  '@radix-ui/react-tabs@1.1.1(@types/react-dom@18.3.1)(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@radix-ui/primitive': 1.1.0
+      '@radix-ui/react-context': 1.1.1(@types/react@18.3.11)(react@18.3.1)
+      '@radix-ui/react-direction': 1.1.0(@types/react@18.3.11)(react@18.3.1)
+      '@radix-ui/react-id': 1.1.0(@types/react@18.3.11)(react@18.3.1)
+      '@radix-ui/react-presence': 1.1.1(@types/react-dom@18.3.1)(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-primitive': 2.0.0(@types/react-dom@18.3.1)(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-roving-focus': 1.1.0(@types/react-dom@18.3.1)(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-use-controllable-state': 1.1.0(@types/react@18.3.11)(react@18.3.1)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+    optionalDependencies:
+      '@types/react': 18.3.11
+      '@types/react-dom': 18.3.1
 
   '@radix-ui/react-use-callback-ref@1.0.1(@types/react@18.3.11)(react@18.3.1)':
     dependencies:
@@ -20031,6 +20110,12 @@ snapshots:
 
   '@tus/utils@0.4.0': {}
 
+  '@types/argon2-browser@1.18.4': {}
+
+  '@types/argon2@0.15.4':
+    dependencies:
+      argon2: 0.41.1
+
   '@types/argparse@1.0.38': {}
 
   '@types/aria-query@5.0.4': {}
@@ -20058,7 +20143,9 @@ snapshots:
 
   '@types/bcrypt@5.0.2':
     dependencies:
-      '@types/node': 22.7.5
+      '@types/node': 20.16.11
+
+  '@types/bcryptjs@2.4.6': {}
 
   '@types/body-parser@1.19.5':
     dependencies:
@@ -20718,7 +20805,7 @@ snapshots:
       sirv: 2.0.4
       tinyglobby: 0.2.9
       tinyrainbow: 1.2.0
-      vitest: 2.1.2(@types/node@20.16.11)(@vitest/ui@2.1.2)(jsdom@25.0.1(bufferutil@4.0.8)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@6.0.4))(sass@1.79.4)(terser@5.34.1)
+      vitest: 2.1.2(@types/node@20.16.11)(@vitest/ui@2.1.2)(jsdom@25.0.1(bufferutil@4.0.8)(canvas@2.11.2)(utf-8-validate@6.0.4))(sass@1.79.4)(terser@5.34.1)
 
   '@vitest/utils@2.0.5':
     dependencies:
@@ -20964,6 +21051,8 @@ snapshots:
 
   arg@5.0.2: {}
 
+  argon2-browser@1.18.0: {}
+
   argon2@0.41.1:
     dependencies:
       '@phc/format': 1.0.0
@@ -21186,6 +21275,8 @@ snapshots:
     transitivePeerDependencies:
       - encoding
       - supports-color
+
+  bcryptjs@2.4.3: {}
 
   before-after-hook@2.2.3: {}
 
@@ -23913,7 +24004,7 @@ snapshots:
 
   jsdoc-type-pratt-parser@4.1.0: {}
 
-  jsdom@25.0.1(bufferutil@4.0.8)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@6.0.4):
+  jsdom@25.0.1(bufferutil@4.0.8)(canvas@2.11.2)(utf-8-validate@6.0.4):
     dependencies:
       cssstyle: 4.1.0
       data-urls: 5.0.0
@@ -28457,7 +28548,7 @@ snapshots:
       sass: 1.79.4
       terser: 5.34.1
 
-  vitest@2.1.2(@types/node@20.16.11)(@vitest/ui@2.1.2)(jsdom@25.0.1(bufferutil@4.0.8)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@6.0.4))(sass@1.79.4)(terser@5.34.1):
+  vitest@2.1.2(@types/node@20.16.11)(@vitest/ui@2.1.2)(jsdom@25.0.1(bufferutil@4.0.8)(canvas@2.11.2)(utf-8-validate@6.0.4))(sass@1.79.4)(terser@5.34.1):
     dependencies:
       '@vitest/expect': 2.1.2
       '@vitest/mocker': 2.1.2(@vitest/spy@2.1.2)(vite@5.4.8(@types/node@20.16.11)(sass@1.79.4)(terser@5.34.1))
@@ -28481,7 +28572,7 @@ snapshots:
     optionalDependencies:
       '@types/node': 20.16.11
       '@vitest/ui': 2.1.2(vitest@2.1.2)
-      jsdom: 25.0.1(bufferutil@4.0.8)(canvas@2.11.2(encoding@0.1.13))(utf-8-validate@6.0.4)
+      jsdom: 25.0.1(bufferutil@4.0.8)(canvas@2.11.2)(utf-8-validate@6.0.4)
     transitivePeerDependencies:
       - less
       - lightningcss

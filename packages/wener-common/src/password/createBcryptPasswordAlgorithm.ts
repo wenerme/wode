@@ -1,9 +1,14 @@
+import type { MaybePromise } from '@wener/utils';
 import { Password } from './Password';
 
-type ProviderType = () => Promise<Pick<typeof import('bcrypt'), 'hash' | 'compare'>>;
+type ProviderType = () => MaybePromise<{
+  hash: (password: string, rounds: number | string) => Promise<string>;
+  compare: (password: string, hash: string) => Promise<boolean>;
+}>;
 
 export function createBcryptPasswordAlgorithm({
-  provider = () => import('bcrypt'),
+  // provider = () => import('bcrypt').then((v) => v.default),
+  provider = () => import('bcryptjs').then((v) => v.default),
 }: {
   provider?: ProviderType;
 } = {}): Password.PasswordAlgorithm {

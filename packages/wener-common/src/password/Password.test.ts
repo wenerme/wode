@@ -2,7 +2,6 @@ import { describe, expect, test } from 'vitest';
 import { createArgon2PasswordAlgorithm } from './createArgon2PasswordAlgorithm';
 import { createBase64PasswordAlgorithm } from './createBase64PasswordAlgorithm';
 import { createBcryptPasswordAlgorithm } from './createBcryptPasswordAlgorithm';
-import { createScryptPasswordAlgorithm } from './createScryptPasswordAlgorithm';
 import { Password } from './Password';
 
 describe('Password', () => {
@@ -20,7 +19,11 @@ describe('Password', () => {
 
   Password.addAlgorithm(createBcryptPasswordAlgorithm());
   Password.addAlgorithm(createBase64PasswordAlgorithm());
-  Password.addAlgorithm(createArgon2PasswordAlgorithm());
+  Password.addAlgorithm(
+    createArgon2PasswordAlgorithm({
+      provide: import('argon2'),
+    }),
+  );
   // Password.addAlgorithm(createScryptPasswordAlgorithm());
 
   test('base', async () => {
@@ -37,7 +40,7 @@ describe('Password', () => {
     await check({ algorithm: '7' });
   });
 
-  test('case', async () => {
+  test('should verify manual created hash', async () => {
     const tests: Array<{
       password?: string;
       hash: string;
