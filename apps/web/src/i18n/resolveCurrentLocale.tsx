@@ -1,4 +1,4 @@
-import cookie from 'cookie';
+import * as cookie from 'cookie';
 import { getLocales } from '@/i18n/getLocales';
 import { resolveRequestLocale, type ResolveRequestLocaleOptions } from '@/i18n/resolveRequestLocale';
 
