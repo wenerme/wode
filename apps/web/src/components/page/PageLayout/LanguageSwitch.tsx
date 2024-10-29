@@ -1,12 +1,10 @@
 import React from 'react';
 import { PiGlobeLight } from 'react-icons/pi';
 import { Trans } from '@lingui/macro';
-import cookie from 'cookie';
 import Link from 'next/link';
 
 function setLocale(locale: string) {
   // document.cookie = `lang=${locale}; path=/`;
-  cookie;
   const url = new URL(window.location.href);
   url.searchParams.delete('lang');
   window.location.href = url.toString();

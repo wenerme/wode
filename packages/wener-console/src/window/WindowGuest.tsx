@@ -3,8 +3,7 @@ import { Rnd } from 'react-rnd';
 import { Closer } from '@wener/utils';
 import { clsx } from 'clsx';
 import { useStore } from 'zustand';
-import { shallow } from 'zustand/shallow';
-import { useStoreWithEqualityFn } from 'zustand/traditional';
+import { useShallow } from 'zustand/react/shallow';
 import { getRootWindow, WindowContext, type ReactWindow } from './ReactWindow';
 import { WindowController } from './WindowController';
 import { WindowFrame } from './WindowFrame';
@@ -14,40 +13,43 @@ export const WindowGuest = memo<{ win: ReactWindow }>(({ win }) => {
   const [zIndex, minimized, x, y, width, height, canResize, canDrag, minWidth, minHeight, maxWidth, maxHeight] =
     useStore(
       store,
-      ({
-        zIndex,
-        minimized,
-        x,
-        y,
-        width,
-        height,
-        canResize,
-        maximized,
-        canDrag,
-        minWidth,
-        minHeight,
-        maxWidth,
-        maxHeight,
-      }) => {
-        return [
+      useShallow(
+        ({
           zIndex,
           minimized,
           x,
           y,
           width,
           height,
-          canResize && !maximized,
+          canResize,
+          maximized,
           canDrag,
           minWidth,
           minHeight,
           maxWidth,
           maxHeight,
-        ];
-      },
+        }) => {
+          return [
+            zIndex,
+            minimized,
+            x,
+            y,
+            width,
+            height,
+            canResize && !maximized,
+            canDrag,
+            minWidth,
+            minHeight,
+            maxWidth,
+            maxHeight,
+          ];
+        },
+      ),
     );
   return (
     <Rnd
       id={`win-${win.id}`}
+      data-dnd-window-id={win.id}
       className={clsx(!minimized && 'pointer-events-auto')}
       default={{
         x: 0,
@@ -99,12 +101,11 @@ export const WindowGuest = memo<{ win: ReactWindow }>(({ win }) => {
 
 const WinContent: FC<{ win: ReactWindow }> = memo(({ win }) => {
   const store = win.store;
-  const [frameless, minimized, canMinimize, canMaximize, title, render] = useStoreWithEqualityFn(
+  const [frameless] = useStore(
     store,
-    ({ frameless, minimized, canMinimize, canMaximize, title, render }) => {
+    useShallow(({ frameless, minimized, canMinimize, canMaximize, title, render }) => {
       return [frameless, minimized, canMinimize, canMaximize, title, render];
-    },
-    shallow,
+    }),
   );
 
   let rw = getRootWindow();
@@ -145,12 +146,11 @@ const WinContent: FC<{ win: ReactWindow }> = memo(({ win }) => {
 
 const WinFramelessContent: FC<{ win: ReactWindow }> = ({ win }) => {
   const store = win.store;
-  const [minimized, render] = useStoreWithEqualityFn(
+  const [minimized, render] = useStore(
     store,
-    ({ minimized, render }) => {
+    useShallow(({ minimized, render }) => {
       return [minimized, render];
-    },
-    shallow,
+    }),
   );
   return (
     <div
@@ -171,12 +171,11 @@ const WinFramelessContent: FC<{ win: ReactWindow }> = ({ win }) => {
 };
 const WinFrameContent: FC<{ win: ReactWindow }> = memo(({ win }) => {
   const store = win.store;
-  const [minimized, canMinimize, canMaximize, title, render] = useStoreWithEqualityFn(
+  const [minimized, canMinimize, canMaximize, title, render] = useStore(
     store,
-    ({ minimized, canMinimize, canMaximize, title, render }) => {
+    useShallow(({ minimized, canMinimize, canMaximize, title, render }) => {
       return [minimized, canMinimize, canMaximize, title, render];
-    },
-    shallow,
+    }),
   );
   return (
     <WindowContext.Provider value={win}>

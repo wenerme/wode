@@ -1,0 +1,23 @@
+version: v2
+modules:
+- path: protos/bundles
+  name: buf.build/x/bundle
+  lint:
+    ignore:
+    - protos/bundles
+- path: protos/wode
+  # https://buf.build/docs/lint/rules/
+  lint:
+    except:
+    - FILE_LOWER_SNAKE_CASE
+    - FIELD_NOT_REQUIRED
+    - PACKAGE_NO_IMPORT_CYCLE
+    - ENUM_VALUE_PREFIX
+    - ENUM_ZERO_VALUE_SUFFIX
+    disallow_comment_ignores: true
+  breaking:
+    use:
+    - FILE
+    except:
+    - EXTENSION_NO_DELETE
+    - FIELD_SAME_DEFAULT

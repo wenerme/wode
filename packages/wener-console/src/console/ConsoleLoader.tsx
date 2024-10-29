@@ -2,8 +2,7 @@ import React, { useState, type FC, type ReactNode } from 'react';
 import { createHashRouter, Outlet, RouterProvider, type RouterProviderProps } from 'react-router-dom';
 import type { Router } from '@remix-run/router';
 import { ErrorSuspenseBoundary, useAsyncEffect, useDebugRender } from '@wener/reaction';
-import { shallow } from 'zustand/shallow';
-import { useStoreWithEqualityFn } from 'zustand/traditional';
+import { useStore } from 'zustand';
 import { isDev } from '../const';
 import { useLogger } from '../hooks';
 import type { RouteObjects } from '../router';
@@ -45,7 +44,7 @@ export const ConsoleLoader: FC<ConsoleLoaderProps> = ({
     v7_startTransition: true,
   },
 }) => {
-  const [router] = useStoreWithEqualityFn(getRouteStore(), ({ router }) => [router], shallow);
+  const router = useStore(getRouteStore(), ({ router }) => router);
   useDebugRender(`ConsoleAppContent`);
   const log = useLogger('ConsoleContent');
   const [state, _setState] = useState(ServiceState.New);

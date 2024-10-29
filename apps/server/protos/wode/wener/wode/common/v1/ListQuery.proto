@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package wener.wode.common.v1;
+
+message ListQuery {
+  optional int32 page_size = 1;
+  optional int32 page_index = 2;
+  optional int32 page_number = 3;
+  optional int32 limit = 4;
+  optional int32 offset = 5;
+  optional string search = 6;
+  optional string filter = 7;
+  repeated string filters = 8;
+  optional bool deleted = 9;
+  optional string cursor = 10;
+  repeated string order = 11;
+  repeated string ids = 12;
+}
