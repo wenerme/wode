@@ -1,5 +1,4 @@
 import { Errors } from '@wener/utils';
-import { createScryptPasswordAlgorithm } from './createScryptPasswordAlgorithm';
 import { createPBKDF2PasswordAlgorithm } from './createPBKDF2PasswordAlgorithm';
 import { PHC } from './PHC';
 
@@ -35,7 +34,7 @@ export namespace Password {
     6: 'sha512',
     7: 'scrypt',
   };
-  let DefaultAlgorithm: string = '7';
+  let DefaultAlgorithm: string = '6';
 
   export function setDefaultAlgorithm(algorithm: string) {
     Errors.BadRequest.check(Algorithms[algorithm], `Unknown algorithm ${algorithm}`);
@@ -67,7 +66,6 @@ export namespace Password {
       digest: 'SHA-512',
     }),
   );
-  addAlgorithm(createScryptPasswordAlgorithm({}));
 
   export async function parse(hash: string) {
     return PHC.deserialize(hash);

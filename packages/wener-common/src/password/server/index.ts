@@ -1,0 +1,1 @@
+export { createScryptPasswordAlgorithm } from '../createScryptPasswordAlgorithm';
