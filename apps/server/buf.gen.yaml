@@ -1,6 +1,5 @@
-version: v1
+version: v2
 plugins:
-  - plugin: protoc-gen-es
-    path: ./node_modules/.bin/protoc-gen-es
+  - local: ./node_modules/.bin/protoc-gen-es
     out: src/gen/pb
     opt: target=ts

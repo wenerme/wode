@@ -5,9 +5,9 @@ package wener.wode.agent.v1;
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
 
-message AgentInfoRequest {}
+message InfoRequest {}
 
-message AgentInfoResponse {
+message InfoResponse {
   google.protobuf.Timestamp now = 1;
   google.protobuf.Timestamp started_at = 2;
   double uptime = 3;
@@ -15,15 +15,15 @@ message AgentInfoResponse {
   string locale = 5;
 }
 
-message AgentReloadRequest {
+message ReloadRequest {
   string reason = 1;
 }
 
-message AgentReloadResponse {
+message ReloadResponse {
   string message = 1;
 }
 
 service AgentService {
-  rpc Info(AgentInfoRequest) returns (AgentInfoResponse);
-  rpc Reload(AgentReloadRequest) returns (AgentReloadResponse);
+  rpc Info(InfoRequest) returns (InfoResponse);
+  rpc Reload(ReloadRequest) returns (ReloadResponse);
 }

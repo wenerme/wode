@@ -8,8 +8,10 @@ const nextConfig = {
   output: 'standalone',
   trailingSlash: true,
   transpilePackages: ['@wener/reaction', '@wener/console', 'common'],
+  compiler: {},
+  expireTime: 180,
   experimental: {
-    swrDelta: 60,
+    // NextJS 15 waiting for https://github.com/lingui/swc-plugin/issues/119
     swcPlugins: [['@lingui/swc-plugin', {}]],
   },
   eslint: {

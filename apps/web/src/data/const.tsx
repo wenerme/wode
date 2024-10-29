@@ -30,10 +30,16 @@ defineEntry([
     tags: ['network', 'checker'],
   },
   {
-    href: '/zxcvbn/check',
-    title: <Trans comment={'Zxcvbn Password Strength'}>Zxcvbn 密码强度检测</Trans>,
+    href: '/password/strength',
+    title: <Trans id={'entry.password.strength.title'}>密码强度检测</Trans>,
     icon: <PiPassword />,
-    tags: ['password', 'checker'],
+    tags: ['password', 'check'],
+  },
+  {
+    href: '/password/hash',
+    title: <Trans id={'entry.password.hash.title'}>密码Hash</Trans>,
+    icon: <PiPassword />,
+    tags: ['password', 'hash'],
   },
   {
     href: '/hash',

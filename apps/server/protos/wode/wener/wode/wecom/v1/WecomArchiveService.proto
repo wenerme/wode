@@ -1,11 +1,8 @@
 syntax = "proto3";
 
-package wener.wode.wecom;
+package wener.wode.wecom.v1;
 
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
 
-
-service WecomArchiveService {
-
-}
+service WecomArchiveService {}
