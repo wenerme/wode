@@ -35,7 +35,7 @@
     "zx": "^8.2.0"
   },
   "devDependencies": {
-    "@bufbuild/protobuf": "^2.2.1",
+    "@bufbuild/protobuf": "^2.2.2",
     "@connectrpc/connect": "rc",
     "@types/semver": "^7.5.8",
     "@types/tar": "^6.1.13"

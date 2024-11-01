@@ -8,7 +8,7 @@ import { loadI18n } from '@/i18n/loadI18n';
 import type { NextPageProps } from '@/types';
 
 export default async function (props: NextPageProps) {
-  const tags = arrayOfMaybeArray(props.searchParams.tags)
+  const tags = arrayOfMaybeArray((await props.searchParams).tags)
     ?.flat()
     .join(',')
     .split(',')

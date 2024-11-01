@@ -33,10 +33,10 @@
     "preinstall": "npx only-allow pnpm"
   },
   "devDependencies": {
-    "@bufbuild/protoc-gen-es": "^2.2.1",
+    "@bufbuild/protoc-gen-es": "^2.2.2",
     "@connectrpc/protoc-gen-connect-query": "rc",
     "@ianvs/prettier-plugin-sort-imports": "^4.3.1",
-    "@swc/cli": "^0.4.0",
+    "@swc/cli": "^0.5.0",
     "@swc/core": "^1.7.42",
     "@tailwindcss/container-queries": "^0.1.1",
     "@tailwindcss/forms": "^0.5.9",
@@ -88,13 +88,12 @@
     "patchedDependencies": {
       "ts-node@11.0.0-beta.1": "patches/ts-node@11.0.0-beta.1.patch"
     },
-    "_": "connectrpc v2 still in rc, @lingui/swc-plugin is not ready for next 15",
+    "_": "connectrpc v2 still in rc, align with buf/protobuf v2",
     "overrides": {
       "@connectrpc/connect": "rc",
       "@connectrpc/connect-web": "rc",
       "@connectrpc/connect-query": "rc",
-      "@connectrpc/protoc-gen-connect-query": "rc",
-      "next": "^14"
+      "@connectrpc/protoc-gen-connect-query": "rc"
     }
   },
   "packageManager": "pnpm@9.12.0"

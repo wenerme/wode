@@ -7,7 +7,7 @@ import { useMutative } from 'use-mutative';
 
 export const PasswordHashContent = () => {
   const [state, update] = useMutative(() => {
-    let hash = location?.hash?.slice(1) || '';
+    let hash = globalThis.location?.hash?.slice(1) || '';
     if (hash) {
       parsePassword(hash).then((result) => {
         if (result) {

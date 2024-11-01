@@ -5,7 +5,7 @@ import { ZxcvbnPasswordStrength } from '@/components/zxcvbn/ZxcvbnPasswordStreng
 import type { NextPageProps } from '@/types';
 
 export default async function (props: NextPageProps) {
-  const password = firstOfMaybeArray(props.searchParams.password);
+  const password = firstOfMaybeArray((await props.searchParams).password);
   let data: ZXCVBNResult | undefined;
   if (password && typeof password === 'string') {
     const { default: check } = await import('zxcvbn');
