@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package wener.wode.wecom.archive.v1;
+
+import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
+
+message WecomArchiveMessage {
+  int64 sequence = 1;
+  string corp_id = 2;
+  string message_id = 3;
+  string action = 4;
+  string type = 5;
+  google.protobuf.Struct raw = 6;
+
+  google.protobuf.Timestamp message_time = 7;
+  string from_id = 8;
+  repeated string to_ids = 9;
+  string room_id = 10;
+}
+
+message GetMessageRequest {
+  WecomClient client = 1;
+  int64 sequence = 2;
+  int32 limit = 3;
+  string proxy = 4;
+  string proxy_credential = 5;
+  int32 timeout = 6;
+}
+
+message WecomClient {
+  string client_id = 1;
+  string corp_id = 10;
+  string corp_secret = 11;
+  string private_key = 12;
+  string proxy = 13;
+}
+
+message GetMessageResponse {
+  repeated WecomArchiveMessage messages = 1;
+  int64 sequence = 2;
+}
+
+service WecomArchiveService {
+  rpc GetMessage(GetMessageRequest) returns (GetMessageResponse);
+}

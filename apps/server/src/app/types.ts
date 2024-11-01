@@ -1,4 +1,4 @@
-import { type FastifyReply, type FastifyRequest } from 'fastify';
+import type { FastifyReply, FastifyRequest } from 'fastify';
 
 export type NestRequest = FastifyRequest['raw'];
 export type NestResponse = FastifyReply['raw'];

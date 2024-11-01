@@ -1,6 +1,6 @@
 import { MikroORM, RequestContext, type TransactionOptions } from '@mikro-orm/core';
-import { type EntityManager, type PostgreSqlDriver } from '@mikro-orm/postgresql';
-import { MaybeFunction, type MaybePromise } from '@wener/utils';
+import type { EntityManager, PostgreSqlDriver } from '@mikro-orm/postgresql';
+import type { MaybeFunction, MaybePromise } from '@wener/utils';
 import { getContext } from '../app.context';
 
 let _provider = () => getContext(MikroORM);

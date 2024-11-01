@@ -65,7 +65,7 @@
     "dayjs": "^1.11.13",
     "fast-xml-parser": "^4.5.0",
     "node-rsa": "^1.1.1",
-    "openai": "^4.68.4",
+    "openai": "^4.69.0",
     "puppeteer": "^23.6.1",
     "puppeteer-core": "^23.6.1",
     "ts-pattern": "^5.5.0",

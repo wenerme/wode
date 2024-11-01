@@ -1,11 +1,11 @@
-import { type EntityManager } from '@mikro-orm/postgresql';
+import type { EntityManager } from '@mikro-orm/postgresql';
 import { HttpException, Logger } from '@nestjs/common';
 import { classOf, type FetchLike } from '@wener/utils';
 import { createParser, type ParsedEvent } from 'eventsource-parser';
 import { getEntityManager as _getEntityManager } from '../../app/mikro-orm/context';
 import { FetchCache, type FetchCacheConfig, type FetchCacheHookContext } from './FetchCache';
 import { HttpRequestLog } from './HttpRequestLog';
-import { type FindCacheOptions } from './HttpRequestLog.repository';
+import type { FindCacheOptions } from './HttpRequestLog.repository';
 import { removeNullChar } from './removeNullChar';
 
 export interface CreateFetchWithCacheOptions {

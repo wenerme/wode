@@ -1,0 +1,5 @@
+version: v2
+plugins:
+  - local: ./node_modules/.bin/protoc-gen-es
+    out: packages/common/src/gen/pb
+    #opt: target=dts+js

@@ -1,10 +1,10 @@
 import path from 'node:path';
-import { ethers } from 'ethers';
 import { writeFileSync } from 'fs';
+import { ethers } from 'ethers';
 import { sepolia } from 'viem/chains';
 import { test } from 'vitest';
-import Out from './GeoWeb.json';
 import contracts from './contracts.json';
+import Out from './GeoWeb.json';
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
 

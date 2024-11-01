@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { sha256 } from '@wener/utils';

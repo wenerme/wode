@@ -1,4 +1,4 @@
-import { assert, test, expect } from 'vitest';
+import { assert, expect, test } from 'vitest';
 import { removeNullChar } from './removeNullChar';
 
 test('removeNullChar', () => {

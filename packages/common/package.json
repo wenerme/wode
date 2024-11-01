@@ -12,7 +12,8 @@
     "./icons": "./src/icons/index.ts",
     "./torrent": "./src/torrent/index.ts",
     "./aports": "./src/aports/index.ts",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./gen/*": "./src/gen/*.js"
   },
   "files": [
     "lib",
@@ -27,13 +28,15 @@
   "dependencies": {
     "@wener/utils": "^1.1.51",
     "es-toolkit": "^1.26.1",
-    "execa": "^9.5.0",
-    "lru-cache": "^11.0.1",
+    "execa": "^9.5.1",
+    "lru-cache": "^11.0.2",
     "semver": "^7.6.3",
     "tar": "^7.4.3",
-    "zx": "^8.1.9"
+    "zx": "^8.2.0"
   },
   "devDependencies": {
+    "@bufbuild/protobuf": "^2.2.1",
+    "@connectrpc/connect": "rc",
     "@types/semver": "^7.5.8",
     "@types/tar": "^6.1.13"
   }

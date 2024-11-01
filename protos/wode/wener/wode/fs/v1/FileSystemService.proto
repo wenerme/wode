@@ -1,0 +1,153 @@
+syntax = "proto3";
+package wener.wode.fs.v1;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/wenerme/wego/gen/wener/wode/fs/v1;filesystemservicev1";
+
+enum EntryType {
+  UNSPECIFIED = 0;
+  FILE = 1;
+  DIRECTORY = 2;
+  SYMLINK = 3;
+  BLOCK_DEVICE = 4;
+  CHARACTER_DEVICE = 5;
+  FIFO = 6;
+  SOCKET = 7;
+}
+
+message Shortcut {
+  string path = 1;
+  string name = 2;
+  string label = 3;
+}
+
+message ListShortcutRequest {}
+message ListShortcutResponse {
+  repeated Shortcut data = 1;
+}
+
+message FileAttributes {
+  int64 size = 1;
+  uint32 mode = 2; // POSIX file mode (permissions & type)
+  uint32 uid = 3; // User ID of owner
+  uint32 gid = 4; // Group ID of owner
+  google.protobuf.Timestamp atime = 5; // Last access time
+  google.protobuf.Timestamp mtime = 6; // Last modification time
+  google.protobuf.Timestamp ctime = 7; // Last status change time
+}
+
+message EntryMetadata {
+  string path = 1;
+  string name = 2;
+  EntryType type = 3;
+  FileAttributes attributes = 4;
+}
+
+message ReaddirRequest {
+  string path = 1;
+  EntryType type = 2;
+  bool recursive = 3;
+}
+
+message ReaddirResponse {
+  repeated EntryMetadata data = 1;
+  string path = 2;
+}
+
+message StatRequest {
+  string path = 1;
+}
+
+message StatResponse {
+  EntryMetadata data = 1;
+}
+
+message ReadRequest {
+  string path = 1;
+  int64 offset = 2;
+  optional int64 size = 3; // If not set, read all
+}
+
+message ReadResponse {
+  bytes data = 1;
+}
+
+message WriteRequest {
+  string path = 1;
+  int64 offset = 2;
+  bytes data = 3;
+}
+
+message WriteResponse {
+  int64 written = 1; // The number of bytes written
+}
+
+message CreateRequest {
+  string path = 1;
+  string name = 2;
+  uint32 mode = 3; // File mode (permissions)
+  EntryType type = 4; // Type of the entry to create
+  FileAttributes attributes = 5;
+}
+
+message CreateResponse {
+  EntryMetadata data = 1;
+}
+
+message DeleteRequest {
+  string path = 1;
+}
+
+message DeleteResponse {}
+
+message MoveRequest {
+  string src = 1;
+  string dst = 2;
+}
+
+message MoveResponse {
+  EntryMetadata data = 1;
+}
+
+message RenameRequest {
+  string src = 1;
+  string dst = 2;
+}
+
+message RenameResponse {
+  EntryMetadata data = 1;
+}
+
+message CopyRequest {
+  string src = 1;
+  string dst = 2;
+}
+
+message CopyResponse {
+  EntryMetadata data = 1;
+}
+
+message GlobRequest {
+  string path = 1;
+  repeated string patterns = 2;
+}
+
+message GlobResponse {
+  repeated EntryMetadata data = 1;
+}
+
+service FileSystemService {
+  rpc Readdir(ReaddirRequest) returns (ReaddirResponse);
+  rpc Stat(StatRequest) returns (StatResponse);
+  rpc Read(ReadRequest) returns (ReadResponse);
+  rpc Write(WriteRequest) returns (WriteResponse);
+  rpc Create(CreateRequest) returns (CreateResponse);
+  rpc Delete(DeleteRequest) returns (DeleteResponse);
+  rpc Move(MoveRequest) returns (MoveResponse);
+  rpc Rename(RenameRequest) returns (RenameResponse);
+  rpc Copy(CopyRequest) returns (CopyResponse);
+
+  rpc Glob(GlobRequest) returns (GlobResponse);
+  rpc ListShortcut(ListShortcutRequest) returns (ListShortcutResponse);
+}

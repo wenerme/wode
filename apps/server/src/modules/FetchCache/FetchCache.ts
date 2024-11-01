@@ -1,6 +1,6 @@
 import { AsyncLocalStorage } from 'node:async_hooks';
-import { type MaybePromise } from '@wener/utils';
-import { BaseHttpRequestLogEntity } from './BaseHttpRequestLogEntity';
+import type { MaybePromise } from '@wener/utils';
+import type { BaseHttpRequestLogEntity } from './BaseHttpRequestLogEntity';
 
 export class FetchCache {
   private static readonly Storage = new AsyncLocalStorage<FetchCacheConfig>();

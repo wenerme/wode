@@ -1,11 +1,11 @@
-import { RequiredEntityData } from '@mikro-orm/core';
+import type { RequiredEntityData } from '@mikro-orm/core';
 import { MikroORM } from '@mikro-orm/postgresql';
 import { Inject, Injectable } from '@nestjs/common';
 import { Errors, randomUUID } from '@wener/utils';
 import dayjs from 'dayjs';
 import { AccessTokenEntity } from '@/foundation/Auth/entity/AccessTokenEntity';
 import { CustomBaseEntityService } from '@/foundation/services/CustomBaseEntityService';
-import { UserEntity } from '@/foundation/User/entity/UserEntity';
+import type { UserEntity } from '@/foundation/User/entity/UserEntity';
 import { UserService } from '@/foundation/User/UserService';
 
 @Injectable()

@@ -1,0 +1,6 @@
+.next
+build
+dist
+node_modules
+ignored
+src/gen

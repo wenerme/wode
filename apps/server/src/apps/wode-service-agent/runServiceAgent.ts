@@ -1,8 +1,8 @@
-import { ConnectRouter } from '@connectrpc/connect';
+import type { ConnectRouter } from '@connectrpc/connect';
 import { Logger } from '@nestjs/common';
 import { createOpenAPIHono, runServer } from '@wener/nestjs/hono';
 import { serveNodeConnect } from '@/server/connect/serveNodeConnect';
-import { createAgentService } from '@/server/wode/createAgentService';
+import { AgentConnectService } from '@/services/AgentConnectService';
 
 /*
 curl -sf --json '{}' http://127.0.0.1:3000/api/connect/wener.wode.agent.v1.AgentService/Info | jq
@@ -28,5 +28,5 @@ export async function runServiceAgent() {
 }
 
 function createConnectService(route: ConnectRouter) {
-  route.service(...createAgentService());
+  route.service(AgentConnectService.Schema, new AgentConnectService());
 }

@@ -1,9 +1,9 @@
 import { Currents } from '@wener/nestjs';
 import { setCurrentContext } from '@wener/nestjs/app';
-import { StandardBaseEntity, TenantBaseEntity } from '@wener/nestjs/entity';
-import { AccessTokenEntity } from '@/foundation/Auth/entity';
-import { TenantEntity } from '@/foundation/Tenant/entity/TenantEntity';
-import { UserEntity } from '@/foundation/User/entity/UserEntity';
+import type { StandardBaseEntity, TenantBaseEntity } from '@wener/nestjs/entity';
+import type { AccessTokenEntity } from '@/foundation/Auth/entity';
+import type { TenantEntity } from '@/foundation/Tenant/entity/TenantEntity';
+import type { UserEntity } from '@/foundation/User/entity/UserEntity';
 
 export const ServerContexts = {
   token: Currents.create<AccessTokenEntity>('AccessToken'),

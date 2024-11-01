@@ -1,8 +1,7 @@
 import React from 'react';
-import type { ReactTestRenderer } from 'react-test-renderer';
-import { act, create } from 'react-test-renderer';
+import { act, create, type ReactTestRenderer } from 'react-test-renderer';
 import _ from 'lodash';
-import { test, assert, expect } from 'vitest';
+import { assert, expect, test } from 'vitest';
 import { deserialize, serialize } from './serialize';
 
 test('ele', () => {
