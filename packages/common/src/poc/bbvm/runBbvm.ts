@@ -2,8 +2,8 @@ import process from 'node:process';
 import sdl from '@kmamal/sdl';
 import { sleep } from '@wener/utils';
 import { createCanvas } from 'canvas';
-import { BasicVm } from './BBVM';
 import { BasicGuiRuntime } from './BasicGuiRuntime';
+import { BasicVm } from './BBVM';
 
 export async function runBbvm({}: {} = {}) {
   const scale = 2;

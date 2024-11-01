@@ -1,5 +1,5 @@
 import { Logger, type DynamicModule, type Type } from '@nestjs/common';
-import { type MaybePromise } from '@wener/utils';
+import type { MaybePromise } from '@wener/utils';
 
 export class ModuleLoader {
   static log = new Logger(ModuleLoader.name);

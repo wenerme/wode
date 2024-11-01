@@ -1,5 +1,5 @@
 import { FetchLike } from '@wener/utils';
-import { ProxyAgent, fetch } from 'undici';
+import { fetch, ProxyAgent } from 'undici';
 
 export function createFetchWithProxy2({ proxy }: { proxy?: string }) {
   if (!proxy) {

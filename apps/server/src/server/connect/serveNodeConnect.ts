@@ -1,8 +1,13 @@
-import { ConnectRouter, ConnectRouterOptions, ContextValues, createConnectRouter } from '@connectrpc/connect';
+import {
+  createConnectRouter,
+  type ConnectRouter,
+  type ConnectRouterOptions,
+  type ContextValues,
+} from '@connectrpc/connect';
 import { universalRequestFromNodeRequest, universalResponseToNodeResponse } from '@connectrpc/connect-node';
-import { UniversalHandler } from '@connectrpc/connect/protocol';
-import { HttpBindings } from '@hono/node-server';
-import { Handler } from 'hono';
+import type { UniversalHandler } from '@connectrpc/connect/protocol';
+import type { HttpBindings } from '@hono/node-server';
+import type { Handler } from 'hono';
 
 export function serveNodeConnect(
   options: ConnectRouterOptions & {

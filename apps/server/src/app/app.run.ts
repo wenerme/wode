@@ -7,7 +7,7 @@ import { FastifyAdapter, type NestFastifyApplication } from '@nestjs/platform-fa
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ms } from '@wener/utils';
 import { bootstrap, type BootstrapOptions } from './bootstrap';
-import { type ServerConfig } from './config';
+import type { ServerConfig } from './config';
 import { getStaticRootPath } from './util/getStaticRootPath';
 
 const log = new Logger('RunApplication');

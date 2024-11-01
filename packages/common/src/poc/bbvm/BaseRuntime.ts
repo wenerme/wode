@@ -378,7 +378,7 @@ export class BaseRuntime {
 }
 
 function createRandom(seed: number | string = Date.now()) {
-  let s = typeof seed === 'string' ? 0 : seed ?? 0;
+  let s = typeof seed === 'string' ? 0 : (seed ?? 0);
   if (typeof seed === 'string') {
     let sum = 0;
     for (let i = 0; i < seed.length; i++) {

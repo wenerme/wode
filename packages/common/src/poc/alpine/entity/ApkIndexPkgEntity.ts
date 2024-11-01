@@ -1,7 +1,6 @@
 import { Entity, Property, types } from '@mikro-orm/core';
 import { StandardBaseEntity } from '@/entity/base/StandardBaseEntity';
 
-
 @Entity({ tableName: 'apk_index_pkg', schema: 'alpine' })
 export class ApkIndexPkgEntity extends StandardBaseEntity {
   @Property({ type: types.string, unique: true })

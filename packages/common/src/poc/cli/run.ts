@@ -1,5 +1,4 @@
-import { MaybePromise } from '@wener/utils';
-import { AsyncCloser } from '@wener/utils';
+import { AsyncCloser, MaybePromise } from '@wener/utils';
 import { Command } from 'commander';
 
 interface RootContext {

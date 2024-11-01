@@ -7,8 +7,8 @@ import {
   type ExecutionContext,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { type FastifyRequest } from 'fastify';
-import { type AuthPrincipal } from './AuthPrincipal';
+import type { FastifyRequest } from 'fastify';
+import type { AuthPrincipal } from './AuthPrincipal';
 import { getRequest } from './getRequest';
 import { AUTH_PUBLIC_KEY } from './public.decorator';
 import { Role } from './role.enum';

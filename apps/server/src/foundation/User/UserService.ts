@@ -1,4 +1,4 @@
-import { MikroORM, QueryBuilder } from '@mikro-orm/postgresql';
+import { MikroORM, type QueryBuilder } from '@mikro-orm/postgresql';
 import { Inject, Injectable } from '@nestjs/common';
 import { applySearch } from '@wener/nestjs/entity/service';
 import { CustomBaseEntityService } from '@/foundation/services/CustomBaseEntityService';

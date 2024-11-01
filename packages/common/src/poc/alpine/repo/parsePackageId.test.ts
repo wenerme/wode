@@ -1,4 +1,4 @@
-import { test, expect } from 'vitest';
+import { expect, test } from 'vitest';
 import { ParsedPackageId, parsePackageId } from '@/poc/alpine/repo/parsePackageId';
 
 test('parsePackageId', () => {

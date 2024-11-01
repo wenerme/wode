@@ -11,22 +11,22 @@ export interface ServerCountryCity extends City {
 }
 
 export interface Server {
-  id: number
-  created_at: string
-  updated_at: string
-  name: string
-  station: string
-  ipv6_station: string
-  hostname: string
-  load: number
-  status: string
-  type: string
-  locations: Location[]
-  services: Service[]
-  technologies: Technology[]
-  groups: Group[]
-  specifications: Specification[]
-  ips: Ip[]
+  id: number;
+  created_at: string;
+  updated_at: string;
+  name: string;
+  station: string;
+  ipv6_station: string;
+  hostname: string;
+  load: number;
+  status: string;
+  type: string;
+  locations: Location[];
+  services: Service[];
+  technologies: Technology[];
+  groups: Group[];
+  specifications: Specification[];
+  ips: Ip[];
 }
 
 export interface Location {

@@ -1,6 +1,6 @@
 import { MikroORM } from '@mikro-orm/postgresql';
 import { Inject, Injectable } from '@nestjs/common';
-import { getEntityDef, StandardBaseEntity } from '@wener/nestjs/entity';
+import { getEntityDef, type StandardBaseEntity } from '@wener/nestjs/entity';
 import { Errors } from '@wener/utils';
 import { AuthEntityRoleEntity, AuthRoleEntity } from '@/foundation/Auth/entity';
 import { CustomBaseEntityService } from '@/foundation/services/CustomBaseEntityService';

@@ -1,7 +1,7 @@
 import type { EntityData, RequiredEntityData } from '@mikro-orm/core';
 import { EntityManager, type EntityRepository } from '@mikro-orm/postgresql';
 import { Inject, Injectable } from '@nestjs/common';
-import { StandardBaseEntity } from '@wener/nestjs/entity';
+import type { StandardBaseEntity } from '@wener/nestjs/entity';
 import { AuthEntityRoleEntity } from '@/foundation/Auth/entity/AuthEntityRoleEntity';
 import { AuthPermissionEntity } from '@/foundation/Auth/entity/AuthPermissionEntity';
 import { AuthRoleEntity } from '@/foundation/Auth/entity/AuthRoleEntity';

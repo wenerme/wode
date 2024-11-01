@@ -3,8 +3,8 @@ import { EntityData } from '@mikro-orm/core';
 import { EntityManager } from '@mikro-orm/postgresql';
 import { getAlpineCacheDir } from '@/poc/alpine/repo/fs';
 import { ApkIndexEntity } from '../entity/ApkIndexEntity';
-import { RepoClient } from './RepoClient';
 import { parseApkIndexArchive } from './parseApkIndexArchive';
+import { RepoClient } from './RepoClient';
 
 function byteLength(str: string) {
   // returns the byte length of an utf8 string

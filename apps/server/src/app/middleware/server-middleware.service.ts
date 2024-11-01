@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Currents } from '@wener/nestjs';
-import { type NestMiddleware, type NestRequest, type NestResponse } from '../types';
+import type { NestMiddleware, NestRequest, NestResponse } from '../types';
 
 @Injectable()
 export class ServerMiddleware implements NestMiddleware {

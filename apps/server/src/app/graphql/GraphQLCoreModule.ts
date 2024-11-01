@@ -1,7 +1,7 @@
 import path from 'node:path';
-import { DynamicModule } from '@nestjs/common';
+import type { DynamicModule } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
-import { MercuriusDriver, MercuriusDriverConfig } from '@nestjs/mercurius';
+import { MercuriusDriver, type MercuriusDriverConfig } from '@nestjs/mercurius';
 
 export class GraphQLCoreModule {
   static forRoot({ name }: { name: string }): DynamicModule {

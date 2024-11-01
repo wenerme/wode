@@ -1,4 +1,4 @@
-import { OrderRule } from '@wener/console';
+import type { OrderRule } from '@wener/console';
 
 export function toKnexOrder(order: OrderRule[]): Record<string, string> {
   return Object.fromEntries(

@@ -2,7 +2,7 @@ import { EntityRepository } from '@mikro-orm/postgresql';
 import { HttpException } from '@nestjs/common';
 import { ms } from '@wener/utils';
 import dayjs from 'dayjs';
-import { type HttpRequestLog } from './HttpRequestLog';
+import type { HttpRequestLog } from './HttpRequestLog';
 
 export interface FindCacheOptions {
   expires?: string;

@@ -1,5 +1,5 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { EntityManager, EntityRepository } from '@mikro-orm/postgresql';
+import { EntityManager, type EntityRepository } from '@mikro-orm/postgresql';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { Errors } from '@wener/utils';
 import { UserAuditAction, writeUserAuditLog } from '@/foundation/Audit';

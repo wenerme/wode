@@ -2,7 +2,7 @@ import os from 'node:os';
 import process from 'node:process';
 import { serveStatic } from '@hono/node-server/serve-static';
 import { DataloaderType, MemoryCacheAdapter } from '@mikro-orm/core';
-import { defineConfig, EntityManager } from '@mikro-orm/postgresql';
+import { defineConfig, type EntityManager } from '@mikro-orm/postgresql';
 import { Logger, Module } from '@nestjs/common';
 import {
   createArgon2PasswordAlgorithm,

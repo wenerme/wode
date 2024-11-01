@@ -1,8 +1,8 @@
-import { HttpBindings } from '@hono/node-server';
+import type { HttpBindings } from '@hono/node-server';
 import { createRoute, OpenAPIHono } from '@hono/zod-openapi';
 import { firstOfMaybeArray } from '@wener/utils';
 import { mapValues } from 'es-toolkit';
-import { MiddlewareHandler } from 'hono';
+import type { MiddlewareHandler } from 'hono';
 import { getCookie } from 'hono/cookie';
 import { UAParser } from 'ua-parser-js';
 import { z } from 'zod';

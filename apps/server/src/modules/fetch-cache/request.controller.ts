@@ -1,12 +1,12 @@
 import { once } from 'node:events';
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { EntityRepository } from '@mikro-orm/postgresql';
+import type { EntityRepository } from '@mikro-orm/postgresql';
 import { Controller, Get, Inject, Param, Req, Res } from '@nestjs/common';
 import { ApiBearerAuth, ApiCookieAuth, ApiTags } from '@nestjs/swagger';
-import { type FastifyReply, type FastifyRequest } from 'fastify';
+import type { FastifyReply, FastifyRequest } from 'fastify';
 import { Role, Roles } from '../../app/auth';
 import { KeyOfFetchCacheModuleOptions } from './const';
-import { type FetchCacheModuleOptions } from './fetch-cache.module';
+import type { FetchCacheModuleOptions } from './fetch-cache.module';
 import { HttpRequestLog } from './HttpRequestLog';
 import { SSE } from './SSE';
 

@@ -1,9 +1,14 @@
 import 'reflect-metadata';
-import { INestApplicationContext, Logger, type INestApplication, type NestApplicationOptions } from '@nestjs/common';
+import {
+  Logger,
+  type INestApplication,
+  type INestApplicationContext,
+  type NestApplicationOptions,
+} from '@nestjs/common';
 import { NestFactory, type AbstractHttpAdapter } from '@nestjs/core';
 import { setAppContext } from '@wener/nestjs';
 import { App } from '@wener/nestjs/app';
-import { type MaybePromise } from '@wener/utils';
+import type { MaybePromise } from '@wener/utils';
 
 export interface MicroserviceOptions extends Record<string, any> {}
 

@@ -1,13 +1,13 @@
 import {
   BaseEntity,
   Config,
-  DefineConfig,
   Entity,
-  Opt,
   PrimaryKey,
   PrimaryKeyProp,
   Property,
   types,
+  type DefineConfig,
+  type Opt,
 } from '@mikro-orm/core';
 
 export type StandardBaseEntityOptionalFields =
