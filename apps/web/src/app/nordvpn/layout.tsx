@@ -2,21 +2,21 @@ import React from 'react';
 import type { NextLayoutProps } from '@wener/reaction/next';
 import { TabPageLayout } from '@/components/page/TabPageLayout';
 
-const PasswordPageTabs = [
+const NordVPNTabs = [
   {
-    label: '密码强度',
-    href: '/password/strength/',
+    label: 'Server',
+    href: '/nordvpn/server/',
   },
   {
-    label: '密码哈希',
-    href: '/password/hash/',
+    label: 'Country',
+    href: '/nordvpn/country/',
   },
 ];
 
 export default function ({ params, children }: NextLayoutProps) {
   // let path = await getServerRequestPath();
   return (
-    <TabPageLayout tabs={PasswordPageTabs} title={'密码'}>
+    <TabPageLayout tabs={NordVPNTabs} title={'NordVPN'}>
       {children}
     </TabPageLayout>
   );
