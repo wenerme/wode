@@ -5,7 +5,7 @@ import { resolveRequestLocale, type ResolveRequestLocaleOptions } from '@/i18n/r
 export async function resolveCurrentLocale(opts: Partial<ResolveRequestLocaleOptions> = {}) {
   if (typeof window === 'undefined') {
     const { headers, cookies } = await import('next/headers');
-    let hdr = headers();
+    let hdr = await headers();
     opts.accept ??= hdr.get('accept-language');
     if (typeof opts.query !== 'string') {
       let u = hdr.get('x-url');
@@ -17,7 +17,7 @@ export async function resolveCurrentLocale(opts: Partial<ResolveRequestLocaleOpt
         }
       }
     }
-    opts.cookie ??= cookies().get('lang')?.value;
+    opts.cookie ??= (await cookies()).get('lang')?.value;
   } else {
     opts.cookie ??= cookie.parse(document.cookie)['lang'];
     opts.query ??= location.search ? new URLSearchParams(location.search).get('lang') : undefined;

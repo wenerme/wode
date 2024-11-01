@@ -18,7 +18,7 @@ export async function NextRootLayout({ children, params }: NextLayoutProps) {
   });
   const { title } = getSiteData();
   const attrs: Record<string, any> = {};
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   // let hdr = headers();
   // let query: Record<string, string> = {};
   // {
