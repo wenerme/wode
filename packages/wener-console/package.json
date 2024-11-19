@@ -1,6 +1,6 @@
 {
   "name": "@wener/console",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "type": "module",
   "description": "Base console UI toolkit",
   "author": "wener",
@@ -18,9 +18,11 @@
     "./foundation/site": "./src/foundation/site/index.ts",
     "./hooks": "./src/hooks/index.ts",
     "./icons": "./src/icons/index.ts",
+    "./jsonschema": "./src/jsonschema/index.ts",
     "./loader": "./src/loader/index.ts",
     "./matomo": "./src/matomo/index.ts",
     "./pages": "./src/console/pages/index.ts",
+    "./react-hook-form": "./src/react-hook-form/index.ts",
     "./router": "./src/router/index.ts",
     "./toast": "./src/toast/index.ts",
     "./tw": "./src/tw/index.ts",
@@ -95,6 +97,7 @@
     "@graphql-typed-document-node/core": "^3.2.0",
     "@headlessui/react": "^2.2.0",
     "@remix-run/router": "^1.20.0",
+    "@sinclair/typebox": "^0.33.17",
     "@storybook/addon-essentials": "^8.4.1",
     "@storybook/addon-interactions": "^8.4.1",
     "@storybook/addon-links": "^8.4.1",
@@ -103,6 +106,7 @@
     "@storybook/react": "^8.4.1",
     "@storybook/react-vite": "^8.4.1",
     "@storybook/test": "^8.4.1",
+    "@types/json-schema": "^7.0.15",
     "@types/react-is": "^18.3.0",
     "@urql/core": "^5.0.8",
     "@urql/devtools": "^2.0.3",
@@ -112,6 +116,10 @@
     "@wener/nestjs": "workspace:^",
     "@wener/reaction": "workspace:^",
     "@wener/utils": "workspace:^",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "ajv-i18n": "^4.2.0",
+    "ajv-keywords": "^5.1.0",
     "clsx": "^2.1.1",
     "dataloader": "^2.2.2",
     "graphql-request": "^7.1.1",
@@ -127,6 +135,7 @@
     "react-rnd": "^10.4.13",
     "storybook": "^8.4.1",
     "styled-components": "^6.1.13",
+    "ts-pattern": "^5.5.0",
     "urql": "^4.2.0",
     "web-vitals": "^4.2.4",
     "wonka": "^6.3.4"
@@ -178,6 +187,10 @@
         "types": "./src/icons/index.ts",
         "default": "./lib/icons/index.js"
       },
+      "./jsonschema": {
+        "types": "./src/jsonschema/index.ts",
+        "default": "./lib/jsonschema/index.js"
+      },
       "./loader": {
         "types": "./src/loader/index.ts",
         "default": "./lib/loader/index.js"
@@ -189,6 +202,10 @@
       "./pages": {
         "types": "./src/console/pages/index.ts",
         "default": "./lib/console/pages/index.js"
+      },
+      "./react-hook-form": {
+        "types": "./src/react-hook-form/index.ts",
+        "default": "./lib/react-hook-form/index.js"
       },
       "./router": {
         "types": "./src/router/index.ts",

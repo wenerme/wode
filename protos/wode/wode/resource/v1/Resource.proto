@@ -1,0 +1,83 @@
+syntax = "proto3";
+
+package wode.resource.v1;
+
+import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
+import "wode/resource/v1/ListQuery.proto";
+
+message ResourceProto {
+  string id = 100;
+  optional string uid = 101;
+  optional string tid = 102;
+  optional int64 sid = 103;
+  optional string eid = 104;
+  optional string cid = 105;
+  optional string rid = 106;
+
+  optional google.protobuf.Timestamp created_at = 107;
+  optional google.protobuf.Timestamp updated_at = 108;
+  optional google.protobuf.Timestamp deleted_at = 109;
+
+  optional google.protobuf.Struct attributes = 110;
+  optional google.protobuf.Struct properties = 111;
+  optional google.protobuf.Struct extensions = 112;
+
+  optional string state = 120;
+  optional string status = 121;
+  repeated string tags = 123;
+  optional string notes = 124;
+  optional google.protobuf.Struct metadata = 125;
+
+  optional string owner_id = 130;
+  optional string owner_type = 131;
+  optional string owning_user_id = 132;
+  optional string owning_team_id = 133;
+}
+
+message CubeQuery {
+  string resource = 1;
+  repeated string dimensions = 2;
+  repeated string measures = 3;
+  string filter = 4;
+  repeated string filters = 5;
+  int32 limit = 6;
+  int32 offset = 7;
+  bool total = 8;
+  repeated string order = 9;
+  bool rollup = 10;
+  string separator = 11; // build _key
+}
+
+message ExecCubeQueryRequest {
+  CubeQuery query = 1;
+}
+
+message ExecCubeQueryResponse {
+  repeated google.protobuf.Struct data = 1;
+  int32 total = 2;
+  CubeQuery query = 3;
+}
+
+message GetResourceRequest {
+  string id = 1;
+}
+
+message GetResourceResponse {
+  ResourceProto data = 1;
+}
+
+message ListResourceRequest {
+  wode.resource.v1.ListQuery query = 1;
+}
+
+message ListResourceResponse {
+  repeated ResourceProto data = 1;
+  int32 total = 2;
+}
+
+service ResourceService {
+  rpc GetResource(GetResourceRequest) returns (GetResourceResponse) {}
+  rpc ListResource(ListResourceRequest) returns (ListResourceResponse) {}
+  rpc ExecCubeQuery(ExecCubeQueryRequest) returns (ExecCubeQueryResponse) {}
+}

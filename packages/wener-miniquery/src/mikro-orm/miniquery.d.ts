@@ -1,4 +1,4 @@
-export function parse(input: string, options?: ParseOptions);
+export function parse(input: string, options?: ParseOptions): any;
 
 export interface ParseOptions {
   grammarSource?: string;

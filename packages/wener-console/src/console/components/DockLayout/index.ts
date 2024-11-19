@@ -1,0 +1,1 @@
+export { DockLayout } from './DockLayout';

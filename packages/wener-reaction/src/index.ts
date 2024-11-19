@@ -43,7 +43,7 @@ export type { Equivalence, Selector, UseSelector, Optional, PartialRequired } fr
 export { withDefaultProps } from './hoc/withDefaultProps';
 export { ClientOnly } from './components/ClientOnly';
 
-export { flexRender, type FlexRenderable } from './render/flexRender';
+export { flexRender, type FlexRenderable, FlexRenderer, type FlexRendererProps } from './render/flexRender';
 export { renderAlternative, type AlternativeRendererProps } from './render/renderAlternative';
 export { isReactComponent } from './render/isReactComponent';
 export { mergeRefs } from './utils/mergeRefs';

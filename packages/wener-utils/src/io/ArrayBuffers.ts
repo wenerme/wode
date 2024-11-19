@@ -15,6 +15,10 @@ Stage 3
 Uint8Array.fromBase64, Uint8Array.prototype.toBase64
 Uint8Array.fromHex, Uint8Array.prototype.toHex
 https://github.com/tc39/proposal-arraybuffer-base64
+
+Unicode routines (UTF8, UTF16, UTF32) and Base64
+used by Node.js, WebKit/Safari, Ladybird, Cloudflare Workers, Bun
+https://github.com/simdutf/simdutf
  */
 
   /*
@@ -299,8 +303,13 @@ https://github.com/tc39/proposal-resizablearraybuffer
     return r.buffer;
   }
 
-  export function fromBase64(v: string): Uint8Array {
-    if ('fromBase64' in Uint8Array) {
+  export function fromBase64(v: string, encoding?: undefined): Uint8Array;
+  export function fromBase64(v: string, encoding: BinaryStringEncoding): string;
+  export function fromBase64(v: string, encoding?: BinaryStringEncoding): Uint8Array | string {
+    if (encoding) {
+      return toString(fromBase64(v), encoding);
+    }
+    if ('fromBase64' in Uint8Array && typeof Uint8Array.fromBase64 === 'function') {
       return Uint8Array.fromBase64(v);
     }
     if (isNativeBufferAllowed()) {
@@ -309,8 +318,13 @@ https://github.com/tc39/proposal-resizablearraybuffer
     return decodeBase64ToUint8Array(v.replace(/[^0-9a-zA-Z=+/_]/g, ''));
   }
 
-  export function fromHex(v: string): Uint8Array {
-    if ('fromHex' in Uint8Array) {
+  export function fromHex(v: string, encoding?: undefined): Uint8Array;
+  export function fromHex(v: string, encoding: BinaryStringEncoding): string;
+  export function fromHex(v: string, encoding?: BinaryStringEncoding): Uint8Array | string {
+    if (encoding) {
+      return toString(fromHex(v), encoding);
+    }
+    if ('fromHex' in Uint8Array && typeof Uint8Array.fromHex === 'function') {
       return Uint8Array.fromHex(v);
     }
     if (isNativeBufferAllowed()) {
@@ -327,7 +341,7 @@ https://github.com/tc39/proposal-resizablearraybuffer
   export function toBase64(source: BufferSource | string): string {
     source = encode(source);
     if ('toBase64' in Uint8Array.prototype) {
-      return toUint8Array(source).toBase64();
+      return (toUint8Array(source) as Uint8Array2).toBase64();
     }
     if (isNativeBufferAllowed()) {
       return Buffer.from(asView(Uint8Array, source)).toString('base64');
@@ -338,7 +352,7 @@ https://github.com/tc39/proposal-resizablearraybuffer
   export function toHex(v: BufferSource | string): string {
     v = encode(v);
     if ('toHex' in Uint8Array.prototype) {
-      return toUint8Array(v).toHex();
+      return (toUint8Array(v) as Uint8Array2).toHex();
     }
     if (isNativeBufferAllowed()) {
       return Buffer.from(asView(Uint8Array, v)).toString('hex');
@@ -362,7 +376,7 @@ https://github.com/tc39/proposal-resizablearraybuffer
     }
 
     const old = v;
-    const newBuf = new ArrayBuffer(newByteLength, { maxByteLength: maxByteLength });
+    const newBuf = new (ArrayBuffer as ArrayBuffer2Constructor)(newByteLength, { maxByteLength: maxByteLength });
     const oldView = new Uint8Array(old);
     const newView = new Uint8Array(newBuf);
     newView.set(oldView);
@@ -414,6 +428,7 @@ export type TypedArray =
 
 type ArrayBufferViewConstructor<T> = new (buffer: ArrayBufferLike, byteOffset?: number, byteLength?: number) => T;
 
+// base16
 const hexLookupTable = (function () {
   const alphabet = '0123456789abcdef';
   const table = new Array(256);
@@ -426,32 +441,22 @@ const hexLookupTable = (function () {
   return table;
 })();
 
-declare global {
-  interface ArrayBuffer {
-    resize?: (newByteLength: number) => void;
-    resizable?: boolean;
-  }
+// avoid declare global
 
-  interface ArrayBufferConstructor {
-    new (byteLength: number, opts?: { maxByteLength?: number }): ArrayBuffer;
-  }
+interface Uint8Array2 extends Uint8Array {
+  toBase64(): string;
 
-  interface SharedArrayBuffer {
-    resize?: (newByteLength: number) => void;
-    resizable?: boolean;
-  }
+  toHex(): string;
+}
 
-  interface Uint8Array {
-    toBase64(): string;
+type ArrayBuffer2 = (ArrayBuffer | SharedArrayBuffer) & {
+  resize(newByteLength: number): void;
+  resizable: boolean;
+  maxByteLength: number;
+};
 
-    toHex(): string;
-  }
-
-  interface Uint8ArrayConstructor {
-    fromBase64(v: string): Uint8Array;
-
-    fromHex(v: string): Uint8Array;
-  }
+interface ArrayBuffer2Constructor {
+  new (byteLength: number, opts?: { maxByteLength?: number }): ArrayBuffer;
 }
 
 function isIterable(obj: any): obj is Iterable<any> {

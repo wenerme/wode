@@ -1,0 +1,132 @@
+syntax = "proto3";
+package wode.storage.object.v1;
+
+import "google/protobuf/timestamp.proto";
+
+message ObjectRef {
+  string bucket = 1;
+  string name = 2;
+}
+
+message ObjectMeta {
+  string name = 1;
+  string prefix = 2;
+  int64 size = 3;
+  string etag = 4;
+
+  optional google.protobuf.Timestamp ctime = 6;
+  optional google.protobuf.Timestamp mtime = 7;
+
+  map<string, string> metadata = 8;
+}
+
+message BucketMeta {
+  string name = 1;
+  google.protobuf.Timestamp created_at = 2;
+}
+
+message ListBucketRequest {}
+
+message ListBucketResponse {
+  repeated BucketMeta data = 1;
+}
+
+message MakeBucketRequest {
+  string name = 1;
+}
+
+message MakeBucketResponse {
+  BucketMeta data = 1;
+}
+
+message ListObjectRequest {
+  string bucket = 1;
+  string prefix = 2;
+  bool recursive = 3;
+  string start_after = 4;
+  bool include_meta = 5;
+}
+
+message ListObjectResponse {
+  repeated ObjectMeta data = 1;
+}
+
+message GetObjectRequest {
+  ObjectRef ref = 1;
+}
+
+message GetObjectResponse {
+  bytes data = 1;
+}
+
+message GetObjectStreamRequest {
+  ObjectRef ref = 1;
+  int64 offset = 2;
+  int64 length = 3;
+}
+
+message GetObjectStreamResponse {
+  bytes data = 1;
+}
+
+message PutObjectRequest {
+  ObjectRef ref = 1;
+  bytes data = 2;
+}
+
+message PutObjectResponse {}
+
+message PutObjectStreamRequest {
+  ObjectRef ref = 1;
+  int64 offset = 2;
+  bytes data = 3;
+}
+
+message PutObjectStreamResponse {}
+
+message ComposeObjectRequest {
+  repeated ObjectRef refs = 1;
+  ObjectRef target = 2;
+}
+
+message ComposeObjectResponse {}
+
+message CopyObjectRequest {
+  ObjectRef source = 1;
+  ObjectRef target = 2;
+}
+
+message CopyObjectResponse {}
+
+message StatObjectRequest {
+  ObjectRef ref = 1;
+}
+
+message StatObjectResponse {
+  ObjectMeta meta = 1;
+}
+
+message RemoveObjectRequest {
+  ObjectRef ref = 1;
+}
+
+message RemoveObjectResponse {}
+
+// PresignedUrl
+// PresignedGetObject
+// PresignedPutObject
+
+service ObjectStorageService {
+  rpc ListBucket(ListBucketRequest) returns (ListBucketResponse);
+  rpc MakeBucket(MakeBucketRequest) returns (MakeBucketResponse);
+
+  rpc GetObject(GetObjectRequest) returns (GetObjectResponse);
+  rpc GetObjectStream(GetObjectStreamRequest) returns (stream GetObjectStreamResponse);
+  rpc ListObject(ListObjectRequest) returns (ListObjectResponse);
+  rpc PutObject(PutObjectRequest) returns (PutObjectResponse);
+  rpc PutObjectStream(stream PutObjectStreamRequest) returns (PutObjectStreamResponse);
+  rpc ComposeObject(ComposeObjectRequest) returns (ComposeObjectResponse);
+  rpc CopyObject(CopyObjectRequest) returns (CopyObjectResponse);
+  rpc StatObject(StatObjectRequest) returns (StatObjectResponse);
+  rpc RemoveObject(RemoveObjectRequest) returns (RemoveObjectResponse);
+}

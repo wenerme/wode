@@ -9,10 +9,10 @@ import { PlaygroundWidget } from '@/applets/Playground/PlaygroundWidget';
 import { getUserAbility } from '@/casl';
 import { DevOpsModule, FamilyModule, SiteModules } from '@/console/modules/user.core/SiteModules';
 import type { ConsoleLayoutContext, DashMenuItem } from '../../components/ConsoleLayout/ConsoleLayoutContext';
-import { createRoutes } from '../../createRoutes';
+import { createConsoleRoutes } from '../../createConsoleRoutes';
 
 export default {
-  createRoutes,
+  createRoutes: createConsoleRoutes,
   onModuleInit: (ctx) => {
     ctx.as<ConsoleLayoutContext>().add('console.menu.bottom', [
       {

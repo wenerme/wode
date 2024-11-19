@@ -26,17 +26,27 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "@sinclair/typebox": "^0.33.17",
+    "@types/json-schema": "^7.0.15",
     "@wener/utils": "^1.1.51",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "ajv-i18n": "^4.2.0",
+    "ajv-keywords": "^5.1.0",
     "es-toolkit": "^1.26.1",
     "execa": "^9.5.1",
+    "fs-extra": "^11.2.0",
     "lru-cache": "^11.0.2",
     "semver": "^7.6.3",
     "tar": "^7.4.3",
+    "ts-pattern": "^5.5.0",
+    "zod": "^3.23.8",
     "zx": "^8.2.0"
   },
   "devDependencies": {
     "@bufbuild/protobuf": "^2.2.2",
     "@connectrpc/connect": "rc",
+    "@sinclair/typebox-codegen": "^0.10.5",
     "@types/semver": "^7.5.8",
     "@types/tar": "^6.1.13"
   }

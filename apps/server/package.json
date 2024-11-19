@@ -90,6 +90,7 @@
     "minio": "^8.0.2",
     "node-pg-migrate": "^7.7.1",
     "object-hash": "^3.0.0",
+    "ollama": "^0.5.9",
     "openapi3-ts": "^4.4.0",
     "picocolors": "^1.1.1",
     "qrcode": "^1.5.4",
