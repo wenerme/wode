@@ -10,7 +10,8 @@ export interface UserAction {
 }
 
 export function getUserAction(): UserAction {
-  const { emit } = getConsoleContext().getEmitter();
+  const emitter = getConsoleContext().getEmitter();
+  const emit = emitter.emit.bind(emitter);
   return {
     refreshProfile: () => {
       return emit(ConsoleEvents.RefreshProfile, {});

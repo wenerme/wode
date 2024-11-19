@@ -111,15 +111,27 @@ RelExpr
   / field:Field __ op:((not __)? (in)) __ value:Array {return _make(field,op,value)}
   / field:Field __ op:((not __)? (like/ilike)) __ value:string {return _make(field,op,value)}
 
-Field 	= ref / name
-//ref     = a:name b:('.' v:name {return v})+ {return [a,...b].join('.')}
-ref     = a:name|1..,_ '.'_ | {return a}
-name 	= ([a-zA-Z]([_a-zA-Z0-9])*) {return text()}
+FunctionExpr
+  = name:name _ "(" _ args:Values? _ ")" {
+      return { type: 'function', name, values: args || [] };
+    }
 
+ValueExpr
+  = FunctionExpr
+  / Field
+  / Value
+
+Field 	= ref / name
+
+// Value   = literal / Field
 Value   = literal
 // Values = next:(a:Value _ b:(_ ',' _ next:Value {return next})* ','? {return b?[a,...b]:a})? {return next || []}
 Values 	= next:(Value|.., _ "," _ |) _  ','?  {return next || []}
 Array   = '[' _ next:Values _ ']' {return next} / '(' _ next:Values _ ')' {return next}
+
+//ref     = a:name b:('.' v:name {return v})+ {return [a,...b].join('.')}
+ref     = a:name|1..,_ '.'_ | {return a}
+name  	= ([a-zA-Z]([_a-zA-Z0-9])*) {return text()}
 
 in      = 'in' / 'IN'  {return 'in'}
 is      = 'is' / 'IS'  {return 'is'}

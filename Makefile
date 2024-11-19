@@ -56,3 +56,15 @@ outdated:
 
 prepare:
 	npm add -g pnpm@latest
+
+ifneq ($(wildcard buf.gen.yaml),)
+buf-gen:
+	buf generate
+
+buf-fmt:
+	buf format -w
+
+buf-lint: buf-fmt
+	buf lint
+endif
+

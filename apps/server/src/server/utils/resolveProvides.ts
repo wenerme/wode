@@ -28,7 +28,7 @@ export function resolveProvides(
   }) as Constructor<any>[];
 
   const services = all.flatMap((v) => {
-    if (v.name.endsWith('Service')) {
+    if (v.name.endsWith('Service') || v.name.endsWith('Impl')) {
       return v;
     }
     if (v.ServiceType) {

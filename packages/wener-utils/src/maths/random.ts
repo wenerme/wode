@@ -1,7 +1,8 @@
 // LCG pseudo random
-export function createRandom(_seed: number | string = 0): {
-  random(): number;
+export function createRandom(_seed: number | string = Date.now()): {
+  random(n?: number): number;
   randomBytes(length: number): Uint8Array;
+  [Symbol.iterator](): Generator<number, void, unknown>;
 } {
   let seed = 0;
 
@@ -22,9 +23,13 @@ export function createRandom(_seed: number | string = 0): {
   const a = 1664525;
   const c = 1013904223;
 
-  const random = (): number => {
+  const random = (n?: number): number => {
     seed = (a * seed + c) % m;
-    return seed / m;
+    let r = seed / m;
+    if (n) {
+      r = Math.floor(r * n);
+    }
+    return r;
   };
 
   const randomBytes = (length: number): Uint8Array => {
@@ -38,5 +43,10 @@ export function createRandom(_seed: number | string = 0): {
   return {
     random,
     randomBytes,
+    [Symbol.iterator]: function* () {
+      while (true) {
+        yield random();
+      }
+    },
   };
 }

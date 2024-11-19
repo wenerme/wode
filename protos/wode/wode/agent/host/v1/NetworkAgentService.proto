@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package wode.agent.host.v1;
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+message IcmpPingRequest {
+  string host = 1;
+}
+message IcmpPingResponse {
+  string host = 1;
+  int32 seq = 2;
+  float ttl = 3;
+  float time = 4;
+}
+
+message ResolveNameRequest {
+  string name = 1;
+}
+
+message ResolveNameResponse {
+  string name = 1;
+  repeated string addresses = 2;
+}
+
+service NetworkAgentService {
+  rpc IcmpPing(IcmpPingRequest) returns (stream IcmpPingResponse);
+  rpc ResolveName(ResolveNameRequest) returns (ResolveNameResponse);
+}
