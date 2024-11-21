@@ -21,6 +21,7 @@
     "./jsonschema": "./src/jsonschema/index.ts",
     "./loader": "./src/loader/index.ts",
     "./matomo": "./src/matomo/index.ts",
+    "./meta": "./src/meta/index.ts",
     "./pages": "./src/console/pages/index.ts",
     "./react-hook-form": "./src/react-hook-form/index.ts",
     "./router": "./src/router/index.ts",
@@ -198,6 +199,10 @@
       "./matomo": {
         "types": "./src/matomo/index.ts",
         "default": "./lib/matomo/index.js"
+      },
+      "./meta": {
+        "types": "./src/meta/index.ts",
+        "default": "./lib/meta/index.js"
       },
       "./pages": {
         "types": "./src/console/pages/index.ts",

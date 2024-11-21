@@ -1,5 +1,5 @@
-import { get, set } from '@wener/utils';
-import _ from 'lodash';
+import { startCase } from 'es-toolkit';
+import { get, set } from 'es-toolkit/compat';
 
 type HasMetadata = {
   metadata?: Record<string, any>;
@@ -30,7 +30,7 @@ export function createMetadataKey<T = never>(a: any, b?: any): MetadataKey<T> {
       : a;
 
   const { key } = opts;
-  opts.title ||= _.startCase(key);
+  opts.title ||= startCase(key);
 
   const k: MetadataKey<T> = {
     ...opts,
