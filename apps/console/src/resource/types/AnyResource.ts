@@ -1,13 +1,38 @@
 export type AnyResource = {
   __typename?: string; // GQL 类型
 
-  id: string; // 主键  - <TYPETAG>_<ULID>
-  uid?: string; // UUID
-  tid?: string; // 租户
-  sid?: number; // 顺序ID - 对用户友好 - 租户+实体类型维度递增
-  eid?: string; // 外部 ID - 例如 对接已有系统
-  cid?: string; // 平台 ID - CID+RID - 平台+平台ID - 组成 vendor 相关的外部资源
-  rid?: string; // 平台关联 ID
+  /**
+   * @title ID
+   * 主键  - <TYPETAG>_<ULID>
+   */
+  id: string;
+  /**
+   * @title UUID
+   */
+  uid?: string;
+  /**
+   * @title 租户ID
+   */
+  tid?: string;
+  /**
+   * @title 顺序ID
+   * 对用户友好 - 租户+实体类型维度递增
+   */
+  sid?: number;
+  /**
+   * @title 外部ID
+   * 例如 对接已有系统
+   */
+  eid?: string;
+  /**
+   * @title 平台ID
+   * CID+RID - 平台+平台ID - 组成 vendor 相关的外部资源
+   */
+  cid?: string;
+  /**
+   * @title 平台关联ID
+   */
+  rid?: string;
 
   // 常见的名字字段 - 避免使用 name
   loginName?: string; // 可登录对象
@@ -50,25 +75,47 @@ export type AnyResource = {
   notes?: string; // 面向业务员 -  后台备注
   remark?: string; // 面向用户 - 前台备注 - 一般少用
 
-  state?: string; // 状态 - 粗粒度系统定义
-  status?: string; // 阶段 - 细粒度业务定义
+  /**
+   * @title 状态
+   * 粗粒度系统定义
+   */
+  state?: string;
+  /**
+   * @title 阶段
+   * 细粒度业务定义
+   */
+  status?: string;
   stateLabel?: string; // 自动 resolve 出来的显示内容
   statusLabel?: string;
 
-  tags?: string[]; // 标记体系 - 自定义
+  /**
+   * @title 标记
+   * 标记体系 - 自定义
+   */
+  tags?: string[];
   metadata?: Record<string, any>; // 元数据
 
   userId?: string; // 可关联用户
   user?: AnyResource;
 
-  labels?: AnyResource[]; // 标签体系 - 系统定义
+  /**
+   * @title 标签
+   * 标签体系 - 系统定义
+   */
+  labels?: AnyResource[];
 
   // 排序用
   sort?: number;
   displayOrder?: number;
 
-  // 可归属资源
+  /**
+   * @title 所有者ID
+   * 可归属资源
+   */
   ownerId?: string;
+  /**
+   * @title 所有者类型
+   */
   ownerType?: string | 'User' | 'Team';
 
   // 具体归属 ID 基于 type 生成

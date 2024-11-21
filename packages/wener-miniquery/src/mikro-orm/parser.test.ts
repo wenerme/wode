@@ -79,6 +79,8 @@ test('miniquery', async () => {
   // https://github.com/wenerme/wode/blob/main/packages/ohm-grammar-miniquery/src/miniquery.test.ts
   // https://github.com/wenerme/go-miniquery/blob/main/miniquery/parser_test.go
   const valid = [
+    'a=0',
+    'a>0',
     'a>1',
     '!a>1',
     ' a > 1 ',

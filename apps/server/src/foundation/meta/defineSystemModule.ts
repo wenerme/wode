@@ -1,7 +1,7 @@
+import { createMetadataKey, defineMetadata } from '@wener/console/meta';
 import { defineEntity, type DefineEntityOptions } from '@wener/nestjs/entity';
 import type { Constructor } from '@wener/utils';
 import _ from 'lodash';
-import { createMetadataKey, defineMetadata } from '@/utils/meta/defineMetadata';
 
 type DefineSystemModuleOptions = {
   name: string;

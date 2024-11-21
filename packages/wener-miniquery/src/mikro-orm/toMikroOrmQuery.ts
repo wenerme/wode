@@ -1,5 +1,5 @@
 import type { EntityManager, EntityName, QBFilterQuery } from '@mikro-orm/core';
-import { parse } from './miniquery';
+import { parse } from './parser';
 
 export function toMikroOrmQuery<T>(
   query?: string,

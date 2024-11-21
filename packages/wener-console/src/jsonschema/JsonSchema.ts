@@ -10,10 +10,10 @@ export function setupAjv(ajv: Ajv) {
   addKeywords(ajv);
   addFormats(ajv);
   // store meta data
-  ajv.addKeyword({
-    keyword: '$meta',
-    schemaType: 'object',
-  });
+  // ajv.addKeyword({
+  //   keyword: '$meta',
+  //   schemaType: 'object',
+  // });
   return ajv;
 }
 
@@ -46,13 +46,16 @@ function validate({
   schema: any;
   data: any;
 }) {
-  let opts: Options = {};
+  let opts: Options = {
+    strict: 'log',
+  };
 
   if (mutate) {
     Object.assign(opts, {
       removeAdditional: true,
       useDefaults: true,
       coerceTypes: true,
+      allErrors: true,
     });
   }
 
@@ -81,8 +84,40 @@ function validate({
 }
 
 type TypeOfSchema<S> = S extends TSchema ? Static<S> : any;
-
+type IJsonSchema = JSONSchema7;
 export namespace JsonSchema {
+  export let schemas: IJsonSchema[] = [];
+
+  export function addSchema(
+    schema: IJsonSchema,
+    {
+      onConflict = 'throw',
+    }: {
+      onConflict?: 'throw' | 'ignore' | 'replace' | ((old: IJsonSchema, neo: IJsonSchema) => IJsonSchema);
+    } = {},
+  ) {
+    if (!schema.$id) throw new Error('Schema must have $id');
+    switch (onConflict) {
+      case 'ignore':
+        onConflict = (old) => old;
+        break;
+      case 'replace':
+        onConflict = (_, neo) => neo;
+        break;
+      case 'throw':
+        onConflict = (old, neo) => {
+          throw new Error(`Schema ${neo.$id} already exists`);
+        };
+        break;
+    }
+    let idx = schemas.findIndex((s) => s.$id === schema.$id);
+    if (idx >= 0) {
+      schemas[idx] = onConflict(schemas[idx], schema);
+    } else {
+      schemas.push(schema);
+    }
+  }
+
   /**
    * Check data is valid, will not use default
    */
