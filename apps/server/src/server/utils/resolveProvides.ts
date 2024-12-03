@@ -1,17 +1,31 @@
 import type { Constructor } from '@wener/utils';
 
-export function resolveProvides(
-  all: Array<
-    Constructor<any> & {
-      EntityType?: Function;
-      ServiceType?: Function;
-    }
-  >,
-): {
+type ServiceClass = Constructor & {
+  name: `${string}Service` | `${string}Impl`;
+};
+
+type ResolverClass = Constructor & {
+  name: `${string}Resolver`;
+};
+
+type EntityClass = Constructor & {
+  name: `${string}Entity`;
+};
+
+type AnyConstructor = Constructor<any> & {
+  EntityType?: Function;
+  ServiceType?: Function;
+};
+
+type Provides = {
   resolvers: Constructor<any>[];
   entities: Constructor<any>[];
   services: Constructor<any>[];
-} {
+  provides: Constructor<any>[];
+};
+
+export function resolveProvides(all: Array<AnyConstructor>): Provides {
+  // fixme should not make Resolve as special case
   const resolvers = all.filter((v) => {
     // fixme check @Resolver
     return v.name.endsWith('Resolver');
@@ -44,17 +58,19 @@ export function resolveProvides(
     services.forEach((v) => a.delete(v));
     if (a.size) {
       throw new Error(
-        `Unresolved Types: ${Array.from(a)
+        `Unresolved Provides: ${Array.from(a)
           .map((v) => v.name)
           .join(', ')}`,
       );
     }
   }
 
+  const provides = services.concat(entities).concat(resolvers);
   return {
     resolvers: unique(resolvers),
     entities: unique(entities),
     services: unique(services),
+    provides: unique(provides),
   };
 }
 

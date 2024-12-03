@@ -6,21 +6,26 @@ export interface BuildGraphModuleOptions {
   resolvers: Constructor<any>[];
   entities: Constructor<any>[];
   services: Constructor<any>[];
+  provides: Constructor<any>[];
   providers?: ModuleMetadata['providers'];
   imports?: ModuleMetadata['imports'];
 }
 
-export function buildGraphModule(...ctx: BuildGraphModuleOptions[]) {
+export function buildGraphModule(...ctx: Array<Partial<BuildGraphModuleOptions>>): BuildGraphModuleOptions & {
+  module: DynamicModule;
+} {
   let providers = ctx.flatMap((v) => v.providers || []);
   let services = ctx.flatMap((v) => v.services || []);
   let entities = ctx.flatMap((v) => v.entities || []);
   let resolvers = ctx.flatMap((v) => v.resolvers || []);
   let imports = ctx.flatMap((v) => v.imports || []);
+  let provides = services.concat(entities).concat(resolvers);
   return {
     resolvers,
     entities,
     services,
     providers,
+    provides,
     get module() {
       return {
         module: TypeGraphModule,

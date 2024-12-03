@@ -1,10 +1,18 @@
 import { assert, test } from 'vitest';
-import { parseOrder } from './parseOrder';
+import { parseSort } from './parseSort';
 
-test('parseOrder', () => {
+test('parseSort', () => {
   for (const [o, e] of [
     //
     ['', []],
+    [[], []],
+    [null, []],
+    // invalid
+    [[{ order: 'asc' }], []],
+    // partial invalid
+    [['a,,', { field: '', order: 'asc' }], [{ field: 'a', order: 'asc' }]],
+    [[',,', { field: 'a', order: 'asc' }], [{ field: 'a', order: 'asc' }]],
+    //
     ['a', [{ field: 'a', order: 'asc' }]],
     [['a'], [{ field: 'a', order: 'asc' }]],
     [[{ field: 'a', order: 'asc' }], [{ field: 'a', order: 'asc' }]],
@@ -28,6 +36,6 @@ test('parseOrder', () => {
     ['-a nulls first', [{ field: 'a', order: 'desc', nulls: 'first' }]],
     ['a.b', [{ field: 'a.b', order: 'asc' }]],
   ]) {
-    assert.deepEqual(parseOrder(o as string), e as any, `parseOrder: ${JSON.stringify(o)}`);
+    assert.deepEqual(parseSort(o as any), e as any, `parseOrder: ${JSON.stringify(o)}`);
   }
 });

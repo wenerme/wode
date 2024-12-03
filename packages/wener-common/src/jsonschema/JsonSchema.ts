@@ -3,17 +3,14 @@ import Ajv, { type ErrorObject, type Options } from 'ajv';
 import addFormats from 'ajv-formats';
 import localize from 'ajv-i18n/localize/zh';
 import addKeywords from 'ajv-keywords';
-import type { JSONSchema7 } from 'json-schema';
+import { isNil } from 'es-toolkit';
 import { match, P } from 'ts-pattern';
+import type { JsonSchemaDef } from './types';
 
-export function setupAjv(ajv: Ajv) {
+function _createAjv(opt: Options) {
+  const ajv = new Ajv(opt);
   addKeywords(ajv);
   addFormats(ajv);
-  // store meta data
-  // ajv.addKeyword({
-  //   keyword: '$meta',
-  //   schemaType: 'object',
-  // });
   return ajv;
 }
 
@@ -47,7 +44,9 @@ function validate({
   data: any;
 }) {
   let opts: Options = {
-    strict: 'log',
+    // strict: 'log',
+    strict: true,
+    strictSchema: 'log', // skip unknown keywords in schema
   };
 
   if (mutate) {
@@ -64,7 +63,7 @@ function validate({
   }
 
   if (!ajv) {
-    ajv = setupAjv(new Ajv(opts));
+    ajv = JsonSchema.createAjv(opts);
   }
 
   const validate = ajv.compile(schema);
@@ -84,16 +83,18 @@ function validate({
 }
 
 type TypeOfSchema<S> = S extends TSchema ? Static<S> : any;
-type IJsonSchema = JSONSchema7;
+
 export namespace JsonSchema {
-  export let schemas: IJsonSchema[] = [];
+  export let schemas: JsonSchemaDef[] = [];
+
+  export const createAjv = _createAjv;
 
   export function addSchema(
-    schema: IJsonSchema,
+    schema: JsonSchemaDef,
     {
       onConflict = 'throw',
     }: {
-      onConflict?: 'throw' | 'ignore' | 'replace' | ((old: IJsonSchema, neo: IJsonSchema) => IJsonSchema);
+      onConflict?: 'throw' | 'ignore' | 'replace' | ((old: JsonSchemaDef, neo: JsonSchemaDef) => JsonSchemaDef);
     } = {},
   ) {
     if (!schema.$id) throw new Error('Schema must have $id');
@@ -142,7 +143,7 @@ export namespace JsonSchema {
 
   export function create<S>(schema: S, data?: any): TypeOfSchema<S> {
     // will not ensure value match the rule
-    return match(schema as JSONSchema7)
+    return match(schema as JsonSchemaDef)
       .returnType<any>()
       .with({ const: P.select() }, (v) => v)
       .with({ default: P.select() }, (v) => v)
@@ -154,7 +155,25 @@ export namespace JsonSchema {
       })
       .with({ type: 'string' }, (schema) => '')
       .with({ type: P.union('number', 'integer') }, (schema) => 0)
-      .with({ type: 'object' }, () => validate({ schema, data: data ?? {}, mutate: true }).data)
+      .with({ type: 'object' }, (schema) => {
+        let out = validate({ schema, data: data ?? {}, mutate: true });
+        if (!out.success) {
+          // fallback
+          let obj = data || {};
+          schema.required?.forEach((key) => {
+            if (!(key in obj)) {
+              let last = obj[key];
+              let prop = schema.properties?.[key];
+              if (prop && isNil(last)) obj[key] = JsonSchema.create(prop, last);
+            }
+          });
+          out = validate({ schema, data: obj, mutate: true });
+          if (!out.success) {
+            console.warn(`Failed to create object with schema: ${out.message}`);
+          }
+        }
+        return out.data;
+      })
       .with({ type: 'null' }, () => null)
       .with({ type: 'boolean' }, (schema) => false)
       .with({ type: 'array' }, (schema) => [])
@@ -164,7 +183,7 @@ export namespace JsonSchema {
   }
 
   export function isPrimitiveType(schema: any): boolean {
-    return match(schema as JSONSchema7)
+    return match(schema as JsonSchemaDef)
       .returnType<boolean>()
       .with({ type: P.union('number', 'integer', 'string', 'boolean') }, () => true)
       .with({ anyOf: P.nonNullable }, (schema) => {

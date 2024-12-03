@@ -1,0 +1,84 @@
+syntax = "proto3";
+
+package wode.resource;
+
+import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
+
+message ResourceProto {
+  string id = 100;
+  optional string uid = 101;
+  optional string tid = 102;
+  optional int64 sid = 103;
+  optional string eid = 104;
+  optional string cid = 105;
+  optional string rid = 106;
+
+  optional google.protobuf.Timestamp created_at = 107;
+  optional google.protobuf.Timestamp updated_at = 108;
+  optional google.protobuf.Timestamp deleted_at = 109;
+
+  optional google.protobuf.Struct attributes = 110;
+  optional google.protobuf.Struct properties = 111;
+  optional google.protobuf.Struct extensions = 112;
+
+  optional string state = 120;
+  optional string status = 121;
+  repeated string tags = 123;
+  optional string notes = 124;
+  optional google.protobuf.Struct metadata = 125;
+
+  optional string owner_id = 130;
+  optional string owner_type = 131;
+  optional string owning_user_id = 132;
+  optional string owning_team_id = 133;
+}
+
+message OnConflict {
+  repeated string fields = 1;
+  repeated string merge = 2;
+  repeated string exclude = 3;
+  ACTION action = 4;
+
+  enum ACTION {
+    STRATEGY_UNKNOWN = 0;
+    STRATEGY_SKIP = 1;
+    STRATEGY_MERGE = 2;
+  }
+}
+
+message SortRule {
+  optional string field = 1;
+  optional string order = 2;
+  optional string nulls = 3;
+}
+
+message ListQuery {
+  optional int32 page_size = 1;
+  optional int32 page_index = 2;
+  optional int32 page_number = 3;
+  optional int32 limit = 4;
+  optional int32 offset = 5;
+  optional string search = 6;
+  optional string filter = 7;
+  repeated string filters = 8;
+  optional bool deleted = 9;
+  optional string cursor = 10;
+  repeated string order = 11;
+  repeated string ids = 12;
+
+  repeated string includes = 20;
+  repeated string excludes = 21;
+}
+
+message ResolveQuery {
+  optional string id = 1;
+  optional string uid = 2;
+  optional int64 sid = 3;
+  optional string eid = 4;
+  optional string cid = 5;
+  optional string rid = 6;
+  optional string code = 7;
+  optional string filter = 8;
+  repeated string filters = 9;
+}
