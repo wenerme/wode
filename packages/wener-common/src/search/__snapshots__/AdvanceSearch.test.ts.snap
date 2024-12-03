@@ -1,0 +1,675 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AdvanceSearch > should parse 1`] = `"-a"`;
+
+exports[`AdvanceSearch > should parse 2`] = `"-a"`;
+
+exports[`AdvanceSearch > should parse 3`] = `
+[
+  {
+    "negative": true,
+    "type": "keyword",
+    "value": "a",
+  },
+]
+`;
+
+exports[`AdvanceSearch > should parse 4`] = `"a"`;
+
+exports[`AdvanceSearch > should parse 5`] = `"a"`;
+
+exports[`AdvanceSearch > should parse 6`] = `
+[
+  {
+    "type": "keyword",
+    "value": "a",
+  },
+]
+`;
+
+exports[`AdvanceSearch > should parse 7`] = `"a b"`;
+
+exports[`AdvanceSearch > should parse 8`] = `"a b"`;
+
+exports[`AdvanceSearch > should parse 9`] = `
+[
+  {
+    "type": "keyword",
+    "value": "a",
+  },
+  {
+    "type": "keyword",
+    "value": "b",
+  },
+]
+`;
+
+exports[`AdvanceSearch > should parse 10`] = `"a -b"`;
+
+exports[`AdvanceSearch > should parse 11`] = `"a -b"`;
+
+exports[`AdvanceSearch > should parse 12`] = `
+[
+  {
+    "negative": false,
+    "type": "keyword",
+    "value": "a",
+  },
+  {
+    "negative": true,
+    "type": "keyword",
+    "value": "b",
+  },
+]
+`;
+
+exports[`AdvanceSearch > should parse 13`] = `"a-b"`;
+
+exports[`AdvanceSearch > should parse 14`] = `"a-b"`;
+
+exports[`AdvanceSearch > should parse 15`] = `
+[
+  {
+    "negative": false,
+    "type": "keyword",
+    "value": "a-b",
+  },
+]
+`;
+
+exports[`AdvanceSearch > should parse 16`] = `"a"b"`;
+
+exports[`AdvanceSearch > should parse 17`] = `"a"b"`;
+
+exports[`AdvanceSearch > should parse 18`] = `
+[
+  {
+    "negative": false,
+    "type": "keyword",
+    "value": "a"b",
+  },
+]
+`;
+
+exports[`AdvanceSearch > should parse 19`] = `"a&b"`;
+
+exports[`AdvanceSearch > should parse 20`] = `"a&b"`;
+
+exports[`AdvanceSearch > should parse 21`] = `
+[
+  {
+    "type": "keyword",
+    "value": "a&b",
+  },
+]
+`;
+
+exports[`AdvanceSearch > should parse 22`] = `"NOT a"`;
+
+exports[`AdvanceSearch > should parse 23`] = `"-a"`;
+
+exports[`AdvanceSearch > should parse 24`] = `
+[
+  {
+    "type": "not",
+    "value": {
+      "negative": false,
+      "type": "keyword",
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`AdvanceSearch > should parse 25`] = `"NOT -a"`;
+
+exports[`AdvanceSearch > should parse 26`] = `"a"`;
+
+exports[`AdvanceSearch > should parse 27`] = `
+[
+  {
+    "type": "not",
+    "value": {
+      "negative": true,
+      "type": "keyword",
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`AdvanceSearch > should parse 28`] = `"HELLO -WORLD"`;
+
+exports[`AdvanceSearch > should parse 29`] = `"HELLO -WORLD"`;
+
+exports[`AdvanceSearch > should parse 30`] = `
+[
+  {
+    "negative": false,
+    "type": "keyword",
+    "value": "HELLO",
+  },
+  {
+    "negative": true,
+    "type": "keyword",
+    "value": "WORLD",
+  },
+]
+`;
+
+exports[`AdvanceSearch > should parse 31`] = `"(a)"`;
+
+exports[`AdvanceSearch > should parse 32`] = `"a"`;
+
+exports[`AdvanceSearch > should parse 33`] = `
+[
+  {
+    "type": "parentheses",
+    "value": [
+      {
+        "negative": false,
+        "type": "keyword",
+        "value": "a",
+      },
+    ],
+  },
+]
+`;
+
+exports[`AdvanceSearch > should parse 34`] = `"(a OR B)"`;
+
+exports[`AdvanceSearch > should parse 35`] = `"a OR B"`;
+
+exports[`AdvanceSearch > should parse 36`] = `
+[
+  {
+    "type": "parentheses",
+    "value": [
+      {
+        "operator": "or",
+        "type": "logical",
+        "value": [
+          {
+            "negative": false,
+            "type": "keyword",
+            "value": "a",
+          },
+          {
+            "negative": false,
+            "type": "keyword",
+            "value": "B",
+          },
+        ],
+      },
+    ],
+  },
+]
+`;
+
+exports[`AdvanceSearch > should parse 37`] = `"A OR B"`;
+
+exports[`AdvanceSearch > should parse 38`] = `"A OR B"`;
+
+exports[`AdvanceSearch > should parse 39`] = `
+[
+  {
+    "operator": "or",
+    "type": "logical",
+    "value": [
+      {
+        "negative": false,
+        "type": "keyword",
+        "value": "A",
+      },
+      {
+        "negative": false,
+        "type": "keyword",
+        "value": "B",
+      },
+    ],
+  },
+]
+`;
+
+exports[`AdvanceSearch > should parse 40`] = `"a:[1,2]"`;
+
+exports[`AdvanceSearch > should parse 41`] = `"a:[1,2]"`;
+
+exports[`AdvanceSearch > should parse 42`] = `
+[
+  {
+    "field": "a",
+    "operator": "range",
+    "type": "compare",
+    "value": {
+      "maximum": {
+        "type": "literal",
+        "value": 2,
+      },
+      "maximumExclusive": false,
+      "minimum": {
+        "type": "literal",
+        "value": 1,
+      },
+      "minimumExclusive": false,
+      "type": "range",
+    },
+  },
+]
+`;
+
+exports[`AdvanceSearch > should parse 43`] = `"a:*..1"`;
+
+exports[`AdvanceSearch > should parse 44`] = `"a:*..1"`;
+
+exports[`AdvanceSearch > should parse 45`] = `
+[
+  {
+    "field": "a",
+    "operator": "range",
+    "type": "compare",
+    "value": {
+      "maximum": {
+        "type": "literal",
+        "value": 1,
+      },
+      "minimum": undefined,
+      "type": "range",
+    },
+  },
+]
+`;
+
+exports[`AdvanceSearch > should parse 46`] = `"a:ok a:=1 a:>1 a:<1 a:>=1 a:<=1 a:!=1 a:1..2 a:*..1 a:1..* a:[1,2] a:(1,2) a:[1,2) a:(1,2]"`;
+
+exports[`AdvanceSearch > should parse 47`] = `"a:ok a:=1 a:>1 a:<1 a:>=1 a:<=1 a:!=1 a:1..2 a:*..1 a:1..* a:[1,2] a:(1,2) a:[1,2) a:(1,2]"`;
+
+exports[`AdvanceSearch > should parse 48`] = `
+[
+  {
+    "field": "a",
+    "operator": "has",
+    "type": "compare",
+    "value": {
+      "type": "literal",
+      "value": "ok",
+    },
+  },
+  {
+    "field": "a",
+    "operator": "eq",
+    "type": "compare",
+    "value": {
+      "type": "literal",
+      "value": 1,
+    },
+  },
+  {
+    "field": "a",
+    "operator": "gt",
+    "type": "compare",
+    "value": {
+      "type": "literal",
+      "value": 1,
+    },
+  },
+  {
+    "field": "a",
+    "operator": "lt",
+    "type": "compare",
+    "value": {
+      "type": "literal",
+      "value": 1,
+    },
+  },
+  {
+    "negative": false,
+    "type": "keyword",
+    "value": "a:>=1",
+  },
+  {
+    "negative": false,
+    "type": "keyword",
+    "value": "a:<=1",
+  },
+  {
+    "field": "a",
+    "operator": "ne",
+    "type": "compare",
+    "value": {
+      "type": "literal",
+      "value": 1,
+    },
+  },
+  {
+    "field": "a",
+    "operator": "range",
+    "type": "compare",
+    "value": {
+      "maximum": {
+        "type": "literal",
+        "value": 2,
+      },
+      "minimum": {
+        "type": "literal",
+        "value": 1,
+      },
+      "type": "range",
+    },
+  },
+  {
+    "field": "a",
+    "operator": "range",
+    "type": "compare",
+    "value": {
+      "maximum": {
+        "type": "literal",
+        "value": 1,
+      },
+      "minimum": undefined,
+      "type": "range",
+    },
+  },
+  {
+    "field": "a",
+    "operator": "range",
+    "type": "compare",
+    "value": {
+      "maximum": undefined,
+      "minimum": {
+        "type": "literal",
+        "value": 1,
+      },
+      "type": "range",
+    },
+  },
+  {
+    "field": "a",
+    "operator": "range",
+    "type": "compare",
+    "value": {
+      "maximum": {
+        "type": "literal",
+        "value": 2,
+      },
+      "maximumExclusive": false,
+      "minimum": {
+        "type": "literal",
+        "value": 1,
+      },
+      "minimumExclusive": false,
+      "type": "range",
+    },
+  },
+  {
+    "field": "a",
+    "operator": "range",
+    "type": "compare",
+    "value": {
+      "maximum": {
+        "type": "literal",
+        "value": 2,
+      },
+      "maximumExclusive": true,
+      "minimum": {
+        "type": "literal",
+        "value": 1,
+      },
+      "minimumExclusive": true,
+      "type": "range",
+    },
+  },
+  {
+    "field": "a",
+    "operator": "range",
+    "type": "compare",
+    "value": {
+      "maximum": {
+        "type": "literal",
+        "value": 2,
+      },
+      "maximumExclusive": true,
+      "minimum": {
+        "type": "literal",
+        "value": 1,
+      },
+      "minimumExclusive": false,
+      "type": "range",
+    },
+  },
+  {
+    "field": "a",
+    "operator": "range",
+    "type": "compare",
+    "value": {
+      "maximum": {
+        "type": "literal",
+        "value": 2,
+      },
+      "maximumExclusive": false,
+      "minimum": {
+        "type": "literal",
+        "value": 1,
+      },
+      "minimumExclusive": true,
+      "type": "range",
+    },
+  },
+]
+`;
+
+exports[`AdvanceSearch > should parse 49`] = `"NOT (A B) AND (a:ok AND size:>1)"`;
+
+exports[`AdvanceSearch > should parse 50`] = `"NOT (A B) AND (a:ok AND size:>1)"`;
+
+exports[`AdvanceSearch > should parse 51`] = `
+[
+  {
+    "operator": "and",
+    "type": "logical",
+    "value": [
+      {
+        "type": "not",
+        "value": {
+          "type": "parentheses",
+          "value": [
+            {
+              "negative": false,
+              "type": "keyword",
+              "value": "A",
+            },
+            {
+              "negative": false,
+              "type": "keyword",
+              "value": "B",
+            },
+          ],
+        },
+      },
+      {
+        "type": "parentheses",
+        "value": [
+          {
+            "operator": "and",
+            "type": "logical",
+            "value": [
+              {
+                "field": "a",
+                "operator": "has",
+                "type": "compare",
+                "value": {
+                  "type": "literal",
+                  "value": "ok",
+                },
+              },
+              {
+                "field": "size",
+                "operator": "gt",
+                "type": "compare",
+                "value": {
+                  "type": "literal",
+                  "value": 1,
+                },
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+]
+`;
+
+exports[`AdvanceSearch > should parse 52`] = `"NOT -a"`;
+
+exports[`AdvanceSearch > should parse 53`] = `"a"`;
+
+exports[`AdvanceSearch > should parse 54`] = `
+[
+  {
+    "type": "not",
+    "value": {
+      "negative": true,
+      "type": "keyword",
+      "value": "a",
+    },
+  },
+]
+`;
+
+exports[`AdvanceSearch > should parse 55`] = `"NOT (NOT -a)"`;
+
+exports[`AdvanceSearch > should parse 56`] = `"-a"`;
+
+exports[`AdvanceSearch > should parse 57`] = `
+[
+  {
+    "type": "not",
+    "value": {
+      "type": "parentheses",
+      "value": [
+        {
+          "type": "not",
+          "value": {
+            "negative": true,
+            "type": "keyword",
+            "value": "a",
+          },
+        },
+      ],
+    },
+  },
+]
+`;
+
+exports[`AdvanceSearch > should parse 58`] = `"owner:=@me owner:=@me owner:!=@me"`;
+
+exports[`AdvanceSearch > should parse 59`] = `"owner:=@me owner:=@me owner:!=@me"`;
+
+exports[`AdvanceSearch > should parse 60`] = `
+[
+  {
+    "field": "owner",
+    "operator": "eq",
+    "type": "compare",
+    "value": {
+      "format": "mention",
+      "value": "me",
+    },
+  },
+  {
+    "field": "owner",
+    "operator": "eq",
+    "type": "compare",
+    "value": {
+      "format": "mention",
+      "value": "me",
+    },
+  },
+  {
+    "field": "owner",
+    "operator": "ne",
+    "type": "compare",
+    "value": {
+      "format": "mention",
+      "value": "me",
+    },
+  },
+]
+`;
+
+exports[`AdvanceSearch > should parse 61`] = `"@AI:"Where is my car""`;
+
+exports[`AdvanceSearch > should parse 62`] = `"@AI:"Where is my car""`;
+
+exports[`AdvanceSearch > should parse 63`] = `
+[
+  {
+    "field": "AI",
+    "mention": true,
+    "operator": "has",
+    "type": "compare",
+    "value": {
+      "value": "Where is my car",
+    },
+  },
+]
+`;
+
+exports[`AdvanceSearch > should parse 64`] = `"/*  */ a"`;
+
+exports[`AdvanceSearch > should parse 65`] = `"a"`;
+
+exports[`AdvanceSearch > should parse 66`] = `
+[
+  {
+    "type": "comment",
+    "value": "",
+  },
+  {
+    "negative": false,
+    "type": "keyword",
+    "value": "a",
+  },
+]
+`;
+
+exports[`AdvanceSearch > should parse 67`] = `"/* Hint */ a"`;
+
+exports[`AdvanceSearch > should parse 68`] = `"/* Hint */ a"`;
+
+exports[`AdvanceSearch > should parse 69`] = `
+[
+  {
+    "type": "comment",
+    "value": "Hint",
+  },
+  {
+    "negative": false,
+    "type": "keyword",
+    "value": "a",
+  },
+]
+`;
+
+exports[`AdvanceSearch > should parse 70`] = `"/* a */ a /* b */"`;
+
+exports[`AdvanceSearch > should parse 71`] = `"/* a */ a /* b */"`;
+
+exports[`AdvanceSearch > should parse 72`] = `
+[
+  {
+    "type": "comment",
+    "value": "a",
+  },
+  {
+    "negative": false,
+    "type": "keyword",
+    "value": "a",
+  },
+  {
+    "type": "comment",
+    "value": "b",
+  },
+]
+`;
