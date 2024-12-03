@@ -1,0 +1,185 @@
+syntax = "proto3";
+
+package wode.resource.dynamic.v1;
+
+import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
+import "wode/resource/protos.proto";
+
+message ImportResourceRequest {
+  string resource = 1;
+  repeated google.protobuf.Struct data = 2;
+  repeated string fields = 3;
+  optional bool returning = 4;
+  optional wode.resource.OnConflict on_conflict = 5;
+}
+
+message ImportResourceResponse {
+  repeated google.protobuf.Struct data = 1;
+  int32 total = 2;
+}
+
+message ExportResourceRequest {
+  string resource = 1;
+  repeated string fields = 2;
+  wode.resource.ListQuery query = 3;
+}
+
+message ExportResourceResponse {
+  repeated google.protobuf.Struct data = 1;
+  int32 total = 2;
+}
+
+message GetResourceSchemaRequest {
+  string resource = 1;
+}
+
+message GetResourceSchemaResponse {
+  google.protobuf.Struct schema = 1;
+}
+
+message GetResourceRequest {
+  optional string resource = 1;
+  string id = 2;
+}
+
+message GetResourceResponse {
+  google.protobuf.Struct data = 1;
+}
+
+message ResolveResourceRequest {
+  string resource = 1;
+  wode.resource.ResolveQuery query = 2;
+}
+
+message ResolveResourceResponse {
+  optional google.protobuf.Struct data = 1;
+}
+
+message ListResourceRequest {
+  string resource = 1;
+  wode.resource.ListQuery query = 2;
+}
+
+message ListResourceResponse {
+  repeated google.protobuf.Struct data = 1;
+  int32 total = 2;
+}
+
+message DeleteResourceRequest {
+  optional string resource = 1;
+  string id = 2;
+}
+
+message DeleteResourceResponse {
+  optional google.protobuf.Struct data = 1;
+}
+
+message UpdateResourceRequest {
+  optional string resource = 1;
+  string id = 2;
+  google.protobuf.Struct data = 3;
+  repeated string fields = 4;
+}
+
+message UpdateResourceResponse {
+  google.protobuf.Struct data = 1;
+}
+
+message CubeQuery {
+  string resource = 1;
+  repeated string dimensions = 2;
+  repeated string measures = 3;
+  string filter = 4;
+  repeated string filters = 5;
+  int32 limit = 6;
+  int32 offset = 7;
+  bool total = 8;
+  repeated string order = 9;
+  bool rollup = 10;
+  string separator = 11; // build _key
+}
+
+message ExecCubeQueryRequest {
+  CubeQuery query = 1;
+}
+
+message ExecCubeQueryResponse {
+  repeated google.protobuf.Struct data = 1;
+  int32 total = 2;
+  CubeQuery query = 3;
+}
+
+message WatchResourceRequest {
+  string resource = 1;
+  string id = 2;
+}
+
+message WatchResourceResponse {
+  google.protobuf.Struct data = 1;
+  google.protobuf.Timestamp timestamp = 2;
+}
+
+message CreateResourceRequest {
+  string resource = 1;
+  google.protobuf.Struct data = 2;
+  repeated string fields = 3;
+}
+
+message CreateResourceResponse {
+  google.protobuf.Struct data = 1;
+  optional wode.resource.OnConflict on_conflict = 5;
+}
+
+message UpdateResourceStatusRequest {
+  optional string resource = 1;
+  string id = 2;
+  optional string state = 3;
+  string status = 4;
+  string reason = 5;
+  optional string from_state = 6;
+  optional string from_status = 7;
+  optional google.protobuf.Struct metadata = 8;
+}
+
+message UpdateResourceStatusResponse {
+  google.protobuf.Struct data = 1;
+}
+
+message UpdateResourceTagsRequest {
+  optional string resource = 1;
+  string id = 2;
+  repeated string set = 3;
+  repeated string add = 4;
+  repeated string remove = 5;
+}
+
+message UpdateResourceTagsResponse {
+  google.protobuf.Struct data = 1;
+}
+
+message UpdateResourceNotesRequest {
+  optional string resource = 1;
+  string id = 2;
+  string notes = 3;
+}
+
+message UpdateResourceNotesResponse {
+  google.protobuf.Struct data = 1;
+}
+
+service DynamicResourceService {
+  rpc ImportResource(ImportResourceRequest) returns (ImportResourceResponse) {}
+  rpc ExportResource(ExportResourceRequest) returns (ExportResourceResponse) {}
+  rpc GetResourceSchema(GetResourceSchemaRequest) returns (GetResourceSchemaResponse) {}
+  rpc GetResource(GetResourceRequest) returns (GetResourceResponse) {}
+  rpc WatchResource(WatchResourceRequest) returns (WatchResourceResponse) {}
+  rpc ResolveResource(ResolveResourceRequest) returns (ResolveResourceResponse) {}
+  rpc ListResource(ListResourceRequest) returns (ListResourceResponse) {}
+  rpc DeleteResource(DeleteResourceRequest) returns (DeleteResourceResponse) {}
+  rpc UpdateResource(UpdateResourceRequest) returns (UpdateResourceResponse) {}
+  rpc UpdateResourceStatus(UpdateResourceStatusRequest) returns (UpdateResourceStatusResponse) {}
+  rpc UpdateResourceTags(UpdateResourceTagsRequest) returns (UpdateResourceTagsResponse) {}
+  rpc UpdateResourceNotes(UpdateResourceNotesRequest) returns (UpdateResourceNotesResponse) {}
+  rpc ExecCubeQuery(ExecCubeQueryRequest) returns (ExecCubeQueryResponse) {}
+}

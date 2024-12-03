@@ -1,12 +1,13 @@
 {
   "name": "@wener/common",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "description": "",
   "author": "",
   "license": "MIT",
   "exports": {
     ".": "./src/index.ts",
+    "./jsonschema": "./src/jsonschema/index.ts",
     "./meta": "./src/meta/index.ts",
     "./password": "./src/password/index.ts",
     "./package.json": "./package.json"
@@ -22,16 +23,43 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@wener/utils": "^1.1.51",
-    "es-toolkit": "^1.26.1"
+    "@wener/utils": "workspace:*",
+    "es-toolkit": "^1.27.0",
+    "ts-pattern": "^5.5.0"
   },
   "devDependencies": {
+    "@sinclair/typebox": "^0.34.9",
     "@types/argon2-browser": "^1.18.4",
     "@types/bcrypt": "^5.0.2",
     "@types/bcryptjs": "^2.4.6",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "ajv-i18n": "^4.2.0",
+    "ajv-keywords": "^5.1.0",
     "argon2": "^0.41.1",
     "argon2-browser": "^1.18.0",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3"
+  },
+  "publishConfig": {
+    "exports": {
+      ".": {
+        "types": "./src/index.ts",
+        "default": "./lib/index.js"
+      },
+      "./jsonschema": {
+        "types": "./src/jsonschema/index.ts",
+        "default": "./lib/jsonschema/index.js"
+      },
+      "./meta": {
+        "types": "./src/meta/index.ts",
+        "default": "./lib/meta/index.js"
+      },
+      "./password": {
+        "types": "./src/password/index.ts",
+        "default": "./lib/password/index.js"
+      },
+      "./package.json": "./package.json"
+    }
   }
 }

@@ -11,8 +11,18 @@ export { resolveSearch } from './resolveSearch';
 export { applyQueryFilter } from './applyQueryFilter';
 export { applyListQuery } from './applyListQuery';
 export { applyResolveQuery } from './applyResolveQuery';
-export { parseOrder, type OrderRule } from './parseOrder';
+
+export {
+  /**
+   * @deprecated
+   */
+  parseOrder,
+  type OrderRule,
+} from './parseOrder';
 export { toKnexOrder } from './toKnexOrder';
+/**
+ * @deprecated
+ */
 export { normalizePagination } from './normalizePagination';
 export { hasEntityFeature } from './hasEntityFeature';
 

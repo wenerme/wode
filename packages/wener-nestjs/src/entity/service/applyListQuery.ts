@@ -1,7 +1,6 @@
 import { QueryOrder } from '@mikro-orm/core';
 import type { QueryBuilder } from '@mikro-orm/postgresql';
-import { normalizePagination } from './normalizePagination';
-import { parseOrder } from './parseOrder';
+import { normalizePagination, parseSort } from '@wener/common';
 import { toKnexOrder } from './toKnexOrder';
 import type { ListEntityRequest } from './types';
 
@@ -17,7 +16,7 @@ export function applyListQuery<T extends QueryBuilder<any>>({
     builder.limit(limit || 20).offset(offset);
   }
 
-  const order = parseOrder(query.order);
+  const order = parseSort(query.order);
   if (order.length > 0) {
     builder.orderBy(toKnexOrder(order));
   } else {

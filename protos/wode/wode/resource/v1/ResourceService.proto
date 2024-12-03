@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+package wode.resource.v1;
+
+import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
+import "wode/resource/protos.proto";
+
+message ResourceServiceGetRequest {
+  string id = 1;
+}
+
+message ResourceServiceGetResponse {
+  ResourceProto data = 1;
+}
+
+message ResourceServiceListRequest {
+  ListQuery query = 1;
+}
+
+message ResourceServiceListResponse {
+  repeated ResourceProto data = 1;
+  int32 total = 2;
+}
+
+message ResourceServiceDeleteRequest {
+  string id = 1;
+}
+
+message ResourceServiceDeleteResponse {
+  optional ResourceProto data = 1;
+}
+
+message ResourceServiceCreateRequest {
+  ResourceProto data = 1;
+}
+
+message ResourceServiceCreateResponse {
+  ResourceProto data = 1;
+}
+message ResourceServiceUpdateRequest {
+  ResourceProto data = 1;
+  repeated string fields = 2;
+}
+message ResourceServiceUpdateResponse {
+  ResourceProto data = 1;
+}
+
+service ResourceService {
+  rpc Get(ResourceServiceGetRequest) returns (ResourceServiceGetResponse) {}
+  rpc List(ResourceServiceListRequest) returns (ResourceServiceListResponse) {}
+  rpc Delete(ResourceServiceDeleteRequest) returns (ResourceServiceDeleteResponse) {}
+  rpc Create(ResourceServiceCreateRequest) returns (ResourceServiceCreateResponse) {}
+  rpc Update(ResourceServiceUpdateRequest) returns (ResourceServiceUpdateResponse) {}
+}

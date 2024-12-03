@@ -22,6 +22,7 @@
     "removeComments": false,
     "stripInternal": true,
     "isolatedModules": true,
+    "jsx": "react-jsx",
     "outDir": "lib",
     "baseUrl": ".",
     "rootDir": "./src"
@@ -30,7 +31,6 @@
     "node_modules"
   ],
   "include": [
-    "src/types.d.ts",
     "src"
   ]
 }

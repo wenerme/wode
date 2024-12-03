@@ -2,7 +2,7 @@ syntax = "proto3";
 package wener.wode.storage.bin.v1;
 
 import "google/protobuf/timestamp.proto";
-import "wode/resource/v1/ListQuery.proto";
+import "wode/resource/protos.proto";
 
 service WodeBinService {
   // 存储内容，返回生成的 key

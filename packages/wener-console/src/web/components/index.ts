@@ -1,7 +1,7 @@
 export { ErrorSuspenseBoundary } from './ErrorSuspenseBoundary';
 export { UpdateNotification } from './UpdateNotification';
 export { OverlayScrollbar } from './OverlayScrollbar';
-export { HeaderContentFooterLayout } from './HeaderContentFooterLayout';
+export { HeaderContentFooterLayout } from '../../components/HeaderContentFooterLayout';
 export { LeftContentRightLayout } from './LeftContentRightLayout';
 export { Image, type ImageProps } from './Image';
 export { Link, type LinkProps } from './Link';

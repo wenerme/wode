@@ -1,11 +1,10 @@
 import { QueryOrder, type EntityClass, type FilterQuery, type QBFilterQuery } from '@mikro-orm/core';
 import type { QueryBuilder } from '@mikro-orm/postgresql';
+import { normalizePagination, parseSort } from '@wener/common';
 import { toMikroOrmQuery } from '@wener/miniquery/mikro-orm';
 import { Errors, type MaybePromise } from '@wener/utils';
 import type { StandardBaseEntity } from '../StandardBaseEntity';
 import { resolveEntitySearch } from './applySearch';
-import { normalizePagination } from './normalizePagination';
-import { parseOrder } from './parseOrder';
 import { resolveEntityContext, type ResolveEntityContextOptions } from './resolveEntityContext';
 import { toKnexOrder } from './toKnexOrder';
 
@@ -79,7 +78,7 @@ export async function findAllEntity<E extends StandardBaseEntity>(
   // order
   {
     const { order } = opts;
-    const orderRules = parseOrder(order);
+    const orderRules = parseSort(order);
     if (orderRules.length > 0) {
       builder.orderBy(toKnexOrder(orderRules));
     } else {
