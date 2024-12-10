@@ -1,6 +1,6 @@
 import React, { useEffect, type PropsWithChildren } from 'react';
 import type { Decorator, Preview } from '@storybook/react';
-import { getSupportedThemes, useThemeState } from '../src/daisy';
+import { DaisyTheme, getSupportedThemes } from '../src/daisy';
 import '@/console/globals.css';
 import { StaticRootReactor } from '../src/console';
 
@@ -28,10 +28,9 @@ const preview: Preview = {
 };
 
 const withThemeProvider: Decorator = (Story: any, context: any) => {
-  let state = useThemeState();
-  // const log = useDebugRender('withThemeProvider', context.globals);
+  const [, update] = DaisyTheme.useThemeState();
   useEffect(() => {
-    state.theme = context.globals.theme;
+    update({ theme: context.globals.theme });
   }, [context.globals.theme]);
   return (
     <>

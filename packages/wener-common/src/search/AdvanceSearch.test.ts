@@ -73,8 +73,8 @@ describe('AdvanceSearch', () => {
       ],
       ['"Hello"', [{ type: 'keyword', value: 'Hello', exact: true }]],
       ['-"Hello"', [{ type: 'keyword', value: 'Hello', exact: true, negative: true }]],
-      ['is:ok', [{ type: 'compare', field: 'is', operator: 'has', value: { value: 'ok' } }]],
-      ['-is:ok', [{ type: 'compare', field: 'is', negative: true, operator: 'has', value: { value: 'ok' } }]],
+      ['is:ok', [{ type: 'compare', field: 'is', operator: 'match', value: { value: 'ok' } }]],
+      ['-is:ok', [{ type: 'compare', field: 'is', negative: true, operator: 'match', value: { value: 'ok' } }]],
     ];
 
     for (const [input, expected] of cases) {

@@ -3,7 +3,7 @@ import { AdvanceSearch } from './AdvanceSearch';
 
 export function formatAdvanceSearch(input: AdvanceSearch.Expr[]) {
   const OP = {
-    has: ':',
+    match: ':',
     eq: ':=',
     ne: ':!=',
     gt: ':>',

@@ -49,27 +49,26 @@
     "test": "make test"
   },
   "dependencies": {
-    "@wener/utils": "^1.1.51",
-    "zod": "^3.23.8"
+    "@wener/utils": "workspace:^1.1.51",
+    "zod": "^3.24.0"
   },
   "devDependencies": {
     "@alicloud/openapi-client": "^0.4.12",
-    "@sinclair/typebox": "^0.33.22",
-    "@types/bun": "^1.1.13",
-    "@types/cookie": "^0.6.0",
+    "@sinclair/typebox": "^0.34.11",
+    "@types/bun": "^1.1.14",
     "@types/crypto-js": "^4.2.2",
     "@types/node-rsa": "^1.1.4",
-    "@wecom/jssdk": "^1.4.5",
+    "@wecom/jssdk": "^2.2.4",
     "cookie": "^1.0.2",
     "crypto-js": "^4.2.0",
     "dayjs": "^1.11.13",
     "fast-xml-parser": "^4.5.0",
     "node-rsa": "^1.1.1",
-    "openai": "^4.73.0",
-    "puppeteer": "^23.9.0",
-    "puppeteer-core": "^23.9.0",
+    "openai": "^4.76.1",
+    "puppeteer": "^23.10.2",
+    "puppeteer-core": "^23.10.2",
     "ts-pattern": "^5.5.0",
-    "undici": "^6.21.0",
+    "undici": "^7.1.0",
     "ws": "^8.18.0"
   },
   "publishConfig": {

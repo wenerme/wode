@@ -35,6 +35,7 @@ test('parseSort', () => {
     ['a nulls first', [{ field: 'a', order: 'asc', nulls: 'first' }]],
     ['-a nulls first', [{ field: 'a', order: 'desc', nulls: 'first' }]],
     ['a.b', [{ field: 'a.b', order: 'asc' }]],
+    ['-a asc', [{ field: 'a', order: 'asc' }]], // asc 优先级高
   ]) {
     assert.deepEqual(parseSort(o as any), e as any, `parseOrder: ${JSON.stringify(o)}`);
   }

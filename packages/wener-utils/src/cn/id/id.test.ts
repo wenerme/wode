@@ -7,7 +7,7 @@ test('id', (t) => {
 
   let cs = Mod11;
   for (const id of ids) {
-    assert.equal(cs.generate(id.slice(0, -1)), id.at(-1));
+    assert.equal(cs.compute(id.slice(0, -1)), id.at(-1));
   }
 
   let parse = ResidentIdNumber.parse(ids[0]);

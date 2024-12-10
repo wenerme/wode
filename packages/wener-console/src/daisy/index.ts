@@ -8,16 +8,6 @@ export { Pagination } from './Pagination/Pagination';
 export { PageSizeSelect } from './PageSizeSelect/PageSizeSelect';
 export { GotoPageInput } from './GotoPageInput/GotoPageInput';
 
-export {
-  ThemeSelectorButton,
-  ThemeListSelector,
-  DaisyThemeDemo,
-  useThemeState,
-  getSupportedThemes,
-  ThemeProvider,
-  ThemeStateReactor,
-  useThemeSchema,
-  DaisyTheme,
-} from './theme';
+export { ThemeSelectorButton, ThemeListSelector, DaisyThemeDemo, getSupportedThemes, DaisyTheme } from './theme';
 
 export { Daisy } from './Daisy';

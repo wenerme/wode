@@ -288,7 +288,7 @@ exports[`AdvanceSearch > should parse 48`] = `
 [
   {
     "field": "a",
-    "operator": "has",
+    "operator": "match",
     "type": "compare",
     "value": {
       "type": "literal",
@@ -495,7 +495,7 @@ exports[`AdvanceSearch > should parse 51`] = `
             "value": [
               {
                 "field": "a",
-                "operator": "has",
+                "operator": "match",
                 "type": "compare",
                 "value": {
                   "type": "literal",
@@ -607,7 +607,7 @@ exports[`AdvanceSearch > should parse 63`] = `
   {
     "field": "AI",
     "mention": true,
-    "operator": "has",
+    "operator": "match",
     "type": "compare",
     "value": {
       "value": "Where is my car",

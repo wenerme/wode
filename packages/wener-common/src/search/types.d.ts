@@ -42,7 +42,7 @@ export type CompareCondition = {
    * mention value for eq, ne only
    * range require range value
    */
-  operator: 'eq' | 'ne' | 'gt' | 'lt' | 'gte' | 'lte' | 'range' | 'has';
+  operator: 'eq' | 'ne' | 'gt' | 'lt' | 'gte' | 'lte' | 'range' | 'match';
   negative?: boolean;
   mention?: boolean;
   value: Value;

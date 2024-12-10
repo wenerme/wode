@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
 import type { Decorator, Preview } from '@storybook/react';
-import { getSupportedThemes, useThemeState } from '@wener/console/daisy';
-import '@/web/globals.css';
+import { DaisyTheme, getSupportedThemes } from '@wener/console/daisy';
+import '@/console/globals.css';
+import { DayJSInit } from '@/console/base.init';
+import { RootContext } from '@/console/RootContext';
 
 // polyfills
 if (!globalThis.process) {
@@ -23,15 +25,15 @@ const preview: Preview = {
 };
 
 const withThemeProvider: Decorator = (Story: any, context: any) => {
-  let state = useThemeState();
-  // const log = useDebugRender('withThemeProvider', context.globals);
+  const [, update] = DaisyTheme.useThemeState();
   useEffect(() => {
-    state.theme = context.globals.theme;
+    update({ theme: context.globals.theme });
   }, [context.globals.theme]);
   return (
-    <>
+    <RootContext init={[DayJSInit]}>
+      <DaisyTheme.Sidecar />
       <Story {...context} />
-    </>
+    </RootContext>
   );
 };
 

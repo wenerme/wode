@@ -1,6 +1,5 @@
 import process from 'node:process';
 import react from '@vitejs/plugin-react-swc';
-// import react from '@vitejs/plugin-react';
 import { defineConfig, loadEnv, type PluginOption } from 'vite';
 
 // https://vitejs.dev/config/
@@ -15,6 +14,7 @@ export default ({ mode }: { mode: string }) => {
       //   auto: true
       // }),
       react(),
+      // not worth it
       // react({
       //   plugins: [
       //     ['@graphql-codegen/client-preset-swc-plugin', { artifactDirectory: './src/gql', gqlTagName: 'graphql' }],
@@ -39,7 +39,7 @@ export default ({ mode }: { mode: string }) => {
       },
     },
     build: {
-      sourcemap: false, // 在没有合适的 auth 前提下，关闭 sourcemap
+      sourcemap: false,
       rollupOptions: {
         onwarn(warning, defaultHandler) {
           // https://github.com/vitejs/vite/issues/15012

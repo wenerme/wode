@@ -26,26 +26,26 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@sinclair/typebox": "^0.33.22",
+    "@sinclair/typebox": "^0.34.11",
     "@types/json-schema": "^7.0.15",
-    "@wener/utils":"workspace:*",
+    "@wener/utils": "workspace:*",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",
     "ajv-i18n": "^4.2.0",
     "ajv-keywords": "^5.1.0",
-    "es-toolkit": "^1.27.0",
-    "execa": "^9.5.1",
+    "es-toolkit": "^1.29.0",
+    "execa": "^9.5.2",
     "fs-extra": "^11.2.0",
     "lru-cache": "^11.0.2",
     "semver": "^7.6.3",
     "tar": "^7.4.3",
     "ts-pattern": "^5.5.0",
-    "zod": "^3.23.8",
-    "zx": "^8.2.2"
+    "zod": "^3.24.0",
+    "zx": "^8.2.4"
   },
   "devDependencies": {
-    "@bufbuild/protobuf": "^2.2.2",
-    "@connectrpc/connect": "rc",
+    "@bufbuild/protobuf": "^2.2.3",
+    "@connectrpc/connect": "^2.0.0",
     "@sinclair/typebox-codegen": "^0.10.5",
     "@types/semver": "^7.5.8",
     "@types/tar": "^6.1.13"

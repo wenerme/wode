@@ -106,13 +106,13 @@ class IdNumber {
    * @private
    */
   private get base() {
-    return [this.division, formatDate(this.birthDate, 'YYYYMMDD'), this.sequence.toString().padStart(3, '0')].join('');
+    return [this.division, formatDate(this.birthDate, 'yyyyMMDD'), this.sequence.toString().padStart(3, '0')].join('');
   }
 }
 
-function formatDate(date: Date, format = 'YYYYMMDD') {
+export function formatDate(date: Date, format: 'yyyyMMDD') {
   switch (format) {
-    case 'YYYYMMDD': {
+    case 'yyyyMMDD': {
       const year = date.getFullYear();
       const month = (date.getMonth() + 1).toString().padStart(2, '0');
       const day = date.getDate().toString().padStart(2, '0');

@@ -1,15 +1,17 @@
 {
   "name": "@wener/common",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "type": "module",
   "description": "",
   "author": "",
   "license": "MIT",
   "exports": {
     ".": "./src/index.ts",
+    "./cn": "./src/cn/index.ts",
     "./jsonschema": "./src/jsonschema/index.ts",
     "./meta": "./src/meta/index.ts",
     "./password": "./src/password/index.ts",
+    "./search": "./src/search/index.ts",
     "./package.json": "./package.json"
   },
   "files": [
@@ -24,11 +26,11 @@
   },
   "dependencies": {
     "@wener/utils": "workspace:*",
-    "es-toolkit": "^1.27.0",
+    "es-toolkit": "^1.29.0",
     "ts-pattern": "^5.5.0"
   },
   "devDependencies": {
-    "@sinclair/typebox": "^0.34.9",
+    "@sinclair/typebox": "^0.34.11",
     "@types/argon2-browser": "^1.18.4",
     "@types/bcrypt": "^5.0.2",
     "@types/bcryptjs": "^2.4.6",
@@ -47,6 +49,10 @@
         "types": "./src/index.ts",
         "default": "./lib/index.js"
       },
+      "./cn": {
+        "types": "./src/cn/index.ts",
+        "default": "./lib/cn/index.js"
+      },
       "./jsonschema": {
         "types": "./src/jsonschema/index.ts",
         "default": "./lib/jsonschema/index.js"
@@ -58,6 +64,10 @@
       "./password": {
         "types": "./src/password/index.ts",
         "default": "./lib/password/index.js"
+      },
+      "./search": {
+        "types": "./src/search/index.ts",
+        "default": "./lib/search/index.js"
       },
       "./package.json": "./package.json"
     }
