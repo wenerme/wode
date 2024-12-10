@@ -1,15 +1,14 @@
 import React, { type FC, type HTMLAttributes } from 'react';
 import classNames from 'clsx';
-import { useSnapshot } from 'valtio';
+import { DaisyTheme } from './DaisyTheme';
 import { getSupportedThemes } from './getSupportedThemes';
 import { ThemePreviewCard } from './ThemePreviewCard';
-import { useThemeState } from './useTheme';
 
 export const ThemeListSelector: FC<HTMLAttributes<HTMLDivElement>> = ({ className, style, ...props }) => {
-  const state = useThemeState();
-  const { theme } = useSnapshot(state);
+  const [state, update] = DaisyTheme.useThemeState();
+  const { theme } = state;
   const setTheme = (v: string) => {
-    state.theme = v;
+    update({ theme: v });
   };
 
   return (

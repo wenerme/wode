@@ -23,10 +23,10 @@ export class Mod31Checksum {
   }
 
   validate(s: string) {
-    return s.at(-1) === this.generate(s.slice(0, s.length - 1));
+    return s.at(-1) === this.compute(s.slice(0, s.length - 1));
   }
 
-  generate(s: string) {
+  compute(s: string) {
     let sum = 0;
     for (let i = 0; i < s.length; i++) {
       sum += this.numbers[s[i]] * this.weights[i];

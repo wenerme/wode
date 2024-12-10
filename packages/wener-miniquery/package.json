@@ -29,9 +29,9 @@
     "@wener/utils": "workspace:^"
   },
   "devDependencies": {
-    "@mikro-orm/core": "^6.4.0",
-    "@mikro-orm/sqlite": "^6.4.0",
-    "@sequelize/core": "7.0.0-alpha.37",
+    "@mikro-orm/core": "^6.4.1",
+    "@mikro-orm/sqlite": "^6.4.1",
+    "@sequelize/core": "7.0.0-alpha.43",
     "ohm-js": "^17.1.0"
   },
   "publishConfig": {

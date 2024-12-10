@@ -3,17 +3,17 @@ import { HiChevronDown, HiColorSwatch } from 'react-icons/hi';
 import { MdSettings } from 'react-icons/md';
 import { Listbox, Transition } from '@headlessui/react';
 import classNames from 'clsx';
-import { useSnapshot } from 'valtio';
+import { DaisyTheme } from './DaisyTheme';
 import { getSupportedThemes } from './getSupportedThemes';
 import { ThemePreviewCard } from './ThemePreviewCard';
-import { useThemeState } from './useTheme';
 
 export const ThemeSelectorButton = () => {
-  const state = useThemeState();
-  const { theme } = useSnapshot(state);
+  const [state, update] = DaisyTheme.useThemeState();
+  const { theme } = state;
   const setTheme = (v: string) => {
-    state.theme = v;
+    update({ theme: v });
   };
+
   return (
     <Listbox value={theme} onChange={setTheme} as='div' className='relative inline-block text-left'>
       <Listbox.Button

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useState, type FC, type HTMLProps } from 'react';
+import React, { useContext, useEffect, useState, type FC, type HTMLProps } from 'react';
 import { HiChevronDoubleLeft, HiChevronDoubleRight, HiXMark } from 'react-icons/hi2';
 import {
   PiArrowClockwise,
@@ -11,11 +11,12 @@ import {
   PiDownloadSimple,
 } from 'react-icons/pi';
 import { TbTextRecognition } from 'react-icons/tb';
-import { useAbortController } from '@wener/reaction';
+import { createReactContext, useAbortController } from '@wener/reaction';
 import { copy, download, formatBytes, getGlobalThis, loadScripts } from '@wener/utils';
 import clsx from 'clsx';
 import { createStore, useStore } from 'zustand';
 import { mutative } from 'zustand-mutative';
+import { useShallow } from 'zustand/react/shallow';
 import { showErrorToast, showSuccessToast } from '../../../toast';
 
 interface ImagePreviewState {
@@ -54,7 +55,7 @@ export interface ImagePreviewProps {
   onOpenChange?: (show: boolean) => void;
 }
 
-const Context = createContext(createImagePreviewStore());
+const Context = createReactContext('ImagePreviewStoreContext', createImagePreviewStore());
 
 export function useImagePreviewStore() {
   return useContext(Context);
@@ -124,7 +125,10 @@ export const ImagePreview: FC<ImagePreviewProps> = ({ onOpenChange, info, src })
 
 const _Image = () => {
   const { store } = useImagePreviewContext();
-  const { rotate, enlarge, src } = useStore(store, ({ rotate, enlarge, src }) => ({ rotate, enlarge, src }));
+  const { rotate, enlarge, src } = useStore(
+    store,
+    useShallow(({ rotate, enlarge, src }) => ({ rotate, enlarge, src })),
+  );
   if (!src) {
     return <div>无图片</div>;
   }
@@ -158,7 +162,10 @@ const _Image = () => {
 
 const Actions = () => {
   let { store } = useImagePreviewContext();
-  let { enlarge, src } = useStore(store, ({ enlarge, src }) => ({ enlarge, src }));
+  let { enlarge, src } = useStore(
+    store,
+    useShallow(({ enlarge, src }) => ({ enlarge, src })),
+  );
   return (
     <div className={'flex gap-2'}>
       <FuncButton

@@ -1,16 +1,14 @@
 'use client';
 
 import React from 'react';
-import { useSnapshot } from 'valtio';
-import { DaisyThemeDemo, ThemeListSelector, useThemeState } from '../../../daisy';
+import { DaisyTheme, DaisyThemeDemo, ThemeListSelector } from '../../../daisy';
 import { SettingLayout } from '../../../web';
 import { getPrefersColorSchema } from '../../../web/utils';
 
 export const AppearanceSettingPage = () => {
-  const state = useThemeState();
-  const { theme } = useSnapshot(state);
+  const [{ theme }, update] = DaisyTheme.useThemeState();
   const setTheme = (v: string) => {
-    state.theme = v;
+    update({ theme: v });
   };
   return (
     <SettingLayout

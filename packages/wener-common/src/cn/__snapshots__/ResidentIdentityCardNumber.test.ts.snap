@@ -1,0 +1,15 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ResidentIdentityCardNumber > should parse 1`] = `
+{
+  "age": 75,
+  "birthDate": "19491231",
+  "checksum": "X",
+  "division": "110105",
+  "female": true,
+  "male": false,
+  "sequence": 2,
+  "sex": "Female",
+  "valid": true,
+}
+`;

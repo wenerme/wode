@@ -47,7 +47,8 @@ export { ClientOnly } from './components/ClientOnly';
 export { flexRender, type FlexRenderable } from './render/flexRender';
 export { renderAlternative, type AlternativeRendererProps } from './render/renderAlternative';
 export { isReactComponent } from './render/isReactComponent';
+export { FlexRenderer, type FlexRendererProps } from './render/FlexRenderer';
+
 export { mergeRefs } from './utils/mergeRefs';
 export { mergeProps } from './utils/mergeProps';
-export { FlexRenderer } from './render/FlexRenderer';
-export { FlexRendererProps } from './render/FlexRenderer';
+export { createReactContext } from './utils/createReactContext';

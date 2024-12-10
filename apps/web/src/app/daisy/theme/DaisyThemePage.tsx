@@ -2,14 +2,16 @@
 
 import React from 'react';
 import { getPrefersColorSchema } from '@wener/console';
-import { DaisyThemeDemo, ThemeListSelector, useThemeState } from '@wener/console/daisy';
-import { useSnapshot } from 'valtio';
+import { DaisyTheme, DaisyThemeDemo, ThemeListSelector } from '@wener/console/daisy';
+import { useStore } from 'zustand';
 
 export const DaisyThemePage = () => {
-  const state = useThemeState();
-  const { theme } = useSnapshot(state);
+  const store = DaisyTheme.useThemeStore();
+  const theme = useStore(store, (s) => {
+    return s.theme;
+  });
   const setTheme = (v: string) => {
-    state.theme = v;
+    store.setState({ theme: v });
   };
   return (
     <div>

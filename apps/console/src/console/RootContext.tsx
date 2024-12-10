@@ -3,7 +3,7 @@
 import React, { type PropsWithChildren } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { LoadingIndicator } from '@wener/console/console';
-import { ThemeStateReactor } from '@wener/console/daisy';
+import { DaisyTheme } from '@wener/console/daisy';
 import { useExposeDebug } from '@wener/console/hooks';
 import dayjs from 'dayjs';
 import type { InitDef } from '@/utils/init/defineInit';
@@ -20,7 +20,7 @@ export const RootContext: React.FC<PropsWithChildren & { init?: Array<InitDef> }
   return (
     <>
       <Toaster />
-      <ThemeStateReactor />
+      <DaisyTheme.Sidecar />
       {children}
     </>
   );

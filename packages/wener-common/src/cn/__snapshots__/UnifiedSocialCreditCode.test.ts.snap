@@ -1,0 +1,41 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`UnifiedSocialCreditCode > should parse 1`] = `
+{
+  "bureau": "9",
+  "checksum": "P",
+  "codes": [
+    "9",
+    "1",
+    "330106",
+    "673959654",
+  ],
+  "division": "330106",
+  "labels": [
+    "工商",
+    "企业",
+  ],
+  "subject": "673959654",
+  "subjectType": "1",
+}
+`;
+
+exports[`UnifiedSocialCreditCode > should parse 2`] = `
+{
+  "bureau": "9",
+  "checksum": "R",
+  "codes": [
+    "9",
+    "1",
+    "330106",
+    "MA2CFLDG4",
+  ],
+  "division": "330106",
+  "labels": [
+    "工商",
+    "企业",
+  ],
+  "subject": "MA2CFLDG4",
+  "subjectType": "1",
+}
+`;

@@ -50,3 +50,22 @@ pnpm add overlayscrollbars overlayscrollbars-react tailwind-merge clsx
   }
 }
 ```
+
+## Layer
+
+- body
+  - WindowHost isolate
+    - Window
+  - id=root isolate
+    - Theme
+    - Component Provider
+      - Instance Context
+        - SiteLoader
+          - AuthSidecar
+          - AuthReady
+            - AuthBlock
+              - ConsoleApp
+                - UserLoader
+                  - RouteContent
+                    - ConsoleLayout
+                      - DockLayout

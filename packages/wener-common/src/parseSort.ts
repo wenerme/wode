@@ -113,3 +113,21 @@ function _parse(v: string) {
     nulls,
   };
 }
+
+export function formatSort(s: SortRule[]): string[] {
+  return s
+    .map(({ field, order, nulls }) => {
+      if (field) {
+        let r = field;
+        if (order) {
+          r += ` ${order}`;
+        }
+        if (nulls) {
+          r += ` nulls ${nulls}`;
+        }
+        return r;
+      }
+      return '';
+    })
+    .filter(Boolean);
+}

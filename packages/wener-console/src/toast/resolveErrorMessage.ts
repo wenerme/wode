@@ -5,37 +5,63 @@ export function resolveErrorMessage(error: Error | any) {
     return;
   }
 
-  if (error instanceof Error) {
-    try {
-      if (isZodError(error)) {
-        return error.issues.map((v) => `${v.path.join('.')}: ${v.message}`).join(';');
-      }
-      if (isTypeBoxError(error)) {
-        const { path, type, message } = error.error;
-        return `${path}: ${message} (${type})`;
-      }
-      if (URQLError.is(error)) {
-        return error.response.errors.map((v: any) => v.message).join(';');
-      }
-      if (GraphQLClientError.is(error)) {
-        if (!error.response.errors) {
-          let status = error.response.status;
-          let text = getHttpStatusText(status);
-          return `${status} ${text}`;
-        }
-      }
+  if (!(error instanceof Error)) {
+    return String(error);
+  }
 
-      if (typeof error === 'object' && 'message' in error) {
-        return error.message;
-      }
-    } catch (e) {
-      console.error('resolveErrorMessage', e);
+  try {
+    if (isZodError(error)) {
+      return error.issues.map((v) => `${v.path.join('.')}: ${v.message}`).join(';');
     }
+    if (isTypeBoxError(error)) {
+      const { path, type, message } = error.error;
+      return `${path}: ${message} (${type})`;
+    }
+    if (URQLError.is(error)) {
+      return error.response.errors.map((v: any) => v.message).join(';');
+    }
+
+    const buildGraphQLError = (errors: GraphQLError[] = []) => {
+      return errors
+        .map((v) => {
+          return `${v.message}`;
+        })
+        .join(';');
+    };
+
+    const buildGraphQLResponseError = ({
+      response,
+    }: {
+      response: {
+        status: number;
+        errors?: GraphQLError[];
+      };
+    }) => {
+      let s = [''];
+      let status = response.status;
+      if (status !== 200) {
+        s.push(`${status} ${getHttpStatusText(status)}`);
+      }
+      if (response.errors) {
+        s.push(buildGraphQLError(response.errors));
+      }
+      return s.join(' ');
+    };
+
+    if (GraphQL.isClientError(error)) {
+      return buildGraphQLResponseError(error);
+    }
+
+    if (typeof error === 'object' && 'message' in error) {
+      return error.message;
+    }
+  } catch (e) {
+    console.error('resolveErrorMessage', e);
   }
   return String(error);
 }
 
-namespace GraphQLClientError {
+namespace GraphQL {
   interface GraphQLResponse<T = unknown> {
     data?: T;
     errors?: GraphQLError[];
@@ -56,14 +82,15 @@ namespace GraphQLClientError {
     request: GraphQLRequestContext;
   };
 
-  // graphql-client _ClientError
-  // https://github.com/graffle-js/graffle/blob/graphql-request/src/legacy/classes/ClientError.ts
-  export function is(error: any): error is ClientError {
+  export function isClientError(error: any): error is ClientError {
+    // graphql-client _ClientError
+    // https://github.com/graffle-js/graffle/blob/graphql-request/src/legacy/classes/ClientError.ts
     return (
       typeof error.response === 'object' &&
       typeof error.request === 'object' &&
       typeof error.response.status === 'number' &&
-      typeof error.request.query === 'string'
+      typeof error.request.query === 'string' &&
+      (error.response.errors === undefined || error.response.errors === null || Array.isArray(error.response.errors))
     );
   }
 }

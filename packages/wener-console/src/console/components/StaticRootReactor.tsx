@@ -10,7 +10,7 @@ import isToday from 'dayjs/plugin/isToday';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
-import { ThemeStateReactor } from '../../daisy';
+import { DaisyTheme } from '../../daisy';
 import { useExposeDebug } from '../../hooks';
 
 let init = false;
@@ -25,7 +25,7 @@ export const StaticRootReactor: FC<PropsWithChildren> = () => {
   return (
     <>
       <Toaster />
-      <ThemeStateReactor />
+      <DaisyTheme.Sidecar />
     </>
   );
 };

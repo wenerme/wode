@@ -1,7 +1,7 @@
 import process from 'node:process';
 import react from '@vitejs/plugin-react';
-import { defineConfig, loadEnv, type PluginOption } from 'vite';
-import 'vitest';
+import { loadEnv, type PluginOption } from 'vite';
+import { defineConfig } from 'vitest/config';
 
 // https://vitejs.dev/config/
 export default ({ mode }: { mode: string }) => {
