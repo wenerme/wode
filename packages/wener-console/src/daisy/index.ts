@@ -8,6 +8,12 @@ export { Pagination } from './Pagination/Pagination';
 export { PageSizeSelect } from './PageSizeSelect/PageSizeSelect';
 export { GotoPageInput } from './GotoPageInput/GotoPageInput';
 
-export { ThemeSelectorButton, ThemeListSelector, DaisyThemeDemo, getSupportedThemes, DaisyTheme } from './theme';
+export { ThemeSelectorButton, ThemeListSelector, DaisyThemeDemo, getSupportedThemes } from './theme';
 
 export { Daisy } from './Daisy';
+
+export { DaisyCollapsible } from './DaisyCollapsible';
+export { DaisyDrawer } from './DaisyDrawer';
+export { DaisyDropdownMenu } from './DaisyDropdownMenu';
+export { DaisyTabs } from './DaisyTabs';
+export { DaisyTheme } from './theme';

@@ -133,19 +133,11 @@ export namespace FunctionButton {
   };
 
   export const BindCustomer = forwardRef<HTMLButtonElement, ButtonProps>(({ children, className, ...props }, ref) => {
-    return (
-      <Button {...props} className={cn(!children && 'btn-square', className)} ref={ref}>
-        {children ?? <PiUserPlusLight />}
-      </Button>
-    );
+    return <Button icon={PiUserPlusLight} {...props} />;
   });
 
-  export const BindUser: FC<ButtonProps> = ({ children, className, ...props }) => {
-    return (
-      <Button {...props} className={cn(!children && 'btn-square', className)}>
-        {children ?? <PiUserPlusLight />}
-      </Button>
-    );
+  export const BindUser: FC<ButtonProps> = ({ children, className, ...props }: ButtonProps) => {
+    return <Button icon={PiUserPlusLight} {...props} />;
   };
 
   export type ButtonProps = ComponentPropsWithRef<'button'> & {
@@ -157,62 +149,73 @@ export namespace FunctionButton {
     loading?: boolean;
   };
 
-  export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-    ({ size, children, asChild, className, onAction, onClick, icon, text, loading, ...props }, ref) => {
-      const sz = Daisy.getSize(size);
-      const [_loading, setLoading] = useState(false);
-      loading ||= _loading;
+  export const Button = ({
+    size,
+    children,
+    asChild,
+    className,
+    onAction,
+    onClick,
+    icon,
+    text,
+    loading,
+    ref,
+    ...props
+  }: ButtonProps) => {
+    const sz = Daisy.getSize(size);
+    const [_loading, setLoading] = useState(false);
+    loading ||= _loading;
 
-      const Comp = asChild ? Slot : 'button';
-      if (!onClick && onAction) {
-        onClick = (e: MouseEvent) => {
-          if (loading) {
-            return;
-          }
-          const p = onAction(e);
-          if (p && p.then) {
-            setLoading(true);
-            p.then(() => {
-              setLoading(false);
-            }).catch((e: any) => {
-              setLoading(false);
-              // 不一定是直接处理error
-              // showErrorToast(e);
-            });
-          }
-        };
-      }
-      let square = false;
-      if (!children) {
-        let _icon;
-        square = Boolean(icon && !text);
+    const Comp = asChild ? Slot : 'button';
+    if (!onClick && onAction) {
+      onClick = (e: MouseEvent) => {
         if (loading) {
-          _icon = <div className={clsx('loading loading-spinner', sz?.loading)}></div>;
-        } else {
-          _icon = flexRender(icon, {
-            className: sz?.icon,
+          return;
+        }
+        const p = onAction(e);
+        if (p && p.then) {
+          setLoading(true);
+          p.then(() => {
+            setLoading(false);
+          }).catch((e: any) => {
+            setLoading(false);
+            // 不一定是直接处理error
+            // showErrorToast(e);
           });
         }
-        children = (
-          <>
-            {_icon}
-            {text}
-          </>
-        );
+      };
+    }
+    let square = false;
+    if (!children) {
+      let _icon;
+      square = Boolean(icon && !text);
+      if (loading) {
+        _icon = <div className={clsx('loading loading-spinner', sz?.loading)}></div>;
+      } else {
+        _icon = flexRender(icon, {
+          className: sz?.icon,
+        });
       }
-      return (
-        <Comp
-          type={'button'}
-          className={cn('btn', sz?.btn, square && 'btn-square', className)}
-          ref={ref}
-          {...{
-            ...props,
-            onClick,
-          }}
-        >
-          {children}
-        </Comp>
+      children = (
+        <>
+          {_icon}
+          {text}
+        </>
       );
-    },
-  );
+    }
+    return (
+      <Comp
+        type={'button'}
+        className={cn('btn', sz?.btn, square && 'btn-square', className)}
+        data-loading={loading || null}
+        ref={ref}
+        {...{
+          ...props,
+          onClick,
+        }}
+      >
+        {children}
+      </Comp>
+    );
+  };
 }

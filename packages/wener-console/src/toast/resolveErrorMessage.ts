@@ -6,6 +6,12 @@ export function resolveErrorMessage(error: Error | any) {
   }
 
   if (!(error instanceof Error)) {
+    if ('message' in error) {
+      return error.message;
+    }
+    if ('detail' in error) {
+      return error.detail;
+    }
     return String(error);
   }
 

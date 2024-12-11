@@ -49,7 +49,7 @@
     "lru-cache": "^11.0.2",
     "mutative": "^1.1.0",
     "negotiator": "^1.0.0",
-    "next": "^15.0.4",
+    "next": "^15.1.0",
     "pinyin": "4.0.0-alpha.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -67,7 +67,7 @@
     "use-mutative": "^1.1.8",
     "valtio": "^2.1.2",
     "wonka": "^6.3.4",
-    "zod": "^3.24.0",
+    "zod": "^3.24.1",
     "zustand": "^5.0.2",
     "zustand-mutative": "^1.1.0",
     "zxcvbn": "^4.4.2"

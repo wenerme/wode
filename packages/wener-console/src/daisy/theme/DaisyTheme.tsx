@@ -113,14 +113,18 @@ export namespace DaisyTheme {
 
       // active
       {
-        const element = document.documentElement;
+        // const element = document.documentElement;
         store.subscribe((s) => {
           let active = getActiveTheme(s);
-          if (s.active === active) {
+          let schema = getThemeSchema(active);
+          if (s.active === active && s.schema === schema) {
             return;
           }
-          store.setState({ active });
-          setElementThemeAttribute(active, element);
+          store.setState({ active, schema });
+          const el = globalThis.document?.documentElement;
+          // setElementThemeAttribute(active, element);
+          el?.setAttribute('data-theme', active);
+          el?.setAttribute('data-color-mode', schema);
         });
       }
 
@@ -129,22 +133,30 @@ export namespace DaisyTheme {
       };
     }, [store]);
 
+    /*
+    data-color-mode="dark"
+     */
+
     return null;
   };
 
   export function useThemeSchema(): 'light' | 'dark' {
     let store = useThemeStore();
     return useStore(store, ({ theme }) => {
-      switch (theme) {
-        case 'system':
-          return getPrefersColorSchema();
-        case 'dark':
-        case 'light':
-          return theme;
-        default:
-          return getSupportedThemes().find((v) => v.value === theme)?.schema ?? 'light';
-      }
+      return getThemeSchema(theme);
     });
+  }
+}
+
+function getThemeSchema(theme: string | undefined) {
+  switch (theme) {
+    case 'system':
+      return getPrefersColorSchema();
+    case 'dark':
+    case 'light':
+      return theme;
+    default:
+      return getSupportedThemes().find((v) => v.value === theme)?.schema ?? 'light';
   }
 }
 

@@ -9,6 +9,7 @@ export type DaisyThemeStoreState = {
 
   system?: 'light' | 'dark' | string;
   custom?: Record<string, any>;
+  schema?: 'light' | 'dark';
 
   active?: string;
 };
