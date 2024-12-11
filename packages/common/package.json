@@ -12,6 +12,7 @@
     "./icons": "./src/icons/index.ts",
     "./torrent": "./src/torrent/index.ts",
     "./aports": "./src/aports/index.ts",
+    "./ai/cv": "./src/ai/cv/index.ts",
     "./package.json": "./package.json",
     "./gen/*": "./src/gen/*.js"
   },
@@ -40,7 +41,7 @@
     "semver": "^7.6.3",
     "tar": "^7.4.3",
     "ts-pattern": "^5.5.0",
-    "zod": "^3.24.0",
+    "zod": "^3.24.1",
     "zx": "^8.2.4"
   },
   "devDependencies": {

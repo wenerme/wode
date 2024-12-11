@@ -1,25 +1,32 @@
-import React, { forwardRef, type ComponentPropsWithoutRef, type FC, type ReactNode } from 'react';
+import React, { type ComponentPropsWithRef, type ElementType, type ReactNode } from 'react';
 import { cn } from '../tw';
 
-export type LeftCenterRightLayoutProps = {
+export type LeftCenterRightLayoutProps<E extends ElementType = 'div'> = ComponentPropsWithRef<E> & {
+  as?: E;
   left?: ReactNode;
   center?: ReactNode;
   right?: ReactNode;
-} & ComponentPropsWithoutRef<'div'>;
-export const LeftCenterRightLayout: FC<LeftCenterRightLayoutProps> = forwardRef<
-  HTMLDivElement,
-  LeftCenterRightLayoutProps
->(({ left, center, right, className, children, ...props }, ref) => {
+};
+export const LeftCenterRightLayout = <E extends ElementType = 'div'>({
+  as: As = 'div',
+  left,
+  center,
+  right,
+  className,
+  children,
+  ref,
+  ...props
+}: LeftCenterRightLayoutProps<E>) => {
   return (
-    <div className={cn('flex items-center', className)} ref={ref} {...props}>
-      <div className={'flex items-center'}>{left}</div>
+    <As className={cn('flex items-center', className)} ref={ref} {...props}>
+      {left}
       <div className={'relative flex h-full flex-1'}>
         <div className={'absolute inset-0 flex flex-wrap items-center overflow-x-auto'}>
           {center}
           {children}
         </div>
       </div>
-      <div className={'flex items-center'}>{right}</div>
-    </div>
+      {right}
+    </As>
   );
-});
+};
