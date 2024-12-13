@@ -78,6 +78,7 @@
     "cmdk": "^1.0.4",
     "comlink": "^4.4.2",
     "common": "workspace:^1.0.0",
+    "csv-parse": "^5.6.0",
     "dataloader": "^2.2.3",
     "dayjs": "^1.11.13",
     "echarts": "^5.5.1",
@@ -135,6 +136,7 @@
     "valtio": "^2.1.2",
     "web-vitals": "^4.2.4",
     "wonka": "^6.3.4",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz",
     "zod": "^3.24.1",
     "zustand": "^5.0.2",
     "zustand-mutative": "^1.1.0"

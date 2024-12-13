@@ -1,6 +1,6 @@
 {
   "name": "@wener/reaction",
-  "version": "1.2.24",
+  "version": "1.2.25",
   "type": "module",
   "description": "React hooks, utils & reaction",
   "repository": {

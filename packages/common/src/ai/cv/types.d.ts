@@ -36,6 +36,7 @@ export type Annotation = {
   label?: string;
   text?: string;
   markdown?: string;
+  csv?: string;
   bbox: XYWH;
   confidence?: number;
 
