@@ -1,5 +1,5 @@
 import process from 'node:process';
-import react from '@vitejs/plugin-react';
+import react from '@vitejs/plugin-react-swc';
 import { loadEnv, type PluginOption } from 'vite';
 import { defineConfig } from 'vitest/config';
 

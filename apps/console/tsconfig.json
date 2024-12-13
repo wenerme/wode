@@ -4,7 +4,7 @@
       "dom",
       "dom.iterable",
       "WebWorker",
-      "esnext"
+      "esnext.full"
     ],
     "target": "es2018",
     "allowJs": true,

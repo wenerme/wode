@@ -1,6 +1,6 @@
 {
   "name": "@wener/console",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "type": "module",
   "description": "Base console UI toolkit",
   "author": "wener",

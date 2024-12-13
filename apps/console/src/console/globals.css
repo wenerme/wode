@@ -247,3 +247,6 @@ scrollbar-thumb:!bg-base-300 scrollbar-track:!rounded
     margin-right: 30mm;
   }
 }
+
+/* https://github.com/uiwjs/react-md-editor/issues/625 */
+.w-md-editor-text { min-height: 100% !important; }
