@@ -1,4 +1,4 @@
-import { Server, ServerCountry } from '@/poc/nordvpn/types';
+import type { Server, ServerCountry } from './types';
 
 export class Client {
   getServerCountries(): Promise<ServerCountry[]> {

@@ -46,11 +46,11 @@
     "test": "make test"
   },
   "devDependencies": {
-    "@sinclair/typebox": "^0.34.11",
+    "@sinclair/typebox": "^0.34.13",
     "@types/ws": "^8.5.13",
     "https-proxy-agent": "^7.0.6",
     "node-fetch": "^3.3.2",
-    "undici": "^7.1.0",
+    "undici": "^7.2.0",
     "zod": "^3.24.1"
   },
   "publishConfig": {

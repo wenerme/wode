@@ -1,1 +1,4 @@
-export { createMetadataKey, defineMetadata, getMetadata } from './defineMetadata';
+/**
+ * @deprecated
+ */
+export { createMetadataKey, defineMetadata, getMetadata } from '@wener/common/meta';

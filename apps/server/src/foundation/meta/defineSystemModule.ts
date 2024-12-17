@@ -1,4 +1,4 @@
-import { createMetadataKey, defineMetadata } from '@wener/console/meta';
+import { createMetadataKey, defineMetadata } from '@wener/common/meta';
 import { defineEntity, type DefineEntityOptions } from '@wener/nestjs/entity';
 import type { Constructor } from '@wener/utils';
 import _ from 'lodash';

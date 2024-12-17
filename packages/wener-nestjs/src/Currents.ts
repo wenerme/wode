@@ -1,6 +1,6 @@
 import { AsyncLocalStorage } from 'node:async_hooks';
 import { Logger, type Type } from '@nestjs/common';
-import { Errors, Promises } from '@wener/utils';
+import { Errors } from '@wener/utils';
 
 export class Currents {
   static readonly #storage = new AsyncLocalStorage<Map<any, any>>();
@@ -96,7 +96,7 @@ export interface ContextToken<T, K> {
 
   require(): T;
 
-  ifPresent(f: (v: T) => void): void;
+  ifPresent<V>(f: (v: T) => V): V | undefined;
 
   readonly key: K;
 }
@@ -125,10 +125,10 @@ class Token<T, K> implements ContextToken<T, K> {
     return Currents.get(this.key, def);
   };
 
-  ifPresent = (f: (v: T) => void) => {
+  ifPresent = <V>(f: (v: T) => V) => {
     const found = this.get();
     if (found !== undefined) {
-      f(found);
+      return f(found);
     }
   };
 

@@ -1,0 +1,1 @@
+export { useInit } from './useInit';

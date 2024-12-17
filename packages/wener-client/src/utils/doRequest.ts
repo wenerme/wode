@@ -1,4 +1,4 @@
-import { dumpRequest, isPlainObject, type FetchLike, type MaybePromise } from '@wener/utils';
+import { dumpRequest, dumpResponse, isPlainObject, type FetchLike, type MaybePromise } from '@wener/utils';
 
 type DoRequestContext = {
   url: string;
@@ -154,31 +154,4 @@ function _parseResponse(res: Response): Promise<any> {
     });
   }
   return res.json();
-}
-
-async function dumpResponse({
-  res,
-  url,
-  req,
-  log = console.log,
-}: {
-  res: Response;
-  url: string;
-  req: RequestInit;
-  log?: (s: string) => void;
-}) {
-  res = res.clone();
-  let out = `<- ${res.status} ${res.statusText} ${req.method} ${url}
-${Array.from(res.headers.entries())
-  .map(([k, v]) => `${k}: ${v}`)
-  .join('\n')}
-   `;
-  let contentType = res.headers.get('content-type');
-  // TODO text/event-stream
-  if (contentType?.includes('application/json') || contentType?.includes('text/plain')) {
-    const body = await res.text();
-    out += `\n${body}\n`;
-  }
-
-  log(out);
 }
