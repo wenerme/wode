@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { runInit, type InitDef } from './defineInit';
+import { runInit, type InitDef } from '@wener/common/meta';
 
 export function useInit(init?: InitDef[]) {
   const [state, setState] = useState({ done: false });

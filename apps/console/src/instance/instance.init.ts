@@ -1,6 +1,6 @@
+import { defineInit } from '@wener/common/meta';
 import { ConsoleEvents, getConsoleContext } from '@wener/console/console';
 import { getAuthStore } from '@wener/console/foundation/auth';
-import { defineInit } from '@/utils/init/defineInit';
 
 export const InstanceInit = defineInit({
   name: 'Console',

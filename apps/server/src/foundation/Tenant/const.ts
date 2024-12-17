@@ -3,13 +3,7 @@ import { Errors } from '@wener/utils';
 
 export { getStaticTenantId } from '@wener/nestjs/app';
 export { getFallbackTenantId, getCurrentUserId as getUserId } from '@wener/nestjs/app';
-export { getCurrentTenantId as getTenantId } from '@wener/nestjs/app';
-
-export function requireTenantId() {
-  const tid = getCurrentTenantId();
-  Errors.InternalServerError.check(tid, 'Missing tenant id');
-  return tid;
-}
+export { getCurrentTenantId as getTenantId, requireTenantId } from '@wener/nestjs/app';
 
 export function requireUserId() {
   const uid = Contexts.userId.get();

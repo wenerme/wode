@@ -3,12 +3,17 @@ export async function dumpResponse({
   url,
   req,
   log = console.log,
+  clone = true,
 }: {
   res: Response;
   url: string;
   req: RequestInit;
   log?: (s: string) => void;
+  clone?: boolean;
 }) {
+  if (clone) {
+    res = res.clone();
+  }
   let out = `<- ${res.status} ${res.statusText} ${req.method} ${url}
 ${Array.from(res.headers.entries())
   .map(([k, v]) => `${k}: ${v}`)

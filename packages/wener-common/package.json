@@ -26,11 +26,11 @@
   },
   "dependencies": {
     "@wener/utils": "workspace:*",
-    "es-toolkit": "^1.29.0",
-    "ts-pattern": "^5.5.0"
+    "es-toolkit": "^1.31.0",
+    "ts-pattern": "^5.6.0"
   },
   "devDependencies": {
-    "@sinclair/typebox": "^0.34.11",
+    "@sinclair/typebox": "^0.34.13",
     "@types/argon2-browser": "^1.18.4",
     "@types/bcrypt": "^5.0.2",
     "@types/bcryptjs": "^2.4.6",

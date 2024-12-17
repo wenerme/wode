@@ -8,4 +8,5 @@ export {
   getStaticTenantId,
   getFallbackTenantId,
   getCurrentFallbackTenantId,
+  requireTenantId,
 } from './Contexts';

@@ -219,7 +219,7 @@ https://www.npmjs.com/package/pony-cause
       }
     }
 
-    if (e instanceof Error) {
+    if (isError(e)) {
       const { message, code, status } = e as any;
       // can get status from NestJS HttpException
       return new DetailHolder({
@@ -236,12 +236,16 @@ https://www.npmjs.com/package/pony-cause
       cause: e,
     });
   }
-}
 
-// interface ZodError {
-//   path: Array<string | number>;
-//   message: string;
-//   code: string;
-//   expected?: any;
-//   received?: any;
-// }
+  /**
+   * Check if the given value is an Error
+   * @see https://github.com/tc39/proposal-is-error
+   */
+  export function isError(e: any): e is Error {
+    if ('isError' in Error) {
+      // will handle cross-realm
+      return (Error as any).isError(e);
+    }
+    return e instanceof Error;
+  }
+}

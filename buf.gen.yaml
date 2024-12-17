@@ -1,5 +1,15 @@
 version: v2
+clean: true
+managed:
+  enabled: true
+  disable:
+  - path: protos/bundles
 plugins:
-  - local: ./node_modules/.bin/protoc-gen-es
-    out: packages/common/src/gen/pb
-    #opt: target=dts+js
+- local: ./node_modules/.bin/protoc-gen-es
+  out: packages/common/src/gen/pb
+inputs:
+- directory: protos/wode
+  paths:
+  - protos/wode/wode/foundation/v1
+  - protos/wode/wode/service/v1
+  - protos/wode/wode/incs/zhb/ve/v1

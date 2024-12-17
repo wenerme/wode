@@ -3,14 +3,17 @@ import { getGlobalThis, randomUUID } from '@wener/utils';
 export interface App {
   readonly region?: string;
   readonly zone?: string;
-  readonly env: Record<string, any>;
+  readonly env?: string;
   readonly mode?: string;
+
   name: string;
   component: string;
   instanceId: string;
   readonly service: string;
   readonly isProduction: boolean;
   readonly isDevelopment: boolean;
+
+  envs(): Record<string, any>;
 
   reset(): void;
 }
@@ -25,13 +28,15 @@ class DefaultApp implements App {
   #name?: string;
   #component?: string;
   #mode?: string;
-  #env: Record<string, any> = {};
+  #env?: string;
+  #envs: Record<string, any> = {};
 
   toJSON() {
     return {
       region: this.region,
       zone: this.zone,
       mode: this.mode,
+      env: this.env,
       name: this.name,
       component: this.component,
       instanceId: this.instanceId,
@@ -41,11 +46,11 @@ class DefaultApp implements App {
     };
   }
 
-  get env() {
+  envs() {
     if (typeof process === 'object' && 'env' in process) {
       return process.env;
     }
-    return this.#env;
+    return this.#envs;
   }
 
   get region() {
@@ -57,7 +62,11 @@ class DefaultApp implements App {
   }
 
   get mode() {
-    return (this.#mode ||= process.env.APP_ENV || process.env.NODE_ENV);
+    return (this.#mode ||= process.env.NODE_ENV);
+  }
+
+  get env() {
+    return (this.#mode ||= process.env.APP_ENV);
   }
 
   get service() {
@@ -139,6 +148,7 @@ class DefaultApp implements App {
     this.#name = undefined;
     this.#instanceId = undefined;
     this.#mode = undefined;
+    this.#env = undefined;
   }
 }
 

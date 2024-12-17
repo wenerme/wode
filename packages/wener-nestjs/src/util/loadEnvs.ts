@@ -8,23 +8,36 @@ import dotenv from 'dotenv';
 export async function loadEnvs({
   log = new Logger(loadEnvs.name),
   name,
-  env = process.env.NODE_ENV || 'development',
+  mode = process.env.NODE_ENV,
+  env = process.env.APP_ENV,
   profiles = process.env.NODE_PROFILES?.split(',').filter(Boolean) || [],
 }: {
   name?: string;
-  env?: string;
+  mode?: string; // NODE_ENV - What mode is current running
+  env?: string; // APP_ENV - Which env we want to run in
   profiles?: string[];
   log?: Logger;
 } = {}) {
   profiles = profiles.filter(Boolean);
 
-  const files = [`.env.${env}.local`, `.env.${env}`, `.env.local`, '.env'];
+  const files = [`.env.local`, '.env'];
+  if (mode === env) {
+    env = undefined;
+  }
+  if (mode) {
+    files.unshift(`.env.${mode}.local`, `.env.${mode}`);
+  }
+  if (env) {
+    files.unshift(`.env.${env}.local`, `.env.${env}`);
+  }
   for (let profile of profiles) {
     files.unshift(`.env.${profile}.local`, `.env.${profile}`);
   }
   if (name) {
-    files.unshift(`.env.${name}.${env}.local`, `.env.${name}.${env}`, `.env.${name}.local`, `.env.${name}`);
-
+    files.unshift(`.env.${name}.local`, `.env.${name}`);
+    if (mode) {
+      files.unshift(`.env.${name}.${mode}.local`, `.env.${name}.${mode}`);
+    }
     for (let profile of profiles) {
       files.unshift(`.env.${name}.${profile}.local`, `.env.${name}.${profile}`);
     }

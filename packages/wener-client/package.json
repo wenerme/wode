@@ -1,6 +1,6 @@
 {
   "name": "@wener/client",
-  "version": "1.0.23",
+  "version": "1.0.24",
   "type": "module",
   "description": "Client for Wechat, Wecom, Xunfei, FunAsr, etc.",
   "repository": {
@@ -54,21 +54,21 @@
   },
   "devDependencies": {
     "@alicloud/openapi-client": "^0.4.12",
-    "@sinclair/typebox": "^0.34.11",
+    "@sinclair/typebox": "^0.34.13",
     "@types/bun": "^1.1.14",
     "@types/crypto-js": "^4.2.2",
     "@types/node-rsa": "^1.1.4",
-    "@wecom/jssdk": "^2.2.4",
+    "@wecom/jssdk": "^2.2.5",
     "cookie": "^1.0.2",
     "crypto-js": "^4.2.0",
     "dayjs": "^1.11.13",
-    "fast-xml-parser": "^4.5.0",
+    "fast-xml-parser": "^4.5.1",
     "node-rsa": "^1.1.1",
-    "openai": "^4.76.1",
-    "puppeteer": "^23.10.3",
-    "puppeteer-core": "^23.10.3",
-    "ts-pattern": "^5.5.0",
-    "undici": "^7.1.0",
+    "openai": "^4.77.3",
+    "puppeteer": "^23.11.1",
+    "puppeteer-core": "^23.11.1",
+    "ts-pattern": "^5.6.0",
+    "undici": "^7.2.0",
     "ws": "^8.18.0"
   },
   "publishConfig": {

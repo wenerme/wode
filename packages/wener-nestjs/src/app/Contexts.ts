@@ -1,4 +1,5 @@
 import type { IncomingMessage } from 'node:http';
+import { Errors } from '@wener/utils';
 import { Currents } from '../Currents';
 
 export const Contexts = {
@@ -68,4 +69,10 @@ export function getCurrentFallbackTenantId() {
 
 export function getCurrentUserId() {
   return Contexts.userId.get();
+}
+
+export function requireTenantId() {
+  const tid = getCurrentTenantId();
+  Errors.InternalServerError.check(tid, 'Missing tenant id');
+  return tid;
 }

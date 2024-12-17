@@ -1,3 +1,4 @@
+import { defineInit } from '@wener/common/meta';
 import dayjs from 'dayjs';
 import advancedFormat from 'dayjs/plugin/advancedFormat';
 import dayOfYear from 'dayjs/plugin/dayOfYear';
@@ -6,7 +7,6 @@ import isToday from 'dayjs/plugin/isToday';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
-import { defineInit } from '@/utils/init/defineInit';
 import 'dayjs/locale/en';
 import 'dayjs/locale/zh';
 import 'dayjs/locale/zh-cn';

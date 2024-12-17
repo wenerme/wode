@@ -46,9 +46,22 @@ export function createMetadataKey<T = never>(a: any, b?: any): MetadataKey<T> {
   return k;
 }
 
-export function defineMetadata<T>(res: HasMetadata, key: MetadataKey<T>, opts: T) {
-  res.metadata = res.metadata || {};
-  set(res.metadata, key.key, opts);
+export function defineMetadata<T>(res: HasMetadata, key: MetadataKey<T>, opts: T): void;
+export function defineMetadata<T>(key: MetadataKey<T>, items: Array<[HasMetadata, T]>): void;
+export function defineMetadata<T>(a: any, b: any, c?: any) {
+  if (Array.isArray(b)) {
+    const key = a;
+    const items = b;
+    for (const [res, opts] of items) {
+      defineMetadata(res, key, opts);
+    }
+  } else {
+    const res = a;
+    const key = b;
+    const opts = c;
+    res.metadata = res.metadata || {};
+    set(res.metadata, key.key, opts);
+  }
 }
 
 export function getMetadata<T>(res: HasMetadata | undefined | null, key: MetadataKey<T>): T | undefined {
