@@ -25,6 +25,8 @@
     "./qq": "./src/qq/index.ts",
     "./server": "./src/server/index.ts",
     "./wechat": "./src/wechat/index.ts",
+    "./wechat/miniprogram": "./src/wechat/miniprogram/index.ts",
+    "./wechat/server": "./src/wechat/server/index.ts",
     "./wechat/webhook": "./src/wechat/webhook/index.ts",
     "./wecom": "./src/wecom/index.ts",
     "./wecom/archive": "./src/wecom/archive/index.ts",
@@ -129,6 +131,14 @@
         "types": "./src/wechat/index.ts",
         "default": "./lib/wechat/index.js"
       },
+      "./wechat/miniprogram": {
+        "types": "./src/wechat/miniprogram/index.ts",
+        "default": "./lib/wechat/miniprogram/index.js"
+      },
+      "./wechat/server": {
+        "types": "./src/wechat/server/index.ts",
+        "default": "./lib/wechat/server/index.js"
+      },
       "./wechat/webhook": {
         "types": "./src/wechat/webhook/index.ts",
         "default": "./lib/wechat/webhook/index.js"
@@ -144,6 +154,10 @@
       "./wecom/archive/bun": {
         "types": "./src/wecom/archive/bun/index.ts",
         "default": "./lib/wecom/archive/bun/index.js"
+      },
+      "./wecom/archive/server": {
+        "types": "./src/wecom/archive/server/index.ts",
+        "default": "./lib/wecom/archive/server/index.js"
       },
       "./wecom/server": {
         "types": "./src/wecom/server/index.ts",
