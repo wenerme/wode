@@ -7,7 +7,7 @@ import {
 } from '../../ExpiryValue';
 import { getAccessToken, getStableAccessToken } from './getAccessToken';
 import { request, type RequestOptions } from './request';
-import type { GetDomainInfoResponse, GetOpenAPIQuotaResponse } from './types';
+import type { GetDomainInfoResponse, GetOpenAPIQuotaResponse, GetPhoneNumberResponse } from './types';
 
 export interface WechatServerClientInit {
   fetch?: FetchLike;
@@ -224,6 +224,19 @@ export class WechatServerClient {
       params: {
         access_token: true,
       },
+    });
+  }
+
+  /**
+   * @see https://developers.weixin.qq.com/miniprogram/dev/OpenApiDoc/user-info/phone-number/getPhoneNumber.html
+   */
+  async getPhoneNumber(params: { code: string; openid?: string }) {
+    return this.request<GetPhoneNumberResponse>({
+      url: 'https://api.weixin.qq.com/wxa/business/getuserphonenumber',
+      params: {
+        access_token: true,
+      },
+      body: params,
     });
   }
 

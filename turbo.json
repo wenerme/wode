@@ -1,9 +1,16 @@
 {
   "$schema": "https://turborepo.org/schema.json",
   "globalDependencies": [
+    "Makefile",
+    "package.json",
+    "tsconfig.json",
     "pnpm-lock.yaml",
     "rollup.config.ts",
     "rollup.config.js"
+  ],
+  "globalEnv": [
+    "CI_COMMIT_TAG",
+    "CI_COMMIT_BRANCH"
   ],
   "tasks": {
     "deploy": {
@@ -11,17 +18,17 @@
         "build"
       ],
       "env": [
-        "CI_COMMIT_TAG",
-        "CI_COMMIT_BRANCH",
         "DOCKER_REGISTRY",
         "IMAGE_REGISTRY"
       ],
       "inputs": [
+        "Makefile",
         "deploy.sh",
         "docker-bake.hcl",
         "Dockerfile",
         "builds/docker-bake.hcl",
-        "builds/*/Dockerfile"
+        "builds/*/Dockerfile",
+        "builds/*/rootfs"
       ],
       "outputs": []
     },
@@ -32,6 +39,7 @@
       "outputs": [
         "dist/**",
         "lib/**",
+        "builds/*/app/**",
         ".next/**",
         "!.next/cache/**"
       ],

@@ -87,3 +87,19 @@ export interface GetDomainInfoResponse {
   downloaddomain: string[];
   udpdomain: string[];
 }
+
+export interface GetPhoneNumberResponse {
+  phone_info: GetPhoneNumberResponsePhoneInfo;
+}
+
+export interface GetPhoneNumberResponsePhoneInfo {
+  phoneNumber: string;
+  purePhoneNumber: string;
+  countryCode: number;
+  watermark: GetPhoneNumberResponsePhoneInfoWatermark;
+}
+
+export interface GetPhoneNumberResponsePhoneInfoWatermark {
+  timestamp: number;
+  appid: string;
+}
