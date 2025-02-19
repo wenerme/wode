@@ -1,9 +1,9 @@
 export function setElementThemeAttribute(
-  theme: string | undefined,
-  el = typeof document === 'undefined' ? undefined : document.documentElement,
+	theme: string | undefined,
+	el = typeof document === 'undefined' ? undefined : document.documentElement,
 ) {
-  if (!theme || !el) {
-    return;
-  }
-  el.setAttribute('data-theme', theme);
+	if (!theme || !el) {
+		return;
+	}
+	el.setAttribute('data-theme', theme);
 }

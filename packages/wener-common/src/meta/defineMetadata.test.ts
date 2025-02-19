@@ -2,14 +2,12 @@ import { expect, test } from 'vitest';
 import { createMetadataKey, defineMetadata, getMetadata } from './defineMetadata';
 
 test('defineMetadata', () => {
-  const key = createMetadataKey<string>('name');
+	const key = createMetadataKey<string>('name');
 
-  const user = {
-    metadata: {},
-  };
+	const user = { metadata: {} };
 
-  defineMetadata(user, key, 'wener');
+	defineMetadata(user, key, 'wener');
 
-  expect(user.metadata).toEqual({ name: 'wener' });
-  expect(getMetadata(user, key)).toEqual('wener');
+	expect(user.metadata).toEqual({ name: 'wener' });
+	expect(getMetadata(user, key)).toEqual('wener');
 });

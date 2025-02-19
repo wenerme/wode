@@ -4,13 +4,13 @@ import { mixin, type Constructor } from '@wener/utils';
 import { GraphQLScalarType } from 'graphql';
 import { GraphQLDateTime } from 'graphql-scalars';
 import {
-  buildSchema,
-  InterfaceType,
-  ObjectType,
-  Resolver,
-  type AuthCheckerInterface,
-  type BuildSchemaOptions,
-  type ResolverData,
+	buildSchema,
+	InterfaceType,
+	ObjectType,
+	Resolver,
+	type AuthCheckerInterface,
+	type BuildSchemaOptions,
+	type ResolverData,
 } from 'type-graphql';
 import { expect, test } from 'vitest';
 import { StandardBaseEntity } from '../entity';
@@ -27,48 +27,48 @@ import { RelayNode } from './relay';
 import { createBaseEntityResolver, createListPayload, withBaseQuery } from './resource';
 
 test('build', async () => {
-  expect(GraphQLJSONScalar).instanceof(GraphQLScalarType);
-  // console.log(GraphQLJSONScalar instanceof GraphQLScalarType, GraphQLScalarType);
-  await buildGraphQLSchema({
-    resolvers: [ResourceResolver],
-    scalarsMap: [
-      // type-graphql 里的 graphql 和当前 graphql 不同
-      // Cannot use GraphQLScalarType "JSON" from another module or realm.
-      // { type: GraphQLJSONScalar, scalar: GraphQLJSONScalar },
-    ],
-  });
+	expect(GraphQLJSONScalar).instanceof(GraphQLScalarType);
+	// console.log(GraphQLJSONScalar instanceof GraphQLScalarType, GraphQLScalarType);
+	await buildGraphQLSchema({
+		resolvers: [ResourceResolver],
+		scalarsMap: [
+			// type-graphql 里的 graphql 和当前 graphql 不同
+			// Cannot use GraphQLScalarType "JSON" from another module or realm.
+			// { type: GraphQLJSONScalar, scalar: GraphQLJSONScalar },
+		],
+	});
 });
 
 @InterfaceType({
-  autoRegisterImplementations: false,
-  implements: [BaseNode, RelayNode, HasOwnerRefNode, HasStateStatusNode],
-  resolveType: (...args) => {
-    return RelayNode.resolveType(...args);
-  },
+	autoRegisterImplementations: false,
+	implements: [BaseNode, RelayNode, HasOwnerRefNode, HasStateStatusNode],
+	resolveType: (...args) => {
+		return RelayNode.resolveType(...args);
+	},
 })
 export class ResourceNode extends mixin(BaseNode, withStateStatusType, withOwnerRefType, withAuditorRefType) {
-  // @Field(() => OwnerNode, { nullable: true })
-  // owner?: OwnerNode;
-  //
-  // @Field(() => UserObject, { nullable: true })
-  // createdBy?: UserObject;
-  // @Field(() => UserObject, { nullable: true })
-  // updatedBy?: UserObject;
-  // @Field(() => UserObject, { nullable: true })
-  // deletedBy?: UserObject;
+	// @Field(() => OwnerNode, { nullable: true })
+	// owner?: OwnerNode;
+	//
+	// @Field(() => UserObject, { nullable: true })
+	// createdBy?: UserObject;
+	// @Field(() => UserObject, { nullable: true })
+	// updatedBy?: UserObject;
+	// @Field(() => UserObject, { nullable: true })
+	// deletedBy?: UserObject;
 }
 
 @ObjectType({ implements: [ResourceNode] })
 export class ResourceObject extends mixin(BaseObject, withStateStatusType, withOwnerRefType, withAuditorRefType) {
-  // @Field(() => OwnerNode, { nullable: true })
-  // owner?: OwnerNode;
-  //
-  // @Field(() => UserObject, { nullable: true })
-  // createdBy?: UserObject;
-  // @Field(() => UserObject, { nullable: true })
-  // updatedBy?: UserObject;
-  // @Field(() => UserObject, { nullable: true })
-  // deletedBy?: UserObject;
+	// @Field(() => OwnerNode, { nullable: true })
+	// owner?: OwnerNode;
+	//
+	// @Field(() => UserObject, { nullable: true })
+	// createdBy?: UserObject;
+	// @Field(() => UserObject, { nullable: true })
+	// updatedBy?: UserObject;
+	// @Field(() => UserObject, { nullable: true })
+	// deletedBy?: UserObject;
 }
 
 @Entity()
@@ -82,66 +82,62 @@ class ResourceListPayload extends createListPayload(ResourceObject) {}
 
 @Resolver(() => ResourceObject)
 class ResourceResolver extends mixin(
-  createBaseEntityResolver({
-    ObjectType: ResourceObject,
-    EntityType: ResourceEntity,
-    ServiceType: ResourceService,
-    ListPayloadType: ResourceListPayload,
-  }),
-  withBaseQuery,
+	createBaseEntityResolver({
+		ObjectType: ResourceObject,
+		EntityType: ResourceEntity,
+		ServiceType: ResourceService,
+		ListPayloadType: ResourceListPayload,
+	}),
+	withBaseQuery,
 ) {}
 
-export function buildGraphQLSchema(
-  opts: Omit<BuildSchemaOptions, 'resolvers'> & {
-    resolvers: Constructor<any>[];
-  },
-) {
-  RelayNode.resolveType = resolveNodeType;
+export function buildGraphQLSchema(opts: Omit<BuildSchemaOptions, 'resolvers'> & { resolvers: Constructor<any>[] }) {
+	RelayNode.resolveType = resolveNodeType;
 
-  // registerEnumType(OwnerType, {
-  //   name: 'OwnerType',
-  // });
-  // registerEnumType(SexType, {
-  //   name: 'SexType',
-  // });
+	// registerEnumType(OwnerType, {
+	//   name: 'OwnerType',
+	// });
+	// registerEnumType(SexType, {
+	//   name: 'SexType',
+	// });
 
-  return buildSchema({
-    container: new NestContainerType(),
-    // pubSub: getPubSub(),
-    authChecker: ContextGraphAuthChecker,
-    ...(opts as any),
-    scalarsMap: [
-      { type: Object, scalar: GraphQLJSONObjectScalar },
-      { type: Date, scalar: GraphQLDateTime },
-      // { type: dayjs, scalar: GraphQLDateTime },
-      // { type: BigNumber, scalar: GraphQLString },
-      { type: File, scalar: FileScalar },
-      ...(opts.scalarsMap || []),
-    ],
-    orphanedTypes: [
-      ResourceNode,
-      // PrimaryResourceNode,
-      ResourceObject,
-      // PrimaryResourceObject,
-      HasTagsNode,
-      // HasLabelsNode,
-      HasNotesNode,
-      ...(opts.orphanedTypes || []),
-    ],
-  });
+	return buildSchema({
+		container: new NestContainerType(),
+		// pubSub: getPubSub(),
+		authChecker: ContextGraphAuthChecker,
+		...(opts as any),
+		scalarsMap: [
+			{ type: Object, scalar: GraphQLJSONObjectScalar },
+			{ type: Date, scalar: GraphQLDateTime },
+			// { type: dayjs, scalar: GraphQLDateTime },
+			// { type: BigNumber, scalar: GraphQLString },
+			{ type: File, scalar: FileScalar },
+			...(opts.scalarsMap || []),
+		],
+		orphanedTypes: [
+			ResourceNode,
+			// PrimaryResourceNode,
+			ResourceObject,
+			// PrimaryResourceObject,
+			HasTagsNode,
+			// HasLabelsNode,
+			HasNotesNode,
+			...(opts.orphanedTypes || []),
+		],
+	});
 }
 
 export class ContextGraphAuthChecker implements AuthCheckerInterface<{}> {
-  constructor() {}
+	constructor() {}
 
-  check({ context }: ResolverData<any>, roles: string[]) {
-    if (roles.includes('Public')) {
-      return true;
-    }
-    let userId = context.userId;
-    if (!userId) {
-      return false;
-    }
-    return true;
-  }
+	check({ context }: ResolverData<any>, roles: string[]) {
+		if (roles.includes('Public')) {
+			return true;
+		}
+		let userId = context.userId;
+		if (!userId) {
+			return false;
+		}
+		return true;
+	}
 }

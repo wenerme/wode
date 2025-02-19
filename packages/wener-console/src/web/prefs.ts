@@ -1,12 +1,12 @@
 import type { ReactNode } from 'react';
 
 export interface SitePreferences {
-  site: {
-    title: string;
-    logo: ReactNode;
-    author: {
-      name: string;
-      link: string;
-    };
-  };
+	site: {
+		title: string;
+		logo: ReactNode;
+		author: {
+			name: string;
+			link: string;
+		};
+	};
 }

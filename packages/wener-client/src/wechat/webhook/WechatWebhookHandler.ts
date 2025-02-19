@@ -4,114 +4,93 @@ import { decrypt } from './crypt';
 import type { WechatWebhookEncryptPayload, WechatWebhookPayload } from './types';
 
 export interface WechatWebhookHandlerCreateOptions {
-  token?: string;
-  appId?: string;
-  encodingAesKey: string;
+	token?: string;
+	appId?: string;
+	encodingAesKey: string;
 }
 
 export async function createWechatWebhookHandler({ encodingAesKey, ...rest }: WechatWebhookHandlerCreateOptions) {
-  if (encodingAesKey.length !== 43) {
-    throw new Error('Invalid AESKey');
-  }
+	if (encodingAesKey.length !== 43) {
+		throw new Error('Invalid AESKey');
+	}
 
-  const raw = ArrayBuffers.asView(Uint8Array, ArrayBuffers.from(encodingAesKey, 'base64'));
-  const key = await crypto.subtle.importKey(
-    'raw',
-    raw,
-    {
-      name: 'AES-CBC',
-      length: 256,
-    },
-    false,
-    ['encrypt', 'decrypt'],
-  );
-  const iv = raw.slice(0, 16);
-  return new WechatWebhookHandler({
-    key,
-    iv,
-    parser: new XMLParser(),
-    builder: new XMLBuilder({}),
-    ...rest,
-  });
+	const raw = ArrayBuffers.asView(Uint8Array, ArrayBuffers.from(encodingAesKey, 'base64'));
+	const key = await crypto.subtle.importKey('raw', raw, { name: 'AES-CBC', length: 256 }, false, [
+		'encrypt',
+		'decrypt',
+	]);
+	const iv = raw.slice(0, 16);
+	return new WechatWebhookHandler({ key, iv, parser: new XMLParser(), builder: new XMLBuilder({}), ...rest });
 }
 
 /**
  * @see https://developers.weixin.qq.com/doc/oplatform/Third-party_Platforms/2.0/api/Before_Develop/Message_encryption_and_decryption.html
  */
 export class WechatWebhookHandler {
-  constructor(readonly options: WechatWebhookHandlerOptions) {}
+	constructor(readonly options: WechatWebhookHandlerOptions) {}
 
-  parse(xml: string | WechatWebhookEncryptPayload): WechatWebhookEncryptPayload {
-    return typeof xml === 'string' ? (this.options.parser.parse(xml).xml as WechatWebhookEncryptPayload) : xml;
-  }
+	parse(xml: string | WechatWebhookEncryptPayload): WechatWebhookEncryptPayload {
+		return typeof xml === 'string' ? (this.options.parser.parse(xml).xml as WechatWebhookEncryptPayload) : xml;
+	}
 
-  async verify({
-    timestamp,
-    nonce,
-    signature,
-    message,
-  }: {
-    timestamp: string | number;
-    nonce: string | number;
-    signature: string;
-    message?: string;
-  }) {
-    const { token } = this.options;
-    if (!token) {
-      throw new Error('token is required for verify');
-    }
+	async verify({
+		timestamp,
+		nonce,
+		signature,
+		message,
+	}: {
+		timestamp: string | number;
+		nonce: string | number;
+		signature: string;
+		message?: string;
+	}) {
+		const { token } = this.options;
+		if (!token) {
+			throw new Error('token is required for verify');
+		}
 
-    const s = [token, timestamp, nonce, message].filter(Boolean).sort().join('');
-    return signature === hex(await sha1(s));
-  }
+		const s = [token, timestamp, nonce, message].filter(Boolean).sort().join('');
+		return signature === hex(await sha1(s));
+	}
 
-  async decrypt(s: BufferSource) {
-    return decrypt({
-      key: this.options.key,
-      iv: this.options.iv,
-      data: s,
-    });
-  }
+	async decrypt(s: BufferSource) {
+		return decrypt({ key: this.options.key, iv: this.options.iv, data: s });
+	}
 
-  async decryptPayload(xml: string | WechatWebhookEncryptPayload): Promise<WechatMessageDecryptResult> {
-    const { iv, key, parser } = this.options;
-    const data = this.parse(xml);
-    const enc = Buffer.from(data.Encrypt, 'base64');
+	async decryptPayload(xml: string | WechatWebhookEncryptPayload): Promise<WechatMessageDecryptResult> {
+		const { iv, key, parser } = this.options;
+		const data = this.parse(xml);
+		const enc = Buffer.from(data.Encrypt, 'base64');
 
-    const { nonce, receiverId, data: content } = await this.decrypt(enc);
+		const { nonce, receiverId, data: content } = await this.decrypt(enc);
 
-    let parsed: any;
-    if (content.startsWith('<xml>')) {
-      parsed = parser.parse(content).xml;
-    }
+		let parsed: any;
+		if (content.startsWith('<xml>')) {
+			parsed = parser.parse(content).xml;
+		}
 
-    const out = {
-      nonce,
-      content,
-      receiverId,
-      payload: parsed,
-    };
+		const out = { nonce, content, receiverId, payload: parsed };
 
-    if (this.options.receiverId && out.receiverId !== this.options.receiverId) {
-      throw new Error(`Invalid appId: expected ${this.options.receiverId} got ${out.receiverId}`);
-    }
+		if (this.options.receiverId && out.receiverId !== this.options.receiverId) {
+			throw new Error(`Invalid appId: expected ${this.options.receiverId} got ${out.receiverId}`);
+		}
 
-    return out;
-  }
+		return out;
+	}
 }
 
 export interface WechatMessageDecryptResult<T = WechatWebhookPayload> {
-  nonce: string;
-  content: string;
-  receiverId: string;
-  payload?: T;
+	nonce: string;
+	content: string;
+	receiverId: string;
+	payload?: T;
 }
 
 export interface WechatWebhookHandlerOptions {
-  key: CryptoKey;
-  iv: Uint8Array;
-  parser: XMLParser;
-  builder: XMLBuilder;
-  token?: string;
-  receiverId?: string;
+	key: CryptoKey;
+	iv: Uint8Array;
+	parser: XMLParser;
+	builder: XMLBuilder;
+	token?: string;
+	receiverId?: string;
 }

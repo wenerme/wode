@@ -1,10 +1,10 @@
 export type * from './WxJsSdk';
 export { createJsSdkSignature } from './createJsSdkSignature';
 export {
-  type BuildAuthorizeUrlOptions,
-  buildAuthorizeUrl,
-  buildOfficialAccountProfileUrl,
-  buildShowQrcodeUrl,
+	type BuildAuthorizeUrlOptions,
+	buildAuthorizeUrl,
+	buildOfficialAccountProfileUrl,
+	buildShowQrcodeUrl,
 } from './buildUrl';
 export { isWechatMiniAppUserAgent, isWechatUserAgent } from './utils/useragent';
 

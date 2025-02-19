@@ -12,20 +12,20 @@ import utc from 'dayjs/plugin/utc';
 let _dayjs: typeof dayjs;
 
 export function getDayjs() {
-  return (_dayjs ||= _getDayjs());
+	return (_dayjs ||= _getDayjs());
 }
 
 function _getDayjs() {
-  dayjs.extend(relativeTime);
-  dayjs.extend(duration);
-  dayjs.extend(advancedFormat);
-  dayjs.extend(isToday);
-  dayjs.extend(dayOfYear);
-  dayjs.extend(quarterOfYear);
-  dayjs.extend(localeData);
-  dayjs.extend(utc);
-  dayjs.extend(timezone);
-  dayjs.locale('zh-cn');
-  dayjs.tz.setDefault('Asia/Shanghai');
-  return dayjs;
+	dayjs.extend(relativeTime);
+	dayjs.extend(duration);
+	dayjs.extend(advancedFormat);
+	dayjs.extend(isToday);
+	dayjs.extend(dayOfYear);
+	dayjs.extend(quarterOfYear);
+	dayjs.extend(localeData);
+	dayjs.extend(utc);
+	dayjs.extend(timezone);
+	dayjs.locale('zh-cn');
+	dayjs.tz.setDefault('Asia/Shanghai');
+	return dayjs;
 }

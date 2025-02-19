@@ -11,18 +11,18 @@ import { useInit } from 'common/components';
 import dayjs from 'dayjs';
 
 export const RootContext: React.FC<PropsWithChildren & { init?: Array<InitDef> }> = ({ children, init }) => {
-  useExposeDebug({ dayjs });
-  const { done } = useInit(init);
+	useExposeDebug({ dayjs });
+	const { done } = useInit(init);
 
-  if (!done) {
-    return <LoadingIndicator />;
-  }
+	if (!done) {
+		return <LoadingIndicator />;
+	}
 
-  return (
-    <>
-      <Toaster />
-      <DaisyTheme.Sidecar />
-      {children}
-    </>
-  );
+	return (
+		<>
+			<Toaster />
+			<DaisyTheme.Sidecar />
+			{children}
+		</>
+	);
 };

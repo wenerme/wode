@@ -4,40 +4,36 @@ import { mixin } from './mixin';
 export type Constructor<T = {}> = new (...args: any[]) => T;
 
 test('mixin', () => {
-  // @ts-ignore
-  class User extends mixin(BaseResource, createBarFields()) {}
+	// @ts-ignore
+	class User extends mixin(BaseResource, createBarFields()) {}
 
-  let usr = new User();
-  // type not working
-  // @ts-ignore
-  expect(usr.foo, 'foo');
-  expect(usr).toEqual({
-    foo: 'foo',
-    bar: 'bar',
-    id: '',
-  });
+	let usr = new User();
+	// type not working
+	// @ts-ignore
+	expect(usr.foo, 'foo');
+	expect(usr).toEqual({ foo: 'foo', bar: 'bar', id: '' });
 });
 
 class BaseResource {
-  id?: string = '';
+	id?: string = '';
 }
 
 function createBarFields() {
-  return <TBase extends Constructor>(Base: TBase) => {
-    // nested type not working
-    // @ts-ignore
-    class HasBarMixin extends mixin(Base, withFooFields) {
-      bar?: string = 'bar';
-    }
+	return <TBase extends Constructor>(Base: TBase) => {
+		// nested type not working
+		// @ts-ignore
+		class HasBarMixin extends mixin(Base, withFooFields) {
+			bar?: string = 'bar';
+		}
 
-    return HasBarMixin;
-  };
+		return HasBarMixin;
+	};
 }
 
 function withFooFields<TBase extends Constructor>(Base: TBase) {
-  class HasFieldFooMixin extends Base {
-    foo?: string = 'foo';
-  }
+	class HasFieldFooMixin extends Base {
+		foo?: string = 'foo';
+	}
 
-  return HasFieldFooMixin;
+	return HasFieldFooMixin;
 }

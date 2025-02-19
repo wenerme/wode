@@ -15,26 +15,26 @@ import 'dayjs/locale/zh-tw';
 import React from 'react';
 
 export const EnvironmentInit = defineInit({
-  name: 'Environment',
-  onInit: () => {
-    // avoid potential dependency
-    window.React ||= React;
-  },
+	name: 'Environment',
+	onInit: () => {
+		// avoid potential dependency
+		window.React ||= React;
+	},
 });
 
 export const DayJSInit = defineInit({
-  name: 'DayJS',
-  onInit: () => {
-    dayjs.extend(relativeTime);
-    dayjs.extend(duration);
-    dayjs.extend(advancedFormat);
-    dayjs.extend(isToday);
-    dayjs.extend(dayOfYear);
-    // dayjs.extend(quarterOfYear);
-    // dayjs.extend(localeData);
-    dayjs.extend(utc);
-    dayjs.extend(timezone);
-    dayjs.locale('zh-cn');
-    dayjs.tz.setDefault('Asia/Shanghai');
-  },
+	name: 'DayJS',
+	onInit: () => {
+		dayjs.extend(relativeTime);
+		dayjs.extend(duration);
+		dayjs.extend(advancedFormat);
+		dayjs.extend(isToday);
+		dayjs.extend(dayOfYear);
+		// dayjs.extend(quarterOfYear);
+		// dayjs.extend(localeData);
+		dayjs.extend(utc);
+		dayjs.extend(timezone);
+		dayjs.locale('zh-cn');
+		dayjs.tz.setDefault('Asia/Shanghai');
+	},
 });

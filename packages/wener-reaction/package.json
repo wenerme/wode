@@ -1,117 +1,117 @@
 {
-  "name": "@wener/reaction",
-  "version": "1.2.25",
-  "type": "module",
-  "description": "React hooks, utils & reaction",
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com/wenerme/wode.git",
-    "directory": "packages/reaction"
-  },
-  "homepage": "https://github.com/wenerme/wode#readme",
-  "bugs": {
-    "url": "https://github.com/wenerme/wode/issues"
-  },
-  "license": "MIT",
-  "exports": {
-    ".": "./src/index.ts",
-    "./mutative/zustand": "./src/mutative/zustand/index.ts",
-    "./next": "./src/next/index.ts",
-    "./router": "./src/router/index.ts",
-    "./store": "./src/store/index.ts",
-    "./universal": "./src/universal.ts",
-    "./valtio": "./src/valtio/index.ts",
-    "./package.json": "./package.json"
-  },
-  "files": [
-    "Makefile",
-    "dist",
-    "lib",
-    "src",
-    "tsconfig.json"
-  ],
-  "keywords": [
-    "components",
-    "react",
-    "hooks",
-    "util",
-    "tool"
-  ],
-  "scripts": {
-    "build": "make build",
-    "clean": "make clean",
-    "dev": "make dev"
-  },
-  "peerDependencies": {
-    "react": ">=18",
-    "react-dom": ">=18",
-    "react-is": ">=18"
-  },
-  "peerDependenciesMeta": {
-    "react": {
-      "optional": true
-    },
-    "react-dom": {
-      "optional": true
-    },
-    "react-is": {
-      "optional": true
-    }
-  },
-  "dependencies": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "react-is": "^19.0.0"
-  },
-  "devDependencies": {
-    "@remix-run/router": "^1.21.0",
-    "@types/react": "^19.0.2",
-    "@types/react-dom": "^19.0.2",
-    "@types/react-is": "^19.0.0",
-    "@types/react-reconciler": "^0.28.9",
-    "@wener/utils": "workspace:^",
-    "clsx": "^2.1.1",
-    "mutative": "^1.1.0",
-    "next": "^15.1.3",
-    "react-reconciler": "^0.31.0",
-    "react-router-dom": "^7.1.1",
-    "valtio": "^2.1.2",
-    "zustand": "^5.0.2"
-  },
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org",
-    "access": "public",
-    "exports": {
-      ".": {
-        "types": "./src/index.ts",
-        "default": "./lib/index.js"
-      },
-      "./mutative/zustand": {
-        "types": "./src/mutative/zustand/index.ts",
-        "default": "./lib/mutative/zustand/index.js"
-      },
-      "./next": {
-        "types": "./src/next/index.ts",
-        "default": "./lib/next/index.js"
-      },
-      "./router": {
-        "types": "./src/router/index.ts",
-        "default": "./lib/router/index.js"
-      },
-      "./store": {
-        "types": "./src/store/index.ts",
-        "default": "./lib/store/index.js"
-      },
-      "./universal": {
-        "types": "./src/universal.ts",
-        "default": "./lib/universal.js"
-      },
-      "./valtio": {
-        "types": "./src/valtio/index.ts",
-        "default": "./lib/valtio/index.js"
-      },
-      "./package.json": "./package.json"
-    }
-  },
-  "sideEffects": false
+	"name": "@wener/reaction",
+	"version": "1.2.25",
+	"type": "module",
+	"description": "React hooks, utils & reaction",
+	"repository": {
+		"type": "git",
+		"url": "git+ssh://git@github.com/wenerme/wode.git",
+		"directory": "packages/reaction"
+	},
+	"homepage": "https://github.com/wenerme/wode#readme",
+	"bugs": {
+		"url": "https://github.com/wenerme/wode/issues"
+	},
+	"license": "MIT",
+	"exports": {
+		".": "./src/index.ts",
+		"./mutative/zustand": "./src/mutative/zustand/index.ts",
+		"./next": "./src/next/index.ts",
+		"./router": "./src/router/index.ts",
+		"./store": "./src/store/index.ts",
+		"./universal": "./src/universal.ts",
+		"./valtio": "./src/valtio/index.ts",
+		"./package.json": "./package.json"
+	},
+	"files": [
+		"Makefile",
+		"dist",
+		"lib",
+		"src",
+		"tsconfig.json"
+	],
+	"keywords": [
+		"components",
+		"react",
+		"hooks",
+		"util",
+		"tool"
+	],
+	"scripts": {
+		"build": "make build",
+		"clean": "make clean",
+		"dev": "make dev"
+	},
+	"peerDependencies": {
+		"react": ">=18",
+		"react-dom": ">=18",
+		"react-is": ">=18"
+	},
+	"peerDependenciesMeta": {
+		"react": {
+			"optional": true
+		},
+		"react-dom": {
+			"optional": true
+		},
+		"react-is": {
+			"optional": true
+		}
+	},
+	"dependencies": {
+		"react": "^19.0.0",
+		"react-dom": "^19.0.0",
+		"react-is": "^19.0.0"
+	},
+	"devDependencies": {
+		"@remix-run/router": "^1.22.0",
+		"@types/react": "^19.0.10",
+		"@types/react-dom": "^19.0.4",
+		"@types/react-is": "^19.0.0",
+		"@types/react-reconciler": "^0.28.9",
+		"@wener/utils": "workspace:^",
+		"clsx": "^2.1.1",
+		"mutative": "^1.1.0",
+		"next": "^15.1.7",
+		"react-reconciler": "^0.31.0",
+		"react-router-dom": "^7.2.0",
+		"valtio": "^2.1.3",
+		"zustand": "^5.0.3"
+	},
+	"publishConfig": {
+		"registry": "https://registry.npmjs.org",
+		"access": "public",
+		"exports": {
+			".": {
+				"types": "./src/index.ts",
+				"default": "./lib/index.js"
+			},
+			"./mutative/zustand": {
+				"types": "./src/mutative/zustand/index.ts",
+				"default": "./lib/mutative/zustand/index.js"
+			},
+			"./next": {
+				"types": "./src/next/index.ts",
+				"default": "./lib/next/index.js"
+			},
+			"./router": {
+				"types": "./src/router/index.ts",
+				"default": "./lib/router/index.js"
+			},
+			"./store": {
+				"types": "./src/store/index.ts",
+				"default": "./lib/store/index.js"
+			},
+			"./universal": {
+				"types": "./src/universal.ts",
+				"default": "./lib/universal.js"
+			},
+			"./valtio": {
+				"types": "./src/valtio/index.ts",
+				"default": "./lib/valtio/index.js"
+			},
+			"./package.json": "./package.json"
+		}
+	},
+	"sideEffects": false
 }

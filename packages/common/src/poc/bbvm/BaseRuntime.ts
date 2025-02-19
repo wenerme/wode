@@ -3,434 +3,431 @@ import { BasicVm } from '@/poc/bbvm/BBVM';
 import { Float32, Handler, Int32, Runtime } from './types';
 
 export class BaseRuntime {
-  vm!: BasicVm;
-  strings: (StringHdr | undefined)[] = [];
-  pages: (PageHdr | undefined)[] = [];
-  page: PageHdr;
-  resources: (ResHdr | undefined)[] = [];
-  files: (FileHdr | undefined)[] = [];
+	vm!: BasicVm;
+	strings: (StringHdr | undefined)[] = [];
+	pages: (PageHdr | undefined)[] = [];
+	page: PageHdr;
+	resources: (ResHdr | undefined)[] = [];
+	files: (FileHdr | undefined)[] = [];
 
-  memory: DataView = new DataView(new Uint8Array(0x10000).buffer);
-  ptr: Int32 = 0;
+	memory: DataView = new DataView(new Uint8Array(0x10000).buffer);
+	ptr: Int32 = 0;
 
-  random = createRandom(0);
+	random = createRandom(0);
 
-  cursor = {
-    line: 0,
-    row: 0,
-  };
+	cursor = { line: 0, row: 0 };
 
-  textEncoder = new TextEncoder();
-  textDecoder = new TextDecoder('gbk'); // default to gbk
+	textEncoder = new TextEncoder();
+	textDecoder = new TextDecoder('gbk'); // default to gbk
 
-  constructor() {
-    this.page = this.AllocPage();
-  }
+	constructor() {
+		this.page = this.AllocPage();
+	}
 
-  async reset(vm: BasicVm) {
-    this.vm = vm;
-    console.clear();
-  }
+	async reset(vm: BasicVm) {
+		this.vm = vm;
+		console.clear();
+	}
 
-  print(v: string) {
-    console.log(`> ${v}`);
-  }
+	print(v: string) {
+		console.log(`> ${v}`);
+	}
 
-  OpenFile(fd: Int32, fn: StringHdr, mode: Int32): void {}
+	OpenFile(fd: Int32, fn: StringHdr, mode: Int32): void {}
 
-  CloseFile(fd: Int32) {}
+	CloseFile(fd: Int32) {}
 
-  FileReadInt(fd: Int32, offset: Int32): Int32 {
-    return 0;
-  }
+	FileReadInt(fd: Int32, offset: Int32): Int32 {
+		return 0;
+	}
 
-  FileReadFloat(fd: Int32, offset: Int32): Float32 {
-    return 0;
-  }
+	FileReadFloat(fd: Int32, offset: Int32): Float32 {
+		return 0;
+	}
 
-  FileReadString(fd: Int32, offset: Int32, dst: StringHdr): void {}
+	FileReadString(fd: Int32, offset: Int32, dst: StringHdr): void {}
 
-  FileEof(fd: Int32): Int32 {
-    return 0;
-  }
+	FileEof(fd: Int32): Int32 {
+		return 0;
+	}
 
-  FileLoc(fd: Int32): Int32 {
-    return 0;
-  }
+	FileLoc(fd: Int32): Int32 {
+		return 0;
+	}
 
-  FileLof(fd: Int32): Int32 {
-    return 0;
-  }
+	FileLof(fd: Int32): Int32 {
+		return 0;
+	}
 
-  FileSeek(fd: Int32, loc: Int32): void {}
+	FileSeek(fd: Int32, loc: Int32): void {}
 
-  FileWriteInt(fd: Int32, offset: Int32, v: Int32): void {}
+	FileWriteInt(fd: Int32, offset: Int32, v: Int32): void {}
 
-  FileWriteFloat(fd: Int32, offset: Int32, v: Float32): void {}
+	FileWriteFloat(fd: Int32, offset: Int32, v: Float32): void {}
 
-  FileWriteString(fd: Int32, offset: Int32, v: StringHdr): void {}
+	FileWriteString(fd: Int32, offset: Int32, v: StringHdr): void {}
 
-  DrawRectangle(page: PageHdr, left: Int32, top: Int32, right: Int32, bottom: Int32): void {}
+	DrawRectangle(page: PageHdr, left: Int32, top: Int32, right: Int32, bottom: Int32): void {}
 
-  DrawCircle(page: PageHdr, cx: Int32, cy: Int32, cr: Int32): void {}
+	DrawCircle(page: PageHdr, cx: Int32, cy: Int32, cr: Int32): void {}
 
-  PageCopyExt2(dst: PageHdr, src: PageHdr, x: Int32, y: Int32, w: Int32, h: Int32, cx: Int32, cy: Int32): void {}
+	PageCopyExt2(dst: PageHdr, src: PageHdr, x: Int32, y: Int32, w: Int32, h: Int32, cx: Int32, cy: Int32): void {}
 
-  FloatToInt(v: Float32): Int32 {
-    return Math.floor(v);
-  }
+	FloatToInt(v: Float32): Int32 {
+		return Math.floor(v);
+	}
 
-  IntToFloat(v: Float32): Float32 {
-    return v;
-  }
+	IntToFloat(v: Float32): Float32 {
+		return v;
+	}
 
-  AllocString(): StringHdr {
-    const id = this.strings.length;
-    const ctx = this;
-    let hdr = new StringHdr(id);
-    this.strings.push(hdr);
-    return hdr as StringHdr;
-  }
+	AllocString(): StringHdr {
+		const id = this.strings.length;
+		const ctx = this;
+		let hdr = new StringHdr(id);
+		this.strings.push(hdr);
+		return hdr as StringHdr;
+	}
 
-  StringToInt(hdr: StringHdr): Int32 {
-    return parseInt(hdr.value, 10);
-  }
+	StringToInt(hdr: StringHdr): Int32 {
+		return parseInt(hdr.value, 10);
+	}
 
-  IntToString(dst: StringHdr, v: Int32): void {
-    dst.value = v.toString();
-  }
+	IntToString(dst: StringHdr, v: Int32): void {
+		dst.value = v.toString();
+	}
 
-  StringCopy(dst: StringHdr, src: StringHdr): void {
-    dst.value = src.value;
-  }
+	StringCopy(dst: StringHdr, src: StringHdr): void {
+		dst.value = src.value;
+	}
 
-  StringConcat(a: StringHdr, b: StringHdr): void {
-    a.value += b.value;
-  }
+	StringConcat(a: StringHdr, b: StringHdr): void {
+		a.value += b.value;
+	}
+
+	StringLength(hdr: StringHdr): Int32 {
+		return hdr.value.length;
+	}
+
+	FreeString(hdr: StringHdr): void {
+		this.strings[hdr.id] = undefined;
+	}
 
-  StringLength(hdr: StringHdr): Int32 {
-    return hdr.value.length;
-  }
+	StringCompare(a: StringHdr, b: StringHdr): Int32 {
+		return a.value.localeCompare(b.value);
+	}
 
-  FreeString(hdr: StringHdr): void {
-    this.strings[hdr.id] = undefined;
-  }
+	IntToFloatToString(dst: StringHdr, v: Int32): void {
+		dst.value = v.toString();
+	}
 
-  StringCompare(a: StringHdr, b: StringHdr): Int32 {
-    return a.value.localeCompare(b.value);
-  }
+	StringToFloat(hdr: StringHdr): Float32 {
+		return parseFloat(hdr.value);
+	}
 
-  IntToFloatToString(dst: StringHdr, v: Int32): void {
-    dst.value = v.toString();
-  }
+	StringGetAscii(hdr: StringHdr, idx: Int32): Int32 {
+		return hdr.value.charCodeAt(idx);
+	}
 
-  StringToFloat(hdr: StringHdr): Float32 {
-    return parseFloat(hdr.value);
-  }
+	StringSetAscii(hdr: StringHdr, idx: Int32, v: Int32): void {
+		hdr.value = hdr.value.substr(0, idx) + String.fromCharCode(v) + hdr.value.substr(idx + 1);
+	}
 
-  StringGetAscii(hdr: StringHdr, idx: Int32): Int32 {
-    return hdr.value.charCodeAt(idx);
-  }
+	StringGet(hdr: StringHdr): string {
+		return hdr.value;
+	}
 
-  StringSetAscii(hdr: StringHdr, idx: Int32, v: Int32): void {
-    hdr.value = hdr.value.substr(0, idx) + String.fromCharCode(v) + hdr.value.substr(idx + 1);
-  }
+	StringSet(hdr: StringHdr, v: string): void {
+		hdr.value = v;
+	}
 
-  StringGet(hdr: StringHdr): string {
-    return hdr.value;
-  }
+	StringOf(hdr: Int32): StringHdr {
+		return this.strings[hdr] as StringHdr;
+	}
 
-  StringSet(hdr: StringHdr, v: string): void {
-    hdr.value = v;
-  }
+	Tick(): Int32 {
+		return 0;
+	}
 
-  StringOf(hdr: Int32): StringHdr {
-    return this.strings[hdr] as StringHdr;
-  }
+	Sin(a: Float32): Float32 {
+		return Math.sin(a);
+	}
 
-  Tick(): Int32 {
-    return 0;
-  }
+	Cos(a: Float32): Float32 {
+		return Math.cos(a);
+	}
 
-  Sin(a: Float32): Float32 {
-    return Math.sin(a);
-  }
+	Tan(a: Float32): Float32 {
+		return Math.tan(a);
+	}
 
-  Cos(a: Float32): Float32 {
-    return Math.cos(a);
-  }
+	Sqrt(a: Float32): Float32 {
+		return Math.sqrt(a);
+	}
+
+	IntAbs(a: Int32): Int32 {
+		return Math.abs(a);
+	}
+
+	FloatAbs(a: Float32): Float32 {
+		return Math.abs(a);
+	}
+
+	DataPtrSet(v: Int32): void {
+		// fixme
+		this.ptr = v;
+	}
 
-  Tan(a: Float32): Float32 {
-    return Math.tan(a);
-  }
+	Read(addr: Int32): Int32 {
+		return this.memory.getInt32(addr, true);
+	}
 
-  Sqrt(a: Float32): Float32 {
-    return Math.sqrt(a);
-  }
+	Write(addr: Int32, v: Int32): void {
+		this.memory.setInt32(addr, v, true);
+	}
+
+	GetEnv(): Int32 {
+		return 0;
+	}
+
+	StringLeft(dst: StringHdr, hdr: StringHdr, len: Int32): void {
+		dst.value = hdr.value.substr(0, len);
+	}
+
+	StringRight(dst: StringHdr, hdr: StringHdr, len: Int32): void {
+		dst.value = hdr.value.substr(-len);
+	}
+
+	StringMid(dst: StringHdr, hdr: StringHdr, idx: Int32, len: Int32): void {
+		dst.value = hdr.value.substr(idx, len);
+	}
+
+	StringFirstAscii(hdr: StringHdr): Int32 {
+		return hdr.value.charCodeAt(0);
+	}
+
+	StringFind(hdr: StringHdr, sub: StringHdr, offset: Int32): Int32 {
+		return hdr.value.indexOf(sub.value, offset);
+	}
+
+	VmTest(): void {}
+
+	Delay(ms: Int32): void {
+		// fixme
+	}
+
+	RandSeed(seed: Int32) {
+		this.random = createRandom(seed);
+	}
 
-  IntAbs(a: Int32): Int32 {
-    return Math.abs(a);
-  }
+	Rand() {
+		return this.random();
+	}
 
-  FloatAbs(a: Float32): Float32 {
-    return Math.abs(a);
-  }
+	IsKeyPressed(key: Int32): Int32 {
+		return 0;
+	}
 
-  DataPtrSet(v: Int32): void {
-    // fixme
-    this.ptr = v;
-  }
+	Clear() {}
 
-  Read(addr: Int32): Int32 {
-    return this.memory.getInt32(addr, true);
-  }
+	LocateCursor(line: Int32, row: Int32) {
+		this.cursor.line = line;
+		this.cursor.row = row;
+	}
 
-  Write(addr: Int32, v: Int32): void {
-    this.memory.setInt32(addr, v, true);
-  }
-
-  GetEnv(): Int32 {
-    return 0;
-  }
-
-  StringLeft(dst: StringHdr, hdr: StringHdr, len: Int32): void {
-    dst.value = hdr.value.substr(0, len);
-  }
-
-  StringRight(dst: StringHdr, hdr: StringHdr, len: Int32): void {
-    dst.value = hdr.value.substr(-len);
-  }
-
-  StringMid(dst: StringHdr, hdr: StringHdr, idx: Int32, len: Int32): void {
-    dst.value = hdr.value.substr(idx, len);
-  }
-
-  StringFirstAscii(hdr: StringHdr): Int32 {
-    return hdr.value.charCodeAt(0);
-  }
-
-  StringFind(hdr: StringHdr, sub: StringHdr, offset: Int32): Int32 {
-    return hdr.value.indexOf(sub.value, offset);
-  }
-
-  VmTest(): void {}
-
-  Delay(ms: Int32): void {
-    // fixme
-  }
-
-  RandSeed(seed: Int32) {
-    this.random = createRandom(seed);
-  }
+	WaitKey() {
+		return 0;
+	}
 
-  Rand() {
-    return this.random();
-  }
+	GetImageHeight() {
+		return 0;
+	}
 
-  IsKeyPressed(key: Int32): Int32 {
-    return 0;
-  }
+	GetImageWidth() {
+		return 0;
+	}
 
-  Clear() {}
+	InputKeyCode(dst: StringHdr) {}
 
-  LocateCursor(line: Int32, row: Int32) {
-    this.cursor.line = line;
-    this.cursor.row = row;
-  }
+	SetPen(page: PageHdr, style: Int32, wid: Int32, color: Int32) {
+		page.penStyle = style;
+		page.penWidth = wid;
+		page.penColor = color;
+	}
 
-  WaitKey() {
-    return 0;
-  }
+	MoveTo(page: PageHdr, x: Int32, y: Int32) {
+		page.penX = x;
+		page.penY = y;
+	}
 
-  GetImageHeight() {
-    return 0;
-  }
+	LineTo(page: PageHdr, x: Int32, y: Int32) {
+		page.penX = x;
+		page.penY = y;
+	}
 
-  GetImageWidth() {
-    return 0;
-  }
+	PageOf(hdr: Int32): PageHdr {
+		return this.pages[hdr] as PageHdr;
+	}
 
-  InputKeyCode(dst: StringHdr) {}
+	ResOf(hdr: Int32): ResHdr {
+		return this.resources[hdr] as ResHdr;
+	}
 
-  SetPen(page: PageHdr, style: Int32, wid: Int32, color: Int32) {
-    page.penStyle = style;
-    page.penWidth = wid;
-    page.penColor = color;
-  }
+	BytesToString(b: Uint8Array): string {
+		return this.textDecoder.decode(b);
+	}
 
-  MoveTo(page: PageHdr, x: Int32, y: Int32) {
-    page.penX = x;
-    page.penY = y;
-  }
+	StringToBytes(s: string): Uint8Array {
+		return this.textEncoder.encode(s);
+	}
 
-  LineTo(page: PageHdr, x: Int32, y: Int32) {
-    page.penX = x;
-    page.penY = y;
-  }
+	// SetLcd: (w: Int32, h: Int32) => void;
+	// AllocPage: () => PageHdr;
+	// FreePage: (hdr: PageHdr) => void;
+	// LoadImage: (fn: StringHdr, idx: Int32) => ResHdr;
+	SetLcd(w: Int32, h: Int32) {}
 
-  PageOf(hdr: Int32): PageHdr {
-    return this.pages[hdr] as PageHdr;
-  }
+	AllocPage(): PageHdr {
+		const id = this.pages.length;
+		const ctx = this;
+		let hdr = new PageHdr(id);
+		this.pages.push(hdr);
+		return hdr as PageHdr;
+	}
 
-  ResOf(hdr: Int32): ResHdr {
-    return this.resources[hdr] as ResHdr;
-  }
+	FreePage(hdr: PageHdr) {
+		hdr.free = true;
+		this.pages[hdr.id] = undefined;
+	}
 
-  BytesToString(b: Uint8Array): string {
-    return this.textDecoder.decode(b);
-  }
+	LoadImage(fn: StringHdr, idx: Int32): ResHdr {
+		const id = this.resources.length;
+		const ctx = this;
+		let hdr = new ResHdr(id);
+		this.resources.push(hdr);
+		return hdr as ResHdr;
+	}
 
-  StringToBytes(s: string): Uint8Array {
-    return this.textEncoder.encode(s);
-  }
+	SetFont(font: Int32) {}
 
-  // SetLcd: (w: Int32, h: Int32) => void;
-  // AllocPage: () => PageHdr;
-  // FreePage: (hdr: PageHdr) => void;
-  // LoadImage: (fn: StringHdr, idx: Int32) => ResHdr;
-  SetLcd(w: Int32, h: Int32) {}
+	SetColor(font: Int32, back: Int32, frame: Int32) {}
 
-  AllocPage(): PageHdr {
-    const id = this.pages.length;
-    const ctx = this;
-    let hdr = new PageHdr(id);
-    this.pages.push(hdr);
-    return hdr as PageHdr;
-  }
+	PixelLocateCursor(x: Int32, y: Int32) {}
 
-  FreePage(hdr: PageHdr) {
-    hdr.free = true;
-    this.pages[hdr.id] = undefined;
-  }
+	PageCopyExt(dst: ResHdr, src: ResHdr, x: Int32, y: Int32) {}
 
-  LoadImage(fn: StringHdr, idx: Int32): ResHdr {
-    const id = this.resources.length;
-    const ctx = this;
-    let hdr = new ResHdr(id);
-    this.resources.push(hdr);
-    return hdr as ResHdr;
-  }
+	SetBackgroundMode(mod: Int32) {}
 
-  SetFont(font: Int32) {}
+	SetBrush(page: PageHdr, style: Int32) {}
 
-  SetColor(font: Int32, back: Int32, frame: Int32) {}
+	FreeRes(hdr: ResHdr) {
+		hdr.free = true;
+		this.resources[hdr.id] = undefined;
+	}
 
-  PixelLocateCursor(x: Int32, y: Int32) {}
+	FlipPage(hdr: PageHdr) {
+		this.page = hdr;
+	}
 
-  PageCopyExt(dst: ResHdr, src: ResHdr, x: Int32, y: Int32) {}
+	PrintChar(v: Int32) {}
 
-  SetBackgroundMode(mod: Int32) {}
+	PageCopy(dst: PageHdr, src: PageHdr) {}
 
-  SetBrush(page: PageHdr, style: Int32) {}
+	PrintFloat(v: Float32) {}
 
-  FreeRes(hdr: ResHdr) {
-    hdr.free = true;
-    this.resources[hdr.id] = undefined;
-  }
+	InputInt() {
+		return 0;
+	}
 
-  FlipPage(hdr: PageHdr) {
-    this.page = hdr;
-  }
+	InputString(dst: StringHdr) {}
 
-  PrintChar(v: Int32) {}
+	InputFloat() {
+		return 0;
+	}
 
-  PageCopy(dst: PageHdr, src: PageHdr) {}
+	DataReadInt() {
+		return 0;
+	}
 
-  PrintFloat(v: Float32) {}
+	DataReadString(hdr: StringHdr) {}
 
-  InputInt() {
-    return 0;
-  }
+	DataReadFloat() {
+		return 0;
+	}
 
-  InputString(dst: StringHdr) {}
+	ShowPic(page: PageHdr, res: ResHdr, dx: Int32, dy: Int32, w: Int32, h: Int32, x: Int32, y: Int32, mode: Int32) {}
 
-  InputFloat() {
-    return 0;
-  }
+	PageFill(hdr: PageHdr, x: Int32, y: Int32, w: Int32, h: Int32, color: Int32) {}
 
-  DataReadInt() {
-    return 0;
-  }
+	PagePixel(hdr: PageHdr, x: Int32, y: Int32, color: Int32) {}
 
-  DataReadString(hdr: StringHdr) {}
+	PageReadPixel(hdr: PageHdr, x: Int32, y: Int32) {
+		return 0;
+	}
 
-  DataReadFloat() {
-    return 0;
-  }
+	pageOf(hdr: Int32): PageHdr {
+		return this.pages[hdr]!;
+	}
 
-  ShowPic(page: PageHdr, res: ResHdr, dx: Int32, dy: Int32, w: Int32, h: Int32, x: Int32, y: Int32, mode: Int32) {}
-
-  PageFill(hdr: PageHdr, x: Int32, y: Int32, w: Int32, h: Int32, color: Int32) {}
-
-  PagePixel(hdr: PageHdr, x: Int32, y: Int32, color: Int32) {}
-
-  PageReadPixel(hdr: PageHdr, x: Int32, y: Int32) {
-    return 0;
-  }
-
-  pageOf(hdr: Int32): PageHdr {
-    return this.pages[hdr]!;
-  }
-
-  strOf(hdr: Int32): StringHdr {
-    return this.strings[hdr]!;
-  }
+	strOf(hdr: Int32): StringHdr {
+		return this.strings[hdr]!;
+	}
 }
 
 function createRandom(seed: number | string = Date.now()) {
-  let s = typeof seed === 'string' ? 0 : (seed ?? 0);
-  if (typeof seed === 'string') {
-    let sum = 0;
-    for (let i = 0; i < seed.length; i++) {
-      sum += seed.charCodeAt(i);
-    }
-    s = sum;
-  }
+	let s = typeof seed === 'string' ? 0 : (seed ?? 0);
+	if (typeof seed === 'string') {
+		let sum = 0;
+		for (let i = 0; i < seed.length; i++) {
+			sum += seed.charCodeAt(i);
+		}
+		s = sum;
+	}
 
-  return () => {
-    const x = Math.sin(s++) * 10000;
-    return x - Math.floor(x);
-  };
+	return () => {
+		const x = Math.sin(s++) * 10000;
+		return x - Math.floor(x);
+	};
 }
 
 class Hdr extends Number {
-  constructor(id: number) {
-    super(id);
-  }
+	constructor(id: number) {
+		super(id);
+	}
 
-  get id(): Int32 {
-    return +this;
-  }
+	get id(): Int32 {
+		return +this;
+	}
 
-  free = false;
-  type: string = '';
+	free = false;
+	type: string = '';
 
-  access(reason?: string) {
-    if (this.free) {
-      throw new Error(`Access freed ${this.type} ${this.id} ${reason}`);
-    }
-  }
+	access(reason?: string) {
+		if (this.free) {
+			throw new Error(`Access freed ${this.type} ${this.id} ${reason}`);
+		}
+	}
 }
 
 class StringHdr extends Hdr {
-  type = 'String';
-  value: string = '';
+	type = 'String';
+	value: string = '';
 }
 
 class PageHdr extends Hdr {
-  type = 'Page';
-  brushStyle: Int32 = 0;
-  penX: Int32 = 0;
-  penY: Int32 = 0;
-  penStyle: Int32 = 0;
-  penWidth: Int32 = 0;
-  penColor: Int32 = 0;
+	type = 'Page';
+	brushStyle: Int32 = 0;
+	penX: Int32 = 0;
+	penY: Int32 = 0;
+	penStyle: Int32 = 0;
+	penWidth: Int32 = 0;
+	penColor: Int32 = 0;
 }
 
 class ResHdr extends Hdr {
-  type = 'Resource';
+	type = 'Resource';
 }
 
 class FileHdr extends Hdr {
-  type = 'File';
+	type = 'File';
 }

@@ -1,12 +1,12 @@
 import type { Constructor } from '@wener/utils';
 import { Field, ID, InputType, InterfaceType, ObjectType } from 'type-graphql';
 import {
-  HasAuditorRefNode,
-  HasCustomerRefNode,
-  HasOwnerRefNode,
-  HasSlugNode,
-  HasStateStatusNode,
-  HasVendorRefNode,
+	HasAuditorRefNode,
+	HasCustomerRefNode,
+	HasOwnerRefNode,
+	HasSlugNode,
+	HasStateStatusNode,
+	HasVendorRefNode,
 } from '../interface';
 import { HasEntityRefNode } from '../interface/HasEntityRefNode';
 import { HasTitleDescriptionNode } from '../interface/HasTitleDescriptionNode';
@@ -19,122 +19,122 @@ export { withDisplayOrderType } from './withDisplayOrderType';
 export { withCodeType } from './withCodeType';
 
 export function withTitleDescriptionType<TBase extends Constructor>(Base: TBase) {
-  @InterfaceType({ implements: HasTitleDescriptionNode })
-  @ObjectType({ implements: HasTitleDescriptionNode })
-  @InputType()
-  class HasTitleDescriptionMixinType extends Base {
-    @Field(() => String, { nullable: false })
-    title!: string;
+	@InterfaceType({ implements: HasTitleDescriptionNode })
+	@ObjectType({ implements: HasTitleDescriptionNode })
+	@InputType()
+	class HasTitleDescriptionMixinType extends Base {
+		@Field(() => String, { nullable: false })
+		title!: string;
 
-    @Field(() => String, { nullable: true })
-    description?: string;
-  }
+		@Field(() => String, { nullable: true })
+		description?: string;
+	}
 
-  return HasTitleDescriptionMixinType;
+	return HasTitleDescriptionMixinType;
 }
 
 export function withVendorRefType<TBase extends Constructor>(Base: TBase) {
-  @InterfaceType({ implements: HasVendorRefNode })
-  @ObjectType({ implements: HasVendorRefNode })
-  @InputType()
-  class HasVendorRefMixinType extends Base {
-    @Field(() => String, { nullable: true })
-    cid?: string;
+	@InterfaceType({ implements: HasVendorRefNode })
+	@ObjectType({ implements: HasVendorRefNode })
+	@InputType()
+	class HasVendorRefMixinType extends Base {
+		@Field(() => String, { nullable: true })
+		cid?: string;
 
-    @Field(() => String, { nullable: true })
-    rid?: string;
-  }
+		@Field(() => String, { nullable: true })
+		rid?: string;
+	}
 
-  return HasVendorRefMixinType;
+	return HasVendorRefMixinType;
 }
 
 export function withOwnerRefType<TBase extends Constructor>(Base: TBase) {
-  @InterfaceType({ implements: HasOwnerRefNode })
-  @ObjectType({ implements: HasOwnerRefNode })
-  @InputType()
-  class HasVendorRefMixinType extends Base {
-    @Field(() => ID, { nullable: true })
-    ownerId?: string;
-    @Field(() => String, { nullable: true })
-    ownerType?: string;
-    @Field(() => ID, { nullable: true })
-    ownerUserId?: string;
-  }
+	@InterfaceType({ implements: HasOwnerRefNode })
+	@ObjectType({ implements: HasOwnerRefNode })
+	@InputType()
+	class HasVendorRefMixinType extends Base {
+		@Field(() => ID, { nullable: true })
+		ownerId?: string;
+		@Field(() => String, { nullable: true })
+		ownerType?: string;
+		@Field(() => ID, { nullable: true })
+		ownerUserId?: string;
+	}
 
-  return HasVendorRefMixinType;
+	return HasVendorRefMixinType;
 }
 
 export function withAuditorRefType<TBase extends Constructor>(Base: TBase) {
-  @InterfaceType({ implements: HasAuditorRefNode })
-  @ObjectType({ implements: HasAuditorRefNode })
-  @InputType()
-  class HasAuditorRefMixinType extends Base {
-    @Field(() => ID, { nullable: true })
-    createdById?: string;
-    @Field(() => ID, { nullable: true })
-    updatedById?: string;
-    @Field(() => ID, { nullable: true })
-    deletedById?: string;
-  }
+	@InterfaceType({ implements: HasAuditorRefNode })
+	@ObjectType({ implements: HasAuditorRefNode })
+	@InputType()
+	class HasAuditorRefMixinType extends Base {
+		@Field(() => ID, { nullable: true })
+		createdById?: string;
+		@Field(() => ID, { nullable: true })
+		updatedById?: string;
+		@Field(() => ID, { nullable: true })
+		deletedById?: string;
+	}
 
-  return HasAuditorRefMixinType;
+	return HasAuditorRefMixinType;
 }
 
 export function withCustomerRefType<TBase extends Constructor>(Base: TBase) {
-  @ObjectType({ implements: [HasCustomerRefNode] })
-  @InterfaceType({ implements: [HasCustomerRefNode] })
-  @InputType()
-  class HasCustomerRefMixinType extends Base {
-    @Field(() => String, { nullable: true })
-    customerId?: string;
-    @Field(() => String, { nullable: true })
-    customerType?: string;
-    @Field(() => String, { nullable: true })
-    contactId?: string;
-    @Field(() => String, { nullable: true })
-    accountId?: string;
-  }
+	@ObjectType({ implements: [HasCustomerRefNode] })
+	@InterfaceType({ implements: [HasCustomerRefNode] })
+	@InputType()
+	class HasCustomerRefMixinType extends Base {
+		@Field(() => String, { nullable: true })
+		customerId?: string;
+		@Field(() => String, { nullable: true })
+		customerType?: string;
+		@Field(() => String, { nullable: true })
+		contactId?: string;
+		@Field(() => String, { nullable: true })
+		accountId?: string;
+	}
 
-  return HasCustomerRefMixinType;
+	return HasCustomerRefMixinType;
 }
 
 export function withStateStatusType<TBase extends Constructor>(Base: TBase) {
-  @ObjectType({ implements: [HasStateStatusNode] })
-  @InterfaceType({ implements: [HasStateStatusNode] })
-  @InputType()
-  class HasStateStatusMixinType extends Base {
-    @Field(() => String, { nullable: false })
-    state!: string;
-    @Field(() => String, { nullable: false })
-    status!: string;
-  }
+	@ObjectType({ implements: [HasStateStatusNode] })
+	@InterfaceType({ implements: [HasStateStatusNode] })
+	@InputType()
+	class HasStateStatusMixinType extends Base {
+		@Field(() => String, { nullable: false })
+		state!: string;
+		@Field(() => String, { nullable: false })
+		status!: string;
+	}
 
-  return HasStateStatusMixinType;
+	return HasStateStatusMixinType;
 }
 
 export function withEntityRefType<TBase extends Constructor>(Base: TBase) {
-  @InterfaceType({ implements: HasEntityRefNode })
-  @ObjectType({ implements: HasEntityRefNode })
-  @InputType()
-  class HasEntityRefMixinType extends Base {
-    @Field(() => ID, { nullable: true })
-    entityId?: string;
+	@InterfaceType({ implements: HasEntityRefNode })
+	@ObjectType({ implements: HasEntityRefNode })
+	@InputType()
+	class HasEntityRefMixinType extends Base {
+		@Field(() => ID, { nullable: true })
+		entityId?: string;
 
-    @Field(() => String, { nullable: true })
-    entityType?: string;
-  }
+		@Field(() => String, { nullable: true })
+		entityType?: string;
+	}
 
-  return HasEntityRefMixinType;
+	return HasEntityRefMixinType;
 }
 
 export function withSlugType<TBase extends Constructor>(Base: TBase) {
-  @InterfaceType({ implements: HasSlugNode })
-  @ObjectType({ implements: HasSlugNode })
-  @InputType()
-  class HasSlugMixinType extends Base {
-    @Field(() => ID, { nullable: true })
-    slug?: string;
-  }
+	@InterfaceType({ implements: HasSlugNode })
+	@ObjectType({ implements: HasSlugNode })
+	@InputType()
+	class HasSlugMixinType extends Base {
+		@Field(() => ID, { nullable: true })
+		slug?: string;
+	}
 
-  return HasSlugMixinType;
+	return HasSlugMixinType;
 }

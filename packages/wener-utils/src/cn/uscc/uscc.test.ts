@@ -4,13 +4,13 @@ import { Mod31 } from './Mod31';
 import { USCC } from './USCC';
 
 test('uscc', () => {
-  let cs = Mod31;
+	let cs = Mod31;
 
-  // 阿里云计算
-  expect(cs.validate('91330106673959654P')).toBeTruthy();
-  expect(cs.compute('91330106673959654')).toBe('P');
+	// 阿里云计算
+	expect(cs.validate('91330106673959654P')).toBeTruthy();
+	expect(cs.compute('91330106673959654')).toBe('P');
 
-  expect(isUSCC('91330106673959654P')).toBeTruthy();
+	expect(isUSCC('91330106673959654P')).toBeTruthy();
 
-  console.log(USCC.parse('91330106673959654P'));
+	console.log(USCC.parse('91330106673959654P'));
 });

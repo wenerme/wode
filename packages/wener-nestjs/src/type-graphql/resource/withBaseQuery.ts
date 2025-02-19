@@ -9,50 +9,41 @@ import type { BaseEntityResolverConstructor } from './createBaseEntityResolver';
 import { ListQueryInput } from './ListQueryInput';
 
 export function withBaseQuery<TBase extends BaseEntityResolverConstructor<any, any, any>>(Base: TBase) {
-  @Injectable()
-  @Resolver(Base.ObjectType)
-  class BaseQuery extends Base {
-    @Authorized()
-    @Query(() => Base.ListPayloadType, {
-      name: `find${Base.ObjectName}`,
-    })
-    async findAll(
-      @Arg('query', () => ListQueryInput, {
-        nullable: true,
-        defaultValue: {},
-      })
-      input: ListQueryInput,
-      @Info() info: GraphQLResolveInfo,
-    ) {
-      const fields =
-        info.fieldNodes[0].selectionSet?.selections.map((selection) => (selection as any).name.value) || [];
-      let includeTotal = fields.includes('total');
-      let includeData = fields.includes('data');
-      const { total, data } = await this.svc.findAllEntity({
-        count: includeTotal,
-        find: includeData,
-        ...input,
-      });
+	@Injectable()
+	@Resolver(Base.ObjectType)
+	class BaseQuery extends Base {
+		@Authorized()
+		@Query(() => Base.ListPayloadType, { name: `find${Base.ObjectName}` })
+		async findAll(
+			@Arg('query', () => ListQueryInput, { nullable: true, defaultValue: {} })
+			input: ListQueryInput,
+			@Info() info: GraphQLResolveInfo,
+		) {
+			const fields =
+				info.fieldNodes[0].selectionSet?.selections.map((selection) => (selection as any).name.value) || [];
+			let includeTotal = fields.includes('total');
+			let includeData = fields.includes('data');
+			const { total, data } = await this.svc.findAllEntity({ count: includeTotal, find: includeData, ...input });
 
-      return { total, data };
-    }
+			return { total, data };
+		}
 
-    @Authorized()
-    @Query(() => Base.ObjectType, { name: `get${Base.ObjectName}` })
-    async get(@Args(() => GetResourceArgs) args: GetResourceArgs, @Ctx() ctx: any) {
-      return this.svc.get(args);
-    }
+		@Authorized()
+		@Query(() => Base.ObjectType, { name: `get${Base.ObjectName}` })
+		async get(@Args(() => GetResourceArgs) args: GetResourceArgs, @Ctx() ctx: any) {
+			return this.svc.get(args);
+		}
 
-    @FieldResolver(() => GraphQLJSONScalar, { nullable: true })
-    attributes(@Root() root: any, @Args(() => JSONArgs) args: JSONArgs) {
-      return resolveGraphQLJSON((root as any)?.attributes, args);
-    }
+		@FieldResolver(() => GraphQLJSONScalar, { nullable: true })
+		attributes(@Root() root: any, @Args(() => JSONArgs) args: JSONArgs) {
+			return resolveGraphQLJSON((root as any)?.attributes, args);
+		}
 
-    @FieldResolver(() => GraphQLJSONScalar, { nullable: true })
-    properties(@Root() root: any, @Args(() => JSONArgs) args: JSONArgs) {
-      return resolveGraphQLJSON((root as any)?.properties, args);
-    }
-  }
+		@FieldResolver(() => GraphQLJSONScalar, { nullable: true })
+		properties(@Root() root: any, @Args(() => JSONArgs) args: JSONArgs) {
+			return resolveGraphQLJSON((root as any)?.properties, args);
+		}
+	}
 
-  return BaseQuery;
+	return BaseQuery;
 }

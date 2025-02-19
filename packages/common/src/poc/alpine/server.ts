@@ -16,58 +16,55 @@ import { ApkIndexService } from './service/ApkIndexService';
 await runAlpineApiServer();
 
 export async function runAlpineApiServer() {
-  const { schema, providers } = await createTypeGraphSchema();
+	const { schema, providers } = await createTypeGraphSchema();
 
-  type Bindings = HttpBindings & {
-    /* ... */
-  };
-  const app = new Hono<{ Bindings: Bindings }>();
+	type Bindings = HttpBindings & {
+		/* ... */
+	};
+	const app = new Hono<{ Bindings: Bindings }>();
 
-  await loadEnvs();
+	await loadEnvs();
 
-  @Module({
-    imports: [
-      OrmModule.forRoot({
-        clientUrl: process.env.DB_DSN || process.env.DATABASE_DSN,
-        debug: parseBoolean(process.env.DATABASE_DEBUG),
-        entities: [ApkIndexEntity, ApkIndexPkgEntity],
-      }),
-      // OrmModule.forFeature([ApkIndexEntity, ApkIndexPkgEntity]),
-    ],
-    providers: [ApkIndexService, ...providers],
-  })
-  class AppModule {}
+	@Module({
+		imports: [
+			OrmModule.forRoot({
+				clientUrl: process.env.DB_DSN || process.env.DATABASE_DSN,
+				debug: parseBoolean(process.env.DATABASE_DEBUG),
+				entities: [ApkIndexEntity, ApkIndexPkgEntity],
+			}),
+			// OrmModule.forFeature([ApkIndexEntity, ApkIndexPkgEntity]),
+		],
+		providers: [ApkIndexService, ...providers],
+	})
+	class AppModule {}
 
-  const bootstrap = createBootstrap({
-    module: AppModule,
-    onBootstrap: () => {
-      console.log(`[AppModule] bootstrap`);
-    },
-  });
+	const bootstrap = createBootstrap({
+		module: AppModule,
+		onBootstrap: () => {
+			console.log(`[AppModule] bootstrap`);
+		},
+	});
 
-  function runContext<T>(f: () => MaybePromise<T>) {
-    return bootstrap().then(() => RequestContext.create(getEntityManager(), async () => Currents.run(f)));
-    // return RequestContext.createAsync(orm.em, async () => Currents.run(f));
-  }
+	function runContext<T>(f: () => MaybePromise<T>) {
+		return bootstrap().then(() => RequestContext.create(getEntityManager(), async () => Currents.run(f)));
+		// return RequestContext.createAsync(orm.em, async () => Currents.run(f));
+	}
 
-  const requestContext: MiddlewareHandler = (c, next) => {
-    return runContext(next);
-  };
+	const requestContext: MiddlewareHandler = (c, next) => {
+		return runContext(next);
+	};
 
-  await bootstrap();
+	await bootstrap();
 
-  const yoga = createYoga({
-    // schema: createGraphSchema().builder.toSchema(),
-    schema: schema,
-  });
-  app.use('/graphql', requestContext, (c) => {
-    return yoga(c.req.raw);
-  });
+	const yoga = createYoga({
+		// schema: createGraphSchema().builder.toSchema(),
+		schema: schema,
+	});
+	app.use('/graphql', requestContext, (c) => {
+		return yoga(c.req.raw);
+	});
 
-  app.use('*', serveStatic({ root: './public' }));
+	app.use('*', serveStatic({ root: './public' }));
 
-  await runServer({
-    app,
-    port: 8787,
-  });
+	await runServer({ app, port: 8787 });
 }

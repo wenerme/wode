@@ -13,11 +13,11 @@ export { applyListQuery } from './applyListQuery';
 export { applyResolveQuery } from './applyResolveQuery';
 
 export {
-  /**
-   * @deprecated
-   */
-  parseOrder,
-  type OrderRule,
+	/**
+	 * @deprecated
+	 */
+	parseOrder,
+	type OrderRule,
 } from './parseOrder';
 export { toKnexOrder } from './toKnexOrder';
 /**
@@ -28,9 +28,9 @@ export { hasEntityFeature } from './hasEntityFeature';
 
 export { BaseEntityService, type EntityServiceOptions } from './BaseEntityService';
 export {
-  resolveEntityContext,
-  type ResolveEntityContextOptions,
-  type ResolvedEntityContext,
+	resolveEntityContext,
+	type ResolveEntityContextOptions,
+	type ResolvedEntityContext,
 } from './resolveEntityContext';
 export * from './findAllEntity';
 export * from './resolveEntity';

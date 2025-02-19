@@ -7,13 +7,13 @@ import { CustomAutoEntityService } from '@/foundation/services/CustomAutoEntityS
 @Resolver(() => RelayNode)
 @Injectable()
 export class RelayNodeResolver {
-  constructor(@Inject(CustomAutoEntityService) private readonly es: CustomAutoEntityService) {}
+	constructor(@Inject(CustomAutoEntityService) private readonly es: CustomAutoEntityService) {}
 
-  @Authorized()
-  @Query(() => RelayNode)
-  async node(@Arg('id', () => ID) id: string) {
-    const { entity } = await this.es.resolveEntity({ id });
-    Errors.NotFound.check(entity);
-    return entity;
-  }
+	@Authorized()
+	@Query(() => RelayNode)
+	async node(@Arg('id', () => ID) id: string) {
+		const { entity } = await this.es.resolveEntity({ id });
+		Errors.NotFound.check(entity);
+		return entity;
+	}
 }

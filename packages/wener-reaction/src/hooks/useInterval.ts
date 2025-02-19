@@ -6,12 +6,12 @@ import { useEffect, useRef } from 'react';
  * @param interval 0 means disable
  */
 export function useInterval(handler: Function, interval: number) {
-  const ref = useRef<any>();
-  useEffect(() => {
-    if (!interval || interval < 0) {
-      return;
-    }
-    ref.current = setInterval(handler, interval);
-    return () => clearInterval(ref.current);
-  }, [interval]);
+	const ref = useRef<any>();
+	useEffect(() => {
+		if (!interval || interval < 0) {
+			return;
+		}
+		ref.current = setInterval(handler, interval);
+		return () => clearInterval(ref.current);
+	}, [interval]);
 }

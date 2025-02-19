@@ -3,15 +3,15 @@ import { BaseNode } from '../BaseNode';
 import { RelayNode } from '../relay';
 
 @InterfaceType({
-  implements: [BaseNode],
-  autoRegisterImplementations: false,
-  resolveType: (...args) => {
-    return HasDisplayOrderNode.resolveType(...args);
-  },
+	implements: [BaseNode],
+	autoRegisterImplementations: false,
+	resolveType: (...args) => {
+		return HasDisplayOrderNode.resolveType(...args);
+	},
 })
 export class HasDisplayOrderNode extends BaseNode {
-  static resolveType = RelayNode.resolveType;
+	static resolveType = RelayNode.resolveType;
 
-  @Field(() => Number)
-  displayOrder!: number;
+	@Field(() => Number)
+	displayOrder!: number;
 }

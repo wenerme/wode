@@ -1,6 +1,6 @@
 export type EntityClass<T> = Function & {
-  prototype: T;
+	prototype: T;
 
-  StateEntity?: EntityClass<any>;
-  StatusEntity?: EntityClass<any>;
+	StateEntity?: EntityClass<any>;
+	StatusEntity?: EntityClass<any>;
 };

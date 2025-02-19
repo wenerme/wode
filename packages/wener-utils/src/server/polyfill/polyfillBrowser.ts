@@ -11,7 +11,7 @@ import { polyfillJsDom } from './polyfillJsDom';
  * - `crypto`
  */
 export async function polyfillBrowser() {
-  await polyfillCrypto();
-  await polyfillFetch();
-  await polyfillJsDom();
+	await polyfillCrypto();
+	await polyfillFetch();
+	await polyfillJsDom();
 }

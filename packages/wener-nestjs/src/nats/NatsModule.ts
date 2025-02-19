@@ -10,54 +10,43 @@ export const NatsConn = NATS_CONNECTION;
 export type NatsConn = NatsConnection;
 
 export interface NatsModuleOptions {
-  connect?: (opts: Partial<ConnectionOptions>) => Promise<NatsConnection>;
-  options?: Partial<ConnectionOptions>;
+	connect?: (opts: Partial<ConnectionOptions>) => Promise<NatsConnection>;
+	options?: Partial<ConnectionOptions>;
 }
 
 const { ConfigurableModuleClass, MODULE_OPTIONS_TOKEN } = new ConfigurableModuleBuilder<NatsModuleOptions>()
-  .setExtras(
-    {
-      isGlobal: true,
-    },
-    (definition, extras) => ({
-      ...definition,
-      global: extras.isGlobal,
-    }),
-  )
-  .setClassMethodName('forRoot')
-  .build();
+	.setExtras({ isGlobal: true }, (definition, extras) => ({ ...definition, global: extras.isGlobal }))
+	.setClassMethodName('forRoot')
+	.build();
 
 @Module({
-  exports: [NATS_CONNECTION, NatsConn],
-  providers: [
-    {
-      provide: NatsConn,
-      useExisting: NATS_CONNECTION,
-    },
-    {
-      provide: NATS_CONNECTION,
-      async useFactory({ options = getNatsOptions(), connect = defaultConnect }: NatsModuleOptions = {}) {
-        log.log(
-          `connecting: ${Array.from(options.servers ?? [])
-            .flat()
-            .map((v) => maskUrl(v))}`,
-        );
-        const client = await connect(options);
-        log.log('connected');
-        return client;
-      },
-      inject: [{ token: MODULE_OPTIONS_TOKEN, optional: true }],
-    },
-  ],
+	exports: [NATS_CONNECTION, NatsConn],
+	providers: [
+		{ provide: NatsConn, useExisting: NATS_CONNECTION },
+		{
+			provide: NATS_CONNECTION,
+			async useFactory({ options = getNatsOptions(), connect = defaultConnect }: NatsModuleOptions = {}) {
+				log.log(
+					`connecting: ${Array.from(options.servers ?? [])
+						.flat()
+						.map((v) => maskUrl(v))}`,
+				);
+				const client = await connect(options);
+				log.log('connected');
+				return client;
+			},
+			inject: [{ token: MODULE_OPTIONS_TOKEN, optional: true }],
+		},
+	],
 })
 export class NatsModule extends ConfigurableModuleClass {}
 
 const log = new Logger(NatsModule.name);
 
 function maskUrl(s: string) {
-  if (!/^\w+:\/\//.test(s)) {
-    s = 'nats://' + s;
-  }
+	if (!/^\w+:\/\//.test(s)) {
+		s = 'nats://' + s;
+	}
 
-  return s.replace(/:\/\/.*@/, '://***:***@');
+	return s.replace(/:\/\/.*@/, '://***:***@');
 }

@@ -9,14 +9,9 @@ export function decrypt(s: string): string;
 export function decrypt(s: string | undefined): string | undefined;
 
 export function decrypt(s: string | undefined) {
-  if (!s) {
-    return s;
-  }
+	if (!s) {
+		return s;
+	}
 
-  return Utf8.stringify(
-    AES.decrypt(s, key, {
-      mode: ECB,
-      padding: Pkcs7,
-    }),
-  );
+	return Utf8.stringify(AES.decrypt(s, key, { mode: ECB, padding: Pkcs7 }));
 }

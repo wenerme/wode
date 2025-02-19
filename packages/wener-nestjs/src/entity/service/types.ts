@@ -4,23 +4,23 @@
  * @$id: ResolveEntityRequest
  */
 export interface ResolveEntityRequest {
-  // tid, cid, rid, sid
+	// tid, cid, rid, sid
 
-  id?: string;
-  uid?: string;
-  eid?: string;
-  cid?: string;
-  rid?: string;
-  select?: string[];
-  include?: string[];
-  deleted?: boolean;
+	id?: string;
+	uid?: string;
+	eid?: string;
+	cid?: string;
+	rid?: string;
+	select?: string[];
+	include?: string[];
+	deleted?: boolean;
 }
 
 /**
  * @$id: GetEntityRequest
  */
 export interface GetEntityRequest extends HasSelection, HasFilter {
-  id: string;
+	id: string;
 }
 
 /**
@@ -39,55 +39,55 @@ export interface UndeleteEntityRequest extends GetEntityRequest {}
 export interface PurgeEntityRequest extends GetEntityRequest {}
 
 interface ModifyEntityRequest<T> extends GetEntityRequest {
-  data: T;
+	data: T;
 }
 
 interface ActionResponse<T = any> {
-  status?: number;
-  code?: string | number;
-  message?: string;
-  detail?: Record<string, any>;
-  data?: T;
-  metadata?: Record<string, any>;
+	status?: number;
+	code?: string | number;
+	message?: string;
+	detail?: Record<string, any>;
+	data?: T;
+	metadata?: Record<string, any>;
 }
 
 export interface GeneralActionResponse {
-  status?: number;
-  code?: string | number;
-  message?: string;
-  detail?: Record<string, any>;
-  data?: any;
-  metadata?: Record<string, any>;
+	status?: number;
+	code?: string | number;
+	message?: string;
+	detail?: Record<string, any>;
+	data?: any;
+	metadata?: Record<string, any>;
 }
 
 interface HasOnConflict {
-  onConflictFields?: string[];
-  onConflictAction?: 'ignore' | 'merge';
-  onConflictMergeFields?: string[];
-  onConflictExcludeFields?: string[];
+	onConflictFields?: string[];
+	onConflictAction?: 'ignore' | 'merge';
+	onConflictMergeFields?: string[];
+	onConflictExcludeFields?: string[];
 }
 
 interface HasPagination {
-  pageSize?: number;
-  pageIndex?: number;
-  pageNumber?: number;
-  limit?: number;
-  offset?: number;
-  order?: string[];
+	pageSize?: number;
+	pageIndex?: number;
+	pageNumber?: number;
+	limit?: number;
+	offset?: number;
+	order?: string[];
 }
 
 interface HasFilter {
-  ids?: string[];
-  search?: string;
-  filter?: string;
-  filters?: string[];
-  deleted?: boolean;
+	ids?: string[];
+	search?: string;
+	filter?: string;
+	filters?: string[];
+	deleted?: boolean;
 }
 
 interface HasSelection {
-  include?: string[];
-  exclude?: string[];
-  select?: string[];
+	include?: string[];
+	exclude?: string[];
+	select?: string[];
 }
 
 /**
@@ -99,8 +99,8 @@ export interface ListEntityRequest extends HasPagination, HasFilter, HasSelectio
  * @$id: ListEntityResponse
  */
 export interface ListEntityResponse<T = any> {
-  data: T[];
-  total: number;
+	data: T[];
+	total: number;
 }
 
 /**
@@ -112,19 +112,19 @@ export interface CountEntityRequest extends HasFilter {}
  * @$id: SetStateRequest
  */
 export interface SetStateRequest extends GetEntityRequest {
-  state: string;
-  status?: string;
-  comment?: string;
-  metadata?: Record<string, any>;
+	state: string;
+	status?: string;
+	comment?: string;
+	metadata?: Record<string, any>;
 }
 
 export interface SetStateResponse extends GeneralActionResponse {}
 
 export interface CreateEntityRequest<T = any> extends ModifyEntityRequest<T>, GetEntityRequest, HasOnConflict {
-  // returning?: boolean;
-  // extends ModifyEntityRequest<T> 会导致类型过于复杂
-  // data: T;
-  upsert?: boolean;
+	// returning?: boolean;
+	// extends ModifyEntityRequest<T> 会导致类型过于复杂
+	// data: T;
+	upsert?: boolean;
 }
 
 /**
@@ -147,7 +147,7 @@ export interface PatchEntityRequest<T = any> extends ModifyEntityRequest<T> {}
 export interface PatchAnyEntityRequest extends PatchEntityRequest<any> {}
 
 export interface ImportEntityRequest<T = any> extends HasOnConflict {
-  data: T[];
+	data: T[];
 }
 
 /**
@@ -156,15 +156,15 @@ export interface ImportEntityRequest<T = any> extends HasOnConflict {
 export interface ImportAnyEntityRequest extends ImportEntityRequest<any> {}
 
 export interface ImportEntityResponse {
-  total: number;
+	total: number;
 }
 
 /**
  * @$id: AssignOwnerRequest
  */
 export interface AssignOwnerRequest extends GetEntityRequest {
-  ownerId: string;
-  ownerType: string;
+	ownerId: string;
+	ownerType: string;
 }
 
 /**
@@ -176,7 +176,7 @@ export interface AssignOwnerResponse extends GeneralActionResponse {}
  * @$id: ClaimOwnerRequest
  */
 export interface ClaimOwnerRequest extends GetEntityRequest {
-  userId?: string;
+	userId?: string;
 }
 
 /**
@@ -198,10 +198,10 @@ export interface ReleaseOwnerResponse extends GeneralActionResponse {}
  * @$id: GeneralResponse
  */
 export interface GeneralResponse<T = any> {
-  status?: number;
-  code?: string | number;
-  message?: string;
-  detail?: Record<string, any>;
-  metadata?: Record<string, any>;
-  data?: T;
+	status?: number;
+	code?: string | number;
+	message?: string;
+	detail?: Record<string, any>;
+	metadata?: Record<string, any>;
+	data?: T;
 }

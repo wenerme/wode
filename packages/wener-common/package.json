@@ -1,75 +1,75 @@
 {
-  "name": "@wener/common",
-  "version": "1.0.3",
-  "type": "module",
-  "description": "",
-  "author": "",
-  "license": "MIT",
-  "exports": {
-    ".": "./src/index.ts",
-    "./cn": "./src/cn/index.ts",
-    "./jsonschema": "./src/jsonschema/index.ts",
-    "./meta": "./src/meta/index.ts",
-    "./password": "./src/password/index.ts",
-    "./search": "./src/search/index.ts",
-    "./package.json": "./package.json"
-  },
-  "files": [
-    "lib",
-    "lib.d.ts",
-    "libs",
-    "src"
-  ],
-  "keywords": [],
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "dependencies": {
-    "@wener/utils": "workspace:*",
-    "es-toolkit": "^1.31.0",
-    "ts-pattern": "^5.6.0"
-  },
-  "devDependencies": {
-    "@sinclair/typebox": "^0.34.13",
-    "@types/argon2-browser": "^1.18.4",
-    "@types/bcrypt": "^5.0.2",
-    "@types/bcryptjs": "^2.4.6",
-    "ajv": "^8.17.1",
-    "ajv-formats": "^3.0.1",
-    "ajv-i18n": "^4.2.0",
-    "ajv-keywords": "^5.1.0",
-    "argon2": "^0.41.1",
-    "argon2-browser": "^1.18.0",
-    "bcrypt": "^5.1.1",
-    "bcryptjs": "^2.4.3"
-  },
-  "publishConfig": {
-    "exports": {
-      ".": {
-        "types": "./src/index.ts",
-        "default": "./lib/index.js"
-      },
-      "./cn": {
-        "types": "./src/cn/index.ts",
-        "default": "./lib/cn/index.js"
-      },
-      "./jsonschema": {
-        "types": "./src/jsonschema/index.ts",
-        "default": "./lib/jsonschema/index.js"
-      },
-      "./meta": {
-        "types": "./src/meta/index.ts",
-        "default": "./lib/meta/index.js"
-      },
-      "./password": {
-        "types": "./src/password/index.ts",
-        "default": "./lib/password/index.js"
-      },
-      "./search": {
-        "types": "./src/search/index.ts",
-        "default": "./lib/search/index.js"
-      },
-      "./package.json": "./package.json"
-    }
-  }
+	"name": "@wener/common",
+	"version": "1.0.3",
+	"type": "module",
+	"description": "",
+	"author": "",
+	"license": "MIT",
+	"exports": {
+		".": "./src/index.ts",
+		"./cn": "./src/cn/index.ts",
+		"./jsonschema": "./src/jsonschema/index.ts",
+		"./meta": "./src/meta/index.ts",
+		"./password": "./src/password/index.ts",
+		"./search": "./src/search/index.ts",
+		"./package.json": "./package.json"
+	},
+	"files": [
+		"lib",
+		"lib.d.ts",
+		"libs",
+		"src"
+	],
+	"keywords": [],
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"dependencies": {
+		"@wener/utils": "workspace:*",
+		"es-toolkit": "^1.32.0",
+		"ts-pattern": "^5.6.2"
+	},
+	"devDependencies": {
+		"@sinclair/typebox": "^0.34.25",
+		"@types/argon2-browser": "^1.18.4",
+		"@types/bcrypt": "^5.0.2",
+		"@types/bcryptjs": "^2.4.6",
+		"ajv": "^8.17.1",
+		"ajv-formats": "^3.0.1",
+		"ajv-i18n": "^4.2.0",
+		"ajv-keywords": "^5.1.0",
+		"argon2": "^0.41.1",
+		"argon2-browser": "^1.18.0",
+		"bcrypt": "^5.1.1",
+		"bcryptjs": "^3.0.2"
+	},
+	"publishConfig": {
+		"exports": {
+			".": {
+				"types": "./src/index.ts",
+				"default": "./lib/index.js"
+			},
+			"./cn": {
+				"types": "./src/cn/index.ts",
+				"default": "./lib/cn/index.js"
+			},
+			"./jsonschema": {
+				"types": "./src/jsonschema/index.ts",
+				"default": "./lib/jsonschema/index.js"
+			},
+			"./meta": {
+				"types": "./src/meta/index.ts",
+				"default": "./lib/meta/index.js"
+			},
+			"./password": {
+				"types": "./src/password/index.ts",
+				"default": "./lib/password/index.js"
+			},
+			"./search": {
+				"types": "./src/search/index.ts",
+				"default": "./lib/search/index.js"
+			},
+			"./package.json": "./package.json"
+		}
+	}
 }

@@ -2,316 +2,278 @@
 
 /** @description Usage statistics for the completion request. */
 export type CompletionUsage = {
-  /** @description Number of tokens in the generated completion. */
-  completion_tokens: number;
-  /** @description Number of tokens in the prompt. */
-  prompt_tokens: number;
-  /** @description Total number of tokens used in the request (prompt + completion). */
-  total_tokens: number;
+	/** @description Number of tokens in the generated completion. */
+	completion_tokens: number;
+	/** @description Number of tokens in the prompt. */
+	prompt_tokens: number;
+	/** @description Total number of tokens used in the request (prompt + completion). */
+	total_tokens: number;
 };
 /** @description Represents a completion response from the API. Note: both the streamed and non-streamed response objects share the same shape (unlike the chat endpoint). */
 export type CreateCompletionResponse = {
-  /** @description A unique identifier for the completion. */
-  id: string;
-  /** @description The list of completion choices the model generated for the input prompt. */
-  choices: Array<{
-    /**
-     * @description The reason the model stopped generating tokens. This will be `stop` if the model hit a natural stop point or a provided stop sequence,
-     * `length` if the maximum number of tokens specified in the request was reached,
-     * or `content_filter` if content was omitted due to a flag from our content filters.
-     *
-     * @enum {string}
-     */
-    finish_reason: 'stop' | 'length' | 'content_filter';
-    index: number;
-    logprobs:
-      | {
-          text_offset?: number[];
-          token_logprobs?: number[];
-          tokens?: string[];
-          top_logprobs?: Array<Record<string, number>>;
-        }
-      | undefined;
-    text: string;
-  }>;
-  /** @description The Unix timestamp (in seconds) of when the completion was created. */
-  created: number;
-  /** @description The model used for completion. */
-  model: string;
-  /**
-   * @description This fingerprint represents the backend configuration that the model runs with.
-   *
-   * Can be used in conjunction with the `seed` request parameter to understand when backend changes have been made that might impact determinism.
-   */
-  system_fingerprint?: string;
-  /**
-   * @description The object type, which is always "text_completion"
-   * @enum {string}
-   */
-  object: 'text_completion';
-  usage?: CompletionUsage;
+	/** @description A unique identifier for the completion. */
+	id: string;
+	/** @description The list of completion choices the model generated for the input prompt. */
+	choices: Array<{
+		/**
+		 * @description The reason the model stopped generating tokens. This will be `stop` if the model hit a natural stop point or a provided stop sequence,
+		 * `length` if the maximum number of tokens specified in the request was reached,
+		 * or `content_filter` if content was omitted due to a flag from our content filters.
+		 *
+		 * @enum {string}
+		 */
+		finish_reason: 'stop' | 'length' | 'content_filter';
+		index: number;
+		logprobs:
+			| {
+					text_offset?: number[];
+					token_logprobs?: number[];
+					tokens?: string[];
+					top_logprobs?: Array<Record<string, number>>;
+			  }
+			| undefined;
+		text: string;
+	}>;
+	/** @description The Unix timestamp (in seconds) of when the completion was created. */
+	created: number;
+	/** @description The model used for completion. */
+	model: string;
+	/**
+	 * @description This fingerprint represents the backend configuration that the model runs with.
+	 *
+	 * Can be used in conjunction with the `seed` request parameter to understand when backend changes have been made that might impact determinism.
+	 */
+	system_fingerprint?: string;
+	/**
+	 * @description The object type, which is always "text_completion"
+	 * @enum {string}
+	 */
+	object: 'text_completion';
+	usage?: CompletionUsage;
 };
 
 export type CreateCompletionRequest = {
-  /** @description ID of the model to use. You can use the [List models](/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](/docs/models/overview) for descriptions of them. */
-  model:
-    | string
-    | (
-        | 'babbage-002'
-        | 'davinci-002'
-        | 'gpt-3.5-turbo-instruct'
-        | 'text-davinci-003'
-        | 'text-davinci-002'
-        | 'text-davinci-001'
-        | 'code-davinci-002'
-        | 'text-curie-001'
-        | 'text-babbage-001'
-        | 'text-ada-001'
-      );
-  /**
-   * @description The prompt(s) to generate completions for, encoded as a string, array of strings, array of tokens, or array of token arrays.
-   *
-   * Note that <|endoftext|> is the document separator that the model sees during training, so if a prompt is not specified the model will generate as if from the beginning of a new document.
-   *
-   * @default <|endoftext|>
-   */
-  prompt: string | string[] | number[] | number[][] | undefined;
-  /**
-   * @description Generates `best_of` completions server-side and returns the "best" (the one with the highest log probability per token). Results cannot be streamed.
-   *
-   * When used with `n`, `best_of` controls the number of candidate completions and `n` specifies how many to return – `best_of` must be greater than `n`.
-   *
-   * **Note:** Because this parameter generates many completions, it can quickly consume your token quota. Use carefully and ensure that you have reasonable settings for `max_tokens` and `stop`.
-   *
-   * @default 1
-   */
-  best_of?: number | undefined;
-  /**
-   * @description Echo back the prompt in addition to the completion
-   *
-   * @default false
-   */
-  echo?: boolean | undefined;
-  /**
-   * @description Number between -2.0 and 2.0. Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim.
-   *
-   * [See more information about frequency and presence penalties.](/docs/guides/gpt/parameter-details)
-   *
-   * @default 0
-   */
-  frequency_penalty?: number | undefined;
-  /**
-   * @description Modify the likelihood of specified tokens appearing in the completion.
-   *
-   * Accepts a JSON object that maps tokens (specified by their token ID in the GPT tokenizer) to an associated bias value from -100 to 100. You can use this [tokenizer tool](/tokenizer?view=bpe) (which works for both GPT-2 and GPT-3) to convert text to token IDs. Mathematically, the bias is added to the logits generated by the model prior to sampling. The exact effect will vary per model, but values between -1 and 1 should decrease or increase likelihood of selection; values like -100 or 100 should result in a ban or exclusive selection of the relevant token.
-   *
-   * As an example, you can pass `{"50256": -100}` to prevent the <|endoftext|> token from being generated.
-   *
-   * @default null
-   */
-  logit_bias?: Record<string, number> | undefined;
-  /**
-   * @description Include the log probabilities on the `logprobs` most likely tokens, as well the chosen tokens. For example, if `logprobs` is 5, the API will return a list of the 5 most likely tokens. The API will always return the `logprob` of the sampled token, so there may be up to `logprobs+1` elements in the response.
-   *
-   * The maximum value for `logprobs` is 5.
-   *
-   * @default null
-   */
-  logprobs?: number | undefined;
-  /**
-   * @description The maximum number of [tokens](/tokenizer) to generate in the completion.
-   *
-   * The token count of your prompt plus `max_tokens` cannot exceed the model's context length. [Example Python code](https://cookbook.openai.com/examples/how_to_count_tokens_with_tiktoken) for counting tokens.
-   *
-   * @default 16
-   * @example 16
-   */
-  max_tokens?: number | undefined;
-  /**
-   * @description How many completions to generate for each prompt.
-   *
-   * **Note:** Because this parameter generates many completions, it can quickly consume your token quota. Use carefully and ensure that you have reasonable settings for `max_tokens` and `stop`.
-   *
-   * @default 1
-   * @example 1
-   */
-  n?: number | undefined;
-  /**
-   * @description Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics.
-   *
-   * [See more information about frequency and presence penalties.](/docs/guides/gpt/parameter-details)
-   *
-   * @default 0
-   */
-  presence_penalty?: number | undefined;
-  /**
-   * @description If specified, our system will make a best effort to sample deterministically, such that repeated requests with the same `seed` and parameters should return the same result.
-   *
-   * Determinism is not guaranteed, and you should refer to the `system_fingerprint` response parameter to monitor changes in the backend.
-   */
-  seed?: number | undefined;
-  /**
-   * @description Up to 4 sequences where the API will stop generating further tokens. The returned text will not contain the stop sequence.
-   *
-   * @default null
-   */
-  stop?: (string | undefined) | string[] | undefined;
-  /**
-   * @description Whether to stream back partial progress. If set, tokens will be sent as data-only [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#Event_stream_format) as they become available, with the stream terminated by a `data: [DONE]` message. [Example Python code](https://cookbook.openai.com/examples/how_to_stream_completions).
-   *
-   * @default false
-   */
-  stream?: boolean | undefined;
-  /**
-   * @description The suffix that comes after a completion of inserted text.
-   * @default null
-   * @example test.
-   */
-  suffix?: string | undefined;
-  /**
-   * @description What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.
-   *
-   * We generally recommend altering this or `top_p` but not both.
-   *
-   * @default 1
-   * @example 1
-   */
-  temperature?: number | undefined;
-  /**
-   * @description An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.
-   *
-   * We generally recommend altering this or `temperature` but not both.
-   *
-   * @default 1
-   * @example 1
-   */
-  top_p?: number | undefined;
-  /**
-   * @description A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn more](/docs/guides/safety-best-practices/end-user-ids).
-   *
-   * @example user-1234
-   */
-  user?: string;
+	/** @description ID of the model to use. You can use the [List models](/docs/api-reference/models/list) API to see all of your available models, or see our [Model overview](/docs/models/overview) for descriptions of them. */
+	model:
+		| string
+		| (
+				| 'babbage-002'
+				| 'davinci-002'
+				| 'gpt-3.5-turbo-instruct'
+				| 'text-davinci-003'
+				| 'text-davinci-002'
+				| 'text-davinci-001'
+				| 'code-davinci-002'
+				| 'text-curie-001'
+				| 'text-babbage-001'
+				| 'text-ada-001'
+		  );
+	/**
+	 * @description The prompt(s) to generate completions for, encoded as a string, array of strings, array of tokens, or array of token arrays.
+	 *
+	 * Note that <|endoftext|> is the document separator that the model sees during training, so if a prompt is not specified the model will generate as if from the beginning of a new document.
+	 *
+	 * @default <|endoftext|>
+	 */
+	prompt: string | string[] | number[] | number[][] | undefined;
+	/**
+	 * @description Generates `best_of` completions server-side and returns the "best" (the one with the highest log probability per token). Results cannot be streamed.
+	 *
+	 * When used with `n`, `best_of` controls the number of candidate completions and `n` specifies how many to return – `best_of` must be greater than `n`.
+	 *
+	 * **Note:** Because this parameter generates many completions, it can quickly consume your token quota. Use carefully and ensure that you have reasonable settings for `max_tokens` and `stop`.
+	 *
+	 * @default 1
+	 */
+	best_of?: number | undefined;
+	/**
+	 * @description Echo back the prompt in addition to the completion
+	 *
+	 * @default false
+	 */
+	echo?: boolean | undefined;
+	/**
+	 * @description Number between -2.0 and 2.0. Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim.
+	 *
+	 * [See more information about frequency and presence penalties.](/docs/guides/gpt/parameter-details)
+	 *
+	 * @default 0
+	 */
+	frequency_penalty?: number | undefined;
+	/**
+	 * @description Modify the likelihood of specified tokens appearing in the completion.
+	 *
+	 * Accepts a JSON object that maps tokens (specified by their token ID in the GPT tokenizer) to an associated bias value from -100 to 100. You can use this [tokenizer tool](/tokenizer?view=bpe) (which works for both GPT-2 and GPT-3) to convert text to token IDs. Mathematically, the bias is added to the logits generated by the model prior to sampling. The exact effect will vary per model, but values between -1 and 1 should decrease or increase likelihood of selection; values like -100 or 100 should result in a ban or exclusive selection of the relevant token.
+	 *
+	 * As an example, you can pass `{"50256": -100}` to prevent the <|endoftext|> token from being generated.
+	 *
+	 * @default null
+	 */
+	logit_bias?: Record<string, number> | undefined;
+	/**
+	 * @description Include the log probabilities on the `logprobs` most likely tokens, as well the chosen tokens. For example, if `logprobs` is 5, the API will return a list of the 5 most likely tokens. The API will always return the `logprob` of the sampled token, so there may be up to `logprobs+1` elements in the response.
+	 *
+	 * The maximum value for `logprobs` is 5.
+	 *
+	 * @default null
+	 */
+	logprobs?: number | undefined;
+	/**
+	 * @description The maximum number of [tokens](/tokenizer) to generate in the completion.
+	 *
+	 * The token count of your prompt plus `max_tokens` cannot exceed the model's context length. [Example Python code](https://cookbook.openai.com/examples/how_to_count_tokens_with_tiktoken) for counting tokens.
+	 *
+	 * @default 16
+	 * @example 16
+	 */
+	max_tokens?: number | undefined;
+	/**
+	 * @description How many completions to generate for each prompt.
+	 *
+	 * **Note:** Because this parameter generates many completions, it can quickly consume your token quota. Use carefully and ensure that you have reasonable settings for `max_tokens` and `stop`.
+	 *
+	 * @default 1
+	 * @example 1
+	 */
+	n?: number | undefined;
+	/**
+	 * @description Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics.
+	 *
+	 * [See more information about frequency and presence penalties.](/docs/guides/gpt/parameter-details)
+	 *
+	 * @default 0
+	 */
+	presence_penalty?: number | undefined;
+	/**
+	 * @description If specified, our system will make a best effort to sample deterministically, such that repeated requests with the same `seed` and parameters should return the same result.
+	 *
+	 * Determinism is not guaranteed, and you should refer to the `system_fingerprint` response parameter to monitor changes in the backend.
+	 */
+	seed?: number | undefined;
+	/**
+	 * @description Up to 4 sequences where the API will stop generating further tokens. The returned text will not contain the stop sequence.
+	 *
+	 * @default null
+	 */
+	stop?: (string | undefined) | string[] | undefined;
+	/**
+	 * @description Whether to stream back partial progress. If set, tokens will be sent as data-only [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events#Event_stream_format) as they become available, with the stream terminated by a `data: [DONE]` message. [Example Python code](https://cookbook.openai.com/examples/how_to_stream_completions).
+	 *
+	 * @default false
+	 */
+	stream?: boolean | undefined;
+	/**
+	 * @description The suffix that comes after a completion of inserted text.
+	 * @default null
+	 * @example test.
+	 */
+	suffix?: string | undefined;
+	/**
+	 * @description What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.
+	 *
+	 * We generally recommend altering this or `top_p` but not both.
+	 *
+	 * @default 1
+	 * @example 1
+	 */
+	temperature?: number | undefined;
+	/**
+	 * @description An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.
+	 *
+	 * We generally recommend altering this or `temperature` but not both.
+	 *
+	 * @default 1
+	 * @example 1
+	 */
+	top_p?: number | undefined;
+	/**
+	 * @description A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn more](/docs/guides/safety-best-practices/end-user-ids).
+	 *
+	 * @example user-1234
+	 */
+	user?: string;
 };
 
-export type DeletedObject<T extends string = string> = {
-  id: string;
-  object: T;
-  deleted: true;
-};
+export type DeletedObject<T extends string = string> = { id: string; object: T; deleted: true };
 
-export type ListObject<T> = {
-  object: 'list';
-  data: T[];
-};
+export type ListObject<T> = { object: 'list'; data: T[] };
 
-export type EmbeddingObject = {
-  object: 'embedding';
-  embedding: number[];
-  index: number;
-};
+export type EmbeddingObject = { object: 'embedding'; embedding: number[]; index: number };
 
-export type ImageObject =
-  | {
-      url: string;
-      revised_prompt: string;
-    }
-  | {
-      b64_json: string;
-      revised_prompt: string;
-    };
+export type ImageObject = { url: string; revised_prompt: string } | { b64_json: string; revised_prompt: string };
 
-export type ModelObject = {
-  id: string;
-  object: 'model';
-  created: number;
-  owned_by: 'openai' | string;
-};
+export type ModelObject = { id: string; object: 'model'; created: number; owned_by: 'openai' | string };
 
 export type AssistantObject = {
-  id: string;
-  object: 'assistant';
-  created_at: number;
-  name: string | undefined;
-  description: string | undefined;
-  model: string;
-  instructions: string | undefined;
-  tools: Array<
-    | {
-        type: 'code_interpreter';
-      }
-    | {
-        type: 'retrieval';
-      }
-    | {
-        type: 'function';
-        function: {
-          name: string;
-          description: string;
-          parameters: Record<string, any>;
-        };
-      }
-  >;
-  file_ids: string[];
-  metadata: Record<string, any>;
+	id: string;
+	object: 'assistant';
+	created_at: number;
+	name: string | undefined;
+	description: string | undefined;
+	model: string;
+	instructions: string | undefined;
+	tools: Array<
+		| { type: 'code_interpreter' }
+		| { type: 'retrieval' }
+		| { type: 'function'; function: { name: string; description: string; parameters: Record<string, any> } }
+	>;
+	file_ids: string[];
+	metadata: Record<string, any>;
 };
 
 export interface ChatCompletionObjectChoiceMessage {
-  role: string;
-  content: string;
+	role: string;
+	content: string;
 }
 
 export interface ChatCompletionObjectChoice {
-  index: number;
-  message: ChatCompletionObjectChoiceMessage;
-  finish_reason: string;
+	index: number;
+	message: ChatCompletionObjectChoiceMessage;
+	finish_reason: string;
 }
 
 export interface ChatCompletionObjectUsage {
-  prompt_tokens: number;
-  completion_tokens: number;
-  total_tokens: number;
+	prompt_tokens: number;
+	completion_tokens: number;
+	total_tokens: number;
 }
 
 export interface ChatCompletionObject {
-  id: string;
-  object: 'chat.completion';
-  created: number;
-  model: string;
-  system_fingerprint: string;
-  choices: ChatCompletionObjectChoice[];
-  usage: ChatCompletionObjectUsage;
+	id: string;
+	object: 'chat.completion';
+	created: number;
+	model: string;
+	system_fingerprint: string;
+	choices: ChatCompletionObjectChoice[];
+	usage: ChatCompletionObjectUsage;
 }
 
 export interface ChatCompletionChunkObjectChoiceDelta {
-  role: string;
-  content: string;
-  /**
-   * @deprecated
-   */
-  function_call?: any;
-  tool_calls?: Array<{
-    index: number;
-    id: string;
-    type: string | 'function';
-    function: {
-      name: string;
-      arguments: string;
-    };
-  }>;
+	role: string;
+	content: string;
+	/**
+	 * @deprecated
+	 */
+	function_call?: any;
+	tool_calls?: Array<{
+		index: number;
+		id: string;
+		type: string | 'function';
+		function: { name: string; arguments: string };
+	}>;
 }
 
 export interface ChatCompletionChunkObjectChoice {
-  index: number;
-  delta: ChatCompletionChunkObjectChoiceDelta;
-  finish_reason: undefined | 'stop' | 'length' | 'content_filter' | 'tool_calls' | 'function_call';
+	index: number;
+	delta: ChatCompletionChunkObjectChoiceDelta;
+	finish_reason: undefined | 'stop' | 'length' | 'content_filter' | 'tool_calls' | 'function_call';
 }
 
 export interface ChatCompletionChunkObject {
-  id: string;
-  object: 'chat.completion.chunk';
-  created: number;
-  model: string;
-  system_fingerprint: string;
-  choices: ChatCompletionChunkObjectChoice[];
+	id: string;
+	object: 'chat.completion.chunk';
+	created: number;
+	model: string;
+	system_fingerprint: string;
+	choices: ChatCompletionChunkObjectChoice[];
 }

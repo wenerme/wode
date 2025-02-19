@@ -4,6 +4,6 @@ import { RelayMutationInput } from './relay';
 
 @InputType()
 export class GeneralRequestInput extends RelayMutationInput {
-  @Field(() => GraphQLJSON, { nullable: true })
-  data?: any;
+	@Field(() => GraphQLJSON, { nullable: true })
+	data?: any;
 }

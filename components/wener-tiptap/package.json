@@ -1,145 +1,154 @@
 {
-  "name": "@wener/tiptap",
-  "version": "1.0.0",
-  "type": "module",
-  "description": "Collection of useful tiptap extensions",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/wener/wode.git"
-  },
-  "author": "wener",
-  "license": "MIT",
-  "main": "dist/cjs/index.js",
-  "module": "lib/index.js",
-  "exports": {
-    ".": {
-      "types": "./src/index.ts",
-      "import": "./lib/index.js",
-      "require": "./dist/cjs/index.js"
-    },
-    "./src/*": "./src/*",
-    "./package.json": "./package.json"
-  },
-  "types": "src/index.ts",
-  "files": [
-    "dist",
-    "lib",
-    "rollup.config.js",
-    "src",
-    "tsconfig.json",
-    "types",
-    "README.md"
-  ],
-  "keywords": [
-    "tiptap",
-    "editor",
-    "extension",
-    "prosemirror"
-  ],
-  "scripts": {
-    "build": "make build",
-    "clean": "rm -rf lib/*",
-    "dev": "esbuild --watch --format=esm --outdir=lib/esm --target=chrome90 src/index.ts src/**/*.ts",
-    "lint": "tsc --noEmit",
-    "test": "make test"
-  },
-  "peerDependencies": {
-    "react": ">=18",
-    "react-dom": ">=18",
-    "y-prosemirror": ">=1",
-    "y-protocols": ">=1",
-    "yjs": ">=13"
-  },
-  "dependencies": {
-    "@tiptap/core": "^2.11.0",
-    "@tiptap/extension-blockquote": "^2.11.0",
-    "@tiptap/extension-bold": "^2.11.0",
-    "@tiptap/extension-bubble-menu": "^2.11.0",
-    "@tiptap/extension-bullet-list": "^2.11.0",
-    "@tiptap/extension-character-count": "^2.11.0",
-    "@tiptap/extension-code": "^2.11.0",
-    "@tiptap/extension-code-block": "^2.11.0",
-    "@tiptap/extension-collaboration": "^2.11.0",
-    "@tiptap/extension-collaboration-cursor": "^2.11.0",
-    "@tiptap/extension-color": "^2.11.0",
-    "@tiptap/extension-document": "^2.11.0",
-    "@tiptap/extension-dropcursor": "^2.11.0",
-    "@tiptap/extension-floating-menu": "^2.11.0",
-    "@tiptap/extension-focus": "^2.11.0",
-    "@tiptap/extension-font-family": "^2.11.0",
-    "@tiptap/extension-gapcursor": "^2.11.0",
-    "@tiptap/extension-hard-break": "^2.11.0",
-    "@tiptap/extension-heading": "^2.11.0",
-    "@tiptap/extension-highlight": "^2.11.0",
-    "@tiptap/extension-history": "^2.11.0",
-    "@tiptap/extension-horizontal-rule": "^2.11.0",
-    "@tiptap/extension-image": "^2.11.0",
-    "@tiptap/extension-italic": "^2.11.0",
-    "@tiptap/extension-link": "^2.11.0",
-    "@tiptap/extension-list-item": "^2.11.0",
-    "@tiptap/extension-mention": "^2.11.0",
-    "@tiptap/extension-ordered-list": "^2.11.0",
-    "@tiptap/extension-paragraph": "^2.11.0",
-    "@tiptap/extension-placeholder": "^2.11.0",
-    "@tiptap/extension-strike": "^2.11.0",
-    "@tiptap/extension-subscript": "^2.11.0",
-    "@tiptap/extension-superscript": "^2.11.0",
-    "@tiptap/extension-table": "^2.11.0",
-    "@tiptap/extension-table-cell": "^2.11.0",
-    "@tiptap/extension-table-header": "^2.11.0",
-    "@tiptap/extension-table-row": "^2.11.0",
-    "@tiptap/extension-task-item": "^2.11.0",
-    "@tiptap/extension-task-list": "^2.11.0",
-    "@tiptap/extension-text": "^2.11.0",
-    "@tiptap/extension-text-align": "^2.11.0",
-    "@tiptap/extension-text-style": "^2.11.0",
-    "@tiptap/extension-typography": "^2.11.0",
-    "@tiptap/extension-underline": "^2.11.0",
-    "@tiptap/html": "^2.11.0",
-    "@tiptap/react": "^2.11.0",
-    "@tiptap/starter-kit": "^2.11.0",
-    "@tiptap/suggestion": "^2.11.0",
-    "@wener/utils": "workspace:*",
-    "classnames": "^2.5.1",
-    "linkify-it": "^5.0.0",
-    "markdown-it": "^14.1.0",
-    "mdurl": "^2.0.0",
-    "prosemirror-markdown": "^1.13.1",
-    "prosemirror-model": "^1.24.1",
-    "prosemirror-state": "^1.4.3",
-    "prosemirror-transform": "^1.10.2",
-    "prosemirror-view": "^1.37.1",
-    "y-prosemirror": "^1.2.15",
-    "y-protocols": "^1.0.6",
-    "yjs": "^13.6.21"
-  },
-  "devDependencies": {
-    "@types/markdown-it": "^14.1.2",
-    "@types/react": "^19.0.2",
-    "@types/react-dom": "^19.0.2",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "typescript": "^5.7.2"
-  },
-  "publishConfig": {
-    "access": "public",
-    "main": "dist/wener-tiptap.cjs.js",
-    "umd": "dist/wener-tiptap.umd.js",
-    "module": "dist/wener-tiptap.esm.js",
-    "types": "lib/esm/index.d.ts"
-  },
-  "sideEffects": false,
-  "ava": {
-    "extensions": {
-      "ts": "module"
-    },
-    "nodeArguments": [
-      "--loader=tsx"
-    ]
-  },
-  "rollup": {},
-  "typedoc": {
-    "entryPoint": "./src/index.ts",
-    "readmeFile": "./README.md"
-  }
+	"name": "@wener/tiptap",
+	"version": "1.0.0",
+	"type": "module",
+	"description": "Collection of useful tiptap extensions",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/wener/wode.git"
+	},
+	"author": "wener",
+	"license": "MIT",
+	"main": "dist/cjs/index.js",
+	"module": "lib/index.js",
+	"exports": {
+		".": {
+			"types": "./src/index.ts",
+			"import": "./lib/index.js",
+			"require": "./dist/cjs/index.js"
+		},
+		"./src/*": "./src/*",
+		"./package.json": "./package.json"
+	},
+	"types": "src/index.ts",
+	"files": [
+		"dist",
+		"lib",
+		"rollup.config.js",
+		"src",
+		"tsconfig.json",
+		"types",
+		"README.md"
+	],
+	"keywords": [
+		"tiptap",
+		"editor",
+		"extension",
+		"prosemirror"
+	],
+	"scripts": {
+		"build": "make build",
+		"clean": "rm -rf lib/*",
+		"dev": "esbuild --watch --format=esm --outdir=lib/esm --target=chrome90 src/index.ts src/**/*.ts",
+		"lint": "tsc --noEmit",
+		"test": "make test"
+	},
+	"peerDependencies": {
+		"react": ">=18",
+		"react-dom": ">=18",
+		"y-prosemirror": ">=1",
+		"y-protocols": ">=1",
+		"yjs": ">=13"
+	},
+	"dependencies": {
+		"@tiptap/core": "^2.11.5",
+		"@tiptap/extension-blockquote": "^2.11.5",
+		"@tiptap/extension-bold": "^2.11.5",
+		"@tiptap/extension-bubble-menu": "^2.11.5",
+		"@tiptap/extension-bullet-list": "^2.11.5",
+		"@tiptap/extension-character-count": "^2.11.5",
+		"@tiptap/extension-code": "^2.11.5",
+		"@tiptap/extension-code-block": "^2.11.5",
+		"@tiptap/extension-collaboration": "^2.11.5",
+		"@tiptap/extension-collaboration-cursor": "^2.11.5",
+		"@tiptap/extension-color": "^2.11.5",
+		"@tiptap/extension-document": "^2.11.5",
+		"@tiptap/extension-dropcursor": "^2.11.5",
+		"@tiptap/extension-floating-menu": "^2.11.5",
+		"@tiptap/extension-focus": "^2.11.5",
+		"@tiptap/extension-font-family": "^2.11.5",
+		"@tiptap/extension-gapcursor": "^2.11.5",
+		"@tiptap/extension-hard-break": "^2.11.5",
+		"@tiptap/extension-heading": "^2.11.5",
+		"@tiptap/extension-highlight": "^2.11.5",
+		"@tiptap/extension-history": "^2.11.5",
+		"@tiptap/extension-horizontal-rule": "^2.11.5",
+		"@tiptap/extension-image": "^2.11.5",
+		"@tiptap/extension-italic": "^2.11.5",
+		"@tiptap/extension-link": "^2.11.5",
+		"@tiptap/extension-list-item": "^2.11.5",
+		"@tiptap/extension-mention": "^2.11.5",
+		"@tiptap/extension-ordered-list": "^2.11.5",
+		"@tiptap/extension-paragraph": "^2.11.5",
+		"@tiptap/extension-placeholder": "^2.11.5",
+		"@tiptap/extension-strike": "^2.11.5",
+		"@tiptap/extension-subscript": "^2.11.5",
+		"@tiptap/extension-superscript": "^2.11.5",
+		"@tiptap/extension-table": "^2.11.5",
+		"@tiptap/extension-table-cell": "^2.11.5",
+		"@tiptap/extension-table-header": "^2.11.5",
+		"@tiptap/extension-table-row": "^2.11.5",
+		"@tiptap/extension-task-item": "^2.11.5",
+		"@tiptap/extension-task-list": "^2.11.5",
+		"@tiptap/extension-text": "^2.11.5",
+		"@tiptap/extension-text-align": "^2.11.5",
+		"@tiptap/extension-text-style": "^2.11.5",
+		"@tiptap/extension-typography": "^2.11.5",
+		"@tiptap/extension-underline": "^2.11.5",
+		"@tiptap/html": "^2.11.5",
+		"@tiptap/react": "^2.11.5",
+		"@tiptap/starter-kit": "^2.11.5",
+		"@tiptap/suggestion": "^2.11.5",
+		"@wener/utils": "workspace:*",
+		"classnames": "^2.5.1",
+		"linkify-it": "^5.0.0",
+		"markdown-it": "^14.1.0",
+		"mdurl": "^2.0.0",
+		"prosemirror-markdown": "^1.13.1",
+		"prosemirror-model": "^1.24.1",
+		"prosemirror-state": "^1.4.3",
+		"prosemirror-transform": "^1.10.2",
+		"prosemirror-view": "^1.38.0",
+		"y-prosemirror": "^1.2.15",
+		"y-protocols": "^1.0.6",
+		"yjs": "^13.6.23"
+	},
+	"devDependencies": {
+		"@types/markdown-it": "^14.1.2",
+		"@types/react": "^19.0.10",
+		"@types/react-dom": "^19.0.4",
+		"react": "^19.0.0",
+		"react-dom": "^19.0.0",
+		"typescript": "^5.7.3"
+	},
+	"publishConfig": {
+		"access": "public",
+		"main": "dist/wener-tiptap.cjs.js",
+		"umd": "dist/wener-tiptap.umd.js",
+		"module": "dist/wener-tiptap.esm.js",
+		"types": "lib/esm/index.d.ts",
+		"exports": {
+			".": {
+				"types": "./src/index.ts",
+				"import": "./lib/index.js",
+				"require": "./dist/cjs/index.js"
+			},
+			"./src/*": "./src/*",
+			"./package.json": "./package.json"
+		}
+	},
+	"sideEffects": false,
+	"ava": {
+		"extensions": {
+			"ts": "module"
+		},
+		"nodeArguments": [
+			"--loader=tsx"
+		]
+	},
+	"rollup": {},
+	"typedoc": {
+		"entryPoint": "./src/index.ts",
+		"readmeFile": "./README.md"
+	}
 }

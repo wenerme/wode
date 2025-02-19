@@ -5,15 +5,15 @@ import { getRequestSubject } from './nats';
 import { requestNatsService } from './requestNatsService';
 
 export interface CreateNatsClientConnectionOptions {
-  nc: NatsConnection;
-  getSubject?: (req: ServerRequest) => string;
-  logger?: Logger;
+	nc: NatsConnection;
+	getSubject?: (req: ServerRequest) => string;
+	logger?: Logger;
 }
 
 export function createNatsClientConnection({
-  nc,
-  getSubject = getRequestSubject,
-  logger,
+	nc,
+	getSubject = getRequestSubject,
+	logger,
 }: CreateNatsClientConnectionOptions): ClientConnection {
-  return (req) => requestNatsService({ req, logger, subject: getSubject(req), nc });
+	return (req) => requestNatsService({ req, logger, subject: getSubject(req), nc });
 }

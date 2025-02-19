@@ -13,38 +13,38 @@ export { HasStateStatusNode } from './HasStateStatusNode';
 export { HasSlugNode } from './HasSlugNode';
 
 @InterfaceType({
-  implements: [BaseNode],
-  autoRegisterImplementations: false,
-  resolveType: (...args) => {
-    return HasVendorRefNode.resolveType(...args);
-  },
+	implements: [BaseNode],
+	autoRegisterImplementations: false,
+	resolveType: (...args) => {
+		return HasVendorRefNode.resolveType(...args);
+	},
 })
 export class HasVendorRefNode extends BaseNode {
-  @Field(() => String, { nullable: true })
-  cid?: string;
+	@Field(() => String, { nullable: true })
+	cid?: string;
 
-  @Field(() => String, { nullable: true })
-  rid?: string;
+	@Field(() => String, { nullable: true })
+	rid?: string;
 
-  static resolveType = RelayNode.resolveType;
+	static resolveType = RelayNode.resolveType;
 }
 
 @InterfaceType({
-  implements: [BaseNode],
-  autoRegisterImplementations: false,
-  resolveType: (...args) => {
-    return HasCustomerRefNode.resolveType(...args);
-  },
+	implements: [BaseNode],
+	autoRegisterImplementations: false,
+	resolveType: (...args) => {
+		return HasCustomerRefNode.resolveType(...args);
+	},
 })
 export class HasCustomerRefNode extends BaseNode {
-  @Field(() => ID, { nullable: true })
-  customerId?: string;
-  @Field(() => String, { nullable: true })
-  customerType?: string;
-  @Field(() => ID, { nullable: true })
-  contactId?: string;
-  @Field(() => ID, { nullable: true })
-  accountId?: string;
+	@Field(() => ID, { nullable: true })
+	customerId?: string;
+	@Field(() => String, { nullable: true })
+	customerType?: string;
+	@Field(() => ID, { nullable: true })
+	contactId?: string;
+	@Field(() => ID, { nullable: true })
+	accountId?: string;
 
-  static resolveType = RelayNode.resolveType;
+	static resolveType = RelayNode.resolveType;
 }

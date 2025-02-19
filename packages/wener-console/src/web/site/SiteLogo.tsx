@@ -4,7 +4,7 @@ import { useContextStore } from '../../hooks';
 import type { SitePreferences } from '../prefs';
 
 export const SiteLogo = (props: any) => {
-  const { useWatch } = useContextStore<SitePreferences>();
-  const logo = useWatch('site.logo');
-  return flexRender(logo || GrSystem, props, true);
+	const { useWatch } = useContextStore<SitePreferences>();
+	const logo = useWatch('site.logo');
+	return flexRender(logo || GrSystem, props, true);
 };

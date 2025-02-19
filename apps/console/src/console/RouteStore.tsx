@@ -6,30 +6,30 @@ import { createStore } from 'zustand';
 import { mutative } from 'zustand-mutative';
 
 interface RouteState {
-  // content
-  routes: RouteObject[];
-  // root router
-  router: Router;
-  // history: RemixHistory;
+	// content
+	routes: RouteObject[];
+	// root router
+	router: Router;
+	// history: RemixHistory;
 }
 
 function createRouteStore(initial: Partial<RouteState> = {}) {
-  return createStore(
-    mutative<RouteState>((setState, getState, store) => {
-      const routes = initial.routes ?? [
-        {
-          index: true,
-          element: <LoadingIndicator />,
-        },
-      ];
-      const router = createMemoryRouter(routes);
-      return {
-        routes,
-        router,
-        // history,
-      } as RouteState;
-    }),
-  );
+	return createStore(
+		mutative<RouteState>((setState, getState, store) => {
+			const routes = initial.routes ?? [
+				{
+					index: true,
+					element: <LoadingIndicator />,
+				},
+			];
+			const router = createMemoryRouter(routes);
+			return {
+				routes,
+				router,
+				// history,
+			} as RouteState;
+		}),
+	);
 }
 
 type RouteStore = ReturnType<typeof createRouteStore>;

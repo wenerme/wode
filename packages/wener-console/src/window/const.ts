@@ -1,7 +1,7 @@
 export function getWindowDragHandleClassname() {
-  return 'WindowDragHandle';
+	return 'WindowDragHandle';
 }
 
 export function getWindowDragCancelClassname() {
-  return 'WindowDragCancel';
+	return 'WindowDragCancel';
 }

@@ -34,7 +34,7 @@ export type MixinConstructor<T = {}> = new (...args: any[]) => T;
  * @typeParam R The type of the returned class.
  */
 export type MixinFunction<T extends MixinConstructor = MixinConstructor, R extends T = T & MixinConstructor> = (
-  Base: T,
+	Base: T,
 ) => R;
 
 /**
@@ -44,10 +44,7 @@ export type MixinFunction<T extends MixinConstructor = MixinConstructor, R exten
  * @typeParam M The type of the mixin functions.
  */
 export type MixinReturnValue<T extends MixinConstructor, M extends MixinFunction<T, any>[]> = UnionToIntersection<
-  | T
-  | {
-      [K in keyof M]: M[K] extends MixinFunction<any, infer U> ? U : never;
-    }[number]
+	T | { [K in keyof M]: M[K] extends MixinFunction<any, infer U> ? U : never }[number]
 >;
 
 /**
@@ -56,7 +53,7 @@ export type MixinReturnValue<T extends MixinConstructor, M extends MixinFunction
  * @typeParam F The type of the mixin function.
  */
 export type MixinInstance<F extends MixinFunction<any>> =
-  F extends MixinFunction<MixinConstructor<any>, infer R> ? InstanceType<R> : never;
+	F extends MixinFunction<MixinConstructor<any>, infer R> ? InstanceType<R> : never;
 
 /**
  * Applies the given mixins to the a common base class.
@@ -73,10 +70,10 @@ export type MixinInstance<F extends MixinFunction<any>> =
  * ```
  */
 export function mixin<T extends MixinConstructor, M extends MixinFunction<T, any>[]>(
-  Base: T,
-  ...mixins: M
+	Base: T,
+	...mixins: M
 ): MixinReturnValue<T, M> {
-  return mixins.reduce((mix, applyMixin) => applyMixin(mix), Base) as MixinReturnValue<T, M>;
+	return mixins.reduce((mix, applyMixin) => applyMixin(mix), Base) as MixinReturnValue<T, M>;
 }
 
 // https://github.com/1nVitr0/lib-ts-mixin-extended

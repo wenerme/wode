@@ -19,32 +19,32 @@ import { UserService } from '@/foundation/User/UserService';
 import { resolveProvides } from '@/server/utils/resolveProvides';
 
 function getInstanceProvides() {
-  return [
-    // System
-    SystemService,
-    SystemResolver,
-    SiteResolver,
-    PingResolver,
+	return [
+		// System
+		SystemService,
+		SystemResolver,
+		SiteResolver,
+		PingResolver,
 
-    // Tenant
-    TenantService,
-    TenantEntity,
+		// Tenant
+		TenantService,
+		TenantEntity,
 
-    // Auth & User
-    AuthService,
-    AuthResolver,
-    AccessTokenEntity,
-    AccessTokenService,
-    UserEntity,
-    UserService,
-    UserResolver,
-    // Resource
-    RelayNodeResolver,
-    CustomAutoEntityService,
-    EntityResolver,
-  ];
+		// Auth & User
+		AuthService,
+		AuthResolver,
+		AccessTokenEntity,
+		AccessTokenService,
+		UserEntity,
+		UserService,
+		UserResolver,
+		// Resource
+		RelayNodeResolver,
+		CustomAutoEntityService,
+		EntityResolver,
+	];
 }
 
 export function getInstanceGraphModule() {
-  return getGlobalStates('InstanceGraphModule', () => buildGraphModule(resolveProvides(getInstanceProvides())));
+	return getGlobalStates('InstanceGraphModule', () => buildGraphModule(resolveProvides(getInstanceProvides())));
 }

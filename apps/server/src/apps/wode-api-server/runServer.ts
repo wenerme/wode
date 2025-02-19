@@ -5,10 +5,10 @@ import { DataloaderType, MemoryCacheAdapter } from '@mikro-orm/core';
 import { defineConfig, type EntityManager } from '@mikro-orm/postgresql';
 import { Logger, Module } from '@nestjs/common';
 import {
-  createArgon2PasswordAlgorithm,
-  createBase64PasswordAlgorithm,
-  createBcryptPasswordAlgorithm,
-  Password,
+	createArgon2PasswordAlgorithm,
+	createBase64PasswordAlgorithm,
+	createBcryptPasswordAlgorithm,
+	Password,
 } from '@wener/common/password';
 import { createBootstrap } from '@wener/nestjs';
 import { createOpenAPIHono, runServer } from '@wener/nestjs/hono';
@@ -33,119 +33,108 @@ setupDayjs();
 const Instance = getInstanceGraphModule();
 
 export async function runDemoApiServer() {
-  const bootstrap = createBootstrap({
-    module: ApiServerModule,
-  });
+	const bootstrap = createBootstrap({ module: ApiServerModule });
 
-  await bootstrap();
+	await bootstrap();
 
-  let app = createOpenAPIHono();
-  let log = new Logger(runDemoApiServer.name);
-  const withContext = withHonoContext();
-  const withAuth = withHonoAuth({ log });
+	let app = createOpenAPIHono();
+	let log = new Logger(runDemoApiServer.name);
+	const withContext = withHonoContext();
+	const withAuth = withHonoAuth({ log });
 
-  if (isDev()) {
-    const em = getEntityManager<EntityManager>();
-    let knex = em.getKnex();
-    const {
-      current_user: currentUser,
-      version: version,
-      current_catalog: database,
-    } = (await knex.raw('select current_user, current_catalog, version()')).rows[0];
-    const searchPath = (await knex.raw('show search_path')).rows[0].search_path;
-    log.debug(`DB Conn: ${version} db=${database} current_user=${currentUser}, search_path=${searchPath}`);
-  }
+	if (isDev()) {
+		const em = getEntityManager<EntityManager>();
+		let knex = em.getKnex();
+		const {
+			current_user: currentUser,
+			version: version,
+			current_catalog: database,
+		} = (await knex.raw('select current_user, current_catalog, version()')).rows[0];
+		const searchPath = (await knex.raw('show search_path')).rows[0].search_path;
+		log.debug(`DB Conn: ${version} db=${database} current_user=${currentUser}, search_path=${searchPath}`);
+	}
 
-  Password.addAlgorithm(createBcryptPasswordAlgorithm());
-  Password.addAlgorithm(
-    createArgon2PasswordAlgorithm({
-      provide: () => import('argon2'),
-    }),
-  );
-  Password.setDefaultAlgorithm('argon2i');
+	Password.addAlgorithm(createBcryptPasswordAlgorithm());
+	Password.addAlgorithm(createArgon2PasswordAlgorithm({ provide: () => import('argon2') }));
+	Password.setDefaultAlgorithm('argon2i');
 
-  if (isDev()) {
-    Password.addAlgorithm(createBase64PasswordAlgorithm());
-  }
+	if (isDev()) {
+		Password.addAlgorithm(createBase64PasswordAlgorithm());
+	}
 
-  {
-    const yoga = createYogaServer();
+	{
+		const yoga = createYogaServer();
 
-    app.on(
-      ['POST', 'GET', 'OPTIONS'],
-      '/graphql/*',
-      cors({
-        origin: '*',
-        allowMethods: ['POST', 'GET', 'OPTIONS'],
-        allowHeaders: ['content-type', 'authorization'],
-        credentials: true,
-      }),
-      withContext,
-      withAuth,
-      serveYoga({ yoga, sseEndpoint: '/graphql/stream' }),
-    );
-  }
+		app.on(
+			['POST', 'GET', 'OPTIONS'],
+			'/graphql/*',
+			cors({
+				origin: '*',
+				allowMethods: ['POST', 'GET', 'OPTIONS'],
+				allowHeaders: ['content-type', 'authorization'],
+				credentials: true,
+			}),
+			withContext,
+			withAuth,
+			serveYoga({ yoga, sseEndpoint: '/graphql/stream' }),
+		);
+	}
 
-  app.on(['GET', 'HEAD', 'OPTIONS'], ['/proxy/:target{.+}'], async (c) => {
-    const target = c.req.param('target');
-    return serveExternalProxy({
-      context: c,
-      target: resolveProxyExternalUrl(target)?.url,
-      log,
-      cacheDir: getFileCacheDir(),
-    });
-  });
-  app.route('/', createBaseRoute());
-  app.use('*', serveStatic({ root: './public' }));
+	app.on(['GET', 'HEAD', 'OPTIONS'], ['/proxy/:target{.+}'], async (c) => {
+		const target = c.req.param('target');
+		return serveExternalProxy({
+			context: c,
+			target: resolveProxyExternalUrl(target)?.url,
+			log,
+			cacheDir: getFileCacheDir(),
+		});
+	});
+	app.route('/', createBaseRoute());
+	app.use('*', serveStatic({ root: './public' }));
 
-  await runServer({
-    app,
-    env: false,
-  });
+	await runServer({ app, env: false });
 }
 
 function getTempDir() {
-  // Windows: TEMP, TMP, %SystemRoot%\temp, %windir%\temp
-  // TMPDIR, TMP, TEMP, /tmp
-  return os.platform() === 'darwin' ? '/tmp' : os.tmpdir();
+	// Windows: TEMP, TMP, %SystemRoot%\temp, %windir%\temp
+	// TMPDIR, TMP, TEMP, /tmp
+	return os.platform() === 'darwin' ? '/tmp' : os.tmpdir();
 }
 
 function getFileCacheDir() {
-  return `${getTempDir()}/file/cache`;
+	return `${getTempDir()}/file/cache`;
 }
 
 @Module({
-  imports: [
-    OrmModule.forRootAsync({
-      useFactory: () => {
-        return defineConfig({
-          clientUrl: process.env.DATABASE_URL || process.env.DATABASE_DSN || process.env.DB_URL || process.env.DB_DSN,
-          entities: [...Instance.entities],
-          dataloader: DataloaderType.ALL,
-          // debug: isDev,
-          debug: parseBoolean(process.env.DB_DEBUG),
-          resultCache: {
-            adapter: MemoryCacheAdapter,
-            expiration: 1000, // 1s
-            global: 50,
-            options: {},
-          },
-        });
-      },
-    }),
-    Instance.module,
-  ],
-  providers: [
-    ContextGraphAuthChecker,
-    {
-      provide: GraphQLSchema,
-      useFactory: async () => {
-        return buildGraphQLSchema({
-          resolvers: Instance.resolvers,
-        });
-      },
-    },
-  ],
-  exports: [],
+	imports: [
+		OrmModule.forRootAsync({
+			useFactory: () => {
+				return defineConfig({
+					clientUrl: process.env.DATABASE_URL || process.env.DATABASE_DSN || process.env.DB_URL || process.env.DB_DSN,
+					entities: [...Instance.entities],
+					dataloader: DataloaderType.ALL,
+					// debug: isDev,
+					debug: parseBoolean(process.env.DB_DEBUG),
+					resultCache: {
+						adapter: MemoryCacheAdapter,
+						expiration: 1000, // 1s
+						global: 50,
+						options: {},
+					},
+				});
+			},
+		}),
+		Instance.module,
+	],
+	providers: [
+		ContextGraphAuthChecker,
+		{
+			provide: GraphQLSchema,
+			useFactory: async () => {
+				return buildGraphQLSchema({ resolvers: Instance.resolvers });
+			},
+		},
+	],
+	exports: [],
 })
 class ApiServerModule {}

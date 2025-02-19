@@ -1,54 +1,49 @@
 export interface Parser {
-  name: string;
-  title: string;
-  description?: string;
-  length?: number;
-  pattern?: RegExp;
-  parse?: (s: string) => any;
-  generate?: (o?: any) => string;
+	name: string;
+	title: string;
+	description?: string;
+	length?: number;
+	pattern?: RegExp;
+	parse?: (s: string) => any;
+	generate?: (o?: any) => string;
 
-  model?: ParseableModel<any>;
+	model?: ParseableModel<any>;
 
-  tags?: string[];
-  confidence?: number;
+	tags?: string[];
+	confidence?: number;
 }
 
 export interface ParseableModel<T extends abstract new (...args: any) => any> {
-  random(): InstanceType<T>;
+	random(): InstanceType<T>;
 
-  parse(s: string): InstanceType<T>;
+	parse(s: string): InstanceType<T>;
 
-  toString(): string;
+	toString(): string;
 }
 
 export interface ParseResult {
-  parser: Parser;
-  raw: string;
-  matched: boolean;
-  data?: any;
+	parser: Parser;
+	raw: string;
+	matched: boolean;
+	data?: any;
 }
 
 export function tryParse(raw: string, parsers: Parser[]): ParseResult[] {
-  raw = raw.trim();
-  const len = raw.length;
-  return parsers.map((parser) => {
-    const { name, length, pattern, parse } = parser;
-    if ((length && len !== length) || (pattern && !pattern.test(raw))) {
-      return { parser, raw, matched: false };
-    }
-    let data: any;
-    try {
-      data = parse?.(raw);
-    } catch (e) {
-      console.error(`failed to parse ${name}:`, e);
-    }
-    return {
-      parser,
-      raw,
-      matched: Boolean(data),
-      data,
-    };
-  });
+	raw = raw.trim();
+	const len = raw.length;
+	return parsers.map((parser) => {
+		const { name, length, pattern, parse } = parser;
+		if ((length && len !== length) || (pattern && !pattern.test(raw))) {
+			return { parser, raw, matched: false };
+		}
+		let data: any;
+		try {
+			data = parse?.(raw);
+		} catch (e) {
+			console.error(`failed to parse ${name}:`, e);
+		}
+		return { parser, raw, matched: Boolean(data), data };
+	});
 }
 
 // export function parseIt(raw: string): ParsedIt | undefined {

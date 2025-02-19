@@ -1,33 +1,33 @@
 export async function dumpResponse({
-  res,
-  url,
-  req,
-  log = console.log,
-  clone = true,
+	res,
+	url,
+	req,
+	log = console.log,
+	clone = true,
 }: {
-  res: Response;
-  url: string;
-  req: RequestInit;
-  log?: (s: string) => void;
-  clone?: boolean;
+	res: Response;
+	url: string;
+	req: RequestInit;
+	log?: (s: string) => void;
+	clone?: boolean;
 }) {
-  if (clone) {
-    res = res.clone();
-  }
-  let out = `<- ${res.status} ${res.statusText} ${req.method} ${url}
+	if (clone) {
+		res = res.clone();
+	}
+	let out = `<- ${res.status} ${res.statusText} ${req.method} ${url}
 ${Array.from(res.headers.entries())
-  .map(([k, v]) => `${k}: ${v}`)
-  .join('\n')}
+	.map(([k, v]) => `${k}: ${v}`)
+	.join('\n')}
    `;
-  let contentType = res.headers.get('content-type');
-  // TODO text/event-stream
-  if (contentType?.includes('application/json') || contentType?.includes('text/plain')) {
-    const body = await res.text();
-    out += `\n${body}\n`;
-    res = new Response(body, res);
-  }
+	let contentType = res.headers.get('content-type');
+	// TODO text/event-stream
+	if (contentType?.includes('application/json') || contentType?.includes('text/plain')) {
+		const body = await res.text();
+		out += `\n${body}\n`;
+		res = new Response(body, res);
+	}
 
-  log(out);
+	log(out);
 
-  return res;
+	return res;
 }

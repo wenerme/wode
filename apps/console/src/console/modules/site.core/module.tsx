@@ -1,5 +1,5 @@
 import type { DynamicModule } from '@wener/console/web';
 
 export default {
-  onModuleInit: (ctx) => {},
+	onModuleInit: (ctx) => {},
 } satisfies DynamicModule;

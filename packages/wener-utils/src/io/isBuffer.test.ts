@@ -4,6 +4,6 @@ import { classOf } from '../langs/classOf';
 import { isBuffer } from './isBuffer';
 
 test('isBuffer', () => {
-  expect(isBuffer(Buffer.from(''))).toBeTruthy();
-  expect(classOf(Buffer)).toBe('Function');
+	expect(isBuffer(Buffer.from(''))).toBeTruthy();
+	expect(classOf(Buffer)).toBe('Function');
 });

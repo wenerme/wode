@@ -4,11 +4,11 @@ import { SiteLogo } from '@wener/console/console';
 import { WenerLogo } from '@/instance/WenerLogo';
 
 export namespace Instance {
-  export const Provide: FC<PropsWithChildren> = ({ children }) => {
-    return (
-      <>
-        <ComponentProvider components={[{ provide: SiteLogo, Component: WenerLogo }]}>{children}</ComponentProvider>
-      </>
-    );
-  };
+	export const Provide: FC<PropsWithChildren> = ({ children }) => {
+		return (
+			<>
+				<ComponentProvider components={[{ provide: SiteLogo, Component: WenerLogo }]}>{children}</ComponentProvider>
+			</>
+		);
+	};
 }

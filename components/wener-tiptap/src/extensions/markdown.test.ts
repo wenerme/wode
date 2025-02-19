@@ -10,45 +10,45 @@ import { createMarkdownParser } from './parseMarkdown';
 let editor: Editor;
 
 test.before(async (t) => {
-  await polyfillJsDom();
-  t.truthy(document);
+	await polyfillJsDom();
+	t.truthy(document);
 
-  let $ele = document.createElement('div');
-  editor = new Editor({
-    element: $ele,
-    extensions: [ExtensionBundle.configure(DefaultMarkdownExtensionOptions)],
-    // extensions: [StarterKit.configure()],
-    content: `<p>Hello world! :-)</p>`,
-    onCreate({}) {},
-    onUpdate({}) {},
-    onSelectionUpdate({}) {},
-  });
+	let $ele = document.createElement('div');
+	editor = new Editor({
+		element: $ele,
+		extensions: [ExtensionBundle.configure(DefaultMarkdownExtensionOptions)],
+		// extensions: [StarterKit.configure()],
+		content: `<p>Hello world! :-)</p>`,
+		onCreate({}) {},
+		onUpdate({}) {},
+		onSelectionUpdate({}) {},
+	});
 });
 
 test('createMarkdownParser', (t) => {
-  let node = createMarkdownParser(editor.schema).parse(
-    `
+	let node = createMarkdownParser(editor.schema).parse(
+		`
 ## Hi
 **Nice** to meed _your_!
   `.trim(),
-  );
-  t.snapshot(node.toJSON(), 'MarkdownParser');
+	);
+	t.snapshot(node.toJSON(), 'MarkdownParser');
 });
 
 test('parseMarkdown', (t) => {
-  editor.commands.selectAll();
-  editor.commands.setMarkdownContent(
-    `
+	editor.commands.selectAll();
+	editor.commands.setMarkdownContent(
+		`
 ## Hi
 **Nice** to meed _your_!
   `.trim(),
-  );
-  {
-    t.snapshot(editor.getJSON(), 'getJSON');
-    t.snapshot(editor.getHTML(), 'getHTML');
-    t.snapshot(editor.getText(), 'getText');
-    t.snapshot(createMarkdownSerializer(editor.schema).serialize(editor.state.doc, {}), 'getMarkdown');
-  }
+	);
+	{
+		t.snapshot(editor.getJSON(), 'getJSON');
+		t.snapshot(editor.getHTML(), 'getHTML');
+		t.snapshot(editor.getText(), 'getText');
+		t.snapshot(createMarkdownSerializer(editor.schema).serialize(editor.state.doc, {}), 'getMarkdown');
+	}
 });
 
 // function assertContent(t: ExecutionContext, o: { text?: string; html?: string; json?: any; markdown?: string }) {

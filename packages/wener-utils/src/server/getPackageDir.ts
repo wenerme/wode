@@ -6,13 +6,13 @@ import path from 'node:path';
 // const __dirname = path.dirname(__filename);
 
 export function getPackageDir(currentDir: string = process.cwd()) {
-  while (!fs.existsSync(path.join(currentDir, 'package.json'))) {
-    currentDir = path.resolve(currentDir, '..');
-    if (currentDir === '/') {
-      return undefined;
-    }
-  }
-  return currentDir;
+	while (!fs.existsSync(path.join(currentDir, 'package.json'))) {
+		currentDir = path.resolve(currentDir, '..');
+		if (currentDir === '/') {
+			return undefined;
+		}
+	}
+	return currentDir;
 }
 
 function findUp() {}

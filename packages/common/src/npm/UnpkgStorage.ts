@@ -1,39 +1,39 @@
 import type { MaybePromise } from '@wener/utils';
 
 export interface UnpkgStorage<O extends object = any> {
-  init(o?: O): Promise<void>;
+	init(o?: O): Promise<void>;
 
-  saveRawFile(o: RawFileEntity): MaybePromise<void>;
+	saveRawFile(o: RawFileEntity): MaybePromise<void>;
 
-  getRawFileDataByUrl(url: string): MaybePromise<BufferSource | undefined>;
+	getRawFileDataByUrl(url: string): MaybePromise<BufferSource | undefined>;
 
-  savePackageFile(o: PackageFileEntity): MaybePromise<void>;
+	savePackageFile(o: PackageFileEntity): MaybePromise<void>;
 
-  hasPackageFile(pkg: string): MaybePromise<boolean>;
+	hasPackageFile(pkg: string): MaybePromise<boolean>;
 
-  getPackageFileDataByPackageAndPath(o: { package: string; path: string }): MaybePromise<BufferSource | undefined>;
+	getPackageFileDataByPackageAndPath(o: { package: string; path: string }): MaybePromise<BufferSource | undefined>;
 
-  getPackageMetaByNameAndVersion(param: { name: string; version: string }): MaybePromise<any>;
+	getPackageMetaByNameAndVersion(param: { name: string; version: string }): MaybePromise<any>;
 
-  savePackage(param: PackageEntity): MaybePromise<void>;
+	savePackage(param: PackageEntity): MaybePromise<void>;
 }
 
 export interface RawFileEntity {
-  url: string;
-  name: string;
-  version: string;
-  data: BufferSource;
+	url: string;
+	name: string;
+	version: string;
+	data: BufferSource;
 }
 
 export interface PackageFileEntity {
-  package: string;
-  path: string;
-  size: number;
-  data: BufferSource;
+	package: string;
+	path: string;
+	size: number;
+	data: BufferSource;
 }
 
 export interface PackageEntity {
-  name: string;
-  version: string;
-  meta: string;
+	name: string;
+	version: string;
+	meta: string;
 }

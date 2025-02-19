@@ -4,13 +4,13 @@ import { useWindowTheme } from './useWindowTheme';
 import { WindowsWindowController } from './windows/WindowsWindowController';
 
 export const WindowController: FC<{
-  close?: ComponentPropsWithRef<'button'>;
-  minimize?: ComponentPropsWithRef<'button'>;
-  maximize?: ComponentPropsWithRef<'button'>;
+	close?: ComponentPropsWithRef<'button'>;
+	minimize?: ComponentPropsWithRef<'button'>;
+	maximize?: ComponentPropsWithRef<'button'>;
 }> = (props) => {
-  let theme = useWindowTheme();
-  if (theme === 'macos') {
-    return <MacOSWindowController {...props} />;
-  }
-  return <WindowsWindowController {...props} />;
+	let theme = useWindowTheme();
+	if (theme === 'macos') {
+		return <MacOSWindowController {...props} />;
+	}
+	return <WindowsWindowController {...props} />;
 };

@@ -16,31 +16,31 @@ import { useExposeDebug } from '../../hooks';
 let init = false;
 
 export const StaticRootReactor: FC<PropsWithChildren> = () => {
-  useExposeDebug({ dayjs });
-  if (!init) {
-    init = true;
-    setupDayjs();
-  }
+	useExposeDebug({ dayjs });
+	if (!init) {
+		init = true;
+		setupDayjs();
+	}
 
-  return (
-    <>
-      <Toaster />
-      <DaisyTheme.Sidecar />
-    </>
-  );
+	return (
+		<>
+			<Toaster />
+			<DaisyTheme.Sidecar />
+		</>
+	);
 };
 
 function setupDayjs() {
-  dayjs.extend(relativeTime);
-  dayjs.extend(duration);
-  dayjs.extend(advancedFormat);
-  dayjs.extend(isToday);
-  dayjs.extend(dayOfYear);
-  // dayjs.extend(quarterOfYear);
-  // dayjs.extend(localeData);
-  dayjs.extend(utc);
-  dayjs.extend(timezone);
-  dayjs.locale('zh-cn');
-  dayjs.tz.setDefault('Asia/Shanghai');
-  return dayjs;
+	dayjs.extend(relativeTime);
+	dayjs.extend(duration);
+	dayjs.extend(advancedFormat);
+	dayjs.extend(isToday);
+	dayjs.extend(dayOfYear);
+	// dayjs.extend(quarterOfYear);
+	// dayjs.extend(localeData);
+	dayjs.extend(utc);
+	dayjs.extend(timezone);
+	dayjs.locale('zh-cn');
+	dayjs.tz.setDefault('Asia/Shanghai');
+	return dayjs;
 }

@@ -1,58 +1,96 @@
 {
-  "name": "common",
-  "version": "1.0.0",
-  "type": "module",
-  "description": "",
-  "author": "",
-  "license": "MIT",
-  "exports": {
-    ".": "./src/index.ts",
-    "./meta": "./src/meta/index.ts",
-    "./npm": "./src/npm/index.ts",
-    "./icons": "./src/icons/index.ts",
-    "./components": "./src/components/index.ts",
-    "./torrent": "./src/torrent/index.ts",
-    "./aports": "./src/aports/index.ts",
-    "./ai/cv": "./src/ai/cv/index.ts",
-    "./package.json": "./package.json",
-    "./gen/*": "./src/gen/*.js"
-  },
-  "files": [
-    "lib",
-    "lib.d.ts",
-    "libs",
-    "src"
-  ],
-  "keywords": [],
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "dependencies": {
-    "@mikro-orm/better-sqlite": "^6.4.2",
-    "@mikro-orm/core": "^6.4.2",
-    "@sinclair/typebox": "^0.34.13",
-    "@types/json-schema": "^7.0.15",
-    "@wener/common": "workspace:^1.0.2",
-    "@wener/utils": "workspace:*",
-    "ajv": "^8.17.1",
-    "ajv-formats": "^3.0.1",
-    "ajv-i18n": "^4.2.0",
-    "ajv-keywords": "^5.1.0",
-    "es-toolkit": "^1.31.0",
-    "execa": "^9.5.2",
-    "fs-extra": "^11.2.0",
-    "lru-cache": "^11.0.2",
-    "semver": "^7.6.3",
-    "tar": "^7.4.3",
-    "ts-pattern": "^5.6.0",
-    "zod": "^3.24.1",
-    "zx": "^8.3.0"
-  },
-  "devDependencies": {
-    "@bufbuild/protobuf": "^2.2.3",
-    "@connectrpc/connect": "^2.0.0",
-    "@sinclair/typebox-codegen": "^0.10.5",
-    "@types/semver": "^7.5.8",
-    "@types/tar": "^6.1.13"
-  }
+	"name": "common",
+	"version": "1.0.0",
+	"type": "module",
+	"description": "",
+	"author": "",
+	"license": "MIT",
+	"exports": {
+		".": "./src/index.ts",
+		"./ai/cv": "./src/ai/cv/index.ts",
+		"./aports": "./src/aports/index.ts",
+		"./components": "./src/components/index.ts",
+		"./icons": "./src/icons/index.ts",
+		"./meta": "./src/meta/index.ts",
+		"./npm": "./src/npm/index.ts",
+		"./torrent": "./src/torrent/index.ts",
+		"./package.json": "./package.json",
+		"./gen/*": "./src/gen/*.js"
+	},
+	"files": [
+		"lib",
+		"lib.d.ts",
+		"libs",
+		"src"
+	],
+	"keywords": [],
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"dependencies": {
+		"@mikro-orm/better-sqlite": "^6.4.6",
+		"@mikro-orm/core": "^6.4.6",
+		"@sinclair/typebox": "^0.34.25",
+		"@types/json-schema": "^7.0.15",
+		"@wener/common": "workspace:^1.0.3",
+		"@wener/utils": "workspace:*",
+		"ajv": "^8.17.1",
+		"ajv-formats": "^3.0.1",
+		"ajv-i18n": "^4.2.0",
+		"ajv-keywords": "^5.1.0",
+		"es-toolkit": "^1.32.0",
+		"execa": "^9.5.2",
+		"fs-extra": "^11.3.0",
+		"lru-cache": "^11.0.2",
+		"semver": "^7.7.1",
+		"tar": "^7.4.3",
+		"ts-pattern": "^5.6.2",
+		"zod": "^3.24.2",
+		"zx": "^8.3.2"
+	},
+	"devDependencies": {
+		"@bufbuild/protobuf": "^2.2.3",
+		"@connectrpc/connect": "^2.0.1",
+		"@sinclair/typebox-codegen": "^0.10.5",
+		"@types/semver": "^7.5.8",
+		"@types/tar": "^6.1.13"
+	},
+	"publishConfig": {
+		"exports": {
+			".": {
+				"types": "./src/index.ts",
+				"default": "./lib/index.js"
+			},
+			"./ai/cv": {
+				"types": "./src/ai/cv/index.ts",
+				"default": "./lib/ai/cv/index.js"
+			},
+			"./aports": {
+				"types": "./src/aports/index.ts",
+				"default": "./lib/aports/index.js"
+			},
+			"./components": {
+				"types": "./src/components/index.ts",
+				"default": "./lib/components/index.js"
+			},
+			"./icons": {
+				"types": "./src/icons/index.ts",
+				"default": "./lib/icons/index.js"
+			},
+			"./meta": {
+				"types": "./src/meta/index.ts",
+				"default": "./lib/meta/index.js"
+			},
+			"./npm": {
+				"types": "./src/npm/index.ts",
+				"default": "./lib/npm/index.js"
+			},
+			"./torrent": {
+				"types": "./src/torrent/index.ts",
+				"default": "./lib/torrent/index.js"
+			},
+			"./package.json": "./package.json",
+			"./gen/*": "./src/gen/*.js"
+		}
+	}
 }

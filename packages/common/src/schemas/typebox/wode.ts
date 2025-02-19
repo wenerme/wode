@@ -8,6 +8,6 @@ const ResourceStateInactive = Type.Literal('Inactive', { title: '禁用' });
 
 export type ResourceState = Static<typeof ResourceState>;
 export const ResourceState = Type.Union([ResourceStateActive, ResourceStateInactive], {
-  title: '资源状态',
-  $id: 'wode.resource.ResourceState',
+	title: '资源状态',
+	$id: 'wode.resource.ResourceState',
 });

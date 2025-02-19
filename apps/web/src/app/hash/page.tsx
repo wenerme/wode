@@ -5,11 +5,11 @@ import { PageLayout } from '@/components/page/PageLayout';
 import type { NextPageProps } from '@/types';
 
 export default async function (props: NextPageProps) {
-  return (
-    <PageLayout>
-      <PageContainer>
-        <HashPage />
-      </PageContainer>
-    </PageLayout>
-  );
+	return (
+		<PageLayout>
+			<PageContainer>
+				<HashPage />
+			</PageContainer>
+		</PageLayout>
+	);
 }

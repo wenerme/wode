@@ -1,100 +1,125 @@
 {
-  "name": "@wener/system",
-  "version": "1.0.6",
-  "type": "module",
-  "description": "Utils for systemjs",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/wener/wode.git"
-  },
-  "homepage": "https://github.com/wenerme/wode#readme",
-  "author": "wener",
-  "license": "MIT",
-  "main": "dist/cjs/index.js",
-  "module": "lib/index.js",
-  "exports": {
-    ".": {
-      "types": "./src/index.ts",
-      "typescript": "./src/index.ts",
-      "import": "./lib/index.js",
-      "system": {
-        "default": "./dist/system/index.js"
-      },
-      "require": "./dist/cjs/index.cjs"
-    },
-    "./types": {
-      "types": "./src/types.d.ts"
-    },
-    "./server": {
-      "types": "./src/server.ts",
-      "typescript": "./src/server.ts",
-      "import": "./lib/server.js",
-      "system": {
-        "default": "./dist/system/server.js"
-      },
-      "require": "./dist/cjs/server.cjs"
-    },
-    "./src/*": "./src/*",
-    "./package.json": "./package.json"
-  },
-  "types": "src/index.ts",
-  "files": [
-    "dist",
-    "index.ts",
-    "lib",
-    "server.ts",
-    "src",
-    "tsconfig.json"
-  ],
-  "keywords": [
-    "utils",
-    "system",
-    "helper"
-  ],
-  "scripts": {
-    "build": "make prepublish",
-    "clean": "make clean",
-    "dev": "make dev",
-    "test": "make test"
-  },
-  "peerDependencies": {
-    "node-fetch": "*",
-    "systemjs": "*"
-  },
-  "peerDependenciesMeta": {
-    "node-fetch": {
-      "optional": true
-    },
-    "systemjs": {
-      "optional": true
-    }
-  },
-  "optionalDependencies": {
-    "node-fetch": "^3.3.2",
-    "systemjs": "^6.15.1"
-  },
-  "devDependencies": {
-    "@types/jsdom": "^21.1.7",
-    "@types/react": "^19.0.2",
-    "@types/react-dom": "^19.0.2",
-    "@wener/utils": "workspace:^",
-    "jsdom": "^25.0.1",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
-  },
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org",
-    "access": "public"
-  },
-  "sideEffects": false,
-  "rollup": {
-    "input": [
-      "./src/index.ts",
-      "./src/server.ts"
-    ]
-  },
-  "typedoc": {
-    "entryPoint": "./src/typedoc.ts",
-    "readmeFile": "./README.md"
-  }
+	"name": "@wener/system",
+	"version": "1.0.6",
+	"type": "module",
+	"description": "Utils for systemjs",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/wener/wode.git"
+	},
+	"homepage": "https://github.com/wenerme/wode#readme",
+	"author": "wener",
+	"license": "MIT",
+	"main": "dist/cjs/index.js",
+	"module": "lib/index.js",
+	"exports": {
+		".": {
+			"types": "./src/index.ts",
+			"typescript": "./src/index.ts",
+			"import": "./lib/index.js",
+			"system": {
+				"default": "./dist/system/index.js"
+			},
+			"require": "./dist/cjs/index.cjs"
+		},
+		"./server": {
+			"types": "./src/server.ts",
+			"typescript": "./src/server.ts",
+			"import": "./lib/server.js",
+			"system": {
+				"default": "./dist/system/server.js"
+			},
+			"require": "./dist/cjs/server.cjs"
+		},
+		"./types": {
+			"types": "./src/types.d.ts"
+		},
+		"./src/*": "./src/*",
+		"./package.json": "./package.json"
+	},
+	"types": "src/index.ts",
+	"files": [
+		"dist",
+		"index.ts",
+		"lib",
+		"server.ts",
+		"src",
+		"tsconfig.json"
+	],
+	"keywords": [
+		"utils",
+		"system",
+		"helper"
+	],
+	"scripts": {
+		"build": "make prepublish",
+		"clean": "make clean",
+		"dev": "make dev",
+		"test": "make test"
+	},
+	"peerDependencies": {
+		"node-fetch": "*",
+		"systemjs": "*"
+	},
+	"peerDependenciesMeta": {
+		"node-fetch": {
+			"optional": true
+		},
+		"systemjs": {
+			"optional": true
+		}
+	},
+	"optionalDependencies": {
+		"node-fetch": "^3.3.2",
+		"systemjs": "^6.15.1"
+	},
+	"devDependencies": {
+		"@types/jsdom": "^21.1.7",
+		"@types/react": "^19.0.10",
+		"@types/react-dom": "^19.0.4",
+		"@wener/utils": "workspace:^",
+		"jsdom": "^26.0.0",
+		"react": "^19.0.0",
+		"react-dom": "^19.0.0"
+	},
+	"publishConfig": {
+		"registry": "https://registry.npmjs.org",
+		"access": "public",
+		"exports": {
+			".": {
+				"types": "./src/index.ts",
+				"typescript": "./src/index.ts",
+				"import": "./lib/index.js",
+				"system": {
+					"default": "./dist/system/index.js"
+				},
+				"require": "./dist/cjs/index.cjs"
+			},
+			"./server": {
+				"types": "./src/server.ts",
+				"typescript": "./src/server.ts",
+				"import": "./lib/server.js",
+				"system": {
+					"default": "./dist/system/server.js"
+				},
+				"require": "./dist/cjs/server.cjs"
+			},
+			"./types": {
+				"types": "./src/types.d.ts"
+			},
+			"./src/*": "./src/*",
+			"./package.json": "./package.json"
+		}
+	},
+	"sideEffects": false,
+	"rollup": {
+		"input": [
+			"./src/index.ts",
+			"./src/server.ts"
+		]
+	},
+	"typedoc": {
+		"entryPoint": "./src/typedoc.ts",
+		"readmeFile": "./README.md"
+	}
 }

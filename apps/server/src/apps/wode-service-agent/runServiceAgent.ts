@@ -10,23 +10,14 @@ curl -sf --json '{"reason":"CLI"}' http://127.0.0.1:3000/api/connect/wener.wode.
 */
 
 export async function runServiceAgent() {
-  let app = createOpenAPIHono();
-  let log = new Logger(runServiceAgent.name);
+	let app = createOpenAPIHono();
+	let log = new Logger(runServiceAgent.name);
 
-  app.use(
-    '/api/connect/*',
-    serveNodeConnect({
-      prefix: '/api/connect',
-      routes: createConnectService,
-    }),
-  );
+	app.use('/api/connect/*', serveNodeConnect({ prefix: '/api/connect', routes: createConnectService }));
 
-  await runServer({
-    app,
-    env: false,
-  });
+	await runServer({ app, env: false });
 }
 
 function createConnectService(route: ConnectRouter) {
-  route.service(AgentConnectService.Schema, new AgentConnectService());
+	route.service(AgentConnectService.Schema, new AgentConnectService());
 }
