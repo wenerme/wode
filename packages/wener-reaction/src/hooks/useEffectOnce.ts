@@ -5,5 +5,5 @@ import { useEffect, type EffectCallback } from 'react';
  * @param effect
  */
 export function useEffectOnce(effect: EffectCallback) {
-  useEffect(effect, []);
+	useEffect(effect, []);
 }

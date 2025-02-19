@@ -7,8 +7,8 @@ import { AuthRoleEntity } from './AuthRoleEntity';
 @Entity({ tableName: 'auth_entity_permission' })
 @Unique({ properties: ['tid', 'entityId', 'related'] })
 export class AuthEntityPermissionEntity extends mixin(TenantBaseEntity, withRequiredEntityRefEntity) {
-  @ManyToOne({ entity: () => AuthRoleEntity })
-  related!: AuthPermissionEntity;
+	@ManyToOne({ entity: () => AuthRoleEntity })
+	related!: AuthPermissionEntity;
 
-  // permission!: AuthPermissionEntity;
+	// permission!: AuthPermissionEntity;
 }

@@ -28,84 +28,61 @@ import { UnderlineExtension } from './UnderlineExtension';
 import { VideoNode } from './VideoNode';
 
 export interface TipTapWordStarterKitOptions extends StarterKitOptions {
-  underline?: false;
-  image?: false;
-  video?: false;
+	underline?: false;
+	image?: false;
+	video?: false;
 }
 
 export const TipTapWordStarterKit = Extension.create<TipTapWordStarterKitOptions>({
-  name: 'wordStarterKit',
+	name: 'wordStarterKit',
 
-  addExtensions() {
-    const { strike, italic, bold, underline, image, video, paragraph, ...rest } = this.options;
-    const extensions: Array<AnyExtension | boolean> = [
-      MarkdownExtension,
-      // Text
-      // DocumentExtension,
-      StarterKit.configure({
-        // document: false,
-        ...rest,
-        strike: false,
-        italic: false,
-        bold: false,
-        paragraph: false,
-      }),
-      bold === false || BoldExtension,
-      italic === false || ItalicExtension,
-      strike === false || StrikeExtension,
-      underline === false || UnderlineExtension,
-      paragraph === false || Paragraph,
-      TaskListExtension,
-      TaskItemExtension,
-      TextAlignExtension.configure({
-        types: ['heading', 'paragraph'],
-      }),
+	addExtensions() {
+		const { strike, italic, bold, underline, image, video, paragraph, ...rest } = this.options;
+		const extensions: Array<AnyExtension | boolean> = [
+			MarkdownExtension,
+			// Text
+			// DocumentExtension,
+			StarterKit.configure({
+				// document: false,
+				...rest,
+				strike: false,
+				italic: false,
+				bold: false,
+				paragraph: false,
+			}),
+			bold === false || BoldExtension,
+			italic === false || ItalicExtension,
+			strike === false || StrikeExtension,
+			underline === false || UnderlineExtension,
+			paragraph === false || Paragraph,
+			TaskListExtension,
+			TaskItemExtension,
+			TextAlignExtension.configure({ types: ['heading', 'paragraph'] }),
 
-      TextStyleExtension,
-      FontFamilyExtension,
-      ...TextFormats,
-      ...BlockStyles.map((v) => v.configure({ types: ['listItem', 'taskItem', 'heading', 'paragraph'] })),
-      TextIndent.configure({
-        types: ['paragraph'],
-      }),
-      ClassNameExtension.configure({
-        types: ['textStyle'],
-      }),
-      IndentExtension,
-      ColorExtension,
-      HighlightExtension.configure({ multicolor: true }),
-      //
-      LinkExtension.configure({
-        autolink: true,
-        openOnClick: false,
-        linkOnPaste: true,
-      }),
-      // Notes
-      image === false ||
-        ImageExtension.configure({
-          inline: false,
-          allowBase64: true,
-        }),
-      video === false ||
-        VideoNode.configure({
-          inline: false,
-          allowBase64: true,
-        }),
-      // Table
-      TableExtension.configure({
-        resizable: true,
-        allowTableNodeSelection: true,
-      }),
-      TableRowExtension,
-      TableCellExtension,
-      TableHeaderExtension,
+			TextStyleExtension,
+			FontFamilyExtension,
+			...TextFormats,
+			...BlockStyles.map((v) => v.configure({ types: ['listItem', 'taskItem', 'heading', 'paragraph'] })),
+			TextIndent.configure({ types: ['paragraph'] }),
+			ClassNameExtension.configure({ types: ['textStyle'] }),
+			IndentExtension,
+			ColorExtension,
+			HighlightExtension.configure({ multicolor: true }),
+			//
+			LinkExtension.configure({ autolink: true, openOnClick: false, linkOnPaste: true }),
+			// Notes
+			image === false || ImageExtension.configure({ inline: false, allowBase64: true }),
+			video === false || VideoNode.configure({ inline: false, allowBase64: true }),
+			// Table
+			TableExtension.configure({ resizable: true, allowTableNodeSelection: true }),
+			TableRowExtension,
+			TableCellExtension,
+			TableHeaderExtension,
 
-      CharacterCountExtension.configure(),
+			CharacterCountExtension.configure(),
 
-      CssColumnsExtension.configure({
-        types: ['paragraph'],
-      }),
-    ];
-    return extensions.filter((v) => typeof v !== 'boolean') as Extensions;
-  },
+			CssColumnsExtension.configure({ types: ['paragraph'] }),
+		];
+		return extensions.filter((v) => typeof v !== 'boolean') as Extensions;
+	},
 });

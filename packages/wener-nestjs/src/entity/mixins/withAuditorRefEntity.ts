@@ -7,49 +7,43 @@ import { resolveEntityRef } from '../resolveEntityRef';
 import type { HasAuditorRefEntity } from './types';
 
 export function withAuditorRefEntity<TBase extends Constructor>(Base: TBase) {
-  // AuditorAware
+	// AuditorAware
 
-  @Feature([EntityFeature.HasAuditorRef])
-  @Entity({ abstract: true })
-  class HasAuditorRefMixinEntity extends Base implements HasAuditorRefEntity {
-    @Property({ type: types.string, nullable: true })
-    createdById?: string;
+	@Feature([EntityFeature.HasAuditorRef])
+	@Entity({ abstract: true })
+	class HasAuditorRefMixinEntity extends Base implements HasAuditorRefEntity {
+		@Property({ type: types.string, nullable: true })
+		createdById?: string;
 
-    @Property({ type: types.string, nullable: true })
-    updatedById?: string;
+		@Property({ type: types.string, nullable: true })
+		updatedById?: string;
 
-    @Property({ type: types.string, nullable: true })
-    deletedById?: string;
+		@Property({ type: types.string, nullable: true })
+		deletedById?: string;
 
-    get createdBy() {
-      return resolveEntityRef({
-        entityId: this.createdById,
-      });
-    }
+		get createdBy() {
+			return resolveEntityRef({ entityId: this.createdById });
+		}
 
-    get updatedBy() {
-      return resolveEntityRef({
-        entityId: this.updatedById,
-      });
-    }
+		get updatedBy() {
+			return resolveEntityRef({ entityId: this.updatedById });
+		}
 
-    get deletedBy() {
-      return resolveEntityRef({
-        entityId: this.deletedById,
-      });
-    }
+		get deletedBy() {
+			return resolveEntityRef({ entityId: this.deletedById });
+		}
 
-    @BeforeCreate()
-    setAuditorBeforeCreate() {
-      this.createdById ||= getCurrentUserId();
-      this.updatedById ||= getCurrentUserId();
-    }
+		@BeforeCreate()
+		setAuditorBeforeCreate() {
+			this.createdById ||= getCurrentUserId();
+			this.updatedById ||= getCurrentUserId();
+		}
 
-    @BeforeUpdate()
-    setAuditorBeforeUpdate() {
-      this.updatedById = getCurrentUserId() || this.updatedById;
-    }
-  }
+		@BeforeUpdate()
+		setAuditorBeforeUpdate() {
+			this.updatedById = getCurrentUserId() || this.updatedById;
+		}
+	}
 
-  return HasAuditorRefMixinEntity;
+	return HasAuditorRefMixinEntity;
 }

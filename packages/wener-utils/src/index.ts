@@ -2,11 +2,11 @@ import { Promises } from './asyncs/Promises';
 
 // arrays
 export {
-  firstOfMaybeArray,
-  lastOfMaybeArray,
-  arrayOfMaybeArray,
-  objectOfMaybeArray,
-  type MaybeArray,
+	firstOfMaybeArray,
+	lastOfMaybeArray,
+	arrayOfMaybeArray,
+	objectOfMaybeArray,
+	type MaybeArray,
 } from './arrays/MaybeArray';
 export { arrayFromAsync } from './arrays/arrayFromAsync';
 
@@ -110,13 +110,13 @@ export { clamp } from './maths/clamp';
 
 // network
 export {
-  type FetchLike,
-  createFetchWith,
-  createFetchWithLogging,
-  dumpResponse,
-  dumpRequest,
-  createFetchWithRetry,
-  type FetchWithRetryOptions,
+	type FetchLike,
+	createFetchWith,
+	createFetchWithLogging,
+	dumpResponse,
+	dumpRequest,
+	createFetchWithRetry,
+	type FetchWithRetryOptions,
 } from './fetch';
 
 // bundled

@@ -4,25 +4,23 @@ import { createFetchWithProxyByUndici } from './createFetchWithProxyByUndici';
 import { requireResponseOk } from './requireResponseOk';
 
 beforeAll(async () => {
-  await loadEnvs();
+	await loadEnvs();
 });
 
 test('fetch with proxy', async () => {
-  if (!process.env.FETCH_PROXY) {
-    return;
-  }
+	if (!process.env.FETCH_PROXY) {
+		return;
+	}
 
-  const fetch = createFetchWithProxyByUndici({
-    proxy: process.env.FETCH_PROXY,
-  });
+	const fetch = createFetchWithProxyByUndici({ proxy: process.env.FETCH_PROXY });
 
-  assert.notEqual(
-    await globalThis
-      .fetch('http://icanhazip.com')
-      .then(requireResponseOk)
-      .then((v) => v.text()),
-    await fetch('http://icanhazip.com')
-      .then(requireResponseOk)
-      .then((v) => v.text()),
-  );
+	assert.notEqual(
+		await globalThis
+			.fetch('http://icanhazip.com')
+			.then(requireResponseOk)
+			.then((v) => v.text()),
+		await fetch('http://icanhazip.com')
+			.then(requireResponseOk)
+			.then((v) => v.text()),
+	);
 });

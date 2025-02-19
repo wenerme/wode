@@ -6,14 +6,14 @@ import { AuthRoleEntity } from './AuthRoleEntity';
 @Entity({ tableName: 'auth_entity_role' })
 @Unique({ properties: ['tid', 'entityId', 'related'] })
 export class AuthEntityRoleEntity extends mixin(TenantBaseEntity, withRequiredEntityRefEntity) {
-  @ManyToOne({ entity: () => AuthRoleEntity })
-  related!: Rel<AuthRoleEntity>;
+	@ManyToOne({ entity: () => AuthRoleEntity })
+	related!: Rel<AuthRoleEntity>;
 
-  get role() {
-    return this.related;
-  }
+	get role() {
+		return this.related;
+	}
 
-  set role(role: AuthRoleEntity) {
-    this.related = role;
-  }
+	set role(role: AuthRoleEntity) {
+		this.related = role;
+	}
 }

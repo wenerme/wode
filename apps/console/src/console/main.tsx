@@ -15,28 +15,28 @@ import { InstanceInit } from '@/instance/instance.init';
 // web-vitals.js may block by client
 const WebVitals = lazy(() => import('@/components/WebVitals').then((m) => ({ default: m.WebVitals })));
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <RootContext init={[EnvironmentInit, DayJSInit, InstanceInit]}>
-      <SiteLoader
-        getSiteConf={async () => {
-          return (await SiteActions.resolveSiteConf({})) ?? {};
-        }}
-      >
-        <ConsoleApp />
-        <SiteSidecar />
-      </SiteLoader>
-      <ProdOnly>
-        <UpdateNotification
-          getVersion={async () => {
-            const res = await fetch('/version.json');
-            const data: BuildInfo = await res.json();
-            return data.date || data.version;
-          }}
-        />
-      </ProdOnly>
-    </RootContext>
-    <ProdOnly>
-      <WebVitals />
-    </ProdOnly>
-  </React.StrictMode>,
+	<React.StrictMode>
+		<RootContext init={[EnvironmentInit, DayJSInit, InstanceInit]}>
+			<SiteLoader
+				getSiteConf={async () => {
+					return (await SiteActions.resolveSiteConf({})) ?? {};
+				}}
+			>
+				<ConsoleApp />
+				<SiteSidecar />
+			</SiteLoader>
+			<ProdOnly>
+				<UpdateNotification
+					getVersion={async () => {
+						const res = await fetch('/version.json');
+						const data: BuildInfo = await res.json();
+						return data.date || data.version;
+					}}
+				/>
+			</ProdOnly>
+		</RootContext>
+		<ProdOnly>
+			<WebVitals />
+		</ProdOnly>
+	</React.StrictMode>,
 );

@@ -4,11 +4,11 @@ import { PageContainer } from '@/components/page/PageContainer';
 import { PageLayout } from '@/components/page/PageLayout';
 
 export default function () {
-  return (
-    <PageLayout>
-      <PageContainer>
-        <IdBenchmarkPage />
-      </PageContainer>
-    </PageLayout>
-  );
+	return (
+		<PageLayout>
+			<PageContainer>
+				<IdBenchmarkPage />
+			</PageContainer>
+		</PageLayout>
+	);
 }

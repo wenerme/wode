@@ -6,7 +6,7 @@ export { getFallbackTenantId, getCurrentUserId as getUserId } from '@wener/nestj
 export { getCurrentTenantId as getTenantId, requireTenantId } from '@wener/nestjs/app';
 
 export function requireUserId() {
-  const uid = Contexts.userId.get();
-  Errors.InternalServerError.check(uid, 'Missing user id');
-  return uid;
+	const uid = Contexts.userId.get();
+	Errors.InternalServerError.check(uid, 'Missing user id');
+	return uid;
 }

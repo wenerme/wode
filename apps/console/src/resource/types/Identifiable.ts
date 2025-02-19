@@ -1,3 +1,3 @@
 export type Identifiable = {
-  id: string;
+	id: string;
 };

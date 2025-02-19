@@ -3,9 +3,9 @@ import type { MaybePromise } from './MaybePromise';
 import { nextOfAsyncIterator } from './nextOfAsyncIterator';
 
 export function firstOfAsyncIterator<T>(it: MaybePromise<AsyncIterator<T> | Iterator<T> | T>): MaybePromise<T> {
-  const next = nextOfAsyncIterator(it);
-  if (isPromise(next)) {
-    return next.then((v) => v[0]);
-  }
-  return next[0];
+	const next = nextOfAsyncIterator(it);
+	if (isPromise(next)) {
+		return next.then((v) => v[0]);
+	}
+	return next[0];
 }

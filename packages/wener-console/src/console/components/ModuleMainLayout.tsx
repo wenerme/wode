@@ -5,31 +5,31 @@ import { ExpandableSideMenuLayout, type ExpandableSideMenuLayoutProps } from '..
 import { useUserPreferenceState } from '../hooks';
 
 const ModuleLayoutState = z.object({
-  expanded: z.boolean().optional().default(true),
+	expanded: z.boolean().optional().default(true),
 });
 
 function useModuleLayoutState({ path }: { path: string }) {
-  return useUserPreferenceState({
-    key: `ModuleLayoutState.${path}`,
-    schema: ModuleLayoutState,
-  });
+	return useUserPreferenceState({
+		key: `ModuleLayoutState.${path}`,
+		schema: ModuleLayoutState,
+	});
 }
 
 export const ModuleMainLayout: FC<
-  ExpandableSideMenuLayoutProps & {
-    path?: string;
-  }
+	ExpandableSideMenuLayoutProps & {
+		path?: string;
+	}
 > = ({ children = <Outlet />, path = 'default', ...props }) => {
-  const [{ expanded }, update] = useModuleLayoutState({ path });
-  return (
-    <ExpandableSideMenuLayout
-      expanded={expanded}
-      onExpandedChange={(next) => {
-        update({ expanded: next });
-      }}
-      {...props}
-    >
-      {children}
-    </ExpandableSideMenuLayout>
-  );
+	const [{ expanded }, update] = useModuleLayoutState({ path });
+	return (
+		<ExpandableSideMenuLayout
+			expanded={expanded}
+			onExpandedChange={(next) => {
+				update({ expanded: next });
+			}}
+			{...props}
+		>
+			{children}
+		</ExpandableSideMenuLayout>
+	);
 };

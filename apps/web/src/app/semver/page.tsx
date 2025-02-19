@@ -5,11 +5,11 @@ import { SemverTool } from '@/components/semver/SemverTool';
 import type { NextPageProps } from '@/types';
 
 export default async function (props: NextPageProps) {
-  return (
-    <PageLayout>
-      <PageContainer>
-        <SemverTool />
-      </PageContainer>
-    </PageLayout>
-  );
+	return (
+		<PageLayout>
+			<PageContainer>
+				<SemverTool />
+			</PageContainer>
+		</PageLayout>
+	);
 }

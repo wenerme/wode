@@ -8,18 +8,18 @@ import { useSiteStore } from './SiteStore';
 const MatomoTracker = lazy(() => import('../../matomo/MatomoTracker').then((m) => ({ default: m.MatomoTracker })));
 
 export const SiteSidecar = () => {
-  const { url, siteId } = useSiteStore(
-    useShallow((s) => {
-      return {
-        url: s.metadata?.matomoUrl,
-        siteId: s.metadata?.matomoSiteId,
-      };
-    }),
-  );
+	const { url, siteId } = useSiteStore(
+		useShallow((s) => {
+			return {
+				url: s.metadata?.matomoUrl,
+				siteId: s.metadata?.matomoSiteId,
+			};
+		}),
+	);
 
-  return (
-    <>
-      <ProdOnly>{siteId && url && <MatomoTracker url={url} siteId={siteId} useUserId={useUserId} />}</ProdOnly>
-    </>
-  );
+	return (
+		<>
+			<ProdOnly>{siteId && url && <MatomoTracker url={url} siteId={siteId} useUserId={useUserId} />}</ProdOnly>
+		</>
+	);
 };

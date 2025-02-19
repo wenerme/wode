@@ -2,8 +2,8 @@ import React, { type JSXElementConstructor, type ReactElement, type ReactNode } 
 import { arrayOfMaybeArray, type MaybeArray } from '@wener/utils';
 
 export function isNodeTypeOf(
-  ele: ReactNode,
-  component: MaybeArray<string | JSXElementConstructor<any>>,
+	ele: ReactNode,
+	component: MaybeArray<string | JSXElementConstructor<any>>,
 ): ele is ReactElement {
-  return React.isValidElement(ele) && arrayOfMaybeArray(component).includes(ele.type as any);
+	return React.isValidElement(ele) && arrayOfMaybeArray(component).includes(ele.type as any);
 }

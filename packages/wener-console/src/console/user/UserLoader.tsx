@@ -7,23 +7,23 @@ import { getUserStore } from '../context';
 import type { UserProfileData } from '../store/UserStore';
 
 export const UserLoader: FC<
-  PropsWithChildren & {
-    load?: () => Promise<UserProfileData>;
-  }
+	PropsWithChildren & {
+		load?: () => Promise<UserProfileData>;
+	}
 > = ({ children, load }) => {
-  const { loading, error } = usePromise(async () => {
-    if (!load) return;
-    let data = await load();
-    data && getUserStore().getState().load(data);
-  }, []);
+	const { loading, error } = usePromise(async () => {
+		if (!load) return;
+		let data = await load();
+		data && getUserStore().getState().load(data);
+	}, []);
 
-  if (loading) {
-    return <LoadingIndicator />;
-  }
+	if (loading) {
+		return <LoadingIndicator />;
+	}
 
-  if (error) {
-    return <NonIdealState title={'Failed to load user'} description={String(resolveErrorMessage(error))} />;
-  }
+	if (error) {
+		return <NonIdealState title={'Failed to load user'} description={String(resolveErrorMessage(error))} />;
+	}
 
-  return children;
+	return children;
 };

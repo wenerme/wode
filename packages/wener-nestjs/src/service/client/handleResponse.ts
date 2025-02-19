@@ -2,16 +2,16 @@ import { nextOfAsyncIterator } from '@wener/utils';
 import type { ClientRequest, ClientResponse } from './types';
 
 export async function handleResponse({
-  res,
-  req,
+	res,
+	req,
 }: {
-  res: ClientResponse | AsyncIterator<ClientResponse>;
-  req: ClientRequest;
+	res: ClientResponse | AsyncIterator<ClientResponse>;
+	req: ClientRequest;
 }) {
-  const [result] = await nextOfAsyncIterator(res);
-  if (!result.ok) {
-    throw Object.assign(new Error(result.description), { res: result, status: result.status });
-  }
+	const [result] = await nextOfAsyncIterator(res);
+	if (!result.ok) {
+		throw Object.assign(new Error(result.description), { res: result, status: result.status });
+	}
 
-  return result.body;
+	return result.body;
 }

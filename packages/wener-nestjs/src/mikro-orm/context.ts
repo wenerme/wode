@@ -11,40 +11,37 @@ import { getContext } from '../context';
  */
 
 export function getMikroORM<M extends MikroORM = MikroORM>() {
-  return getContext(MikroORM) as M;
+	return getContext(MikroORM) as M;
 }
 
 export function getEntityManager<E extends EntityManager = EntityManager>({
-  fork,
-  em,
-}: {
-  fork?: true;
-  em?: E;
-} = {}): E {
-  em ||= RequestContext.getEntityManager() as E;
-  if (em && !fork) {
-    return em;
-  }
-  const orm = getMikroORM();
-  em = orm.em as E;
-  if (fork) {
-    em = em.fork() as E;
-  }
-  return em as E;
+	fork,
+	em,
+}: { fork?: true; em?: E } = {}): E {
+	em ||= RequestContext.getEntityManager() as E;
+	if (em && !fork) {
+		return em;
+	}
+	const orm = getMikroORM();
+	em = orm.em as E;
+	if (fork) {
+		em = em.fork() as E;
+	}
+	return em as E;
 }
 
 export function requireContextEntityManager<E extends EntityManager = EntityManager>() {
-  const context = RequestContext.getEntityManager();
-  if (!context) {
-    throw new Error('No entity manager context');
-  }
+	const context = RequestContext.getEntityManager();
+	if (!context) {
+		throw new Error('No entity manager context');
+	}
 
-  return context as E;
+	return context as E;
 }
 
 export function runInTransaction<R, E extends EntityManager = EntityManager>(
-  fn: (em: E) => MaybePromise<R>,
-  { em, ...opts }: TransactionOptions & { em?: E } = {},
+	fn: (em: E) => MaybePromise<R>,
+	{ em, ...opts }: TransactionOptions & { em?: E } = {},
 ): Promise<R> {
-  return getEntityManager({ em }).transactional(fn as any, opts);
+	return getEntityManager({ em }).transactional(fn as any, opts);
 }

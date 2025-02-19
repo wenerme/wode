@@ -3,19 +3,19 @@ import { BaseNode } from '../BaseNode';
 import { RelayNode } from '../relay';
 
 @InterfaceType({
-  implements: [BaseNode],
-  autoRegisterImplementations: false,
-  resolveType: (...args) => {
-    return HasAuditorRefNode.resolveType(...args);
-  },
+	implements: [BaseNode],
+	autoRegisterImplementations: false,
+	resolveType: (...args) => {
+		return HasAuditorRefNode.resolveType(...args);
+	},
 })
 export class HasAuditorRefNode extends BaseNode {
-  static resolveType = RelayNode.resolveType;
+	static resolveType = RelayNode.resolveType;
 
-  @Field(() => ID, { nullable: true })
-  createdById?: string;
-  @Field(() => ID, { nullable: true })
-  updatedById?: string;
-  @Field(() => ID, { nullable: true })
-  deletedById?: string;
+	@Field(() => ID, { nullable: true })
+	createdById?: string;
+	@Field(() => ID, { nullable: true })
+	updatedById?: string;
+	@Field(() => ID, { nullable: true })
+	deletedById?: string;
 }

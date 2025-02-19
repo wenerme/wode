@@ -7,31 +7,23 @@ import { HttpRequestLog } from './HttpRequestLog';
 import { RequestController } from './request.controller';
 
 export class FetchCacheModule {
-  static forRoot({ options, global }: { options?: FetchCacheModuleOptions; global?: boolean } = {}): DynamicModule {
-    return {
-      module: FetchCacheModule,
-      imports: [MikroOrmModule.forFeature([HttpRequestLog])],
-      controllers: [RequestController],
-      providers: [
-        FetchCacheService,
-        {
-          provide: KeyOfFetchCacheModuleOptions,
-          useValue: options,
-        },
-      ],
-      exports: [FetchCacheService],
-      global,
-    };
-  }
+	static forRoot({ options, global }: { options?: FetchCacheModuleOptions; global?: boolean } = {}): DynamicModule {
+		return {
+			module: FetchCacheModule,
+			imports: [MikroOrmModule.forFeature([HttpRequestLog])],
+			controllers: [RequestController],
+			providers: [FetchCacheService, { provide: KeyOfFetchCacheModuleOptions, useValue: options }],
+			exports: [FetchCacheService],
+			global,
+		};
+	}
 
-  static forFeature(): DynamicModule {
-    return {
-      module: FetchCacheModule,
-    };
-  }
+	static forFeature(): DynamicModule {
+		return { module: FetchCacheModule };
+	}
 }
 
 export interface FetchCacheModuleOptions {
-  schema?: string;
-  fetch?: FetchLike;
+	schema?: string;
+	fetch?: FetchLike;
 }

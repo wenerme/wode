@@ -2,51 +2,51 @@ import { parseModuleId, type Logger } from '@wener/utils';
 import { getGlobalSystem, type SystemJS } from '../utils/getGlobalSystem';
 
 export function resolveBareSpecifier({
-  protocol = 'package',
-  System = getGlobalSystem(),
-  logger = console,
-  cache = false,
+	protocol = 'package',
+	System = getGlobalSystem(),
+	logger = console,
+	cache = false,
 }: { protocol?: string; System?: SystemJS; logger?: Logger; cache?: boolean } = {}) {
-  const orig = System.constructor.prototype.resolve.bind(System);
-  const map = new Map();
-  const prefix = `${protocol}:`;
+	const orig = System.constructor.prototype.resolve.bind(System);
+	const map = new Map();
+	const prefix = `${protocol}:`;
 
-  System.constructor.prototype.resolve = (id: string, parentUrl?: string) => {
-    try {
-      const out = cache && map.get(id);
+	System.constructor.prototype.resolve = (id: string, parentUrl?: string) => {
+		try {
+			const out = cache && map.get(id);
 
-      // dynamic import
-      // handle ./a.js, package:@wener/reaction
-      if (!out && id.startsWith('.') && parentUrl && parentUrl.startsWith(prefix)) {
-        if (!parseModuleId(parentUrl.substring(prefix.length))?.path) {
-          parentUrl = `${parentUrl}/`;
-        }
-      }
+			// dynamic import
+			// handle ./a.js, package:@wener/reaction
+			if (!out && id.startsWith('.') && parentUrl && parentUrl.startsWith(prefix)) {
+				if (!parseModuleId(parentUrl.substring(prefix.length))?.path) {
+					parentUrl = `${parentUrl}/`;
+				}
+			}
 
-      return out || orig(id, parentUrl);
-    } catch (e) {
-      // handle ./a.js @wener/reaction
-      if (id.startsWith('.') && parentUrl) {
-        const m = parseModuleId(parentUrl);
-        if (m) {
-          let r = `${protocol}:${parentUrl}`;
-          // ensure parentUrl is a package
-          if (!m.path) {
-            r += '/';
-          }
-          return orig(id, r);
-        }
-      }
-      // handle @wener/reaction
-      if (parseModuleId(id)) {
-        const r = `${protocol}:${id}`;
-        logger.debug(`resolve bare specifier ${id} as ${r} from ${parentUrl || 'top level'}`);
-        map.set(id, r);
-        return orig(r, parentUrl);
-      }
-      throw e;
-    }
-  };
+			return out || orig(id, parentUrl);
+		} catch (e) {
+			// handle ./a.js @wener/reaction
+			if (id.startsWith('.') && parentUrl) {
+				const m = parseModuleId(parentUrl);
+				if (m) {
+					let r = `${protocol}:${parentUrl}`;
+					// ensure parentUrl is a package
+					if (!m.path) {
+						r += '/';
+					}
+					return orig(id, r);
+				}
+			}
+			// handle @wener/reaction
+			if (parseModuleId(id)) {
+				const r = `${protocol}:${id}`;
+				logger.debug(`resolve bare specifier ${id} as ${r} from ${parentUrl || 'top level'}`);
+				map.set(id, r);
+				return orig(r, parentUrl);
+			}
+			throw e;
+		}
+	};
 }
 
 /*

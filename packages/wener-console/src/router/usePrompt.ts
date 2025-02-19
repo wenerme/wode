@@ -10,66 +10,66 @@ import { useCallback, useContext, useEffect } from 'react';
 import { UNSAFE_NavigationContext as NavigationContext } from 'react-router-dom';
 
 function useConfirmExit(confirmExit: () => boolean, when = true) {
-  const { navigator } = useContext(NavigationContext);
+	const { navigator } = useContext(NavigationContext);
 
-  useEffect(() => {
-    if (!when) {
-      return;
-    }
+	useEffect(() => {
+		if (!when) {
+			return;
+		}
 
-    const go = navigator.go;
-    const push = navigator.push;
+		const go = navigator.go;
+		const push = navigator.push;
 
-    navigator.push = (...args: Parameters<typeof push>) => {
-      const result = confirmExit();
-      if (result !== false) {
-        push(...args);
-      }
-    };
+		navigator.push = (...args: Parameters<typeof push>) => {
+			const result = confirmExit();
+			if (result !== false) {
+				push(...args);
+			}
+		};
 
-    navigator.go = (...args: Parameters<typeof go>) => {
-      const result = confirmExit();
-      if (result !== false) {
-        go(...args);
-      }
-    };
+		navigator.go = (...args: Parameters<typeof go>) => {
+			const result = confirmExit();
+			if (result !== false) {
+				go(...args);
+			}
+		};
 
-    return () => {
-      navigator.push = push;
-      navigator.go = go;
-    };
-  }, [navigator, confirmExit, when]);
+		return () => {
+			navigator.push = push;
+			navigator.go = go;
+		};
+	}, [navigator, confirmExit, when]);
 }
 
 export function usePrompt(message: string, when = true, onConfirm?: () => void, legacy = false) {
-  const warnWhenListener = useCallback(
-    (e: { preventDefault: () => void; returnValue: string }) => {
-      e.preventDefault();
+	const warnWhenListener = useCallback(
+		(e: { preventDefault: () => void; returnValue: string }) => {
+			e.preventDefault();
 
-      e.returnValue = message;
+			e.returnValue = message;
 
-      return e.returnValue;
-    },
-    [message],
-  );
+			return e.returnValue;
+		},
+		[message],
+	);
 
-  useEffect(() => {
-    if (when && !legacy) {
-      window.addEventListener('beforeunload', warnWhenListener);
-    }
+	useEffect(() => {
+		if (when && !legacy) {
+			window.addEventListener('beforeunload', warnWhenListener);
+		}
 
-    return () => {
-      window.removeEventListener('beforeunload', warnWhenListener);
-    };
-  }, [warnWhenListener, when, legacy]);
+		return () => {
+			window.removeEventListener('beforeunload', warnWhenListener);
+		};
+	}, [warnWhenListener, when, legacy]);
 
-  const confirmExit = useCallback(() => {
-    const confirm = window.confirm(message);
-    if (confirm && onConfirm) {
-      onConfirm();
-    }
-    return confirm;
-  }, [message]);
+	const confirmExit = useCallback(() => {
+		const confirm = window.confirm(message);
+		if (confirm && onConfirm) {
+			onConfirm();
+		}
+		return confirm;
+	}, [message]);
 
-  useConfirmExit(confirmExit, when);
+	useConfirmExit(confirmExit, when);
 }

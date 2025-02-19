@@ -20,25 +20,25 @@ export type FlexRenderable<TProps> = ReactNode | ComponentType<Partial<TProps>>;
  * @see {@link https://github.com/TanStack/table/blob/3f0e5d285af94b604734d71f710643c53a43ef0d/packages/react-table/src/index.tsx TanStack/table}
  */
 export function flexRender<TProps extends object>(
-  Comp: FlexRenderable<TProps>,
-  props: TProps,
-  mergeProps?: ((a: TProps, b: TProps) => TProps) | true,
+	Comp: FlexRenderable<TProps>,
+	props: TProps,
+	mergeProps?: ((a: TProps, b: TProps) => TProps) | true,
 ): ReactNode | ReactElement {
-  if (!Comp) {
-    return null;
-  }
-  if (isReactComponent<TProps>(Comp)) {
-    return <Comp {...props} />;
-  }
-  // for mergeProps
-  if (mergeProps) {
-    const merge = mergeProps === true ? flexRender.mergeProps : mergeProps;
-    if (typeof Comp === 'object' && 'props' in Comp) {
-      return cloneElement(Comp, merge(Comp.props, props));
-    }
-  }
-  // various ReactNode types
-  return Comp as any;
+	if (!Comp) {
+		return null;
+	}
+	if (isReactComponent<TProps>(Comp)) {
+		return <Comp {...props} />;
+	}
+	// for mergeProps
+	if (mergeProps) {
+		const merge = mergeProps === true ? flexRender.mergeProps : mergeProps;
+		if (typeof Comp === 'object' && 'props' in Comp) {
+			return cloneElement(Comp, merge(Comp.props, props));
+		}
+	}
+	// various ReactNode types
+	return Comp as any;
 }
 
 flexRender.mergeProps = defaultMergeProps;

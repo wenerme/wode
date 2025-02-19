@@ -5,7 +5,7 @@ import { CustomBaseEntityService } from '@/foundation/services/CustomBaseEntityS
 
 @Injectable()
 export class AuthPermissionService extends CustomBaseEntityService<AuthPermissionEntity> {
-  constructor(@Inject(MikroORM) orm: MikroORM) {
-    super(orm, AuthPermissionEntity);
-  }
+	constructor(@Inject(MikroORM) orm: MikroORM) {
+		super(orm, AuthPermissionEntity);
+	}
 }

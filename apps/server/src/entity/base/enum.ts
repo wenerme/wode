@@ -1,40 +1,40 @@
 export enum OwnerType {
-  User = 'User',
-  Team = 'Team',
+	User = 'User',
+	Team = 'Team',
 }
 
 // 性别
 export enum SexType {
-  // 男性
-  Male = 'Male',
-  // 女性
-  Female = 'Female',
-  // 间性
-  // Intersex = 'Intersex'
-  // 未知
-  Unknown = 'Unknown',
+	// 男性
+	Male = 'Male',
+	// 女性
+	Female = 'Female',
+	// 间性
+	// Intersex = 'Intersex'
+	// 未知
+	Unknown = 'Unknown',
 }
 
 export enum EntityFeature {
-  HasAuditor = 'HasAuditor',
-  HasOwner = 'HasOwner',
-  HasStatus = 'HasStatus',
-  HasCustomer = 'HasCustomer',
-  HasLabels = 'HasLabels',
-  HasSid = 'HasSid',
-  HasActivity = 'HasActivity',
-  HasTags = 'HasTags',
-  HasNotes = 'HasNotes',
-  HasCode = 'HasCode',
-  HasVendorRef = 'HasVendorRef',
-  HasEntityRef = 'HasEntityRef',
-  IsCustomer = 'IsCustomer',
-  IsActivity = 'IsActivity',
-  IsOwner = 'IsOwner',
-  IsState = 'IsState',
-  IsStatus = 'IsStatus',
-  IsSystemType = 'IsSystemType',
-  IsTenantType = 'IsTenantType',
+	HasAuditor = 'HasAuditor',
+	HasOwner = 'HasOwner',
+	HasStatus = 'HasStatus',
+	HasCustomer = 'HasCustomer',
+	HasLabels = 'HasLabels',
+	HasSid = 'HasSid',
+	HasActivity = 'HasActivity',
+	HasTags = 'HasTags',
+	HasNotes = 'HasNotes',
+	HasCode = 'HasCode',
+	HasVendorRef = 'HasVendorRef',
+	HasEntityRef = 'HasEntityRef',
+	IsCustomer = 'IsCustomer',
+	IsActivity = 'IsActivity',
+	IsOwner = 'IsOwner',
+	IsState = 'IsState',
+	IsStatus = 'IsStatus',
+	IsSystemType = 'IsSystemType',
+	IsTenantType = 'IsTenantType',
 }
 
 export type EntityFeatureCode = keyof typeof EntityFeature;

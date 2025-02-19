@@ -7,15 +7,15 @@ import { mergeRefs } from './mergeRefs';
  * @param override override
  */
 export function mergeProps<T extends { className?: string; style?: CSSProperties; ref?: Ref<any> }>(
-  source: T,
-  override: T,
+	source: T,
+	override: T,
 ): T {
-  const o = {
-    ...source,
-    ...override,
-    className: [source.className, override.className].filter(Boolean).join(' '),
-    style: { ...source.style, ...override.style },
-    ref: mergeRefs(source.ref, override.ref),
-  };
-  return o;
+	const o = {
+		...source,
+		...override,
+		className: [source.className, override.className].filter(Boolean).join(' '),
+		style: { ...source.style, ...override.style },
+		ref: mergeRefs(source.ref, override.ref),
+	};
+	return o;
 }

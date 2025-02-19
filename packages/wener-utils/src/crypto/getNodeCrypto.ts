@@ -17,6 +17,6 @@ let nodeCrypto;
 //   } catch (e) {}
 // }
 export function getNodeCrypto() {
-  nodeCrypto ||= getGlobalThis().crypto;
-  return nodeCrypto;
+	nodeCrypto ||= getGlobalThis().crypto;
+	return nodeCrypto;
 }

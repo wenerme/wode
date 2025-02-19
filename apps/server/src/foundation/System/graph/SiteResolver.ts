@@ -6,55 +6,48 @@ import { SystemRole } from '@/graph/const';
 
 @ObjectType('SiteConf')
 class SiteConfObject {
-  @Field(() => String)
-  tid!: string;
-  @Field(() => String)
-  title!: string;
+	@Field(() => String)
+	tid!: string;
+	@Field(() => String)
+	title!: string;
 
-  @Field(() => String, { nullable: true })
-  serverUrl?: string;
-  @Field(() => String, { nullable: true })
-  baseUrl?: string;
-  @Field(() => [String], { defaultValue: [] })
-  features: string[] = [];
+	@Field(() => String, { nullable: true })
+	serverUrl?: string;
+	@Field(() => String, { nullable: true })
+	baseUrl?: string;
+	@Field(() => [String], { defaultValue: [] })
+	features: string[] = [];
 
-  @Field(() => Object, { defaultValue: {} })
-  metadata: Record<string, any> = {};
+	@Field(() => Object, { defaultValue: {} })
+	metadata: Record<string, any> = {};
 }
 
 @InputType()
 class ResolveSiteConfInput extends RelayMutationInput {
-  @Field(() => String, { nullable: true })
-  tid?: string;
+	@Field(() => String, { nullable: true })
+	tid?: string;
 }
 
 @ObjectType()
 class ResolveSiteConfPayload extends RelayMutationPayload {
-  @Field(() => SiteConfObject, { nullable: true })
-  data?: SiteConfObject;
+	@Field(() => SiteConfObject, { nullable: true })
+	data?: SiteConfObject;
 }
 
 @Resolver()
 export class SiteResolver {
-  @Inject(TenantService) ts!: TenantService;
+	@Inject(TenantService) ts!: TenantService;
 
-  @Authorized(SystemRole.Public)
-  @Mutation(() => ResolveSiteConfPayload)
-  resolveSiteConf(@Arg('input', () => ResolveSiteConfInput) input: ResolveSiteConfInput) {
-    return runRelayClientMutation(input, async () => {
-      const ent = await this.ts.resolveTenant({});
-      if (!ent) {
-        return {};
-      }
-      const { tid, fullName } = ent;
-      return {
-        data: {
-          tid,
-          title: fullName,
-          features: [],
-          metadata: {},
-        },
-      };
-    });
-  }
+	@Authorized(SystemRole.Public)
+	@Mutation(() => ResolveSiteConfPayload)
+	resolveSiteConf(@Arg('input', () => ResolveSiteConfInput) input: ResolveSiteConfInput) {
+		return runRelayClientMutation(input, async () => {
+			const ent = await this.ts.resolveTenant({});
+			if (!ent) {
+				return {};
+			}
+			const { tid, fullName } = ent;
+			return { data: { tid, title: fullName, features: [], metadata: {} } };
+		});
+	}
 }

@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
  * @see https://github.com/zeit/next.js/blob/canary/examples/progressive-render/pages/index.js
  */
 export function useMounted() {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
-  return mounted;
+	const [mounted, setMounted] = useState(false);
+	useEffect(() => setMounted(true), []);
+	return mounted;
 }

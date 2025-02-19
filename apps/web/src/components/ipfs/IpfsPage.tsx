@@ -7,47 +7,25 @@ import { ExpandableSideMenuLayout, usePageLayoutState, type ExpandableSideMenuIt
 import { IpfsOutlined } from 'common/icons';
 
 const MenuItems: ExpandableSideMenuItemProps[] = [
-  {
-    label: 'IPFS Access',
-    href: '/ipfs',
-    end: true,
-    icon: <IpfsOutlined className={'h-5 w-5'} />,
-  },
-  {
-    type: 'title',
-    label: '网关',
-    icon: <AiOutlineGateway />,
-  },
-  {
-    label: '网关检测',
-    href: '/ipfs/gateway/check',
-    icon: <SiTestin />,
-  },
-  {
-    type: 'title',
-    label: '设置',
-    icon: <HiCog />,
-  },
-  {
-    label: '网关设置',
-    href: '/ipfs/setting/gateway',
-    icon: <AiOutlineApi />,
-    iconActive: <AiFillApi />,
-  },
+	{ label: 'IPFS Access', href: '/ipfs', end: true, icon: <IpfsOutlined className={'h-5 w-5'} /> },
+	{ type: 'title', label: '网关', icon: <AiOutlineGateway /> },
+	{ label: '网关检测', href: '/ipfs/gateway/check', icon: <SiTestin /> },
+	{ type: 'title', label: '设置', icon: <HiCog /> },
+	{ label: '网关设置', href: '/ipfs/setting/gateway', icon: <AiOutlineApi />, iconActive: <AiFillApi /> },
 ];
 
 export const IpfsPage: React.FC<{ children?: ReactNode }> = ({ children }) => {
-  const state = usePageLayoutState('ipfs');
-  return (
-    <ExpandableSideMenuLayout
-      initialExpanded={state.expanded}
-      onExpandedChange={(e) => (state.expanded = e)}
-      icon={<IpfsOutlined className={'h-8 w-8'} />}
-      title={'IPFS'}
-      items={MenuItems}
-    >
-      {children}
-    </ExpandableSideMenuLayout>
-  );
+	const state = usePageLayoutState('ipfs');
+	return (
+		<ExpandableSideMenuLayout
+			initialExpanded={state.expanded}
+			onExpandedChange={(e) => (state.expanded = e)}
+			icon={<IpfsOutlined className={'h-8 w-8'} />}
+			title={'IPFS'}
+			items={MenuItems}
+		>
+			{children}
+		</ExpandableSideMenuLayout>
+	);
 };
 export default IpfsPage;

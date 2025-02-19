@@ -4,9 +4,9 @@ import { PageLayout } from '@/components/page/PageLayout';
 import type { NextPageProps } from '@/types';
 
 export default async function (props: NextPageProps) {
-  return (
-    <PageLayout>
-      <RiddlePrintPage />
-    </PageLayout>
-  );
+	return (
+		<PageLayout>
+			<RiddlePrintPage />
+		</PageLayout>
+	);
 }

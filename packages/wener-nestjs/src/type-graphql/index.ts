@@ -14,11 +14,11 @@ export { GeneralRequestInput } from './GeneralRequestInput';
 
 // fixme: move to resource
 export {
-  type PageResponse,
-  createListPayload,
-  ListQueryInput,
-  withBaseQuery,
-  createBaseEntityResolver,
+	type PageResponse,
+	createListPayload,
+	ListQueryInput,
+	withBaseQuery,
+	createBaseEntityResolver,
 } from './resource';
 
 export { getObjectName, getInputName } from './getObjectName';

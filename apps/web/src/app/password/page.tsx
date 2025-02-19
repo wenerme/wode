@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
 
 export default function () {
-  redirect('/password/strength');
+	redirect('/password/strength');
 
-  return null;
+	return null;
 }

@@ -1,17 +1,17 @@
 export function useIsDev() {
-  return process.env.NODE_ENV === 'development';
+	return process.env.NODE_ENV === 'development';
 }
 
 export function useIsProd() {
-  return !useIsDev();
+	return !useIsDev();
 }
 
 export function useIsClient() {
-  return typeof window !== 'undefined' && typeof location !== 'undefined';
+	return typeof window !== 'undefined' && typeof location !== 'undefined';
 }
 
 let _isNextJS: boolean | undefined;
 
 export function useIsNextJS() {
-  return (_isNextJS ||= Boolean((globalThis as any).next?.version));
+	return (_isNextJS ||= Boolean((globalThis as any).next?.version));
 }

@@ -5,7 +5,7 @@ import { ApkIndexEntity } from '../entity/ApkIndexEntity';
 
 @Injectable()
 export class ApkIndexService extends EntityBaseService<ApkIndexEntity> {
-  constructor(@Inject(MikroORM) protected readonly orm: MikroORM) {
-    super(orm, ApkIndexEntity);
-  }
+	constructor(@Inject(MikroORM) protected readonly orm: MikroORM) {
+		super(orm, ApkIndexEntity);
+	}
 }

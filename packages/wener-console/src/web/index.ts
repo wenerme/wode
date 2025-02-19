@@ -7,9 +7,9 @@ export { DockClock } from './layouts/DockLayout/DockClock';
 export { DockUserAvatar, type DockUserAvatarProps } from './layouts/DockLayout/DockUserAvatar';
 
 export {
-  ExpandableSideMenuLayout,
-  type ExpandableSideMenuLayoutProps,
-  type ExpandableSideMenuItemProps,
+	ExpandableSideMenuLayout,
+	type ExpandableSideMenuLayoutProps,
+	type ExpandableSideMenuItemProps,
 } from './layouts';
 
 export { SettingLayout } from './layouts/SettingLayout/SettingLayout';

@@ -10,22 +10,20 @@ import { hideActuatorApi } from './const';
 @Controller('actuator')
 @ApiExcludeController(hideActuatorApi())
 export class ProcessController {
-  @Get('process')
-  @ApiOperation({
-    summary: 'Process status',
-  })
-  process() {
-    const { NODE_ENV: env } = process.env;
+	@Get('process')
+	@ApiOperation({ summary: 'Process status' })
+	process() {
+		const { NODE_ENV: env } = process.env;
 
-    return {
-      versions: process.versions,
-      env,
-      platform: process.platform,
-      arch: process.arch,
-      now: new Date(),
-      uptime: ms(process.uptime() * 1000),
-      memory: process.memoryUsage(),
-      cpu: process.cpuUsage(),
-    };
-  }
+		return {
+			versions: process.versions,
+			env,
+			platform: process.platform,
+			arch: process.arch,
+			now: new Date(),
+			uptime: ms(process.uptime() * 1000),
+			memory: process.memoryUsage(),
+			cpu: process.cpuUsage(),
+		};
+	}
 }

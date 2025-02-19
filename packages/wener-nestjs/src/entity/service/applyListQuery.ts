@@ -5,29 +5,27 @@ import { toKnexOrder } from './toKnexOrder';
 import type { ListEntityRequest } from './types';
 
 export function applyListQuery<T extends QueryBuilder<any>>({
-  builder,
-  query,
+	builder,
+	query,
 }: {
-  builder: T;
-  query: ListEntityRequest;
+	builder: T;
+	query: ListEntityRequest;
 }) {
-  {
-    const { limit, offset } = normalizePagination(query);
-    builder.limit(limit || 20).offset(offset);
-  }
+	{
+		const { limit, offset } = normalizePagination(query);
+		builder.limit(limit || 20).offset(offset);
+	}
 
-  const order = parseSort(query.order);
-  if (order.length > 0) {
-    builder.orderBy(toKnexOrder(order));
-  } else {
-    builder.orderBy({ id: QueryOrder.DESC });
-  }
+	const order = parseSort(query.order);
+	if (order.length > 0) {
+		builder.orderBy(toKnexOrder(order));
+	} else {
+		builder.orderBy({ id: QueryOrder.DESC });
+	}
 
-  if (!query.deleted) {
-    builder = builder.andWhere({
-      deletedAt: null,
-    });
-  }
+	if (!query.deleted) {
+		builder = builder.andWhere({ deletedAt: null });
+	}
 
-  return builder;
+	return builder;
 }

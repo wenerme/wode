@@ -4,15 +4,9 @@ import { AuthGuard } from './auth.guard';
 import { RolesGuard } from './roles.guard';
 
 @Module({
-  providers: [
-    {
-      provide: APP_GUARD,
-      useClass: AuthGuard,
-    },
-    {
-      provide: APP_GUARD,
-      useClass: RolesGuard,
-    },
-  ],
+	providers: [
+		{ provide: APP_GUARD, useClass: AuthGuard },
+		{ provide: APP_GUARD, useClass: RolesGuard },
+	],
 })
 export class AuthModule {}

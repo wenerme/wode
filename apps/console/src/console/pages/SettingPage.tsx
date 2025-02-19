@@ -9,54 +9,54 @@ import { ModuleMainLayout } from '@wener/console/console';
 import type { ExpandableSideMenuItemProps } from '@wener/console/web';
 
 const SettingItems: ExpandableSideMenuItemProps[] = [
-  {
-    label: '用户资料',
-    href: '/setting/profile',
-    icon: <FaRegUser />,
-    iconActive: <FaUser />,
-  },
-  {
-    type: 'title',
-    label: '显示和行为',
-    icon: <HiOutlineColorSwatch />,
-  },
-  {
-    label: '显示设置',
-    href: '/setting/appearance',
-    icon: <HiOutlineColorSwatch />,
-    iconActive: <HiColorSwatch />,
-  },
-  {
-    type: 'title',
-    label: '系统',
-  },
-  {
-    label: '系统信息',
-    href: '/setting/system/about',
-    icon: <TiInfoLargeOutline />,
-    iconActive: <TiInfoLarge />,
-  },
+	{
+		label: '用户资料',
+		href: '/setting/profile',
+		icon: <FaRegUser />,
+		iconActive: <FaUser />,
+	},
+	{
+		type: 'title',
+		label: '显示和行为',
+		icon: <HiOutlineColorSwatch />,
+	},
+	{
+		label: '显示设置',
+		href: '/setting/appearance',
+		icon: <HiOutlineColorSwatch />,
+		iconActive: <HiColorSwatch />,
+	},
+	{
+		type: 'title',
+		label: '系统',
+	},
+	{
+		label: '系统信息',
+		href: '/setting/system/about',
+		icon: <TiInfoLargeOutline />,
+		iconActive: <TiInfoLarge />,
+	},
 
-  {
-    type: 'title',
-    label: '开发',
-  },
-  {
-    label: '调试设置',
-    href: '/setting/dev/debug',
-    icon: <AiOutlineExperiment />,
-    iconActive: <AiFillExperiment />,
-  },
+	{
+		type: 'title',
+		label: '开发',
+	},
+	{
+		label: '调试设置',
+		href: '/setting/dev/debug',
+		icon: <AiOutlineExperiment />,
+		iconActive: <AiFillExperiment />,
+	},
 ];
 export const SettingPage: React.FC<{ children?: ReactNode; items?: ExpandableSideMenuItemProps[] }> = ({
-  children,
-  items = SettingItems,
+	children,
+	items = SettingItems,
 }) => {
-  return (
-    <ModuleMainLayout title={'设置'} icon={<HiOutlineCog className={'h-8 w-8'} />} items={items} path={'/setting'}>
-      {children}
-    </ModuleMainLayout>
-  );
+	return (
+		<ModuleMainLayout title={'设置'} icon={<HiOutlineCog className={'h-8 w-8'} />} items={items} path={'/setting'}>
+			{children}
+		</ModuleMainLayout>
+	);
 };
 
 export default SettingPage;

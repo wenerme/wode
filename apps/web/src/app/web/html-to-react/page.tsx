@@ -5,11 +5,11 @@ import { PageLayout } from '@/components/page/PageLayout';
 import type { NextPageProps } from '@/types';
 
 export default async function (props: NextPageProps) {
-  return (
-    <PageLayout>
-      <PageContainer className={'py-2'}>
-        <HtmlToReactPage />
-      </PageContainer>
-    </PageLayout>
-  );
+	return (
+		<PageLayout>
+			<PageContainer className={'py-2'}>
+				<HtmlToReactPage />
+			</PageContainer>
+		</PageLayout>
+	);
 }

@@ -7,16 +7,14 @@ import { SystemRole } from '@/graph/const';
 
 @Resolver()
 export class SystemResolver {
-  @Inject(SystemService) svc!: SystemService;
+	@Inject(SystemService) svc!: SystemService;
 
-  @Authorized(SystemRole.SystemAdmin)
-  @Mutation(() => GeneralResponseObject)
-  runSystemMaintenance(@Arg('input', () => RelayMutationInput) input: RelayMutationInput) {
-    return runRelayClientMutation(input, async () => {
-      await runSystemMaintenance();
-      return {
-        message: 'OK',
-      };
-    });
-  }
+	@Authorized(SystemRole.SystemAdmin)
+	@Mutation(() => GeneralResponseObject)
+	runSystemMaintenance(@Arg('input', () => RelayMutationInput) input: RelayMutationInput) {
+		return runRelayClientMutation(input, async () => {
+			await runSystemMaintenance();
+			return { message: 'OK' };
+		});
+	}
 }

@@ -4,5 +4,5 @@ import Utf8 from 'crypto-js/enc-utf8';
 const key = Utf8.parse('RGZwrjvQmQl2A4Hk');
 
 export function getCryptoKey() {
-  return key;
+	return key;
 }

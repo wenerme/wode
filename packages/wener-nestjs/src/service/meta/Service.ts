@@ -10,30 +10,30 @@ export const Service = (opts: ServiceOptionsInit): ClassDecorator => Reflect.met
 export const ServiceNameProp = Symbol('$ServiceName');
 
 export function getServiceName(svc: Constructor | string | Function | undefined): string | undefined {
-  if (!svc) {
-    return;
-  }
+	if (!svc) {
+		return;
+	}
 
-  if (typeof svc === 'string') {
-    return svc;
-  }
+	if (typeof svc === 'string') {
+		return svc;
+	}
 
-  if (typeof svc === 'function') {
-    let name = Reflect.getMetadata(SERVICE_METADATA_KEY, svc)?.name;
-    if (!name && ServiceNameProp in svc && typeof svc[ServiceNameProp] === 'string') {
-      name ||= svc[ServiceNameProp];
-    }
+	if (typeof svc === 'function') {
+		let name = Reflect.getMetadata(SERVICE_METADATA_KEY, svc)?.name;
+		if (!name && ServiceNameProp in svc && typeof svc[ServiceNameProp] === 'string') {
+			name ||= svc[ServiceNameProp];
+		}
 
-    return name;
-  }
+		return name;
+	}
 }
 
 export function getServiceOptions(svc: Constructor | AbstractConstructor | Function): ServiceOptionsInit | undefined {
-  if (!svc) {
-    return;
-  }
+	if (!svc) {
+		return;
+	}
 
-  if (typeof svc === 'function') {
-    return Reflect.getMetadata(SERVICE_METADATA_KEY, svc);
-  }
+	if (typeof svc === 'function') {
+		return Reflect.getMetadata(SERVICE_METADATA_KEY, svc);
+	}
 }

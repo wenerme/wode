@@ -1,7 +1,7 @@
 export class UnauthenticatedError extends Error {
-  code?: string;
+	code?: string;
 
-  constructor(message: string) {
-    super(message);
-  }
+	constructor(message: string) {
+		super(message);
+	}
 }

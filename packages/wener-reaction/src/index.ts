@@ -23,10 +23,10 @@ export { useWindowEventListener, useDocumentEventListener, useBodyEventListener 
 export type { HandlersOfEventMap } from './hooks/useEventListener';
 export { usePrevious } from './hooks/usePrevious';
 export {
-  useDeepCompareMemo,
-  useDeepCompareCallback,
-  useDeepCompareEffect,
-  useDeepCompareMemoize,
+	useDeepCompareMemo,
+	useDeepCompareCallback,
+	useDeepCompareEffect,
+	useDeepCompareMemoize,
 } from './hooks/useDeepCompareHooks';
 export { ContainerProvider, useContainer, type UseContainer } from './hooks/useContainer';
 

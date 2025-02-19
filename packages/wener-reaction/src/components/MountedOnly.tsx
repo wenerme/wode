@@ -8,6 +8,6 @@ import { renderAlternative, type AlternativeRendererProps } from '../render/rend
  * Only render when mounted or client side
  */
 export const MountedOnly: FC<AlternativeRendererProps> = (props) => {
-  const mounted = useMounted();
-  return renderAlternative(mounted, props);
+	const mounted = useMounted();
+	return renderAlternative(mounted, props);
 };

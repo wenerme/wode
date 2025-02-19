@@ -7,19 +7,19 @@ import { hideActuatorApi } from './const';
 @Controller('actuator/health')
 @ApiExcludeController(hideActuatorApi())
 export class HealthController {
-  @Get('readiness')
-  readiness() {
-    return { status: 'UP' };
-  }
+	@Get('readiness')
+	readiness() {
+		return { status: 'UP' };
+	}
 
-  @Get('liveness')
-  liveness() {
-    return { status: 'UP' };
-  }
+	@Get('liveness')
+	liveness() {
+		return { status: 'UP' };
+	}
 
-  @Get()
-  @Public()
-  health() {
-    return { status: 'UP' };
-  }
+	@Get()
+	@Public()
+	health() {
+		return { status: 'UP' };
+	}
 }

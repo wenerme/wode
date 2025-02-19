@@ -4,26 +4,26 @@ import { useRouteTitles } from '../../router';
 import { ReactRouterTracker } from './ReactRouterTracker';
 
 export const RootRouterReactor: FC<PropsWithChildren> = ({ children }) => {
-  return (
-    <>
-      <RouterReactor />
-      <ReactRouterTracker />
-    </>
-  );
+	return (
+		<>
+			<RouterReactor />
+			<ReactRouterTracker />
+		</>
+	);
 };
 
 const RouterReactor = () => {
-  useRouteTitleUpdate();
-  return null;
+	useRouteTitleUpdate();
+	return null;
 };
 
 function useRouteTitleUpdate() {
-  if (!useInRouterContext()) {
-    return null;
-  }
-  const titles = useRouteTitles();
-  const title = titles.join(' » ');
-  useEffect(() => {
-    document.title = title;
-  }, [title]);
+	if (!useInRouterContext()) {
+		return null;
+	}
+	const titles = useRouteTitles();
+	const title = titles.join(' » ');
+	useEffect(() => {
+		document.title = title;
+	}, [title]);
 }

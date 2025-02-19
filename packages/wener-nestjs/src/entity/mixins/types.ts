@@ -2,129 +2,129 @@ import type { BaseEntity, Collection, Opt, Ref } from '@mikro-orm/core';
 import type { IdentifiableEntity } from '../types';
 
 export interface HasTidEntity {
-  tid: string;
+	tid: string;
 }
 
 export interface HasSidEntity {
-  sid: number;
+	sid: number;
 }
 
 export interface HasVendorRefEntity {
-  cid?: string;
-  rid?: string;
+	cid?: string;
+	rid?: string;
 }
 
 export interface HasStateStatusEntity {
-  state: string & Opt;
-  status: string & Opt;
+	state: string & Opt;
+	status: string & Opt;
 }
 
 export interface HasTagsEntity {
-  tags?: string[];
+	tags?: string[];
 }
 
 export interface HasDisplayOrderEntity {
-  displayOrder: number;
+	displayOrder: number;
 }
 
 export interface HasLabelsEntity<E extends BaseEntity = BaseEntity> {
-  labels: Collection<E>;
+	labels: Collection<E>;
 }
 
 export interface HasNotesEntity {
-  notes?: string;
+	notes?: string;
 }
 
 export interface HasMetadataEntity {
-  metadata?: Record<string, any>;
+	metadata?: Record<string, any>;
 }
 
 export interface HasCodeEntity {
-  code?: string;
+	code?: string;
 }
 
 export interface HasEntityRefEntity {
-  entityId?: string;
-  entityType?: string;
-  entity?: Ref<IdentifiableEntity>;
+	entityId?: string;
+	entityType?: string;
+	entity?: Ref<IdentifiableEntity>;
 }
 
 export interface HasRequiredEntityRefEntity {
-  entityId: string;
-  entityType: string;
-  entity: Ref<IdentifiableEntity>;
+	entityId: string;
+	entityType: string;
+	entity: Ref<IdentifiableEntity>;
 }
 
 export interface HasCustomerRefEntity {
-  customerId?: string;
-  customerType?: string;
-  customer?: Ref<IdentifiableEntity>;
+	customerId?: string;
+	customerType?: string;
+	customer?: Ref<IdentifiableEntity>;
 }
 
 export interface HasOwnerRefEntity {
-  ownerId?: string;
-  ownerType?: string;
-  owner?: Ref<IdentifiableEntity>;
+	ownerId?: string;
+	ownerType?: string;
+	owner?: Ref<IdentifiableEntity>;
 }
 
 export interface HasAuditorRefEntity {
-  createdById?: string;
-  updatedById?: string;
-  deletedById?: string;
+	createdById?: string;
+	updatedById?: string;
+	deletedById?: string;
 }
 
 export interface HasSlugEntity {
-  slug?: string;
+	slug?: string;
 }
 
 export interface HasAuditorEntity<E extends IsUserEntity> extends HasAuditorRefEntity {
-  get createdBy(): Ref<E>;
+	get createdBy(): Ref<E>;
 
-  get updatedBy(): Ref<E>;
+	get updatedBy(): Ref<E>;
 
-  get deletedBy(): Ref<E>;
+	get deletedBy(): Ref<E>;
 }
 
 export interface IsHierarchyEntity<E extends IsHierarchyEntity<any>> extends IdentifiableEntity {
-  parent?: E;
-  children: Collection<E>;
+	parent?: E;
+	children: Collection<E>;
 
-  parentId?: string;
+	parentId?: string;
 }
 
 export interface HasTitleDescriptionEntity {
-  title: string;
-  description?: string;
+	title: string;
+	description?: string;
 }
 
 interface IsConnectionEntity extends IdentifiableEntity {
-  entity1Id?: string;
-  entity1Type?: string;
-  entity1?: Ref<IdentifiableEntity>;
-  entity1Role?: string;
+	entity1Id?: string;
+	entity1Type?: string;
+	entity1?: Ref<IdentifiableEntity>;
+	entity1Role?: string;
 
-  entity2Id?: string;
-  entity2Type?: string;
-  entity2?: Ref<IdentifiableEntity>;
-  entity2Role?: string;
+	entity2Id?: string;
+	entity2Type?: string;
+	entity2?: Ref<IdentifiableEntity>;
+	entity2Role?: string;
 
-  effectiveStart?: Date;
-  effectiveEnd?: Date;
+	effectiveStart?: Date;
+	effectiveEnd?: Date;
 
-  description?: string;
-  entityImage?: string;
+	description?: string;
+	entityImage?: string;
 }
 
 interface IsRelationEntity<R extends IdentifiableEntity> extends IdentifiableEntity {
-  entityId: string;
-  entityType: string;
-  entity: Ref<IdentifiableEntity>;
+	entityId: string;
+	entityType: string;
+	entity: Ref<IdentifiableEntity>;
 
-  relatedId: string;
-  relatedType: string;
-  related: Ref<R>;
+	relatedId: string;
+	relatedType: string;
+	related: Ref<R>;
 
-  displayOrder: number;
+	displayOrder: number;
 }
 
 // Connection Association  Link, Join, Relation

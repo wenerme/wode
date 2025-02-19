@@ -25,75 +25,75 @@ import { Instance } from '@/instance/Instance';
 const Content = lazy(() => import('./ConsoleAppContent'));
 
 export const ConsoleApp = () => {
-  const doLogin = async (o: LoginFormData) => {
-    try {
-      const out = await AuthActions.signInByPassword({
-        ...o,
-      });
-      getAuthState().setAuth(out);
-      showSuccessToast('登录成功');
-      // if (await refreshProfile()) {
-      //   showSuccessToast(message || '登录成功');
-      // } else {
-      //   showErrorToast('登录检测失败');
-      // }
-    } catch (e) {
-      showErrorToast(e);
-    }
-  };
-  const { title } = getSiteStore().getState();
-  return (
-    <Instance.Provide>
-      <ComponentProvider components={[{ provide: SiteLogo, Component: WenerLogo }]}>
-        <AuthSidecar
-          actions={{
-            refresh: AuthActions.refreshAccessToken,
-          }}
-        />
-        <AuthReady>
-          <ReactQueryClientProvider>
-            <UrqlProvider value={getUrqlClient()}>
-              {/* fixme Change this */}
-              <ContextStoreProvider value={getConsoleContext().getModuleService().store}>
-                <AuthBlock
-                  fallback={
-                    <LoginPage
-                      title={title}
-                      logo={<SiteLogo className={'h-10 w-10'} />}
-                      onSubmit={doLogin}
-                      hero={
-                        <Image className='absolute inset-0 h-full w-full object-cover' src={Splash} alt={'splash'} />
-                      }
-                    />
-                  }
-                >
-                  <ErrorSuspenseBoundary>
-                    <Content />
-                  </ErrorSuspenseBoundary>
-                </AuthBlock>
-              </ContextStoreProvider>
-            </UrqlProvider>
-          </ReactQueryClientProvider>
-        </AuthReady>
-      </ComponentProvider>
-    </Instance.Provide>
-  );
+	const doLogin = async (o: LoginFormData) => {
+		try {
+			const out = await AuthActions.signInByPassword({
+				...o,
+			});
+			getAuthState().setAuth(out);
+			showSuccessToast('登录成功');
+			// if (await refreshProfile()) {
+			//   showSuccessToast(message || '登录成功');
+			// } else {
+			//   showErrorToast('登录检测失败');
+			// }
+		} catch (e) {
+			showErrorToast(e);
+		}
+	};
+	const { title } = getSiteStore().getState();
+	return (
+		<Instance.Provide>
+			<ComponentProvider components={[{ provide: SiteLogo, Component: WenerLogo }]}>
+				<AuthSidecar
+					actions={{
+						refresh: AuthActions.refreshAccessToken,
+					}}
+				/>
+				<AuthReady>
+					<ReactQueryClientProvider>
+						<UrqlProvider value={getUrqlClient()}>
+							{/* fixme Change this */}
+							<ContextStoreProvider value={getConsoleContext().getModuleService().store}>
+								<AuthBlock
+									fallback={
+										<LoginPage
+											title={title}
+											logo={<SiteLogo className={'h-10 w-10'} />}
+											onSubmit={doLogin}
+											hero={
+												<Image className='absolute inset-0 h-full w-full object-cover' src={Splash} alt={'splash'} />
+											}
+										/>
+									}
+								>
+									<ErrorSuspenseBoundary>
+										<Content />
+									</ErrorSuspenseBoundary>
+								</AuthBlock>
+							</ContextStoreProvider>
+						</UrqlProvider>
+					</ReactQueryClientProvider>
+				</AuthReady>
+			</ComponentProvider>
+		</Instance.Provide>
+	);
 };
 
 function getUrqlClient(): Client {
-  return getGlobalStates('UrqlClient', () =>
-    createUrqlClient({
-      getToken: getAccessToken,
-      url: getGraphQLUrl(),
-      schema,
-      resolveTypeNameFromKey: (id) => {
-        return resolveResourceSchema({ id })?.typeName;
-      },
-    }),
-  );
+	return getGlobalStates('UrqlClient', () =>
+		createUrqlClient({
+			getToken: getAccessToken,
+			url: getGraphQLUrl(),
+			schema,
+			resolveTypeNameFromKey: (id) => {
+				return resolveResourceSchema({ id })?.typeName;
+			},
+		}),
+	);
 }
 
 const ReactQueryClientProvider: React.FC<{ children?: React.ReactNode; url?: string }> = ({ children, url }) => {
-  const [queryClient] = useState(() => new QueryClient({ defaultOptions: { queries: { staleTime: 60 * 5 * 1000 } } }));
-  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
+	const [queryClient] = useState(() => new QueryClient({ defaultOptions: { queries: { staleTime: 60 * 5 * 1000 } } }));
+	return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
 };

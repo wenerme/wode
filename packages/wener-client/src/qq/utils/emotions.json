@@ -1,827 +1,142 @@
 [
-  {
-    "id": 0,
-    "cn": "微笑",
-    "emoji": "😊",
-    "en": "Smile"
-  },
-  {
-    "id": 1,
-    "cn": "撇嘴",
-    "emoji": "😏",
-    "en": "Grimace"
-  },
-  {
-    "id": 2,
-    "cn": "色",
-    "emoji": "😍",
-    "en": "Drool"
-  },
-  {
-    "id": 3,
-    "cn": "发呆",
-    "emoji": "😶",
-    "en": "Scowl"
-  },
-  {
-    "id": 4,
-    "cn": "得意",
-    "emoji": "😌",
-    "en": "CoolGuy"
-  },
-  {
-    "id": 5,
-    "cn": "流泪",
-    "emoji": "😭",
-    "en": "Sob"
-  },
-  {
-    "id": 6,
-    "cn": "害羞",
-    "emoji": "😳",
-    "en": "Shy"
-  },
-  {
-    "id": 7,
-    "cn": "闭嘴",
-    "emoji": "🤐",
-    "en": "Silent"
-  },
-  {
-    "id": 8,
-    "cn": "睡",
-    "emoji": "😴",
-    "en": "Sleep"
-  },
-  {
-    "id": 9,
-    "cn": "大哭",
-    "emoji": "😢",
-    "en": "Cry"
-  },
-  {
-    "id": 10,
-    "cn": "尴尬",
-    "emoji": "😬",
-    "en": "Awkward"
-  },
-  {
-    "id": 11,
-    "cn": "发怒",
-    "emoji": "😡",
-    "en": "Angry"
-  },
-  {
-    "id": 12,
-    "cn": "调皮",
-    "emoji": "😜",
-    "en": "Tongue"
-  },
-  {
-    "id": 13,
-    "cn": "呲牙",
-    "emoji": "😁",
-    "en": "Grin"
-  },
-  {
-    "id": 14,
-    "cn": "惊讶",
-    "emoji": "😮",
-    "en": "Surprise"
-  },
-  {
-    "id": 15,
-    "cn": "难过",
-    "emoji": "😟",
-    "en": "Frown"
-  },
-  {
-    "id": 16,
-    "cn": "酷",
-    "emoji": "😎",
-    "en": "Ruthless"
-  },
-  {
-    "id": 17,
-    "cn": "冷汗",
-    "emoji": "😓",
-    "en": "Blush"
-  },
-  {
-    "id": 18,
-    "cn": "抓狂",
-    "emoji": "😖",
-    "en": "Scream"
-  },
-  {
-    "id": 19,
-    "cn": "吐",
-    "emoji": "🤮",
-    "en": "Puke"
-  },
-  {
-    "id": 20,
-    "cn": "偷笑",
-    "emoji": "😸",
-    "en": "Chuckle"
-  },
-  {
-    "id": 21,
-    "cn": "愉快",
-    "emoji": "😺"
-  },
-  {
-    "id": 22,
-    "cn": "白眼",
-    "emoji": "🙄",
-    "en": "Slight"
-  },
-  {
-    "id": 23,
-    "cn": "傲慢",
-    "emoji": "😤",
-    "en": "Smug"
-  },
-  {
-    "id": 24,
-    "cn": "饥饿",
-    "emoji": "😋",
-    "en": "Hungry"
-  },
-  {
-    "id": 25,
-    "cn": "困",
-    "emoji": "😪",
-    "en": "Drowsy"
-  },
-  {
-    "id": 26,
-    "cn": "惊恐",
-    "emoji": "😱",
-    "en": "Panic"
-  },
-  {
-    "id": 27,
-    "cn": "流汗",
-    "emoji": "😥",
-    "en": "Sweat"
-  },
-  {
-    "id": 28,
-    "cn": "憨笑",
-    "emoji": "😄",
-    "en": "Laugh"
-  },
-  {
-    "id": 29,
-    "cn": "大兵",
-    "emoji": "👮",
-    "en": "Commando"
-  },
-  {
-    "id": 30,
-    "cn": "奋斗",
-    "emoji": "💪",
-    "en": "Determined"
-  },
-  {
-    "id": 31,
-    "cn": "咒骂",
-    "emoji": "🤬",
-    "en": "Scold"
-  },
-  {
-    "id": 32,
-    "cn": "疑问",
-    "emoji": "❓",
-    "en": "Shocked"
-  },
-  {
-    "id": 33,
-    "cn": "嘘",
-    "emoji": "🤫",
-    "en": "Shhh"
-  },
-  {
-    "id": 34,
-    "cn": "晕",
-    "emoji": "😵",
-    "en": "Dizzy"
-  },
-  {
-    "id": 35,
-    "cn": "折磨",
-    "en": "Tormented"
-  },
-  {
-    "id": 36,
-    "cn": "衰",
-    "en": "Toasted"
-  },
-  {
-    "id": 37,
-    "cn": "骷髅",
-    "emoji": "💀",
-    "en": "Skull"
-  },
-  {
-    "id": 38,
-    "cn": "敲打",
-    "emoji": "🔨",
-    "en": "Hammer"
-  },
-  {
-    "id": 39,
-    "cn": "再见",
-    "emoji": "👋",
-    "en": "Wave"
-  },
-  {
-    "id": 40,
-    "cn": "擦汗",
-    "emoji": "😅",
-    "en": "Speechless"
-  },
-  {
-    "id": 41,
-    "cn": "抠鼻",
-    "emoji": "👃",
-    "en": "NosePick"
-  },
-  {
-    "id": 42,
-    "cn": "鼓掌",
-    "emoji": "👏",
-    "en": "Clap"
-  },
-  {
-    "id": 43,
-    "cn": "糗大了",
-    "emoji": "😳",
-    "en": "Shame"
-  },
-  {
-    "id": 44,
-    "cn": "坏笑",
-    "emoji": "😈",
-    "en": "Trick"
-  },
-  {
-    "id": 45,
-    "cn": "左哼哼",
-    "emoji": "😡",
-    "en": "Bah! L"
-  },
-  {
-    "id": 46,
-    "cn": "右哼哼",
-    "emoji": "😡",
-    "en": "Bah! R"
-  },
-  {
-    "id": 47,
-    "cn": "哈欠",
-    "emoji": "🥱",
-    "en": "Yawn"
-  },
-  {
-    "id": 48,
-    "cn": "鄙视",
-    "emoji": "😒",
-    "en": "Pooh-pooh"
-  },
-  {
-    "id": 49,
-    "cn": "委屈",
-    "emoji": "😣",
-    "en": "Shrunken"
-  },
-  {
-    "id": 50,
-    "cn": "快哭了",
-    "emoji": "😢",
-    "en": "TearingUp"
-  },
-  {
-    "id": 51,
-    "cn": "阴险",
-    "emoji": "😈",
-    "en": "Sly"
-  },
-  {
-    "id": 52,
-    "cn": "亲亲",
-    "emoji": "😗",
-    "en": "Kiss"
-  },
-  {
-    "id": 53,
-    "cn": "吓",
-    "emoji": "😱",
-    "en": "Wrath"
-  },
-  {
-    "id": 54,
-    "cn": "可怜",
-    "emoji": "😖",
-    "en": "Whimper"
-  },
-  {
-    "id": 55,
-    "cn": "菜刀",
-    "emoji": "🔪",
-    "en": "Cleaver"
-  },
-  {
-    "id": 56,
-    "cn": "西瓜",
-    "emoji": "🍉",
-    "en": "Watermelon"
-  },
-  {
-    "id": 57,
-    "cn": "啤酒",
-    "emoji": "🍺",
-    "en": "Beer"
-  },
-  {
-    "id": 58,
-    "cn": "篮球",
-    "emoji": "🏀",
-    "en": "Basketball"
-  },
-  {
-    "id": 59,
-    "cn": "乒乓",
-    "emoji": "🏓",
-    "en": "PingPong"
-  },
-  {
-    "id": 60,
-    "cn": "咖啡",
-    "emoji": "☕",
-    "en": "Coffee"
-  },
-  {
-    "id": 61,
-    "cn": "饭",
-    "emoji": "🍚",
-    "en": "Rice"
-  },
-  {
-    "id": 62,
-    "cn": "猪头",
-    "emoji": "🐷",
-    "en": "Pig"
-  },
-  {
-    "id": 63,
-    "cn": "玫瑰",
-    "emoji": "🌹",
-    "en": "Rose"
-  },
-  {
-    "id": 64,
-    "cn": "凋谢",
-    "emoji": "🥀",
-    "en": "Wilt"
-  },
-  {
-    "id": 65,
-    "cn": "示爱",
-    "emoji": "💑",
-    "en": "Lips"
-  },
-  {
-    "id": 66,
-    "cn": "爱心",
-    "emoji": "❤️",
-    "en": "Heart"
-  },
-  {
-    "id": 67,
-    "cn": "心碎",
-    "emoji": "💔",
-    "en": "BrokenHeart"
-  },
-  {
-    "id": 68,
-    "cn": "蛋糕",
-    "emoji": "🍰",
-    "en": "Cake"
-  },
-  {
-    "id": 69,
-    "cn": "闪电",
-    "emoji": "⚡",
-    "en": "Lightning"
-  },
-  {
-    "id": 70,
-    "cn": "炸弹",
-    "emoji": "💣",
-    "en": "Bomb"
-  },
-  {
-    "id": 71,
-    "cn": "刀",
-    "emoji": "🔪",
-    "en": "Dagger"
-  },
-  {
-    "id": 72,
-    "cn": "足球",
-    "emoji": "⚽",
-    "en": "Soccer"
-  },
-  {
-    "id": 73,
-    "cn": "瓢虫",
-    "emoji": "🐞",
-    "en": "Ladybug"
-  },
-  {
-    "id": 74,
-    "cn": "便便",
-    "emoji": "💩",
-    "en": "Poop"
-  },
-  {
-    "id": 75,
-    "cn": "月亮",
-    "emoji": "🌙",
-    "en": "Moon"
-  },
-  {
-    "id": 76,
-    "cn": "太阳",
-    "emoji": "☀️",
-    "en": "Sun"
-  },
-  {
-    "id": 77,
-    "cn": "礼物",
-    "emoji": "🎁",
-    "en": "Gift"
-  },
-  {
-    "id": 78,
-    "cn": "拥抱",
-    "emoji": "🤗",
-    "en": "Hug"
-  },
-  {
-    "id": 79,
-    "cn": "强",
-    "emoji": "💪",
-    "en": "Strong"
-  },
-  {
-    "id": 80,
-    "cn": "弱",
-    "emoji": "🦵",
-    "en": "Weak"
-  },
-  {
-    "id": 81,
-    "cn": "握手",
-    "emoji": "🤝",
-    "en": "Shake"
-  },
-  {
-    "id": 82,
-    "cn": "胜利",
-    "emoji": "✌️",
-    "en": "Peace"
-  },
-  {
-    "id": 83,
-    "cn": "抱拳",
-    "emoji": "🙏",
-    "en": "Fight"
-  },
-  {
-    "id": 84,
-    "cn": "勾引",
-    "emoji": "💁",
-    "en": "Beckon"
-  },
-  {
-    "id": 85,
-    "cn": "拳头",
-    "emoji": "👊",
-    "en": "Fist"
-  },
-  {
-    "id": 86,
-    "cn": "差劲",
-    "emoji": "👎",
-    "en": "Pinky"
-  },
-  {
-    "id": 87,
-    "cn": "爱你",
-    "emoji": "😍",
-    "en": "RockOn"
-  },
-  {
-    "id": 88,
-    "cn": "NO",
-    "emoji": "🚫",
-    "en": "NO"
-  },
-  {
-    "id": 89,
-    "cn": "OK",
-    "emoji": "👌",
-    "en": "OK"
-  },
-  {
-    "id": 90,
-    "cn": "爱情",
-    "emoji": "💖",
-    "en": "InLove"
-  },
-  {
-    "id": 91,
-    "cn": "飞吻",
-    "emoji": "😘",
-    "en": "Blowkiss"
-  },
-  {
-    "id": 92,
-    "cn": "跳跳",
-    "emoji": "🤸",
-    "en": "Waddle"
-  },
-  {
-    "id": 93,
-    "cn": "发抖",
-    "emoji": "🥶",
-    "en": "Tremble"
-  },
-  {
-    "id": 94,
-    "cn": "怄火",
-    "emoji": "😡",
-    "en": "Aaagh"
-  },
-  {
-    "id": 95,
-    "cn": "转圈",
-    "emoji": "🔄",
-    "en": "Twirl"
-  },
-  {
-    "id": 96,
-    "cn": "磕头",
-    "emoji": "🙇",
-    "en": "Kotow"
-  },
-  {
-    "id": 97,
-    "cn": "回头",
-    "emoji": "🔙",
-    "en": "Dramatic"
-  },
-  {
-    "id": 98,
-    "cn": "跳绳",
-    "emoji": "🪢",
-    "en": "JumpRope"
-  },
-  {
-    "id": 99,
-    "cn": "挥手",
-    "emoji": "👋",
-    "en": "Surrender"
-  },
-  {
-    "id": 100,
-    "cn": "激动",
-    "emoji": "🤪",
-    "en": "Exciting"
-  },
-  {
-    "id": 101,
-    "cn": "街舞",
-    "emoji": "🕺",
-    "en": "HipHot"
-  },
-  {
-    "id": 102,
-    "cn": "献吻",
-    "emoji": "💋",
-    "en": "ShowLove"
-  },
-  {
-    "id": 103,
-    "cn": "左太极",
-    "en": "Tai Chi L"
-  },
-  {
-    "id": 104,
-    "cn": "右太极",
-    "en": "Tai Chi R"
-  },
-  {
-    "id": 105,
-    "cn": "嘿哈"
-  },
-  {
-    "id": 106,
-    "cn": "捂脸",
-    "emoji": "🤦"
-  },
-  {
-    "id": 107,
-    "cn": "奸笑",
-    "emoji": "😏"
-  },
-  {
-    "id": 108,
-    "cn": "机智"
-  },
-  {
-    "id": 109,
-    "cn": "皱眉",
-    "emoji": "🤨"
-  },
-  {
-    "id": 110,
-    "cn": "耶",
-    "emoji": "✌️"
-  },
-  {
-    "id": 111,
-    "cn": "红包",
-    "emoji": "🧧"
-  },
-  {
-    "id": 112,
-    "cn": "鸡",
-    "emoji": "🐔"
-  },
-  {
-    "id": 113,
-    "cn": "喝彩",
-    "en": "Cheers",
-    "emoji": "🥂"
-  },
-  {
-    "id": 114,
-    "cn": "祈祷",
-    "en": "Pray",
-    "emoji": "🙏"
-  },
-  {
-    "id": 115,
-    "cn": "爆筋",
-    "en": "BlowUp",
-    "emoji": "💥"
-  },
-  {
-    "id": 116,
-    "cn": "棒棒糖",
-    "en": "Lolly",
-    "emoji": "🍭"
-  },
-  {
-    "id": 117,
-    "cn": "喝奶",
-    "en": "Milk",
-    "emoji": "🥛"
-  },
-  {
-    "id": 118,
-    "cn": "下面",
-    "en": "Noodles",
-    "emoji": "🍜"
-  },
-  {
-    "id": 119,
-    "cn": "香蕉",
-    "en": "Banana",
-    "emoji": "🍌"
-  },
-  {
-    "id": 120,
-    "cn": "飞机",
-    "en": "Plane",
-    "emoji": "✈️"
-  },
-  {
-    "id": 121,
-    "cn": "开车",
-    "en": "Car",
-    "emoji": "🚗"
-  },
-  {
-    "id": 122,
-    "cn": "左车头",
-    "en": "Locomotive",
-    "emoji": "🚂"
-  },
-  {
-    "id": 123,
-    "cn": "车厢",
-    "en": "Train",
-    "emoji": "🚃"
-  },
-  {
-    "id": 124,
-    "cn": "右车头",
-    "en": "Train Tail",
-    "emoji": "🚃"
-  },
-  {
-    "id": 125,
-    "cn": "多云",
-    "en": "Cloudy",
-    "emoji": "☁️"
-  },
-  {
-    "id": 126,
-    "cn": "下雨",
-    "en": "Rain",
-    "emoji": "🌧️"
-  },
-  {
-    "id": 127,
-    "cn": "钞票",
-    "en": "Dollor",
-    "emoji": "💵"
-  },
-  {
-    "id": 128,
-    "cn": "熊猫",
-    "en": "Panda",
-    "emoji": "🐼"
-  },
-  {
-    "id": 129,
-    "cn": "灯泡",
-    "en": "Bulb",
-    "emoji": "💡"
-  },
-  {
-    "id": 130,
-    "cn": "风车",
-    "en": "Windmill",
-    "emoji": "🎡"
-  },
-  {
-    "id": 131,
-    "cn": "闹钟",
-    "en": "Clock",
-    "emoji": "⏰"
-  },
-  {
-    "id": 132,
-    "cn": "打伞",
-    "en": "Umbrella",
-    "emoji": "☂️"
-  },
-  {
-    "id": 133,
-    "cn": "彩球",
-    "en": "Balloon",
-    "emoji": "🎈"
-  },
-  {
-    "id": 134,
-    "cn": "钻戒",
-    "en": "Ring",
-    "emoji": "💍"
-  },
-  {
-    "id": 135,
-    "cn": "沙发",
-    "en": "Sofa",
-    "emoji": "🛋️"
-  },
-  {
-    "id": 136,
-    "cn": "纸巾",
-    "en": "toiletPaper",
-    "emoji": "🧻"
-  },
-  {
-    "id": 137,
-    "cn": "药",
-    "en": "Pill",
-    "emoji": "💊"
-  },
-  {
-    "id": 138,
-    "cn": "手枪",
-    "en": "Pistol",
-    "emoji": "🔫"
-  },
-  {
-    "id": 139,
-    "cn": "青蛙",
-    "en": "Frog",
-    "emoji": "🐸"
-  }
+	{ "id": 0, "cn": "微笑", "emoji": "😊", "en": "Smile" },
+	{ "id": 1, "cn": "撇嘴", "emoji": "😏", "en": "Grimace" },
+	{ "id": 2, "cn": "色", "emoji": "😍", "en": "Drool" },
+	{ "id": 3, "cn": "发呆", "emoji": "😶", "en": "Scowl" },
+	{ "id": 4, "cn": "得意", "emoji": "😌", "en": "CoolGuy" },
+	{ "id": 5, "cn": "流泪", "emoji": "😭", "en": "Sob" },
+	{ "id": 6, "cn": "害羞", "emoji": "😳", "en": "Shy" },
+	{ "id": 7, "cn": "闭嘴", "emoji": "🤐", "en": "Silent" },
+	{ "id": 8, "cn": "睡", "emoji": "😴", "en": "Sleep" },
+	{ "id": 9, "cn": "大哭", "emoji": "😢", "en": "Cry" },
+	{ "id": 10, "cn": "尴尬", "emoji": "😬", "en": "Awkward" },
+	{ "id": 11, "cn": "发怒", "emoji": "😡", "en": "Angry" },
+	{ "id": 12, "cn": "调皮", "emoji": "😜", "en": "Tongue" },
+	{ "id": 13, "cn": "呲牙", "emoji": "😁", "en": "Grin" },
+	{ "id": 14, "cn": "惊讶", "emoji": "😮", "en": "Surprise" },
+	{ "id": 15, "cn": "难过", "emoji": "😟", "en": "Frown" },
+	{ "id": 16, "cn": "酷", "emoji": "😎", "en": "Ruthless" },
+	{ "id": 17, "cn": "冷汗", "emoji": "😓", "en": "Blush" },
+	{ "id": 18, "cn": "抓狂", "emoji": "😖", "en": "Scream" },
+	{ "id": 19, "cn": "吐", "emoji": "🤮", "en": "Puke" },
+	{ "id": 20, "cn": "偷笑", "emoji": "😸", "en": "Chuckle" },
+	{ "id": 21, "cn": "愉快", "emoji": "😺" },
+	{ "id": 22, "cn": "白眼", "emoji": "🙄", "en": "Slight" },
+	{ "id": 23, "cn": "傲慢", "emoji": "😤", "en": "Smug" },
+	{ "id": 24, "cn": "饥饿", "emoji": "😋", "en": "Hungry" },
+	{ "id": 25, "cn": "困", "emoji": "😪", "en": "Drowsy" },
+	{ "id": 26, "cn": "惊恐", "emoji": "😱", "en": "Panic" },
+	{ "id": 27, "cn": "流汗", "emoji": "😥", "en": "Sweat" },
+	{ "id": 28, "cn": "憨笑", "emoji": "😄", "en": "Laugh" },
+	{ "id": 29, "cn": "大兵", "emoji": "👮", "en": "Commando" },
+	{ "id": 30, "cn": "奋斗", "emoji": "💪", "en": "Determined" },
+	{ "id": 31, "cn": "咒骂", "emoji": "🤬", "en": "Scold" },
+	{ "id": 32, "cn": "疑问", "emoji": "❓", "en": "Shocked" },
+	{ "id": 33, "cn": "嘘", "emoji": "🤫", "en": "Shhh" },
+	{ "id": 34, "cn": "晕", "emoji": "😵", "en": "Dizzy" },
+	{ "id": 35, "cn": "折磨", "en": "Tormented" },
+	{ "id": 36, "cn": "衰", "en": "Toasted" },
+	{ "id": 37, "cn": "骷髅", "emoji": "💀", "en": "Skull" },
+	{ "id": 38, "cn": "敲打", "emoji": "🔨", "en": "Hammer" },
+	{ "id": 39, "cn": "再见", "emoji": "👋", "en": "Wave" },
+	{ "id": 40, "cn": "擦汗", "emoji": "😅", "en": "Speechless" },
+	{ "id": 41, "cn": "抠鼻", "emoji": "👃", "en": "NosePick" },
+	{ "id": 42, "cn": "鼓掌", "emoji": "👏", "en": "Clap" },
+	{ "id": 43, "cn": "糗大了", "emoji": "😳", "en": "Shame" },
+	{ "id": 44, "cn": "坏笑", "emoji": "😈", "en": "Trick" },
+	{ "id": 45, "cn": "左哼哼", "emoji": "😡", "en": "Bah! L" },
+	{ "id": 46, "cn": "右哼哼", "emoji": "😡", "en": "Bah! R" },
+	{ "id": 47, "cn": "哈欠", "emoji": "🥱", "en": "Yawn" },
+	{ "id": 48, "cn": "鄙视", "emoji": "😒", "en": "Pooh-pooh" },
+	{ "id": 49, "cn": "委屈", "emoji": "😣", "en": "Shrunken" },
+	{ "id": 50, "cn": "快哭了", "emoji": "😢", "en": "TearingUp" },
+	{ "id": 51, "cn": "阴险", "emoji": "😈", "en": "Sly" },
+	{ "id": 52, "cn": "亲亲", "emoji": "😗", "en": "Kiss" },
+	{ "id": 53, "cn": "吓", "emoji": "😱", "en": "Wrath" },
+	{ "id": 54, "cn": "可怜", "emoji": "😖", "en": "Whimper" },
+	{ "id": 55, "cn": "菜刀", "emoji": "🔪", "en": "Cleaver" },
+	{ "id": 56, "cn": "西瓜", "emoji": "🍉", "en": "Watermelon" },
+	{ "id": 57, "cn": "啤酒", "emoji": "🍺", "en": "Beer" },
+	{ "id": 58, "cn": "篮球", "emoji": "🏀", "en": "Basketball" },
+	{ "id": 59, "cn": "乒乓", "emoji": "🏓", "en": "PingPong" },
+	{ "id": 60, "cn": "咖啡", "emoji": "☕", "en": "Coffee" },
+	{ "id": 61, "cn": "饭", "emoji": "🍚", "en": "Rice" },
+	{ "id": 62, "cn": "猪头", "emoji": "🐷", "en": "Pig" },
+	{ "id": 63, "cn": "玫瑰", "emoji": "🌹", "en": "Rose" },
+	{ "id": 64, "cn": "凋谢", "emoji": "🥀", "en": "Wilt" },
+	{ "id": 65, "cn": "示爱", "emoji": "💑", "en": "Lips" },
+	{ "id": 66, "cn": "爱心", "emoji": "❤️", "en": "Heart" },
+	{ "id": 67, "cn": "心碎", "emoji": "💔", "en": "BrokenHeart" },
+	{ "id": 68, "cn": "蛋糕", "emoji": "🍰", "en": "Cake" },
+	{ "id": 69, "cn": "闪电", "emoji": "⚡", "en": "Lightning" },
+	{ "id": 70, "cn": "炸弹", "emoji": "💣", "en": "Bomb" },
+	{ "id": 71, "cn": "刀", "emoji": "🔪", "en": "Dagger" },
+	{ "id": 72, "cn": "足球", "emoji": "⚽", "en": "Soccer" },
+	{ "id": 73, "cn": "瓢虫", "emoji": "🐞", "en": "Ladybug" },
+	{ "id": 74, "cn": "便便", "emoji": "💩", "en": "Poop" },
+	{ "id": 75, "cn": "月亮", "emoji": "🌙", "en": "Moon" },
+	{ "id": 76, "cn": "太阳", "emoji": "☀️", "en": "Sun" },
+	{ "id": 77, "cn": "礼物", "emoji": "🎁", "en": "Gift" },
+	{ "id": 78, "cn": "拥抱", "emoji": "🤗", "en": "Hug" },
+	{ "id": 79, "cn": "强", "emoji": "💪", "en": "Strong" },
+	{ "id": 80, "cn": "弱", "emoji": "🦵", "en": "Weak" },
+	{ "id": 81, "cn": "握手", "emoji": "🤝", "en": "Shake" },
+	{ "id": 82, "cn": "胜利", "emoji": "✌️", "en": "Peace" },
+	{ "id": 83, "cn": "抱拳", "emoji": "🙏", "en": "Fight" },
+	{ "id": 84, "cn": "勾引", "emoji": "💁", "en": "Beckon" },
+	{ "id": 85, "cn": "拳头", "emoji": "👊", "en": "Fist" },
+	{ "id": 86, "cn": "差劲", "emoji": "👎", "en": "Pinky" },
+	{ "id": 87, "cn": "爱你", "emoji": "😍", "en": "RockOn" },
+	{ "id": 88, "cn": "NO", "emoji": "🚫", "en": "NO" },
+	{ "id": 89, "cn": "OK", "emoji": "👌", "en": "OK" },
+	{ "id": 90, "cn": "爱情", "emoji": "💖", "en": "InLove" },
+	{ "id": 91, "cn": "飞吻", "emoji": "😘", "en": "Blowkiss" },
+	{ "id": 92, "cn": "跳跳", "emoji": "🤸", "en": "Waddle" },
+	{ "id": 93, "cn": "发抖", "emoji": "🥶", "en": "Tremble" },
+	{ "id": 94, "cn": "怄火", "emoji": "😡", "en": "Aaagh" },
+	{ "id": 95, "cn": "转圈", "emoji": "🔄", "en": "Twirl" },
+	{ "id": 96, "cn": "磕头", "emoji": "🙇", "en": "Kotow" },
+	{ "id": 97, "cn": "回头", "emoji": "🔙", "en": "Dramatic" },
+	{ "id": 98, "cn": "跳绳", "emoji": "🪢", "en": "JumpRope" },
+	{ "id": 99, "cn": "挥手", "emoji": "👋", "en": "Surrender" },
+	{ "id": 100, "cn": "激动", "emoji": "🤪", "en": "Exciting" },
+	{ "id": 101, "cn": "街舞", "emoji": "🕺", "en": "HipHot" },
+	{ "id": 102, "cn": "献吻", "emoji": "💋", "en": "ShowLove" },
+	{ "id": 103, "cn": "左太极", "en": "Tai Chi L" },
+	{ "id": 104, "cn": "右太极", "en": "Tai Chi R" },
+	{ "id": 105, "cn": "嘿哈" },
+	{ "id": 106, "cn": "捂脸", "emoji": "🤦" },
+	{ "id": 107, "cn": "奸笑", "emoji": "😏" },
+	{ "id": 108, "cn": "机智" },
+	{ "id": 109, "cn": "皱眉", "emoji": "🤨" },
+	{ "id": 110, "cn": "耶", "emoji": "✌️" },
+	{ "id": 111, "cn": "红包", "emoji": "🧧" },
+	{ "id": 112, "cn": "鸡", "emoji": "🐔" },
+	{ "id": 113, "cn": "喝彩", "en": "Cheers", "emoji": "🥂" },
+	{ "id": 114, "cn": "祈祷", "en": "Pray", "emoji": "🙏" },
+	{ "id": 115, "cn": "爆筋", "en": "BlowUp", "emoji": "💥" },
+	{ "id": 116, "cn": "棒棒糖", "en": "Lolly", "emoji": "🍭" },
+	{ "id": 117, "cn": "喝奶", "en": "Milk", "emoji": "🥛" },
+	{ "id": 118, "cn": "下面", "en": "Noodles", "emoji": "🍜" },
+	{ "id": 119, "cn": "香蕉", "en": "Banana", "emoji": "🍌" },
+	{ "id": 120, "cn": "飞机", "en": "Plane", "emoji": "✈️" },
+	{ "id": 121, "cn": "开车", "en": "Car", "emoji": "🚗" },
+	{ "id": 122, "cn": "左车头", "en": "Locomotive", "emoji": "🚂" },
+	{ "id": 123, "cn": "车厢", "en": "Train", "emoji": "🚃" },
+	{ "id": 124, "cn": "右车头", "en": "Train Tail", "emoji": "🚃" },
+	{ "id": 125, "cn": "多云", "en": "Cloudy", "emoji": "☁️" },
+	{ "id": 126, "cn": "下雨", "en": "Rain", "emoji": "🌧️" },
+	{ "id": 127, "cn": "钞票", "en": "Dollor", "emoji": "💵" },
+	{ "id": 128, "cn": "熊猫", "en": "Panda", "emoji": "🐼" },
+	{ "id": 129, "cn": "灯泡", "en": "Bulb", "emoji": "💡" },
+	{ "id": 130, "cn": "风车", "en": "Windmill", "emoji": "🎡" },
+	{ "id": 131, "cn": "闹钟", "en": "Clock", "emoji": "⏰" },
+	{ "id": 132, "cn": "打伞", "en": "Umbrella", "emoji": "☂️" },
+	{ "id": 133, "cn": "彩球", "en": "Balloon", "emoji": "🎈" },
+	{ "id": 134, "cn": "钻戒", "en": "Ring", "emoji": "💍" },
+	{ "id": 135, "cn": "沙发", "en": "Sofa", "emoji": "🛋️" },
+	{ "id": 136, "cn": "纸巾", "en": "toiletPaper", "emoji": "🧻" },
+	{ "id": 137, "cn": "药", "en": "Pill", "emoji": "💊" },
+	{ "id": 138, "cn": "手枪", "en": "Pistol", "emoji": "🔫" },
+	{ "id": 139, "cn": "青蛙", "en": "Frog", "emoji": "🐸" }
 ]

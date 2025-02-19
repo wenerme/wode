@@ -8,39 +8,39 @@ import { handleRemoteSystemEvents } from '@/server/events/handleRemoteSystemEven
 
 @Injectable()
 export class SystemService implements OnApplicationBootstrap, OnModuleInit {
-  private log = new Logger(SystemService.name);
+	private log = new Logger(SystemService.name);
 
-  constructor(@Inject(EntityManager) protected readonly em: EntityManager) {}
+	constructor(@Inject(EntityManager) protected readonly em: EntityManager) {}
 
-  async onModuleInit() {
-    this.log.log('Server starting');
-    await this.start();
-  }
+	async onModuleInit() {
+		this.log.log('Server starting');
+		await this.start();
+	}
 
-  private async start() {
-    // await handleRemoteSystemEvents();
-  }
+	private async start() {
+		// await handleRemoteSystemEvents();
+	}
 
-  async onApplicationBootstrap() {
-    await this.ready();
-  }
+	async onApplicationBootstrap() {
+		await this.ready();
+	}
 
-  private async ready() {
-    const { log } = this;
-    log.log('Server ready');
+	private async ready() {
+		const { log } = this;
+		log.log('Server ready');
 
-    await getEvents().emit(SystemEvents.ServerReady, {});
-    await getRemoteEvents().emit(SystemEvents.ServerReady, getInstanceInfo());
-  }
+		await getEvents().emit(SystemEvents.ServerReady, {});
+		await getRemoteEvents().emit(SystemEvents.ServerReady, getInstanceInfo());
+	}
 }
 
 function getInstanceInfo() {
-  return {
-    instanceId: App.instanceId,
-    name: App.name,
-    component: App.component,
-    service: App.service,
-    hostname: os.hostname(),
-    dev: App.isDevelopment,
-  };
+	return {
+		instanceId: App.instanceId,
+		name: App.name,
+		component: App.component,
+		service: App.service,
+		hostname: os.hostname(),
+		dev: App.isDevelopment,
+	};
 }

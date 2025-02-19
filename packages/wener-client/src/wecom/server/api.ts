@@ -1,8 +1,8 @@
 import type { ExtAttr, ExternalProfile } from './types';
 
 export interface GeneralResponse {
-  errcode: number;
-  errmsg: string;
+	errcode: number;
+	errmsg: string;
 }
 
 // export interface GetUserResponse {
@@ -70,41 +70,41 @@ export interface GeneralResponse {
 // }
 
 export interface CreateUserRequest {
-  userid: string;
-  name: string;
-  alias: string;
-  mobile: string;
-  department: string[];
-  order: string[];
-  position: string;
-  gender: string;
-  email: string;
-  biz_mail: string;
-  is_leader_in_dept: string[];
-  direct_leader: string[];
-  enable: string;
-  avatar_mediaid: string;
-  telephone: string;
-  address: string;
-  main_department: string;
-  extattr: ExtAttr;
-  to_invite: string;
-  external_position: string;
-  external_profile: ExternalProfile;
+	userid: string;
+	name: string;
+	alias: string;
+	mobile: string;
+	department: string[];
+	order: string[];
+	position: string;
+	gender: string;
+	email: string;
+	biz_mail: string;
+	is_leader_in_dept: string[];
+	direct_leader: string[];
+	enable: string;
+	avatar_mediaid: string;
+	telephone: string;
+	address: string;
+	main_department: string;
+	extattr: ExtAttr;
+	to_invite: string;
+	external_position: string;
+	external_profile: ExternalProfile;
 }
 
 export interface DepartmentInput {
-  id?: number;
-  name: string;
-  name_en?: string;
-  parentid?: number;
-  order?: number;
+	id?: number;
+	name: string;
+	name_en?: string;
+	parentid?: number;
+	order?: number;
 }
 export interface DepartmentOutput {
-  id: number;
-  name: string;
-  name_en?: string;
-  parentid: number;
-  order: number;
-  department_leader?: string[];
+	id: number;
+	name: string;
+	name_en?: string;
+	parentid: number;
+	order: number;
+	department_leader?: string[];
 }

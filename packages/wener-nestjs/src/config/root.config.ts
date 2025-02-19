@@ -6,21 +6,21 @@ import { getRedisConfig, RedisConfig } from './redis.config';
 import { getServerConfig, ServerConfig } from './server.config';
 
 export const RootConfig = z.object({
-  server: ServerConfig,
-  database: DatabaseConfig,
-  redis: RedisConfig,
-  nats: NatsConfig,
-  minio: MinioConfig,
+	server: ServerConfig,
+	database: DatabaseConfig,
+	redis: RedisConfig,
+	nats: NatsConfig,
+	minio: MinioConfig,
 });
 
 export type RootConfig = z.infer<typeof RootConfig>;
 
 export function getRootConfig(env = process.env): RootConfig {
-  return {
-    server: getServerConfig(env),
-    database: getDatabaseConfig(env),
-    redis: getRedisConfig(env),
-    nats: getNatsConfig(env),
-    minio: getMinioConfig(env),
-  };
+	return {
+		server: getServerConfig(env),
+		database: getDatabaseConfig(env),
+		redis: getRedisConfig(env),
+		nats: getNatsConfig(env),
+		minio: getMinioConfig(env),
+	};
 }

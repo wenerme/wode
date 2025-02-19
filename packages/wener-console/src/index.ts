@@ -7,8 +7,8 @@ export { cn } from './tw/cn';
 
 export { getNetworkStatus, useNetworkStatus } from './utils/NetworkStatus';
 export {
-  type UserAgentPreferences,
-  getUserAgentPreferences,
-  useUserAgentPreferences,
+	type UserAgentPreferences,
+	getUserAgentPreferences,
+	useUserAgentPreferences,
 } from './utils/UserAgentPreference';
 export { getPrefersColorSchema } from './utils/getPrefersColorSchema';
