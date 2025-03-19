@@ -3,7 +3,7 @@ import type { MaybePromise } from '@wener/utils';
 import type { Hono } from 'hono';
 import { showRoutes } from 'hono/dev';
 import { App } from '../app';
-import { loadEnvs } from '../util/loadEnvs';
+import { loadEnvs } from '../utils/loadEnvs';
 import { createHono } from './createHono';
 import { serve } from './serve';
 

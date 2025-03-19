@@ -96,19 +96,14 @@ export namespace ReactHookForm {
 	> = ({ className, dirty = true, children, ...props }) => {
 		const { formState } = useFormContext();
 		const { isSubmitting, isDirty, disabled } = formState;
-		let invalid = disabled || isSubmitting;
+		let mute = disabled || isSubmitting;
 
 		if (dirty) {
-			invalid = invalid || !isDirty; // require dirty
+			mute ||= !isDirty; // require dirty
 		}
 
 		return (
-			<FunctionButton.Submit
-				className={cn('btn-primary', className)}
-				disabled={invalid}
-				loading={isSubmitting}
-				{...props}
-			>
+			<FunctionButton.Submit className={cn('btn-primary', className)} disabled={mute} loading={isSubmitting} {...props}>
 				{children}
 			</FunctionButton.Submit>
 		);

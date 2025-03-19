@@ -1,6 +1,6 @@
 import { QueryOrder } from '@mikro-orm/core';
 import type { QueryBuilder } from '@mikro-orm/postgresql';
-import { normalizePagination, parseSort } from '@wener/common';
+import { parseSort, resolvePagination } from '@wener/common';
 import { toKnexOrder } from './toKnexOrder';
 import type { ListEntityRequest } from './types';
 
@@ -12,7 +12,7 @@ export function applyListQuery<T extends QueryBuilder<any>>({
 	query: ListEntityRequest;
 }) {
 	{
-		const { limit, offset } = normalizePagination(query);
+		const { limit, offset } = resolvePagination(query);
 		builder.limit(limit || 20).offset(offset);
 	}
 

@@ -18,4 +18,4 @@ export function toKnexOrder(order: OrderRule[]): Record<string, any> {
 		);
 }
 
-export type OrderRule = { field: string; order: 'asc' | 'desc'; nulls?: 'last' | 'first' };
+type OrderRule = { field: string; order: 'asc' | 'desc'; nulls?: 'last' | 'first' };

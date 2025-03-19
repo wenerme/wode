@@ -1,1 +1,1 @@
-export { normalizePagination } from '@wener/common';
+export { resolvePagination } from '@wener/common';

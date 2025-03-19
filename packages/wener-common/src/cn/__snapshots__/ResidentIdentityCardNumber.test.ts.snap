@@ -2,7 +2,7 @@
 
 exports[`ResidentIdentityCardNumber > should parse 1`] = `
 {
-  "age": 75,
+  "age": 76,
   "birthDate": "19491231",
   "checksum": "X",
   "division": "110105",

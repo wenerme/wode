@@ -34,7 +34,7 @@ export function flexRender<TProps extends object>(
 	if (mergeProps) {
 		const merge = mergeProps === true ? flexRender.mergeProps : mergeProps;
 		if (typeof Comp === 'object' && 'props' in Comp) {
-			return cloneElement(Comp, merge(Comp.props, props));
+			return cloneElement(Comp, merge(Comp.props as any, props));
 		}
 	}
 	// various ReactNode types

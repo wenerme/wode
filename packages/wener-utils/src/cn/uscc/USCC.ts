@@ -50,7 +50,7 @@ export class UnifiedSocialCreditCodeFormat {
 		let organizationTypeCode = s[1];
 		return {
 			registryAuthorityCode: registryCode,
-			registryAuthorityCodeLabel: l1?.label,
+			registryAuthorityLabel: l1?.label,
 			organizationTypeCode,
 			organizationTypeLabel: l1?.children?.[organizationTypeCode]?.label,
 			registryDivisionCode: s.slice(3, 6),
@@ -73,7 +73,7 @@ interface Code {
 interface ParsedUSCC {
 	// 登记管理部门码
 	registryAuthorityCode: string;
-	registryAuthorityCodeLabel?: string;
+	registryAuthorityLabel?: string;
 	// 机构类别代码
 	organizationTypeCode: string;
 	organizationTypeLabel?: string;
