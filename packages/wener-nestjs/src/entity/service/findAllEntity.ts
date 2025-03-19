@@ -1,6 +1,6 @@
 import { QueryOrder, type EntityClass, type FilterQuery, type QBFilterQuery } from '@mikro-orm/core';
 import type { QueryBuilder } from '@mikro-orm/postgresql';
-import { normalizePagination, parseSort } from '@wener/common';
+import { parseSort, resolvePagination } from '@wener/common/data';
 import { toMikroOrmQuery } from '@wener/miniquery/mikro-orm';
 import { Errors, type MaybePromise } from '@wener/utils';
 import type { StandardBaseEntity } from '../StandardBaseEntity';
@@ -17,6 +17,7 @@ export interface FindAllEntityOptions<E extends StandardBaseEntity> {
 	pageNumber?: number;
 	limit?: number;
 	offset?: number;
+
 	order?: string[];
 
 	search?: string;
@@ -85,7 +86,7 @@ export async function findAllEntity<E extends StandardBaseEntity>(
 
 	// pagination
 	{
-		const { limit, offset } = normalizePagination(opts);
+		const { limit, offset } = resolvePagination(opts);
 		limit > 0 && builder.limit(limit);
 		offset > 0 && builder.offset(offset);
 	}

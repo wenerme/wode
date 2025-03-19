@@ -1,5 +1,3 @@
-export class FeishuCliet {}
-
 export function request() {}
 
 export async function getTenantAccessTokenInternal(body: {

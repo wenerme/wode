@@ -8,6 +8,7 @@
 	"exports": {
 		".": "./src/index.ts",
 		"./cn": "./src/cn/index.ts",
+		"./data": "./src/data/index.ts",
 		"./jsonschema": "./src/jsonschema/index.ts",
 		"./meta": "./src/meta/index.ts",
 		"./password": "./src/password/index.ts",
@@ -27,10 +28,11 @@
 	"dependencies": {
 		"@wener/utils": "workspace:*",
 		"es-toolkit": "^1.32.0",
-		"ts-pattern": "^5.6.2"
+		"ts-pattern": "^5.6.2",
+		"zod": "^3.24.2"
 	},
 	"devDependencies": {
-		"@sinclair/typebox": "^0.34.25",
+		"@sinclair/typebox": "^0.34.28",
 		"@types/argon2-browser": "^1.18.4",
 		"@types/bcrypt": "^5.0.2",
 		"@types/bcryptjs": "^2.4.6",
@@ -52,6 +54,10 @@
 			"./cn": {
 				"types": "./src/cn/index.ts",
 				"default": "./lib/cn/index.js"
+			},
+			"./data": {
+				"types": "./src/data/index.ts",
+				"default": "./lib/data/index.js"
 			},
 			"./jsonschema": {
 				"types": "./src/jsonschema/index.ts",

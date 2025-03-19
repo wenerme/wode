@@ -1,4 +1,11 @@
-import { dumpRequest, dumpResponse, isPlainObject, type FetchLike, type MaybePromise } from '@wener/utils';
+import {
+	dumpRequest,
+	dumpResponse,
+	isPlainObject,
+	type FetchLike,
+	type MaybeArray,
+	type MaybePromise,
+} from '@wener/utils';
 
 type DoRequestContext = { url: string; req: RequestInit; res: Response };
 type DoRequestInit = Omit<RequestInit, 'method' | 'headers'> & { method: string; headers: Headers };
@@ -7,7 +14,7 @@ export type DoRequestOptions<OUT = any, IN = OUT> = {
 	url: string;
 	baseUrl?: string;
 	body?: any;
-	params?: any;
+	params?: Record<string, MaybeArray<string | number | boolean | null | undefined>>;
 	transform?: (ctx: { data: IN } & DoRequestContext) => MaybePromise<OUT>;
 	onRequest?: (ctx: { url: string; req: DoRequestInit }) => MaybePromise<void>;
 	onSuccess?: (ctx: { data: OUT } & DoRequestContext) => MaybePromise<void>;
@@ -32,7 +39,7 @@ export async function doRequest<OUT = any, IN = OUT>(opts: DoRequestOptions<OUT,
 		onRequest,
 		...init
 	} = opts;
-	const { req, url } = buildRequest(init);
+	const { req, url } = resolveRequest(init);
 
 	onRequest && (await onRequest({ url, req }));
 
@@ -84,7 +91,7 @@ export async function doRequest<OUT = any, IN = OUT>(opts: DoRequestOptions<OUT,
 	return output;
 }
 
-export function buildRequest({
+export function resolveRequest({
 	body,
 	method = body ? 'POST' : 'GET',
 	url,
@@ -110,20 +117,27 @@ export function buildRequest({
 		}
 	}
 
+	let u: URL;
 	if (baseUrl) {
-		url = new URL(url, baseUrl).toString();
+		u = new URL(url, baseUrl);
+	} else {
+		u = new URL(url);
 	}
 
 	if (params) {
-		const search = new URLSearchParams(params);
-		const u = new URL(url);
-		for (const [k, v] of search.entries()) {
-			u.searchParams.set(k, v);
+		for (const [k, v] of Object.entries(params)) {
+			if (v === null || v === undefined) continue;
+			if (Array.isArray(v)) {
+				for (const vv of v) {
+					u.searchParams.append(k, String(vv));
+				}
+				continue;
+			}
+			u.searchParams.set(k, String(v));
 		}
-
-		url = u.toString();
 	}
-
+	u.searchParams.sort();
+	url = u.toString();
 	let req = { signal, method, body, cache, credentials, headers } as DoRequestInit;
 
 	return { req, url };

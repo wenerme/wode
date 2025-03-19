@@ -1,5 +1,5 @@
 {
-  "$schema": "https://json.schemastore.org/swcrc",
+  "$schema": "https://swc.rs/schema.json",
   "sourceMaps": true,
   "module": {
     "type": "es6"
@@ -24,7 +24,7 @@
   "env": {
     "targets": {
       "chrome": "100",
-      "node": "20"
+      "node": "22"
     }
   },
   "sourceMaps": true,
