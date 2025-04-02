@@ -1570,6 +1570,9 @@ importers:
       es-toolkit:
         specifier: ^1.32.0
         version: 1.32.0
+      std-env:
+        specifier: ^3.8.1
+        version: 3.8.1
       ts-pattern:
         specifier: ^5.6.2
         version: 5.6.2
@@ -1580,6 +1583,9 @@ importers:
       '@sinclair/typebox':
         specifier: ^0.34.28
         version: 0.34.28
+      '@sinclair/typebox-codegen':
+        specifier: ^0.10.5
+        version: 0.10.5
       '@types/argon2-browser':
         specifier: ^1.18.4
         version: 1.18.4
@@ -1613,6 +1619,15 @@ importers:
       bcryptjs:
         specifier: ^3.0.2
         version: 3.0.2
+      chalk:
+        specifier: ^5.4.1
+        version: 5.4.1
+      consola:
+        specifier: ^3.4.2
+        version: 3.4.2
+      dayjs:
+        specifier: ^1.11.13
+        version: 1.11.13
 
   packages/wener-console:
     dependencies:
@@ -6997,6 +7012,10 @@ packages:
   consola@2.15.3:
     resolution: {integrity: sha512-9vAdYbHj6x2fLKC4+oPH0kFzY/orMZyG2Aj+kNylHxKGJ/Ed4dpNyAQYwJOdqO4zdM7XpVHmyejQDcQHrnuXbw==}
 
+  consola@3.4.2:
+    resolution: {integrity: sha512-5IKcdX0nnYavi6G7TtOhwkYzyjfJlatbjMjuLSfE2kYT5pMDOilZ4OvMhi637CcDICTmz3wARPoyhqyX1Y+XvA==}
+    engines: {node: ^14.18.0 || >=16.10.0}
+
   console-control-strings@1.1.0:
     resolution: {integrity: sha512-ty/fTekppD2fIwRvnZAVdeOiGd1c7YXEixbgJTNzqcxJWKQnjJ/V1bNEEE6hygpM3WjwHFUVK6HTjWSzV4a8sQ==}
 
@@ -7449,6 +7468,7 @@ packages:
 
   echarts-for-react@3.0.3:
     resolution: {integrity: sha512-KdvZGkCwmx5DTHl7vjo0CBodSaPY31hPWRC4NZ5B+utQfoW+M54OTBvkoCmktR0kJ+1Bj6rP7pIJJnxPdySyug==}
+    deprecated: this version has serious bug.
     peerDependencies:
       echarts: ^3.0.0 || ^4.0.0 || ^5.0.0
       react: ^15.0.0 || >=16.0.0
@@ -18099,6 +18119,8 @@ snapshots:
   concat-map@0.0.1: {}
 
   consola@2.15.3: {}
+
+  consola@3.4.2: {}
 
   console-control-strings@1.1.0: {}
 

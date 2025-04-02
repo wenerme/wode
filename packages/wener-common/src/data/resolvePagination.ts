@@ -39,7 +39,7 @@ export function resolvePagination(
 		pageSize = maybeFunction(options.pageSize, pageSize);
 	}
 	pageSize ??= 20;
-	pageSize = clamp(pageSize, 1, options.maxPageSize ?? 100);
+	pageSize = clamp(pageSize, 1, options.maxPageSize ?? 1000);
 
 	let { pageNumber = 1, pageIndex, limit, offset } = out;
 	// page index over page number

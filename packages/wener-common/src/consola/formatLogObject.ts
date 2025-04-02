@@ -1,0 +1,171 @@
+import colors from 'chalk';
+import type { ConsolaOptions, FormatOptions, LogObject, LogType } from 'consola/core';
+import dayjs from 'dayjs';
+import { isDevelopment } from 'std-env';
+
+const levelColors: Record<LogType, (str: string) => string> = {
+	trace: colors.gray,
+	debug: colors.cyan,
+	info: colors.blueBright,
+	warn: colors.yellow,
+	error: colors.red,
+	fatal: colors.bgRed.white,
+	silent: colors.white,
+	log: colors.white,
+	success: colors.green,
+	fail: colors.red,
+	ready: colors.green,
+	start: colors.cyan,
+	box: colors.white,
+	verbose: colors.green,
+};
+
+const levelShort: Record<LogType, string> = {
+	trace: 'TRAC',
+	debug: 'DEBG',
+	info: 'INFO',
+	warn: 'WARN',
+	error: 'ERRO',
+	fatal: 'FATL',
+	silent: 'SLNT',
+	log: 'LOG ', // Added space to make it 4 characters
+	success: 'SUCC',
+	fail: 'FAIL',
+	ready: 'READ',
+	start: 'STRT',
+	box: 'BOX ', // Added space to make it 4 characters
+	verbose: 'VERB',
+};
+const start = Date.now();
+
+export function formatLogObject(
+	o: LogObject,
+	ctx: {
+		options: ConsolaOptions;
+	},
+) {
+	let { date, type, tag } = o;
+	type = type === 'log' ? 'info' : type;
+
+	const color = levelColors[type] || colors.white;
+	const levelText = levelShort[type] || type.toUpperCase().slice(0, 4); // Get first 4 chars, consistent uppercase
+
+	let line = '';
+	let out: string[] = [];
+
+	// Timestamp
+	if (isDevelopment) {
+		// process.hrtime.bigint()
+		let diff = (date.getTime() - start) / 1000;
+
+		out.push(colors.gray(diff.toFixed(3).padStart(7, ' ')));
+	} else {
+		out.push(colors.gray(dayjs(date).format('YYYY-MM-DD HH:mm:ss.SSS')));
+	}
+
+	// Log Level (colored)
+	// Pad to 4 characters
+	out.push(color(levelText.padEnd(4, ' ')));
+
+	if (tag) {
+		out.push(colors.yellow(`[${tag}]`)); // Added color for tag
+	}
+
+	{
+		const [message, ...additional] = formatArgs(o.args, ctx).split('\n');
+
+		out.push(characterFormat(message));
+
+		line = out.join(' ');
+		if (additional.length > 0) {
+			line += characterFormat(additional.join('\n'));
+		}
+
+		if (type === 'trace') {
+			const _err = new Error('Trace: ' + o.message);
+			line += formatStack(_err.stack || '', _err.message);
+		}
+	}
+
+	// if (!message && typeof args[0] === 'string') {
+	//   message = args.shift();
+	// }
+	// if (message) {
+	//   out.push(message);
+	// }
+	// if (args.length) {
+	//   out.push(...args.map((a) => (typeof a === 'string' ? a : JSON.stringify(a)))); // Handle non-string args
+	// }
+
+	// todo format error
+	// https://github.com/unjs/consola/blob/main/src/reporters/fancy.ts
+
+	// return out.join('  '); // Increased spacing for better readability
+	return line;
+}
+
+function characterFormat(str: string) {
+	return (
+		str
+			// highlight backticks
+			.replace(/`([^`]+)`/gm, (_, m) => colors.cyan(m))
+			// underline underscores
+			.replace(/\s+_([^_]+)_\s+/gm, (_, m) => ` ${colors.underline(m)} `)
+	);
+}
+
+function parseStack(stack: string, message: string) {
+	// const cwd = process.cwd() + sep;
+
+	const lines = stack
+		.split('\n')
+		.splice(message.split('\n').length)
+		.map(
+			(l) => l.trim().replace('file://', ''),
+			// .replace(cwd, '')
+		);
+
+	return lines;
+}
+
+function formatStack(stack: string, message: string, opts?: FormatOptions) {
+	const indent = '  '.repeat((opts?.errorLevel || 0) + 1);
+	return (
+		`\n${indent}`
+		+ parseStack(stack, message)
+			.map(
+				(line) =>
+					'  ' + line.replace(/^at +/, (m) => colors.gray(m)).replace(/\((.+)\)/, (_, m) => `(${colors.cyan(m)})`),
+			)
+			.join(`\n${indent}`)
+	);
+}
+
+function formatArgs(args: any[], opts: FormatOptions) {
+	const _args = args.map((arg) => {
+		if (arg && typeof arg.stack === 'string') {
+			return formatError(arg, opts);
+		}
+		return arg;
+	});
+
+	// Only supported with Node >= 10
+	// https://nodejs.org/api/util.html#util_util_inspect_object_options
+	return formatWithOptions(opts, ..._args);
+}
+
+function formatWithOptions(o: any, ...params: any[]) {
+	// import { formatWithOptions } from 'node:util';
+	return params.join(' ');
+}
+
+function formatError(err: any, opts: FormatOptions): string {
+	const message = err.message ?? formatWithOptions(opts, err);
+	const stack = err.stack ? formatStack(err.stack, message, opts) : '';
+
+	const level = opts?.errorLevel || 0;
+	const causedPrefix = level > 0 ? `${'  '.repeat(level)}[cause]: ` : '';
+	const causedError = err.cause ? '\n\n' + formatError(err.cause, { ...opts, errorLevel: level + 1 }) : '';
+
+	return causedPrefix + message + '\n' + stack + causedError;
+}
