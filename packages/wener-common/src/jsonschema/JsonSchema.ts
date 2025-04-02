@@ -1,7 +1,7 @@
 import type { Static, TSchema } from '@sinclair/typebox';
 import Ajv, { type ErrorObject, type Options } from 'ajv';
 import addFormats from 'ajv-formats';
-import localize from 'ajv-i18n/localize/zh';
+// import localize from 'ajv-i18n/localize/zh';
 import addKeywords from 'ajv-keywords';
 import { isNil } from 'es-toolkit';
 import { match, P } from 'ts-pattern';
@@ -45,7 +45,7 @@ function validate({ schema, data, mutate, clone, ajv }: ValidateOptions & { sche
 
 	const valid = validate(data);
 	const errors = validate.errors;
-	localize(errors);
+	// localize(errors);
 
 	return { data, success: valid, message: ajv.errorsText(errors), errors: errors };
 }
