@@ -1,5 +1,8 @@
+import type { TObject } from '@sinclair/typebox';
+import type { AnySchemaObject, JSONSchemaType } from 'ajv';
 import { describe, expect, it } from 'vitest';
 import { JsonSchema } from './JsonSchema';
+import type { JsonSchemaDef } from './types';
 
 describe('jsonschema', () => {
 	it('should create from schema', () => {
@@ -14,5 +17,19 @@ describe('jsonschema', () => {
 		]) {
 			expect(JsonSchema.create(a)).toEqual(b);
 		}
+	});
+
+	it('should match typebox types', () => {
+		let a: JsonSchemaDef | undefined;
+		let b: TObject<{}> | undefined;
+		a = b;
+	});
+
+	it('should match ajv types', () => {
+		let a: JsonSchemaDef | undefined;
+		let b: AnySchemaObject | undefined;
+		let c: JSONSchemaType<{}> | undefined;
+		a = b;
+		// a = c;
 	});
 });

@@ -53,6 +53,6 @@ test(resolvePagination.name, () => {
 });
 
 test(`${resolvePagination.name} with options`, () => {
-	expect(resolvePagination({ pageSize: '200' }, { maxPageSize: 50 })).toMatchObject({ pageSize: 50, limit: 50 });
+	expect(resolvePagination({ pageSize: '200' }, { maxLimit: 50 })).toMatchObject({ pageSize: 50, limit: 50 });
 	expect(resolvePagination({}, { pageSize: 30 })).toMatchObject({ pageSize: 30, limit: 30 });
 });

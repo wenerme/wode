@@ -12,6 +12,10 @@ export type ResolveEntityOptions<E extends StandardBaseEntity, O extends {} = {}
 			resolve?: (o: O & BuildResolveEntityOptions, ctx: { where: FilterQuery<E>[] }) => void;
 	  } & O)
 	| E;
+// | string
+// | { id: string }
+// | { eid: string }
+// | { where: FilterQuery<E> };
 
 export interface ResolveEntityResult<E extends StandardBaseEntity> {
 	entity?: E | null;

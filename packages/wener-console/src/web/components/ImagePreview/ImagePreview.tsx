@@ -276,29 +276,27 @@ const _ExtraInfo = () => {
 	return (
 		<div className={'p-2'}>
 			{text && (
-				<label className='form-control w-full max-w-xs'>
-					<div className='label'>
-						<span className='label-text'>识别结果</span>
-						<span className='label-text-alt'>
-							<button
-								type={'button'}
-								className={'btn btn-xs'}
-								onClick={async () => {
-									try {
-										await copy(text);
-										showSuccessToast('已复制');
-									} catch (e) {
-										showErrorToast(e);
-									}
-								}}
-							>
-								<PiCopy className={'h-4 w-4'} />
-								复制
-							</button>
-						</span>
+				<fieldset className="w-full max-w-xs">
+					<div className="flex items-center justify-between">
+						<legend className="text-sm font-medium">识别结果</legend>
+						<button
+							type={'button'}
+							className={'btn btn-xs'}
+							onClick={async () => {
+								try {
+									await copy(text);
+									showSuccessToast('已复制');
+								} catch (e) {
+									showErrorToast(e);
+								}
+							}}
+						>
+							<PiCopy className={'h-4 w-4'} />
+							复制
+						</button>
 					</div>
-					<textarea className={'textarea textarea-bordered textarea-sm h-24 w-full'} value={text} readOnly />
-				</label>
+					<textarea className={'textarea h-24 w-full'} value={text} readOnly />
+				</fieldset>
 			)}
 		</div>
 	);

@@ -11,15 +11,12 @@ export const MenuLayout: FC<{
 				<header className={'border-color flex items-center border-b px-2 py-4'}>
 					<div className={'text-lg font-medium'}>{title}</div>
 				</header>
-				<ul className='menu-compact menu bg-base-100 py-2'>
+				<ul className='menu menu-sm bg-base-100 py-2'>
 					{menu.map(({ href, label }, i) => {
-						// fixme
 						return (
-							<a key={i} href={href}>
-								<li>
-									<a href={href}>{label}</a>
-								</li>
-							</a>
+							<li key={i}>
+								<a href={href}>{label}</a>
+							</li>
 						);
 					})}
 				</ul>

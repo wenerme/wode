@@ -15,7 +15,7 @@ export const AppearanceSettingPage = () => {
 			title={
 				<div className={'flex items-center gap-2'}>
 					<span>主题设置</span>
-					<div className='form-control'>
+					<fieldset>
 						<label className='label cursor-pointer'>
 							<span className='label-text'>使用系统配色</span>
 							<input
@@ -27,7 +27,7 @@ export const AppearanceSettingPage = () => {
 								}}
 							/>
 						</label>
-					</div>
+					 </fieldset>
 				</div>
 			}
 		>

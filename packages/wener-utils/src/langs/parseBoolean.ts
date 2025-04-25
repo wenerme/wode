@@ -6,14 +6,18 @@ export function parseBoolean(s?: string | boolean | number | null, strict = fals
 	}
 	if (typeof s === 'string') {
 		switch (s.toLowerCase()) {
-			case 'f':
+			case 'yes':
+			case 'y':
+			case 'true':
+			case 't':
+			case '1':
+				return true;
+			case 'no':
+			case 'n':
 			case 'false':
+			case 'f':
 			case '0':
 				return false;
-			case '1':
-			case 't':
-			case 'true':
-				return true;
 		}
 	} else if (typeof s === 'number') {
 		switch (s) {

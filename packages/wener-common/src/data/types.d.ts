@@ -31,3 +31,15 @@ type ListResult<T = any> = {
 	/** Total number of items */
 	total: number;
 };
+
+type PageInfo = {
+	/** Whether there are more items */
+	hasNextPage: boolean;
+	/** Whether there are previous items */
+	hasPreviousPage: boolean;
+
+	// /** Start cursor */
+	// startCursor?: string;
+	// /** End cursor */
+	// endCursor?: string;
+};
