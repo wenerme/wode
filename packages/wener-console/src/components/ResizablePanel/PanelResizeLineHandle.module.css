@@ -1,0 +1,42 @@
+.PanelResizeLineHandle {
+	@apply bg-base-200 relative;
+	--size: 1px;
+
+	&:hover,
+	&[data-resize-handle-state="hover"],
+	&[data-resize-handle-state="drag"] {
+		&::before {
+			@apply bg-base-300/30 absolute inset-0;
+			content: "";
+			z-index: 30;
+		}
+
+		&[data-resize-handle-state="drag"] {
+			/* stronger vision indication */
+
+			&::before {
+				@apply bg-info;
+			}
+		}
+	}
+
+	&[data-panel-group-direction="horizontal"] {
+		@apply w-[var(--size)];
+
+		&::before {
+			width: 3px;
+			height: 100%;
+			translate: -1px 0;
+		}
+	}
+
+	&[data-panel-group-direction="vertical"] {
+		@apply h-[var(--size)];
+
+		&::before {
+			width: 100%;
+			height: 3px;
+			translate: 0 -1px;
+		}
+	}
+}

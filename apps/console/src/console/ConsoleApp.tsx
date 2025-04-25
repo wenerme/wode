@@ -1,28 +1,28 @@
-import type React from 'react';
-import { lazy, useState } from 'react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import type React, { ReactNode } from 'react';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import type { Client } from '@urql/core';
-import { getGraphQLUrl } from '@wener/console/client/graphql';
-import { ComponentProvider } from '@wener/console/components';
-import { ErrorSuspenseBoundary, getAccessToken, SiteLogo } from '@wener/console/console';
-import { AuthBlock, AuthReady, AuthSidecar, getAuthState } from '@wener/console/foundation/auth';
+import { getGraphQLUrl, getUrqlClient } from '@wener/console/client/graphql';
+import { ConsoleLoader, getAccessToken, getSiteStore, Launcher, type UserProfileData } from '@wener/console/console';
+import { UserAuthExpireOverlay, UserLoader, UserLockOverlay } from '@wener/console/console/user';
+import { getAuthState } from '@wener/console/foundation/auth';
+import { type LoginFormData } from '@wener/console/pages';
+import { showErrorToast, showSuccessToast } from '@wener/console/toast';
 import { createUrqlClient } from '@wener/console/urql';
+import { WindowHost } from '@wener/console/window';
 import { getGlobalStates } from '@wener/utils';
 import { Provider as UrqlProvider } from 'urql';
+import { ConsoleLayout } from '@/console/components/ConsoleLayout';
+import { loadModule } from '@/console/loadModule';
+import { ReactQueryClientProvider } from '@/console/ReactQueryClientProvider';
 import { AuthActions } from '@/foundation/Auth/AuthActions';
+import { UserActions } from '@/foundation/User/UserActions';
 import schema from '@/gql/urql.schema.json' with { type: 'json' };
-import { WenerLogo } from '@/instance/WenerLogo';
 import { resolveResourceSchema } from '@/resource';
-import './globals.css';
-import { getSiteStore } from '@wener/console/console';
-import { ContextStoreProvider } from '@wener/console/hooks';
-import { LoginPage, type LoginFormData } from '@wener/console/pages';
-import { showErrorToast, showSuccessToast } from '@wener/console/toast';
-import { getConsoleContext, Image } from '@wener/console/web';
-import Splash from '@/assets/LoginSplash.jpg';
-import { Instance } from '@/instance/Instance';
-
-const Content = lazy(() => import('./ConsoleAppContent'));
+import type { RouteObjects } from '@wener/console/router';
+import { RootRouterReactor } from '@wener/console/src/console/components/RootRouterReactor';
+import { ErrorSuspenseBoundary } from '@wener/reaction';
+import { Outlet } from 'react-router-dom';
+import { NotFoundPage, PageErrorState } from '@wener/console/src/web';
 
 export const ConsoleApp = () => {
 	const doLogin = async (o: LoginFormData) => {
@@ -43,57 +43,63 @@ export const ConsoleApp = () => {
 	};
 	const { title } = getSiteStore().getState();
 	return (
-		<Instance.Provide>
-			<ComponentProvider components={[{ provide: SiteLogo, Component: WenerLogo }]}>
-				<AuthSidecar
-					actions={{
-						refresh: AuthActions.refreshAccessToken,
-					}}
-				/>
-				<AuthReady>
-					<ReactQueryClientProvider>
-						<UrqlProvider value={getUrqlClient()}>
-							{/* fixme Change this */}
-							<ContextStoreProvider value={getConsoleContext().getModuleService().store}>
-								<AuthBlock
-									fallback={
-										<LoginPage
-											title={title}
-											logo={<SiteLogo className={'h-10 w-10'} />}
-											onSubmit={doLogin}
-											hero={
-												<Image className='absolute inset-0 h-full w-full object-cover' src={Splash} alt={'splash'} />
-											}
-										/>
-									}
-								>
-									<ErrorSuspenseBoundary>
-										<Content />
-									</ErrorSuspenseBoundary>
-								</AuthBlock>
-							</ContextStoreProvider>
-						</UrqlProvider>
-					</ReactQueryClientProvider>
-				</AuthReady>
-			</ComponentProvider>
-		</Instance.Provide>
+		<ReactQueryClientProvider>
+			<ReactQueryDevtools initialIsOpen={false} />
+			<UrqlProvider value={getUrqlClient()}>
+				{/* fixme Change this */}
+				<UserLoader load={async () => (await UserActions.getCurrentUser()) as UserProfileData}>
+					<ConsoleLoader
+						loadModule={loadModule}
+						modules={[
+							//
+							'site.core',
+							'user.core',
+						]}
+						render={(content) => {
+							return <ConsoleLayout>{content}</ConsoleLayout>;
+						}}
+					>
+						<UserAuthExpireOverlay />
+						<UserLockOverlay />
+						<WindowHost />
+						<Launcher.Host />
+					</ConsoleLoader>
+				</UserLoader>
+			</UrqlProvider>
+		</ReactQueryClientProvider>
 	);
 };
 
-function getUrqlClient(): Client {
-	return getGlobalStates('UrqlClient', () =>
-		createUrqlClient({
-			getToken: getAccessToken,
-			url: getGraphQLUrl(),
-			schema,
-			resolveTypeNameFromKey: (id) => {
-				return resolveResourceSchema({ id })?.typeName;
+function createRootRoutes({
+	children,
+	render = (children) => children,
+}: {
+	children: RouteObjects;
+	render?: (content: ReactNode) => ReactNode;
+}): RouteObjects {
+	return [
+		{
+			element: (
+				<>
+					<RootRouterReactor />
+					{render(
+						<ErrorSuspenseBoundary>
+							<Outlet />
+						</ErrorSuspenseBoundary>,
+					)}
+				</>
+			),
+			errorElement: <PageErrorState />,
+			handle: {
+				title: getSiteStore().getState().title,
 			},
-		}),
-	);
+			children: [
+				...children,
+				{
+					path: '*',
+					element: <NotFoundPage />,
+				},
+			],
+		},
+	];
 }
-
-const ReactQueryClientProvider: React.FC<{ children?: React.ReactNode; url?: string }> = ({ children, url }) => {
-	const [queryClient] = useState(() => new QueryClient({ defaultOptions: { queries: { staleTime: 60 * 5 * 1000 } } }));
-	return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
-};

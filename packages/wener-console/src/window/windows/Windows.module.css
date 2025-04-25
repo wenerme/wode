@@ -6,11 +6,11 @@
 		width: 42px;
 
 		&[data-action="close"]:hover {
-			@apply bg-error;
+			background-color: var(--color-error);
 		}
 
 		&:hover {
-			@apply bg-base-300;
+			background-color: var(--color-base-300);
 		}
 	}
 }

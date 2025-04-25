@@ -9,7 +9,7 @@ export namespace DaisyDrawer {
 	type OverlayProps = Dialog.DialogOverlayProps & {};
 	export const Overlay = forwardRef<HTMLDivElement, OverlayProps>(({ children, className, ...props }, ref) => {
 		return (
-			<Dialog.Overlay className={'fixed inset-0 z-30 bg-base-300 opacity-75'} ref={ref} {...props}>
+			<Dialog.Overlay className={'bg-base-300 fixed inset-0 z-30 opacity-75'} ref={ref} {...props}>
 				{children}
 			</Dialog.Overlay>
 		);
@@ -17,7 +17,7 @@ export namespace DaisyDrawer {
 	export type ContentProps = Dialog.DialogContentProps & {};
 	export const Content: FC<ContentProps> = ({ className, children, ...props }) => {
 		return (
-			<Dialog.Content className={cn('fixed right-0 z-30 h-full w-56 border-l bg-base-100', className)} {...props}>
+			<Dialog.Content className={cn('bg-base-100 fixed right-0 z-30 h-full w-56 border-l', className)} {...props}>
 				{children}
 			</Dialog.Content>
 		);

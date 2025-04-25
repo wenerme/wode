@@ -8,7 +8,7 @@ export namespace DaisyCollapsible {
 	export const Root: FC<RootProps> = ({ className, ...props }) => {
 		return (
 			<Collapsible.Root
-				className={cn('collapse collapse-arrow rounded-none data-[state=open]:collapse-open', className)}
+				className={cn('collapse-arrow data-[state=open]:collapse-open collapse rounded-none', className)}
 				{...props}
 			/>
 		);

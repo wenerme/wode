@@ -1,7 +1,9 @@
-import type { FC, ReactNode } from 'react';
-import React from 'react';
+import type { PropsWithChildren, ReactNode } from 'react';
+import { isDevelopment } from 'std-env';
 
-export const DevOnly: FC<{ children?: ReactNode; fallback?: ReactNode }> = ({ children, fallback = null }) => {
-	const dev = process.env.NODE_ENV === 'development';
-	return dev ? <>{children}</> : fallback;
+export const DevOnly = ({ children }: PropsWithChildren): ReactNode => {
+	if (isDevelopment) {
+		return children;
+	}
+	return null;
 };

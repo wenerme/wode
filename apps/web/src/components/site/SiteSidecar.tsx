@@ -56,7 +56,7 @@ export const SiteSidecar = () => {
 			<LocaleSidecar />
 			<aside
 				className={clsx(
-					'fixed bg-base-100',
+					'bg-base-100 fixed',
 					//
 					'flex items-center',
 					'order-1 border-b px-2',
@@ -73,7 +73,7 @@ export const SiteSidecar = () => {
 				<div className={'relative flex h-full w-full flex-1 flex-row items-center gap-1 md:flex-col'}>
 					<WindowControl />
 					<div className={'relative h-full w-full flex-1'}>
-						<div className={'absolute inset-0 overflow-x-auto md:overflow-y-auto md:overflow-x-hidden'}>
+						<div className={'absolute inset-0 overflow-x-auto md:overflow-x-hidden md:overflow-y-auto'}>
 							<WindowDocks />
 						</div>
 					</div>
@@ -81,7 +81,7 @@ export const SiteSidecar = () => {
 			</aside>
 			<div
 				className={
-					'fixed bottom-4 right-1.5 flex flex-col gap-2 overflow-hidden rounded-full border bg-base-100 px-1 py-1 shadow-lg'
+					'bg-base-100 fixed right-1.5 bottom-4 flex flex-col gap-2 overflow-hidden rounded-full border px-1 py-1 shadow-lg'
 				}
 			>
 				<button
@@ -179,7 +179,7 @@ const WindowControlPopoverContent: React.FC<ComponentPropsWithoutRef<'ul'>> = (p
 	const top = useMemo(() => root.top, []);
 	const count = root.windows.length;
 	return (
-		<ul className={'border-color menu menu-sm w-44 rounded-box border bg-base-100'} {...props}>
+		<ul className={'border-color menu menu-sm rounded-box bg-base-100 w-44 border'} {...props}>
 			{top && (
 				<>
 					<li className='menu-title'>当前窗口</li>
@@ -287,8 +287,8 @@ const WindowDock = memo<{ win: ReactWindow }>(({ win }) => {
 				type={'button'}
 				className={cn(
 					'h-10 w-10',
-					`flex items-center justify-center text-base-content hover:text-base-content`,
-					'rounded bg-base-200',
+					`text-base-content hover:text-base-content flex items-center justify-center`,
+					'bg-base-200 rounded',
 					!minimized ? `active bg-base-300` : 'opacity-75',
 				)}
 				{...getReferenceProps()}
@@ -303,7 +303,7 @@ const WindowDock = memo<{ win: ReactWindow }>(({ win }) => {
 				<FloatingPortal>
 					<FloatingFocusManager context={context}>
 						<div
-							className={'rounded bg-base-200 p-1 text-xs opacity-85'}
+							className={'bg-base-200 rounded p-1 text-xs opacity-85'}
 							ref={refs.setFloating}
 							{...getFloatingProps()}
 							style={floatingStyles}

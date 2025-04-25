@@ -1,127 +1,113 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-/* for shadcn */
-@layer base {
-	:root {
-		--background: 0 0% 100%;
-		--foreground: 222.2 84% 4.9%;
+@plugin "daisyui" {
+	themes: all;
+	root: ":root";
+	logs: true;
+}
 
-		--card: 0 0% 100%;
-		--card-foreground: 222.2 84% 4.9%;
+@plugin "daisyui/theme" {
+	name: "purplewind";
+	default: false;
+	prefersdark: false;
+	color-scheme: "light";
+	--color-base-100: oklch(96% 0.016 293.756);
+	--color-base-200: oklch(94% 0.029 294.588);
+	--color-base-300: oklch(89% 0.057 293.283);
+	--color-base-content: oklch(38% 0.189 293.745);
+	--color-primary: oklch(82% 0.12 346.018);
+	--color-primary-content: oklch(28% 0.109 3.907);
+	--color-secondary: oklch(82% 0.119 306.383);
+	--color-secondary-content: oklch(29% 0.149 302.717);
+	--color-accent: oklch(80% 0.105 251.813);
+	--color-accent-content: oklch(28% 0.091 267.935);
+	--color-neutral: oklch(38% 0.189 293.745);
+	--color-neutral-content: oklch(96% 0.016 293.756);
+	--color-info: oklch(54% 0.245 262.881);
+	--color-info-content: oklch(97% 0.014 254.604);
+	--color-success: oklch(60% 0.118 184.704);
+	--color-success-content: oklch(98% 0.014 180.72);
+	--color-warning: oklch(68% 0.162 75.834);
+	--color-warning-content: oklch(98% 0.026 102.212);
+	--color-error: oklch(58% 0.253 17.585);
+	--color-error-content: oklch(96% 0.015 12.422);
+	--radius-selector: 0.25rem;
+	--radius-field: 0.25rem;
+	--radius-box: 0.5rem;
+	--size-selector: 0.25rem;
+	--size-field: 0.25rem;
+	--border: 2px;
+	--depth: 1;
+	--noise: 1;
+}
 
-		--popover: 0 0% 100%;
-		--popover-foreground: 222.2 84% 4.9%;
+@utility border {
+	border-color: var(--color-base-300);
+}
+@utility border-r {
+	border-color: var(--color-base-300);
+}
+@utility border-l {
+	border-color: var(--color-base-300);
+}
+@utility border-t {
+	border-color: var(--color-base-300);
+}
+@utility border-b {
+	border-color: var(--color-base-300);
+}
+@utility border-x {
+	border-color: var(--color-base-300);
+}
+@utility border-y {
+	border-color: var(--color-base-300);
+}
 
-		--primary: 222.2 47.4% 11.2%;
-		--primary-foreground: 210 40% 98%;
+@layer utilities {
+	@font-face {
+		font-family: "color-emoji";
+		src:
+			local("Apple Color Emoji"), local("Twemoji Mozilla"), local("Segoe UI Emoji"), local("Segoe UI Symbol"),
+			local("Noto Color Emoji"), local("EmojiOne Color"), local("Android Emoji");
 
-		--secondary: 210 40% 96.1%;
-		--secondary-foreground: 222.2 47.4% 11.2%;
-
-		--muted: 210 40% 96.1%;
-		--muted-foreground: 215.4 16.3% 46.9%;
-
-		--accent: 210 40% 96.1%;
-		--accent-foreground: 222.2 47.4% 11.2%;
-
-		--destructive: 0 84.2% 60.2%;
-		--destructive-foreground: 210 40% 98%;
-
-		--border: 214.3 31.8% 91.4%;
-		--input: 214.3 31.8% 91.4%;
-		--ring: 222.2 84% 4.9%;
-
-		--radius: 0.5rem;
+		/* Emoji unicode blocks */
+		unicode-range:
+			U+00A9, U+00AE, U+200D, U+203C, U+2049, U+20E3, U+2122, U+2139, U+2194-2199, U+21A9-21AA, U+231A, U+231B, U+2328,
+			U+23CF, U+23E9-23F3, U+23F8-23FA, U+24C2, U+25AA, U+25AB, U+25B6, U+25C0, U+25FB-25FE, U+2600-27EF, U+2934,
+			U+2935, U+2B00-2BFF, U+3030, U+303D, U+3297, U+3299, U+1F000-1F02F, U+1F0A0-1F0FF, U+1F100-1F64F, U+1F680-1F6FF,
+			U+1F910-1F96B, U+1F980-1F9E0;
 	}
 
-	.dark {
-		--background: 222.2 84% 4.9%;
-		--foreground: 210 40% 98%;
-
-		--card: 222.2 84% 4.9%;
-		--card-foreground: 210 40% 98%;
-
-		--popover: 222.2 84% 4.9%;
-		--popover-foreground: 210 40% 98%;
-
-		--primary: 210 40% 98%;
-		--primary-foreground: 222.2 47.4% 11.2%;
-
-		--secondary: 217.2 32.6% 17.5%;
-		--secondary-foreground: 210 40% 98%;
-
-		--muted: 217.2 32.6% 17.5%;
-		--muted-foreground: 215 20.2% 65.1%;
-
-		--accent: 217.2 32.6% 17.5%;
-		--accent-foreground: 210 40% 98%;
-
-		--destructive: 0 62.8% 30.6%;
-		--destructive-foreground: 210 40% 98%;
-
-		--border: 217.2 32.6% 17.5%;
-		--input: 217.2 32.6% 17.5%;
-		--ring: 212.7 26.8% 83.9%;
+	html,
+	body {
+		padding: 0;
+		margin: 0;
+		font-family:
+			-apple-system,
+			color-emoji,
+			BlinkMacSystemFont,
+			Segoe UI,
+			Roboto,
+			Oxygen,
+			Ubuntu,
+			Cantarell,
+			Fira Sans,
+			Droid Sans,
+			Helvetica Neue,
+			sans-serif;
 	}
-}
 
-/*
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-}
-*/
+	html {
+		height: 100%;
+	}
 
-@font-face {
-	font-family: "color-emoji";
-	src:
-		local("Apple Color Emoji"), local("Twemoji Mozilla"), local("Segoe UI Emoji"), local("Segoe UI Symbol"),
-		local("Noto Color Emoji"), local("EmojiOne Color"), local("Android Emoji");
+	body {
+		min-height: 100%;
+		display: flex;
+		flex-direction: column;
+	}
 
-	/* Emoji unicode blocks */
-	unicode-range:
-		U+00A9, U+00AE, U+200D, U+203C, U+2049, U+20E3, U+2122, U+2139, U+2194-2199, U+21A9-21AA, U+231A, U+231B, U+2328,
-		U+23CF, U+23E9-23F3, U+23F8-23FA, U+24C2, U+25AA, U+25AB, U+25B6, U+25C0, U+25FB-25FE, U+2600-27EF, U+2934, U+2935,
-		U+2B00-2BFF, U+3030, U+303D, U+3297, U+3299, U+1F000-1F02F, U+1F0A0-1F0FF, U+1F100-1F64F, U+1F680-1F6FF,
-		U+1F910-1F96B, U+1F980-1F9E0;
-}
-
-html,
-body {
-	padding: 0;
-	margin: 0;
-	font-family:
-		-apple-system,
-		color-emoji,
-		BlinkMacSystemFont,
-		Segoe UI,
-		Roboto,
-		Oxygen,
-		Ubuntu,
-		Cantarell,
-		Fira Sans,
-		Droid Sans,
-		Helvetica Neue,
-		sans-serif;
-}
-
-html {
-	height: 100%;
-}
-
-body {
-	min-height: 100%;
-	display: flex;
-	flex-direction: column;
-}
-
-/*
+	/*
 html,
 body,
 #__next {
@@ -134,34 +120,21 @@ body,
   flex-direction: column;
 }
 */
-
-/**
+	/**
  * DaisyUI minor fix
  */
+	.btn {
+		text-transform: none;
+	}
 
-.btn {
-	text-transform: none;
-}
+	/* hide icon for loading */
+	.btn.loading > svg:first-of-type {
+		display: none;
+	}
 
-/* hide icon for loading */
-.btn.loading > svg:first-of-type {
-	display: none;
-}
-
-/* 统一 border 颜色 - 一般默认为 currentColor */
-/* .btn-outline */
-.border-color {
-	@apply border-base-300;
-}
-
-@layer components {
-	.border,
-	.border-r,
-	.border-l,
-	.border-t,
-	.border-b,
-	.border-x,
-	.border-y {
+	/* 统一 border 颜色 - 一般默认为 currentColor */
+	/* .btn-outline */
+	.border-color {
 		@apply border-base-300;
 	}
 }
@@ -191,7 +164,7 @@ scrollbar-thumb:!bg-base-300 scrollbar-track:!rounded
 
 /* 角落 */
 ::-webkit-scrollbar-corner {
-	background: oklch(var(--b1));
+	background: oklch(var(--color-base-100));
 }
 
 *::-webkit-scrollbar {
@@ -201,56 +174,15 @@ scrollbar-thumb:!bg-base-300 scrollbar-track:!rounded
 
 *::-webkit-scrollbar-track {
 	@apply rounded;
-	background: oklch(var(--b1));
+	background: oklch(var(--color-base-100));
 }
 
 *::-webkit-scrollbar-thumb {
 	@apply rounded;
-	background: oklch(var(--b2));
+	background: oklch(var(--color-base-200));
 	transition: background-color 0.2s ease-in-out;
 }
 
 *::-webkit-scrollbar-thumb:hover {
-	background: oklch(var(--b3));
-}
-
-/**
- * @devbookhq/splitter https://github.com/devbookhq/splitter
- */
-
-.__dbk__gutter {
-	background: transparent !important;
-}
-
-.__dbk__dragger {
-	background: transparent !important;
-}
-
-.__dbk__gutter:hover {
-	background: oklch(var(--b2)) !important;
-
-	.__dbk__dragger {
-		background: oklch(var(--b3)) !important;
-	}
-}
-
-@page {
-	margin-top: 5cm;
-	margin-bottom: 5cm;
-	margin-left: 3cm;
-	margin-right: 3cm;
-}
-
-@media print {
-	body {
-		margin-top: 50mm;
-		margin-bottom: 50mm;
-		margin-left: 30mm;
-		margin-right: 30mm;
-	}
-}
-
-/* https://github.com/uiwjs/react-md-editor/issues/625 */
-.w-md-editor-text {
-	min-height: 100% !important;
+	background: oklch(var(--color-base-300));
 }

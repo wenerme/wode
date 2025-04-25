@@ -74,7 +74,7 @@ const DetailButton = () => {
 	};
 	return (
 		<ActionButton
-			className={'absolute right-4 top-4 z-10'}
+			className={'absolute top-4 right-4 z-10'}
 			onClick={() => {
 				setShowDetail(!showDetail);
 			}}
@@ -104,7 +104,7 @@ export const ImagePreview: FC<ImagePreviewProps> = ({ onOpenChange, info, src })
 				<div className={'absolute inset-0'}>
 					<div className={'flex h-full'}>
 						<div className={'relative flex h-full flex-1 flex-col'}>
-							<ActionButton className={'absolute left-4 top-4 z-10'} onClick={() => onOpenChange?.(false)}>
+							<ActionButton className={'absolute top-4 left-4 z-10'} onClick={() => onOpenChange?.(false)}>
 								<HiXMark className={'h-6 w-6 text-white/75'} />
 							</ActionButton>
 							<DetailButton />
@@ -220,7 +220,7 @@ const DetailPanel = () => {
 		return;
 	}
 	return (
-		<div className={'w-60 bg-base-100'}>
+		<div className={'bg-base-100 w-60'}>
 			<header className={'px-2 py-4'}>
 				<h2 className={'text-lg font-semibold'}>图片信息</h2>
 			</header>
@@ -276,9 +276,9 @@ const _ExtraInfo = () => {
 	return (
 		<div className={'p-2'}>
 			{text && (
-				<fieldset className="w-full max-w-xs">
-					<div className="flex items-center justify-between">
-						<legend className="text-sm font-medium">识别结果</legend>
+				<fieldset className='w-full max-w-xs'>
+					<div className='flex items-center justify-between'>
+						<legend className='text-sm font-medium'>识别结果</legend>
 						<button
 							type={'button'}
 							className={'btn btn-xs'}

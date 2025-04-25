@@ -1,8 +1,11 @@
+@reference "tailwindcss/theme.css";
+
 .WindowController {
-	@apply flex items-center gap-2 *:bg-gray-300 [&>button>svg]:opacity-0 [&>button>svg]:hover:opacity-65;
+	@apply flex items-center gap-2 [&>button>svg]:opacity-0 [&>button>svg]:hover:opacity-65;
 
 	& > button {
-		@apply h-4 w-4 rounded-full;
+		@apply h-4 w-4 rounded-full bg-gray-300;
+		--color: var(--color-gray-300);
 
 		&:disabled {
 			@apply opacity-45;

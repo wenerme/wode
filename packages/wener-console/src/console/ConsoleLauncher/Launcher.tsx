@@ -94,7 +94,7 @@ const LauncherContent: FC<{ onLaunch?: (v: LauncherItem) => void }> = ({ onLaunc
 			}}
 			ref={ref}
 		>
-			<div className={'absolute inset-0 left-14 bg-base-300/20 backdrop-blur'}>
+			<div className={'bg-base-300/20 absolute inset-0 left-14 backdrop-blur'}>
 				<div className={'flex flex-wrap gap-10 px-20 py-10'}>
 					{items.map((v) => {
 						const { key, title, icon } = v;

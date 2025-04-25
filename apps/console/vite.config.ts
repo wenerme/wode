@@ -1,4 +1,5 @@
 import process from 'node:process';
+import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react-swc';
 import { defineConfig, loadEnv, type PluginOption } from 'vite';
 
@@ -14,6 +15,7 @@ export default ({ mode }: { mode: string }) => {
 			//   auto: true
 			// }),
 			react(),
+			tailwindcss(),
 			// not worth it
 			// react({
 			//   plugins: [

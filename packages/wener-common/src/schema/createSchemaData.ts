@@ -5,21 +5,40 @@ import type { SchemaOutput, TypeSchema } from './TypeSchema';
 
 export function createSchemaData<S extends TypeSchema>(
 	ts: S,
-	options: {
-		required?: boolean;
-	} = {},
+	options: CreateSchemaDataOptions = {},
 ): Partial<SchemaOutput<S>> {
 	const schema = toJsonSchema(ts);
-	return _createSchemaData(schema, options);
+	return createJsonSchemaData(schema, options);
 }
 
-function _createSchemaData(
-	schema: JsonSchemaDef,
-	options: {
-		required?: boolean;
-	},
-): any {
-	if (!options.required && schema.nullable) {
+type CreateSchemaDataOptions = Partial<CreateOptions> & {
+	all?: boolean;
+};
+
+function createJsonSchemaData(schema: JsonSchemaDef, options: CreateSchemaDataOptions): any {
+	let skip: CreateOptions['skip'] = (s, ctx) => Boolean(!ctx.required && s.nullable);
+	if (options.all) {
+		skip = () => false;
+	}
+	if (options.skip) {
+		skip = options.skip;
+	}
+	return _create(
+		schema,
+		{
+			skip,
+		},
+		{ required: false },
+	);
+}
+
+type CreateOptions = {
+	skip: (schema: JsonSchemaDef, ctx: { required: boolean }) => boolean;
+};
+
+function _create(schema: JsonSchemaDef, options: CreateOptions, ctx: { required: boolean }): any {
+	const { skip } = options;
+	if (skip(schema, ctx)) {
 		return schema.default;
 	}
 	if (schema.default !== undefined) {
@@ -28,22 +47,21 @@ function _createSchemaData(
 	return match(schema as JsonSchemaDef)
 		.returnType<any>()
 		.with({ default: P.select() }, (v) => v)
-		.with({ const: P.nonNullable }, (v) => v)
+		.with({ const: P.nonNullable }, (v) => v.const)
 		.with({ anyOf: P.nonNullable }, (schema) => {
-			return _createSchemaData(schema.anyOf[0], options);
+			return _create(schema.anyOf[0], options, { required: false });
 		})
 		.with({ oneOf: P.nonNullable }, (schema) => {
-			return _createSchemaData(schema.oneOf[0], options);
+			return _create(schema.oneOf[0], options, { required: false });
 		})
 		.with({ type: 'string' }, (schema) => '')
 		.with({ type: P.union('number', 'integer') }, (schema) => 0)
-		.with({ type: 'object' }, (schema) => {
+		.with({ type: 'object' }, () => {
 			const out: Record<string, any> = {};
 
 			let required = schema.required || [];
 			for (const [k, v] of Object.entries(schema.properties || {}) as [string, JsonSchemaDef][]) {
-				const value = createSchemaData(v, {
-					...options,
+				const value = _create(v, options, {
 					required: required.includes(k),
 				});
 				if (value === undefined) {

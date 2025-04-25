@@ -10,7 +10,7 @@ import { useMounted } from '@wener/reaction';
 import { clsx } from 'clsx';
 import { WechatBrandIcon, WecomBrandIcon } from '../../../icons';
 import { ReactHookForm } from '../../../react-hook-form';
-import { cn } from '../../../tw';
+import { cn } from '../../../utils/cn';
 import { getUserAgentPreferences } from '../../../utils/UserAgentPreference';
 
 export type LoginFormData = {
@@ -90,7 +90,7 @@ export const LoginPage: FC<LoginPageProps> = ({
 							<div className={'flex items-center gap-2'}>
 								{logo} <span className={'text-xl font-medium'}>{title}</span>
 							</div>
-							<h2 className='mt-8 text-2xl font-bold leading-9 tracking-tight opacity-80'>{subtitle}</h2>
+							<h2 className='mt-8 text-2xl leading-9 font-bold tracking-tight opacity-80'>{subtitle}</h2>
 							{onRegister && (
 								<p className='mt-2 text-sm leading-6 opacity-60'>
 									尚未加入?{' '}
@@ -166,7 +166,7 @@ export const LoginPage: FC<LoginPageProps> = ({
 									<div className='flex items-center justify-between'>
 										<label className='flex items-center'>
 											<input type='checkbox' className='checkbox h-4 w-4' {...register('remember')} />
-											<div className='ml-3 block select-none text-sm leading-6 opacity-75'>记住登录</div>
+											<div className='ml-3 block text-sm leading-6 opacity-75 select-none'>记住登录</div>
 										</label>
 
 										{onRegister && (
@@ -185,7 +185,7 @@ export const LoginPage: FC<LoginPageProps> = ({
 									<div>
 										<button
 											type='submit'
-											className='flex w-full items-center justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+											className='flex w-full items-center justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm leading-6 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
 											disabled={!isValid || isSubmitting}
 										>
 											{isSubmitting && <span className='loading loading-spinner loading-xs'></span>}
@@ -242,7 +242,7 @@ const SocialLogin = () => {
 				<div className='absolute inset-0 flex items-center' aria-hidden='true'>
 					<div className='w-full border-t border-gray-200' />
 				</div>
-				<div className='relative flex justify-center text-sm font-medium leading-6'>
+				<div className='relative flex justify-center text-sm leading-6 font-medium'>
 					<span className='bg-white px-6 opacity-80'>社交方式登录</span>
 				</div>
 			</div>
@@ -250,12 +250,12 @@ const SocialLogin = () => {
 			<div className='mt-6 grid grid-cols-2 gap-4'>
 				<a href='#' className={clsx('btn btn-sm rounded-md')}>
 					<WechatBrandIcon className={'h-4 w-4'} />
-					<span className='text-sm font-semibold leading-6'>Wechat</span>
+					<span className='text-sm leading-6 font-semibold'>Wechat</span>
 				</a>
 
 				<a href='#' className={clsx('btn btn-sm rounded-md')}>
 					<WecomBrandIcon className={'h-4 w-4'} />
-					<span className='text-sm font-semibold leading-6'>企业微信</span>
+					<span className='text-sm leading-6 font-semibold'>企业微信</span>
 				</a>
 			</div>
 		</div>
@@ -312,7 +312,7 @@ const Lang = () => {
 const Browser = () => {
 	const { brand, version } = navigator.userAgent.match(/(?<brand>Chrom(e|ium))\/(?<version>[0-9]+)\./)?.groups ?? {};
 	if (!brand) {
-		return <small className={'text-xs text-error opacity-75'}>请使用新版本的 Chrome 浏览器</small>;
+		return <small className={'text-error text-xs opacity-75'}>请使用新版本的 Chrome 浏览器</small>;
 	}
 	let old = parseInt(version) < 100;
 
@@ -321,7 +321,7 @@ const Browser = () => {
 			<BiLogoChrome />
 			{brand} {version}
 			{old && (
-				<small className={'text-xs text-warning opacity-75'}>
+				<small className={'text-warning text-xs opacity-75'}>
 					当前浏览器版本 {version} 过低，请下载使用新版本浏览器。
 				</small>
 			)}

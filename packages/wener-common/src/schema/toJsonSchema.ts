@@ -1,4 +1,4 @@
-import { omit } from 'es-toolkit';
+import { omit, remove } from 'es-toolkit';
 import { match, P } from 'ts-pattern';
 import { z } from 'zod';
 import type { JsonSchemaDef } from '../jsonschema';
@@ -19,12 +19,18 @@ export function toJsonSchema(schema: TypeSchema): JsonSchemaDef {
 						Object.assign(js, meta);
 					}
 					switch (def.type) {
+						case 'union':
+							if (zodSchema._zod.traits.has('ZodDiscriminatedUnion')) {
+								resolveDiscriminator(js as JsonSchemaDef);
+							}
+							break;
 						case 'nonoptional':
 							// js._ref maybe true
 							js.nullable = false;
 							break;
 						case 'nullable':
 						case 'optional':
+							// prefer nullable
 							match(js)
 								.with({ anyOf: [P.select(), { type: 'null' }] }, (select) => {
 									delete js['anyOf'];
@@ -39,6 +45,7 @@ export function toJsonSchema(schema: TypeSchema): JsonSchemaDef {
 				},
 			}) as JsonSchemaDef;
 
+			// remove redundant nullable, ensure required is sorted
 			visit(js, (v) => {
 				if (v.nullable === false) {
 					delete v.nullable;
@@ -47,6 +54,7 @@ export function toJsonSchema(schema: TypeSchema): JsonSchemaDef {
 					v.required.sort();
 				}
 			});
+			// maybe freeze
 			return js;
 		});
 	}
@@ -129,4 +137,64 @@ function resolveJsonSchemaDef(
 		.otherwise(() => {
 			return js;
 		});
+}
+
+function resolveDiscriminator(jsd: JsonSchemaDef) {
+	if (!(jsd.anyOf && jsd.anyOf.length > 1)) {
+		return;
+	}
+	if (jsd.discriminator) {
+		return;
+	}
+
+	let names: string[] = [];
+	{
+		// candidate for discriminator
+		const v = jsd.anyOf[0];
+		if (v && v.type === 'object' && v.properties) {
+			if (Array.isArray(v.required)) {
+				for (const k of v.required) {
+					if (v.properties[k].const !== undefined) {
+						names.push(k);
+					}
+				}
+			}
+		}
+	}
+	if (names.length >= 1) {
+		for (let i = 0; i < jsd.anyOf.length; i++) {
+			if (i === 0) {
+				// skip first
+				continue;
+			}
+			if (!names.length) {
+				break;
+			}
+
+			const v = jsd.anyOf[i];
+			if (v && v.type === 'object' && v.properties) {
+				const props = v.properties;
+				remove(names, (k) => {
+					// dont care the mapping
+					let p = props[k];
+					switch (typeof p.const) {
+						case 'string':
+						case 'number':
+						case 'boolean':
+							return false;
+						default:
+							return true;
+					}
+				});
+			} else {
+				names = [];
+				break;
+			}
+		}
+	}
+	if (names.length === 1) {
+		jsd.discriminator = {
+			propertyName: names[0],
+		};
+	}
 }

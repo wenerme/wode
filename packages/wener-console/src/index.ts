@@ -3,7 +3,7 @@ export { getGlobalStates, setGlobalStates } from '@wener/utils';
 export type * from './types';
 export { isProd, isDev, isBuilding } from './const';
 
-export { cn } from './tw/cn';
+export { cn } from './utils/cn';
 
 export { getNetworkStatus, useNetworkStatus } from './utils/NetworkStatus';
 export {

@@ -1,9 +1,9 @@
 import type { ComponentPropsWithoutRef, ComponentPropsWithRef, ElementType, ErrorInfo, ReactNode } from 'react';
 import { GrSystem } from 'react-icons/gr';
 import { defineComponent, type ContextComponentType } from '../../components/ComponentProvider';
+import { EmptyPlaceholder as _EmptyPlaceholder } from '../../components/formats/EmptyPlaceholder';
 import { LoadingIndicator as _LoadingIndicator } from '../../loader';
 import { ErrorSuspenseBoundary as _ErrorSuspenseBoundary, Image as _Image, Link as _Link } from '../../web';
-import { EmptyPlaceholder as _EmptyPlaceholder } from '../../web/formats/EmptyPlaceholder';
 
 enum ConsoleComponentName {
 	SiteLogo = 'SiteLogo',

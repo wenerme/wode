@@ -9,7 +9,7 @@ export const DaisyThemeDemo = () => {
 		intent: undefined,
 	});
 	const { size, intent } = state;
-	const btnEx = daisy('btn', { size, intent });
+	const btnx = daisy('btn', { size, intent });
 	return (
 		<div className={'flex flex-col justify-center gap-2 py-4'}>
 			<div>
@@ -17,7 +17,7 @@ export const DaisyThemeDemo = () => {
 					<label tabIndex={0} className='btn btn-outline btn-sm m-1'>
 						{state.size || 'Size'}
 					</label>
-					<ul tabIndex={0} className='menu dropdown-content w-52 rounded-box bg-base-100 p-2 shadow'>
+					<ul tabIndex={0} className='menu dropdown-content rounded-box bg-base-100 w-52 p-2 shadow'>
 						<li
 							onClick={() => {
 								update({ ...state, size: undefined });
@@ -43,7 +43,7 @@ export const DaisyThemeDemo = () => {
 					<label tabIndex={0} className={`btn btn-outline btn-sm m-1 ${daisy('btn', { intent })}`}>
 						{state.intent || 'Intent'}
 					</label>
-					<ul tabIndex={0} className='menu dropdown-content w-52 rounded-box bg-base-100 p-2 shadow'>
+					<ul tabIndex={0} className='menu dropdown-content rounded-box bg-base-100 w-52 p-2 shadow'>
 						<li
 							onClick={() => {
 								update({ ...state, intent: undefined });
@@ -85,15 +85,15 @@ export const DaisyThemeDemo = () => {
 						))}
 					</div>
 					<div className={'flex flex-wrap gap-2'}>
-						<button className={`btn btn-outline ${btnEx}`}>outline</button>
-						<button className={`btn glass ${btnEx}`}>glass</button>
-						<button className={`btn btn-ghost ${btnEx}`}>ghost</button>
-						<button className={`btn loading ${btnEx}`}>loading</button>
-						<button className={`btn btn-link ${btnEx}`}>link</button>
-						<button className={`btn btn-active ${btnEx}`}>active</button>
-						<button className={`btn btn-disabled ${btnEx}`}>disabled</button>
-						<button className={`btn btn-circle ${btnEx}`}>C</button>
-						<button className={`btn btn-square ${btnEx}`}>S</button>
+						<button className={`btn btn-outline ${btnx}`}>outline</button>
+						<button className={`btn glass ${btnx}`}>glass</button>
+						<button className={`btn btn-ghost ${btnx}`}>ghost</button>
+						<button className={`btn loading ${btnx}`}>loading</button>
+						<button className={`btn btn-link ${btnx}`}>link</button>
+						<button className={`btn btn-active ${btnx}`}>active</button>
+						<button className={`btn btn-disabled ${btnx}`}>disabled</button>
+						<button className={`btn btn-circle ${btnx}`}>C</button>
+						<button className={`btn btn-square ${btnx}`}>S</button>
 					</div>
 				</div>
 
@@ -179,41 +179,41 @@ export const DaisyThemeDemo = () => {
 							<a className='tab tab-active'>Tab 2</a>
 							<a className='tab'>Tab 3</a>
 						</div>
-						<div className='tabs'>
-							<a className='tab-bordered tab'>tab-bordered</a>
-							<a className='tab-bordered tab tab-active'>Tab 2</a>
-							<a className='tab-bordered tab'>Tab 3</a>
+						<div className='tabs tabs-border'>
+							<a className='tab'>tab-bordered</a>
+							<a className='tab tab-active'>Tab 2</a>
+							<a className='tab'>Tab 3</a>
 						</div>
-						<div className='tabs'>
-							<a className='tab-lifted tab'>tab-lifted</a>
-							<a className='tab-lifted tab tab-active'>Tab 2</a>
-							<a className='tab-lifted tab'>Tab 3</a>
+						<div className='tabs tabs-lift'>
+							<a className='tab'>tab-lifted</a>
+							<a className='tab tab-active'>Tab 2</a>
+							<a className='tab'>Tab 3</a>
 						</div>
-						<div className='tabs-boxed tabs'>
+						<div className='tabs-box tabs'>
 							<a className='tab'>tabs-boxed</a>
 							<a className='tab tab-active'>Tab 2</a>
 							<a className='tab'>Tab 3</a>
 						</div>
 						{/*  size */}
-						<div className='tabs'>
-							<a className='tab-lifted tab-xs tab'>tab-xs</a>
-							<a className='tab-lifted tab-xs tab tab-active'>Tiny</a>
-							<a className='tab-lifted tab-xs tab'>Tiny</a>
+						<div className='tabs tabs-lift tabs-xs'>
+							<a className='tab'>tab-xs</a>
+							<a className='tab tab-active'>Tiny</a>
+							<a className='tab'>Tiny</a>
 						</div>
-						<div className='tabs'>
-							<a className='tab-lifted tab-sm tab'>tab-sm</a>
-							<a className='tab-lifted tab-sm tab tab-active'>Small</a>
-							<a className='tab-lifted tab-sm tab'>Small</a>
+						<div className='tabs tabs-lift tabs-sm'>
+							<a className='tab'>tab-sm</a>
+							<a className='tab tab-active'>Small</a>
+							<a className='tab'>Small</a>
 						</div>
-						<div className='tabs'>
-							<a className='tab-lifted tab'>Normal</a>
-							<a className='tab-lifted tab tab-active'>Normal</a>
-							<a className='tab-lifted tab'>Normal</a>
+						<div className='tabs tabs-lift tabs-md'>
+							<a className='tab'>Normal</a>
+							<a className='tab tab-active'>Normal</a>
+							<a className='tab'>Normal</a>
 						</div>
-						<div className='tabs'>
-							<a className='tab-lifted tab-lg tab'>tab-lg</a>
-							<a className='tab-lifted tab-lg tab tab-active'>Large</a>
-							<a className='tab-lifted tab-lg tab'>Large</a>
+						<div className='tabs tabs-lift tabs-lg'>
+							<a className='tab'>tab-lg</a>
+							<a className='tab tab-active'>Large</a>
+							<a className='tab'>Large</a>
 						</div>
 					</div>
 				</div>
@@ -229,6 +229,7 @@ export const DaisyThemeDemo = () => {
 						<progress className='progress progress-success w-56' value='70' max='100'></progress>
 						<progress className='progress progress-warning w-56' value='85' max='100'></progress>
 						<progress className='progress progress-error w-56' value='100' max='100'></progress>
+						<progress className='progress w-56'></progress>
 					</div>
 				</div>
 				<div>
@@ -244,7 +245,7 @@ export const DaisyThemeDemo = () => {
 							primary
 						</div>
 						<div
-							className='border-primary bg-primary radial-progress border-4 text-primary-content'
+							className='border-primary bg-primary radial-progress text-primary-content border-4'
 							style={{ '--value': 35 }}
 						>
 							35%

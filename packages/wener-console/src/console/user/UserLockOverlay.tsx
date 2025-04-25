@@ -44,7 +44,7 @@ export const UserLockOverlay = () => {
 				}
 			}}
 		>
-			<div className={'rounded border-base-200 bg-base-100 px-8 py-4 shadow-xl'}>
+			<div className={'border-base-200 bg-base-100 rounded px-8 py-4 shadow-xl'}>
 				<NonIdealState
 					icon={<HiLockClosed className='h-12 w-12' />}
 					title={

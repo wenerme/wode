@@ -1,6 +1,6 @@
 import React, { forwardRef } from 'react';
 import { PiAppWindowLight } from 'react-icons/pi';
-import { cn } from '../../tw';
+import { cn } from '../../utils/cn';
 import { getWindowDragHandleClassname } from '../const';
 import type { WindowFrameProps } from '../WindowFrame';
 import { WindowsWindowController } from './WindowsWindowController';
@@ -21,7 +21,7 @@ export const WindowsWindowFrame = forwardRef<HTMLDivElement, WindowFrameProps>(
 				{...props}
 			>
 				<header
-					className={`${getWindowDragHandleClassname()} flex h-7 cursor-default items-center justify-between bg-base-200 pl-2`}
+					className={`${getWindowDragHandleClassname()} bg-base-200 flex h-7 cursor-default items-center justify-between pl-2`}
 					onDoubleClick={() => {
 						onToggleMaximize?.();
 					}}

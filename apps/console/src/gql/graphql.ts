@@ -23,12 +23,31 @@ export type Scalars = {
 	JSONObject: { input: any; output: any };
 };
 
+export type AccessTokenResponse = {
+	__typename?: 'AccessTokenResponse';
+	accessToken: Scalars['String']['output'];
+	expiresAt: Scalars['DateTime']['output'];
+	expiresIn: Scalars['Int']['output'];
+	refreshToken: Scalars['String']['output'];
+};
+
 /** 为资源分配负责人 */
 export type AssignOwnerInput = {
 	clientMutationId?: InputMaybe<Scalars['String']['input']>;
 	id?: InputMaybe<Scalars['ID']['input']>;
 	ownerId: Scalars['String']['input'];
 	ownerType?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type BaseNode = {
+	attributes?: Maybe<Scalars['JSON']['output']>;
+	createdAt: Scalars['DateTime']['output'];
+	deletedAt?: Maybe<Scalars['DateTime']['output']>;
+	eid?: Maybe<Scalars['String']['output']>;
+	id: Scalars['ID']['output'];
+	properties?: Maybe<Scalars['JSON']['output']>;
+	uid: Scalars['String']['output'];
+	updatedAt: Scalars['DateTime']['output'];
 };
 
 /** 为实体绑定用户 */
@@ -65,9 +84,151 @@ export type ClaimOwnerInput = {
 	id?: InputMaybe<Scalars['ID']['input']>;
 };
 
+export type CurrentUser = BaseNode &
+	HasRole &
+	Node &
+	OwnerNode & {
+		__typename?: 'CurrentUser';
+		attributes?: Maybe<Scalars['JSON']['output']>;
+		birthDate?: Maybe<Scalars['DateTime']['output']>;
+		createdAt: Scalars['DateTime']['output'];
+		deletedAt?: Maybe<Scalars['DateTime']['output']>;
+		displayName?: Maybe<Scalars['String']['output']>;
+		eid?: Maybe<Scalars['String']['output']>;
+		email?: Maybe<Scalars['String']['output']>;
+		fullName: Scalars['String']['output'];
+		homePhone?: Maybe<Scalars['String']['output']>;
+		id: Scalars['ID']['output'];
+		jobNumber?: Maybe<Scalars['String']['output']>;
+		jobTitle?: Maybe<Scalars['String']['output']>;
+		joinDate?: Maybe<Scalars['DateTime']['output']>;
+		loginName?: Maybe<Scalars['String']['output']>;
+		mobilePhone?: Maybe<Scalars['String']['output']>;
+		photoUrl?: Maybe<Scalars['String']['output']>;
+		properties?: Maybe<Scalars['JSON']['output']>;
+		uid: Scalars['String']['output'];
+		updatedAt: Scalars['DateTime']['output'];
+	};
+
+export type CurrentUserAttributesArgs = {
+	default?: InputMaybe<Scalars['JSON']['input']>;
+	path?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type CurrentUserPropertiesArgs = {
+	default?: InputMaybe<Scalars['JSON']['input']>;
+	path?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type DeleteResourceInput = {
 	clientMutationId?: InputMaybe<Scalars['String']['input']>;
 	id?: InputMaybe<Scalars['ID']['input']>;
+};
+
+export type DeleteResourcePayload = {
+	__typename?: 'DeleteResourcePayload';
+	clientMutationId?: Maybe<Scalars['String']['output']>;
+	data?: Maybe<Node>;
+};
+
+export type GeneralResponse = {
+	__typename?: 'GeneralResponse';
+	clientMutationId?: Maybe<Scalars['String']['output']>;
+	data?: Maybe<Scalars['JSON']['output']>;
+	message: Scalars['String']['output'];
+};
+
+export type GeneralResponseDataArgs = {
+	default?: InputMaybe<Scalars['JSON']['input']>;
+	path?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type HasCustomerNode = {
+	accountId?: Maybe<Scalars['String']['output']>;
+	attributes?: Maybe<Scalars['JSON']['output']>;
+	contactId?: Maybe<Scalars['String']['output']>;
+	createdAt: Scalars['DateTime']['output'];
+	customerId?: Maybe<Scalars['String']['output']>;
+	customerType?: Maybe<Scalars['String']['output']>;
+	deletedAt?: Maybe<Scalars['DateTime']['output']>;
+	eid?: Maybe<Scalars['String']['output']>;
+	id: Scalars['ID']['output'];
+	properties?: Maybe<Scalars['JSON']['output']>;
+	uid: Scalars['String']['output'];
+	updatedAt: Scalars['DateTime']['output'];
+};
+
+export type HasCustomerNodePayload = {
+	__typename?: 'HasCustomerNodePayload';
+	clientMutationId?: Maybe<Scalars['String']['output']>;
+	data: HasCustomerNode;
+};
+
+export type HasOwnerNodePayload = {
+	__typename?: 'HasOwnerNodePayload';
+	clientMutationId?: Maybe<Scalars['String']['output']>;
+	data: HasOwnerRefNode;
+};
+
+export type HasOwnerRefNode = {
+	attributes?: Maybe<Scalars['JSON']['output']>;
+	createdAt: Scalars['DateTime']['output'];
+	deletedAt?: Maybe<Scalars['DateTime']['output']>;
+	eid?: Maybe<Scalars['String']['output']>;
+	id: Scalars['ID']['output'];
+	ownerId?: Maybe<Scalars['ID']['output']>;
+	ownerType?: Maybe<Scalars['String']['output']>;
+	ownerUserId?: Maybe<Scalars['ID']['output']>;
+	properties?: Maybe<Scalars['JSON']['output']>;
+	uid: Scalars['String']['output'];
+	updatedAt: Scalars['DateTime']['output'];
+};
+
+export type HasRole = {
+	id: Scalars['ID']['output'];
+};
+
+export type HasStateStatusNode = {
+	attributes?: Maybe<Scalars['JSON']['output']>;
+	createdAt: Scalars['DateTime']['output'];
+	deletedAt?: Maybe<Scalars['DateTime']['output']>;
+	eid?: Maybe<Scalars['String']['output']>;
+	id: Scalars['ID']['output'];
+	properties?: Maybe<Scalars['JSON']['output']>;
+	state: Scalars['String']['output'];
+	status: Scalars['String']['output'];
+	uid: Scalars['String']['output'];
+	updatedAt: Scalars['DateTime']['output'];
+};
+
+export type HasUserNode = {
+	attributes?: Maybe<Scalars['JSON']['output']>;
+	createdAt: Scalars['DateTime']['output'];
+	createdBy?: Maybe<User>;
+	createdById?: Maybe<Scalars['ID']['output']>;
+	deletedAt?: Maybe<Scalars['DateTime']['output']>;
+	deletedBy?: Maybe<User>;
+	deletedById?: Maybe<Scalars['ID']['output']>;
+	eid?: Maybe<Scalars['String']['output']>;
+	id: Scalars['ID']['output'];
+	owner?: Maybe<OwnerNode>;
+	ownerId?: Maybe<Scalars['ID']['output']>;
+	ownerType?: Maybe<Scalars['String']['output']>;
+	ownerUserId?: Maybe<Scalars['ID']['output']>;
+	properties?: Maybe<Scalars['JSON']['output']>;
+	state: Scalars['String']['output'];
+	status: Scalars['String']['output'];
+	uid: Scalars['String']['output'];
+	updatedAt: Scalars['DateTime']['output'];
+	updatedBy?: Maybe<User>;
+	updatedById?: Maybe<Scalars['ID']['output']>;
+	userId?: Maybe<Scalars['ID']['output']>;
+};
+
+export type HasUserNodePayload = {
+	__typename?: 'HasUserNodePayload';
+	clientMutationId?: Maybe<Scalars['String']['output']>;
+	data: HasUserNode;
 };
 
 export type ListQueryInput = {
@@ -97,14 +258,177 @@ export type ListQueryInput = {
 	search?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type Mutation = {
+	__typename?: 'Mutation';
+	assignOwner: HasOwnerNodePayload;
+	bindCustomer: HasCustomerNodePayload;
+	bindEntity: HasOwnerNodePayload;
+	bindUser: HasUserNodePayload;
+	changePassword: GeneralResponse;
+	claimOwner: HasOwnerNodePayload;
+	deleteResource: DeleteResourcePayload;
+	purgeResource: DeleteResourcePayload;
+	refreshAccessToken: RefreshAccessTokenPayload;
+	releaseOwner: HasOwnerNodePayload;
+	resolveSiteConf: ResolveSiteConfPayload;
+	runSystemMaintenance: GeneralResponse;
+	setResourceNotes: MutationNodePayload;
+	setResourceStatus: SetResourceStatusPayload;
+	signInByPassword: SignInPayload;
+	signOut: RelayMutationPayload;
+	unbindCustomer: HasCustomerNodePayload;
+	unbindEntity: HasOwnerNodePayload;
+	unbindUser: HasUserNodePayload;
+	undeleteResource: RelayMutationPayload;
+};
+
+export type MutationAssignOwnerArgs = {
+	input: AssignOwnerInput;
+};
+
+export type MutationBindCustomerArgs = {
+	input: BindCustomerInput;
+};
+
+export type MutationBindEntityArgs = {
+	input: BindEntityInput;
+};
+
+export type MutationBindUserArgs = {
+	input: BindUserInput;
+};
+
+export type MutationChangePasswordArgs = {
+	input: ChangePasswordInput;
+};
+
+export type MutationClaimOwnerArgs = {
+	input: ClaimOwnerInput;
+};
+
+export type MutationDeleteResourceArgs = {
+	input: DeleteResourceInput;
+};
+
+export type MutationPurgeResourceArgs = {
+	input: DeleteResourceInput;
+};
+
+export type MutationRefreshAccessTokenArgs = {
+	input: RefreshAccessTokenInput;
+};
+
+export type MutationReleaseOwnerArgs = {
+	input: ReleaseOwnerInput;
+};
+
+export type MutationResolveSiteConfArgs = {
+	input: ResolveSiteConfInput;
+};
+
+export type MutationRunSystemMaintenanceArgs = {
+	input: RelayMutationInput;
+};
+
+export type MutationSetResourceNotesArgs = {
+	input: SetResourceNotesInput;
+};
+
+export type MutationSetResourceStatusArgs = {
+	input: SetResourceStatusInput;
+};
+
+export type MutationSignInByPasswordArgs = {
+	input: SignInByPasswordInput;
+};
+
+export type MutationSignOutArgs = {
+	input?: InputMaybe<SignOutInput>;
+};
+
+export type MutationUnbindCustomerArgs = {
+	input: UnbindCustomerInput;
+};
+
+export type MutationUnbindEntityArgs = {
+	input: UnbindEntityInput;
+};
+
+export type MutationUnbindUserArgs = {
+	input: UnbindUserInput;
+};
+
+export type MutationUndeleteResourceArgs = {
+	input: DeleteResourceInput;
+};
+
+export type MutationNodePayload = {
+	__typename?: 'MutationNodePayload';
+	clientMutationId?: Maybe<Scalars['String']['output']>;
+	data: Node;
+};
+
+/** An object with a global ID. */
+export type Node = {
+	id: Scalars['ID']['output'];
+};
+
+export type OwnerNode = {
+	attributes?: Maybe<Scalars['JSON']['output']>;
+	createdAt: Scalars['DateTime']['output'];
+	deletedAt?: Maybe<Scalars['DateTime']['output']>;
+	eid?: Maybe<Scalars['String']['output']>;
+	id: Scalars['ID']['output'];
+	properties?: Maybe<Scalars['JSON']['output']>;
+	uid: Scalars['String']['output'];
+	updatedAt: Scalars['DateTime']['output'];
+};
+
+export type Query = {
+	__typename?: 'Query';
+	currentUser: CurrentUser;
+	findUser: UserListPayload;
+	getUser: User;
+	node: Node;
+	ping: GeneralResponse;
+	resolveResource?: Maybe<Node>;
+};
+
+export type QueryFindUserArgs = {
+	query?: InputMaybe<ListQueryInput>;
+};
+
+export type QueryGetUserArgs = {
+	id?: InputMaybe<Scalars['ID']['input']>;
+};
+
+export type QueryNodeArgs = {
+	id: Scalars['ID']['input'];
+};
+
+export type QueryResolveResourceArgs = {
+	query: ResolveResourceQueryInput;
+};
+
 export type RefreshAccessTokenInput = {
 	accessToken: Scalars['String']['input'];
 	clientMutationId?: InputMaybe<Scalars['String']['input']>;
 	refreshToken: Scalars['String']['input'];
 };
 
+export type RefreshAccessTokenPayload = {
+	__typename?: 'RefreshAccessTokenPayload';
+	clientMutationId?: Maybe<Scalars['String']['output']>;
+	data: AccessTokenResponse;
+};
+
 export type RelayMutationInput = {
 	clientMutationId?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type RelayMutationPayload = {
+	__typename?: 'RelayMutationPayload';
+	clientMutationId?: Maybe<Scalars['String']['output']>;
 };
 
 /** 释放资源负责人 */
@@ -128,6 +452,35 @@ export type ResolveSiteConfInput = {
 	tid?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type ResolveSiteConfPayload = {
+	__typename?: 'ResolveSiteConfPayload';
+	clientMutationId?: Maybe<Scalars['String']['output']>;
+	data?: Maybe<SiteConf>;
+};
+
+export type ResourceNode = {
+	attributes?: Maybe<Scalars['JSON']['output']>;
+	createdAt: Scalars['DateTime']['output'];
+	createdBy?: Maybe<User>;
+	createdById?: Maybe<Scalars['ID']['output']>;
+	deletedAt?: Maybe<Scalars['DateTime']['output']>;
+	deletedBy?: Maybe<User>;
+	deletedById?: Maybe<Scalars['ID']['output']>;
+	eid?: Maybe<Scalars['String']['output']>;
+	id: Scalars['ID']['output'];
+	owner?: Maybe<OwnerNode>;
+	ownerId?: Maybe<Scalars['ID']['output']>;
+	ownerType?: Maybe<Scalars['String']['output']>;
+	ownerUserId?: Maybe<Scalars['ID']['output']>;
+	properties?: Maybe<Scalars['JSON']['output']>;
+	state: Scalars['String']['output'];
+	status: Scalars['String']['output'];
+	uid: Scalars['String']['output'];
+	updatedAt: Scalars['DateTime']['output'];
+	updatedBy?: Maybe<User>;
+	updatedById?: Maybe<Scalars['ID']['output']>;
+};
+
 export type SetResourceNotesInput = {
 	clientMutationId?: InputMaybe<Scalars['String']['input']>;
 	id?: InputMaybe<Scalars['ID']['input']>;
@@ -141,6 +494,12 @@ export type SetResourceStatusInput = {
 	status: Scalars['String']['input'];
 };
 
+export type SetResourceStatusPayload = {
+	__typename?: 'SetResourceStatusPayload';
+	clientMutationId?: Maybe<Scalars['String']['output']>;
+	data: HasStateStatusNode;
+};
+
 export type SignInByPasswordInput = {
 	clientMutationId?: InputMaybe<Scalars['String']['input']>;
 	org?: InputMaybe<Scalars['String']['input']>;
@@ -152,8 +511,33 @@ export type SignInByPasswordInput = {
 	username: Scalars['String']['input'];
 };
 
+export type SignInPayload = {
+	__typename?: 'SignInPayload';
+	clientMutationId?: Maybe<Scalars['String']['output']>;
+	data: AccessTokenResponse;
+};
+
 export type SignOutInput = {
 	clientMutationId?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type SiteConf = {
+	__typename?: 'SiteConf';
+	baseUrl?: Maybe<Scalars['String']['output']>;
+	features: Array<Scalars['String']['output']>;
+	metadata: Scalars['JSONObject']['output'];
+	serverUrl?: Maybe<Scalars['String']['output']>;
+	tid: Scalars['String']['output'];
+	title: Scalars['String']['output'];
+};
+
+export type Subscription = {
+	__typename?: 'Subscription';
+	watchResource: Node;
+};
+
+export type SubscriptionWatchResourceArgs = {
+	input: WatchResourceInput;
 };
 
 export type UnbindCustomerInput = {
@@ -171,6 +555,48 @@ export type UnbindUserInput = {
 	clientMutationId?: InputMaybe<Scalars['String']['input']>;
 	id?: InputMaybe<Scalars['ID']['input']>;
 	userId?: InputMaybe<Scalars['ID']['input']>;
+};
+
+export type User = BaseNode &
+	HasRole &
+	Node &
+	OwnerNode & {
+		__typename?: 'User';
+		attributes?: Maybe<Scalars['JSON']['output']>;
+		birthDate?: Maybe<Scalars['DateTime']['output']>;
+		createdAt: Scalars['DateTime']['output'];
+		deletedAt?: Maybe<Scalars['DateTime']['output']>;
+		displayName?: Maybe<Scalars['String']['output']>;
+		eid?: Maybe<Scalars['String']['output']>;
+		email?: Maybe<Scalars['String']['output']>;
+		fullName: Scalars['String']['output'];
+		homePhone?: Maybe<Scalars['String']['output']>;
+		id: Scalars['ID']['output'];
+		jobNumber?: Maybe<Scalars['String']['output']>;
+		jobTitle?: Maybe<Scalars['String']['output']>;
+		joinDate?: Maybe<Scalars['DateTime']['output']>;
+		loginName?: Maybe<Scalars['String']['output']>;
+		mobilePhone?: Maybe<Scalars['String']['output']>;
+		photoUrl?: Maybe<Scalars['String']['output']>;
+		properties?: Maybe<Scalars['JSON']['output']>;
+		uid: Scalars['String']['output'];
+		updatedAt: Scalars['DateTime']['output'];
+	};
+
+export type UserAttributesArgs = {
+	default?: InputMaybe<Scalars['JSON']['input']>;
+	path?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type UserPropertiesArgs = {
+	default?: InputMaybe<Scalars['JSON']['input']>;
+	path?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type UserListPayload = {
+	__typename?: 'UserListPayload';
+	data: Array<User>;
+	total: Scalars['Int']['output'];
 };
 
 export type WatchResourceInput = {

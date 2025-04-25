@@ -11,7 +11,6 @@ export function getSupportedThemes() {
 // { label: 'Light', value: 'light', icon: <MdLightMode />, iconActive: <MdOutlineLightMode /> },
 // { label: 'Dark', value: 'dark', type: 'dark', icon: <MdDarkMode />, iconActive: <MdOutlineDarkMode /> },
 // { label: '跟随系统', value: 'system', icon: <MdSettings /> },
-
 const themes = [
 	{ label: '亮色', value: 'light' },
 	{ label: '暗色', value: 'dark' },
@@ -45,4 +44,7 @@ const themes = [
 	{ label: '暗淡', value: 'dim', schema: 'dark' },
 	{ label: '北欧', value: 'nord' },
 	{ label: '日落', value: 'sunset', schema: 'dark' },
+	{ label: '焦糖拿铁', value: 'caramellatte' },
+	{ label: '深渊', value: 'abyss', schema: 'dark' },
+	{ label: '丝绸', value: 'silk' },
 ] satisfies ThemeProps[];

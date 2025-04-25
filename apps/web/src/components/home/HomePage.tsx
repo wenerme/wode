@@ -59,17 +59,17 @@ const ModuleListCard: React.FC<{
 	title?: ReactNode;
 }> = ({ items, title, figure, action }) => {
 	return (
-		<div className='card card-side border bg-base-100 shadow-xl'>
+		<div className='card card-side bg-base-100 border shadow-xl'>
 			{figure && <figure>{figure}</figure>}
 			<div className='card-body'>
 				{title && <h2 className='card-title'>{title}</h2>}
 				<div className={'flex flex-wrap gap-6 py-2'}>
 					{items.map(({ title, icon, href }) => {
 						return (
-							<Link className='group relative inline-block focus:outline-none focus:ring' key={href} href={href}>
+							<Link className='group relative inline-block focus:ring focus:outline-none' key={href} href={href}>
 								<span className='absolute inset-0 translate-x-1.5 translate-y-1.5 bg-blue-300 transition-transform group-hover:translate-x-0 group-hover:translate-y-0'></span>
 
-								<div className='relative inline-block border-2 border-current px-8 py-3 text-sm font-bold uppercase tracking-widest text-black group-active:text-opacity-75'>
+								<div className='group-active:text-opacity-75 relative inline-block border-2 border-current px-8 py-3 text-sm font-bold tracking-widest text-black uppercase'>
 									{flexRender(icon, { className: 'size-20' }, true)}
 									<span className={'normal-case'}>{title}</span>
 								</div>
@@ -86,7 +86,7 @@ const ModuleListCard: React.FC<{
 const Hero = () => {
 	let { i18n } = useLingui();
 	return (
-		<div className='hero min-h-96 flex-1 bg-base-200'>
+		<div className='hero bg-base-200 min-h-96 flex-1'>
 			<div className='hero-content text-center'>
 				<div className='max-w-md'>
 					<h1 className='text-5xl font-bold'>Wener APIs</h1>

@@ -1,13 +1,13 @@
-import React, { cloneElement, Fragment, type CSSProperties, type ReactNode } from 'react';
+import React, { cloneElement, Fragment, type CSSProperties, type ReactElement, type ReactNode } from 'react';
 import { FloatingPortal, type Placement } from '@floating-ui/react';
-import { cn } from '../tw/cn';
+import { cn } from '../utils/cn';
 import type { UseFloatingInteractionsOptions } from './useFloatingInteractions';
 import { usePopover } from './usePopover';
 
 export interface TooltipProps extends UseFloatingInteractionsOptions {
 	content?: ReactNode;
 	placement?: Placement;
-	children: JSX.Element;
+	children: ReactElement;
 	portal?: boolean;
 	className?: string;
 	style?: CSSProperties;
@@ -52,7 +52,7 @@ export const Tooltip = ({
 				<Wrapper>
 					<div
 						role={'tooltip'}
-						className={cn('Tooltip max-w-xs rounded bg-neutral px-2 py-1 text-sm text-neutral-content', className)}
+						className={cn('Tooltip bg-neutral text-neutral-content max-w-xs rounded px-2 py-1 text-sm', className)}
 						ref={refs.setFloating}
 						{...getFloatingProps()}
 						style={floatingStyles}

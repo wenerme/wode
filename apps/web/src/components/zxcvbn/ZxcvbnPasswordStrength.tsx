@@ -65,7 +65,7 @@ const ZxcvbnDescription: React.FC<{ data: ZXCVBNResult; password: string }> = ({
 		{ label: '10亿 个每秒', speedTip: '离线破解, 较快的算法, 多核', value: times.offline_fast_hashing_1e10_per_second },
 	];
 	return (
-		<div className='card w-full bg-base-100 shadow-xl'>
+		<div className='card bg-base-100 w-full shadow-xl'>
 			<div className='card-body'>
 				<h2 className='card-title'>
 					检测结果{' '}

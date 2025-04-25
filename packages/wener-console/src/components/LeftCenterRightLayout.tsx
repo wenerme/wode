@@ -1,5 +1,5 @@
 import React, { type ComponentPropsWithRef, type ElementType, type ReactNode } from 'react';
-import { cn } from '../tw';
+import { cn } from '../utils/cn';
 
 export type LeftCenterRightLayoutProps<E extends ElementType = 'div'> = ComponentPropsWithRef<E> & {
 	as?: E;

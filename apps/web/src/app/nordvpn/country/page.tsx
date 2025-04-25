@@ -15,7 +15,7 @@ export default async function (props: NextPageProps) {
 							<div className={'flex gap-2 text-lg font-medium'}>
 								<span>{name}</span>
 								{serverCount !== 1 && (
-									<span className={'flex items-center gap-1 text-sm text-info'}>
+									<span className={'text-info flex items-center gap-1 text-sm'}>
 										<PiHardDrive />
 										{serverCount}
 									</span>

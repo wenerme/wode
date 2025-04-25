@@ -20,7 +20,7 @@ import type { MaybePromise } from '@wener/utils';
 import { clsx } from 'clsx';
 import { Daisy } from '../daisy';
 import { showErrorToast } from '../toast';
-import { cn } from '../tw';
+import { cn } from '../utils/cn';
 
 export namespace FunctionButton {
 	export type RefreshButtonProps = ComponentPropsWithoutRef<'button'> & {

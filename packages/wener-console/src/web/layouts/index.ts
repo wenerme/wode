@@ -9,12 +9,12 @@ export {
 	createSlotContext,
 } from './Slot';
 
-export { DockLayout } from './DockLayout/DockLayout';
+export { DockLayout } from '../../components/DockLayout/DockLayout';
 
 export {
 	ExpandableSideMenuLayout,
 	type ExpandableSideMenuLayoutProps,
 	type ExpandableSideMenuItemProps,
-} from './ExpandableSideMenuLayout/ExpandableSideMenuLayout';
+} from '../../components/ExpandableSideMenuLayout/ExpandableSideMenuLayout';
 
-export { LeftSideMenuBarLayout } from './LeftSideMenuBarLayout/LeftSideMenuBarLayout';
+export { LeftSideMenuBarLayout } from '../../components/LeftSideMenuBarLayout/LeftSideMenuBarLayout';

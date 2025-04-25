@@ -59,7 +59,7 @@ export const IpfsGatewayCheck = () => {
 				<div>当前偏好网关 {prefer}</div>
 			</div>
 
-			<table className={'monospace table hover table-zebra'}>
+			<table className={'monospace hover table-zebra table'}>
 				<thead>
 					<tr>
 						<th>Online</th>

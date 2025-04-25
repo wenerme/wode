@@ -20,6 +20,7 @@ export { ConsoleLauncher, type ConsoleLauncherProps } from './ConsoleLauncher';
 export { useUserPreferenceState } from './hooks';
 export {
 	getConsoleContext,
+	setConsoleContext,
 	getAccessToken,
 	useUserId,
 	getConsoleEmitter,

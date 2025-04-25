@@ -1,6 +1,6 @@
 {
 	"name": "@wener/console",
-	"version": "1.0.16",
+	"version": "2.0.0",
 	"type": "module",
 	"description": "Base console UI toolkit",
 	"author": "wener",
@@ -16,24 +16,17 @@
 		"./floating": "./src/floating/index.ts",
 		"./foundation/auth": "./src/foundation/auth/index.ts",
 		"./foundation/site": "./src/foundation/site/index.ts",
+		"./foundation/user": "./src/foundation/user/index.ts",
 		"./hooks": "./src/hooks/index.ts",
 		"./icons": "./src/icons/index.ts",
-		"./jsonschema": "./src/jsonschema/index.ts",
 		"./loader": "./src/loader/index.ts",
 		"./matomo": "./src/matomo/index.ts",
-		"./meta": "./src/meta/index.ts",
 		"./pages": "./src/console/pages/index.ts",
 		"./react-hook-form": "./src/react-hook-form/index.ts",
 		"./router": "./src/router/index.ts",
 		"./toast": "./src/toast/index.ts",
-		"./tw": "./src/tw/index.ts",
 		"./urql": "./src/urql/index.ts",
 		"./valtio": "./src/valtio/index.ts",
-		"./web": "./src/web/index.ts",
-		"./web/components": "./src/web/components/index.ts",
-		"./web/pages": "./src/web/pages/index.ts",
-		"./web/user": "./src/web/user/index.ts",
-		"./web/window": "./src/web/window/index.ts",
 		"./window": "./src/window/index.ts",
 		"./zustand": "./src/zustand/index.ts",
 		"./console/*": "./src/console/*/index.ts",
@@ -41,9 +34,7 @@
 	},
 	"files": [
 		"lib",
-		"postcss.config.cjs",
-		"src",
-		"tailwind.config.ts"
+		"src"
 	],
 	"keywords": [
 		"admin",
@@ -65,7 +56,7 @@
 		"@floating-ui/dom": "*",
 		"@floating-ui/react": "*",
 		"@headlessui/react": ">=2",
-		"@wener/utils": "workspace:^",
+		"@wener/utils": "*",
 		"clsx": "*",
 		"dayjs": "*",
 		"react": "*",
@@ -80,64 +71,65 @@
 		"zustand": ">=4"
 	},
 	"dependencies": {
-		"@radix-ui/react-slot": "^1.1.2",
-		"@wener/common": "workspace:^1.0.3",
-		"derive-valtio": "^0.2.0",
+		"@base-ui-components/react": "1.0.0-alpha.8",
+		"@radix-ui/react-slot": "^1.2.2",
+		"@wener/common": "^1.0.5",
+		"date-fns": "^4.1.0",
 		"emittery": "^1.1.0",
-		"es-toolkit": "^1.32.0",
-		"tailwind-merge": "^2.6.0",
-		"zustand-mutative": "^1.2.0"
+		"es-toolkit": "^1.37.2",
+		"react-medium-image-zoom": "^5.2.14",
+		"react-resizable-panels": "^3.0.1",
+		"std-env": "^3.9.0",
+		"tailwind-merge": "^3.2.0",
+		"tailwindcss": "^4.1.5",
+		"use-mutative": "^1.2.1",
+		"zustand-mutative": "^1.2.1"
 	},
 	"devDependencies": {
 		"@emotion/styled": "^11.14.0",
-		"@floating-ui/dom": "^1.6.13",
-		"@floating-ui/react": "^0.27.5",
+		"@floating-ui/dom": "^1.7.0",
+		"@floating-ui/react": "^0.27.8",
 		"@graphql-typed-document-node/core": "^3.2.0",
-		"@headlessui/react": "^2.2.0",
-		"@radix-ui/react-collapsible": "^1.1.3",
-		"@radix-ui/react-dialog": "^1.1.6",
-		"@radix-ui/react-dropdown-menu": "^2.1.6",
-		"@radix-ui/react-tabs": "^1.1.3",
+		"@headlessui/react": "^2.2.2",
+		"@radix-ui/react-collapsible": "^1.1.10",
+		"@radix-ui/react-dialog": "^1.1.13",
+		"@radix-ui/react-dropdown-menu": "^2.1.14",
+		"@radix-ui/react-tabs": "^1.1.11",
 		"@remix-run/router": "^1.23.0",
-		"@sinclair/typebox": "^0.34.28",
-		"@storybook/addon-essentials": "^8.6.4",
-		"@storybook/addon-interactions": "^8.6.4",
-		"@storybook/addon-links": "^8.6.4",
-		"@storybook/blocks": "^8.6.4",
-		"@storybook/builder-vite": "^8.6.4",
-		"@storybook/react": "^8.6.4",
-		"@storybook/react-vite": "^8.6.4",
-		"@storybook/test": "^8.6.4",
-		"@types/json-schema": "^7.0.15",
+		"@sinclair/typebox": "^0.34.33",
+		"@storybook/addon-essentials": "^8.6.12",
+		"@storybook/addon-interactions": "^8.6.12",
+		"@storybook/addon-links": "^8.6.12",
+		"@storybook/blocks": "^8.6.12",
+		"@storybook/builder-vite": "^8.6.12",
+		"@storybook/react": "^8.6.12",
+		"@storybook/react-vite": "^8.6.12",
+		"@storybook/test": "^8.6.12",
+		"@tailwindcss/vite": "^4.1.5",
 		"@types/react-is": "^19.0.0",
 		"@urql/core": "^5.1.1",
 		"@urql/devtools": "^2.0.3",
 		"@urql/exchange-graphcache": "^7.2.3",
 		"@urql/exchange-persisted": "^4.3.1",
 		"@urql/exchange-retry": "^1.3.1",
-		"@wener/nestjs": "workspace:^",
-		"@wener/reaction": "workspace:^",
-		"@wener/utils": "workspace:^",
-		"ajv": "^8.17.1",
-		"ajv-formats": "^3.0.1",
-		"ajv-i18n": "^4.2.0",
-		"ajv-keywords": "^5.1.0",
+		"@wener/nestjs": "^1.0.53",
+		"@wener/reaction": "^1.2.25",
+		"@wener/utils": "^1.1.51",
 		"clsx": "^2.1.1",
 		"dataloader": "^2.2.3",
 		"graphql-request": "^7.1.2",
 		"immer": "^10.1.1",
-		"lru-cache": "^11.0.2",
+		"lru-cache": "^11.1.0",
 		"mutative": "^1.1.0",
-		"overlayscrollbars": "^2.11.1",
+		"overlayscrollbars": "^2.11.2",
 		"overlayscrollbars-react": "^0.5.6",
 		"polished": "^4.3.1",
-		"react-hook-form": "^7.54.2",
+		"react-hook-form": "^7.56.2",
 		"react-icons": "^5.5.0",
-		"react-is": "^19.0.0",
+		"react-is": "^19.1.0",
 		"react-rnd": "^10.5.2",
-		"storybook": "^8.6.4",
-		"styled-components": "^6.1.15",
-		"ts-pattern": "^5.6.2",
+		"storybook": "^8.6.12",
+		"ts-pattern": "^5.7.0",
 		"urql": "^4.2.2",
 		"web-vitals": "^4.2.4",
 		"wonka": "^6.3.5"
@@ -181,6 +173,10 @@
 				"types": "./src/foundation/site/index.ts",
 				"default": "./lib/foundation/site/index.js"
 			},
+			"./foundation/user": {
+				"types": "./src/foundation/user/index.ts",
+				"default": "./lib/foundation/user/index.js"
+			},
 			"./hooks": {
 				"types": "./src/hooks/index.ts",
 				"default": "./lib/hooks/index.js"
@@ -189,10 +185,6 @@
 				"types": "./src/icons/index.ts",
 				"default": "./lib/icons/index.js"
 			},
-			"./jsonschema": {
-				"types": "./src/jsonschema/index.ts",
-				"default": "./lib/jsonschema/index.js"
-			},
 			"./loader": {
 				"types": "./src/loader/index.ts",
 				"default": "./lib/loader/index.js"
@@ -200,10 +192,6 @@
 			"./matomo": {
 				"types": "./src/matomo/index.ts",
 				"default": "./lib/matomo/index.js"
-			},
-			"./meta": {
-				"types": "./src/meta/index.ts",
-				"default": "./lib/meta/index.js"
 			},
 			"./pages": {
 				"types": "./src/console/pages/index.ts",
@@ -221,10 +209,6 @@
 				"types": "./src/toast/index.ts",
 				"default": "./lib/toast/index.js"
 			},
-			"./tw": {
-				"types": "./src/tw/index.ts",
-				"default": "./lib/tw/index.js"
-			},
 			"./urql": {
 				"types": "./src/urql/index.ts",
 				"default": "./lib/urql/index.js"
@@ -232,26 +216,6 @@
 			"./valtio": {
 				"types": "./src/valtio/index.ts",
 				"default": "./lib/valtio/index.js"
-			},
-			"./web": {
-				"types": "./src/web/index.ts",
-				"default": "./lib/web/index.js"
-			},
-			"./web/components": {
-				"types": "./src/web/components/index.ts",
-				"default": "./lib/web/components/index.js"
-			},
-			"./web/pages": {
-				"types": "./src/web/pages/index.ts",
-				"default": "./lib/web/pages/index.js"
-			},
-			"./web/user": {
-				"types": "./src/web/user/index.ts",
-				"default": "./lib/web/user/index.js"
-			},
-			"./web/window": {
-				"types": "./src/web/window/index.ts",
-				"default": "./lib/web/window/index.js"
 			},
 			"./window": {
 				"types": "./src/window/index.ts",

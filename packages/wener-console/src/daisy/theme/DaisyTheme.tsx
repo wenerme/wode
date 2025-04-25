@@ -5,7 +5,6 @@ import { useStore } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
 import { getPrefersColorSchema } from '../../utils/getPrefersColorSchema';
 import { getSupportedThemes } from './getSupportedThemes';
-import { setElementThemeAttribute } from './setElementThemeAttribute';
 import { DaisyThemeStoreContext, type DaisyThemeStoreState } from './useTheme';
 
 type Updator<T> = (update: Partial<T> | ((state: T) => void)) => void;
@@ -49,7 +48,7 @@ export namespace DaisyTheme {
 				light: z.string().optional(),
 				dark: z.string().optional(),
 				theme: z.string().optional(),
-				custom: z.record(z.any()).optional(),
+				custom: z.record(z.string(), z.any()).optional(),
 			});
 
 			const closer: Array<() => void> = [];

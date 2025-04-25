@@ -77,7 +77,7 @@ function renderResult(result: DetectResult) {
 			}
 
 			return (
-				<table className={'table compact table-xs'}>
+				<table className={'compact table-xs table'}>
 					<colgroup>
 						<col className='w-10' />
 						<col />

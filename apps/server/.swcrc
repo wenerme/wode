@@ -1,11 +1,10 @@
 {
-  "$schema": "https://json.schemastore.org/swcrc",
+  "$schema": "https://swc.rs/schema.json",
   "sourceMaps": true,
   "module": {
     "type": "es6"
   },
   "jsc": {
-    "target": "es2022",
     "parser": {
       "syntax": "typescript",
       "decorators": true,
@@ -17,11 +16,11 @@
     },
     "keepClassNames": true,
     "baseUrl": "./",
-     "paths": {
-       "@/*": [
-         "src/*"
-       ]
-     }
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
+  "sourceMaps": true,
+  "exclude": ["\\.test\\.tsx?$", "\\.stories\\.tsx?$"],
   "minify": false
 }

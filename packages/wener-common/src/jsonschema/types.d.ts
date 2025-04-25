@@ -13,8 +13,9 @@ type JsonValue =
 	| number
 	| boolean
 	| { [key: string]: JsonValue }
-	| readonly JsonValue[]
-	| null;
+	| JsonValue[]
+	| null
+	| undefined; //
 
 type JsonSchemaVersion =
 	| 'http://json-schema.org/schema' // latest
@@ -58,7 +59,7 @@ type JsonSchemaFormatName =
  *
  * @see https://json-schema.org/specification-links.html
  */
-export type JsonSchemaDef<T = any> = {
+export type JsonSchemaDef<I = any, O = I> = {
 	$id?: string;
 	$ref?: string;
 	/**
@@ -77,7 +78,7 @@ export type JsonSchemaDef<T = any> = {
 
 	$defs?: { [key: string]: JsonSchemaDef };
 
-	type?: JsonSchemaTypeName | readonly JsonSchemaTypeName[];
+	type?: JsonSchemaTypeName | JsonSchemaTypeName[];
 	enum?: JsonValue;
 	const?: JsonValue;
 
@@ -105,7 +106,7 @@ export type JsonSchemaDef<T = any> = {
 	 * schema for array items
 	 * @see https://json-schema.org/understanding-json-schema/reference/array.html#items
 	 */
-	items?: JsonSchemaDef | readonly JsonSchemaDef[];
+	items?: JsonSchemaDef | JsonSchemaDef[];
 	additionalItems?: JsonSchemaDef | boolean;
 	maxItems?: number;
 	minItems?: number;
@@ -115,7 +116,7 @@ export type JsonSchemaDef<T = any> = {
 	//region Draft 2022-12
 	minContains?: number;
 	maxContains?: number;
-	prefixItems?: readonly JsonSchemaDef[];
+	prefixItems?: JsonSchemaDef[];
 	//endregion
 
 	//endregion
@@ -124,23 +125,23 @@ export type JsonSchemaDef<T = any> = {
 
 	maxProperties?: number;
 	minProperties?: number;
-	required?: readonly string[];
+	required?: string[];
 	properties?: { [key: string]: JsonSchemaDef };
 	patternProperties?: { [key: string]: JsonSchemaDef };
 	/**
 	 * Replaced by {@link unevaluatedProperties} in Draft 2019-09+
 	 */
-	additionalProperties?: JsonSchemaDef | boolean;
+	additionalProperties?: JsonSchemaDef | boolean; // true = {}
 	/**
 	 * Superseded by {@link dependentSchemas}, {@link dependentRequired} in Draft 2019-09+
 	 */
-	dependencies?: { [key: string]: undefined | JsonSchemaDef | readonly string[] };
+	dependencies?: { [key: string]: undefined | JsonSchemaDef | string[] };
 	propertyNames?: JsonSchemaDef;
 
 	//region Draft 2019-09+
 
 	dependentSchemas?: { [key: string]: JsonSchemaDef };
-	dependentRequired?: { [key: string]: readonly string[] };
+	dependentRequired?: { [key: string]: string[] };
 	unevaluatedProperties?: JsonSchemaDef | boolean;
 	unevaluatedItems?: JsonSchemaDef | boolean;
 
@@ -158,9 +159,9 @@ export type JsonSchemaDef<T = any> = {
 
 	//region Boolean Logic
 
-	allOf?: readonly JsonSchemaDef[];
-	anyOf?: readonly JsonSchemaDef[];
-	oneOf?: readonly JsonSchemaDef[];
+	allOf?: JsonSchemaDef[]; // extends, merge
+	anyOf?: JsonSchemaDef[];
+	oneOf?: JsonSchemaDef[]; // polymorphism, enum
 	not?: JsonSchemaDef;
 	//endregion
 
@@ -201,7 +202,13 @@ export type JsonSchemaDef<T = any> = {
 
 	nullable?: boolean;
 
+	discriminator?: {
+		propertyName: string;
+		mapping?: { [key: string]: string };
+	};
+
 	//endregion
 
-	[key: `x-${string}`]: JsonValue;
+	// [key: `x-${string}`]: JsonValue;
+	[key: string]: JsonValue;
 };
