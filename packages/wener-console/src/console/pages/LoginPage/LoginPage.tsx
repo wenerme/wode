@@ -115,11 +115,11 @@ export const LoginPage: FC<LoginPageProps> = ({
 									<div className={'flex flex-col gap-2'}>
 										{showOrg && (
 											<div className='join w-full'>
-												<span className={'btn-bordered btn join-item'}>
+												<span className={'btn join-item'}>
 													<PiBuildingsThin className={'h-6 w-6'} />
 												</span>
 												<input
-													className='input join-item input-bordered flex-1'
+													className='input join-item flex-1'
 													placeholder={'企业'}
 													value={title || undefined}
 													readOnly={Boolean(title)}
@@ -132,12 +132,12 @@ export const LoginPage: FC<LoginPageProps> = ({
 										)}
 
 										<div className='join w-full'>
-											<span className={'btn-bordered btn join-item'}>
+											<span className={'btn join-item'}>
 												<CiUser className={'h-6 w-6'} />
 											</span>
 											<input
 												autoComplete='username'
-												className='input join-item input-bordered flex-1'
+												className='input join-item flex-1'
 												placeholder={'用户'}
 												required
 												{...register('username', {
@@ -147,13 +147,13 @@ export const LoginPage: FC<LoginPageProps> = ({
 										</div>
 
 										<div className='join w-full'>
-											<span className={'btn-bordered btn join-item'}>
+											<span className={'btn join-item'}>
 												<CiLock className={'h-6 w-6'} />
 											</span>
 											<input
 												type='password'
 												autoComplete='current-password'
-												className='input join-item input-bordered flex-1'
+												className='input join-item flex-1'
 												placeholder={'密码'}
 												required
 												{...register('password', {
@@ -165,7 +165,7 @@ export const LoginPage: FC<LoginPageProps> = ({
 
 									<div className='flex items-center justify-between'>
 										<label className='flex items-center'>
-											<input type='checkbox' className='h-4 w-4 rounded' {...register('remember')} />
+											<input type='checkbox' className='checkbox h-4 w-4' {...register('remember')} />
 											<div className='ml-3 block select-none text-sm leading-6 opacity-75'>记住登录</div>
 										</label>
 
@@ -248,12 +248,12 @@ const SocialLogin = () => {
 			</div>
 
 			<div className='mt-6 grid grid-cols-2 gap-4'>
-				<a href='#' className={clsx('btn-bordered btn btn-sm rounded-md')}>
+				<a href='#' className={clsx('btn btn-sm rounded-md')}>
 					<WechatBrandIcon className={'h-4 w-4'} />
 					<span className='text-sm font-semibold leading-6'>Wechat</span>
 				</a>
 
-				<a href='#' className={clsx('btn-bordered btn btn-sm rounded-md')}>
+				<a href='#' className={clsx('btn btn-sm rounded-md')}>
 					<WecomBrandIcon className={'h-4 w-4'} />
 					<span className='text-sm font-semibold leading-6'>企业微信</span>
 				</a>

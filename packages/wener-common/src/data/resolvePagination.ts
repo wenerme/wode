@@ -1,5 +1,5 @@
 import { maybeFunction, type MaybeFunction } from '@wener/utils';
-import { clamp, mapValues, omitBy, pick } from 'es-toolkit';
+import { mapValues, omitBy, pick } from 'es-toolkit';
 import { maybeNumber, type MaybeNumber } from './maybeNumber';
 
 export type PaginationInput = {
@@ -22,7 +22,8 @@ export function resolvePagination(
 	page: PaginationInput,
 	options: {
 		pageSize?: MaybeFunction<number, [number | undefined]>;
-		maxPageSize?: number;
+		maxLimit?: number;
+		maxOffset?: number;
 	} = {},
 ): ResolvedPagination {
 	let out = omitBy(
@@ -38,15 +39,23 @@ export function resolvePagination(
 	if (options.pageSize) {
 		pageSize = maybeFunction(options.pageSize, pageSize);
 	}
-	pageSize ??= 20;
-	pageSize = clamp(pageSize, 1, options.maxPageSize ?? 1000);
+	pageSize ??= resolvePagination.pageSize;
 
-	let { pageNumber = 1, pageIndex, limit, offset } = out;
+	let { pageNumber = 1, pageIndex } = out;
 	// page index over page number
 	pageNumber = Math.max(pageNumber, 1);
 	pageIndex = Math.max(pageIndex ?? pageNumber - 1, 0);
-	limit = Math.max(1, limit ?? pageSize);
-	offset = Math.max(0, offset ?? pageSize * pageIndex);
+
+	let { limit = pageSize, offset = pageSize * pageIndex } = out;
+	limit = Math.max(1, limit);
+	offset = Math.max(0, offset);
+
+	if (options.maxLimit) {
+		limit = Math.min(limit, options.maxLimit);
+	}
+	if (options.maxOffset) {
+		offset = Math.min(offset, options.maxOffset);
+	}
 
 	pageSize = limit;
 	pageIndex = Math.floor(offset / pageSize);
@@ -58,3 +67,5 @@ export function resolvePagination(
 		pageIndex,
 	};
 }
+
+resolvePagination.pageSize = 20;

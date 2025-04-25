@@ -5,23 +5,29 @@ type JsonSchemaTypeName =
 	| 'boolean'
 	| 'object'
 	| 'array'
-	| 'null';
+	| 'null'
+	| undefined;
 
 type JsonValue =
 	| string //
 	| number
 	| boolean
 	| { [key: string]: JsonValue }
-	| JsonValue[]
+	| readonly JsonValue[]
 	| null;
 
 type JsonSchemaVersion =
 	| 'http://json-schema.org/schema' // latest
+	//
 	| 'https://json-schema.org/draft/2020-12/schema'
+	| 'https://json-schema.org/draft/2019-09/schema'
 	// draft-07
-	| 'http://json-schema.org/draft-07/schema#' //
-	| 'http://json-schema.org/draft-07/hyper-schema#';
-
+	| 'https://json-schema.org/draft-07/schema'
+	| 'http://json-schema.org/draft-07/schema'
+	| 'https://json-schema.org/draft-07/hyper-schema'
+	| 'http://json-schema.org/draft-07/hyper-schema'
+	//
+	| 'https://json-schema.org/draft-04/schema';
 type JsonSchemaFormatName =
 	//
 	| 'date-time'
@@ -47,7 +53,12 @@ type JsonSchemaFormatName =
 	| 'json-pointer'
 	| 'relative-json-pointer';
 
-export type JsonSchemaDef = {
+/**
+ * JSON Schema Definition
+ *
+ * @see https://json-schema.org/specification-links.html
+ */
+export type JsonSchemaDef<T = any> = {
 	$id?: string;
 	$ref?: string;
 	/**
@@ -66,8 +77,8 @@ export type JsonSchemaDef = {
 
 	$defs?: { [key: string]: JsonSchemaDef };
 
-	type?: JsonSchemaTypeName | JsonSchemaTypeName[];
-	enum?: JsonValue[];
+	type?: JsonSchemaTypeName | readonly JsonSchemaTypeName[];
+	enum?: JsonValue;
 	const?: JsonValue;
 
 	//region Numeric Validation
@@ -90,24 +101,51 @@ export type JsonSchemaDef = {
 
 	//region Array Validation
 
-	items?: JsonSchemaDef | JsonSchemaDef[];
-	additionalItems?: JsonSchemaDef;
+	/**
+	 * schema for array items
+	 * @see https://json-schema.org/understanding-json-schema/reference/array.html#items
+	 */
+	items?: JsonSchemaDef | readonly JsonSchemaDef[];
+	additionalItems?: JsonSchemaDef | boolean;
 	maxItems?: number;
 	minItems?: number;
 	uniqueItems?: boolean;
 	contains?: JsonSchemaDef;
+
+	//region Draft 2022-12
+	minContains?: number;
+	maxContains?: number;
+	prefixItems?: readonly JsonSchemaDef[];
+	//endregion
+
 	//endregion
 
 	//region Object Validation
 
 	maxProperties?: number;
 	minProperties?: number;
-	required?: string[];
+	required?: readonly string[];
 	properties?: { [key: string]: JsonSchemaDef };
 	patternProperties?: { [key: string]: JsonSchemaDef };
-	additionalProperties?: JsonSchemaDef;
-	dependencies?: { [key: string]: JsonSchemaDef | string[] };
+	/**
+	 * Replaced by {@link unevaluatedProperties} in Draft 2019-09+
+	 */
+	additionalProperties?: JsonSchemaDef | boolean;
+	/**
+	 * Superseded by {@link dependentSchemas}, {@link dependentRequired} in Draft 2019-09+
+	 */
+	dependencies?: { [key: string]: undefined | JsonSchemaDef | readonly string[] };
 	propertyNames?: JsonSchemaDef;
+
+	//region Draft 2019-09+
+
+	dependentSchemas?: { [key: string]: JsonSchemaDef };
+	dependentRequired?: { [key: string]: readonly string[] };
+	unevaluatedProperties?: JsonSchemaDef | boolean;
+	unevaluatedItems?: JsonSchemaDef | boolean;
+
+	//endregion
+
 	//endregion
 
 	//region Conditional
@@ -120,9 +158,9 @@ export type JsonSchemaDef = {
 
 	//region Boolean Logic
 
-	allOf?: JsonSchemaDef[];
-	anyOf?: JsonSchemaDef[];
-	oneOf?: JsonSchemaDef[];
+	allOf?: readonly JsonSchemaDef[];
+	anyOf?: readonly JsonSchemaDef[];
+	oneOf?: readonly JsonSchemaDef[];
 	not?: JsonSchemaDef;
 	//endregion
 
@@ -159,5 +197,11 @@ export type JsonSchemaDef = {
 
 	//endregion
 
+	//region OpenAPI Spec
+
 	nullable?: boolean;
+
+	//endregion
+
+	[key: `x-${string}`]: JsonValue;
 };

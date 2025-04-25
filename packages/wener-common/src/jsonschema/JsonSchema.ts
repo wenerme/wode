@@ -55,7 +55,7 @@ type TypeOfSchema<S> = S extends TSchema ? Static<S> : any;
 export namespace JsonSchema {
 	export let schemas: JsonSchemaDef[] = [];
 
-	export const createAjv = _createAjv;
+	export let createAjv = _createAjv;
 
 	export function addSchema(
 		schema: JsonSchemaDef,
@@ -113,7 +113,7 @@ export namespace JsonSchema {
 		// will not ensure value match the rule
 		return match(schema as JsonSchemaDef)
 			.returnType<any>()
-			.with({ const: P.select() }, (v) => v)
+			.with({ const: P.nonNullable }, (v) => v)
 			.with({ default: P.select() }, (v) => v)
 			.with({ anyOf: P.nonNullable }, (schema) => {
 				return create(schema.anyOf[0]);

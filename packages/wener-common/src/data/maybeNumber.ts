@@ -9,9 +9,13 @@ export function maybeNumber(v: MaybeNumber) {
 		case 'number':
 			return v;
 		case 'bigint':
+			if (v > BigInt(Number.MAX_SAFE_INTEGER) || v < BigInt(Number.MIN_SAFE_INTEGER)) {
+				throw new Error(`bigint out of range`);
+			}
 			return Number(v);
 		case 'string':
-			if (v === '') {
+			v = v.trim();
+			if (!v) {
 				return undefined;
 			}
 	}

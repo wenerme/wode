@@ -37,7 +37,7 @@ export function createCreateResourceInput<T extends object>(Type: Constructor<T>
 
 export function createUpdateResourceInput<T extends object>(Type: Constructor<T>): Constructor<UpdateResourceInput<T>> {
 	// ResourceCreateInput
-	let name = Type.name.replace(/(Update|Creare)?Input$/, '');
+	let name = Type.name.replace(/(Update|Create)?Input$/, '');
 	// CreateResourceInput
 	let key = `Update${name}Input`;
 	return computeIfAbsent(getTypeCache(), key, () => {
