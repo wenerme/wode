@@ -1,6 +1,6 @@
 import React, { memo, useMemo, useRef, useState } from 'react';
 import { ClockWidget } from '@wener/console/console/applets';
-import type { ReactWindow } from '@wener/console/web/window';
+import type { ReactWindow } from '@wener/console/window';
 import { useInterval } from '@wener/reaction';
 import dayjs from 'dayjs';
 

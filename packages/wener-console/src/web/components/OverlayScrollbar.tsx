@@ -1,29 +1,24 @@
-import React, { forwardRef } from 'react';
-import {
-	OverlayScrollbarsComponent,
-	type OverlayScrollbarsComponentProps,
-	type OverlayScrollbarsComponentRef,
-} from 'overlayscrollbars-react';
+import React from 'react';
+import { OverlayScrollbarsComponent, type OverlayScrollbarsComponentProps } from 'overlayscrollbars-react';
 
-export const OverlayScrollbar = forwardRef<OverlayScrollbarsComponentRef<'div'>, OverlayScrollbarsComponentProps>(
-	({ children, ...props }, ref) => {
-		return (
-			<OverlayScrollbarsComponent
-				defer
-				options={{
-					scrollbars: {
-						visibility: 'auto',
-						autoHide: 'leave',
-						autoHideDelay: 1000,
-						autoHideSuspend: true,
-					},
-				}}
-				ref={ref}
-				{...props}
-			>
-				{children}
-			</OverlayScrollbarsComponent>
-		);
-	},
-);
+type OverlayScrollbarProps = OverlayScrollbarsComponentProps & {};
+
+export const OverlayScrollbar = ({ children, ...props }: OverlayScrollbarProps) => {
+	return (
+		<OverlayScrollbarsComponent
+			defer
+			options={{
+				scrollbars: {
+					visibility: 'auto',
+					autoHide: 'leave',
+					autoHideDelay: 1000,
+					autoHideSuspend: true,
+				},
+			}}
+			{...props}
+		>
+			{children}
+		</OverlayScrollbarsComponent>
+	);
+};
 OverlayScrollbar.displayName = 'OverlayScrollbar';

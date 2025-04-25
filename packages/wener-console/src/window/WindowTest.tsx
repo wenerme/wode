@@ -1,17 +1,21 @@
 import React from 'react';
 import { useStore } from 'zustand';
+import { useShallow } from 'zustand/react/shallow';
 import { useWindow } from './ReactWindow';
 
 export const WindowTest = () => {
 	let win = useWindow();
 	let store = win.store;
-	const { canMaximize, canMinimize, canResize } = useStore(store, ({ canMaximize, canMinimize, canResize }) => {
-		return {
-			canMaximize,
-			canMinimize,
-			canResize,
-		};
-	});
+	const { canMaximize, canMinimize, canResize } = useStore(
+		store,
+		useShallow(({ canMaximize, canMinimize, canResize }) => {
+			return {
+				canMaximize,
+				canMinimize,
+				canResize,
+			};
+		}),
+	);
 	return (
 		<div className={'flex flex-col p-2'}>
 			<h2>Window Test</h2>

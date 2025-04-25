@@ -1,27 +1,26 @@
 {
-	"$schema": "https://swc.rs/schema.json",
-	"sourceMaps": true,
-	"module": {
-		"type": "es6"
-	},
-	"jsc": {
-		"parser": {
-			"syntax": "typescript",
-			"decorators": true,
-			"dynamicImport": true
-		},
-		"transform": {
-			"legacyDecorator": true,
-			"decoratorMetadata": true
-		},
-		"keepClassNames": true
-	},
-	"env": {
-		"targets": {
-			"chrome": "100",
-			"node": "20"
-		}
-	},
-	"exclude": ["\\.test\\.tsx?$", "\\.stories\\.tsx?$"],
-	"minify": false
+  "$schema": "https://swc.rs/schema.json",
+  "sourceMaps": true,
+  "module": {
+    "type": "es6"
+  },
+  "jsc": {
+    "parser": {
+      "syntax": "typescript",
+      "decorators": true,
+      "dynamicImport": true
+    },
+    "transform": {
+      "legacyDecorator": true,
+      "decoratorMetadata": true
+    },
+    "keepClassNames": true,
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  },
+  "sourceMaps": true,
+  "exclude": ["\\.test\\.tsx?$", "\\.stories\\.tsx?$"],
+  "minify": false
 }

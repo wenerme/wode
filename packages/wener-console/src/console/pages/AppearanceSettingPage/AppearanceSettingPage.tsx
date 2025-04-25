@@ -2,8 +2,8 @@
 
 import React from 'react';
 import { DaisyTheme, DaisyThemeDemo, ThemeListSelector } from '../../../daisy';
+import { getPrefersColorSchema } from '../../../utils/getPrefersColorSchema';
 import { SettingLayout } from '../../../web';
-import { getPrefersColorSchema } from '../../../web/utils';
 
 export const AppearanceSettingPage = () => {
 	const [{ theme }, update] = DaisyTheme.useThemeState();
@@ -27,7 +27,7 @@ export const AppearanceSettingPage = () => {
 								}}
 							/>
 						</label>
-					 </fieldset>
+					</fieldset>
 				</div>
 			}
 		>

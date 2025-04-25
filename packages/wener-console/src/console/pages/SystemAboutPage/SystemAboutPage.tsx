@@ -78,7 +78,7 @@ const AppBuildInfo: FC<{ logo?: ReactNode; title?: ReactNode; info: BuildInfo }>
 				</li>
 				<li>
 					<div className={'flex h-8 w-8 items-center justify-center'}>
-						<HiCheck className={'h-4 w-4 text-info'} />
+						<HiCheck className={'text-info h-4 w-4'} />
 					</div>
 					<div>
 						<div className={'flex items-center gap-2'}>

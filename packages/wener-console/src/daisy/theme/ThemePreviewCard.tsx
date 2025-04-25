@@ -14,9 +14,9 @@ const Colors = {
 export const ThemePreviewCard: FC<{ title?: string }> = ({ title }) => {
 	return (
 		<div className='grid grid-cols-5 grid-rows-4'>
-			<div className='col-start-1 row-span-2 row-start-1 bg-base-200'></div>
-			<div className='col-start-1 row-span-2 row-start-3 bg-base-300'></div>
-			<div className='col-span-4 col-start-2 row-span-4 row-start-1 flex flex-col gap-1 bg-base-100 p-2'>
+			<div className='bg-base-200 col-start-1 row-span-2 row-start-1'></div>
+			<div className='bg-base-300 col-start-1 row-span-2 row-start-3'></div>
+			<div className='bg-base-100 col-span-4 col-start-2 row-span-4 row-start-1 flex flex-col gap-1 p-2'>
 				<div className='font-bold'>{title}</div>
 				<div className='grid grid-cols-4 gap-1'>
 					{Object.entries(Colors).map(([name, [bg, content]]) => (

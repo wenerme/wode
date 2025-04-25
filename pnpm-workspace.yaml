@@ -2,3 +2,23 @@ packages:
   - 'apps/*'
   - 'packages/*'
   - 'components/*'
+
+onlyBuiltDependencies:
+- '@swc/core'
+- argon2
+- bcrypt
+- better-sqlite3
+- canvas
+- esbuild
+- sharp
+
+patchedDependencies:
+  ts-node@11.0.0-beta.1: patches/ts-node.patch
+
+overrides:
+  zod: next
+
+linkWorkspacePackages: true
+preferWorkspacePackages: true
+saveWorkspaceProtocol: false
+dedupeDirectDeps: true

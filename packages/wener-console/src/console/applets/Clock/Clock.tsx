@@ -317,7 +317,7 @@ export const Clock: FC<ComponentPropsWithoutRef<'div'>> = ({ className, children
 	}, []);
 
 	return (
-		<Container className={clsx('clock container pb-2 pt-4', className)} {...props}>
+		<Container className={clsx('clock container pt-4 pb-2', className)} {...props}>
 			<div className='clock__container grid'>
 				<div className='clock__content grid'>
 					<div className='clock__circle'>

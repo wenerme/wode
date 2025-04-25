@@ -24,7 +24,7 @@ export const LanguageSwitch = () => {
 					<span className='ml-2 text-xs'>▼</span>
 				</span>
 			</div>
-			<ul tabIndex={0} className='menu dropdown-content w-32 rounded-box bg-base-100 shadow-lg'>
+			<ul tabIndex={0} className='menu dropdown-content rounded-box bg-base-100 w-32 shadow-lg'>
 				{options.map((item, index) => (
 					<li key={index}>
 						<Link href={{ query: { lang: item.value } }}>{item.label}</Link>

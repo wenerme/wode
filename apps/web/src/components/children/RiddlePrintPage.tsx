@@ -58,13 +58,13 @@ export const GomokuBoard = () => {
 	const cols = Array.from({ length: 15 });
 
 	return (
-		<div className='flex flex-col border-b border-r border-gray-400 bg-white'>
+		<div className='flex flex-col border-r border-b border-gray-400 bg-white'>
 			{rows.map((_, rowIndex) => (
 				<div key={rowIndex} className='flex'>
 					{cols.map((_, colIndex) => (
 						<div
 							key={colIndex}
-							className='flex h-10 w-10 items-center justify-center border-l border-t border-gray-400'
+							className='flex h-10 w-10 items-center justify-center border-t border-l border-gray-400'
 						>
 							{/* 棋子占位符 */}
 						</div>

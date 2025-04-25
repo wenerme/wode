@@ -56,7 +56,7 @@ export function Drawer({ children, render }: Props) {
 				ref={refs.setFloating}
 				aria-labelledby={labelId}
 				aria-describedby={descriptionId}
-				className='absolute right-0 top-0 h-full w-48 bg-slate-100 p-4'
+				className='absolute top-0 right-0 h-full w-48 bg-slate-100 p-4'
 				{...getFloatingProps()}
 			>
 				{render({

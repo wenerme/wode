@@ -1,6 +1,6 @@
 import React from 'react';
 import type { Meta } from '@storybook/react';
-import { WindowHost } from '@wener/console/web/window';
+import { WindowHost } from '@wener/console/window';
 import { DockLayout } from './DockLayout';
 
 const meta: Meta = {

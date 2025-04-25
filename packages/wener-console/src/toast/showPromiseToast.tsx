@@ -1,5 +1,5 @@
 import type { ReactElement } from 'react';
-import { toast, type DefaultToastOptions } from 'react-hot-toast';
+import toast, { type DefaultToastOptions } from 'react-hot-toast';
 import { classOf, maybeFunction, Promises, type MaybeFunction } from '@wener/utils';
 import { resolveErrorMessage } from './resolveErrorMessage';
 
@@ -13,21 +13,47 @@ export type ShowPromiseToastOptions<T> = {
 	loading?: MaybeFunction<Renderable>;
 	success?: MaybeFunction<Renderable, [T]>;
 	error?: MaybeFunction<Renderable, [any]>;
-	options?: DefaultToastOptions;
 };
 
-export async function showPromiseToast<T, S extends boolean>({
-	promise,
-	delay = 0,
-	swallow,
-	action = '操作',
-	loading = () => `${action}中...`,
-	success = (v: T) => `${action}成功`,
-	error = (err: any) => `${action}失败: ${resolveErrorMessage(err)}`,
-	options: opts = {},
-}: ShowPromiseToastOptions<T> & {
-	swallow?: S;
-}): Promise<S extends true ? T | undefined : T> {
+export async function showPromiseToast<T, S extends boolean = false>(
+	promise: Promise<T>,
+	opts?: Omit<ShowPromiseToastOptions<T>, 'promise'> & { swallow?: S },
+	def?: DefaultToastOptions,
+): Promise<S extends true ? T | undefined : T>;
+export async function showPromiseToast<T, S extends boolean = false>(
+	opts: ShowPromiseToastOptions<T> & { swallow?: S },
+	def?: DefaultToastOptions,
+): Promise<S extends true ? T | undefined : T>;
+export async function showPromiseToast<T, S extends boolean>(
+	a: any,
+	b?: any,
+	c?: any,
+): Promise<S extends true ? T | undefined : T> {
+	let promise: Promise<T>;
+	let opts: ShowPromiseToastOptions<T> & {
+		swallow?: S;
+	};
+	let def: DefaultToastOptions;
+	if ('then' in a) {
+		promise = a;
+		opts = b;
+		def = c;
+	} else {
+		promise = a.promise;
+		opts = a;
+		def = b;
+	}
+	def ||= {};
+
+	const {
+		delay = 0,
+		swallow,
+		action = '操作',
+		loading = () => `${action}中...`,
+		success = (v: T) => `${action}成功`,
+		error = (err: any) => `${action}失败: ${resolveErrorMessage(err)}`,
+	} = opts;
+
 	let toastId;
 	try {
 		let done = false;
@@ -37,10 +63,10 @@ export async function showPromiseToast<T, S extends boolean>({
 			Promises.sleep(delay).then(() => {
 				if (done) return;
 				let content = maybeFunction(loading);
-				if (!content) {
-					toastId = toast.loading(loading, {
-						...opts,
-						...opts.loading,
+				if (content) {
+					toastId = toast.loading(content, {
+						...def,
+						...def.loading,
 					});
 				}
 			}),
@@ -52,29 +78,28 @@ export async function showPromiseToast<T, S extends boolean>({
 		if (message) {
 			toast.success(message, {
 				id: toastId,
-				...opts,
-				...opts.success,
+				...def,
+				...def.success,
 			});
 		} else {
 			toast.dismiss(toastId);
 		}
 		return out;
 	} catch (e) {
-		console.log(`ERROR ${classOf(error)}`, error);
+		console.log(`ERROR ${classOf(e)}`, e);
 
 		let message = maybeFunction(error, e);
 		if (message) {
 			toast.error(message, {
 				id: toastId,
-				...opts,
-				...opts.error,
+				...def,
+				...def.error,
 			});
 		} else {
 			toast.dismiss(toastId);
 		}
 		if (swallow === true) {
-			// @ts-ignore
-			return undefined;
+			return undefined as S extends true ? T | undefined : T;
 		}
 		throw e;
 	}

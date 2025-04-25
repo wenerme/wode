@@ -28,7 +28,7 @@ const Socials = [
 ];
 const Footer = () => {
 	return (
-		<footer className='footer bg-neutral p-10 text-neutral-content print:hidden'>
+		<footer className='footer bg-neutral text-neutral-content p-10 print:hidden'>
 			<aside>
 				<WenerAvatarIcon />
 				<p>
@@ -65,7 +65,7 @@ const Nav = () => {
 					<div tabIndex={0} role='button' className='btn btn-circle btn-ghost'>
 						<PiListLight className={'size-6'} />
 					</div>
-					<ul tabIndex={0} className='menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box bg-base-100 p-2 shadow'>
+					<ul tabIndex={0} className='menu dropdown-content menu-sm rounded-box bg-base-100 z-[1] mt-3 w-52 p-2 shadow'>
 						<li>
 							<a>Homepage</a>
 						</li>

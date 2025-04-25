@@ -47,7 +47,7 @@ export namespace DaisyDropdownMenu {
 				side={'bottom'}
 				align={'end'}
 				sideOffset={5}
-				className={cn('menu menu-sm z-30 w-52 rounded-box bg-base-200', className)}
+				className={cn('menu menu-sm rounded-box bg-base-200 z-30 w-52', className)}
 			>
 				{items.map((item, key) => {
 					return match(item)
@@ -60,7 +60,7 @@ export namespace DaisyDropdownMenu {
 						})
 						.with({ type: 'separator' }, ({ type, className, ...props }) => {
 							return (
-								<DropdownMenu.Separator key={key} className={cn('m-[5px] h-px bg-base-300', className)} {...props} />
+								<DropdownMenu.Separator key={key} className={cn('bg-base-300 m-[5px] h-px', className)} {...props} />
 							);
 						})
 						.otherwise(({ label, icon, type, className, children, ...props }) => {
@@ -68,7 +68,7 @@ export namespace DaisyDropdownMenu {
 								<DropdownMenu.Item key={key} asChild {...props}>
 									<li
 										className={clsx(
-											'select-none outline-none',
+											'outline-none select-none',
 											'group/item',
 											'data-[disabled]:disabled data-[disabled]:pointer-events-none',
 											className,

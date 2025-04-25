@@ -1,78 +1,140 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-@font-face {
-	font-family: "color-emoji";
-	src:
-		local("Apple Color Emoji"), local("Twemoji Mozilla"), local("Segoe UI Emoji"), local("Segoe UI Symbol"),
-		local("Noto Color Emoji"), local("EmojiOne Color"), local("Android Emoji");
-
-	/* Emoji unicode blocks */
-	unicode-range:
-		U+00A9, U+00AE, U+200D, U+203C, U+2049, U+20E3, U+2122, U+2139, U+2194-2199, U+21A9-21AA, U+231A, U+231B, U+2328,
-		U+23CF, U+23E9-23F3, U+23F8-23FA, U+24C2, U+25AA, U+25AB, U+25B6, U+25C0, U+25FB-25FE, U+2600-27EF, U+2934, U+2935,
-		U+2B00-2BFF, U+3030, U+303D, U+3297, U+3299, U+1F000-1F02F, U+1F0A0-1F0FF, U+1F100-1F64F, U+1F680-1F6FF,
-		U+1F910-1F96B, U+1F980-1F9E0;
+@plugin "daisyui" {
+	themes: all;
+	root: ":root";
+	logs: true;
 }
 
+@plugin "daisyui/theme" {
+	name: "purplewind";
+	default: false;
+	prefersdark: false;
+	color-scheme: "light";
+	--color-base-100: oklch(96% 0.016 293.756);
+	--color-base-200: oklch(94% 0.029 294.588);
+	--color-base-300: oklch(89% 0.057 293.283);
+	--color-base-content: oklch(38% 0.189 293.745);
+	--color-primary: oklch(82% 0.12 346.018);
+	--color-primary-content: oklch(28% 0.109 3.907);
+	--color-secondary: oklch(82% 0.119 306.383);
+	--color-secondary-content: oklch(29% 0.149 302.717);
+	--color-accent: oklch(80% 0.105 251.813);
+	--color-accent-content: oklch(28% 0.091 267.935);
+	--color-neutral: oklch(38% 0.189 293.745);
+	--color-neutral-content: oklch(96% 0.016 293.756);
+	--color-info: oklch(54% 0.245 262.881);
+	--color-info-content: oklch(97% 0.014 254.604);
+	--color-success: oklch(60% 0.118 184.704);
+	--color-success-content: oklch(98% 0.014 180.72);
+	--color-warning: oklch(68% 0.162 75.834);
+	--color-warning-content: oklch(98% 0.026 102.212);
+	--color-error: oklch(58% 0.253 17.585);
+	--color-error-content: oklch(96% 0.015 12.422);
+	--radius-selector: 0.25rem;
+	--radius-field: 0.25rem;
+	--radius-box: 0.5rem;
+	--size-selector: 0.25rem;
+	--size-field: 0.25rem;
+	--border: 2px;
+	--depth: 1;
+	--noise: 1;
+}
+
+@utility border {
+	border-color: var(--color-base-300);
+}
+@utility border-r {
+	border-color: var(--color-base-300);
+}
+@utility border-l {
+	border-color: var(--color-base-300);
+}
+@utility border-t {
+	border-color: var(--color-base-300);
+}
+@utility border-b {
+	border-color: var(--color-base-300);
+}
+@utility border-x {
+	border-color: var(--color-base-300);
+}
+@utility border-y {
+	border-color: var(--color-base-300);
+}
+
+@layer utilities {
+	@font-face {
+		font-family: "color-emoji";
+		src:
+			local("Apple Color Emoji"), local("Twemoji Mozilla"), local("Segoe UI Emoji"), local("Segoe UI Symbol"),
+			local("Noto Color Emoji"), local("EmojiOne Color"), local("Android Emoji");
+
+		/* Emoji unicode blocks */
+		unicode-range:
+			U+00A9, U+00AE, U+200D, U+203C, U+2049, U+20E3, U+2122, U+2139, U+2194-2199, U+21A9-21AA, U+231A, U+231B, U+2328,
+			U+23CF, U+23E9-23F3, U+23F8-23FA, U+24C2, U+25AA, U+25AB, U+25B6, U+25C0, U+25FB-25FE, U+2600-27EF, U+2934,
+			U+2935, U+2B00-2BFF, U+3030, U+303D, U+3297, U+3299, U+1F000-1F02F, U+1F0A0-1F0FF, U+1F100-1F64F, U+1F680-1F6FF,
+			U+1F910-1F96B, U+1F980-1F9E0;
+	}
+
+	html,
+	body {
+		padding: 0;
+		margin: 0;
+		font-family:
+			-apple-system,
+			color-emoji,
+			BlinkMacSystemFont,
+			Segoe UI,
+			Roboto,
+			Oxygen,
+			Ubuntu,
+			Cantarell,
+			Fira Sans,
+			Droid Sans,
+			Helvetica Neue,
+			sans-serif;
+	}
+
+	html {
+		height: 100%;
+	}
+
+	body {
+		min-height: 100%;
+		display: flex;
+		flex-direction: column;
+	}
+
+	/*
 html,
-body {
-	padding: 0;
-	margin: 0;
-	font-family:
-		-apple-system,
-		color-emoji,
-		BlinkMacSystemFont,
-		Segoe UI,
-		Roboto,
-		Oxygen,
-		Ubuntu,
-		Cantarell,
-		Fira Sans,
-		Droid Sans,
-		Helvetica Neue,
-		sans-serif;
+body,
+#__next {
+  min-height: 100vh;
+  min-height: 100dvh;
 }
 
-html {
-	height: 100%;
+#__next {
+  display: flex;
+  flex-direction: column;
 }
-
-body {
-	min-height: 100%;
-	display: flex;
-	flex-direction: column;
-	/* fixme why there is overflow */
-	overflow-x: hidden;
-}
-
-/**
+*/
+	/**
  * DaisyUI minor fix
  */
+	.btn {
+		text-transform: none;
+	}
 
-.btn {
-	text-transform: none;
-}
+	/* hide icon for loading */
+	.btn.loading > svg:first-of-type {
+		display: none;
+	}
 
-/* hide icon for loading */
-.btn.loading > svg:first-of-type {
-	display: none;
-}
-
-/* 统一 border 颜色 - 一般默认为 currentColor */
-.border-color {
-	@apply border-base-300;
-}
-
-@layer components {
-	.border,
-	.border-r,
-	.border-l,
-	.border-t,
-	.border-b,
-	.border-x,
-	.border-y {
+	/* 统一 border 颜色 - 一般默认为 currentColor */
+	/* .btn-outline */
+	.border-color {
 		@apply border-base-300;
 	}
 }
@@ -102,7 +164,7 @@ scrollbar-thumb:!bg-base-300 scrollbar-track:!rounded
 
 /* 角落 */
 ::-webkit-scrollbar-corner {
-	background: oklch(var(--b1));
+	background: oklch(var(--color-base-100));
 }
 
 *::-webkit-scrollbar {
@@ -112,23 +174,23 @@ scrollbar-thumb:!bg-base-300 scrollbar-track:!rounded
 
 *::-webkit-scrollbar-track {
 	@apply rounded;
-	background: oklch(var(--b1));
+	background: oklch(var(--color-base-100));
 }
 
 *::-webkit-scrollbar-thumb {
 	@apply rounded;
-	background: oklch(var(--b2));
+	background: oklch(var(--color-base-200));
 	transition: background-color 0.2s ease-in-out;
 }
 
 *::-webkit-scrollbar-thumb:hover {
-	background: oklch(var(--b3));
+	background: oklch(var(--color-base-300));
 }
 
 /**
- * @devbookhq/splitter https://github.com/devbookhq/splitter
+ * react splitter
  */
-
+/*
 .__dbk__gutter {
 	background: transparent !important;
 }
@@ -144,3 +206,4 @@ scrollbar-thumb:!bg-base-300 scrollbar-track:!rounded
 		background: oklch(var(--b3)) !important;
 	}
 }
+*/

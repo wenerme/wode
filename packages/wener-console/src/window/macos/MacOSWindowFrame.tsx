@@ -1,5 +1,5 @@
 import React, { forwardRef } from 'react';
-import { cn } from '../../tw';
+import { cn } from '../../utils/cn';
 import { getWindowDragHandleClassname } from '../const';
 import type { WindowFrameProps } from '../WindowFrame';
 import { MacOSWindowController } from './MacOSWindowController';
@@ -20,7 +20,7 @@ export const MacOSWindowFrame = forwardRef<HTMLDivElement, WindowFrameProps>(
 				{...props}
 			>
 				<header
-					className={`${getWindowDragHandleClassname()} flex h-7 cursor-default items-center justify-between bg-base-200 px-1.5`}
+					className={`${getWindowDragHandleClassname()} bg-base-200 flex h-7 cursor-default items-center justify-between px-1.5`}
 					onDoubleClick={() => {
 						onToggleMaximize?.();
 					}}

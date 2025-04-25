@@ -4,13 +4,14 @@ import { Closer } from '@wener/utils';
 import { clsx } from 'clsx';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
+import { getWindowDragCancelClassname, getWindowDragHandleClassname } from './const';
 import { getRootWindow, WindowContext, type ReactWindow } from './ReactWindow';
 import { WindowController } from './WindowController';
 import { WindowFrame } from './WindowFrame';
 
 export const WindowGuest = memo<{ win: ReactWindow }>(({ win }) => {
 	const { store } = win;
-	const [zIndex, minimized, x, y, width, height, canResize, canDrag, minWidth, minHeight, maxWidth, maxHeight] =
+	const { zIndex, minimized, x, y, width, height, canResize, canDrag, minWidth, minHeight, maxWidth, maxHeight } =
 		useStore(
 			store,
 			useShallow(
@@ -29,20 +30,21 @@ export const WindowGuest = memo<{ win: ReactWindow }>(({ win }) => {
 					maxWidth,
 					maxHeight,
 				}) => {
-					return [
+					return {
 						zIndex,
 						minimized,
+						maximized,
 						x,
 						y,
-						width,
-						height,
-						canResize && !maximized,
+						width: maximized ? '100%' : width,
+						height: maximized ? '100%' : height,
+						canResize: canResize && !maximized,
 						canDrag,
 						minWidth,
 						minHeight,
 						maxWidth,
 						maxHeight,
-					];
+					};
 				},
 			),
 		);
@@ -75,8 +77,8 @@ export const WindowGuest = memo<{ win: ReactWindow }>(({ win }) => {
 					...position,
 				});
 			}}
-			dragHandleClassName={'WindowDragHandle'}
-			cancel={'.WindowDragCancel'}
+			dragHandleClassName={getWindowDragHandleClassname()}
+			cancel={`.${getWindowDragCancelClassname()}`}
 			enableResizing={canResize}
 			disableDragging={!canDrag}
 			bounds={document.body}
@@ -158,7 +160,7 @@ const WinFramelessContent: FC<{ win: ReactWindow }> = ({ win }) => {
 				win.setBody(ref);
 			}}
 			className={clsx(
-				'rounded-lg bg-base-100 shadow outline-none @container focus-within:shadow-lg',
+				'bg-base-100 @container rounded-lg shadow outline-none focus-within:shadow-lg',
 				minimized && 'hidden',
 			)}
 			tabIndex={-1}
@@ -171,10 +173,10 @@ const WinFramelessContent: FC<{ win: ReactWindow }> = ({ win }) => {
 };
 const WinFrameContent: FC<{ win: ReactWindow }> = memo(({ win }) => {
 	const store = win.store;
-	const [minimized, canMinimize, canMaximize, title, render] = useStore(
+	const { minimized, maximized, canMinimize, canMaximize, title, render } = useStore(
 		store,
-		useShallow(({ minimized, canMinimize, canMaximize, title, render }) => {
-			return [minimized, canMinimize, canMaximize, title, render];
+		useShallow(({ minimized, maximized, canMinimize, canMaximize, title, render }) => {
+			return { minimized, maximized, canMinimize, canMaximize, title, render };
 		}),
 	);
 	return (
@@ -199,6 +201,7 @@ const WinFrameContent: FC<{ win: ReactWindow }> = memo(({ win }) => {
 							onClick: () => {
 								win.maximize();
 							},
+							['data-active']: maximized || null,
 						}}
 					/>
 				}
@@ -211,7 +214,7 @@ const WinFrameContent: FC<{ win: ReactWindow }> = memo(({ win }) => {
 			>
 				<main className={'relative flex-1 overflow-hidden'}>
 					<div
-						className={'absolute inset-0 overflow-auto @container'}
+						className={'@container absolute inset-0 overflow-auto'}
 						ref={(ref) => {
 							win.setBody(ref);
 						}}

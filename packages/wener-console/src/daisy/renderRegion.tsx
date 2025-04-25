@@ -1,6 +1,6 @@
 import React, { type ElementType, type ReactNode } from 'react';
-import { Slot } from '@radix-ui/react-slot';
-import { cn } from '../tw';
+// import { Slot } from '@radix-ui/react-slot';
+import { cn } from '../utils/cn';
 
 export type LayoutRegion = ReactNode | { content: ReactNode; className?: string; asChild?: boolean; as?: ElementType };
 export function renderRegion(region?: LayoutRegion) {
@@ -10,7 +10,7 @@ export function renderRegion(region?: LayoutRegion) {
 	}
 	let { className, content, as: As = 'div', asChild } = region;
 	if (As) {
-		As = Slot as ElementType;
+		// As = Slot as ElementType;
 	}
 	return <As className={cn(className)}>{content}</As>;
 }

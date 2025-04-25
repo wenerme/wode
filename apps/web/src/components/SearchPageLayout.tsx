@@ -26,7 +26,7 @@ export const SearchPageLayout: React.FC<{
 		<div
 			className={clsx(
 				'flex items-center rounded-full border px-4 py-2',
-				'focus-within:bg-base-200 focus-within:shadow-lg hover:bg-base-200 hover:shadow-lg',
+				'focus-within:bg-base-200 hover:bg-base-200 focus-within:shadow-lg hover:shadow-lg',
 			)}
 		>
 			<BsSearch className={'h-6 w-6 pr-2'} />
@@ -48,7 +48,7 @@ export const SearchPageLayout: React.FC<{
 					<div className={'flex-1'}></div>
 					{action}
 				</div>
-				<div className={'max-w-2xl pl-[72px] pt-1'}>
+				<div className={'max-w-2xl pt-1 pl-[72px]'}>
 					{typeof children === 'function' ? children({ value: value }) : children}
 				</div>
 			</div>

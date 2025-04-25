@@ -1,3 +1,3 @@
 export { gqlr } from './gqlr';
-export { getUrqlClient } from './getUrqlClient';
+export { getUrqlClient, setUrlqClient } from './getUrqlClient';
 export { getGraphQLUrl } from './getGraphQLUrl';

@@ -90,6 +90,6 @@ export function getUserStore(): UserStore {
 	return getConsoleContext().getUserStore();
 }
 
-export function getConsoleEmitter() {
+export function getConsoleEmitter(): ConsoleEmitter {
 	return getConsoleContext().getEmitter();
 }

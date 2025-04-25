@@ -8,7 +8,7 @@ export const FootNoteLink: React.FC<
 	return (
 		<a
 			{...props}
-			className={clsx(className, 'inline-flex items-center px-1 text-info-content hover:underline')}
+			className={clsx(className, 'text-info-content inline-flex items-center px-1 hover:underline')}
 			target='_blank'
 			rel='noopener noreferrer'
 		>
