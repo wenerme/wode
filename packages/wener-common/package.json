@@ -1,6 +1,6 @@
 {
 	"name": "@wener/common",
-	"version": "2.0.0",
+	"version": "2.0.1",
 	"type": "module",
 	"description": "",
 	"author": "",
@@ -14,6 +14,7 @@
 		"./meta": "./src/meta/index.ts",
 		"./password": "./src/password/index.ts",
 		"./resource": "./src/resource/index.ts",
+		"./resource/schema": "./src/resource/schema/index.ts",
 		"./schema": "./src/schema/index.ts",
 		"./search": "./src/search/index.ts",
 		"./package.json": "./package.json"
@@ -35,12 +36,12 @@
 		"@standard-schema/spec": "^1.0.0",
 		"@wener/utils": "workspace:^1.1.51",
 		"date-fns": "^4.1.0",
-		"es-toolkit": "^1.37.2",
+		"es-toolkit": "^1.39.3",
 		"std-env": "^3.9.0",
-		"ts-pattern": "^5.7.0"
+		"ts-pattern": "^5.7.1"
 	},
 	"devDependencies": {
-		"@sinclair/typebox": "^0.34.33",
+		"@sinclair/typebox": "^0.34.35",
 		"@sinclair/typebox-codegen": "^0.11.1",
 		"@types/argon2-browser": "^1.18.4",
 		"@types/bcrypt": "^5.0.2",
@@ -50,12 +51,12 @@
 		"ajv-keywords": "^5.1.0",
 		"argon2": "^0.43.0",
 		"argon2-browser": "^1.18.0",
-		"bcrypt": "^5.1.1",
+		"bcrypt": "^6.0.0",
 		"bcryptjs": "^3.0.2",
 		"chalk": "^5.4.1",
 		"consola": "^3.4.2",
 		"dayjs": "^1.11.13",
-		"zod": "next"
+		"zod": "^3.25.67"
 	},
 	"publishConfig": {
 		"exports": {

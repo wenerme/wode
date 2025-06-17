@@ -1,6 +1,6 @@
 import { omit, remove } from 'es-toolkit';
 import { match, P } from 'ts-pattern';
-import { z } from 'zod';
+import { z } from 'zod/v4';
 import type { JsonSchemaDef } from '../jsonschema';
 import { getSchemaCache } from './getSchemaCache';
 import type { TypeSchema } from './TypeSchema';

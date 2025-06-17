@@ -1,6 +1,6 @@
 import { inspect } from 'node:util';
 import { describe, expect, it } from 'vitest';
-import { z } from 'zod';
+import { z } from 'zod/v4';
 import { toJsonSchema } from './toJsonSchema';
 
 describe('toJsonSchema', () => {
@@ -8,7 +8,7 @@ describe('toJsonSchema', () => {
 		console.log(
 			inspect(
 				toJsonSchema(
-					z.discriminatedUnion([
+					z.discriminatedUnion('type', [
 						z.object({
 							type: z.literal('string'),
 							value: z.string(),

@@ -1,5 +1,5 @@
-import { z } from 'zod';
-import type { EnumValues } from './schema';
+import { z } from 'zod/v4';
+import type { EnumValues } from './types';
 
 export const ResourceActionType = Object.freeze({
 	__proto__: null,
@@ -32,6 +32,7 @@ export const ResourceActionType = Object.freeze({
 	Reject: 'Reject',
 	ReleaseOwner: 'ReleaseOwner',
 	ResetPassword: 'ResetPassword',
+	ReturnForRevision: 'ReturnForRevision',
 	Revise: 'Revise',
 	SaveDraft: 'SaveDraft',
 	Signup: 'Signup',
@@ -87,6 +88,7 @@ export const ResourceActionTypeSchema = z
 		z.literal(ResourceActionType.Reject).describe('驳回'),
 		z.literal(ResourceActionType.ReleaseOwner).describe('释放负责人'),
 		z.literal(ResourceActionType.ResetPassword).describe('重置密码'),
+		z.literal(ResourceActionType.ReturnForRevision).describe('退回修订'),
 		z.literal(ResourceActionType.Revise).describe('修订'),
 		z.literal(ResourceActionType.SaveDraft).describe('保存草稿'),
 		z.literal(ResourceActionType.Signup).describe('注册'),

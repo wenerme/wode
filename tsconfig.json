@@ -1,40 +1,78 @@
 {
-  "compilerOptions": {
-    "target": "ESNext",
-    "module": "ESNext",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "ESNext"
-    ],
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": false,
-    "verbatimModuleSyntax": true,
-    "noEmit": true,
-    "strict": true,
-    "skipLibCheck": true,
-    "noFallthroughCasesInSwitch": true,
-    "moduleDetection": "force",
-    "sourceMap": true,
-    "esModuleInterop": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "noImplicitAny": true,
-    "noImplicitReturns": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "pretty": true,
-    "removeComments": false,
-    "stripInternal": true
-  },
-  "exclude": [
-    "node_modules"
-  ],
-  "ts-node": {
-    "transpileOnly": true,
-    "swc": true,
-    "esm": true,
-    "experimentalSpecifierResolution": "node"
-  }
+	"compilerOptions": {
+		"target": "ESNext",
+		"module": "ESNext",
+		"lib": [
+			"dom",
+			"dom.iterable",
+			"ESNext"
+		],
+		"moduleResolution": "bundler",
+		"allowImportingTsExtensions": false,
+		"verbatimModuleSyntax": true,
+		"noEmit": true,
+		"strict": true,
+		"skipLibCheck": true,
+		"noFallthroughCasesInSwitch": true,
+		"moduleDetection": "force",
+		"sourceMap": true,
+		"esModuleInterop": true,
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
+		"allowSyntheticDefaultImports": true,
+		"noImplicitAny": true,
+		"noImplicitReturns": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"pretty": true,
+		"removeComments": false,
+		"stripInternal": true
+	},
+	"exclude": [
+		"node_modules"
+	],
+	"ts-node": {
+		"transpileOnly": true,
+		"swc": true,
+		"esm": true,
+		"experimentalSpecifierResolution": "node"
+	},
+	"references": [
+		{
+			"path": "./apps/console"
+		},
+		{
+			"path": "./apps/server"
+		},
+		{
+			"path": "./components/wener-tiptap"
+		},
+		{
+			"path": "./packages/common"
+		},
+		{
+			"path": "./packages/system"
+		},
+		{
+			"path": "./packages/wener-client"
+		},
+		{
+			"path": "./packages/wener-common"
+		},
+		{
+			"path": "./packages/wener-console"
+		},
+		{
+			"path": "./packages/wener-miniquery"
+		},
+		{
+			"path": "./packages/wener-nestjs"
+		},
+		{
+			"path": "./packages/wener-reaction"
+		},
+		{
+			"path": "./packages/wener-utils"
+		}
+	]
 }

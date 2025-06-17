@@ -1,6 +1,6 @@
 import { isValid } from 'date-fns';
 import dayjs from 'dayjs';
-import { z } from 'zod';
+import { z } from 'zod/v4';
 
 const TypeIdSchema = z
 	.string()
@@ -103,16 +103,3 @@ export const rz = {
 } as const;
 
 export type EnumValues<T> = T[Exclude<keyof T, '__proto__'>];
-
-export const SexType = Object.freeze({
-	__proto__: null,
-	Male: 'Male',
-	Female: 'Female',
-	// Intersex
-} as const);
-export type SexType = EnumValues<typeof SexType>;
-export const SexTypeSchema = z
-	.union([z.literal(SexType.Male).describe('男'), z.literal(SexType.Female).describe('女')])
-	.describe('性别');
-
-//endregion
