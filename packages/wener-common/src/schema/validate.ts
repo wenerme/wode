@@ -4,7 +4,7 @@ import { TypeCompiler } from '@sinclair/typebox/compiler';
 import { ifPresent } from '@wener/utils';
 import { Ajv } from 'ajv';
 import addFormats from 'ajv-formats';
-import type { ZodType } from 'zod';
+import type { ZodType } from 'zod/v4';
 import type { JsonSchemaDef } from '../jsonschema';
 import type { SchemaOutput, TypeSchema } from './TypeSchema';
 

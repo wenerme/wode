@@ -1,5 +1,5 @@
-import { z } from 'zod';
-import type { EnumValues } from './schema';
+import { z } from 'zod/v4';
+import type { EnumValues } from './types';
 
 export const ResourceStatus = Object.freeze({
 	__proto__: null,
@@ -21,11 +21,15 @@ export const ResourceStatus = Object.freeze({
 	Failed: 'Failed',
 	InProgress: 'InProgress',
 	Inactive: 'Inactive',
+	Initial: 'Initial',
 	Lost: 'Lost',
 	New: 'New',
 	Nurturing: 'Nurturing',
 	OnHold: 'OnHold',
 	Open: 'Open',
+	Overdue: 'Overdue',
+	Paid: 'Paid',
+	PartiallyPaid: 'PartiallyPaid',
 	Pending: 'Pending',
 	PendingAcceptance: 'PendingAcceptance',
 	PendingApproval: 'PendingApproval',
@@ -62,11 +66,15 @@ export const ResourceStatusSchema = z
 		z.literal(ResourceStatus.Expired).describe('已过期'),
 		z.literal(ResourceStatus.InProgress).describe('进行中'),
 		z.literal(ResourceStatus.Inactive).describe('停用'),
+		z.literal(ResourceStatus.Initial).describe('初始'),
 		z.literal(ResourceStatus.Lost).describe('已失去'),
 		z.literal(ResourceStatus.New).describe('新建'),
 		z.literal(ResourceStatus.Nurturing).describe('培育中'),
 		z.literal(ResourceStatus.OnHold).describe('搁置'),
 		z.literal(ResourceStatus.Open).describe('开放'),
+		z.literal(ResourceStatus.Overdue).describe('逾期'),
+		z.literal(ResourceStatus.Paid).describe('已支付'),
+		z.literal(ResourceStatus.PartiallyPaid).describe('部分支付'),
 		z.literal(ResourceStatus.Pending).describe('待审核'),
 		z.literal(ResourceStatus.PendingAcceptance).describe('待接受'),
 		z.literal(ResourceStatus.PendingApproval).describe('待批准'),

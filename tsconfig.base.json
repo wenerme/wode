@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "NodeNext",
+    "target": "ESNext",
+    "module": "ESNext",
+    "composite": true,
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "WebWorker",
+      "esnext"
+    ],
+    "strict": true,
+    "baseUrl": ".",
+    "rootDir": "."
+  },
+  "ts-node": {
+    "transpileOnly": true,
+    "swc": true,
+    "esm": true,
+    "experimentalSpecifierResolution": "node"
+  }
+}

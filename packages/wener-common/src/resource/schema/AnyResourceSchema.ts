@@ -1,5 +1,6 @@
-import { z } from 'zod';
-import { rz, SexTypeSchema } from './schema';
+import { z } from 'zod/v4';
+import { SexTypeSchema } from './SexType';
+import { rz } from './types';
 
 export type AnyResource = z.infer<typeof AnyResourceSchema>;
 export const AnyResourceSchema = z

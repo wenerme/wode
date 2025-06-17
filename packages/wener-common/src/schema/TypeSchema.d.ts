@@ -4,7 +4,7 @@ import type {
 	StaticEncode as TypeBoxStaticEncode,
 } from '@sinclair/typebox';
 import type { StandardSchemaV1 } from '@standard-schema/spec';
-import type { z } from 'zod';
+import type { z } from 'zod/v4';
 import type { JsonSchemaDef } from '../jsonschema';
 
 export type TypeSchema<I = unknown, O = I> = TSchema | z.ZodSchema<O, I> | JsonSchemaDef | StandardSchemaV1<I, O>;

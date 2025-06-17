@@ -46,12 +46,12 @@
 		"test": "make test"
 	},
 	"devDependencies": {
-		"@sinclair/typebox": "^0.34.33",
+		"@sinclair/typebox": "^0.34.35",
 		"@types/ws": "^8.18.1",
 		"https-proxy-agent": "^7.0.6",
 		"node-fetch": "^3.3.2",
-		"undici": "^7.8.0",
-		"zod": "next"
+		"undici": "^7.10.0",
+		"zod": "^3.25.67"
 	},
 	"publishConfig": {
 		"registry": "https://registry.npmjs.org",

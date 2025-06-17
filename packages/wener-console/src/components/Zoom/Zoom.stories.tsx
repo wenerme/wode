@@ -12,10 +12,17 @@ export default meta;
 
 export const Default = () => {
 	return (
-		<div>
+		<div className={'flex flex-col gap-8 p-8'}>
 			<Zoom>
-				<img alt={'placeholder'} src={'https://placehold.co/600x400'} className={'max-w-10'} />
+				<img alt={'placeholder'} src={placeholderUrl} className={'max-w-10'} />
+			</Zoom>
+			<Zoom>
+				<img alt={'placeholder'} src={dataUrl} className={'max-w-10'} />
 			</Zoom>
 		</div>
 	);
 };
+
+const placeholderUrl = 'https://placehold.co/600x400';
+const dataUrl =
+	'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVR42mP8//8/AwAI/wH+9Q4AAAAASUVORK5CYII=';

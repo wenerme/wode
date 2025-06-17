@@ -43,6 +43,9 @@ export async function showPromiseToast<T, S extends boolean>(
 		opts = a;
 		def = b;
 	}
+	opts ||= {
+		promise,
+	};
 	def ||= {};
 
 	const {

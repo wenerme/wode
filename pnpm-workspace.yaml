@@ -15,8 +15,6 @@ onlyBuiltDependencies:
 patchedDependencies:
   ts-node@11.0.0-beta.1: patches/ts-node.patch
 
-overrides:
-  zod: next
 
 linkWorkspacePackages: true
 preferWorkspacePackages: true
