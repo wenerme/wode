@@ -4,3 +4,4 @@ export { getSchemaOptions, getSchemaOptionLabel } from './getSchemaOptions';
 export { toJsonSchema } from './toJsonSchema';
 export { findJsonSchemaByPath } from './findJsonSchemaByPath';
 export { createSchemaData } from './createSchemaData';
+export { SchemaRegistry } from './SchemaRegistry.mod';

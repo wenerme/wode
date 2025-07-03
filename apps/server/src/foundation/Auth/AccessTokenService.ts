@@ -5,7 +5,7 @@ import { Errors, randomUUID } from '@wener/utils';
 import dayjs from 'dayjs';
 import { AccessTokenEntity } from '@/foundation/Auth/entity/AccessTokenEntity';
 import { CustomBaseEntityService } from '@/foundation/services/CustomBaseEntityService';
-import type { UserEntity } from '@/foundation/User/entity/UserEntity';
+import type { UserEntity } from '@/foundation/User/UserEntity';
 import { UserService } from '@/foundation/User/UserService';
 
 @Injectable()

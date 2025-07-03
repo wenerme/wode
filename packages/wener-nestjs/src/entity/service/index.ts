@@ -23,7 +23,7 @@ export { toKnexOrder } from './toKnexOrder';
 /**
  * @deprecated
  */
-export { resolvePagination } from './normalizePagination';
+export { resolvePagination } from '@wener/common/data';
 export { hasEntityFeature } from './hasEntityFeature';
 
 export { BaseEntityService, type EntityServiceOptions } from './BaseEntityService';

@@ -13,8 +13,8 @@ import { SystemResolver } from '@/foundation/System/graph/SystemResolver';
 import { SystemService } from '@/foundation/System/SystemService';
 import { TenantService } from '@/foundation/Tenant';
 import { TenantEntity } from '@/foundation/Tenant/entity/TenantEntity';
-import { UserEntity } from '@/foundation/User/entity/UserEntity';
 import { UserResolver } from '@/foundation/User/graph/UserResolver';
+import { UserEntity } from '@/foundation/User/UserEntity';
 import { UserService } from '@/foundation/User/UserService';
 import { resolveProvides } from '@/server/utils/resolveProvides';
 

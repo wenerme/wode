@@ -5,7 +5,7 @@ import type { StandardBaseEntity } from '@wener/nestjs/entity';
 import { AuthEntityRoleEntity } from '@/foundation/Auth/entity/AuthEntityRoleEntity';
 import { AuthPermissionEntity } from '@/foundation/Auth/entity/AuthPermissionEntity';
 import { AuthRoleEntity } from '@/foundation/Auth/entity/AuthRoleEntity';
-import type { UserEntity } from '@/foundation/User/entity/UserEntity';
+import type { UserEntity } from '@/foundation/User/UserEntity';
 
 @Injectable()
 export class AccessControlService {

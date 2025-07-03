@@ -74,9 +74,9 @@
 		"mutative": "^1.2.0",
 		"next": "^15.3.4",
 		"react-reconciler": "^0.32.0",
-		"react-router-dom": "^7.6.2",
+		"react-router-dom": "^7.6.3",
 		"valtio": "^2.1.5",
-		"zustand": "^5.0.5"
+		"zustand": "^5.0.6"
 	},
 	"publishConfig": {
 		"registry": "https://registry.npmjs.org",

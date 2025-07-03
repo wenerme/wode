@@ -68,10 +68,10 @@ export namespace Password {
 		return f;
 	}
 
-	export async function check(password: string, hash: string) {
+	export async function validate(password: string, hash: string) {
 		let res = await parse(hash);
 		let f = resolveAlgorithm(res.id);
-		return { result: f.verify(password, hash, res), parsed: res };
+		return { result: await f.verify(password, hash, res), parsed: res };
 	}
 
 	export async function verify(password: string, hash: string) {

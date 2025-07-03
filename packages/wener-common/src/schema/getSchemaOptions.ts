@@ -1,10 +1,10 @@
 import { deepFreeze } from '@wener/utils';
 import { getSchemaCache } from './getSchemaCache';
-import { toJsonSchema } from './toJsonSchema';
+import { SchemaRegistry } from './SchemaRegistry.mod';
 import type { TypeSchema } from './TypeSchema';
 
 export function getSchemaOptions(s: TypeSchema): Array<{ value: string; label: string }> {
-	let js = toJsonSchema(s);
+	let js = SchemaRegistry.get(s);
 	return getSchemaCache(s, 'options', () => {
 		let out =
 			(js.anyOf || js.oneOf)?.map((v) => {
