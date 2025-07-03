@@ -33,7 +33,7 @@ import { AuthRoleService } from '@/foundation/Auth/AuthRoleService';
 import { AuthEntityRoleEntity } from '@/foundation/Auth/entity/AuthEntityRoleEntity';
 import { AuthPermissionEntity } from '@/foundation/Auth/entity/AuthPermissionEntity';
 import { AuthRoleEntity } from '@/foundation/Auth/entity/AuthRoleEntity';
-import { UserEntity } from '@/foundation/User/entity/UserEntity';
+import { UserEntity } from '@/foundation/User/UserEntity';
 import { DeleteEntityInput, DeleteEntityPayload } from '@/graph/common';
 import { SystemRole } from '@/graph/const';
 import { HasRoleObject } from '@/graph/HasRoleObject';

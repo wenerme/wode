@@ -1,6 +1,6 @@
 import { QueryOrder } from '@mikro-orm/core';
 import type { QueryBuilder } from '@mikro-orm/postgresql';
-import { parseSort, resolvePagination } from '@wener/common';
+import { parseSort, resolvePagination } from '@wener/common/data';
 import { toKnexOrder } from './toKnexOrder';
 import type { ListEntityRequest } from './types';
 

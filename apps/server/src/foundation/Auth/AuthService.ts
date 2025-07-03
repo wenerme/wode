@@ -5,7 +5,7 @@ import { Errors } from '@wener/utils';
 import { UserAuditAction, writeUserAuditLog } from '@/foundation/Audit';
 import { AccessTokenService } from '@/foundation/Auth/AccessTokenService';
 import { AccessTokenEntity } from '@/foundation/Auth/entity';
-import { UserEntity } from '@/foundation/User/entity/UserEntity';
+import { UserEntity } from '@/foundation/User/UserEntity';
 import { UserService } from '@/foundation/User/UserService';
 
 @Injectable()
@@ -43,7 +43,7 @@ export class AuthService {
 		let user = await this.us.repo.findOne({ loginName: username });
 
 		Errors.NotFound.check(user, '用户不存在');
-		Errors.Forbidden.check(user.isPasswordMatch(password), '密码错误');
+		Errors.Forbidden.check(await user.isPasswordMatch(password), '密码错误');
 
 		const token = await this.ats.createLoginToken({
 			data: { subjectId: user.id, subjectType: 'User', grantType: 'password' },

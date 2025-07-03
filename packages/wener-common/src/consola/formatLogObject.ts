@@ -1,9 +1,9 @@
-import colors from 'chalk';
+import colors, { Chalk, type ChalkInstance } from 'chalk';
 import type { ConsolaOptions, FormatOptions, LogObject, LogType } from 'consola/core';
 import dayjs from 'dayjs';
 import { isDevelopment } from 'std-env';
 
-const levelColors: Record<LogType, (str: string) => string> = {
+const LevelColors: Record<LogType, (str: string) => string> = {
 	trace: colors.gray,
 	debug: colors.cyan,
 	info: colors.blueBright,
@@ -38,16 +38,24 @@ const levelShort: Record<LogType, string> = {
 };
 const start = Date.now();
 
+const Colors: ChalkInstance = colors;
+const NoColors = new Chalk({ level: 0 });
+
 export function formatLogObject(
 	o: LogObject,
 	ctx: {
 		options: ConsolaOptions;
 	},
 ) {
+	const shouldColor = Boolean(ctx.options?.formatOptions?.colors);
+
 	let { date, type, tag } = o;
 	type = type === 'log' ? 'info' : type;
-
-	const color = levelColors[type] || colors.white;
+	const colors = shouldColor ? Colors : NoColors;
+	let color = LevelColors[type] || colors.white;
+	if (!shouldColor) {
+		color = (v) => v;
+	}
 	const levelText = levelShort[type] || type.toUpperCase().slice(0, 4); // Get first 4 chars, consistent uppercase
 
 	let line = '';
