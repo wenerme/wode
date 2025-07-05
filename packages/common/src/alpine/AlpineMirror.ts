@@ -5,13 +5,14 @@ import { parseApkIndex, type ApkIndexPackage } from './repo/parseApkIndex';
 import { parseApkIndexArchive, type ApkIndexArchive } from './repo/parseApkIndexArchive';
 import { resolveRepositoryCoordinate, type RepositoryCoordinateInit } from './RepositoryCoordinate';
 
-export function createAlpineMirror({
-	url: mirrorUrl = getOfficialAlpineMirrorUrl(),
-	fetch = globalThis.fetch,
-}: {
-	url?: string;
-	fetch?: FetchLike;
-} = {}): AlpineMirror {
+export function createAlpineMirror(
+	mirrorUrl = getOfficialAlpineMirrorUrl(),
+	{
+		fetch = globalThis.fetch,
+	}: {
+		fetch?: FetchLike;
+	} = {},
+): AlpineMirror {
 	const coordinate = resolveRepositoryCoordinate({ mirrorUrl });
 	const request = async (path: string, {}: {} = {}) => {
 		let u = path;
@@ -73,7 +74,7 @@ export function createAlpineRepo({
 	mirror?: AlpineMirror;
 }): AlpineRepo {
 	const coordinate = resolveRepositoryCoordinate(_coord);
-	mirror ||= createAlpineMirror({ url: coordinate.mirrorUrl });
+	mirror ||= createAlpineMirror(coordinate.mirrorUrl);
 
 	const request = async (path: string, {}: {} = {}) => {
 		let u = path;

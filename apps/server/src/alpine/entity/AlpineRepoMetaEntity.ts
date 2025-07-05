@@ -1,10 +1,11 @@
 import { Entity, Property, types, type Opt } from '@mikro-orm/core';
-import { StandardBaseEntity } from '@wener/nestjs/entity';
+import { EntitySchema, StandardBaseEntity } from '@wener/nestjs/entity';
 
+@EntitySchema({ idType: 'alprm' })
 @Entity({ tableName: 'alpine_repo_meta' })
 export class AlpineRepoMetaEntity extends StandardBaseEntity {
 	@Property({ type: types.string, generated: `branch || '/' || channel || '/' || arch`, unique: true })
-	path!: string; // ${branch}/${channel}/${arch}
+	path!: string & Opt; // ${branch}/${channel}/${arch}
 
 	@Property({ type: types.string })
 	branch!: string;

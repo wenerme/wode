@@ -51,7 +51,7 @@
 		"https-proxy-agent": "^7.0.6",
 		"node-fetch": "^3.3.2",
 		"undici": "^7.11.0",
-		"zod": "^3.25.67"
+		"zod": "^3.25.74"
 	},
 	"publishConfig": {
 		"registry": "https://registry.npmjs.org",

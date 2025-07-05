@@ -10,6 +10,7 @@ import { OrmModule } from '@wener/nestjs/mikro-orm';
 import { Errors, parseBoolean } from '@wener/utils';
 import consola from 'consola';
 import { LogLevels } from 'consola/core';
+import { pick } from 'es-toolkit';
 import { Hono } from 'hono';
 import { logger } from 'hono/logger';
 import { getWenerApisDynamicModule } from '@/apps/wener-apis-server/const';
@@ -61,8 +62,35 @@ export async function runWenerApisServer() {
 
 	handleContract(app);
 
+	app.use('/docs.html', serveStatic({ root: './public' }));
+	app.use('/graphiql.html', serveStatic({ root: './public' }));
+
+	{
+		const { request } = await import('undici');
+
+		app.on(['GET'], ['/', '/:path{.*}'], async (c) => {
+			// github pages
+			// 185.199.108.153
+			const target = '185.199.108.153';
+			let next = `http://${target}/${c.req.param('path') || ''}`;
+			let headers: Record<string, any> = {
+				...pick(c.req.header(), ['accept-encoding']),
+				Host: 'wener.me',
+			};
+
+			// fetch can not override the host header
+			let res = await request(next, {
+				headers,
+			});
+
+			return new Response(res.body as any, {
+				status: res.statusCode,
+				headers: new Headers(Object.entries(res.headers) as any),
+			});
+		});
+	}
+
 	// app.doc('/api/openapi.json', { openapi: '3.0.0', info: { version: '1.0.0', title: 'API' } });
-	app.use('*', serveStatic({ root: './public' }));
 
 	await runServer({ app, env: false });
 }

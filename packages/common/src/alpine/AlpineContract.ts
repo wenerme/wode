@@ -1,4 +1,4 @@
-import { oc, type } from '@orpc/contract';
+import { oc } from '@orpc/contract';
 import { ListQuerySchema } from '@wener/common/resource';
 import { z } from 'zod/v4';
 import { ApkIndexPackageSchema } from './repo/parseApkIndex';
@@ -8,16 +8,16 @@ export const AlpinePackageSchema = z.object({
 	id: z.string(),
 
 	path: z.string(),
-	directory: z.string(),
+	// directory: z.string(),
 	filename: z.string(),
 
 	branch: z.string(),
-	repo: z.string(),
+	channel: z.string(),
 
 	...ApkIndexPackageSchema.shape,
 });
 
-type AlpineRepo = z.infer<typeof AlpineRepoSchema>;
+export type AlpineRepo = z.infer<typeof AlpineRepoSchema>;
 export const AlpineRepoSchema = z.object({
 	id: z.string(),
 
@@ -60,7 +60,18 @@ export const AlpineContract = {
 	// 	info: oc.output(z.object({})),
 	// },
 	repo: {
-		list: oc.output(type<ListResponse<AlpineRepo>>()),
+		list: oc
+			.input(
+				z.object({
+					query: ListQuerySchema,
+				}),
+			)
+			.output(
+				z.object({
+					data: AlpineRepoSchema.array(),
+					total: z.number(),
+				}),
+			),
 	},
 	package: {
 		list: oc

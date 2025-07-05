@@ -1,11 +1,11 @@
 import { MikroORM } from '@mikro-orm/postgresql';
 import { Inject, Injectable } from '@nestjs/common';
 import { EntityBaseService } from '@wener/nestjs/entity/service';
-import { AlpineRepoMetaEntity } from '@/alpine/entity/AlpineRepoMetaEntity';
+import { AlpinePackageMetaEntity } from '@/alpine/entity/AlpinePackageMetaEntity';
 
 @Injectable()
-export class AlpineRepoMetaService extends EntityBaseService<AlpineRepoMetaEntity> {
+export class AlpinePackageMetaService extends EntityBaseService<AlpinePackageMetaEntity> {
 	constructor(@Inject(MikroORM) protected readonly orm: MikroORM) {
-		super(orm, AlpineRepoMetaEntity);
+		super(orm, AlpinePackageMetaEntity);
 	}
 }

@@ -1,3 +1,4 @@
+import { inspect } from 'util';
 import type { HttpBindings } from '@hono/node-server';
 import { OpenAPIGenerator } from '@orpc/openapi';
 import { OpenAPIHandler } from '@orpc/openapi/fetch';
@@ -24,7 +25,7 @@ export function handleRPCContract(app: Hono<{ Bindings: HttpBindings }>, router:
 				}),
 				new ResponseHeadersPlugin(),
 			],
-			interceptors: [onError((error) => console.error(error))],
+			interceptors: [onError((error) => console.error(inspect(error, { depth: 5 })))],
 		});
 
 		app.use('/api/rpc/*', async (c, next) => {

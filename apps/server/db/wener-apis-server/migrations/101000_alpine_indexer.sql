@@ -17,12 +17,14 @@ create table if not exists alpine_repo_meta
 	size               int         not null default 0,
 	content            text        not null default '',
 	last_modified_time timestamptz not null,
+	version            text,
 
 	attributes         jsonb       not null default '{}',
 	properties         jsonb       not null default '{}',
 	extensions         jsonb       not null default '{}',
 	unique (path)
 );
+
 
 
 create table if not exists alpine_pkg_meta
@@ -54,11 +56,14 @@ create table if not exists alpine_pkg_meta
 	build_time        bigint      not null,
 	commit            text,
 	license           text,
-	provider_priority bigint      not null,
+	provider_priority int,
 	url               text,
 	depends           text[]      not null default '{}',
 	provides          text[]      not null default '{}',
 	install_if        text[]      not null default '{}',
+
+	maintainer_name   text,
+	maintainer_email  text,
 
 	attributes        jsonb       not null default '{}',
 	properties        jsonb       not null default '{}',

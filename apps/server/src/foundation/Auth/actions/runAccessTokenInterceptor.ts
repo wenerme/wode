@@ -6,6 +6,7 @@ import { AuthService } from '@/foundation/Auth/AuthService';
 import type { AccessTokenEntity } from '@/foundation/Auth/entity';
 import type { TenantEntity } from '@/foundation/Tenant/entity/TenantEntity';
 import { checkUserAllowed } from '@/foundation/User/actions/checkUserAllowed';
+import { checkUserPassword } from '@/foundation/User/actions/checkUserPassword';
 import type { UserEntity } from '@/foundation/User/UserEntity';
 import { setServerContext } from '@/server/context';
 import { resolveRequestToken } from '@/server/utils/resolveRequestToken';
@@ -28,7 +29,7 @@ export async function runAccessTokenInterceptor({
 
 	try {
 		if (canBasicAuth && username && password) {
-			user = (await authService.checkPassword({ username, password }))?.user;
+			user = (await checkUserPassword({ username, password }))?.user;
 		} else if (token) {
 			// 不考虑 bearer 或 token 类型
 			({ subject: user, accessToken: accessToken } = await authService.resolveAccessToken({ accessToken: token }));
