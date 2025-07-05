@@ -8,16 +8,19 @@ export const ApkIndexPackageSchema = z.looseObject({
 	arch: z.string(),
 	size: z.number(),
 	installSize: z.number(),
-	maintainer: z.string(),
+	maintainer: z.string().nullish(),
 	origin: z.string(),
 	buildTime: z.number(),
 	commit: z.string(),
 	license: z.string(),
-	providerPriority: z.number(),
+	providerPriority: z.number().nullish(),
 	url: z.string(),
 	depends: z.array(z.string()).default([]),
 	provides: z.array(z.string()).default([]),
 	installIf: z.array(z.string()).default([]),
+
+	maintainerName: z.string().nullish(),
+	maintainerEmail: z.string().nullish(),
 });
 
 export type ApkIndexPackage = z.infer<typeof ApkIndexPackageSchema>;
@@ -102,6 +105,14 @@ export function parseApkIndex(txt: string): ApkIndexPackage[] {
 			case 'installIf':
 				v = v.split(' ');
 				break;
+			case 'maintainer': {
+				const m = v.match(/^(.*) <(.*)>$/);
+				if (m) {
+					build.maintainerName = m[1];
+					build.maintainerEmail = m[2];
+				}
+				break;
+			}
 		}
 		build[f] = v;
 	}

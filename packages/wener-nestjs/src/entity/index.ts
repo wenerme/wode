@@ -20,3 +20,6 @@ export type * from './types';
 
 export { checkMikroOrmEnv } from './env';
 export { patchMikroORMMetadataStorage } from './patchMikroORMMetadataStorage';
+
+export { getEntitySchema, EntitySchema, FieldSchema } from './schema';
+export type { EntitySchemaDef, EntityFieldSchemaDef } from './schema';

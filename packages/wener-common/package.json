@@ -56,7 +56,7 @@
 		"chalk": "^5.4.1",
 		"consola": "^3.4.2",
 		"dayjs": "^1.11.13",
-		"zod": "^3.25.67"
+		"zod": "^3.25.74"
 	},
 	"publishConfig": {
 		"exports": {

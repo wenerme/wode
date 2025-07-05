@@ -53,9 +53,9 @@
 	"dependencies": {
 		"@wener/common": "workspace:^2.0.1",
 		"@wener/utils": "workspace:^1.1.51",
-		"dotenv": "^16.6.1",
+		"dotenv": "^17.0.1",
 		"reflect-metadata": "^0.2.2",
-		"zod": "^3.25.67"
+		"zod": "^3.25.74"
 	},
 	"devDependencies": {
 		"@bufbuild/protobuf": "^2.6.0",
@@ -72,13 +72,13 @@
 		"@nestjs/swagger": "^11.2.0",
 		"@nestjs/testing": "^11.1.3",
 		"@sinclair/typebox": "^0.34.37",
-		"@types/bun": "^1.2.17",
+		"@types/bun": "^1.2.18",
 		"@wener/miniquery": "workspace:^0.0.7",
 		"class-validator": "^0.14.2",
 		"fastify": "^5.4.0",
 		"graphql": "^16.11.0",
 		"graphql-scalars": "^1.24.2",
-		"hono": "^4.8.3",
+		"hono": "^4.8.4",
 		"ioredis": "^5.6.1",
 		"knex": "^3.1.0",
 		"nats": "^2.29.3",

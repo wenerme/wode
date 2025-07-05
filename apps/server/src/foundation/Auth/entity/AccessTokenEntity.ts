@@ -1,6 +1,7 @@
 import { Entity, Property, types, type Opt } from '@mikro-orm/core';
-import { TenantBaseEntity } from '@wener/nestjs/entity';
+import { EntitySchema, TenantBaseEntity } from '@wener/nestjs/entity';
 
+@EntitySchema({ idType: 'at' })
 @Entity({ tableName: 'access_token' })
 export class AccessTokenEntity extends TenantBaseEntity {
 	@Property({ type: types.string })

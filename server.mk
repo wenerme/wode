@@ -1,4 +1,5 @@
 REPO_ROOT ?= $(shell git rev-parse --show-toplevel)
+FRAMEWORK:=none
 -include $(REPO_ROOT)/base.mk
 
 ifdef SERVER
@@ -13,6 +14,8 @@ dev:
 else
 dev:
 	NODE_ENV=development pnpm node --loader ts-node/esm --watch ./src/apps/$(SERVER)/main.ts
+debug:
+	NODE_OPTIONS='--inspect' NODE_ENV=development node --loader ts-node/esm ./src/apps/$(SERVER)/main.ts
 endif
 
 build: swc-build
@@ -79,7 +82,9 @@ dev: list
 dev\:%:
 	@echo "Dev $*"
 	@make SERVER=$(*) dev
-
+debug\:%:
+	@echo "Debug $*"
+	@make SERVER=$(*) debug
 run\:%:
 	@echo "Running $*"
 	@make SERVER=$(*) run
@@ -91,6 +96,10 @@ build\:%:
 image\:%:
 	@echo "Building image $*"
 	@make SERVER=$(*) image
+
+image-run\:%:
+	@echo "Running image $*"
+	@make SERVER=$(*) image-run
 
 deploy\:%:
 	@echo "Deploy $*"

@@ -2,10 +2,11 @@ variable "TAG" {
   default = "latest"
 }
 variable "VERSION" { default = "" }
-variable "IMAGE_REGISTRY" { default = "registry.gitlab.com" }
+# variable "IMAGE_REGISTRY" { default = "registry.gitlab.com" }
+variable "IMAGE_REGISTRY" { default = "ghcr.io" }
 
 group "default" {
-  targets = ["apis-open-server", "wener-get-server", "openai-proxy"]
+  targets = ["wener-apis-server", "wener-get-server", "openai-proxy"]
 }
 
 target "base" {
@@ -14,10 +15,10 @@ target "base" {
   pull       = true
 }
 
-target "apis-open-server" {
+target "wener-apis-server" {
   inherits = ["base"]
-  context  = "apis-open-server"
-  tags     = tags("apis-open-server")
+  context  = "wener-apis-server"
+  tags     = tags("wener-apis-server")
 }
 
 target "wener-get-server" {

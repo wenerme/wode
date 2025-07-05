@@ -72,7 +72,7 @@
 		"@wener/utils": "workspace:^1.1.51",
 		"clsx": "^2.1.1",
 		"mutative": "^1.2.0",
-		"next": "^15.3.4",
+		"next": "^15.3.5",
 		"react-reconciler": "^0.32.0",
 		"react-router-dom": "^7.6.3",
 		"valtio": "^2.1.5",

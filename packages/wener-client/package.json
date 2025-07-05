@@ -52,12 +52,12 @@
   },
   "dependencies": {
     "@wener/utils": "workspace:^1.1.51",
-    "zod": "^3.25.67"
+    "zod": "^3.25.74"
   },
   "devDependencies": {
-    "@alicloud/openapi-client": "^0.4.14",
+    "@alicloud/openapi-client": "^0.4.15",
     "@sinclair/typebox": "^0.34.37",
-    "@types/bun": "^1.2.17",
+    "@types/bun": "^1.2.18",
     "@types/crypto-js": "^4.2.2",
     "@types/node-rsa": "^1.1.4",
     "@wecom/jssdk": "^2.3.1",
