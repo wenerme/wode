@@ -1,0 +1,1 @@
+export { parseDecimal } from './parseDecimal';

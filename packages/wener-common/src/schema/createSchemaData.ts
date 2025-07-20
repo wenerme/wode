@@ -59,7 +59,7 @@ function _create(schema: JsonSchemaDef, options: CreateOptions, ctx: { required:
 		.with({ type: 'object' }, () => {
 			const out: Record<string, any> = {};
 
-			let required = schema.required || [];
+			let required = Array.isArray(schema.required) ? schema.required : [];
 			for (const [k, v] of Object.entries(schema.properties || {}) as [string, JsonSchemaDef][]) {
 				const value = _create(v, options, {
 					required: required.includes(k),

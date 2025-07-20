@@ -2,40 +2,46 @@
 
 exports[`UnifiedSocialCreditCode > should parse 1`] = `
 {
-  "bureau": "9",
-  "checksum": "P",
+  "adminDivisionCode": "330106",
+  "checkDigit": "P",
   "codes": [
     "9",
     "1",
     "330106",
     "673959654",
+    "P",
   ],
-  "division": "330106",
-  "labels": [
+  "entityCategoryCode": "1",
+  "names": [
     "工商",
     "企业",
   ],
-  "subject": "673959654",
-  "subjectType": "1",
+  "organizationCode": "673959654",
+  "raw": "91330106673959654P",
+  "registrationAuthorityCode": "9",
+  "valid": true,
 }
 `;
 
 exports[`UnifiedSocialCreditCode > should parse 2`] = `
 {
-  "bureau": "9",
-  "checksum": "R",
+  "adminDivisionCode": "330106",
+  "checkDigit": "R",
   "codes": [
     "9",
     "1",
     "330106",
     "MA2CFLDG4",
+    "R",
   ],
-  "division": "330106",
-  "labels": [
+  "entityCategoryCode": "1",
+  "names": [
     "工商",
     "企业",
   ],
-  "subject": "MA2CFLDG4",
-  "subjectType": "1",
+  "organizationCode": "MA2CFLDG4",
+  "raw": "91330106MA2CFLDG4R",
+  "registrationAuthorityCode": "9",
+  "valid": true,
 }
 `;

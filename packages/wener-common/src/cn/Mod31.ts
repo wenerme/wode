@@ -34,3 +34,5 @@ export class Mod31Checksum {
 		return this.toChar(31 - (sum % 31));
 	}
 }
+
+export const Mod31 = new Mod31Checksum();

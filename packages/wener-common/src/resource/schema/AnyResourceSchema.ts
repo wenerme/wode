@@ -1,5 +1,5 @@
 import { z } from 'zod/v4';
-import { SexTypeSchema } from './SexType';
+import { SexTypeSchema } from '../../foundation/schema/SexType';
 import { rz } from './types';
 
 export type AnyResource = z.infer<typeof AnyResourceSchema>;

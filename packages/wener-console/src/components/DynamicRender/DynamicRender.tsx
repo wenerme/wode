@@ -1,8 +1,8 @@
 import React, { Fragment, use, useCallback, useState, type PropsWithChildren, type ReactNode } from 'react';
 import { createReactContext, FlexRenderer } from '@wener/reaction';
 import { getGlobalStates } from '@wener/utils';
+import { createStore, useStore } from 'zustand';
 import { mutative } from 'zustand-mutative';
-import { createStore, useStore } from 'zustand/index';
 import { useShallow } from 'zustand/react/shallow';
 
 type DynamicRenderStoreState = {
