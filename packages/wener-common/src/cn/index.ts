@@ -1,3 +1,1 @@
-export { ResidentIdentityCardNumber } from './ResidentIdentityCardNumber';
-export { DivisionCode } from './DivisionCode';
-export { UnifiedSocialCreditCode } from './UnifiedSocialCreditCode';
+export { ChineseResidentIdNo, UnifiedSocialCreditCode, DivisionCode } from './mod';

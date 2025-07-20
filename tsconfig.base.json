@@ -1,23 +1,46 @@
 {
   "compilerOptions": {
-    "moduleResolution": "NodeNext",
-    "target": "ESNext",
-    "module": "ESNext",
     "composite": true,
+    // Module & Baseline
+    "module": "ESNext",
+    "target": "ESNext",
     "lib": [
       "dom",
       "dom.iterable",
       "WebWorker",
       "esnext"
     ],
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "allowJs": true,
+    // bundler mode
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": false,
+    "verbatimModuleSyntax": true,
+    "noEmit": true,
+    // Best practices
     "strict": true,
+    "skipLibCheck": true,
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    //
     "baseUrl": ".",
     "rootDir": "."
   },
+  "include": [
+    "*.ts",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    ".storybook/*"
+  ],
   "ts-node": {
     "transpileOnly": true,
     "swc": true,
     "esm": true,
-    "experimentalSpecifierResolution": "node"
+    "files": true,
+    "logError": true,
+    "experimentalSpecifierResolution": "node",
+    "experimentalResolver": true
   }
 }

@@ -2,7 +2,7 @@
  * ISO 7064:1983, MOD 11-2.
  */
 export class Mod11Checksum {
-	weights = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2, 1];
+	protected weights = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2, 1];
 
 	validate(s: string) {
 		return s.at(-1) === this.compute(s.slice(0, s.length - 1));
@@ -22,3 +22,5 @@ export class Mod11Checksum {
 		}
 	}
 }
+
+export const Mod11 = new Mod11Checksum();

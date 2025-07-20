@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { DivisionCode } from './DivisionCode';
+import { DivisionCode } from './mod';
 
 describe('DivisionCode', () => {
 	it('should parse', () => {
@@ -7,27 +7,17 @@ describe('DivisionCode', () => {
 			[
 				'441900003001',
 				{
-					province: '44',
-					city: '19',
-					county: '00',
-					town: '003',
-					village: '001',
 					codes: ['44', '19', '00', '003', '001'],
 				},
 			],
 			[
 				441900003001,
 				{
-					province: '44',
-					city: '19',
-					county: '00',
-					town: '003',
-					village: '001',
 					codes: ['44', '19', '00', '003', '001'],
 				},
 			],
-			[441900, { province: '44', city: '19', county: '00' }],
-			['31', { province: '31' }],
+			[441900, { codes: ['44', '19', '00'] }],
+			['31', { codes: ['31'] }],
 			['4', undefined],
 			['', undefined],
 			[null, undefined],

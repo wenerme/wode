@@ -1,7 +1,7 @@
-import { promises as FsPromise } from 'node:fs';
-import Path from 'node:path';
-import type { Plugin } from 'esbuild';
-import { globby } from 'globby';
+import { promises as fsp } from 'fs';
+import Path from 'path';
+import { type Plugin } from 'esbuild';
+import glob from 'fast-glob';
 
 export interface DynamicImportConfig {
 	transformExtensions?: string[];
@@ -26,7 +26,7 @@ export function createDynamicImportPlugin(config: DynamicImportConfig): Plugin {
 
 			build.onLoad({ filter }, async (args) => {
 				const resolveDir = Path.dirname(args.path);
-				const fileContents = await FsPromise.readFile(args.path, 'utf8');
+				const fileContents = await fsp.readFile(args.path, 'utf8');
 				let value = cache.get(args.path);
 
 				// cache busting check
@@ -69,7 +69,7 @@ async function replaceImports(fileContents: string, resolveDir: string, config: 
 
 	if (globImports.length > 0) {
 		const filenameImportPromises: Array<Promise<Array<string>>> = [];
-		filenameImportPromises.push(globby(globImports, { cwd: resolveDir }));
+		filenameImportPromises.push(glob(globImports, { cwd: resolveDir }));
 		let importFilePaths: Array<string> = [];
 		try {
 			// Flatten array to array of filenames, filter out any rejected promises or duplicate entries

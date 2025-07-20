@@ -1,0 +1,14 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ChineseResidentIdNo > should parse 1`] = `
+{
+  "addressCode": "110105",
+  "age": 76,
+  "birthDate": "1949-12-31",
+  "checkDigit": 10,
+  "raw": "11010519491231002X",
+  "sequence": 2,
+  "sex": "Male",
+  "valid": true,
+}
+`;

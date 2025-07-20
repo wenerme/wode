@@ -13,7 +13,7 @@ export const ListQuerySchema = z.object({
 	ids: z.array(z.coerce.string()).optional(),
 	filter: z.string().optional().describe('sql-like filter string'),
 	filters: z.array(z.any()).optional().describe('sql-like filter string'),
-	where: z.any().optional().describe('document query filter'),
+	where: z.record(z.string(), z.any()).optional().describe('document query filter'),
 	search: z.string().optional(),
 	limit: IntLikeSchema,
 	offset: IntLikeSchema,

@@ -33,8 +33,8 @@
 	"dependencies": {
 		"@mikro-orm/better-sqlite": "^6.4.16",
 		"@mikro-orm/core": "^6.4.16",
-		"@orpc/contract": "^1.6.6",
-		"@sinclair/typebox": "^0.34.37",
+		"@orpc/contract": "^1.7.4",
+		"@sinclair/typebox": "^0.34.38",
 		"@types/json-schema": "^7.0.15",
 		"@wener/common": "workspace:^2.0.1",
 		"@wener/utils": "workspace:^1.1.51",
@@ -46,7 +46,7 @@
 		"consola": "^3.4.2",
 		"date-fns": "^4.1.0",
 		"dayjs": "^1.11.13",
-		"es-toolkit": "^1.39.6",
+		"es-toolkit": "^1.39.7",
 		"execa": "^9.6.0",
 		"fs-extra": "^11.3.0",
 		"lru-cache": "^11.1.0",
@@ -58,11 +58,11 @@
 		"tar": "^7.4.3",
 		"tar-stream": "^3.1.7",
 		"ts-pattern": "^5.7.1",
-		"zod": "^3.25.74",
-		"zx": "^8.6.1"
+		"zod": "^3.25.76",
+		"zx": "^8.7.1"
 	},
 	"devDependencies": {
-		"@bufbuild/protobuf": "^2.6.0",
+		"@bufbuild/protobuf": "^2.6.1",
 		"@connectrpc/connect": "^2.0.2",
 		"@sinclair/typebox-codegen": "^0.11.1",
 		"@types/pako": "^2.0.3",

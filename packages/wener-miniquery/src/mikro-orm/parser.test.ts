@@ -12,6 +12,7 @@ import {
 } from '@mikro-orm/core';
 import { defineConfig } from '@mikro-orm/sqlite';
 import { expect, test } from 'vitest';
+import { DemoQueryExamples } from '../ast/ast.test';
 import { toMikroOrmQuery } from './toMikroOrmQuery';
 
 async function getOrm() {
@@ -28,22 +29,22 @@ async function getOrm() {
 	{
 		for (const schema of [
 			`
-        create table users
-        (
-          id    bigint primary key,
-          a     bigint,
-          b     text,
-          attrs json
-        );
-      `,
+				create table users
+				(
+					id    bigint primary key,
+					a     bigint,
+					b     text,
+					attrs json
+				);
+			`,
 			`
-        create table user_profile
-        (
-          id      bigint primary key,
-          user_id bigint,
-          age     bigint,
-          attrs   json
-        );
+				create table user_profile
+				(
+					id      bigint primary key,
+					user_id bigint,
+					age     bigint,
+					attrs   json
+				);
       `,
 		]) {
 			await em.execute(schema);
@@ -75,24 +76,7 @@ test('miniquery', async () => {
 
 	// https://github.com/wenerme/wode/blob/main/packages/ohm-grammar-miniquery/src/miniquery.test.ts
 	// https://github.com/wenerme/go-miniquery/blob/main/miniquery/parser_test.go
-	const valid = [
-		'a=0',
-		'a>0',
-		'a>1',
-		'!a>1',
-		' a > 1 ',
-		'a > 1 and b > "1" AND a > 1 or a > 1 OR a>1',
-		'a > 1 && b > "1" and a > 1 || a > 1 || a>1',
-		//
-		'a is null AND a is not null',
-		//
-		'profile.age > 1',
-		'profile.age between 18 and 28',
-		'b between "a" and "z"',
-		// json works as expected
-		'attrs.test = true',
-		'attrs.vendor.code = "wener"',
-	];
+	const valid = DemoQueryExamples;
 
 	for (const v of valid) {
 		let query = toMikroOrmQuery(v, { em, Entity: UserEntity });

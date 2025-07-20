@@ -33,7 +33,7 @@ export function parseDuration(value: MaybeDuration): Duration | undefined {
 	let duration: Duration;
 	if (typeof value === 'number') {
 		duration = dayjs.duration(value);
-	} else if (typeof value === 'string') {
+	} else if (typeof value === 'string' && value.startsWith('P')) {
 		// PT0S
 		duration = dayjs.duration(value);
 	} else if (typeof value === 'object' && 'value' in value) {

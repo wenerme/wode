@@ -10,6 +10,8 @@
 		"./cn": "./src/cn/index.ts",
 		"./consola": "./src/consola/index.ts",
 		"./data": "./src/data/index.ts",
+		"./dayjs": "./src/dayjs/index.ts",
+		"./decimal": "./src/decimal/index.ts",
 		"./jsonschema": "./src/jsonschema/index.ts",
 		"./meta": "./src/meta/index.ts",
 		"./password": "./src/password/index.ts",
@@ -36,27 +38,28 @@
 		"@standard-schema/spec": "^1.0.0",
 		"@wener/utils": "workspace:^1.1.51",
 		"date-fns": "^4.1.0",
-		"es-toolkit": "^1.39.6",
+		"es-toolkit": "^1.39.7",
 		"std-env": "^3.9.0",
 		"ts-pattern": "^5.7.1"
 	},
 	"devDependencies": {
-		"@sinclair/typebox": "^0.34.37",
+		"@sinclair/typebox": "^0.34.38",
 		"@sinclair/typebox-codegen": "^0.11.1",
 		"@types/argon2-browser": "^1.18.4",
-		"@types/bcrypt": "^5.0.2",
+		"@types/bcrypt": "^6.0.0",
 		"ajv": "^8.17.1",
 		"ajv-formats": "^3.0.1",
 		"ajv-i18n": "^4.2.0",
 		"ajv-keywords": "^5.1.0",
-		"argon2": "^0.43.0",
+		"argon2": "^0.43.1",
 		"argon2-browser": "^1.18.0",
 		"bcrypt": "^6.0.0",
 		"bcryptjs": "^3.0.2",
 		"chalk": "^5.4.1",
 		"consola": "^3.4.2",
 		"dayjs": "^1.11.13",
-		"zod": "^3.25.74"
+		"decimal.js": "^10.6.0",
+		"zod": "^3.25.76"
 	},
 	"publishConfig": {
 		"exports": {
@@ -76,6 +79,14 @@
 				"types": "./src/data/index.ts",
 				"default": "./lib/data/index.js"
 			},
+			"./dayjs": {
+				"types": "./src/dayjs/index.ts",
+				"default": "./lib/dayjs/index.js"
+			},
+			"./decimal": {
+				"types": "./src/decimal/index.ts",
+				"default": "./lib/decimal/index.js"
+			},
 			"./jsonschema": {
 				"types": "./src/jsonschema/index.ts",
 				"default": "./lib/jsonschema/index.js"
@@ -91,6 +102,10 @@
 			"./resource": {
 				"types": "./src/resource/index.ts",
 				"default": "./lib/resource/index.js"
+			},
+			"./resource/schema": {
+				"types": "./src/resource/schema/index.ts",
+				"default": "./lib/resource/schema/index.js"
 			},
 			"./schema": {
 				"types": "./src/schema/index.ts",

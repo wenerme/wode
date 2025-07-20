@@ -7,6 +7,7 @@
 	"license": "ISC",
 	"exports": {
 		".": "./src/index.ts",
+		"./ast": "./src/ast/index.ts",
 		"./mikro-orm": "./src/mikro-orm/index.ts",
 		"./package.json": "./package.json"
 	},
@@ -39,6 +40,10 @@
 			".": {
 				"types": "./src/index.ts",
 				"default": "./lib/index.js"
+			},
+			"./ast": {
+				"types": "./src/ast/index.ts",
+				"default": "./lib/ast/index.js"
 			},
 			"./mikro-orm": {
 				"types": "./src/mikro-orm/index.ts",

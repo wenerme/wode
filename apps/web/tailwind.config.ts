@@ -1,4 +1,3 @@
-// const plugin = require('tailwindcss/plugin');
 import containerQueries from '@tailwindcss/container-queries';
 import typography from '@tailwindcss/typography';
 import daisyuiPlugin from 'daisyui';
@@ -100,14 +99,14 @@ import type { PluginCreator } from 'tailwindcss/types/config';
 export function createConfig(opts: { daisyui?: any } = {}): Config {
 	const { daisyui } = opts;
 	let config = {
-		mode: 'jit',
+		// mode: 'jit',
 		content: [
 			'./src/**/*.{html,ts,tsx,js,jsx,mdx}',
 			'node_modules/common/src/**/*.{html,ts,tsx,js,jsx,mdx}',
 			'node_modules/@wener/console/src/**/*.{html,ts,tsx,js,jsx,mdx}',
 		],
-		safelist: [{ pattern: /^(btn|input)-/ }],
-		darkMode: ['class'],
+		// safelist: [{ pattern: /^(btn|input)-/ }],
+		// darkMode: ['class'],
 		theme: {
 			extend: {
 				spacing: { 15: '3.75rem', 30: '7.5rem' },
@@ -118,49 +117,49 @@ export function createConfig(opts: { daisyui?: any } = {}): Config {
 					'safe-left': 'env(safe-area-inset-left)',
 				},
 				// shadcn
-				colors: {
-					// border: 'hsl(var(--border))',
-					border: 'oklch(var(--b3))',
-					input: 'hsl(var(--input))',
-					ring: 'hsl(var(--ring))',
-					background: 'oklch(var(--b1))',
-					foreground: 'oklch(var(--n))',
-					// background: 'hsl(var(--background))',
-					// foreground: 'hsl(var(--foreground))',
-					primary: {
-						// DEFAULT: 'hsl(var(--primary))',
-						// foreground: 'hsl(var(--primary-foreground))',
-						DEFAULT: 'oklch(var(--p)',
-						foreground: 'oklch(var(--pc))',
-					},
-					secondary: {
-						DEFAULT: 'oklch(var(--s)',
-						foreground: 'oklch(var(--sc))',
-						// DEFAULT: 'hsl(var(--secondary))',
-						// foreground: 'hsl(var(--secondary-foreground))',
-					},
-					destructive: {
-						// DEFAULT: 'hsl(var(--destructive))',
-						// foreground: 'hsl(var(--destructive-foreground))',
-						DEFAULT: 'oklch(var(--er))',
-						foreground: 'oklch(var(--erc))',
-					},
-					muted: { DEFAULT: 'hsl(var(--muted))', foreground: 'hsl(var(--muted-foreground))' },
-					accent: {
-						DEFAULT: 'oklch(var(--a))',
-						foreground: 'oklch(var(--ac))',
-						// DEFAULT: 'hsl(var(--accent))',
-						// foreground: 'hsl(var(--accent-foreground))',
-					},
-					popover: {
-						// DEFAULT: 'hsl(var(--popover))',
-						// foreground: 'hsl(var(--popover-foreground))',
-						DEFAULT: 'oklch(var(--b1))',
-						foreground: 'oklch(var(--pc))',
-					},
-					card: { DEFAULT: 'hsl(var(--card))', foreground: 'hsl(var(--card-foreground))' },
-				},
-				borderRadius: { lg: 'var(--radius)', md: 'calc(var(--radius) - 2px)', sm: 'calc(var(--radius) - 4px)' },
+				// colors: {
+				// 	// border: 'hsl(var(--border))',
+				// 	border: 'oklch(var(--b3))',
+				// 	input: 'hsl(var(--input))',
+				// 	ring: 'hsl(var(--ring))',
+				// 	background: 'oklch(var(--b1))',
+				// 	foreground: 'oklch(var(--n))',
+				// 	// background: 'hsl(var(--background))',
+				// 	// foreground: 'hsl(var(--foreground))',
+				// 	primary: {
+				// 		// DEFAULT: 'hsl(var(--primary))',
+				// 		// foreground: 'hsl(var(--primary-foreground))',
+				// 		DEFAULT: 'oklch(var(--p)',
+				// 		foreground: 'oklch(var(--pc))',
+				// 	},
+				// 	secondary: {
+				// 		DEFAULT: 'oklch(var(--s)',
+				// 		foreground: 'oklch(var(--sc))',
+				// 		// DEFAULT: 'hsl(var(--secondary))',
+				// 		// foreground: 'hsl(var(--secondary-foreground))',
+				// 	},
+				// 	destructive: {
+				// 		// DEFAULT: 'hsl(var(--destructive))',
+				// 		// foreground: 'hsl(var(--destructive-foreground))',
+				// 		DEFAULT: 'oklch(var(--er))',
+				// 		foreground: 'oklch(var(--erc))',
+				// 	},
+				// 	muted: { DEFAULT: 'hsl(var(--muted))', foreground: 'hsl(var(--muted-foreground))' },
+				// 	accent: {
+				// 		DEFAULT: 'oklch(var(--a))',
+				// 		foreground: 'oklch(var(--ac))',
+				// 		// DEFAULT: 'hsl(var(--accent))',
+				// 		// foreground: 'hsl(var(--accent-foreground))',
+				// 	},
+				// 	popover: {
+				// 		// DEFAULT: 'hsl(var(--popover))',
+				// 		// foreground: 'hsl(var(--popover-foreground))',
+				// 		DEFAULT: 'oklch(var(--b1))',
+				// 		foreground: 'oklch(var(--pc))',
+				// 	},
+				// 	card: { DEFAULT: 'hsl(var(--card))', foreground: 'hsl(var(--card-foreground))' },
+				// },
+				// borderRadius: { lg: 'var(--radius)', md: 'calc(var(--radius) - 2px)', sm: 'calc(var(--radius) - 4px)' },
 				keyframes: {
 					'accordion-down': { from: { height: '0' }, to: { height: 'var(--radix-accordion-content-height)' } },
 					'accordion-up': { from: { height: 'var(--radix-accordion-content-height)' }, to: { height: '0' } },
@@ -168,15 +167,15 @@ export function createConfig(opts: { daisyui?: any } = {}): Config {
 				animation: { 'accordion-down': 'accordion-down 0.2s ease-out', 'accordion-up': 'accordion-up 0.2s ease-out' },
 			},
 		},
-		experimental: {
-			// classRegex: [
-			//   'twc\\.[^`]+`([^`]*)`',
-			//   'twc\\(.*?\\).*?`([^`]*)',
-			//   ['twc\\.[^`]+\\(([^)]*)\\)', "(?:'|\"|`)([^']*)(?:'|\"|`)"],
-			//   ['twc\\(.*?\\).*?\\(([^)]*)\\)', "(?:'|\"|`)([^']*)(?:'|\"|`)"],
-			// ],
-		},
-		variants: { extend: {} },
+		// experimental: {
+		// classRegex: [
+		//   'twc\\.[^`]+`([^`]*)`',
+		//   'twc\\(.*?\\).*?`([^`]*)',
+		//   ['twc\\.[^`]+\\(([^)]*)\\)', "(?:'|\"|`)([^']*)(?:'|\"|`)"],
+		//   ['twc\\(.*?\\).*?\\(([^)]*)\\)', "(?:'|\"|`)([^']*)(?:'|\"|`)"],
+		// ],
+		// },
+		// variants: { extend: {} },
 		plugins: [
 			typography,
 			containerQueries,
