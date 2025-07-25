@@ -71,6 +71,7 @@ export { createChildLogger } from './logging/createChildLogger';
 export { pascalCase, camelCase } from './strings/camelCase';
 export { renderTemplate } from './strings/renderTemplate';
 export { formatBytes } from './strings/formatBytes';
+export { parseBytes } from './strings/parseBytes';
 
 // i18n
 export { createTranslate } from './i18n/createTranslate';

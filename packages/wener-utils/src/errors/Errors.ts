@@ -232,4 +232,18 @@ https://www.npmjs.com/package/pony-cause
 		}
 		return e instanceof Error;
 	}
+
+	export function isAbort(e: any): e is Error {
+		if (!isError(e)) {
+			return false;
+		}
+		return e.name === 'AbortError';
+	}
+
+	export function isTimeout(e: any): e is Error {
+		if (!isError(e)) {
+			return false;
+		}
+		return e.name === 'TimeoutError' || e.name === 'Timeout';
+	}
 }

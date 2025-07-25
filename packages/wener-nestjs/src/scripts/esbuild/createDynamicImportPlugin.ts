@@ -1,6 +1,6 @@
 import { promises as fsp } from 'fs';
 import Path from 'path';
-import { type Plugin } from 'esbuild';
+import type { Plugin } from 'esbuild';
 import glob from 'fast-glob';
 
 export interface DynamicImportConfig {
