@@ -1,3 +1,4 @@
+import { parseDuration } from '@wener/common/dayjs';
 import type { OpUnitType, UnitTypeLongPlural } from 'dayjs';
 import dayjs from 'dayjs';
 import type { Duration } from 'dayjs/plugin/duration';
@@ -26,28 +27,7 @@ export type MaybeDuration =
 	| undefined
 	| null;
 
-export function parseDuration(value: MaybeDuration): Duration | undefined {
-	if (!value && value !== 0) {
-		return;
-	}
-	let duration: Duration;
-	if (typeof value === 'number') {
-		duration = dayjs.duration(value);
-	} else if (typeof value === 'string' && value.startsWith('P')) {
-		// PT0S
-		duration = dayjs.duration(value);
-	} else if (typeof value === 'object' && 'value' in value) {
-		duration = dayjs.duration(value.value, value.unit);
-	} else if (dayjs.isDuration(value)) {
-		duration = value;
-	} else if (typeof value === 'object') {
-		duration = dayjs.duration(value);
-	} else {
-		console.warn(`Invalid duration value:`, value);
-		return;
-	}
-	return duration;
-}
+export { parseDuration };
 
 export function formatDuration(value: MaybeDuration, opts?: FormatDurationOptions): string | undefined;
 /**

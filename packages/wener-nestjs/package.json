@@ -1,6 +1,6 @@
 {
 	"name": "@wener/nestjs",
-	"version": "1.0.54",
+	"version": "1.0.55",
 	"type": "module",
 	"description": "NestJS utils",
 	"author": "wener",
@@ -46,6 +46,7 @@
 		"test": "make test"
 	},
 	"peerDependencies": {
+		"@swc/helpers": "*",
 		"@mikro-orm/core": "*",
 		"@nestjs/common": "*",
 		"@nestjs/core": "*"

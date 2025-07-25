@@ -14,6 +14,7 @@
       "legacyDecorator": true,
       "decoratorMetadata": true
     },
+		"externalHelpers": true,
     "keepClassNames": true,
     "baseUrl": "./",
     "paths": {
@@ -22,5 +23,8 @@
   },
   "sourceMaps": true,
   "exclude": ["\\.test\\.tsx?$", "\\.stories\\.tsx?$"],
-  "minify": false
+  "minify": false,
+  "env":{
+  	"targets": "maintained node versions"
+	}
 }

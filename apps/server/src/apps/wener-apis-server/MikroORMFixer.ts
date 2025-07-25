@@ -6,23 +6,23 @@ class MikroORMFix {}
 
 // fixme the compiled PostgreSqlMikroORM is different from the dev
 export const MikroORMFixer: DynamicModule = {
-  module: MikroORMFix,
-  global: true,
-  exports: [PostgreSqlMikroORM, PostgreSqlEntityManager],
-  providers: [
-    {
-      provide: PostgreSqlMikroORM,
-      useFactory: (v) => {
-        return v;
-      },
-      inject: [MikroORM],
-    },
-    {
-      provide: PostgreSqlEntityManager,
-      useFactory: (v) => {
-        return v;
-      },
-      inject: [EntityManager],
-    },
-  ],
+	module: MikroORMFix,
+	global: true,
+	exports: [PostgreSqlMikroORM, PostgreSqlEntityManager],
+	providers: [
+		{
+			provide: PostgreSqlMikroORM,
+			useFactory: (v) => {
+				return v;
+			},
+			inject: [MikroORM],
+		},
+		{
+			provide: PostgreSqlEntityManager,
+			useFactory: (v) => {
+				return v;
+			},
+			inject: [EntityManager],
+		},
+	],
 };

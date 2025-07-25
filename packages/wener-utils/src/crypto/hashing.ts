@@ -1,27 +1,44 @@
 import { ArrayBuffers } from '../io/ArrayBuffers';
 
-export function sha1(s: BinaryLike, o?: undefined): Promise<Buffer>;
+type HashEncoding = 'hex' | 'base64' | 'buffer';
+
+type HashFunction = {
+	(s: BinaryLike, o?: 'hex' | 'base64' | undefined): Promise<string>;
+	(s: BinaryLike, o: 'buffer'): Promise<ArrayBuffer>;
+};
+
+function createDigestFunction(a: string): HashFunction {
+	return (async (s: BinaryLike, o: HashEncoding = 'hex') => {
+		const buffer = await crypto.subtle.digest(a, binaryOf(s));
+		if (o === 'buffer') {
+			return buffer;
+		}
+		return ArrayBuffers.toString(buffer, o || 'hex');
+	}) as HashFunction;
+}
+
+export function sha1(s: BinaryLike, o?: undefined | 'buffer'): Promise<Buffer>;
 export function sha1(s: BinaryLike, o: 'hex' | 'base64'): Promise<string>;
 
 export function sha1(s: BinaryLike, o?: DigestOptions) {
 	return digestOf('SHA-1', s, o);
 }
 
-export function sha256(s: BinaryLike, o?: undefined): Promise<Buffer>;
+export function sha256(s: BinaryLike, o?: undefined | 'buffer'): Promise<Buffer>;
 export function sha256(s: BinaryLike, o: 'hex' | 'base64'): Promise<string>;
 
 export function sha256(s: BinaryLike, o?: DigestOptions) {
 	return digestOf('SHA-256', s, o);
 }
 
-export function sha384(s: BinaryLike, o?: undefined): Promise<Buffer>;
+export function sha384(s: BinaryLike, o?: undefined | 'buffer'): Promise<Buffer>;
 export function sha384(s: BinaryLike, o: 'hex' | 'base64'): Promise<string>;
 
 export function sha384(s: BinaryLike, o?: DigestOptions) {
 	return digestOf('SHA-384', s, o);
 }
 
-export function sha512(s: BinaryLike, o?: undefined): Promise<Buffer>;
+export function sha512(s: BinaryLike, o?: undefined | 'buffer'): Promise<Buffer>;
 export function sha512(s: BinaryLike, o: 'hex' | 'base64'): Promise<string>;
 
 export function sha512(s: BinaryLike, o?: DigestOptions) {
@@ -30,10 +47,13 @@ export function sha512(s: BinaryLike, o?: DigestOptions) {
 
 function digestOf(a: string, s: BinaryLike, o?: DigestOptions) {
 	let buffer = crypto.subtle.digest(a, binaryOf(s));
+	if (o === 'buffer') {
+		return buffer;
+	}
 	return o ? buffer.then((v) => encode(v, o)) : buffer;
 }
 
-export type DigestOptions = 'hex' | 'base64' | { encoding: 'hex' | 'base64' };
+export type DigestOptions = 'hex' | 'base64' | 'buffer' | { encoding: 'hex' | 'base64' };
 
 type BinaryLike = string | BufferSource;
 
