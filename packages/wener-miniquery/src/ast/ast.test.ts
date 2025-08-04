@@ -1,8 +1,8 @@
 import { inspect } from 'node:util';
 import { describe, expect, test } from 'vitest';
-import { formatExpr } from './formatExpr';
+import { formatQuery } from './formatQuery';
 import { parseQuery } from './parseQuery';
-import { resolveExpr } from './resolveExpr';
+import { resolveQuery } from './resolveQuery';
 
 export const DemoQueryExamples = [
 	'a=0',
@@ -127,7 +127,7 @@ const EvalExamples: Array<[string] | [string, any]> = [
 describe('ast', () => {
 	const check = (a: string) => {
 		let va = parseQuery(a);
-		let b = formatExpr(va);
+		let b = formatQuery(va);
 		let vb = parseQuery(b);
 
 		try {
@@ -156,7 +156,7 @@ describe('ast', () => {
 	test('should eval', async () => {
 		for (const [expr, expected = true] of EvalExamples) {
 			let ast = check(expr);
-			let result = resolveExpr(ast, { context: EvalData });
+			let result = resolveQuery(ast, { context: EvalData });
 			expect(result, `${expr} -> ${JSON.stringify(expected)}`).toEqual(expected);
 		}
 	});

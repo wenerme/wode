@@ -1,4 +1,4 @@
-export type Exprs = Expr[];
+export type SearchExpr = Expr[];
 export type Expr =
 	| CommentExpr
 	| ParenthesesExpr

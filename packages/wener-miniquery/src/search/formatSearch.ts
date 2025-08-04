@@ -1,13 +1,13 @@
 import { match } from 'ts-pattern';
-import { AdvanceSearch } from './AdvanceSearch';
+import type { Expr, SearchExpr, Value } from './types';
 
-export function formatAdvanceSearch(input: AdvanceSearch.Expr[]) {
+export function formatSearch(input: SearchExpr) {
 	const OP = { match: ':', eq: ':=', ne: ':!=', gt: ':>', lt: ':<', gte: ':>=', lte: ':<=', range: ':' } as const;
 
-	const _exprs = (s: AdvanceSearch.Expr[]): string => {
+	const _exprs = (s: SearchExpr): string => {
 		return s.map(_expr).join(' ');
 	};
-	const _expr = (s: AdvanceSearch.Expr): string => {
+	const _expr = (s: Expr): string => {
 		return match(s)
 			.with({ type: 'keyword' }, ({ value, exact, negative }) => {
 				return `${negative ? '-' : ''}${exact ? `"${value}"` : value}`;
@@ -28,7 +28,7 @@ export function formatAdvanceSearch(input: AdvanceSearch.Expr[]) {
 		}
 		return JSON.stringify(s);
 	};
-	const _value = (v: AdvanceSearch.Value): string => {
+	const _value = (v: Value): string => {
 		return match(v)
 			.with({ type: 'range' }, ({ minimum, maximum, minimumExclusive, maximumExclusive }) => {
 				if (minimumExclusive === undefined && maximumExclusive === undefined) {

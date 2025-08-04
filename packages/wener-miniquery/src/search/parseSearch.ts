@@ -1,7 +1,7 @@
-import { AdvanceSearch } from './AdvanceSearch';
 import { parse } from './parser';
+import type { SearchExpr } from './types';
 
-export function parseAdvanceSearch(s: string | undefined | null): AdvanceSearch.Expr[] {
+export function parseSearch(s: string | undefined | null): SearchExpr {
 	s = s?.trim();
 	if (!s) {
 		return [];

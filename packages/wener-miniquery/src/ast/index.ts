@@ -1,4 +1,4 @@
 export type * from './types';
 export { parseQuery } from './parseQuery';
-export { formatExpr } from './formatExpr';
-export { resolveExpr } from './resolveExpr';
+export { formatQuery } from './formatQuery';
+export { resolveQuery } from './resolveQuery';

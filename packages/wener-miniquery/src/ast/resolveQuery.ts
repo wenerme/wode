@@ -19,7 +19,7 @@ function get(data: Record<string, any>, ref: string[]): any {
 
 type EvalFunc = (e: Expr) => any;
 
-export function resolveExpr(
+export function resolveQuery(
 	ast: Expr,
 	{
 		context = {},
@@ -44,7 +44,7 @@ export function resolveExpr(
 	} = {},
 ): any {
 	const _eval: EvalFunc = (e: Expr) => {
-		return resolveExpr(e, { context, resolveRef, resolveFunc });
+		return resolveQuery(e, { context, resolveRef, resolveFunc });
 	};
 	switch (ast.type) {
 		case 'literal':
