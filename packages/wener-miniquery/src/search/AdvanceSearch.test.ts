@@ -1,5 +1,9 @@
+import { inspect } from 'node:util';
 import { describe, expect, it } from 'vitest';
-import { AdvanceSearch } from './AdvanceSearch';
+import { formatSearch } from './formatSearch';
+import { optimizeSearchExpr } from './optimizeSearchExpr';
+import { parseSearch } from './parseSearch';
+import type { SearchExpr } from './types';
 
 describe('AdvanceSearch', () => {
 	it('should parse', () => {
@@ -30,17 +34,17 @@ describe('AdvanceSearch', () => {
 			'/* Hint */ a',
 			'/* a */ a /* b */',
 		]) {
-			let out = AdvanceSearch.parse(input);
-			let formated = AdvanceSearch.format(out);
+			let out = parseSearch(input);
+			let formated = formatSearch(out);
 			expect(formated, `reformat`).toMatchSnapshot();
-			let optimized = AdvanceSearch.format(AdvanceSearch.optimize(out));
+			let optimized = formatSearch(optimizeSearchExpr(out));
 			expect(optimized, `optimized`).toMatchSnapshot();
 			expect(out, `parsed`).toMatchSnapshot();
-			expect(AdvanceSearch.parse(formated), `reformat match original`).toMatchObject(out);
+			expect(parseSearch(formated), `reformat match original`).toMatchObject(out);
 		}
 	});
 	it('should parse as expected', () => {
-		type Case = [string | null | undefined, AdvanceSearch.Expr[]];
+		type Case = [string | null | undefined, SearchExpr];
 
 		const cases: Case[] = [
 			[null, []],
@@ -74,14 +78,14 @@ describe('AdvanceSearch', () => {
 		];
 
 		for (const [input, expected] of cases) {
-			let out = AdvanceSearch.parse(input);
+			let out = parseSearch(input);
 			expect(out).toMatchObject(expected);
-			expect(AdvanceSearch.parse(AdvanceSearch.format(out)), 'reformat should match').toMatchObject(expected);
+			expect(parseSearch(formatSearch(out)), 'reformat should match').toMatchObject(expected);
 		}
 	});
 
 	it('should optimize simple', () => {
-		type Case = { input: AdvanceSearch.Expr[]; expected: AdvanceSearch.Expr[] };
+		type Case = { input: SearchExpr; expected: SearchExpr };
 		const cases: Case[] = [
 			// rm empty comment
 			{
@@ -116,7 +120,7 @@ describe('AdvanceSearch', () => {
 
 		for (let i = 0; i < cases.length; i++) {
 			const { input, expected } = cases[i];
-			let out = AdvanceSearch.optimize(input);
+			let out = optimizeSearchExpr(input);
 			expect(out, `case #${i}`).toEqual(expected);
 		}
 	});
@@ -136,14 +140,14 @@ describe('AdvanceSearch', () => {
 		];
 
 		for (const [input, expected] of cases) {
-			let out = AdvanceSearch.optimize(AdvanceSearch.parse(input));
-			expect(AdvanceSearch.format(out), `${input} -> ${expected}: ${JSON.stringify(out)}`).toEqual(expected);
+			let out = optimizeSearchExpr(parseSearch(input));
+			expect(formatSearch(out), `${input} -> ${expected}: ${JSON.stringify(out)}`).toEqual(expected);
 		}
 	});
 
 	it.fails('should parse parentheses', () => {
-		let out = AdvanceSearch.parse('(a)');
-		console.log(out);
+		let out = parseSearch('(a)');
+		console.log(inspect(out, { depth: 10, colors: true }));
 		expect(out).toEqual([{ type: 'parentheses', value: [{ type: 'keyword', value: 'a' }] }]);
 	});
 });

@@ -9,6 +9,7 @@
 		".": "./src/index.ts",
 		"./ast": "./src/ast/index.ts",
 		"./mikro-orm": "./src/mikro-orm/index.ts",
+		"./search": "./src/search/index.ts",
 		"./package.json": "./package.json"
 	},
 	"files": [
@@ -27,7 +28,8 @@
 		"test": "make test"
 	},
 	"dependencies": {
-		"@wener/utils": "workspace:^1.1.51"
+		"@wener/utils": "workspace:^1.1.51",
+		"ts-pattern": "^5.7.1"
 	},
 	"devDependencies": {
 		"@mikro-orm/core": "^6.4.16",
@@ -48,6 +50,10 @@
 			"./mikro-orm": {
 				"types": "./src/mikro-orm/index.ts",
 				"default": "./lib/mikro-orm/index.js"
+			},
+			"./search": {
+				"types": "./src/search/index.ts",
+				"default": "./lib/search/index.js"
 			},
 			"./package.json": "./package.json"
 		}

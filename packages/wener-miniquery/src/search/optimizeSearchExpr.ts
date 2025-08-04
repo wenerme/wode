@@ -1,10 +1,10 @@
 import { arrayOfMaybeArray, deepEqual, type MaybeArray } from '@wener/utils';
 import { match } from 'ts-pattern';
-import { AdvanceSearch } from './AdvanceSearch';
+import type { Expr, SearchExpr } from './types';
 
-export function optimizeAdvanceSearch(expr: AdvanceSearch.Exprs): AdvanceSearch.Exprs {
+export function optimizeSearchExpr(expr: SearchExpr): SearchExpr {
 	const NEG = { eq: 'ne', ne: 'eq', gt: 'lte', lt: 'gte', gte: 'lt', lte: 'gt' } as const;
-	const _expr = (e: AdvanceSearch.Expr): MaybeArray<AdvanceSearch.Expr> => {
+	const _expr = (e: Expr): MaybeArray<Expr> => {
 		// merge Exprs to AND ?
 		return (
 			match(e)

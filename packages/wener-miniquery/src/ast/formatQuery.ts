@@ -1,6 +1,6 @@
 import type { Expr } from './types';
 
-export function formatExpr(ast: Expr): string {
+export function formatQuery(ast: Expr): string {
 	const visit = (node: Expr): string => {
 		switch (node.type) {
 			case 'logic': {
