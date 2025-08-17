@@ -1,16 +1,14 @@
-import { DisableKey, IgnoreKeyPrefix } from './const';
 import type { AnyDocumentQuery } from './types';
 
-export function formatDocumentQuery(o: AnyDocumentQuery): string | undefined {
-	if (!o || Object.keys(o).length === 0) {
-		return undefined;
-	}
+export type FormatDocumentQueryOptions = {
+	/**
+	 * handle `{$text:{$search: 'query'}}`
+	 */
+	onSearch?: (query: string, ctx: { filters: string[] }) => void;
+};
 
-	const conditions = _format(o, { path: [], out: [] });
-	if (conditions.length === 0) {
-		return undefined;
-	}
-	return conditions.join(' AND ');
+export function formatDocumentQuery(o: AnyDocumentQuery, opts?: FormatDocumentQueryOptions): string[] {
+	return _format(o, { root: o, path: [], out: [] });
 }
 
 function formatValue(v: any): string {
@@ -20,16 +18,26 @@ function formatValue(v: any): string {
 	return JSON.stringify(v);
 }
 
-function _format(o: any, ctx: { path: string[]; out: string[] }): string[] {
+export const IgnoreKeyPrefix = '$$';
+export const DisableKey = '$$disable';
+
+function _format(o: any, ctx: { root: any; field?: string; path: string[]; out: string[] }): string[] {
 	if (o === undefined || o === null || (typeof o === 'object' && o[DisableKey] === true)) {
 		return ctx.out;
 	}
 
-	if (typeof o !== 'object' || Array.isArray(o)) {
-		throw new Error(`Invalid query segment: ${JSON.stringify(o)} at path ${ctx.path.join('.')}`);
+	if (Array.isArray(o)) {
+		for (let v of o) {
+			_format(v, ctx);
+		}
+		return ctx.out;
 	}
 
-	const { path, out } = ctx;
+	if (typeof o !== 'object') {
+		throw new Error(`Invalid query: ${o}`);
+	}
+
+	const { field, path, out } = ctx;
 
 	for (const [k, v] of Object.entries(o).sort((a, b) => a[0].localeCompare(b[0]))) {
 		if (v === undefined || k.startsWith(IgnoreKeyPrefix)) {
@@ -52,9 +60,12 @@ function _format(o: any, ctx: { path: string[]; out: string[] }): string[] {
 					break;
 				}
 				case '$not': {
-					const subQuery = formatDocumentQuery(v!);
-					if (subQuery) {
-						out.push(`NOT (${subQuery})`);
+					let all = _format(v, { ...ctx, out: [] });
+					if (all.length === 0) {
+					} else if (all.length === 1) {
+						out.push(`NOT (${all[0]})`);
+					} else {
+						out.push(`NOT (${all.map((v) => `(${v})`).join(` AND `)})`);
 					}
 					break;
 				}
@@ -64,17 +75,17 @@ function _format(o: any, ctx: { path: string[]; out: string[] }): string[] {
 				case '$size':
 					out.push(`LENGTH(${field}) = ${v}`);
 					break;
-				case '$all':
-					if (!Array.isArray(v)) throw new Error('$all requires an array');
-					v.forEach((item) => out.push(`CONTAINS(${field}, ${formatValue(item)})`));
-					break;
-				case '$elemMatch': {
-					const subQuery = formatDocumentQuery(v!);
-					if (subQuery) {
-						out.push(`ELEM_MATCH(${field}, '${subQuery.replace(/'/g, "''")}')`);
-					}
-					break;
-				}
+				// case '$all':
+				//   if (!Array.isArray(v)) throw new Error('$all requires an array');
+				//   v.forEach((item) => out.push(`CONTAINS(${field}, ${formatValue(item)})`));
+				//   break;
+				// case '$elemMatch': {
+				//   const subQuery = formatDocumentQuery(v!);
+				//   if (subQuery) {
+				//     out.push(`ELEM_MATCH(${field}, '${subQuery.replace(/'/g, "''")}')`);
+				//   }
+				//   break;
+				// }
 				default: {
 					const op = InfixOperator[k.slice(1)];
 					if (op && field) {
@@ -116,6 +127,6 @@ const InfixOperator: Record<string, string> = {
 	like: 'LIKE',
 	nlike: 'NOT LIKE',
 	regex: 'RLIKE',
-	type: 'TYPE',
-	expr: 'EXPR',
+	// type: 'TYPE',
+	// expr: 'EXPR',
 };

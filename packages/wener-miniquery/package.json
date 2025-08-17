@@ -1,6 +1,6 @@
 {
 	"name": "@wener/miniquery",
-	"version": "0.0.7",
+	"version": "1.0.0",
 	"type": "module",
 	"description": "SQL Where like **safe** filter expression for ORM.",
 	"author": "wener",
@@ -8,6 +8,7 @@
 	"exports": {
 		".": "./src/index.ts",
 		"./ast": "./src/ast/index.ts",
+		"./doc": "./src/doc/index.ts",
 		"./mikro-orm": "./src/mikro-orm/index.ts",
 		"./search": "./src/search/index.ts",
 		"./package.json": "./package.json"
@@ -46,6 +47,10 @@
 			"./ast": {
 				"types": "./src/ast/index.ts",
 				"default": "./lib/ast/index.js"
+			},
+			"./doc": {
+				"types": "./src/doc/index.ts",
+				"default": "./lib/doc/index.js"
 			},
 			"./mikro-orm": {
 				"types": "./src/mikro-orm/index.ts",
