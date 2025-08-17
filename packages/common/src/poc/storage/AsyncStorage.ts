@@ -4,11 +4,9 @@
  * @see https://localforage.github.io/localForage/
  */
 export interface AsyncStorage {
-	clear(): void;
+	clear(): Promise<void>;
 
 	getItem(key: string): Promise<string | null>;
-
-	key(index: number): string | null;
 
 	removeItem(key: string): Promise<void>;
 
@@ -16,9 +14,7 @@ export interface AsyncStorage {
 
 	length(): Promise<number>;
 
-	keys(): Promise<string[]>;
-	// key(keyIndex, successCallback)
-	// iterate(iteratorCallback, successCallback)
+	keys(options: { prefix?: string; limit?: number }): Promise<string[]>;
 }
 
 type Value =

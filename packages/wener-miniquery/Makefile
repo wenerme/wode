@@ -4,7 +4,7 @@ REPO_ROOT ?= $(shell git rev-parse --show-toplevel)
 build:
 	# $(NDEV) build lib
 	-rm -rf lib/*
-	pnpm swc ./src -d ./lib --strip-leading-paths --copy-files
+	pnpm swc ./src -d ./lib --strip-leading-paths --copy-files --ignore '**/*.test.ts'
 	npx -y ts-add-js-extension --dir=lib
 
 publish: build

@@ -1494,9 +1494,18 @@ importers:
       '@connectrpc/connect':
         specifier: ^2.0.2
         version: 2.0.2(@bufbuild/protobuf@2.6.1)
+      '@orpc/server':
+        specifier: ^1.7.4
+        version: 1.7.4(ws@8.18.3(bufferutil@4.0.8)(utf-8-validate@6.0.4))
       '@sinclair/typebox-codegen':
         specifier: ^0.11.1
         version: 0.11.1
+      '@types/micromatch':
+        specifier: ^4.0.9
+        version: 4.0.9
+      '@types/mime-types':
+        specifier: ^3.0.1
+        version: 3.0.1
       '@types/pako':
         specifier: ^2.0.3
         version: 2.0.3
@@ -1515,6 +1524,9 @@ importers:
       micromatch:
         specifier: ^4.0.8
         version: 4.0.8
+      mime-types:
+        specifier: ^3.0.1
+        version: 3.0.1
       webdav:
         specifier: ^5.8.0
         version: 5.8.0
@@ -5656,6 +5668,9 @@ packages:
   '@types/bcrypt@6.0.0':
     resolution: {integrity: sha512-/oJGukuH3D2+D+3H4JWLaAsJ/ji86dhRidzZ/Od7H/i8g+aCmvkeCc6Ni/f9uxGLSQVCRZkX2/lqEFG2BvWtlQ==}
 
+  '@types/braces@3.0.5':
+    resolution: {integrity: sha512-SQFof9H+LXeWNz8wDe7oN5zu7ket0qwMu5vZubW4GCJ8Kkeh6nBWUz87+KTz/G3Kqsrp0j/W253XJb3KMEeg3w==}
+
   '@types/bun@1.2.19':
     resolution: {integrity: sha512-d9ZCmrH3CJ2uYKXQIUuZ/pUnTqIvLDS0SK7pFmbx8ma+ziH/FRMoAq5bYpRG7y+w1gl+HgyNZbtqgMq4W4e2Lg==}
 
@@ -5763,6 +5778,9 @@ packages:
 
   '@types/mdurl@2.0.0':
     resolution: {integrity: sha512-RGdgjQUZba5p6QEFAVx2OGb8rQDL/cPRG7GiedRzMcJ1tYnUANBncjbSB1NRGwbvjcPeikRABz2nshyPk1bhWg==}
+
+  '@types/micromatch@4.0.9':
+    resolution: {integrity: sha512-7V+8ncr22h4UoYRLnLXSpTxjQrNUXtWHGeMPRJt1nULXI57G9bIcpyrHlmrQ7QK24EyyuXvYcSSWAM8GA9nqCg==}
 
   '@types/mime-types@3.0.1':
     resolution: {integrity: sha512-xRMsfuQbnRq1Ef+C+RKaENOxXX87Ygl38W1vDfPHRku02TgQr+Qd8iivLtAMcR0KF5/29xlnFihkTlbqFrGOVQ==}
@@ -16439,6 +16457,8 @@ snapshots:
     dependencies:
       '@types/node': 24.0.15
 
+  '@types/braces@3.0.5': {}
+
   '@types/bun@1.2.19(@types/react@19.1.8)':
     dependencies:
       bun-types: 1.2.19(@types/react@19.1.8)
@@ -16554,6 +16574,10 @@ snapshots:
       '@types/unist': 3.0.3
 
   '@types/mdurl@2.0.0': {}
+
+  '@types/micromatch@4.0.9':
+    dependencies:
+      '@types/braces': 3.0.5
 
   '@types/mime-types@3.0.1': {}
 

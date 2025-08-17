@@ -8,17 +8,21 @@
 	"exports": {
 		".": "./src/index.ts",
 		"./ai/cv": "./src/ai/cv/index.ts",
-		"./aports": "./src/aports/index.ts",
 		"./alpine": "./src/alpine/index.ts",
-		"./wener": "./src/wener/index.ts",
-		"./utils": "./src/utils/index.ts",
+		"./aports": "./src/aports/index.ts",
 		"./components": "./src/components/index.ts",
+		"./fs": "./src/fs/index.ts",
+		"./fs/orpc": "./src/fs/orpc/index.ts",
+		"./fs/orpc/server": "./src/fs/orpc/server/index.ts",
+		"./fs/server": "./src/fs/server/index.ts",
 		"./icons": "./src/icons/index.ts",
 		"./meta": "./src/meta/index.ts",
 		"./npm": "./src/npm/index.ts",
 		"./torrent": "./src/torrent/index.ts",
-		"./package.json": "./package.json",
-		"./gen/*": "./src/gen/*.js"
+		"./utils": "./src/utils/index.ts",
+		"./wener": "./src/wener/index.ts",
+		"./gen/*": "./src/gen/*.js",
+		"./package.json": "./package.json"
 	},
 	"files": [
 		"lib",
@@ -64,13 +68,17 @@
 	"devDependencies": {
 		"@bufbuild/protobuf": "^2.6.1",
 		"@connectrpc/connect": "^2.0.2",
+		"@orpc/server": "^1.7.4",
 		"@sinclair/typebox-codegen": "^0.11.1",
+		"@types/micromatch": "^4.0.9",
+		"@types/mime-types": "^3.0.1",
 		"@types/pako": "^2.0.3",
 		"@types/readable-stream": "^4.0.21",
 		"@types/semver": "^7.7.0",
 		"@types/tar": "^6.1.13",
 		"@types/tar-stream": "^3.1.4",
 		"micromatch": "^4.0.8",
+		"mime-types": "^3.0.1",
 		"webdav": "^5.8.0"
 	},
 	"publishConfig": {
@@ -83,6 +91,10 @@
 				"types": "./src/ai/cv/index.ts",
 				"default": "./lib/ai/cv/index.js"
 			},
+			"./alpine": {
+				"types": "./src/alpine/index.ts",
+				"default": "./lib/alpine/index.js"
+			},
 			"./aports": {
 				"types": "./src/aports/index.ts",
 				"default": "./lib/aports/index.js"
@@ -90,6 +102,22 @@
 			"./components": {
 				"types": "./src/components/index.ts",
 				"default": "./lib/components/index.js"
+			},
+			"./fs": {
+				"types": "./src/fs/index.ts",
+				"default": "./lib/fs/index.js"
+			},
+			"./fs/orpc": {
+				"types": "./src/fs/orpc/index.ts",
+				"default": "./lib/fs/orpc/index.js"
+			},
+			"./fs/orpc/server": {
+				"types": "./src/fs/orpc/server/index.ts",
+				"default": "./lib/fs/orpc/server/index.js"
+			},
+			"./fs/server": {
+				"types": "./src/fs/server/index.ts",
+				"default": "./lib/fs/server/index.js"
 			},
 			"./icons": {
 				"types": "./src/icons/index.ts",
@@ -107,8 +135,16 @@
 				"types": "./src/torrent/index.ts",
 				"default": "./lib/torrent/index.js"
 			},
-			"./package.json": "./package.json",
-			"./gen/*": "./src/gen/*.js"
+			"./utils": {
+				"types": "./src/utils/index.ts",
+				"default": "./lib/utils/index.js"
+			},
+			"./wener": {
+				"types": "./src/wener/index.ts",
+				"default": "./lib/wener/index.js"
+			},
+			"./gen/*": "./src/gen/*.js",
+			"./package.json": "./package.json"
 		}
 	}
 }
