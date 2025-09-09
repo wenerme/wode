@@ -652,10 +652,10 @@ importers:
         version: 6.4.16
       '@mikro-orm/migrations':
         specifier: ^6.4.16
-        version: 6.4.16(@mikro-orm/core@6.4.16)(@types/node@24.0.15)(better-sqlite3@12.2.0)(libsql@0.4.7)(pg@8.16.3)
+        version: 6.4.16(@mikro-orm/core@6.4.16)(@types/node@24.0.15)(better-sqlite3@12.2.0)(libsql@0.4.7)(pg@8.16.0)
       '@mikro-orm/mysql':
         specifier: ^6.4.16
-        version: 6.4.16(@mikro-orm/core@6.4.16)(better-sqlite3@12.2.0)(libsql@0.4.7)(pg@8.16.3)
+        version: 6.4.16(@mikro-orm/core@6.4.16)(better-sqlite3@12.2.0)(libsql@0.4.7)(pg@8.16.0)
       '@mikro-orm/nestjs':
         specifier: ^6.1.1
         version: 6.1.1(@mikro-orm/core@6.4.16)(@nestjs/common@11.1.5(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.5(@nestjs/common@11.1.5(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(reflect-metadata@0.2.2)(rxjs@7.8.2))
@@ -841,7 +841,7 @@ importers:
         version: 5.0.1
       knex:
         specifier: ^3.1.0
-        version: 3.1.0(better-sqlite3@12.2.0)(mysql2@3.14.1)(pg@8.16.3)
+        version: 3.1.0(better-sqlite3@12.2.0)(mysql2@3.14.1)(pg@8.16.0)
       knex-schema-inspector:
         specifier: ^3.1.0
         version: 3.1.0
@@ -862,7 +862,7 @@ importers:
         version: 8.0.5
       node-pg-migrate:
         specifier: ^8.0.3
-        version: 8.0.3(@types/pg@8.15.4)(pg@8.16.3)
+        version: 8.0.3(@types/pg@8.15.4)(pg@8.16.0)
       object-hash:
         specifier: ^3.0.0
         version: 3.0.0
@@ -1568,8 +1568,8 @@ importers:
         specifier: workspace:^1.1.51
         version: link:../wener-utils
       zod:
-        specifier: ^3.25.76
-        version: 3.25.76
+        specifier: ^4
+        version: 4.0.5
     devDependencies:
       '@alicloud/openapi-client':
         specifier: ^0.4.15
@@ -1958,7 +1958,7 @@ importers:
         version: 6.4.16(@mikro-orm/core@6.4.16)(better-sqlite3@12.2.0)(libsql@0.4.7)
       '@mikro-orm/sqlite':
         specifier: ^6.4.16
-        version: 6.4.16(@mikro-orm/core@6.4.16)(better-sqlite3@12.2.0)(libsql@0.4.7)(pg@8.16.0)
+        version: 6.4.16(@mikro-orm/core@6.4.16)(better-sqlite3@12.2.0)(libsql@0.4.7)(pg@8.16.3)
       '@nestjs/common':
         specifier: ^11.1.5
         version: 11.1.5(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2)
@@ -2006,7 +2006,7 @@ importers:
         version: 5.6.1
       knex:
         specifier: ^3.1.0
-        version: 3.1.0(better-sqlite3@12.2.0)(pg@8.16.0)(sqlite3@5.1.7)
+        version: 3.1.0(better-sqlite3@12.2.0)(pg@8.16.3)(sqlite3@5.1.7)
       nats:
         specifier: ^2.29.3
         version: 2.29.3
@@ -14244,29 +14244,11 @@ snapshots:
       - supports-color
       - tedious
 
-  '@mikro-orm/knex@6.4.16(@mikro-orm/core@6.4.16)(better-sqlite3@12.2.0)(libsql@0.4.7)(mysql2@3.14.1)(pg@8.16.3)':
+  '@mikro-orm/knex@6.4.16(@mikro-orm/core@6.4.16)(better-sqlite3@12.2.0)(libsql@0.4.7)(mysql2@3.14.1)(pg@8.16.0)':
     dependencies:
       '@mikro-orm/core': 6.4.16
       fs-extra: 11.3.0
-      knex: 3.1.0(better-sqlite3@12.2.0)(mysql2@3.14.1)(pg@8.16.3)
-      sqlstring: 2.3.3
-    optionalDependencies:
-      better-sqlite3: 12.2.0
-      libsql: 0.4.7
-    transitivePeerDependencies:
-      - mysql
-      - mysql2
-      - pg
-      - pg-native
-      - sqlite3
-      - supports-color
-      - tedious
-
-  '@mikro-orm/knex@6.4.16(@mikro-orm/core@6.4.16)(better-sqlite3@12.2.0)(libsql@0.4.7)(pg@8.16.0)(sqlite3@5.1.7)':
-    dependencies:
-      '@mikro-orm/core': 6.4.16
-      fs-extra: 11.3.0
-      knex: 3.1.0(better-sqlite3@12.2.0)(pg@8.16.0)(sqlite3@5.1.7)
+      knex: 3.1.0(better-sqlite3@12.2.0)(mysql2@3.14.1)(pg@8.16.0)
       sqlstring: 2.3.3
     optionalDependencies:
       better-sqlite3: 12.2.0
@@ -14298,10 +14280,10 @@ snapshots:
       - supports-color
       - tedious
 
-  '@mikro-orm/migrations@6.4.16(@mikro-orm/core@6.4.16)(@types/node@24.0.15)(better-sqlite3@12.2.0)(libsql@0.4.7)(pg@8.16.3)':
+  '@mikro-orm/migrations@6.4.16(@mikro-orm/core@6.4.16)(@types/node@24.0.15)(better-sqlite3@12.2.0)(libsql@0.4.7)(pg@8.16.0)':
     dependencies:
       '@mikro-orm/core': 6.4.16
-      '@mikro-orm/knex': 6.4.16(@mikro-orm/core@6.4.16)(better-sqlite3@12.2.0)(libsql@0.4.7)(mysql2@3.14.1)(pg@8.16.3)
+      '@mikro-orm/knex': 6.4.16(@mikro-orm/core@6.4.16)(better-sqlite3@12.2.0)(libsql@0.4.7)(mysql2@3.14.1)(pg@8.16.0)
       fs-extra: 11.3.0
       umzug: 3.8.2(@types/node@24.0.15)
     transitivePeerDependencies:
@@ -14317,10 +14299,10 @@ snapshots:
       - supports-color
       - tedious
 
-  '@mikro-orm/mysql@6.4.16(@mikro-orm/core@6.4.16)(better-sqlite3@12.2.0)(libsql@0.4.7)(pg@8.16.3)':
+  '@mikro-orm/mysql@6.4.16(@mikro-orm/core@6.4.16)(better-sqlite3@12.2.0)(libsql@0.4.7)(pg@8.16.0)':
     dependencies:
       '@mikro-orm/core': 6.4.16
-      '@mikro-orm/knex': 6.4.16(@mikro-orm/core@6.4.16)(better-sqlite3@12.2.0)(libsql@0.4.7)(mysql2@3.14.1)(pg@8.16.3)
+      '@mikro-orm/knex': 6.4.16(@mikro-orm/core@6.4.16)(better-sqlite3@12.2.0)(libsql@0.4.7)(mysql2@3.14.1)(pg@8.16.0)
       mysql2: 3.14.1
     transitivePeerDependencies:
       - better-sqlite3
@@ -14342,7 +14324,7 @@ snapshots:
   '@mikro-orm/postgresql@6.4.16(@mikro-orm/core@6.4.16)(better-sqlite3@12.2.0)(libsql@0.4.7)':
     dependencies:
       '@mikro-orm/core': 6.4.16
-      '@mikro-orm/knex': 6.4.16(@mikro-orm/core@6.4.16)(better-sqlite3@12.2.0)(libsql@0.4.7)(pg@8.16.0)(sqlite3@5.1.7)
+      '@mikro-orm/knex': 6.4.16(@mikro-orm/core@6.4.16)(better-sqlite3@12.2.0)(libsql@0.4.7)(mysql2@3.14.1)(pg@8.16.0)
       pg: 8.16.0
       postgres-array: 3.0.4
       postgres-date: 2.1.0
@@ -14355,25 +14337,6 @@ snapshots:
       - mysql2
       - pg-native
       - sqlite3
-      - supports-color
-      - tedious
-
-  '@mikro-orm/sqlite@6.4.16(@mikro-orm/core@6.4.16)(better-sqlite3@12.2.0)(libsql@0.4.7)(pg@8.16.0)':
-    dependencies:
-      '@mikro-orm/core': 6.4.16
-      '@mikro-orm/knex': 6.4.16(@mikro-orm/core@6.4.16)(better-sqlite3@12.2.0)(libsql@0.4.7)(pg@8.16.0)(sqlite3@5.1.7)
-      fs-extra: 11.3.0
-      sqlite3: 5.1.7
-      sqlstring-sqlite: 0.1.1
-    transitivePeerDependencies:
-      - better-sqlite3
-      - bluebird
-      - libsql
-      - mariadb
-      - mysql
-      - mysql2
-      - pg
-      - pg-native
       - supports-color
       - tedious
 
@@ -19732,7 +19695,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  knex@3.1.0(better-sqlite3@12.2.0)(mysql2@3.14.1)(pg@8.16.3):
+  knex@3.1.0(better-sqlite3@12.2.0)(mysql2@3.14.1)(pg@8.16.0):
     dependencies:
       colorette: 2.0.19
       commander: 10.0.1
@@ -19751,30 +19714,7 @@ snapshots:
     optionalDependencies:
       better-sqlite3: 12.2.0
       mysql2: 3.14.1
-      pg: 8.16.3
-    transitivePeerDependencies:
-      - supports-color
-
-  knex@3.1.0(better-sqlite3@12.2.0)(pg@8.16.0)(sqlite3@5.1.7):
-    dependencies:
-      colorette: 2.0.19
-      commander: 10.0.1
-      debug: 4.3.4
-      escalade: 3.2.0
-      esm: 3.2.25
-      get-package-type: 0.1.0
-      getopts: 2.3.0
-      interpret: 2.2.0
-      lodash: 4.17.21
-      pg-connection-string: 2.6.2
-      rechoir: 0.8.0
-      resolve-from: 5.0.0
-      tarn: 3.0.2
-      tildify: 2.0.0
-    optionalDependencies:
-      better-sqlite3: 12.2.0
       pg: 8.16.0
-      sqlite3: 5.1.7
     transitivePeerDependencies:
       - supports-color
 
@@ -20750,10 +20690,10 @@ snapshots:
 
   node-int64@0.4.0: {}
 
-  node-pg-migrate@8.0.3(@types/pg@8.15.4)(pg@8.16.3):
+  node-pg-migrate@8.0.3(@types/pg@8.15.4)(pg@8.16.0):
     dependencies:
       glob: 11.0.3
-      pg: 8.16.3
+      pg: 8.16.0
       yargs: 17.7.2
     optionalDependencies:
       '@types/pg': 8.15.4
