@@ -17,6 +17,7 @@
     "./17dz/flow": "./src/17dz/flow/index.ts",
     "./17dz/operator": "./src/17dz/operator/index.ts",
     "./alicloud": "./src/alicloud/index.ts",
+    "./apolloconfig": "./src/apolloconfig/index.ts",
     "./browser/launch": "./src/browser/launch/index.ts",
     "./browserless": "./src/browserless/index.ts",
     "./cubejs": "./src/cubejs/index.ts",
@@ -24,6 +25,7 @@
     "./openai": "./src/openai/index.ts",
     "./qq": "./src/qq/index.ts",
     "./server": "./src/server/index.ts",
+    "./tencent/cls": "./src/tencent/cls/index.ts",
     "./wechat": "./src/wechat/index.ts",
     "./wechat/miniprogram": "./src/wechat/miniprogram/index.ts",
     "./wechat/server": "./src/wechat/server/index.ts",
@@ -52,7 +54,7 @@
   },
   "dependencies": {
     "@wener/utils": "workspace:^1.1.51",
-    "zod": "^3.25.76"
+    "zod": "^4"
   },
   "devDependencies": {
     "@alicloud/openapi-client": "^0.4.15",
@@ -98,6 +100,10 @@
         "types": "./src/alicloud/index.ts",
         "default": "./lib/alicloud/index.js"
       },
+      "./apolloconfig": {
+        "types": "./src/apolloconfig/index.ts",
+        "default": "./lib/apolloconfig/index.js"
+      },
       "./browser/launch": {
         "types": "./src/browser/launch/index.ts",
         "default": "./lib/browser/launch/index.js"
@@ -125,6 +131,10 @@
       "./server": {
         "types": "./src/server/index.ts",
         "default": "./lib/server/index.js"
+      },
+      "./tencent/cls": {
+        "types": "./src/tencent/cls/index.ts",
+        "default": "./lib/tencent/cls/index.js"
       },
       "./wechat": {
         "types": "./src/wechat/index.ts",

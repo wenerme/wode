@@ -1,0 +1,1 @@
+export { ApolloConfigClient } from './ApolloConfigClient';
