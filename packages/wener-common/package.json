@@ -37,12 +37,12 @@
 		"@standard-schema/spec": "^1.0.0",
 		"@wener/utils": "workspace:^1.1.51",
 		"date-fns": "^4.1.0",
-		"es-toolkit": "^1.39.7",
+		"es-toolkit": "^1.39.10",
 		"std-env": "^3.9.0",
-		"ts-pattern": "^5.7.1"
+		"ts-pattern": "^5.8.0"
 	},
 	"devDependencies": {
-		"@sinclair/typebox": "^0.34.38",
+		"@sinclair/typebox": "^0.34.41",
 		"@sinclair/typebox-codegen": "^0.11.1",
 		"@types/argon2-browser": "^1.18.4",
 		"@types/bcrypt": "^6.0.0",
@@ -50,15 +50,15 @@
 		"ajv-formats": "^3.0.1",
 		"ajv-i18n": "^4.2.0",
 		"ajv-keywords": "^5.1.0",
-		"argon2": "^0.43.1",
+		"argon2": "^0.44.0",
 		"argon2-browser": "^1.18.0",
 		"bcrypt": "^6.0.0",
 		"bcryptjs": "^3.0.2",
-		"chalk": "^5.4.1",
+		"chalk": "^5.6.2",
 		"consola": "^3.4.2",
-		"dayjs": "^1.11.13",
+		"dayjs": "^1.11.18",
 		"decimal.js": "^10.6.0",
-		"zod": "^3.25.76"
+		"zod": "^4.1.8"
 	},
 	"publishConfig": {
 		"exports": {
