@@ -54,24 +54,24 @@
   },
   "dependencies": {
     "@wener/utils": "workspace:^1.1.51",
-    "zod": "^4"
+    "zod": "^4.1.8"
   },
   "devDependencies": {
     "@alicloud/openapi-client": "^0.4.15",
-    "@sinclair/typebox": "^0.34.38",
-    "@types/bun": "^1.2.19",
+    "@sinclair/typebox": "^0.34.41",
+    "@types/bun": "^1.2.22",
     "@types/crypto-js": "^4.2.2",
     "@types/node-rsa": "^1.1.4",
     "@wecom/jssdk": "^2.3.1",
     "cookie": "^1.0.2",
     "crypto-js": "^4.2.0",
-    "dayjs": "^1.11.13",
+    "dayjs": "^1.11.18",
     "fast-xml-parser": "^5.2.5",
     "node-rsa": "^1.1.1",
-    "puppeteer": "^24.14.0",
-    "puppeteer-core": "^24.14.0",
-    "ts-pattern": "^5.7.1",
-    "undici": "^7.12.0",
+    "puppeteer": "^24.21.0",
+    "puppeteer-core": "^24.21.0",
+    "ts-pattern": "^5.8.0",
+    "undici": "^7.16.0",
     "ws": "^8.18.3"
   },
   "publishConfig": {
