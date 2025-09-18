@@ -1,30 +1,33 @@
-import React, { forwardRef, type FC } from 'react';
-import * as Collapsible from '@radix-ui/react-collapsible';
+import React, { type FC } from 'react';
+import { Collapsible } from '@base-ui-components/react/collapsible';
 import { cn } from '@wener/console';
 
-export namespace DaisyCollapsible {
-	type RootProps = Collapsible.CollapsibleProps;
+type RootProps = React.ComponentProps<typeof Collapsible.Root>;
 
-	export const Root: FC<RootProps> = ({ className, ...props }) => {
-		return (
-			<Collapsible.Root
-				className={cn('collapse-arrow data-[state=open]:collapse-open collapse rounded-none', className)}
-				{...props}
-			/>
-		);
-	};
+export const DaisyCollapsibleRoot: FC<RootProps> = ({ className, ...props }) => {
+	return (
+		<Collapsible.Root
+			className={cn('collapse-arrow data-[state=open]:collapse-open collapse rounded-none', className)}
+			{...props}
+		/>
+	);
+};
 
-	// export const Summary: FC<Collapsible.CollapsibleTriggerProps> = forwardRef(({ className, ...props },ref) => {
-	//   return <Collapsible.Trigger className={cn('collapse-title border-b', className)} {...props} ref={ref} />;
-	// });
+type TriggerProps = React.ComponentProps<typeof Collapsible.Trigger>;
 
-	type TriggerProps = Collapsible.CollapsibleTriggerProps;
+export const DaisyCollapsibleTrigger: FC<TriggerProps> = ({ className, ...props }) => {
+	return <Collapsible.Trigger className={cn('collapse-title', className)} {...props} />;
+};
 
-	export const Trigger = forwardRef<HTMLButtonElement, TriggerProps>(({ className, ...props }, ref) => {
-		return <Collapsible.Trigger className={cn('', className)} {...props} ref={ref} />;
-	});
+type PanelProps = React.ComponentProps<typeof Collapsible.Panel>;
 
-	export const Content: FC<Collapsible.CollapsibleContentProps> = ({ className, ...props }) => {
-		return <Collapsible.Content className={cn('collapse-content', className)} {...props} />;
-	};
-}
+export const DaisyCollapsiblePanel: FC<PanelProps> = ({ className, ...props }) => {
+	return <Collapsible.Panel className={cn('collapse-content', className)} {...props} />;
+};
+
+export const DaisyCollapsible = {
+	Root: DaisyCollapsibleRoot,
+	Trigger: DaisyCollapsibleTrigger,
+	Panel: DaisyCollapsiblePanel,
+	Content: DaisyCollapsiblePanel, // Backward compatibility alias
+} as const;

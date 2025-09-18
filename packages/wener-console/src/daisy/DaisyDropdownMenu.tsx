@@ -1,5 +1,5 @@
-import React, { forwardRef, type ComponentPropsWithoutRef, type ReactNode } from 'react';
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+import React, { type ComponentPropsWithoutRef, type ReactNode, type FC } from 'react';
+import { Menu } from '@base-ui-components/react/menu';
 import { cn } from '@wener/console';
 import { flexRender } from '@wener/reaction';
 import type { FlexRenderable } from '@wener/reaction';
@@ -8,42 +8,41 @@ import { pick } from 'es-toolkit';
 import { match } from 'ts-pattern';
 import { isNodeTypeOf } from './isNodeTypeOf';
 
-export namespace DaisyDropdownMenu {
-	export type MenuItem =
-		| ({
-				type?: 'item';
-				label?: ReactNode;
-				icon?: FlexRenderable<any>;
-		  } & ComponentPropsWithoutRef<typeof DropdownMenu.Item>)
-		| ({ type: 'label'; label?: ReactNode } & ComponentPropsWithoutRef<typeof DropdownMenu.Label>)
-		| ({ type: 'separator' } & ComponentPropsWithoutRef<typeof DropdownMenu.Separator>);
-	type CompositeProps = {
-		items: MenuItem[];
-		children?: ReactNode;
-		trigger?: ReactNode;
-		portal?: boolean;
+export type DaisyDropdownMenuItem =
+	| ({
+			type?: 'item';
+			label?: ReactNode;
+			icon?: FlexRenderable<any>;
+	  } & ComponentPropsWithoutRef<typeof Menu.Item>)
+	| ({ type: 'label'; label?: ReactNode } & ComponentPropsWithoutRef<typeof Menu.GroupLabel>)
+	| ({ type: 'separator' } & ComponentPropsWithoutRef<typeof Menu.Separator>);
 
-		// root
-		open?: boolean;
-		defaultOpen?: boolean;
-		onOpenChange?(open: boolean): void;
-		modal?: boolean;
-		//
-		className?: string;
-	};
-	export const Composite = ({ items, children, trigger, portal, className, ...props }: CompositeProps) => {
-		// if (Children.count(children) === 1) {
-		//   children = Children.only(children);
-		// }
-		trigger ||= children;
-		if (trigger) {
-			if (!isNodeTypeOf(trigger, [DropdownMenu.Trigger, Trigger])) {
-				let last = trigger;
-				trigger = <Trigger asChild>{last}</Trigger>;
-			}
+type CompositeProps = {
+	items: DaisyDropdownMenuItem[];
+	children?: ReactNode;
+	trigger?: ReactNode;
+	portal?: boolean;
+
+	// root
+	open?: boolean;
+	defaultOpen?: boolean;
+	onOpenChange?(open: boolean): void;
+	modal?: boolean;
+	//
+	className?: string;
+};
+
+export const DaisyDropdownMenuComposite = ({ items, children, trigger, portal, className, ...props }: CompositeProps) => {
+	trigger ||= children;
+	if (trigger) {
+		if (!isNodeTypeOf(trigger, [Menu.Trigger, DaisyDropdownMenuTrigger])) {
+			let last = trigger;
+			trigger = <DaisyDropdownMenuTrigger asChild>{last}</DaisyDropdownMenuTrigger>;
 		}
-		let content = (
-			<DropdownMenu.Content
+	}
+	let content = (
+		<Menu.Positioner>
+			<Menu.Popup
 				side={'bottom'}
 				align={'end'}
 				sideOffset={5}
@@ -53,19 +52,19 @@ export namespace DaisyDropdownMenu {
 					return match(item)
 						.with({ type: 'label' }, ({ label, type, className, children, ...props }) => {
 							return (
-								<DropdownMenu.Label key={key} className={cn('menu-title', className)} {...props}>
+								<Menu.GroupLabel key={key} className={cn('menu-title', className)} {...props}>
 									{label || children}
-								</DropdownMenu.Label>
+								</Menu.GroupLabel>
 							);
 						})
 						.with({ type: 'separator' }, ({ type, className, ...props }) => {
 							return (
-								<DropdownMenu.Separator key={key} className={cn('bg-base-300 m-[5px] h-px', className)} {...props} />
+								<Menu.Separator key={key} className={cn('bg-base-300 m-[5px] h-px', className)} {...props} />
 							);
 						})
 						.otherwise(({ label, icon, type, className, children, ...props }) => {
 							return (
-								<DropdownMenu.Item key={key} asChild {...props}>
+								<Menu.Item key={key} asChild {...props}>
 									<li
 										className={clsx(
 											'outline-none select-none',
@@ -79,25 +78,40 @@ export namespace DaisyDropdownMenu {
 											{label}
 										</a>
 									</li>
-								</DropdownMenu.Item>
+								</Menu.Item>
 							);
 						});
 				})}
-			</DropdownMenu.Content>
-		);
+			</Menu.Popup>
+		</Menu.Positioner>
+	);
 
-		return (
-			<DropdownMenu.Root {...pick(props, ['open', 'onOpenChange', 'modal', 'defaultOpen'])}>
-				{trigger}
-				{portal && <DropdownMenu.Portal>{content}</DropdownMenu.Portal>}
-				{!portal && content}
-			</DropdownMenu.Root>
-		);
-	};
+	return (
+		<Menu.Root {...pick(props, ['open', 'onOpenChange', 'modal', 'defaultOpen'])}>
+			{trigger}
+			{portal && <Menu.Portal>{content}</Menu.Portal>}
+			{!portal && content}
+		</Menu.Root>
+	);
+};
 
-	export interface TriggerProps extends DropdownMenu.DropdownMenuTriggerProps {}
+export interface DaisyDropdownMenuTriggerProps extends React.ComponentProps<typeof Menu.Trigger> {}
 
-	export const Trigger = forwardRef<HTMLButtonElement, TriggerProps>(({ className, ...props }, ref) => {
-		return <DropdownMenu.Trigger className={cn('btn relative', className)} {...props} ref={ref} />;
-	});
-}
+export const DaisyDropdownMenuTrigger: FC<DaisyDropdownMenuTriggerProps> = ({ className, ...props }) => {
+	return <Menu.Trigger className={cn('btn relative', className)} {...props} />;
+};
+
+export const DaisyDropdownMenu = {
+	Composite: DaisyDropdownMenuComposite,
+	Trigger: DaisyDropdownMenuTrigger,
+	Root: Menu.Root,
+	Portal: Menu.Portal,
+	Positioner: Menu.Positioner,
+	Popup: Menu.Popup,
+	Item: Menu.Item,
+	Separator: Menu.Separator,
+	GroupLabel: Menu.GroupLabel,
+} as const;
+
+// Export individual MenuItem type for external use
+export type { DaisyDropdownMenuItem as MenuItem };
