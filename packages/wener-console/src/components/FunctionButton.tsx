@@ -1,5 +1,4 @@
 import React, {
-	forwardRef,
 	useState,
 	type ComponentPropsWithoutRef,
 	type ComponentPropsWithRef,
@@ -132,9 +131,9 @@ export namespace FunctionButton {
 		);
 	};
 
-	export const BindCustomer = forwardRef<HTMLButtonElement, ButtonProps>(({ children, className, ...props }, ref) => {
+	export const BindCustomer: FC<ButtonProps> = ({ children, className, ...props }) => {
 		return <Button icon={PiUserPlusLight} {...props} />;
-	});
+	};
 
 	export const BindUser: FC<ButtonProps> = ({ children, className, ...props }: ButtonProps) => {
 		return <Button icon={PiUserPlusLight} {...props} />;

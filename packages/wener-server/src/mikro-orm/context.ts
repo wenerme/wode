@@ -1,6 +1,6 @@
 import { MikroORM, RequestContext, type EntityManager, type TransactionOptions } from '@mikro-orm/core';
 import type { MaybePromise } from '@wener/utils';
-import { getContext } from '../context';
+import { getContext } from '../ContextProvider';
 
 /*
 这个文件是重复的，有几个问题，导致 optional 依赖被强制引入

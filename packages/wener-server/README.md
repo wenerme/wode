@@ -1,11 +1,11 @@
 
-# NestJS Server
+# Server
 
 ## service
 
 - NATS based microservice
 
-## Common Dependencies for NestJS dev
+## Common Dependencies for server dev
 
 ```bash
 pnpm add @nestjs/{common,core,platform-fastify,serve-static,swagger} fastify

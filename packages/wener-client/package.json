@@ -54,7 +54,7 @@
   },
   "dependencies": {
     "@wener/utils": "workspace:^1.1.51",
-    "zod": "^4.1.8"
+    "zod": "^4.1.9"
   },
   "devDependencies": {
     "@alicloud/openapi-client": "^0.4.15",
@@ -68,8 +68,8 @@
     "dayjs": "^1.11.18",
     "fast-xml-parser": "^5.2.5",
     "node-rsa": "^1.1.1",
-    "puppeteer": "^24.21.0",
-    "puppeteer-core": "^24.21.0",
+    "puppeteer": "^24.22.0",
+    "puppeteer-core": "^24.22.0",
     "ts-pattern": "^5.8.0",
     "undici": "^7.16.0",
     "ws": "^8.18.3"

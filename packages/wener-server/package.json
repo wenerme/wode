@@ -1,16 +1,13 @@
 {
-	"name": "@wener/nestjs",
-	"version": "1.0.55",
+	"name": "@wener/server",
+	"version": "2.0.0",
 	"type": "module",
-	"description": "NestJS utils",
+	"description": "Server utils",
 	"author": "wener",
 	"license": "ISC",
 	"exports": {
 		".": "./src/index.ts",
-		"./actuator": "./src/actuator/index.ts",
 		"./app": "./src/app/index.ts",
-		"./auth": "./src/auth/index.ts",
-		"./config": "./src/config/index.ts",
 		"./entity": "./src/entity/index.ts",
 		"./entity/audit": "./src/entity/audit/index.ts",
 		"./entity/mixins": "./src/entity/mixins/index.ts",
@@ -52,26 +49,31 @@
 		"@swc/helpers": "*"
 	},
 	"dependencies": {
-		"@wener/common": "workspace:^2.0.1",
+		"@wener/common": "workspace:^2.0.2",
 		"@wener/utils": "workspace:^1.1.51",
 		"dotenv": "^17.2.2",
 		"reflect-metadata": "^0.2.2",
-		"zod": "^4.1.8"
+		"zod": "^4.1.9"
 	},
 	"devDependencies": {
-		"@bufbuild/protobuf": "^2.8.0",
+		"@bufbuild/protobuf": "^2.9.0",
 		"@connectrpc/connect": "^2.1.0",
 		"@connectrpc/connect-node": "^2.1.0",
-		"@hono/node-server": "^1.19.2",
-		"@mikro-orm/core": "^6.5.3",
+		"@hono/node-server": "^1.19.3",
+		"@hono/zod-openapi": "^1.1.2",
+		"@mikro-orm/core": "^6.5.4",
 		"@mikro-orm/nestjs": "^6.1.1",
-		"@mikro-orm/postgresql": "^6.5.3",
-		"@mikro-orm/sqlite": "^6.5.3",
+		"@mikro-orm/postgresql": "^6.5.4",
+		"@mikro-orm/sqlite": "^6.5.4",
 		"@nestjs/common": "^11.1.6",
 		"@nestjs/core": "^11.1.6",
 		"@nestjs/platform-fastify": "^11.1.6",
 		"@nestjs/swagger": "^11.2.0",
 		"@nestjs/testing": "^11.1.6",
+		"@orpc/json-schema": "^1.8.9",
+		"@orpc/openapi": "^1.8.9",
+		"@orpc/server": "^1.8.9",
+		"@orpc/zod": "^1.8.9",
 		"@sinclair/typebox": "^0.34.41",
 		"@types/bun": "^1.2.22",
 		"@wener/miniquery": "workspace:^1.0.0",
@@ -80,7 +82,7 @@
 		"fastify": "^5.6.0",
 		"graphql": "^16.11.0",
 		"graphql-scalars": "^1.24.2",
-		"hono": "^4.9.7",
+		"hono": "^4.9.8",
 		"ioredis": "^5.7.0",
 		"knex": "^3.1.0",
 		"nats": "^2.29.3",
@@ -95,21 +97,9 @@
 				"types": "./src/index.ts",
 				"default": "./lib/index.js"
 			},
-			"./actuator": {
-				"types": "./src/actuator/index.ts",
-				"default": "./lib/actuator/index.js"
-			},
 			"./app": {
 				"types": "./src/app/index.ts",
 				"default": "./lib/app/index.js"
-			},
-			"./auth": {
-				"types": "./src/auth/index.ts",
-				"default": "./lib/auth/index.js"
-			},
-			"./config": {
-				"types": "./src/config/index.ts",
-				"default": "./lib/config/index.js"
 			},
 			"./entity": {
 				"types": "./src/entity/index.ts",
