@@ -19,7 +19,6 @@ function createDigestFunction(a: string): HashFunction {
 
 export function sha1(s: BinaryLike, o?: undefined | 'buffer'): Promise<Buffer>;
 export function sha1(s: BinaryLike, o: 'hex' | 'base64'): Promise<string>;
-
 export function sha1(s: BinaryLike, o?: DigestOptions) {
 	return digestOf('SHA-1', s, o);
 }

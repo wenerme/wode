@@ -1,6 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { getNodeCrypto } from '../crypto/getNodeCrypto';
-import type { TypedArray } from '../io/ArrayBuffers';
+import type { TypedArray } from '../io/types';
 import { getGlobalThis } from './getGlobalThis';
 
 const globalThis = getGlobalThis();
