@@ -120,7 +120,8 @@ export {
 export { default as ms } from './libs/ms';
 
 // error
-export { Errors, DetailError, type ErrorDetail, type ErrorDetailInit } from './errors/Errors';
+export { Errors } from './errors/Errors';
+export { DetailError, type ErrorDetail, type ErrorDetailInit } from './errors/DetailError';
 // http
 export { getHttpStatusText, isRetryableHttpStatus } from './fetch/HttpStatus';
 

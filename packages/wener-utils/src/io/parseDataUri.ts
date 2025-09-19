@@ -52,7 +52,7 @@ export function parseDataUri(data: string): undefined | ParsedDataUri {
 				if (enc === 'utf-8') {
 					return raw;
 				}
-				buf = ArrayBuffers.from(raw, 'utf-8');
+				buf = ArrayBuffers.from(raw, 'utf-8') as BufferSource;
 			}
 			if (enc === 'utf-8') {
 				return new TextDecoder(enc).decode(buf);

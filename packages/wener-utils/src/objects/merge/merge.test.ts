@@ -1,4 +1,5 @@
 import { assert, describe, test } from 'vitest';
+import { isPlainObject } from '../../langs/isPlainObject';
 import { merge, type MergeOptions } from './merge';
 
 describe('custom-array-merge', () => {
@@ -85,8 +86,6 @@ describe('custom-is-mergeable-object', () => {
 	});
 
 	test(`example from readme`, () => {
-		const { isPlainObject } = require(`is-plain-object`);
-
 		class SuperSpecial {
 			special = `oh yeah man totally`;
 		}

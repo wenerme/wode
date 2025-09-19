@@ -1,3 +1,5 @@
+import type { Bytes } from '../io/types';
+
 /**
  * Trigger browser download
  * @param filename download as filename
@@ -27,7 +29,7 @@ export async function download(filename: string, data: any, { type = 'applicatio
 		}
 
 		if (data instanceof Uint8Array) {
-			data = new Blob([data], { type });
+			data = new Blob([data as Bytes], { type });
 		}
 		{
 			if (data instanceof File || data instanceof Blob || data instanceof MediaSource) {

@@ -16,7 +16,7 @@ export function get<O extends object, P extends ObjectKey, OrElse extends unknow
 	for (const i of path) {
 		out = out ? out[i] : undef;
 	}
-	return out === undef ? def : out;
+	return out === undef ? (def as any) : out;
 }
 
 /**
