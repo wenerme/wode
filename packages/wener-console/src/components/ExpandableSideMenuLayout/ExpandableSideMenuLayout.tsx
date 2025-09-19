@@ -239,8 +239,7 @@ export const ExpandableSideMenuLayout: FC<ExpandableSideMenuLayoutProps> = ({
 	const [expanded, setExpanded] = useControllable(
 		_expanded,
 		_onExpandedChange,
-		() =>
-			_initialExpanded ?? (typeof window === 'undefined' ? true : window.matchMedia('(min-width: 768px)').matches),
+		() => _initialExpanded ?? (typeof window === 'undefined' ? true : window.matchMedia('(min-width: 768px)').matches),
 	);
 
 	return (

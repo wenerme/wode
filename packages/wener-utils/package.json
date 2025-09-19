@@ -12,9 +12,6 @@
 	"license": "MIT",
 	"exports": {
 		".": "./src/index.ts",
-		"./cn": "./src/cn/index.ts",
-		"./cn/pinyin/data.json": "./src/cn/pinyin/data.json",
-		"./cn/pinyin/preload": "./src/cn/pinyin/preload.ts",
 		"./schema/typebox": "./src/schema/typebox/index.ts",
 		"./schema/typebox/gen": "./src/schema/typebox/gen/index.ts",
 		"./server": "./src/server/index.ts",
@@ -60,15 +57,6 @@
 			".": {
 				"types": "./src/index.ts",
 				"default": "./lib/index.js"
-			},
-			"./cn": {
-				"types": "./src/cn/index.ts",
-				"default": "./lib/cn/index.js"
-			},
-			"./cn/pinyin/data.json": "./src/cn/pinyin/data.json",
-			"./cn/pinyin/preload": {
-				"types": "./src/cn/pinyin/preload.ts",
-				"default": "./lib/cn/pinyin/preload.js"
 			},
 			"./schema/typebox": {
 				"types": "./src/schema/typebox/index.ts",

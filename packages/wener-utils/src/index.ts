@@ -33,6 +33,7 @@ export const isPromise = Promises.isPromise;
 export { timeout, TimeoutError } from './asyncs/timeout';
 
 // langs
+export { isNil } from './langs/isNil';
 export { shallowEqual } from './langs/shallowEqual';
 export { deepEqual } from './langs/deepEqual';
 export { deepFreeze } from './langs/deepFreeze';
@@ -61,12 +62,6 @@ export { parseTimestamp } from './validations/parseTimestamp';
 export { parseModuleId, type ParsedModuleId } from './modules/parseModuleId';
 export { isModule, type Module } from './modules/isModule';
 
-// logging
-export { type Logger, type LogLevel } from './logging/Logger';
-export { createLogger } from './logging/createLogger';
-export { createNoopLogger } from './logging/createNoopLogger';
-export { createChildLogger } from './logging/createChildLogger';
-
 // strings
 export { pascalCase, camelCase } from './strings/camelCase';
 export { renderTemplate } from './strings/renderTemplate';
@@ -83,6 +78,7 @@ export { ArrayBuffers } from './io/ArrayBuffers';
 export { ByteBuffer } from './io/ByteBuffer';
 export { fromHexDump, toHexDump } from './io/dump';
 export { Buffer } from './io/Buffer';
+export { type Bytes } from './io/types';
 export { parseDataUri, type ParsedDataUri } from './io/parseDataUri';
 export type { AbstractEncoding } from './io/AbstractEncoding';
 

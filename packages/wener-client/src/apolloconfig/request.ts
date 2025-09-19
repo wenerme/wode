@@ -1,4 +1,6 @@
+import { createHmac } from 'crypto';
 import { type FetchLike } from '@wener/utils';
+import { parseJsonResponse, resolveRequest } from '../utils/resolveRequest';
 
 export type RequestOptions = {
 	url: string;
@@ -9,75 +11,45 @@ export type RequestOptions = {
 	method?: string;
 	fetch?: FetchLike;
 	signal?: AbortSignal;
+	// Apollo Config authentication
+	appId?: string;
+	appSecret?: string;
 };
 
+export function sign(urlPath: string, timestamp: string, appSecret: string): string {
+	const stringToSign = `${timestamp}\n${urlPath}`;
+	return createHmac('sha1', appSecret).update(stringToSign, 'utf8').digest('base64');
+}
+
 export async function request<O = any>(options: RequestOptions): Promise<O> {
-	let {
-		url,
-		baseUrl = '',
-		params = {},
-		data,
-		headers = {},
-		method = 'GET',
-		fetch = globalThis.fetch,
-		signal,
-	} = options;
+	const { fetch = globalThis.fetch, appId, appSecret, headers = {}, ...restOptions } = options;
 
-	let u: URL;
-	if (baseUrl && !/^https?:\/\//.test(url)) {
-		if (!baseUrl.endsWith('/')) {
-			baseUrl += '/';
-		}
-		if (url.startsWith('/')) {
-			url = url.slice(1);
-		}
-		u = new URL(baseUrl + url);
-	} else {
-		u = new URL(url);
+	// Resolve base request
+	const resolved = resolveRequest(restOptions);
+
+	// Add Apollo Config authentication if configured
+	if (appSecret && appId) {
+		const timestamp = Date.now().toString();
+		const pathAndQuery = resolved.url.pathname + (resolved.url.search || '');
+		const signature = sign(pathAndQuery, timestamp, appSecret);
+
+		resolved.headers.set('Authorization', `Apollo ${appId}:${signature}`);
+		resolved.headers.set('Timestamp', timestamp);
 	}
 
-	if (params) {
-		for (const [k, v] of Object.entries(params)) {
-			if (v === null || v === undefined) continue;
-			if (Array.isArray(v)) {
-				for (const vv of v) {
-					u.searchParams.append(k, String(vv));
-				}
-				continue;
-			}
-			u.searchParams.set(k, String(v));
-		}
-	}
-	u.searchParams.sort();
-
-	const req: RequestInit = {
-		method,
-		signal,
-		headers: {
-			'Content-Type': 'application/json',
-			...headers,
-		},
-	};
-
-	if (data && (method === 'POST' || method === 'PUT' || method === 'PATCH')) {
-		req.body = JSON.stringify(data);
+	// Add any additional headers that were passed in
+	for (const [key, value] of Object.entries(headers)) {
+		resolved.headers.set(key, value);
 	}
 
-	const response = await fetch(u.toString(), req);
-
-	// Handle 304 Not Modified - return null to indicate no changes
-	if (response.status === 304) {
-		return null;
-	}
+	const response = await fetch(resolved.url.toString(), resolved.init);
 
 	if (!response.ok) {
-		throw new Error(`HTTP ${response.status}: ${response.statusText} ${u.pathname}`);
+		// {"timestamp":"","status":404,"error":"Not Found","path":"/configfiles/json/app/default/conf.yaml"}
+		throw Object.assign(new Error(`HTTP ${response.status}: ${response.statusText} ${resolved.url.pathname}`), {
+			status: response.status,
+		});
 	}
 
-	const contentType = response.headers.get('content-type');
-	if (contentType?.includes('application/json')) {
-		return await response.json();
-	}
-
-	return (await response.text()) as any;
+	return parseJsonResponse<O>(response);
 }

@@ -4,7 +4,7 @@ import type { Column } from './types';
 
 export type SearchAnalysisLogStreamOptions = {
 	client: TencentLogClient;
-	onResponse?: (res: SearchLogResponse) => MaybePromise<void>;
+	onResponse?: (res: SearchLogResponse, ctx: { from: number; to: number; count: number }) => MaybePromise<void>;
 	interval: number;
 	To?: number;
 	From?: number;
@@ -34,7 +34,7 @@ export async function* searchAnalysisLogStream({
 	index: number;
 	record: Record<string, any>;
 	columns?: Column[] | null;
-	window: { From: number; To: number };
+	range: { From: number; To: number };
 	raw: SearchLogResponse;
 }> {
 	if (interval <= 0) {
@@ -85,7 +85,7 @@ export async function* searchAnalysisLogStream({
 				To: end,
 				UseNewAnalysis: true,
 			});
-			await onResponse?.(res);
+			await onResponse?.(res, { from: start, to: end, count: getRecordCount(res) });
 
 			yield* processResponse(res, start, end, index);
 			index += getRecordCount(res);
@@ -104,7 +104,7 @@ export async function* searchAnalysisLogStream({
 				To: end,
 				UseNewAnalysis: true,
 			});
-			await onResponse?.(res);
+			await onResponse?.(res, { from: start, to: end, count: getRecordCount(res) });
 
 			yield* processResponse(res, start, end, index);
 			index += getRecordCount(res);
@@ -129,7 +129,7 @@ function* processResponse(
 	index: number;
 	record: Record<string, any>;
 	columns?: Column[] | null;
-	window: { From: number; To: number };
+	range: { From: number; To: number };
 	raw: SearchLogResponse;
 }> {
 	if (!res.Analysis) {
@@ -151,7 +151,7 @@ function* processResponse(
 				index: index++,
 				record: parsed,
 				columns: res.Columns,
-				window: { From: start, To: end },
+				range: { From: start, To: end },
 				raw: res,
 			};
 		}
@@ -166,7 +166,7 @@ function* processResponse(
 				index: index++,
 				record: obj,
 				columns: null,
-				window: { From: start, To: end },
+				range: { From: start, To: end },
 				raw: res,
 			};
 		}

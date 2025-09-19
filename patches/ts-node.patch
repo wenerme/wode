@@ -1,8 +1,17 @@
 diff --git a/dist/transpilers/swc.js b/dist/transpilers/swc.js
-index c334bd3b18b292c3f865639dca4080ff3dfe53e8..26c37e4b45177554f4a79e311775dab3e9085a59 100644
+index c334bd3b18b292c3f865639dca4080ff3dfe53e8..8fc480051355d30d15bf025b482e8330e9f839c0 100644
 --- a/dist/transpilers/swc.js
 +++ b/dist/transpilers/swc.js
-@@ -167,7 +167,7 @@ function createSwcOptions(compilerOptions, nodeModuleEmitKind, swcInstance, swcD
+@@ -60,6 +60,8 @@ exports.targetMapping.set(/* ts.ScriptTarget.ES2019 */ 6, 'es2019');
+ exports.targetMapping.set(/* ts.ScriptTarget.ES2020 */ 7, 'es2020');
+ exports.targetMapping.set(/* ts.ScriptTarget.ES2021 */ 8, 'es2021');
+ exports.targetMapping.set(/* ts.ScriptTarget.ES2022 */ 9, 'es2022');
++exports.targetMapping.set(/* ts.ScriptTarget.ES2023 */ 10, 'es2023');
++exports.targetMapping.set(/* ts.ScriptTarget.ES2024 */ 11, 'es2024');
+ exports.targetMapping.set(/* ts.ScriptTarget.ESNext */ 99, 'esnext');
+ /**
+  * @internal
+@@ -167,7 +169,7 @@ function createSwcOptions(compilerOptions, nodeModuleEmitKind, swcInstance, swcD
                          : {}),
                  }
                  : undefined,

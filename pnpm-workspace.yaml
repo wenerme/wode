@@ -20,3 +20,9 @@ linkWorkspacePackages: true
 preferWorkspacePackages: true
 saveWorkspaceProtocol: false
 dedupeDirectDeps: true
+
+minimumReleaseAge: 3600
+minimumReleaseAgeExclude:
+- "@wener/*"
+
+strictPeerDependencies: false

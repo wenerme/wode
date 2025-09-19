@@ -16,7 +16,7 @@ deploy: image-push
 build: build-web web-image
 
 build-libs:
-	NODE_ENV=production TW_PX=1 pnpm tsx ./src/libs/bundle.ts
+	NODE_ENV=production TW_PX=1 pnpm exec tsx ./src/libs/bundle.ts
 
 #npx tailwindcss -i ./src/app/styles/global.css -o ./dist/global.css --minify
 #ls -lash dist/global.css
@@ -70,7 +70,7 @@ clean-image:
 	rm -rf builds/*/app/* dist/* lib/*
 
 write-version:
-	pnpm tsx ./src/scripts/write-version.ts
+	pnpm exec tsx ./src/scripts/write-version.ts
 
 web-image: web-image-static
 

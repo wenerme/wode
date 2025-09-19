@@ -63,7 +63,7 @@ list:
 
 build:
 	@echo Building all
-	SERVER=`ls src/apps/* -d | xargs -n 1 basename | paste -sd,` pnpm tsx src/scripts/bundle.esbuild.ts
+	SERVER=`find src/apps -mindepth 1 -maxdepth 1 -type d -print -exec basename {} \\; | paste -sd,` pnpm tsx src/scripts/bundle.esbuild.ts
 
 image-build-prepare:
 	ls src/apps/* -d | xargs -n 1 basename | xargs -I {} make SERVER={} image-build-prepare

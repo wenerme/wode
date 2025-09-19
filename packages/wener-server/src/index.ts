@@ -1,7 +1,6 @@
 export { getHttpStatusText } from './HttpStatus';
 export { Currents, type ContextToken } from './Currents';
 export { getAppContext, getAppContextAsync, setAppContext } from './nest/AppContext';
-export { Cookies } from './decorator/cookies.decorator';
 export { Feature, Features, type FeatureOptions } from './Feature';
 export { requireFound } from './utils/requireFound';
 export { getStaticRootPath } from './utils/getStaticRootPath';

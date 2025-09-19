@@ -1,7 +1,7 @@
-import type { FetchLike, MaybePromise } from '@wener/utils';
+import type { FetchLike } from '@wener/utils';
 import { request, sign, type RequestOptions } from './request';
 import { searchAnalysisLogStream, type SearchAnalysisLogStreamOptions } from './searchAnalysisLogStream';
-import { searchLogStream } from './searchLogStream';
+import { searchLogStream, type SearchLogStreamOptions } from './searchLogStream';
 import type {
 	Column,
 	Filter,
@@ -14,6 +14,7 @@ import type {
 	Tag,
 	TopicInfo,
 } from './types';
+import { isTopicId } from './utils';
 
 type CommonListRequest = {
 	Filters?: Filter[];
@@ -209,16 +210,16 @@ export type DeleteLogsetResponse = CommonListResponse;
 
 export type TencentLogClientInit = {
 	fetch?: FetchLike;
-	secretId: string;
-	secretKey: string;
+	clientId: string;
+	clientSecret: string;
 	region?: string;
 	endpoint?: string;
 };
 
 export type TencentLogClientOptions = {
 	fetch: FetchLike;
-	secretId: string;
-	secretKey: string;
+	clientId: string;
+	clientSecret: string;
 	region: string;
 	endpoint: string;
 };
@@ -228,7 +229,7 @@ export class TencentLogClient {
 
 	constructor({ region, endpoint, ...init }: TencentLogClientInit) {
 		if (region) {
-			endpoint = `cls.${region}.tencentcloudapi.com`;
+			endpoint ||= `cls.${region}.tencentcloudapi.com`;
 		}
 		region ||= 'ap-shanghai';
 		endpoint ||= `cls.tencentcloudapi.com`;
@@ -248,8 +249,8 @@ export class TencentLogClient {
 		const method = 'POST';
 
 		const { authorization } = sign({
-			secretId: this.options.secretId,
-			secretKey: this.options.secretKey,
+			clientId: this.options.clientId,
+			clientKey: this.options.clientSecret,
 			service: 'cls',
 			region: this.options.region,
 			action,
@@ -286,11 +287,7 @@ export class TencentLogClient {
 		return this.request('SearchLog', request);
 	}
 
-	searchLogStream(
-		request: SearchLogRequest & {
-			onResponse?: (res: SearchLogResponse) => MaybePromise<void>;
-		},
-	) {
+	searchLogStream(request: Omit<SearchLogStreamOptions, 'client'>) {
 		return searchLogStream({
 			client: this,
 			...request,
@@ -305,11 +302,47 @@ export class TencentLogClient {
 	}
 
 	async listLogset(request: ListLogsetRequest = {}): Promise<ListLogsetResponse> {
+		// filters: logsetName, logsetId , tagKey, tag:<tagKey>
 		return this.request('DescribeLogsets', request);
 	}
 
 	async listTopic(request: ListTopicRequest = {}): Promise<ListTopicResponse> {
+		// filters: topicName, logsetName, topicId, logsetId, tagKey, tag:<tagKey>, storageType = hot,cold
 		return this.request('DescribeTopics', request);
+	}
+
+	async resolveTopicIds(needle: string[]) {
+		let ids = needle.filter((v) => isTopicId(v));
+		let names = needle.filter((v) => !isTopicId(v));
+		if (names.length) {
+			let out = await this.resolveTopics(names);
+			for (let t of out) {
+				ids.push(t.TopicId);
+			}
+		}
+		return ids;
+	}
+
+	async resolveTopics(needle: string[]) {
+		let ids = needle.filter((v) => isTopicId(v));
+		let names = needle.filter((v) => !isTopicId(v));
+		const q: ListTopicRequest = {};
+		q.Filters ||= [];
+
+		if (ids.length) {
+			q.Filters.push({
+				Key: 'topicId',
+				Values: ids,
+			});
+		}
+		if (names.length) {
+			q.Filters.push({
+				Key: 'topicName',
+				Values: names,
+			});
+		}
+
+		return (await this.listTopic(q)).Topics;
 	}
 
 	async listTopicByLogset(

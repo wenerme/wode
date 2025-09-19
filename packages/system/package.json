@@ -112,12 +112,6 @@
 		}
 	},
 	"sideEffects": false,
-	"rollup": {
-		"input": [
-			"./src/index.ts",
-			"./src/server.ts"
-		]
-	},
 	"typedoc": {
 		"entryPoint": "./src/typedoc.ts",
 		"readmeFile": "./README.md"

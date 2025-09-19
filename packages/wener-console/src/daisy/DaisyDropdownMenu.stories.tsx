@@ -39,23 +39,20 @@ const complexItems: DaisyDropdownMenuItem[] = [
 export const Basic: Story = {
 	args: {
 		items: basicItems,
-		children: <button className="btn">Menu</button>,
+		children: <button className='btn'>Menu</button>,
 	},
 };
 
 export const WithTrigger: Story = {
 	render: () => (
-		<DaisyDropdownMenu.Composite 
-			items={basicItems}
-			trigger={<button className="btn btn-primary">Open Menu</button>}
-		/>
+		<DaisyDropdownMenu.Composite items={basicItems} trigger={<button className='btn btn-primary'>Open Menu</button>} />
 	),
 };
 
 export const Complex: Story = {
 	args: {
 		items: complexItems,
-		children: <button className="btn btn-outline">Actions</button>,
+		children: <button className='btn btn-outline'>Actions</button>,
 	},
 };
 
@@ -63,16 +60,16 @@ export const WithPortal: Story = {
 	args: {
 		items: basicItems,
 		portal: true,
-		children: <button className="btn btn-secondary">Portal Menu</button>,
+		children: <button className='btn btn-secondary'>Portal Menu</button>,
 	},
 };
 
 export const CustomTrigger: Story = {
 	render: () => (
 		<DaisyDropdownMenu.Composite items={basicItems}>
-			<div className="avatar">
-				<div className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-					<img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" alt="Avatar" />
+			<div className='avatar'>
+				<div className='ring-primary ring-offset-base-100 w-10 rounded-full ring ring-offset-2'>
+					<img src='https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp' alt='Avatar' />
 				</div>
 			</div>
 		</DaisyDropdownMenu.Composite>
@@ -82,21 +79,25 @@ export const CustomTrigger: Story = {
 export const ManualComposition: Story = {
 	render: () => (
 		<DaisyDropdownMenu.Root>
-			<DaisyDropdownMenu.Trigger>
-				Manual Menu
-			</DaisyDropdownMenu.Trigger>
+			<DaisyDropdownMenu.Trigger>Manual Menu</DaisyDropdownMenu.Trigger>
 			<DaisyDropdownMenu.Portal>
 				<DaisyDropdownMenu.Positioner>
-					<DaisyDropdownMenu.Popup className="menu menu-sm rounded-box bg-base-200 z-30 w-52">
+					<DaisyDropdownMenu.Popup className='menu menu-sm rounded-box bg-base-200 z-30 w-52'>
 						<DaisyDropdownMenu.Item>
-							<li><a>Item 1</a></li>
+							<li>
+								<a>Item 1</a>
+							</li>
 						</DaisyDropdownMenu.Item>
 						<DaisyDropdownMenu.Item>
-							<li><a>Item 2</a></li>
+							<li>
+								<a>Item 2</a>
+							</li>
 						</DaisyDropdownMenu.Item>
-						<DaisyDropdownMenu.Separator className="bg-base-300 m-[5px] h-px" />
+						<DaisyDropdownMenu.Separator className='bg-base-300 m-[5px] h-px' />
 						<DaisyDropdownMenu.Item>
-							<li><a>Item 3</a></li>
+							<li>
+								<a>Item 3</a>
+							</li>
 						</DaisyDropdownMenu.Item>
 					</DaisyDropdownMenu.Popup>
 				</DaisyDropdownMenu.Positioner>

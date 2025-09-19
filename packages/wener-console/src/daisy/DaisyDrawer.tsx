@@ -35,11 +35,7 @@ export const DaisyDrawerTitle: FC<TitleProps> = ({ children, className, ...props
 
 type DescriptionProps = React.ComponentProps<typeof Dialog.Description> & {};
 export const DaisyDrawerDescription: FC<DescriptionProps> = ({ children, ...props }) => {
-	return (
-		<Dialog.Description {...props}>
-			{children}
-		</Dialog.Description>
-	);
+	return <Dialog.Description {...props}>{children}</Dialog.Description>;
 };
 
 export const DaisyDrawer = {
