@@ -1,4 +1,4 @@
-import React, { type ComponentPropsWithoutRef, type ReactNode, type FC } from 'react';
+import React, { type ComponentPropsWithoutRef, type FC, type ReactNode } from 'react';
 import { Menu } from '@base-ui-components/react/menu';
 import { cn } from '@wener/console';
 import { flexRender } from '@wener/reaction';
@@ -32,7 +32,14 @@ type CompositeProps = {
 	className?: string;
 };
 
-export const DaisyDropdownMenuComposite = ({ items, children, trigger, portal, className, ...props }: CompositeProps) => {
+export const DaisyDropdownMenuComposite = ({
+	items,
+	children,
+	trigger,
+	portal,
+	className,
+	...props
+}: CompositeProps) => {
 	trigger ||= children;
 	if (trigger) {
 		if (!isNodeTypeOf(trigger, [Menu.Trigger, DaisyDropdownMenuTrigger])) {
@@ -58,9 +65,7 @@ export const DaisyDropdownMenuComposite = ({ items, children, trigger, portal, c
 							);
 						})
 						.with({ type: 'separator' }, ({ type, className, ...props }) => {
-							return (
-								<Menu.Separator key={key} className={cn('bg-base-300 m-[5px] h-px', className)} {...props} />
-							);
+							return <Menu.Separator key={key} className={cn('bg-base-300 m-[5px] h-px', className)} {...props} />;
 						})
 						.otherwise(({ label, icon, type, className, children, ...props }) => {
 							return (

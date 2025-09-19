@@ -1,4 +1,4 @@
-import React, { Fragment, type ReactNode, type FC } from 'react';
+import React, { Fragment, type FC, type ReactNode } from 'react';
 import { Tabs } from '@base-ui-components/react/tabs';
 import { cn } from '@wener/console';
 import { Daisy } from '@wener/console/daisy';
@@ -123,15 +123,19 @@ export interface DaisyTabsListProps extends Omit<React.ComponentProps<typeof Tab
 	title?: React.ReactNode;
 }
 
-export const DaisyTabsList: FC<DaisyTabsListProps> = ({ className, variant, size, action, title, children, ...props }) => {
+export const DaisyTabsList: FC<DaisyTabsListProps> = ({
+	className,
+	variant,
+	size,
+	action,
+	title,
+	children,
+	...props
+}) => {
 	const sz = Daisy.getSize(size);
 
 	return (
-		<Tabs.List
-			className={cn('flex', 'data-[variant=boxed]:self-center')}
-			data-variant={variant}
-			{...props}
-		>
+		<Tabs.List className={cn('flex', 'data-[variant=boxed]:self-center')} data-variant={variant} {...props}>
 			{variant === 'lifted' && (
 				<div
 					className={'border-color flex h-full items-center self-end px-2'}

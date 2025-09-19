@@ -59,12 +59,12 @@ class WebdavFS implements IFileSystem {
 
 	private getData<T>(input: ResponseDataDetailed<T> | T): T {
 		if (
-			input &&
-			typeof input === 'object' &&
-			'data' in input &&
+			input
+			&& typeof input === 'object'
+			&& 'data' in input
 			// 'headers' in input &&
-			'status' in input &&
-			typeof input.status === 'number'
+			&& 'status' in input
+			&& typeof input.status === 'number'
 		) {
 			return input.data;
 		}

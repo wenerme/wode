@@ -65,6 +65,9 @@ export type Filter = {
 
 export type MultiTopicSearchInformation = {
 	TopicId?: string;
+	/**
+	 * You can pass through the Context value (validity: 1 hour) returned by the last API to continue to get logs, which can get up to 10,000 raw logs.
+	 */
 	Context?: string;
 };
 

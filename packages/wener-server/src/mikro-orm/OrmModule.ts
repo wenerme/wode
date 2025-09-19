@@ -10,7 +10,7 @@ import {
 } from '@mikro-orm/postgresql';
 import { Logger, type DynamicModule } from '@nestjs/common';
 import { createLazyPromise, type MaybePromise } from '@wener/utils';
-import { getMikroOrmConfig } from '../config';
+import { getMikroOrmConfig } from '../config/database.config';
 import { defineMikroOrmOptions } from './defineMikroOrmOptions';
 
 export type OrmModuleOptions = Partial<Options> & { onConfig?: (config: Options) => void };
@@ -26,7 +26,7 @@ export class OrmModule {
 		return createLazyPromise(async () => {
 			const { onConfig, useFactory, ...rest } = opts;
 
-			let module = MikroOrmModule.forRootAsync({
+			let module = await MikroOrmModule.forRootAsync({
 				...rest,
 				useFactory: async (...args) => {
 					let config = ((await useFactory?.(...args))

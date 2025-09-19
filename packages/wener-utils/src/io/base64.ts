@@ -1,5 +1,7 @@
 // https://github.com/niklasvh/base64-arraybuffer/blob/master/src/index.ts
 
+import type { Bytes } from './types';
+
 const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 
 // Use a lookup table to find the index.
@@ -8,7 +10,7 @@ for (let i = 0; i < chars.length; i++) {
 	lookup[chars.charCodeAt(i)] = i;
 }
 
-export function encodeArrayBufferToBase64(arraybuffer: ArrayBuffer): string {
+export function encodeArrayBufferToBase64(arraybuffer: ArrayBuffer | ArrayLike<number>): string {
 	const bytes = new Uint8Array(arraybuffer);
 	const len = bytes.length;
 	let base64 = '';
@@ -29,7 +31,7 @@ export function encodeArrayBufferToBase64(arraybuffer: ArrayBuffer): string {
 	return base64;
 }
 
-export function decodeBase64ToUint8Array(base64: string): Uint8Array {
+export function decodeBase64ToUint8Array(base64: string): Bytes {
 	const len = base64.length;
 	let bufferLength = base64.length * 0.75;
 	let i;

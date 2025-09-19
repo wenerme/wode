@@ -2,6 +2,7 @@ import { classOf } from '../langs/classOf';
 import { getGlobalThis } from '../web/getGlobalThis';
 import { decodeBase64ToUint8Array, encodeArrayBufferToBase64 } from './base64';
 import { isBuffer } from './isBuffer';
+import type { Bytes } from './types';
 
 /**
  * Various utils to work with {@link ArrayBuffer}
@@ -59,9 +60,9 @@ https://github.com/tc39/proposal-resizablearraybuffer
 		return (textDecoder ||= new TextDecoder()).decode(v);
 	}
 
-	function encode(v: string): Uint8Array;
-	function encode<T>(v: string | T): T | Uint8Array;
-	function encode<T>(v: string | T): T | Uint8Array {
+	function encode(v: string): Bytes;
+	function encode<T>(v: string | T): T | Bytes;
+	function encode<T>(v: string | T): T | Bytes {
 		if (typeof v === 'string') {
 			return (textEncoder ||= new TextEncoder()).encode(v);
 		}
@@ -112,7 +113,7 @@ https://github.com/tc39/proposal-resizablearraybuffer
 	 */
 	export function asView<C extends ArrayBufferViewConstructor<unknown>>(
 		TypedArray: C,
-		v: BufferSource,
+		v: BufferSource | TypedArray,
 		byteOffset?: number,
 		byteLength?: number,
 	): InstanceType<C> {
@@ -132,7 +133,10 @@ https://github.com/tc39/proposal-resizablearraybuffer
 	/**
 	 * toString convert the given {@link BufferSource} to string
 	 */
-	export function toString(source: BufferSource | string, encoding: BinaryStringEncoding = 'utf8'): string {
+	export function toString(
+		source: BufferSource | TypedArray | string,
+		encoding: BinaryStringEncoding = 'utf8',
+	): string {
 		// 'ascii'  'utf16le' | 'ucs2' | 'ucs-2' | 'base64' | 'base64url' | 'latin1' | 'binary' | 'hex'
 		if (typeof source === 'string') {
 			switch (encoding) {
@@ -156,7 +160,7 @@ https://github.com/tc39/proposal-resizablearraybuffer
 				return [...u8].map((b) => hexLookupTable[b]).join('');
 			}
 			case 'base64': {
-				return encodeArrayBufferToBase64(u8);
+				return toBase64(u8);
 			}
 			case 'utf8':
 			// falls through
@@ -303,9 +307,9 @@ https://github.com/tc39/proposal-resizablearraybuffer
 		return r.buffer;
 	}
 
-	export function fromBase64(v: string, encoding?: undefined): Uint8Array;
+	export function fromBase64(v: string, encoding?: undefined): Bytes;
 	export function fromBase64(v: string, encoding: BinaryStringEncoding): string;
-	export function fromBase64(v: string, encoding?: BinaryStringEncoding): Uint8Array | string {
+	export function fromBase64(v: string, encoding?: BinaryStringEncoding): Bytes | string {
 		if (encoding) {
 			return toString(fromBase64(v), encoding);
 		}
@@ -318,7 +322,7 @@ https://github.com/tc39/proposal-resizablearraybuffer
 		return decodeBase64ToUint8Array(v.replace(/[^0-9a-zA-Z=+/_]/g, ''));
 	}
 
-	export function fromHex(v: string, encoding?: undefined): Uint8Array;
+	export function fromHex(v: string, encoding?: undefined): Bytes;
 	export function fromHex(v: string, encoding: BinaryStringEncoding): string;
 	export function fromHex(v: string, encoding?: BinaryStringEncoding): Uint8Array | string {
 		if (encoding) {
@@ -396,11 +400,11 @@ https://github.com/tc39/proposal-resizablearraybuffer
 		throw new Error(`ArrayBuffers.toArrayBuffer unsupported type ${classOf(v)}`);
 	}
 
-	export function toUint8Array(v: BufferSource): Uint8Array {
+	export function toUint8Array(v: BufferSource): Bytes {
 		return asView(Uint8Array, v);
 	}
 
-	export function alloc(size: number, fill?: string | number, encoding?: BinaryStringEncoding): ArrayBuffer {
+	export function alloc(size: number, fill?: string | number, encoding?: BinaryStringEncoding): ArrayBuffer | Bytes {
 		if (fill !== undefined) {
 			if (typeof fill === 'number') {
 				return new Uint8Array(size).fill(fill);

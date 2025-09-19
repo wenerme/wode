@@ -1,5 +1,5 @@
 import { isDefined } from '../langs/isDefined';
-import { isNullish } from '../langs/isNullish';
+import { isNil } from '../langs/isNil';
 
 // export function clamp<T>(value: T | null | undefined, opts: { min?: T; max?: T; default?: T }): T;
 export function clamp<T>(value: T | null | undefined, min: T, max: T, def?: T): T;
@@ -10,7 +10,7 @@ export function clamp<T>(value: T | null | undefined, ...o: any[]): T {
 	} else {
 		[min, max, def = min!] = o;
 	}
-	if (isNullish(value)) {
+	if (isNil(value)) {
 		return def;
 	}
 	if (isDefined(min) && value < min) {

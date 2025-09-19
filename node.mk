@@ -71,9 +71,11 @@ else ifneq ($(wildcard rollup.config.*),)
 else ifneq ($(wildcard esbuild.build.*),)
 	$(EXEC) $(wildcard esbuild.build.*)
 else
-	@$(EXEC) esbuild --format=esm --outdir=lib $(SOURCE_FILES) $(ESBUILD_BUILD_FLAGS)
+	@$(EXEC) swc ./src -d ./lib --strip-leading-paths --copy-files --ignore '**/*.test.ts'
+	@$(NPX) ts-add-js-extension --dir=lib
 ifeq ($(WANT_CJS),true)
-	@$(EXEC) esbuild --format=cjs --outdir=dist/cjs/lib $(SOURCE_FILES) $(ESBUILD_BUILD_FLAGS)
+	@$(EXEC) swc ./src -d ./dist/cjs/lib --strip-leading-paths --copy-files --ignore '**/*.test.ts' -C module.type=commonjs
+	@$(NPX) ts-add-js-extension --dir=./dist/cjs/lib
 endif
 endif
 
@@ -114,7 +116,8 @@ else ifneq ($(wildcard esbuild.bundle.*),)
 else
 	@$(EXEC) esbuild --format=esm --outfile=dist/esm/$(OUT_NAME).development.js $(ESBUILD_DEVELOPMENT_FLAGS) $(ESBUILD_BUNDLE_FLAGS) src/index.ts
 	@$(EXEC) esbuild --format=esm --outfile=dist/esm/$(OUT_NAME).production.js $(ESBUILD_PRODUCTION_FLAGS) $(ESBUILD_BUNDLE_FLAGS) src/index.ts
-	@$(EXEC) esbuild --format=cjs --outfile=dist/cjs/index.js $(ESBUILD_DEVELOPMENT_FLAGS) $(ESBUILD_BUNDLE_FLAGS) src/index.ts
+	@$(EXEC) swc ./src -d dist/cjs --strip-leading-paths --copy-files --ignore '**/*.test.ts' -C module.type=commonjs
+	@$(NPX) ts-add-js-extension --dir=./dist/cjs
 endif
 
 ifneq ($(wildcard rollup.config.js),)
@@ -155,7 +158,9 @@ endif
 
 test:
 	@printf $(COLOR_INFO) "Testing..."
-ifneq ($(wildcard jest.config.*),)
+ifneq ($(wildcard vitest.config.*),)
+	$(EXEC) vitest run
+else ifneq ($(wildcard jest.config.*),)
 	$(EXEC) jest
 else ifneq ($(wildcard ava.config.*),)
 	$(EXEC) ava

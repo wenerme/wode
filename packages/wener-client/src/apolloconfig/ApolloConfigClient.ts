@@ -1,4 +1,3 @@
-import { createHmac } from 'node:crypto';
 import type { FetchLike } from '@wener/utils';
 import { request, type RequestOptions } from './request';
 import type {
@@ -10,12 +9,12 @@ import type {
 	WatchResult,
 } from './types';
 
-// https://www.apolloconfig.com/#/zh/client/other-language-client-user-guide
+type ConfigFormat = 'json' | 'xml' | 'yaml' | 'yml' | 'properties' | 'txt';
 
 export type ApolloConfigClientInit = {
-	appId: string;
+	url: string;
 	cluster?: string;
-	configServerUrl: string;
+	appId: string;
 	appSecret?: string;
 	clientIp?: string;
 	fetch?: FetchLike;
@@ -24,10 +23,10 @@ export type ApolloConfigClientInit = {
 
 export type ApolloConfigClientOptions = {
 	appId: string;
+	appSecret?: string;
 	cluster: string;
 	namespace: string;
-	configServerUrl: string;
-	accessKeySecret?: string;
+	url: string;
 	clientIp?: string;
 	fetch: FetchLike;
 };
@@ -40,58 +39,22 @@ export class ApolloConfigClient<T extends Record<string, string> = Record<string
 			cluster: 'default',
 			namespace: 'application',
 			...init,
-			accessKeySecret: init.appSecret,
+			appSecret: init.appSecret,
 			fetch: init.fetch || globalThis.fetch,
 		};
 	}
 
 	async request<T = any>(url: string, options: Partial<RequestOptions> = {}): Promise<T> {
-		const headers: Record<string, string> = {
-			...options.headers,
-		};
-
-		// Add access key authentication if configured
-		if (this.options.accessKeySecret) {
-			const timestamp = Date.now().toString();
-			// Build full URL with query parameters to get correct path for signature
-			let fullUrl = new URL(url, this.options.configServerUrl);
-			if (options.params) {
-				for (const [k, v] of Object.entries(options.params)) {
-					if (v === null || v === undefined) continue;
-					if (Array.isArray(v)) {
-						for (const vv of v) {
-							fullUrl.searchParams.append(k, String(vv));
-						}
-						continue;
-					}
-					fullUrl.searchParams.set(k, String(v));
-				}
-				fullUrl.searchParams.sort();
-			}
-			const pathAndQuery = fullUrl.pathname + (fullUrl.search || '');
-			const signature = this.generateSignature(pathAndQuery, timestamp);
-
-			headers['Authorization'] = `Apollo ${this.options.appId}:${signature}`;
-			headers['Timestamp'] = timestamp;
-		}
-
 		return request<T>({
-			baseUrl: this.options.configServerUrl,
+			baseUrl: this.options.url,
 			url,
 			method: 'GET',
-			headers,
+			headers: options.headers,
 			fetch: this.options.fetch,
+			appId: this.options.appId,
+			appSecret: this.options.appSecret,
 			...options,
 		});
-	}
-
-	private generateSignature(urlPath: string, timestamp: string): string {
-		if (!this.options.accessKeySecret) {
-			throw new Error('Access key secret is required for signature generation');
-		}
-
-		const stringToSign = `${timestamp}\n${urlPath}`;
-		return createHmac('sha1', this.options.accessKeySecret).update(stringToSign, 'utf8').digest('base64');
 	}
 
 	private resolveOptions(options: CommonConfigOptions = {}) {
@@ -141,17 +104,18 @@ export class ApolloConfigClient<T extends Record<string, string> = Record<string
 		if (resolved.ip) params.ip = resolved.ip;
 
 		const url = `configs/${resolved.appId}/${resolved.cluster}/${resolved.namespace}`;
-		const result = await this.request<ApolloConfigResponse<T> | null>(url, { params });
-
-		// If 304 Not Modified, return null to indicate no changes
-		if (result === null) {
-			return null;
+		try {
+			return await this.request<ApolloConfigResponse<T>>(url, { params });
+		} catch (e: any) {
+			if (e && e.status === 304) {
+				// Not Modified
+				return null;
+			}
+			throw e;
 		}
-
-		return result;
 	}
 
-	async getConfigJson(options: CommonConfigOptions = {}): Promise<Record<string, string>> {
+	async getJson(options: CommonConfigOptions = {}): Promise<Record<string, string>> {
 		const resolved = this.resolveOptions(options);
 
 		const params: Record<string, any> = {};
@@ -163,7 +127,72 @@ export class ApolloConfigClient<T extends Record<string, string> = Record<string
 		return this.request<Record<string, string>>(url, { params });
 	}
 
-	async getConfigProperties(options: CommonConfigOptions = {}): Promise<string> {
+	async getContent({
+		format,
+		namespace,
+		...options
+	}: CommonConfigOptions & {
+		format?: ConfigFormat;
+	} = {}): Promise<string> {
+		namespace ||= this.options.namespace;
+		({ namespace, format } = resolveNamespaceFormat({
+			namespace,
+			format,
+		}));
+
+		const out = await this.getJson({
+			namespace,
+			...options,
+		});
+
+		let keys = Object.keys(out);
+		if (format === 'properties' || !format) {
+			return keys.map((k) => `${k}=${JSON.stringify(out[k])}`).join('\n');
+		}
+
+		if (keys.length === 1 && keys[0] === 'content') {
+			// this is the case
+			return out['content'];
+		}
+
+		throw new Error(`${namespace} config unknown format ${format}, keys: ${keys.join(',')}`);
+	}
+
+	async getData({
+		format,
+		namespace,
+		...options
+	}: CommonConfigOptions & {
+		format?: ConfigFormat;
+	} = {}): Promise<any> {
+		namespace ||= this.options.namespace;
+
+		({ namespace, format } = resolveNamespaceFormat({
+			namespace,
+			format,
+		}));
+
+		const out = await this.getJson({
+			namespace,
+			...options,
+		});
+		switch (format) {
+			case 'properties':
+				return out;
+			case 'json':
+				return JSON.parse(out['content'] || '{}');
+			case 'yml':
+			case 'yaml': {
+				// lazy load
+				const { parse } = await import('yaml');
+				return parse(out['content'] || '', { merge: true });
+			}
+			default:
+				throw new Error(`Unsupported format ${format}`);
+		}
+	}
+
+	async getProperties(options: CommonConfigOptions = {}): Promise<string> {
 		const resolved = this.resolveOptions(options);
 
 		const params: Record<string, any> = {};
@@ -201,43 +230,9 @@ export class ApolloConfigClient<T extends Record<string, string> = Record<string
 		return this.request<NotificationResponse>('notifications/v2', { params, signal });
 	}
 
-	/**
-	 * Create an async generator that watches for configuration changes
-	 *
-	 * @param options - Watch options
-	 * @returns AsyncGenerator that yields {config?, notification} objects
-	 *
-	 * @example
-	 * ```typescript
-	 * // Watch config content (default behavior)
-	 * for await (const result of client.watch()) {
-	 *   console.log('Notification:', result.notification);
-	 *   if (result.config) {
-	 *     console.log('Config changed:', result.config.configurations);
-	 *     console.log('Release key:', result.config.releaseKey);
-	 *   }
-	 * }
-	 *
-	 * // Watch notifications only (low-level)
-	 * for await (const result of client.watch({ includeConfig: false })) {
-	 *   console.log('Notification:', result.notification);
-	 *   // result.config will be undefined
-	 * }
-	 *
-	 * // With AbortController
-	 * const controller = new AbortController();
-	 * setTimeout(() => controller.abort(), 10000); // Stop after 10s
-	 *
-	 * for await (const result of client.watch({ signal: controller.signal })) {
-	 *   console.log('Changes:', result);
-	 * }
-	 * ```
-	 */
 	async *watch(options: WatchOptions = {}): AsyncGenerator<WatchResult<T>, void, unknown> {
 		const {
 			namespaces: inputNamespaces,
-			interval = 60000, // 60 seconds
-			includeInitial = options.includeConfig ?? true, // Default to true if includeConfig
 			onError = () => true, // Default: continue on errors
 			signal,
 			includeConfig = true, // Default to true
@@ -247,44 +242,30 @@ export class ApolloConfigClient<T extends Record<string, string> = Record<string
 		// Convert single namespace to namespaces array if namespaces is missing
 		const namespaces = inputNamespaces || [namespace];
 
-		const notificationMap = new Map<string, number>();
-		const releaseKeyMap = new Map<string, string>(); // Track releaseKey per namespace
+		// Track state for each namespace
+		const tracks: Record<string, { namespace: string; id: number; releaseKey?: string }> = {};
 
-		// Initialize notification IDs
-		namespaces.forEach((ns) => notificationMap.set(ns, -1));
+		// Initialize tracks
+		namespaces.forEach((ns) => {
+			tracks[ns] = { namespace: ns, id: -1 };
+		});
 
-		let isFirstPoll = true;
-
-		// Handle initial data if requested
-		if (includeInitial && includeConfig) {
-			try {
-				if (signal?.aborted) return;
-				const initialConfig = await this.getConfig({ namespace });
-				if (initialConfig !== null) {
-					releaseKeyMap.set(namespace, initialConfig.releaseKey);
-					// For initial config, create result with empty notification
-					yield {
-						config: initialConfig,
-						notification: { namespaceName: namespace, notificationId: -1 },
-					};
-				}
-			} catch (error) {
-				if (error instanceof Error && onError) {
-					const shouldContinue = onError(error);
-					if (!shouldContinue) return;
-				} else {
-					throw error;
-				}
+		const handleError = (error: any) => {
+			if (onError?.(error)) {
+				return;
 			}
-		}
+			throw error;
+		};
+
+		// first getNotifications always return, because initial id is -1
 
 		while (!signal?.aborted) {
 			try {
 				if (signal?.aborted) break; // Check again before making request
 
-				const notifications = Array.from(notificationMap.entries()).map(([namespaceName, notificationId]) => ({
-					namespaceName,
-					notificationId,
+				const notifications = Object.values(tracks).map((track) => ({
+					namespaceName: track.namespace,
+					notificationId: track.id,
 				}));
 
 				const changes = await this.getNotifications({
@@ -294,102 +275,73 @@ export class ApolloConfigClient<T extends Record<string, string> = Record<string
 
 				if (signal?.aborted) break; // Check after request
 
-				if (changes.length > 0) {
-					// Update notification IDs
-					changes.forEach((change) => {
-						notificationMap.set(change.namespaceName, change.notificationId);
-					});
-
-					if (includeConfig) {
-						// Process each changed namespace from notifications
-						let configToYield: ApolloConfigResponse<T> | undefined;
-
-						for (const change of changes) {
-							try {
-								if (signal?.aborted) break;
-
-								const changedNamespace = change.namespaceName;
-								const currentReleaseKey = releaseKeyMap.get(changedNamespace);
-
-								const updatedConfig = await this.getConfig({
-									namespace: changedNamespace,
-									releaseKey: currentReleaseKey,
-								});
-
-								// Handle 304 Not Modified (null response) - skip yielding
-								if (updatedConfig === null) {
-									// No changes, skip yielding
-									continue;
-								}
-
-								// Only update if releaseKey has actually changed (deduplication)
-								if (updatedConfig.releaseKey !== currentReleaseKey) {
-									releaseKeyMap.set(changedNamespace, updatedConfig.releaseKey);
-									configToYield = updatedConfig; // Use the last changed config
-								}
-							} catch (error) {
-								if (onError?.(error)) {
-									// continue on error
-									break;
-								} else {
-									throw error;
-								}
-							}
-						}
-
-						// Yield result with both notification and config (if any)
-						if (!signal?.aborted) {
-							if (configToYield) {
-								// Yield one result per changed namespace
-								for (const change of changes) {
-									yield {
-										config: configToYield,
-										notification: change,
-									};
-								}
-							}
-						}
-					} else {
-						// Yield only notifications (skip first poll unless includeInitial is true)
-						if (!isFirstPoll || includeInitial) {
-							if (!signal?.aborted) {
-								// Yield one result per notification
-								for (const change of changes) {
-									yield {
-										notification: change,
-									};
-								}
-							}
-						}
-					}
+				if (!changes.length) {
+					// nothing
+					continue;
 				}
 
-				isFirstPoll = false;
+				changes.forEach((change) => {
+					tracks[change.namespaceName].id = change.notificationId;
+				});
 
-				// Wait before next poll, but allow early exit on abort
-				if (!signal?.aborted) {
-					await new Promise<void>((resolve) => {
-						const timeout = setTimeout(resolve, interval);
+				if (!includeConfig) {
+					yield* changes.map((v) => ({ notification: v }));
+					continue;
+				}
 
-						if (signal) {
-							const abortHandler = () => {
-								clearTimeout(timeout);
-								resolve();
-							};
-							signal.addEventListener('abort', abortHandler, { once: true });
+				for (const change of changes) {
+					try {
+						if (signal?.aborted) break;
+
+						const changedNamespace = change.namespaceName;
+						const track = tracks[changedNamespace];
+						const currentReleaseKey = track.releaseKey;
+
+						const updatedConfig = await this.getConfig({
+							namespace: changedNamespace,
+							releaseKey: currentReleaseKey,
+							// todo messages
+						});
+						if (signal?.aborted) break;
+
+						// Handle 304 Not Modified (null response) - skip yielding
+						if (updatedConfig === null) {
+							continue;
 						}
-					});
+
+						// Only yield if releaseKey has actually changed (deduplication)
+						if (updatedConfig.releaseKey !== currentReleaseKey) {
+							track.releaseKey = updatedConfig.releaseKey;
+
+							yield { config: updatedConfig, notification: change };
+						}
+					} catch (error) {
+						handleError(error);
+					}
 				}
 			} catch (error) {
-				if (error instanceof Error && onError) {
-					const shouldContinue = onError(error);
-					if (!shouldContinue) {
-						break;
-					}
-				} else {
-					throw error;
-				}
+				handleError(error);
 			}
 		}
 	}
+}
+
+function resolveNamespaceFormat({ namespace, format }: { namespace: string; format?: ConfigFormat }): {
+	namespace: string;
+	format: ConfigFormat;
+} {
+	if (!format) {
+		let ext = namespace.split('.').pop();
+		if (ext && ['json', 'xml', 'yaml', 'yml', 'properties', 'txt'].includes(ext)) {
+			format = ext as ConfigFormat;
+		}
+	}
+
+	format ||= 'properties';
+	if (format === 'properties') {
+	} else if (!namespace.endsWith(`.${format}`)) {
+		namespace = `${namespace}.${format}`;
+	}
+
+	return { namespace, format };
 }

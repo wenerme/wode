@@ -26,7 +26,7 @@
   },
   "keywords": [],
   "scripts": {
-    "build": "turbo run build",
+    "build": "turbo run build --filter='!@wener/system'",
     "dev": "turbo run dev --parallel",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "lint": "turbo run lint",
@@ -86,5 +86,5 @@
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
   },
-  "packageManager": "pnpm@10.14.0"
+  "packageManager": "pnpm@10.17.0"
 }

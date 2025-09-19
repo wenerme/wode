@@ -17,6 +17,7 @@
 		"./password": "./src/password/index.ts",
 		"./resource": "./src/resource/index.ts",
 		"./resource/schema": "./src/resource/schema/index.ts",
+		"./s3": "./src/s3/index.ts",
 		"./schema": "./src/schema/index.ts",
 		"./package.json": "./package.json"
 	},
@@ -31,6 +32,7 @@
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"peerDependencies": {
+		"ajv": "*",
 		"zod": "*"
 	},
 	"dependencies": {
@@ -46,7 +48,6 @@
 		"@sinclair/typebox-codegen": "^0.11.1",
 		"@types/argon2-browser": "^1.18.4",
 		"@types/bcrypt": "^6.0.0",
-		"ajv": "^8.17.1",
 		"ajv-formats": "^3.0.1",
 		"ajv-i18n": "^4.2.0",
 		"ajv-keywords": "^5.1.0",
@@ -105,6 +106,10 @@
 			"./resource/schema": {
 				"types": "./src/resource/schema/index.ts",
 				"default": "./lib/resource/schema/index.js"
+			},
+			"./s3": {
+				"types": "./src/s3/index.ts",
+				"default": "./lib/s3/index.js"
 			},
 			"./schema": {
 				"types": "./src/schema/index.ts",

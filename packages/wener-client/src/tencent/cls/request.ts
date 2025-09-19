@@ -1,5 +1,6 @@
 import { createHash, createHmac } from 'crypto';
 import type { FetchLike } from '@wener/utils';
+import { resolveRequest } from '../../utils/resolveRequest';
 
 export type RequestOptions = {
 	url: string;
@@ -13,8 +14,8 @@ export type RequestOptions = {
 };
 
 export type SignOptions = {
-	secretId: string;
-	secretKey: string;
+	clientId: string;
+	clientKey: string;
 	service: string;
 	region: string;
 	action: string;
@@ -27,64 +28,31 @@ export type SignOptions = {
 };
 
 export async function request<O = any>(options: RequestOptions): Promise<O> {
-	let {
-		url,
-		baseUrl = '',
-		params = {},
-		data,
-		headers = {},
-		method = 'POST',
-		fetch = globalThis.fetch,
-		signal,
-	} = options;
+	const { fetch = globalThis.fetch, method = 'POST', ...restOptions } = options;
 
-	let u: URL;
-	if (baseUrl && !/^https?:\/\//.test(url)) {
-		if (!baseUrl.endsWith('/')) {
-			baseUrl += '/';
-		}
-		if (url.startsWith('/')) {
-			url = url.slice(1);
-		}
-		u = new URL(baseUrl + url);
-	} else {
-		u = new URL(url);
-	}
-
-	if (params) {
-		for (const [k, v] of Object.entries(params)) {
-			if (v === null || v === undefined) continue;
-			if (Array.isArray(v)) {
-				for (const vv of v) {
-					u.searchParams.append(k, String(vv));
-				}
-				continue;
-			}
-			u.searchParams.set(k, String(v));
-		}
-	}
-	u.searchParams.sort();
-
-	const req: RequestInit = {
+	// Resolve base request
+	const { url, init, headers } = resolveRequest({
+		...restOptions,
 		method,
-		signal,
-		headers: {
-			'Content-Type': 'application/json',
-			...headers,
-		},
-	};
+	});
 
-	if (data && (method === 'POST' || method === 'PUT' || method === 'PATCH')) {
-		req.body = JSON.stringify(data);
-	}
-
-	const response = await fetch(u.toString(), req);
+	const response = await fetch(url.toString(), init);
 
 	if (!response.ok) {
 		throw new Error(`HTTP ${response.status}: ${response.statusText}`);
 	}
-
-	let out = (await response.json()) as GeneralResponse<O>;
+	let text = await response.text();
+	let out: GeneralResponse<O>;
+	try {
+		out = JSON.parse(text) as GeneralResponse<O>;
+	} catch (e) {
+		console.log(`Failed to parse response as JSON: ${text}`);
+		throw Object.assign(new Error(`HTTP ${response.status}: ${response.statusText}`), {
+			code: response.status,
+			requestId: undefined,
+			body: text,
+		});
+	}
 	if ('Error' in out.Response) {
 		const { Code, Message } = out.Response.Error;
 		const RequestId = out.Response.RequestId;
@@ -110,7 +78,7 @@ type GeneralResponse<T> = {
 };
 
 export function sign(options: SignOptions): { authorization: string; timestamp: string } {
-	const { secretId, secretKey, service, region, action, version, timestamp, payload, method, host, uri } = options;
+	const { clientId, clientKey, service, region, action, version, timestamp, payload, method, host, uri } = options;
 
 	// 步骤 1：拼接规范请求串
 	const canonicalHeaders = `content-type:application/json\nhost:${host}\n`;
@@ -128,13 +96,13 @@ export function sign(options: SignOptions): { authorization: string; timestamp: 
 	const stringToSign = [algorithm, timestamp.toString(), credentialScope, hashedCanonicalRequest].join('\n');
 
 	// 步骤 3：计算签名
-	const kDate = createHmac('sha256', `TC3${secretKey}`).update(date).digest();
+	const kDate = createHmac('sha256', `TC3${clientKey}`).update(date).digest();
 	const kService = createHmac('sha256', kDate).update(service).digest();
 	const kSigning = createHmac('sha256', kService).update('tc3_request').digest();
 	const signature = createHmac('sha256', kSigning).update(stringToSign).digest('hex');
 
 	// 步骤 4：拼接 Authorization
-	const authorization = `${algorithm} Credential=${secretId}/${credentialScope}, SignedHeaders=${signedHeaders}, Signature=${signature}`;
+	const authorization = `${algorithm} Credential=${clientId}/${credentialScope}, SignedHeaders=${signedHeaders}, Signature=${signature}`;
 
 	return {
 		authorization,

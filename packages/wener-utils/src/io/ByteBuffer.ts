@@ -1,8 +1,10 @@
 import { ArrayBuffers } from './ArrayBuffers';
+import type { Bytes } from './types';
 
-type AnyBuffer = BufferSource | ArrayBufferLike;
+// type AnyBuffer = BufferSource | ArrayBufferLike;
+type AnyBuffer = ArrayBufferView<ArrayBuffer> | ArrayBuffer;
 
-function asBuffer(o: AnyBuffer) {
+function asBuffer(o: AnyBuffer): ArrayBuffer {
 	if (o instanceof ArrayBuffer) {
 		return o;
 	}
@@ -41,9 +43,9 @@ function asBuffer(o: AnyBuffer) {
 export class ByteBuffer {
 	position = 0;
 
-	#buffer: ArrayBufferLike;
+	#buffer: ArrayBuffer;
 	#view: DataView;
-	#bytes: Uint8Array;
+	#bytes: Bytes;
 	// #endian: 'big' | 'little' = 'big';
 	#bigEndian = true;
 
@@ -54,7 +56,7 @@ export class ByteBuffer {
 		this.#bytes = new Uint8Array(this.#buffer);
 	}
 
-	get littleEndian() {
+	get littleEndian(): boolean {
 		return !this.#bigEndian;
 	}
 
@@ -62,7 +64,7 @@ export class ByteBuffer {
 		this.#bigEndian = !v;
 	}
 
-	get bigEndian() {
+	get bigEndian(): boolean {
 		return this.#bigEndian;
 	}
 
@@ -70,11 +72,11 @@ export class ByteBuffer {
 		this.#bigEndian = v;
 	}
 
-	get view() {
+	get view(): DataView {
 		return this.#view;
 	}
 
-	get buffer(): ArrayBufferLike {
+	get buffer(): ArrayBuffer {
 		return this.#buffer;
 	}
 
@@ -84,11 +86,11 @@ export class ByteBuffer {
 		this.#bytes = new Uint8Array(this.#buffer);
 	}
 
-	get bytes(): Uint8Array {
+	get bytes(): Bytes {
 		return this.#bytes;
 	}
 
-	get length() {
+	get length(): number {
 		return this.view.byteLength;
 	}
 
@@ -96,96 +98,98 @@ export class ByteBuffer {
 		this.resize(length);
 	}
 
-	resize(newLength: number) {
+	resize(newLength: number): void {
 		// 1.2 for buffer growth
 		this.buffer = ArrayBuffers.resize(this.buffer, newLength, Math.ceil(newLength * 1.2));
 	}
 
-	writeByte(value: number) {
+	writeByte(value: number): void {
 		this.willWrite(1);
 		this.view.setUint8(this.position++, value);
 	}
 
-	writeBytes(bytes: ArrayBufferLike, len: number = bytes.byteLength) {
+	writeBytes(bytes: ArrayBuffer | ArrayBufferView<ArrayBuffer>, len?: number): void {
+		const byteLength = getByteLength(bytes);
+		len ??= byteLength;
 		this.willWrite(len);
 		// ensure len first
-		this.bytes.set(new Uint8Array(bytes).subarray(0, len), this.position);
-		if (len > bytes.byteLength) {
+		this.bytes.set(ArrayBuffers.toUint8Array(bytes).subarray(0, len), this.position);
+		if (len > byteLength) {
 			// fill zero
-			this.bytes.fill(0, this.position + bytes.byteLength, this.position + len);
+			this.bytes.fill(0, this.position + byteLength, this.position + len);
 		}
 
 		this.position += len;
 	}
 
-	writeInt8(value: number) {
+	writeInt8(value: number): void {
 		this.willWrite(1);
 		this.view.setInt8(this.position, value);
 		this.position += 1;
 	}
 
-	writeUint8(value: number) {
+	writeUint8(value: number): void {
 		this.willWrite(1);
 		this.view.setUint8(this.position, value);
 		this.position += 1;
 	}
 
-	writeInt16(value: number) {
+	writeInt16(value: number): void {
 		this.willWrite(2);
 		this.view.setInt16(this.position, value, this.littleEndian);
 		this.position += 2;
 	}
 
-	writeUint16(value: number) {
+	writeUint16(value: number): void {
 		this.willWrite(2);
 		this.view.setUint16(this.position, value, this.littleEndian);
 		this.position += 2;
 	}
 
-	writeUint24(value: number) {
+	writeUint24(value: number): void {
 		this.willWrite(3);
 		this.view.setUint8(this.position, value & 0xff);
 		this.view.setUint16(this.position + 1, value >> 8, this.littleEndian);
 		this.position += 3;
 	}
 
-	writeInt32(value: number) {
+	writeInt32(value: number): void {
 		this.willWrite(4);
 		this.view.setInt32(this.position, value, this.littleEndian);
 		this.position += 4;
 	}
 
-	writeUint32(value: number) {
+	writeUint32(value: number): void {
 		this.willWrite(4);
 		this.view.setUint32(this.position, value, this.littleEndian);
 		this.position += 4;
 	}
 
-	writeInt64(value: bigint | number) {
+	writeInt64(value: bigint | number): void {
 		this.willWrite(8);
 		this.view.setBigInt64(this.position, bigintOf(value), this.littleEndian);
 		this.position += 8;
 	}
 
-	writeUint64(value: bigint | number) {
+	writeUint64(value: bigint | number): void {
 		this.willWrite(8);
 		this.view.setBigUint64(this.position, bigintOf(value), this.littleEndian);
 		this.position += 8;
 	}
 
-	writeFloat32(value: number) {
+	writeFloat32(value: number): void {
 		this.willWrite(4);
 		this.view.setFloat32(this.position, value, this.littleEndian);
 		this.position += 4;
 	}
 
-	writeFloat64(value: number) {
+	writeFloat64(value: number): void {
 		this.willWrite(8);
 		this.view.setFloat64(this.position, value, this.littleEndian);
 		this.position += 8;
 	}
 
-	writeBoolean(value: boolean) {
+	writeBoolean(value: boolean): void {
 		this.writeByte(value ? 1 : 0);
 	}
 
@@ -193,56 +197,56 @@ export class ByteBuffer {
 
 	writeString(value: string, len?: number): void;
 
-	writeString(value: string, len?: number) {
+	writeString(value: string, len?: number): void {
 		let bytes = this.encodeText(value);
 		this.writeBytes(bytes, len);
 	}
 
-	readSizeString(n?: number) {
+	readSizeString(n?: number): string {
 		return this.readString(requireNumber(this.readUint(n)));
 	}
 
-	writeSizeString(value: string, n?: number) {
+	writeSizeString(value: string, n?: number): void {
 		let out = this.encodeText(value);
 		this.writeUint(out.length, n);
 		this.writeBytes(out);
 	}
 
-	encodeText(value: string) {
+	encodeText(value: string): Bytes {
 		return new TextEncoder().encode(value);
 	}
 
-	decodeText(bytes: ArrayBufferLike) {
+	decodeText(bytes: ArrayBufferLike): string {
 		return new TextDecoder().decode(bytes);
 	}
 
-	readByte() {
+	readByte(): number {
 		return this.view.getUint8(this.position++);
 	}
 
-	readBytes(length: number) {
+	readBytes(length: number): ArrayBuffer {
 		let bytes = this.buffer.slice(this.position, this.position + length);
 		this.position += length;
 		return bytes;
 	}
 
-	readInt8() {
+	readInt8(): number {
 		let value = this.view.getInt8(this.position);
 		this.position += 1;
 		return value;
 	}
 
-	readUint8() {
+	readUint8(): number {
 		let value = this.view.getUint8(this.position);
 		this.position += 1;
 		return value;
 	}
 
-	readUnsignedByte() {
+	readUnsignedByte(): number {
 		return this.readUint8();
 	}
 
-	readThrough(end: number) {
+	readThrough(end: number): ArrayBuffer {
 		// readUntil 不包含 end
 		let idx = this.bytes.indexOf(end, this.position);
 		if (idx === -1) {
@@ -253,55 +257,55 @@ export class ByteBuffer {
 		return bytes;
 	}
 
-	readInt16() {
+	readInt16(): number {
 		let value = this.view.getInt16(this.position, this.littleEndian);
 		this.position += 2;
 		return value;
 	}
 
-	readUint16() {
+	readUint16(): number {
 		let value = this.view.getUint16(this.position, this.littleEndian);
 		this.position += 2;
 		return value;
 	}
 
-	readInt32() {
+	readInt32(): number {
 		let value = this.view.getInt32(this.position, this.littleEndian);
 		this.position += 4;
 		return value;
 	}
 
-	readUint32() {
+	readUint32(): number {
 		let value = this.view.getUint32(this.position, this.littleEndian);
 		this.position += 4;
 		return value;
 	}
 
-	readInt64() {
+	readInt64(): number | bigint {
 		let value = this.view.getBigInt64(this.position, this.littleEndian);
 		this.position += 8;
 		return safeNumber(value);
 	}
 
-	readUint64() {
+	readUint64(): number | bigint {
 		let value = this.view.getBigUint64(this.position, this.littleEndian);
 		this.position += 8;
 		return safeNumber(value);
 	}
 
-	readFloat32() {
+	readFloat32(): number {
 		let value = this.view.getFloat32(this.position, this.littleEndian);
 		this.position += 4;
 		return value;
 	}
 
-	readFloat64() {
+	readFloat64(): number {
 		let value = this.view.getFloat64(this.position, this.littleEndian);
 		this.position += 8;
 		return value;
 	}
 
-	readBoolean() {
+	readBoolean(): boolean {
 		// or !== 0?
 		return this.readByte() === 1;
 	}
@@ -316,22 +320,22 @@ export class ByteBuffer {
 		return this.decodeText(bytes);
 	}
 
-	readHexString(length: number) {
+	readHexString(length: number): string {
 		let bytes = this.readBytes(length);
 		return ArrayBuffers.toHex(bytes);
 	}
 
-	writeHexString(value: string, len?: number) {
+	writeHexString(value: string, len?: number): void {
 		this.writeBytes(ArrayBuffers.fromHex(value), len);
 	}
 
-	writeInt24(value: number) {
+	writeInt24(value: number): void {
 		// fixme byte order
 		this.writeUint8(value & 0xff);
 		this.writeUint16(value >> 8);
 	}
 
-	readInt24() {
+	readInt24(): number {
 		// fixme recheck
 		let value = this.readUint24();
 		if (value & 0x800000) {
@@ -341,12 +345,12 @@ export class ByteBuffer {
 		return value;
 	}
 
-	readUint24() {
+	readUint24(): number {
 		// fixme recheck
 		return this.readUint8() | (this.readUint8() << 8) | (this.readUint8() << 16);
 	}
 
-	writeZero(length: number) {
+	writeZero(length: number): void {
 		this.willWrite(length);
 		this.bytes.fill(0, this.position, this.position + length);
 		this.position += length;
@@ -354,7 +358,7 @@ export class ByteBuffer {
 
 	writeValue(typ: TypedValue['type'], val: TypedValue['value']): void;
 	writeValue(tv: TypedValue): void;
-	writeValue(a: any, b?: any) {
+	writeValue(a: any, b?: any): void {
 		const tv: TypedValue = typeof a === 'string' ? { type: a, value: b } : a;
 		const { type, value, length } = tv;
 		switch (type) {
@@ -407,15 +411,15 @@ export class ByteBuffer {
 		}
 	}
 
-	readUnsignedShort() {
+	readUnsignedShort(): number {
 		return this.readUint16();
 	}
 
-	readShort() {
+	readShort(): number {
 		return this.readInt16();
 	}
 
-	readInt(bytesOrBits: number = 32) {
+	readInt(bytesOrBits: number = 32): number | bigint {
 		switch (bytesOrBits) {
 			case 1:
 			case 8:
@@ -437,7 +441,7 @@ export class ByteBuffer {
 		}
 	}
 
-	readUint(bytesOrBits: number = 32) {
+	readUint(bytesOrBits: number = 32): number | bigint {
 		switch (bytesOrBits) {
 			case 1:
 			case 8:
@@ -459,7 +463,7 @@ export class ByteBuffer {
 		}
 	}
 
-	writeUint(value: number, bytesOrBits: number = 32) {
+	writeUint(value: number, bytesOrBits: number = 32): void {
 		switch (bytesOrBits) {
 			case 1:
 			case 8:
@@ -485,7 +489,7 @@ export class ByteBuffer {
 		}
 	}
 
-	readFloat(n: number = 32) {
+	readFloat(n: number = 32): number {
 		switch (n) {
 			case 4:
 			case 32:
@@ -498,7 +502,7 @@ export class ByteBuffer {
 		}
 	}
 
-	writeFloat(value: number, n: number = 32) {
+	writeFloat(value: number, n: number = 32): void {
 		switch (n) {
 			case 4:
 			case 32:
@@ -513,39 +517,39 @@ export class ByteBuffer {
 		}
 	}
 
-	readDouble() {
+	readDouble(): number {
 		return this.readFloat64();
 	}
 
-	writeDouble(value: number) {
+	writeDouble(value: number): void {
 		this.writeFloat64(value);
 	}
 
-	remaining() {
+	remaining(): number {
 		return this.length - this.position;
 	}
 
-	hasRemaining() {
+	hasRemaining(): boolean {
 		return this.remaining() > 0;
 	}
 
-	readRemaining() {
+	readRemaining(): ArrayBuffer {
 		return this.readBytes(this.remaining());
 	}
 
-	toUint8Array() {
+	toUint8Array(): Bytes {
 		return new Uint8Array(this.buffer);
 	}
 
-	toHex() {
+	toHex(): string {
 		return ArrayBuffers.toHex(this.buffer);
 	}
 
-	toBase64() {
+	toBase64(): string {
 		return ArrayBuffers.toBase64(this.buffer);
 	}
 
-	private willWrite(length: number) {
+	private willWrite(length: number): void {
 		if (this.remaining() < length) {
 			this.resize(this.position + length);
 		}
@@ -576,23 +580,27 @@ export interface TypedValue {
 	length?: number;
 }
 
-function safeNumber(n: bigint) {
+function safeNumber(n: bigint): number | bigint {
 	if (n > Number.MAX_SAFE_INTEGER) {
 		return n;
 	}
 	return Number(n);
 }
 
-function bigintOf(n: number | bigint) {
+function bigintOf(n: number | bigint): bigint {
 	if (typeof n === 'bigint') {
 		return n;
 	}
 	return BigInt(n);
 }
 
-function requireNumber(n: number | bigint) {
+function requireNumber(n: number | bigint): number {
 	if (typeof n !== 'number') {
 		throw new Error(`Expected number, got ${n}`);
 	}
 	return n;
+}
+
+function getByteLength(i: { byteLength: number } | { length: number }) {
+	return 'byteLength' in i ? i.byteLength : i.length;
 }
