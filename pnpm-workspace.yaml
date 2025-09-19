@@ -21,8 +21,10 @@ preferWorkspacePackages: true
 saveWorkspaceProtocol: false
 dedupeDirectDeps: true
 
-minimumReleaseAge: 3600
+minimumReleaseAge: 600
 minimumReleaseAgeExclude:
 - "@wener/*"
+- "@vitejs/*"
+- vite
 
 strictPeerDependencies: false

@@ -3,7 +3,7 @@ import type { Meta } from '@storybook/react';
 import { ImagePreview } from './ImagePreview';
 
 const meta: Meta = {
-	title: 'web/components/ImagePreview',
+	title: 'components/ImagePreview',
 	parameters: {
 		layout: 'fullscreen',
 	},

@@ -17,7 +17,7 @@ import clsx from 'clsx';
 import { createStore, useStore } from 'zustand';
 import { mutative } from 'zustand-mutative';
 import { useShallow } from 'zustand/react/shallow';
-import { showErrorToast, showSuccessToast } from '../../../toast';
+import { showErrorToast, showSuccessToast } from '../../toast';
 
 interface ImagePreviewState {
 	detail: boolean;

@@ -11,7 +11,6 @@ export type WindowFrameProps = Omit<ComponentPropsWithoutRef<'div'>, 'title'> & 
 };
 
 export const WindowFrame = forwardRef<HTMLDivElement, WindowFrameProps>(({ ...props }, ref) => {
-	// 组件样式可参考 https://reactdesktop.js.org/
 	let theme = useWindowTheme();
 	if (theme === 'macos') {
 		return <MacOSWindowFrame ref={ref} {...props} />;

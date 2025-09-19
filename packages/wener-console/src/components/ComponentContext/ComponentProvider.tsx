@@ -13,14 +13,7 @@ type ComponentContextValue = {
 	find: (provide: string | ComponentType) => ComponentType | undefined;
 };
 
-const ComponentContext = createReactContext<ComponentContextValue>('ComponentContext', {
-	find: (provide) => {
-		if (typeof provide === 'function') {
-			return provide;
-		}
-		return undefined;
-	},
-});
+const ComponentContext = createReactContext<ComponentStore | undefined>('ComponentContext', undefined);
 
 type ComponentProviderProps = {
 	provides: ComponentProvide[];
@@ -36,19 +29,28 @@ type ComponentStore = ReturnType<typeof createComponentStore>;
 
 function createComponentStore(init: { provides?: ComponentProvide[] } = {}) {
 	return createStore(
-		mutative<ComponentStoreState>(() => {
+		mutative<ComponentStoreState>((setState, getState, store) => {
 			return {
 				provides: [],
 				...init,
-				actions: {},
+				actions: {
+					find(provide: string | ComponentType) {
+						const { provides } = getState();
+						const p = provides.find((p) => p.provide === provide);
+						if (p) {
+							return p.use;
+						}
+						return undefined;
+					},
+				},
 			};
 		}),
 	);
 }
 
 export function useComponentStore(): ComponentStore {
-	const store = use(ComponentContext);
-	return store || getGlobalStates('ComponentStore', () => createComponentStore());
+	const value = use(ComponentContext);
+	return value || getGlobalStates('ComponentStore', () => createComponentStore());
 }
 
 export const ComponentProvider = ({ children, provides }: ComponentProviderProps) => {

@@ -9,7 +9,7 @@ import React, {
 import { clsx } from 'clsx';
 import { Tooltip } from '../../floating';
 import { cn } from '../../utils/cn';
-import { HeaderContentFooterLayout, LeftContentRightLayout, OverlayScrollbar } from '../../web/components';
+import { HeaderContentFooterLayout, LeftContentRightLayout, OverlayScrollbar } from '../../components';
 import { AutoNavLink } from '../links';
 
 type BaseNavLink = ComponentType<BaseNavLinkProps>;

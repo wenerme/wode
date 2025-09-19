@@ -1,6 +1,8 @@
 import type Emittery from 'emittery';
 
-export const ActionEvents = {
+export const ActionEventType = {
+	__proto__: null,
+
 	//UI View
 
 	DumpViewState: 'Action:DumpViewState',
@@ -24,25 +26,25 @@ export const ActionEvents = {
 } as const;
 
 export type ActionEventData = {
-	[ActionEvents.DumpViewState]: {
+	[ActionEventType.DumpViewState]: {
 		state: Record<string, any>;
 	};
-	[ActionEvents.RestoreViewState]: {
+	[ActionEventType.RestoreViewState]: {
 		state: Record<string, any>;
 	};
 
-	[ActionEvents.Refresh]: {};
-	[ActionEvents.Debug]: {};
-	[ActionEvents.Close]: {
+	[ActionEventType.Refresh]: {};
+	[ActionEventType.Debug]: {};
+	[ActionEventType.Close]: {
 		reason?: string;
 	};
-	[ActionEvents.Error]: {
+	[ActionEventType.Error]: {
 		error: any;
 	};
-	[ActionEvents.Cancel]: {};
-	[ActionEvents.Apply]: {};
-	[ActionEvents.Next]: {};
-	[ActionEvents.Previous]: {};
+	[ActionEventType.Cancel]: {};
+	[ActionEventType.Apply]: {};
+	[ActionEventType.Next]: {};
+	[ActionEventType.Previous]: {};
 };
 
 export type ActionEventEmitter = Emittery<ActionEventData>;

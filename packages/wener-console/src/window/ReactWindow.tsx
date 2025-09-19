@@ -3,8 +3,6 @@ import { clamp, getGlobalStates, randomUUID } from '@wener/utils';
 import { createStore } from 'zustand';
 import { mutative } from 'zustand-mutative';
 
-// import { Window } from './Window';
-
 export const WindowContext = createContext<ReactWindow | null>(null);
 
 export function useWindow(): ReactWindow {
@@ -243,19 +241,15 @@ export class ReactWindow extends EventTarget {
 			if (maximize && !s.maximized) {
 				s.maximized = true;
 				s.minimized = false;
-
 				s.properties['last'] = [s.x, s.y, s.width, s.height];
-
 				s.width = window.innerWidth;
 				s.height = window.innerHeight;
 				s.x = 0;
 				s.y = 0;
-
 				ReactWindow.MaximizedWindow = this;
 			} else if (!maximize && s.maximized) {
 				s.maximized = false;
 				s.minimized = false;
-
 				const [x, y, width, height] = s.properties['last'] ?? [];
 				s.width = width;
 				s.height = height;
@@ -265,6 +259,7 @@ export class ReactWindow extends EventTarget {
 				ReactWindow.MaximizedWindow = undefined;
 			}
 		});
+
 		if (maximize) {
 			this.dispatchEvent(new Event('maximize'));
 		} else {
@@ -368,7 +363,6 @@ class ReactRootWindow extends ReactWindow {
 		}
 
 		let root = (this.parent || getRootWindow()).store;
-		// let root = this.root;
 
 		let store = createWindowStore({
 			...opts,
@@ -381,9 +375,6 @@ class ReactRootWindow extends ReactWindow {
 			store,
 		});
 
-		// const { x, y, width, height } = store.getState();
-		// console.log(`open window`, id, { x, y, width, height });
-
 		child.addEventListener('close', () => {
 			root.setState((s) => {
 				s.windows = s.windows.filter((v) => v !== child);
@@ -395,7 +386,6 @@ class ReactRootWindow extends ReactWindow {
 		child.addEventListener('focusout', (e) => this.handleFocusOut(e, child));
 
 		root.setState((s) => {
-			// fixme typing Element is not draftable
 			s.windows.push(child as any);
 		});
 

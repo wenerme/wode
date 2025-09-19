@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react';
 import { PiAppleLogo, PiWindowsLogo } from 'react-icons/pi';
-import type { RouteObject } from 'react-router-dom';
 import type { Meta } from '@storybook/react';
 import { useStore } from 'zustand';
 import { ComponentProvider } from '../components';
@@ -17,15 +16,6 @@ const meta: Meta = {
 	},
 };
 export default meta;
-
-function buildRoutes() {
-	return [
-		{
-			path: '/a1',
-			element: <div>A1</div>,
-		},
-	] as RouteObject[];
-}
 
 export const Windows = () => {
 	let store = getWindowStyleStore();
