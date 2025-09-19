@@ -10,8 +10,10 @@
 		"./buildinfo": "./src/buildinfo/index.ts",
 		"./client/graphql": "./src/client/graphql/index.ts",
 		"./components": "./src/components/index.ts",
+		"./components/icons": "./src/components/icons/index.ts",
 		"./console": "./src/console/index.ts",
 		"./console/globals.css": "./src/console/globals.css",
+		"./console/pages": "./src/console/pages/index.ts",
 		"./daisy": "./src/daisy/index.ts",
 		"./floating": "./src/floating/index.ts",
 		"./foundation/auth": "./src/foundation/auth/index.ts",
@@ -29,7 +31,6 @@
 		"./valtio": "./src/valtio/index.ts",
 		"./window": "./src/window/index.ts",
 		"./zustand": "./src/zustand/index.ts",
-		"./console/*": "./src/console/*/index.ts",
 		"./package.json": "./package.json"
 	},
 	"files": [
@@ -144,11 +145,19 @@
 				"types": "./src/components/index.ts",
 				"default": "./lib/components/index.js"
 			},
+			"./components/icons": {
+				"types": "./src/components/icons/index.ts",
+				"default": "./lib/components/icons/index.js"
+			},
 			"./console": {
 				"types": "./src/console/index.ts",
 				"default": "./lib/console/index.js"
 			},
 			"./console/globals.css": "./src/console/globals.css",
+			"./console/pages": {
+				"types": "./src/console/pages/index.ts",
+				"default": "./lib/console/pages/index.js"
+			},
 			"./daisy": {
 				"types": "./src/daisy/index.ts",
 				"default": "./lib/daisy/index.js"
@@ -216,10 +225,6 @@
 			"./zustand": {
 				"types": "./src/zustand/index.ts",
 				"default": "./lib/zustand/index.js"
-			},
-			"./console/*": {
-				"types": "./src/console/*/index.ts",
-				"default": "./lib/console/*/index.js"
 			},
 			"./package.json": "./package.json"
 		}

@@ -21,7 +21,7 @@ export namespace Window {
 			return host;
 		}
 		host = document.createElement('div');
-		// host.setAttribute('data-react-window-id', win.id);
+		host.setAttribute('data-react-window-id', win.id);
 		host.id = id;
 		host.className = 'fixed overflow-hidden w-screen h-screen left-0 top-0 pointer-events-none isolate z-40';
 		document.body.appendChild(host);
@@ -33,7 +33,6 @@ export namespace Window {
 		const [container, setContainer] = useState<HTMLElement | null>(null);
 		let store = window.store;
 
-		// works in ssr
 		useEffect(() => {
 			let ele = createWindowContainer(window);
 			setContainer(ele);
@@ -59,8 +58,6 @@ export namespace Window {
 			</>
 		);
 	};
-
-	// Host.displayName = 'Window.Host';
 
 	export function getRoot(): ReactWindow;
 	export function getRoot() {

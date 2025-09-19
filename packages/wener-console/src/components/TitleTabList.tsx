@@ -2,7 +2,7 @@ import React, { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 import { NavLink } from 'react-router-dom';
 import { flexRender, useControllable, type FlexRenderable } from '@wener/reaction';
 import { clsx } from 'clsx';
-import { cn } from '../../utils/cn';
+import { cn } from '../utils/cn';
 
 export interface TitleTabItem {
 	label: ReactNode;

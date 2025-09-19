@@ -11,77 +11,102 @@ import { WindowFrame } from './WindowFrame';
 
 export const WindowGuest = memo<{ win: ReactWindow }>(({ win }) => {
 	const { store } = win;
-	const { zIndex, minimized, x, y, width, height, canResize, canDrag, minWidth, minHeight, maxWidth, maxHeight } =
-		useStore(
-			store,
-			useShallow(
-				({
+	const {
+		zIndex,
+		minimized,
+		x,
+		y,
+		width,
+		height,
+		canResize,
+		canDrag,
+		minWidth,
+		minHeight,
+		maxWidth,
+		maxHeight,
+		maximized,
+	} = useStore(
+		store,
+		useShallow(
+			({
+				zIndex,
+				minimized,
+				x,
+				y,
+				width,
+				height,
+				canResize,
+				maximized,
+				canDrag,
+				minWidth,
+				minHeight,
+				maxWidth,
+				maxHeight,
+			}) => {
+				return {
 					zIndex,
 					minimized,
+					maximized,
 					x,
 					y,
 					width,
 					height,
-					canResize,
-					maximized,
+					canResize: canResize && !maximized,
 					canDrag,
 					minWidth,
 					minHeight,
 					maxWidth,
 					maxHeight,
-				}) => {
-					return {
-						zIndex,
-						minimized,
-						maximized,
-						x,
-						y,
-						width: maximized ? '100%' : width,
-						height: maximized ? '100%' : height,
-						canResize: canResize && !maximized,
-						canDrag,
-						minWidth,
-						minHeight,
-						maxWidth,
-						maxHeight,
-					};
-				},
-			),
-		);
+				};
+			},
+		),
+	);
 	return (
 		<Rnd
 			id={`win-${win.id}`}
 			data-dnd-window-id={win.id}
-			className={clsx(!minimized && 'pointer-events-auto')}
+			className={clsx(!minimized && 'pointer-events-auto', maximized && 'h-screen w-screen')}
 			default={{
 				x: 0,
 				y: 0,
 				width: 320,
 				height: 200,
 			}}
-			size={{
-				width,
-				height,
-			}}
-			position={{
-				x,
-				y,
-			}}
+			size={
+				maximized
+					? { width: '100vw', height: '100vh' }
+					: {
+							width,
+							height,
+						}
+			}
+			position={
+				maximized
+					? { x: 0, y: 0 }
+					: {
+							x,
+							y,
+						}
+			}
 			onDragStop={(e, d) => {
-				store.setState({ x: d.x, y: d.y });
+				if (!maximized) {
+					store.setState({ x: d.x, y: d.y });
+				}
 			}}
 			onResize={(e, direction, ref, delta, position) => {
-				store.setState({
-					width: ref.offsetWidth,
-					height: ref.offsetHeight,
-					...position,
-				});
+				if (!maximized) {
+					store.setState({
+						width: ref.offsetWidth,
+						height: ref.offsetHeight,
+						...position,
+					});
+				}
 			}}
 			dragHandleClassName={getWindowDragHandleClassname()}
 			cancel={`.${getWindowDragCancelClassname()}`}
 			enableResizing={canResize}
-			disableDragging={!canDrag}
-			bounds={document.body}
+			disableDragging={!canDrag || maximized}
+			bounds={maximized ? undefined : document.body}
 			minWidth={minWidth}
 			minHeight={minHeight}
 			maxWidth={maxWidth}
@@ -220,7 +245,6 @@ const WinFrameContent: FC<{ win: ReactWindow }> = memo(({ win }) => {
 						}}
 						tabIndex={-1}
 					>
-						{/* ensure WindowContext works */}
 						<WindowRenderer render={render} />
 					</div>
 				</main>
@@ -234,14 +258,5 @@ const WindowRenderer: FC<{ render?: () => ReactNode }> = ({ render }) => {
 };
 
 function getWindowProps(win: ReactWindow): ComponentPropsWithoutRef<'div'> {
-	// https://github.com/facebook/react/issues/6410#issuecomment-207064994
-	// 会导致 window 内 input 无法获取焦点
-	return {
-		// onFocus: (e) => {
-		//   win.dispatchEvent(new FocusEvent('focusin', { bubbles: true, cancelable: false }));
-		// },
-		// onBlur: (e) => {
-		//   win.dispatchEvent(new FocusEvent('focusout', { bubbles: true, cancelable: false }));
-		// },
-	};
+	return {};
 }

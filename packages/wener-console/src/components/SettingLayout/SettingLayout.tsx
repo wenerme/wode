@@ -1,7 +1,7 @@
 import React, { type FC, type HTMLProps, type ReactNode } from 'react';
 import { clsx } from 'clsx';
 import { cn } from '../../utils/cn';
-import { TitleTabLayout } from '../../web/components';
+import { TitleTabLayout } from '../../components';
 
 export const SettingLayout: FC<
 	{ title?: ReactNode; action?: ReactNode; children?: ReactNode } & Omit<HTMLProps<HTMLDivElement>, 'title' | 'action'>

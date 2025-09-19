@@ -3,7 +3,7 @@ import { BiError } from 'react-icons/bi';
 import { GrDocumentMissing } from 'react-icons/gr';
 import { HiMiniArrowLeft, HiMiniArrowPath, HiMiniHome } from 'react-icons/hi2';
 import { useInRouterContext, useNavigate } from 'react-router-dom';
-import { Button, NonIdealState } from '../daisy';
+import { Button, NonIdealState } from '../../daisy';
 
 export const NonIdealPage: FC<{ icon?: ReactNode; title?: ReactNode; description?: ReactNode }> = ({
 	title,

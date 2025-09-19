@@ -9,7 +9,7 @@ export function useAsyncEffect(
 	effect: (o: { signal: AbortSignal }) => Promise<void | (() => void)>, // eslint-disable-line @typescript-eslint/no-invalid-void-type
 	deps?: DependencyList,
 ): { abort: () => void } {
-	const abortRef = useRef<() => void>();
+	const abortRef = useRef<() => void>(undefined);
 	useEffect(() => {
 		const abortController = new AbortController();
 		abortRef.current = () => abortController.abort();

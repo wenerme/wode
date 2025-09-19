@@ -1,12 +1,13 @@
 {
-  "compilerOptions": {
+	"extends": ["../../tsconfig.base.json"],
+	"compilerOptions": {
     "moduleResolution": "bundler",
     "target": "ESNext",
     "module": "ESNext",
     "lib": [
       "dom",
       "dom.iterable",
-      "ES2018"
+      "ESNext"
     ],
     "strict": true,
     "sourceMap": true,
@@ -14,6 +15,7 @@
     "declaration": false,
     "esModuleInterop": true,
     "jsx": "react-jsx",
+		"erasableSyntaxOnly": true,
     "importHelpers": true,
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,

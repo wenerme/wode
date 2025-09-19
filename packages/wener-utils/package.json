@@ -12,6 +12,7 @@
 	"license": "MIT",
 	"exports": {
 		".": "./src/index.ts",
+		"./logger": "./src/logger/index.ts",
 		"./schema/typebox": "./src/schema/typebox/index.ts",
 		"./schema/typebox/gen": "./src/schema/typebox/gen/index.ts",
 		"./server": "./src/server/index.ts",
@@ -57,6 +58,10 @@
 			".": {
 				"types": "./src/index.ts",
 				"default": "./lib/index.js"
+			},
+			"./logger": {
+				"types": "./src/logger/index.ts",
+				"default": "./lib/logger/index.js"
 			},
 			"./schema/typebox": {
 				"types": "./src/schema/typebox/index.ts",

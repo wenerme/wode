@@ -1,5 +1,5 @@
 import { useMemo, useRef } from 'react';
-import { createLogger, createNoopLogger, type Logger } from '@wener/utils';
+import { logger as _logger, createNoopLogger, type Logger } from '@wener/utils/logger';
 
 /**
  * useDebugRender will log a message when component render with render count
@@ -11,7 +11,7 @@ export function useDebugRender(
 	options: { name: string; id?: string; onRender?: boolean; logger?: Logger },
 	...rest: any[]
 ): DebugRenderLogger;
-export function useDebugRender(o: any, ...rest: any[]): DebugRenderLogger & Logger {
+export function useDebugRender(o: any, ...rest: any[]): DebugRenderLogger {
 	if (process.env.NODE_ENV === 'production') {
 		return useMemo(() => Object.assign(() => undefined, createNoopLogger()), []);
 	}
@@ -19,17 +19,16 @@ export function useDebugRender(o: any, ...rest: any[]): DebugRenderLogger & Logg
 	const counterRef = useRef(0);
 	counterRef.current++;
 
-	const { name, onRender, id = undefined, logger = console } = typeof o === 'string' ? { name: o, onRender: true } : o;
-	const pref = id ? `[${name}@${id}]` : `[${name}]`;
+	const { name, onRender, id = undefined, logger = _logger } = typeof o === 'string' ? { name: o, onRender: true } : o;
 	const log = useMemo(() => {
-		const l = createLogger(({ level, values }) => {
+		const pref = id ? `[${name}@${id}]` : `[${name}]`;
+		return (...values: any[]) => {
 			let message = '';
 			if (typeof values[0] === 'string') {
 				message = values.shift();
 			}
-			logger[level](`${pref}#${counterRef.current}${message ? `: ${message}` : ''}`, ...values);
-		});
-		return Object.assign(l.debug, l);
+			logger.log(`${pref}#${counterRef.current}${message ? `: ${message}` : ''}`, ...values);
+		};
 	}, [name]);
 	if (onRender) {
 		log(`Render`, ...rest);

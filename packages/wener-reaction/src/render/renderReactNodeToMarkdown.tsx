@@ -9,12 +9,12 @@ export function renderReactNodeToMarkdown(node: ReactNode) {
 		if (Array.isArray(_node)) {
 			return _node.map((v) => walk(v)).join('');
 		} else if (typeof _node === 'object') {
+			let props = _node.props as Record<string, any>;
 			if (typeof _node.type === 'function') {
-				return walk((_node as any).type(_node.props));
+				return walk((_node as any).type(props));
 			}
-			const children = Array.isArray(_node.props.children)
-				? _node.props.children.map((c: any) => walk(c)).join('')
-				: walk(_node.props.children);
+			const _children = props.children;
+			const children = Array.isArray(_children) ? _children.map((c: any) => walk(c)).join('') : walk(_children);
 
 			switch (_node.type) {
 				case 'p':
@@ -22,7 +22,7 @@ export function renderReactNodeToMarkdown(node: ReactNode) {
 				case 'div':
 					return children + '\n';
 				case 'a':
-					return `[${children}](${_node.props.href})`;
+					return `[${children}](${props.href})`;
 				case 'strong':
 				case 'b':
 					return `**${children}**`;
@@ -39,7 +39,7 @@ export function renderReactNodeToMarkdown(node: ReactNode) {
 				case 'li':
 					return `- ${children}\n`;
 				case 'img':
-					return `![${_node.props.alt}](${_node.props.src})`;
+					return `![${props.alt}](${props.src})`;
 				default:
 					return children;
 			}

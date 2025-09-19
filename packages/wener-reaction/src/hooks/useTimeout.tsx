@@ -6,7 +6,7 @@ import { useEffect, useRef, type DependencyList } from 'react';
  * @param deps - reset timer when deps change - defaults to [delay]
  */
 export function useTimeout(handler: () => void, delay: number, deps: DependencyList = [delay]) {
-	const ref = useRef<any>();
+	const ref = useRef<any>(undefined);
 	const clear = () => {
 		ref.current && clearTimeout(ref.current);
 	};

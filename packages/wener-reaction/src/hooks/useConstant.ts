@@ -7,7 +7,7 @@ import { useRef } from 'react';
  * @see https://github.com/Andarist/use-constant/blob/master/src/index.ts
  */
 export function useConstant<T>(fn: () => T): T {
-	const ref = useRef<{ v: T }>();
+	const ref = useRef<{ v: T }>(undefined);
 
 	if (!ref.current) {
 		ref.current = { v: fn() };

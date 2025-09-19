@@ -30,7 +30,7 @@ export class ReactShadowRoot extends PureComponent<ReactShadowRootProps> {
 	static propTypes = {};
 	static shadowRootSupported = shadowRootSupported;
 	private shadowRoot?: ShadowRoot;
-	private readonly placeholder: RefObject<HTMLElement>;
+	private readonly placeholder: RefObject<HTMLElement | null>;
 	state = { initialized: false };
 
 	/**
@@ -41,7 +41,7 @@ export class ReactShadowRoot extends PureComponent<ReactShadowRootProps> {
 	 */
 	constructor(props: ReactShadowRootProps) {
 		super(props);
-		this.placeholder = createRef();
+		this.placeholder = createRef<HTMLElement>();
 	}
 
 	componentDidMount() {
