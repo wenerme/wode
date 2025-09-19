@@ -58,7 +58,7 @@
 		"consola": "^3.4.2",
 		"dayjs": "^1.11.18",
 		"decimal.js": "^10.6.0",
-		"zod": "^4.1.8"
+		"zod": "^4.1.9"
 	},
 	"publishConfig": {
 		"exports": {

@@ -35,12 +35,12 @@
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"dependencies": {
-		"@mikro-orm/better-sqlite": "^6.5.3",
-		"@mikro-orm/core": "^6.5.3",
+		"@mikro-orm/better-sqlite": "^6.5.4",
+		"@mikro-orm/core": "^6.5.4",
 		"@orpc/contract": "^1.8.9",
 		"@sinclair/typebox": "^0.34.41",
 		"@types/json-schema": "^7.0.15",
-		"@wener/common": "workspace:^2.0.1",
+		"@wener/common": "workspace:^2.0.2",
 		"@wener/utils": "workspace:^1.1.51",
 		"ajv": "^8.17.1",
 		"ajv-formats": "^3.0.1",
@@ -62,11 +62,11 @@
 		"tar": "^7.4.3",
 		"tar-stream": "^3.1.7",
 		"ts-pattern": "^5.8.0",
-		"zod": "^4.1.8",
+		"zod": "^4.1.9",
 		"zx": "^8.8.1"
 	},
 	"devDependencies": {
-		"@bufbuild/protobuf": "^2.8.0",
+		"@bufbuild/protobuf": "^2.9.0",
 		"@connectrpc/connect": "^2.1.0",
 		"@orpc/server": "^1.8.9",
 		"@sinclair/typebox-codegen": "^0.11.1",

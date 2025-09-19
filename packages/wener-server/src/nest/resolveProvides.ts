@@ -1,6 +1,7 @@
 import type { Provider } from '@nestjs/common';
 import { isClass, type Constructor } from '@wener/utils';
-import { getMetadataStorage } from 'type-graphql';
+
+// import { getMetadataStorage } from 'type-graphql';
 
 type ServiceClass = Constructor & { name: `${string}Service` | `${string}Impl` };
 
@@ -28,9 +29,10 @@ export function resolveProvides(_all: Array<AnyConstructor | Provider>): {
 		return false;
 	}) as AnyConstructor[];
 
-	const resolverSet = new Set(getMetadataStorage().resolverClasses.map((v) => v.target));
+	// const resolverSet = new Set(getMetadataStorage().resolverClasses.map((v) => v.target));
 	const resolvers = all.filter((v) => {
-		return v.name.endsWith('Resolver') || resolverSet.has(v);
+		// return v.name.endsWith('Resolver') || resolverSet.has(v);
+		return v.name.endsWith('Resolver');
 	});
 
 	const entities = all.flatMap((v) => {

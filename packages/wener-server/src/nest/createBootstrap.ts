@@ -1,7 +1,7 @@
 import { Logger, type INestApplicationContext, type LoggerService, type LogLevel } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import type { MaybePromise } from '@wener/utils';
-import { setAppContext } from './context';
+import { setAppContext } from './AppContext';
 
 export interface NestApplicationContextOptions {
 	/**

@@ -1,4 +1,4 @@
-import React, { forwardRef, useState, type FC, type HTMLProps, type ReactElement, type ReactNode } from 'react';
+import React, { useState, type FC, type HTMLProps, type ReactElement, type ReactNode } from 'react';
 import { HiChevronDown, HiChevronRight } from 'react-icons/hi2';
 import { PiCaretDoubleLeftThin, PiCaretDoubleRightThin } from 'react-icons/pi';
 import { flexRender, useControllable, type FlexRenderable } from '@wener/reaction';
@@ -224,47 +224,42 @@ export const ExpandableMenu: FC<ExpandableSideMenuLayoutProps> = ({
 	);
 };
 
-export const ExpandableSideMenuLayout = forwardRef<HTMLDivElement, ExpandableSideMenuLayoutProps>(
-	(
-		{
-			children,
-			header: _header,
-			title,
-			icon,
-			items,
-			NavLink = AutoNavLink,
-			expanded: _expanded,
-			onExpandedChange: _onExpandedChange,
-			initialExpanded: _initialExpanded,
-			...props
-		},
-		ref,
-	) => {
-		const [expanded, setExpanded] = useControllable(
-			_expanded,
-			_onExpandedChange,
-			() =>
-				_initialExpanded ?? (typeof window === 'undefined' ? true : window.matchMedia('(min-width: 768px)').matches),
-		);
+export const ExpandableSideMenuLayout: FC<ExpandableSideMenuLayoutProps> = ({
+	children,
+	header: _header,
+	title,
+	icon,
+	items,
+	NavLink = AutoNavLink,
+	expanded: _expanded,
+	onExpandedChange: _onExpandedChange,
+	initialExpanded: _initialExpanded,
+	...props
+}) => {
+	const [expanded, setExpanded] = useControllable(
+		_expanded,
+		_onExpandedChange,
+		() =>
+			_initialExpanded ?? (typeof window === 'undefined' ? true : window.matchMedia('(min-width: 768px)').matches),
+	);
 
-		return (
-			<LeftContentRightLayout
-				className={'h-full'}
-				left={
-					<ExpandableMenu
-						expanded={expanded}
-						onExpandedChange={setExpanded}
-						title={title}
-						items={items}
-						icon={icon}
-						header={_header}
-					/>
-				}
-				ref={ref}
-			>
-				{children}
-			</LeftContentRightLayout>
-		);
-	},
-);
+	return (
+		<LeftContentRightLayout
+			className={'h-full'}
+			left={
+				<ExpandableMenu
+					expanded={expanded}
+					onExpandedChange={setExpanded}
+					title={title}
+					items={items}
+					icon={icon}
+					header={_header}
+				/>
+			}
+			{...props}
+		>
+			{children}
+		</LeftContentRightLayout>
+	);
+};
 ExpandableSideMenuLayout.displayName = 'ExpandableSideMenuLayout';
