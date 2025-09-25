@@ -11,7 +11,7 @@ export { UpdateNotification } from './UpdateNotification';
 export { WebVitals } from './WebVitals';
 export { Zoom } from './Zoom/Zoom';
 export { defineComponent, useComponent, ComponentProvider } from './ComponentProvider';
-export { usePortal, PortalProvider, Portal } from './PortalContainer';
+// export { usePortal, PortalProvider, Portal } from './PortalContainer';
 export { LeftContentRightLayout } from './LeftContentRightLayout';
 export { OverlayScrollbar } from './OverlayScrollbar';
 export { TitleTabLayout, type TitleTabContentItem } from './TitleTabLayout';

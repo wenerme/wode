@@ -1,6 +1,6 @@
 {
 	"name": "@wener/console",
-	"version": "2.0.0",
+	"version": "2.0.2",
 	"type": "module",
 	"description": "Base console UI toolkit",
 	"author": "wener",
@@ -30,6 +30,7 @@
 		"./urql": "./src/urql/index.ts",
 		"./valtio": "./src/valtio/index.ts",
 		"./window": "./src/window/index.ts",
+		"./window/standalone": "./src/window/standalone/index.ts",
 		"./zustand": "./src/zustand/index.ts",
 		"./package.json": "./package.json"
 	},
@@ -221,6 +222,10 @@
 			"./window": {
 				"types": "./src/window/index.ts",
 				"default": "./lib/window/index.js"
+			},
+			"./window/standalone": {
+				"types": "./src/window/standalone/index.ts",
+				"default": "./lib/window/standalone/index.js"
 			},
 			"./zustand": {
 				"types": "./src/zustand/index.ts",
