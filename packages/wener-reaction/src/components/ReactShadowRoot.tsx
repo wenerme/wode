@@ -72,6 +72,7 @@ export class ReactShadowRoot extends PureComponent<ReactShadowRootProps> {
 //   };
 // }
 
+/*
 declare global {
 	interface ShadowRoot {
 		// Chrome 73+
@@ -79,3 +80,4 @@ declare global {
 		adoptedStyleSheets?: ReadonlyArray<CSSStyleSheet>;
 	}
 }
+*/

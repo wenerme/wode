@@ -33,3 +33,7 @@ export function useContainer(ele?: HTMLElement): UseContainer {
 		},
 	};
 }
+
+export function useContainerContext(): HTMLElement | null {
+	return useContext(ContainerContext);
+}

@@ -14,7 +14,7 @@ export namespace Window {
 		getRootWindow().windows.forEach((v) => v.minimize(true));
 	}
 
-	function createWindowContainer(win: ReactWindow) {
+	function createWindowContainer(win: ReactWindow, body: HTMLElement = document.body) {
 		let id = `react-window-container-${win.id}`;
 		let host = document.getElementById(id);
 		if (host) {
@@ -24,17 +24,17 @@ export namespace Window {
 		host.setAttribute('data-react-window-id', win.id);
 		host.id = id;
 		host.className = 'fixed overflow-hidden w-screen h-screen left-0 top-0 pointer-events-none isolate z-40';
-		document.body.appendChild(host);
+		body.appendChild(host);
 		return host;
 	}
 
-	export const Host = () => {
+	export const Host = ({ body = document.body }: { body?: HTMLElement }) => {
 		const window = getRootWindow();
 		const [container, setContainer] = useState<HTMLElement | null>(null);
 		let store = window.store;
 
 		useEffect(() => {
-			let ele = createWindowContainer(window);
+			let ele = createWindowContainer(window, body);
 			setContainer(ele);
 			store.setState({ childrenElement: ele });
 			return () => {

@@ -9,11 +9,13 @@ export const StandaloneWindow = ({
 	onOpenChange: _onOpenChange,
 	children,
 	controller,
+	body,
 }: {
 	open?: boolean;
 	onOpenChange?: (open: boolean) => void;
 	children?: ReactNode;
 	controller?: ReactNode;
+	body?: HTMLElement;
 }) => {
 	const initialRef = useRef(true);
 	const [open, setOpen] = useControllable(_open, _onOpenChange, false);
@@ -21,7 +23,7 @@ export const StandaloneWindow = ({
 	useEffect(() => {
 		if (initialRef.current) return;
 		return Window.getRoot().store.subscribe((s) => {
-			if (s.windows.length) {
+			if (s.windows.length && !initialRef.current) {
 				initialRef.current = true;
 				setOpen(true);
 			}
@@ -29,7 +31,7 @@ export const StandaloneWindow = ({
 	}, []);
 	return (
 		<>
-			<Window.Host />
+			<Window.Host body={body} />
 			<StandaloneDockSidebar open={open} />
 
 			{controller ?? (
