@@ -1,4 +1,4 @@
-import React, { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
+import React, { type ComponentPropsWithRef, type ReactNode } from 'react';
 import { NavLink } from 'react-router-dom';
 import { flexRender, useControllable, type FlexRenderable } from '@wener/reaction';
 import { clsx } from 'clsx';
@@ -16,17 +16,24 @@ export function getTitleTabItemKey(item: TitleTabItem, index: number) {
 	return item.key ?? String(index);
 }
 
-export const TitleTabList = forwardRef<
-	HTMLDivElement,
-	Omit<HTMLAttributes<HTMLDivElement>, 'title'> & {
-		title?: ReactNode;
-		action?: ReactNode;
-		tabs: Array<TitleTabItem>;
-		value?: string;
-		defaultValue?: string;
-		onValueChange?: (value: string) => void;
-	}
->(({ className, value, onValueChange, defaultValue, title, action, tabs, ...props }, ref) => {
+export const TitleTabList = ({
+	className,
+	value,
+	onValueChange,
+	defaultValue,
+	title,
+	action,
+	tabs,
+	ref,
+	...props
+}: Omit<ComponentPropsWithRef<'div'>, 'title'> & {
+	title?: ReactNode;
+	action?: ReactNode;
+	tabs: Array<TitleTabItem>;
+	value?: string;
+	defaultValue?: string;
+	onValueChange?: (value: string) => void;
+}) => {
 	const [current, setCurrent] = useControllable<string>(value, onValueChange, defaultValue);
 	return (
 		<div ref={ref} className={cn('flex items-end', className)} {...props}>
@@ -92,4 +99,4 @@ export const TitleTabList = forwardRef<
 			)}
 		</div>
 	);
-});
+};

@@ -1,4 +1,4 @@
-import React, { Fragment, type FC, type ReactNode } from 'react';
+import React, { Fragment, type ComponentProps, type FC, type ReactNode } from 'react';
 import { Tabs } from '@base-ui-components/react/tabs';
 import { cn } from '@wener/console';
 import { Daisy } from '@wener/console/daisy';
@@ -49,13 +49,13 @@ export const DaisyTabsComposite = ({
 						trigger = item.trigger;
 					} else if (item.trigger) {
 						trigger = (
-							<DaisyTabsTrigger key={key} value={key} asChild>
+							<DaisyTabsTrigger key={key} value={key}>
 								{item.trigger}
 							</DaisyTabsTrigger>
 						);
 					} else if (item.href) {
 						trigger = (
-							<DaisyTabsTrigger key={key} value={key} asChild>
+							<DaisyTabsTrigger key={key} value={key}>
 								<Tag href={href}>
 									{flexRender(icon, {})}
 									{label}
@@ -182,7 +182,7 @@ export const DaisyTabsList: FC<DaisyTabsListProps> = ({
 	);
 };
 
-export interface DaisyTabsTriggerProps extends React.ComponentProps<typeof Tabs.Tab> {}
+export interface DaisyTabsTriggerProps extends ComponentProps<typeof Tabs.Tab> {}
 
 export const DaisyTabsTrigger: FC<DaisyTabsTriggerProps> = ({ className, ...props }) => {
 	return (

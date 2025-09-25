@@ -1,8 +1,8 @@
-import React, { type FC, type HTMLAttributes, type ReactNode } from 'react';
+import React, { type ComponentPropsWithRef, type FC, type ReactNode } from 'react';
 import classNames from 'clsx';
 import type { IntentType } from '../const';
 
-export interface NonIdealStateProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
+export interface NonIdealStateProps extends Omit<ComponentPropsWithRef<'div'>, 'title'> {
 	title?: ReactNode;
 	icon?: ReactNode;
 	description?: ReactNode;
