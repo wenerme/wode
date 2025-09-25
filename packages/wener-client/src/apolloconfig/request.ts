@@ -1,6 +1,7 @@
 import { createHmac } from 'crypto';
 import { type FetchLike } from '@wener/utils';
-import { parseJsonResponse, resolveRequest } from '../utils/resolveRequest';
+import { parseJsonResponse } from '../utils/parseJsonResponse';
+import { resolveRequest } from '../utils/resolveRequest';
 
 export type RequestOptions = {
 	url: string;

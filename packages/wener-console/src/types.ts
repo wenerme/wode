@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react';
 
+/// <reference types="mutative" />
+
 export interface NextPageProps<P = Record<string, any>, S = Record<string, any>> {
 	params: P;
 	searchParams: S;

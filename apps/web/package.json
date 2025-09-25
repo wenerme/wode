@@ -47,7 +47,7 @@
 		"konva": "^10.0.2",
 		"lodash": "^4.17.21",
 		"lru-cache": "^11.2.1",
-		"mutative": "^1.2.0",
+		"mutative": "^1.3.0",
 		"negotiator": "^1.0.0",
 		"next": "^15.5.3",
 		"pinyin": "4.0.0",

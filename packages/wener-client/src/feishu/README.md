@@ -1,3 +1,11 @@
+# Feishu API
+
+- ./document - 飞书文档
+- ./events - 事件订阅
+- ./server - 服务端 API
+
+## 参考
+
 - https://github.com/larksuite/node-sdk
   - 基于 CodeGen
 - AccessToken
@@ -14,3 +22,5 @@
   - https://open.feishu.cn/document/server-docs/docs/docs-overview
   - Block 数据结构
     - https://open.feishu.cn/document/ukTMukTMukTM/uUDN04SN0QjL1QDN/document-docx/docx-v1/data-structure/block
+- Event
+  - https://open.feishu.cn/document/server-docs/event-subscription-guide/overview
