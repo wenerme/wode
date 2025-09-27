@@ -1,7 +1,7 @@
 packages:
-  - 'apps/*'
-  - 'packages/*'
-  - 'components/*'
+- 'apps/*'
+- 'packages/*'
+- 'components/*'
 
 onlyBuiltDependencies:
 - '@swc/core'
@@ -12,19 +12,22 @@ onlyBuiltDependencies:
 - esbuild
 - sharp
 
+ignoredOptionalDependencies:
+- fsevents
+- "@esbuild/*"
+
 patchedDependencies:
   ts-node@11.0.0-beta.1: patches/ts-node.patch
-
-
-linkWorkspacePackages: true
-preferWorkspacePackages: true
-saveWorkspaceProtocol: false
-dedupeDirectDeps: true
 
 minimumReleaseAge: 600
 minimumReleaseAgeExclude:
 - "@wener/*"
 - "@vitejs/*"
 - vite
+- react
 
 strictPeerDependencies: false
+linkWorkspacePackages: true
+preferWorkspacePackages: true
+saveWorkspaceProtocol: false
+dedupeDirectDeps: true

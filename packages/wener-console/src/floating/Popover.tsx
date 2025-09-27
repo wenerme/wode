@@ -5,6 +5,7 @@ import React, {
 	useState,
 	type CSSProperties,
 	type HTMLProps,
+	type JSX,
 	type ReactElement,
 	type ReactNode,
 } from 'react';

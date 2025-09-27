@@ -1,26 +1,16 @@
-import { getGlobalThis } from '@wener/utils';
-
-let NODE_ENV: any;
-let NEXT_PHASE: any;
-try {
-	NODE_ENV = process.env.NODE_ENV;
-	NEXT_PHASE = process.env.NEXT_PHASE;
-	if (typeof window === 'undefined') {
-		({ NODE_ENV } = getGlobalThis().process?.env || {});
-	}
-} catch (e) {}
+import { isDevelopment, isProduction } from 'std-env';
 
 /* @__PURE__ */
 export function isProd() {
-	return NODE_ENV === 'production';
+	return isProduction;
 }
 
 /* @__PURE__ */
 export function isDev() {
-	return NODE_ENV === 'development';
+	return isDevelopment;
 }
 
 /* @__PURE__ */
 export function isBuilding() {
-	return NEXT_PHASE === 'phase-production-build';
+	return process.env.NEXT_PHASE === 'phase-production-build';
 }

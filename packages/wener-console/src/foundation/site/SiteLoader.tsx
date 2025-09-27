@@ -1,5 +1,4 @@
-import type React from 'react';
-import { useState, type PropsWithChildren } from 'react';
+import React, { useState, type PropsWithChildren } from 'react';
 import { useAsyncEffect } from '@wener/reaction';
 import { LoadingIndicator } from '../../console';
 import { getSiteStore, type SiteConfInit } from './SiteStore';

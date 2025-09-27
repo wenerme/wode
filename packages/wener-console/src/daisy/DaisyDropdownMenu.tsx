@@ -1,8 +1,8 @@
 import React, { type ComponentPropsWithoutRef, type FC, type ReactNode } from 'react';
 import { Menu } from '@base-ui-components/react/menu';
 import { cn } from '@wener/console';
-import { flexRender } from '@wener/reaction';
 import type { FlexRenderable } from '@wener/reaction';
+import { flexRender } from '@wener/reaction';
 import { clsx } from 'clsx';
 import { pick } from 'es-toolkit';
 import { match } from 'ts-pattern';
@@ -44,17 +44,12 @@ export const DaisyDropdownMenuComposite = ({
 	if (trigger) {
 		if (!isNodeTypeOf(trigger, [Menu.Trigger, DaisyDropdownMenuTrigger])) {
 			let last = trigger;
-			trigger = <DaisyDropdownMenuTrigger asChild>{last}</DaisyDropdownMenuTrigger>;
+			trigger = <DaisyDropdownMenuTrigger>{last}</DaisyDropdownMenuTrigger>;
 		}
 	}
 	let content = (
-		<Menu.Positioner>
-			<Menu.Popup
-				side={'bottom'}
-				align={'end'}
-				sideOffset={5}
-				className={cn('menu menu-sm rounded-box bg-base-200 z-30 w-52', className)}
-			>
+		<Menu.Positioner side={'bottom'} align={'end'} sideOffset={5}>
+			<Menu.Popup className={cn('menu menu-sm rounded-box bg-base-200 z-30 w-52', className)}>
 				{items.map((item, key) => {
 					return match(item)
 						.with({ type: 'label' }, ({ label, type, className, children, ...props }) => {
@@ -69,21 +64,25 @@ export const DaisyDropdownMenuComposite = ({
 						})
 						.otherwise(({ label, icon, type, className, children, ...props }) => {
 							return (
-								<Menu.Item key={key} asChild {...props}>
-									<li
-										className={clsx(
-											'outline-none select-none',
-											'group/item',
-											'data-[disabled]:disabled data-[disabled]:pointer-events-none',
-											className,
-										)}
-									>
-										<a className={clsx('group-data-[highlighted]/item:active')}>
-											{flexRender(icon, { className: 'size-4' })}
-											{label}
-										</a>
-									</li>
-								</Menu.Item>
+								<Menu.Item
+									key={key}
+									{...props}
+									render={
+										<li
+											className={clsx(
+												'outline-none select-none',
+												'group/item',
+												'data-[disabled]:disabled data-[disabled]:pointer-events-none',
+												className,
+											)}
+										>
+											<a className={clsx('group-data-[highlighted]/item:active')}>
+												{flexRender(icon, { className: 'size-4' })}
+												{label}
+											</a>
+										</li>
+									}
+								/>
 							);
 						});
 				})}

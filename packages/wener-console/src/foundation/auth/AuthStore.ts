@@ -1,8 +1,8 @@
 import { useEffect, useRef, type FC } from 'react';
+import { useNetworkStatus } from '@wener/reaction/store';
 import { getGlobalStates } from '@wener/utils';
 import { createStore } from 'zustand';
 import { mutative } from 'zustand-mutative';
-import { useNetworkStatus } from '../../utils/NetworkStatus';
 import { createStoreSelectorHook } from '../../zustand';
 
 export const AuthStatus = {
@@ -101,7 +101,7 @@ function useAuthSidecar({ store, actions: { refresh }, storage = localStorage }:
 		return false;
 	};
 
-	const authRef = useRef<Promise<boolean>>();
+	const authRef = useRef<Promise<boolean> | undefined>(undefined);
 
 	const doAuthCheck = () => {
 		const state = store.getState();
@@ -116,7 +116,7 @@ function useAuthSidecar({ store, actions: { refresh }, storage = localStorage }:
 		// avoid race
 		let current = authRef.current;
 		if (current) {
-			current.then((v) => {
+			return current.then((v) => {
 				// authed, skip for now, will check for next
 				if (v) {
 					authRef.current = undefined;
@@ -127,11 +127,11 @@ function useAuthSidecar({ store, actions: { refresh }, storage = localStorage }:
 				return v;
 			});
 		} else {
-			authRef.current = checkAuth().then((v) => {
+			return (authRef.current = checkAuth().then((v) => {
 				// done
 				authRef.current = undefined;
 				return v;
-			});
+			}));
 		}
 	};
 

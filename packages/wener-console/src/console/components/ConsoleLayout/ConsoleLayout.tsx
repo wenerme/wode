@@ -1,7 +1,7 @@
 import React, { type PropsWithChildren, type ReactNode } from 'react';
+import { AutoNavLink, LeftSideMenuBarLayout } from '@wener/console/components';
 import { SiteLogo } from '@wener/console/console';
 import { useContextStore } from '@wener/console/hooks';
-import { AutoNavLink, LeftSideMenuBarLayout } from '@wener/console/web';
 import { DockLayout } from '../DockLayout';
 import type { ConsoleLayoutContext, DashMenu } from './ConsoleLayoutContext';
 
@@ -12,7 +12,7 @@ const TitleDivider: React.FC<PropsWithChildren> = ({ children }) => {
 };
 
 function renderMenuItems(items: DashMenu[]): ReactNode[] {
-	const NavLink = AutoNavLink;
+	const NavLink = AutoNavLink as any; // Type cast to resolve BaseNavLink compatibility
 	return items.map((item, i) => {
 		if ('type' in item) {
 			if (item.type === 'group') {

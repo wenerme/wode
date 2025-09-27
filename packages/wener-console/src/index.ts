@@ -5,7 +5,6 @@ export { isProd, isDev, isBuilding } from './const';
 
 export { cn } from './utils/cn';
 
-export { getNetworkStatus, useNetworkStatus } from './utils/NetworkStatus';
 export {
 	type UserAgentPreferences,
 	getUserAgentPreferences,

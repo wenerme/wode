@@ -14,7 +14,7 @@ export {
 	type ErrorSuspenseBoundaryProps,
 	ErrorSuspenseBoundary,
 } from './components/ConsoleComponent';
-export { defineApplet, getApplets, type DefineAppletOptions } from './applets/defineApplet';
+export { defineApplet, getApplets, type DefineAppletOptions } from '../applets/defineApplet';
 export { ConsoleLoader, type ConsoleLoaderProps } from './ConsoleLoader';
 export { ConsoleLauncher, type ConsoleLauncherProps } from './ConsoleLauncher';
 export { useUserPreferenceState } from './hooks';

@@ -1,6 +1,6 @@
 import React from 'react';
 import type { Meta } from '@storybook/react';
-import { Image } from '../../web';
+import { Image } from '@wener/console/components';
 import { AppearanceSettingPage } from './AppearanceSettingPage/AppearanceSettingPage';
 import { LoginPage } from './LoginPage';
 import { SystemAboutPage } from './SystemAboutPage';

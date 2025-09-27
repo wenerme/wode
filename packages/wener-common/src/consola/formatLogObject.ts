@@ -80,7 +80,7 @@ export function formatLogObject(
 	}
 
 	{
-		const [message, ...additional] = formatArgs(o.args, ctx).split('\n');
+		const [message, ...additional] = formatArgs(o.args, { colors: shouldColor }).split('\n');
 
 		out.push(characterFormat(message));
 
@@ -159,16 +159,44 @@ function formatArgs(args: any[], opts: FormatOptions) {
 
 	// Only supported with Node >= 10
 	// https://nodejs.org/api/util.html#util_util_inspect_object_options
-	return formatWithOptions(opts, ..._args);
+	return formatWithOptions(Boolean(opts.colors), ..._args);
 }
 
-function formatWithOptions(o: any, ...params: any[]) {
-	// import { formatWithOptions } from 'node:util';
-	return params.join(' ');
+function formatWithOptions(shouldColor: boolean, ...params: any[]) {
+	return params.map((value) => formatValue(value, shouldColor)).join(' ');
+}
+
+function formatValue(value: any, shouldColor: boolean = false): string {
+	const colors = shouldColor ? Colors : NoColors;
+
+	if (value === null) return 'null';
+	if (value === undefined) return 'undefined';
+	if (typeof value === 'string') return value;
+	if (typeof value === 'number' || typeof value === 'boolean') return String(value);
+
+	if (typeof value === 'object' && value.constructor === Object) {
+		const entries = Object.entries(value);
+		if (entries.length === 0) return '{}';
+		return entries
+			.map(([key, val]) => {
+				const keyStr = shouldColor ? colors.blue(key) : key;
+				const valStr = shouldColor ? colors.green(JSON.stringify(val)) : JSON.stringify(val);
+				return `${keyStr}=${valStr}`;
+			})
+			.join(' ');
+	}
+
+	// For arrays and other objects, use JSON.stringify directly
+	try {
+		const result = JSON.stringify(value);
+		return shouldColor ? colors.green(result) : result;
+	} catch {
+		return String(value);
+	}
 }
 
 function formatError(err: any, opts: FormatOptions): string {
-	const message = err.message ?? formatWithOptions(opts, err);
+	const message = err.message ?? formatWithOptions(Boolean(opts.colors), err);
 	const stack = err.stack ? formatStack(err.stack, message, opts) : '';
 
 	const level = opts?.errorLevel || 0;

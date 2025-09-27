@@ -1,1 +1,0 @@
-export { ClockWidget } from './ClockWidget';
