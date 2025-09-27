@@ -1,8 +1,28 @@
 import React, { type ComponentPropsWithRef, type FC } from 'react';
 import { PiMinusThin, PiSquareThin, PiXThin } from 'react-icons/pi';
+import styled from '@emotion/styled';
 import { clsx } from 'clsx';
 import { getWindowDragCancelClassname } from '../const';
-import styles from './Windows.module.css';
+
+const WindowController = styled.div`
+	display: flex;
+	height: 100%;
+
+	& > button {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 42px;
+
+		&[data-action='close']:hover {
+			background-color: var(--color-error);
+		}
+
+		&:hover {
+			background-color: var(--color-base-300);
+		}
+	}
+`;
 
 export const WindowsWindowController: FC<{
 	close?: ComponentPropsWithRef<'button'>;
@@ -10,7 +30,7 @@ export const WindowsWindowController: FC<{
 	maximize?: ComponentPropsWithRef<'button'>;
 }> = ({ close, minimize, maximize }) => {
 	return (
-		<div className={clsx('WindowController', getWindowDragCancelClassname(), styles.WindowController)}>
+		<WindowController className={clsx('WindowController', getWindowDragCancelClassname())}>
 			<button type={'button'} data-action={'minimize'} {...minimize}>
 				<PiMinusThin />
 			</button>
@@ -20,6 +40,6 @@ export const WindowsWindowController: FC<{
 			<button type={'button'} data-action={'close'} {...close}>
 				<PiXThin />
 			</button>
-		</div>
+		</WindowController>
 	);
 };

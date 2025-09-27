@@ -10,10 +10,10 @@ export type WindowFrameProps = Omit<ComponentPropsWithRef<'div'>, 'title'> & {
 	onToggleMaximize?: () => void;
 };
 
-export const WindowFrame = ({ ref, ...props }: WindowFrameProps) => {
+export const WindowFrame = ({ ...props }: WindowFrameProps) => {
 	let theme = useWindowTheme();
 	if (theme === 'macos') {
-		return <MacOSWindowFrame ref={ref} {...props} />;
+		return <MacOSWindowFrame {...props} />;
 	}
-	return <WindowsWindowFrame ref={ref} {...props} />;
+	return <WindowsWindowFrame {...props} />;
 };

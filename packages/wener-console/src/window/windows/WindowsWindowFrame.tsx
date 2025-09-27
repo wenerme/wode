@@ -22,6 +22,7 @@ export const WindowsWindowFrame = ({
 				'border-color border shadow',
 				'focus-within:shadow-lg',
 				'bg-base-100',
+				'outline-none',
 				className,
 			)}
 			tabIndex={-1}

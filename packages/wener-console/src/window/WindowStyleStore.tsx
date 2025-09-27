@@ -1,9 +1,14 @@
+import type { ComponentType } from 'react';
 import { getGlobalStates } from '@wener/utils';
 import { createStore } from 'zustand';
 import { mutative } from 'zustand-mutative';
+import { WindowFrame, type WindowFrameProps } from './WindowFrame';
 
 export interface WindowStyleState {
 	theme?: 'macos' | 'windows' | 'system';
+	components: {
+		WindowFrame: ComponentType<WindowFrameProps>;
+	};
 }
 
 export function getWindowStyleStore(): WindowStyleStore {
@@ -15,6 +20,9 @@ export function createWindowStyleStore() {
 		mutative<WindowStyleState>(() => {
 			return {
 				theme: 'system',
+				components: {
+					WindowFrame: WindowFrame,
+				},
 			};
 		}),
 	);

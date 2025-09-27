@@ -1,5 +1,13 @@
-import React, { memo, useEffect, type ComponentPropsWithoutRef, type FC, type ReactNode } from 'react';
+import React, {
+	memo,
+	useEffect,
+	type ComponentProps,
+	type ComponentPropsWithoutRef,
+	type FC,
+	type ReactNode,
+} from 'react';
 import { Rnd } from 'react-rnd';
+import { useEvent } from '@wener/reaction';
 import { Closer } from '@wener/utils';
 import { clsx } from 'clsx';
 import { useStore } from 'zustand';
@@ -52,7 +60,7 @@ export const WindowGuest = memo<{ win: ReactWindow }>(({ win }) => {
 					width,
 					height,
 					canResize: canResize && !maximized,
-					canDrag,
+					canDrag: canDrag && !maximized,
 					minWidth,
 					minHeight,
 					maxWidth,
@@ -61,66 +69,70 @@ export const WindowGuest = memo<{ win: ReactWindow }>(({ win }) => {
 			},
 		),
 	);
+
+	// maximized should keep space for dock
+	// fullscreen should cover dock
+
+	let size = maximized
+		? { width: '100vw', height: '100vh' }
+		: {
+				width,
+				height,
+			};
+	let position = maximized
+		? { x: 0, y: 0 }
+		: {
+				x,
+				y,
+			};
+	const props: ComponentProps<typeof Rnd> = {
+		id: `win-${win.id}`,
+		'data-dnd-window-id': win.id,
+		className: clsx(!minimized && 'pointer-events-auto', maximized && 'h-screen w-screen'),
+		default: {
+			x: 0,
+			y: 0,
+			width: 320,
+			height: 200,
+		},
+		size: size,
+		position: position,
+		onDragStop: useEvent((e, d) => {
+			if (!maximized) {
+				store.setState({ x: d.x, y: d.y });
+			}
+		}),
+		onResize: useEvent((e, direction, ref, delta, position) => {
+			if (!maximized) {
+				store.setState({
+					width: ref.offsetWidth,
+					height: ref.offsetHeight,
+					...position,
+				});
+			}
+		}),
+		dragHandleClassName: getWindowDragHandleClassname(),
+		cancel: `.${getWindowDragCancelClassname()}`,
+		enableResizing: canResize,
+		disableDragging: !canDrag || maximized,
+		bounds: maximized ? undefined : document.body,
+		minWidth: minWidth,
+		minHeight: minHeight,
+		maxWidth: maxWidth,
+		maxHeight: maxHeight,
+		style: {
+			zIndex,
+		},
+		ref: useEvent((ref: Rnd | null) => {
+			let ele = ref?.resizableElement.current;
+			if (ele && win.state.windowElement !== ele) {
+				win.store.setState({ windowElement: ele });
+			}
+		}),
+	};
+
 	return (
-		<Rnd
-			id={`win-${win.id}`}
-			data-dnd-window-id={win.id}
-			className={clsx(!minimized && 'pointer-events-auto', maximized && 'h-screen w-screen')}
-			default={{
-				x: 0,
-				y: 0,
-				width: 320,
-				height: 200,
-			}}
-			size={
-				maximized
-					? { width: '100vw', height: '100vh' }
-					: {
-							width,
-							height,
-						}
-			}
-			position={
-				maximized
-					? { x: 0, y: 0 }
-					: {
-							x,
-							y,
-						}
-			}
-			onDragStop={(e, d) => {
-				if (!maximized) {
-					store.setState({ x: d.x, y: d.y });
-				}
-			}}
-			onResize={(e, direction, ref, delta, position) => {
-				if (!maximized) {
-					store.setState({
-						width: ref.offsetWidth,
-						height: ref.offsetHeight,
-						...position,
-					});
-				}
-			}}
-			dragHandleClassName={getWindowDragHandleClassname()}
-			cancel={`.${getWindowDragCancelClassname()}`}
-			enableResizing={canResize}
-			disableDragging={!canDrag || maximized}
-			bounds={maximized ? undefined : document.body}
-			minWidth={minWidth}
-			minHeight={minHeight}
-			maxWidth={maxWidth}
-			maxHeight={maxHeight}
-			style={{
-				zIndex,
-			}}
-			ref={(ref) => {
-				let ele = ref?.resizableElement.current;
-				if (ele && win.state.windowElement !== ele) {
-					win.store.setState({ windowElement: ele });
-				}
-			}}
-		>
+		<Rnd {...props}>
 			<WinContent win={win} />
 		</Rnd>
 	);
@@ -130,12 +142,14 @@ const WinContent: FC<{ win: ReactWindow }> = memo(({ win }) => {
 	const store = win.store;
 	const [frameless] = useStore(
 		store,
-		useShallow(({ frameless, minimized, canMinimize, canMaximize, title, render }) => {
-			return [frameless, minimized, canMinimize, canMaximize, title, render];
+		useShallow(({ frameless, fullscreen }) => {
+			// fullscreen always frameless
+			frameless = frameless || fullscreen;
+			return [frameless];
 		}),
 	);
 
-	let rw = getRootWindow();
+	const root = getRootWindow();
 	useEffect(() => {
 		let closer = new Closer();
 		let windowElement: HTMLElement | null | undefined;
@@ -148,7 +162,7 @@ const WinContent: FC<{ win: ReactWindow }> = memo(({ win }) => {
 			}
 
 			ele.addEventListener('mousedown', () => {
-				rw.setActive(win);
+				root.setActive(win);
 			});
 		};
 
@@ -165,10 +179,11 @@ const WinContent: FC<{ win: ReactWindow }> = memo(({ win }) => {
 		};
 	}, []);
 
-	if (frameless) {
-		return <WinFramelessContent win={win} />;
-	}
-	return <WinFrameContent win={win} />;
+	return (
+		<WindowContext.Provider value={win}>
+			{frameless ? <WinFramelessContent win={win} /> : <WinFrameContent win={win} />}
+		</WindowContext.Provider>
+	);
 });
 
 const WinFramelessContent: FC<{ win: ReactWindow }> = ({ win }) => {
@@ -192,11 +207,11 @@ const WinFramelessContent: FC<{ win: ReactWindow }> = ({ win }) => {
 			inert={minimized}
 			{...getWindowProps(win)}
 		>
-			<WindowRenderer render={render} />
+			<WindowContentRenderer render={render} />
 		</div>
 	);
 };
-const WinFrameContent: FC<{ win: ReactWindow }> = memo(({ win }) => {
+const WinFrameContent: FC<{ win: ReactWindow }> = ({ win }) => {
 	const store = win.store;
 	const { minimized, maximized, canMinimize, canMaximize, title, render } = useStore(
 		store,
@@ -205,55 +220,53 @@ const WinFrameContent: FC<{ win: ReactWindow }> = memo(({ win }) => {
 		}),
 	);
 	return (
-		<WindowContext.Provider value={win}>
-			<WindowFrame
-				inert={minimized}
-				controller={
-					<WindowController
-						close={{
-							onClick: () => {
-								win.close();
-							},
-						}}
-						minimize={{
-							disabled: !canMinimize,
-							onClick: () => {
-								win.minimize();
-							},
-						}}
-						maximize={{
-							disabled: !canMaximize,
-							onClick: () => {
-								win.maximize();
-							},
-							['data-active']: maximized || null,
-						}}
-					/>
-				}
-				onToggleMaximize={() => {
-					win.maximize();
-				}}
-				className={clsx('h-full w-full', minimized && 'hidden')}
-				title={title}
-				{...getWindowProps(win)}
-			>
-				<main className={'relative flex-1 overflow-hidden'}>
-					<div
-						className={'@container absolute inset-0 overflow-auto'}
-						ref={(ref) => {
-							win.setBody(ref);
-						}}
-						tabIndex={-1}
-					>
-						<WindowRenderer render={render} />
-					</div>
-				</main>
-			</WindowFrame>
-		</WindowContext.Provider>
+		<WindowFrame
+			inert={minimized}
+			controller={
+				<WindowController
+					close={{
+						onClick: () => {
+							win.close();
+						},
+					}}
+					minimize={{
+						disabled: !canMinimize,
+						onClick: () => {
+							win.minimize();
+						},
+					}}
+					maximize={{
+						disabled: !canMaximize,
+						onClick: () => {
+							win.maximize();
+						},
+						['data-active']: maximized || null,
+					}}
+				/>
+			}
+			onToggleMaximize={() => {
+				win.maximize();
+			}}
+			className={clsx('h-full w-full', minimized && 'hidden')}
+			title={title}
+			{...getWindowProps(win)}
+		>
+			<main className={'relative flex-1 overflow-hidden'}>
+				<div
+					className={'@container absolute inset-0 overflow-auto outline-none'}
+					ref={(ref) => {
+						win.setBody(ref);
+					}}
+					tabIndex={-1}
+				>
+					<WindowContentRenderer render={render} />
+				</div>
+			</main>
+		</WindowFrame>
 	);
-});
+};
 
-const WindowRenderer: FC<{ render?: () => ReactNode }> = ({ render }) => {
+const WindowContentRenderer: FC<{ render?: () => ReactNode }> = ({ render }) => {
 	return render?.();
 };
 

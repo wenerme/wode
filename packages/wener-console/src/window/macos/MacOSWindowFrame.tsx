@@ -20,6 +20,7 @@ export const MacOSWindowFrame = ({
 				'border-color rounded border shadow',
 				'focus-within:shadow-lg',
 				'bg-base-100',
+				'outline-none',
 				className,
 			)}
 			tabIndex={-1}
@@ -32,9 +33,9 @@ export const MacOSWindowFrame = ({
 					onToggleMaximize?.();
 				}}
 			>
-				{/*<BsWindow className={'w-4 h-4'} />*/}
 				{controller ?? <MacOSWindowController />}
 				<h4 className={'flex-1 truncate px-1 text-center leading-7'}>{title}</h4>
+				{/* 占位，保持标题居中 */}
 				<div className={'w-16'}></div>
 			</header>
 			{children}

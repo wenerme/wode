@@ -3,10 +3,26 @@ import { clamp, getGlobalStates, randomUUID } from '@wener/utils';
 import { createStore } from 'zustand';
 import { mutative } from 'zustand-mutative';
 
-export const WindowContext = createContext<ReactWindow | null>(null);
+export const WindowContext = createContext<ReactWindow | undefined>(undefined);
+
+export function useRootWindow(): ReactWindow {
+	return getRootWindow();
+}
 
 export function useWindow(): ReactWindow {
-	return useContext(WindowContext) || getRootWindow();
+	let win = useContext(WindowContext);
+	if (!win) {
+		console.trace(`useWindow used outside of WindowContext, fallback to root window`);
+	}
+	return win || getRootWindow();
+}
+
+export function useWindowContext() {
+	let win = useContext(WindowContext);
+	if (!win) {
+		throw new Error(`useWindowContext must be used within a WindowContext`);
+	}
+	return win;
 }
 
 export function getRootWindow(): ReactRootWindow {
@@ -217,7 +233,10 @@ export class ReactWindow extends EventTarget {
 	};
 
 	minimize = (minimize?: boolean) => {
-		let current = this.state.minimized;
+		let { minimized: current, canMinimize } = this.state;
+		if (!canMinimize) {
+			return;
+		}
 		minimize = minimize ?? !current;
 		if (minimize === current) {
 			return;
@@ -231,7 +250,10 @@ export class ReactWindow extends EventTarget {
 	};
 
 	maximize = (maximize?: boolean) => {
-		let current = this.state.maximized;
+		const { maximized: current, canMaximize } = this.state;
+		if (!canMaximize) {
+			return;
+		}
 		maximize = maximize ?? !current;
 		if (maximize === current) {
 			return;
