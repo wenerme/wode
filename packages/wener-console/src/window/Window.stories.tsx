@@ -3,14 +3,14 @@ import { PiAppleLogo, PiWindowsLogo } from 'react-icons/pi';
 import type { Meta } from '@storybook/react';
 import { useStore } from 'zustand';
 import { ComponentProvider } from '../components';
-import { useWindow } from './ReactWindow';
+import { useRootWindow, useWindow } from './ReactWindow';
 import { WindowFrame } from './WindowFrame';
 import { WindowHost } from './WindowHost';
 import { getWindowStyleStore } from './WindowStyleStore';
 import { WindowTest } from './WindowTest';
 
 const meta: Meta = {
-	title: 'console/window',
+	title: 'window',
 	parameters: {
 		layout: 'fullscreen',
 	},
@@ -52,7 +52,7 @@ export const Windows = () => {
 	);
 };
 export const Demo = () => {
-	let win = useWindow();
+	let win = useRootWindow();
 	return (
 		<ComponentProvider components={[]}>
 			<div className={'h-full w-full'}>

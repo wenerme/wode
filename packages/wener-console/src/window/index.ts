@@ -1,5 +1,5 @@
 export { getWindowDragHandleClassname, getWindowDragCancelClassname } from './const';
-export { ReactWindow, getRootWindow, useWindow, type WindowOpenOptions } from './ReactWindow';
+export { ReactWindow, getRootWindow, useWindow, useRootWindow, type WindowOpenOptions } from './ReactWindow';
 export { WindowHost } from './WindowHost';
-export { WindowGuest } from './WindowGuest';
+// export { WindowGuest } from './WindowGuest';
 export { Window } from './Window';
