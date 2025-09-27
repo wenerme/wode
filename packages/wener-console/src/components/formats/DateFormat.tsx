@@ -1,5 +1,5 @@
 import React, { useMemo, type ComponentPropsWithRef, type ReactNode } from 'react';
-import dayjs from 'dayjs';
+import { dayjs } from '@wener/common/dayjs';
 import { EmptyPlaceholder } from './EmptyPlaceholder';
 
 export const DateFormat = ({

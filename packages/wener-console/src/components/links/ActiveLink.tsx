@@ -12,7 +12,7 @@ export const ActiveLink = ({ children, activeClassName, ...props }: ActiveLinkPr
 	const { asPath, isReady } = useRouter();
 
 	const child = Children.only(children);
-	const childClassName = child.props.className || '';
+	const childClassName: string = (child as any).props?.className || '';
 	const [className, setClassName] = useState(childClassName);
 
 	useEffect(() => {
@@ -38,7 +38,7 @@ export const ActiveLink = ({ children, activeClassName, ...props }: ActiveLinkPr
 		<Link {...props} legacyBehavior>
 			{cloneElement(child, {
 				className: className || null,
-			})}
+			} as any)}
 		</Link>
 	);
 };

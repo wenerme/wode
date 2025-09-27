@@ -1,6 +1,5 @@
 import React, { useState, type FC, type ReactNode } from 'react';
-import { createHashRouter, Outlet, RouterProvider, type RouterProviderProps } from 'react-router-dom';
-import type { Router } from '@remix-run/router';
+import { createHashRouter, Outlet, RouterProvider } from 'react-router-dom';
 import { ErrorSuspenseBoundary, useAsyncEffect, useDebugRender } from '@wener/reaction';
 import { useStore } from 'zustand';
 import { isDev } from '../const';
@@ -10,6 +9,7 @@ import { getConsoleContext, NotFoundPage, PageErrorState, type DynamicModule } f
 import { LoadingIndicator } from './components';
 import { RootRouterReactor } from './components/RootRouterReactor';
 import { getRouteStore, getSiteStore } from './context';
+import type { ReactRouter } from './store/RouteStore';
 
 enum ServiceState {
 	New = 'New',
@@ -29,8 +29,7 @@ export type ConsoleLoaderProps = {
 	loadModule: (name: string) => Promise<DynamicModule>;
 	modules?: string[];
 	children?: ReactNode;
-	createRouter?: (children: RouteObjects) => Router;
-	future?: RouterProviderProps['future'];
+	createRouter?: (children: RouteObjects) => ReactRouter;
 };
 
 export const ConsoleLoader: FC<ConsoleLoaderProps> = ({
@@ -38,11 +37,7 @@ export const ConsoleLoader: FC<ConsoleLoaderProps> = ({
 	modules = [],
 	render,
 	createRouter = createHashRouter,
-	// createRootRoutes = _createRootRoutes,
 	children,
-	future = {
-		v7_startTransition: true,
-	},
 }) => {
 	const router = useStore(getRouteStore(), ({ router }) => router);
 	useDebugRender(`ConsoleAppContent`);
@@ -85,7 +80,7 @@ export const ConsoleLoader: FC<ConsoleLoaderProps> = ({
 				render,
 			}),
 		);
-		getRouteStore().setState({ router, routes });
+		getRouteStore().setState({ router: router as any, routes });
 		setState(ServiceState.Done);
 		log('Initialized');
 
@@ -101,7 +96,7 @@ export const ConsoleLoader: FC<ConsoleLoaderProps> = ({
 	return (
 		<>
 			{children}
-			<RouterProvider router={router} fallbackElement={<LoadingIndicator />} future={future} />
+			<RouterProvider router={router} />
 		</>
 	);
 };

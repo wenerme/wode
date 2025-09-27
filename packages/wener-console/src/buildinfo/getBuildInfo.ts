@@ -1,4 +1,4 @@
-import dayjs from 'dayjs';
+import { dayjs } from '@wener/common/dayjs';
 
 export interface BuildInfo {
   version: string;

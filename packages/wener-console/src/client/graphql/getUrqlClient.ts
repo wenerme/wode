@@ -4,10 +4,10 @@ import { getAccessToken } from '../../console/context';
 import { createUrqlClient } from '../../urql';
 import { getGraphQLUrl } from './getGraphQLUrl';
 
-const key = 'UrqlClient';
+const _UrqlClientStateKey = 'UrqlClient';
 
 export function getUrqlClient(): Client {
-	return getGlobalStates(key, () =>
+	return getGlobalStates(_UrqlClientStateKey, () =>
 		createUrqlClient({
 			getToken: getAccessToken,
 			url: getGraphQLUrl(),
@@ -16,5 +16,5 @@ export function getUrqlClient(): Client {
 }
 
 export function setUrlqClient(client: Client) {
-	setGlobalStates(key, client);
+	setGlobalStates(_UrqlClientStateKey, client);
 }

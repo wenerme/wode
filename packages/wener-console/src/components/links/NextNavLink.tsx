@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 export interface NextNavLinkProps extends LinkProps {
 	children: ReactElement | ((o: { isActive: boolean }) => ReactElement);
 	className?: string | ((o: { isActive: boolean }) => string);
+	ref?: any;
 }
 
 export const NextNavLink = ({ children, className, ref, ...props }: NextNavLinkProps) => {

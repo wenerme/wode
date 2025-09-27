@@ -1,4 +1,4 @@
-import { getRootWindow, type ReactWindow, type WindowOpenOptions } from '../../window';
+import { getRootWindow, type ReactWindow, type WindowOpenOptions } from '../window';
 
 export interface DefineAppletOptions {
 	name: string;

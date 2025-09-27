@@ -2,7 +2,7 @@
 
 import React, { type FC, type PropsWithChildren } from 'react';
 import { Toaster } from 'react-hot-toast';
-import dayjs from 'dayjs';
+import { dayjs } from '@wener/common/dayjs';
 import advancedFormat from 'dayjs/plugin/advancedFormat';
 import dayOfYear from 'dayjs/plugin/dayOfYear';
 import duration from 'dayjs/plugin/duration';

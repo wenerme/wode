@@ -21,7 +21,7 @@ export function createStoreContext<S extends StoreApi<unknown>>() {
 	const ZustandContext = reactCreateContext<S | undefined>(undefined);
 
 	const Provider = ({ createStore, children }: { createStore: () => S; children: ReactNode }) => {
-		const storeRef = useRef<S>();
+		const storeRef = useRef<S>(undefined);
 
 		if (!storeRef.current) {
 			storeRef.current = createStore();
@@ -38,7 +38,7 @@ export function createStoreContext<S extends StoreApi<unknown>>() {
 		if (!store) {
 			throw new Error('Seems like you have not used zustand provider as an ancestor.');
 		}
-		return useStore(store, selector as (state: ExtractState<S>) => StateSlice, equalityFn);
+		return useStore(store, selector as (state: ExtractState<S>) => StateSlice);
 	};
 
 	const useStoreApi = () => {

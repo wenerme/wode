@@ -40,10 +40,7 @@ export const Tooltip = ({
 
 	if (!content) return children;
 
-	const trigger = cloneElement(
-		children,
-		getReferenceProps({ ref: refs.setReference, ...children.props, ...getReferenceProps() }),
-	);
+	const trigger = cloneElement(children, getReferenceProps({ ref: refs.setReference, ...(children.props as any) }));
 	const Wrapper = portal ? FloatingPortal : Fragment;
 	return (
 		<>

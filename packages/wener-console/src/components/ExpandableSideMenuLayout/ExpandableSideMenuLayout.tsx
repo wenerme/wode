@@ -3,8 +3,8 @@ import { HiChevronDown, HiChevronRight } from 'react-icons/hi2';
 import { PiCaretDoubleLeftThin, PiCaretDoubleRightThin } from 'react-icons/pi';
 import { flexRender, useControllable, type FlexRenderable } from '@wener/reaction';
 import { clsx } from 'clsx';
-import { Tooltip } from '../../floating';
 import { HeaderContentFooterLayout, LeftContentRightLayout, OverlayScrollbar } from '../../components';
+import { Tooltip } from '../../floating';
 import { AutoNavLink } from '../links';
 import type { BaseNavLink } from './BaseNavLink';
 

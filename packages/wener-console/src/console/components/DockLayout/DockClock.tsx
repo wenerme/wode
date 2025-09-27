@@ -1,8 +1,7 @@
-import React, { memo, useMemo, useRef, useState } from 'react';
-import { ClockWidget } from '@wener/console/console/applets';
-import type { ReactWindow } from '@wener/console/web/window';
+import React, { memo, useMemo, useState } from 'react';
+import { dayjs } from '@wener/common/dayjs';
 import { useInterval } from '@wener/reaction';
-import dayjs from 'dayjs';
+import { ClockWidget } from '../../../applets/ClockWidget';
 
 export const DockClock = memo(() => {
 	const [date, setDate] = useState(() => dayjs());
@@ -11,10 +10,9 @@ export const DockClock = memo(() => {
 	}, 1000 * 60);
 	const title = useMemo(
 		() => new Intl.DateTimeFormat('zh-CN', { calendar: 'chinese', dateStyle: 'full' }).format(date.toDate()),
-		[date.dayOfYear()],
+		[date.valueOf()],
 	);
 
-	const winRef = useRef<ReactWindow>();
 	return (
 		<div
 			className={'flex flex-col items-center self-center'}

@@ -1,16 +1,21 @@
 import type { DescMessage, DescMethodUnary, DescService, MessageInitShape, MessageShape } from '@bufbuild/protobuf';
-import { createClient, type Client, type ConnectError } from '@connectrpc/connect';
+import { createClient, type Client, type ConnectError, type Transport } from '@connectrpc/connect';
 import { useQuery as _useConnectQuery, type UseQueryOptions } from '@connectrpc/connect-query';
 import { createConnectTransport } from '@connectrpc/connect-web';
 import type { SkipToken, UseQueryResult } from '@tanstack/react-query';
-import { getGlobalStates } from '@wener/utils';
+import { getGlobalStates, setGlobalStates } from '@wener/utils';
 
-export function getConnectTransport() {
-	return getGlobalStates('ConnectRpcTransport', () => {
+export function getConnectTransport(): Transport {
+	return getGlobalStates(_ConnectRpcTransportKey, () => {
 		return createConnectTransport({
 			baseUrl: `${location.origin}/api/connect`,
 		});
 	});
+}
+
+const _ConnectRpcTransportKey = 'ConnectRpcTransport';
+export function setConnectTransport(transport: Transport) {
+	setGlobalStates(_ConnectRpcTransportKey, transport);
 }
 
 export function getConnectServiceClient<T extends DescService>(service: T): Client<T> {
