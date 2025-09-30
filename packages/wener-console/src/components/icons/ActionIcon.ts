@@ -1,5 +1,7 @@
 import type { ComponentType } from 'react';
+import { HiHome, HiMiniArrowPath } from 'react-icons/hi2';
 import {
+	PiAlignLeftSimpleFill,
 	PiArrowDown,
 	PiArrowLineDown,
 	PiArrowLineUp,
@@ -68,6 +70,9 @@ export const ActionIcon = {
 	Upload: PiUploadSimple,
 	View: PiEye,
 	Write: PiNotePencil,
+	Backward: PiAlignLeftSimpleFill,
+	Reset: HiMiniArrowPath,
+	Home: HiHome,
 } as const satisfies Record<string, ComponentType<any>>;
 
 export const AppletIcon = {

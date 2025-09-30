@@ -21,3 +21,13 @@ export { Link, type LinkProps } from './Link';
 export { ErrorSuspenseBoundary } from './ErrorSuspenseBoundary';
 export { LeftSideMenuBarLayout } from './LeftSideMenuBarLayout';
 export { AutoNavLink } from './links';
+
+export { DockLayout } from './DockLayout/DockLayout';
+
+export {
+	ExpandableSideMenuLayout,
+	type ExpandableSideMenuLayoutProps,
+	type ExpandableSideMenuItemProps,
+} from './ExpandableSideMenuLayout/ExpandableSideMenuLayout';
+
+export { Icon, type IconProps } from './icons/Icon';

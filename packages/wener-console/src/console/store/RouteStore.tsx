@@ -1,5 +1,5 @@
 import React from 'react';
-import { createMemoryRouter, type RouteObject } from 'react-router-dom';
+import { createMemoryRouter, type RouteObject } from 'react-router';
 import { createReactContext } from '@wener/reaction';
 import { createStore } from 'zustand';
 import { mutative } from 'zustand-mutative';

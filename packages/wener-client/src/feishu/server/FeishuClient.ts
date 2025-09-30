@@ -1,10 +1,10 @@
 import type { FetchLike } from '@wener/utils';
 import dayjs from 'dayjs';
 import type { ExpiryValue } from '../../ExpiryValue';
+import { MessageType } from '../../local/feishu/message-common';
 import { getAppAccessTokenInternal } from './getAppAccessTokenInternal';
 import { getExpiryValueOrRequest } from './getExpiryValueOrRequest';
 import { getTenantAccessTokenInternal } from './getTenantAccessTokenInternal';
-import { MessageType } from './message-common';
 import { refreshAccessToken } from './refreshAccessToken';
 import { request, type RequestOptions } from './request';
 

@@ -1,5 +1,5 @@
 import React, { useEffect, type FC, type PropsWithChildren } from 'react';
-import { useInRouterContext } from 'react-router-dom';
+import { useInRouterContext } from 'react-router';
 import { useRouteTitles } from '../../router';
 import { ReactRouterTracker } from './ReactRouterTracker';
 

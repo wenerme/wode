@@ -3,7 +3,7 @@ import { HiOutlineLogout } from 'react-icons/hi';
 import { HiLockClosed, HiMiniArrowsPointingIn, HiOutlineIdentification, HiQuestionMarkCircle } from 'react-icons/hi2';
 import { PiBrowser, PiBrowsersLight } from 'react-icons/pi';
 import { VscClose, VscCloseAll, VscPrimitiveSquare } from 'react-icons/vsc';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { FloatingFocusManager, FloatingPortal, useTransitionStyles } from '@floating-ui/react';
 import { getUserStore } from '@wener/console/console';
 import { usePopover } from '@wener/console/floating';

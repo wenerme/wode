@@ -1,4 +1,4 @@
-import type { RouteObject } from 'react-router-dom';
+import type { RouteObject } from 'react-router';
 import { createStore, type StoreApi } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 import { DynamicStore } from './DynamicStore';

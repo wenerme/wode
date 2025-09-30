@@ -1,5 +1,5 @@
 import React, { type FC } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router';
 import { z } from 'zod';
 import { ExpandableSideMenuLayout, type ExpandableSideMenuLayoutProps } from '../../web';
 import { useUserPreferenceState } from '../hooks';

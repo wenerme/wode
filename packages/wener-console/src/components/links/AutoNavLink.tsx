@@ -1,5 +1,5 @@
 import React, { type ComponentPropsWithRef, type ReactElement } from 'react';
-import { NavLink, useInRouterContext } from 'react-router-dom';
+import { NavLink, useInRouterContext } from 'react-router';
 import { StaticNavLink } from './StaticNavLink';
 
 export interface NavLinkProps extends Omit<ComponentPropsWithRef<'a'>, 'children' | 'className'> {

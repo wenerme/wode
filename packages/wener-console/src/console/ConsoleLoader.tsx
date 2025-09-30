@@ -1,5 +1,5 @@
 import React, { useState, type FC, type ReactNode } from 'react';
-import { createHashRouter, Outlet, RouterProvider } from 'react-router-dom';
+import { createHashRouter, Outlet, RouterProvider } from 'react-router';
 import { ErrorSuspenseBoundary, useAsyncEffect, useDebugRender } from '@wener/reaction';
 import { useStore } from 'zustand';
 import { isDev } from '../const';
