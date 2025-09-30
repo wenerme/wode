@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react';
 import type { ArrayPath, Path, PathValue } from 'react-hook-form';
-import type { RouteObject } from 'react-router-dom';
+import type { RouteObject } from 'react-router';
 import type { MaybePromise } from '@wener/utils';
 
 export interface ModuleStore<O extends Record<string, any> = Record<string, any>> {

@@ -1,4 +1,4 @@
-import { useMatches } from 'react-router-dom';
+import { useMatches } from 'react-router';
 import type { KnownRouteObjectHandle } from './index';
 
 export function useRouteTitles(id?: string): string[] {

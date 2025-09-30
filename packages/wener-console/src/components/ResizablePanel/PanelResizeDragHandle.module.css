@@ -49,10 +49,11 @@
 }
 
 .LineHandle {
-	@apply bg-base-200;
+	background-color: var(--color-base-200);
+
 	&:hover,
 	&[data-resize-handle-state="hover"] {
-		@apply bg-base-300;
+		background-color: var(--color-base-300);
 	}
 
 	&[data-panel-group-direction="horizontal"] {

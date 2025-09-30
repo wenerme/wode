@@ -1,10 +1,10 @@
 import type { ReactNode } from 'react';
-import type { LazyRouteFunction, RouteObject, UIMatch } from 'react-router-dom';
+import type { LazyRouteFunction, RouteObject, UIMatch } from 'react-router';
 
 export { useRouteTitles } from './useRouteTitles';
 export { usePrompt } from './usePrompt';
 
-declare module 'react-router-dom' {
+declare module 'react-router' {
 	export interface IndexRouteObject {
 		meta?: KnownRouteObjectMeta;
 	}

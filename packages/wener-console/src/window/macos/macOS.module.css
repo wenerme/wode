@@ -1,0 +1,30 @@
+@reference "tailwindcss/theme.css";
+
+.WindowController {
+	@apply flex items-center gap-2 [&>button>svg]:opacity-0 [&>button>svg]:hover:opacity-65;
+
+	& > button {
+		@apply h-4 w-4 rounded-full bg-gray-300;
+		--color: var(--color-gray-300);
+
+		&:disabled {
+			@apply opacity-45;
+			--color: #000 !important;
+		}
+
+		&[data-action="close"] {
+			/*#ec6a5e*/
+			--color: #f34f4f;
+		}
+
+		&[data-action="minimize"] {
+			/*#f4bf4f*/
+			--color: #f3b95d;
+		}
+
+		&[data-action="maximize"] {
+			/*#61c554*/
+			--color: #3ab54a;
+		}
+	}
+}

@@ -1,5 +1,5 @@
 import React, { type ComponentPropsWithRef, type ReactNode } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router';
 import { flexRender, useControllable, type FlexRenderable } from '@wener/reaction';
 import { clsx } from 'clsx';
 import { cn } from '../utils/cn';

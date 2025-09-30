@@ -841,7 +841,7 @@ importers:
         version: 5.0.1
       knex:
         specifier: ^3.1.0
-        version: 3.1.0(better-sqlite3@12.2.0)(mysql2@3.15.0)(pg@8.16.3)
+        version: 3.1.0(better-sqlite3@12.2.0)(pg@8.16.3)(sqlite3@5.1.7)
       knex-schema-inspector:
         specifier: ^3.1.0
         version: 3.1.0
@@ -1541,8 +1541,8 @@ importers:
       react-resizable-panels:
         specifier: ^3.0.6
         version: 3.0.6(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
-      react-router-dom:
-        specifier: '*'
+      react-router:
+        specifier: ^7.9.1
         version: 7.9.1(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       std-env:
         specifier: ^3.9.0
@@ -1876,7 +1876,7 @@ importers:
         version: 5.7.0
       knex:
         specifier: ^3.1.0
-        version: 3.1.0(better-sqlite3@12.2.0)(mysql2@3.15.0)(pg@8.16.3)
+        version: 3.1.0(better-sqlite3@12.2.0)(pg@8.16.3)(sqlite3@5.1.7)
       nats:
         specifier: ^2.29.3
         version: 2.29.3
@@ -13867,7 +13867,7 @@ snapshots:
   '@mikro-orm/migrations@6.5.4(@mikro-orm/core@6.5.4)(@types/node@24.5.2)(better-sqlite3@12.2.0)(libsql@0.4.7)(pg@8.16.3)':
     dependencies:
       '@mikro-orm/core': 6.5.4
-      '@mikro-orm/knex': 6.5.4(@mikro-orm/core@6.5.4)(better-sqlite3@12.2.0)(libsql@0.4.7)(mysql2@3.15.0)(pg@8.16.3)
+      '@mikro-orm/knex': 6.5.4(@mikro-orm/core@6.5.4)(better-sqlite3@12.2.0)(libsql@0.4.7)(pg@8.16.3)(sqlite3@5.1.7)
       fs-extra: 11.3.2
       umzug: 3.8.2(@types/node@24.5.2)
     transitivePeerDependencies:
@@ -13908,7 +13908,7 @@ snapshots:
   '@mikro-orm/postgresql@6.5.4(@mikro-orm/core@6.5.4)(better-sqlite3@12.2.0)(libsql@0.4.7)':
     dependencies:
       '@mikro-orm/core': 6.5.4
-      '@mikro-orm/knex': 6.5.4(@mikro-orm/core@6.5.4)(better-sqlite3@12.2.0)(libsql@0.4.7)(mysql2@3.15.0)(pg@8.16.3)
+      '@mikro-orm/knex': 6.5.4(@mikro-orm/core@6.5.4)(better-sqlite3@12.2.0)(libsql@0.4.7)(pg@8.16.3)(sqlite3@5.1.7)
       pg: 8.16.3
       postgres-array: 3.0.4
       postgres-date: 2.1.0

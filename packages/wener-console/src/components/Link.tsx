@@ -1,5 +1,5 @@
 import React, { type ElementType } from 'react';
-import { Link as _Link, useInRouterContext } from 'react-router-dom';
+import { Link as _Link, useInRouterContext } from 'react-router';
 import type { AsProps } from './props';
 
 export type LinkProps<E extends ElementType = 'a'> = AsProps<E> & {
