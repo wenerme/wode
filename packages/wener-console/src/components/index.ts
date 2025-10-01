@@ -19,8 +19,9 @@ export { TitleTabList, getTitleTabItemKey, type TitleTabItem } from './TitleTabL
 export { ActiveToggleIcon, type ActiveToggleIconProps } from './ActiveToggleIcon';
 export { Link, type LinkProps } from './Link';
 export { ErrorSuspenseBoundary } from './ErrorSuspenseBoundary';
-export { LeftSideMenuBarLayout } from './LeftSideMenuBarLayout';
-export { AutoNavLink } from './links';
+export { LeftSideMenuBarLayout } from './IconSidebarLayout';
+export { IconMenuSidebarLayout } from './IconSidebarLayout/LeftSideMenuBarLayout';
+export { NavLink } from './links';
 
 export { DockLayout } from './DockLayout/DockLayout';
 

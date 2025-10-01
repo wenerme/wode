@@ -1,7 +1,7 @@
 import React, { type FC } from 'react';
 import { Outlet } from 'react-router';
 import { z } from 'zod';
-import { ExpandableSideMenuLayout, type ExpandableSideMenuLayoutProps } from '../../web';
+import { ExpandableSideMenuLayout, type ExpandableSideMenuLayoutProps } from '../../components';
 import { useUserPreferenceState } from '../hooks';
 
 const ModuleLayoutState = z.object({

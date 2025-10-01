@@ -1,3 +1,3 @@
-export { AutoNavLink, ReactRouterNavLink, type AutoNavLinkProps } from './AutoNavLink';
+export { NavLink, ReactRouterNavLink, type AutoNavLinkProps } from './NavLink';
 export { StaticNavLink } from './StaticNavLink';
-export { type NavLinkProps } from './AutoNavLink';
+export { type NavLinkProps } from './NavLink';

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import type { AutoNavLinkProps } from './AutoNavLink';
+import type { AutoNavLinkProps } from './NavLink';
 
 /**
  *  不会添加 basename
