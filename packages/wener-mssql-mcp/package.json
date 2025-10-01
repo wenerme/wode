@@ -1,0 +1,50 @@
+{
+	"name": "@wener/mssql-mcp",
+	"version": "1.0.0",
+	"description": "Microsoft SQL Server MCP (Model Context Protocol) server with SQL query execution and Windows Authentication support",
+	"bin": {
+		"mssql-mcp": "./dist/main.mjs"
+	},
+	"main": "./dist/main.mjs",
+	"files": [
+		"dist",
+		"README.md"
+	],
+	"scripts": {
+		"build": "node --loader ts-node/esm src/scripts/bundle.ts",
+		"dev": "node --loader ts-node/esm src/main.ts",
+		"prepublishOnly": "pnpm build",
+		"clean": "rm -rf dist"
+	},
+	"keywords": [
+		"mcp",
+		"mssql",
+		"sql-server",
+		"model-context-protocol",
+		"claude",
+		"anthropic",
+		"database",
+		"ai-tools"
+	],
+	"author": "wener",
+	"license": "MIT",
+	"type": "module",
+	"engines": {
+		"node": ">=18.0.0"
+	},
+	"devDependencies": {
+		"@hono/mcp": "^0.1.4",
+		"@hono/node-server": "^1.19.3",
+		"@modelcontextprotocol/sdk": "^1.18.2",
+		"@types/node": "^22.0.0",
+		"commander": "^12.1.0",
+		"consola": "^3.2.3",
+		"dotenv": "^16.4.5",
+		"esbuild": "^0.25.0",
+		"hono": "^4.9.9",
+		"mssql": "^12.0.0",
+		"ts-node": "^10.9.2",
+		"typescript": "^5.7.0",
+		"zod": "^4.1.9"
+	}
+}
