@@ -5,7 +5,7 @@ import { flexRender, useControllable, type FlexRenderable } from '@wener/reactio
 import { clsx } from 'clsx';
 import { HeaderContentFooterLayout, LeftContentRightLayout, OverlayScrollbar } from '../../components';
 import { Tooltip } from '../../floating';
-import { AutoNavLink } from '../links';
+import { NavLink } from '../links';
 import type { BaseNavLink } from './BaseNavLink';
 
 interface ExpandableSideMenuTitle {
@@ -51,7 +51,7 @@ export interface ExpandableSideMenuLayoutProps extends Omit<HTMLProps<HTMLDivEle
 const SideMenuItem: FC<{ item: ExpandableSideMenuItemProps; expanded?: boolean; NavLink?: BaseNavLink }> = ({
 	item,
 	expanded,
-	NavLink = AutoNavLink,
+	NavLink = NavLink,
 }) => {
 	const [collapse, setCollapse] = useState(true);
 	if ('children' in item) {
@@ -230,7 +230,7 @@ export const ExpandableSideMenuLayout: FC<ExpandableSideMenuLayoutProps> = ({
 	title,
 	icon,
 	items,
-	NavLink = AutoNavLink,
+	NavLink = NavLink,
 	expanded: _expanded,
 	onExpandedChange: _onExpandedChange,
 	initialExpanded: _initialExpanded,

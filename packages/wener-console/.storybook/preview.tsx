@@ -4,6 +4,7 @@ import { DaisyTheme, getSupportedThemes } from '../src/daisy';
 import '../src/console/globals.css';
 import { DynamicRender } from '../src/components/DynamicRender';
 import { StaticRootReactor } from '../src/console';
+import 'overlayscrollbars/overlayscrollbars.css';
 
 const ClientContext: React.FC<PropsWithChildren> = ({ children }) => {
 	return children;

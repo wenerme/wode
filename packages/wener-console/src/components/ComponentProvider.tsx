@@ -117,13 +117,15 @@ export type ComponentProviderProps = {
 	children?: ReactNode;
 };
 
-type NameLike<P> = string | ContextComponentType<P>;
+type NameLike<P> = string | ContextComponentType<P> | ComponentType<P>;
 
 type ComponentContextObject = {
 	parent?: ComponentContextObject;
 	components: ProvideComponentOptions[];
-	useComponent: <P extends {}>(comp: NameLike<P>) => [ComponentType<P>, [ctx: { found: boolean }]];
+	useComponent: <P extends {}>(comp: NameLike<P>) => UseComponentResult<P>;
 };
+
+type UseComponentResult<P> = [ComponentType<P>, { found: boolean }];
 
 const RootValue: ComponentContextObject = {
 	get components() {
@@ -144,7 +146,10 @@ function resolveName<P>(def: NameLike<P>) {
 	return { name };
 }
 
-export function useComponent<P extends {}>(comp: NameLike<P>) {
+export function useComponent<P extends {}>(
+	comp: NameLike<P>,
+	def?: ComponentType<P>,
+): [ComponentType<P>, { found: boolean }] {
 	const { useComponent } = useContext(ComponentContext);
 	return useComponent<P>(comp);
 }
