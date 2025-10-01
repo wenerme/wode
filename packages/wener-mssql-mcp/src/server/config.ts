@@ -111,7 +111,16 @@ export function getMssqlConfig(): MssqlConfig {
  * Check if a SQL query is a read-only operation
  */
 export function isReadOnlyQuery(query: string): boolean {
-	const trimmed = query.trim().toUpperCase();
+	// Remove SQL line comments (--) and whitespace
+	const cleanQuery = query
+		.replace(/--.*$/gm, '') // Remove line comments
+		.trim()
+		.toUpperCase();
+
+	// If no content left after removing comments, treat as unsafe
+	if (!cleanQuery) {
+		return false;
+	}
 
 	// Allow SELECT statements and information queries
 	const readOnlyOperations = [
@@ -124,7 +133,7 @@ export function isReadOnlyQuery(query: string): boolean {
 	];
 
 	// Check if query starts with any read-only operation
-	return readOnlyOperations.some((op) => trimmed.startsWith(op));
+	return readOnlyOperations.some((op) => cleanQuery.startsWith(op));
 }
 
 /**
