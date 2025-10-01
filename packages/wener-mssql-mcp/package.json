@@ -1,21 +1,22 @@
 {
 	"name": "@wener/mssql-mcp",
-	"version": "1.0.0",
+	"version": "1.0.1",
+	"type": "module",
 	"description": "Microsoft SQL Server MCP (Model Context Protocol) server with SQL query execution and Windows Authentication support",
+	"author": "wener",
+	"license": "MIT",
+	"engines": {
+		"node": ">=18.0.0"
+	},
 	"bin": {
 		"mssql-mcp": "./dist/main.mjs"
 	},
 	"main": "./dist/main.mjs",
 	"files": [
 		"dist",
+		"src",
 		"README.md"
 	],
-	"scripts": {
-		"build": "node --loader ts-node/esm src/scripts/bundle.ts",
-		"dev": "node --loader ts-node/esm src/main.ts",
-		"prepublishOnly": "pnpm build",
-		"clean": "rm -rf dist"
-	},
 	"keywords": [
 		"mcp",
 		"mssql",
@@ -26,11 +27,11 @@
 		"database",
 		"ai-tools"
 	],
-	"author": "wener",
-	"license": "MIT",
-	"type": "module",
-	"engines": {
-		"node": ">=18.0.0"
+	"scripts": {
+		"build": "node --loader ts-node/esm src/scripts/bundle.ts",
+		"clean": "rm -rf dist",
+		"dev": "node --loader ts-node/esm src/main.ts",
+		"prepublishOnly": "pnpm build"
 	},
 	"devDependencies": {
 		"@hono/mcp": "^0.1.4",
@@ -46,5 +47,8 @@
 		"ts-node": "^10.9.2",
 		"typescript": "^5.7.0",
 		"zod": "^4.1.9"
+	},
+	"publishConfig": {
+		"access": "public"
 	}
 }
