@@ -51,7 +51,6 @@ export interface ExpandableSideMenuLayoutProps extends Omit<HTMLProps<HTMLDivEle
 const SideMenuItem: FC<{ item: ExpandableSideMenuItemProps; expanded?: boolean; NavLink?: BaseNavLink }> = ({
 	item,
 	expanded,
-	NavLink = NavLink,
 }) => {
 	const [collapse, setCollapse] = useState(true);
 	if ('children' in item) {
@@ -213,7 +212,7 @@ export const ExpandableMenu: FC<ExpandableSideMenuLayoutProps> = ({
 			}
 		>
 			<OverlayScrollbar className={'h-full'}>
-				<ul className={clsx('menu bg-base-100 gap-0.5', expanded ? 'p-2' : 'p-0')}>
+				<ul className={clsx('menu w-full bg-base-100 gap-0.5', expanded ? 'p-2' : 'p-0')}>
 					{items.map((item, i) => {
 						return <SideMenuItem item={item} expanded={expanded} key={i} />;
 					})}
@@ -230,7 +229,6 @@ export const ExpandableSideMenuLayout: FC<ExpandableSideMenuLayoutProps> = ({
 	title,
 	icon,
 	items,
-	NavLink = NavLink,
 	expanded: _expanded,
 	onExpandedChange: _onExpandedChange,
 	initialExpanded: _initialExpanded,

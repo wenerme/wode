@@ -1,4 +1,4 @@
-import React, { memo, useMemo, type ComponentPropsWithoutRef } from 'react';
+import React, { memo, useMemo, type ComponentPropsWithoutRef, type CSSProperties } from 'react';
 import { HiMiniArrowsPointingIn } from 'react-icons/hi2';
 import { PiBrowsersLight } from 'react-icons/pi';
 import { VscClose, VscCloseAll, VscPrimitiveSquare } from 'react-icons/vsc';
@@ -89,9 +89,14 @@ export const WindowControlButton = memo(() => {
 			</button>
 			{isMounted && (
 				<FloatingFocusManager context={context}>
-					<div ref={refs.setFloating} {...getFloatingProps()} style={floatingStyles} className={'z-50'}>
+					<div
+						ref={refs.setFloating}
+						{...getFloatingProps()}
+						style={floatingStyles as CSSProperties}
+						className={'z-50'}
+					>
 						<WindowControlPopoverContent
-							style={styles}
+							style={styles as CSSProperties}
 							onClick={() => {
 								setOpen(false);
 							}}

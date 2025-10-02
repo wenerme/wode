@@ -107,7 +107,6 @@ build/**
 dist/**
 .next/**
 
-local.mk
 
 packages/*/lib
 packages/*/out
@@ -122,3 +121,17 @@ ignored
 ignored.*
 .DS_Store
 .idea
+
+local.mk
+*.local.md
+local.test.ts
+*.local.test.ts
+*.lcoal.json
+test-*.js
+test-*.ts
+
+# Environment files with credentials
+.env
+.env.local
+.env.*.local
+

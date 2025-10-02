@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { UnifiedSocialCreditCode } from './mod';
+import { UnifiedSocialCreditCode } from './index';
 
 describe('UnifiedSocialCreditCode', () => {
 	it('should parse', () => {

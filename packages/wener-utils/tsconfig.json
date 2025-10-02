@@ -3,17 +3,13 @@
 		"moduleResolution": "bundler",
 		"target": "ESNext",
 		"module": "ESNext",
-		"lib": [
-			"dom",
-			"dom.iterable",
-			"ESNext"
-		],
+		"lib": ["dom", "dom.iterable", "ESNext"],
 		"strict": true,
 		"sourceMap": true,
 		"skipLibCheck": true,
 		"esModuleInterop": true,
 		"verbatimModuleSyntax": true,
-		"erasableSyntaxOnly": true,
+		"erasableSyntaxOnly": false,
 		"allowSyntheticDefaultImports": true,
 		"noImplicitAny": true,
 		"noImplicitReturns": true,
@@ -27,11 +23,6 @@
 		"baseUrl": ".",
 		"rootDir": "./src"
 	},
-	"exclude": [
-		"node_modules"
-	],
-	"include": [
-		"src/types.d.ts",
-		"src"
-	]
+	"exclude": ["node_modules"],
+	"include": ["src/types.d.ts", "src"]
 }

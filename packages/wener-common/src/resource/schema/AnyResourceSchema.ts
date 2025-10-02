@@ -2,9 +2,23 @@ import { z } from 'zod/v4';
 import { SexTypeSchema } from '../../foundation/schema/SexType';
 import { rz } from './types';
 
-export type AnyResource = z.infer<typeof AnyResourceSchema>;
+export type AnyResource = z.infer<typeof AnyResourceSchema> & {
+	owner?: AnyResource;
+
+	entity?: AnyResource;
+
+	customer?: AnyResource;
+	account?: AnyResource;
+	contact?: AnyResource;
+
+	user?: AnyResource;
+	createdBy?: AnyResource;
+	updatedBy?: AnyResource;
+	deletedBy?: AnyResource;
+};
+
 export const AnyResourceSchema = z
-	.object({
+	.looseObject({
 		id: rz.resourceId.readonly().describe('ID'),
 		uid: z.guid().nullish().readonly().describe('唯一ID'),
 		tid: rz.resourceId.nullish().readonly().describe('租户ID'),

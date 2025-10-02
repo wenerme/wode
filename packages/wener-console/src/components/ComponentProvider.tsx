@@ -89,7 +89,7 @@ export const ConsumeComponent = forwardRef<any, { $name: string } & Record<strin
 
 const ComponentNamePropKey = '$ContextComponentName';
 
-export type ContextComponentType<P> = ComponentType<P> & { [ComponentNamePropKey]: string };
+export type ContextComponentType<P = {}> = ComponentType<P> & { [ComponentNamePropKey]: string };
 
 export function createContextComponent<P extends {}>(name: string): ContextComponentType<P> {
 	let component = Object.assign(
@@ -106,14 +106,14 @@ export function createContextComponent<P extends {}>(name: string): ContextCompo
 
 type LoadableComponent<P> = () => MaybePromise<ComponentType<P> | { default: ComponentType<P> }>;
 
-type ProvideComponentOptions<P extends {} = {}> = {
-	provide: string | ContextComponentType<P>;
+type ProvidedComponent<P extends {} = {}> = {
+	provide: NameLike<P>;
 	Component?: ComponentType<P>;
 	load?: LoadableComponent<P>;
 };
 
 export type ComponentProviderProps = {
-	components: Array<ProvideComponentOptions>;
+	components: Array<ProvidedComponent>;
 	children?: ReactNode;
 };
 
@@ -121,9 +121,11 @@ type NameLike<P> = string | ContextComponentType<P> | ComponentType<P>;
 
 type ComponentContextObject = {
 	parent?: ComponentContextObject;
-	components: ProvideComponentOptions[];
+	components: ProvidedComponent[];
 	useComponent: <P extends {}>(comp: NameLike<P>) => UseComponentResult<P>;
 };
+
+type ComponentProviderState = {};
 
 type UseComponentResult<P> = [ComponentType<P>, { found: boolean }];
 
@@ -142,16 +144,23 @@ const RootValue: ComponentContextObject = {
 const ComponentContext = createContext<ComponentContextObject>(RootValue);
 
 function resolveName<P>(def: NameLike<P>) {
-	let name = typeof def === 'string' ? def : def[ComponentNamePropKey];
-	return { name };
+	let name: string;
+	if (typeof def === 'string') {
+		name = def;
+	} else {
+		name =
+			(def as ContextComponentType)[ComponentNamePropKey] ||
+			(def as ComponentType).displayName ||
+			// (def as ComponentType).name || // this is not reliable
+			'';
+	}
+	return name;
 }
 
-export function useComponent<P extends {}>(
-	comp: NameLike<P>,
-	def?: ComponentType<P>,
-): [ComponentType<P>, { found: boolean }] {
+export function useComponent<P extends {}>(comp: NameLike<P>, def?: ComponentType<P>): UseComponentResult<P> {
 	const { useComponent } = useContext(ComponentContext);
-	return useComponent<P>(comp);
+	const [o, r] = useComponent<P>(comp);
+	return [r.found ? o : def || o, r];
 }
 
 export const ComponentProvider: FC<ComponentProviderProps> = ({ components, children }) => {
@@ -162,7 +171,7 @@ export const ComponentProvider: FC<ComponentProviderProps> = ({ components, chil
 	provideRef.current = components;
 	parentRef.current = parent;
 
-	const val = useMemo(() => {
+	const val = useMemo((): ComponentContextObject => {
 		return {
 			get parent() {
 				return parentRef.current;
@@ -173,29 +182,27 @@ export const ComponentProvider: FC<ComponentProviderProps> = ({ components, chil
 			useComponent: (comp) => {
 				return resolveComponent(comp, val);
 			},
-		} as ComponentContextObject;
+		};
 	}, []);
 	return <ComponentContext.Provider value={val}>{children}</ComponentContext.Provider>;
 };
 
-function resolveComponent<P extends {}>(
-	comp: NameLike<P>,
-	obj: ComponentContextObject,
-): [
-	ComponentType<P>,
-	[
-		ctx: {
-			found: boolean;
-		},
-	],
-] {
-	const { name } = resolveName(comp);
+function resolveComponent<P extends {}>(comp: NameLike<P>, obj: ComponentContextObject): UseComponentResult<P> {
 	let cur: ComponentContextObject | undefined = obj;
 	let Component = Fragment as ComponentType<P>;
 	let found = false;
+
+	const name = resolveName(comp);
+	const isMatch = (provide: NameLike<any>) => {
+		if (provide === comp) {
+			return true;
+		}
+		return name && resolveName(provide) === name;
+	};
+
 	outer: while (cur) {
 		for (let item of cur.components) {
-			if (resolveName(item.provide).name === name) {
+			if (isMatch(item.provide)) {
 				Component = createComponent(item);
 				found = true;
 				break outer;
@@ -203,10 +210,11 @@ function resolveComponent<P extends {}>(
 		}
 		cur = cur.parent;
 	}
+
 	if (Component === Fragment || !found) {
-		console.warn(`Component ${name} not found`);
+		console.warn(`Component ${name || String(comp)} not found`);
 	}
-	return [Component, [{ found }]] as const;
+	return [Component, { found }];
 }
 
 function createComponent({

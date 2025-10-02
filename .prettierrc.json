@@ -10,18 +10,13 @@
 	"jsxSingleQuote": true,
 	"overrides": [
 		{
-			"files": [
-				"*.html",
-				"*.css"
-			],
+			"files": ["*.html", "*.css"],
 			"options": {
 				"singleQuote": false
 			}
 		},
 		{
-			"files": [
-				"*.sql"
-			],
+			"files": ["*.sql"],
 			"options": {
 				"tabWidth": 4
 			}
@@ -38,22 +33,8 @@
 		"^[.][.]",
 		"^[.][/]"
 	],
-	"importOrderParserPlugins": [
-		"typescript",
-		"jsx",
-		"decorators-legacy",
-		"importAttributes"
-	],
+	"importOrderParserPlugins": ["typescript", "jsx", "decorators-legacy", "importAttributes"],
 	"importOrderTypeScriptVersion": "5.4.2",
-	"plugins": [
-		"prettier-plugin-pkg",
-		"@ianvs/prettier-plugin-sort-imports",
-		"prettier-plugin-tailwindcss"
-	],
-	"tailwindFunctions": [
-		"clsx",
-		"tw",
-		"cn"
-	],
-	"tailwindConfig": "./tailwind.config.ts"
+	"plugins": ["prettier-plugin-pkg", "@ianvs/prettier-plugin-sort-imports", "prettier-plugin-tailwindcss"],
+	"tailwindFunctions": ["clsx", "tw", "cn"]
 }

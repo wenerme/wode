@@ -135,7 +135,7 @@ When connected, Claude can use these capabilities:
 
 - **`exec_sql_csv`**: Execute SQL queries and get results in CSV format
 - **`exec_sql_json`**: Execute SQL queries and get results in JSON format
-- **`get_version`**: Get SQL Server version information
+- **`get_version`**: Get SQL Server version information _(readOnlyHint: true)_
 
 ### 📂 Database Resources
 

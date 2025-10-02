@@ -7,10 +7,9 @@ import React, {
 } from 'react';
 import { clsx } from 'clsx';
 import { HeaderContentFooterLayout, Icon, LeftContentRightLayout, OverlayScrollbar } from '../../components';
-import { Tooltip } from '../../floating';
 import { cn } from '../../utils/cn';
 import { NavLink } from '../links';
-import type { INavLink } from '../links/NavLink';
+import { Tooltip } from '../Tooltip';
 
 type GroupItem = {
 	type: 'group';
@@ -36,27 +35,25 @@ type NavItem =
 
 type ItemProp = GroupItem | NavItem;
 
-const MenuBarItem: FC<{ item: NavItem; NavLink?: INavLink }> = ({
-	item: { title, href, icon, iconActive, className, ...props },
-	NavLink = NavLink,
-}) => {
+const MenuBarItem: FC<{ item: NavItem }> = ({ item: { title, href, icon, iconActive, className, ...props } }) => {
 	// NavLink 使用 useLocation 会每次 rerender
-	// due to overflow, tooltip not works
 	return (
-		<Tooltip content={title} portal placement={'right'} className={'hidden md:block'}>
+		<Tooltip.Composite delay={0} content={title} portal placement={'right'} className={'hidden md:block'}>
 			{href ? (
 				<NavLink
 					href={href}
-					className={({ isActive }) =>
+					className={({ isActive }: { isActive: boolean }) =>
 						clsx(
 							'btn btn-square btn-ghost btn-sm h-10 w-10 p-0',
 							isActive ? 'text-base-content/90' : 'opacity-70',
 							className,
 						)
 					}
-					{...props}
+					{...(props as ComponentPropsWithoutRef<'a'>)}
 				>
-					{({ isActive }) => <Icon icon={icon} active={isActive} activeIcon={iconActive} className={'size-6'} />}
+					{({ isActive }: { isActive: boolean }) => (
+						<Icon icon={icon} active={isActive} activeIcon={iconActive} className={'size-6'} />
+					)}
 				</NavLink>
 			) : (
 				<button
@@ -67,7 +64,7 @@ const MenuBarItem: FC<{ item: NavItem; NavLink?: INavLink }> = ({
 					<Icon icon={icon} className={'size-6'} />
 				</button>
 			)}
-		</Tooltip>
+		</Tooltip.Composite>
 	);
 };
 
@@ -79,35 +76,39 @@ export const IconMenuSidebarLayout: FC<
 	} & ComponentPropsWithoutRef<'aside'>
 > = ({ top, bottom, children, center = children, className, ...props }) => {
 	return (
-		<HeaderContentFooterLayout
-			as={'aside'}
-			className={cn(
-				'border-base-300 order-0 flex flex-row',
-				// 手机
-				'h-[57px] w-full border-b px-2',
-				// 桌面
-				'md:h-full md:w-[57px] md:flex-col md:border-r md:px-0',
-				//
-				className,
-			)}
-			header={<div className={'border-base-300 flex items-center justify-center gap-1 py-1 md:border-b'}>{top}</div>}
-			footer={<div className={'border-base-300 flex items-center justify-center gap-1 py-1 md:border-t'}>{bottom}</div>}
-			{...props}
-		>
-			<OverlayScrollbar className={'h-full w-full'}>
-				<div
-					className={cn(
-						// 8px padding
-						'flex items-center gap-1 px-1 py-1',
-						'flex-row',
-						'md:flex-col',
-						// 'overflow-x-auto overflow-y-hidden md:overflow-x-hidden md:overflow-y-auto',
-					)}
-				>
-					{center}
-				</div>
-			</OverlayScrollbar>
-		</HeaderContentFooterLayout>
+		<Tooltip.Provider>
+			<HeaderContentFooterLayout
+				as={'aside'}
+				className={cn(
+					'border-base-300 order-0 flex flex-row',
+					// 手机
+					'h-[57px] w-full border-b px-2',
+					// 桌面
+					'md:h-full md:w-[57px] md:flex-col md:border-r md:px-0',
+					//
+					className,
+				)}
+				header={<div className={'border-base-300 flex items-center justify-center gap-1 py-1 md:border-b'}>{top}</div>}
+				footer={
+					<div className={'border-base-300 flex items-center justify-center gap-1 py-1 md:border-t'}>{bottom}</div>
+				}
+				{...props}
+			>
+				<OverlayScrollbar className={'h-full w-full'}>
+					<div
+						className={cn(
+							// 8px padding
+							'flex items-center gap-1 px-1 py-1',
+							'flex-row',
+							'md:flex-col',
+							// 'overflow-x-auto overflow-y-hidden md:overflow-x-hidden md:overflow-y-auto',
+						)}
+					>
+						{center}
+					</div>
+				</OverlayScrollbar>
+			</HeaderContentFooterLayout>
+		</Tooltip.Provider>
 	);
 };
 
@@ -154,11 +155,13 @@ export namespace IconSidebarLayout {
 		if (!Array.isArray(items)) {
 			return items;
 		}
-		const NavLink: INavLink = NavLink;
 
 		let n = 0;
 		const renderItem = (item: ItemProp): ReactNode[] => {
 			let key = n++;
+			if (React.isValidElement(item)) {
+				return [item];
+			}
 			if ('type' in item && item.type === 'group') {
 				let o: ReactNode[] = [];
 				if (item.title) {
@@ -171,7 +174,8 @@ export namespace IconSidebarLayout {
 
 				return o;
 			}
-			return [<MenuBarItem NavLink={NavLink} key={key} item={item as NavItem} />];
+
+			return [<MenuBarItem key={key} item={item as NavItem} />];
 		};
 
 		return items.flatMap((item, i) => {
@@ -179,5 +183,3 @@ export namespace IconSidebarLayout {
 		});
 	}
 }
-
-export const LeftSideMenuBarLayout = Object.assign(IconSidebarLayout.Layout, { MenuBarItem });

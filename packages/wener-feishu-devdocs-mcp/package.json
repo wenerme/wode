@@ -1,0 +1,55 @@
+{
+	"name": "@wener/feishu-devdocs-mcp",
+	"version": "1.0.0",
+	"type": "module",
+	"description": "Feishu/Lark Developer Documentation MCP server with search and recall capabilities",
+	"author": "wener",
+	"license": "MIT",
+	"engines": {
+		"node": ">=18.0.0"
+	},
+	"bin": {
+		"feishu-devdocs-mcp": "./dist/main.mjs"
+	},
+	"main": "./dist/main.mjs",
+	"files": [
+		"dist",
+		"src",
+		"README.md"
+	],
+	"keywords": [
+		"mcp",
+		"feishu",
+		"lark",
+		"developer-docs",
+		"documentation",
+		"search",
+		"recall",
+		"model-context-protocol",
+		"ai-tools"
+	],
+	"scripts": {
+		"build": "pnpm tsx src/scripts/bundle.ts",
+		"clean": "rm -rf dist",
+		"dev": "pnpm tsx --watch src/main.ts --http",
+		"prepublishOnly": "pnpm build"
+	},
+	"devDependencies": {
+		"@hono/mcp": "^0.1.5",
+		"@hono/node-server": "^1.19.6",
+		"@modelcontextprotocol/sdk": "^1.20.2",
+		"@orpc/contract": "^1.10.3",
+		"@orpc/server": "^1.10.3",
+		"@types/node": "^22.18.13",
+		"@wener/utils": "^1.1.53",
+		"commander": "^14.0.2",
+		"common": "workspace:^1.0.0",
+		"consola": "^3.4.2",
+		"dotenv": "^16.6.1",
+		"hono": "^4.10.4",
+		"zod": "^4.1.12"
+	},
+	"publishConfig": {
+		"access": "public"
+	}
+}

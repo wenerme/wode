@@ -38,7 +38,7 @@ export function createNodeFileSystem(options: { root?: string } = {}): INodeFile
 
 type IFS = typeof import('fs/promises');
 
-class NodeFs implements INodeFileSystem {
+class NodeFs implements IFileSystem, INodeFileSystem {
 	readonly root: string;
 	private readonly fs: IFS;
 
@@ -256,7 +256,7 @@ class NodeFs implements INodeFileSystem {
 			// Handle progress reporting if needed
 			if (onDownloadProgress) {
 				const stat = await fs.stat(resolvedPath);
-				const stream = this.createReadStream(resolvedPath, { signal });
+				const stream = this.createReadStream(path, { signal });
 
 				return new Promise((resolve, reject) => {
 					const chunks: Buffer[] = [];
@@ -331,7 +331,7 @@ class NodeFs implements INodeFileSystem {
 		if (data instanceof Readable) {
 			let _data = data;
 			return new Promise((resolve, reject) => {
-				const writeStream = this.createWriteStream(resolvedPath, options);
+				const writeStream = this.createWriteStream(path, options);
 				let totalBytes = 0;
 
 				if (onUploadProgress) {

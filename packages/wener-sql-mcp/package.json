@@ -1,0 +1,73 @@
+{
+	"name": "@wener/sql-mcp",
+	"version": "1.0.0",
+	"type": "module",
+	"description": "Unified SQL MCP (Model Context Protocol) server supporting PostgreSQL, MySQL, SQLite, and MSSQL via Knex",
+	"author": "wener",
+	"license": "MIT",
+	"engines": {
+		"node": ">=18.0.0"
+	},
+	"bin": {
+		"sql-mcp": "./dist/main.mjs"
+	},
+	"files": [
+		"dist",
+		"src",
+		"README.md"
+	],
+	"keywords": [
+		"mcp",
+		"sql",
+		"knex",
+		"postgresql",
+		"mysql",
+		"mssql",
+		"sqlserver",
+		"sqlite",
+		"database",
+		"model-context-protocol",
+		"claude",
+		"anthropic",
+		"ai-tools"
+	],
+	"scripts": {
+		"build": "tsx src/scripts/bundle.ts",
+		"clean": "rm -rf dist",
+		"dev": "tsx src/main.ts",
+		"start": "node dist/main.mjs",
+		"prepublishOnly": "pnpm build",
+		"test": "vitest"
+	},
+	"dependencies": {
+		"common": "workspace:^1.0.0"
+	},
+	"devDependencies": {
+		"@esbuild/darwin-arm64": "^0.25.12",
+		"@hono/mcp": "^0.1.5",
+		"@hono/node-server": "^1.19.6",
+		"@modelcontextprotocol/sdk": "^1.20.2",
+		"@orpc/contract": "^1.10.3",
+		"@orpc/server": "^1.10.3",
+		"@types/better-sqlite3": "^7.6.13",
+		"@types/node": "^22.18.13",
+		"@wener/utils": "^1.1.53",
+		"better-sqlite3": "^12.4.1",
+		"commander": "^14.0.2",
+		"consola": "^3.4.2",
+		"dotenv": "^16.6.1",
+		"esbuild": "^0.25.12",
+		"hono": "^4.10.4",
+		"knex": "^3.1.0",
+		"mssql": "^12.0.0",
+		"mysql2": "^3.15.3",
+		"pg": "^8.16.3",
+		"tedious": "^19.0.0",
+		"ts-node": "^10.9.2",
+		"typescript": "^5.9.3",
+		"zod": "^4.1.12"
+	},
+	"publishConfig": {
+		"access": "public"
+	}
+}

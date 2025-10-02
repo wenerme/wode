@@ -1,6 +1,6 @@
 import { HiCog, HiHome, HiInformationCircle, HiUser } from 'react-icons/hi2';
 import type { Meta, StoryObj } from '@storybook/react';
-import { IconSidebarLayout } from './LeftSideMenuBarLayout';
+import { IconSidebarLayout } from './IconSidebarLayout';
 
 const meta: Meta<typeof IconSidebarLayout.Layout> = {
 	title: 'components/LeftSideMenuBarLayout',

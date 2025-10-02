@@ -31,3 +31,13 @@ linkWorkspacePackages: true
 preferWorkspacePackages: true
 saveWorkspaceProtocol: false
 dedupeDirectDeps: true
+
+# Package version overrides
+packageExtensions:
+  dotenv:
+    peerDependencies:
+      "@types/node": "*"
+
+# Override dotenv version across the entire workspace
+overrides:
+  dotenv: ^16.4.5

@@ -64,3 +64,11 @@ export function formatChineseResidentIdNo({
 			: checkDigit?.toUpperCase() || Mod11.compute(major);
 	return `${major}${check}`;
 }
+
+export namespace ChineseResidentIdNo {
+	export const regex = ChineseResidentIdNoRegex;
+	export const parse = parseChineseResidentIdNo;
+	export const format = formatChineseResidentIdNo;
+	export type Result = ParsedChineseResidentIdNo;
+	export const ResultSchema = ParsedChineseResidentIdNoSchema;
+}

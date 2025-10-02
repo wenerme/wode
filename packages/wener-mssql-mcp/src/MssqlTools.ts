@@ -31,6 +31,9 @@ export const MssqlTools = {
 				name: 'get_version',
 				description: 'Get the SQL Server version information',
 				inputSchema: z.toJSONSchema(GetVersionInputSchema) as any,
+				annotations: {
+					readOnlyHint: true,
+				},
 			},
 		];
 	},

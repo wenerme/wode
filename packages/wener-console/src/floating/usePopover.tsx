@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import {
 	autoPlacement,
 	autoUpdate,
@@ -13,11 +13,14 @@ import {
 	useInteractions,
 	useRole,
 	type AutoPlacementOptions,
+	type ExtendedRefs,
+	type FloatingContext,
 	type OffsetOptions,
 	type Placement,
 	type UseClickProps,
 	type UseDismissProps,
 	type UseHoverProps,
+	type UseInteractionsReturn,
 	type UseRoleProps,
 } from '@floating-ui/react';
 
@@ -32,7 +35,14 @@ export function usePopover(
 		offset?: OffsetOptions;
 		// boundary?: Boundary;
 	} = {},
-) {
+): {
+	nodeId: string | undefined;
+	refs: ExtendedRefs<any>;
+	open: boolean;
+	setOpen: (open: boolean) => void;
+	floatingStyles: React.CSSProperties;
+	context: FloatingContext;
+} & UseInteractionsReturn {
 	// let { container } = useContainer();
 	const [open, setOpen] = useState(false);
 	const nodeId = useFloatingNodeId();
@@ -76,7 +86,7 @@ export function usePopover(
 	}
 
 	// Merge all the interactions into prop getters
-	const { getReferenceProps, getFloatingProps } = useInteractions(list);
+	const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions(list);
 
 	return {
 		nodeId,
@@ -85,7 +95,8 @@ export function usePopover(
 		setOpen,
 		getReferenceProps,
 		getFloatingProps,
-		floatingStyles,
+		getItemProps,
+		floatingStyles: floatingStyles as React.CSSProperties,
 		context,
 	};
 }

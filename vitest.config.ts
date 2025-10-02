@@ -2,8 +2,6 @@ import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
 	test: {
-		// ['packages/*/vitest.config.{e2e,unit}.ts'],
-		projects: ['apps/*', 'packages/*'],
-		include: ['src/**/*.{test,spec}.?(c|m)[jt]s?(x)'],
+		workspace: ['apps/*', 'packages/*'],
 	},
 });

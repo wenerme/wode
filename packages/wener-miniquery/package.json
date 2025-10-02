@@ -29,13 +29,13 @@
 		"test": "make test"
 	},
 	"dependencies": {
-		"@wener/utils": "workspace:^1.1.51",
-		"ts-pattern": "^5.8.0"
+		"@wener/utils": "workspace:^1.1.53",
+		"ts-pattern": "^5.9.0"
 	},
 	"devDependencies": {
-		"@mikro-orm/core": "^6.5.4",
-		"@mikro-orm/sqlite": "^6.5.4",
-		"@sequelize/core": "7.0.0-alpha.46",
+		"@mikro-orm/core": "^6.5.9",
+		"@mikro-orm/sqlite": "^6.5.9",
+		"@sequelize/core": "7.0.0-alpha.47",
 		"ohm-js": "^17.2.1"
 	},
 	"publishConfig": {
