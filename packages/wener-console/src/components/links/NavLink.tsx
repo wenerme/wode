@@ -1,9 +1,7 @@
 import React, { type ComponentPropsWithRef, type ComponentType, type ReactElement } from 'react';
 import { NavLink as RRNavLink, useInRouterContext } from 'react-router';
-import { useComponent } from '../ComponentProvider';
 import { StaticNavLink } from './StaticNavLink';
 
-export type INavLink = ComponentType<NavLinkProps>;
 export type NavLinkProps = Omit<ComponentPropsWithRef<'a'>, 'children' | 'className' | 'href'> & {
 	children: ReactElement | ((o: { isActive: boolean }) => ReactElement);
 	className: string | ((o: { isActive: boolean }) => string);
@@ -21,7 +19,6 @@ export interface AutoNavLinkProps extends NavLinkProps {
 }
 
 export const NavLink = (props: AutoNavLinkProps) => {
-	useComponent(NavLink);
 	const csr = useInRouterContext();
 	if (csr) {
 		const { href, ...rest } = props;

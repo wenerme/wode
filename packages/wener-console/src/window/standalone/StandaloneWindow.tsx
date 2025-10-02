@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, type ReactNode } from 'react';
 import { PiCaretLeftLight, PiCaretRightLight } from 'react-icons/pi';
 import { DevOnly, useControllable } from '@wener/reaction';
-import { Window } from '..';
-import { StandaloneDockSidebar } from './StandaloneDockSidebar';
+import { Window, WindowDock } from '..';
 
 export const StandaloneWindow = ({
 	open: _open,
@@ -32,7 +31,7 @@ export const StandaloneWindow = ({
 	return (
 		<>
 			<Window.Host body={body} />
-			<StandaloneDockSidebar open={open} />
+			<WindowDock.Dock open={open} />
 
 			{controller ?? (
 				<div

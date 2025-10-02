@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { DivisionCode } from './mod';
+import { DivisionCode } from './index';
 
 describe('DivisionCode', () => {
 	it('should parse', () => {

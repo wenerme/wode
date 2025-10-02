@@ -144,3 +144,11 @@ export function formatDivisionCode({
 
 	return codes.join('');
 }
+
+export namespace DivisionCode {
+	export const regex = DivisionCodeRegex;
+	export const parse = parseDivisionCode;
+	export const format = formatDivisionCode;
+	export type Result = ParsedDivisionCode;
+	export const ResultSchema = ParsedDivisionCodeSchema;
+}

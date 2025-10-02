@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { ChineseResidentIdNo } from './mod';
+import { ChineseResidentIdNo } from './index';
 
 describe('ChineseResidentIdNo', () => {
 	it('should parse', () => {

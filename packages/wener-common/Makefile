@@ -3,13 +3,9 @@ REPO_ROOT ?= $(shell git rev-parse --show-toplevel)
 
 
 build:
-	rm -rf lib2
-	pnpm swc ./src -d ./lib2 --strip-leading-paths
-	npx -y ts-add-js-extension --dir=lib2
-	rsync ./src/ ./lib2/ -a --include="*.css" --include="*.json" --include="*/" --exclude="*"
-	-mv lib lib3
-	mv lib2 lib
-	rm -rf lib3
+	pnpm swc ./src -d ./lib --strip-leading-paths
+	npx -y ts-add-js-extension --dir=lib
+	rsync ./src/ ./lib/ -a --include="*.css" --include="*.json" --include="*/" --exclude="*"
 
 publish: build
 	pnpm version patch --no-workspaces-update

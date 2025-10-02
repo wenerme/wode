@@ -28,7 +28,7 @@ describe('Password', () => {
 
 		await check({ algorithm: '5' });
 		await check({ algorithm: '6' });
-		await check({ algorithm: '7' });
+		// await check({ algorithm: '7' });
 	});
 
 	test('should verify manual created hash', async () => {

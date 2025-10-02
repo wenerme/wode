@@ -1,18 +1,9 @@
 export type * from './module/types';
 
-// export { DockLayout } from './layouts';
 export { DockClock } from '../components/DockLayout/DockClock';
 export { DockUserAvatar, type DockUserAvatarProps } from '../components/DockLayout/DockUserAvatar';
 
-// export {
-// 	ExpandableSideMenuLayout,
-// 	type ExpandableSideMenuLayoutProps,
-// 	type ExpandableSideMenuItemProps,
-// } from './layouts';
-
 export { SettingLayout } from '../components/SettingLayout/SettingLayout';
-
-// export { LeftSideMenuBarLayout } from './layouts';
 
 export { NavLink, type AutoNavLinkProps } from '../components/links';
 

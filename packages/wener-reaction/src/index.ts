@@ -28,7 +28,13 @@ export {
 	useDeepCompareEffect,
 	useDeepCompareMemoize,
 } from './hooks/useDeepCompareHooks';
-export { ContainerProvider, useContainer, type UseContainer, useContainerContext } from './hooks/useContainer';
+export {
+	ContainerProvider,
+	useContainer,
+	usePortalContainer,
+	type UseContainer,
+	useContainerContext,
+} from './hooks/useContainer';
 
 export { DevOnly } from './components/DevOnly';
 export { ProdOnly } from './components/ProdOnly';

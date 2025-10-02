@@ -121,3 +121,11 @@ export function next(s: string, delta: number = 1) {
 	}
 	return sp.map((v) => Mod31.chars[v]).join('');
 }
+
+export namespace UnifiedSocialCreditCode {
+	export const regex = UnifiedSocialCreditCodeRegex;
+	export const parse = parseUnifiedSocialCreditCode;
+	export const format = formatUnifiedSocialCreditCode;
+	export type Result = ParsedUnifiedSocialCreditCode;
+	export const ResultSchema = ParsedUnifiedSocialCreditCodeSchema;
+}
