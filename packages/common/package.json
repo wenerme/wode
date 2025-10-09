@@ -14,6 +14,8 @@
     "./torrent": "./src/torrent/index.ts",
     "./aports": "./src/aports/index.ts",
     "./ai/cv": "./src/ai/cv/index.ts",
+    "./mcp": "./src/mcp/index.ts",
+    "./mcp/sql": "./src/mcp/sql/index.ts",
     "./package.json": "./package.json",
     "./gen/*": "./src/gen/*.js"
   },
@@ -30,6 +32,9 @@
   "dependencies": {
     "@mikro-orm/better-sqlite": "^6.4.2",
     "@mikro-orm/core": "^6.4.2",
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "@orpc/contract": "^0.0.1",
+    "@orpc/server": "^0.0.1",
     "@sinclair/typebox": "^0.34.13",
     "@types/json-schema": "^7.0.15",
     "@wener/common": "workspace:^1.0.2",

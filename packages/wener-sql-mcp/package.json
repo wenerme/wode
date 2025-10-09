@@ -1,0 +1,55 @@
+{
+  "name": "@wener/sql-mcp",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Unified SQL MCP server using Knex",
+  "author": "wener",
+  "license": "MIT",
+  "exports": {
+    ".": "./src/index.ts",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "lib.d.ts",
+    "src"
+  ],
+  "keywords": [
+    "mcp",
+    "sql",
+    "knex",
+    "mysql",
+    "postgresql",
+    "sqlite"
+  ],
+  "scripts": {
+    "build": "make build",
+    "test": "vitest",
+    "dev": "make dev",
+    "start": "node lib/cli.js"
+  },
+  "bin": {
+    "wener-sql-mcp": "./lib/cli.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "@orpc/contract": "^0.0.1",
+    "@orpc/server": "^0.0.1",
+    "@wener/common": "workspace:^1.0.2",
+    "knex": "^3.1.0",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0",
+    "vitest": "^1.0.0"
+  },
+  "peerDependencies": {
+    "knex": "^3.1.0"
+  },
+  "peerDependenciesMeta": {
+    "knex": {
+      "optional": false
+    }
+  }
+}
