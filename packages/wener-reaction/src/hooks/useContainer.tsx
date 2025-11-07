@@ -1,8 +1,8 @@
-import { createContext, use, useContext, type ReactNode, type ReactPortal } from 'react';
+import { createContext, use, type ReactNode, type ReactPortal } from 'react';
 import { createPortal } from 'react-dom';
 import { getGlobalThis } from '@wener/utils';
 
-const ContainerContext = createContext<HTMLElement | null>(null);
+const ContainerContext = createContext<HTMLElement | undefined>(undefined);
 
 export const ContainerProvider = ContainerContext.Provider;
 
@@ -18,7 +18,7 @@ export interface UseContainer {
  * @deprecated
  */
 export function useContainer(ele?: HTMLElement): UseContainer {
-	let ctx = useContext(ContainerContext);
+	let ctx = use(ContainerContext);
 	let container: HTMLElement = ele || ctx || getGlobalThis().document?.body;
 
 	// maybe Element | DocumentFragment
@@ -37,10 +37,10 @@ export function useContainer(ele?: HTMLElement): UseContainer {
 	};
 }
 
-export function useContainerContext(): HTMLElement | null {
-	return useContext(ContainerContext);
+export function useContainerContext(): HTMLElement | undefined {
+	return use(ContainerContext);
 }
 
-export function usePortalContainer(val?: HTMLElement) {
+export function usePortalContainer(val?: HTMLElement): HTMLElement {
 	return val || use(ContainerContext) || globalThis.document?.body;
 }

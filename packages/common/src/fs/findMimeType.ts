@@ -10,7 +10,7 @@ export function findMimeType(path: string | undefined | null) {
 	}
 
 	// get the extension ("ext" or ".ext" or full path)
-	var extension = pathe
+	const extension = pathe
 		.extname('x.' + path)
 		.toLowerCase()
 		.slice(1);

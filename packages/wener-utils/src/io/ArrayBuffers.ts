@@ -47,6 +47,7 @@ export type BinaryStringEncoding =
 	| 'utf8'
 	| 'utf-8'
 	| 'hex';
+type BufferSource = ArrayBufferView<ArrayBuffer> | ArrayBuffer;
 
 export namespace ArrayBuffers {
 	let nativeBufferAllowed: boolean = true;

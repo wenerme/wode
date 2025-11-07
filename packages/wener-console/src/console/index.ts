@@ -27,7 +27,6 @@ export {
 	getRouteStore,
 	getUserStore,
 	getSiteStore,
-	ConsoleEvents,
 	type ConsoleContext,
 } from './context';
 
@@ -35,3 +34,7 @@ export { type UserStore, type UserState, type UserProfileData, createUserStore }
 export { type RouteStore, type RouteState, createRouteStore } from './store/RouteStore';
 
 export { Launcher } from './ConsoleLauncher/Launcher';
+
+export { ConsoleAuth } from './components/ConsoleAuth/ConsoleAuth';
+
+export { ConsoleEventType, type ConsoleEmitter, type ConsoleEventData } from './ConsoleEmitter';

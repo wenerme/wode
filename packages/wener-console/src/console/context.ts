@@ -2,6 +2,8 @@ import { getGlobalStates, setGlobalStates } from '@wener/utils';
 import Emittery from 'emittery';
 import { useStore } from 'zustand';
 import { getSiteStore as _getSiteStore, type SiteStore } from '../foundation/site/SiteStore';
+import type { ConsoleEmitter, ConsoleEventData } from './ConsoleEmitter';
+import { ConsoleEventType } from './ConsoleEmitter';
 import { createRouteStore, type RouteStore } from './store/RouteStore';
 import { createUserStore, type UserStore } from './store/UserStore';
 
@@ -16,32 +18,10 @@ export type ConsoleContext = {
 	getUserStore: () => UserStore;
 };
 
-export const ConsoleEvents = {
-	Error: 'Console:Error',
-	SignIn: 'Console:SignIn',
-	SignOut: 'Console:SignOut',
-	Lock: 'Console:Lock',
-	Unlock: 'Console:Unlock',
-	RefreshProfile: 'Console:RefreshProfile',
-	ModuleLoad: 'Console:Module:Load',
-	LauncherToggle: 'Console:Launcher:Toggle',
-} as const;
-
-type ConsoleEventData = {
-	[ConsoleEvents.Error]: ConsoleEvent<{ error: any }>;
-	[ConsoleEvents.SignIn]: ConsoleEvent<{}>;
-	[ConsoleEvents.SignOut]: ConsoleEvent<{}>;
-	[ConsoleEvents.Lock]: ConsoleEvent<{}>;
-	[ConsoleEvents.Unlock]: ConsoleEvent<{ pin?: string }>;
-	[ConsoleEvents.RefreshProfile]: ConsoleEvent<{}>;
-	[ConsoleEvents.ModuleLoad]: ConsoleEvent<{ module: any }>;
-	[ConsoleEvents.LauncherToggle]: ConsoleEvent<{ open?: boolean }>;
-};
-type ConsoleEvent<T> = T;
-type ConsoleEmitter = Emittery<ConsoleEventData>;
+export { ConsoleEventType };
 
 function createConsoleContext({ emitter: _emitter }: { emitter?: Emittery }) {
-	const emitter = (_emitter || new Emittery<ConsoleEventData>()) as ConsoleEmitter;
+	const emitter = getConsoleEmitter();
 	const routeStore = createRouteStore();
 	const userStore = createUserStore();
 	const ctx: ConsoleContext = {

@@ -7,8 +7,10 @@ export function buildRedactorFormSchema(
 	ts: TypeSchema,
 	{
 		shouldRedact = (schema) => schema['x-sensitive'] === true,
+		replacer = () => RedactedText,
 	}: {
 		shouldRedact?: (schema: JsonSchemaDef) => boolean;
+		replacer?: (key: string, value: any) => any;
 	},
 ) {
 	let js = toJsonSchema(ts);
@@ -33,7 +35,7 @@ export function buildRedactorFormSchema(
 			if (c && typeof c === 'object' && k in c) {
 				let v = c[k];
 				if (path.length === 1) {
-					c[k] = RedactedText;
+					c[k] = replacer(k, v);
 				} else if (Array.isArray(v)) {
 					for (let vv of v) {
 						vis(vv, path.slice(i + 1));

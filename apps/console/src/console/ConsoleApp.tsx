@@ -1,14 +1,18 @@
 import type React, { ReactNode } from 'react';
+import { Outlet } from 'react-router-dom';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import type { Client } from '@urql/core';
 import { getGraphQLUrl, getUrqlClient } from '@wener/console/client/graphql';
 import { ConsoleLoader, getAccessToken, getSiteStore, Launcher, type UserProfileData } from '@wener/console/console';
 import { UserAuthExpireOverlay, UserLoader, UserLockOverlay } from '@wener/console/console/user';
 import { getAuthState } from '@wener/console/foundation/auth';
-import { type LoginFormData } from '@wener/console/pages';
+import type { RouteObjects } from '@wener/console/router';
+import { RootRouterReactor } from '@wener/console/src/console/components/RootRouterReactor';
+import { NotFoundPage, PageErrorState } from '@wener/console/src/web';
 import { showErrorToast, showSuccessToast } from '@wener/console/toast';
 import { createUrqlClient } from '@wener/console/urql';
 import { WindowHost } from '@wener/console/window';
+import { ErrorSuspenseBoundary } from '@wener/reaction';
 import { getGlobalStates } from '@wener/utils';
 import { Provider as UrqlProvider } from 'urql';
 import { ConsoleLayout } from '@/console/components/ConsoleLayout';
@@ -18,11 +22,7 @@ import { AuthActions } from '@/foundation/Auth/AuthActions';
 import { UserActions } from '@/foundation/User/UserActions';
 import schema from '@/gql/urql.schema.json' with { type: 'json' };
 import { resolveResourceSchema } from '@/resource';
-import type { RouteObjects } from '@wener/console/router';
-import { RootRouterReactor } from '@wener/console/src/console/components/RootRouterReactor';
-import { ErrorSuspenseBoundary } from '@wener/reaction';
-import { Outlet } from 'react-router-dom';
-import { NotFoundPage, PageErrorState } from '@wener/console/src/web';
+import { type LoginFormData } from '../../../../packages/wener-console/src/pages';
 
 export const ConsoleApp = () => {
 	const doLogin = async (o: LoginFormData) => {

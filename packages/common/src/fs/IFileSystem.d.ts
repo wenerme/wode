@@ -65,13 +65,13 @@ export type IFileSystem = {
 	 *
 	 * @deprecated use `createReadableStream` instead
 	 */
-	createReadStream(path: string, options?: CreateReadStreamOptions): Readable;
+	createReadStream?(path: string, options?: CreateReadStreamOptions): Readable;
 	/**
 	 * optional, may not be implemented
 	 *
 	 * @deprecated use `createWritableStream` instead
 	 */
-	createWriteStream(path: string, options?: CreateWriteStreamOptions): Writable;
+	createWriteStream?(path: string, options?: CreateWriteStreamOptions): Writable;
 
 	getUrl?(path: IFileStat | string, options?: FileUrlOptions): string | undefined;
 

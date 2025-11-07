@@ -3,7 +3,8 @@ import { HiLockClosed, HiMiniLockOpen } from 'react-icons/hi2';
 import { clsx } from 'clsx';
 import { Button, NonIdealState } from '../../daisy';
 import { useAuthStore } from '../../foundation/auth/AuthStore';
-import { ConsoleEvents, getConsoleContext } from '../context';
+import { getConsoleEmitter } from '../ConsoleEmitter';
+import { ConsoleEventType } from '../context';
 import { getUserAction } from './getUserAction';
 
 export const UserLockOverlay = () => {
@@ -20,9 +21,9 @@ export const UserLockOverlay = () => {
 			setHidden(false);
 		}
 	}, [locked]);
-	const emitter = getConsoleContext().getEmitter();
+	const emitter = getConsoleEmitter();
 	useEffect(() => {
-		return emitter.on(ConsoleEvents.Lock, () => {
+		return emitter.on(ConsoleEventType.Lock, () => {
 			setLock(true);
 		});
 	}, [emitter]);

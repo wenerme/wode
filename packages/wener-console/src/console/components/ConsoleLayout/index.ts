@@ -1,1 +1,1 @@
-export { ConsoleLayout } from './ConsoleLayout';
+export { ConsoleLayoutLegacy } from './ConsoleLayoutLegacy';

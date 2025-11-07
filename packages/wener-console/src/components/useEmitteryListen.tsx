@@ -12,7 +12,7 @@ export function useEmitteryListen<E>(
 	useEffect(() => {
 		let unsub = Object.keys(ref.current).map((event) => {
 			return e.on(event as any, (e) => {
-				ref.current[event]?.(e);
+				return ref.current[event]?.(e);
 			});
 		});
 		return () => {

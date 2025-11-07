@@ -13,7 +13,8 @@ import { getGlobalStates } from '@wener/utils';
 import { uniqBy } from 'es-toolkit';
 import { createStore, useStore } from 'zustand';
 import { mutative } from 'zustand-mutative';
-import { ConsoleEvents, getConsoleContext } from '../context';
+import { getConsoleEmitter } from '../ConsoleEmitter';
+import { ConsoleEventType } from '../context';
 
 export interface LauncherItem {
 	key: string;
@@ -39,9 +40,9 @@ function createLauncherStore() {
 }
 
 function LauncherHost() {
-	const emitter = getConsoleContext().getEmitter();
+	const emitter = getConsoleEmitter();
 	useEffect(() => {
-		return emitter.on(ConsoleEvents.LauncherToggle, ({ open }) => {
+		return emitter.on(ConsoleEventType.LauncherToggle, ({ open }) => {
 			Launcher.toggle(open);
 		});
 	}, [emitter]);

@@ -2,8 +2,8 @@
 	"name": "@wener/common",
 	"version": "2.0.2",
 	"type": "module",
-	"description": "",
-	"author": "",
+	"description": "Common utils for console & server",
+	"author": "wener",
 	"license": "MIT",
 	"exports": {
 		".": "./src/index.ts",
@@ -14,11 +14,13 @@
 		"./decimal": "./src/decimal/index.ts",
 		"./jsonschema": "./src/jsonschema/index.ts",
 		"./meta": "./src/meta/index.ts",
+		"./orpc": "./src/orpc/index.ts",
 		"./password": "./src/password/index.ts",
 		"./resource": "./src/resource/index.ts",
 		"./resource/schema": "./src/resource/schema/index.ts",
 		"./s3": "./src/s3/index.ts",
 		"./schema": "./src/schema/index.ts",
+		"./utils": "./src/utils/index.ts",
 		"./package.json": "./package.json"
 	},
 	"files": [
@@ -44,6 +46,9 @@
 		"ts-pattern": "^5.9.0"
 	},
 	"devDependencies": {
+		"@orpc/client": "^1.11.0",
+		"@orpc/contract": "^1.10.4",
+		"@orpc/openapi-client": "^1.11.0",
 		"@sinclair/typebox": "^0.34.41",
 		"@sinclair/typebox-codegen": "^0.11.1",
 		"@types/argon2-browser": "^1.18.4",
@@ -54,7 +59,7 @@
 		"argon2": "^0.44.0",
 		"argon2-browser": "^1.18.0",
 		"bcrypt": "^6.0.0",
-		"bcryptjs": "^3.0.2",
+		"bcryptjs": "^3.0.3",
 		"chalk": "^5.6.2",
 		"consola": "^3.4.2",
 		"dayjs": "^1.11.19",
@@ -96,6 +101,10 @@
 				"types": "./src/meta/index.ts",
 				"default": "./lib/meta/index.js"
 			},
+			"./orpc": {
+				"types": "./src/orpc/index.ts",
+				"default": "./lib/orpc/index.js"
+			},
 			"./password": {
 				"types": "./src/password/index.ts",
 				"default": "./lib/password/index.js"
@@ -115,6 +124,10 @@
 			"./schema": {
 				"types": "./src/schema/index.ts",
 				"default": "./lib/schema/index.js"
+			},
+			"./utils": {
+				"types": "./src/utils/index.ts",
+				"default": "./lib/utils/index.js"
 			},
 			"./package.json": "./package.json"
 		}

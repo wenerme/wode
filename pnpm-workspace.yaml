@@ -14,7 +14,6 @@ onlyBuiltDependencies:
 
 ignoredOptionalDependencies:
 - fsevents
-- "@esbuild/*"
 
 patchedDependencies:
   ts-node@11.0.0-beta.1: patches/ts-node.patch
