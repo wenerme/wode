@@ -5,7 +5,6 @@ import { ComponentProvider, Image, ProdOnly, UpdateNotification, WebVitals } fro
 import { ErrorSuspenseBoundary, SiteLogo } from '@wener/console/console';
 import { AuthBlock, AuthSidecar } from '@wener/console/foundation/auth';
 import { SiteLoader, SiteSidecar } from '@wener/console/foundation/site';
-import { LoginPage } from '@wener/console/pages';
 import Splash from '@/assets/LoginSplash.jpg';
 import { EnvironmentInit } from '@/console/EnvironmentInit';
 import { LibInit } from '@/console/LibInit';
@@ -14,6 +13,7 @@ import { AuthActions } from '@/foundation/Auth/AuthActions';
 import { SiteActions } from '@/foundation/Site/SiteActions';
 import { InstanceInit } from '@/instance/instance.init';
 import { WenerLogo } from '@/instance/WenerLogo';
+import { LoginPage } from '../../../../packages/wener-console/src/pages';
 import './globals.css';
 
 const ConsoleApp = lazy(() => import('./ConsoleApp').then(({ ConsoleApp }) => ({ default: ConsoleApp })));

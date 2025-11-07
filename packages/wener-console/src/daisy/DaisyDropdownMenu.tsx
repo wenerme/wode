@@ -6,7 +6,7 @@ import { flexRender } from '@wener/reaction';
 import { clsx } from 'clsx';
 import { pick } from 'es-toolkit';
 import { match } from 'ts-pattern';
-import { isNodeTypeOf } from './isNodeTypeOf';
+import { isNodeTypeOf } from '../utils/isNodeTypeOf';
 
 export type DaisyDropdownMenuItem =
 	| ({

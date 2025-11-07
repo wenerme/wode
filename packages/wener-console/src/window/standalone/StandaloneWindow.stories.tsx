@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Meta } from '@storybook/react';
+import type { Meta } from '@storybook/react-vite';
 import { useWindow } from '../ReactWindow';
 import { StandaloneWindow } from './StandaloneWindow';
 

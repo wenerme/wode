@@ -1,6 +1,6 @@
 import React from 'react';
 import type { RouteObject } from 'react-router-dom';
-import { SystemAboutPage } from '@wener/console/pages';
+import { SystemAboutPage } from '../../../../../packages/wener-console/src/pages';
 
 export default {
 	element: <SystemAboutPage />,

@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DaisyDropdownMenu, type DaisyDropdownMenuItem } from './DaisyDropdownMenu';
 
 const meta: Meta<typeof DaisyDropdownMenu.Composite> = {

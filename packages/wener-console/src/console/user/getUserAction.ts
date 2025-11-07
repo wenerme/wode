@@ -1,5 +1,6 @@
 import type { MaybePromise } from '@wener/utils';
-import { ConsoleEvents, getConsoleContext } from '../context';
+import { getConsoleEmitter } from '../ConsoleEmitter';
+import { ConsoleEventType } from '../context';
 
 export interface UserAction {
 	refreshProfile: () => MaybePromise<void>;
@@ -10,23 +11,23 @@ export interface UserAction {
 }
 
 export function getUserAction(): UserAction {
-	const emitter = getConsoleContext().getEmitter();
+	const emitter = getConsoleEmitter();
 	const emit = emitter.emit.bind(emitter);
 	return {
 		refreshProfile: () => {
-			return emit(ConsoleEvents.RefreshProfile, {});
+			return emit(ConsoleEventType.RefreshProfile, {});
 		},
 		signIn: () => {
-			return emit(ConsoleEvents.SignIn, {});
+			return emit(ConsoleEventType.SignIn, {});
 		},
 		signOut: () => {
-			return emit(ConsoleEvents.SignOut, {});
+			return emit(ConsoleEventType.SignOut, {});
 		},
 		lock: () => {
-			return emit(ConsoleEvents.Lock, {});
+			return emit(ConsoleEventType.Lock, {});
 		},
 		unlock: (options?: { pin?: string }) => {
-			return emit(ConsoleEvents.Unlock, { ...options });
+			return emit(ConsoleEventType.Unlock, { ...options });
 		},
 	};
 }

@@ -212,7 +212,7 @@ export const ExpandableMenu: FC<ExpandableSideMenuLayoutProps> = ({
 			}
 		>
 			<OverlayScrollbar className={'h-full'}>
-				<ul className={clsx('menu w-full bg-base-100 gap-0.5', expanded ? 'p-2' : 'p-0')}>
+				<ul className={clsx('menu bg-base-100 w-full gap-0.5', expanded ? 'p-2' : 'p-0')}>
 					{items.map((item, i) => {
 						return <SideMenuItem item={item} expanded={expanded} key={i} />;
 					})}

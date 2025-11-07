@@ -9,7 +9,10 @@ export type ParsedS3Options = {
 	endpoint: string;
 	port?: number;
 	pathStyle?: boolean;
+	url?: string;
 };
+
+export type ParseS3UrlOptions = Partial<ParsedS3Options>;
 
 function isValidIpAddress(hostname: string): boolean {
 	const ipv4Regex = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
@@ -17,9 +20,7 @@ function isValidIpAddress(hostname: string): boolean {
 	return ipv4Regex.test(hostname) || ipv6Regex.test(hostname);
 }
 
-export function parseS3Url({ url = process.env.S3_URL, ...rest }: { url?: string } & Partial<ParsedS3Options> = {}):
-	| ParsedS3Options
-	| undefined {
+export function parseS3Url({ url = process.env.S3_URL, ...rest }: ParseS3UrlOptions = {}): ParsedS3Options | undefined {
 	if (!url) return undefined;
 
 	const normalizedUrl = url.startsWith('s3://') ? url.replace(/^s3:\/\//, 'https://') : url;
@@ -31,7 +32,8 @@ export function parseS3Url({ url = process.env.S3_URL, ...rest }: { url?: string
 	}
 
 	const pathStyleParam = parsed.searchParams.get('pathStyle');
-	let pathStyle: boolean | undefined = pathStyleParam !== null ? parseBoolean(pathStyleParam) : undefined;
+	let pathStyle: boolean | undefined = rest.pathStyle;
+	pathStyle ??= parseBoolean(pathStyleParam, true);
 
 	// Auto-detect path style for IP addresses
 	if (pathStyle === undefined && isValidIpAddress(parsed.hostname)) {
@@ -47,6 +49,14 @@ export function parseS3Url({ url = process.env.S3_URL, ...rest }: { url?: string
 		region: parsed.searchParams.get('region') || undefined,
 		pathStyle,
 	};
+
+	if (!result.port) {
+		if (result.useSsl) {
+			result.port = 443;
+		} else {
+			result.port = 80;
+		}
+	}
 
 	const pathSegments = parsed.pathname.split('/').filter(Boolean);
 	const awsVirtualHostMatch = parsed.hostname.match(/^(.*?)\.s3[.-]([a-z0-9-]+)?\.?amazonaws\.com$/);

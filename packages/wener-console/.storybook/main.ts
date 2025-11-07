@@ -1,8 +1,10 @@
-import { dirname, join } from 'node:path';
+import { dirname } from 'node:path';
+import process from 'node:process';
+import { fileURLToPath } from 'node:url';
 import type { StorybookConfig } from '@storybook/react-vite';
 
 function getAbsolutePath(value: string): any {
-	return dirname(require.resolve(join(value, 'package.json')));
+	return dirname(fileURLToPath(import.meta.resolve(`${value}/package.json`)));
 }
 
 const config: StorybookConfig = {
@@ -21,13 +23,25 @@ const config: StorybookConfig = {
 		disableTelemetry: true,
 		disableWhatsNewNotifications: true,
 		builder: {
-			name: '@storybook/builder-vite',
+			name: getAbsolutePath("@storybook/builder-vite"),
 			options: {},
 		},
 	},
 	// debug vite config
-	// viteFinal: (config) => {
-	//   console.log(`viteFinal`, config);
-	// },
+	viteFinal: (config) => {
+		return {
+			...config,
+			server: {
+				...config.server,
+				proxy: {
+					...config.server?.proxy,
+					'/api/': {
+						target: `http://127.0.0.1:${process.env.WEB_API_SERVER_PORT || '8055'}`,
+						changeOrigin: true,
+					},
+				},
+			},
+		};
+	},
 };
 export default config;

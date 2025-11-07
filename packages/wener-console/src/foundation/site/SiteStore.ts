@@ -1,8 +1,8 @@
+import { createBoundedUseStore } from '@wener/reaction/zustand';
 import { computeIfAbsent, getGlobalStates } from '@wener/utils';
 import { merge } from 'es-toolkit';
 import { createStore } from 'zustand';
 import { mutative } from 'zustand-mutative';
-import { createStoreSelectorHook } from '../../zustand';
 
 export interface SiteConfInit extends Partial<SiteConf> {}
 
@@ -51,4 +51,4 @@ export function getSiteStore(): SiteStore {
 	return computeIfAbsent(getGlobalStates(), 'SiteStore', createSiteStore);
 }
 
-export const useSiteStore = createStoreSelectorHook<SiteStore>(getSiteStore);
+export const useSiteStore = createBoundedUseStore<SiteStore>(getSiteStore);

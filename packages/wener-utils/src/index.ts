@@ -33,24 +33,26 @@ export const isPromise = Promises.isPromise;
 export { timeout, TimeoutError } from './asyncs/timeout';
 
 // langs
-export { isNil } from './langs/isNil';
-export { shallowEqual } from './langs/shallowEqual';
+export { classOf } from './langs/classOf';
 export { deepEqual } from './langs/deepEqual';
 export { deepFreeze } from './langs/deepFreeze';
-export { classOf } from './langs/classOf';
-export { shallowClone } from './langs/shallowClone';
+export { getGlobalStates, setGlobalStates } from './langs/getGlobalStates';
+export { getObjectId } from './langs/getObjectId';
+export { ifPresent } from './langs/ifPresent';
 export { isClass } from './langs/isClass';
 export { isDefined } from './langs/isDefined';
 export { isEmptyObject } from './langs/isEmptyObject';
+export { isNil } from './langs/isNil';
 export { isPlainObject } from './langs/isPlainObject';
-export { ifPresent } from './langs/ifPresent';
-export { parseBoolean } from './langs/parseBoolean';
 export { maybeFunction, type MaybeFunction } from './langs/MaybeFunction';
 export { memoize } from './langs/memoize';
 export { mixin } from './langs/mixin';
+export { parseBoolean } from './langs/parseBoolean';
+export { parseDate } from './langs/parseDate';
+export { shallowClone } from './langs/shallowClone';
+export { shallowEqual } from './langs/shallowEqual';
+
 export type { MixinFunction, MixinInstance, MixinReturnValue } from './langs/mixin';
-export { getObjectId } from './langs/getObjectId';
-export { getGlobalStates, setGlobalStates } from './langs/getGlobalStates';
 
 export { AsyncCloser } from './langs/AsyncCloser';
 export { Closer } from './langs/Closer';

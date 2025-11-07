@@ -1,9 +1,9 @@
 import { useEffect, useRef, type FC } from 'react';
 import { useNetworkStatus } from '@wener/reaction/store';
+import { createBoundedUseStore } from '@wener/reaction/zustand';
 import { getGlobalStates } from '@wener/utils';
 import { createStore } from 'zustand';
 import { mutative } from 'zustand-mutative';
-import { createStoreSelectorHook } from '../../zustand';
 
 export const AuthStatus = {
 	Init: 'Init',
@@ -36,7 +36,7 @@ interface AuthStoreState {
 	reset(): void;
 }
 
-type AuthStore = ReturnType<typeof createAuthStore>;
+export type AuthStore = ReturnType<typeof createAuthStore>;
 
 function createAuthStore() {
 	return createStore(
@@ -204,4 +204,4 @@ function deleteItem(s: any, key: string) {
 	}
 }
 
-export const useAuthStore = createStoreSelectorHook(getAuthStore);
+export const useAuthStore = createBoundedUseStore(getAuthStore);
