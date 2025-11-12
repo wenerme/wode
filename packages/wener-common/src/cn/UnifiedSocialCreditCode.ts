@@ -128,4 +128,11 @@ export namespace UnifiedSocialCreditCode {
 	export const format = formatUnifiedSocialCreditCode;
 	export type Result = ParsedUnifiedSocialCreditCode;
 	export const ResultSchema = ParsedUnifiedSocialCreditCodeSchema;
+	export function test(s: string | undefined | null) {
+		if (!s) {
+			return false;
+		}
+		// fast check
+		return regex.test(s) && Mod31.validate(s);
+	}
 }

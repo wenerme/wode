@@ -62,7 +62,7 @@
     "@types/bun": "^1.3.2",
     "@types/crypto-js": "^4.2.2",
     "@types/node-rsa": "^1.1.4",
-    "@wecom/jssdk": "^2.3.1",
+    "@wecom/jssdk": "^2.3.2",
     "cookie": "^1.0.2",
     "crypto-js": "^4.2.0",
     "dayjs": "^1.11.19",

@@ -68,7 +68,7 @@
 		"@wener/utils": "workspace:^1.1.53",
 		"clsx": "^2.1.1",
 		"mutative": "^1.3.0",
-		"next": "^16.0.1",
+		"next": "^16.0.2",
 		"react": "^19.2.0",
 		"react-dom": "^19.2.0",
 		"react-is": "^19.2.0",

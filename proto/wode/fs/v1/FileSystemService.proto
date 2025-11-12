@@ -1,0 +1,195 @@
+syntax = "proto3";
+package wode.fs.v1;
+
+import "google/api/annotations.proto";
+import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/wenerme/wode/wogo/proto/wode/fs/v1;filesystemservicev1";
+
+// FileKind represents the type of a file system entry
+enum FileKind {
+	FILE_KIND_UNSPECIFIED = 0;
+	FILE_KIND_FILE = 1;
+	FILE_KIND_DIRECTORY = 2;
+}
+
+// FileStat represents file or directory metadata
+message FileStat {
+	string directory = 1; // Parent directory path
+	string path = 2; // Full path
+	string name = 3; // Entry name
+	FileKind kind = 4; // Entry type
+	google.protobuf.Timestamp mtime = 5; // Last modification time
+	int64 size = 6; // Size in bytes (default: 0)
+	google.protobuf.Struct meta = 7; // Additional metadata
+}
+
+// ReaddirRequest lists directory contents
+message ReaddirRequest {
+	string dir = 1; // Directory path (required, non-empty)
+	optional string glob = 2; // Glob pattern filter
+	bool recursive = 3; // Recursive listing (default: false)
+	optional int32 depth = 4; // Maximum depth (min: 0)
+	optional FileKind kind = 5; // Filter by entry type
+	optional string cursor = 6; // Pagination cursor
+	bool hidden = 7; // Include hidden files (default: false)
+}
+
+// ReaddirResponse contains directory listing
+message ReaddirResponse {
+	repeated FileStat data = 1;
+}
+
+// StatRequest gets file or directory status
+message StatRequest {
+	string path = 1; // File or directory path
+}
+
+// StatResponse contains file or directory status
+message StatResponse {
+	FileStat data = 1;
+}
+
+// MkdirRequest creates a directory
+message MkdirRequest {
+	string path = 1; // Directory path to create
+	optional bool recursive = 2; // Create parent directories if needed
+}
+
+// MkdirResponse indicates successful directory creation
+message MkdirResponse {}
+
+message ReadFileRequest {
+	string path = 1;
+	string encoding = 2; // base64, binary
+}
+
+message ReadFileResponse {
+	string base64 = 1;
+	bytes content = 2;
+}
+
+// WriteFileRequest writes file contents
+message WriteFileRequest {
+	string path = 1; // File path
+	string base64 = 2; // File contents encoded as base64
+	bytes data = 3; // File contents as bytes
+	optional bool overwrite = 4; // Overwrite if exists
+}
+
+// WriteFileResponse indicates successful file write
+message WriteFileResponse {}
+
+// RenameRequest renames a file or directory
+message RenameRequest {
+	string old_path = 1; // Current path
+	string new_path = 2; // New path
+	optional bool overwrite = 3; // Overwrite destination if exists
+}
+
+// RenameResponse indicates successful rename
+message RenameResponse {}
+
+// ExistsRequest checks if a path exists
+message ExistsRequest {
+	string path = 1; // Path to check
+}
+
+// ExistsResponse indicates if the path exists
+message ExistsResponse {
+	bool data = 1; // True if path exists
+}
+
+// CopyRequest copies a file or directory
+message CopyRequest {
+	string src = 1; // Source path
+	string dest = 2; // Destination path
+	optional bool overwrite = 3; // Overwrite destination if exists
+	optional bool shallow = 4; // Shallow copy (for directories)
+}
+
+// CopyResponse indicates successful copy
+message CopyResponse {}
+
+// RemoveRequest removes a file or directory
+message RemoveRequest {
+	string path = 1; // Path to remove
+	optional bool recursive = 2; // Recursive removal (for directories)
+	optional bool force = 3; // Force removal (ignore errors)
+}
+
+// RemoveResponse indicates successful removal
+message RemoveResponse {}
+
+service FileSystemService {
+	// List directory contents
+	rpc Readdir(ReaddirRequest) returns (ReaddirResponse) {
+		option (google.api.http) = {
+			post: "/v1/fs/readdir"
+			body: "*"
+		};
+	}
+
+	// Get file or directory status
+	rpc Stat(StatRequest) returns (StatResponse) {
+		option (google.api.http) = {
+			get: "/v1/fs/stat"
+		};
+	}
+
+	// Create a directory
+	rpc Mkdir(MkdirRequest) returns (MkdirResponse) {
+		option (google.api.http) = {
+			post: "/v1/fs/mkdir"
+			body: "*"
+		};
+	}
+
+	// Read file contents
+	rpc ReadFile(ReadFileRequest) returns (ReadFileResponse) {
+		option (google.api.http) = {
+			post: "/v1/fs/readFile"
+			body: "*"
+		};
+	}
+
+	// Write file contents
+	rpc WriteFile(WriteFileRequest) returns (WriteFileResponse) {
+		option (google.api.http) = {
+			post: "/v1/fs/writeFile"
+			body: "*"
+		};
+	}
+
+	// Rename a file or directory
+	rpc Rename(RenameRequest) returns (RenameResponse) {
+		option (google.api.http) = {
+			post: "/v1/fs/rename"
+			body: "*"
+		};
+	}
+
+	// Check if a path exists
+	rpc Exists(ExistsRequest) returns (ExistsResponse) {
+		option (google.api.http) = {
+			get: "/v1/fs/exists"
+		};
+	}
+
+	// Copy a file or directory
+	rpc Copy(CopyRequest) returns (CopyResponse) {
+		option (google.api.http) = {
+			post: "/v1/fs/copy"
+			body: "*"
+		};
+	}
+
+	// Remove a file or directory
+	rpc Remove(RemoveRequest) returns (RemoveResponse) {
+		option (google.api.http) = {
+			post: "/v1/fs/remove"
+			body: "*"
+		};
+	}
+}

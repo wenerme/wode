@@ -1,5 +1,5 @@
+import { UnifiedSocialCreditCode } from '@wener/common/cn';
 import { isULID, isUUID } from '@wener/utils';
-import { isUSCC } from '@wener/utils/cn';
 
 export interface ResolveSearchOptions<C = any> {
 	onTypedKey?: (s: string, ctx: C) => void;
@@ -48,7 +48,7 @@ export function resolveSearch<C = Record<string, any>>(
 		o.onULID(s, ctx);
 		return;
 	}
-	if (o.onUSCC && isUSCC(s)) {
+	if (o.onUSCC && UnifiedSocialCreditCode.test(s)) {
 		o.onUSCC(s, ctx);
 		return;
 	}

@@ -1,12 +1,6 @@
 version: v2
 modules:
-- path: protos/bundles
-  name: buf.build/x/bundle
-  lint:
-    ignore:
-    - protos/bundles
-- path: protos/wode
-  # https://buf.build/docs/lint/rules/
+- path: proto
   lint:
     except:
     - FILE_LOWER_SNAKE_CASE
@@ -21,3 +15,6 @@ modules:
     except:
     - EXTENSION_NO_DELETE
     - FIELD_SAME_DEFAULT
+
+deps:
+- buf.build/googleapis/googleapis
