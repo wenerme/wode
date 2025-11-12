@@ -1,0 +1,12 @@
+# Generate application icons
+
+icons:
+    rsvg-convert -w 1024 -h 1024 ./logo.svg -o ./build/appicon.png
+    for i in 16 32 64 128; do magick build/appicon.png -resize ${i}x${i} -gravity center -background none -extent ${i}x${i} appx/icon-${i}.png; done
+    oxipng -o max -i 0 --strip safe appx/*.png
+    cd build && wails3 generate icons -input appicon.png
+    cp build/icon.ico build/windows
+    cp build/icon.incs build/darwin
+
+assets:
+	task common:update:build-assets

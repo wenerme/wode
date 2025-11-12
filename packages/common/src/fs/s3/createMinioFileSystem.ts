@@ -1,7 +1,7 @@
 import { basename, dirname, normalize } from 'node:path';
-import { PassThrough, Readable } from 'node:stream';
+import { PassThrough, Readable, type Writable } from 'node:stream';
 import { parseS3Url, type ParseS3UrlOptions } from '@wener/common/s3';
-import type * as Minio from 'minio';
+import { Client } from 'minio';
 import type {
 	CopyOptions,
 	CreateReadStreamOptions,
@@ -18,7 +18,7 @@ import type {
 } from '../IFileSystem';
 
 type CreateMinioFileSystemOptions = ParseS3UrlOptions & {
-	client?: Minio.Client;
+	client?: Client;
 	/**
 	 * Optional prefix to scope all operations within a specific folder in the bucket.
 	 * All file operations will be relative to this prefix.
@@ -39,7 +39,7 @@ export function createMinioFileSystem(options: CreateMinioFileSystemOptions = {}
 		throw new Error('S3 endpoint and bucket are required when client is not provided');
 	}
 
-	let minioClient: Minio.Client;
+	let minioClient: Client;
 	let bucket: string;
 
 	if (client) {
@@ -49,8 +49,7 @@ export function createMinioFileSystem(options: CreateMinioFileSystemOptions = {}
 		bucket = parsed.bucket || '';
 
 		// Import Minio dynamically to avoid requiring it as a dependency
-		const Minio = require('minio');
-		minioClient = new Minio.Client({
+		minioClient = new Client({
 			endPoint: parsed.endpoint,
 			port: parsed.port,
 			useSSL: parsed.useSsl ?? true,
@@ -69,7 +68,7 @@ export function createMinioFileSystem(options: CreateMinioFileSystemOptions = {}
 
 class MinioFS implements IFileSystem {
 	constructor(
-		private readonly client: Minio.Client,
+		private readonly client: Client,
 		private readonly bucket: string,
 		private readonly prefix: string = '',
 	) {}
@@ -276,7 +275,7 @@ class MinioFS implements IFileSystem {
 				// Calculate depth: count the number of slashes in the relative path
 				// depth=1 means immediate children (no slashes), depth=2 means one level deep (one slash), etc.
 				const depthLevel = (relativeKey.match(/\//g) || []).length + 1;
-				
+
 				// Filter by depth
 				if (depthLevel > depth) {
 					continue;
@@ -984,7 +983,7 @@ class MinioFS implements IFileSystem {
 
 				try {
 					let nodeStream: Readable;
-					
+
 					if (range) {
 						// Use getPartialObject for range requests
 						// getPartialObject's length parameter: number of bytes to read (not end position)
@@ -1043,7 +1042,7 @@ class MinioFS implements IFileSystem {
 			async start(controller) {
 				try {
 					let nodeStream: Readable;
-					
+
 					if (range) {
 						// Use getPartialObject for range requests
 						// getPartialObject's length parameter: number of bytes to read (not end position)
@@ -1079,6 +1078,10 @@ class MinioFS implements IFileSystem {
 				}
 			},
 		});
+	}
+
+	createWriteStream(path: string, options?: CreateWriteStreamOptions): Writable {
+		throw new Error('Not implemented');
 	}
 
 	createWritableStream(path: string, options: CreateWriteStreamOptions = {}): WritableStream {

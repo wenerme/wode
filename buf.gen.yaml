@@ -1,15 +1,41 @@
 version: v2
+plugins:
+# https://github.com/bufbuild/plugins/tree/main/plugins
+
+- local: protoc-gen-go
+  out: wogo/proto
+  opt: paths=source_relative
+- local: protoc-gen-connect-go
+  out: wogo/proto
+  opt:
+  - paths=source_relative
+  - simple
+- local: protoc-gen-connect-openapi
+  out: wogo/proto
+  strategy: all
+  opt:
+  - path=openapi.yaml
+  - format=yaml
+
+- local: ./node_modules/.bin/protoc-gen-es
+  out: packages/common/src/protos
+  opt: target=ts
+- local: ./node_modules/.bin/protoc-gen-connect-es
+  out: packages/common/src/protos
+  opt: target=ts
+
+#- local: ./node_modules/.bin/protoc-gen-connect-query
+#  out: packages/common/src/protos
+#  opt: target=ts
+
 clean: true
 managed:
   enabled: true
   disable:
-  - path: protos/bundles
-plugins:
-- local: ./node_modules/.bin/protoc-gen-es
-  out: packages/common/src/gen/pb
+  - file_option: go_package
+    module: buf.build/googleapis/googleapis
 inputs:
-- directory: protos/wode
-  paths:
-  - protos/wode/wode/foundation/v1
-  - protos/wode/wode/service/v1
-  - protos/wode/wode/incs/zhb/ve/v1
+- directory: proto
+  #exclude_paths:
+  #- proto/google
+

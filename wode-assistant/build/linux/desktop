@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version=1.0
+Name=Wode Assitant
+Comment=A program may help you alittle
+# The Exec line includes %u to pass the URL to the application
+Exec=/usr/local/bin/wode-assistant %u
+Terminal=false
+Type=Application
+Icon=wode-assistant
+Categories=Utility;
+StartupWMClass=wode-assistant
+
+ 

@@ -4,7 +4,6 @@ import {
 	Cascade,
 	Collection,
 	Entity,
-	Enum,
 	ManyToOne,
 	OneToMany,
 	OneToOne,
@@ -14,10 +13,11 @@ import {
 	type Opt,
 	type Rel,
 } from '@mikro-orm/core';
-import type { EntityManager } from '@mikro-orm/postgresql';
-import { TenantBaseEntity } from '@wener/nestjs/entity';
-import { getEntityManager } from '@wener/nestjs/mikro-orm';
+import type { EntityManager } from '@mikro-orm/knex';
+import { TenantBaseEntity } from '@wener/server/entity';
+import { getEntityManager } from '@wener/server/mikro-orm';
 import type { CopyOptions } from 'fs-extra';
+import { FileSystemError, FileSystemErrorCode } from '../FileSystemError';
 import type {
 	CreateReadStreamOptions,
 	CreateWriteStreamOptions,
@@ -31,17 +31,15 @@ import type {
 	StatOptions,
 	WriteFileOptions,
 } from '../IFileSystem';
-
-enum FileKind {
-	DIRECTORY = 'directory',
-	FILE = 'file',
-}
+import { FileKind } from '../types';
 
 export function createDatabaseFileSystem(options: Partial<IDatabaseFileSystemOptions> = {}): IDatabaseFileSystem {
 	return new DBFS(options);
 }
 
-type IDatabaseFileSystem = IFileSystem & {};
+type IDatabaseFileSystem = IFileSystem & {
+	ensureRootNode(): Promise<FileNodeMetaEntity>;
+};
 type IDatabaseFileSystemOptions = {
 	getEntityManager: () => EntityManager;
 	smallFileThreshold?: number;
@@ -53,7 +51,7 @@ class DBFS implements IFileSystem {
 	constructor(options: Partial<IDatabaseFileSystemOptions> = {}) {
 		this.options = {
 			getEntityManager: () => getEntityManager<EntityManager>().fork(),
-			smallFileThreshold: 64 * 1024,
+			smallFileThreshold: 512,
 			...options,
 		};
 	}
@@ -62,11 +60,59 @@ class DBFS implements IFileSystem {
 		return this.options.getEntityManager();
 	}
 
+	/**
+	 * Ensure root node exists, create it if it doesn't exist
+	 * @returns The root FileNodeMetaEntity
+	 */
+	async ensureRootNode(): Promise<FileNodeMetaEntity> {
+		const em = this.em;
+		const rootQb = em.createQueryBuilder(FileNodeMetaEntity, 'f');
+		rootQb.where({ parent: null });
+		const rootNode = await rootQb.getSingleResult();
+
+		if (rootNode) {
+			return rootNode;
+		}
+
+		// Create root directory (parent is null, filename is empty string)
+		const now = new Date();
+		const rootDir = em.create(FileNodeMetaEntity, {
+			filename: '',
+			parent: null,
+			kind: FileKind.directory,
+			size: 0,
+			atime: now,
+			btime: now,
+			ctime: now,
+			mtime: now,
+		});
+		try {
+			await em.persistAndFlush(rootDir);
+			return rootDir;
+		} catch (error: any) {
+			// If root already exists (race condition), fetch and return it
+			if (error.message?.includes('UNIQUE constraint') || error.message?.includes('duplicate')) {
+				const existingRootQb = em.createQueryBuilder(FileNodeMetaEntity, 'f');
+				existingRootQb.where({ parent: null });
+				const existingRoot = await existingRootQb.getSingleResult();
+				if (existingRoot) {
+					return existingRoot;
+				}
+			}
+			throw error;
+		}
+	}
+
 	async stat(path: string, options?: StatOptions): Promise<IFileStat> {
+		// Validate input
+		if (!path || typeof path !== 'string') {
+			throw new FileSystemError('Invalid path', FileSystemErrorCode.EINVAL);
+		}
+
 		const em = this.em;
 		const node = await this._getNodeByPath(path, em);
 		if (!node) {
-			throw new FileSystemError(`Path not found: ${path}`, 'ENOENT');
+			throw new FileSystemError(`Path not found: ${path}`, FileSystemErrorCode.ENOENT);
 		}
 		return this._toFileStat(node, path);
 	}
@@ -80,66 +126,106 @@ class DBFS implements IFileSystem {
 		const parentNode = await this._getNodeByPath(dir, em);
 
 		if (!parentNode) {
-			throw new FileSystemError(`Directory not found: ${dir}`, 'ENOENT');
+			throw new FileSystemError(`Directory not found: ${dir}`, FileSystemErrorCode.ENOENT);
 		}
-		if (parentNode.kind !== FileKind.DIRECTORY) {
-			throw new FileSystemError(`Path is not a directory: ${dir}`, 'ENOTDIR');
+		if (parentNode.kind !== FileKind.directory) {
+			throw new FileSystemError(`Path is not a directory: ${dir}`, FileSystemErrorCode.ENOTDIR);
 		}
 
-		await em.populate(parentNode, ['children']);
+		// Use QueryBuilder to avoid automatic relationship loading
+		const qb = em.createQueryBuilder(FileNodeMetaEntity, 'f');
+		qb.where({ parent: parentNode });
+		const children = await qb.getResult();
 
-		return (await parentNode.children.loadItems()).map((child) => this._toFileStat(child, join(dir, child.filename)));
+		return children.map((child) => this._toFileStat(child, join(dir, child.filename)));
 	}
 
 	async mkdir(path: string, options: MkdirOptions = {}): Promise<void> {
-		const em = this.em;
+		await this._mkdirInTransaction(path, options, this.em);
+	}
+
+	private async _mkdirInTransaction(path: string, options: MkdirOptions, em: EntityManager): Promise<void> {
 		const normalized = normalize(path);
+
+		// Special handling for root directory
+		if (normalized === '/') {
+			const rootQb = em.createQueryBuilder(FileNodeMetaEntity, 'f');
+			rootQb.where({ parent: null });
+			const rootNode = await rootQb.getSingleResult();
+			if (rootNode) {
+				// Root directory already exists
+				return;
+			}
+			// Create root directory (parent is null, filename is empty string)
+			const now = new Date();
+			const rootDir = em.create(FileNodeMetaEntity, {
+				filename: '',
+				parent: null,
+				kind: FileKind.directory,
+				size: 0,
+				atime: now,
+				btime: now,
+				ctime: now,
+				mtime: now,
+			});
+			try {
+				await em.persistAndFlush(rootDir);
+			} catch (error: any) {
+				// If root already exists (race condition), ignore the error
+				if (!error.message?.includes('UNIQUE constraint') && !error.message?.includes('duplicate')) {
+					throw error;
+				}
+			}
+			return;
+		}
+
 		const parentPath = dirname(normalized);
 		const newDirName = basename(normalized);
 
-		if (!newDirName) throw new FileSystemError('Cannot create directory with empty name');
+		if (!newDirName) throw new FileSystemError('Cannot create directory with empty name', FileSystemErrorCode.EINVAL);
 
 		let parentNode = await this._getNodeByPath(parentPath, em);
 
 		if (!parentNode) {
 			if (options.recursive) {
 				// 递归创建父目录
-				await this.mkdir(parentPath, options);
+				await this._mkdirInTransaction(parentPath, options, em);
 				parentNode = await this._getNodeByPath(parentPath, em);
 			} else {
-				throw new FileSystemError(`Parent directory not found: ${parentPath}`, 'ENOENT');
+				throw new FileSystemError(`Parent directory not found: ${parentPath}`, FileSystemErrorCode.ENOENT);
 			}
 		}
 
-		if (!parentNode) throw new FileSystemError('Failed to create parent directory structure');
+		if (!parentNode)
+			throw new FileSystemError('Failed to create parent directory structure', FileSystemErrorCode.EINVAL);
 
-		// const existing = await em.findOne(FileNodeMetaEntity, { parent: parentNode, filename: newDirName });
-		//
-		// if (existing) {
-		//   if (existing.kind === FileKind.DIRECTORY) return; // 目录已存在，静默处理
-		//   throw new FileSystemError(`A file with the same name already exists: ${path}`, 'EEXIST');
-		// }
+		// Check if directory already exists using QueryBuilder
+		const existingQb = em.createQueryBuilder(FileNodeMetaEntity, 'f');
+		existingQb.where({ parent: parentNode, filename: newDirName });
+		const existing = await existingQb.getSingleResult();
 
-		const newDir = await em.upsert(
-			FileNodeMetaEntity,
-			{
-				tid: parentNode.tid,
-				parent: parentNode,
-				filename: newDirName,
-				kind: FileKind.DIRECTORY,
-				size: 0,
-			},
-			{
-				onConflictAction: 'ignore',
-				onConflictFields: ['tid', 'parent', 'filename'],
-			},
-		);
-
-		if (newDir.kind !== FileKind.DIRECTORY) {
-			throw new FileSystemError(`A file with the same name already exists: ${path}`, 'EEXIST');
+		if (existing) {
+			if (existing.kind === FileKind.directory) {
+				// Directory already exists, return silently
+				return;
+			}
+			throw new FileSystemError(`A file with the same name already exists: ${path}`, FileSystemErrorCode.EEXIST);
 		}
 
-		// await em.persistAndFlush(newDir);
+		// Create directory using EntityManager
+		const now = new Date();
+		const newDir = em.create(FileNodeMetaEntity, {
+			tid: parentNode.tid,
+			parent: parentNode,
+			filename: newDirName,
+			kind: FileKind.directory,
+			size: 0,
+			atime: now,
+			btime: now,
+			ctime: now,
+			mtime: now,
+		});
+		await em.persistAndFlush(newDir);
 	}
 
 	readFile(path: string, options?: ReadFileOptions & { encoding: 'text' }): Promise<string>;
@@ -155,23 +241,35 @@ class DBFS implements IFileSystem {
 		const em = this.em;
 		const node = await this._getNodeByPath(path, em);
 
-		if (!node) throw new FileSystemError(`File not found: ${path}`, 'ENOENT');
-		if (node.kind !== FileKind.FILE) throw new FileSystemError(`Path is not a file: ${path}`, 'EISDIR');
+		if (!node) throw new FileSystemError(`File not found: ${path}`, FileSystemErrorCode.ENOENT);
+		if (node.kind !== FileKind.file)
+			throw new FileSystemError(`Path is not a file: ${path}`, FileSystemErrorCode.EISDIR);
 
 		let buffer: Buffer;
 		if (node.content) {
-			// 小文件优化
+			// 小文件优化 - content is already loaded
 			buffer = node.content;
 		} else {
-			await em.populate(node, ['fileContent.content']);
-			if (!node.fileContent) throw new FileSystemError('File content is missing', 'ECONTENT');
-			buffer = node.fileContent.content;
+			// Large file: load from file_node_content table using QueryBuilder
+			const fileContentQb = em.createQueryBuilder(FileNodeContentEntity, 'fc');
+			fileContentQb.where({ node: node });
+			const fileContent = await fileContentQb.getSingleResult();
+			if (!fileContent) throw new FileSystemError('File content is missing', FileSystemErrorCode.ENOENT);
+			buffer = fileContent.content;
 		}
 
 		return options?.encoding === 'text' ? buffer.toString('utf-8') : buffer;
 	}
 
 	async writeFile(path: string, data: string | Buffer, options: WriteFileOptions = {}): Promise<void> {
+		// Validate input
+		if (!path || typeof path !== 'string') {
+			throw new FileSystemError('Invalid path', FileSystemErrorCode.EINVAL);
+		}
+		if (data === null || data === undefined) {
+			throw new FileSystemError('Invalid data', FileSystemErrorCode.EINVAL);
+		}
+
 		await this.em.transactional(async (em) => {
 			const { overwrite = true } = options;
 			const bufferData = Buffer.isBuffer(data) ? data : Buffer.from(data, 'utf-8');
@@ -180,18 +278,26 @@ class DBFS implements IFileSystem {
 			const parentPath = dirname(path);
 			const filename = basename(path);
 
-			// 确保父目录存在
-			await this.mkdir(parentPath, { recursive: true });
-			const parentNode = await this._getNodeByPath(parentPath, em);
-			if (!parentNode) throw new FileSystemError('Failed to establish parent directory');
+			// Validate filename
+			if (!filename) {
+				throw new FileSystemError('filename cannot be empty', FileSystemErrorCode.EINVAL);
+			}
 
-			let node = await em.findOne(FileNodeMetaEntity, { parent: parentNode, filename });
+			// 确保父目录存在 - create it within the transaction
+			await this._mkdirInTransaction(parentPath, { recursive: true }, em);
+			const parentNode = await this._getNodeByPath(parentPath, em);
+			if (!parentNode) throw new FileSystemError('Failed to establish parent directory', FileSystemErrorCode.EINVAL);
+
+			// Find existing node using QueryBuilder
+			const nodeQb = em.createQueryBuilder(FileNodeMetaEntity, 'f');
+			nodeQb.where({ parent: parentNode, filename });
+			let node = await nodeQb.getSingleResult();
 
 			if (node) {
 				// 文件已存在
-				if (!overwrite) throw new FileSystemError(`File already exists: ${path}`, 'EEXIST');
-				if (node.kind === FileKind.DIRECTORY)
-					throw new FileSystemError(`Cannot overwrite a directory with a file: ${path}`, 'EISDIR');
+				if (!overwrite) throw new FileSystemError(`File already exists: ${path}`, FileSystemErrorCode.EEXIST);
+				if (node.kind === FileKind.directory)
+					throw new FileSystemError(`Cannot overwrite a directory with a file: ${path}`, FileSystemErrorCode.EISDIR);
 
 				// 更新节点
 				node.size = size;
@@ -199,42 +305,59 @@ class DBFS implements IFileSystem {
 				// ... 其他时间戳
 			} else {
 				// 新建文件
+				const now = new Date();
 				node = em.create(FileNodeMetaEntity, {
 					tid: parentNode.tid,
 					filename,
 					parent: parentNode,
-					kind: FileKind.FILE,
+					kind: FileKind.file,
 					size,
+					atime: now,
+					btime: now,
+					ctime: now,
+					mtime: now,
 				});
 			}
 
 			// 处理文件内容
 			if (size <= this.options.smallFileThreshold!) {
+				// Small file: store in file_node_meta.content
 				node.content = bufferData;
-				// 如果之前有大文件内容，需要删除
-				if (node.fileContent) {
-					em.remove(node.fileContent);
-					node.fileContent = undefined;
+				// If there was large file content, delete it
+				// Use QueryBuilder to avoid relationship issues
+				const existingContentQb = em.createQueryBuilder(FileNodeContentEntity, 'fc');
+				existingContentQb.where({ node: node });
+				const existingContent = await existingContentQb.getSingleResult();
+				if (existingContent) {
+					await em.removeAndFlush(existingContent);
 				}
 			} else {
-				node.content = undefined; // 清除小文件内容
+				// Large file: store in file_node_content table
+				node.content = undefined; // Clear small file content
 				const md5 = crypto.createHash('md5').update(bufferData).digest('hex');
 				const sha256 = crypto.createHash('sha256').update(bufferData).digest('hex');
 
-				if (node.fileContent) {
-					node.fileContent.content = bufferData;
-					node.fileContent.md5 = md5;
-					node.fileContent.sha256 = sha256;
+				// Check if fileContent already exists using QueryBuilder
+				const fileContentQb = em.createQueryBuilder(FileNodeContentEntity, 'fc');
+				fileContentQb.where({ node: node });
+				let fileContent = await fileContentQb.getSingleResult();
+
+				if (fileContent) {
+					// Update existing content
+					fileContent.content = bufferData;
+					fileContent.size = size;
+					fileContent.md5 = md5;
+					fileContent.sha256 = sha256;
 				} else {
-					const contentEntity = em.create(FileNodeContentEntity, {
+					// Create new content entity
+					fileContent = em.create(FileNodeContentEntity, {
+						node: node, // Use node relationship as primary key
 						tid: node.tid,
-						node,
 						content: bufferData,
-						size: bufferData.length,
-						md5,
-						sha256,
+						size: size,
+						md5: md5,
+						sha256: sha256,
 					});
-					node.fileContent = contentEntity;
 				}
 			}
 
@@ -247,13 +370,17 @@ class DBFS implements IFileSystem {
 			const node = await this._getNodeByPath(path, em);
 			if (!node) {
 				if (options.force) return; // force=true, 不存在也算成功
-				throw new FileSystemError(`Path not found: ${path}`, 'ENOENT');
+				throw new FileSystemError(`Path not found: ${path}`, FileSystemErrorCode.ENOENT);
 			}
 
-			if (node.kind === FileKind.DIRECTORY && !options.recursive) {
-				await em.populate(node, ['children']);
-				if (node.children.length > 0) {
-					throw new FileSystemError(`Directory not empty: ${path}`, 'ENOTEMPTY');
+			if (node.kind === FileKind.directory && !options.recursive) {
+				// Check if directory has children using QueryBuilder
+				const childrenQb = em.createQueryBuilder(FileNodeMetaEntity, 'f');
+				childrenQb.where({ parent: node });
+				childrenQb.select('id');
+				const children = await childrenQb.getResult();
+				if (children.length > 0) {
+					throw new FileSystemError(`Directory not empty: ${path}`, FileSystemErrorCode.ENOTEMPTY);
 				}
 			}
 
@@ -265,17 +392,21 @@ class DBFS implements IFileSystem {
 	async rename(oldPath: string, newPath: string, options: RenameOptions = {}): Promise<void> {
 		await this.em.transactional(async (em) => {
 			const node = await this._getNodeByPath(oldPath, em);
-			if (!node) throw new FileSystemError(`Source path not found: ${oldPath}`, 'ENOENT');
+			if (!node) throw new FileSystemError(`Source path not found: ${oldPath}`, FileSystemErrorCode.ENOENT);
 
 			const newParentPath = dirname(newPath);
 			const newFilename = basename(newPath);
 
 			const newParentNode = await this._getNodeByPath(newParentPath, em);
-			if (!newParentNode) throw new FileSystemError(`Destination directory not found: ${newParentPath}`, 'ENOENT');
+			if (!newParentNode)
+				throw new FileSystemError(`Destination directory not found: ${newParentPath}`, FileSystemErrorCode.ENOENT);
 
-			const existingDest = await em.findOne(FileNodeMetaEntity, { parent: newParentNode, filename: newFilename });
+			const existingDestQb = em.createQueryBuilder(FileNodeMetaEntity, 'f');
+			existingDestQb.where({ parent: newParentNode, filename: newFilename });
+			const existingDest = await existingDestQb.getSingleResult();
 			if (existingDest) {
-				if (!options.overwrite) throw new FileSystemError(`Destination path already exists: ${newPath}`, 'EEXIST');
+				if (!options.overwrite)
+					throw new FileSystemError(`Destination path already exists: ${newPath}`, FileSystemErrorCode.EEXIST);
 				if (node.id === existingDest.id) return; // 移动到原位置，什么都不做
 				await em.removeAndFlush(existingDest);
 			}
@@ -291,18 +422,23 @@ class DBFS implements IFileSystem {
 	async copy(srcPath: string, destPath: string, options: CopyOptions = {}): Promise<void> {
 		await this.em.transactional(async (em) => {
 			const srcNode = await this._getNodeByPath(srcPath, em);
-			if (!srcNode) throw new FileSystemError(`Source path not found: ${srcPath}`, 'ENOENT');
+			if (!srcNode) throw new FileSystemError(`Source path not found: ${srcPath}`, FileSystemErrorCode.ENOENT);
 
 			const destParentPath = dirname(destPath);
 			const destFilename = basename(destPath);
 
 			const destParentNode = await this._getNodeByPath(destParentPath, em);
-			if (!destParentNode) throw new FileSystemError(`Destination directory not found: ${destParentPath}`, 'ENOENT');
+			if (!destParentNode)
+				throw new FileSystemError(`Destination directory not found: ${destParentPath}`, FileSystemErrorCode.ENOENT);
 
-			const existingDest = await em.findOne(FileNodeMetaEntity, { parent: destParentNode, filename: destFilename });
+			const existingDestQb = em.createQueryBuilder(FileNodeMetaEntity, 'f');
+			existingDestQb.where({ parent: destParentNode, filename: destFilename });
+			const existingDest = await existingDestQb.getSingleResult();
 			if (existingDest) {
-				if (!options.overwrite) throw new FileSystemError(`Destination path already exists: ${destPath}`, 'EEXIST');
-				await this.rm(destPath, { recursive: true, force: true });
+				if (!options.overwrite)
+					throw new FileSystemError(`Destination path already exists: ${destPath}`, FileSystemErrorCode.EEXIST);
+				// Delete existing destination within the same transaction
+				await em.removeAndFlush(existingDest);
 			}
 
 			await this._copyNode(srcNode, destParentNode, destFilename, em);
@@ -317,6 +453,14 @@ class DBFS implements IFileSystem {
 		throw new Error('Streaming write is not supported by DBFS yet.');
 	}
 
+	createReadableStream(path: string, options?: CreateReadStreamOptions): ReadableStream {
+		throw new Error('ReadableStream is not supported by DBFS yet.');
+	}
+
+	createWritableStream(path: string, options?: CreateWriteStreamOptions): WritableStream {
+		throw new Error('WritableStream is not supported by DBFS yet.');
+	}
+
 	/**
 	 * 将路径字符串解析为数据库中的节点。这是大部分操作的基础。
 	 * @param pathStr 绝对路径, e.g., /home/user/file.txt
@@ -325,17 +469,32 @@ class DBFS implements IFileSystem {
 	 */
 	private async _getNodeByPath(pathStr: string, em: EntityManager): Promise<FileNodeMetaEntity | null> {
 		const normalized = normalize(pathStr);
+
 		if (normalized === '/') {
-			return em.findOne(FileNodeMetaEntity, { parent: null });
+			// Use QueryBuilder to avoid automatic relationship loading
+			const qb = em.createQueryBuilder(FileNodeMetaEntity, 'f');
+			qb.where({ parent: null });
+			const rootNode = await qb.getSingleResult();
+			return rootNode || null;
 		}
 
 		const parts = normalized.split('/').filter((p) => p);
-		let currentNode: FileNodeMetaEntity | null = await em.findOne(FileNodeMetaEntity, { parent: null });
 
+		// Get root node
+		const rootQb = em.createQueryBuilder(FileNodeMetaEntity, 'f');
+		rootQb.where({ parent: null });
+		let currentNode = await rootQb.getSingleResult();
+		if (!currentNode) return null;
+
+		// Traverse path parts
 		for (const part of parts) {
-			if (!currentNode) return null;
-			currentNode = await em.findOne(FileNodeMetaEntity, { parent: currentNode, filename: part });
+			const childQb = em.createQueryBuilder(FileNodeMetaEntity, 'f');
+			childQb.where({ parent: currentNode, filename: part });
+			const child = await childQb.getSingleResult();
+			if (!child) return null;
+			currentNode = child;
 		}
+
 		return currentNode;
 	}
 
@@ -343,13 +502,31 @@ class DBFS implements IFileSystem {
 	 * 将数据库实体转换为 IFileStat 接口
 	 */
 	private _toFileStat(node: FileNodeMetaEntity, path: string): IFileStat {
+		// Handle mtime - it might be a Date object or a string from raw query
+		let mtime: number;
+		if (node.mtime instanceof Date) {
+			mtime = node.mtime.getTime();
+		} else if (typeof node.mtime === 'string') {
+			mtime = new Date(node.mtime).getTime();
+		} else {
+			mtime = Date.now();
+		}
+
+		// Handle size - convert bigint to number if needed
+		let size: number;
+		if (typeof node.size === 'bigint') {
+			size = Number(node.size);
+		} else {
+			size = node.size;
+		}
+
 		return {
 			path: path,
 			name: node.filename,
 			kind: node.kind,
-			size: node.size,
-			mtime: node.mtime.getTime(),
-			meta: node.metadata,
+			size: size,
+			mtime: mtime,
+			meta: node.metadata || {},
 			// `directory` 字段可以根据 path 动态计算
 			directory: dirname(path),
 		};
@@ -362,6 +539,7 @@ class DBFS implements IFileSystem {
 		em: EntityManager,
 	): Promise<void> {
 		// 1. 复制节点本身
+		const now = new Date();
 		const newNode = em.create(FileNodeMetaEntity, {
 			tid: srcNode.tid,
 			filename: newName,
@@ -370,30 +548,39 @@ class DBFS implements IFileSystem {
 			size: srcNode.size,
 			metadata: srcNode.metadata, // deep copy metadata
 			content: srcNode.content, // copy small file content
+			atime: now,
+			btime: now,
+			ctime: now,
+			mtime: now,
 		});
 
-		// 2. 复制大文件内容 (如果存在)
-		await em.populate(srcNode, ['fileContent']);
-		if (srcNode.fileContent) {
-			const newContent = em.create(FileNodeContentEntity, {
-				tid: srcNode.tid,
-				node: newNode,
-				content: srcNode.fileContent.content,
-				size: srcNode.fileContent.size,
-				md5: srcNode.fileContent.md5,
-				sha256: srcNode.fileContent.sha256,
-				mimeType: srcNode.fileContent.mimeType,
-				metadata: srcNode.fileContent.metadata,
-			});
-			newNode.fileContent = newContent;
+		// 2. 复制大文件内容 (如果存在) - use QueryBuilder to avoid relationship loading
+		if (!srcNode.content) {
+			const srcFileContentQb = em.createQueryBuilder(FileNodeContentEntity, 'fc');
+			srcFileContentQb.where({ node: srcNode });
+			const srcFileContent = await srcFileContentQb.getSingleResult();
+			if (srcFileContent) {
+				const newContent = em.create(FileNodeContentEntity, {
+					node: newNode, // Use node relationship as primary key
+					tid: srcNode.tid,
+					content: srcFileContent.content,
+					size: srcFileContent.size,
+					md5: srcFileContent.md5,
+					sha256: srcFileContent.sha256,
+					mimeType: srcFileContent.mimeType,
+					metadata: srcFileContent.metadata,
+				});
+			}
 		}
 
 		await em.persistAndFlush(newNode);
 
 		// 3. 如果是目录，递归复制子节点
-		if (srcNode.kind === FileKind.DIRECTORY) {
-			await em.populate(srcNode, ['children']);
-			for (const child of srcNode.children.getItems()) {
+		if (srcNode.kind === FileKind.directory) {
+			const childrenQb = em.createQueryBuilder(FileNodeMetaEntity, 'f');
+			childrenQb.where({ parent: srcNode });
+			const children = await childrenQb.getResult();
+			for (const child of children) {
 				await this._copyNode(child, newNode, child.filename, em);
 			}
 		}
@@ -407,7 +594,7 @@ export class FileNodeMetaEntity extends TenantBaseEntity {
 	filename!: string;
 	@Property({ type: types.bigint, nullable: false, default: 0, comment: '文件大小' })
 	size!: number & Opt;
-	@Enum({ items: () => FileKind, nullable: false, comment: '文件类型' })
+	@Property({ type: types.string, nullable: false, comment: '文件类型' })
 	kind!: FileKind;
 
 	@Property({ type: types.datetime, nullable: false, defaultRaw: 'CURRENT_TIMESTAMP' })
@@ -450,7 +637,7 @@ export class FileNodeMetaEntity extends TenantBaseEntity {
 
 @Entity({ tableName: 'file_node_content' })
 export class FileNodeContentEntity extends TenantBaseEntity {
-	@OneToOne({ entity: () => FileNodeMetaEntity, owner: true, primary: true })
+	@OneToOne({ entity: () => FileNodeMetaEntity, owner: true, joinColumn: 'node_id' })
 	node!: Rel<FileNodeMetaEntity>;
 
 	@Property({ type: types.integer, nullable: false })
@@ -478,14 +665,4 @@ export class FileNodeContentEntity extends TenantBaseEntity {
 
 	@Property({ type: types.json, nullable: false, defaultRaw: '{}' })
 	metadata!: Record<string, any>;
-}
-
-class FileSystemError extends Error {
-	constructor(
-		message: string,
-		public code?: string,
-	) {
-		super(message);
-		this.name = 'FileSystemError';
-	}
 }

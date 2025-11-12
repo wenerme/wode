@@ -1,0 +1,988 @@
+openapi: 3.1.0
+info: {}
+paths:
+  /v1/fs/copy:
+    post:
+      tags:
+        - wode.fs.v1.FileSystemService
+      summary: Copy
+      description: Copy a file or directory
+      operationId: wode.fs.v1.FileSystemService.Copy
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/wode.fs.v1.CopyRequest'
+        required: true
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wode.fs.v1.CopyResponse'
+  /v1/fs/exists:
+    get:
+      tags:
+        - wode.fs.v1.FileSystemService
+      summary: Exists
+      description: Check if a path exists
+      operationId: wode.fs.v1.FileSystemService.Exists
+      parameters:
+        - name: path
+          in: query
+          description: Path to check
+          schema:
+            type: string
+            title: path
+            description: Path to check
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wode.fs.v1.ExistsResponse'
+  /v1/fs/mkdir:
+    post:
+      tags:
+        - wode.fs.v1.FileSystemService
+      summary: Mkdir
+      description: Create a directory
+      operationId: wode.fs.v1.FileSystemService.Mkdir
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/wode.fs.v1.MkdirRequest'
+        required: true
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wode.fs.v1.MkdirResponse'
+  /v1/fs/readFile:
+    post:
+      tags:
+        - wode.fs.v1.FileSystemService
+      summary: ReadFile
+      description: Read file contents
+      operationId: wode.fs.v1.FileSystemService.ReadFile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/wode.fs.v1.ReadFileRequest'
+        required: true
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wode.fs.v1.ReadFileResponse'
+  /v1/fs/readdir:
+    post:
+      tags:
+        - wode.fs.v1.FileSystemService
+      summary: Readdir
+      description: List directory contents
+      operationId: wode.fs.v1.FileSystemService.Readdir
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/wode.fs.v1.ReaddirRequest'
+        required: true
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wode.fs.v1.ReaddirResponse'
+  /v1/fs/remove:
+    post:
+      tags:
+        - wode.fs.v1.FileSystemService
+      summary: Remove
+      description: Remove a file or directory
+      operationId: wode.fs.v1.FileSystemService.Remove
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/wode.fs.v1.RemoveRequest'
+        required: true
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wode.fs.v1.RemoveResponse'
+  /v1/fs/rename:
+    post:
+      tags:
+        - wode.fs.v1.FileSystemService
+      summary: Rename
+      description: Rename a file or directory
+      operationId: wode.fs.v1.FileSystemService.Rename
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/wode.fs.v1.RenameRequest'
+        required: true
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wode.fs.v1.RenameResponse'
+  /v1/fs/stat:
+    get:
+      tags:
+        - wode.fs.v1.FileSystemService
+      summary: Stat
+      description: Get file or directory status
+      operationId: wode.fs.v1.FileSystemService.Stat
+      parameters:
+        - name: path
+          in: query
+          description: File or directory path
+          schema:
+            type: string
+            title: path
+            description: File or directory path
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wode.fs.v1.StatResponse'
+  /v1/fs/writeFile:
+    post:
+      tags:
+        - wode.fs.v1.FileSystemService
+      summary: WriteFile
+      description: Write file contents
+      operationId: wode.fs.v1.FileSystemService.WriteFile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/wode.fs.v1.WriteFileRequest'
+        required: true
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wode.fs.v1.WriteFileResponse'
+components:
+  schemas:
+    google.api.CustomHttpPattern:
+      type: object
+      properties:
+        kind:
+          type: string
+          title: kind
+          description: The name of this custom HTTP verb.
+        path:
+          type: string
+          title: path
+          description: The path matched by this custom verb.
+      title: CustomHttpPattern
+      additionalProperties: false
+      description: A custom pattern is used for defining custom HTTP verb.
+    google.api.Http:
+      type: object
+      properties:
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/google.api.HttpRule'
+          title: rules
+          description: |-
+            A list of HTTP configuration rules that apply to individual API methods.
+
+             **NOTE:** All service configuration rules follow "last one wins" order.
+        fullyDecodeReservedExpansion:
+          type: boolean
+          title: fully_decode_reserved_expansion
+          description: |-
+            When set to true, URL path parmeters will be fully URI-decoded except in
+             cases of single segment matches in reserved expansion, where "%2F" will be
+             left encoded.
+
+             The default behavior is to not decode RFC 6570 reserved characters in multi
+             segment matches.
+      title: Http
+      additionalProperties: false
+      description: |-
+        Defines the HTTP configuration for an API service. It contains a list of
+         [HttpRule][google.api.HttpRule], each specifying the mapping of an RPC method
+         to one or more HTTP REST API methods.
+    google.api.HttpRule:
+      type: object
+      allOf:
+        - properties:
+            selector:
+              type: string
+              title: selector
+              description: |-
+                Selects methods to which this rule applies.
+
+                 Refer to [selector][google.api.DocumentationRule.selector] for syntax details.
+            body:
+              type: string
+              title: body
+              description: |-
+                The name of the request field whose value is mapped to the HTTP body, or
+                 `*` for mapping all fields not captured by the path pattern to the HTTP
+                 body. NOTE: the referred field must not be a repeated field and must be
+                 present at the top-level of request message type.
+            responseBody:
+              type: string
+              title: response_body
+              description: |-
+                Optional. The name of the response field whose value is mapped to the HTTP
+                 body of response. Other response fields are ignored. When
+                 not set, the response message will be used as HTTP body of response.
+            additionalBindings:
+              type: array
+              items:
+                $ref: '#/components/schemas/google.api.HttpRule'
+              title: additional_bindings
+              description: |-
+                Additional HTTP bindings for the selector. Nested bindings must
+                 not contain an `additional_bindings` field themselves (that is,
+                 the nesting may only be one level deep).
+        - oneOf:
+            - properties:
+                custom:
+                  title: custom
+                  description: |-
+                    The custom pattern is used for specifying an HTTP method that is not
+                     included in the `pattern` field, such as HEAD, or "*" to leave the
+                     HTTP method unspecified for this rule. The wild-card rule is useful
+                     for services that provide content to Web (HTML) clients.
+                  $ref: '#/components/schemas/google.api.CustomHttpPattern'
+              title: custom
+              required:
+                - custom
+            - properties:
+                delete:
+                  type: string
+                  title: delete
+                  description: Used for deleting a resource.
+              title: delete
+              required:
+                - delete
+            - properties:
+                get:
+                  type: string
+                  title: get
+                  description: Used for listing and getting information about resources.
+              title: get
+              required:
+                - get
+            - properties:
+                patch:
+                  type: string
+                  title: patch
+                  description: Used for updating a resource.
+              title: patch
+              required:
+                - patch
+            - properties:
+                post:
+                  type: string
+                  title: post
+                  description: Used for creating a resource.
+              title: post
+              required:
+                - post
+            - properties:
+                put:
+                  type: string
+                  title: put
+                  description: Used for updating a resource.
+              title: put
+              required:
+                - put
+      title: HttpRule
+      additionalProperties: false
+      description: |-
+        `HttpRule` defines the mapping of an RPC method to one or more HTTP
+         REST API methods. The mapping specifies how different portions of the RPC
+         request message are mapped to URL path, URL query parameters, and
+         HTTP request body. The mapping is typically specified as an
+         `google.api.http` annotation on the RPC method,
+         see "google/api/annotations.proto" for details.
+
+         The mapping consists of a field specifying the path template and
+         method kind.  The path template can refer to fields in the request
+         message, as in the example below which describes a REST GET
+         operation on a resource collection of messages:
+
+
+             service Messaging {
+               rpc GetMessage(GetMessageRequest) returns (Message) {
+                 option (google.api.http).get = "/v1/messages/{message_id}/{sub.subfield}";
+               }
+             }
+             message GetMessageRequest {
+               message SubMessage {
+                 string subfield = 1;
+               }
+               string message_id = 1; // mapped to the URL
+               SubMessage sub = 2;    // `sub.subfield` is url-mapped
+             }
+             message Message {
+               string text = 1; // content of the resource
+             }
+
+         The same http annotation can alternatively be expressed inside the
+         `GRPC API Configuration` YAML file.
+
+             http:
+               rules:
+                 - selector: <proto_package_name>.Messaging.GetMessage
+                   get: /v1/messages/{message_id}/{sub.subfield}
+
+         This definition enables an automatic, bidrectional mapping of HTTP
+         JSON to RPC. Example:
+
+         HTTP | RPC
+         -----|-----
+         `GET /v1/messages/123456/foo`  | `GetMessage(message_id: "123456" sub: SubMessage(subfield: "foo"))`
+
+         In general, not only fields but also field paths can be referenced
+         from a path pattern. Fields mapped to the path pattern cannot be
+         repeated and must have a primitive (non-message) type.
+
+         Any fields in the request message which are not bound by the path
+         pattern automatically become (optional) HTTP query
+         parameters. Assume the following definition of the request message:
+
+
+             service Messaging {
+               rpc GetMessage(GetMessageRequest) returns (Message) {
+                 option (google.api.http).get = "/v1/messages/{message_id}";
+               }
+             }
+             message GetMessageRequest {
+               message SubMessage {
+                 string subfield = 1;
+               }
+               string message_id = 1; // mapped to the URL
+               int64 revision = 2;    // becomes a parameter
+               SubMessage sub = 3;    // `sub.subfield` becomes a parameter
+             }
+
+
+         This enables a HTTP JSON to RPC mapping as below:
+
+         HTTP | RPC
+         -----|-----
+         `GET /v1/messages/123456?revision=2&sub.subfield=foo` | `GetMessage(message_id: "123456" revision: 2 sub: SubMessage(subfield: "foo"))`
+
+         Note that fields which are mapped to HTTP parameters must have a
+         primitive type or a repeated primitive type. Message types are not
+         allowed. In the case of a repeated type, the parameter can be
+         repeated in the URL, as in `...?param=A&param=B`.
+
+         For HTTP method kinds which allow a request body, the `body` field
+         specifies the mapping. Consider a REST update method on the
+         message resource collection:
+
+
+             service Messaging {
+               rpc UpdateMessage(UpdateMessageRequest) returns (Message) {
+                 option (google.api.http) = {
+                   put: "/v1/messages/{message_id}"
+                   body: "message"
+                 };
+               }
+             }
+             message UpdateMessageRequest {
+               string message_id = 1; // mapped to the URL
+               Message message = 2;   // mapped to the body
+             }
+
+
+         The following HTTP JSON to RPC mapping is enabled, where the
+         representation of the JSON in the request body is determined by
+         protos JSON encoding:
+
+         HTTP | RPC
+         -----|-----
+         `PUT /v1/messages/123456 { "text": "Hi!" }` | `UpdateMessage(message_id: "123456" message { text: "Hi!" })`
+
+         The special name `*` can be used in the body mapping to define that
+         every field not bound by the path template should be mapped to the
+         request body.  This enables the following alternative definition of
+         the update method:
+
+             service Messaging {
+               rpc UpdateMessage(Message) returns (Message) {
+                 option (google.api.http) = {
+                   put: "/v1/messages/{message_id}"
+                   body: "*"
+                 };
+               }
+             }
+             message Message {
+               string message_id = 1;
+               string text = 2;
+             }
+
+
+         The following HTTP JSON to RPC mapping is enabled:
+
+         HTTP | RPC
+         -----|-----
+         `PUT /v1/messages/123456 { "text": "Hi!" }` | `UpdateMessage(message_id: "123456" text: "Hi!")`
+
+         Note that when using `*` in the body mapping, it is not possible to
+         have HTTP parameters, as all fields not bound by the path end in
+         the body. This makes this option more rarely used in practice of
+         defining REST APIs. The common usage of `*` is in custom methods
+         which don't use the URL at all for transferring data.
+
+         It is possible to define multiple HTTP methods for one RPC by using
+         the `additional_bindings` option. Example:
+
+             service Messaging {
+               rpc GetMessage(GetMessageRequest) returns (Message) {
+                 option (google.api.http) = {
+                   get: "/v1/messages/{message_id}"
+                   additional_bindings {
+                     get: "/v1/users/{user_id}/messages/{message_id}"
+                   }
+                 };
+               }
+             }
+             message GetMessageRequest {
+               string message_id = 1;
+               string user_id = 2;
+             }
+
+
+         This enables the following two alternative HTTP JSON to RPC
+         mappings:
+
+         HTTP | RPC
+         -----|-----
+         `GET /v1/messages/123456` | `GetMessage(message_id: "123456")`
+         `GET /v1/users/me/messages/123456` | `GetMessage(user_id: "me" message_id: "123456")`
+
+         # Rules for HTTP mapping
+
+         The rules for mapping HTTP path, query parameters, and body fields
+         to the request message are as follows:
+
+         1. The `body` field specifies either `*` or a field path, or is
+            omitted. If omitted, it indicates there is no HTTP request body.
+         2. Leaf fields (recursive expansion of nested messages in the
+            request) can be classified into three types:
+             (a) Matched in the URL template.
+             (b) Covered by body (if body is `*`, everything except (a) fields;
+                 else everything under the body field)
+             (c) All other fields.
+         3. URL query parameters found in the HTTP request are mapped to (c) fields.
+         4. Any body sent with an HTTP request can contain only (b) fields.
+
+         The syntax of the path template is as follows:
+
+             Template = "/" Segments [ Verb ] ;
+             Segments = Segment { "/" Segment } ;
+             Segment  = "*" | "**" | LITERAL | Variable ;
+             Variable = "{" FieldPath [ "=" Segments ] "}" ;
+             FieldPath = IDENT { "." IDENT } ;
+             Verb     = ":" LITERAL ;
+
+         The syntax `*` matches a single path segment. The syntax `**` matches zero
+         or more path segments, which must be the last part of the path except the
+         `Verb`. The syntax `LITERAL` matches literal text in the path.
+
+         The syntax `Variable` matches part of the URL path as specified by its
+         template. A variable template must not contain other variables. If a variable
+         matches a single path segment, its template may be omitted, e.g. `{var}`
+         is equivalent to `{var=*}`.
+
+         If a variable contains exactly one path segment, such as `"{var}"` or
+         `"{var=*}"`, when such a variable is expanded into a URL path, all characters
+         except `[-_.~0-9a-zA-Z]` are percent-encoded. Such variables show up in the
+         Discovery Document as `{var}`.
+
+         If a variable contains one or more path segments, such as `"{var=foo/*}"`
+         or `"{var=**}"`, when such a variable is expanded into a URL path, all
+         characters except `[-_.~/0-9a-zA-Z]` are percent-encoded. Such variables
+         show up in the Discovery Document as `{+var}`.
+
+         NOTE: While the single segment variable matches the semantics of
+         [RFC 6570](https://tools.ietf.org/html/rfc6570) Section 3.2.2
+         Simple String Expansion, the multi segment variable **does not** match
+         RFC 6570 Reserved Expansion. The reason is that the Reserved Expansion
+         does not expand special characters like `?` and `#`, which would lead
+         to invalid URLs.
+
+         NOTE: the field paths in variables and in the `body` must not refer to
+         repeated fields or map fields.
+    google.protobuf.ListValue:
+      type: object
+      properties:
+        values:
+          type: array
+          items:
+            $ref: '#/components/schemas/google.protobuf.Value'
+          title: values
+          description: Repeated field of dynamically typed values.
+      title: ListValue
+      additionalProperties: false
+      description: |-
+        `ListValue` is a wrapper around a repeated field of values.
+
+         The JSON representation for `ListValue` is JSON array.
+    google.protobuf.NullValue:
+      type: string
+      title: NullValue
+      enum:
+        - NULL_VALUE
+      description: |-
+        `NullValue` is a singleton enumeration to represent the null value for the
+         `Value` type union.
+
+         The JSON representation for `NullValue` is JSON `null`.
+    google.protobuf.Struct:
+      type: object
+      additionalProperties:
+        $ref: '#/components/schemas/google.protobuf.Value'
+      description: |-
+        `Struct` represents a structured data value, consisting of fields
+         which map to dynamically typed values. In some languages, `Struct`
+         might be supported by a native representation. For example, in
+         scripting languages like JS a struct is represented as an
+         object. The details of that representation are described together
+         with the proto support for the language.
+
+         The JSON representation for `Struct` is JSON object.
+    google.protobuf.Struct.FieldsEntry:
+      type: object
+      properties:
+        key:
+          type: string
+          title: key
+        value:
+          title: value
+          $ref: '#/components/schemas/google.protobuf.Value'
+      title: FieldsEntry
+      additionalProperties: false
+    google.protobuf.Timestamp:
+      type: string
+      examples:
+        - "2023-01-15T01:30:15.01Z"
+        - "2024-12-25T12:00:00Z"
+      format: date-time
+      description: |-
+        A Timestamp represents a point in time independent of any time zone or local
+         calendar, encoded as a count of seconds and fractions of seconds at
+         nanosecond resolution. The count is relative to an epoch at UTC midnight on
+         January 1, 1970, in the proleptic Gregorian calendar which extends the
+         Gregorian calendar backwards to year one.
+
+         All minutes are 60 seconds long. Leap seconds are "smeared" so that no leap
+         second table is needed for interpretation, using a [24-hour linear
+         smear](https://developers.google.com/time/smear).
+
+         The range is from 0001-01-01T00:00:00Z to 9999-12-31T23:59:59.999999999Z. By
+         restricting to that range, we ensure that we can convert to and from [RFC
+         3339](https://www.ietf.org/rfc/rfc3339.txt) date strings.
+
+         # Examples
+
+         Example 1: Compute Timestamp from POSIX `time()`.
+
+             Timestamp timestamp;
+             timestamp.set_seconds(time(NULL));
+             timestamp.set_nanos(0);
+
+         Example 2: Compute Timestamp from POSIX `gettimeofday()`.
+
+             struct timeval tv;
+             gettimeofday(&tv, NULL);
+
+             Timestamp timestamp;
+             timestamp.set_seconds(tv.tv_sec);
+             timestamp.set_nanos(tv.tv_usec * 1000);
+
+         Example 3: Compute Timestamp from Win32 `GetSystemTimeAsFileTime()`.
+
+             FILETIME ft;
+             GetSystemTimeAsFileTime(&ft);
+             UINT64 ticks = (((UINT64)ft.dwHighDateTime) << 32) | ft.dwLowDateTime;
+
+             // A Windows tick is 100 nanoseconds. Windows epoch 1601-01-01T00:00:00Z
+             // is 11644473600 seconds before Unix epoch 1970-01-01T00:00:00Z.
+             Timestamp timestamp;
+             timestamp.set_seconds((INT64) ((ticks / 10000000) - 11644473600LL));
+             timestamp.set_nanos((INT32) ((ticks % 10000000) * 100));
+
+         Example 4: Compute Timestamp from Java `System.currentTimeMillis()`.
+
+             long millis = System.currentTimeMillis();
+
+             Timestamp timestamp = Timestamp.newBuilder().setSeconds(millis / 1000)
+                 .setNanos((int) ((millis % 1000) * 1000000)).build();
+
+         Example 5: Compute Timestamp from Java `Instant.now()`.
+
+             Instant now = Instant.now();
+
+             Timestamp timestamp =
+                 Timestamp.newBuilder().setSeconds(now.getEpochSecond())
+                     .setNanos(now.getNano()).build();
+
+         Example 6: Compute Timestamp from current time in Python.
+
+             timestamp = Timestamp()
+             timestamp.GetCurrentTime()
+
+         # JSON Mapping
+
+         In JSON format, the Timestamp type is encoded as a string in the
+         [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format. That is, the
+         format is "{year}-{month}-{day}T{hour}:{min}:{sec}[.{frac_sec}]Z"
+         where {year} is always expressed using four digits while {month}, {day},
+         {hour}, {min}, and {sec} are zero-padded to two digits each. The fractional
+         seconds, which can go up to 9 digits (i.e. up to 1 nanosecond resolution),
+         are optional. The "Z" suffix indicates the timezone ("UTC"); the timezone
+         is required. A proto3 JSON serializer should always use UTC (as indicated by
+         "Z") when printing the Timestamp type and a proto3 JSON parser should be
+         able to accept both UTC and other timezones (as indicated by an offset).
+
+         For example, "2017-01-15T01:30:15.01Z" encodes 15.01 seconds past
+         01:30 UTC on January 15, 2017.
+
+         In JavaScript, one can convert a Date object to this format using the
+         standard
+         [toISOString()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString)
+         method. In Python, a standard `datetime.datetime` object can be converted
+         to this format using
+         [`strftime`](https://docs.python.org/2/library/time.html#time.strftime) with
+         the time format spec '%Y-%m-%dT%H:%M:%S.%fZ'. Likewise, in Java, one can use
+         the Joda Time's [`ISODateTimeFormat.dateTime()`](
+         http://joda-time.sourceforge.net/apidocs/org/joda/time/format/ISODateTimeFormat.html#dateTime()
+         ) to obtain a formatter capable of generating timestamps in this format.
+    google.protobuf.Value:
+      oneOf:
+        - type: "null"
+        - type: number
+        - type: string
+        - type: boolean
+        - type: array
+        - type: object
+          additionalProperties: true
+      description: |-
+        `Value` represents a dynamically typed value which can be either
+         null, a number, a string, a boolean, a recursive struct value, or a
+         list of values. A producer of value is expected to set one of these
+         variants. Absence of any variant indicates an error.
+
+         The JSON representation for `Value` is JSON value.
+    wode.fs.v1.CopyRequest:
+      type: object
+      properties:
+        src:
+          type: string
+          title: src
+          description: Source path
+        dest:
+          type: string
+          title: dest
+          description: Destination path
+        overwrite:
+          type: boolean
+          title: overwrite
+          description: Overwrite destination if exists
+          nullable: true
+        shallow:
+          type: boolean
+          title: shallow
+          description: Shallow copy (for directories)
+          nullable: true
+      title: CopyRequest
+      additionalProperties: false
+      description: CopyRequest copies a file or directory
+    wode.fs.v1.CopyResponse:
+      type: object
+      title: CopyResponse
+      additionalProperties: false
+      description: CopyResponse indicates successful copy
+    wode.fs.v1.ExistsRequest:
+      type: object
+      properties:
+        path:
+          type: string
+          title: path
+          description: Path to check
+      title: ExistsRequest
+      additionalProperties: false
+      description: ExistsRequest checks if a path exists
+    wode.fs.v1.ExistsResponse:
+      type: object
+      properties:
+        data:
+          type: boolean
+          title: data
+          description: True if path exists
+      title: ExistsResponse
+      additionalProperties: false
+      description: ExistsResponse indicates if the path exists
+    wode.fs.v1.FileKind:
+      type: string
+      title: FileKind
+      enum:
+        - FILE_KIND_UNSPECIFIED
+        - FILE_KIND_FILE
+        - FILE_KIND_DIRECTORY
+      description: FileKind represents the type of a file system entry
+    wode.fs.v1.FileStat:
+      type: object
+      properties:
+        directory:
+          type: string
+          title: directory
+          description: Parent directory path
+        path:
+          type: string
+          title: path
+          description: Full path
+        name:
+          type: string
+          title: name
+          description: Entry name
+        kind:
+          title: kind
+          description: Entry type
+          $ref: '#/components/schemas/wode.fs.v1.FileKind'
+        mtime:
+          title: mtime
+          description: Last modification time
+          $ref: '#/components/schemas/google.protobuf.Timestamp'
+        size:
+          type:
+            - integer
+            - string
+          title: size
+          format: int64
+          description: 'Size in bytes (default: 0)'
+        meta:
+          title: meta
+          description: Additional metadata
+          $ref: '#/components/schemas/google.protobuf.Struct'
+      title: FileStat
+      additionalProperties: false
+      description: FileStat represents file or directory metadata
+    wode.fs.v1.MkdirRequest:
+      type: object
+      properties:
+        path:
+          type: string
+          title: path
+          description: Directory path to create
+        recursive:
+          type: boolean
+          title: recursive
+          description: Create parent directories if needed
+          nullable: true
+      title: MkdirRequest
+      additionalProperties: false
+      description: MkdirRequest creates a directory
+    wode.fs.v1.MkdirResponse:
+      type: object
+      title: MkdirResponse
+      additionalProperties: false
+      description: MkdirResponse indicates successful directory creation
+    wode.fs.v1.ReadFileRequest:
+      type: object
+      properties:
+        path:
+          type: string
+          title: path
+        encoding:
+          type: string
+          title: encoding
+          description: base64, binary
+      title: ReadFileRequest
+      additionalProperties: false
+    wode.fs.v1.ReadFileResponse:
+      type: object
+      properties:
+        base64:
+          type: string
+          title: base64
+        content:
+          type: string
+          title: content
+          format: byte
+      title: ReadFileResponse
+      additionalProperties: false
+    wode.fs.v1.ReaddirRequest:
+      type: object
+      properties:
+        dir:
+          type: string
+          title: dir
+          description: Directory path (required, non-empty)
+        glob:
+          type: string
+          title: glob
+          description: Glob pattern filter
+          nullable: true
+        recursive:
+          type: boolean
+          title: recursive
+          description: 'Recursive listing (default: false)'
+        depth:
+          type: integer
+          title: depth
+          format: int32
+          description: 'Maximum depth (min: 0)'
+          nullable: true
+        kind:
+          title: kind
+          description: Filter by entry type
+          nullable: true
+          $ref: '#/components/schemas/wode.fs.v1.FileKind'
+        cursor:
+          type: string
+          title: cursor
+          description: Pagination cursor
+          nullable: true
+        hidden:
+          type: boolean
+          title: hidden
+          description: 'Include hidden files (default: false)'
+      title: ReaddirRequest
+      additionalProperties: false
+      description: ReaddirRequest lists directory contents
+    wode.fs.v1.ReaddirResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/wode.fs.v1.FileStat'
+          title: data
+      title: ReaddirResponse
+      additionalProperties: false
+      description: ReaddirResponse contains directory listing
+    wode.fs.v1.RemoveRequest:
+      type: object
+      properties:
+        path:
+          type: string
+          title: path
+          description: Path to remove
+        recursive:
+          type: boolean
+          title: recursive
+          description: Recursive removal (for directories)
+          nullable: true
+        force:
+          type: boolean
+          title: force
+          description: Force removal (ignore errors)
+          nullable: true
+      title: RemoveRequest
+      additionalProperties: false
+      description: RemoveRequest removes a file or directory
+    wode.fs.v1.RemoveResponse:
+      type: object
+      title: RemoveResponse
+      additionalProperties: false
+      description: RemoveResponse indicates successful removal
+    wode.fs.v1.RenameRequest:
+      type: object
+      properties:
+        oldPath:
+          type: string
+          title: old_path
+          description: Current path
+        newPath:
+          type: string
+          title: new_path
+          description: New path
+        overwrite:
+          type: boolean
+          title: overwrite
+          description: Overwrite destination if exists
+          nullable: true
+      title: RenameRequest
+      additionalProperties: false
+      description: RenameRequest renames a file or directory
+    wode.fs.v1.RenameResponse:
+      type: object
+      title: RenameResponse
+      additionalProperties: false
+      description: RenameResponse indicates successful rename
+    wode.fs.v1.StatRequest:
+      type: object
+      properties:
+        path:
+          type: string
+          title: path
+          description: File or directory path
+      title: StatRequest
+      additionalProperties: false
+      description: StatRequest gets file or directory status
+    wode.fs.v1.StatResponse:
+      type: object
+      properties:
+        data:
+          title: data
+          $ref: '#/components/schemas/wode.fs.v1.FileStat'
+      title: StatResponse
+      additionalProperties: false
+      description: StatResponse contains file or directory status
+    wode.fs.v1.WriteFileRequest:
+      type: object
+      properties:
+        path:
+          type: string
+          title: path
+          description: File path
+        base64:
+          type: string
+          title: base64
+          description: File contents encoded as base64
+        data:
+          type: string
+          title: data
+          format: byte
+          description: File contents as bytes
+        overwrite:
+          type: boolean
+          title: overwrite
+          description: Overwrite if exists
+          nullable: true
+      title: WriteFileRequest
+      additionalProperties: false
+      description: WriteFileRequest writes file contents
+    wode.fs.v1.WriteFileResponse:
+      type: object
+      title: WriteFileResponse
+      additionalProperties: false
+      description: WriteFileResponse indicates successful file write
+security: []
+tags:
+  - name: wode.fs.v1.FileSystemService

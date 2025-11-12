@@ -5,3 +5,4 @@ export { createWebDavFileSystem } from './createWebDavFileSystem';
 export { createBrowserFileSystem } from './createBrowserFileSystem';
 export { findMimeType } from './findMimeType';
 export { type FileUrlOptions, FileUrlOptionsSchema } from './types';
+export { FileSystemError, FileSystemErrorCode } from './FileSystemError';
