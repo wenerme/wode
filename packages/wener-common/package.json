@@ -41,14 +41,14 @@
 		"@standard-schema/spec": "^1.0.0",
 		"@wener/utils": "workspace:^1.1.53",
 		"date-fns": "^4.1.0",
-		"es-toolkit": "^1.41.0",
+		"es-toolkit": "^1.42.0",
 		"std-env": "^3.10.0",
 		"ts-pattern": "^5.9.0"
 	},
 	"devDependencies": {
-		"@orpc/client": "^1.11.2",
-		"@orpc/contract": "^1.11.2",
-		"@orpc/openapi-client": "^1.11.2",
+		"@orpc/client": "^1.11.3",
+		"@orpc/contract": "^1.11.3",
+		"@orpc/openapi-client": "^1.11.3",
 		"@sinclair/typebox": "^0.34.41",
 		"@sinclair/typebox-codegen": "^0.11.1",
 		"@types/argon2-browser": "^1.18.4",

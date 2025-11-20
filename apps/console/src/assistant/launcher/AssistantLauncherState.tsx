@@ -2,6 +2,8 @@ import { proxyWithCompare } from '@wener/reaction/valtio';
 import { getGlobalStates } from '@wener/utils';
 import Emittery from 'emittery';
 import { useSnapshot } from 'valtio';
+import type { AssistantTool } from './types';
+import { WodeAssistantSidecar } from './sidecar/WodeAssistantSidecar';
 
 export const AssistantLauncherEventType = {
 	OpenWindow: 'AssistantLauncher:OpenWindow',
@@ -14,6 +16,11 @@ type AssistantLauncherEventData = {
 export type AssistantLauncherEmitter = Emittery<AssistantLauncherEventData>;
 
 type AssistantLauncherState = {
+	// UI State
+	activeToolId?: string;
+	searchQuery: string;
+	tools: AssistantTool[];
+
 	user: {
 		username: string;
 		displayName: string;
@@ -23,16 +30,25 @@ type AssistantLauncherState = {
 		version: string;
 	};
 
-	system: {
-		interfaces: Array<{
-			name: string;
-			address: string;
-		}>;
-	};
+	// Sidecar
+	sidecar: WodeAssistantSidecar;
 };
 
-export function createAssistantLauncherState() {
-	return {} as AssistantLauncherState;
+export function createAssistantLauncherState(): AssistantLauncherState {
+	return {
+		activeToolId: undefined,
+		searchQuery: '',
+		tools: [],
+		user: {
+			username: 'guest',
+			displayName: 'Guest',
+		},
+		info: {
+			title: 'Assistant',
+			version: '1.0.0',
+		},
+		sidecar: new WodeAssistantSidecar(),
+	};
 }
 
 export function getAssistantLauncherState() {

@@ -1,24 +1,21 @@
 import React from 'react';
 import { FiSettings, FiInfo } from 'react-icons/fi';
 import { AssistantToolItem } from './AssistantToolItem';
-import { useAssistantStore, useAssistantActions } from '../context/AssistantStore';
+import { useAssistantLauncherState, useAssistantLauncherMutate } from '../AssistantLauncherState';
+import type { AssistantTool } from '../types';
 
 export const AssistantSidebar: React.FC = () => {
-    const tools = useAssistantStore(s => s.tools);
-    const activeToolId = useAssistantStore(s => s.activeToolId);
-    const searchQuery = useAssistantStore(s => s.searchQuery);
-    const sidecar = useAssistantStore(s => s.sidecar);
-    const version = useAssistantStore(s => s.version);
-    const { setActiveToolId } = useAssistantActions();
+    const state = useAssistantLauncherState();
+    const mutate = useAssistantLauncherMutate();
 
-    const filteredTools = tools.filter(
+    const filteredTools = state.tools.filter(
         (t) =>
-            t.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            t.description?.toLowerCase().includes(searchQuery.toLowerCase())
+            t.name.toLowerCase().includes(state.searchQuery.toLowerCase()) ||
+            t.description?.toLowerCase().includes(state.searchQuery.toLowerCase())
     );
 
     const handleSettings = () => {
-        sidecar.openSettings();
+        state.sidecar.openSettings();
     };
 
     return (
@@ -31,9 +28,9 @@ export const AssistantSidebar: React.FC = () => {
                     filteredTools.map((tool) => (
                         <AssistantToolItem
                             key={tool.id}
-                            tool={tool}
-                            isActive={tool.id === activeToolId}
-                            onClick={() => setActiveToolId(tool.id)}
+                            tool={tool as AssistantTool}
+                            isActive={tool.id === state.activeToolId}
+                            onClick={() => { mutate.activeToolId = tool.id; }}
                         />
                     ))
                 )}
@@ -42,7 +39,7 @@ export const AssistantSidebar: React.FC = () => {
             {/* Footer Menu */}
             <div className="mt-auto border-t border-base-300 p-2">
                 <div className="menu menu-horizontal w-full justify-between">
-                    <button className="btn btn-ghost btn-sm btn-square tooltip" data-tip={`Version ${version}`}>
+                    <button className="btn btn-ghost btn-sm btn-square tooltip" data-tip={`Version ${state.info.version}`}>
                         <FiInfo />
                     </button>
                     <button className="btn btn-ghost btn-sm btn-square" onClick={handleSettings}>
