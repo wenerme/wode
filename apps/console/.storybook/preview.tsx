@@ -1,9 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import type { Decorator, Preview } from '@storybook/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { DynamicRender } from '@wener/console/components';
 import { DaisyTheme, getSupportedThemes } from '@wener/console/daisy';
-import '@/console/globals.css';
-import { LibInit } from '@/console/LibInit';
-import { RootContext } from '@/console/RootContext';
+import { Window } from '@wener/console/window';
+import { doFusionSetup } from '@/fusion/FusionConsoleContext';
+import '@/web/globals.css';
 
 // polyfills
 if (!globalThis.process) {
@@ -23,17 +25,33 @@ const preview: Preview = {
 		},
 	},
 };
-
+const queryClient = new QueryClient({
+	defaultOptions: {
+		queries: {
+			retry: false,
+			refetchOnWindowFocus: false,
+		},
+	},
+});
 const withThemeProvider: Decorator = (Story: any, context: any) => {
-	const [, update] = DaisyTheme.useThemeState();
+	const store = DaisyTheme.useThemeStore();
 	useEffect(() => {
-		update({ theme: context.globals.theme });
+		store.setState((s) => {
+			s.theme = context.globals.theme;
+		});
 	}, [context.globals.theme]);
+	useState(() => {
+		doFusionSetup();
+	});
 	return (
-		<RootContext init={[LibInit]}>
-			<DaisyTheme.Sidecar />
-			<Story {...context} />
-		</RootContext>
+		<>
+			<QueryClientProvider client={queryClient}>
+				<DaisyTheme.Sidecar />
+				<Story {...context} />
+				<Window.Host />
+			</QueryClientProvider>
+			<DynamicRender.Outlet />
+		</>
 	);
 };
 

@@ -1,11 +1,10 @@
 import React from 'react';
 import { FiSearch } from 'react-icons/fi';
-import { useAssistantStore, useAssistantActions } from '../context/AssistantStore';
+import { useAssistantLauncherState, useAssistantLauncherMutate } from '../AssistantLauncherState';
 
 export const AssistantHeader: React.FC = () => {
-    const user = useAssistantStore(s => s.user);
-    const searchQuery = useAssistantStore(s => s.searchQuery);
-    const { setSearchQuery } = useAssistantActions();
+    const state = useAssistantLauncherState();
+    const mutate = useAssistantLauncherMutate();
 
     return (
         <div className="flex h-16 items-center justify-between border-b border-base-300 bg-base-100 px-4" data-tauri-drag-region>
@@ -13,12 +12,12 @@ export const AssistantHeader: React.FC = () => {
             <div className="flex items-center gap-3">
                 <div className="avatar placeholder">
                     <div className="w-10 rounded-full bg-neutral text-neutral-content">
-                        <span className="text-xl">{user?.name?.[0] || 'U'}</span>
+                        <span className="text-xl">{state.user.displayName?.[0] || 'U'}</span>
                     </div>
                 </div>
                 <div>
-                    <div className="font-bold">{user?.name || 'Guest'}</div>
-                    <div className="text-xs opacity-60">{user?.username || 'guest'}</div>
+                    <div className="font-bold">{state.user.displayName || 'Guest'}</div>
+                    <div className="text-xs opacity-60">{state.user.username || 'guest'}</div>
                 </div>
             </div>
 
@@ -30,8 +29,8 @@ export const AssistantHeader: React.FC = () => {
                         type="text"
                         placeholder="Search tools..."
                         className="input input-sm input-bordered w-full pl-9 rounded-full bg-base-200 focus:bg-base-100"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
+                        value={state.searchQuery}
+                        onChange={(e) => { mutate.searchQuery = e.target.value; }}
                     />
                 </div>
             </div>
