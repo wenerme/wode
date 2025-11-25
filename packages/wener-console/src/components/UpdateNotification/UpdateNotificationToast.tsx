@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useId } from 'react';
+import type React from 'react';
+import { useId } from 'react';
 import { createPortal } from 'react-dom';
 import { useMounted } from '@wener/reaction';
 

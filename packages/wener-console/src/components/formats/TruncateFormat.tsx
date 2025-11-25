@@ -1,5 +1,5 @@
 import type { ElementType } from 'react';
-import React from 'react';
+import type React from 'react';
 import { cn } from '../../utils/cn';
 import type { AsProps } from '../props';
 

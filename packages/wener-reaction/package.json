@@ -1,6 +1,6 @@
 {
 	"name": "@wener/reaction",
-	"version": "1.2.26",
+	"version": "1.2.27",
 	"type": "module",
 	"description": "React hooks, utils & reaction",
 	"repository": {
@@ -43,21 +43,10 @@
 		"clean": "make clean",
 		"dev": "make dev"
 	},
-	"peerDependencies": {
+	"dependencies": {
 		"react": ">=18",
 		"react-dom": ">=18",
 		"react-is": ">=18"
-	},
-	"peerDependenciesMeta": {
-		"react": {
-			"optional": true
-		},
-		"react-dom": {
-			"optional": true
-		},
-		"react-is": {
-			"optional": true
-		}
 	},
 	"devDependencies": {
 		"@remix-run/router": "^1.23.0",

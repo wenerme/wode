@@ -1,2 +1,2 @@
 export { LoginPage } from './LoginPage';
-export { LoginFormData } from './LoginPageForm';
+export type { LoginFormData } from './LoginPageForm';

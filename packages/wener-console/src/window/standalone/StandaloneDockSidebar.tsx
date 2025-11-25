@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 import { clsx } from 'clsx';
 import { WindowControlButton } from './WindowControlButton';
 import { WindowDockList } from './WindowDockList';

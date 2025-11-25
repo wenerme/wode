@@ -3,24 +3,24 @@ import { FiClock, FiFileText } from 'react-icons/fi';
 import { AssistantLayout } from './components/AssistantLayout';
 import { AssistantSidebar } from './components/AssistantSidebar';
 import type { AssistantTool } from './types';
-import { TimeParserTool } from './tools/TimeParserTool';
-import { JsonYamlConverterTool } from './tools/JsonYamlConverterTool';
+import { TimeParserTool } from '../tools/TimeParserTool';
+import { JsonYamlConverterTool } from '../tools/JsonYamlConverterTool';
 import { useAssistantLauncherState, useAssistantLauncherMutate } from './AssistantLauncherState';
 
 const TOOLS: AssistantTool[] = [
 	{
 		id: 'time-parser',
 		name: 'Time Parser',
-		description: 'Parse and format dates/times',
+		description: 'Parse timestamps and dates',
 		icon: <FiClock />,
-		component: TimeParserTool,
+		component: TimeParserTool.Composite,
 	},
 	{
 		id: 'json-yaml',
 		name: 'JSON <> YAML',
 		description: 'Convert between JSON and YAML',
 		icon: <FiFileText />,
-		component: JsonYamlConverterTool,
+		component: JsonYamlConverterTool.Composite,
 	},
 ];
 

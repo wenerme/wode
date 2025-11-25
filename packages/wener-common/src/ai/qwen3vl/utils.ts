@@ -1,9 +1,8 @@
 // xyxy
 type Bbox2d = [number, number, number, number];
+type Dimensions = { width: number; height: number };
 // x_center, y_center, z_center, x_size, y_size, z_size, roll, pitch, yaw
 type Bbox3d = [number, number, number, number, number, number, number, number, number];
-type Dimensions = { width: number; height: number };
-
 /**
  * Convert Qwen3V format bbox (0-1000 range) to absolute pixel coordinates
  * @param dimensions Image dimensions {width, height}

@@ -16,7 +16,7 @@ describe('parseRelativeTime', () => {
 		expect(result).toHaveLength(1);
 		expect(result[0]).toEqual({
 			operator: '+',
-			duration: dayjs.duration({ h: 1 }),
+			duration: dayjs.duration({ hours: 1 }),
 		});
 	});
 
@@ -25,7 +25,7 @@ describe('parseRelativeTime', () => {
 		expect(result).toHaveLength(1);
 		expect(result[0]).toEqual({
 			operator: '-',
-			duration: dayjs.duration({ m: 30 }),
+			duration: dayjs.duration({ minutes: 30 }),
 		});
 	});
 
@@ -34,7 +34,7 @@ describe('parseRelativeTime', () => {
 		expect(result).toHaveLength(1);
 		expect(result[0]).toEqual({
 			operator: '+',
-			duration: dayjs.duration({ ms: 500 }),
+			duration: dayjs.duration({ milliseconds: 500 }),
 		});
 	});
 
@@ -43,7 +43,7 @@ describe('parseRelativeTime', () => {
 		expect(result).toHaveLength(1);
 		expect(result[0]).toEqual({
 			operator: '+',
-			duration: dayjs.duration({ d: 1, h: 6, m: 30 }),
+			duration: dayjs.duration({ days: 1, hours: 6, minutes: 30 }),
 		});
 	});
 
@@ -68,11 +68,11 @@ describe('parseRelativeTime', () => {
 		expect(result).toHaveLength(2);
 		expect(result[0]).toEqual({
 			operator: '-',
-			duration: dayjs.duration({ h: 1 }),
+			duration: dayjs.duration({ hours: 1 }),
 		});
 		expect(result[1]).toEqual({
 			operator: '+',
-			duration: dayjs.duration({ m: 30 }),
+			duration: dayjs.duration({ minutes: 30 }),
 		});
 	});
 
@@ -81,7 +81,7 @@ describe('parseRelativeTime', () => {
 		expect(result).toHaveLength(2);
 		expect(result[0]).toEqual({
 			operator: '-',
-			duration: dayjs.duration({ M: 1 }),
+			duration: dayjs.duration({ months: 1 }),
 		});
 		expect(result[1]).toEqual({
 			operator: '/',
@@ -108,14 +108,14 @@ describe('parseRelativeTime', () => {
 		expect(result[0]).toEqual({
 			operator: '+',
 			duration: dayjs.duration({
-				y: 1,
-				M: 2,
-				w: 3,
-				d: 4,
-				h: 5,
-				m: 6,
-				s: 7,
-				ms: 8,
+				years: 1,
+				months: 2,
+				weeks: 3,
+				days: 4,
+				hours: 5,
+				minutes: 6,
+				seconds: 7,
+				milliseconds: 8,
 			}),
 		});
 	});
@@ -125,7 +125,7 @@ describe('parseRelativeTime', () => {
 		expect(result).toHaveLength(1);
 		expect(result[0]).toEqual({
 			operator: '+',
-			duration: dayjs.duration({ h: 6 }), // 1+2+3
+			duration: dayjs.duration({ hours: 6 }), // 1+2+3
 		});
 	});
 
@@ -149,7 +149,7 @@ describe('parseRelativeTime', () => {
 		expect(result).toHaveLength(1);
 		expect(result[0]).toEqual({
 			operator: '+',
-			duration: dayjs.duration({ h: 1, m: 30 }),
+			duration: dayjs.duration({ hours: 1, minutes: 30 }),
 		});
 	});
 
@@ -159,7 +159,7 @@ describe('parseRelativeTime', () => {
 		expect(result1).toHaveLength(1);
 		expect(result1[0]).toEqual({
 			operator: '-',
-			duration: dayjs.duration({ h: 24 }),
+			duration: dayjs.duration({ hours: 24 }),
 		});
 
 		// Start of previous month
@@ -167,7 +167,7 @@ describe('parseRelativeTime', () => {
 		expect(result2).toHaveLength(2);
 		expect(result2[0]).toEqual({
 			operator: '-',
-			duration: dayjs.duration({ M: 1 }),
+			duration: dayjs.duration({ months: 1 }),
 		});
 		expect(result2[1]).toEqual({
 			operator: '/',
@@ -179,7 +179,7 @@ describe('parseRelativeTime', () => {
 		expect(result3).toHaveLength(1);
 		expect(result3[0]).toEqual({
 			operator: '-',
-			duration: dayjs.duration({ w: 1, d: 2, h: 3 }),
+			duration: dayjs.duration({ weeks: 1, days: 2, hours: 3 }),
 		});
 	});
 });

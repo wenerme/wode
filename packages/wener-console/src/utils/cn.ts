@@ -1,5 +1,5 @@
 import { clsx, type ClassValue } from 'clsx';
-import { extendTailwindMerge, twMerge } from 'tailwind-merge';
+import { extendTailwindMerge, type twMerge } from 'tailwind-merge';
 
 let _twMerge: typeof twMerge | undefined;
 let _clsx: ClassNameMerger = (...inputs) => {

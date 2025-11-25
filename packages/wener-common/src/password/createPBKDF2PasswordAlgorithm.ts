@@ -33,7 +33,7 @@ export function createPBKDF2PasswordAlgorithm({
 				'deriveBits',
 			]);
 			let hash = await crypto.subtle.deriveBits(
-				{ name: 'PBKDF2', iterations: rounds, salt, hash: digest },
+				{ name: 'PBKDF2', iterations: rounds, salt: salt as BufferSource, hash: digest },
 				key,
 				keylen * 8,
 			);
@@ -51,7 +51,7 @@ export function createPBKDF2PasswordAlgorithm({
 				'deriveBits',
 			]);
 			let hash = await crypto.subtle.deriveBits(
-				{ name: 'PBKDF2', iterations: rounds, salt, hash: digest },
+				{ name: 'PBKDF2', iterations: rounds, salt: salt as BufferSource, hash: digest },
 				key,
 				storedHash.length * 8,
 			);

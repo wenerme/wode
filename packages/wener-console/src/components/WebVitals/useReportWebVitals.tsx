@@ -1,5 +1,5 @@
 import { useAsyncEffect } from '@wener/reaction';
-import { type Metric } from 'web-vitals';
+import type { Metric } from 'web-vitals';
 
 export function useReportWebVitals(reportWebVitalsFn: (metric: Metric) => void) {
 	useAsyncEffect(async () => {
