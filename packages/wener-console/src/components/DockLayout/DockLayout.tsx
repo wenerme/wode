@@ -5,7 +5,7 @@ import { Link } from 'react-router';
 import clsx from 'clsx';
 import { useStore } from 'zustand';
 import { getUserStore } from '../../console/context';
-import { getUserAction } from '../../console/user';
+import { getAuthAction } from '../../console/user';
 import { isDev } from '../../const';
 import { DockClock } from './DockClock';
 import { DockUserAvatar } from './DockUserAvatar';
@@ -32,7 +32,7 @@ export const DockLayout: FC<{ children?: ReactNode; dock?: ReactNode }> = ({ chi
 const UserAvatar = () => {
 	const { id, loginName, fullName, photoUrl, avatarUrl = photoUrl } = useStore(getUserStore());
 	const hasNotification = false;
-	const { signOut, signIn, lock, refreshProfile } = getUserAction();
+	const { signOut, signIn, lock, refreshProfile } = getAuthAction();
 	return (
 		<DockUserAvatar {...{ loginName, fullName, avatarUrl, hasNotification, onSignIn: signIn, onSignOut: signOut }}>
 			<Link to={`/user/${id}`} type={'button'} className={'btn btn-ghost flex h-auto w-full flex-col items-start py-2'}>

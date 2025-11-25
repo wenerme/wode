@@ -1,5 +1,5 @@
 import React, { useEffect, useState, type PropsWithChildren } from 'react';
-import { AuthStatus, getAuthStore, useAuthStore } from './AuthStore';
+import { AuthStatus, getAuthStore, useAuthStore, useAuthStoreContext } from './AuthStore';
 
 export const AuthBlock: React.FC<
 	PropsWithChildren & {
@@ -8,7 +8,7 @@ export const AuthBlock: React.FC<
 	}
 > = ({ children, fallback, pending }) => {
 	const { authed, init } = useAuthBlock();
-	if (!init) {
+	if (init) {
 		return pending;
 	}
 	if (!authed) {
@@ -18,7 +18,7 @@ export const AuthBlock: React.FC<
 };
 
 function useAuthBlock() {
-	let store = getAuthStore();
+	let store = useAuthStoreContext();
 	const [authed, setAuthed] = useState(() => {
 		return store.getState().status === AuthStatus.Authenticated;
 	});
@@ -33,7 +33,7 @@ function useAuthBlock() {
 			}
 		});
 		return unsub;
-	}, []);
+	}, [store]);
 
 	return {
 		authed,

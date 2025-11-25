@@ -1,6 +1,6 @@
 import type { MaybePromise } from '@wener/utils';
-import { getConsoleEmitter } from '../ConsoleEmitter';
-import { ConsoleEventType } from '../context';
+import { getConsoleEmitter } from '../../console/ConsoleEmitter';
+import { ConsoleEventType } from '../../console/context';
 
 export interface UserAction {
 	refreshProfile: () => MaybePromise<void>;
@@ -10,7 +10,7 @@ export interface UserAction {
 	unlock: (options?: { pin?: string }) => MaybePromise<void>;
 }
 
-export function getUserAction(): UserAction {
+export function getAuthAction(): UserAction {
 	const emitter = getConsoleEmitter();
 	const emit = emitter.emit.bind(emitter);
 	return {

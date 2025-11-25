@@ -15,7 +15,7 @@ import { useStoreWithEqualityFn } from 'zustand/traditional';
 // import { isDev } from '@/const';
 import { isDev } from '../../../const';
 import { cn } from '../../../utils/cn';
-import { getUserAction } from '../../user';
+import { getAuthAction } from '../../user';
 import { DockClock } from './DockClock';
 import { DockUserAvatar } from './DockUserAvatar';
 
@@ -41,7 +41,7 @@ export const DockLayout: React.FC<{ children?: ReactNode; dock?: ReactNode }> = 
 const UserAvatar = () => {
 	const { id, loginName, fullName, photoUrl, avatarUrl = photoUrl } = useStore(getUserStore());
 	const hasNotification = false;
-	const { signOut, signIn, lock, refreshProfile } = getUserAction();
+	const { signOut, signIn, lock, refreshProfile } = getAuthAction();
 	return (
 		<DockUserAvatar {...{ loginName, fullName, avatarUrl, hasNotification, onSignIn: signIn, onSignOut: signOut }}>
 			<Link to={`/user/${id}`} type={'button'} className={'btn btn-ghost flex h-auto w-full flex-col items-start py-2'}>
