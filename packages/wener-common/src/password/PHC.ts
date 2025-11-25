@@ -103,7 +103,7 @@ export namespace PHC {
 				if (typeof value === 'number') {
 					opts.params![k] = value.toString();
 				} else if (value instanceof Uint8Array) {
-					opts.params![k] = toBase64(value).split('=')[0];
+					opts.params![k] = toBase64(value as BufferSource).split('=')[0];
 				}
 			});
 			const pv = objectValues(opts.params);
@@ -125,7 +125,7 @@ export namespace PHC {
 				throw new TypeError('salt must be a Buffer');
 			}
 
-			fields.push(toBase64(opts.salt).split('=')[0]);
+			fields.push(toBase64(opts.salt as BufferSource).split('=')[0]);
 
 			if (typeof opts.hash !== 'undefined') {
 				// Hash Validation
@@ -133,7 +133,7 @@ export namespace PHC {
 					throw new TypeError('hash must be a Buffer');
 				}
 
-				fields.push(toBase64(opts.hash).split('=')[0]);
+				fields.push(toBase64(opts.hash as BufferSource).split('=')[0]);
 			}
 		}
 

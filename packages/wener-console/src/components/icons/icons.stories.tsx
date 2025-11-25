@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { ActionIcon, AppletIcon } from './ActionIcon';
 import { FileExtIcon } from './FileExtIcon';

@@ -6,7 +6,7 @@ import { isDev } from '../const';
 import { useLogger } from '../hooks';
 import { NonIdealPage } from '../pages';
 import type { RouteObjects } from '../router';
-import { getConsoleContext, PageErrorState, type DynamicModule } from '../web';
+import { getConsoleContext, type DynamicModule } from '../web';
 import { LoadingIndicator } from './components';
 import { RootRouterReactor } from './components/RootRouterReactor';
 import { getRouteStore, getSiteStore } from './context';
@@ -121,7 +121,7 @@ function createRootRoutes({
 					)}
 				</>
 			),
-			errorElement: <PageErrorState />,
+			errorElement: <NonIdealPage.PageError />,
 			handle: {
 				title: getSiteStore().getState().title,
 			},

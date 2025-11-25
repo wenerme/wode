@@ -1,6 +1,6 @@
 {
 	"name": "@wener/console",
-	"version": "2.0.6",
+	"version": "2.0.8",
 	"type": "module",
 	"description": "Base console UI toolkit",
 	"author": "wener",
@@ -157,10 +157,6 @@
 				"default": "./lib/console/index.js"
 			},
 			"./console/globals.css": "./src/console/globals.css",
-			"./console/pages": {
-				"types": "./src/console/pages/index.ts",
-				"default": "./lib/console/pages/index.js"
-			},
 			"./daisy": {
 				"types": "./src/daisy/index.ts",
 				"default": "./lib/daisy/index.js"
@@ -198,8 +194,8 @@
 				"default": "./lib/matomo/index.js"
 			},
 			"./pages": {
-				"types": "./src/console/pages/index.ts",
-				"default": "./lib/console/pages/index.js"
+				"types": "./src/pages/index.ts",
+				"default": "./lib/pages/index.js"
 			},
 			"./react-hook-form": {
 				"types": "./src/react-hook-form/index.ts",

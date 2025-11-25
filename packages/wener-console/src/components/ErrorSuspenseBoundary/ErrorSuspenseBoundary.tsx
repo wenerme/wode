@@ -1,7 +1,7 @@
 import React, { type ErrorInfo, type FC, type ReactNode } from 'react';
 import { ErrorSuspenseBoundary as _ErrorSuspenseBoundary } from '@wener/reaction';
 import { LoadingIndicator } from '../../loader';
-import { PageErrorState } from '../PageErrorState';
+import { NonIdealPage } from '../../pages';
 
 export const ErrorSuspenseBoundary: FC<{
 	fallback?: ReactNode;
@@ -19,7 +19,7 @@ export const ErrorSuspenseBoundary: FC<{
 	return (
 		<_ErrorSuspenseBoundary
 			fallback={fallback}
-			renderError={(props) => <PageErrorState error={props.error} onReset={props.reset} title={title} />}
+			renderError={(props) => <NonIdealPage.PageError error={props.error} onReset={props.reset} title={title} />}
 			onError={onError}
 		>
 			{children}

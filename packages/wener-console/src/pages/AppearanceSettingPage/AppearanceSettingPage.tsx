@@ -1,9 +1,9 @@
 'use client';
 
 import React, { type ComponentPropsWithoutRef, type FC, type ReactNode } from 'react';
+import { SettingLayout } from '../../components/SettingLayout/SettingLayout';
 import { DaisyTheme, DaisyThemeDemo, ThemeListSelector } from '../../daisy';
 import { getPrefersColorSchema } from '../../utils/getPrefersColorSchema';
-import { SettingLayout } from '../../web';
 
 export namespace AppearanceSettingPage {
 	export interface CompositeProps extends ComponentPropsWithoutRef<'div'> {

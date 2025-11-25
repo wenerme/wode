@@ -4,8 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { DynamicRender } from '@wener/console/components';
 import { DaisyTheme, getSupportedThemes } from '@wener/console/daisy';
 import { Window } from '@wener/console/window';
-import { doFusionSetup } from '@/fusion/FusionConsoleContext';
-import '@/web/globals.css';
+import '@/console/globals.css';
 
 // polyfills
 if (!globalThis.process) {
@@ -40,9 +39,7 @@ const withThemeProvider: Decorator = (Story: any, context: any) => {
 			s.theme = context.globals.theme;
 		});
 	}, [context.globals.theme]);
-	useState(() => {
-		doFusionSetup();
-	});
+
 	return (
 		<>
 			<QueryClientProvider client={queryClient}>

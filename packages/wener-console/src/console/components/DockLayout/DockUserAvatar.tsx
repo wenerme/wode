@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
-import React, { useState } from 'react';
+import type React from 'react';
+import { useState } from 'react';
 import { HiUsers } from 'react-icons/hi2';
 import { Button } from '@wener/console/daisy';
 import { clsx } from 'clsx';

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
-import { getRootWindow, ReactWindow, type WindowOpenOptions } from './ReactWindow';
+import { getRootWindow, type ReactWindow, type WindowOpenOptions } from './ReactWindow';
 import { WindowGuest } from './WindowGuest';
 
 export namespace Window {

@@ -32,7 +32,7 @@ export namespace Tooltip {
 		if (!content || disabled) return children;
 
 		return (
-			<BaseTooltip.Root delay={delay}>
+			<BaseTooltip.Root>
 				<BaseTooltip.Trigger render={children} />
 				<BaseTooltip.Portal container={portal ? undefined : null}>
 					<BaseTooltip.Positioner side={placement} sideOffset={4} className={'z-50'}>

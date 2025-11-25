@@ -1,7 +1,7 @@
 import React from 'react';
 import { GrSystem } from 'react-icons/gr';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Image } from '../components';
+import { Image } from '../../components';
 import { LoginPage } from './LoginPage';
 
 const meta: Meta<typeof LoginPage.Composite> = {

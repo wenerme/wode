@@ -1,5 +1,5 @@
 import type { ComponentPropsWithRef, ReactNode } from 'react';
-import React from 'react';
+import type React from 'react';
 import { cn } from '@wener/console';
 import { isDefined } from '@wener/utils';
 import { EmptyPlaceholder } from './EmptyPlaceholder';

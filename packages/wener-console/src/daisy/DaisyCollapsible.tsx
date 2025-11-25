@@ -1,4 +1,5 @@
-import React, { type FC } from 'react';
+import type React from 'react';
+import type { FC } from 'react';
 import { Collapsible } from '@base-ui-components/react/collapsible';
 import { cn } from '@wener/console';
 

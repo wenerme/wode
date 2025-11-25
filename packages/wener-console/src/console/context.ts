@@ -1,5 +1,5 @@
 import { getGlobalStates, setGlobalStates } from '@wener/utils';
-import Emittery from 'emittery';
+import type Emittery from 'emittery';
 import { useStore } from 'zustand';
 import { getSiteStore as _getSiteStore, type SiteStore } from '../foundation/site/SiteStore';
 import type { ConsoleEmitter, ConsoleEventData } from './ConsoleEmitter';
