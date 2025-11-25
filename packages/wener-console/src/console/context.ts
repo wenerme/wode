@@ -1,9 +1,7 @@
 import { getGlobalStates, setGlobalStates } from '@wener/utils';
-import type Emittery from 'emittery';
 import { useStore } from 'zustand';
 import { getSiteStore as _getSiteStore, type SiteStore } from '../foundation/site/SiteStore';
-import type { ConsoleEmitter, ConsoleEventData } from './ConsoleEmitter';
-import { ConsoleEventType } from './ConsoleEmitter';
+import { getConsoleEmitter as _getConsoleEmitter, ConsoleEventType, type ConsoleEmitter } from './ConsoleEmitter';
 import { createRouteStore, type RouteStore } from './store/RouteStore';
 import { createUserStore, type UserStore } from './store/UserStore';
 
@@ -20,8 +18,8 @@ export type ConsoleContext = {
 
 export { ConsoleEventType };
 
-function createConsoleContext({ emitter: _emitter }: { emitter?: Emittery }) {
-	const emitter = getConsoleEmitter();
+function createConsoleContext({ emitter }: { emitter?: ConsoleEmitter }) {
+	emitter ||= _getConsoleEmitter();
 	const routeStore = createRouteStore();
 	const userStore = createUserStore();
 	const ctx: ConsoleContext = {

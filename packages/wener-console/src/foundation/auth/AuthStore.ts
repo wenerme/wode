@@ -1,4 +1,5 @@
-import { useEffect, useRef, type FC } from 'react';
+import { use, useEffect, useRef, type FC } from 'react';
+import { createReactContext } from '@wener/reaction';
 import { useNetworkStatus } from '@wener/reaction/store';
 import { createBoundedUseStore } from '@wener/reaction/zustand';
 import { getGlobalStates } from '@wener/utils';
@@ -38,10 +39,11 @@ interface AuthStoreState {
 
 export type AuthStore = ReturnType<typeof createAuthStore>;
 
-function createAuthStore() {
+export function createAuthStore(init: Partial<AuthStoreState> = {}) {
 	return createStore(
 		mutative<AuthStoreState>((setState, getState, store) => {
 			return {
+				...init,
 				status: AuthStatus.Init,
 				setAuth(o: SetAuthOptions) {
 					setState((s) => {
@@ -152,7 +154,7 @@ function useAuthSidecar({ store, actions: { refresh }, storage = localStorage }:
 const AuthStoreStateKey = 'AuthStore';
 
 export const AuthSidecar: FC<Omit<AuthSidecarProps, 'store'>> = (props) => {
-	let store = getAuthStore();
+	const store = useAuthStoreContext();
 	useAuthSidecar({
 		store,
 		...props,
@@ -182,7 +184,7 @@ function useAuthTokenPersist(store: AuthStore, storage: Storage) {
 	}, [store]);
 }
 
-export function getAuthStore() {
+export function getAuthStore(): AuthStore {
 	return getGlobalStates(AuthStoreStateKey, () => {
 		return createAuthStore();
 	});
@@ -196,6 +198,12 @@ export function getAccessToken() {
 	return getAuthState().accessToken;
 }
 
+export const AuthStoreContext = createReactContext<undefined | AuthStore>('AuthStore', undefined);
+
+export function useAuthStoreContext() {
+	return use(AuthStoreContext) || getAuthStore();
+}
+
 function deleteItem(s: any, key: string) {
 	if ('removeItem' in s) {
 		s.removeItem(key);
@@ -204,4 +212,4 @@ function deleteItem(s: any, key: string) {
 	}
 }
 
-export const useAuthStore = createBoundedUseStore(getAuthStore);
+export const useAuthStore = createBoundedUseStore(useAuthStoreContext);

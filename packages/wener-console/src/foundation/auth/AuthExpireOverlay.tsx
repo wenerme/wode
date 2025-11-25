@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { HiMiniArrowPath, HiOutlineNoSymbol, HiMiniArrowRightOnRectangle as LoginIcon } from 'react-icons/hi2';
 import clsx from 'clsx';
 import { Button, NonIdealState } from '../../daisy';
-import { useAuthStore } from '../../foundation/auth/AuthStore';
-import { getUserAction } from './getUserAction';
+import { useAuthStore } from './AuthStore';
+import { getAuthAction } from './getAuthAction';
 
-export const UserAuthExpireOverlay = () => {
-	const { signIn } = getUserAction();
+export const AuthExpireOverlay = () => {
+	const { signIn } = getAuthAction();
 	const expired = useAuthStore((s) => s.status === 'Expired');
 	const [hidden, setHidden] = useState(!expired);
 	useEffect(() => {
