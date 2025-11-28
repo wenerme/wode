@@ -33,7 +33,7 @@ export function withCustomerRefEntity<TBase extends Constructor>(Base: TBase) {
 			this.setCustomerRef(entity);
 		}
 
-		get customer(): Ref<IdentifiableEntity> & Opt {
+		get customer(): undefined | (Ref<IdentifiableEntity> & Opt) {
 			return resolveEntityRef({ entityId: this.customerId, entityType: this.customerType });
 		}
 	}

@@ -6,10 +6,11 @@ import React, {
 	type ReactNode,
 } from 'react';
 import { clsx } from 'clsx';
-import { HeaderContentFooterLayout, Icon, LeftContentRightLayout, OverlayScrollbar } from '../../components';
+import { Icon, LeftContentRightLayout } from '../../components';
 import { cn } from '../../utils/cn';
 import { NavLink } from '../links';
 import { Tooltip } from '../Tooltip';
+import { IconMenuSidebarLayout } from './IconMenuSidebarLayout';
 
 type GroupItem = {
 	type: 'group';
@@ -68,50 +69,6 @@ const MenuBarItem: FC<{ item: NavItem }> = ({ item: { title, href, icon, iconAct
 	);
 };
 
-export const IconMenuSidebarLayout: FC<
-	{
-		top?: ReactNode;
-		bottom?: ReactNode;
-		center?: ReactNode;
-	} & ComponentPropsWithoutRef<'aside'>
-> = ({ top, bottom, children, center = children, className, ...props }) => {
-	return (
-		<Tooltip.Provider>
-			<HeaderContentFooterLayout
-				as={'aside'}
-				className={cn(
-					'border-base-300 order-0 flex flex-row',
-					// 手机
-					'h-[57px] w-full border-b px-2',
-					// 桌面
-					'md:h-full md:w-[57px] md:flex-col md:border-r md:px-0',
-					//
-					className,
-				)}
-				header={<div className={'border-base-300 flex items-center justify-center gap-1 py-1 md:border-b'}>{top}</div>}
-				footer={
-					<div className={'border-base-300 flex items-center justify-center gap-1 py-1 md:border-t'}>{bottom}</div>
-				}
-				{...props}
-			>
-				<OverlayScrollbar className={'h-full w-full'}>
-					<div
-						className={cn(
-							// 8px padding
-							'flex items-center gap-1 px-1 py-1',
-							'flex-row',
-							'md:flex-col',
-							// 'overflow-x-auto overflow-y-hidden md:overflow-x-hidden md:overflow-y-auto',
-						)}
-					>
-						{center}
-					</div>
-				</OverlayScrollbar>
-			</HeaderContentFooterLayout>
-		</Tooltip.Provider>
-	);
-};
-
 export namespace IconSidebarLayout {
 	export type LayoutProps = ComponentPropsWithRef<'div'> & {
 		top?: ReactNode | ItemProp[];
@@ -128,7 +85,9 @@ export namespace IconSidebarLayout {
 		return (
 			<LeftContentRightLayout
 				left={
-					<IconMenuSidebarLayout top={renderItems(top)} center={renderItems(center)} bottom={renderItems(bottom)} />
+					<Tooltip.Provider>
+						<IconMenuSidebarLayout top={renderItems(top)} center={renderItems(center)} bottom={renderItems(bottom)} />
+					</Tooltip.Provider>
 				}
 				className={cn('h-full flex-col md:flex-row', className)}
 				{...props}

@@ -33,7 +33,7 @@ export function withEntityRefEntity<TBase extends Constructor>(Base: TBase) {
 			this.setEntityRef(entity);
 		}
 
-		get entity(): Ref<IdentifiableEntity> & Opt {
+		get entity(): (Ref<IdentifiableEntity> & Opt) | undefined {
 			return resolveEntityRef(this);
 		}
 	}

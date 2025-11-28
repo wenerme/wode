@@ -1,4 +1,5 @@
 import { Entity, Property, types, type Opt } from '@mikro-orm/core';
+import type { Bytes } from '@wener/utils';
 import { StandardBaseEntity } from './StandardBaseEntity';
 
 @Entity({ abstract: true })
@@ -28,7 +29,7 @@ export class BaseHttpRequestLogEntity extends StandardBaseEntity {
 	requestPayload?: any;
 
 	@Property({ type: types.blob, nullable: true })
-	requestBody?: Buffer;
+	requestBody?: Bytes;
 
 	@Property({ type: types.json, nullable: true })
 	responseHeaders!: Record<string, any>;
@@ -37,7 +38,7 @@ export class BaseHttpRequestLogEntity extends StandardBaseEntity {
 	responsePayload?: any;
 
 	@Property({ type: types.blob, nullable: true })
-	responseBody?: Buffer;
+	responseBody?: Bytes;
 
 	@Property({ type: types.integer, nullable: true })
 	contentLength?: number;
