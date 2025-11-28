@@ -14,7 +14,7 @@ class DynamicModuleContext extends DynamicStore {
 }
 
 export class ModuleService {
-	readonly store = createStore(
+	readonly store: StoreApi<Record<string, unknown>> = createStore(
 		immer(() => {
 			return {};
 		}),

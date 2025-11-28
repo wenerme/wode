@@ -33,7 +33,7 @@ export function withOwnerRefEntity<TBase extends Constructor>(Base: TBase) {
 			this.setOwnerRef(entity);
 		}
 
-		get owner(): Ref<IdentifiableEntity> & Opt {
+		get owner(): (Ref<IdentifiableEntity> & Opt) | undefined {
 			return resolveEntityRef({ entityId: this.ownerId, entityType: this.ownerType });
 		}
 	}

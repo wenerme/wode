@@ -1,7 +1,7 @@
-import * as fs from 'fs/promises';
-import * as path from 'path';
 import { createHash } from 'crypto';
+import * as fs from 'fs/promises';
 import { homedir } from 'os';
+import * as path from 'path';
 import consola from 'consola';
 
 const logger = consola.withTag('cache-manager');
@@ -49,7 +49,7 @@ export class CacheManager {
 		} catch (error) {
 			logger.error('Failed to initialize cache directory', {
 				cacheDir: this.cacheDir,
-				error: error instanceof Error ? error.message : String(error)
+				error: error instanceof Error ? error.message : String(error),
 			});
 			throw error;
 		}
@@ -98,7 +98,7 @@ export class CacheManager {
 				logger.debug('Cache entry expired, removing', {
 					query,
 					cacheKey: this.getCacheKey(query),
-					expiry: entry.expiry ? new Date(entry.expiry).toISOString() : 'none'
+					expiry: entry.expiry ? new Date(entry.expiry).toISOString() : 'none',
 				});
 				await this.delete(query);
 				return null;
@@ -107,7 +107,7 @@ export class CacheManager {
 			logger.debug('Cache hit', {
 				query,
 				cacheKey: this.getCacheKey(query),
-				age: Date.now() - entry.timestamp
+				age: Date.now() - entry.timestamp,
 			});
 
 			return entry.data;
@@ -116,7 +116,7 @@ export class CacheManager {
 				// File doesn't exist, cache miss
 				logger.debug('Cache miss', {
 					query,
-					cacheKey: this.getCacheKey(query)
+					cacheKey: this.getCacheKey(query),
 				});
 				return null;
 			}
@@ -124,7 +124,7 @@ export class CacheManager {
 			logger.error('Failed to read cache', {
 				query,
 				cacheKey: this.getCacheKey(query),
-				error: error instanceof Error ? error.message : String(error)
+				error: error instanceof Error ? error.message : String(error),
 			});
 			return null;
 		}
@@ -149,8 +149,8 @@ export class CacheManager {
 			query,
 			metadata: {
 				ttl: actualTtl,
-				cacheKey: this.getCacheKey(query)
-			}
+				cacheKey: this.getCacheKey(query),
+			},
 		};
 
 		try {
@@ -159,13 +159,13 @@ export class CacheManager {
 				query,
 				cacheKey: this.getCacheKey(query),
 				ttl: actualTtl,
-				expiry: expiry ? new Date(expiry).toISOString() : 'none'
+				expiry: expiry ? new Date(expiry).toISOString() : 'none',
 			});
 		} catch (error) {
 			logger.error('Failed to write cache', {
 				query,
 				cacheKey: this.getCacheKey(query),
-				error: error instanceof Error ? error.message : String(error)
+				error: error instanceof Error ? error.message : String(error),
 			});
 		}
 	}
@@ -184,14 +184,14 @@ export class CacheManager {
 			await fs.unlink(filePath);
 			logger.debug('Cache entry deleted', {
 				query,
-				cacheKey: this.getCacheKey(query)
+				cacheKey: this.getCacheKey(query),
 			});
 		} catch (error) {
 			if ((error as any).code !== 'ENOENT') {
 				logger.error('Failed to delete cache', {
 					query,
 					cacheKey: this.getCacheKey(query),
-					error: error instanceof Error ? error.message : String(error)
+					error: error instanceof Error ? error.message : String(error),
 				});
 			}
 		}
@@ -207,18 +207,16 @@ export class CacheManager {
 
 		try {
 			const files = await fs.readdir(this.cacheDir);
-			const jsonFiles = files.filter(file => file.endsWith('.json'));
+			const jsonFiles = files.filter((file) => file.endsWith('.json'));
 
-			await Promise.all(
-				jsonFiles.map(file => fs.unlink(path.join(this.cacheDir, file)))
-			);
+			await Promise.all(jsonFiles.map((file) => fs.unlink(path.join(this.cacheDir, file))));
 
 			logger.info('Cache cleared', {
-				filesDeleted: jsonFiles.length
+				filesDeleted: jsonFiles.length,
 			});
 		} catch (error) {
 			logger.error('Failed to clear cache', {
-				error: error instanceof Error ? error.message : String(error)
+				error: error instanceof Error ? error.message : String(error),
 			});
 		}
 	}
@@ -237,13 +235,13 @@ export class CacheManager {
 			return {
 				totalEntries: 0,
 				totalSize: 0,
-				expiredEntries: 0
+				expiredEntries: 0,
 			};
 		}
 
 		try {
 			const files = await fs.readdir(this.cacheDir);
-			const jsonFiles = files.filter(file => file.endsWith('.json'));
+			const jsonFiles = files.filter((file) => file.endsWith('.json'));
 
 			let totalSize = 0;
 			let oldestEntry: Date | undefined;
@@ -281,16 +279,16 @@ export class CacheManager {
 				totalSize,
 				oldestEntry,
 				newestEntry,
-				expiredEntries
+				expiredEntries,
 			};
 		} catch (error) {
 			logger.error('Failed to get cache stats', {
-				error: error instanceof Error ? error.message : String(error)
+				error: error instanceof Error ? error.message : String(error),
 			});
 			return {
 				totalEntries: 0,
 				totalSize: 0,
-				expiredEntries: 0
+				expiredEntries: 0,
 			};
 		}
 	}
@@ -307,7 +305,7 @@ export class CacheManager {
 
 		try {
 			const files = await fs.readdir(this.cacheDir);
-			const jsonFiles = files.filter(file => file.endsWith('.json'));
+			const jsonFiles = files.filter((file) => file.endsWith('.json'));
 
 			for (const file of jsonFiles) {
 				const filePath = path.join(this.cacheDir, file);
@@ -322,7 +320,7 @@ export class CacheManager {
 						logger.debug('Expired cache entry removed', {
 							file,
 							query: entry.query,
-							expiry: entry.expiry ? new Date(entry.expiry).toISOString() : 'none'
+							expiry: entry.expiry ? new Date(entry.expiry).toISOString() : 'none',
 						});
 					}
 				} catch (error) {
@@ -340,7 +338,7 @@ export class CacheManager {
 			return deletedCount;
 		} catch (error) {
 			logger.error('Failed to cleanup cache', {
-				error: error instanceof Error ? error.message : String(error)
+				error: error instanceof Error ? error.message : String(error),
 			});
 			return 0;
 		}

@@ -62,7 +62,7 @@ export function createFeishuDevDocsServiceImpl({ config }: FeishuDevDocsServiceO
 				}
 			} catch (error) {
 				logger.error('Health check failed', {
-					error: error instanceof Error ? error.message : String(error)
+					error: error instanceof Error ? error.message : String(error),
 				});
 				return {
 					status: 'unhealthy' as const,
@@ -88,7 +88,7 @@ export function createFeishuDevDocsServiceImpl({ config }: FeishuDevDocsServiceO
 
 				logger.info('Developer documentation search completed', {
 					query,
-					resultCount: result.results.length
+					resultCount: result.results.length,
 				});
 
 				return {

@@ -4,26 +4,6 @@ import { z } from 'zod';
 
 const VALID_DOMAINS = ['https://open.feishu.cn', 'https://open.larksuite.com'];
 
-export interface FeishuDevDocsConfig {
-	/** Feishu/Lark API domain */
-	domain: string;
-	/** Request timeout in milliseconds */
-	timeout?: number;
-	/** Maximum number of results to return */
-	maxResults?: number;
-	/** Read-only mode flag */
-	readonly?: boolean;
-	/** Cache configuration */
-	cache?: {
-		/** Enable cache (default: true) */
-		enabled?: boolean;
-		/** Cache TTL in milliseconds (default: 24 hours) */
-		ttl?: number;
-		/** Custom cache directory path */
-		cacheDir?: string;
-	};
-}
-
 export const FeishuDevDocsConfigSchema = z
 	.object({
 		domain: z
@@ -46,7 +26,11 @@ export const FeishuDevDocsConfigSchema = z
 		cache: z
 			.object({
 				enabled: z.boolean().default(true),
-				ttl: z.number().int().min(0).default(24 * 60 * 60 * 1000), // 24 hours
+				ttl: z
+					.number()
+					.int()
+					.min(0)
+					.default(24 * 60 * 60 * 1000), // 24 hours
 				cacheDir: z.string().optional(),
 			})
 			.optional(),

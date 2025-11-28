@@ -3,6 +3,12 @@
 	"version": "1.0.0",
 	"type": "module",
 	"description": "Comprehensive Feishu/Lark MCP server with document management, OAuth authentication, and workspace operations",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/wenerme/wener.git",
+		"directory": "packages/wener-feishu-mcp"
+	},
+	"homepage": "https://github.com/wenerme/wener/tree/main/packages/wener-feishu-mcp",
 	"author": "wener",
 	"license": "MIT",
 	"engines": {
@@ -31,9 +37,9 @@
 		"build": "pnpm tsx src/scripts/bundle.ts",
 		"clean": "rm -rf dist",
 		"dev": "pnpm tsx src/main.ts",
+		"prepublishOnly": "pnpm build",
 		"start": "node dist/main.mjs",
-		"test": "pnpm tsx test-config.ts",
-		"prepublishOnly": "pnpm build"
+		"test": "pnpm tsx test-config.ts"
 	},
 	"dependencies": {
 		"common": "workspace:^1.0.0"

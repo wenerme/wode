@@ -1,6 +1,6 @@
-import { type ComponentPropsWithRef, type ReactNode, useMemo } from 'react';
+import { useMemo, type ComponentPropsWithRef, type ReactNode } from 'react';
 import { PiCalendarBlank } from 'react-icons/pi';
-import { type AnyResource, getTitleOfResource } from '@wener/common/resource';
+import { getTitleOfResource, type AnyResource } from '@wener/common/resource';
 import { DataViewLayout } from './DataViewLayout';
 
 type IAnyResource = AnyResource & {
@@ -78,9 +78,7 @@ export function formatResourceMeta(data: IAnyResource): ReactNode {
 		if (updatedAt) {
 			dates.push(
 				<span key='updated'>
-					{typeof updatedAt === 'string'
-						? new Date(updatedAt).toLocaleDateString()
-						: updatedAt.toLocaleDateString()}
+					{typeof updatedAt === 'string' ? new Date(updatedAt).toLocaleDateString() : updatedAt.toLocaleDateString()}
 				</span>,
 			);
 		}
@@ -89,10 +87,7 @@ export function formatResourceMeta(data: IAnyResource): ReactNode {
 			dates.push(
 				<span key='created'>
 					(创建:{' '}
-					{typeof createdAt === 'string'
-						? new Date(createdAt).toLocaleDateString()
-						: createdAt.toLocaleDateString()}
-					)
+					{typeof createdAt === 'string' ? new Date(createdAt).toLocaleDateString() : createdAt.toLocaleDateString()})
 				</span>,
 			);
 		}

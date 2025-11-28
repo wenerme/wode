@@ -1,6 +1,6 @@
 declare var __DEV__: boolean;
 
-namespace NodeJS {
+declare namespace NodeJS {
 	interface Process {
 		// webpack check
 		readonly browser?: boolean;

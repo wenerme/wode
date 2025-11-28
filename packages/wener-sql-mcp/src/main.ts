@@ -1,9 +1,9 @@
 import { setContractHandler } from 'common/mcp';
 import { runMcpServerCommand } from 'common/mcp/server';
 import knex from 'knex';
+import { createKnexConfig, getSqlConfig } from './server/config';
 import { createKnexSqlServiceImpl } from './sql/createKnexSqlServiceImpl';
 import { SqlServiceContract } from './sql/SqlServiceContract';
-import { createKnexConfig, getSqlConfig } from './server/config';
 
 const AppInfo = {
 	name: process.env.PACKAGE_NAME || 'wener-sql-mcp',
@@ -16,16 +16,16 @@ await runMcpServerCommand({
 	port: 3000,
 	onServer: async (config) => {
 		const { logger, server } = config;
-		
+
 		// Initialize SQL configuration
 		const sqlConfig = getSqlConfig({ logger });
-		
+
 		logger.info(`Connecting to ${sqlConfig.client} database...`);
-		
+
 		// Create Knex instance
 		const knexConfig = createKnexConfig(sqlConfig);
 		const db = knex(knexConfig);
-		
+
 		// Test connection
 		try {
 			await db.raw('SELECT 1');
@@ -34,7 +34,7 @@ await runMcpServerCommand({
 			logger.error('Failed to connect to database:', error);
 			throw new Error(`Database connection failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
 		}
-		
+
 		setContractHandler(server, {
 			contract: SqlServiceContract,
 			impl: createKnexSqlServiceImpl({
@@ -42,7 +42,7 @@ await runMcpServerCommand({
 				readonly: sqlConfig.readonly,
 			}),
 		});
-		
+
 		// Cleanup on server shutdown
 		config.server.close = async () => {
 			await db.destroy();

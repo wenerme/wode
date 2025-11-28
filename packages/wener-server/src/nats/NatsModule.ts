@@ -1,6 +1,5 @@
 import { ConfigurableModuleBuilder, Inject, Logger, Module } from '@nestjs/common';
 import type { ConnectionOptions, NatsConnection } from 'nats';
-import { getNatsOptions } from '../config';
 import { connect as defaultConnect } from './connect';
 
 export const NATS_CONNECTION = Symbol.for('NATS_CONNECTION');
@@ -25,7 +24,7 @@ const { ConfigurableModuleClass, MODULE_OPTIONS_TOKEN } = new ConfigurableModule
 		{ provide: NatsConn, useExisting: NATS_CONNECTION },
 		{
 			provide: NATS_CONNECTION,
-			async useFactory({ options = getNatsOptions(), connect = defaultConnect }: NatsModuleOptions = {}) {
+			async useFactory({ options = {}, connect = defaultConnect }: NatsModuleOptions = {}) {
 				log.log(
 					`connecting: ${Array.from(options.servers ?? [])
 						.flat()

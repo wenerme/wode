@@ -1,4 +1,3 @@
-
 export const FileSystemErrorCode = {
 	ENOENT: 'ENOENT',
 	ENOTDIR: 'ENOTDIR',
@@ -10,7 +9,7 @@ export const FileSystemErrorCode = {
 	EINVAL: 'EINVAL',
 } as const;
 
-export type FileSystemErrorCode = typeof FileSystemErrorCode[keyof typeof FileSystemErrorCode];
+export type FileSystemErrorCode = (typeof FileSystemErrorCode)[keyof typeof FileSystemErrorCode];
 
 export class FileSystemError extends Error {
 	constructor(

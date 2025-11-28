@@ -1,12 +1,13 @@
-import consola from 'consola';
-import type {
-	FeishuConfig,
-	FeishuDocument,
-	FeishuDocumentSearchRequest,
-	FeishuDocumentSearchResponse,
-	FeishuDocumentContent
+import {
+	FeishuAuth,
+	FeishuHttpClient,
+	type FeishuConfig,
+	type FeishuDocument,
+	type FeishuDocumentContent,
+	type FeishuDocumentSearchRequest,
+	type FeishuDocumentSearchResponse,
 } from 'common/feishu';
-import { FeishuHttpClient, FeishuAuth } from 'common/feishu';
+import consola from 'consola';
 
 const logger = consola.withTag('feishu-docs-client');
 
@@ -42,26 +43,26 @@ export class FeishuDocsClient implements FeishuDocumentClient {
 			logger.debug('Searching documents', {
 				searchKey: params.search_key,
 				count: params.count,
-				docTypes: params.docs_types
+				docTypes: params.docs_types,
 			});
 
 			const response = await this.httpClient.post<FeishuDocumentSearchResponse>(
 				'/suite/docs-api/search/object',
 				params,
-				headers
+				headers,
 			);
 
 			logger.info('Document search completed', {
 				searchKey: params.search_key,
 				resultCount: response.docs_entity?.length || 0,
-				hasMore: response.has_more
+				hasMore: response.has_more,
 			});
 
 			return response;
 		} catch (error) {
 			logger.error('Document search failed', {
 				searchKey: params.search_key,
-				error: error instanceof Error ? error.message : String(error)
+				error: error instanceof Error ? error.message : String(error),
 			});
 			throw error;
 		}
@@ -82,25 +83,25 @@ export class FeishuDocsClient implements FeishuDocumentClient {
 					doc_token: docToken,
 					doc_type: docType,
 					content_type: 'markdown',
-					lang: 'zh'
+					lang: 'zh',
 				},
-				headers
+				headers,
 			);
 
 			logger.info('Document content retrieved', {
 				docToken,
 				contentLength: response.content?.length || 0,
-				revision: response.revision
+				revision: response.revision,
 			});
 
 			return {
 				content: response.content || '',
-				revision: response.revision || 0
+				revision: response.revision || 0,
 			};
 		} catch (error) {
 			logger.error('Failed to get document content', {
 				docToken,
-				error: error instanceof Error ? error.message : String(error)
+				error: error instanceof Error ? error.message : String(error),
 			});
 			throw error;
 		}
@@ -131,7 +132,7 @@ export class FeishuDocsClient implements FeishuDocumentClient {
 			}>(
 				'/drive/v1/files/create_folder', // This would be the actual endpoint
 				requestBody,
-				headers
+				headers,
 			);
 
 			const document: FeishuDocument = {
@@ -145,7 +146,7 @@ export class FeishuDocsClient implements FeishuDocumentClient {
 
 			logger.info('Document created successfully', {
 				docToken: document.doc_token,
-				title: document.title
+				title: document.title,
 			});
 
 			return document;
@@ -153,7 +154,7 @@ export class FeishuDocsClient implements FeishuDocumentClient {
 			logger.error('Failed to create document', {
 				title,
 				docType,
-				error: error instanceof Error ? error.message : String(error)
+				error: error instanceof Error ? error.message : String(error),
 			});
 			throw error;
 		}
@@ -168,7 +169,7 @@ export class FeishuDocsClient implements FeishuDocumentClient {
 
 			logger.debug('Importing document from markdown', {
 				fileName,
-				contentLength: markdown.length
+				contentLength: markdown.length,
 			});
 
 			// Step 1: Upload markdown file
@@ -193,7 +194,7 @@ export class FeishuDocsClient implements FeishuDocumentClient {
 						mount_key: '',
 					},
 				},
-				headers
+				headers,
 			);
 
 			// Step 3: Wait for import completion
@@ -210,7 +211,7 @@ export class FeishuDocsClient implements FeishuDocumentClient {
 
 			logger.info('Document imported successfully', {
 				docToken: document.doc_token,
-				title: document.title
+				title: document.title,
 			});
 
 			return document;
@@ -218,7 +219,7 @@ export class FeishuDocsClient implements FeishuDocumentClient {
 			logger.error('Failed to import document', {
 				fileName,
 				contentLength: markdown.length,
-				error: error instanceof Error ? error.message : String(error)
+				error: error instanceof Error ? error.message : String(error),
 			});
 			throw error;
 		}
@@ -236,20 +237,20 @@ export class FeishuDocsClient implements FeishuDocumentClient {
 			const response = await this.httpClient.get<FeishuDocument>(
 				`/drive/v1/files/${docToken}/meta`,
 				undefined,
-				headers
+				headers,
 			);
 
 			logger.info('Document metadata retrieved', {
 				docToken,
 				title: response.title,
-				docType: response.doc_type
+				docType: response.doc_type,
 			});
 
 			return response;
 		} catch (error) {
 			logger.error('Failed to get document metadata', {
 				docToken,
-				error: error instanceof Error ? error.message : String(error)
+				error: error instanceof Error ? error.message : String(error),
 			});
 			throw error;
 		}
@@ -261,7 +262,7 @@ export class FeishuDocsClient implements FeishuDocumentClient {
 	private async uploadMarkdownFile(
 		markdown: string,
 		fileName: string,
-		headers: Record<string, string>
+		headers: Record<string, string>,
 	): Promise<{ file_token: string }> {
 		const blob = new Blob([markdown], { type: 'text/markdown' });
 
@@ -285,7 +286,7 @@ export class FeishuDocsClient implements FeishuDocumentClient {
 				file: markdown, // Simplified - would need proper file upload handling
 				extra: JSON.stringify({ obj_type: 'docx', file_extension: 'md' }),
 			},
-			headers
+			headers,
 		);
 
 		return response;
@@ -296,7 +297,7 @@ export class FeishuDocsClient implements FeishuDocumentClient {
 	 */
 	private async waitForImportCompletion(
 		ticket: string,
-		headers: Record<string, string>
+		headers: Record<string, string>,
 	): Promise<{ doc_token: string; url: string }> {
 		const maxAttempts = 10;
 		const delay = 1000; // 1 second
@@ -317,12 +318,11 @@ export class FeishuDocsClient implements FeishuDocumentClient {
 				// Success
 				return {
 					doc_token: token!,
-					url: url!
+					url: url!,
 				};
 			} else if (job_status === 1 || job_status === 2) {
 				// Processing, wait and retry
-				await new Promise(resolve => setTimeout(resolve, delay));
-				continue;
+				await new Promise((resolve) => setTimeout(resolve, delay));
 			} else {
 				// Failed
 				throw new Error(`Import failed: ${job_error_msg || 'Unknown error'}`);

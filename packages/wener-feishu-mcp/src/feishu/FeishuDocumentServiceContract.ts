@@ -80,11 +80,13 @@ const DocumentMetadataOutputSchema = z.object({
 	createTime: z.string().describe('Creation timestamp'),
 	updateTime: z.string().describe('Last update timestamp'),
 	url: z.string().describe('Document URL'),
-	permissions: z.object({
-		canRead: z.boolean().describe('Can read document'),
-		canWrite: z.boolean().describe('Can write to document'),
-		canShare: z.boolean().describe('Can share document'),
-	}).describe('User permissions for this document'),
+	permissions: z
+		.object({
+			canRead: z.boolean().describe('Can read document'),
+			canWrite: z.boolean().describe('Can write to document'),
+			canShare: z.boolean().describe('Can share document'),
+		})
+		.describe('User permissions for this document'),
 });
 
 const CreateDocumentOutputSchema = z.object({
@@ -107,11 +109,13 @@ const HealthCheckSchema = z.object({
 	version: z.string().describe('Service version'),
 	timestamp: z.string().describe('Health check timestamp'),
 	domain: z.string().describe('Feishu API domain'),
-	authentication: z.object({
-		hasAppCredentials: z.boolean().describe('App credentials available'),
-		hasUserToken: z.boolean().describe('User access token available'),
-		tokenValid: z.boolean().optional().describe('Token validity status'),
-	}).describe('Authentication status'),
+	authentication: z
+		.object({
+			hasAppCredentials: z.boolean().describe('App credentials available'),
+			hasUserToken: z.boolean().describe('User access token available'),
+			tokenValid: z.boolean().optional().describe('Token validity status'),
+		})
+		.describe('Authentication status'),
 	error: z.string().optional().describe('Error message if unhealthy'),
 });
 

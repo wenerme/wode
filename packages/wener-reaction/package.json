@@ -5,12 +5,12 @@
 	"description": "React hooks, utils & reaction",
 	"repository": {
 		"type": "git",
-		"url": "git+ssh://git@github.com/wenerme/wode.git",
-		"directory": "packages/reaction"
+		"url": "https://github.com/wenerme/wener.git",
+		"directory": "packages/wener-reaction"
 	},
-	"homepage": "https://github.com/wenerme/wode#readme",
+	"homepage": "https://github.com/wenerme/wener/tree/main/packages/wener-reaction",
 	"bugs": {
-		"url": "https://github.com/wenerme/wode/issues"
+		"url": "https://github.com/wenerme/wener/issues"
 	},
 	"license": "MIT",
 	"exports": {

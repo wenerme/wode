@@ -33,7 +33,7 @@ export const PageInfo = ({
 				>
 					{pageSize}
 				</div>
-				<ul tabIndex={0} className='menu dropdown-content z-[1] w-20 rounded-box bg-base-100 p-2 shadow'>
+				<ul tabIndex={0} className='menu dropdown-content rounded-box bg-base-100 z-[1] w-20 p-2 shadow'>
 					{pageSizeOptions.map((v) => {
 						return (
 							<li

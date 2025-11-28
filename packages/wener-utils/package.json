@@ -5,9 +5,10 @@
 	"description": "Utils for daily use",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/wener/wode.git"
+		"url": "https://github.com/wenerme/wener.git",
+		"directory": "packages/wener-utils"
 	},
-	"homepage": "https://github.com/wenerme/wode#readme",
+	"homepage": "https://github.com/wenerme/wener/tree/main/packages/wener-utils",
 	"author": "wener",
 	"license": "MIT",
 	"exports": {

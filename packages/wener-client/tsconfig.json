@@ -1,34 +1,17 @@
 {
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "target": "esnext",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
-    "module": "esnext",
-    "moduleDetection": "force",
     "jsx": "preserve",
-    "allowJs": true,
-    // bundler mode
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": false,
-    "verbatimModuleSyntax": true,
-    "noEmit": true,
-    // Best practices
-    "strict": true,
-    "skipLibCheck": true,
-    "noFallthroughCasesInSwitch": true,
-    "resolveJsonModule": true
+    "rootDir": "."
   },
   "include": [
     "lib.d.ts",
-    "ignored/**/*.ts",
     "src/**/*.ts",
     "src/**/*.tsx"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "**/node_modules"
   ],
   "ts-node": {
     "transpileOnly": true,

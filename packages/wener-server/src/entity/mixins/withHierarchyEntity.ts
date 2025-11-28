@@ -10,7 +10,10 @@ export function withHierarchyEntity<E extends IsHierarchyEntity<any>>(f: () => C
 	return <O extends BaseEntity & IdentifiableEntity, TBase extends Constructor<O>>(Base: TBase) => {
 		@Feature([EntityFeature.IsHierarchy])
 		@Entity({ abstract: true })
-		class IsHierarchyMixinEntity extends Base implements IsHierarchyEntity<E> {
+		class IsHierarchyMixinEntity
+			extends (Base as Constructor<BaseEntity & IdentifiableEntity>)
+			implements IsHierarchyEntity<E>
+		{
 			@ManyToOne(f, { nullable: true })
 			parent?: E;
 

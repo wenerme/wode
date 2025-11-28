@@ -3,6 +3,12 @@
 	"version": "1.0.0",
 	"type": "module",
 	"description": "Feishu/Lark Developer Documentation MCP server with search and recall capabilities",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/wenerme/wener.git",
+		"directory": "packages/wener-feishu-devdocs-mcp"
+	},
+	"homepage": "https://github.com/wenerme/wener/tree/main/packages/wener-feishu-devdocs-mcp",
 	"author": "wener",
 	"license": "MIT",
 	"engines": {
