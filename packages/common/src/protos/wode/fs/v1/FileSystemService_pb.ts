@@ -2,548 +2,571 @@
 // @generated from file wode/fs/v1/FileSystemService.proto (package wode.fs.v1, syntax proto3)
 /* eslint-disable */
 
-import type { GenEnum, GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv2";
-import { enumDesc, fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
-import { file_google_api_annotations } from "../../../google/api/annotations_pb";
-import type { Timestamp } from "@bufbuild/protobuf/wkt";
-import { file_google_protobuf_struct, file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
-import type { JsonObject, Message } from "@bufbuild/protobuf";
+import type { JsonObject, Message } from '@bufbuild/protobuf';
+import {
+	enumDesc,
+	fileDesc,
+	messageDesc,
+	serviceDesc,
+	type GenEnum,
+	type GenFile,
+	type GenMessage,
+	type GenService,
+} from '@bufbuild/protobuf/codegenv2';
+import { file_google_protobuf_struct, file_google_protobuf_timestamp, type Timestamp } from '@bufbuild/protobuf/wkt';
+import { file_google_api_annotations } from '../../../google/api/annotations_pb';
 
 /**
  * Describes the file wode/fs/v1/FileSystemService.proto.
  */
-export const file_wode_fs_v1_FileSystemService: GenFile = /*@__PURE__*/
-  fileDesc("CiJ3b2RlL2ZzL3YxL0ZpbGVTeXN0ZW1TZXJ2aWNlLnByb3RvEgp3b2RlLmZzLnYxIr0BCghGaWxlU3RhdBIRCglkaXJlY3RvcnkYASABKAkSDAoEcGF0aBgCIAEoCRIMCgRuYW1lGAMgASgJEiIKBGtpbmQYBCABKA4yFC53b2RlLmZzLnYxLkZpbGVLaW5kEikKBW10aW1lGAUgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIMCgRzaXplGAYgASgDEiUKBG1ldGEYByABKAsyFy5nb29nbGUucHJvdG9idWYuU3RydWN0IswBCg5SZWFkZGlyUmVxdWVzdBILCgNkaXIYASABKAkSEQoEZ2xvYhgCIAEoCUgAiAEBEhEKCXJlY3Vyc2l2ZRgDIAEoCBISCgVkZXB0aBgEIAEoBUgBiAEBEicKBGtpbmQYBSABKA4yFC53b2RlLmZzLnYxLkZpbGVLaW5kSAKIAQESEwoGY3Vyc29yGAYgASgJSAOIAQESDgoGaGlkZGVuGAcgASgIQgcKBV9nbG9iQggKBl9kZXB0aEIHCgVfa2luZEIJCgdfY3Vyc29yIjUKD1JlYWRkaXJSZXNwb25zZRIiCgRkYXRhGAEgAygLMhQud29kZS5mcy52MS5GaWxlU3RhdCIbCgtTdGF0UmVxdWVzdBIMCgRwYXRoGAEgASgJIjIKDFN0YXRSZXNwb25zZRIiCgRkYXRhGAEgASgLMhQud29kZS5mcy52MS5GaWxlU3RhdCJCCgxNa2RpclJlcXVlc3QSDAoEcGF0aBgBIAEoCRIWCglyZWN1cnNpdmUYAiABKAhIAIgBAUIMCgpfcmVjdXJzaXZlIg8KDU1rZGlyUmVzcG9uc2UiMQoPUmVhZEZpbGVSZXF1ZXN0EgwKBHBhdGgYASABKAkSEAoIZW5jb2RpbmcYAiABKAkiMwoQUmVhZEZpbGVSZXNwb25zZRIOCgZiYXNlNjQYASABKAkSDwoHY29udGVudBgCIAEoDCJkChBXcml0ZUZpbGVSZXF1ZXN0EgwKBHBhdGgYASABKAkSDgoGYmFzZTY0GAIgASgJEgwKBGRhdGEYAyABKAwSFgoJb3ZlcndyaXRlGAQgASgISACIAQFCDAoKX292ZXJ3cml0ZSITChFXcml0ZUZpbGVSZXNwb25zZSJZCg1SZW5hbWVSZXF1ZXN0EhAKCG9sZF9wYXRoGAEgASgJEhAKCG5ld19wYXRoGAIgASgJEhYKCW92ZXJ3cml0ZRgDIAEoCEgAiAEBQgwKCl9vdmVyd3JpdGUiEAoOUmVuYW1lUmVzcG9uc2UiHQoNRXhpc3RzUmVxdWVzdBIMCgRwYXRoGAEgASgJIh4KDkV4aXN0c1Jlc3BvbnNlEgwKBGRhdGEYASABKAgicAoLQ29weVJlcXVlc3QSCwoDc3JjGAEgASgJEgwKBGRlc3QYAiABKAkSFgoJb3ZlcndyaXRlGAMgASgISACIAQESFAoHc2hhbGxvdxgEIAEoCEgBiAEBQgwKCl9vdmVyd3JpdGVCCgoIX3NoYWxsb3ciDgoMQ29weVJlc3BvbnNlImEKDVJlbW92ZVJlcXVlc3QSDAoEcGF0aBgBIAEoCRIWCglyZWN1cnNpdmUYAiABKAhIAIgBARISCgVmb3JjZRgDIAEoCEgBiAEBQgwKCl9yZWN1cnNpdmVCCAoGX2ZvcmNlIhAKDlJlbW92ZVJlc3BvbnNlKlIKCEZpbGVLaW5kEhkKFUZJTEVfS0lORF9VTlNQRUNJRklFRBAAEhIKDkZJTEVfS0lORF9GSUxFEAESFwoTRklMRV9LSU5EX0RJUkVDVE9SWRACMsQGChFGaWxlU3lzdGVtU2VydmljZRJdCgdSZWFkZGlyEhoud29kZS5mcy52MS5SZWFkZGlyUmVxdWVzdBobLndvZGUuZnMudjEuUmVhZGRpclJlc3BvbnNlIhmC0+STAhM6ASoiDi92MS9mcy9yZWFkZGlyEk4KBFN0YXQSFy53b2RlLmZzLnYxLlN0YXRSZXF1ZXN0Ghgud29kZS5mcy52MS5TdGF0UmVzcG9uc2UiE4LT5JMCDRILL3YxL2ZzL3N0YXQSVQoFTWtkaXISGC53b2RlLmZzLnYxLk1rZGlyUmVxdWVzdBoZLndvZGUuZnMudjEuTWtkaXJSZXNwb25zZSIXgtPkkwIROgEqIgwvdjEvZnMvbWtkaXISYQoIUmVhZEZpbGUSGy53b2RlLmZzLnYxLlJlYWRGaWxlUmVxdWVzdBocLndvZGUuZnMudjEuUmVhZEZpbGVSZXNwb25zZSIagtPkkwIUOgEqIg8vdjEvZnMvcmVhZEZpbGUSZQoJV3JpdGVGaWxlEhwud29kZS5mcy52MS5Xcml0ZUZpbGVSZXF1ZXN0Gh0ud29kZS5mcy52MS5Xcml0ZUZpbGVSZXNwb25zZSIbgtPkkwIVOgEqIhAvdjEvZnMvd3JpdGVGaWxlElkKBlJlbmFtZRIZLndvZGUuZnMudjEuUmVuYW1lUmVxdWVzdBoaLndvZGUuZnMudjEuUmVuYW1lUmVzcG9uc2UiGILT5JMCEjoBKiINL3YxL2ZzL3JlbmFtZRJWCgZFeGlzdHMSGS53b2RlLmZzLnYxLkV4aXN0c1JlcXVlc3QaGi53b2RlLmZzLnYxLkV4aXN0c1Jlc3BvbnNlIhWC0+STAg8SDS92MS9mcy9leGlzdHMSUQoEQ29weRIXLndvZGUuZnMudjEuQ29weVJlcXVlc3QaGC53b2RlLmZzLnYxLkNvcHlSZXNwb25zZSIWgtPkkwIQOgEqIgsvdjEvZnMvY29weRJZCgZSZW1vdmUSGS53b2RlLmZzLnYxLlJlbW92ZVJlcXVlc3QaGi53b2RlLmZzLnYxLlJlbW92ZVJlc3BvbnNlIhiC0+STAhI6ASoiDS92MS9mcy9yZW1vdmVCtQEKDmNvbS53b2RlLmZzLnYxQhZGaWxlU3lzdGVtU2VydmljZVByb3RvUAFaQWdpdGh1Yi5jb20vd2VuZXJtZS93b2RlL3dvZ28vcHJvdG8vd29kZS9mcy92MTtmaWxlc3lzdGVtc2VydmljZXYxogIDV0ZYqgIKV29kZS5Gcy5WMcoCCldvZGVcRnNcVjHiAhZXb2RlXEZzXFYxXEdQQk1ldGFkYXRh6gIMV29kZTo6RnM6OlYxYgZwcm90bzM", [file_google_api_annotations, file_google_protobuf_struct, file_google_protobuf_timestamp]);
+export const file_wode_fs_v1_FileSystemService: GenFile =
+	/*@__PURE__*/
+	fileDesc(
+		'CiJ3b2RlL2ZzL3YxL0ZpbGVTeXN0ZW1TZXJ2aWNlLnByb3RvEgp3b2RlLmZzLnYxIr0BCghGaWxlU3RhdBIRCglkaXJlY3RvcnkYASABKAkSDAoEcGF0aBgCIAEoCRIMCgRuYW1lGAMgASgJEiIKBGtpbmQYBCABKA4yFC53b2RlLmZzLnYxLkZpbGVLaW5kEikKBW10aW1lGAUgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIMCgRzaXplGAYgASgDEiUKBG1ldGEYByABKAsyFy5nb29nbGUucHJvdG9idWYuU3RydWN0IswBCg5SZWFkZGlyUmVxdWVzdBILCgNkaXIYASABKAkSEQoEZ2xvYhgCIAEoCUgAiAEBEhEKCXJlY3Vyc2l2ZRgDIAEoCBISCgVkZXB0aBgEIAEoBUgBiAEBEicKBGtpbmQYBSABKA4yFC53b2RlLmZzLnYxLkZpbGVLaW5kSAKIAQESEwoGY3Vyc29yGAYgASgJSAOIAQESDgoGaGlkZGVuGAcgASgIQgcKBV9nbG9iQggKBl9kZXB0aEIHCgVfa2luZEIJCgdfY3Vyc29yIjUKD1JlYWRkaXJSZXNwb25zZRIiCgRkYXRhGAEgAygLMhQud29kZS5mcy52MS5GaWxlU3RhdCIbCgtTdGF0UmVxdWVzdBIMCgRwYXRoGAEgASgJIjIKDFN0YXRSZXNwb25zZRIiCgRkYXRhGAEgASgLMhQud29kZS5mcy52MS5GaWxlU3RhdCJCCgxNa2RpclJlcXVlc3QSDAoEcGF0aBgBIAEoCRIWCglyZWN1cnNpdmUYAiABKAhIAIgBAUIMCgpfcmVjdXJzaXZlIg8KDU1rZGlyUmVzcG9uc2UiMQoPUmVhZEZpbGVSZXF1ZXN0EgwKBHBhdGgYASABKAkSEAoIZW5jb2RpbmcYAiABKAkiMwoQUmVhZEZpbGVSZXNwb25zZRIOCgZiYXNlNjQYASABKAkSDwoHY29udGVudBgCIAEoDCJkChBXcml0ZUZpbGVSZXF1ZXN0EgwKBHBhdGgYASABKAkSDgoGYmFzZTY0GAIgASgJEgwKBGRhdGEYAyABKAwSFgoJb3ZlcndyaXRlGAQgASgISACIAQFCDAoKX292ZXJ3cml0ZSITChFXcml0ZUZpbGVSZXNwb25zZSJZCg1SZW5hbWVSZXF1ZXN0EhAKCG9sZF9wYXRoGAEgASgJEhAKCG5ld19wYXRoGAIgASgJEhYKCW92ZXJ3cml0ZRgDIAEoCEgAiAEBQgwKCl9vdmVyd3JpdGUiEAoOUmVuYW1lUmVzcG9uc2UiHQoNRXhpc3RzUmVxdWVzdBIMCgRwYXRoGAEgASgJIh4KDkV4aXN0c1Jlc3BvbnNlEgwKBGRhdGEYASABKAgicAoLQ29weVJlcXVlc3QSCwoDc3JjGAEgASgJEgwKBGRlc3QYAiABKAkSFgoJb3ZlcndyaXRlGAMgASgISACIAQESFAoHc2hhbGxvdxgEIAEoCEgBiAEBQgwKCl9vdmVyd3JpdGVCCgoIX3NoYWxsb3ciDgoMQ29weVJlc3BvbnNlImEKDVJlbW92ZVJlcXVlc3QSDAoEcGF0aBgBIAEoCRIWCglyZWN1cnNpdmUYAiABKAhIAIgBARISCgVmb3JjZRgDIAEoCEgBiAEBQgwKCl9yZWN1cnNpdmVCCAoGX2ZvcmNlIhAKDlJlbW92ZVJlc3BvbnNlKlIKCEZpbGVLaW5kEhkKFUZJTEVfS0lORF9VTlNQRUNJRklFRBAAEhIKDkZJTEVfS0lORF9GSUxFEAESFwoTRklMRV9LSU5EX0RJUkVDVE9SWRACMsQGChFGaWxlU3lzdGVtU2VydmljZRJdCgdSZWFkZGlyEhoud29kZS5mcy52MS5SZWFkZGlyUmVxdWVzdBobLndvZGUuZnMudjEuUmVhZGRpclJlc3BvbnNlIhmC0+STAhM6ASoiDi92MS9mcy9yZWFkZGlyEk4KBFN0YXQSFy53b2RlLmZzLnYxLlN0YXRSZXF1ZXN0Ghgud29kZS5mcy52MS5TdGF0UmVzcG9uc2UiE4LT5JMCDRILL3YxL2ZzL3N0YXQSVQoFTWtkaXISGC53b2RlLmZzLnYxLk1rZGlyUmVxdWVzdBoZLndvZGUuZnMudjEuTWtkaXJSZXNwb25zZSIXgtPkkwIROgEqIgwvdjEvZnMvbWtkaXISYQoIUmVhZEZpbGUSGy53b2RlLmZzLnYxLlJlYWRGaWxlUmVxdWVzdBocLndvZGUuZnMudjEuUmVhZEZpbGVSZXNwb25zZSIagtPkkwIUOgEqIg8vdjEvZnMvcmVhZEZpbGUSZQoJV3JpdGVGaWxlEhwud29kZS5mcy52MS5Xcml0ZUZpbGVSZXF1ZXN0Gh0ud29kZS5mcy52MS5Xcml0ZUZpbGVSZXNwb25zZSIbgtPkkwIVOgEqIhAvdjEvZnMvd3JpdGVGaWxlElkKBlJlbmFtZRIZLndvZGUuZnMudjEuUmVuYW1lUmVxdWVzdBoaLndvZGUuZnMudjEuUmVuYW1lUmVzcG9uc2UiGILT5JMCEjoBKiINL3YxL2ZzL3JlbmFtZRJWCgZFeGlzdHMSGS53b2RlLmZzLnYxLkV4aXN0c1JlcXVlc3QaGi53b2RlLmZzLnYxLkV4aXN0c1Jlc3BvbnNlIhWC0+STAg8SDS92MS9mcy9leGlzdHMSUQoEQ29weRIXLndvZGUuZnMudjEuQ29weVJlcXVlc3QaGC53b2RlLmZzLnYxLkNvcHlSZXNwb25zZSIWgtPkkwIQOgEqIgsvdjEvZnMvY29weRJZCgZSZW1vdmUSGS53b2RlLmZzLnYxLlJlbW92ZVJlcXVlc3QaGi53b2RlLmZzLnYxLlJlbW92ZVJlc3BvbnNlIhiC0+STAhI6ASoiDS92MS9mcy9yZW1vdmVCtQEKDmNvbS53b2RlLmZzLnYxQhZGaWxlU3lzdGVtU2VydmljZVByb3RvUAFaQWdpdGh1Yi5jb20vd2VuZXJtZS93b2RlL3dvZ28vcHJvdG8vd29kZS9mcy92MTtmaWxlc3lzdGVtc2VydmljZXYxogIDV0ZYqgIKV29kZS5Gcy5WMcoCCldvZGVcRnNcVjHiAhZXb2RlXEZzXFYxXEdQQk1ldGFkYXRh6gIMV29kZTo6RnM6OlYxYgZwcm90bzM',
+		[file_google_api_annotations, file_google_protobuf_struct, file_google_protobuf_timestamp],
+	);
 
 /**
  * FileStat represents file or directory metadata
  *
  * @generated from message wode.fs.v1.FileStat
  */
-export type FileStat = Message<"wode.fs.v1.FileStat"> & {
-  /**
-   * Parent directory path
-   *
-   * @generated from field: string directory = 1;
-   */
-  directory: string;
+export type FileStat = Message<'wode.fs.v1.FileStat'> & {
+	/**
+	 * Parent directory path
+	 *
+	 * @generated from field: string directory = 1;
+	 */
+	directory: string;
 
-  /**
-   * Full path
-   *
-   * @generated from field: string path = 2;
-   */
-  path: string;
+	/**
+	 * Full path
+	 *
+	 * @generated from field: string path = 2;
+	 */
+	path: string;
 
-  /**
-   * Entry name
-   *
-   * @generated from field: string name = 3;
-   */
-  name: string;
+	/**
+	 * Entry name
+	 *
+	 * @generated from field: string name = 3;
+	 */
+	name: string;
 
-  /**
-   * Entry type
-   *
-   * @generated from field: wode.fs.v1.FileKind kind = 4;
-   */
-  kind: FileKind;
+	/**
+	 * Entry type
+	 *
+	 * @generated from field: wode.fs.v1.FileKind kind = 4;
+	 */
+	kind: FileKind;
 
-  /**
-   * Last modification time
-   *
-   * @generated from field: google.protobuf.Timestamp mtime = 5;
-   */
-  mtime?: Timestamp;
+	/**
+	 * Last modification time
+	 *
+	 * @generated from field: google.protobuf.Timestamp mtime = 5;
+	 */
+	mtime?: Timestamp;
 
-  /**
-   * Size in bytes (default: 0)
-   *
-   * @generated from field: int64 size = 6;
-   */
-  size: bigint;
+	/**
+	 * Size in bytes (default: 0)
+	 *
+	 * @generated from field: int64 size = 6;
+	 */
+	size: bigint;
 
-  /**
-   * Additional metadata
-   *
-   * @generated from field: google.protobuf.Struct meta = 7;
-   */
-  meta?: JsonObject;
+	/**
+	 * Additional metadata
+	 *
+	 * @generated from field: google.protobuf.Struct meta = 7;
+	 */
+	meta?: JsonObject;
 };
 
 /**
  * Describes the message wode.fs.v1.FileStat.
  * Use `create(FileStatSchema)` to create a new message.
  */
-export const FileStatSchema: GenMessage<FileStat> = /*@__PURE__*/
-  messageDesc(file_wode_fs_v1_FileSystemService, 0);
+export const FileStatSchema: GenMessage<FileStat> = /*@__PURE__*/ messageDesc(file_wode_fs_v1_FileSystemService, 0);
 
 /**
  * ReaddirRequest lists directory contents
  *
  * @generated from message wode.fs.v1.ReaddirRequest
  */
-export type ReaddirRequest = Message<"wode.fs.v1.ReaddirRequest"> & {
-  /**
-   * Directory path (required, non-empty)
-   *
-   * @generated from field: string dir = 1;
-   */
-  dir: string;
+export type ReaddirRequest = Message<'wode.fs.v1.ReaddirRequest'> & {
+	/**
+	 * Directory path (required, non-empty)
+	 *
+	 * @generated from field: string dir = 1;
+	 */
+	dir: string;
 
-  /**
-   * Glob pattern filter
-   *
-   * @generated from field: optional string glob = 2;
-   */
-  glob?: string;
+	/**
+	 * Glob pattern filter
+	 *
+	 * @generated from field: optional string glob = 2;
+	 */
+	glob?: string;
 
-  /**
-   * Recursive listing (default: false)
-   *
-   * @generated from field: bool recursive = 3;
-   */
-  recursive: boolean;
+	/**
+	 * Recursive listing (default: false)
+	 *
+	 * @generated from field: bool recursive = 3;
+	 */
+	recursive: boolean;
 
-  /**
-   * Maximum depth (min: 0)
-   *
-   * @generated from field: optional int32 depth = 4;
-   */
-  depth?: number;
+	/**
+	 * Maximum depth (min: 0)
+	 *
+	 * @generated from field: optional int32 depth = 4;
+	 */
+	depth?: number;
 
-  /**
-   * Filter by entry type
-   *
-   * @generated from field: optional wode.fs.v1.FileKind kind = 5;
-   */
-  kind?: FileKind;
+	/**
+	 * Filter by entry type
+	 *
+	 * @generated from field: optional wode.fs.v1.FileKind kind = 5;
+	 */
+	kind?: FileKind;
 
-  /**
-   * Pagination cursor
-   *
-   * @generated from field: optional string cursor = 6;
-   */
-  cursor?: string;
+	/**
+	 * Pagination cursor
+	 *
+	 * @generated from field: optional string cursor = 6;
+	 */
+	cursor?: string;
 
-  /**
-   * Include hidden files (default: false)
-   *
-   * @generated from field: bool hidden = 7;
-   */
-  hidden: boolean;
+	/**
+	 * Include hidden files (default: false)
+	 *
+	 * @generated from field: bool hidden = 7;
+	 */
+	hidden: boolean;
 };
 
 /**
  * Describes the message wode.fs.v1.ReaddirRequest.
  * Use `create(ReaddirRequestSchema)` to create a new message.
  */
-export const ReaddirRequestSchema: GenMessage<ReaddirRequest> = /*@__PURE__*/
-  messageDesc(file_wode_fs_v1_FileSystemService, 1);
+export const ReaddirRequestSchema: GenMessage<ReaddirRequest> =
+	/*@__PURE__*/
+	messageDesc(file_wode_fs_v1_FileSystemService, 1);
 
 /**
  * ReaddirResponse contains directory listing
  *
  * @generated from message wode.fs.v1.ReaddirResponse
  */
-export type ReaddirResponse = Message<"wode.fs.v1.ReaddirResponse"> & {
-  /**
-   * @generated from field: repeated wode.fs.v1.FileStat data = 1;
-   */
-  data: FileStat[];
+export type ReaddirResponse = Message<'wode.fs.v1.ReaddirResponse'> & {
+	/**
+	 * @generated from field: repeated wode.fs.v1.FileStat data = 1;
+	 */
+	data: FileStat[];
 };
 
 /**
  * Describes the message wode.fs.v1.ReaddirResponse.
  * Use `create(ReaddirResponseSchema)` to create a new message.
  */
-export const ReaddirResponseSchema: GenMessage<ReaddirResponse> = /*@__PURE__*/
-  messageDesc(file_wode_fs_v1_FileSystemService, 2);
+export const ReaddirResponseSchema: GenMessage<ReaddirResponse> =
+	/*@__PURE__*/
+	messageDesc(file_wode_fs_v1_FileSystemService, 2);
 
 /**
  * StatRequest gets file or directory status
  *
  * @generated from message wode.fs.v1.StatRequest
  */
-export type StatRequest = Message<"wode.fs.v1.StatRequest"> & {
-  /**
-   * File or directory path
-   *
-   * @generated from field: string path = 1;
-   */
-  path: string;
+export type StatRequest = Message<'wode.fs.v1.StatRequest'> & {
+	/**
+	 * File or directory path
+	 *
+	 * @generated from field: string path = 1;
+	 */
+	path: string;
 };
 
 /**
  * Describes the message wode.fs.v1.StatRequest.
  * Use `create(StatRequestSchema)` to create a new message.
  */
-export const StatRequestSchema: GenMessage<StatRequest> = /*@__PURE__*/
-  messageDesc(file_wode_fs_v1_FileSystemService, 3);
+export const StatRequestSchema: GenMessage<StatRequest> =
+	/*@__PURE__*/
+	messageDesc(file_wode_fs_v1_FileSystemService, 3);
 
 /**
  * StatResponse contains file or directory status
  *
  * @generated from message wode.fs.v1.StatResponse
  */
-export type StatResponse = Message<"wode.fs.v1.StatResponse"> & {
-  /**
-   * @generated from field: wode.fs.v1.FileStat data = 1;
-   */
-  data?: FileStat;
+export type StatResponse = Message<'wode.fs.v1.StatResponse'> & {
+	/**
+	 * @generated from field: wode.fs.v1.FileStat data = 1;
+	 */
+	data?: FileStat;
 };
 
 /**
  * Describes the message wode.fs.v1.StatResponse.
  * Use `create(StatResponseSchema)` to create a new message.
  */
-export const StatResponseSchema: GenMessage<StatResponse> = /*@__PURE__*/
-  messageDesc(file_wode_fs_v1_FileSystemService, 4);
+export const StatResponseSchema: GenMessage<StatResponse> =
+	/*@__PURE__*/
+	messageDesc(file_wode_fs_v1_FileSystemService, 4);
 
 /**
  * MkdirRequest creates a directory
  *
  * @generated from message wode.fs.v1.MkdirRequest
  */
-export type MkdirRequest = Message<"wode.fs.v1.MkdirRequest"> & {
-  /**
-   * Directory path to create
-   *
-   * @generated from field: string path = 1;
-   */
-  path: string;
+export type MkdirRequest = Message<'wode.fs.v1.MkdirRequest'> & {
+	/**
+	 * Directory path to create
+	 *
+	 * @generated from field: string path = 1;
+	 */
+	path: string;
 
-  /**
-   * Create parent directories if needed
-   *
-   * @generated from field: optional bool recursive = 2;
-   */
-  recursive?: boolean;
+	/**
+	 * Create parent directories if needed
+	 *
+	 * @generated from field: optional bool recursive = 2;
+	 */
+	recursive?: boolean;
 };
 
 /**
  * Describes the message wode.fs.v1.MkdirRequest.
  * Use `create(MkdirRequestSchema)` to create a new message.
  */
-export const MkdirRequestSchema: GenMessage<MkdirRequest> = /*@__PURE__*/
-  messageDesc(file_wode_fs_v1_FileSystemService, 5);
+export const MkdirRequestSchema: GenMessage<MkdirRequest> =
+	/*@__PURE__*/
+	messageDesc(file_wode_fs_v1_FileSystemService, 5);
 
 /**
  * MkdirResponse indicates successful directory creation
  *
  * @generated from message wode.fs.v1.MkdirResponse
  */
-export type MkdirResponse = Message<"wode.fs.v1.MkdirResponse"> & {
-};
+export type MkdirResponse = Message<'wode.fs.v1.MkdirResponse'> & {};
 
 /**
  * Describes the message wode.fs.v1.MkdirResponse.
  * Use `create(MkdirResponseSchema)` to create a new message.
  */
-export const MkdirResponseSchema: GenMessage<MkdirResponse> = /*@__PURE__*/
-  messageDesc(file_wode_fs_v1_FileSystemService, 6);
+export const MkdirResponseSchema: GenMessage<MkdirResponse> =
+	/*@__PURE__*/
+	messageDesc(file_wode_fs_v1_FileSystemService, 6);
 
 /**
  * @generated from message wode.fs.v1.ReadFileRequest
  */
-export type ReadFileRequest = Message<"wode.fs.v1.ReadFileRequest"> & {
-  /**
-   * @generated from field: string path = 1;
-   */
-  path: string;
+export type ReadFileRequest = Message<'wode.fs.v1.ReadFileRequest'> & {
+	/**
+	 * @generated from field: string path = 1;
+	 */
+	path: string;
 
-  /**
-   * base64, binary
-   *
-   * @generated from field: string encoding = 2;
-   */
-  encoding: string;
+	/**
+	 * base64, binary
+	 *
+	 * @generated from field: string encoding = 2;
+	 */
+	encoding: string;
 };
 
 /**
  * Describes the message wode.fs.v1.ReadFileRequest.
  * Use `create(ReadFileRequestSchema)` to create a new message.
  */
-export const ReadFileRequestSchema: GenMessage<ReadFileRequest> = /*@__PURE__*/
-  messageDesc(file_wode_fs_v1_FileSystemService, 7);
+export const ReadFileRequestSchema: GenMessage<ReadFileRequest> =
+	/*@__PURE__*/
+	messageDesc(file_wode_fs_v1_FileSystemService, 7);
 
 /**
  * @generated from message wode.fs.v1.ReadFileResponse
  */
-export type ReadFileResponse = Message<"wode.fs.v1.ReadFileResponse"> & {
-  /**
-   * @generated from field: string base64 = 1;
-   */
-  base64: string;
+export type ReadFileResponse = Message<'wode.fs.v1.ReadFileResponse'> & {
+	/**
+	 * @generated from field: string base64 = 1;
+	 */
+	base64: string;
 
-  /**
-   * @generated from field: bytes content = 2;
-   */
-  content: Uint8Array;
+	/**
+	 * @generated from field: bytes content = 2;
+	 */
+	content: Uint8Array;
 };
 
 /**
  * Describes the message wode.fs.v1.ReadFileResponse.
  * Use `create(ReadFileResponseSchema)` to create a new message.
  */
-export const ReadFileResponseSchema: GenMessage<ReadFileResponse> = /*@__PURE__*/
-  messageDesc(file_wode_fs_v1_FileSystemService, 8);
+export const ReadFileResponseSchema: GenMessage<ReadFileResponse> =
+	/*@__PURE__*/
+	messageDesc(file_wode_fs_v1_FileSystemService, 8);
 
 /**
  * WriteFileRequest writes file contents
  *
  * @generated from message wode.fs.v1.WriteFileRequest
  */
-export type WriteFileRequest = Message<"wode.fs.v1.WriteFileRequest"> & {
-  /**
-   * File path
-   *
-   * @generated from field: string path = 1;
-   */
-  path: string;
+export type WriteFileRequest = Message<'wode.fs.v1.WriteFileRequest'> & {
+	/**
+	 * File path
+	 *
+	 * @generated from field: string path = 1;
+	 */
+	path: string;
 
-  /**
-   * File contents encoded as base64
-   *
-   * @generated from field: string base64 = 2;
-   */
-  base64: string;
+	/**
+	 * File contents encoded as base64
+	 *
+	 * @generated from field: string base64 = 2;
+	 */
+	base64: string;
 
-  /**
-   * File contents as bytes
-   *
-   * @generated from field: bytes data = 3;
-   */
-  data: Uint8Array;
+	/**
+	 * File contents as bytes
+	 *
+	 * @generated from field: bytes data = 3;
+	 */
+	data: Uint8Array;
 
-  /**
-   * Overwrite if exists
-   *
-   * @generated from field: optional bool overwrite = 4;
-   */
-  overwrite?: boolean;
+	/**
+	 * Overwrite if exists
+	 *
+	 * @generated from field: optional bool overwrite = 4;
+	 */
+	overwrite?: boolean;
 };
 
 /**
  * Describes the message wode.fs.v1.WriteFileRequest.
  * Use `create(WriteFileRequestSchema)` to create a new message.
  */
-export const WriteFileRequestSchema: GenMessage<WriteFileRequest> = /*@__PURE__*/
-  messageDesc(file_wode_fs_v1_FileSystemService, 9);
+export const WriteFileRequestSchema: GenMessage<WriteFileRequest> =
+	/*@__PURE__*/
+	messageDesc(file_wode_fs_v1_FileSystemService, 9);
 
 /**
  * WriteFileResponse indicates successful file write
  *
  * @generated from message wode.fs.v1.WriteFileResponse
  */
-export type WriteFileResponse = Message<"wode.fs.v1.WriteFileResponse"> & {
-};
+export type WriteFileResponse = Message<'wode.fs.v1.WriteFileResponse'> & {};
 
 /**
  * Describes the message wode.fs.v1.WriteFileResponse.
  * Use `create(WriteFileResponseSchema)` to create a new message.
  */
-export const WriteFileResponseSchema: GenMessage<WriteFileResponse> = /*@__PURE__*/
-  messageDesc(file_wode_fs_v1_FileSystemService, 10);
+export const WriteFileResponseSchema: GenMessage<WriteFileResponse> =
+	/*@__PURE__*/
+	messageDesc(file_wode_fs_v1_FileSystemService, 10);
 
 /**
  * RenameRequest renames a file or directory
  *
  * @generated from message wode.fs.v1.RenameRequest
  */
-export type RenameRequest = Message<"wode.fs.v1.RenameRequest"> & {
-  /**
-   * Current path
-   *
-   * @generated from field: string old_path = 1;
-   */
-  oldPath: string;
+export type RenameRequest = Message<'wode.fs.v1.RenameRequest'> & {
+	/**
+	 * Current path
+	 *
+	 * @generated from field: string old_path = 1;
+	 */
+	oldPath: string;
 
-  /**
-   * New path
-   *
-   * @generated from field: string new_path = 2;
-   */
-  newPath: string;
+	/**
+	 * New path
+	 *
+	 * @generated from field: string new_path = 2;
+	 */
+	newPath: string;
 
-  /**
-   * Overwrite destination if exists
-   *
-   * @generated from field: optional bool overwrite = 3;
-   */
-  overwrite?: boolean;
+	/**
+	 * Overwrite destination if exists
+	 *
+	 * @generated from field: optional bool overwrite = 3;
+	 */
+	overwrite?: boolean;
 };
 
 /**
  * Describes the message wode.fs.v1.RenameRequest.
  * Use `create(RenameRequestSchema)` to create a new message.
  */
-export const RenameRequestSchema: GenMessage<RenameRequest> = /*@__PURE__*/
-  messageDesc(file_wode_fs_v1_FileSystemService, 11);
+export const RenameRequestSchema: GenMessage<RenameRequest> =
+	/*@__PURE__*/
+	messageDesc(file_wode_fs_v1_FileSystemService, 11);
 
 /**
  * RenameResponse indicates successful rename
  *
  * @generated from message wode.fs.v1.RenameResponse
  */
-export type RenameResponse = Message<"wode.fs.v1.RenameResponse"> & {
-};
+export type RenameResponse = Message<'wode.fs.v1.RenameResponse'> & {};
 
 /**
  * Describes the message wode.fs.v1.RenameResponse.
  * Use `create(RenameResponseSchema)` to create a new message.
  */
-export const RenameResponseSchema: GenMessage<RenameResponse> = /*@__PURE__*/
-  messageDesc(file_wode_fs_v1_FileSystemService, 12);
+export const RenameResponseSchema: GenMessage<RenameResponse> =
+	/*@__PURE__*/
+	messageDesc(file_wode_fs_v1_FileSystemService, 12);
 
 /**
  * ExistsRequest checks if a path exists
  *
  * @generated from message wode.fs.v1.ExistsRequest
  */
-export type ExistsRequest = Message<"wode.fs.v1.ExistsRequest"> & {
-  /**
-   * Path to check
-   *
-   * @generated from field: string path = 1;
-   */
-  path: string;
+export type ExistsRequest = Message<'wode.fs.v1.ExistsRequest'> & {
+	/**
+	 * Path to check
+	 *
+	 * @generated from field: string path = 1;
+	 */
+	path: string;
 };
 
 /**
  * Describes the message wode.fs.v1.ExistsRequest.
  * Use `create(ExistsRequestSchema)` to create a new message.
  */
-export const ExistsRequestSchema: GenMessage<ExistsRequest> = /*@__PURE__*/
-  messageDesc(file_wode_fs_v1_FileSystemService, 13);
+export const ExistsRequestSchema: GenMessage<ExistsRequest> =
+	/*@__PURE__*/
+	messageDesc(file_wode_fs_v1_FileSystemService, 13);
 
 /**
  * ExistsResponse indicates if the path exists
  *
  * @generated from message wode.fs.v1.ExistsResponse
  */
-export type ExistsResponse = Message<"wode.fs.v1.ExistsResponse"> & {
-  /**
-   * True if path exists
-   *
-   * @generated from field: bool data = 1;
-   */
-  data: boolean;
+export type ExistsResponse = Message<'wode.fs.v1.ExistsResponse'> & {
+	/**
+	 * True if path exists
+	 *
+	 * @generated from field: bool data = 1;
+	 */
+	data: boolean;
 };
 
 /**
  * Describes the message wode.fs.v1.ExistsResponse.
  * Use `create(ExistsResponseSchema)` to create a new message.
  */
-export const ExistsResponseSchema: GenMessage<ExistsResponse> = /*@__PURE__*/
-  messageDesc(file_wode_fs_v1_FileSystemService, 14);
+export const ExistsResponseSchema: GenMessage<ExistsResponse> =
+	/*@__PURE__*/
+	messageDesc(file_wode_fs_v1_FileSystemService, 14);
 
 /**
  * CopyRequest copies a file or directory
  *
  * @generated from message wode.fs.v1.CopyRequest
  */
-export type CopyRequest = Message<"wode.fs.v1.CopyRequest"> & {
-  /**
-   * Source path
-   *
-   * @generated from field: string src = 1;
-   */
-  src: string;
+export type CopyRequest = Message<'wode.fs.v1.CopyRequest'> & {
+	/**
+	 * Source path
+	 *
+	 * @generated from field: string src = 1;
+	 */
+	src: string;
 
-  /**
-   * Destination path
-   *
-   * @generated from field: string dest = 2;
-   */
-  dest: string;
+	/**
+	 * Destination path
+	 *
+	 * @generated from field: string dest = 2;
+	 */
+	dest: string;
 
-  /**
-   * Overwrite destination if exists
-   *
-   * @generated from field: optional bool overwrite = 3;
-   */
-  overwrite?: boolean;
+	/**
+	 * Overwrite destination if exists
+	 *
+	 * @generated from field: optional bool overwrite = 3;
+	 */
+	overwrite?: boolean;
 
-  /**
-   * Shallow copy (for directories)
-   *
-   * @generated from field: optional bool shallow = 4;
-   */
-  shallow?: boolean;
+	/**
+	 * Shallow copy (for directories)
+	 *
+	 * @generated from field: optional bool shallow = 4;
+	 */
+	shallow?: boolean;
 };
 
 /**
  * Describes the message wode.fs.v1.CopyRequest.
  * Use `create(CopyRequestSchema)` to create a new message.
  */
-export const CopyRequestSchema: GenMessage<CopyRequest> = /*@__PURE__*/
-  messageDesc(file_wode_fs_v1_FileSystemService, 15);
+export const CopyRequestSchema: GenMessage<CopyRequest> =
+	/*@__PURE__*/
+	messageDesc(file_wode_fs_v1_FileSystemService, 15);
 
 /**
  * CopyResponse indicates successful copy
  *
  * @generated from message wode.fs.v1.CopyResponse
  */
-export type CopyResponse = Message<"wode.fs.v1.CopyResponse"> & {
-};
+export type CopyResponse = Message<'wode.fs.v1.CopyResponse'> & {};
 
 /**
  * Describes the message wode.fs.v1.CopyResponse.
  * Use `create(CopyResponseSchema)` to create a new message.
  */
-export const CopyResponseSchema: GenMessage<CopyResponse> = /*@__PURE__*/
-  messageDesc(file_wode_fs_v1_FileSystemService, 16);
+export const CopyResponseSchema: GenMessage<CopyResponse> =
+	/*@__PURE__*/
+	messageDesc(file_wode_fs_v1_FileSystemService, 16);
 
 /**
  * RemoveRequest removes a file or directory
  *
  * @generated from message wode.fs.v1.RemoveRequest
  */
-export type RemoveRequest = Message<"wode.fs.v1.RemoveRequest"> & {
-  /**
-   * Path to remove
-   *
-   * @generated from field: string path = 1;
-   */
-  path: string;
+export type RemoveRequest = Message<'wode.fs.v1.RemoveRequest'> & {
+	/**
+	 * Path to remove
+	 *
+	 * @generated from field: string path = 1;
+	 */
+	path: string;
 
-  /**
-   * Recursive removal (for directories)
-   *
-   * @generated from field: optional bool recursive = 2;
-   */
-  recursive?: boolean;
+	/**
+	 * Recursive removal (for directories)
+	 *
+	 * @generated from field: optional bool recursive = 2;
+	 */
+	recursive?: boolean;
 
-  /**
-   * Force removal (ignore errors)
-   *
-   * @generated from field: optional bool force = 3;
-   */
-  force?: boolean;
+	/**
+	 * Force removal (ignore errors)
+	 *
+	 * @generated from field: optional bool force = 3;
+	 */
+	force?: boolean;
 };
 
 /**
  * Describes the message wode.fs.v1.RemoveRequest.
  * Use `create(RemoveRequestSchema)` to create a new message.
  */
-export const RemoveRequestSchema: GenMessage<RemoveRequest> = /*@__PURE__*/
-  messageDesc(file_wode_fs_v1_FileSystemService, 17);
+export const RemoveRequestSchema: GenMessage<RemoveRequest> =
+	/*@__PURE__*/
+	messageDesc(file_wode_fs_v1_FileSystemService, 17);
 
 /**
  * RemoveResponse indicates successful removal
  *
  * @generated from message wode.fs.v1.RemoveResponse
  */
-export type RemoveResponse = Message<"wode.fs.v1.RemoveResponse"> & {
-};
+export type RemoveResponse = Message<'wode.fs.v1.RemoveResponse'> & {};
 
 /**
  * Describes the message wode.fs.v1.RemoveResponse.
  * Use `create(RemoveResponseSchema)` to create a new message.
  */
-export const RemoveResponseSchema: GenMessage<RemoveResponse> = /*@__PURE__*/
-  messageDesc(file_wode_fs_v1_FileSystemService, 18);
+export const RemoveResponseSchema: GenMessage<RemoveResponse> =
+	/*@__PURE__*/
+	messageDesc(file_wode_fs_v1_FileSystemService, 18);
 
 /**
  * FileKind represents the type of a file system entry
@@ -551,122 +574,119 @@ export const RemoveResponseSchema: GenMessage<RemoveResponse> = /*@__PURE__*/
  * @generated from enum wode.fs.v1.FileKind
  */
 export enum FileKind {
-  /**
-   * @generated from enum value: FILE_KIND_UNSPECIFIED = 0;
-   */
-  UNSPECIFIED = 0,
+	/**
+	 * @generated from enum value: FILE_KIND_UNSPECIFIED = 0;
+	 */
+	UNSPECIFIED = 0,
 
-  /**
-   * @generated from enum value: FILE_KIND_FILE = 1;
-   */
-  FILE = 1,
+	/**
+	 * @generated from enum value: FILE_KIND_FILE = 1;
+	 */
+	FILE = 1,
 
-  /**
-   * @generated from enum value: FILE_KIND_DIRECTORY = 2;
-   */
-  DIRECTORY = 2,
+	/**
+	 * @generated from enum value: FILE_KIND_DIRECTORY = 2;
+	 */
+	DIRECTORY = 2,
 }
 
 /**
  * Describes the enum wode.fs.v1.FileKind.
  */
-export const FileKindSchema: GenEnum<FileKind> = /*@__PURE__*/
-  enumDesc(file_wode_fs_v1_FileSystemService, 0);
+export const FileKindSchema: GenEnum<FileKind> = /*@__PURE__*/ enumDesc(file_wode_fs_v1_FileSystemService, 0);
 
 /**
  * @generated from service wode.fs.v1.FileSystemService
  */
 export const FileSystemService: GenService<{
-  /**
-   * List directory contents
-   *
-   * @generated from rpc wode.fs.v1.FileSystemService.Readdir
-   */
-  readdir: {
-    methodKind: "unary";
-    input: typeof ReaddirRequestSchema;
-    output: typeof ReaddirResponseSchema;
-  },
-  /**
-   * Get file or directory status
-   *
-   * @generated from rpc wode.fs.v1.FileSystemService.Stat
-   */
-  stat: {
-    methodKind: "unary";
-    input: typeof StatRequestSchema;
-    output: typeof StatResponseSchema;
-  },
-  /**
-   * Create a directory
-   *
-   * @generated from rpc wode.fs.v1.FileSystemService.Mkdir
-   */
-  mkdir: {
-    methodKind: "unary";
-    input: typeof MkdirRequestSchema;
-    output: typeof MkdirResponseSchema;
-  },
-  /**
-   * Read file contents
-   *
-   * @generated from rpc wode.fs.v1.FileSystemService.ReadFile
-   */
-  readFile: {
-    methodKind: "unary";
-    input: typeof ReadFileRequestSchema;
-    output: typeof ReadFileResponseSchema;
-  },
-  /**
-   * Write file contents
-   *
-   * @generated from rpc wode.fs.v1.FileSystemService.WriteFile
-   */
-  writeFile: {
-    methodKind: "unary";
-    input: typeof WriteFileRequestSchema;
-    output: typeof WriteFileResponseSchema;
-  },
-  /**
-   * Rename a file or directory
-   *
-   * @generated from rpc wode.fs.v1.FileSystemService.Rename
-   */
-  rename: {
-    methodKind: "unary";
-    input: typeof RenameRequestSchema;
-    output: typeof RenameResponseSchema;
-  },
-  /**
-   * Check if a path exists
-   *
-   * @generated from rpc wode.fs.v1.FileSystemService.Exists
-   */
-  exists: {
-    methodKind: "unary";
-    input: typeof ExistsRequestSchema;
-    output: typeof ExistsResponseSchema;
-  },
-  /**
-   * Copy a file or directory
-   *
-   * @generated from rpc wode.fs.v1.FileSystemService.Copy
-   */
-  copy: {
-    methodKind: "unary";
-    input: typeof CopyRequestSchema;
-    output: typeof CopyResponseSchema;
-  },
-  /**
-   * Remove a file or directory
-   *
-   * @generated from rpc wode.fs.v1.FileSystemService.Remove
-   */
-  remove: {
-    methodKind: "unary";
-    input: typeof RemoveRequestSchema;
-    output: typeof RemoveResponseSchema;
-  },
-}> = /*@__PURE__*/
-  serviceDesc(file_wode_fs_v1_FileSystemService, 0);
-
+	/**
+	 * List directory contents
+	 *
+	 * @generated from rpc wode.fs.v1.FileSystemService.Readdir
+	 */
+	readdir: {
+		methodKind: 'unary';
+		input: typeof ReaddirRequestSchema;
+		output: typeof ReaddirResponseSchema;
+	};
+	/**
+	 * Get file or directory status
+	 *
+	 * @generated from rpc wode.fs.v1.FileSystemService.Stat
+	 */
+	stat: {
+		methodKind: 'unary';
+		input: typeof StatRequestSchema;
+		output: typeof StatResponseSchema;
+	};
+	/**
+	 * Create a directory
+	 *
+	 * @generated from rpc wode.fs.v1.FileSystemService.Mkdir
+	 */
+	mkdir: {
+		methodKind: 'unary';
+		input: typeof MkdirRequestSchema;
+		output: typeof MkdirResponseSchema;
+	};
+	/**
+	 * Read file contents
+	 *
+	 * @generated from rpc wode.fs.v1.FileSystemService.ReadFile
+	 */
+	readFile: {
+		methodKind: 'unary';
+		input: typeof ReadFileRequestSchema;
+		output: typeof ReadFileResponseSchema;
+	};
+	/**
+	 * Write file contents
+	 *
+	 * @generated from rpc wode.fs.v1.FileSystemService.WriteFile
+	 */
+	writeFile: {
+		methodKind: 'unary';
+		input: typeof WriteFileRequestSchema;
+		output: typeof WriteFileResponseSchema;
+	};
+	/**
+	 * Rename a file or directory
+	 *
+	 * @generated from rpc wode.fs.v1.FileSystemService.Rename
+	 */
+	rename: {
+		methodKind: 'unary';
+		input: typeof RenameRequestSchema;
+		output: typeof RenameResponseSchema;
+	};
+	/**
+	 * Check if a path exists
+	 *
+	 * @generated from rpc wode.fs.v1.FileSystemService.Exists
+	 */
+	exists: {
+		methodKind: 'unary';
+		input: typeof ExistsRequestSchema;
+		output: typeof ExistsResponseSchema;
+	};
+	/**
+	 * Copy a file or directory
+	 *
+	 * @generated from rpc wode.fs.v1.FileSystemService.Copy
+	 */
+	copy: {
+		methodKind: 'unary';
+		input: typeof CopyRequestSchema;
+		output: typeof CopyResponseSchema;
+	};
+	/**
+	 * Remove a file or directory
+	 *
+	 * @generated from rpc wode.fs.v1.FileSystemService.Remove
+	 */
+	remove: {
+		methodKind: 'unary';
+		input: typeof RemoveRequestSchema;
+		output: typeof RemoveResponseSchema;
+	};
+}> = /*@__PURE__*/ serviceDesc(file_wode_fs_v1_FileSystemService, 0);

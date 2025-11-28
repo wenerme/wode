@@ -3,6 +3,12 @@
 	"version": "1.0.0",
 	"type": "module",
 	"description": "Prometheus MCP (Model Context Protocol) server with PromQL query execution and metrics exploration support",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/wenerme/wener.git",
+		"directory": "packages/wener-prometheus-mcp"
+	},
+	"homepage": "https://github.com/wenerme/wener/tree/main/packages/wener-prometheus-mcp",
 	"author": "wener",
 	"license": "MIT",
 	"engines": {
@@ -32,8 +38,8 @@
 		"build": "tsx src/scripts/bundle.ts",
 		"clean": "rm -rf dist",
 		"dev": "tsx src/main.ts",
-		"start": "node dist/main.mjs",
 		"prepublishOnly": "pnpm build",
+		"start": "node dist/main.mjs",
 		"test": "vitest"
 	},
 	"dependencies": {

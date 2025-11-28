@@ -62,8 +62,8 @@ export function createMcpServerHandler<C extends Record<string, any>>(
 			inputSchema: toJsonSchema(inputSchema) as JsonSchemaDef & { type: 'object' },
 		};
 		if (outputSchema && outputSchema['~standard'].vendor !== 'custom') {
-			tool.outputSchema = toJsonSchema(outputSchema) as JsonSchemaDef & { type: 'object' };
-			if (tool.outputSchema.type !== 'object') {
+			tool.outputSchema = toJsonSchema(outputSchema) as Tool['outputSchema'];
+			if (tool.outputSchema?.type !== 'object') {
 				console.error(`tool [${tool.name}] Invalid Output Schema`, tool.outputSchema, outputSchema);
 			}
 		}

@@ -1,33 +1,12 @@
 {
 	"extends": ["../../tsconfig.base.json"],
 	"compilerOptions": {
-    "moduleResolution": "bundler",
-    "target": "ESNext",
-    "module": "ESNext",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "ESNext"
-    ],
-    "strict": true,
-    "sourceMap": true,
-    "skipLibCheck": true,
+    "composite": false,
     "declaration": false,
-    "esModuleInterop": true,
     "jsx": "react-jsx",
-		"erasableSyntaxOnly": true,
     "importHelpers": true,
-    "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "verbatimModuleSyntax": true,
-    "noImplicitAny": true,
-    "noImplicitReturns": true,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "pretty": true,
-    "removeComments": false,
-    "stripInternal": true
+    "emitDecoratorMetadata": true
   },
   "exclude": [
     "node_modules",

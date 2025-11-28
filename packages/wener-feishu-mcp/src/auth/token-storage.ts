@@ -1,6 +1,6 @@
-import consola from 'consola';
-import { SimpleStorage } from 'common/storage';
 import type { FeishuTokens } from 'common/feishu';
+import { SimpleStorage } from 'common/storage';
+import consola from 'consola';
 
 const logger = consola.withTag('token-storage');
 
@@ -16,7 +16,7 @@ export interface StoredTokens extends FeishuTokens {
  */
 export class FeishuTokenStorage {
 	private storage = new SimpleStorage<Record<string, StoredTokens>>({
-		namespace: 'feishu-mcp-tokens'
+		namespace: 'feishu-mcp-tokens',
 	});
 
 	/**
@@ -27,11 +27,11 @@ export class FeishuTokenStorage {
 			const storedTokens: StoredTokens = {
 				appId,
 				...tokens,
-				expiresAt: expiresIn ? Date.now() + (expiresIn * 1000) : undefined
+				expiresAt: expiresIn ? Date.now() + expiresIn * 1000 : undefined,
 			};
 
 			// Load existing tokens
-			const allTokens = await this.storage.get() || {};
+			const allTokens = (await this.storage.get()) || {};
 			allTokens[appId] = storedTokens;
 
 			// Save to storage
@@ -49,7 +49,7 @@ export class FeishuTokenStorage {
 	 */
 	async getTokens(appId: string): Promise<FeishuTokens | null> {
 		try {
-			const allTokens = await this.storage.get() || {};
+			const allTokens = (await this.storage.get()) || {};
 			const stored = allTokens[appId];
 
 			if (!stored) {
@@ -72,7 +72,7 @@ export class FeishuTokenStorage {
 				tenantAccessToken: stored.tenantAccessToken,
 				userAccessToken: stored.userAccessToken,
 				appAccessToken: stored.appAccessToken,
-				refreshToken: stored.refreshToken
+				refreshToken: stored.refreshToken,
 			};
 		} catch (error) {
 			logger.error('Failed to retrieve tokens', { appId, error });
@@ -85,7 +85,7 @@ export class FeishuTokenStorage {
 	 */
 	async deleteTokens(appId: string): Promise<void> {
 		try {
-			const allTokens = await this.storage.get() || {};
+			const allTokens = (await this.storage.get()) || {};
 			delete allTokens[appId];
 
 			await this.storage.store(allTokens);
@@ -102,7 +102,7 @@ export class FeishuTokenStorage {
 	 */
 	async listApps(): Promise<string[]> {
 		try {
-			const allTokens = await this.storage.get() || {};
+			const allTokens = (await this.storage.get()) || {};
 			return Object.keys(allTokens);
 		} catch (error) {
 			logger.error('Failed to list apps', { error });
@@ -141,7 +141,7 @@ export class FeishuTokenStorage {
 		hasRefreshToken: boolean;
 	} | null> {
 		try {
-			const allTokens = await this.storage.get() || {};
+			const allTokens = (await this.storage.get()) || {};
 			const stored = allTokens[appId];
 
 			if (!stored) {
@@ -154,7 +154,7 @@ export class FeishuTokenStorage {
 				hasTokens: true,
 				isExpired,
 				expiresAt: stored.expiresAt ? new Date(stored.expiresAt) : undefined,
-				hasRefreshToken: !!stored.refreshToken
+				hasRefreshToken: !!stored.refreshToken,
 			};
 		} catch (error) {
 			logger.error('Failed to get token info', { appId, error });

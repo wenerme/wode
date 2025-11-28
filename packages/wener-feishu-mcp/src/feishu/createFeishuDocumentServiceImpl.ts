@@ -1,8 +1,8 @@
 import { implement } from '@orpc/server';
 import consola from 'consola';
 import type { ConsolaInstance } from 'consola/core';
-import { FeishuDocumentServiceContract } from './FeishuDocumentServiceContract';
 import type { FeishuDocsClient } from './feishu-docs-client';
+import { FeishuDocumentServiceContract } from './FeishuDocumentServiceContract';
 
 export interface FeishuDocumentServiceOptions {
 	client: FeishuDocsClient;
@@ -12,9 +12,9 @@ export interface FeishuDocumentServiceOptions {
 /**
  * Create Feishu document service implementation
  */
-export function createFeishuDocumentServiceImpl({ 
-	client, 
-	logger = consola.withTag('feishu-document-service') 
+export function createFeishuDocumentServiceImpl({
+	client,
+	logger = consola.withTag('feishu-document-service'),
 }: FeishuDocumentServiceOptions) {
 	const os = implement(FeishuDocumentServiceContract);
 
@@ -27,33 +27,34 @@ export function createFeishuDocumentServiceImpl({
 				const response = await client.searchDocuments({
 					search_key: query,
 					count,
-					docs_types: docTypes
+					docs_types: docTypes,
 				});
 
-				const results = response.docs_entity?.map(doc => ({
-					docToken: doc.doc_token,
-					docType: doc.doc_type,
-					title: doc.title,
-					url: doc.url,
-					createTime: doc.create_time,
-					updateTime: doc.update_time
-				})) || [];
+				const results =
+					response.docs_entity?.map((doc) => ({
+						docToken: doc.doc_token,
+						docType: doc.doc_type,
+						title: doc.title,
+						url: doc.url,
+						createTime: doc.create_time,
+						updateTime: doc.update_time,
+					})) || [];
 
 				logger.info('Document search completed', {
 					query,
 					resultCount: results.length,
-					hasMore: response.has_more
+					hasMore: response.has_more,
 				});
 
 				return {
 					documents: results,
 					hasMore: response.has_more || false,
-					totalCount: results.length
+					totalCount: results.length,
 				};
 			} catch (error) {
 				logger.error('Document search failed', {
 					query,
-					error: error instanceof Error ? error.message : String(error)
+					error: error instanceof Error ? error.message : String(error),
 				});
 				throw error;
 			}
@@ -69,19 +70,19 @@ export function createFeishuDocumentServiceImpl({
 				logger.info('Document content retrieved', {
 					docToken,
 					contentLength: content.content.length,
-					revision: content.revision
+					revision: content.revision,
 				});
 
 				return {
 					docToken,
 					content: content.content,
 					revision: content.revision,
-					title: content.title || 'Untitled'
+					title: (content as any).title || 'Untitled',
 				};
 			} catch (error) {
 				logger.error('Failed to get document content', {
 					docToken,
-					error: error instanceof Error ? error.message : String(error)
+					error: error instanceof Error ? error.message : String(error),
 				});
 				throw error;
 			}
@@ -96,19 +97,19 @@ export function createFeishuDocumentServiceImpl({
 
 				logger.info('Document created successfully', {
 					docToken: document.doc_token,
-					title: document.title
+					title: document.title,
 				});
 
 				return {
 					docToken: document.doc_token,
 					title: document.title,
-					url: document.url,
-					docType: document.doc_type
+					url: document.url || '',
+					docType: document.doc_type,
 				};
 			} catch (error) {
 				logger.error('Failed to create document', {
 					title,
-					error: error instanceof Error ? error.message : String(error)
+					error: error instanceof Error ? error.message : String(error),
 				});
 				throw error;
 			}
@@ -118,7 +119,7 @@ export function createFeishuDocumentServiceImpl({
 			const { markdown, fileName } = input;
 			logger.debug('Importing document from markdown', {
 				fileName,
-				contentLength: markdown.length
+				contentLength: markdown.length,
 			});
 
 			try {
@@ -126,19 +127,19 @@ export function createFeishuDocumentServiceImpl({
 
 				logger.info('Document imported successfully', {
 					docToken: document.doc_token,
-					title: document.title
+					title: document.title,
 				});
 
 				return {
 					docToken: document.doc_token,
 					title: document.title,
-					url: document.url,
-					importStatus: 'success' as const
+					url: document.url || '',
+					importStatus: 'success' as const,
 				};
 			} catch (error) {
 				logger.error('Failed to import document', {
 					fileName,
-					error: error instanceof Error ? error.message : String(error)
+					error: error instanceof Error ? error.message : String(error),
 				});
 				throw error;
 			}
@@ -154,7 +155,7 @@ export function createFeishuDocumentServiceImpl({
 				logger.info('Document metadata retrieved', {
 					docToken,
 					title: document.title,
-					docType: document.doc_type
+					docType: document.doc_type,
 				});
 
 				return {
@@ -168,13 +169,13 @@ export function createFeishuDocumentServiceImpl({
 					permissions: {
 						canRead: true,
 						canWrite: true,
-						canShare: false
-					}
+						canShare: false,
+					},
 				};
 			} catch (error) {
 				logger.error('Failed to get document metadata', {
 					docToken,
-					error: error instanceof Error ? error.message : String(error)
+					error: error instanceof Error ? error.message : String(error),
 				});
 				throw error;
 			}

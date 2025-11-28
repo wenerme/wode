@@ -16,15 +16,17 @@
 // @generated from file google/api/http.proto (package google.api, syntax proto3)
 /* eslint-disable */
 
-import type { GenFile, GenMessage } from "@bufbuild/protobuf/codegenv2";
-import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv2";
-import type { Message } from "@bufbuild/protobuf";
+import type { Message } from '@bufbuild/protobuf';
+import { fileDesc, messageDesc, type GenFile, type GenMessage } from '@bufbuild/protobuf/codegenv2';
 
 /**
  * Describes the file google/api/http.proto.
  */
-export const file_google_api_http: GenFile = /*@__PURE__*/
-  fileDesc("ChVnb29nbGUvYXBpL2h0dHAucHJvdG8SCmdvb2dsZS5hcGkiVAoESHR0cBIjCgVydWxlcxgBIAMoCzIULmdvb2dsZS5hcGkuSHR0cFJ1bGUSJwofZnVsbHlfZGVjb2RlX3Jlc2VydmVkX2V4cGFuc2lvbhgCIAEoCCKBAgoISHR0cFJ1bGUSEAoIc2VsZWN0b3IYASABKAkSDQoDZ2V0GAIgASgJSAASDQoDcHV0GAMgASgJSAASDgoEcG9zdBgEIAEoCUgAEhAKBmRlbGV0ZRgFIAEoCUgAEg8KBXBhdGNoGAYgASgJSAASLwoGY3VzdG9tGAggASgLMh0uZ29vZ2xlLmFwaS5DdXN0b21IdHRwUGF0dGVybkgAEgwKBGJvZHkYByABKAkSFQoNcmVzcG9uc2VfYm9keRgMIAEoCRIxChNhZGRpdGlvbmFsX2JpbmRpbmdzGAsgAygLMhQuZ29vZ2xlLmFwaS5IdHRwUnVsZUIJCgdwYXR0ZXJuIi8KEUN1c3RvbUh0dHBQYXR0ZXJuEgwKBGtpbmQYASABKAkSDAoEcGF0aBgCIAEoCUKqAQoOY29tLmdvb2dsZS5hcGlCCUh0dHBQcm90b1ABWkFnb29nbGUuZ29sYW5nLm9yZy9nZW5wcm90by9nb29nbGVhcGlzL2FwaS9hbm5vdGF0aW9uczthbm5vdGF0aW9uc/gBAaICA0dBWKoCCkdvb2dsZS5BcGnKAgpHb29nbGVcQXBp4gIWR29vZ2xlXEFwaVxHUEJNZXRhZGF0YeoCC0dvb2dsZTo6QXBpYgZwcm90bzM");
+export const file_google_api_http: GenFile =
+	/*@__PURE__*/
+	fileDesc(
+		'ChVnb29nbGUvYXBpL2h0dHAucHJvdG8SCmdvb2dsZS5hcGkiVAoESHR0cBIjCgVydWxlcxgBIAMoCzIULmdvb2dsZS5hcGkuSHR0cFJ1bGUSJwofZnVsbHlfZGVjb2RlX3Jlc2VydmVkX2V4cGFuc2lvbhgCIAEoCCKBAgoISHR0cFJ1bGUSEAoIc2VsZWN0b3IYASABKAkSDQoDZ2V0GAIgASgJSAASDQoDcHV0GAMgASgJSAASDgoEcG9zdBgEIAEoCUgAEhAKBmRlbGV0ZRgFIAEoCUgAEg8KBXBhdGNoGAYgASgJSAASLwoGY3VzdG9tGAggASgLMh0uZ29vZ2xlLmFwaS5DdXN0b21IdHRwUGF0dGVybkgAEgwKBGJvZHkYByABKAkSFQoNcmVzcG9uc2VfYm9keRgMIAEoCRIxChNhZGRpdGlvbmFsX2JpbmRpbmdzGAsgAygLMhQuZ29vZ2xlLmFwaS5IdHRwUnVsZUIJCgdwYXR0ZXJuIi8KEUN1c3RvbUh0dHBQYXR0ZXJuEgwKBGtpbmQYASABKAkSDAoEcGF0aBgCIAEoCUKqAQoOY29tLmdvb2dsZS5hcGlCCUh0dHBQcm90b1ABWkFnb29nbGUuZ29sYW5nLm9yZy9nZW5wcm90by9nb29nbGVhcGlzL2FwaS9hbm5vdGF0aW9uczthbm5vdGF0aW9uc/gBAaICA0dBWKoCCkdvb2dsZS5BcGnKAgpHb29nbGVcQXBp4gIWR29vZ2xlXEFwaVxHUEJNZXRhZGF0YeoCC0dvb2dsZTo6QXBpYgZwcm90bzM',
+	);
 
 /**
  * Defines the HTTP configuration for an API service. It contains a list of
@@ -33,35 +35,34 @@ export const file_google_api_http: GenFile = /*@__PURE__*/
  *
  * @generated from message google.api.Http
  */
-export type Http = Message<"google.api.Http"> & {
-  /**
-   * A list of HTTP configuration rules that apply to individual API methods.
-   *
-   * **NOTE:** All service configuration rules follow "last one wins" order.
-   *
-   * @generated from field: repeated google.api.HttpRule rules = 1;
-   */
-  rules: HttpRule[];
+export type Http = Message<'google.api.Http'> & {
+	/**
+	 * A list of HTTP configuration rules that apply to individual API methods.
+	 *
+	 * **NOTE:** All service configuration rules follow "last one wins" order.
+	 *
+	 * @generated from field: repeated google.api.HttpRule rules = 1;
+	 */
+	rules: HttpRule[];
 
-  /**
-   * When set to true, URL path parmeters will be fully URI-decoded except in
-   * cases of single segment matches in reserved expansion, where "%2F" will be
-   * left encoded.
-   *
-   * The default behavior is to not decode RFC 6570 reserved characters in multi
-   * segment matches.
-   *
-   * @generated from field: bool fully_decode_reserved_expansion = 2;
-   */
-  fullyDecodeReservedExpansion: boolean;
+	/**
+	 * When set to true, URL path parmeters will be fully URI-decoded except in
+	 * cases of single segment matches in reserved expansion, where "%2F" will be
+	 * left encoded.
+	 *
+	 * The default behavior is to not decode RFC 6570 reserved characters in multi
+	 * segment matches.
+	 *
+	 * @generated from field: bool fully_decode_reserved_expansion = 2;
+	 */
+	fullyDecodeReservedExpansion: boolean;
 };
 
 /**
  * Describes the message google.api.Http.
  * Use `create(HttpSchema)` to create a new message.
  */
-export const HttpSchema: GenMessage<Http> = /*@__PURE__*/
-  messageDesc(file_google_api_http, 0);
+export const HttpSchema: GenMessage<Http> = /*@__PURE__*/ messageDesc(file_google_api_http, 0);
 
 /**
  * `HttpRule` defines the mapping of an RPC method to one or more HTTP
@@ -284,137 +285,143 @@ export const HttpSchema: GenMessage<Http> = /*@__PURE__*/
  *
  * @generated from message google.api.HttpRule
  */
-export type HttpRule = Message<"google.api.HttpRule"> & {
-  /**
-   * Selects methods to which this rule applies.
-   *
-   * Refer to [selector][google.api.DocumentationRule.selector] for syntax details.
-   *
-   * @generated from field: string selector = 1;
-   */
-  selector: string;
+export type HttpRule = Message<'google.api.HttpRule'> & {
+	/**
+	 * Selects methods to which this rule applies.
+	 *
+	 * Refer to [selector][google.api.DocumentationRule.selector] for syntax details.
+	 *
+	 * @generated from field: string selector = 1;
+	 */
+	selector: string;
 
-  /**
-   * Determines the URL pattern is matched by this rules. This pattern can be
-   * used with any of the {get|put|post|delete|patch} methods. A custom method
-   * can be defined using the 'custom' field.
-   *
-   * @generated from oneof google.api.HttpRule.pattern
-   */
-  pattern: {
-    /**
-     * Used for listing and getting information about resources.
-     *
-     * @generated from field: string get = 2;
-     */
-    value: string;
-    case: "get";
-  } | {
-    /**
-     * Used for updating a resource.
-     *
-     * @generated from field: string put = 3;
-     */
-    value: string;
-    case: "put";
-  } | {
-    /**
-     * Used for creating a resource.
-     *
-     * @generated from field: string post = 4;
-     */
-    value: string;
-    case: "post";
-  } | {
-    /**
-     * Used for deleting a resource.
-     *
-     * @generated from field: string delete = 5;
-     */
-    value: string;
-    case: "delete";
-  } | {
-    /**
-     * Used for updating a resource.
-     *
-     * @generated from field: string patch = 6;
-     */
-    value: string;
-    case: "patch";
-  } | {
-    /**
-     * The custom pattern is used for specifying an HTTP method that is not
-     * included in the `pattern` field, such as HEAD, or "*" to leave the
-     * HTTP method unspecified for this rule. The wild-card rule is useful
-     * for services that provide content to Web (HTML) clients.
-     *
-     * @generated from field: google.api.CustomHttpPattern custom = 8;
-     */
-    value: CustomHttpPattern;
-    case: "custom";
-  } | { case: undefined; value?: undefined };
+	/**
+	 * Determines the URL pattern is matched by this rules. This pattern can be
+	 * used with any of the {get|put|post|delete|patch} methods. A custom method
+	 * can be defined using the 'custom' field.
+	 *
+	 * @generated from oneof google.api.HttpRule.pattern
+	 */
+	pattern:
+		| {
+				/**
+				 * Used for listing and getting information about resources.
+				 *
+				 * @generated from field: string get = 2;
+				 */
+				value: string;
+				case: 'get';
+		  }
+		| {
+				/**
+				 * Used for updating a resource.
+				 *
+				 * @generated from field: string put = 3;
+				 */
+				value: string;
+				case: 'put';
+		  }
+		| {
+				/**
+				 * Used for creating a resource.
+				 *
+				 * @generated from field: string post = 4;
+				 */
+				value: string;
+				case: 'post';
+		  }
+		| {
+				/**
+				 * Used for deleting a resource.
+				 *
+				 * @generated from field: string delete = 5;
+				 */
+				value: string;
+				case: 'delete';
+		  }
+		| {
+				/**
+				 * Used for updating a resource.
+				 *
+				 * @generated from field: string patch = 6;
+				 */
+				value: string;
+				case: 'patch';
+		  }
+		| {
+				/**
+				 * The custom pattern is used for specifying an HTTP method that is not
+				 * included in the `pattern` field, such as HEAD, or "*" to leave the
+				 * HTTP method unspecified for this rule. The wild-card rule is useful
+				 * for services that provide content to Web (HTML) clients.
+				 *
+				 * @generated from field: google.api.CustomHttpPattern custom = 8;
+				 */
+				value: CustomHttpPattern;
+				case: 'custom';
+		  }
+		| { case: undefined; value?: undefined };
 
-  /**
-   * The name of the request field whose value is mapped to the HTTP body, or
-   * `*` for mapping all fields not captured by the path pattern to the HTTP
-   * body. NOTE: the referred field must not be a repeated field and must be
-   * present at the top-level of request message type.
-   *
-   * @generated from field: string body = 7;
-   */
-  body: string;
+	/**
+	 * The name of the request field whose value is mapped to the HTTP body, or
+	 * `*` for mapping all fields not captured by the path pattern to the HTTP
+	 * body. NOTE: the referred field must not be a repeated field and must be
+	 * present at the top-level of request message type.
+	 *
+	 * @generated from field: string body = 7;
+	 */
+	body: string;
 
-  /**
-   * Optional. The name of the response field whose value is mapped to the HTTP
-   * body of response. Other response fields are ignored. When
-   * not set, the response message will be used as HTTP body of response.
-   *
-   * @generated from field: string response_body = 12;
-   */
-  responseBody: string;
+	/**
+	 * Optional. The name of the response field whose value is mapped to the HTTP
+	 * body of response. Other response fields are ignored. When
+	 * not set, the response message will be used as HTTP body of response.
+	 *
+	 * @generated from field: string response_body = 12;
+	 */
+	responseBody: string;
 
-  /**
-   * Additional HTTP bindings for the selector. Nested bindings must
-   * not contain an `additional_bindings` field themselves (that is,
-   * the nesting may only be one level deep).
-   *
-   * @generated from field: repeated google.api.HttpRule additional_bindings = 11;
-   */
-  additionalBindings: HttpRule[];
+	/**
+	 * Additional HTTP bindings for the selector. Nested bindings must
+	 * not contain an `additional_bindings` field themselves (that is,
+	 * the nesting may only be one level deep).
+	 *
+	 * @generated from field: repeated google.api.HttpRule additional_bindings = 11;
+	 */
+	additionalBindings: HttpRule[];
 };
 
 /**
  * Describes the message google.api.HttpRule.
  * Use `create(HttpRuleSchema)` to create a new message.
  */
-export const HttpRuleSchema: GenMessage<HttpRule> = /*@__PURE__*/
-  messageDesc(file_google_api_http, 1);
+export const HttpRuleSchema: GenMessage<HttpRule> = /*@__PURE__*/ messageDesc(file_google_api_http, 1);
 
 /**
  * A custom pattern is used for defining custom HTTP verb.
  *
  * @generated from message google.api.CustomHttpPattern
  */
-export type CustomHttpPattern = Message<"google.api.CustomHttpPattern"> & {
-  /**
-   * The name of this custom HTTP verb.
-   *
-   * @generated from field: string kind = 1;
-   */
-  kind: string;
+export type CustomHttpPattern = Message<'google.api.CustomHttpPattern'> & {
+	/**
+	 * The name of this custom HTTP verb.
+	 *
+	 * @generated from field: string kind = 1;
+	 */
+	kind: string;
 
-  /**
-   * The path matched by this custom verb.
-   *
-   * @generated from field: string path = 2;
-   */
-  path: string;
+	/**
+	 * The path matched by this custom verb.
+	 *
+	 * @generated from field: string path = 2;
+	 */
+	path: string;
 };
 
 /**
  * Describes the message google.api.CustomHttpPattern.
  * Use `create(CustomHttpPatternSchema)` to create a new message.
  */
-export const CustomHttpPatternSchema: GenMessage<CustomHttpPattern> = /*@__PURE__*/
-  messageDesc(file_google_api_http, 2);
-
+export const CustomHttpPatternSchema: GenMessage<CustomHttpPattern> =
+	/*@__PURE__*/
+	messageDesc(file_google_api_http, 2);

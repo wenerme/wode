@@ -1,9 +1,8 @@
-import { createServer, type Server, type IncomingMessage, type ServerResponse } from 'http';
+import { createServer, type IncomingMessage, type Server, type ServerResponse } from 'http';
 import { URL } from 'url';
+import { FeishuAuth, type FeishuOAuthConfig } from 'common/feishu';
 import consola from 'consola';
 import open from 'open';
-import type { FeishuOAuthConfig } from 'common/feishu';
-import { FeishuAuth } from 'common/feishu';
 
 const logger = consola.withTag('oauth-server');
 
@@ -27,7 +26,7 @@ export class FeishuOAuthServer {
 		this.auth = new FeishuAuth({
 			appId: config.appId,
 			appSecret: config.appSecret,
-			domain: config.domain
+			domain: config.domain,
 		});
 	}
 
@@ -41,16 +40,19 @@ export class FeishuOAuthServer {
 
 		return new Promise((resolve, reject) => {
 			let resolved = false;
-			const timeout = setTimeout(() => {
-				if (!resolved) {
-					resolved = true;
-					this.stopServer();
-					resolve({
-						success: false,
-						error: 'OAuth flow timeout after 5 minutes'
-					});
-				}
-			}, 5 * 60 * 1000); // 5 minutes timeout
+			const timeout = setTimeout(
+				() => {
+					if (!resolved) {
+						resolved = true;
+						this.stopServer();
+						resolve({
+							success: false,
+							error: 'OAuth flow timeout after 5 minutes',
+						});
+					}
+				},
+				5 * 60 * 1000,
+			); // 5 minutes timeout
 
 			// Create HTTP server to handle OAuth callback
 			this.server = createServer((req, res) => this.handleCallback(req, res, resolve, timeout));
@@ -62,7 +64,7 @@ export class FeishuOAuthServer {
 					logger.error('OAuth server error', { error });
 					resolve({
 						success: false,
-						error: `Server error: ${error.message}`
+						error: `Server error: ${error.message}`,
 					});
 				}
 			});
@@ -90,7 +92,7 @@ export class FeishuOAuthServer {
 		req: IncomingMessage,
 		res: ServerResponse,
 		resolve: (result: OAuthFlowResult) => void,
-		timeout: NodeJS.Timeout
+		timeout: NodeJS.Timeout,
 	): Promise<void> {
 		const url = new URL(req.url || '', `http://${req.headers.host}`);
 		const code = url.searchParams.get('code');
@@ -100,7 +102,7 @@ export class FeishuOAuthServer {
 		logger.debug('Received OAuth callback', {
 			path: url.pathname,
 			hasCode: !!code,
-			hasError: !!error
+			hasError: !!error,
 		});
 
 		// Handle OAuth errors
@@ -113,7 +115,7 @@ export class FeishuOAuthServer {
 			this.stopServer();
 			resolve({
 				success: false,
-				error: errorMsg
+				error: errorMsg,
 			});
 			return;
 		}
@@ -132,7 +134,7 @@ export class FeishuOAuthServer {
 				resolve({
 					success: true,
 					accessToken: tokenResponse.access_token,
-					refreshToken: tokenResponse.refresh_token
+					refreshToken: tokenResponse.refresh_token,
 				});
 				return;
 			} catch (error) {
@@ -144,7 +146,7 @@ export class FeishuOAuthServer {
 				this.stopServer();
 				resolve({
 					success: false,
-					error: errorMsg
+					error: errorMsg,
 				});
 				return;
 			}
@@ -152,7 +154,12 @@ export class FeishuOAuthServer {
 
 		// Handle other requests (health check, etc.)
 		if (url.pathname === '/health') {
-			this.sendResponse(res, 200, 'OAuth Server Status', 'OAuth callback server is running and waiting for authorization...');
+			this.sendResponse(
+				res,
+				200,
+				'OAuth Server Status',
+				'OAuth callback server is running and waiting for authorization...',
+			);
 			return;
 		}
 
@@ -188,7 +195,7 @@ export class FeishuOAuthServer {
 
 		res.writeHead(status, {
 			'Content-Type': 'text/html',
-			'Content-Length': Buffer.byteLength(html)
+			'Content-Length': Buffer.byteLength(html),
 		});
 		res.end(html);
 	}

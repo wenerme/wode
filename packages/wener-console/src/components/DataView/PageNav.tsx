@@ -51,7 +51,7 @@ export const PageNav = ({
 						setValue(String(n));
 					}
 				}}
-				className='input input-xs w-[5ch] text-center input-ghost tabular-nums join-item'
+				className='input input-xs input-ghost join-item w-[5ch] text-center tabular-nums'
 			/>
 			<button
 				type={'button'}

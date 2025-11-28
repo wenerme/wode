@@ -1,8 +1,14 @@
 {
 	"name": "@wener/server",
-	"version": "2.0.2",
+	"version": "2.0.3",
 	"type": "module",
 	"description": "Server utils",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/wenerme/wener.git",
+		"directory": "packages/wener-server"
+	},
+	"homepage": "https://github.com/wenerme/wener/tree/main/packages/wener-server",
 	"author": "wener",
 	"license": "ISC",
 	"exports": {
@@ -40,6 +46,7 @@
 	"scripts": {
 		"build": "make build",
 		"deploy": "make deploy",
+		"lint": "tsc --noEmit",
 		"test": "make test"
 	},
 	"peerDependencies": {

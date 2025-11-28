@@ -3,6 +3,12 @@
 	"version": "2.0.2",
 	"type": "module",
 	"description": "Common utils for console & server",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/wenerme/wener.git",
+		"directory": "packages/wener-common"
+	},
+	"homepage": "https://github.com/wenerme/wener/tree/main/packages/wener-common",
 	"author": "wener",
 	"license": "MIT",
 	"exports": {

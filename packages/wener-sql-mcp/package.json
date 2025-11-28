@@ -3,6 +3,12 @@
 	"version": "1.0.0",
 	"type": "module",
 	"description": "Unified SQL MCP (Model Context Protocol) server supporting PostgreSQL, MySQL, SQLite, and MSSQL via Knex",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/wenerme/wener.git",
+		"directory": "packages/wener-sql-mcp"
+	},
+	"homepage": "https://github.com/wenerme/wener/tree/main/packages/wener-sql-mcp",
 	"author": "wener",
 	"license": "MIT",
 	"engines": {

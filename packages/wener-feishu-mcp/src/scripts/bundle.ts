@@ -1,5 +1,5 @@
-import { build } from 'esbuild';
 import { resolve } from 'path';
+import { build } from 'esbuild';
 
 async function bundle() {
 	const result = await build({
@@ -12,13 +12,22 @@ async function bundle() {
 		format: 'esm',
 		external: [
 			// Node built-ins
-			'fs', 'path', 'url', 'util', 'events', 'stream', 'crypto', 'http', 'https', 'os',
+			'fs',
+			'path',
+			'url',
+			'util',
+			'events',
+			'stream',
+			'crypto',
+			'http',
+			'https',
+			'os',
 		],
 		define: {
-			'process.env.NODE_ENV': '"production"'
+			'process.env.NODE_ENV': '"production"',
 		},
 		mainFields: ['module', 'main'],
-		resolveExtensions: ['.ts', '.js', '.mjs']
+		resolveExtensions: ['.ts', '.js', '.mjs'],
 	});
 
 	if (result.errors.length > 0) {

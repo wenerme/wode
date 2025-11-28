@@ -110,7 +110,7 @@ Basic (without title/action):
 
 				{variant === 'lift' && action && (
 					<div
-						className='border-color flex items-center self-stretch border-b pr-1 px-2'
+						className='border-color flex items-center self-stretch border-b px-2 pr-1'
 						style={{
 							borderBottomWidth: 'var(--tab-border,1px)',
 							height: 'var(--tab-height)',

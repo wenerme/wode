@@ -6,8 +6,8 @@ import consola from 'consola';
 import { FeishuOAuthServer } from './auth/oauth-server';
 import { FeishuTokenStorage } from './auth/token-storage';
 import { createFeishuDocumentServiceImpl } from './feishu/createFeishuDocumentServiceImpl';
-import { FeishuDocumentServiceContract } from './feishu/FeishuDocumentServiceContract';
 import { FeishuDocsClient } from './feishu/feishu-docs-client';
+import { FeishuDocumentServiceContract } from './feishu/FeishuDocumentServiceContract';
 import { createOAuthConfig, getFeishuMcpConfig } from './server/config';
 
 const logger = consola.withTag('feishu-mcp');
@@ -135,7 +135,7 @@ runMcpServerCommand({
 	},
 	onServer: async (config) => {
 		const { logger, server } = config;
-		
+
 		// Initialize Feishu MCP configuration
 		const mcpConfig = getFeishuMcpConfig({ logger });
 		const tokenStorage = new FeishuTokenStorage();

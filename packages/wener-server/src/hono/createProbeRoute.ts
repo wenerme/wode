@@ -13,7 +13,7 @@ export function createProbeRoute({
 			method: 'get',
 			path: '/ready',
 			responses: {
-				200: { content: { 'text/plain': { schema: z.object({ ok: z.boolean() }) } }, description: 'Ready' },
+				200: { content: { 'application/json': { schema: z.object({ ok: z.boolean() }) } }, description: 'Ready' },
 			},
 		}),
 		async (c) => {
@@ -31,7 +31,9 @@ export function createProbeRoute({
 		createRoute({
 			method: 'get',
 			path: '/live',
-			responses: { 200: { content: { 'text/plain': { schema: z.object({ ok: z.boolean() }) } }, description: 'Live' } },
+			responses: {
+				200: { content: { 'application/json': { schema: z.object({ ok: z.boolean() }) } }, description: 'Live' },
+			},
 		}),
 		async (c) => {
 			try {

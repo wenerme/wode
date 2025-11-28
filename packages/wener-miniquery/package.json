@@ -3,6 +3,12 @@
 	"version": "1.0.0",
 	"type": "module",
 	"description": "SQL Where like **safe** filter expression for ORM.",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/wenerme/wener.git",
+		"directory": "packages/wener-miniquery"
+	},
+	"homepage": "https://github.com/wenerme/wener/tree/main/packages/wener-miniquery",
 	"author": "wener",
 	"license": "ISC",
 	"exports": {

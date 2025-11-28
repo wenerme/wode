@@ -14,7 +14,7 @@ let sequelize: Sequelize;
 beforeAll(async () => {
 	return;
 
-	sequelize = new Sequelize('sqlite::memory:');
+	sequelize = new Sequelize('sqlite::memory:' as any);
 	const Profile = await sequelize.define(
 		'Profile',
 		{ name: { type: DataTypes.STRING }, attributes: { type: DataTypes.JSON } },
@@ -65,7 +65,7 @@ beforeAll(async () => {
 });
 // fixme 无法处理关联
 test.skip('sequelize where', async (t) => {
-	const { User } = sequelize.models;
+	const { User } = sequelize.models as any;
 	for (const s of [
 		'',
 		`age > -1`,
@@ -87,7 +87,7 @@ test.skip('sequelize where', async (t) => {
 });
 
 test.skip('sequelize association', async (t) => {
-	const { User } = sequelize.models;
+	const { User } = sequelize.models as any;
 	for (const s of [`profile.name is not null`, `profile.avatar.imageUrl is not null`]) {
 		await assertQuery(t, User, s);
 	}
@@ -129,7 +129,7 @@ async function assertQuery(_t: TestContext, Model: ModelStatic<any>, query: stri
 }
 
 test.skip('sequelize incorrect', async () => {
-	const { User } = sequelize.models;
+	const { User } = sequelize.models as any;
 	for (const s of [
 		'1 > 0',
 		`name.not_ok = ''`,
@@ -149,7 +149,7 @@ test.skip('sequelize incorrect', async () => {
 });
 
 test.skip('sequelize type', async () => {
-	const { type } = sequelize.models.User.getAttributes().attributes as any;
+	const { type } = (sequelize.models as any).User.getAttributes().attributes as any;
 	expect(type).toBeInstanceOf(DataTypes.JSON);
 	// sqlite do not support json
 	expect(String(type)).toBe('TEXT');

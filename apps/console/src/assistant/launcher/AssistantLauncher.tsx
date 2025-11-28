@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { FiClock, FiFileText } from 'react-icons/fi';
+import { JsonYamlConverterTool } from '../tools/JsonYamlConverterTool';
+import { TimeParserTool } from '../tools/TimeParserTool';
+import { useAssistantLauncherMutate, useAssistantLauncherState } from './AssistantLauncherState';
 import { AssistantLayout } from './components/AssistantLayout';
 import { AssistantSidebar } from './components/AssistantSidebar';
 import type { AssistantTool } from './types';
-import { TimeParserTool } from '../tools/TimeParserTool';
-import { JsonYamlConverterTool } from '../tools/JsonYamlConverterTool';
-import { useAssistantLauncherState, useAssistantLauncherMutate } from './AssistantLauncherState';
 
 const TOOLS: AssistantTool[] = [
 	{
@@ -33,9 +33,7 @@ const AssistantContent: React.FC = () => {
 	return ActiveComponent ? (
 		<ActiveComponent />
 	) : (
-		<div className="flex h-full items-center justify-center text-base-content/50">
-			Select a tool to get started
-		</div>
+		<div className='text-base-content/50 flex h-full items-center justify-center'>Select a tool to get started</div>
 	);
 };
 
@@ -51,10 +49,10 @@ const AssistantInitializer: React.FC = () => {
 		}
 
 		// Sync User Info
-		state.sidecar.getUserInfo().then(user => {
+		state.sidecar.getUserInfo().then((user) => {
 			mutate.user = {
 				displayName: user.name,
-				username: user.username
+				username: user.username,
 			};
 		});
 	}, [mutate, state.sidecar]);
@@ -69,18 +67,18 @@ export const AssistantLauncher: React.FC = () => {
 	const toolId = searchParams.get('toolId');
 
 	if (mode === 'tool' && toolId) {
-		const tool = TOOLS.find(t => t.id === toolId);
+		const tool = TOOLS.find((t) => t.id === toolId);
 		const ToolComponent = tool?.component as React.ComponentType;
 
 		if (ToolComponent) {
 			return (
-				<div className="h-screen w-screen bg-base-100 text-base-content overflow-hidden">
+				<div className='h-screen w-screen overflow-hidden bg-base-100 text-base-content'>
 					<ToolComponent />
 				</div>
 			);
 		}
 		return (
-			<div className="flex h-screen w-screen items-center justify-center bg-base-100 text-error">
+			<div className='flex h-screen w-screen items-center justify-center bg-base-100 text-error'>
 				Tool not found: {toolId}
 			</div>
 		);
@@ -89,10 +87,7 @@ export const AssistantLauncher: React.FC = () => {
 	return (
 		<>
 			<AssistantInitializer />
-			<AssistantLayout
-				sidebar={<AssistantSidebar />}
-				content={<AssistantContent />}
-			/>
+			<AssistantLayout sidebar={<AssistantSidebar />} content={<AssistantContent />} />
 		</>
 	);
 };

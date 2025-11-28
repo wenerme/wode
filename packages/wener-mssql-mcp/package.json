@@ -3,6 +3,12 @@
 	"version": "1.0.1",
 	"type": "module",
 	"description": "Microsoft SQL Server MCP (Model Context Protocol) server with SQL query execution and Windows Authentication support",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/wenerme/wener.git",
+		"directory": "packages/wener-mssql-mcp"
+	},
+	"homepage": "https://github.com/wenerme/wener/tree/main/packages/wener-mssql-mcp",
 	"author": "wener",
 	"license": "MIT",
 	"engines": {
@@ -37,6 +43,7 @@
 		"@hono/mcp": "^0.1.5",
 		"@hono/node-server": "^1.19.6",
 		"@modelcontextprotocol/sdk": "^1.22.0",
+		"@types/mssql": "^9.1.8",
 		"@types/node": "^24.10.1",
 		"commander": "^14.0.2",
 		"consola": "^3.4.2",

@@ -1,6 +1,6 @@
 import consola from 'consola';
-import type { FeishuDevDocsConfig } from '../server/config';
 import { CacheManager } from '../cache/cache-manager';
+import type { FeishuDevDocsConfig } from '../server/config';
 
 const logger = consola.withTag('feishu-devdocs-client');
 
@@ -31,7 +31,7 @@ export class FeishuDevDocsClient {
 		this.cacheManager = new CacheManager({
 			cacheDirPath: config.cache?.cacheDir,
 			defaultTtl: config.cache?.ttl,
-			enableCache: config.cache?.enabled
+			enableCache: config.cache?.enabled,
 		});
 	}
 
@@ -51,7 +51,7 @@ export class FeishuDevDocsClient {
 		if (cachedResult) {
 			logger.debug('Using cached result for query', {
 				query,
-				resultCount: cachedResult.results.length
+				resultCount: cachedResult.results.length,
 			});
 			return cachedResult;
 		}

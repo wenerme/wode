@@ -3,6 +3,35 @@
 Wener NodeJS Monorepo
 
 - WODE -> Wener nODE & DEMO
+
+**Wokring on overwrite**
+
+Layouts
+
+```
+/apps Applications, things with entrypoint
+	/console Console App use @wener/console as base
+	/server Server App use @wener/server as base, hono, mikro-orm, orpc, connectrpc, graphql
+	/web Legacy
+	/woodpecker-feishu-bot migrate to https://github.com/wenerme/woodpecker-feishu-bot
+/packages Libraries
+	/wener-* Packages that will publish to NPM as @wener/*
+	/common Common for console & server, includes orpc contract, zod schema
+/db Database Schema
+	/migrations Migration based database schema
+	/schemas Schema based database schema managment
+	atlas.hcl
+/proto Protobuf
+/wogo WIP
+/wode-assistant WIP
+
+buf.gen.yaml Buf generate config
+buf.yaml Buf schema config
+go.work
+```
+
+**OLD**
+
 - apps
   - web http://apis.wener.me
     - React, NextJS, Playground for experiments

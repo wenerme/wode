@@ -1,4 +1,5 @@
 import { ArrayBuffers } from '../../io/ArrayBuffers';
+import type { Bytes } from '../../io/types';
 
 export interface Block {
 	/**
@@ -30,7 +31,7 @@ export interface Block {
 		| 'SM2 PARAMETERS';
 
 	header: Record<string, string>;
-	bytes: BufferSource;
+	bytes: Bytes;
 }
 
 export class PEM {
@@ -53,7 +54,7 @@ export class PEM {
 				type,
 				header,
 				//  avoid replaceAll
-				bytes: ArrayBuffers.from(b64.replace(/[\r\n]/g, ''), 'base64'),
+				bytes: ArrayBuffers.from(b64.replace(/[\r\n]/g, ''), 'base64', Uint8Array),
 			},
 			head: data.slice(0, match.index || 0),
 			tail: data.slice((match.index || 0) + match[0].length),

@@ -94,7 +94,7 @@ export class PrometheusClient {
 		logger.debug('Making Prometheus API request', {
 			endpoint,
 			url: url.toString(),
-			params
+			params,
 		});
 
 		try {
@@ -114,14 +114,14 @@ export class PrometheusClient {
 				logger.error('Prometheus API returned error', {
 					endpoint,
 					error,
-					errorType: result.errorType
+					errorType: result.errorType,
 				});
 				throw new Error(`Prometheus API error: ${error}`);
 			}
 
 			logger.debug('Prometheus API request successful', {
 				endpoint,
-				resultType: typeof result.data
+				resultType: typeof result.data,
 			});
 
 			return result.data as T;
@@ -129,7 +129,7 @@ export class PrometheusClient {
 			logger.error('HTTP request to Prometheus failed', {
 				endpoint,
 				url: url.toString(),
-				error: error instanceof Error ? error.message : String(error)
+				error: error instanceof Error ? error.message : String(error),
 			});
 			throw error;
 		}
@@ -146,7 +146,7 @@ export class PrometheusClient {
 		} catch (error) {
 			return {
 				healthy: false,
-				error: error instanceof Error ? error.message : String(error)
+				error: error instanceof Error ? error.message : String(error),
 			};
 		}
 	}
@@ -171,7 +171,7 @@ export class PrometheusClient {
 		logger.info('Instant query completed', {
 			query,
 			resultType: data.resultType,
-			resultCount: Array.isArray(data.result) ? data.result.length : 1
+			resultCount: Array.isArray(data.result) ? data.result.length : 1,
 		});
 
 		return data;
@@ -185,13 +185,13 @@ export class PrometheusClient {
 		start: string,
 		end: string,
 		step: string,
-		options?: { timeout?: string }
+		options?: { timeout?: string },
 	): Promise<PrometheusQueryResult> {
 		const params: Record<string, string> = {
 			query,
 			start,
 			end,
-			step
+			step,
 		};
 
 		if (options?.timeout) {
@@ -205,7 +205,7 @@ export class PrometheusClient {
 		logger.info('Range query completed', {
 			query,
 			resultType: data.resultType,
-			resultCount: Array.isArray(data.result) ? data.result.length : 1
+			resultCount: Array.isArray(data.result) ? data.result.length : 1,
 		});
 
 		return data;
@@ -235,7 +235,7 @@ export class PrometheusClient {
 
 		logger.info('Metric metadata retrieved', {
 			metric,
-			metadataCount: Object.keys(data).length
+			metadataCount: Object.keys(data).length,
 		});
 
 		return data;
@@ -251,7 +251,7 @@ export class PrometheusClient {
 
 		logger.info('Scrape targets retrieved', {
 			activeTargets: data.activeTargets.length,
-			droppedTargets: data.droppedTargets.length
+			droppedTargets: data.droppedTargets.length,
 		});
 
 		return data;

@@ -1,9 +1,8 @@
 import { parseBoolean } from '@wener/utils';
 import type { ConnectionOptions, NatsConnection } from 'nats';
 import { z } from 'zod';
-import { getNatsOptions } from '../config';
 
-export async function connect(opts: Partial<ConnectionOptions> = getNatsOptions()): Promise<NatsConnection> {
+export async function connect(opts: Partial<ConnectionOptions> = {}): Promise<NatsConnection> {
 	const isWs = Array.from(opts.servers ?? []).some((v) => /^ws?s:/.test(v));
 	if (isWs) {
 		// nextjs 用 ws 有问题

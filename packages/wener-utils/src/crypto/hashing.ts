@@ -1,10 +1,11 @@
 import { ArrayBuffers } from '../io/ArrayBuffers';
+import type { Bytes } from '../io/types';
 
 type HashEncoding = 'hex' | 'base64' | 'buffer';
 
 type HashFunction = {
 	(s: BinaryLike, o?: 'hex' | 'base64' | undefined): Promise<string>;
-	(s: BinaryLike, o: 'buffer'): Promise<ArrayBuffer>;
+	(s: BinaryLike, o: 'buffer'): Promise<Bytes>;
 };
 
 function createDigestFunction(a: string): HashFunction {
@@ -17,27 +18,27 @@ function createDigestFunction(a: string): HashFunction {
 	}) as HashFunction;
 }
 
-export function sha1(s: BinaryLike, o?: undefined | 'buffer'): Promise<Buffer>;
+export function sha1(s: BinaryLike, o?: undefined | 'buffer'): Promise<Bytes>;
 export function sha1(s: BinaryLike, o: 'hex' | 'base64'): Promise<string>;
 export function sha1(s: BinaryLike, o?: DigestOptions) {
 	return digestOf('SHA-1', s, o);
 }
 
-export function sha256(s: BinaryLike, o?: undefined | 'buffer'): Promise<Buffer>;
+export function sha256(s: BinaryLike, o?: undefined | 'buffer'): Promise<Bytes>;
 export function sha256(s: BinaryLike, o: 'hex' | 'base64'): Promise<string>;
 
 export function sha256(s: BinaryLike, o?: DigestOptions) {
 	return digestOf('SHA-256', s, o);
 }
 
-export function sha384(s: BinaryLike, o?: undefined | 'buffer'): Promise<Buffer>;
+export function sha384(s: BinaryLike, o?: undefined | 'buffer'): Promise<Bytes>;
 export function sha384(s: BinaryLike, o: 'hex' | 'base64'): Promise<string>;
 
 export function sha384(s: BinaryLike, o?: DigestOptions) {
 	return digestOf('SHA-384', s, o);
 }
 
-export function sha512(s: BinaryLike, o?: undefined | 'buffer'): Promise<Buffer>;
+export function sha512(s: BinaryLike, o?: undefined | 'buffer'): Promise<Bytes>;
 export function sha512(s: BinaryLike, o: 'hex' | 'base64'): Promise<string>;
 
 export function sha512(s: BinaryLike, o?: DigestOptions) {
@@ -84,7 +85,7 @@ export function hmac<O extends DigestOptions>(
 	key: BinaryLike | CryptoKey,
 	data: BinaryLike,
 	o?: O,
-): Promise<IsStringCoding<O> extends true ? string : Buffer>;
+): Promise<IsStringCoding<O> extends true ? string : Bytes>;
 
 export async function hmac(
 	hash: 'SHA-1' | 'SHA-256' | 'SHA-384' | 'SHA-512' | 'sha1' | 'sha256' | 'sha384' | 'sha512',

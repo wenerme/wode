@@ -3,6 +3,12 @@
 	"version": "2.0.11",
 	"type": "module",
 	"description": "Base console UI toolkit",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/wenerme/wener.git",
+		"directory": "packages/wener-console"
+	},
+	"homepage": "https://github.com/wenerme/wener/tree/main/packages/wener-console",
 	"author": "wener",
 	"license": "MIT",
 	"exports": {

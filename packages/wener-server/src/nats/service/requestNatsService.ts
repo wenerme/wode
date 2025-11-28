@@ -18,7 +18,7 @@ export async function requestNatsService({
 	const { headers: _, options: __, ...write } = req;
 	const hdr = headers();
 	for (const [k, v] of Object.entries(req.headers)) {
-		hdr.set(k, v);
+		hdr.set(k, String(v));
 	}
 
 	try {

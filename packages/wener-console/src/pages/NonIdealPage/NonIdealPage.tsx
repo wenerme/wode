@@ -3,8 +3,8 @@ import { BiError, BiLogoChrome } from 'react-icons/bi';
 import { GrDocumentMissing } from 'react-icons/gr';
 import { HiMiniArrowLeft, HiMiniArrowPath, HiMiniHome, HiOutlineExclamationCircle } from 'react-icons/hi2';
 import { useInRouterContext, useNavigate, useRouteError } from 'react-router';
-import { Button, NonIdealState } from '../../daisy';
 import { ActionIcon } from '../../components/icons';
+import { Button, NonIdealState } from '../../daisy';
 
 export namespace NonIdealPage {
 	export interface LayoutProps {

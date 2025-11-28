@@ -13,7 +13,10 @@ export interface PrometheusServiceOptions {
 /**
  * Create Prometheus service implementation that follows the PrometheusServiceContract
  */
-export function createPrometheusServiceImpl({ config, logger = consola.withTag('prometheus') }: PrometheusServiceOptions) {
+export function createPrometheusServiceImpl({
+	config,
+	logger = consola.withTag('prometheus'),
+}: PrometheusServiceOptions) {
 	const os = implement(PrometheusServiceContract);
 	const client = new PrometheusClient(config);
 

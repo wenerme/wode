@@ -130,7 +130,7 @@ export async function dumpBodyContent({
 				if (typeof value === 'string') {
 					result += `${key}: ${value}\n`;
 				} else {
-					result += `${key}: [File: ${value.name || 'unknown'}]\n`;
+					result += `${key}: [File: ${(value as File).name || 'unknown'}]\n`;
 				}
 			}
 			return result;

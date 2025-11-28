@@ -53,7 +53,7 @@ const UserAvatar = () => {
 					)}
 				</div>
 			</Link>
-			<hr className={'border-base-200 my-2'} />
+			<hr className={'my-2 border-base-200'} />
 			<ul className={'menu p-2'}>
 				<li key={'refreshProfile'}>
 					<button type={'button'} onClick={refreshProfile}>
@@ -118,7 +118,7 @@ const WindowControlPopoverContent: React.FC<ComponentPropsWithoutRef<'ul'>> = (p
 	const top = useMemo(() => root.top, []);
 	const count = root.windows.length;
 	return (
-		<ul className={'border-color menu menu-sm rounded-box bg-base-100 w-44 border'} {...props}>
+		<ul className={'border-color menu menu-sm w-44 rounded-box border bg-base-100'} {...props}>
 			{top && (
 				<>
 					<li className='menu-title'>当前窗口</li>
@@ -186,7 +186,7 @@ const WindowControl = memo(() => {
 		<>
 			<button
 				type={'button'}
-				className={'btn btn-square btn-ghost btn-sm self-center'}
+				className={'btn btn-ghost btn-sm btn-square self-center'}
 				ref={refs.setReference}
 				{...getReferenceProps()}
 			>
@@ -233,8 +233,8 @@ const WindowDock = memo<{ win: ReactWindow }>(({ win }) => {
 				type={'button'}
 				className={cn(
 					'h-10 w-10',
-					`text-base-content hover:text-base-content flex items-center justify-center`,
-					'bg-base-200 rounded-lg',
+					`flex items-center justify-center text-base-content hover:text-base-content`,
+					'rounded-lg bg-base-200',
 					!minimized ? `active bg-base-300` : 'opacity-75',
 				)}
 				{...getReferenceProps()}
@@ -249,7 +249,7 @@ const WindowDock = memo<{ win: ReactWindow }>(({ win }) => {
 				<FloatingPortal>
 					<FloatingFocusManager context={context}>
 						<div
-							className={'bg-base-200 rounded p-1 text-xs opacity-85'}
+							className={'rounded bg-base-200 p-1 text-xs opacity-85'}
 							ref={refs.setFloating}
 							{...getFloatingProps()}
 							style={floatingStyles}

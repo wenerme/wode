@@ -1,28 +1,28 @@
 {
-  "name": "@wener/wode-assitant-frontend",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build:dev": "vite build --minify false --mode development",
-    "build": "vite build --mode production",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "@wailsio/runtime": "latest",
-    "@wener/common": "workspace:^2.0.2",
-    "@wener/console": "workspace:^2.0.6",
-    "@wener/reaction": "workspace:^1.2.26",
-    "@wener/utils": "workspace:^1.1.53",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0"
-  },
-  "devDependencies": {
-    "@tailwindcss/vite": "^4.1.17",
-    "@types/react": "^19.2.6",
-    "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^5.1.1",
-    "vite": "^7.2.4"
-  }
+	"name": "@wener/wode-assitant-frontend",
+	"version": "0.0.0",
+	"type": "module",
+	"private": true,
+	"scripts": {
+		"build": "vite build --mode production",
+		"build:dev": "vite build --minify false --mode development",
+		"dev": "vite",
+		"preview": "vite preview"
+	},
+	"dependencies": {
+		"@wailsio/runtime": "latest",
+		"@wener/common": "workspace:^2.0.2",
+		"@wener/console": "workspace:^2.0.6",
+		"@wener/reaction": "workspace:^1.2.26",
+		"@wener/utils": "workspace:^1.1.53",
+		"react": "^19.2.0",
+		"react-dom": "^19.2.0"
+	},
+	"devDependencies": {
+		"@tailwindcss/vite": "^4.1.17",
+		"@types/react": "^19.2.6",
+		"@types/react-dom": "^19.2.3",
+		"@vitejs/plugin-react": "^5.1.1",
+		"vite": "^7.2.4"
+	}
 }

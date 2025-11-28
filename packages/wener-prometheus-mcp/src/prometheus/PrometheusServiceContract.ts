@@ -24,7 +24,10 @@ const PrometheusRangeQueryInputSchema = z.object({
 });
 
 const MetricMetadataInputSchema = z.object({
-	metric: z.string().optional().describe('Specific metric name to get metadata for. If not provided, returns metadata for all metrics'),
+	metric: z
+		.string()
+		.optional()
+		.describe('Specific metric name to get metadata for. If not provided, returns metadata for all metrics'),
 });
 
 // Output schemas
@@ -38,30 +41,45 @@ const MetricsListSchema = z.object({
 });
 
 const MetricMetadataSchema = z.object({
-	metadata: z.record(z.string(), z.array(z.object({
-		type: z.string().describe('Metric type (gauge, counter, histogram, summary)'),
-		help: z.string().describe('Metric description'),
-		unit: z.string().optional().describe('Metric unit'),
-	}))).describe('Metric metadata grouped by metric name'),
+	metadata: z
+		.record(
+			z.string(),
+			z.array(
+				z.object({
+					type: z.string().describe('Metric type (gauge, counter, histogram, summary)'),
+					help: z.string().describe('Metric description'),
+					unit: z.string().optional().describe('Metric unit'),
+				}),
+			),
+		)
+		.describe('Metric metadata grouped by metric name'),
 });
 
 const TargetsSchema = z.object({
-	activeTargets: z.array(z.object({
-		discoveredLabels: z.record(z.string(), z.string()).describe('Labels discovered during service discovery'),
-		labels: z.record(z.string(), z.string()).describe('Final target labels after relabeling'),
-		scrapePool: z.string().describe('Name of the scrape pool'),
-		scrapeUrl: z.string().describe('URL being scraped'),
-		globalUrl: z.string().describe('Global URL for this target'),
-		lastError: z.string().describe('Last scrape error message'),
-		lastScrape: z.string().describe('Timestamp of last scrape'),
-		lastScrapeDuration: z.number().describe('Duration of last scrape in seconds'),
-		health: z.enum(['up', 'down', 'unknown']).describe('Target health status'),
-		scrapeInterval: z.string().describe('Scrape interval for this target'),
-		scrapeTimeout: z.string().describe('Scrape timeout for this target'),
-	})).describe('Active scrape targets'),
-	droppedTargets: z.array(z.object({
-		discoveredLabels: z.record(z.string(), z.string()).describe('Labels discovered during service discovery'),
-	})).describe('Dropped scrape targets'),
+	activeTargets: z
+		.array(
+			z.object({
+				discoveredLabels: z.record(z.string(), z.string()).describe('Labels discovered during service discovery'),
+				labels: z.record(z.string(), z.string()).describe('Final target labels after relabeling'),
+				scrapePool: z.string().describe('Name of the scrape pool'),
+				scrapeUrl: z.string().describe('URL being scraped'),
+				globalUrl: z.string().describe('Global URL for this target'),
+				lastError: z.string().describe('Last scrape error message'),
+				lastScrape: z.string().describe('Timestamp of last scrape'),
+				lastScrapeDuration: z.number().describe('Duration of last scrape in seconds'),
+				health: z.enum(['up', 'down', 'unknown']).describe('Target health status'),
+				scrapeInterval: z.string().describe('Scrape interval for this target'),
+				scrapeTimeout: z.string().describe('Scrape timeout for this target'),
+			}),
+		)
+		.describe('Active scrape targets'),
+	droppedTargets: z
+		.array(
+			z.object({
+				discoveredLabels: z.record(z.string(), z.string()).describe('Labels discovered during service discovery'),
+			}),
+		)
+		.describe('Dropped scrape targets'),
 });
 
 const HealthCheckSchema = z.object({
@@ -73,11 +91,14 @@ const HealthCheckSchema = z.object({
 	prometheus_url: z.string().optional().describe('Prometheus server URL'),
 	prometheus_error: z.string().optional().describe('Prometheus connection error'),
 	error: z.string().optional().describe('General error message'),
-	configuration: z.object({
-		prometheus_url_configured: z.boolean().describe('Whether Prometheus URL is configured'),
-		authentication_configured: z.boolean().describe('Whether authentication is configured'),
-		org_id_configured: z.boolean().describe('Whether organization ID is configured'),
-	}).optional().describe('Configuration status'),
+	configuration: z
+		.object({
+			prometheus_url_configured: z.boolean().describe('Whether Prometheus URL is configured'),
+			authentication_configured: z.boolean().describe('Whether authentication is configured'),
+			org_id_configured: z.boolean().describe('Whether organization ID is configured'),
+		})
+		.optional()
+		.describe('Configuration status'),
 });
 
 export const PrometheusServiceContract = {

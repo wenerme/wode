@@ -2,8 +2,8 @@ import { proxyWithCompare } from '@wener/reaction/valtio';
 import { getGlobalStates } from '@wener/utils';
 import Emittery from 'emittery';
 import { useSnapshot } from 'valtio';
-import type { AssistantTool } from './types';
 import { WodeAssistantSidecar } from './sidecar/WodeAssistantSidecar';
+import type { AssistantTool } from './types';
 
 export const AssistantLauncherEventType = {
 	OpenWindow: 'AssistantLauncher:OpenWindow',
