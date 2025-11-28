@@ -1,6 +1,6 @@
 import { Code, ConnectError, createConnectRouter } from '@connectrpc/connect';
 import { Logger } from '@nestjs/common';
-import { getContext } from '@wener/nestjs';
+import { getContext } from '@wener/server';
 import { Errors, type MaybePromise } from '@wener/utils';
 import { serveNodeConnect, type ServeNodeConnectOptions } from './serveNodeConnect';
 import type { ConnectRpcServiceDef } from './types';

@@ -1,4 +1,4 @@
-import { App, Contexts } from '@wener/nestjs/app';
+import { App, Contexts } from '@wener/server/app';
 import { firstOfMaybeArray } from '@wener/utils';
 import type { AuditData } from './types';
 
