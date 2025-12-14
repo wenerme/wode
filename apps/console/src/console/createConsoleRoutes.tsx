@@ -4,10 +4,13 @@ import type { RouteObject } from 'react-router-dom';
 import { Navigate } from 'react-router-dom';
 import { isDev } from '@wener/console';
 import { lazyRoute } from '@wener/console/router';
-import { PageErrorState } from '@wener/console/web';
 import { can } from '#/casl';
 import { SiteModules } from '#/console/modules/user.core/SiteModules';
 
+const PageErrorState = () => {
+	// TODO
+	return null;
+};
 export function createConsoleRoutes(): RouteObject[] {
 	const routes: RouteObject[] = [
 		{
@@ -84,18 +87,6 @@ export function createConsoleRoutes(): RouteObject[] {
 							lazy: lazyRoute(() => import('./routes/setting.system.route')),
 							handle: {
 								title: '系统信息',
-							},
-						},
-					],
-				},
-				{
-					path: 'dev',
-					children: [
-						{
-							path: 'debug',
-							lazy: lazyRoute(() => import('./routes/setting.dev.debug.route')),
-							handle: {
-								title: '调试设置',
 							},
 						},
 					],

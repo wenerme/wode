@@ -21,7 +21,10 @@
 		"isolatedModules": true,
 		"outDir": "lib",
 		"baseUrl": ".",
-		"rootDir": "./src"
+		"rootDir": "./src",
+		"paths": {
+			"#/*": ["./src/*"]
+		}
 	},
 	"exclude": ["node_modules", "**/*.test.ts", "**/*.spec.ts"],
 	"include": ["src/types.d.ts", "src"]

@@ -107,21 +107,6 @@ export namespace FunctionButton {
 		onDelete?: () => void;
 	};
 	export const Delete: FC<DeleteButtonProps> = ({ onDelete, children, className, ...props }) => {
-		/*
-    <button
-                        type={'button'}
-                        className={'btn btn-square btn-error btn-sm'}
-                        onClick={() => {
-                          showResourceDeleteAlterDialog({
-                            schema,
-                            data: res,
-                            onSubmit: refresh,
-                          });
-                        }}
-                      >
-                        <PiTrashSimpleLight />
-                      </button>
-     */
 		return (
 			<Button {...props} icon={PiTrashSimpleLight} className={cn('btn-error', className)} onAction={onDelete}>
 				{children}

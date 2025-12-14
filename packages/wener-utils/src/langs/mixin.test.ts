@@ -1,9 +1,43 @@
 import { expect, test } from 'vitest';
 import { mixin } from './mixin';
 
-export type Constructor<T = {}> = new (...args: any[]) => T;
+// import type { Constructor } from '#/types';
+type Constructor<T = {}> = new (...args: any[]) => T;
+function Ent<T extends Function>(): (target: T) => void {
+	return () => {};
+}
 
 test('mixin', () => {
+	// @Ent()
+	class User extends mixin(BaseResource, withFooFields) {
+		a?: string;
+	}
+	// @Ent()
+	class User2 extends mixin(BaseEnt, withFooFields) {
+		x: string = 'x';
+	}
+
+	// type works
+	const usr = new User();
+	expect(usr.foo, 'foo');
+
+	const u2 = new User2();
+	console.log(u2);
+});
+
+//  <T extends EntityClass<unknown>>(options?: EntityOptions<T>): (target: T) => void;
+
+// @Ent()
+class BaseResource {
+	id?: string = '';
+}
+
+// @Ent()
+class BaseEnt extends BaseResource {
+	base: string = 'base';
+}
+
+test('mixin deep not working', () => {
 	// @ts-ignore
 	class User extends mixin(BaseResource, createBarFields()) {}
 
@@ -13,10 +47,6 @@ test('mixin', () => {
 	expect(usr.foo, 'foo');
 	expect(usr).toEqual({ foo: 'foo', bar: 'bar', id: '' });
 });
-
-class BaseResource {
-	id?: string = '';
-}
 
 function createBarFields() {
 	return <TBase extends Constructor>(Base: TBase) => {

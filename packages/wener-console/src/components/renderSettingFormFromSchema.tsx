@@ -2,8 +2,10 @@ import React, { type ReactNode } from 'react';
 import { useFieldArray, type useForm } from 'react-hook-form';
 import { PiArrowDownLight, PiArrowUpLight, PiMinusLight, PiPlus, PiPlusLight } from 'react-icons/pi';
 import { JsonSchema, type JsonSchemaDef } from '@wener/common/jsonschema';
+import { cn } from '@wener/console';
+import { isNotNil } from 'es-toolkit';
 import { match, P } from 'ts-pattern';
-import { cn } from '../utils/cn';
+import { resolveRenderable, type Renderable } from './Renderable';
 
 type FormContext = ReturnType<typeof useForm>;
 
@@ -12,27 +14,81 @@ type RenderSettingFormOptions = {
 	level?: number;
 	path?: string[];
 	forms: FormContext;
+	render?: Renderable<{
+		schema: JsonSchemaDef;
+		path: string[];
+		name: string;
+		forms: FormContext;
+	}>;
 };
 
-export function renderSettingFormFromSchema({ schema, level = 0, path = [], forms }: RenderSettingFormOptions) {
+type ExtendSchema = {
+	sensitive?: boolean;
+	'x-input'?: 'textarea' | 'password' | 'email' | 'url' | 'tel' | 'number';
+} & JsonSchemaDef;
+
+function getLabel(s: JsonSchemaDef) {
+	return s.description || s.title;
+}
+
+export function renderSettingFormFromSchema({ schema, level = 0, path = [], forms, render }: RenderSettingFormOptions) {
 	const { register, control } = forms;
+	const name = path.join('.');
+	if (render) {
+		let out = resolveRenderable(
+			render,
+			{}, // do not register
+			{
+				name,
+				path,
+				schema,
+				forms,
+			},
+		);
+		if (isNotNil(out)) {
+			return out;
+		}
+	}
+
 	return match(schema)
 		.returnType<ReactNode>()
 		.with({ type: 'string' }, (schema) => {
 			let type = 'text';
-			if (schema.sensitive) {
+			if ((schema as ExtendSchema).sensitive) {
 				type = 'password';
 			}
-			return <input type={type} className={'input input-sm input-bordered flex-1'} {...register(path.join('.'))} />;
+
+			const xInput = schema['x-input'] as string | undefined;
+			if (xInput === 'textarea') {
+				return <textarea className={'textarea textarea-bordered textarea-sm flex-1'} rows={4} {...register(name)} />;
+			}
+
+			if (xInput && ['email', 'url', 'tel', 'password'].includes(xInput)) {
+				type = xInput;
+			}
+
+			return <input type={type} className={'input input-sm input-bordered flex-1'} {...register(name)} />;
+		})
+		.with({ type: 'integer' }, (schema) => {
+			let type = 'text';
+			return (
+				<input
+					type={type}
+					className={'input input-sm input-bordered flex-1'}
+					{...register(name, {
+						valueAsNumber: true,
+					})}
+				/>
+			);
 		})
 		.with({ anyOf: P.array() }, ({ anyOf }) => {
 			return (
-				<select {...register(path.join('.'))} className={'select select-bordered select-sm'}>
+				<select {...register(name)} className={'select select-bordered select-sm'}>
 					<option value={''}>请选择</option>
 					{anyOf.map((item: any, index) => {
 						return (
 							<option key={index} value={item.const}>
-								{item.title}
+								{getLabel(item)}
 							</option>
 						);
 					})}
@@ -40,10 +96,10 @@ export function renderSettingFormFromSchema({ schema, level = 0, path = [], form
 			);
 		})
 		.with({ type: 'array' }, (schema) => {
-			const { title } = schema;
+			const label = getLabel(schema);
 			const itemSchema = schema.items as JsonSchemaDef;
 			const isPrimitive = JsonSchema.isPrimitiveType(itemSchema);
-			const { append, remove, swap, fields } = useFieldArray({ name: path.join('.'), control });
+			const { append, remove, swap, fields } = useFieldArray({ name: name, control });
 			return (
 				<section
 					className={cn(
@@ -52,8 +108,9 @@ export function renderSettingFormFromSchema({ schema, level = 0, path = [], form
 					)}
 				>
 					<header className={'flex items-center gap-2'}>
-						{Boolean(title) && <h3 className={'text-lg font-medium'}>{String(title)}</h3>}
+						{label && <h3 className={'text-lg font-medium'}>{label}</h3>}
 						<button
+							type={'button'}
 							className={'btn btn-square btn-ghost btn-secondary btn-sm'}
 							onClick={() => {
 								append(JsonSchema.create(itemSchema));
@@ -119,6 +176,7 @@ export function renderSettingFormFromSchema({ schema, level = 0, path = [], form
 									level: level + 1,
 									path: path.concat(index.toString()),
 									forms,
+									render,
 								})}
 								{isPrimitive && controller}
 							</div>
@@ -128,19 +186,25 @@ export function renderSettingFormFromSchema({ schema, level = 0, path = [], form
 			);
 		})
 		.with({ type: 'object' }, (schema) => {
-			const { title } = schema;
+			const label = getLabel(schema);
 			return (
 				<section className={'flex flex-1 flex-col gap-1'}>
-					{Boolean(title) && (
+					{label && (
 						<header>
-							<h3 className={'text-lg font-medium'}>{String(title)}</h3>
+							<h3 className={'text-lg font-medium'}>{label}</h3>
 						</header>
 					)}
-					{Object.entries(schema.properties as Record<string, JsonSchemaDef>).map(([key, prop]) => {
-						if (['array', 'object'].includes(String(prop.type))) {
+					{Object.entries((schema.properties || {}) as Record<string, JsonSchemaDef>).map(([key, prop]) => {
+						if (['array', 'object'].includes(prop.type as string)) {
 							return (
 								<div className={'flex flex-col gap-2 p-2 pb-4'}>
-									{renderSettingFormFromSchema({ schema: prop, level: level + 1, path: path.concat(key), forms })}
+									{renderSettingFormFromSchema({
+										schema: prop,
+										level: level + 1,
+										path: path.concat(key),
+										forms,
+										render,
+									})}
 								</div>
 							);
 						}
@@ -148,40 +212,40 @@ export function renderSettingFormFromSchema({ schema, level = 0, path = [], form
 						let content: ReactNode = null;
 						if (prop.type === 'boolean') {
 							content = (
-								<div className='form-control'>
-									<label className='label cursor-pointer'>
-										<span className='label-text'>{prop.title}</span>
-										<div className={'flex-1'}></div>
-										<input
-											type='checkbox'
-											className={'checkbox-bordered checkbox checkbox-sm'}
-											{...register(path.concat(key).join('.'))}
-										/>
-									</label>
-								</div>
+								<label className='label cursor-pointer'>
+									<span>{getLabel(prop)}</span>
+									<input type='checkbox' className={'checkbox checkbox-sm'} {...register(path.concat(key).join('.'))} />
+								</label>
 							);
 						} else {
 							content = (
 								<>
-									<div className={'label'}>
-										<span className={'label-text font-medium'}>{prop.title}</span>
-									</div>
-									{renderSettingFormFromSchema({ schema: prop, level: level + 1, path: path.concat(key), forms })}
+									{/* only for complex */}
+									{/*<legend className={'fieldset-legend'}>{getLabel(prop)}</legend>*/}
+									<label className='label'>{getLabel(prop)}</label>
+									{renderSettingFormFromSchema({
+										schema: prop,
+										level: level + 1,
+										path: path.concat(key),
+										forms,
+										render,
+									})}
 								</>
 							);
 						}
 
 						return (
-							<div
+							<fieldset
 								key={key}
-								className={cn('form-control', [
+								className={cn('fieldset', [
 									'p-2',
 									'hover:bg-base-200',
 									'focus-within:border-info border border-transparent',
+									'[&>input]:w-full',
 								])}
 							>
 								{content}
-							</div>
+							</fieldset>
 						);
 					})}
 				</section>

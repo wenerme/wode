@@ -20,7 +20,8 @@ export class Promises {
 		}
 		let resolve: (value: T | PromiseLike<T>) => void;
 		let reject: (reason?: any) => void;
-		// @ts-ignore
+		// @ts-ignore -- Polyfill/Fallback for environment without Promise.withResolvers
+		// eslint-disable-next-line
 		const promise = new Promise<T>((res, rej) => {
 			resolve = res;
 			reject = rej;
