@@ -1,7 +1,6 @@
 import React, {
 	useState,
 	type ComponentPropsWithoutRef,
-	type ComponentPropsWithRef,
 	type FC,
 	type MouseEvent,
 	type ReactNode,
@@ -13,7 +12,7 @@ import {
 	PiTrashSimpleLight,
 	PiUserPlusLight,
 } from 'react-icons/pi';
-import { Slot } from '@radix-ui/react-slot';
+import { useRender } from '@base-ui/react/use-render';
 import { flexRender, useDebounce, type FlexRenderable } from '@wener/reaction';
 import type { MaybePromise } from '@wener/utils';
 import { clsx } from 'clsx';
@@ -79,7 +78,6 @@ export namespace FunctionButton {
 
 	export type SubmitButtonProps = ComponentPropsWithoutRef<'button'> & {
 		size?: Daisy.SizeType;
-		asChild?: boolean;
 		loading?: boolean;
 	};
 
@@ -139,9 +137,8 @@ export namespace FunctionButton {
 		return <Button icon={PiUserPlusLight} {...props} />;
 	};
 
-	export type ButtonProps = ComponentPropsWithRef<'button'> & {
+	export type ButtonProps = useRender.ComponentProps<'button'> & {
 		size?: Daisy.SizeType;
-		asChild?: boolean;
 		onAction?: (e: MouseEvent) => MaybePromise<any>;
 		icon?: FlexRenderable<any>;
 		text?: ReactNode;
@@ -151,7 +148,7 @@ export namespace FunctionButton {
 	export const Button = ({
 		size,
 		children,
-		asChild,
+		render,
 		className,
 		onAction,
 		onClick,
@@ -165,7 +162,6 @@ export namespace FunctionButton {
 		const [_loading, setLoading] = useState(false);
 		loading ||= _loading;
 
-		const Comp = asChild ? Slot : 'button';
 		if (!onClick && onAction) {
 			onClick = (e: MouseEvent) => {
 				if (loading) {
@@ -176,7 +172,7 @@ export namespace FunctionButton {
 					setLoading(true);
 					p.then(() => {
 						setLoading(false);
-					}).catch((e: any) => {
+					}).catch(() => {
 						setLoading(false);
 						// 不一定是直接处理error
 						// showErrorToast(e);
@@ -202,19 +198,19 @@ export namespace FunctionButton {
 				</>
 			);
 		}
-		return (
-			<Comp
-				type={'button'}
-				className={cn('btn', sz?.btn, square && 'btn-square', className)}
-				data-loading={loading || null}
-				ref={ref}
-				{...{
-					...props,
-					onClick,
-				}}
-			>
-				{children}
-			</Comp>
-		);
+
+		return useRender({
+			defaultTagName: 'button',
+			render,
+			ref,
+			props: {
+				type: 'button',
+				className: cn('btn', sz?.btn, square && 'btn-square', className),
+				'data-loading': loading || null,
+				...props,
+				onClick,
+				children,
+			},
+		});
 	};
 }

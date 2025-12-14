@@ -1,5 +1,5 @@
 import { getUrqlClient } from '@wener/console/client/graphql';
-import { getFragmentData } from '@/gql';
+import { getFragmentData } from '#/gql';
 import { CurrentUserFragment, CurrentUserQuery } from './query';
 
 export namespace UserActions {

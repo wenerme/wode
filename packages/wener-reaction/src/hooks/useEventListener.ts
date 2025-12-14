@@ -1,4 +1,4 @@
-import { useEffect, type DependencyList } from 'react';
+import { useEffect, useRef } from 'react';
 
 export type HandlersOfEventMap<T extends object> = { [k in keyof T]?: (e: T[k]) => void };
 
@@ -6,25 +6,32 @@ export type HandlersOfEventMap<T extends object> = { [k in keyof T]?: (e: T[k]) 
  * useEventListener listen on {@link EventTarget}
  */
 export function useEventListener<E extends object = HTMLElementEventMap>(
-	target: EventTarget | undefined,
+	target: EventTarget | null | undefined,
 	handlers: HandlersOfEventMap<E>,
-	deps: DependencyList,
 ) {
+	const handlersRef = useRef(handlers);
+	handlersRef.current = handlers;
+
+	const keys = Object.keys(handlers);
 	useEffect(() => {
-		if (!target) {
-			return;
-		}
-		const all = Object.entries(handlers);
-		all.map(([n, h]) => target.addEventListener(n, h as any));
+		if (!target) return;
+
+		const wrappers = keys.map((name) => {
+			const wrapper = (e: Event) => handlersRef.current[name as keyof E]?.(e as any);
+			target.addEventListener(name, wrapper);
+			return { name, wrapper };
+		});
 		return () => {
-			all.map(([n, h]) => target.removeEventListener(n, h as any));
+			wrappers.forEach(({ name, wrapper }) => {
+				target.removeEventListener(name, wrapper);
+			});
 		};
-	}, deps);
+	}, [target, ...keys]);
 }
 
 /**
  * createEventListenerHook a {@link useEventListener} hook with predefined {@link EventTarget}
  */
 export function createEventListenerHook<E extends object = HTMLElementEventMap>(target: EventTarget | undefined) {
-	return (handlers: HandlersOfEventMap<E>, deps: DependencyList) => useEventListener(target, handlers, deps);
+	return (handlers: HandlersOfEventMap<E>) => useEventListener(target, handlers);
 }

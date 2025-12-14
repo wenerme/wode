@@ -4,10 +4,10 @@ import { PiSquaresFour, PiSquaresFourLight } from 'react-icons/pi';
 import { getApplets, Launcher } from '@wener/console/console';
 import { ClockWidget } from '@wener/console/console/applets';
 import type { DynamicModule } from '@wener/console/web';
-import { CalculatorWidget } from '@/applets/Calculator/CalculatorWidget';
-import { PlaygroundWidget } from '@/applets/Playground/PlaygroundWidget';
-import { getUserAbility } from '@/casl';
-import { DevOpsModule, FamilyModule, SiteModules } from '@/console/modules/user.core/SiteModules';
+import { CalculatorWidget } from '#/applets/Calculator/CalculatorWidget';
+import { PlaygroundWidget } from '#/applets/Playground/PlaygroundWidget';
+import { getUserAbility } from '#/casl';
+import { DevOpsModule, FamilyModule, SiteModules } from '#/console/modules/user.core/SiteModules';
 import type { ConsoleLayoutContext, DashMenuItem } from '../../components/ConsoleLayout/ConsoleLayoutContext';
 import { createConsoleRoutes } from '../../createConsoleRoutes';
 

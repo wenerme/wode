@@ -35,15 +35,15 @@
 		"test": "make test"
 	},
 	"dependencies": {
-		"@wener/utils": "workspace:^1.1.53",
+		"@wener/utils": "workspace:^1.1.54",
 		"ts-pattern": "^5.9.0"
 	},
 	"devDependencies": {
 		"@electric-sql/pglite": "^0.3.14",
 		"@electric-sql/pglite-socket": "^0.0.19",
-		"@mikro-orm/core": "^6.6.0",
-		"@mikro-orm/postgresql": "^6.6.0",
-		"@mikro-orm/sqlite": "^6.6.0",
+		"@mikro-orm/core": "^6.6.2",
+		"@mikro-orm/postgresql": "^6.6.2",
+		"@mikro-orm/sqlite": "^6.6.2",
 		"@sequelize/core": "7.0.0-alpha.47",
 		"ohm-js": "^17.2.1"
 	},

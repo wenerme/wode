@@ -40,4 +40,9 @@ packageExtensions:
 
 # Override dotenv version across the entire workspace
 overrides:
-  dotenv: ^16.4.5
+  dotenv: ^16
+
+updateConfig:
+  ignoreDependencies:
+  - '@types/node'
+  - 'dotenv'

@@ -1,5 +1,5 @@
 import React, { type ComponentPropsWithoutRef, type FC, type ReactNode } from 'react';
-import { Menu } from '@base-ui-components/react/menu';
+import { Menu } from '@base-ui/react/menu';
 import { cn } from '@wener/console';
 import type { FlexRenderable } from '@wener/reaction';
 import { flexRender } from '@wener/reaction';
@@ -105,7 +105,17 @@ export const DaisyDropdownMenuTrigger: FC<DaisyDropdownMenuTriggerProps> = ({ cl
 	return <Menu.Trigger className={cn('btn relative', className)} {...props} />;
 };
 
-export const DaisyDropdownMenu = {
+export const DaisyDropdownMenu: {
+	Composite: typeof DaisyDropdownMenuComposite;
+	Trigger: typeof DaisyDropdownMenuTrigger;
+	Root: typeof Menu.Root;
+	Portal: typeof Menu.Portal;
+	Positioner: typeof Menu.Positioner;
+	Popup: typeof Menu.Popup;
+	Item: typeof Menu.Item;
+	Separator: typeof Menu.Separator;
+	GroupLabel: typeof Menu.GroupLabel;
+} = {
 	Composite: DaisyDropdownMenuComposite,
 	Trigger: DaisyDropdownMenuTrigger,
 	Root: Menu.Root,
@@ -115,7 +125,7 @@ export const DaisyDropdownMenu = {
 	Item: Menu.Item,
 	Separator: Menu.Separator,
 	GroupLabel: Menu.GroupLabel,
-} as const;
+};
 
 // Export individual MenuItem type for external use
 export type { DaisyDropdownMenuItem as MenuItem };

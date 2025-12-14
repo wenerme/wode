@@ -1,7 +1,7 @@
 import * as console from 'node:console';
 import { fieldPatternMatcher } from '@casl/ability';
+import { buildUserAbility } from '#/casl/casl';
 import { expect, test } from 'vitest';
-import { buildUserAbility } from '@/casl/casl';
 
 test('casl', () => {
 	console.log(fieldPatternMatcher<string>(['/a/*', '/about/?'])('/about'));

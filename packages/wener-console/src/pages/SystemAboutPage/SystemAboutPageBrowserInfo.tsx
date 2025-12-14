@@ -14,14 +14,11 @@ export const SystemAboutPageBrowserInfo: FC = () => {
 		timezone: Intl.DateTimeFormat?.().resolvedOptions?.()?.timeZone,
 	});
 	const [state, update] = useImmer(getState);
-	useWindowEventListener(
-		{
-			resize: () => {
-				update(getState());
-			},
+	useWindowEventListener({
+		resize: () => {
+			update(getState());
 		},
-		[],
-	);
+	});
 	const { colorTheme, devicePixelRatio, reducedTransparency, reducedData, reducedMotion, contrast } =
 		useUserAgentPreferences();
 	return (

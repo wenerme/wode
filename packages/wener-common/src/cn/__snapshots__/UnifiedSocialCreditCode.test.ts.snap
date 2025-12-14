@@ -45,3 +45,26 @@ exports[`UnifiedSocialCreditCode > should parse 2`] = `
   "valid": true,
 }
 `;
+
+exports[`UnifiedSocialCreditCode > should parse 3`] = `
+{
+  "adminDivisionCode": "310120",
+  "checkDigit": "0",
+  "codes": [
+    "9",
+    "1",
+    "310120",
+    "MAEXK9GG9",
+    "0",
+  ],
+  "entityCategoryCode": "1",
+  "names": [
+    "工商",
+    "企业",
+  ],
+  "organizationCode": "MAEXK9GG9",
+  "raw": "91310120MAEXK9GG90",
+  "registrationAuthorityCode": "9",
+  "valid": false,
+}
+`;

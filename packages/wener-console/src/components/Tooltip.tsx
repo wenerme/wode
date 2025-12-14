@@ -1,5 +1,5 @@
 import type { FC, ReactElement, ReactNode } from 'react';
-import { Tooltip as BaseTooltip } from '@base-ui-components/react';
+import { Tooltip as BaseTooltip } from '@base-ui/react/tooltip';
 import { cn } from '../utils/cn';
 
 export namespace Tooltip {

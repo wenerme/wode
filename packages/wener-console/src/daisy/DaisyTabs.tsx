@@ -1,5 +1,5 @@
 import React, { Fragment, type ComponentProps, type FC, type ReactNode } from 'react';
-import { Tabs } from '@base-ui-components/react/tabs';
+import { Tabs } from '@base-ui/react/tabs';
 import { cn } from '@wener/console';
 import { Daisy } from '@wener/console/daisy';
 import { flexRender, type FlexRenderable } from '@wener/reaction';

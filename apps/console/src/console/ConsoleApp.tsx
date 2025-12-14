@@ -14,14 +14,14 @@ import { createUrqlClient } from '@wener/console/urql';
 import { WindowHost } from '@wener/console/window';
 import { ErrorSuspenseBoundary } from '@wener/reaction';
 import { getGlobalStates } from '@wener/utils';
+import { ConsoleLayout } from '#/console/components/ConsoleLayout';
+import { loadModule } from '#/console/loadModule';
+import { ReactQueryClientProvider } from '#/console/ReactQueryClientProvider';
+import { AuthActions } from '#/foundation/Auth/AuthActions';
+import { UserActions } from '#/foundation/User/UserActions';
+import schema from '#/gql/urql.schema.json' with { type: 'json' };
+import { resolveResourceSchema } from '#/resource';
 import { Provider as UrqlProvider } from 'urql';
-import { ConsoleLayout } from '@/console/components/ConsoleLayout';
-import { loadModule } from '@/console/loadModule';
-import { ReactQueryClientProvider } from '@/console/ReactQueryClientProvider';
-import { AuthActions } from '@/foundation/Auth/AuthActions';
-import { UserActions } from '@/foundation/User/UserActions';
-import schema from '@/gql/urql.schema.json' with { type: 'json' };
-import { resolveResourceSchema } from '@/resource';
 import { type LoginFormData } from '../../../../packages/wener-console/src/pages';
 
 export const ConsoleApp = () => {
