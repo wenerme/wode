@@ -90,7 +90,11 @@ export namespace ReactHookForm {
 			dirty?: boolean;
 		}
 	> = ({ className, dirty = true, children, ...props }) => {
-		const { formState } = useFormContext();
+		let context = useFormContext();
+		if (!context) {
+			return null;
+		}
+		const { formState } = context || {};
 		const { isSubmitting, isDirty, disabled } = formState;
 		let mute = disabled || isSubmitting;
 

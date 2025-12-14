@@ -3,7 +3,7 @@ export function timeout<T = any>(
 	ms: number,
 ): Promise<T> {
 	const error = new TimeoutError();
-	let timeout: any;
+	let timeout: ReturnType<typeof setTimeout>;
 	let ac: AbortController | undefined;
 	if (typeof pending === 'function') {
 		ac = new AbortController();

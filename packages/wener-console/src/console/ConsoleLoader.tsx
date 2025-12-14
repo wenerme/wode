@@ -19,7 +19,7 @@ enum ServiceState {
 	Error = 'Error',
 }
 
-let _state = ServiceState.New;
+
 
 export type ConsoleLoaderProps = {
 	/**
@@ -44,15 +44,16 @@ export const ConsoleLoader: FC<ConsoleLoaderProps> = ({
 	useDebugRender(`ConsoleAppContent`);
 	const log = useLogger('ConsoleContent');
 	const [state, _setState] = useState(ServiceState.New);
+	const stateRef = React.useRef(state);
 
 	const setState = (s: ServiceState) => {
 		// fixme avoid restrict mode rerender
-		_state = s;
+		stateRef.current = s;
 		_setState(s);
 	};
 
 	useAsyncEffect(async () => {
-		if (_state !== 'New') {
+		if (stateRef.current !== 'New') {
 			log(`Skip reinit APP`);
 			return;
 		}
@@ -88,7 +89,7 @@ export const ConsoleLoader: FC<ConsoleLoaderProps> = ({
 		if (isDev()) {
 			log(`Final Store`, moduleService.store.getState());
 		}
-	}, [state]);
+	}, []);
 
 	if (!router) {
 		log(`Router not ready: ${state}`);

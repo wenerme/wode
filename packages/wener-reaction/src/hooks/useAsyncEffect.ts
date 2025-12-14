@@ -13,10 +13,20 @@ export function useAsyncEffect(
 	useEffect(() => {
 		const abortController = new AbortController();
 		abortRef.current = () => abortController.abort();
-		effect({ signal: abortController.signal }).catch((e) => {
-			console.trace(`uncaught useAsyncEffect error`, deps, e);
-		});
-		return () => abortController.abort();
+		let cleanup: void | (() => void);
+		effect({ signal: abortController.signal })
+			.then((rs) => {
+				if (typeof rs === 'function') {
+					cleanup = rs;
+				}
+			})
+			.catch((e) => {
+				console.trace(`uncaught useAsyncEffect error`, deps, e);
+			});
+		return () => {
+			cleanup?.();
+			abortController.abort();
+		};
 	}, deps);
 	return { abort: abortRef.current ?? (() => undefined) };
 }

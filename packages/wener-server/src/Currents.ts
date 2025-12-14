@@ -2,6 +2,11 @@ import { AsyncLocalStorage } from 'node:async_hooks';
 import { Logger, type Type } from '@nestjs/common';
 import { Errors } from '@wener/utils';
 
+/**
+ * Async Context Storage
+ *
+ * Wrapper for `AsyncLocalStorage` to provide a request-scoped key-value store.
+ */
 export class Currents {
 	static readonly #storage = new AsyncLocalStorage<Map<any, any>>();
 

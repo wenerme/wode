@@ -2,6 +2,9 @@ import 'reflect-metadata';
 import { getOwnMetadata } from 'reflect-metadata/no-conflict';
 import { computeIfAbsent, Errors } from '@wener/utils';
 
+/**
+ * Decorator to declare features for a class
+ */
 export const Feature = (o: string[] | FeatureOptions): ClassDecorator => {
 	if (Array.isArray(o)) {
 		o = { features: o };
@@ -9,6 +12,9 @@ export const Feature = (o: string[] | FeatureOptions): ClassDecorator => {
 	return Reflect.metadata(FeatureKey, o);
 };
 
+/**
+ * Helper to check features on a class
+ */
 export class Features {
 	private static cache = new Map<Function, any>();
 

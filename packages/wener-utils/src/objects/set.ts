@@ -13,7 +13,9 @@ export function set<T extends object, V>(obj: T, key: ObjectKey | ObjectPath, va
 	let x, k;
 	while (i < len) {
 		k = path[i++];
+		// Security: Prevent prototype pollution
 		if (k === '__proto__' || k === 'constructor' || k === 'prototype') break;
+
 		// noinspection PointlessArithmeticExpressionJS
 		current = current[k] =
 			i === len
@@ -22,7 +24,14 @@ export function set<T extends object, V>(obj: T, key: ObjectKey | ObjectPath, va
 					: val
 				: typeof (x = current[k]) === typeof path
 					? x
-					: // @ts-expect-error hacky type check
+					: // Determine if we should create an Object or an Array for the next level
+						// If the next key is NOT an integer-like index, or contains a dot, create an Object.
+						// Otherwise, create an Array.
+						//
+						// path[i] * 0 !== 0 checks if it is NOT a number (NaN * 0 is NaN).
+						// !!~('' + path[i]).indexOf('.') checks if it contains a dot.
+						//
+						// @ts-expect-error hacky type check from dset
 						path[i] * 0 !== 0 || !!~('' + path[i]).indexOf('.') // eslint-disable-line
 						? {}
 						: [];

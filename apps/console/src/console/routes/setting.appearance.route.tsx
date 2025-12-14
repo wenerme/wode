@@ -1,9 +1,9 @@
 import React from 'react';
 import type { RouteObject } from 'react-router-dom';
-import { AppearanceSettingPage } from '../../../../../packages/wener-console/src/pages';
+import { AppearanceSettingPage } from '@wener/console/pages';
 
 export default {
-	element: <AppearanceSettingPage />,
+	element: <AppearanceSettingPage.Composite />,
 	handle: {
 		title: '显示设置',
 	},

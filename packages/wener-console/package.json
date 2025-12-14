@@ -1,6 +1,6 @@
 {
 	"name": "@wener/console",
-	"version": "2.0.11",
+	"version": "3.0.2",
 	"type": "module",
 	"description": "Base console UI toolkit",
 	"repository": {
@@ -11,9 +11,6 @@
 	"homepage": "https://github.com/wenerme/wener/tree/main/packages/wener-console",
 	"author": "wener",
 	"license": "MIT",
-	"imports": {
-		"#/*": "./src/*"
-	},
 	"exports": {
 		".": "./src/index.ts",
 		"./buildinfo": "./src/buildinfo/index.ts",

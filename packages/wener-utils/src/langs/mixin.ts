@@ -1,79 +1,60 @@
-/**
- * Helper type to convert a union to an intersection.
- *
- * @internal
- */
-type UnionToIntersection<T> = (T extends any ? (x: T) => any : never) extends (x: infer R) => any ? R : never;
+import type { Constructor } from '../types';
 
 /**
- * Constructor function, that creates a new instance of the given type.
- *
- * @typeParam T The type of the instance to create.
- * @example ```ts
- * function Walkable<TBase extends MixinConstructor<Positionable>>(Base: TBase) {
- * ··return class Walkable extends Base {
- * ····public forward() { this.x++; }
- * ····public backward() { this.x--; }
- * ··};
- * }
- * ```
- * @example ```ts
- * function Loggable(Base: MixinConstructor) {
- * ··return class Loggable extends Base {
- * ····public log(message: string) { throw new Error(404); }
- * ··};
- * }
- * ```
+ * Mixin function type - takes a base class and returns an extended class
  */
-export type MixinConstructor<T = {}> = new (...args: any[]) => T;
+export type MixinFn<TBase extends Constructor = Constructor, TResult extends TBase = TBase> = (Base: TBase) => TResult;
 
-/**
- * Function that applies a mixin to a given base class.
- *
- * @typeParam T The type of the base class.
- * @typeParam R The type of the returned class.
- */
-export type MixinFunction<T extends MixinConstructor = MixinConstructor, R extends T = T & MixinConstructor> = (
+export function mixin<T extends Constructor>(Base: T): T;
+export function mixin<T extends Constructor, M1 extends MixinFn<T>>(Base: T, m1: M1): ReturnType<M1>;
+export function mixin<T extends Constructor, M1 extends MixinFn<T>, M2 extends MixinFn<ReturnType<M1>>>(
 	Base: T,
-) => R;
+	m1: M1,
+	m2: M2,
+): ReturnType<M2>;
+export function mixin<
+	T extends Constructor,
+	M1 extends MixinFn<T>,
+	M2 extends MixinFn<ReturnType<M1>>,
+	M3 extends MixinFn<ReturnType<M2>>,
+>(Base: T, m1: M1, m2: M2, m3: M3): ReturnType<M3>;
+export function mixin<
+	T extends Constructor,
+	M1 extends MixinFn<T>,
+	M2 extends MixinFn<ReturnType<M1>>,
+	M3 extends MixinFn<ReturnType<M2>>,
+	M4 extends MixinFn<ReturnType<M3>>,
+>(Base: T, m1: M1, m2: M2, m3: M3, m4: M4): ReturnType<M4>;
+export function mixin<
+	T extends Constructor,
+	M1 extends MixinFn<T>,
+	M2 extends MixinFn<ReturnType<M1>>,
+	M3 extends MixinFn<ReturnType<M2>>,
+	M4 extends MixinFn<ReturnType<M3>>,
+	M5 extends MixinFn<ReturnType<M4>>,
+>(Base: T, m1: M1, m2: M2, m3: M3, m4: M4, m5: M5): ReturnType<M5>;
+export function mixin<
+	T extends Constructor,
+	M1 extends MixinFn<T>,
+	M2 extends MixinFn<ReturnType<M1>>,
+	M3 extends MixinFn<ReturnType<M2>>,
+	M4 extends MixinFn<ReturnType<M3>>,
+	M5 extends MixinFn<ReturnType<M4>>,
+	M6 extends MixinFn<ReturnType<M5>>,
+>(Base: T, m1: M1, m2: M2, m3: M3, m4: M4, m5: M5, m6: M6): ReturnType<M6>;
 
 /**
- * The return type of the mixin function.
- *
- * @typeParam T The type of the base class.
- * @typeParam M The type of the mixin functions.
- */
-export type MixinReturnValue<T extends MixinConstructor, M extends MixinFunction<T, any>[]> = UnionToIntersection<
-	T | { [K in keyof M]: M[K] extends MixinFunction<any, infer U> ? U : never }[number]
->;
-
-/**
- * The instance created by a mixin function.
- *
- * @typeParam F The type of the mixin function.
- */
-export type MixinInstance<F extends MixinFunction<any>> =
-	F extends MixinFunction<MixinConstructor<any>, infer R> ? InstanceType<R> : never;
-
-/**
- * Applies the given mixins to the a common base class.
+ * Applies the given mixins to a common base class.
  *
  * @param Base The base class to apply the mixins to.
- * @param mixins The mixins to apply. All mixins must extend a common base class or an empty class.
+ * @param mixins The mixins to apply sequentially.
  * @returns A class constructor with all mixins applied.
  *
- * @typeParam T The type of the base class.
- * @typeParam M The type of the mixin functions.
- *
- * @example ```ts
- * class Dog extends mixin(Animal, FourLegged, Carnivore, PackHunting, Barking, Domesticated) {}
+ * @example
+ * ```ts
+ * class Dog extends mixin(Animal, FourLegged, Carnivore) {}
  * ```
  */
-export function mixin<T extends MixinConstructor, M extends MixinFunction<T, any>[]>(
-	Base: T,
-	...mixins: M
-): MixinReturnValue<T, M> {
-	return mixins.reduce((mix, applyMixin) => applyMixin(mix), Base) as MixinReturnValue<T, M>;
+export function mixin<T extends Constructor>(Base: T, ...mixins: MixinFn<any>[]): Constructor {
+	return mixins.reduce((mix, applyMixin) => applyMixin(mix), Base as Constructor);
 }
-
-// https://github.com/1nVitr0/lib-ts-mixin-extended

@@ -11,7 +11,6 @@ export { UpdateNotification } from './UpdateNotification';
 export { WebVitals } from './WebVitals';
 export { Zoom } from './Zoom/Zoom';
 export { defineComponent, useComponent, ComponentProvider } from './ComponentProvider';
-// export { usePortal, PortalProvider, Portal } from './PortalContainer';
 export { LeftContentRightLayout } from './LeftContentRightLayout';
 export { OverlayScrollbar } from './OverlayScrollbar';
 export { TitleTabLayout, type TitleTabContentItem } from './TitleTabLayout';
@@ -19,7 +18,6 @@ export { TitleTabList, getTitleTabItemKey, type TitleTabItem } from './TitleTabL
 export { ActiveToggleIcon, type ActiveToggleIconProps } from './ActiveToggleIcon';
 export { Link, type LinkProps } from './Link';
 export { ErrorSuspenseBoundary } from './ErrorSuspenseBoundary';
-// export { LeftSideMenuBarLayout } from './IconSidebarLayout';
 export { NavLink } from './links';
 
 export { DockLayout } from './DockLayout/DockLayout';
@@ -32,3 +30,4 @@ export {
 
 export { Icon, type IconProps } from './icons/Icon';
 export { IconMenuSidebarLayout } from './IconSidebarLayout/IconMenuSidebarLayout';
+export { renderSettingFormFromSchema } from './renderSettingFormFromSchema';
