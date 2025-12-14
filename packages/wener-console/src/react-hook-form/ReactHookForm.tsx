@@ -70,11 +70,7 @@ export namespace ReactHookForm {
 		);
 	}
 
-	export const Form: FC<ComponentPropsWithoutRef<'form'> & { asChild?: boolean }> = ({
-		asChild,
-		children,
-		...props
-	}) => {
+	export const Form: FC<ComponentPropsWithoutRef<'form'>> = ({ children, ...props }) => {
 		const { handleSubmit } = useFormContext();
 		const { onValid, onInvalid } = Errors.BadRequest.require(useContext(Context), 'ReactHookForm: context not exists');
 		return (

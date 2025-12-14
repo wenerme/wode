@@ -45,16 +45,16 @@
 	},
 	"dependencies": {
 		"@standard-schema/spec": "^1.0.0",
-		"@wener/utils": "workspace:^1.1.53",
+		"@wener/utils": "workspace:^1.1.54",
 		"date-fns": "^4.1.0",
-		"es-toolkit": "^1.42.0",
+		"es-toolkit": "^1.43.0",
 		"std-env": "^3.10.0",
 		"ts-pattern": "^5.9.0"
 	},
 	"devDependencies": {
-		"@orpc/client": "^1.11.3",
-		"@orpc/contract": "^1.11.3",
-		"@orpc/openapi-client": "^1.11.3",
+		"@orpc/client": "^1.12.3",
+		"@orpc/contract": "^1.12.3",
+		"@orpc/openapi-client": "^1.12.3",
 		"@sinclair/typebox": "^0.34.41",
 		"@sinclair/typebox-codegen": "^0.11.1",
 		"@types/argon2-browser": "^1.18.4",
@@ -71,7 +71,7 @@
 		"dayjs": "^1.11.19",
 		"decimal.js": "^10.6.0",
 		"emittery": "^1.2.0",
-		"zod": "^4.1.12"
+		"zod": "^4.1.13"
 	},
 	"publishConfig": {
 		"exports": {

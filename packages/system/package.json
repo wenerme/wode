@@ -75,12 +75,12 @@
 	},
 	"devDependencies": {
 		"@types/jsdom": "^27.0.0",
-		"@types/react": "^19.2.6",
+		"@types/react": "^19.2.7",
 		"@types/react-dom": "^19.2.3",
-		"@wener/utils": "workspace:^1.1.53",
-		"jsdom": "^27.2.0",
-		"react": "^19.2.0",
-		"react-dom": "^19.2.0"
+		"@wener/utils": "workspace:^1.1.54",
+		"jsdom": "^27.3.0",
+		"react": "^19.2.3",
+		"react-dom": "^19.2.3"
 	},
 	"publishConfig": {
 		"registry": "https://registry.npmjs.org",

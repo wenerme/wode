@@ -3,11 +3,7 @@
 		"moduleResolution": "bundler",
 		"target": "ESNext",
 		"module": "ESNext",
-		"lib": [
-			"dom",
-			"dom.iterable",
-			"ESNext"
-		],
+		"lib": ["dom", "dom.iterable", "ESNext"],
 		"strict": true,
 		"sourceMap": true,
 		"skipLibCheck": true,
@@ -27,13 +23,11 @@
 		"outDir": "lib",
 		"jsx": "react-jsx",
 		"baseUrl": ".",
-		"rootDir": "./src"
+		"rootDir": "./src",
+		"paths": {
+			"#/*": ["./src/*"]
+		}
 	},
-	"exclude": [
-		"node_modules"
-	],
-	"include": [
-		"next-env.d.ts",
-		"src"
-	]
+	"exclude": ["node_modules"],
+	"include": ["next-env.d.ts", "src"]
 }

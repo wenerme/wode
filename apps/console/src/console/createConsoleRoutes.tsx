@@ -5,8 +5,8 @@ import { Navigate } from 'react-router-dom';
 import { isDev } from '@wener/console';
 import { lazyRoute } from '@wener/console/router';
 import { PageErrorState } from '@wener/console/web';
-import { can } from '@/casl';
-import { SiteModules } from '@/console/modules/user.core/SiteModules';
+import { can } from '#/casl';
+import { SiteModules } from '#/console/modules/user.core/SiteModules';
 
 export function createConsoleRoutes(): RouteObject[] {
 	const routes: RouteObject[] = [

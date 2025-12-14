@@ -4,9 +4,9 @@ import {
 	RefreshAccessTokenMutation,
 	SignInByPasswordMutation,
 	SignOutMutation,
-} from '@/foundation/Auth/query';
-import { getFragmentData } from '@/gql';
-import type { SignInByPasswordInput } from '@/gql/graphql';
+} from '#/foundation/Auth/query';
+import { getFragmentData } from '#/gql';
+import type { SignInByPasswordInput } from '#/gql/graphql';
 
 export namespace AuthActions {
 	export async function refreshAccessToken({

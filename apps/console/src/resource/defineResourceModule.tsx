@@ -1,4 +1,4 @@
-import type { ResourceSchemaDef } from '@/resource/defineResource';
+import type { ResourceSchemaDef } from '#/resource/defineResource';
 
 type DefineResourceModuleOptions = {
 	name: string;

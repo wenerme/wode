@@ -12,17 +12,17 @@
 	"dependencies": {
 		"@wailsio/runtime": "latest",
 		"@wener/common": "workspace:^2.0.2",
-		"@wener/console": "workspace:^2.0.6",
-		"@wener/reaction": "workspace:^1.2.26",
-		"@wener/utils": "workspace:^1.1.53",
-		"react": "^19.2.0",
-		"react-dom": "^19.2.0"
+		"@wener/console": "workspace:^2.0.11",
+		"@wener/reaction": "workspace:^1.2.27",
+		"@wener/utils": "workspace:^1.1.54",
+		"react": "^19.2.3",
+		"react-dom": "^19.2.3"
 	},
 	"devDependencies": {
-		"@tailwindcss/vite": "^4.1.17",
-		"@types/react": "^19.2.6",
+		"@tailwindcss/vite": "^4.1.18",
+		"@types/react": "^19.2.7",
 		"@types/react-dom": "^19.2.3",
-		"@vitejs/plugin-react": "^5.1.1",
-		"vite": "^7.2.4"
+		"@vitejs/plugin-react": "^5.1.2",
+		"vite": "^7.2.7"
 	}
 }

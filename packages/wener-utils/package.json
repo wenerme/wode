@@ -11,6 +11,9 @@
 	"homepage": "https://github.com/wenerme/wener/tree/main/packages/wener-utils",
 	"author": "wener",
 	"license": "MIT",
+	"imports": {
+		"#/*": "./src/*"
+	},
 	"exports": {
 		".": "./src/index.ts",
 		"./logger": "./src/logger/index.ts",
@@ -50,7 +53,7 @@
 		"https-proxy-agent": "^7.0.6",
 		"node-fetch": "^3.3.2",
 		"undici": "^7.16.0",
-		"zod": "^4.1.12"
+		"zod": "^4.1.13"
 	},
 	"publishConfig": {
 		"registry": "https://registry.npmjs.org",

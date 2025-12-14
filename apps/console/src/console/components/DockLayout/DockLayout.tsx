@@ -10,11 +10,11 @@ import { getUserStore } from '@wener/console/console';
 import { getUserAction } from '@wener/console/console/user';
 import { usePopover } from '@wener/console/floating';
 import { getRootWindow, Window, type ReactWindow } from '@wener/console/window';
+import { isDev } from '#/const';
 import clsx from 'clsx';
 import { useStore } from 'zustand';
 import { shallow } from 'zustand/shallow';
 import { useStoreWithEqualityFn } from 'zustand/traditional';
-import { isDev } from '@/const';
 import { DockClock } from './DockClock';
 import { DockUserAvatar } from './DockUserAvatar';
 

@@ -1,6 +1,5 @@
 import React, { type FC, type ReactNode } from 'react';
 import styled from '@emotion/styled';
-import { darken } from 'polished';
 
 const cbox = (props: any) => `
 position: absolute;
@@ -9,6 +8,7 @@ left: 50%;
 transform: translate(-50%, -50%);
 `;
 
+// background-color: ${darken(0.2, color)};
 const BoxShuffleContainer = styled.div<{ size?: string; colors?: string[] }>`
 	--size: ${(props: BoxShuffleProps) => props.size || '3em'};
 	position: relative;
@@ -138,10 +138,10 @@ const BoxShuffleContainer = styled.div<{ size?: string; colors?: string[] }>`
       .box{
         background-color: ${color};
         &:before{
-          background-color: ${darken(0.2, color)};
+          background-color: color-mix(in oklab, ${color}, black 20%);
         }
         &:after{
-          background-color: ${darken(0.1, color)};
+          background-color: color-mix(in oklab, ${color}, black 10%);
         }
       }
     }

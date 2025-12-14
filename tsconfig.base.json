@@ -5,12 +5,7 @@
 		// Module & Baseline
 		"module": "ESNext",
 		"target": "ESNext",
-		"lib": [
-			"dom",
-			"dom.iterable",
-			"WebWorker",
-			"esnext"
-		],
+		"lib": ["dom", "dom.iterable", "WebWorker", "esnext"],
 		"resolveJsonModule": true,
 		"esModuleInterop": true,
 		"allowJs": true,
@@ -31,17 +26,8 @@
 		"baseUrl": ".",
 		"rootDir": "."
 	},
-	"include": [
-		"*.ts",
-		"src/**/*.ts",
-		"src/**/*.tsx",
-		".storybook/*"
-	],
-	"exclude": [
-		"node_modules",
-		"dist",
-		"build"
-	],
+	"include": ["*.ts", "src/**/*.ts", "src/**/*.tsx", ".storybook/*"],
+	"exclude": ["node_modules", "dist", "build"],
 	"ts-node": {
 		"transpileOnly": true,
 		"swc": true,
