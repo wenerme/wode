@@ -1,4 +1,4 @@
-import { getAppContext } from './app.context';
+import { getAppContext } from './AppContext';
 
 export type Token<T> = symbol & { get(ctx?: Context): T | undefined };
 

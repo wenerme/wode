@@ -19,6 +19,7 @@ function isClassComponent(component: any) {
 function isExoticComponent(component: any) {
 	return (
 		typeof component === 'object'
+		&& component
 		&& typeof component.$$typeof === 'symbol'
 		&& ['react.memo', 'react.forward_ref'].includes(component.$$typeof.description)
 	);

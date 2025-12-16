@@ -4,14 +4,14 @@ packages:
 - 'components/*'
 - wode-assistant/frontend
 
-onlyBuiltDependencies:
-- '@swc/core'
-- argon2
-- bcrypt
-- better-sqlite3
-- canvas
-- esbuild
-- sharp
+allowBuilds:
+  '@swc/core': true
+  argon2: true
+  bcrypt: true
+  better-sqlite3: true
+  canvas: true
+  esbuild: true
+  sharp: true
 
 ignoredOptionalDependencies:
 - fsevents

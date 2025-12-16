@@ -1,22 +1,14 @@
 {
+	"extends": ["../../tsconfig.base.json"],
 	"compilerOptions": {
 		"lib": ["dom", "dom.iterable", "WebWorker", "esnext.full"],
 		"target": "es2018",
 		"allowJs": true,
-		"skipLibCheck": true,
-		"strict": true,
 		"emitDecoratorMetadata": true,
 		"experimentalDecorators": true,
-		"verbatimModuleSyntax": true,
 		"forceConsistentCasingInFileNames": true,
 		"strictNullChecks": true,
-		"noEmit": true,
 		"incremental": true,
-		"esModuleInterop": true,
-		"module": "esnext",
-		"moduleResolution": "bundler",
-		"resolveJsonModule": true,
-		"isolatedModules": true,
 		"jsx": "react-jsx",
 		"baseUrl": ".",
 		"paths": {

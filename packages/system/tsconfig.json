@@ -1,34 +1,21 @@
 {
-  "compilerOptions": {
-    "moduleResolution": "node",
-    "target": "ESNext",
-    "module": "ESNext",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "ES2018"
-    ],
-    "strict": true,
-    "sourceMap": true,
-    "skipLibCheck": true,
-    "declaration": false,
-    "esModuleInterop": true,
-    "importHelpers": true,
-    "allowSyntheticDefaultImports": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "noImplicitAny": true,
-    "noImplicitReturns": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "pretty": true,
-    "removeComments": false,
-    "stripInternal": true
-  },
-  "exclude": [
-    "node_modules"
-  ],
-  "include": [
-    "src"
-  ]
+	"extends": ["../../tsconfig.base.json"],
+	"compilerOptions": {
+		"moduleResolution": "node",
+		"lib": ["dom", "dom.iterable", "ES2018"],
+		"sourceMap": true,
+		"declaration": false,
+		"importHelpers": true,
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
+		"noImplicitAny": true,
+		"noImplicitReturns": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"pretty": true,
+		"removeComments": false,
+		"stripInternal": true
+	},
+	"exclude": ["node_modules"],
+	"include": ["src"]
 }

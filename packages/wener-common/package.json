@@ -18,6 +18,11 @@
 		"./data": "./src/data/index.ts",
 		"./dayjs": "./src/dayjs/index.ts",
 		"./decimal": "./src/decimal/index.ts",
+		"./fs": "./src/fs/index.ts",
+		"./fs/orpc": "./src/fs/orpc/index.ts",
+		"./fs/orpc/server": "./src/fs/orpc/server/index.ts",
+		"./fs/s3": "./src/fs/s3/index.ts",
+		"./fs/server": "./src/fs/server/index.ts",
 		"./jsonschema": "./src/jsonschema/index.ts",
 		"./meta": "./src/meta/index.ts",
 		"./orpc": "./src/orpc/index.ts",
@@ -44,21 +49,23 @@
 		"zod": "*"
 	},
 	"dependencies": {
-		"@standard-schema/spec": "^1.0.0",
-		"@wener/utils": "workspace:^1.1.54",
+		"@standard-schema/spec": "^1.1.0",
+		"@wener/utils": "workspace:^1.1.56",
 		"date-fns": "^4.1.0",
 		"es-toolkit": "^1.43.0",
 		"std-env": "^3.10.0",
 		"ts-pattern": "^5.9.0"
 	},
 	"devDependencies": {
-		"@orpc/client": "^1.12.3",
-		"@orpc/contract": "^1.12.3",
-		"@orpc/openapi-client": "^1.12.3",
+		"@orpc/client": "^1.13.0",
+		"@orpc/contract": "^1.13.0",
+		"@orpc/openapi-client": "^1.13.0",
 		"@sinclair/typebox": "^0.34.41",
 		"@sinclair/typebox-codegen": "^0.11.1",
 		"@types/argon2-browser": "^1.18.4",
 		"@types/bcrypt": "^6.0.0",
+		"@types/micromatch": "^4.0.10",
+		"@types/mime-types": "^3.0.1",
 		"ajv-formats": "^3.0.1",
 		"ajv-i18n": "^4.2.0",
 		"ajv-keywords": "^5.1.0",
@@ -71,7 +78,11 @@
 		"dayjs": "^1.11.19",
 		"decimal.js": "^10.6.0",
 		"emittery": "^1.2.0",
-		"zod": "^4.1.13"
+		"micromatch": "^4.0.8",
+		"mime-types": "^3.0.2",
+		"pathe": "^2.0.3",
+		"s3mini": "^0.8.1",
+		"zod": "^4.2.1"
 	},
 	"publishConfig": {
 		"exports": {
@@ -98,6 +109,26 @@
 			"./decimal": {
 				"types": "./src/decimal/index.ts",
 				"default": "./lib/decimal/index.js"
+			},
+			"./fs": {
+				"types": "./src/fs/index.ts",
+				"default": "./lib/fs/index.js"
+			},
+			"./fs/orpc": {
+				"types": "./src/fs/orpc/index.ts",
+				"default": "./lib/fs/orpc/index.js"
+			},
+			"./fs/orpc/server": {
+				"types": "./src/fs/orpc/server/index.ts",
+				"default": "./lib/fs/orpc/server/index.js"
+			},
+			"./fs/s3": {
+				"types": "./src/fs/s3/index.ts",
+				"default": "./lib/fs/s3/index.js"
+			},
+			"./fs/server": {
+				"types": "./src/fs/server/index.ts",
+				"default": "./lib/fs/server/index.js"
 			},
 			"./jsonschema": {
 				"types": "./src/jsonschema/index.ts",

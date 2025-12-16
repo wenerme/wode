@@ -12,9 +12,9 @@
 	"dependencies": {
 		"@wailsio/runtime": "latest",
 		"@wener/common": "workspace:^2.0.2",
-		"@wener/console": "workspace:^2.0.11",
+		"@wener/console": "workspace:^3.0.2",
 		"@wener/reaction": "workspace:^1.2.27",
-		"@wener/utils": "workspace:^1.1.54",
+		"@wener/utils": "workspace:^1.1.56",
 		"react": "^19.2.3",
 		"react-dom": "^19.2.3"
 	},
@@ -23,6 +23,6 @@
 		"@types/react": "^19.2.7",
 		"@types/react-dom": "^19.2.3",
 		"@vitejs/plugin-react": "^5.1.2",
-		"vite": "^7.2.7"
+		"vite": "^7.3.0"
 	}
 }

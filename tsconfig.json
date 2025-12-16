@@ -7,6 +7,7 @@
 			"dom.iterable",
 			"ESNext"
 		],
+		"composite": true,
 		"moduleResolution": "bundler",
 		"allowImportingTsExtensions": false,
 		"verbatimModuleSyntax": true,
@@ -45,9 +46,6 @@
 			"path": "./apps/server"
 		},
 		{
-			"path": "./components/wener-tiptap"
-		},
-		{
 			"path": "./packages/common"
 		},
 		{
@@ -66,10 +64,10 @@
 			"path": "./packages/wener-miniquery"
 		},
 		{
-			"path": "./packages/wener-nestjs"
+			"path": "./packages/wener-reaction"
 		},
 		{
-			"path": "./packages/wener-reaction"
+			"path": "./packages/wener-server"
 		},
 		{
 			"path": "./packages/wener-utils"

@@ -1,4 +1,3 @@
-import type { Readable, Writable } from 'node:stream';
 import type { FileKind, FileUrlOptions } from './types';
 
 // Base operation options
@@ -45,9 +44,11 @@ export type CreateWriteStreamOptions = OperationOptions & {
 	overwrite?: boolean;
 };
 export type StatOptions = OperationOptions & {};
-type WritableData = string | Buffer | ArrayBuffer | Readable | ArrayBufferView;
+
+type WritableData = string | ArrayBuffer | ArrayBufferView | ReadableStream;
+
 /**
- * use IFileSystem to avoid conflict with global `FileSystem` interface
+ * Universal file system interface (browser & server compatible)
  */
 export type IFileSystem = {
 	readdir(dir: string, options?: ReaddirOptions): Promise<IFileStat[]>;
@@ -60,44 +61,33 @@ export type IFileSystem = {
 	rename(oldPath: string, newPath: string, options?: RenameOptions): Promise<void>;
 	exists(path: string): Promise<boolean>;
 	copy(src: string, dest: string, options?: CopyOptions): Promise<void>;
-	/**
-	 * optional, may not be implemented
-	 *
-	 * @deprecated use `createReadableStream` instead
-	 */
-	createReadStream?(path: string, options?: CreateReadStreamOptions): Readable;
-	/**
-	 * optional, may not be implemented
-	 *
-	 * @deprecated use `createWritableStream` instead
-	 */
-	createWriteStream?(path: string, options?: CreateWriteStreamOptions): Writable;
 
 	getUrl?(path: IFileStat | string, options?: FileUrlOptions): string | undefined;
 
-	// createUrl?(path: IFileStat, options?: FileUrlOptions): Promise<string | undefined>;
+	createReadableStream?(path: string, options?: CreateReadStreamOptions): ReadableStream;
+	createWritableStream?(path: string, options?: CreateWriteStreamOptions): WritableStream;
+};
 
-	/**
-	 * optional, may not be implemented
-	 */
-	createReadableStream(path: string, options?: CreateReadStreamOptions): ReadableStream;
-	/**
-	 * optional, may not be implemented
-	 */
-	createWritableStream(path: string, options?: CreateWriteStreamOptions): WritableStream;
+/**
+ * Server/Node.js specific file system interface with stream support
+ */
+export type IServerFileSystem = IFileSystem & {
+	createReadStream(path: string, options?: CreateReadStreamOptions): import('node:stream').Readable;
+	createWriteStream(path: string, options?: CreateWriteStreamOptions): import('node:stream').Writable;
+	writeFile(
+		path: string,
+		data: WritableData | Buffer | import('node:stream').Readable,
+		options?: WriteFileOptions,
+	): Promise<void>;
 };
 
 export type IFileStat = {
 	/**
 	 * parent path
-	 *
-	 * - redundant, but useful for some operations
 	 */
 	directory: string;
 	/**
 	 * full path
-	 *
-	 * - redundant, but useful for some operations
 	 */
 	path: string;
 	/**
@@ -109,3 +99,4 @@ export type IFileStat = {
 	meta: Record<string, any>;
 	size: number;
 };
+

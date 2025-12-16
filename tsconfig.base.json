@@ -14,13 +14,16 @@
 		"allowImportingTsExtensions": false,
 		"allowSyntheticDefaultImports": true,
 		"verbatimModuleSyntax": true,
-		"noEmit": true,
+		// composite need this
+		"noEmit": false,
 		// Best practices
 		"strict": true,
 		"skipLibCheck": true,
 		"noFallthroughCasesInSwitch": true,
 		"forceConsistentCasingInFileNames": true,
 		"isolatedModules": true,
+		"noImplicitAny": true,
+		"noImplicitReturns": true,
 		"jsx": "react-jsx",
 		//
 		"baseUrl": ".",
