@@ -48,19 +48,19 @@
 	"devDependencies": {
 		"@hono/mcp": "^0.2.2",
 		"@hono/node-server": "^1.19.7",
-		"@modelcontextprotocol/sdk": "^1.24.3",
-		"@orpc/contract": "^1.12.3",
-		"@orpc/server": "^1.12.3",
+		"@modelcontextprotocol/sdk": "^1.25.1",
+		"@orpc/contract": "^1.13.0",
+		"@orpc/server": "^1.13.0",
 		"@types/node": "^24.10.4",
-		"@wener/utils": "^1.1.54",
+		"@wener/utils": "^1.1.56",
 		"commander": "^14.0.2",
 		"consola": "^3.4.2",
 		"dotenv": "^16.6.1",
-		"esbuild": "^0.27.1",
-		"hono": "^4.11.0",
+		"esbuild": "^0.27.2",
+		"hono": "^4.11.1",
 		"ts-node": "^10.9.2",
 		"typescript": "^5.9.3",
-		"zod": "^4.1.13"
+		"zod": "^4.2.1"
 	},
 	"publishConfig": {
 		"access": "public"

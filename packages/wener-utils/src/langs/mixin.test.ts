@@ -3,9 +3,6 @@ import { mixin } from './mixin';
 
 // import type { Constructor } from '#/types';
 type Constructor<T = {}> = new (...args: any[]) => T;
-function Ent<T extends Function>(): (target: T) => void {
-	return () => {};
-}
 
 test('mixin', () => {
 	// @Ent()

@@ -1,36 +1,17 @@
 {
-  "compilerOptions": {
-    "moduleResolution": "bundler",
-    "target": "ESNext",
-    "module": "ESNext",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "ESNext"
-    ],
-    "strict": true,
-    "sourceMap": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "verbatimModuleSyntax": true,
-    "allowSyntheticDefaultImports": true,
-    "noImplicitAny": true,
-    "noImplicitReturns": true,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "pretty": true,
-    "removeComments": false,
-    "stripInternal": true,
-    "isolatedModules": true,
-    "jsx": "react-jsx",
-    "outDir": "lib",
-    "baseUrl": ".",
-    "rootDir": "./src"
-  },
-  "exclude": [
-    "node_modules"
-  ],
-  "include": [
-    "src"
-  ]
+	"extends": ["../../tsconfig.base.json"],
+	"compilerOptions": {
+		"experimentalDecorators": true,
+		"noUnusedLocals": false,
+		"noUnusedParameters": false,
+		"pretty": true,
+		"removeComments": false,
+		"stripInternal": true,
+		"jsx": "react-jsx",
+		"outDir": "lib",
+		"baseUrl": ".",
+		"rootDir": "./src"
+	},
+	"exclude": ["node_modules"],
+	"include": ["src"]
 }

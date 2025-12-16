@@ -1,0 +1,1 @@
+export { getDatabaseUrl } from './getDatabaseUrl';

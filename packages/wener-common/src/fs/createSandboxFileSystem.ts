@@ -1,5 +1,5 @@
 import { join, normalize, relative, sep } from 'pathe';
-import type { IFileStat, IFileSystem, ReadFileOptions } from './IFileSystem';
+import type { IFileStat, IFileSystem, IServerFileSystem, ReadFileOptions } from './IFileSystem';
 import { getPath } from './utils';
 
 class SandboxSecurityError extends Error {
@@ -10,20 +10,20 @@ class SandboxSecurityError extends Error {
 }
 
 export function createSandboxFileSystem(
-	fs: IFileSystem,
+	fs: IServerFileSystem,
 	basePath: string,
-): IFileSystem & {
-	fs: IFileSystem;
+): IServerFileSystem & {
+	fs: IServerFileSystem;
 	basePath: string;
 } {
 	return new SandboxFS(fs, basePath);
 }
 
-class SandboxFS implements IFileSystem {
-	fs: IFileSystem;
+class SandboxFS implements IServerFileSystem {
+	fs: IServerFileSystem;
 	basePath: string;
 
-	constructor(fs: IFileSystem, basePath: string) {
+	constructor(fs: IServerFileSystem, basePath: string) {
 		this.fs = fs;
 		this.basePath = normalize(basePath);
 	}
@@ -131,5 +131,6 @@ class SandboxFS implements IFileSystem {
 		if (this.fs.getUrl) {
 			return this.fs.getUrl(path, options);
 		}
+		return;
 	}
 }

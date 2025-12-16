@@ -1,0 +1,31 @@
+{
+  "$schema": "https://swc.rs/schema.json",
+  "sourceMaps": true,
+  "module": {
+    "type": "es6"
+  },
+  "jsc": {
+    "parser": {
+      "syntax": "typescript",
+      "decorators": true,
+      "dynamicImport": true
+    },
+    "transform": {
+      "legacyDecorator": true,
+      "decoratorMetadata": true
+    },
+		"externalHelpers": true,
+    "keepClassNames": true,
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["src/*"],
+      "#/*": ["src/*"]
+    }
+  },
+  "sourceMaps": true,
+  "exclude": ["\\.test\\.tsx?$", "\\.stories\\.tsx?$"],
+  "minify": false,
+  "env":{
+  	"targets": "maintained node versions"
+	}
+}

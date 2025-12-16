@@ -1,5 +1,5 @@
 import { MikroORM, RequestContext, type EntityManager, type TransactionOptions } from '@mikro-orm/core';
-import type { MaybePromise } from '@wener/utils';
+import type { MaybeFunction, MaybePromise } from '@wener/utils';
 import { getContext } from '../ContextProvider';
 
 /*
@@ -10,8 +10,14 @@ import { getContext } from '../ContextProvider';
 - https://github.com/vercel/next.js/issues/47494
  */
 
+let _provider = () => getContext(MikroORM);
+
+export function setMikroORM(orm: MaybeFunction<MikroORM<any>>) {
+	_provider = typeof orm === 'function' ? orm : () => orm;
+}
+
 export function getMikroORM<M extends MikroORM = MikroORM>() {
-	return getContext(MikroORM) as M;
+	return _provider() as M;
 }
 
 export function getEntityManager<E extends EntityManager = EntityManager>({

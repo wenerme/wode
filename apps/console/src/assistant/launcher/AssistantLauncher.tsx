@@ -1,27 +1,24 @@
 import React, { useEffect } from 'react';
-import { FiClock, FiFileText } from 'react-icons/fi';
-import { JsonYamlConverterTool } from '../tools/JsonYamlConverterTool';
-import { TimeParserTool } from '../tools/TimeParserTool';
 import { useAssistantLauncherMutate, useAssistantLauncherState } from './AssistantLauncherState';
 import { AssistantLayout } from './components/AssistantLayout';
 import { AssistantSidebar } from './components/AssistantSidebar';
 import type { AssistantTool } from './types';
 
 const TOOLS: AssistantTool[] = [
-	{
-		id: 'time-parser',
-		name: 'Time Parser',
-		description: 'Parse timestamps and dates',
-		icon: <FiClock />,
-		component: TimeParserTool.Composite,
-	},
-	{
-		id: 'json-yaml',
-		name: 'JSON <> YAML',
-		description: 'Convert between JSON and YAML',
-		icon: <FiFileText />,
-		component: JsonYamlConverterTool.Composite,
-	},
+	// {
+	// 	id: 'time-parser',
+	// 	name: 'Time Parser',
+	// 	description: 'Parse timestamps and dates',
+	// 	icon: <FiClock />,
+	// 	component: TimeParserTool.Composite,
+	// },
+	// {
+	// 	id: 'json-yaml',
+	// 	name: 'JSON <> YAML',
+	// 	description: 'Convert between JSON and YAML',
+	// 	icon: <FiFileText />,
+	// 	component: JsonYamlConverterTool.Composite,
+	// },
 ];
 
 const AssistantContent: React.FC = () => {
