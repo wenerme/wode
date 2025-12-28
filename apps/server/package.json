@@ -6,6 +6,9 @@
 	"author": "",
 	"license": "ISC",
 	"main": "index.js",
+	"imports": {
+		"#/*": "./src/*"
+	},
 	"keywords": [],
 	"scripts": {
 		"build": "make build",
