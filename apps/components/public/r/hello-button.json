@@ -1,0 +1,14 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "hello-button",
+  "title": "Hello Button",
+  "description": "A simple hello button component for testing the registry",
+  "files": [
+    {
+      "path": "registry/default/ui/hello-button.tsx",
+      "content": "import { HandWavingIcon } from \"@phosphor-icons/react\"\n\nexport function HelloButton({ children = \"Hello from Wener Components!\" }: { children?: React.ReactNode }) {\n  return (\n    <button className=\"inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all bg-primary text-primary-foreground shadow-xs hover:bg-primary/90 h-9 px-4 py-2\">\n      <HandWavingIcon className=\"size-4\" />\n      {children}\n    </button>\n  )\n}\n",
+      "type": "registry:component"
+    }
+  ],
+  "type": "registry:component"
+}

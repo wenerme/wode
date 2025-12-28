@@ -1,0 +1,194 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+@theme {
+	--font-sans: "Geist var", "Geist", system-ui, sans-serif;
+
+	/* Shadcn theme configuration - only non-conflicting vars */
+	--color-sidebar-ring: var(--sidebar-ring);
+	--color-sidebar-border: var(--sidebar-border);
+	--color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+	--color-sidebar-accent: var(--sidebar-accent);
+	--color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+	--color-sidebar-primary: var(--sidebar-primary);
+	--color-sidebar-foreground: var(--sidebar-foreground);
+	--color-sidebar: var(--sidebar);
+	--color-chart-5: var(--chart-5);
+	--color-chart-4: var(--chart-4);
+	--color-chart-3: var(--chart-3);
+	--color-chart-2: var(--chart-2);
+	--color-chart-1: var(--chart-1);
+	--color-ring: var(--ring);
+	--color-input: var(--input);
+	--color-border: var(--border);
+	--color-destructive: var(--destructive);
+	--color-muted-foreground: var(--muted-foreground);
+	--color-muted: var(--muted);
+	--color-popover-foreground: var(--popover-foreground);
+	--color-popover: var(--popover);
+	--color-card-foreground: var(--card-foreground);
+	--color-card: var(--card);
+	--color-foreground: var(--foreground);
+	--color-background: var(--background);
+	--radius-sm: calc(var(--radius) - 4px);
+	--radius-md: calc(var(--radius) - 2px);
+	--radius-lg: var(--radius);
+	--radius-xl: calc(var(--radius) + 4px);
+	--radius-2xl: calc(var(--radius) + 8px);
+	--radius-3xl: calc(var(--radius) + 12px);
+	--radius-4xl: calc(var(--radius) + 16px);
+}
+
+/* Shadcn theme variables - Base Maia Style */
+:root {
+	--background: oklch(1 0 0);
+	--foreground: oklch(0.145 0 0);
+	--card: oklch(1 0 0);
+	--card-foreground: oklch(0.145 0 0);
+	--popover: oklch(1 0 0);
+	--popover-foreground: oklch(0.145 0 0);
+	--primary: oklch(0.61 0.11 222);
+	--primary-foreground: oklch(0.98 0.02 201);
+	--secondary: oklch(0.967 0.001 286.375);
+	--secondary-foreground: oklch(0.21 0.006 285.885);
+	--muted: oklch(0.97 0 0);
+	--muted-foreground: oklch(0.556 0 0);
+	--accent: oklch(0.97 0 0);
+	--accent-foreground: oklch(0.205 0 0);
+	--destructive: oklch(0.58 0.22 27);
+	--border: oklch(0.922 0 0);
+	--input: oklch(0.922 0 0);
+	--ring: oklch(0.708 0 0);
+	--chart-1: oklch(0.87 0.12 207);
+	--chart-2: oklch(0.8 0.13 212);
+	--chart-3: oklch(0.71 0.13 215);
+	--chart-4: oklch(0.61 0.11 222);
+	--chart-5: oklch(0.52 0.09 223);
+	--radius: 0.45rem;
+	--sidebar: oklch(0.985 0 0);
+	--sidebar-foreground: oklch(0.145 0 0);
+	--sidebar-primary: oklch(0.61 0.11 222);
+	--sidebar-primary-foreground: oklch(0.98 0.02 201);
+	--sidebar-accent: oklch(0.97 0 0);
+	--sidebar-accent-foreground: oklch(0.205 0 0);
+	--sidebar-border: oklch(0.922 0 0);
+	--sidebar-ring: oklch(0.708 0 0);
+}
+
+.dark {
+	--background: oklch(0.145 0 0);
+	--foreground: oklch(0.985 0 0);
+	--card: oklch(0.205 0 0);
+	--card-foreground: oklch(0.985 0 0);
+	--popover: oklch(0.205 0 0);
+	--popover-foreground: oklch(0.985 0 0);
+	--primary: oklch(0.71 0.13 215);
+	--primary-foreground: oklch(0.3 0.05 230);
+	--secondary: oklch(0.274 0.006 286.033);
+	--secondary-foreground: oklch(0.985 0 0);
+	--muted: oklch(0.269 0 0);
+	--muted-foreground: oklch(0.708 0 0);
+	--accent: oklch(0.371 0 0);
+	--accent-foreground: oklch(0.985 0 0);
+	--destructive: oklch(0.704 0.191 22.216);
+	--border: oklch(1 0 0 / 10%);
+	--input: oklch(1 0 0 / 15%);
+	--ring: oklch(0.556 0 0);
+	--chart-1: oklch(0.87 0.12 207);
+	--chart-2: oklch(0.8 0.13 212);
+	--chart-3: oklch(0.71 0.13 215);
+	--chart-4: oklch(0.61 0.11 222);
+	--chart-5: oklch(0.52 0.09 223);
+	--sidebar: oklch(0.205 0 0);
+	--sidebar-foreground: oklch(0.985 0 0);
+	--sidebar-primary: oklch(0.8 0.13 212);
+	--sidebar-primary-foreground: oklch(0.3 0.05 230);
+	--sidebar-accent: oklch(0.269 0 0);
+	--sidebar-accent-foreground: oklch(0.985 0 0);
+	--sidebar-border: oklch(1 0 0 / 10%);
+	--sidebar-ring: oklch(0.556 0 0);
+}
+
+/* DaisyUI custom theme 'wener' */
+@plugin "daisyui" {
+	themes: wener --default;
+}
+
+@plugin "daisyui/theme" {
+	name: "wener";
+	default: true;
+	prefersdark: false;
+	color-scheme: light;
+
+	/* Base - sky tones */
+	--color-base-100: oklch(0.9785 0.0047 247.86);
+	--color-base-200: oklch(0.9513 0.0134 236.62);
+	--color-base-300: oklch(0.901 0.0304 233.99);
+	--color-base-content: oklch(0.2332 0.0069 264.69);
+
+	/* Primary - sky-500 */
+	--color-primary: oklch(0.5556 0.1898 241.32);
+	--color-primary-content: oklch(0.9713 0.0143 236.62);
+
+	/* Secondary - indigo-500 */
+	--color-secondary: oklch(0.5358 0.1696 265.75);
+	--color-secondary-content: oklch(0.9671 0.0083 274.72);
+
+	/* Accent - cyan-500 */
+	--color-accent: oklch(0.5198 0.1401 193.18);
+	--color-accent-content: oklch(0.9644 0.0173 192.46);
+
+	/* Neutral - slate-600 */
+	--color-neutral: oklch(0.4393 0.0124 264.36);
+	--color-neutral-content: oklch(0.9715 0.0043 264.54);
+
+	/* Status colors */
+	--color-info: oklch(0.61 0.11 222);
+	--color-info-content: oklch(0.98 0.01 222);
+	--color-success: oklch(0.648 0.15 160);
+	--color-success-content: oklch(0.98 0.01 160);
+	--color-warning: oklch(0.75 0.18 85);
+	--color-warning-content: oklch(0.2 0.05 85);
+	--color-error: oklch(0.58 0.22 27);
+	--color-error-content: oklch(0.98 0.01 27);
+
+	/* border radius */
+	--radius-selector: 0.5rem;
+	--radius-field: 0.25rem;
+	--radius-box: 0.5rem;
+
+	/* base sizes */
+	--size-selector: 0.25rem;
+	--size-field: 0.25rem;
+
+	/* border size */
+	--border: 1px;
+
+	/* effects */
+	--depth: 1;
+	--noise: 0;
+}
+
+/* Custom styles */
+@layer components {
+	.sheet-transition {
+		transition: transform 0.4s cubic-bezier(0.185, 0.285, 0, 1.05);
+	}
+	.sheet-dragging {
+		transition: none;
+	}
+	.no-scrollbar::-webkit-scrollbar {
+		display: none;
+	}
+	.no-scrollbar {
+		-ms-overflow-style: none;
+		scrollbar-width: none;
+	}
+}
+
+/* Shadcn base layer - border styles only, body colors handled by DaisyUI */
+@layer base {
+	* {
+		@apply border-border outline-ring/50;
+	}
+}

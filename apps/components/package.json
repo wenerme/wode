@@ -1,0 +1,39 @@
+{
+  "name": "components",
+  "version": "0.1.0",
+  "type": "module",
+  "private": true,
+  "imports": {
+    "#/*": "./src/*"
+  },
+  "scripts": {
+    "build": "waku build",
+    "dev": "waku dev --port 3060",
+    "start": "waku start",
+    "deploy": "waku build && wrangler deploy",
+    "registry:build": "shadcn build",
+    "storybook": "storybook dev -p 6053 --no-open"
+  },
+  "dependencies": {
+    "@base-ui/react": "^1.0.0",
+    "@phosphor-icons/react": "^2.1.10",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "react": "~19.2.3",
+    "react-dom": "~19.2.3",
+    "react-server-dom-webpack": "~19.2.3",
+    "shadcn": "^3.6.2",
+    "tailwind-merge": "^3.4.0",
+    "waku": "1.0.0-alpha.0"
+  },
+  "devDependencies": {
+    "@storybook/addon-docs": "^10.1.10",
+    "@storybook/addon-links": "^10.1.10",
+    "@storybook/react": "^10.1.10",
+    "@storybook/react-vite": "^10.1.10",
+    "@tailwindcss/vite": "^4.1.18",
+    "@vitejs/plugin-react-swc": "^4.2.2",
+    "storybook": "^10.1.10",
+    "wrangler": "^4.56.0"
+  }
+}

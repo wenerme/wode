@@ -1,8 +1,8 @@
 import { Logger } from '@nestjs/common';
-import { App, getCurrentFallbackTenantId } from '@wener/nestjs/app';
+import { App, getCurrentFallbackTenantId } from '@wener/server/app';
 import type Redis from 'ioredis';
-import { isDev } from '@/const';
-import type { RemoteEmitter } from './getRemoteEvents';
+import { isDevelopment } from 'std-env';
+import type { RemoteEmitter } from './RemoteEmitter';
 
 const MetaKey = '$DistributedEventMeta$';
 type EventMeta = {
@@ -21,7 +21,10 @@ function getMeta(evt: any): EventMeta | undefined {
 
 function setMeta(evt: any, meta: Partial<EventMeta>) {
 	const before = evt[MetaKey];
-	evt[MetaKey] = { ...before, ...meta };
+	evt[MetaKey] = {
+		...before,
+		...meta,
+	};
 	return evt;
 }
 
@@ -34,7 +37,12 @@ function setSendMeta(evt: any, meta: Partial<EventMeta>) {
 	});
 }
 
-export function buildRemoteEvent<T>(evt: T, opt: { targetInstanceId?: string } = {}): T {
+export function buildRemoteEvent<T>(
+	evt: T,
+	opt: {
+		targetInstanceId?: string;
+	} = {},
+): T {
 	// let meta = getMeta(evt);
 	// let { instanceId } = meta ?? {};
 	// if (!meta || !instanceId) {
@@ -73,10 +81,13 @@ events:instance:${InstanceId}:event:${EventName}
 		}
 
 		// emit to remote
-		evt = setSendMeta(structuredClone(evt), { seq: seq++, type: eventName });
+		evt = setSendMeta(structuredClone(evt), {
+			seq: seq++,
+			type: eventName,
+		});
 		let meta = getMeta(evt)!;
 
-		if (isDev()) {
+		if (isDevelopment) {
 			log.debug(`send event ${meta.type} to ${meta.targetInstanceId ?? 'all'}`);
 		}
 
@@ -98,15 +109,15 @@ events:instance:${InstanceId}:event:${EventName}
 			let meta = getMeta(evt);
 			// skip self & invalid
 			if (
-				!meta
-				|| !meta.type
-				|| !meta.instanceId
-				|| meta.instanceId === instanceId
-				|| (meta.targetInstanceId && meta.targetInstanceId !== instanceId)
+				!meta ||
+				!meta.type ||
+				!meta.instanceId ||
+				meta.instanceId === instanceId ||
+				(meta.targetInstanceId && meta.targetInstanceId !== instanceId)
 			) {
 				return;
 			}
-			if (isDev()) {
+			if (isDevelopment) {
 				log.debug(`remote event ${meta.type} from ${meta.instanceId}`);
 			}
 			events.emit(meta.type as any, evt);
