@@ -57,10 +57,10 @@
 		"ts-pattern": "^5.9.0"
 	},
 	"devDependencies": {
-		"@orpc/client": "^1.13.0",
-		"@orpc/contract": "^1.13.0",
-		"@orpc/openapi-client": "^1.13.0",
-		"@sinclair/typebox": "^0.34.41",
+		"@orpc/client": "^1.13.2",
+		"@orpc/contract": "^1.13.2",
+		"@orpc/openapi-client": "^1.13.2",
+		"@sinclair/typebox": "^0.34.47",
 		"@sinclair/typebox-codegen": "^0.11.1",
 		"@types/argon2-browser": "^1.18.4",
 		"@types/bcrypt": "^6.0.0",
@@ -82,7 +82,7 @@
 		"mime-types": "^3.0.2",
 		"pathe": "^2.0.3",
 		"s3mini": "^0.8.1",
-		"zod": "^4.2.1"
+		"zod": "^4.3.5"
 	},
 	"publishConfig": {
 		"exports": {

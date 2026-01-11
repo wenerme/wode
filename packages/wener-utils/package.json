@@ -1,6 +1,6 @@
 {
 	"name": "@wener/utils",
-	"version": "1.1.56",
+	"version": "1.1.58",
 	"type": "module",
 	"description": "Utils for daily use",
 	"repository": {
@@ -48,12 +48,12 @@
 		"test": "make test"
 	},
 	"devDependencies": {
-		"@sinclair/typebox": "^0.34.41",
+		"@sinclair/typebox": "^0.34.47",
 		"@types/ws": "^8.18.1",
 		"https-proxy-agent": "^7.0.6",
 		"node-fetch": "^3.3.2",
-		"undici": "^7.16.0",
-		"zod": "^4.2.1"
+		"undici": "^7.18.2",
+		"zod": "^4.3.5"
 	},
 	"publishConfig": {
 		"registry": "https://registry.npmjs.org",

@@ -1,35 +1,34 @@
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import { getNodeCrypto } from '../crypto/getNodeCrypto';
 import type { TypedArray } from '../io/types';
 import { getGlobalThis } from './getGlobalThis';
 
-const globalThis = getGlobalThis();
+type RandomValuesArray = Exclude<TypedArray, Float32Array | Float64Array>;
+
+const _globalThis = getGlobalThis();
 
 // chrome 11+, safari 5+, nodejs 17.4+
 // https://developer.mozilla.org/en-US/docs/Web/API/Crypto/getRandomValues
-export let getRandomValues: <T extends Exclude<TypedArray, Float32Array | Float64Array>>(typedArray: T) => T =
-	globalThis.crypto?.getRandomValues?.bind(globalThis.crypto)
-	|| (globalThis as any).msCrypto?.getRandomValues?.bind((globalThis as any).msCrypto)
-	|| (() => {
-		throw new Error('[getRandomValues]: No secure random number generator available.');
-	});
+export let getRandomValues: <T extends RandomValuesArray>(typedArray: T) => T =
+	_globalThis.crypto?.getRandomValues?.bind(_globalThis.crypto)
+	|| (_globalThis as any).msCrypto?.getRandomValues?.bind((_globalThis as any).msCrypto)
+	|| _getRandomValues;
 
-function _getRandomValues<T extends Exclude<TypedArray, Float32Array | Float64Array>>(buf: T) {
+function _getRandomValues<T extends RandomValuesArray>(buf: T): T {
 	const nodeCrypto = getNodeCrypto();
-	// avoid type error
-	let wc = nodeCrypto?.webcrypto as any;
+	const wc = nodeCrypto?.webcrypto as Crypto | undefined;
 	if (wc?.getRandomValues) {
-		getRandomValues = wc.getRandomValues?.bind(nodeCrypto?.webcrypto);
-		return wc.getRandomValues(buf);
+		getRandomValues = wc.getRandomValues.bind(wc);
+		return getRandomValues(buf);
 	}
 	if (nodeCrypto?.randomBytes) {
 		if (!(buf instanceof Uint8Array)) {
 			throw new TypeError('expected Uint8Array');
 		}
 		if (buf.length > 65536) {
-			const e: any = new Error();
+			const e = new Error(
+				`Failed to execute 'getRandomValues' on 'Crypto': The ArrayBufferView's byte length (${buf.length}) exceeds the number of bytes of entropy available via this API (65536).`,
+			) as Error & { code: number; name: string };
 			e.code = 22;
-			e.message = `Failed to execute 'getRandomValues' on 'Crypto': The ArrayBufferView's byte length (${buf.length}) exceeds the number of bytes of entropy available via this API (65536).`;
 			e.name = 'QuotaExceededError';
 			throw e;
 		}

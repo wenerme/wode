@@ -40,20 +40,20 @@
 		"prepublishOnly": "pnpm build"
 	},
 	"devDependencies": {
-		"@hono/mcp": "^0.2.2",
-		"@hono/node-server": "^1.19.7",
-		"@modelcontextprotocol/sdk": "^1.25.1",
+		"@hono/mcp": "^0.2.3",
+		"@hono/node-server": "^1.19.8",
+		"@modelcontextprotocol/sdk": "^1.25.2",
 		"@types/mssql": "^9.1.8",
-		"@types/node": "^24.10.4",
+		"@types/node": "^24.10.7",
 		"commander": "^14.0.2",
 		"consola": "^3.4.2",
 		"dotenv": "^16.6.1",
 		"esbuild": "^0.27.2",
-		"hono": "^4.11.1",
+		"hono": "^4.11.3",
 		"mssql": "^12.2.0",
 		"ts-node": "^10.9.2",
 		"typescript": "^5.9.3",
-		"zod": "^4.2.1"
+		"zod": "^4.3.5"
 	},
 	"publishConfig": {
 		"access": "public"
