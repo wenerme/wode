@@ -2,13 +2,22 @@ export interface ParseBooleanOptions {
 	strict?: boolean;
 }
 
-export function parseBoolean(s: string | boolean | number | null | undefined, options: { strict: true }): boolean | undefined;
-export function parseBoolean(s: string | boolean | number | null | undefined | any, options?: ParseBooleanOptions): boolean;
+export function parseBoolean(
+	s: string | boolean | number | null | undefined,
+	options: { strict: true },
+): boolean | undefined;
+export function parseBoolean(
+	s: string | boolean | number | null | undefined | any,
+	options?: ParseBooleanOptions,
+): boolean;
 /** @deprecated Use `parseBoolean(s, { strict: true })` instead */
 export function parseBoolean(s: string | boolean | number | null | undefined, strict: true): boolean | undefined;
 export function parseBoolean(s: string | boolean | number | null | undefined | any): boolean;
-export function parseBoolean(s?: string | boolean | number | null, options?: boolean | ParseBooleanOptions): boolean | undefined {
-	const strict = typeof options === 'boolean' ? options : options?.strict ?? false;
+export function parseBoolean(
+	s?: string | boolean | number | null,
+	options?: boolean | ParseBooleanOptions,
+): boolean | undefined {
+	const strict = typeof options === 'boolean' ? options : (options?.strict ?? false);
 	if (typeof s === 'boolean') {
 		return s;
 	}

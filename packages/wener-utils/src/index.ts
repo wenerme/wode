@@ -52,7 +52,7 @@ export { parseDate } from './langs/parseDate';
 export { shallowClone } from './langs/shallowClone';
 export { shallowEqual } from './langs/shallowEqual';
 
-export type { MixinFunction, MixinInstance, MixinReturnValue } from './langs/mixin';
+export type { MixinFn } from './langs/mixin';
 
 export { AsyncCloser } from './langs/AsyncCloser';
 export { Closer } from './langs/Closer';
@@ -101,10 +101,17 @@ export { sha1, sha256, sha384, sha512, hmac, type DigestOptions } from './crypto
 export { md5 } from './crypto/md5';
 export { hex } from './crypto/base';
 export { isULID, createULID, ulid, parseULID } from './crypto/ulid';
+export {
+	randomUUIDv7,
+	isUUIDv7,
+	parseUUIDv7Timestamp,
+	createRandomUUIDv7,
+	type CreateRandomUUIDv7Options,
+} from './crypto/randomUUIDv7';
 export { PEM } from './crypto/pem/pem';
 
 // math
-export { createRandom } from './maths/random';
+export { createRandom, resolveRandom, type RNG } from './maths/random';
 export { clamp } from './maths/clamp';
 
 // network
