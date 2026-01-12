@@ -320,7 +320,47 @@ export async function loadConfig(explicitPath?: string): Promise<MergedConfig> {
 		return loadConfigFromPath(envPath);
 	}
 
+	// Support inline config via API_CLI_CONFIG env var
+	const inlineConfig = process.env.API_CLI_CONFIG;
+	if (inlineConfig) {
+		return loadConfigFromString(inlineConfig, 'API_CLI_CONFIG');
+	}
+
 	return discoverConfigs();
+}
+
+/**
+ * Load config from JSON string (for inline config)
+ */
+export function loadConfigFromString(jsonString: string, label: string): MergedConfig {
+	let parsed: unknown;
+	try {
+		parsed = JSON.parse(jsonString);
+	} catch {
+		throw new Error(`Invalid JSON in ${label}`);
+	}
+
+	const result = ApiCliConfigSchema.safeParse(parsed);
+	if (!result.success) {
+		throw new Error(`Invalid config format in ${label}: ${result.error.message}`);
+	}
+
+	const source: ConfigSource = {
+		path: label,
+		label,
+	};
+
+	// Apply env values first
+	applyEnvFromConfig(result.data.env ?? undefined, source.label);
+
+	const rawServers = result.data.servers ?? {};
+	const servers = new Map<string, ServerWithSource>();
+	for (const [name, rawConfig] of Object.entries(rawServers)) {
+		const config = substituteEnvVarsInObject(rawConfig);
+		servers.set(name, { name, config, source });
+	}
+
+	return { servers, sources: [source], duplicates: [] };
 }
 
 /**

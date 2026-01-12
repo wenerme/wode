@@ -1,6 +1,5 @@
 import { createHash, createHmac } from 'crypto';
 import type { FetchLike } from '@wener/utils';
-import { resolveRequest } from '../../utils/resolveRequest';
 
 export type RequestOptions = {
 	url: string;
@@ -28,15 +27,58 @@ export type SignOptions = {
 };
 
 export async function request<O = any>(options: RequestOptions): Promise<O> {
-	const { fetch = globalThis.fetch, method = 'POST', ...restOptions } = options;
+	let {
+		url,
+		baseUrl = '',
+		params = {},
+		data,
+		headers = {},
+		method = 'POST',
+		fetch = globalThis.fetch,
+		signal,
+	} = options;
 
-	// Resolve base request
-	const { url, init, headers } = resolveRequest({
-		...restOptions,
+	let u: URL;
+	if (baseUrl && !/^https?:\/\//.test(url)) {
+		if (!baseUrl.endsWith('/')) {
+			baseUrl += '/';
+		}
+		if (url.startsWith('/')) {
+			url = url.slice(1);
+		}
+		u = new URL(baseUrl + url);
+	} else {
+		u = new URL(url);
+	}
+
+	if (params) {
+		for (const [k, v] of Object.entries(params)) {
+			if (v === null || v === undefined) continue;
+			if (Array.isArray(v)) {
+				for (const vv of v) {
+					u.searchParams.append(k, String(vv));
+				}
+				continue;
+			}
+			u.searchParams.set(k, String(v));
+		}
+	}
+	u.searchParams.sort();
+
+	const req: RequestInit = {
 		method,
-	});
+		signal,
+		headers: {
+			'Content-Type': 'application/json',
+			...headers,
+		},
+	};
 
-	const response = await fetch(url.toString(), init);
+	if (data && (method === 'POST' || method === 'PUT' || method === 'PATCH')) {
+		req.body = JSON.stringify(data);
+	}
+
+	const response = await fetch(u.toString(), req);
 
 	if (!response.ok) {
 		throw new Error(`HTTP ${response.status}: ${response.statusText}`);
