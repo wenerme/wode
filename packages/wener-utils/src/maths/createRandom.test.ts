@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { createRandom, resolveRandom } from './random';
+import { createRandom, randomString, resolveRandom } from './random';
 
 describe('createRandom', () => {
 	test('deterministic with same seed', () => {
@@ -196,5 +196,42 @@ describe('resolveRandom', () => {
 		const r = resolveRandom('test');
 		const r2 = createRandom('test');
 		expect(r.random()).toBe(r2.random());
+	});
+});
+
+describe('randomString', () => {
+	test('generates string of correct length', () => {
+		const r = createRandom(42);
+		const str = randomString(r.random, 'abc', 10);
+		expect(str.length).toBe(10);
+	});
+
+	test('only uses characters from charset', () => {
+		const r = createRandom(42);
+		const chars = 'ABC';
+		const str = randomString(r.random, chars, 100);
+		for (const c of str) {
+			expect(chars).toContain(c);
+		}
+	});
+
+	test('is deterministic with same random', () => {
+		const r1 = createRandom(42);
+		const r2 = createRandom(42);
+		expect(randomString(r1.random, 'abc', 20)).toBe(randomString(r2.random, 'abc', 20));
+	});
+
+	test('works with array charset', () => {
+		const r = createRandom(42);
+		const chars = ['aa', 'bb', 'cc'];
+		const str = randomString(r.random, chars, 5);
+		expect(str.length).toBe(10); // 5 * 2 chars each
+	});
+
+	test('RNG.randomString method', () => {
+		const r = createRandom(42);
+		const str = r.randomString('0123456789', 8);
+		expect(str.length).toBe(8);
+		expect(str).toMatch(/^[0-9]+$/);
 	});
 });

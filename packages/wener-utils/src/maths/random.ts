@@ -7,6 +7,8 @@ export type RNG = {
 	/** 生成随机字节，填充到提供的数组或返回指定长度的新数组 */
 	randomBytes(n: number): Uint8Array;
 	randomBytes(buf: Uint8Array): Uint8Array;
+	/** 从字符集生成指定长度的随机字符串 */
+	randomString(chars: string | readonly string[], len: number): string;
 	/** Fisher-Yates 洗牌算法，原地打乱数组 */
 	shuffle<T>(arr: T[]): T[];
 	/** 从数组中随机采样 n 个元素（不重复） */
@@ -19,7 +21,23 @@ export type RNG = {
 	readonly seed: number;
 };
 
-type SeedSource = string | number;
+export type SeedSource = string | number;
+
+/**
+ * 从字符集生成随机字符串
+ * @param random - 返回 [0, 1) 的随机数生成函数
+ * @param chars - 字符集（字符串或字符数组）
+ * @param len - 生成长度
+ */
+export function randomString(random: () => number, chars: string | readonly string[], len: number): string {
+	const charLen = chars.length;
+	let str = '';
+	for (let i = 0; i < len; i++) {
+		const idx = Math.floor(random() * charLen);
+		str += chars[idx];
+	}
+	return str;
+}
 
 function resolveSeed(seed: SeedSource = Date.now()) {
 	let v = 0;
@@ -122,6 +140,7 @@ export function createRandom(s: SeedSource): RNG {
 		random,
 		randomInt,
 		randomBytes,
+		randomString: (chars: string | readonly string[], len: number) => randomString(random, chars, len),
 		shuffle,
 		sample,
 		pick,
