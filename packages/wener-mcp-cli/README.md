@@ -150,12 +150,19 @@ mcp-cli info filesystem/read_file
 # Call a tool with JSON arguments
 mcp-cli call filesystem/read_file '{"path": "./README.md"}'
 
-# Read JSON from stdin
+# Read JSON from stdin (use "-" to explicitly read from stdin)
 echo '{"path": "./file"}' | mcp-cli call server/tool -
 
-# Using heredoc for complex JSON
-mcp-cli call server/tool - <<EOF
-{"content": "Text with 'quotes'"}
+# Using heredoc for complex JSON (use <<'EOF' to prevent variable expansion)
+mcp-cli call server/tool - <<'EOF'
+{"content": "Text with 'quotes' and $variables"}
+EOF
+
+# Multi-line SQL query example
+mcp-cli call mysql/exec_query - <<'EOF'
+{
+  "query": "SELECT * FROM users WHERE status = 'active' LIMIT 10"
+}
 EOF
 ```
 

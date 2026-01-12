@@ -23,19 +23,56 @@ import { resourcesCommand } from './commands/resources';
 import { rmCommand } from './commands/rm';
 import { serversCommand } from './commands/servers';
 import { toolsCommand } from './commands/tools';
-
-const VERSION = '0.1.0';
+import { VERSION } from './const.gen';
 
 const program = new Command();
 
 program
 	.name('mcp-cli')
 	.description('A lightweight CLI for interacting with MCP (Model Context Protocol) servers')
-	.version(VERSION);
+	.version(VERSION)
+	.addHelpText(
+		'after',
+		`
+Configuration:
+  Config files are auto-discovered in priority order:
+    .mcp-cli.local.json  Local overrides (for secrets, gitignored)
+    .mcp-cli.json        Project config (add/rm commands write here)
+    .mcp.json            Claude standard format
+    .cursor/mcp.json     Cursor format
+    .gemini/mcp_config.json  Gemini format
+
+  Config format (mcpServers key):
+    {
+      "mcpServers": {
+        "server-name": { "command": "npx", "args": ["-y", "some-mcp-server"] },
+        "remote": { "url": "https://mcp.example.com/mcp" }
+      }
+    }
+
+  Environment variables:
+    MCP_CONFIG_PATH   Explicit config file path
+    MCP_DEBUG         Enable debug output
+    MCP_TIMEOUT       Request timeout in seconds (default: 1800)
+
+Examples:
+  mcp-cli servers                          List all servers and tools
+  mcp-cli info myserver/mytool             Show tool schema (REQUIRED before call)
+  mcp-cli call myserver/mytool '{"arg":1}' Call tool with JSON args
+  mcp-cli call myserver/mytool - <<'EOF'   Read JSON from stdin (heredoc)
+  mcp-cli add notion https://mcp.notion.com/mcp --transport http
+  mcp-cli add myserver -- npx -y some-mcp-server
+  mcp-cli rm myserver
+
+Agent Usage:
+  IMPORTANT: Always run "mcp-cli info <server>/<tool>" before "mcp-cli call"
+  to inspect the tool schema and required parameters.
+`,
+	);
 
 // Global options
 program
-	.option('-c, --config <path>', 'Path to config file (mcp.json, mcp_servers.json, etc.)')
+	.option('-c, --config <path>', 'Path to config file')
 	.option('-j, --json', 'Output as JSON (for scripting)', false)
 	.option('-d, --with-descriptions', 'Include tool descriptions', false);
 
