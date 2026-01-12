@@ -1,6 +1,4 @@
-import { getRandomValues } from '../web/getRandomValues';
-
-type PRNG = () => number;
+import { randomString } from '../maths/random';
 
 /**
  * Universally Unique Lexicographically Sortable Identifier
@@ -69,14 +67,6 @@ function incrementBase32(str: string): string {
 	throw createError('cannot increment this string');
 }
 
-function randomChar(prng: PRNG): string {
-	let rand = Math.floor(prng() * ENCODING_LEN);
-	if (rand === ENCODING_LEN) {
-		rand = ENCODING_LEN - 1;
-	}
-	return ENCODING.charAt(rand);
-}
-
 function encodeTime(now: number, len: number): string {
 	if (isNaN(now)) {
 		throw new Error(`${now} must be a number`);
@@ -96,14 +86,6 @@ function encodeTime(now: number, len: number): string {
 		mod = now % ENCODING_LEN;
 		str = ENCODING.charAt(mod) + str;
 		now = (now - mod) / ENCODING_LEN;
-	}
-	return str;
-}
-
-function encodeRandom(len: number, prng: PRNG): string {
-	let str = '';
-	for (; len > 0; len--) {
-		str = randomChar(prng) + str;
 	}
 	return str;
 }
@@ -134,26 +116,20 @@ export function parseULID(id: string): { timestamp: number; random: string } {
 	return { timestamp: time, random: id.substring(TIME_LEN) };
 }
 
-function createPrng(): PRNG {
-	return () => {
-		const buffer = new Uint8Array(1);
-		getRandomValues(buffer);
-		return buffer[0] / 0xff;
-	};
-}
-
 /**
  * create a ulid generator
  */
 export function createULID({
 	monotonic = true,
-	random = createPrng(),
+	random = Math.random,
 	now = Date.now,
 }: { monotonic?: boolean; now?: () => number; random?: () => number } = {}) {
+	const encodeRandom = (len: number) => randomString(random, ENCODING, len);
+
 	if (!monotonic) {
 		return function ulid(seedTime?: number): string {
 			seedTime ||= now();
-			return encodeTime(seedTime, TIME_LEN) + encodeRandom(RANDOM_LEN, random);
+			return encodeTime(seedTime, TIME_LEN) + encodeRandom(RANDOM_LEN);
 		};
 	}
 
@@ -166,7 +142,7 @@ export function createULID({
 			return encodeTime(lastTime, TIME_LEN) + incrementedRandom;
 		}
 		lastTime = seedTime;
-		const newRandom = (lastRandom = encodeRandom(RANDOM_LEN, random));
+		const newRandom = (lastRandom = encodeRandom(RANDOM_LEN));
 		return encodeTime(seedTime, TIME_LEN) + newRandom;
 	};
 }
@@ -174,13 +150,4 @@ export function createULID({
 /**
  * default monotonic ulid generator
  */
-export let ulid: ULID = (...args) => {
-	if (_real) {
-		return _real(...args);
-	}
-	// delay initialize crypto
-	_real = createULID();
-	ulid = _real;
-	return _real(...args);
-};
-let _real: ULID;
+export const ulid: ULID = createULID();
