@@ -305,11 +305,25 @@ api-cli rm petstore myapi
 
 ## Environment Variables
 
-| Variable              | Description               | Default |
-|-----------------------|---------------------------|---------|
-| `API_CLI_CONFIG_PATH` | Path to config file       | (none)  |
-| `API_CLI_DEBUG`       | Enable debug output       | `false` |
-| `API_CLI_TIMEOUT`     | Request timeout (seconds) | `30`    |
+| Variable              | Description                                  | Default |
+|-----------------------|----------------------------------------------|---------|
+| `API_CLI_CONFIG_PATH` | Path to config file                          | (none)  |
+| `API_CLI_CONFIG`      | Inline JSON config (alternative to file)     | (none)  |
+| `API_CLI_DEBUG`       | Enable debug output                          | `false` |
+| `API_CLI_TIMEOUT`     | Request timeout (seconds)                    | `30`    |
+
+### Inline Configuration
+
+Use `API_CLI_CONFIG` for quick testing or CI/CD environments:
+
+```bash
+# Inline config via environment variable
+export API_CLI_CONFIG='{"servers":{"petstore":{"url":"https://petstore3.swagger.io/api/v3/openapi.json"}}}'
+api-cli servers
+
+# One-liner
+API_CLI_CONFIG='{"servers":{"myapi":{"url":"./spec.json","baseUrl":"http://localhost:3000"}}}' api-cli get myapi/health
+```
 
 ## Using with AI Agents
 

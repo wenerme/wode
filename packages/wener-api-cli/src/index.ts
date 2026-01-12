@@ -57,6 +57,7 @@ Configuration:
 
   Environment variables:
     API_CLI_CONFIG_PATH   Explicit config file path
+    API_CLI_CONFIG        Inline JSON config (alternative to file)
     API_CLI_DEBUG         Enable debug output
     API_CLI_TIMEOUT       Request timeout in seconds (default: 30)
 
