@@ -42,9 +42,12 @@ function parseTarget(target: string): { server: string; tool: string } {
 async function parseArgs(argsString?: string): Promise<Record<string, unknown>> {
 	let jsonString: string;
 
-	if (argsString) {
+	// "-" means read from stdin explicitly
+	const readFromStdin = argsString === '-' || (!argsString && !process.stdin.isTTY);
+
+	if (argsString && argsString !== '-') {
 		jsonString = argsString;
-	} else if (!process.stdin.isTTY) {
+	} else if (readFromStdin) {
 		// Read from stdin with timeout
 		const timeoutMs = getTimeoutMs();
 		const chunks: Buffer[] = [];
