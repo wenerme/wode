@@ -3,7 +3,7 @@
  */
 
 import { debug, getTimeoutMs } from './config';
-import { buildRequest, getOperation, getOperationByPath, listOperations, loadSpec } from './openapi';
+import { buildRequest, filterOperations, listOperations, loadSpec } from './openapi';
 import type { ParsedOperation, ParsedSpec, RequestConfig, ServerConfig } from './schema';
 
 // Re-export
@@ -16,6 +16,8 @@ export interface ApiClient {
 	spec: ParsedSpec;
 	baseUrl: string;
 	headers: Record<string, string>;
+	include?: string[] | null;
+	exclude?: string[] | null;
 }
 
 /**
@@ -71,14 +73,17 @@ export async function loadApiClient(serverConfig: ServerConfig): Promise<ApiClie
 		spec,
 		baseUrl,
 		headers: serverConfig.headers || {},
+		include: serverConfig.include,
+		exclude: serverConfig.exclude,
 	};
 }
 
 /**
- * List operations from API client
+ * List operations from API client (filtered by include/exclude)
  */
 export function getOperations(client: ApiClient): OperationInfo[] {
-	return listOperations(client.spec).map((op) => ({
+	const operations = getFilteredOperations(client);
+	return operations.map((op) => ({
 		operationId: op.operationId,
 		method: op.method,
 		path: op.path,
@@ -86,6 +91,13 @@ export function getOperations(client: ApiClient): OperationInfo[] {
 		description: op.description,
 		tags: op.tags,
 	}));
+}
+
+/**
+ * Get filtered operations from client (internal helper)
+ */
+function getFilteredOperations(client: ApiClient): ParsedOperation[] {
+	return filterOperations(listOperations(client.spec), client.include, client.exclude);
 }
 
 /**
@@ -99,19 +111,28 @@ export function findOperation(
 	target: string,
 	method?: string,
 ): { operation: ParsedOperation; pathParams?: Record<string, string> } | undefined {
+	const filteredOps = getFilteredOperations(client);
+
+	// Helper to find operation by operationId in filtered list
+	const findById = (opId: string) => filteredOps.find((op) => op.operationId === opId);
+
+	// Helper to find operation by method and path in filtered list
+	const findByMethodPath = (m: string, p: string) =>
+		filteredOps.find((op) => op.method.toUpperCase() === m.toUpperCase() && op.path === p);
+
 	// If method is specified, treat target as path
 	if (method) {
 		const methodUpper = method.toUpperCase();
 		let path = target.startsWith('/') ? target : '/' + target;
 
 		// First try exact match
-		const exact = getOperationByPath(client.spec, methodUpper, path);
+		const exact = findByMethodPath(methodUpper, path);
 		if (exact) {
 			return { operation: exact };
 		}
 
 		// Try matching with path parameters
-		for (const op of client.spec.operations) {
+		for (const op of filteredOps) {
 			if (op.method.toUpperCase() !== methodUpper) continue;
 
 			const pathParams = matchPathWithParams(op.path, path);
@@ -121,7 +142,7 @@ export function findOperation(
 		}
 
 		// Try by operationId as fallback
-		const byId = getOperation(client.spec, target);
+		const byId = findById(target);
 		if (byId && byId.method.toUpperCase() === methodUpper) {
 			return { operation: byId };
 		}
@@ -130,7 +151,7 @@ export function findOperation(
 	}
 
 	// Try by operationId first
-	const byId = getOperation(client.spec, target);
+	const byId = findById(target);
 	if (byId) {
 		return { operation: byId };
 	}
@@ -142,14 +163,14 @@ export function findOperation(
 		let path = '/' + methodMatch[2];
 
 		// First try exact match
-		const exact = getOperationByPath(client.spec, matchedMethod, path);
+		const exact = findByMethodPath(matchedMethod, path);
 		if (exact) {
 			return { operation: exact };
 		}
 
 		// Try matching with path parameters
 		// e.g., GET/pet/123 should match /pet/{petId}
-		for (const op of client.spec.operations) {
+		for (const op of filteredOps) {
 			if (op.method.toUpperCase() !== matchedMethod) continue;
 
 			const pathParams = matchPathWithParams(op.path, path);
@@ -165,14 +186,14 @@ export function findOperation(
 		let path = target.startsWith('/') ? target : '/' + target;
 
 		// Try exact path match (any method)
-		for (const op of client.spec.operations) {
+		for (const op of filteredOps) {
 			if (op.path === path) {
 				return { operation: op };
 			}
 		}
 
 		// Try matching with path parameters (any method)
-		for (const op of client.spec.operations) {
+		for (const op of filteredOps) {
 			const pathParams = matchPathWithParams(op.path, path);
 			if (pathParams) {
 				return { operation: op, pathParams };
@@ -191,11 +212,12 @@ export function findOperationsByPath(
 	client: ApiClient,
 	target: string,
 ): Array<{ operation: ParsedOperation; pathParams?: Record<string, string> }> {
+	const filteredOps = getFilteredOperations(client);
 	const results: Array<{ operation: ParsedOperation; pathParams?: Record<string, string> }> = [];
 	let path = target.startsWith('/') ? target : '/' + target;
 
 	// Try exact path match
-	for (const op of client.spec.operations) {
+	for (const op of filteredOps) {
 		if (op.path === path) {
 			results.push({ operation: op });
 		}
@@ -206,7 +228,7 @@ export function findOperationsByPath(
 	}
 
 	// Try matching with path parameters
-	for (const op of client.spec.operations) {
+	for (const op of filteredOps) {
 		const pathParams = matchPathWithParams(op.path, path);
 		if (pathParams) {
 			results.push({ operation: op, pathParams });
@@ -311,5 +333,6 @@ export async function executeOperation(
  * Get detailed operation info
  */
 export function getOperationDetails(client: ApiClient, operationId: string): ParsedOperation | undefined {
-	return getOperation(client.spec, operationId);
+	const filteredOps = getFilteredOperations(client);
+	return filteredOps.find((op) => op.operationId === operationId);
 }

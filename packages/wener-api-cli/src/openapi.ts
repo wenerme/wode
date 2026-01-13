@@ -403,3 +403,81 @@ export function buildRequest(
 export function clearSpecCache(): void {
 	specCache.clear();
 }
+
+/**
+ * Convert glob pattern to regex
+ * Supports: * (any chars except /), ? (single char), ** (any path including /)
+ */
+function globToRegex(pattern: string): RegExp {
+	let p: string;
+
+	// Handle trailing /** (should match zero or more path segments)
+	if (pattern.endsWith('/**')) {
+		const prefix = pattern.slice(0, -3);
+		const escapedPrefix = prefix
+			.replace(/[.+^${}()|[\]\\]/g, '\\$&')
+			.replace(/\*\*/g, '.*')
+			.replace(/\*/g, '[^/]*')
+			.replace(/\?/g, '.');
+		p = escapedPrefix + '(?:/.*)?';
+	} else {
+		p = pattern
+			.replace(/[.+^${}()|[\]\\]/g, '\\$&')
+			.replace(/\*\*/g, '.*')
+			.replace(/\*/g, '[^/]*')
+			.replace(/\?/g, '.');
+	}
+
+	return new RegExp(`^${p}$`, 'i');
+}
+
+/**
+ * Check if an operation matches a glob pattern
+ * Matches against: operationId, path, METHOD path, tags
+ */
+function operationMatchesPattern(op: ParsedOperation, pattern: string): boolean {
+	const regex = globToRegex(pattern);
+
+	// Match operationId
+	if (regex.test(op.operationId)) return true;
+
+	// Match path (e.g., /pet/*, /api/**/users)
+	if (regex.test(op.path)) return true;
+
+	// Match METHOD path (e.g., GET /pet/*, POST /api/**)
+	if (regex.test(`${op.method} ${op.path}`)) return true;
+	if (regex.test(`${op.method.toLowerCase()} ${op.path}`)) return true;
+
+	// Match tags (e.g., pet, store)
+	for (const tag of op.tags) {
+		if (regex.test(tag)) return true;
+	}
+
+	return false;
+}
+
+/**
+ * Filter operations based on include/exclude patterns
+ * - If include is specified, only operations matching at least one pattern are included
+ * - If exclude is specified, operations matching any pattern are excluded
+ * - Exclude takes precedence over include
+ */
+export function filterOperations(
+	operations: ParsedOperation[],
+	include?: string[] | null,
+	exclude?: string[] | null,
+): ParsedOperation[] {
+	let filtered = operations;
+
+	// Apply include filter (whitelist)
+	if (include && include.length > 0) {
+		filtered = filtered.filter((op) => include.some((pattern) => operationMatchesPattern(op, pattern)));
+	}
+
+	// Apply exclude filter (blacklist) - takes precedence
+	if (exclude && exclude.length > 0) {
+		filtered = filtered.filter((op) => !exclude.some((pattern) => operationMatchesPattern(op, pattern)));
+	}
+
+	return filtered;
+}

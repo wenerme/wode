@@ -11,9 +11,11 @@ import {
 	CursorConfigSchema,
 	GeminiConfigSchema,
 	isHttpServer,
+	McpCliConfigSchema,
 	McpServersConfigSchema,
 	normalizeHttpConfig,
 	type ConfigSource,
+	type McpCliConfig,
 	type MergedConfig,
 	type ServerConfig,
 	type ServerWithSource,
@@ -297,14 +299,29 @@ function getConfigSearchPaths(cwd: string = process.cwd()): ConfigLocation[] {
 
 /**
  * Parse a config file based on its type
+ * Returns both servers and mcp-cli specific options (extends, discoveryConfig)
  */
-function parseConfigFile(content: string, location: ConfigLocation): Record<string, ServerConfig> | null {
+function parseConfigFile(
+	content: string,
+	location: ConfigLocation,
+): { servers: Record<string, ServerConfig>; options?: McpCliConfig } | null {
 	let parsed: unknown;
 	try {
 		parsed = JSON.parse(content);
 	} catch {
 		debug(`Failed to parse JSON: ${location.path}`);
 		return null;
+	}
+
+	// For mcp-cli configs, try to parse with extended schema first
+	if (location.type === 'mcp' && (location.label.includes('mcp-cli') || location.label === 'MCP_CLI_CONFIG_INLINE')) {
+		const cliResult = McpCliConfigSchema.safeParse(parsed);
+		if (cliResult.success) {
+			return {
+				servers: cliResult.data.mcpServers ?? {},
+				options: cliResult.data,
+			};
+		}
 	}
 
 	let schema;
@@ -329,7 +346,7 @@ function parseConfigFile(content: string, location: ConfigLocation): Record<stri
 		return null;
 	}
 
-	return result.data.mcpServers ?? {};
+	return { servers: result.data.mcpServers ?? {} };
 }
 
 /**
@@ -338,6 +355,7 @@ function parseConfigFile(content: string, location: ConfigLocation): Record<stri
 function loadConfigFile(location: ConfigLocation): {
 	servers: Record<string, ServerConfig>;
 	source: ConfigSource;
+	options?: McpCliConfig;
 } | null {
 	if (!existsSync(location.path)) {
 		return null;
@@ -345,8 +363,8 @@ function loadConfigFile(location: ConfigLocation): {
 
 	try {
 		const content = readFileSync(location.path, 'utf-8');
-		const servers = parseConfigFile(content, location);
-		if (!servers) {
+		const parsed = parseConfigFile(content, location);
+		if (!parsed) {
 			return null;
 		}
 
@@ -356,7 +374,7 @@ function loadConfigFile(location: ConfigLocation): {
 			label: location.label,
 		};
 
-		return { servers, source };
+		return { servers: parsed.servers, source, options: parsed.options };
 	} catch (error) {
 		debug(`Failed to load config: ${location.path} - ${(error as Error).message}`);
 		return null;
@@ -364,42 +382,243 @@ function loadConfigFile(location: ConfigLocation): {
 }
 
 /**
+ * Helper to add servers to the merged config
+ */
+function addServersToConfig(
+	servers: Map<string, ServerWithSource>,
+	duplicateMap: Map<string, ConfigSource[]>,
+	rawServers: Record<string, ServerConfig>,
+	source: ConfigSource,
+): void {
+	for (const [name, rawConfig] of Object.entries(rawServers)) {
+		// Normalize and substitute env vars
+		let config = substituteEnvVarsInObject(rawConfig);
+		if (isHttpServer(config)) {
+			config = normalizeHttpConfig(config);
+		}
+
+		if (servers.has(name)) {
+			// Track duplicate
+			const existing = duplicateMap.get(name) ?? [servers.get(name)!.source];
+			existing.push(source);
+			duplicateMap.set(name, existing);
+			debug(`Duplicate server: ${name} (keeping first from ${servers.get(name)!.source.label})`);
+		} else {
+			servers.set(name, {
+				name,
+				config,
+				source,
+			});
+		}
+	}
+}
+
+/**
+ * Parse inline config from MCP_CLI_CONFIG_INLINE env var
+ */
+function parseInlineConfig(): { servers: Record<string, ServerConfig>; options?: McpCliConfig } | null {
+	const inlineConfig = process.env.MCP_CLI_CONFIG_INLINE;
+	if (!inlineConfig) {
+		return null;
+	}
+
+	const location: ConfigLocation = {
+		path: 'MCP_CLI_CONFIG_INLINE',
+		type: 'mcp',
+		label: 'MCP_CLI_CONFIG_INLINE',
+	};
+
+	return parseConfigFile(inlineConfig, location);
+}
+
+/**
+ * Convert glob pattern to regex for server name matching
+ */
+function globToRegex(pattern: string): RegExp {
+	let escaped = '';
+	let i = 0;
+
+	while (i < pattern.length) {
+		const char = pattern[i];
+
+		if (char === '*' && pattern[i + 1] === '*') {
+			escaped += '.*';
+			i += 2;
+			while (pattern[i] === '*') {
+				i++;
+			}
+		} else if (char === '*') {
+			escaped += '[^/]*';
+			i += 1;
+		} else if (char === '?') {
+			escaped += '[^/]';
+			i += 1;
+		} else if ('[.+^${}()|\\]'.includes(char)) {
+			escaped += `\\${char}`;
+			i += 1;
+		} else {
+			escaped += char;
+			i += 1;
+		}
+	}
+
+	return new RegExp(`^${escaped}$`, 'i');
+}
+
+/**
+ * Check if a server name matches any of the patterns
+ */
+function matchesPatterns(name: string, patterns: string[]): boolean {
+	return patterns.some((pattern) => {
+		const regex = globToRegex(pattern);
+		return regex.test(name);
+	});
+}
+
+/**
+ * Filter servers based on include/exclude patterns
+ */
+function filterServers(
+	servers: Map<string, ServerWithSource>,
+	include?: string[],
+	exclude?: string[],
+): Map<string, ServerWithSource> {
+	let filtered = new Map(servers);
+
+	// Apply include filter (whitelist)
+	if (include && include.length > 0) {
+		filtered = new Map(
+			Array.from(filtered.entries()).filter(([name]) => matchesPatterns(name, include)),
+		);
+		debug(`Include filter applied: ${filtered.size} servers remaining`);
+	}
+
+	// Apply exclude filter (blacklist) - takes precedence
+	if (exclude && exclude.length > 0) {
+		filtered = new Map(
+			Array.from(filtered.entries()).filter(([name]) => !matchesPatterns(name, exclude)),
+		);
+		debug(`Exclude filter applied: ${filtered.size} servers remaining`);
+	}
+
+	return filtered;
+}
+
+/**
  * Discover and merge all MCP configurations
  * Returns merged config with deduplication and source tracking
  */
-export function discoverConfigs(cwd?: string): MergedConfig {
+export function discoverConfigs(cwd?: string, options?: { skipDiscovery?: boolean }): MergedConfig {
 	const searchPaths = getConfigSearchPaths(cwd);
 	const servers = new Map<string, ServerWithSource>();
 	const sources: ConfigSource[] = [];
 	const duplicateMap = new Map<string, ConfigSource[]>();
 
-	for (const location of searchPaths) {
+	// Track extends paths to load and config options
+	let extendsToLoad: string[] = [];
+	let discoveryConfig = true;
+	let includePatterns: string[] = [];
+	let excludePatterns: string[] = [];
+	const loadedPaths = new Set<string>();
+
+	// First, check MCP_CLI_CONFIG_INLINE env var for inline config
+	const inlineConfig = parseInlineConfig();
+	if (inlineConfig) {
+		const source: ConfigSource = {
+			path: 'MCP_CLI_CONFIG_INLINE',
+			type: 'mcp',
+			label: 'MCP_CLI_CONFIG_INLINE',
+		};
+		sources.push(source);
+		debug('Found inline config: MCP_CLI_CONFIG_INLINE');
+
+		addServersToConfig(servers, duplicateMap, inlineConfig.servers, source);
+
+		if (inlineConfig.options?.extends) {
+			extendsToLoad = [...inlineConfig.options.extends];
+		}
+		if (inlineConfig.options?.discoveryConfig === false) {
+			discoveryConfig = false;
+		}
+		if (inlineConfig.options?.include) {
+			includePatterns = [...inlineConfig.options.include];
+		}
+		if (inlineConfig.options?.exclude) {
+			excludePatterns = [...inlineConfig.options.exclude];
+		}
+	}
+
+	// Load mcp-cli specific configs first to get extends/discoveryConfig/include/exclude
+	const mcpCliPaths = searchPaths.filter((p) => p.label.includes('mcp-cli'));
+	for (const location of mcpCliPaths) {
 		const result = loadConfigFile(location);
 		if (!result) continue;
 
+		loadedPaths.add(location.path);
 		sources.push(result.source);
 		debug(`Found config: ${location.label}`);
 
-		for (const [name, rawConfig] of Object.entries(result.servers)) {
-			// Normalize and substitute env vars
-			let config = substituteEnvVarsInObject(rawConfig);
-			if (isHttpServer(config)) {
-				config = normalizeHttpConfig(config);
-			}
+		addServersToConfig(servers, duplicateMap, result.servers, result.source);
 
-			if (servers.has(name)) {
-				// Track duplicate
-				const existing = duplicateMap.get(name) ?? [servers.get(name)!.source];
-				existing.push(result.source);
-				duplicateMap.set(name, existing);
-				debug(`Duplicate server: ${name} (keeping first from ${servers.get(name)!.source.label})`);
-			} else {
-				servers.set(name, {
-					name,
-					config,
-					source: result.source,
-				});
-			}
+		// Check for options (first one wins for each option)
+		if (result.options?.extends && extendsToLoad.length === 0) {
+			extendsToLoad = [...result.options.extends];
+		}
+		if (result.options?.discoveryConfig === false) {
+			discoveryConfig = false;
+		}
+		if (result.options?.include && includePatterns.length === 0) {
+			includePatterns = [...result.options.include];
+		}
+		if (result.options?.exclude && excludePatterns.length === 0) {
+			excludePatterns = [...result.options.exclude];
+		}
+	}
+
+	// Load extends configs
+	for (const extendPath of extendsToLoad) {
+		const resolvedPath = resolve(cwd ?? process.cwd(), extendPath);
+		if (loadedPaths.has(resolvedPath)) {
+			debug(`Skipping already loaded extends: ${extendPath}`);
+			continue;
+		}
+
+		const location: ConfigLocation = {
+			path: resolvedPath,
+			type: 'mcp',
+			label: extendPath,
+		};
+
+		const result = loadConfigFile(location);
+		if (!result) {
+			debug(`Failed to load extends: ${extendPath}`);
+			continue;
+		}
+
+		loadedPaths.add(resolvedPath);
+		sources.push(result.source);
+		debug(`Found extends config: ${extendPath}`);
+
+		addServersToConfig(servers, duplicateMap, result.servers, result.source);
+	}
+
+	// If discoveryConfig is disabled or skipDiscovery is set, skip other configs
+	if (!discoveryConfig || options?.skipDiscovery) {
+		debug('Discovery disabled, skipping other configs');
+	} else {
+		// Load remaining configs (non mcp-cli)
+		const otherPaths = searchPaths.filter((p) => !p.label.includes('mcp-cli'));
+		for (const location of otherPaths) {
+			if (loadedPaths.has(location.path)) continue;
+
+			const result = loadConfigFile(location);
+			if (!result) continue;
+
+			loadedPaths.add(location.path);
+			sources.push(result.source);
+			debug(`Found config: ${location.label}`);
+
+			addServersToConfig(servers, duplicateMap, result.servers, result.source);
 		}
 	}
 
@@ -408,7 +627,10 @@ export function discoverConfigs(cwd?: string): MergedConfig {
 		sources: srcs,
 	}));
 
-	return { servers, sources, duplicates };
+	// Apply include/exclude filters
+	const filteredServers = filterServers(servers, includePatterns, excludePatterns);
+
+	return { servers: filteredServers, sources, duplicates };
 }
 
 /**

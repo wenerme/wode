@@ -70,6 +70,51 @@ All config files use the same basic structure:
 
 **Note:** Gemini config uses `serverUrl` instead of `url` - both are supported.
 
+### MCP-CLI Specific Config Options
+
+The `.mcp-cli.json` and `.mcp-cli.local.json` files support additional options:
+
+```json
+{
+  "mcpServers": { ... },
+  "extends": ["../shared-mcp.json", "~/.mcp-servers.json"],
+  "discoveryConfig": false,
+  "include": ["dev-*", "prod-*"],
+  "exclude": ["*-test", "*-debug"]
+}
+```
+
+| Option | Description |
+|--------|-------------|
+| `extends` | Array of config file paths to inherit servers from |
+| `discoveryConfig` | Set to `false` to disable auto-discovery of other config files |
+| `include` | Glob patterns to filter servers (whitelist). Only matching servers are loaded |
+| `exclude` | Glob patterns to exclude servers (blacklist). Takes precedence over include |
+
+**Glob Pattern Syntax:**
+- `*` - matches any characters (except `/`)
+- `**` - matches any characters including `/`
+- `?` - matches single character
+- Case-insensitive matching
+
+**Examples:**
+```json
+{
+  "include": ["dev-*"],           // Only dev-* servers
+  "exclude": ["*-mysql", "*-pg"]  // Exclude database servers
+}
+```
+
+### Inline Config via Environment Variable
+
+You can pass config directly via the `MCP_CLI_CONFIG_INLINE` environment variable:
+
+```bash
+MCP_CLI_CONFIG_INLINE='{"mcpServers":{"test":{"command":"echo"}}}' mcp-cli servers
+```
+
+This has the highest priority and supports all options including `extends` and `discoveryConfig`.
+
 ### Environment Variable Substitution
 
 Use `${VAR_NAME}` syntax anywhere in the config. Values are substituted at load time.
@@ -219,6 +264,7 @@ mcp-cli rm notion asana airtable
 
 | Variable | Description | Default |
 |----------|-------------|---------|
+| `MCP_CLI_CONFIG_INLINE` | Inline JSON config (highest priority) | (none) |
 | `MCP_CONFIG_PATH` | Path to config file | (none) |
 | `MCP_DEBUG` | Enable debug output | `false` |
 | `MCP_TIMEOUT` | Request timeout (seconds) | `1800` (30 min) |

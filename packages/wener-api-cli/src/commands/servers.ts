@@ -2,11 +2,10 @@
  * Servers command - List all API servers and their operations
  */
 
+import { getOperations, loadApiClient } from '../client';
 import { debug, getServerConfig, listServerNames, loadConfig, type MergedConfig } from '../config';
 import { ErrorCode } from '../errors';
-import { listOperations, loadSpec } from '../openapi';
 import { formatConfigSources, formatJson, formatServersWithOps } from '../output';
-import type { ParsedOperation } from '../schema';
 
 export interface ServersOptions {
 	json: boolean;
@@ -36,8 +35,8 @@ interface ServerInfo {
 async function fetchServerInfo(serverName: string, config: MergedConfig): Promise<ServerInfo> {
 	try {
 		const serverWithSource = getServerConfig(config, serverName);
-		const spec = await loadSpec(serverWithSource.config);
-		const operations = listOperations(spec);
+		const client = await loadApiClient(serverWithSource.config);
+		const operations = getOperations(client);
 
 		debug(`${serverName}: loaded ${operations.length} operations`);
 
@@ -49,7 +48,7 @@ async function fetchServerInfo(serverName: string, config: MergedConfig): Promis
 				path: op.path,
 				summary: op.summary,
 			})),
-			info: spec.info,
+			info: client.spec.info,
 			source: serverWithSource.source,
 		};
 	} catch (error) {

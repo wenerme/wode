@@ -64,7 +64,9 @@ The CLI discovers API configuration from multiple sources in priority order:
 			"headers": {
 				"Authorization": "Bearer ${API_TOKEN}"
 			},
-			"type": "openapi"
+			"type": "openapi",
+			"include": ["*pet*"],
+			"exclude": ["*upload*"]
 		},
 		"local-api": {
 			"url": "./specs/my-api.yaml",
@@ -74,14 +76,49 @@ The CLI discovers API configuration from multiple sources in priority order:
 }
 ```
 
-| Field     | Description                                              |
-|-----------|----------------------------------------------------------|
-| `env`     | Environment variables to set (for `${VAR}` substitution) |
-| `servers` | Server configurations                                    |
-| `url`     | OpenAPI spec URL (remote) or file path (local)           |
-| `baseUrl` | API base URL (auto-detected from spec if not provided)   |
-| `headers` | Default request headers                                  |
-| `type`    | Spec type: `openapi` (default) or `swagger`              |
+| Field     | Description                                                    |
+|-----------|----------------------------------------------------------------|
+| `env`     | Environment variables to set (for `${VAR}` substitution)       |
+| `servers` | Server configurations                                          |
+| `url`     | OpenAPI spec URL (remote) or file path (local)                 |
+| `baseUrl` | API base URL (auto-detected from spec if not provided)         |
+| `headers` | Default request headers                                        |
+| `type`    | Spec type: `openapi` (default) or `swagger`                    |
+| `include` | Glob patterns to include operations (whitelist)                |
+| `exclude` | Glob patterns to exclude operations (blacklist, takes priority)|
+
+### Operation Filtering (include/exclude)
+
+Use glob patterns to filter operations by operationId, path, or tags:
+
+```json
+{
+	"servers": {
+		"petstore": {
+			"url": "https://petstore.swagger.io/v3/openapi.json",
+			"include": ["*pet*"],
+			"exclude": ["*upload*", "*delete*"]
+		}
+	}
+}
+```
+
+Patterns match against:
+- **operationId**: `*pet*` matches `getPetById`, `addPet`, etc.
+- **path**: `/pet/**` matches `/pet`, `/pet/{petId}`, `/pet/findByStatus`
+- **METHOD path**: `GET /pet/*` matches GET operations on /pet paths
+- **tags**: `store` matches operations tagged with "store"
+
+Examples:
+```json
+{
+	"include": ["*pet*"],           // Only pet-related operations
+	"include": ["/pet/**"],         // Only operations with /pet path
+	"include": ["store"],           // Only operations tagged "store"
+	"exclude": ["*upload*"],        // Exclude upload operations
+	"exclude": ["DELETE *"]         // Exclude all DELETE operations
+}
+```
 
 ### Environment Variable Substitution
 
@@ -308,21 +345,21 @@ api-cli rm petstore myapi
 | Variable              | Description                                  | Default |
 |-----------------------|----------------------------------------------|---------|
 | `API_CLI_CONFIG_PATH` | Path to config file                          | (none)  |
-| `API_CLI_CONFIG`      | Inline JSON config (alternative to file)     | (none)  |
+| `API_CLI_CONFIG_INLINE` | Inline JSON config (alternative to file)   | (none)  |
 | `API_CLI_DEBUG`       | Enable debug output                          | `false` |
 | `API_CLI_TIMEOUT`     | Request timeout (seconds)                    | `30`    |
 
 ### Inline Configuration
 
-Use `API_CLI_CONFIG` for quick testing or CI/CD environments:
+Use `API_CLI_CONFIG_INLINE` for quick testing or CI/CD environments:
 
 ```bash
 # Inline config via environment variable
-export API_CLI_CONFIG='{"servers":{"petstore":{"url":"https://petstore3.swagger.io/api/v3/openapi.json"}}}'
+export API_CLI_CONFIG_INLINE='{"servers":{"petstore":{"url":"https://petstore3.swagger.io/api/v3/openapi.json"}}}'
 api-cli servers
 
 # One-liner
-API_CLI_CONFIG='{"servers":{"myapi":{"url":"./spec.json","baseUrl":"http://localhost:3000"}}}' api-cli get myapi/health
+API_CLI_CONFIG_INLINE='{"servers":{"myapi":{"url":"./spec.json","baseUrl":"http://localhost:3000"}}}' api-cli get myapi/health
 ```
 
 ## Using with AI Agents

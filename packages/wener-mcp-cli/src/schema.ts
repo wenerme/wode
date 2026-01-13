@@ -76,6 +76,18 @@ export const McpServersConfigSchema = z.object({
 export type McpServersConfig = z.infer<typeof McpServersConfigSchema>;
 
 /**
+ * MCP-CLI specific config format with extends and discoveryConfig
+ */
+export const McpCliConfigSchema = z.object({
+	mcpServers: z.record(ServerConfigSchema).optional(),
+	extends: z.array(z.string()).optional(),
+	discoveryConfig: z.boolean().optional(),
+	include: z.array(z.string()).optional(),
+	exclude: z.array(z.string()).optional(),
+});
+export type McpCliConfig = z.infer<typeof McpCliConfigSchema>;
+
+/**
  * Config source information - tracks where the config was found
  */
 export interface ConfigSource {

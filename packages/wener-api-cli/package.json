@@ -1,6 +1,6 @@
 {
 	"name": "@wener/api-cli",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"type": "module",
 	"description": "A lightweight CLI for interacting with REST APIs via OpenAPI specifications",
 	"repository": {
