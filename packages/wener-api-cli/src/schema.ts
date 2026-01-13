@@ -13,6 +13,8 @@ export const ServerConfigSchema = z.object({
 	baseUrl: z.string().nullish(), // API base URL (auto-detected from spec if not provided)
 	headers: z.record(z.string()).nullish(), // Default headers for all requests
 	type: z.literal('openapi').default('openapi'),
+	include: z.array(z.string()).nullish(), // Glob patterns to include operations (matches operationId, path, tags)
+	exclude: z.array(z.string()).nullish(), // Glob patterns to exclude operations
 });
 export type ServerConfig = z.infer<typeof ServerConfigSchema>;
 

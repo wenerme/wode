@@ -320,10 +320,10 @@ export async function loadConfig(explicitPath?: string): Promise<MergedConfig> {
 		return loadConfigFromPath(envPath);
 	}
 
-	// Support inline config via API_CLI_CONFIG env var
-	const inlineConfig = process.env.API_CLI_CONFIG;
+	// Support inline config via API_CLI_CONFIG_INLINE env var
+	const inlineConfig = process.env.API_CLI_CONFIG_INLINE;
 	if (inlineConfig) {
-		return loadConfigFromString(inlineConfig, 'API_CLI_CONFIG');
+		return loadConfigFromString(inlineConfig, 'API_CLI_CONFIG_INLINE');
 	}
 
 	return discoverConfigs();

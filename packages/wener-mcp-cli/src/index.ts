@@ -47,10 +47,15 @@ Configuration:
       "mcpServers": {
         "server-name": { "command": "npx", "args": ["-y", "some-mcp-server"] },
         "remote": { "url": "https://mcp.example.com/mcp" }
-      }
+      },
+      "extends": ["./other-config.json"],  // Inherit from other configs
+      "discoveryConfig": false,            // Disable auto-discovery
+      "include": ["dev-*", "prod-*"],      // Glob patterns to include
+      "exclude": ["*-test"]                // Glob patterns to exclude
     }
 
   Environment variables:
+    MCP_CLI_CONFIG_INLINE    Inline JSON config (highest priority)
     MCP_CONFIG_PATH   Explicit config file path
     MCP_DEBUG         Enable debug output
     MCP_TIMEOUT       Request timeout in seconds (default: 1800)
@@ -63,6 +68,9 @@ Examples:
   mcp-cli add notion https://mcp.notion.com/mcp --transport http
   mcp-cli add myserver -- npx -y some-mcp-server
   mcp-cli rm myserver
+
+  # Inline config for testing
+  MCP_CLI_CONFIG_INLINE='{"mcpServers":{"test":{"command":"echo"}},"include":["test"]}' mcp-cli servers
 
 Agent Usage:
   IMPORTANT: Always run "mcp-cli info <server>/<tool>" before "mcp-cli call"

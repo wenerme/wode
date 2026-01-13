@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { parseOpenApiSpec } from '../src/openapi';
+import { filterOperations, parseOpenApiSpec } from '../src/openapi';
+import type { ParsedOperation } from '../src/schema';
 
 describe('parseOpenApiSpec', () => {
 	it('should parse OpenAPI 3.0 spec', () => {
@@ -96,5 +97,84 @@ describe('parseOpenApiSpec', () => {
 		expect(parsed.operations[0].requestBody).toBeDefined();
 		expect(parsed.operations[0].requestBody?.required).toBe(true);
 		expect(parsed.operations[0].requestBody?.contentType).toBe('application/json');
+	});
+});
+
+describe('filterOperations', () => {
+	const operations: ParsedOperation[] = [
+		{
+			operationId: 'getPetById',
+			method: 'GET',
+			path: '/pet/{petId}',
+			tags: ['pet'],
+			parameters: [],
+			responses: {},
+		},
+		{
+			operationId: 'addPet',
+			method: 'POST',
+			path: '/pet',
+			tags: ['pet'],
+			parameters: [],
+			responses: {},
+		},
+		{
+			operationId: 'uploadFile',
+			method: 'POST',
+			path: '/pet/{petId}/uploadImage',
+			tags: ['pet'],
+			parameters: [],
+			responses: {},
+		},
+		{
+			operationId: 'getInventory',
+			method: 'GET',
+			path: '/store/inventory',
+			tags: ['store'],
+			parameters: [],
+			responses: {},
+		},
+		{
+			operationId: 'createUser',
+			method: 'POST',
+			path: '/user',
+			tags: ['user'],
+			parameters: [],
+			responses: {},
+		},
+	];
+
+	it('should filter by include pattern on operationId', () => {
+		const filtered = filterOperations(operations, ['*pet*']);
+		expect(filtered).toHaveLength(3);
+		expect(filtered.map((op) => op.operationId)).toEqual(['getPetById', 'addPet', 'uploadFile']);
+	});
+
+	it('should filter by exclude pattern', () => {
+		const filtered = filterOperations(operations, null, ['*upload*']);
+		expect(filtered).toHaveLength(4);
+		expect(filtered.map((op) => op.operationId)).not.toContain('uploadFile');
+	});
+
+	it('should apply both include and exclude (exclude takes priority)', () => {
+		const filtered = filterOperations(operations, ['*pet*'], ['*upload*']);
+		expect(filtered).toHaveLength(2);
+		expect(filtered.map((op) => op.operationId)).toEqual(['getPetById', 'addPet']);
+	});
+
+	it('should filter by tag', () => {
+		const filtered = filterOperations(operations, ['store']);
+		expect(filtered).toHaveLength(1);
+		expect(filtered[0].operationId).toBe('getInventory');
+	});
+
+	it('should filter by path pattern', () => {
+		const filtered = filterOperations(operations, ['/pet/**']);
+		expect(filtered).toHaveLength(3);
+	});
+
+	it('should return all operations when no filter specified', () => {
+		const filtered = filterOperations(operations, null, null);
+		expect(filtered).toHaveLength(5);
 	});
 });
