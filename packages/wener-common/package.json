@@ -1,6 +1,6 @@
 {
 	"name": "@wener/common",
-	"version": "2.0.2",
+	"version": "2.0.3",
 	"type": "module",
 	"description": "Common utils for console & server",
 	"repository": {
@@ -50,20 +50,25 @@
 	},
 	"dependencies": {
 		"@standard-schema/spec": "^1.1.0",
-		"@wener/utils": "workspace:^1.1.56",
+		"@wener/utils": "workspace:^1.1.58",
 		"date-fns": "^4.1.0",
-		"es-toolkit": "^1.43.0",
+		"es-toolkit": "^1.44.0",
 		"std-env": "^3.10.0",
 		"ts-pattern": "^5.9.0"
 	},
 	"devDependencies": {
-		"@orpc/client": "^1.13.2",
-		"@orpc/contract": "^1.13.2",
-		"@orpc/openapi-client": "^1.13.2",
-		"@sinclair/typebox": "^0.34.47",
+		"@mikro-orm/better-sqlite": "^6.6.5",
+		"@mikro-orm/core": "^6.6.5",
+		"@mikro-orm/knex": "^6.6.5",
+		"@orpc/client": "^1.13.4",
+		"@orpc/contract": "^1.13.4",
+		"@orpc/openapi-client": "^1.13.4",
+		"@orpc/server": "^1.13.4",
+		"@sinclair/typebox": "^0.34.48",
 		"@sinclair/typebox-codegen": "^0.11.1",
 		"@types/argon2-browser": "^1.18.4",
 		"@types/bcrypt": "^6.0.0",
+		"@types/better-sqlite3": "^7.6.13",
 		"@types/micromatch": "^4.0.10",
 		"@types/mime-types": "^3.0.1",
 		"ajv-formats": "^3.0.1",
@@ -81,8 +86,9 @@
 		"micromatch": "^4.0.8",
 		"mime-types": "^3.0.2",
 		"pathe": "^2.0.3",
-		"s3mini": "^0.8.1",
-		"zod": "^4.3.5"
+		"s3mini": "^0.9.1",
+		"webdav": "^5.8.0",
+		"zod": "^4.3.6"
 	},
 	"publishConfig": {
 		"exports": {

@@ -1,4 +1,3 @@
-import React from 'react';
 import { createMemoryRouter, type RouteObject } from 'react-router';
 import { createReactContext } from '@wener/reaction';
 import { createStore } from 'zustand';
@@ -16,7 +15,7 @@ export interface RouteState {
 
 export function createRouteStore() {
 	return createStore(
-		mutative<RouteState>((setState, getState, store) => {
+		mutative<RouteState>((_setState, _getState, _store) => {
 			const router: ReactRouter = createMemoryRouter([
 				{
 					index: true,
@@ -33,4 +32,4 @@ export function createRouteStore() {
 
 export type RouteStore = ReturnType<typeof createRouteStore>;
 
-const RouterStoreContext = createReactContext<ReactRouter | undefined>('RouterStoreContext', undefined);
+const _RouterStoreContext = createReactContext<ReactRouter | undefined>('RouterStoreContext', undefined);

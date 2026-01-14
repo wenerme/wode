@@ -4,6 +4,7 @@ import type { MaybePromise } from './MaybePromise';
 
 type IteratorLike<T> = Iterable<T> | Iterator<T>;
 type AsyncIteratorLike<T> = AsyncIterable<T> | AsyncIterator<T> | AsyncIterableIterator<T> | IteratorLike<T>;
+export type { AsyncIteratorLike };
 
 export function nextOfAsyncIterator<T>(
 	it: MaybePromise<AsyncIterable<T> | Iterable<T> | AsyncIterator<T> | Iterator<T> | T>,

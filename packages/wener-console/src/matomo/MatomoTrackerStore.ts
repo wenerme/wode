@@ -18,7 +18,7 @@ function setupMatomo({
 		return;
 	}
 	const G = global;
-	if (typeof G === 'undefined' || G['Matomo']?.initialized) {
+	if (typeof G === 'undefined' || G.Matomo?.initialized) {
 		return;
 	}
 	const _paq = (G._paq = G._paq || queue);
@@ -26,7 +26,7 @@ function setupMatomo({
 	_paq.push(['trackPageView']);
 	_paq.push(['enableLinkTracking']);
 	const u = url;
-	_paq.push(['setTrackerUrl', u + 'matomo.php']);
+	_paq.push(['setTrackerUrl', `${u}matomo.php`]);
 	_paq.push(['setSiteId', siteId]);
 
 	return new Promise((resolve, reject) => {
@@ -40,7 +40,7 @@ function setupMatomo({
 		ele$.type = 'text/javascript';
 		ele$.async = true;
 		ele$.defer = true;
-		ele$.src = u + 'matomo.js';
+		ele$.src = `${u}matomo.js`;
 		parent$.parentNode?.insertBefore(ele$, parent$);
 	});
 }
@@ -51,20 +51,20 @@ interface TrackerStoreState {
 }
 
 export const TrackerStore = createStore<TrackerStoreState>()(
-	mutative((setState, getState, store) => {
-		const g: any = getGlobalThis();
+	mutative((_setState, _getState, _store) => {
+		const _g: any = getGlobalThis();
 		const queue: any[] = [];
-		let pending;
+		let _pending: Promise<unknown> | undefined;
 		return {
 			init: ({ baseUrl, siteId }) => {
-				pending ||= setupMatomo({
+				_pending ||= setupMatomo({
 					url: baseUrl,
 					siteId: siteId,
 				});
 			},
 			tracker: createProxyTracker({
 				queue,
-				invoke: ({ method, args }) => {},
+				invoke: () => undefined,
 			}),
 		} as TrackerStoreState;
 	}),
@@ -75,7 +75,7 @@ function createProxyTracker({
 	invoke,
 }: {
 	queue?: any[];
-	invoke?: (o: { method: string; args: any[]; queue: any[] }) => void | boolean;
+	invoke?: (o: { method: string; args: any[]; queue: any[] }) => undefined | boolean;
 }): MatomoTracker {
 	return new Proxy(
 		{

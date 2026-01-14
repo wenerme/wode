@@ -1,4 +1,4 @@
-import React, { lazy } from 'react';
+import { lazy } from 'react';
 import { ProdOnly } from '@wener/reaction';
 import { useShallow } from 'zustand/react/shallow';
 import { useUserId } from '../../console/context';
@@ -17,9 +17,5 @@ export const SiteSidecar = () => {
 		}),
 	);
 
-	return (
-		<>
-			<ProdOnly>{siteId && url && <MatomoTracker url={url} siteId={siteId} useUserId={useUserId} />}</ProdOnly>
-		</>
-	);
+	return <ProdOnly>{siteId && url && <MatomoTracker url={url} siteId={siteId} useUserId={useUserId} />}</ProdOnly>;
 };

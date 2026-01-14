@@ -24,7 +24,7 @@ export type UserStore = ReturnType<typeof createUserStore>;
 
 export function createUserStore(init: Partial<UserState> = {}) {
 	return createStore(
-		mutative<UserState>((setState, getState, store) => {
+		mutative<UserState>((setState, _getState, _store) => {
 			return {
 				id: '',
 				displayName: '',

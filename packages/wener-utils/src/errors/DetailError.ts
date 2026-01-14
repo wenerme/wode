@@ -13,9 +13,9 @@ export class DetailError extends Error {
 	readonly detail: ErrorDetail;
 	readonly status: number;
 	readonly description?: string;
-
 	constructor(detail: ErrorDetail) {
-		super(detail.message, { cause: detail.cause });
+		super(detail.message);
+		this.cause = detail.cause;
 		this.detail = detail;
 		this.status = detail.status;
 		this.description = detail.description;

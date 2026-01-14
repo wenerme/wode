@@ -1,4 +1,4 @@
-import React, { type ComponentPropsWithoutRef, type ComponentPropsWithRef, type FC, type ReactNode } from 'react';
+import type { ComponentPropsWithoutRef, ComponentPropsWithRef, FC, ReactNode } from 'react';
 import { GrSystem } from 'react-icons/gr';
 import type { BuildInfo } from '../../buildinfo';
 import { getBuildInfo } from '../../buildinfo';

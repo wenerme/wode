@@ -55,7 +55,7 @@ export function getFeishuMcpConfig({
 		appId,
 		appSecret,
 		domain: process.env.FEISHU_DOMAIN,
-		timeout: process.env.FEISHU_TIMEOUT ? parseInt(process.env.FEISHU_TIMEOUT) : undefined,
+		timeout: process.env.FEISHU_TIMEOUT ? parseInt(process.env.FEISHU_TIMEOUT, 10) : undefined,
 		readonly: process.env.FEISHU_READONLY === 'true' || process.env.FEISHU_READONLY === '1',
 		oauth: {
 			redirectUri: process.env.FEISHU_REDIRECT_URI,
@@ -81,7 +81,7 @@ export function getFeishuMcpConfig({
 	}
 
 	logger.info('Feishu MCP configuration loaded', {
-		appId: config.appId.substring(0, 8) + '...',
+		appId: `${config.appId.substring(0, 8)}...`,
 		domain: config.domain,
 		timeout: config.timeout,
 		readonly: config.readonly,

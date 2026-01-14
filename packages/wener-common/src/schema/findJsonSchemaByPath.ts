@@ -14,10 +14,10 @@ export function findJsonSchemaByPath(schema: TypeSchema, objectPath: string) {
 	for (const segment of segments) {
 		// 检查当前 schema 是否是对象类型且有 properties
 		if (
-			currentSchema
-			&& typeof currentSchema === 'object'
-			&& currentSchema.properties
-			&& currentSchema.properties[segment]
+			currentSchema &&
+			typeof currentSchema === 'object' &&
+			currentSchema.properties &&
+			currentSchema.properties[segment]
 		) {
 			currentSchema = currentSchema.properties[segment];
 			continue;

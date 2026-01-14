@@ -1,4 +1,4 @@
-import React, { type FC, type HTMLAttributes } from 'react';
+import type { FC, HTMLAttributes } from 'react';
 import styled from '@emotion/styled';
 
 const GooeyLoaderContainer = styled.div`

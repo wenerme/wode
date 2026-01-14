@@ -15,25 +15,25 @@
     "storybook": "storybook dev -p 6053 --no-open"
   },
   "dependencies": {
-    "@base-ui/react": "^1.0.0",
+    "@base-ui/react": "^1.1.0",
     "@phosphor-icons/react": "^2.1.10",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "react": "~19.2.3",
     "react-dom": "~19.2.3",
     "react-server-dom-webpack": "~19.2.3",
-    "shadcn": "^3.6.3",
+    "shadcn": "^3.7.0",
     "tailwind-merge": "^3.4.0",
-    "waku": "1.0.0-alpha.0"
+    "waku": "1.0.0-alpha.2"
   },
   "devDependencies": {
-    "@storybook/addon-docs": "^10.1.11",
-    "@storybook/addon-links": "^10.1.11",
-    "@storybook/react": "^10.1.11",
-    "@storybook/react-vite": "^10.1.11",
+    "@storybook/addon-docs": "^10.2.0",
+    "@storybook/addon-links": "^10.2.0",
+    "@storybook/react": "^10.2.0",
+    "@storybook/react-vite": "^10.2.0",
     "@tailwindcss/vite": "^4.1.18",
     "@vitejs/plugin-react-swc": "^4.2.2",
-    "storybook": "^10.1.11",
-    "wrangler": "^4.58.0"
+    "storybook": "^10.2.0",
+    "wrangler": "^4.60.0"
   }
 }

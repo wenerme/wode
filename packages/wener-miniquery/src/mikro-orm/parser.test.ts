@@ -26,9 +26,8 @@ async function getOrm() {
 		}),
 	);
 	let em = orm.em.fork();
-	{
-		for (const schema of [
-			`
+	for (const schema of [
+		`
 				create table users
 				(
 					id    bigint primary key,
@@ -37,7 +36,7 @@ async function getOrm() {
 					attrs json
 				);
 			`,
-			`
+		`
 				create table user_profile
 				(
 					id      bigint primary key,
@@ -46,9 +45,8 @@ async function getOrm() {
 					attrs   json
 				);
       `,
-		]) {
-			await em.execute(schema);
-		}
+	]) {
+		await em.execute(schema);
 	}
 
 	return { orm, em };

@@ -28,7 +28,7 @@ type CookieSameSite = 'Strict' | 'Lax' | 'None';
  */
 type CookieSourceScheme = 'Unset' | 'NonSecure' | 'Secure';
 
-interface Cookie {
+interface _Cookie {
 	/**
 	 * Cookie name.
 	 */

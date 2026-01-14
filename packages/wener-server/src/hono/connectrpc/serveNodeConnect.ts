@@ -62,6 +62,7 @@ export function serveNodeConnect(options: ServeNodeConnectOptions): Handler<{ Bi
 		} catch (e) {
 			log.error(`handler for rpc ${hdr.method.name} of ${hdr.service.typeName} failed`);
 			console.error(e);
+			throw e;
 		}
 	};
 }

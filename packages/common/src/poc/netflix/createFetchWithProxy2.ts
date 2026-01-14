@@ -1,4 +1,4 @@
-import { FetchLike } from '@wener/utils';
+import type { FetchLike } from '@wener/utils';
 import { fetch, ProxyAgent } from 'undici';
 
 export function createFetchWithProxy2({ proxy }: { proxy?: string }) {
@@ -22,7 +22,7 @@ export function createFetchWithProxy2({ proxy }: { proxy?: string }) {
 			u.username || u.password
 				? `Basic ${Buffer.from(`${decodeURIComponent(u.username)}:${decodeURIComponent(u.password)}`).toString('base64')}`
 				: undefined,
-		// @ts-ignore
+		// @ts-expect-error
 		protocol: u.protocol,
 		// clientFactory: (origin, opts) => {
 		//   return new Pool(origin, {
@@ -46,7 +46,7 @@ export function createFetchWithProxy2({ proxy }: { proxy?: string }) {
 			}
 		}
 		init.dispatcher = agent;
-		return await (fetch as any)!(...args);
+		return await (fetch as any)?.(...args);
 	};
 
 	return { fetch: _fetch, agent };

@@ -83,7 +83,7 @@ export function createConnectHandler({
 				router.service(
 					Schema,
 					new Proxy(target, {
-						get(target, key, receiver) {
+						get(target, key, _receiver) {
 							let val = target[key];
 							if (!val || typeof val !== 'function' || typeof key !== 'string') return val;
 							const fn = val.bind(target);

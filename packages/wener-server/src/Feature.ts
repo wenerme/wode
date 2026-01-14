@@ -19,12 +19,12 @@ export class Features {
 	private static cache = new Map<Function, any>();
 
 	static requireFeature(c: any, f: string | string[]) {
-		Errors.NotImplemented.check(this.hasFeature(c, f), `Feature not implemented: ${f}`);
+		Errors.NotImplemented.check(Features.hasFeature(c, f), `Feature not implemented: ${f}`);
 		return c;
 	}
 
 	static hasFeature(c: any, f: string | string[]) {
-		let features = this.getFeatures(c);
+		let features = Features.getFeatures(c);
 		if (typeof f === 'string') {
 			return features.includes(f);
 		}
@@ -35,7 +35,7 @@ export class Features {
 		if (typeof c !== 'function') {
 			c = c.constructor;
 		}
-		return computeIfAbsent(this.cache, c, () => {
+		return computeIfAbsent(Features.cache, c, () => {
 			let all = [getOwnMetadata(FeatureKey, c) as FeatureOptions | undefined];
 			{
 				let p = c;

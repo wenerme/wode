@@ -1,5 +1,5 @@
 import { maybeFunction, type MaybeFunction, type MaybePromise } from '@wener/utils';
-import { Password } from './Password';
+import type { Password } from './Password';
 
 type Provide = {
 	hash: (password: string, options: { salt?: Buffer; raw?: boolean; type?: 0 | 1 | 2 }) => Promise<string>;

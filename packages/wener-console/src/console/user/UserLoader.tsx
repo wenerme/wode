@@ -1,4 +1,4 @@
-import React, { type FC, type PropsWithChildren } from 'react';
+import type { FC, PropsWithChildren } from 'react';
 import { usePromise } from '@wener/reaction';
 import { NonIdealState } from '../../daisy';
 import { resolveErrorMessage } from '../../toast';

@@ -99,7 +99,7 @@ export function formatResourceMeta(data: IAnyResource): ReactNode {
 		);
 	}
 
-	return parts.length > 0 ? <>{parts.map((p, i) => (i > 0 ? [' • ', p] : p))}</> : null;
+	return parts.length > 0 ? parts.map((p, i) => (i > 0 ? [' • ', p] : p)) : null;
 }
 
 export type ResourceListItemProps = Omit<

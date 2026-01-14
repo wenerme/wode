@@ -1,5 +1,5 @@
 import React, { useEffect, useState, type PropsWithChildren } from 'react';
-import { AuthStatus, getAuthStore, useAuthStore, useAuthStoreContext } from './AuthStore';
+import { AuthStatus, useAuthStore, useAuthStoreContext } from './AuthStore';
 
 export const AuthBlock: React.FC<
 	PropsWithChildren & {

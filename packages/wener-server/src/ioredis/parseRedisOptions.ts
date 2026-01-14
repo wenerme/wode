@@ -55,7 +55,7 @@ interface ParsedRedisUrl {
 	tls?: { servername?: string };
 }
 
-function parseRedisUrl(u: string) {
+function _parseRedisUrl(u: string) {
 	let url = new URL(u);
 	let out: ParsedRedisUrl = {
 		hostname: url.hostname,

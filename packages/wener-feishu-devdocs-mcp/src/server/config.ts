@@ -50,12 +50,12 @@ export function getFeishuDevDocsConfig({
 } = {}): FeishuDevDocsConfig {
 	const rawConfig = {
 		domain: process.env.FEISHU_DOMAIN,
-		timeout: process.env.FEISHU_TIMEOUT ? parseInt(process.env.FEISHU_TIMEOUT) : undefined,
-		maxResults: process.env.FEISHU_DEVDOCS_MAX_RESULTS ? parseInt(process.env.FEISHU_DEVDOCS_MAX_RESULTS) : undefined,
+		timeout: process.env.FEISHU_TIMEOUT ? parseInt(process.env.FEISHU_TIMEOUT, 10) : undefined,
+		maxResults: process.env.FEISHU_DEVDOCS_MAX_RESULTS ? parseInt(process.env.FEISHU_DEVDOCS_MAX_RESULTS, 10) : undefined,
 		readonly: process.env.FEISHU_READONLY === 'true' ? true : undefined,
 		cache: {
 			enabled: process.env.FEISHU_CACHE_ENABLED !== 'false', // Default to true
-			ttl: process.env.FEISHU_CACHE_TTL ? parseInt(process.env.FEISHU_CACHE_TTL) : undefined,
+			ttl: process.env.FEISHU_CACHE_TTL ? parseInt(process.env.FEISHU_CACHE_TTL, 10) : undefined,
 			cacheDir: process.env.FEISHU_CACHE_DIR,
 		},
 	};

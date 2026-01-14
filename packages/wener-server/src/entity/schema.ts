@@ -159,32 +159,28 @@ export function getEntitySchema<T = unknown>(
 					// fixme typing
 					(fieldJsonschemaDef as { nullable?: boolean }).nullable = true;
 				}
-				{
-					entityFieldSchemaDef.title && (fieldJsonschemaDef.title ||= entityFieldSchemaDef.title);
-					entityFieldSchemaDef.description && (fieldJsonschemaDef.description ||= entityFieldSchemaDef.description);
-					if (prop.comment) {
-						if (!fieldJsonschemaDef.title) {
-							fieldJsonschemaDef.title = prop.comment;
-						} else {
-							fieldJsonschemaDef.description ||= prop.comment;
-						}
-					}
-					if (prop.default !== undefined && prop.default !== null) {
-						if (fieldJsonschemaDef.type === 'object' && typeof prop.default === 'string') {
-							// ignore json case default
-						} else {
-							fieldJsonschemaDef.default = prop.default;
-						}
+				entityFieldSchemaDef.title && (fieldJsonschemaDef.title ||= entityFieldSchemaDef.title);
+				entityFieldSchemaDef.description && (fieldJsonschemaDef.description ||= entityFieldSchemaDef.description);
+				if (prop.comment) {
+					if (!fieldJsonschemaDef.title) {
+						fieldJsonschemaDef.title = prop.comment;
+					} else {
+						fieldJsonschemaDef.description ||= prop.comment;
 					}
 				}
-				{
-					if (entityFieldSchemaDef.title === entityFieldSchemaDef.description) {
-						entityFieldSchemaDef.description = undefined;
+				if (prop.default !== undefined && prop.default !== null) {
+					if (fieldJsonschemaDef.type === 'object' && typeof prop.default === 'string') {
+						// ignore json case default
+					} else {
+						fieldJsonschemaDef.default = prop.default;
 					}
+				}
+				if (entityFieldSchemaDef.title === entityFieldSchemaDef.description) {
+					entityFieldSchemaDef.description = undefined;
+				}
 
-					if (fieldJsonschemaDef.title === fieldJsonschemaDef.description) {
-						fieldJsonschemaDef.description = undefined;
-					}
+				if (fieldJsonschemaDef.title === fieldJsonschemaDef.description) {
+					fieldJsonschemaDef.description = undefined;
 				}
 				entitySchemaDef.fields.push(entityFieldSchemaDef);
 			}

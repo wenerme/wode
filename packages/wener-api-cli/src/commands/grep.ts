@@ -4,7 +4,6 @@
 
 import { getOperations, loadApiClient, type OperationInfo } from '../client';
 import { getServerConfig, listServerNames, loadConfig } from '../config';
-import { ErrorCode } from '../errors';
 import { formatJson, formatSearchResults } from '../output';
 
 export interface GrepOptions {
@@ -64,7 +63,7 @@ export async function grepCommand(options: GrepOptions): Promise<void> {
 					results.push({ server: serverName, operation });
 				}
 			}
-		} catch (error) {
+		} catch (_error) {
 			// Silently skip servers that fail to load
 			// Could add verbose flag to show these
 		}

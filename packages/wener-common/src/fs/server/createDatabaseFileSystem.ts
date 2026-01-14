@@ -103,7 +103,7 @@ class DBFS implements IFileSystem {
 		}
 	}
 
-	async stat(path: string, options?: StatOptions): Promise<IFileStat> {
+	async stat(path: string, _options?: StatOptions): Promise<IFileStat> {
 		// Validate input
 		if (!path || typeof path !== 'string') {
 			throw new FileSystemError('Invalid path', FileSystemErrorCode.EINVAL);
@@ -121,7 +121,7 @@ class DBFS implements IFileSystem {
 		return !!(await this._getNodeByPath(path, this.em));
 	}
 
-	async readdir(dir: string, options?: ReaddirOptions): Promise<IFileStat[]> {
+	async readdir(dir: string, _options?: ReaddirOptions): Promise<IFileStat[]> {
 		const em = this.em;
 		const parentNode = await this._getNodeByPath(dir, em);
 
@@ -445,19 +445,19 @@ class DBFS implements IFileSystem {
 		});
 	}
 
-	createReadStream(path: string, options?: CreateReadStreamOptions): never {
+	createReadStream(_path: string, _options?: CreateReadStreamOptions): never {
 		throw new Error('Streaming read is not supported by DBFS yet.');
 	}
 
-	createWriteStream(path: string, options?: CreateWriteStreamOptions): never {
+	createWriteStream(_path: string, _options?: CreateWriteStreamOptions): never {
 		throw new Error('Streaming write is not supported by DBFS yet.');
 	}
 
-	createReadableStream(path: string, options?: CreateReadStreamOptions): ReadableStream {
+	createReadableStream(_path: string, _options?: CreateReadStreamOptions): ReadableStream {
 		throw new Error('ReadableStream is not supported by DBFS yet.');
 	}
 
-	createWritableStream(path: string, options?: CreateWriteStreamOptions): WritableStream {
+	createWritableStream(_path: string, _options?: CreateWriteStreamOptions): WritableStream {
 		throw new Error('WritableStream is not supported by DBFS yet.');
 	}
 
@@ -560,7 +560,7 @@ class DBFS implements IFileSystem {
 			srcFileContentQb.where({ node: srcNode });
 			const srcFileContent = await srcFileContentQb.getSingleResult();
 			if (srcFileContent) {
-				const newContent = em.create(FileNodeContentEntity, {
+				const _newContent = em.create(FileNodeContentEntity, {
 					node: newNode, // Use node relationship as primary key
 					tid: srcNode.tid,
 					content: srcFileContent.content,

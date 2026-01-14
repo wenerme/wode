@@ -1,4 +1,4 @@
-import React, { type ComponentPropsWithRef } from 'react';
+import type { ComponentPropsWithRef } from 'react';
 import { HiExclamationCircle } from 'react-icons/hi2';
 import { showErrorToast } from '../../toast';
 import { cn } from '../../utils/cn';

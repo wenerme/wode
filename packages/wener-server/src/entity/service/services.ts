@@ -150,8 +150,8 @@ export interface HasEntityRefService<E extends StandardBaseEntity> {
 	unbindEntity(req: ResolveEntityOptions<E>): Promise<EntityResult<E>>;
 }
 
-export type AnyEntityService<E extends StandardBaseEntity = StandardBaseEntity> = EntityService<E>
-	& HasOwnerEntityService<E>
-	& HasStatusEntityService<E>
-	& HasEntityRefService<E>
-	& HasSoftDeleteEntityService<E>;
+export type AnyEntityService<E extends StandardBaseEntity = StandardBaseEntity> = EntityService<E> &
+	HasOwnerEntityService<E> &
+	HasStatusEntityService<E> &
+	HasEntityRefService<E> &
+	HasSoftDeleteEntityService<E>;

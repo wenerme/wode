@@ -64,11 +64,11 @@ export class EntityBaseService<E extends StandardBaseEntity> extends BaseEntityS
 	static #services = new Map<EntityClass<any> | string, EntityBaseService<any>>();
 
 	static getService<T>(entity: EntityClass<T> | string) {
-		return this.#services.get(entity) as T;
+		return EntityBaseService.#services.get(entity) as T;
 	}
 
 	static requireService<T extends StandardBaseEntity>(entity: EntityClass<T>): EntityBaseService<T> {
-		return this.#services.get(entity) || new EntityBaseService(getMikroORM(), entity);
+		return EntityBaseService.#services.get(entity) || new EntityBaseService(getMikroORM(), entity);
 	}
 
 	protected applyResolve<T extends QueryBuilder<E>, Q extends ResolveEntityRequest>({
@@ -196,9 +196,9 @@ export class EntityBaseService<E extends StandardBaseEntity> extends BaseEntityS
 			try {
 				entity = await this.em.upsert(this.Entity, data as any, {
 					onConflictFields,
-					// @ts-ignore
+					// @ts-expect-error
 					onConflictMergeFields,
-					// @ts-ignore
+					// @ts-expect-error
 					onConflictExcludeFields: [...onConflictExcludeFields, 'id', 'uid', 'tid', 'createdAt', 'deletedAt'],
 					onConflictAction,
 				});
@@ -219,7 +219,7 @@ export class EntityBaseService<E extends StandardBaseEntity> extends BaseEntityS
 
 	async update(req: UpdateEntityRequest & { data: Partial<E> }) {
 		let { data } = req;
-		const { repo, em } = this;
+		const { em } = this;
 		const entity = await this.get(req);
 		const before = entity.toPOJO();
 		entity.assign(trimUndefined(data));
@@ -247,7 +247,7 @@ export class EntityBaseService<E extends StandardBaseEntity> extends BaseEntityS
 	}
 
 	async delete(r: DeleteEntityRequest): Promise<GeneralResponse<E>> {
-		const { repo, em } = this;
+		const { em } = this;
 		// todo 允许不存在
 		const entity = await this.resolve(r);
 		if (!entity) {
@@ -271,7 +271,7 @@ export class EntityBaseService<E extends StandardBaseEntity> extends BaseEntityS
 	}
 
 	async undelete(r: UndeleteEntityRequest) {
-		const { repo, em } = this;
+		const { em } = this;
 		const entity = await this.get({ ...r, deleted: true });
 		entity.deletedAt = undefined;
 		if (hasEntityFeature(entity, EntityFeature.HasAuditorRef)) {
@@ -283,7 +283,7 @@ export class EntityBaseService<E extends StandardBaseEntity> extends BaseEntityS
 	}
 
 	async purge(r: PurgeEntityRequest) {
-		const { repo, em } = this;
+		const { em } = this;
 		const entity = await this.get({ ...r, deleted: true });
 		writeEntityAuditLog({ entity, action: EntityAuditAction.Purge, em, before: entity.toPOJO() });
 		await em.removeAndFlush(entity);
@@ -303,9 +303,9 @@ export class EntityBaseService<E extends StandardBaseEntity> extends BaseEntityS
 		const entities = await em.transactional(async (em) => {
 			const entities = await em.upsertMany(this.Entity, data, {
 				onConflictFields,
-				// @ts-ignore
+				// @ts-expect-error
 				onConflictMergeFields,
-				// @ts-ignore
+				// @ts-expect-error
 				onConflictExcludeFields: [...onConflictExcludeFields, 'id', 'tid', 'createdAt', 'deletedAt'],
 				onConflictAction,
 			});
@@ -326,7 +326,7 @@ export class EntityBaseService<E extends StandardBaseEntity> extends BaseEntityS
 	}
 
 	async assignOwner({ ownerId, ...req }: AssignOwnerRequest): Promise<AssignOwnerResponse> {
-		const userId = Contexts.userId.require();
+		const _userId = Contexts.userId.require();
 		const ent = await this.get(req);
 		Errors.BadRequest.check(hasEntityFeature(ent, EntityFeature.HasOwnerRef), '资源不支持归属');
 		setOwnerRef(ent, ownerId);
@@ -372,7 +372,7 @@ export class EntityBaseService<E extends StandardBaseEntity> extends BaseEntityS
 	// }
 }
 
-function findByCursor<E extends EntityClass<any>>(o: {
+function _findByCursor<E extends EntityClass<any>>(_o: {
 	em: EntityManager;
 	builder: QueryBuilder<E>;
 	cursor: { first?: number; after?: string; last?: number; before?: string };

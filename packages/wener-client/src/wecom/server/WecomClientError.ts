@@ -17,8 +17,8 @@ export class WecomClientError extends Error {
 	}
 
 	static async ok(res: Response) {
-		let body;
-		let last;
+		let body: unknown;
+		let last: unknown;
 		try {
 			const type = res.headers.get('content-type');
 			if (type?.includes('application/json')) {

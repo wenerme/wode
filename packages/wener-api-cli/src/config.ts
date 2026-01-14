@@ -244,10 +244,11 @@ export function discoverConfigs(cwd?: string): MergedConfig {
 			const config = substituteEnvVarsInObject(rawConfig);
 
 			if (servers.has(name)) {
-				const existing = duplicateMap.get(name) ?? [servers.get(name)!.source];
+				const existingSource = servers.get(name)?.source;
+				const existing = duplicateMap.get(name) ?? (existingSource ? [existingSource] : []);
 				existing.push(result.source);
 				duplicateMap.set(name, existing);
-				debug(`Duplicate server: ${name} (keeping first from ${servers.get(name)!.source.label})`);
+				debug(`Duplicate server: ${name} (keeping first from ${servers.get(name)?.source.label})`);
 			} else {
 				servers.set(name, {
 					name,
@@ -413,5 +414,5 @@ export function readConfigFile(configPath: string): { servers: Record<string, Se
  */
 export function writeConfigFile(configPath: string, config: { servers: Record<string, ServerConfig> }): void {
 	const content = JSON.stringify(config, null, 2);
-	writeFileSync(configPath, content + '\n', 'utf-8');
+	writeFileSync(configPath, `${content}\n`, 'utf-8');
 }

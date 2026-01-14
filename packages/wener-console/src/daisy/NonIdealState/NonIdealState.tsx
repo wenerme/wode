@@ -1,4 +1,4 @@
-import React, { type ComponentPropsWithRef, type FC, type ReactNode } from 'react';
+import type { ComponentPropsWithRef, FC, ReactNode } from 'react';
 import classNames from 'clsx';
 import type { IntentType } from '../const';
 

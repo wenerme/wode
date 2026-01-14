@@ -1,4 +1,4 @@
-import React, { cloneElement, isValidElement, useEffect, useId, useState, type ReactNode } from 'react';
+import { cloneElement, isValidElement, useEffect, useId, useState, type ReactNode } from 'react';
 import {
 	FloatingFocusManager,
 	FloatingOverlay,

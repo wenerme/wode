@@ -18,7 +18,6 @@
 		".": "./src/index.ts",
 		"./logger": "./src/logger/index.ts",
 		"./schema/typebox": "./src/schema/typebox/index.ts",
-		"./schema/typebox/gen": "./src/schema/typebox/gen/index.ts",
 		"./server": "./src/server/index.ts",
 		"./server/jsdom": "./src/server/jsdom.ts",
 		"./server/node-fetch": "./src/server/node-fetch.ts",
@@ -48,12 +47,12 @@
 		"test": "make test"
 	},
 	"devDependencies": {
-		"@sinclair/typebox": "^0.34.47",
+		"@sinclair/typebox": "^0.34.48",
 		"@types/ws": "^8.18.1",
 		"https-proxy-agent": "^7.0.6",
 		"node-fetch": "^3.3.2",
-		"undici": "^7.18.2",
-		"zod": "^4.3.5"
+		"undici": "^7.19.0",
+		"zod": "^4.3.6"
 	},
 	"publishConfig": {
 		"registry": "https://registry.npmjs.org",
@@ -70,10 +69,6 @@
 			"./schema/typebox": {
 				"types": "./src/schema/typebox/index.ts",
 				"default": "./lib/schema/typebox/index.js"
-			},
-			"./schema/typebox/gen": {
-				"types": "./src/schema/typebox/gen/index.ts",
-				"default": "./lib/schema/typebox/gen/index.js"
 			},
 			"./server": {
 				"types": "./src/server/index.ts",

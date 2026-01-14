@@ -44,7 +44,7 @@ program
 			}
 
 			const server = new MssqlMcpServer({
-				port: parseInt(options.port),
+				port: parseInt(options.port, 10),
 				host: options.host,
 				stdio: options.stdio,
 			});

@@ -13,9 +13,9 @@
 		"stripInternal": true,
 		"outDir": "lib",
 		"jsx": "react-jsx",
-		"baseUrl": ".",
 		"rootDir": "./src",
 		"paths": {
+			"@/*": ["./src/*"],
 			"#/*": ["./src/*"]
 		}
 	},

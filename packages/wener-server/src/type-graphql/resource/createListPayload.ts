@@ -1,4 +1,4 @@
-import { computeIfAbsent, type AbstractConstructor, type Constructor } from '@wener/utils';
+import { computeIfAbsent, type Constructor } from '@wener/utils';
 import { Field, Int, ObjectType } from 'type-graphql';
 import { getObjectName } from '../getObjectName';
 import { getTypeCache } from '../getTypeCache';
@@ -10,9 +10,9 @@ export function createListPayload<T extends object>(Type: Constructor<T>): Const
 	return computeIfAbsent(getTypeCache(), key, () => {
 		@ObjectType(key)
 		class ListPayload {
-			@Field((type) => Int)
+			@Field((_type) => Int)
 			total!: number;
-			@Field((type) => [Type])
+			@Field((_type) => [Type])
 			data!: T[];
 		}
 

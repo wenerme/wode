@@ -137,7 +137,7 @@ export namespace IconSidebarLayout {
 			return [<MenuBarItem key={key} item={item as NavItem} />];
 		};
 
-		return items.flatMap((item, i) => {
+		return items.flatMap((item, _i) => {
 			return renderItem(item);
 		});
 	}

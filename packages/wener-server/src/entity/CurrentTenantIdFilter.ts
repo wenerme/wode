@@ -1,15 +1,13 @@
-import type { Filter } from '@mikro-orm/core';
+import type { EntityManager } from '@mikro-orm/core';
 import { Logger } from '@nestjs/common';
-import type { ArgumentsType } from 'vitest';
 import { getCurrentTenantId } from '../app';
 
-type FilterDef = ArgumentsType<typeof Filter>[0];
 const log = new Logger('CurrentTenantIdFilter');
 export const CurrentTenantIdFilter = {
 	name: 'CurrentTenantIdFilter',
 	args: false,
 	default: true,
-	cond: (_, type, em) => {
+	cond: (_: Record<string, unknown>, type: string, _em: EntityManager) => {
 		const tid = getCurrentTenantId();
 		if (!tid) {
 			log.warn(`${type} without tenant`);
@@ -18,4 +16,4 @@ export const CurrentTenantIdFilter = {
 		// log.debug(`${type} by ${tid}`);
 		return { tid };
 	},
-} satisfies FilterDef;
+};

@@ -112,7 +112,7 @@ export async function callCommand(options: CallOptions): Promise<void> {
 		process.exit(ErrorCode.CLIENT_ERROR);
 	}
 
-	let client;
+	let client: Client;
 	let close: () => Promise<void> = async () => {};
 
 	try {

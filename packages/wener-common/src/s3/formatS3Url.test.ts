@@ -216,7 +216,7 @@ describe('formatS3Url', () => {
 			endpoint: 's3.amazonaws.com',
 			bucket: 'a'.repeat(64),
 		};
-		expect(() => formatS3Url(options)).toThrow('Invalid bucket name: ' + 'a'.repeat(64));
+		expect(() => formatS3Url(options)).toThrow(`Invalid bucket name: ${'a'.repeat(64)}`);
 	});
 
 	it('should handle valid bucket names with various formats', () => {

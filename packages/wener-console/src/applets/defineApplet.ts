@@ -30,7 +30,7 @@ class Applet {
 	window?: ReactWindow;
 
 	toggle(opts: Partial<WindowOpenOptions> = {}) {
-		if (this.window && this.window.state.minimized) {
+		if (this.window?.state.minimized) {
 			this.window.minimize(false);
 			return;
 		}

@@ -23,7 +23,7 @@ type GeneralResponse = {
 	error_description?: string;
 };
 
-async function requireSuccessResponse(r: Response, ctx?: { url: string; req: RequestInit }) {
+async function requireSuccessResponse(r: Response, _ctx?: { url: string; req: RequestInit }) {
 	const contentType = r.headers.get('content-type')?.split(';')[0];
 	if (!contentType?.includes('json')) {
 		if (!r.ok) {

@@ -9,7 +9,6 @@ import { dirname, join, resolve } from 'node:path';
 import { parse as parseToml } from 'smol-toml';
 import {
 	ClaudeConfigSchema,
-	ConfigSourceTypes,
 	CursorConfigSchema,
 	GeminiConfigSchema,
 	isHttpServer,
@@ -17,7 +16,6 @@ import {
 	McpServersConfigSchema,
 	normalizeHttpConfig,
 	type ConfigSource,
-	type ConfigSourceType,
 	type McpCliConfig,
 	type MergedConfig,
 	type ServerConfig,
@@ -207,9 +205,40 @@ interface ConfigLocation {
 }
 
 /**
- * Find a file by searching upward from cwd to root (stops at .git directory or home)
+ * Find a file by searching upward from cwd to root
+ * Stops at filesystem root or home directory
+ * Unlike findUpToGit, this continues past .git directories
  */
 function findUpSync(filename: string, cwd: string = process.cwd()): string | null {
+	const home = homedir();
+	let current = resolve(cwd);
+
+	while (current) {
+		const filePath = join(current, filename);
+		if (existsSync(filePath)) {
+			return filePath;
+		}
+
+		// Stop at home directory
+		if (current === home) {
+			return null;
+		}
+
+		const parent = dirname(current);
+		if (parent === current) {
+			// Reached filesystem root
+			return null;
+		}
+		current = parent;
+	}
+
+	return null;
+}
+
+/**
+ * Find a file by searching upward, stopping at .git boundary (project root)
+ */
+function _findUpToGitSync(filename: string, cwd: string = process.cwd()): string | null {
 	const home = homedir();
 	let current = resolve(cwd);
 
@@ -227,7 +256,6 @@ function findUpSync(filename: string, cwd: string = process.cwd()): string | nul
 
 		const parent = dirname(current);
 		if (parent === current) {
-			// Reached filesystem root
 			return null;
 		}
 		current = parent;
@@ -298,36 +326,11 @@ function parseCodexConfig(content: string): Record<string, ServerConfig> {
 }
 
 /**
- * Get all config search paths for a given working directory
+ * Get config search paths for discovery (excludes mcp-cli configs which are handled separately)
  */
 function getConfigSearchPaths(cwd: string = process.cwd()): ConfigLocation[] {
 	const home = homedir();
 	const paths: ConfigLocation[] = [];
-
-	// Project-level configs (higher priority)
-	// mcp-cli local config (highest priority, for local env vars)
-	paths.push({
-		path: resolve(cwd, '.mcp-cli.local.json'),
-		type: 'mcp',
-		label: './.mcp-cli.local.json',
-	});
-
-	// mcp-cli specific config - also try findup
-	paths.push({
-		path: resolve(cwd, '.mcp-cli.json'),
-		type: 'mcp',
-		label: './.mcp-cli.json',
-	});
-
-	// Try findup for .mcp-cli.json (search upward to .git or HOME)
-	const foundMcpCliJson = findUpSync('.mcp-cli.json', cwd);
-	if (foundMcpCliJson && foundMcpCliJson !== resolve(cwd, '.mcp-cli.json')) {
-		paths.push({
-			path: foundMcpCliJson,
-			type: 'mcp',
-			label: foundMcpCliJson.replace(home, '~'),
-		});
-	}
 
 	// Claude standard: .mcp.json (hidden file)
 	paths.push({
@@ -356,18 +359,6 @@ function getConfigSearchPaths(cwd: string = process.cwd()): ConfigLocation[] {
 	});
 
 	// User-level configs
-	paths.push({
-		path: join(home, '.mcp-cli.local.json'),
-		type: 'mcp',
-		label: '~/.mcp-cli.local.json',
-	});
-
-	paths.push({
-		path: join(home, '.mcp-cli.json'),
-		type: 'mcp',
-		label: '~/.mcp-cli.json',
-	});
-
 	paths.push({
 		path: join(home, '.claude.json'),
 		type: 'claude',
@@ -448,7 +439,7 @@ function parseConfigFile(
 		}
 	}
 
-	let schema;
+	let schema: z.ZodTypeAny;
 	switch (location.type) {
 		case 'claude':
 			schema = ClaudeConfigSchema;
@@ -523,10 +514,10 @@ function addServersToConfig(
 
 		if (servers.has(name)) {
 			// Track duplicate
-			const existing = duplicateMap.get(name) ?? [servers.get(name)!.source];
+			const existing = duplicateMap.get(name) ?? [servers.get(name)?.source];
 			existing.push(source);
 			duplicateMap.set(name, existing);
-			debug(`Duplicate server: ${name} (keeping first from ${servers.get(name)!.source.label})`);
+			debug(`Duplicate server: ${name} (keeping first from ${servers.get(name)?.source.label})`);
 		} else {
 			servers.set(name, {
 				name,
@@ -627,9 +618,18 @@ function filterServers(
 /**
  * Discover and merge all MCP configurations
  * Returns merged config with deduplication and source tracking
+ *
+ * Loading order:
+ * 1. MCP_CLI_CONFIG_INLINE env var (highest priority for all settings)
+ * 2. Primary .mcp-cli.json found via findup (controls discoveryConfig)
+ * 3. Local .mcp-cli.local.json (for local env overrides)
+ * 4. Other mcp-cli configs
+ * 5. Extends configs
+ * 6. Other config sources (if discoveryConfig allows)
  */
 export function discoverConfigs(cwd?: string, options?: { skipDiscovery?: boolean }): MergedConfig {
-	const searchPaths = getConfigSearchPaths(cwd);
+	const workingDir = cwd ?? process.cwd();
+	const home = homedir();
 	const servers = new Map<string, ServerWithSource>();
 	const sources: ConfigSource[] = [];
 	const duplicateMap = new Map<string, ConfigSource[]>();
@@ -637,12 +637,31 @@ export function discoverConfigs(cwd?: string, options?: { skipDiscovery?: boolea
 	// Track extends paths to load and config options
 	let extendsToLoad: string[] = [];
 	// discoveryConfig can be: true (all), false (none), or string[] (selective)
-	let discoveryConfig: boolean | string[] = true;
+	// Using object wrapper to avoid TypeScript narrowing issues with closures
+	const configState = { discoveryConfig: true as boolean | string[] };
 	let includePatterns: string[] = [];
 	let excludePatterns: string[] = [];
 	const loadedPaths = new Set<string>();
 
-	// First, check MCP_CLI_CONFIG_INLINE env var for inline config
+	// Helper to update options from a config (first one wins for each option)
+	const updateOptions = (configOptions?: McpCliConfig) => {
+		if (!configOptions) return;
+		if (configOptions.extends && extendsToLoad.length === 0) {
+			extendsToLoad = [...configOptions.extends];
+		}
+		if (configOptions.discoveryConfig !== undefined && configState.discoveryConfig === true) {
+			configState.discoveryConfig = configOptions.discoveryConfig;
+			debug(`discoveryConfig set to: ${JSON.stringify(configState.discoveryConfig)}`);
+		}
+		if (configOptions.include && includePatterns.length === 0) {
+			includePatterns = [...configOptions.include];
+		}
+		if (configOptions.exclude && excludePatterns.length === 0) {
+			excludePatterns = [...configOptions.exclude];
+		}
+	};
+
+	// 1. First, check MCP_CLI_CONFIG_INLINE env var for inline config (highest priority)
 	const inlineConfig = parseInlineConfig();
 	if (inlineConfig) {
 		const source: ConfigSource = {
@@ -652,53 +671,79 @@ export function discoverConfigs(cwd?: string, options?: { skipDiscovery?: boolea
 		};
 		sources.push(source);
 		debug('Found inline config: MCP_CLI_CONFIG_INLINE');
-
 		addServersToConfig(servers, duplicateMap, inlineConfig.servers, source);
-
-		if (inlineConfig.options?.extends) {
-			extendsToLoad = [...inlineConfig.options.extends];
-		}
-		if (inlineConfig.options?.discoveryConfig !== undefined) {
-			discoveryConfig = inlineConfig.options.discoveryConfig;
-		}
-		if (inlineConfig.options?.include) {
-			includePatterns = [...inlineConfig.options.include];
-		}
-		if (inlineConfig.options?.exclude) {
-			excludePatterns = [...inlineConfig.options.exclude];
-		}
+		updateOptions(inlineConfig.options);
 	}
 
-	// Load mcp-cli specific configs first to get extends/discoveryConfig/include/exclude
-	const mcpCliPaths = searchPaths.filter((p) => p.label.includes('mcp-cli'));
-	for (const location of mcpCliPaths) {
+	// 2. Find and load PRIMARY .mcp-cli.json via findup (controls discoveryConfig)
+	// This is the key config that controls whether other configs are loaded
+	const primaryConfigPath = findUpSync('.mcp-cli.json', workingDir);
+	if (primaryConfigPath && !loadedPaths.has(primaryConfigPath)) {
+		const location: ConfigLocation = {
+			path: primaryConfigPath,
+			type: 'mcp',
+			label: primaryConfigPath.replace(home, '~'),
+		};
 		const result = loadConfigFile(location);
-		if (!result) continue;
-
-		loadedPaths.add(location.path);
-		sources.push(result.source);
-		debug(`Found config: ${location.label}`);
-
-		addServersToConfig(servers, duplicateMap, result.servers, result.source);
-
-		// Check for options (first one wins for each option)
-		if (result.options?.extends && extendsToLoad.length === 0) {
-			extendsToLoad = [...result.options.extends];
-		}
-		if (result.options?.discoveryConfig !== undefined && discoveryConfig === true) {
-			discoveryConfig = result.options.discoveryConfig;
-		}
-		if (result.options?.include && includePatterns.length === 0) {
-			includePatterns = [...result.options.include];
-		}
-		if (result.options?.exclude && excludePatterns.length === 0) {
-			excludePatterns = [...result.options.exclude];
+		if (result) {
+			loadedPaths.add(primaryConfigPath);
+			sources.push(result.source);
+			debug(`Found primary config: ${location.label}`);
+			addServersToConfig(servers, duplicateMap, result.servers, result.source);
+			updateOptions(result.options);
 		}
 	}
 
-	// Load extends configs
+	// 3. Load local override configs (.mcp-cli.local.json) - for local env vars, etc.
+	// These should NOT override discoveryConfig from the primary config
+	const localOverridePaths = [resolve(workingDir, '.mcp-cli.local.json'), join(home, '.mcp-cli.local.json')];
+	for (const localPath of localOverridePaths) {
+		if (loadedPaths.has(localPath) || !existsSync(localPath)) continue;
+		const location: ConfigLocation = {
+			path: localPath,
+			type: 'mcp',
+			label: localPath.replace(home, '~').replace(workingDir, '.'),
+		};
+		const result = loadConfigFile(location);
+		if (result) {
+			loadedPaths.add(localPath);
+			sources.push(result.source);
+			debug(`Found local override config: ${location.label}`);
+			addServersToConfig(servers, duplicateMap, result.servers, result.source);
+			// Only update extends/include/exclude, NOT discoveryConfig from local overrides
+			if (result.options?.extends && extendsToLoad.length === 0) {
+				extendsToLoad = [...result.options.extends];
+			}
+			if (result.options?.include && includePatterns.length === 0) {
+				includePatterns = [...result.options.include];
+			}
+			if (result.options?.exclude && excludePatterns.length === 0) {
+				excludePatterns = [...result.options.exclude];
+			}
+		}
+	}
+
+	// 4. Load user-level mcp-cli config
+	const userConfigPath = join(home, '.mcp-cli.json');
+	if (!loadedPaths.has(userConfigPath) && existsSync(userConfigPath)) {
+		const location: ConfigLocation = {
+			path: userConfigPath,
+			type: 'mcp',
+			label: '~/.mcp-cli.json',
+		};
+		const result = loadConfigFile(location);
+		if (result) {
+			loadedPaths.add(userConfigPath);
+			sources.push(result.source);
+			debug(`Found user config: ${location.label}`);
+			addServersToConfig(servers, duplicateMap, result.servers, result.source);
+			updateOptions(result.options);
+		}
+	}
+
+	// 5. Load extends configs
 	for (const extendPath of extendsToLoad) {
-		const resolvedPath = resolve(cwd ?? process.cwd(), extendPath);
+		const resolvedPath = resolve(workingDir, extendPath);
 		if (loadedPaths.has(resolvedPath)) {
 			debug(`Skipping already loaded extends: ${extendPath}`);
 			continue;
@@ -719,22 +764,24 @@ export function discoverConfigs(cwd?: string, options?: { skipDiscovery?: boolea
 		loadedPaths.add(resolvedPath);
 		sources.push(result.source);
 		debug(`Found extends config: ${extendPath}`);
-
 		addServersToConfig(servers, duplicateMap, result.servers, result.source);
 	}
 
-	// If discoveryConfig is disabled or skipDiscovery is set, skip other configs
-	if (discoveryConfig === false || options?.skipDiscovery) {
+	// 6. If discoveryConfig is disabled or skipDiscovery is set, skip other configs
+	const shouldDiscover = configState.discoveryConfig !== false && !options?.skipDiscovery;
+	if (!shouldDiscover) {
 		debug('Discovery disabled, skipping other configs');
 	} else {
-		// Load remaining configs (non mcp-cli)
+		// Load remaining configs based on discoveryConfig
+		const searchPaths = getConfigSearchPaths(workingDir);
 		const otherPaths = searchPaths.filter((p) => !p.label.includes('mcp-cli'));
+
 		for (const location of otherPaths) {
 			if (loadedPaths.has(location.path)) continue;
 
 			// If discoveryConfig is an array, check if this source type is allowed
-			if (Array.isArray(discoveryConfig)) {
-				const allowedTypes = discoveryConfig.map((t) => t.toLowerCase());
+			if (Array.isArray(configState.discoveryConfig)) {
+				const allowedTypes = configState.discoveryConfig.map((t) => t.toLowerCase());
 				if (!allowedTypes.includes(location.type)) {
 					debug(`Skipping ${location.label} (type ${location.type} not in discoveryConfig)`);
 					continue;
@@ -747,7 +794,6 @@ export function discoverConfigs(cwd?: string, options?: { skipDiscovery?: boolea
 			loadedPaths.add(location.path);
 			sources.push(result.source);
 			debug(`Found config: ${location.label}`);
-
 			addServersToConfig(servers, duplicateMap, result.servers, result.source);
 		}
 	}
@@ -777,7 +823,7 @@ export function loadConfigFromPath(configPath: string): MergedConfig {
 	let parsed: unknown;
 	try {
 		parsed = JSON.parse(content);
-	} catch (error) {
+	} catch (_error) {
 		throw new Error(`Invalid JSON in config file: ${resolvedPath}`);
 	}
 
@@ -872,5 +918,5 @@ export function readConfigFile(configPath: string): { mcpServers: Record<string,
  */
 export function writeConfigFile(configPath: string, config: { mcpServers: Record<string, ServerConfig> }): void {
 	const content = JSON.stringify(config, null, 2);
-	writeFileSync(configPath, content + '\n', 'utf-8');
+	writeFileSync(configPath, `${content}\n`, 'utf-8');
 }

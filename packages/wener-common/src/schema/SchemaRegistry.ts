@@ -21,7 +21,7 @@ export namespace SchemaRegistry {
 	}
 
 	function getKey(s: TypeSchema | string) {
-		let key;
+		let key: string | undefined;
 		if (typeof s === 'string') {
 			key = s;
 		} else {

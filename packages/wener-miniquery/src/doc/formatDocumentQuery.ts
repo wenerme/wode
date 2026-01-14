@@ -7,7 +7,7 @@ export type FormatDocumentQueryOptions = {
 	onSearch?: (query: string, ctx: { filters: string[] }) => void;
 };
 
-export function formatDocumentQuery(o: AnyDocumentQuery, opts?: FormatDocumentQueryOptions): string[] {
+export function formatDocumentQuery(o: AnyDocumentQuery, _opts?: FormatDocumentQueryOptions): string[] {
 	return _format(o, { root: o, path: [], out: [] });
 }
 
@@ -37,7 +37,7 @@ function _format(o: any, ctx: { root: any; field?: string; path: string[]; out: 
 		throw new Error(`Invalid query: ${o}`);
 	}
 
-	const { field, path, out } = ctx;
+	const { field: _field, path, out } = ctx;
 
 	for (const [k, v] of Object.entries(o).sort((a, b) => a[0].localeCompare(b[0]))) {
 		if (v === undefined || k.startsWith(IgnoreKeyPrefix)) {

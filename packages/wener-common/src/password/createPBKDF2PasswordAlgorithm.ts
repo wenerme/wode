@@ -1,5 +1,5 @@
 import { Errors } from '@wener/utils';
-import { Password } from './Password';
+import type { Password } from './Password';
 import { PHC } from './PHC';
 
 export function createPBKDF2PasswordAlgorithm({
@@ -55,7 +55,7 @@ export function createPBKDF2PasswordAlgorithm({
 				key,
 				storedHash.length * 8,
 			);
-			return new Uint8Array(hash).every((v, i) => v === storedHash![i]);
+			return new Uint8Array(hash).every((v, i) => v === storedHash?.[i]);
 		},
 	};
 }

@@ -1,10 +1,4 @@
-import React, {
-	useState,
-	type ComponentPropsWithoutRef,
-	type FC,
-	type MouseEvent,
-	type ReactNode,
-} from 'react';
+import { useState, type ComponentPropsWithoutRef, type FC, type MouseEvent, type ReactNode } from 'react';
 import { HiExclamationCircle } from 'react-icons/hi2';
 import {
 	PiArrowsCounterClockwiseLight,
@@ -153,7 +147,7 @@ export namespace FunctionButton {
 					return;
 				}
 				const p = onAction(e);
-				if (p && p.then) {
+				if (p?.then) {
 					setLoading(true);
 					p.then(() => {
 						setLoading(false);
@@ -167,7 +161,7 @@ export namespace FunctionButton {
 		}
 		let square = false;
 		if (!children) {
-			let _icon;
+			let _icon: React.ReactNode;
 			square = Boolean(icon && !text);
 			if (loading) {
 				_icon = <div className={clsx('loading loading-spinner', sz?.loading)}></div>;

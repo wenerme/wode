@@ -1,4 +1,4 @@
-import React, { type ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { useFieldArray, type useForm } from 'react-hook-form';
 import { PiArrowDownLight, PiArrowUpLight, PiMinusLight, PiPlus, PiPlusLight } from 'react-icons/pi';
 import { JsonSchema, type JsonSchemaDef } from '@wener/common/jsonschema';
@@ -69,7 +69,7 @@ export function renderSettingFormFromSchema({ schema, level = 0, path = [], form
 
 			return <input type={type} className={'input input-sm input-bordered flex-1'} {...register(name)} />;
 		})
-		.with({ type: 'integer' }, (schema) => {
+		.with({ type: 'integer' }, (_schema) => {
 			let type = 'text';
 			return (
 				<input

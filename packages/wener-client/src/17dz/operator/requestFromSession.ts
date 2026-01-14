@@ -36,7 +36,7 @@ export async function requestFromSession<T>({ cookie, ...opts }: SessionRequestO
 	return request<T>({ ...opts, headers });
 }
 
-function serializeCookie(o: Record<string, any>) {
+function _serializeCookie(o: Record<string, any>) {
 	return Object.entries(o)
 		.map(([k, v]) => `${k}=${v}`)
 		.join('; ');

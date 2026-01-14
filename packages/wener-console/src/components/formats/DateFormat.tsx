@@ -1,4 +1,4 @@
-import React, { useMemo, type ComponentPropsWithRef, type ReactNode } from 'react';
+import { useMemo, type ComponentPropsWithRef, type ReactNode } from 'react';
 import { dayjs } from '@wener/common/dayjs';
 import { EmptyPlaceholder } from './EmptyPlaceholder';
 

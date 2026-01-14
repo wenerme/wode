@@ -105,7 +105,7 @@ MiniQuerySemantics.addOperation<MiniQueryASTNode>('toAST()', {
 		return { type: 'array', value: list.toAST(), v: Array };
 	},
 	int: (s, _, v) => {
-		return { type: 'int', value: parseInt(`${s.sourceString || ''}${v.sourceString}`), v: 'int' };
+		return { type: 'int', value: parseInt(`${s.sourceString || ''}${v.sourceString}`, 10), v: 'int' };
 	},
 	float: (i, _, f) => {
 		return { type: 'float', value: parseFloat(`${i?.sourceString || 0}.${f.sourceString}`), v: Number };

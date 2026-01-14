@@ -107,7 +107,7 @@ export function parseData<S extends TypeSchema>(schema: S, data: unknown): Schem
 	);
 }
 
-function formatIssues(schema: TypeSchema, issues: Array<ValidationIssue>): string {
+function _formatIssues(_schema: TypeSchema, _issues: Array<ValidationIssue>): string {
 	return '';
 }
 

@@ -41,19 +41,19 @@
 	},
 	"devDependencies": {
 		"@hono/mcp": "^0.2.3",
-		"@hono/node-server": "^1.19.8",
-		"@modelcontextprotocol/sdk": "^1.25.2",
-		"@types/mssql": "^9.1.8",
-		"@types/node": "^24.10.7",
+		"@hono/node-server": "^1.19.9",
+		"@modelcontextprotocol/sdk": "^1.25.3",
+		"@types/mssql": "^9.1.9",
+		"@types/node": "^24.10.9",
 		"commander": "^14.0.2",
 		"consola": "^3.4.2",
 		"dotenv": "^16.6.1",
 		"esbuild": "^0.27.2",
-		"hono": "^4.11.3",
+		"hono": "^4.11.5",
 		"mssql": "^12.2.0",
 		"ts-node": "^10.9.2",
 		"typescript": "^5.9.3",
-		"zod": "^4.3.5"
+		"zod": "^4.3.6"
 	},
 	"publishConfig": {
 		"access": "public"

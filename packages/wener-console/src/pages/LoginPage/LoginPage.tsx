@@ -1,4 +1,4 @@
-import React, { type ComponentPropsWithoutRef, type ReactNode } from 'react';
+import type { ComponentPropsWithoutRef, ReactNode } from 'react';
 import { GrSystem } from 'react-icons/gr';
 import { LoginPageFooter } from './LoginPageFooter';
 import { LoginPageForm, type LoginFormData } from './LoginPageForm';

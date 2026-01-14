@@ -1,4 +1,4 @@
-import { createHash, createHmac } from 'crypto';
+import { createHash, createHmac } from 'node:crypto';
 import type { FetchLike } from '@wener/utils';
 
 export type RequestOptions = {
@@ -87,7 +87,7 @@ export async function request<O = any>(options: RequestOptions): Promise<O> {
 	let out: GeneralResponse<O>;
 	try {
 		out = JSON.parse(text) as GeneralResponse<O>;
-	} catch (e) {
+	} catch (_e) {
 		console.log(`Failed to parse response as JSON: ${text}`);
 		throw Object.assign(new Error(`HTTP ${response.status}: ${response.statusText}`), {
 			code: response.status,
@@ -120,7 +120,19 @@ type GeneralResponse<T> = {
 };
 
 export function sign(options: SignOptions): { authorization: string; timestamp: string } {
-	const { clientId, clientKey, service, region, action, version, timestamp, payload, method, host, uri } = options;
+	const {
+		clientId,
+		clientKey,
+		service,
+		region: _region,
+		action: _action,
+		version: _version,
+		timestamp,
+		payload,
+		method,
+		host,
+		uri,
+	} = options;
 
 	// 步骤 1：拼接规范请求串
 	const canonicalHeaders = `content-type:application/json\nhost:${host}\n`;

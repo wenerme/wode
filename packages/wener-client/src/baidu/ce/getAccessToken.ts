@@ -24,7 +24,7 @@ export async function getAccessToken({
 }
 
 async function requireResOk(res: Response) {
-	let cause;
+	let cause: unknown;
 	let payload: unknown;
 
 	if (res.headers.get('content-type')?.includes('json')) {

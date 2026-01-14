@@ -684,13 +684,13 @@ export interface GetJsApiTicketResponse {
 //   // ServerEncodingAESKey
 // }
 
-const AgentTypes = {
-	3_010_185: { title: '人事助手' },
-	3_010_115: { title: '对外收款' },
-	3_010_011: { title: '打卡' },
-	3_010_040: { title: '审批' },
-	3_010_041: { title: '汇报' },
-	3_010_097: { title: '直播' }, // https://developer.work.weixin.qq.com/document/path/93633
+const _AgentTypes = {
+	3010185: { title: '人事助手' },
+	3010115: { title: '对外收款' },
+	3010011: { title: '打卡' },
+	3010040: { title: '审批' },
+	3010041: { title: '汇报' },
+	3010097: { title: '直播' }, // https://developer.work.weixin.qq.com/document/path/93633
 	// : { title: '公费电话' }, // https://work.weixin.qq.com/api/doc/14744
 	// 企业微信服务商助手
 	// 会议室

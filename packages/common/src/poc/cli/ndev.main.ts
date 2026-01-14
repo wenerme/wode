@@ -172,7 +172,7 @@ async function scanPnpmLockDup() {
 		.map((v) => v.trim())
 		.map((v) => {
 			const { name, version, spec } =
-				v.match(/^\/(?<name>(@[^\/]+\/)?[^@]+)@(?<version>[^:(]+)(\((?<spec>.*?)\))?:$/)?.groups || {};
+				v.match(/^\/(?<name>(@[^/]+\/)?[^@]+)@(?<version>[^:(]+)(\((?<spec>.*?)\))?:$/)?.groups || {};
 			return { name, version, spec };
 		});
 

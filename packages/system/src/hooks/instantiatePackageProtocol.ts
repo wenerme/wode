@@ -20,7 +20,7 @@ export function instantiatePackageProtocol({
 	System = getGlobalSystem(),
 }: PackageResolveOptions = {}) {
 	const orig = System.constructor.prototype.instantiate.bind(System);
-	System.constructor.prototype.instantiate = async function (url: string, parent?: string) {
+	System.constructor.prototype.instantiate = async (url: string, parent?: string) => {
 		if (!url.startsWith(`${protocol}:`)) {
 			return orig(url, parent);
 		}
@@ -48,7 +48,7 @@ export function instantiatePackageProtocol({
 
 		// https://cdn.jsdelivr.net/npm/@wener/reaction@latest/package.json
 		const metaModuleUrl = resolveUrl(`${name}@${ver}/package.json`);
-		let meta;
+		let meta: Record<string, unknown>;
 		{
 			logger.debug(`load package.json for ${url} through ${metaModuleUrl}`);
 
@@ -86,7 +86,7 @@ export function instantiatePackageProtocol({
 		if (!path || path === '/') {
 			path = '.';
 		} else if (path[0] === '/') {
-			path = '.' + path;
+			path = `.${path}`;
 		}
 
 		// try modern exports
@@ -95,7 +95,7 @@ export function instantiatePackageProtocol({
 				resolved = resolve(meta, path, { unsafe: true, conditions: ['system', 'production'] });
 				// if exports only have default will also resolve, recheck the system condition
 				isSystem = Boolean(meta.exports['.']?.system);
-			} catch (e) {
+			} catch (_e) {
 				try {
 					// at least use esm
 					resolved = resolve(meta, path, { browser: isBrowser, require: false, conditions: ['production'] });

@@ -15,7 +15,7 @@ export type LazyPromise<T> = Promise<T> & {
  * if you pass a function to it, it will be executed when the promise try to resolve.
  */
 export function createLazyPromise<T = any>(
-	executor?: (resolve: LazyPromise<T>['resolve'], reject: LazyPromise<T>['reject']) => MaybePromise<T> | void,
+	executor?: (resolve: LazyPromise<T>['resolve'], reject: LazyPromise<T>['reject']) => MaybePromise<T> | undefined,
 ): LazyPromise<T> {
 	const { promise, resolve, reject } = Promises.withResolvers();
 	const lazy = Object.assign(promise, { resolve, reject }) as LazyPromise<T>;
@@ -59,6 +59,7 @@ export function createLazyPromise<T = any>(
 			finally: lazy.finally?.bind(lazy),
 			resolve: _resolve,
 			reject: _reject,
+			// biome-ignore lint/suspicious/noThenProperty: intentional thenable implementation
 			then: (...args: any[]) => {
 				if (executor && !executed) {
 					executed = true;

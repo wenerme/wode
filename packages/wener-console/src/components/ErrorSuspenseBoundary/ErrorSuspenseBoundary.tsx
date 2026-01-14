@@ -1,4 +1,4 @@
-import React, { type ErrorInfo, type FC, type ReactNode } from 'react';
+import type { ErrorInfo, FC, ReactNode } from 'react';
 import { ErrorSuspenseBoundary as _ErrorSuspenseBoundary } from '@wener/reaction';
 import { LoadingIndicator } from '../../loader';
 import { NonIdealPage } from '../../pages';

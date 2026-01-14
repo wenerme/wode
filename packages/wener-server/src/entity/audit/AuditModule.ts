@@ -3,11 +3,13 @@ import { Module } from '@nestjs/common';
 import { AuditLogEntity } from './AuditLogEntity';
 import { AuditService } from './AuditService';
 
+const AuditModuleEntities = [AuditLogEntity];
+
 @Module({
-	imports: [MikroOrmModule.forFeature(AuditModule.Entities)],
+	imports: [MikroOrmModule.forFeature(AuditModuleEntities)],
 	providers: [AuditService],
 	exports: [AuditService],
 })
 export class AuditModule {
-	static Entities = [AuditLogEntity];
+	static Entities = AuditModuleEntities;
 }

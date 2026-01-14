@@ -29,8 +29,8 @@ export function _clone(x: any): any {
 	if (typeof x !== 'object') return x;
 
 	let i = 0;
-	let k;
-	let list;
+	let k: string | number;
+	let list: any[] | Set<any> | Map<any, any>;
 	let tmp: any;
 	const str = classOf(x);
 	switch (str) {
@@ -42,13 +42,13 @@ export function _clone(x: any): any {
 			break;
 		case 'Set':
 			tmp = new Set();
-			x.forEach(function (val: any) {
+			x.forEach((val: any) => {
 				tmp.add(_clone(val));
 			});
 			break;
 		case 'Map':
 			tmp = new Map();
-			x.forEach(function (val: any, key: any) {
+			x.forEach((val: any, key: any) => {
 				tmp.set(_clone(key), _clone(val));
 			});
 			break;
@@ -79,7 +79,7 @@ export function _clone(x: any): any {
 		}
 
 		for (i = 0, list = Object.getOwnPropertyNames(x); i < list.length; i++) {
-			if (Object.hasOwnProperty.call(tmp, (k = list[i])) && tmp[k] === x[k]) continue;
+			if (Object.prototype.hasOwnProperty.call(tmp, (k = list[i])) && tmp[k] === x[k]) continue;
 			set(tmp, k, Object.getOwnPropertyDescriptor(x, k));
 		}
 	}

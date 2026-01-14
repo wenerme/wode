@@ -27,7 +27,7 @@ export function createCreateResourceInput<T extends object>(Type: Constructor<T>
 	return computeIfAbsent(getTypeCache(), key, () => {
 		@InputType(key)
 		class CreateResourceInput extends BaseCreateResourceInput {
-			@Field((type) => Type)
+			@Field((_type) => Type)
 			data!: T;
 		}
 
@@ -43,7 +43,7 @@ export function createUpdateResourceInput<T extends object>(Type: Constructor<T>
 	return computeIfAbsent(getTypeCache(), key, () => {
 		@InputType(key)
 		class UpdateResourceInput extends BaseUpdateResourceInput {
-			@Field((type) => Type)
+			@Field((_type) => Type)
 			data!: T;
 		}
 
@@ -59,7 +59,7 @@ export function createMutationResourcePayload<T extends object>(
 	return computeIfAbsent(getTypeCache(), key, () => {
 		@ObjectType(key)
 		class MutationResourcePayload extends RelayMutationPayload {
-			@Field((type) => Type)
+			@Field((_type) => Type)
 			data!: T;
 		}
 
@@ -75,7 +75,7 @@ export function createUpdateResourcePayload<T extends object>(
 	return computeIfAbsent(getTypeCache(), key, () => {
 		@ObjectType(key)
 		class UpdateResourcePayload extends RelayMutationPayload {
-			@Field((type) => Type)
+			@Field((_type) => Type)
 			data!: T;
 		}
 
@@ -91,7 +91,7 @@ export function createCreateResourcePayload<T extends object>(
 	return computeIfAbsent(getTypeCache(), key, () => {
 		@ObjectType(key)
 		class CreateResourcePayload extends RelayMutationPayload {
-			@Field((type) => Type)
+			@Field((_type) => Type)
 			data!: T;
 		}
 

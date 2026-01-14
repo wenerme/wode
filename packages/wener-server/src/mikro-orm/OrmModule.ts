@@ -29,8 +29,8 @@ export class OrmModule {
 			let module = await MikroOrmModule.forRootAsync({
 				...rest,
 				useFactory: async (...args) => {
-					let config = ((await useFactory?.(...args))
-						|| defineMikroOrmOptions({ entities: [], ...getMikroOrmConfig() })) as Options;
+					let config = ((await useFactory?.(...args)) ||
+						defineMikroOrmOptions({ entities: [], ...getMikroOrmConfig() })) as Options;
 					// dedup
 					config.entities = Array.from(new Set(config.entities)).filter(Boolean);
 					await onConfig?.(config, ...args);
@@ -44,7 +44,7 @@ export class OrmModule {
 	}
 
 	static forRoot(opts: OrmModuleOptions) {
-		return this.forRootAsync({ onConfig: opts.onConfig, useFactory: () => defineMikroOrmOptions(opts) });
+		return OrmModule.forRootAsync({ onConfig: opts.onConfig, useFactory: () => defineMikroOrmOptions(opts) });
 	}
 
 	static forFeature(

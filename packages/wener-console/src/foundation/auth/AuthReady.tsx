@@ -1,4 +1,4 @@
-import React, { useCallback, type ReactNode } from 'react';
+import { useCallback, type ReactNode } from 'react';
 import { LoadingIndicator } from '../../console';
 import { AuthStatus, useAuthStore } from './AuthStore';
 

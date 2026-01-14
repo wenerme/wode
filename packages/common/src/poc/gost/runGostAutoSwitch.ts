@@ -1,9 +1,8 @@
 import fs from 'node:fs/promises';
 import { Value } from '@sinclair/typebox/value';
-import { createFetchWithProxy } from '@wener/utils/server';
 import YAML from 'yaml';
 import { z } from 'zod';
-import { GostConfig } from '@/poc/gost/types';
+import type { GostConfig } from '@/poc/gost/types';
 import { verifyNetflixProxy } from '@/poc/netflix/verifyNetflixProxy';
 
 const RunAutoSwitchOptions = z.object({

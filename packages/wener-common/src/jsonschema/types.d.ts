@@ -59,7 +59,7 @@ type JsonSchemaFormatName =
  *
  * @see https://json-schema.org/specification-links.html
  */
-export type JsonSchemaDef<I = any, O = I> = {
+export type JsonSchemaDef<I = any, _O = I> = {
 	$id?: string;
 	$ref?: string;
 	/**

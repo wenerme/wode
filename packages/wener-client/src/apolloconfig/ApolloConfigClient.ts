@@ -152,7 +152,7 @@ export class ApolloConfigClient<T extends Record<string, string> = Record<string
 
 		if (keys.length === 1 && keys[0] === 'content') {
 			// this is the case
-			return out['content'];
+			return out.content;
 		}
 
 		throw new Error(`${namespace} config unknown format ${format}, keys: ${keys.join(',')}`);
@@ -180,12 +180,12 @@ export class ApolloConfigClient<T extends Record<string, string> = Record<string
 			case 'properties':
 				return out;
 			case 'json':
-				return JSON.parse(out['content'] || '{}');
+				return JSON.parse(out.content || '{}');
 			case 'yml':
 			case 'yaml': {
 				// lazy load
 				const { parse } = await import('yaml');
-				return parse(out['content'] || '', { merge: true });
+				return parse(out.content || '', { merge: true });
 			}
 			default:
 				throw new Error(`Unsupported format ${format}`);

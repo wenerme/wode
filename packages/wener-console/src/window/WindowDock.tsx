@@ -1,4 +1,4 @@
-import React, { useMemo, useState, type ComponentPropsWithRef, type ReactNode } from 'react';
+import { useMemo, useState, type ComponentPropsWithRef, type ReactNode } from 'react';
 import { useInterval } from '@wener/reaction';
 import dayjs from 'dayjs';
 import { cn } from '../utils/cn';

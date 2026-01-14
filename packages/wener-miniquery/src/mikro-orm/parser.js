@@ -67,19 +67,19 @@ class peg$SyntaxError extends SyntaxError {
 				const last = s.line === e.line ? e.column : line.length + 1;
 				const hatLen = last - s.column || 1;
 				str +=
-					'\n --> '
-					+ loc
-					+ '\n'
-					+ filler
-					+ ' |\n'
-					+ offset_s.line
-					+ ' | '
-					+ line
-					+ '\n'
-					+ filler
-					+ ' | '
-					+ ''.padEnd(s.column - 1, ' ')
-					+ ''.padEnd(hatLen, '^');
+					'\n --> ' +
+					loc +
+					'\n' +
+					filler +
+					' |\n' +
+					offset_s.line +
+					' | ' +
+					line +
+					'\n' +
+					filler +
+					' | ' +
+					''.padEnd(s.column - 1, ' ') +
+					''.padEnd(hatLen, '^');
 			} else {
 				str += '\n at ' + loc;
 			}

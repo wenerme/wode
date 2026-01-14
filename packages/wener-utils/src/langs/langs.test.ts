@@ -14,7 +14,7 @@ test('classOf', () => {
 		[new Map(), 'Map'],
 		[new Set(), 'Set'],
 		[new Date(), 'Date'],
-		[new RegExp(''), 'RegExp'],
+		[/(?:)/, 'RegExp'],
 		[new DataView(new ArrayBuffer(0)), 'DataView'],
 		[new Int8Array(0), 'Int8Array'],
 	]) {

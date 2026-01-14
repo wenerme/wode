@@ -28,7 +28,10 @@ export function fromHexDump(dump: string) {
 		dump
 			.split('\n')
 			.map((v) => {
-				return v.substring(10, 10 + 41).replaceAll(' ', '');
+				return v
+					.substring(10, 10 + 41)
+					.split(' ')
+					.join('');
 			})
 			.join(''),
 	);

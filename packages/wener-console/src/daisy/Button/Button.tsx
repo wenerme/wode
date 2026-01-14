@@ -1,4 +1,4 @@
-import React, { useMemo, useState, type ComponentProps, type ElementType, type ReactNode, type Ref } from 'react';
+import { useMemo, useState, type ComponentProps, type ElementType, type ReactNode, type Ref } from 'react';
 import { isPromise } from '@wener/utils';
 import { clsx } from 'clsx';
 import type { IntentType, SizeType } from '../const';

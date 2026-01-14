@@ -8,19 +8,19 @@ export function isReactComponent<TProps>(component: unknown): component is Compo
 
 function isClassComponent(component: any) {
 	return (
-		typeof component === 'function'
-		&& (() => {
+		typeof component === 'function' &&
+		(() => {
 			const proto = Object.getPrototypeOf(component);
-			return proto.prototype && proto.prototype.isReactComponent;
+			return proto.prototype?.isReactComponent;
 		})()
 	);
 }
 
 function isExoticComponent(component: any) {
 	return (
-		typeof component === 'object'
-		&& component
-		&& typeof component.$$typeof === 'symbol'
-		&& ['react.memo', 'react.forward_ref'].includes(component.$$typeof.description)
+		typeof component === 'object' &&
+		component &&
+		typeof component.$$typeof === 'symbol' &&
+		['react.memo', 'react.forward_ref'].includes(component.$$typeof.description)
 	);
 }

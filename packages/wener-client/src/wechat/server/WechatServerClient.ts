@@ -193,13 +193,13 @@ export class WechatServerClient {
 	async request<T>(o: RequestOptions): Promise<T> {
 		const { params } = o;
 		if (params) {
-			if (params['appid'] === true) {
+			if (params.appid === true) {
 				params.appid = Errors.BadRequest.require(this.options.appId, 'client config without appId');
 			}
-			if (params['secret'] === true) {
+			if (params.secret === true) {
 				params.secret = Errors.BadRequest.require(this.options.appSecret, 'client config without appSecret');
 			}
-			if (params['access_token'] === true) {
+			if (params.access_token === true) {
 				params.access_token = await this.getAccessToken();
 			}
 		}

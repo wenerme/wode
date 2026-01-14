@@ -7,7 +7,7 @@ async function createLocalDatabase(options: Partial<Options>): LocalDatabase {
 	const orm = await MikroORM.init(
 		defineConfig({
 			// dbName: 'wode.local.db',
-			dbName: os.homedir() + '/.local/state/wener/wode.local.db',
+			dbName: `${os.homedir()}/.local/state/wener/wode.local.db`,
 			entities: [],
 			...options,
 		}),

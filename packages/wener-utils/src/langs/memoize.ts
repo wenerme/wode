@@ -17,9 +17,8 @@ export function memoize<T extends func>(
 
 	const cache: Record<string, any> = {};
 
-	const memoized = function (this: any) {
-		const args = Array.prototype.slice.call(arguments); // to simplify JSON.stringify
-		const key = resolver.apply(this, args as Parameters<T>);
+	const memoized = function (this: any, ...args: Parameters<T>) {
+		const key = resolver.apply(this, args);
 
 		if (!(key in cache)) {
 			cache[key] = callback.apply(this, args);

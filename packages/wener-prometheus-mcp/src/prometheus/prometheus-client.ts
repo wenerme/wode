@@ -60,10 +60,10 @@ export class PrometheusClient {
 		};
 
 		if (this.config.token) {
-			headers['Authorization'] = `Bearer ${this.config.token}`;
+			headers.Authorization = `Bearer ${this.config.token}`;
 		} else if (this.config.username && this.config.password) {
 			const credentials = Buffer.from(`${this.config.username}:${this.config.password}`).toString('base64');
-			headers['Authorization'] = `Basic ${credentials}`;
+			headers.Authorization = `Basic ${credentials}`;
 		}
 
 		// Add organization ID header if specified

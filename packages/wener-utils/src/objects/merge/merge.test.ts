@@ -22,7 +22,7 @@ describe('custom-array-merge', () => {
 		assert.deepEqual(actual, expected);
 	});
 
-	test('merge top-level arrays', function () {
+	test('merge top-level arrays', () => {
 		function overwriteMerge(_a: any, b: any) {
 			return b;
 		}
@@ -33,15 +33,13 @@ describe('custom-array-merge', () => {
 		assert.deepEqual(actual, expected);
 	});
 
-	test('cloner function is available for merge functions to use', function () {
+	test('cloner function is available for merge functions to use', () => {
 		var customMergeWasCalled = false;
 
 		function cloneMerge(target: any, source: any, options: any) {
 			customMergeWasCalled = true;
 			assert.isTrue(!!options.cloneUnlessOtherwiseSpecified, 'cloner function is available');
-			return target.concat(source).map(function (element: any) {
-				return options.cloneUnlessOtherwiseSpecified(element, options);
-			});
+			return target.concat(source).map((element: any) => options.cloneUnlessOtherwiseSpecified(element, options));
 		}
 
 		var src = { key1: ['one', 'three'], key2: ['four'] };
@@ -111,31 +109,31 @@ describe('custom-is-mergeable-object', () => {
 });
 
 describe('merge-all', () => {
-	test('throw error if first argument is not an array', function () {
+	test('throw error if first argument is not an array', () => {
 		assert.throws(merge.all.bind(null, { example: true } as any, { another: '2' } as any), Error);
 	});
 
-	test('return an empty object if first argument is an array with no elements', function () {
+	test('return an empty object if first argument is an array with no elements', () => {
 		assert.deepEqual(merge.all([]), {});
 	});
 
-	test('Work just fine if first argument is an array with least than two elements', function () {
+	test('Work just fine if first argument is an array with least than two elements', () => {
 		var actual = merge.all([{ example: true }]);
 		var expected = { example: true };
 		assert.deepEqual(actual, expected);
 	});
 
-	test('execute correctly if options object were not passed', function () {
+	test('execute correctly if options object were not passed', () => {
 		var arrayToMerge = [{ example: true }, { another: '123' }];
 		assert.doesNotThrow(merge.all.bind(null, arrayToMerge));
 	});
 
-	test('execute correctly if options object were passed', function () {
+	test('execute correctly if options object were passed', () => {
 		var arrayToMerge = [{ example: true }, { another: '123' }];
 		assert.doesNotThrow(merge.all.bind(null, arrayToMerge, { clone: true }));
 	});
 
-	test('invoke merge on every item in array should result with all props', function () {
+	test('invoke merge on every item in array should result with all props', () => {
 		var firstObject = { first: true };
 		var secondObject = { second: false };
 		var thirdObject = { third: 123 };
@@ -149,7 +147,7 @@ describe('merge-all', () => {
 		assert.isTrue(mergedObject.fourth === 'some string');
 	});
 
-	test('invoke merge on every item in array with clone should clone all elements', function () {
+	test('invoke merge on every item in array with clone should clone all elements', () => {
 		var firstObject = { a: { d: 123 } };
 		var secondObject = { b: { e: true } };
 		var thirdObject = { c: { f: 'string' } };
@@ -161,7 +159,7 @@ describe('merge-all', () => {
 		assert.notEqual(mergedWithClone.c, thirdObject.c);
 	});
 
-	test('invoke merge on every item in array clone=false should not clone all elements', function () {
+	test('invoke merge on every item in array clone=false should not clone all elements', () => {
 		var firstObject = { a: { d: 123 } };
 		var secondObject = { b: { e: true } };
 		var thirdObject = { c: { f: 'string' } };
@@ -173,7 +171,7 @@ describe('merge-all', () => {
 		assert.equal(mergedWithoutClone.c, thirdObject.c);
 	});
 
-	test('invoke merge on every item in array without clone should clone all elements', function () {
+	test('invoke merge on every item in array without clone should clone all elements', () => {
 		var firstObject = { a: { d: 123 } };
 		var secondObject = { b: { e: true } };
 		var thirdObject = { c: { f: 'string' } };
@@ -187,7 +185,7 @@ describe('merge-all', () => {
 });
 
 describe('merge', () => {
-	test('add keys in target that do not exist at the root', function () {
+	test('add keys in target that do not exist at the root', () => {
 		var src = { key1: 'value1', key2: 'value2' };
 		var target = {};
 
@@ -197,7 +195,7 @@ describe('merge', () => {
 		assert.deepEqual(res, src);
 	});
 
-	test('merge existing simple keys in target at the roots', function () {
+	test('merge existing simple keys in target at the roots', () => {
 		var src = { key1: 'changed', key2: 'value2' };
 		var target = { key1: 'value1', key3: 'value3' };
 
@@ -207,7 +205,7 @@ describe('merge', () => {
 		assert.deepEqual(merge(target, src), expected);
 	});
 
-	test('merge nested objects into target', function () {
+	test('merge nested objects into target', () => {
 		var src = { key1: { subkey1: 'changed', subkey3: 'added' } };
 		var target = { key1: { subkey1: 'value1', subkey2: 'value2' } };
 
@@ -217,7 +215,7 @@ describe('merge', () => {
 		assert.deepEqual(merge(target, src), expected);
 	});
 
-	test('replace simple key with nested object in target', function () {
+	test('replace simple key with nested object in target', () => {
 		var src = { key1: { subkey1: 'subvalue1', subkey2: 'subvalue2' } };
 		var target = { key1: 'value1', key2: 'value2' };
 
@@ -227,7 +225,7 @@ describe('merge', () => {
 		assert.deepEqual(merge(target, src), expected);
 	});
 
-	test('should add nested object in target', function () {
+	test('should add nested object in target', () => {
 		var src = { b: { c: {} } };
 
 		var target = { a: {} };
@@ -237,7 +235,7 @@ describe('merge', () => {
 		assert.deepEqual(merge(target, src), expected);
 	});
 
-	test('should clone source and target', function () {
+	test('should clone source and target', () => {
 		var src = { b: { c: 'foo' } };
 
 		var target = { a: { d: 'bar' } };
@@ -252,7 +250,7 @@ describe('merge', () => {
 		assert.notEqual(merged.b, src.b);
 	});
 
-	test('should clone source and target', function () {
+	test('should clone source and target', () => {
 		var src = { b: { c: 'foo' } };
 
 		var target = { a: { d: 'bar' } };
@@ -262,7 +260,7 @@ describe('merge', () => {
 		assert.notEqual(merged.b, src.b);
 	});
 
-	test('should replace object with simple key in target', function () {
+	test('should replace object with simple key in target', () => {
 		var src = { key1: 'value1' };
 		var target = { key1: { subkey1: 'subvalue1', subkey2: 'subvalue2' }, key2: 'value2' };
 
@@ -272,7 +270,7 @@ describe('merge', () => {
 		assert.deepEqual(merge(target, src), expected);
 	});
 
-	test('should replace objects with arrays', function () {
+	test('should replace objects with arrays', () => {
 		var target = { key1: { subkey: 'one' } };
 
 		var src = { key1: ['subkey'] };
@@ -282,7 +280,7 @@ describe('merge', () => {
 		assert.deepEqual(merge(target, src), expected);
 	});
 
-	test('should replace arrays with objects', function () {
+	test('should replace arrays with objects', () => {
 		var target = { key1: ['subkey'] };
 
 		var src = { key1: { subkey: 'one' } };
@@ -292,7 +290,7 @@ describe('merge', () => {
 		assert.deepEqual(merge(target, src), expected);
 	});
 
-	test('should replace dates with arrays', function () {
+	test('should replace dates with arrays', () => {
 		var target = { key1: new Date() };
 
 		var src = { key1: ['subkey'] };
@@ -302,7 +300,7 @@ describe('merge', () => {
 		assert.deepEqual(merge(target, src), expected);
 	});
 
-	test('should replace null with arrays', function () {
+	test('should replace null with arrays', () => {
 		var target = { key1: null };
 
 		var src = { key1: ['subkey'] };
@@ -312,7 +310,7 @@ describe('merge', () => {
 		assert.deepEqual(merge(target, src), expected);
 	});
 
-	test('should work on simple array', function () {
+	test('should work on simple array', () => {
 		var src = ['one', 'three'];
 		var target = ['one', 'two'];
 
@@ -322,7 +320,7 @@ describe('merge', () => {
 		assert.isTrue(Array.isArray(merge(target, src)));
 	});
 
-	test('should work on another simple array', function () {
+	test('should work on another simple array', () => {
 		var target = ['a1', 'a2', 'c1', 'f1', 'p1'];
 		var src = ['t1', 's1', 'c2', 'r1', 'p2', 'p3'];
 
@@ -332,7 +330,7 @@ describe('merge', () => {
 		assert.isTrue(Array.isArray(merge(target, src)));
 	});
 
-	test('should work on array properties', function () {
+	test('should work on array properties', () => {
 		var src = { key1: ['one', 'three'], key2: ['four'] };
 		var target = { key1: ['one', 'two'] };
 
@@ -343,7 +341,7 @@ describe('merge', () => {
 		assert.isTrue(Array.isArray(merge(target, src).key2));
 	});
 
-	test('should work on array properties with clone option', function () {
+	test('should work on array properties with clone option', () => {
 		var src = { key1: ['one', 'three'], key2: ['four'] };
 		var target = { key1: ['one', 'two'] };
 
@@ -354,7 +352,7 @@ describe('merge', () => {
 		assert.notEqual(merged.key2, src.key2);
 	});
 
-	test('should work on array of objects', function () {
+	test('should work on array of objects', () => {
 		var src = [{ key1: ['one', 'three'], key2: ['one'] }, { key3: ['five'] }];
 		var target = [{ key1: ['one', 'two'] }, { key3: ['four'] }];
 
@@ -370,7 +368,7 @@ describe('merge', () => {
 		assert.isTrue(Array.isArray(merge(target, src)[0].key1), 'subkey should be an array too');
 	});
 
-	test('should work on array of objects with clone option', function () {
+	test('should work on array of objects with clone option', () => {
 		var src = [{ key1: ['one', 'three'], key2: ['one'] }, { key3: ['five'] }];
 		var target = [{ key1: ['one', 'two'] }, { key3: ['four'] }];
 
@@ -392,7 +390,7 @@ describe('merge', () => {
 		assert.notEqual(merged[1].key3, target[1].key3);
 	});
 
-	test('should treat regular expressions like primitive values', function () {
+	test('should treat regular expressions like primitive values', () => {
 		var target = { key1: /abc/ };
 		var src = { key1: /efg/ };
 		var expected = { key1: /efg/ };
@@ -403,7 +401,7 @@ describe('merge', () => {
 
 	test(
 		'should treat regular expressions like primitive values and should not' + ' clone even with clone option',
-		function () {
+		() => {
 			var target = { key1: /abc/ };
 			var src = { key1: /efg/ };
 
@@ -413,7 +411,7 @@ describe('merge', () => {
 		},
 	);
 
-	test('should treat dates like primitives', function () {
+	test('should treat dates like primitives', () => {
 		var monday = new Date('2016-09-27T01:08:12.761Z');
 		var tuesday = new Date('2016-09-28T01:18:12.761Z');
 
@@ -427,7 +425,7 @@ describe('merge', () => {
 		assert.equal(actual.key.valueOf(), tuesday.valueOf());
 	});
 
-	test('should treat dates like primitives and should not clone even with clone' + ' option', function () {
+	test('should treat dates like primitives and should not clone even with clone' + ' option', () => {
 		var monday = new Date('2016-09-27T01:08:12.761Z');
 		var tuesday = new Date('2016-09-28T01:18:12.761Z');
 
@@ -439,7 +437,7 @@ describe('merge', () => {
 		assert.equal(actual.key, tuesday);
 	});
 
-	test('should work on array with null in it', function () {
+	test('should work on array with null in it', () => {
 		var target: any[] = [];
 
 		var src = [null];
@@ -449,7 +447,7 @@ describe('merge', () => {
 		assert.deepEqual(merge(target, src), expected);
 	});
 
-	test("should clone array's element if it is object", function () {
+	test("should clone array's element if it is object", () => {
 		var a = { key: 'yup' };
 		var target: any[] = [];
 		var source = [a];
@@ -460,7 +458,7 @@ describe('merge', () => {
 		assert.equal(output[0].key, 'yup');
 	});
 
-	test('should clone an array property when there is no target array', function () {
+	test('should clone an array property when there is no target array', () => {
 		const someObject = {};
 		var target = {};
 		var source = { ary: [someObject] };
@@ -470,7 +468,7 @@ describe('merge', () => {
 		assert.notEqual(output.ary[0], someObject);
 	});
 
-	test('should overwrite values when property is initialised but undefined', function () {
+	test('should overwrite values when property is initialised but undefined', () => {
 		var target1 = { value: [] };
 		var target2 = { value: null };
 		var target3 = { value: 2 };
@@ -478,7 +476,7 @@ describe('merge', () => {
 		var src = { value: undefined };
 
 		function hasUndefinedProperty(o: any) {
-			assert.isTrue(o.hasOwnProperty('value'));
+			assert.isTrue(Object.hasOwn(o, 'value'));
 			assert.equal(typeof o.value, 'undefined');
 		}
 
@@ -487,7 +485,7 @@ describe('merge', () => {
 		hasUndefinedProperty(merge(target3, src));
 	});
 
-	test('dates should copy correctly in an array', function () {
+	test('dates should copy correctly in an array', () => {
 		var monday = new Date('2016-09-27T01:08:12.761Z');
 		var tuesday = new Date('2016-09-28T01:18:12.761Z');
 
@@ -500,7 +498,7 @@ describe('merge', () => {
 		assert.deepEqual(actual, expected);
 	});
 
-	test('should handle custom merge functions', function () {
+	test('should handle custom merge functions', () => {
 		var target = { letters: ['a', 'b'], people: { first: 'Alex', second: 'Bert' } };
 
 		var source = { letters: ['c'], people: { first: 'Smith', second: 'Bertson', third: 'Car' } };
@@ -535,7 +533,7 @@ describe('merge', () => {
 		assert.deepEqual(actual, expected);
 	});
 
-	test('should handle custom merge functions', function () {
+	test('should handle custom merge functions', () => {
 		var target = { letters: ['a', 'b'], people: { first: 'Alex', second: 'Bert' } };
 
 		var source = { letters: ['c'], people: { first: 'Smith', second: 'Bertson', third: 'Car' } };
@@ -559,7 +557,7 @@ describe('merge', () => {
 		assert.deepEqual(actual, expected);
 	});
 
-	test('should merge correctly if custom merge is not a valid function', function () {
+	test('should merge correctly if custom merge is not a valid function', () => {
 		var target = { letters: ['a', 'b'], people: { first: 'Alex', second: 'Bert' } };
 
 		var source = { letters: ['c'], people: { first: 'Smith', second: 'Bertson', third: 'Car' } };
@@ -576,7 +574,7 @@ describe('merge', () => {
 		assert.deepEqual(actual, expected);
 	});
 
-	test('copy symbol keys in target that do not exist on the target', function () {
+	test('copy symbol keys in target that do not exist on the target', () => {
 		var mySymbol = Symbol();
 		var src = { [mySymbol]: 'value1' };
 		var target = {};
@@ -587,7 +585,7 @@ describe('merge', () => {
 		assert.deepEqual(Object.getOwnPropertySymbols(res), Object.getOwnPropertySymbols(src));
 	});
 
-	test('copy symbol keys in target that do exist on the target', function () {
+	test('copy symbol keys in target that do exist on the target', () => {
 		var mySymbol = Symbol();
 		var src = { [mySymbol]: 'value1' };
 		var target = { [mySymbol]: 'wat' };
@@ -597,7 +595,7 @@ describe('merge', () => {
 		assert.equal(res[mySymbol], 'value1');
 	});
 
-	test('Falsey properties should be mergeable', function () {
+	test('Falsey properties should be mergeable', () => {
 		var uniqueValue = {};
 
 		var target = { wat: false };
@@ -607,14 +605,10 @@ describe('merge', () => {
 		var customMergeWasCalled = false;
 
 		var result = merge(target, source, {
-			isMergeableObject: function () {
-				return true;
-			},
-			customMerge: function () {
-				return function () {
-					customMergeWasCalled = true;
-					return uniqueValue;
-				};
+			isMergeableObject: () => true,
+			customMerge: () => () => {
+				customMergeWasCalled = true;
+				return uniqueValue;
 			},
 		});
 
@@ -625,7 +619,7 @@ describe('merge', () => {
 
 describe('prototype-poisoning', async () => {
 	const { isMergeableObject } = await import('./isMergeableObject');
-	test('merging objects with own __proto__', function () {
+	test('merging objects with own __proto__', () => {
 		var user = {};
 		var malicious = JSON.parse('{ "__proto__": { "admin": true } }');
 		var mergedObject: any = merge(user, malicious);
@@ -633,7 +627,7 @@ describe('prototype-poisoning', async () => {
 		assert.isFalse(!!mergedObject.admin, 'the destination should have an unmodified prototype');
 	});
 
-	test('merging objects with plain and non-plain properties', function () {
+	test('merging objects with plain and non-plain properties', () => {
 		var plainSymbolKey = Symbol('plainSymbolKey');
 		var parent = { parentKey: 'should be undefined' };
 
@@ -655,15 +649,13 @@ describe('prototype-poisoning', async () => {
 	});
 
 	// the following cases come from the thread here: https://github.com/TehShrike/deepmerge/pull/164
-	test('merging strings works with a custom string merge', function () {
+	test('merging strings works with a custom string merge', () => {
 		var target = { name: 'Alexander' };
 		var source = { name: 'Hamilton' };
 
 		function customMerge(key: any): any {
 			if (key === 'name') {
-				return function (target: any, source: any) {
-					return target[0] + '. ' + source.substring(0, 3);
-				};
+				return (target: any, source: any) => `${target[0]}. ${source.substring(0, 3)}`;
 			} else {
 				return merge;
 			}
@@ -676,7 +668,7 @@ describe('prototype-poisoning', async () => {
 		assert.equal('A. Ham', merge(target, source, { customMerge: customMerge, isMergeableObject: mergeable }).name);
 	});
 
-	test('merging objects with null prototype', function () {
+	test('merging objects with null prototype', () => {
 		var target = Object.create(null);
 		var source = Object.create(null);
 		target.wheels = 4;

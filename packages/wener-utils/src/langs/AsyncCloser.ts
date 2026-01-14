@@ -23,7 +23,7 @@ export class AsyncCloser implements AsyncDisposable {
 
 	async [Symbol.asyncDispose]() {
 		for (let closer of this.closers) {
-			let o;
+			let o: unknown;
 			if (typeof closer === 'function') {
 				o = closer();
 			} else if (Symbol.asyncDispose in closer) {
@@ -33,7 +33,7 @@ export class AsyncCloser implements AsyncDisposable {
 			} else {
 				o = closer.close();
 			}
-			if (o && typeof o.then === 'function') {
+			if (o && typeof (o as PromiseLike<unknown>).then === 'function') {
 				await o;
 			}
 		}

@@ -6,17 +6,17 @@ beforeAll(() => {
 	ArrayBuffers.setNativeBufferAllowed(false);
 });
 
-test('base64: ignore whitespace', function () {
+test('base64: ignore whitespace', () => {
 	const text = '\n   YW9ldQ==  ';
 	const buf = ArrayBuffers.from(text, 'base64');
 	expect(ArrayBuffers.toString(buf)).toBe('aoeu');
 });
 
-test('base64: strings without padding', function () {
+test('base64: strings without padding', () => {
 	expect(ArrayBuffers.toString(ArrayBuffers.from('YW9ldQ', 'base64'))).toBe('aoeu');
 });
 
-test('base64: newline in utf8 -- should not be an issue', function () {
+test('base64: newline in utf8 -- should not be an issue', () => {
 	assert.equal(
 		ArrayBuffers.toString(
 			ArrayBuffers.from('LS0tCnRpdGxlOiBUaHJlZSBkYXNoZXMgbWFya3MgdGhlIHNwb3QKdGFnczoK', 'base64'),
@@ -26,7 +26,7 @@ test('base64: newline in utf8 -- should not be an issue', function () {
 	);
 });
 
-test('base64: newline in base64 -- should get stripped', function () {
+test('base64: newline in base64 -- should get stripped', () => {
 	assert.equal(
 		ArrayBuffers.toString(
 			ArrayBuffers.from(
@@ -39,7 +39,7 @@ test('base64: newline in base64 -- should get stripped', function () {
 	);
 });
 
-test('base64: tab characters in base64 - should get stripped', function () {
+test('base64: tab characters in base64 - should get stripped', () => {
 	assert.equal(
 		ArrayBuffers.toString(
 			ArrayBuffers.from(
@@ -52,11 +52,11 @@ test('base64: tab characters in base64 - should get stripped', function () {
 	);
 });
 
-test('base64: invalid non-alphanumeric characters -- should be stripped', function () {
+test('base64: invalid non-alphanumeric characters -- should be stripped', () => {
 	expect(ArrayBuffers.toString(ArrayBuffers.from('!"#$%&\'()*,.:;<=>?@[\\]^`{|}~', 'base64'), 'utf8')).toBe('');
 });
 
-test('base64: high byte', function () {
+test('base64: high byte', () => {
 	const highByte = ArrayBuffers.from([128]);
 	assert.deepEqual(ArrayBuffers.alloc(1, ArrayBuffers.toString(highByte, 'base64'), 'base64'), highByte);
 });

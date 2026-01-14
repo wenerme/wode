@@ -12,7 +12,7 @@ export function runRelayClientMutation<I extends { clientMutationId?: string }, 
 	const out = f(input);
 	const attach = (data: O) => {
 		if (typeof data === 'object' && data) {
-			(data as any)['clientMutationId'] = clientMutationId;
+			(data as any).clientMutationId = clientMutationId;
 		} else if (data === undefined) {
 			(data as any) = { clientMutationId };
 		}

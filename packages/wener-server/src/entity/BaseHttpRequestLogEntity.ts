@@ -103,7 +103,7 @@ export class BaseHttpRequestLogEntity extends StandardBaseEntity {
 			statusCode: resp.status,
 			statusText: resp.statusText,
 			responseHeaders: headers,
-			contentLength: headers['content-length'] ? Number.parseInt(headers['content-length']) : undefined,
+			contentLength: headers['content-length'] ? Number.parseInt(headers['content-length'], 10) : undefined,
 			contentType: headers['content-type'],
 			// responsePayload: resp.body,
 		} as any);

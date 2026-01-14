@@ -92,7 +92,7 @@ describe('Bencode', () => {
 				],
 			];
 
-			testCases.forEach(([k, v, m]) => {
+			testCases.forEach(([k, v, _m]) => {
 				const buf = encode(k);
 				const l = Bencode.byteLength(k);
 				expect(l).toBe(buf.byteLength);

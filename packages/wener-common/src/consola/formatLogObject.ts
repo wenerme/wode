@@ -90,7 +90,7 @@ export function formatLogObject(
 		}
 
 		if (type === 'trace') {
-			const _err = new Error('Trace: ' + o.message);
+			const _err = new Error(`Trace: ${o.message}`);
 			line += formatStack(_err.stack || '', _err.message);
 		}
 	}
@@ -139,11 +139,11 @@ function parseStack(stack: string, message: string) {
 function formatStack(stack: string, message: string, opts?: FormatOptions) {
 	const indent = '  '.repeat((opts?.errorLevel || 0) + 1);
 	return (
-		`\n${indent}`
-		+ parseStack(stack, message)
+		`\n${indent}` +
+		parseStack(stack, message)
 			.map(
 				(line) =>
-					'  ' + line.replace(/^at +/, (m) => colors.gray(m)).replace(/\((.+)\)/, (_, m) => `(${colors.cyan(m)})`),
+					`  ${line.replace(/^at +/, (m) => colors.gray(m)).replace(/\((.+)\)/, (_, m) => `(${colors.cyan(m)})`)}`,
 			)
 			.join(`\n${indent}`)
 	);
@@ -201,7 +201,7 @@ function formatError(err: any, opts: FormatOptions): string {
 
 	const level = opts?.errorLevel || 0;
 	const causedPrefix = level > 0 ? `${'  '.repeat(level)}[cause]: ` : '';
-	const causedError = err.cause ? '\n\n' + formatError(err.cause, { ...opts, errorLevel: level + 1 }) : '';
+	const causedError = err.cause ? `\n\n${formatError(err.cause, { ...opts, errorLevel: level + 1 })}` : '';
 
-	return causedPrefix + message + '\n' + stack + causedError;
+	return `${causedPrefix + message}\n${stack}${causedError}`;
 }

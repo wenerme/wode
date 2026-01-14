@@ -9,7 +9,7 @@ export interface RequestOptions<T> {
 	body?: string | Record<string, any>;
 	headers?: Record<string, any>;
 	fetch?: FetchLike;
-	onSuccess?: (ctx: { res: Response; data: T }) => MaybePromise<T | void>;
+	onSuccess?: (ctx: { res: Response; data: T }) => MaybePromise<T | undefined>;
 	onResponse?: (ctx: { res: Response; req: RequestInit; data?: T; err?: any }) => MaybePromise<void>;
 }
 

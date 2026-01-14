@@ -13,8 +13,8 @@ const dirname = path.dirname(fileURLToPath(import.meta.url));
 describe('parseTorrent', async () => {
 	await polyfillCrypto();
 
-	test('parseFile', async (t) => {
-		const files = await globby(path.join(dirname, 'fixtures') + '/*.torrent');
+	test('parseFile', async (_t) => {
+		const files = await globby(`${path.join(dirname, 'fixtures')}/*.torrent`);
 		files.sort();
 		for (const file of files) {
 			const r = await fs.readFile(file);

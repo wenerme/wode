@@ -1,5 +1,5 @@
 import {
-	FeishuAuth,
+	type FeishuAuth,
 	FeishuHttpClient,
 	type FeishuConfig,
 	type FeishuDocument,
@@ -25,7 +25,6 @@ export interface FeishuDocumentClient {
 export class FeishuDocsClient implements FeishuDocumentClient {
 	private httpClient: FeishuHttpClient;
 	private auth: FeishuAuth;
-	private config: FeishuConfig;
 
 	constructor(config: FeishuConfig, auth: FeishuAuth) {
 		this.config = config;

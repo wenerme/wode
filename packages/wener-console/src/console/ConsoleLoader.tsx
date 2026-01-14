@@ -19,8 +19,6 @@ enum ServiceState {
 	Error = 'Error',
 }
 
-
-
 export type ConsoleLoaderProps = {
 	/**
 	 * Render root content

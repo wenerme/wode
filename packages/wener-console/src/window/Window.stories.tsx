@@ -1,9 +1,9 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { PiAppleLogo, PiWindowsLogo } from 'react-icons/pi';
 import type { Meta } from '@storybook/react-vite';
 import { useStore } from 'zustand';
 import { ComponentProvider } from '../components';
-import { useRootWindow, useWindow } from './ReactWindow';
+import { useRootWindow } from './ReactWindow';
 import { WindowFrame } from './WindowFrame';
 import { WindowHost } from './WindowHost';
 import { getWindowStyleStore } from './WindowStyleStore';
@@ -39,7 +39,7 @@ export const Windows = () => {
 					ref={ref}
 					type='checkbox'
 					className='toggle toggle-xs'
-					onChange={(e) => {
+					onChange={(_e) => {
 						let loop = ['macos', 'system', 'windows'] as const;
 						const next = loop[(loop.indexOf(theme) + 1) % loop.length];
 						store.setState({ theme: next });

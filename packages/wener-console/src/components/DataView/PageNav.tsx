@@ -1,4 +1,3 @@
-import type React from 'react';
 import { useEffect, useState } from 'react';
 import { PiArrowLeftThin, PiArrowLineLeftThin, PiArrowLineRightThin, PiArrowRightThin } from 'react-icons/pi';
 import { clamp } from '@wener/utils';

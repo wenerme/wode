@@ -10,7 +10,7 @@ export function gqlr<TResult, TVariables>(
 	let token = getAccessToken();
 	const headers: Record<string, string> = {};
 	if (token) {
-		headers['Authorization'] = `Bearer ${token}`;
+		headers.Authorization = `Bearer ${token}`;
 	}
 	return request({
 		url: getGraphQLUrl(),

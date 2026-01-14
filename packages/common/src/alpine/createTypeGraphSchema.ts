@@ -1,11 +1,11 @@
-import { DynamicModule, Injectable } from '@nestjs/common';
-import { ModuleRef, ModulesContainer } from '@nestjs/core';
+import { type DynamicModule, Injectable } from '@nestjs/common';
+import type { ModuleRef, ModulesContainer } from '@nestjs/core';
 import { getEntityManager } from '@wener/nestjs/mikro-orm';
 import { BaseObject, NestContainerType } from '@wener/nestjs/type-graphql';
-import { Constructor } from '@wener/utils';
+import type { Constructor } from '@wener/utils';
 import { GraphQLSchema } from 'graphql';
 import { GraphQLDateTime } from 'graphql-scalars';
-import { Args, ArgsType, buildSchema, Field, Float, Mutation, NonEmptyArray, ObjectType, Resolver } from 'type-graphql';
+import { Args, ArgsType, buildSchema, Field, Float, Mutation, type NonEmptyArray, ObjectType, Resolver } from 'type-graphql';
 import { ApkIndexEntity } from '@/poc/alpine/entity/ApkIndexEntity';
 import { ApkIndexPkgEntity } from '@/poc/alpine/entity/ApkIndexPkgEntity';
 import { AlpineArchitectures, AlpineRepos, getLatestAlpineBranch } from '@/poc/alpine/repo/const';
@@ -201,4 +201,4 @@ class TypeGraphSchemaModule {
 	}
 }
 
-function resolverContainer({ moduleRef, container }: { moduleRef: ModuleRef; container: ModulesContainer }) {}
+function _resolverContainer({ moduleRef, container }: { moduleRef: ModuleRef; container: ModulesContainer }) {}

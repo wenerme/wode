@@ -37,7 +37,9 @@ export function buildAuthorizeUrl({
  */
 export function buildOfficialAccountProfileUrl({
 	uin = process.env.WECHAT_OA_UIN || process.env.NEXT_PUBLIC_WECHAT_OA_UIN,
-}: { uin?: string } = {}) {
+}: {
+	uin?: string;
+} = {}) {
 	if (!uin) {
 		throw new Error('buildOfficialAccountProfileUrl: uin required');
 	}

@@ -27,7 +27,7 @@ async function cache(dir: string, url: string): Promise<string> {
 		await fs.stat(file);
 		console.info('[cache] hit', url);
 		return await fs.readFile(file, 'utf-8');
-	} catch (e) {}
+	} catch (_e) {}
 	console.info('[cache] miss', url);
 	const text = await fetch(url).then((v) => {
 		if (v.status >= 300) {
@@ -59,8 +59,8 @@ export function getGenerateContext(prefix?: string): MaybePromise<GenerateContex
 		});
 	}
 	return (
-		_root
-		|| Promise.resolve().then(async () => {
+		_root ||
+		Promise.resolve().then(async () => {
 			const pkgDir = await getPackageDir();
 			Errors.BadRequest.check(pkgDir, 'pkgDir not found');
 			const dataDir = path.resolve(pkgDir, 'data');
@@ -86,7 +86,7 @@ export function getGenerateContext(prefix?: string): MaybePromise<GenerateContex
 async function write(dir: string, file: string, content: string) {
 	const size = new Blob([content]).size;
 	const dst = path.join(dir, file);
-	let last;
+	let last: number | undefined;
 	try {
 		last = (await fs.stat(dst)).size;
 	} catch {}

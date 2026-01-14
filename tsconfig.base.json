@@ -9,6 +9,7 @@
 		"resolveJsonModule": true,
 		"esModuleInterop": true,
 		"allowJs": true,
+		"importHelpers": true,
 		// bundler mode
 		"moduleResolution": "bundler",
 		"allowImportingTsExtensions": false,
@@ -25,8 +26,6 @@
 		"noImplicitAny": true,
 		"noImplicitReturns": true,
 		"jsx": "react-jsx",
-		//
-		"baseUrl": ".",
 		"rootDir": "."
 	},
 	"include": ["*.ts", "src/**/*.ts", "src/**/*.tsx", ".storybook/*"],

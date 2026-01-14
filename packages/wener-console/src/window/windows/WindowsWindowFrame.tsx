@@ -1,4 +1,3 @@
-import React from 'react';
 import { PiAppWindowLight } from 'react-icons/pi';
 import { cn } from '../../utils/cn';
 import { getWindowDragHandleClassname } from '../const';

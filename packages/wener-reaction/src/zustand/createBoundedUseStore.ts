@@ -8,7 +8,8 @@ export const createBoundedUseStore = ((store) => (selector) => {
 	if (!_store) {
 		throw new Error('No store');
 	}
-	return useStore(_store as any, selector ? useShallow(selector) : selector);
+	const shallowSelector = selector ? useShallow(selector) : selector;
+	return useStore(_store as any, shallowSelector);
 }) as <S extends StoreApi<unknown>>(store: MaybeFunction<S> | Context<undefined | null | S>) => BoundedUseStore<S>;
 
 export type BoundedUseStore<S extends StoreApi<unknown>> = {
@@ -18,9 +19,9 @@ export type BoundedUseStore<S extends StoreApi<unknown>> = {
 
 function isContext<T>(v: unknown | Context<T>): v is Context<T> {
 	return (
-		typeof v === 'object'
-		&& v !== null
-		&& '$$typeof' in v
-		&& typeof (v as { Provider?: unknown }).Provider !== 'undefined'
+		typeof v === 'object' &&
+		v !== null &&
+		'$$typeof' in v &&
+		typeof (v as { Provider?: unknown }).Provider !== 'undefined'
 	);
 }

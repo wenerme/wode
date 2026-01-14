@@ -3,7 +3,7 @@
  */
 
 import type { ApiClient, ApiResponse, OperationInfo } from './client';
-import type { ConfigSource, ParameterInfo, ParsedOperation } from './schema';
+import type { ConfigSource, ParsedOperation } from './schema';
 
 // ANSI color codes
 const colors = {
@@ -166,7 +166,7 @@ export function formatServerInfo(serverName: string, client: ApiClient, source?:
 	for (const op of spec.operations) {
 		const tag = op.tags[0] || 'default';
 		if (!byTag.has(tag)) byTag.set(tag, []);
-		byTag.get(tag)!.push(op);
+		byTag.get(tag)?.push(op);
 	}
 
 	for (const [tag, ops] of byTag) {
@@ -179,7 +179,7 @@ export function formatServerInfo(serverName: string, client: ApiClient, source?:
 /**
  * Format operation details (schema)
  */
-export function formatOperationDetails(serverName: string, operation: ParsedOperation): string {
+export function formatOperationDetails(_serverName: string, operation: ParsedOperation): string {
 	const lines: string[] = [];
 
 	lines.push(`${color('Operation:', colors.bold)} ${color(operation.operationId, colors.green)}`);

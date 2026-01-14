@@ -2,7 +2,7 @@
  * Call command - Execute an API operation
  */
 
-import { executeOperation, findOperation, getOperations, getTimeoutMs, loadApiClient } from '../client';
+import { type ApiClient, executeOperation, findOperation, getOperations, getTimeoutMs, loadApiClient } from '../client';
 import { getServerConfig, listServerNames, loadConfig } from '../config';
 import {
 	ErrorCode,
@@ -144,7 +144,7 @@ export async function callCommand(options: CallOptions): Promise<void> {
 	const extraHeaders = parseHeaders(options.headers);
 
 	// Load API client
-	let client;
+	let client: ApiClient;
 	try {
 		client = await loadApiClient(serverWithSource.config);
 		// Merge extra headers

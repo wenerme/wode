@@ -207,7 +207,7 @@ export function getSqlConfig({
 	else {
 		const host = process.env.DB_HOST || 'localhost';
 		const dbConfig = DATABASE_TYPE_CONFIG[client];
-		const port = parseInt(process.env.DB_PORT || String(dbConfig.port));
+		const port = parseInt(process.env.DB_PORT || String(dbConfig.port), 10);
 		const user = process.env.DB_USER || process.env.DB_USERNAME;
 		const password = process.env.DB_PASSWORD || process.env.DB_PASS;
 		const database = process.env.DB_DATABASE || process.env.DB_NAME;

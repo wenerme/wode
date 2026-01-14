@@ -11,7 +11,7 @@ export const ServiceNameProp = Symbol('$ServiceName');
 
 export function getServiceName(svc: Constructor | string | Function | undefined): string | undefined {
 	if (!svc) {
-		return;
+		return undefined;
 	}
 
 	if (typeof svc === 'string') {
@@ -26,14 +26,16 @@ export function getServiceName(svc: Constructor | string | Function | undefined)
 
 		return name;
 	}
+	return undefined;
 }
 
 export function getServiceOptions(svc: Constructor | AbstractConstructor | Function): ServiceOptionsInit | undefined {
 	if (!svc) {
-		return;
+		return undefined;
 	}
 
 	if (typeof svc === 'function') {
 		return Reflect.getMetadata(SERVICE_METADATA_KEY, svc);
 	}
+	return undefined;
 }

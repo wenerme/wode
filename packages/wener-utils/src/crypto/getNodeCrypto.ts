@@ -1,7 +1,7 @@
 // import type * as NodeCrypto from 'node:crypto';
 import { getGlobalThis } from '../web/getGlobalThis';
 
-let nodeCrypto;
+let nodeCrypto: Crypto | undefined;
 // globalThis.process?.release?.name
 
 // avoid import node

@@ -22,7 +22,7 @@ interface SiteStoreState extends SiteConf {
 
 function createSiteStore() {
 	return createStore(
-		mutative<SiteStoreState>((setState, getState, store) => {
+		mutative<SiteStoreState>((setState, _getState, _store) => {
 			return {
 				title: '',
 				baseUrl: typeof window === 'undefined' ? 'http://localhost:3000' : window.location.origin,

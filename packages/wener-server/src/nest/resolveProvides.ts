@@ -3,9 +3,9 @@ import { isClass, type Constructor } from '@wener/utils';
 
 // import { getMetadataStorage } from 'type-graphql';
 
-type ServiceClass = Constructor & { name: `${string}Service` | `${string}Impl` };
+type _ServiceClass = Constructor & { name: `${string}Service` | `${string}Impl` };
 
-type ResolverClass = Constructor & { name: `${string}Resolver` };
+type _ResolverClass = Constructor & { name: `${string}Resolver` };
 type EntityClass = Constructor & { name: `${string}Entity` };
 
 type AnyConstructor = Constructor<any> & { EntityType?: Function; ServiceType?: Function };

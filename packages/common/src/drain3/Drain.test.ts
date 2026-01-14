@@ -1,4 +1,4 @@
-import { readFile, writeFile, unlink } from 'node:fs/promises';
+import { readFile, unlink } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { describe, it, expect, beforeEach } from 'vitest';
@@ -241,7 +241,7 @@ describe('TemplateMiner', () => {
 			const miner = new TemplateMiner(drain, new MemoryPersistence());
 
 			const result = await miner.addLogMessage('[INFO] User 123 logged in');
-			const template = result.templateMined;
+			const _template = result.templateMined;
 
 			// After second message, template should have wildcard
 			await miner.addLogMessage('[INFO] User 456 logged in');
@@ -365,7 +365,7 @@ describe('TemplateMiner', () => {
 				expect(result.cluster).toBeDefined();
 
 				// Extract parameters to verify they work
-				const params = miner.extractParameters(result.templateMined, log);
+				const _params = miner.extractParameters(result.templateMined, log);
 				// Params may be null for some logs, which is fine
 			}
 

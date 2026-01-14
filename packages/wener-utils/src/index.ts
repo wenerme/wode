@@ -20,7 +20,7 @@ export { merge, type MergeOptions } from './objects/merge';
 // async
 export { createLazyPromise, type LazyPromise } from './asyncs/createLazyPromise';
 export { setAsyncInterval, clearAsyncInterval } from './asyncs/AsyncInterval';
-export { type MaybePromise } from './asyncs/MaybePromise';
+export type { MaybePromise } from './asyncs/MaybePromise';
 // async - iterator
 export { createAsyncIterator } from './asyncs/createAsyncIterator';
 export { firstOfAsyncIterator } from './asyncs/firstOfAsyncIterator';
@@ -80,7 +80,7 @@ export { ArrayBuffers } from './io/ArrayBuffers';
 export { ByteBuffer } from './io/ByteBuffer';
 export { fromHexDump, toHexDump } from './io/dump';
 export { Buffer } from './io/Buffer';
-export { type Bytes } from './io/types';
+export type { Bytes } from './io/types';
 export { parseDataUri, type ParsedDataUri } from './io/parseDataUri';
 export type { AbstractEncoding } from './io/AbstractEncoding';
 
@@ -133,5 +133,7 @@ export { Errors } from './errors/Errors';
 export { DetailError, type ErrorDetail, type ErrorDetailInit } from './errors/DetailError';
 // http
 export { getHttpStatusText, isRetryableHttpStatus } from './fetch/HttpStatus';
+
+export { getAnsiStyle, type AnsiStyle, type AnsiFormatOptions, isConsoleColorEnabled } from './misc/getAnsiStyle';
 
 export type * from './types';

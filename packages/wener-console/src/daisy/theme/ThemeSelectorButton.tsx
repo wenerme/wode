@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { HiChevronDown, HiColorSwatch } from 'react-icons/hi';
 import { MdSettings } from 'react-icons/md';
 import classNames from 'clsx';
@@ -32,7 +32,6 @@ export const ThemeSelectorButton = () => {
 			</div>
 			{isOpen && (
 				<ul
-					tabIndex={0}
 					className={classNames(
 						'dropdown-content menu bg-base-200 absolute right-0 z-50 flex h-[400px] w-[200px] flex-col gap-2 overflow-y-auto rounded p-2 text-sm',
 						'border-base-300 border shadow-lg',

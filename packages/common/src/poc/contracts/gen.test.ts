@@ -1,5 +1,5 @@
 import path from 'node:path';
-import { writeFileSync } from 'fs';
+import { writeFileSync } from 'node:fs';
 import { ethers } from 'ethers';
 import { sepolia } from 'viem/chains';
 import { test } from 'vitest';
@@ -50,7 +50,7 @@ async function gen() {
 		};
 		const exts = Array.from(new Set(collect(c.extends)));
 
-		let abi = c.abi.concat(exts.flatMap((v) => byName[v]!.abi));
+		let abi = c.abi.concat(exts.flatMap((v) => byName[v]?.abi));
 		// let total = abi.length;
 		// abi = _.uniqBy(abi, (v) => ethers.utils.id(v));
 		// if (abi.length !== total) {

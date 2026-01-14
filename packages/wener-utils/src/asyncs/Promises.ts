@@ -15,14 +15,18 @@ export class Promises {
 	 * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/withResolvers
 	 */
 	static withResolvers<T>(): PromiseWithResolvers<T> {
-		if ('withResolvers' in Promise) {
-			return Promise['withResolvers']() as any;
+		const P = Promise as unknown as {
+			new <T>(
+				executor: (resolve: (value: T | PromiseLike<T>) => void, reject: (reason?: any) => void) => void,
+			): Promise<T>;
+			withResolvers?<T>(): PromiseWithResolvers<T>;
+		};
+		if (P.withResolvers) {
+			return P.withResolvers<T>();
 		}
 		let resolve: (value: T | PromiseLike<T>) => void;
 		let reject: (reason?: any) => void;
-		// @ts-ignore -- Polyfill/Fallback for environment without Promise.withResolvers
-		// eslint-disable-next-line
-		const promise = new Promise<T>((res, rej) => {
+		const promise = new P<T>((res, rej) => {
 			resolve = res;
 			reject = rej;
 		});

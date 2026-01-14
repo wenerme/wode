@@ -1,5 +1,5 @@
-import { createServer, type IncomingMessage, type Server, type ServerResponse } from 'http';
-import { URL } from 'url';
+import { createServer, type IncomingMessage, type Server, type ServerResponse } from 'node:http';
+import { URL } from 'node:url';
 import { FeishuAuth, type FeishuOAuthConfig } from 'common/feishu';
 import consola from 'consola';
 import open from 'open';
@@ -35,10 +35,10 @@ export class FeishuOAuthServer {
 	 */
 	async startOAuthFlow(): Promise<OAuthFlowResult> {
 		const url = new URL(this.config.redirectUri);
-		const port = parseInt(url.port) || 3000;
+		const port = parseInt(url.port, 10) || 3000;
 		const host = url.hostname || 'localhost';
 
-		return new Promise((resolve, reject) => {
+		return new Promise((resolve, _reject) => {
 			let resolved = false;
 			const timeout = setTimeout(
 				() => {

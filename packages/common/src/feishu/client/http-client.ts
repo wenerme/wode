@@ -1,5 +1,5 @@
 import consola from 'consola';
-import { FeishuDomains, type FeishuApiResponse, type FeishuConfig, type FeishuError } from '../types';
+import { FeishuDomains, type FeishuApiResponse, type FeishuConfig, } from '../types';
 
 const logger = consola.withTag('feishu-http-client');
 

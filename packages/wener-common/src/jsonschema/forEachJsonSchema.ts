@@ -9,7 +9,7 @@ export function forEachJsonSchema(js: JsonSchemaDef, cb: (js: JsonSchemaDef, ctx
 		_f: (js: JsonSchemaDef, ctx: VisitJsonSchemaContext) => void,
 		parent: JsonSchemaDef | undefined,
 		path: string[],
-		k?: string,
+		_k?: string,
 	) => {
 		if (!js) {
 			return;

@@ -1,5 +1,5 @@
 import type { MaybePromise } from '@wener/utils';
-import { TencentLogClient, type SearchLogRequest, type SearchLogResponse } from './TencentLogClient';
+import type { TencentLogClient, SearchLogRequest, SearchLogResponse } from './TencentLogClient';
 import type { LogInfo } from './types';
 
 export type SearchLogStreamOptions = {
@@ -12,7 +12,7 @@ export async function* searchLogStream({
 	onResponse,
 	...options
 }: SearchLogStreamOptions): AsyncGenerator<{ info: LogInfo; log: Record<string, any>; index: number }> {
-	let context: string | undefined = undefined;
+	let context: string | undefined;
 	let n = 0;
 	while (true) {
 		const result = await client.searchLog({

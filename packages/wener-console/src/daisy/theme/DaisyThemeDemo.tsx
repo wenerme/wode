@@ -1,4 +1,3 @@
-import React from 'react';
 import { useImmer } from 'use-immer';
 import type { IntentType, SizeType } from '../const';
 import { daisy } from '../utils/daisy';
@@ -14,10 +13,8 @@ export const DaisyThemeDemo = () => {
 		<div className={'flex flex-col justify-center gap-2 py-4'}>
 			<div>
 				<div className='dropdown'>
-					<label tabIndex={0} className='btn btn-outline btn-sm m-1'>
-						{state.size || 'Size'}
-					</label>
-					<ul tabIndex={0} className='menu dropdown-content rounded-box bg-base-100 w-52 p-2 shadow'>
+					<label className='btn btn-outline btn-sm m-1'>{state.size || 'Size'}</label>
+					<ul className='menu dropdown-content rounded-box bg-base-100 w-52 p-2 shadow'>
 						<li
 							onClick={() => {
 								update({ ...state, size: undefined });
@@ -40,10 +37,8 @@ export const DaisyThemeDemo = () => {
 					</ul>
 				</div>
 				<div className='dropdown'>
-					<label tabIndex={0} className={`btn btn-outline btn-sm m-1 ${daisy('btn', { intent })}`}>
-						{state.intent || 'Intent'}
-					</label>
-					<ul tabIndex={0} className='menu dropdown-content rounded-box bg-base-100 w-52 p-2 shadow'>
+					<label className={`btn btn-outline btn-sm m-1 ${daisy('btn', { intent })}`}>{state.intent || 'Intent'}</label>
+					<ul className='menu dropdown-content rounded-box bg-base-100 w-52 p-2 shadow'>
 						<li
 							onClick={() => {
 								update({ ...state, intent: undefined });

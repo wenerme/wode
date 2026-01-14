@@ -343,7 +343,7 @@ export namespace ArrayBuffers {
 		}
 
 		// Handle odd-length hex strings by padding with leading zero
-		const cleanHex = v.length % 2 === 1 ? '0' + v : v;
+		const cleanHex = v.length % 2 === 1 ? `0${v}` : v;
 		const matches = cleanHex.match(/.{1,2}/g);
 		if (!matches) {
 			throw new Error('Invalid hex string');
@@ -503,7 +503,7 @@ export namespace ArrayBuffers {
 	}
 
 	// base16 lookup table for efficient hex conversion
-	const hexLookupTable = (function () {
+	const hexLookupTable = (() => {
 		const alphabet = '0123456789abcdef';
 		const table = new Array(256);
 		for (let i = 0; i < 16; ++i) {
@@ -523,7 +523,7 @@ export namespace ArrayBuffers {
 		toHex(): string;
 	}
 
-	type IArrayBuffer = (ArrayBuffer | SharedArrayBuffer) & {
+	export type IArrayBuffer = (ArrayBuffer | SharedArrayBuffer) & {
 		resize(newByteLength: number): void;
 		resizable: boolean;
 		maxByteLength: number;

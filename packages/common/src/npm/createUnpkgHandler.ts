@@ -47,7 +47,7 @@ file
 			// pkg/version
 			const segments = file.replace(/^\//, '').split('/');
 			const firstSegment = segments[0];
-			let tarballMatchGroups;
+			let tarballMatchGroups: Record<string, string> | undefined;
 			if (isVersion(firstSegment) || index['dist-tags'][firstSegment]) {
 				file = file.substring(firstSegment.length + 1);
 				ver = index['dist-tags'][firstSegment] || firstSegment;

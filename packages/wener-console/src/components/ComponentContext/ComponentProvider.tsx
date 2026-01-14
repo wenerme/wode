@@ -1,4 +1,4 @@
-import React, { use, useEffect, useState, type ComponentType, type ReactNode } from 'react';
+import { use, useEffect, useState, type ComponentType, type ReactNode } from 'react';
 import { createReactContext } from '@wener/reaction';
 import { getGlobalStates } from '@wener/utils';
 import { createStore } from 'zustand';
@@ -29,7 +29,7 @@ type ComponentStore = ReturnType<typeof createComponentStore>;
 
 function createComponentStore(init: { provides?: ComponentProvide[] } = {}) {
 	return createStore(
-		mutative<ComponentStoreState>((setState, getState, store) => {
+		mutative<ComponentStoreState>((_setState, getState, _store) => {
 			return {
 				provides: [],
 				...init,
@@ -54,7 +54,7 @@ export function useComponentStore(): ComponentStore {
 }
 
 export const ComponentProvider = ({ children, provides }: ComponentProviderProps) => {
-	let parent = useComponentStore();
+	let _parent = useComponentStore();
 	const [store] = useState(() => createComponentStore({ provides }));
 	useEffect(() => {}, provides);
 

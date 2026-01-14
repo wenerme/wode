@@ -2,7 +2,7 @@
  * Info command - Show operation details and schema
  */
 
-import { findOperation, findOperationsByPath, getOperations, loadApiClient } from '../client';
+import { type ApiClient, findOperation, findOperationsByPath, getOperations, loadApiClient } from '../client';
 import { getServerConfig, listServerNames, loadConfig } from '../config';
 import { ErrorCode, formatCliError, operationNotFoundError, serverNotFoundError, specLoadError } from '../errors';
 import { formatJson, formatOperationDetails, formatServerInfo } from '../output';
@@ -44,7 +44,7 @@ export async function infoCommand(options: InfoOptions): Promise<void> {
 
 	const serverWithSource = getServerConfig(config, serverName);
 
-	let client;
+	let client: ApiClient;
 	try {
 		client = await loadApiClient(serverWithSource.config);
 	} catch (error) {

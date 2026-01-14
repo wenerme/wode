@@ -4,14 +4,14 @@ import type { ResolvedEntityContext } from './resolveEntityContext';
 
 interface LoadTypeOptions<E extends StandardBaseEntity> extends ResolvedEntityContext<E> {}
 
-export function loadType<E extends StandardBaseEntity>(opts: LoadTypeOptions<E>) {}
+export function loadType<E extends StandardBaseEntity>(_opts: LoadTypeOptions<E>) {}
 
 interface FindCollectionOptions<E extends StandardBaseEntity> extends ResolvedEntityContext<E> {
 	refresh?: boolean;
 	where?: FilterQuery<E>;
 }
 
-export function findCollection<E extends StandardBaseEntity>(col: Collection<E>, opts: FindCollectionOptions<E>) {
+export function findCollection<E extends StandardBaseEntity>(col: Collection<E>, _opts: FindCollectionOptions<E>) {
 	const where: FilterQuery<E>[] = [];
 	if (!where) {
 		return col.loadItems();

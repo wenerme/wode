@@ -2,7 +2,7 @@
  * Read command - Read an MCP resource
  */
 
-import { connectToServer, readResource, safeClose } from '../client';
+import { type Client, connectToServer, readResource, safeClose } from '../client';
 import { getServerConfig, loadConfig } from '../config';
 import { ErrorCode, formatCliError, invalidTargetError, serverConnectionError } from '../errors';
 import { formatJson } from '../output';
@@ -47,7 +47,7 @@ export async function readCommand(options: ReadOptions): Promise<void> {
 
 	const serverWithSource = getServerConfig(config, serverName);
 
-	let client;
+	let client: Client;
 	let close: () => Promise<void> = async () => {};
 
 	try {

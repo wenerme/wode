@@ -1,7 +1,6 @@
 import { Entity } from '@mikro-orm/core';
 import { Injectable } from '@nestjs/common';
 import { mixin, type Constructor } from '@wener/utils';
-import { GraphQLScalarType } from 'graphql';
 import { GraphQLDateTime } from 'graphql-scalars';
 import {
 	buildSchema,
@@ -27,7 +26,9 @@ import { RelayNode } from './relay';
 import { createBaseEntityResolver, createListPayload, withBaseQuery } from './resource';
 
 test('build', async () => {
-	expect(GraphQLJSONScalar).instanceof(GraphQLScalarType);
+	// Note: instanceof check may fail in monorepos due to multiple graphql package instances
+	// Check by constructor name instead for more robust testing
+	expect(GraphQLJSONScalar.constructor.name).toBe('GraphQLScalarType');
 	// console.log(GraphQLJSONScalar instanceof GraphQLScalarType, GraphQLScalarType);
 	await buildGraphQLSchema({
 		resolvers: [ResourceResolver],
@@ -128,8 +129,6 @@ export function buildGraphQLSchema(opts: Omit<BuildSchemaOptions, 'resolvers'> &
 }
 
 export class ContextGraphAuthChecker implements AuthCheckerInterface<{}> {
-	constructor() {}
-
 	check({ context }: ResolverData<any>, roles: string[]) {
 		if (roles.includes('Public')) {
 			return true;

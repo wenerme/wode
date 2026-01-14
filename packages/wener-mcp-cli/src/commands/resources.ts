@@ -2,7 +2,7 @@
  * Resources command - List and read MCP resources
  */
 
-import { connectToServer, listResources, safeClose } from '../client';
+import { type Client, connectToServer, listResources, safeClose } from '../client';
 import { getServerConfig, listServerNames, loadConfig } from '../config';
 import { ErrorCode, formatCliError, serverConnectionError } from '../errors';
 import { formatJson, formatResourceList } from '../output';
@@ -34,7 +34,7 @@ export async function resourcesCommand(options: ResourcesOptions): Promise<void>
 	}
 
 	const serverWithSource = getServerConfig(config, options.server);
-	let client;
+	let client: Client;
 	let close: () => Promise<void> = async () => {};
 
 	try {

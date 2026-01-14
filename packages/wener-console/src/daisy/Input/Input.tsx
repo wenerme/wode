@@ -1,4 +1,4 @@
-import React, { type ComponentPropsWithRef } from 'react';
+import type { ComponentPropsWithRef } from 'react';
 import classNames from 'clsx';
 import type { DaisyModifierProps } from '../utils/daisy';
 import { daisy, omitDaisyModifiers } from '../utils/daisy';
