@@ -60,10 +60,10 @@ export function buildRedactorFormSchema(
 	};
 }
 
-function buildReversibleRedactText({
+function _buildReversibleRedactText({
 	id,
-	type,
-	key,
+	type: _type,
+	key: _key,
 	timestamp,
 }: {
 	id?: string | number;

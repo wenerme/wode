@@ -1,4 +1,4 @@
-import React, { type FC } from 'react';
+import type { FC } from 'react';
 import styled from '@emotion/styled';
 
 // loader from https://codepen.io/AlexWarnes/pen/jXYYKL

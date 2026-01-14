@@ -16,8 +16,11 @@ export class AliCloudClient {
 	readonly options: AliCloudClientOptions;
 
 	static {
-		this.registry({ product: 'Dytnsapi', version: '2020-02-17' }, { endpoint: 'dytnsapi.aliyuncs.com' });
-		this.registry({ product: 'ocr-api', version: '2021-07-07' }, { endpoint: 'ocr-api.cn-hangzhou.aliyuncs.com' });
+		AliCloudClient.registry({ product: 'Dytnsapi', version: '2020-02-17' }, { endpoint: 'dytnsapi.aliyuncs.com' });
+		AliCloudClient.registry(
+			{ product: 'ocr-api', version: '2021-07-07' },
+			{ endpoint: 'ocr-api.cn-hangzhou.aliyuncs.com' },
+		);
 	}
 
 	constructor(o: Partial<AliCloudClientOptions>) {
@@ -25,11 +28,16 @@ export class AliCloudClient {
 	}
 
 	static registry({ product, version }: { product: string; version: string }, val: { endpoint: string }) {
-		this.APIS[`${product}/${version}`] = { ...this.APIS[`${product}/${version}`], ...val, product, version };
+		AliCloudClient.APIS[`${product}/${version}`] = {
+			...AliCloudClient.APIS[`${product}/${version}`],
+			...val,
+			product,
+			version,
+		};
 	}
 
 	static getService(svc: { product: string; version: string }) {
-		return this.APIS[`${svc.product}/${svc.version}`];
+		return AliCloudClient.APIS[`${svc.product}/${svc.version}`];
 	}
 
 	async request<T>(options: AliCloudRequestOptions<T>) {
@@ -63,7 +71,7 @@ export class AliCloudClient {
 			getPrototypeOf(target: ProxyClientTarget) {
 				return target.constructor?.prototype || null;
 			},
-			has(target, key): boolean {
+			has(_target, key): boolean {
 				switch (key) {
 					case 'toString':
 					case 'toJSON':
@@ -160,7 +168,7 @@ interface ProxyClientTarget {
 }
 
 // https://www.unpkg.com/browse/@alicloud/endpoint-util@0.0.1/src/client.ts
-function getEndpoint({
+function _getEndpoint({
 	product,
 	regionId,
 	endpointType = regionId?.length ? 'regional' : undefined,
@@ -173,13 +181,13 @@ function getEndpoint({
 	network?: string;
 	suffix?: string;
 }): string {
-	let result;
-	network = network && network.length > 0 && network != 'public' ? '-' + network : '';
+	let result: string;
+	network = network && network.length > 0 && network !== 'public' ? `-${network}` : '';
 	if (suffix.length > 0) {
-		suffix = '-' + suffix;
+		suffix = `-${suffix}`;
 	}
 
-	if (endpointType == 'regional') {
+	if (endpointType === 'regional') {
 		if (!regionId?.length) {
 			throw new Error('RegionId is empty, please set a valid RegionId');
 		}

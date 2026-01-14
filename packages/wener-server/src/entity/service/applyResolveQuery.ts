@@ -29,7 +29,7 @@ export function applyResolveQuery<T extends QueryBuilder<any>>({
 
 	// Errors.BadRequest.check(!rest.id && !rest.uid && !rest.eid && !rest.sid, 'Invalid resolve query');
 	// trim empty
-	builder.andWhere(Object.fromEntries(Object.entries({ id, uid, eid, cid, rid }).filter(([k, v]) => v)));
+	builder.andWhere(Object.fromEntries(Object.entries({ id, uid, eid, cid, rid }).filter(([_k, v]) => v)));
 
 	return true;
 }
@@ -41,7 +41,7 @@ export function applySelection<T extends QueryBuilder<any>>({
 	builder: T;
 	query: { deleted?: boolean; select?: string[]; include?: string[] };
 }) {
-	const { select, include, deleted } = query;
+	const { select: _select, include: _include, deleted } = query;
 	if (deleted) {
 		builder.andWhere({ deletedAt: { $ne: null } });
 	} else {

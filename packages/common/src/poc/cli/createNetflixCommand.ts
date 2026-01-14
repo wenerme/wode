@@ -10,7 +10,7 @@ export function createNetflixCommand() {
 		.option('-a, --check-all', 'check all proxies')
 		.addOption(new Option('-u, --username <username>', 'username for proxy').env('PROXY_USERNAME'))
 		.addOption(new Option('-p, --password <password>', 'password for proxy').env('PROXY_PASSWORD'))
-		.action(async (proxy, options, command) => {
+		.action(async (proxy, options, _command) => {
 			await run(() =>
 				runNetflixCheck({ proxy, username: options.username, password: options.password, checkAll: options.checkAll }),
 			);

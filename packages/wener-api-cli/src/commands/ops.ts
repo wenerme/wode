@@ -4,7 +4,7 @@
 
 import { getOperations, loadApiClient } from '../client';
 import { getServerConfig, listServerNames, loadConfig } from '../config';
-import { ErrorCode, formatCliError, serverNotFoundError, specLoadError } from '../errors';
+import { ErrorCode, formatCliError, serverNotFoundError } from '../errors';
 import { formatJson, formatOperationsList } from '../output';
 
 export interface OpsOptions {
@@ -56,14 +56,13 @@ export async function opsCommand(options: OpsOptions): Promise<void> {
 
 			// Filter by tag
 			if (options.tag) {
-				operations = operations.filter((op) =>
-					op.tags.some((t) => t.toLowerCase().includes(options.tag!.toLowerCase())),
-				);
+				const tagFilter = options.tag.toLowerCase();
+				operations = operations.filter((op) => op.tags.some((t) => t.toLowerCase().includes(tagFilter)));
 			}
 
 			// Filter by method
 			if (options.method) {
-				operations = operations.filter((op) => op.method.toUpperCase() === options.method!.toUpperCase());
+				operations = operations.filter((op) => op.method.toUpperCase() === options.method?.toUpperCase());
 			}
 
 			results.push({

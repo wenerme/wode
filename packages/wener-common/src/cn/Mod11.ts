@@ -12,7 +12,7 @@ export class Mod11Checksum {
 		const { weights } = this;
 		let sum = 0;
 		for (let i = 0; i < s.length; i++) {
-			sum += parseInt(s[i]) * weights[i];
+			sum += parseInt(s[i], 10) * weights[i];
 		}
 		const num = (12 - (sum % 11)) % 11;
 		if (num < 10) {

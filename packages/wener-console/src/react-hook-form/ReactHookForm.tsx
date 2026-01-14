@@ -1,4 +1,4 @@
-import React, {
+import {
 	createContext,
 	useContext,
 	useId,
@@ -40,7 +40,7 @@ type ContextState = {
 
 export namespace ReactHookForm {
 	export let handleInvalid = _handleInvalid;
-	export const Root: FC<ReactHookFormProviderProps> = (props) => {
+	export const Root: FC<ReactHookFormProviderProps> = (_props) => {
 		return null;
 	};
 

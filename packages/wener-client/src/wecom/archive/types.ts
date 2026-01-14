@@ -1,6 +1,6 @@
 export type SwitchMessage = { msgid: string; action: 'switch'; user: string; time: number };
 
-interface BaseMessage {
+interface _BaseMessage {
 	msgid: string;
 	action: string;
 	msgtype?: string;
@@ -210,7 +210,7 @@ export interface TodoMessage extends SendMessage {
 	todo: { title: string; content: string };
 }
 
-type ChatRecordMessageItemType =
+type _ChatRecordMessageItemType =
 	| 'ChatRecordText'
 	| 'ChatRecordFile'
 	| 'ChatRecordImage'
@@ -431,7 +431,7 @@ type ChatRecordMessageTypeContentMapping = Pick<
 	'text' | 'file' | 'image' | 'video' | 'link' | 'location' | 'mixed' | 'chatrecord'
 >;
 
-const ChatRecordMessageTypeToMessageType = {
+const _ChatRecordMessageTypeToMessageType = {
 	ChatRecordText: 'text',
 	ChatRecordFile: 'file',
 	ChatRecordImage: 'image',

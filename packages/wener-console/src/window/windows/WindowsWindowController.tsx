@@ -1,4 +1,4 @@
-import React, { type ComponentPropsWithRef, type FC } from 'react';
+import type { ComponentPropsWithRef, FC } from 'react';
 import { PiMinusThin, PiSquareThin, PiXThin } from 'react-icons/pi';
 import styled from '@emotion/styled';
 import { clsx } from 'clsx';

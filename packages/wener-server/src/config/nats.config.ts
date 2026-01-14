@@ -68,7 +68,7 @@ export function getNatsOptions() {
 		name,
 		password: pass,
 		username: user,
-		host,
+		host: _host,
 		servers,
 		tls,
 		maxReconnectAttempts = -1, // default 10

@@ -1,5 +1,4 @@
 import type { ElementType } from 'react';
-import React from 'react';
 import { clsx } from 'clsx';
 import type { AsProps } from '../props';
 

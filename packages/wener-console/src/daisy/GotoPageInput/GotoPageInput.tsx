@@ -1,4 +1,4 @@
-import React, { useState, type FC } from 'react';
+import { useState, type FC } from 'react';
 import { Button } from '../Button/Button';
 
 export const GotoPageInput: FC<{
@@ -7,7 +7,7 @@ export const GotoPageInput: FC<{
 	disabled?: boolean;
 }> = ({ count = 0, onGoto }) => {
 	const [val, setVal] = useState('');
-	const n = parseInt(val);
+	const n = parseInt(val, 10);
 	const disabled = !Number.isFinite(n) || n < 1 || n > count;
 
 	const goto = () => {

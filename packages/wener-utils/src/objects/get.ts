@@ -5,7 +5,7 @@ import { parseObjectPath, type ObjectKey } from './parseObjectPath';
  *
  * {@link https://github.com/developit/dlv dlv}
  */
-export function get<O extends object, P extends ObjectKey, OrElse extends unknown>(
+export function get<O extends object, P extends ObjectKey, OrElse>(
 	obj: O,
 	key: P | P[],
 	def?: OrElse,

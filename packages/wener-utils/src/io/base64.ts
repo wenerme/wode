@@ -23,9 +23,9 @@ export function encodeArrayBufferToBase64(arraybuffer: ArrayBuffer | ArrayLike<n
 	}
 
 	if (len % 3 === 2) {
-		base64 = base64.substring(0, base64.length - 1) + '=';
+		base64 = `${base64.substring(0, base64.length - 1)}=`;
 	} else if (len % 3 === 1) {
-		base64 = base64.substring(0, base64.length - 2) + '==';
+		base64 = `${base64.substring(0, base64.length - 2)}==`;
 	}
 
 	return base64;
@@ -34,12 +34,12 @@ export function encodeArrayBufferToBase64(arraybuffer: ArrayBuffer | ArrayLike<n
 export function decodeBase64ToUint8Array(base64: string): Bytes {
 	const len = base64.length;
 	let bufferLength = base64.length * 0.75;
-	let i;
+	let i: number;
 	let p = 0;
-	let encoded1;
-	let encoded2;
-	let encoded3;
-	let encoded4;
+	let encoded1: number;
+	let encoded2: number;
+	let encoded3: number;
+	let encoded4: number;
 
 	if (base64[base64.length - 1] === '=') {
 		bufferLength--;

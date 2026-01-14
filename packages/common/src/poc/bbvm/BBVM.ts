@@ -3,7 +3,7 @@ import { BaseRuntime } from './BaseRuntime';
 import { float32bits, float32frombits } from './lib';
 import { readInstruction } from './readInstruction';
 import { getOpcodeLength } from './rt';
-import { AddressMode, Float32, Instruction, Opcode, Operand, Register, VM } from './types';
+import { AddressMode, type Float32, type Instruction, Opcode, type Operand, type Register, type VM } from './types';
 
 enum VmState {
 	New,
@@ -20,10 +20,10 @@ enum SyscallMode {
 
 interface VmEventTypes {
 	load: ArrayBuffer;
-	reset: void;
-	start: void;
+	reset: undefined;
+	start: undefined;
 	next: Instruction;
-	exit: void;
+	exit: undefined;
 }
 
 export class BasicVm extends EventEmitter<VmEventTypes> implements VM {

@@ -13,7 +13,7 @@ export function getFieldErrors(err: FieldErrors): Array<{
 			if (val && typeof val === 'object' && 'type' in val && typeof val.type === 'string') {
 				out.push({ path: pre + key, error: val as FieldError });
 			} else {
-				collect(val, pre + key + '.');
+				collect(val, `${pre + key}.`);
 			}
 		}
 	};

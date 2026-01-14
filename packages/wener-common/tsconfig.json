@@ -9,9 +9,13 @@
 		"stripInternal": true,
 		"jsx": "react-jsx",
 		"outDir": "lib",
-		"baseUrl": ".",
 		"rootDir": "./src"
 	},
-	"exclude": ["node_modules"],
+	"exclude": [
+		"node_modules",
+		"src/fs/server/createDatabaseFileSystem.ts",
+		"src/fs/server/dbfs.test.ts",
+		"src/fs/server/loadTestDatabase.ts"
+	],
 	"include": ["src"]
 }

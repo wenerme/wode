@@ -16,6 +16,7 @@ export async function polyfillJsDom() {
 		constructor(opts: ResourceLoaderConstructorOptions & ConstructorOptions = {}) {
 			const { proxy, strictSSL, userAgent, ...jsdomOpts } = opts;
 			const resources = new ResourceLoader({ proxy, strictSSL, userAgent });
+			// biome-ignore lint/correctness/noConstructorReturn: intentional proxy pattern
 			return new JSDOM('', Object.assign(jsdomOpts, { resources })).window;
 		}
 	}

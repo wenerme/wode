@@ -1,4 +1,4 @@
-import { CallToolResultSchema, type CallToolResult } from '@modelcontextprotocol/sdk/types.js';
+import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 import { oc, type } from '@orpc/contract';
 import { McpMetaKey } from 'common/mcp';
 import { z } from 'zod/v4';

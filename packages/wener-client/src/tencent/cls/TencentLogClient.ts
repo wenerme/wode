@@ -5,6 +5,7 @@ import { searchLogStream, type SearchLogStreamOptions } from './searchLogStream'
 import type {
 	Column,
 	Filter,
+	LogContextInfo,
 	LogGroup,
 	LogInfo,
 	LogItems,
@@ -208,6 +209,41 @@ export type DeleteTopicResponse = CommonListResponse;
 
 export type DeleteLogsetResponse = CommonListResponse;
 
+export type DescribeLogContextRequest = {
+	/** 日志主题 ID */
+	TopicId: string;
+	/**
+	 * 日志时间，格式：YYYY-mm-dd HH:MM:SS.FFF
+	 * 时区为 UTC+8
+	 */
+	BTime: string;
+	/** 日志包序号 */
+	PkgId: string;
+	/** 日志包内的日志序号 */
+	PkgLogId: number;
+	/** 前 N 条日志数量，默认值 10，最大值 100 */
+	PrevLogs?: number;
+	/** 后 N 条日志数量，默认值 10，最大值 100 */
+	NextLogs?: number;
+	/** 检索条件过滤，最大长度 12KB，仅支持检索条件，不支持 SQL 语句 */
+	Query?: string;
+	/** 起始时间，毫秒时间戳 */
+	From?: number;
+	/** 结束时间，毫秒时间戳 */
+	To?: number;
+};
+
+export type DescribeLogContextResponse = {
+	/** 日志上下文信息集合 */
+	LogContextInfos: LogContextInfo[];
+	/** 上文日志是否全部返回，true 为全部返回 */
+	PrevOver: boolean;
+	/** 下文日志是否全部返回，true 为全部返回 */
+	NextOver: boolean;
+	/** 唯一请求 ID */
+	RequestId: string;
+};
+
 export type TencentLogClientInit = {
 	fetch?: FetchLike;
 	clientId: string;
@@ -378,5 +414,9 @@ export class TencentLogClient {
 
 	async deleteLogset(request: DeleteLogsetRequest): Promise<DeleteLogsetResponse> {
 		return this.request('DeleteLogset', request);
+	}
+
+	async describeLogContext(request: DescribeLogContextRequest): Promise<DescribeLogContextResponse> {
+		return this.request('DescribeLogContext', request);
 	}
 }

@@ -1,12 +1,12 @@
-import { afterEach, beforeAll, beforeEach, describe, expect, it } from 'vitest';
+import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { ApolloConfigClient } from './ApolloConfigClient';
-import type { ApolloConfigResponse, NotificationItem } from './types';
+import type { NotificationItem } from './types';
 
 // 只有在配置了环境变量时才运行测试
 const runTests = !!(
-	process.env.APOLLOCONFIG_APP_ID
-	&& process.env.APOLLOCONFIG_APP_SECRET
-	&& process.env.APOLLOCONFIG_URL
+	process.env.APOLLOCONFIG_APP_ID &&
+	process.env.APOLLOCONFIG_APP_SECRET &&
+	process.env.APOLLOCONFIG_URL
 );
 
 describe.skipIf(!runTests)('ApolloConfigClient', () => {
@@ -66,7 +66,7 @@ describe.skipIf(!runTests)('ApolloConfigClient', () => {
 
 			// Second request with same releaseKey should return null (304)
 			const secondConfig = await client.getConfig({
-				releaseKey: firstConfig!.releaseKey,
+				releaseKey: firstConfig?.releaseKey,
 			});
 			expect(secondConfig).toBeNull();
 		});
@@ -343,7 +343,7 @@ describe.skipIf(!runTests)('ApolloConfigClient', () => {
 			const generator = errorClient.watch({
 				namespaces: ['application'],
 				signal: controller.signal,
-				onError: (error) => {
+				onError: (_error) => {
 					errorHandled = true;
 					controller.abort();
 					return false; // Stop watching
@@ -441,11 +441,11 @@ if (!runTests) {
 	describe('ApolloConfigClient', () => {
 		it('should skip tests when environment variables are not set', () => {
 			console.warn(
-				'ApolloConfigClient tests skipped. Set the following environment variables to run tests:\n'
-					+ '  - APOLLOCONFIG_APP_ID\n'
-					+ '  - APOLLOCONFIG_APP_SECRET\n'
-					+ '  - APOLLOCONFIG_URL\n'
-					+ '\nYou can create a .env.local file in packages/wener-client/ directory with these variables.',
+				'ApolloConfigClient tests skipped. Set the following environment variables to run tests:\n' +
+					'  - APOLLOCONFIG_APP_ID\n' +
+					'  - APOLLOCONFIG_APP_SECRET\n' +
+					'  - APOLLOCONFIG_URL\n' +
+					'\nYou can create a .env.local file in packages/wener-client/ directory with these variables.',
 			);
 			expect(true).toBe(true);
 		});

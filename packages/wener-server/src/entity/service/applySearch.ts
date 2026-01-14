@@ -41,12 +41,12 @@ export function resolveEntitySearch({
 				or.push({ code: { $eq: search } });
 			}
 		},
-		onUSCC = (uscc, { and, or }) => {
+		onUSCC = (uscc, { and, or: _or }) => {
 			if (hasFeature(EntityFeature.HasUSCC)) {
 				and.push({ uscc: { $eq: uscc } });
 			}
 		},
-		onSearch = (search, { and, or }) => {
+		onSearch = (search, { and: _and, or }) => {
 			if (hasFeature(EntityFeature.HasNotes)) {
 				or.push({ notes: { $ilike: `%${search}%` } });
 			}

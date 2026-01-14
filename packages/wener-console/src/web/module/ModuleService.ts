@@ -6,7 +6,7 @@ import type { DynamicModule } from './types';
 
 class DynamicModuleContext extends DynamicStore {
 	constructor(
-		private readonly module: DynamicModule,
+		readonly _module: DynamicModule,
 		store: StoreApi<any>,
 	) {
 		super(store);

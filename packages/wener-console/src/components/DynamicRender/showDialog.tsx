@@ -1,4 +1,4 @@
-import React, { useEffect, useState, type ComponentPropsWithRef, type ReactNode } from 'react';
+import { useEffect, useState, type ComponentPropsWithRef, type ReactNode } from 'react';
 import { Promises } from '@wener/utils';
 import { DynamicRender } from './';
 import type { DynamicRenderer } from './DynamicRender';
@@ -51,7 +51,6 @@ export function showPrompt({
 					</button>
 				</form>
 				<button
-					autoFocus
 					type={'button'}
 					className='btn btn-primary btn-sm'
 					onClick={() => {
@@ -84,7 +83,6 @@ export function showConfirm(props: ShowDialogOptions): Promise<boolean> {
 					</button>
 				</form>
 				<button
-					autoFocus
 					type={'button'}
 					className='btn btn-primary btn-sm'
 					onClick={() => {

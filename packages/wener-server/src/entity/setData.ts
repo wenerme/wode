@@ -6,7 +6,7 @@ export interface SetDataOptions {
 	partial?: boolean;
 }
 
-const overwriteMerge = (destinationArray: any, sourceArray: any, options: any) => sourceArray;
+const overwriteMerge = (_destinationArray: any, sourceArray: any, _options: any) => sourceArray;
 
 export function setData(data: any, { data: next, schema, partial }: SetDataOptions) {
 	if (!next) {

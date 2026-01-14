@@ -21,7 +21,7 @@ export const ChatParameterSchema = z.object({
 	maxTokens: z.coerce.number().optional(),
 	presencePenalty: z.coerce.number().optional(),
 	frequencyPenalty: z.coerce.number().optional(),
-	logitBias: z.record(z.any()).optional(),
+	logitBias: z.record(z.string(), z.any()).optional(),
 	user: z.string().optional(),
 });
 export type ChatParameter = z.infer<typeof ChatParameterSchema>;

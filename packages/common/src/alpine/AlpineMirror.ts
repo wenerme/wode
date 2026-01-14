@@ -14,7 +14,7 @@ export function createAlpineMirror(
 	} = {},
 ): AlpineMirror {
 	const coordinate = resolveRepositoryCoordinate({ mirrorUrl });
-	const request = async (path: string, {}: {} = {}) => {
+	const request = async (path: string, _options: object = {}) => {
 		let u = path;
 		if (!/^https?:\//.test(u)) {
 			u = joinUrl(coordinate.mirrorUrl, path);
@@ -76,7 +76,7 @@ export function createAlpineRepo({
 	const coordinate = resolveRepositoryCoordinate(_coord);
 	mirror ||= createAlpineMirror(coordinate.mirrorUrl);
 
-	const request = async (path: string, {}: {} = {}) => {
+	const request = async (path: string, _options: object = {}) => {
 		let u = path;
 		if (!/^https?:\//.test(u)) {
 			u = joinUrl(coordinate.repoUrl, path);

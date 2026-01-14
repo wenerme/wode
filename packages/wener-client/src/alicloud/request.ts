@@ -25,7 +25,7 @@ export interface AliCloudRequestOptions<T> {
 		req: RequestInit;
 		payload: AliCloudResponse<T>;
 		data: T;
-	}) => MaybePromise<T | void>;
+	}) => MaybePromise<T | undefined>;
 	onResponse?: (ctx: {
 		res: Response;
 		req: RequestInit;
@@ -55,17 +55,15 @@ export async function request<T>(options: AliCloudRequestOptions<T>) {
 		onSuccess,
 	} = options;
 	let u: URL;
-	{
-		if (!url) {
-			if (!endpoint) {
-				throw new Error('Missing endpoint');
-			}
-
-			url = `https://${endpoint}`;
+	if (!url) {
+		if (!endpoint) {
+			throw new Error('Missing endpoint');
 		}
 
-		u = new URL(url);
+		url = `https://${endpoint}`;
 	}
+
+	u = new URL(url);
 
 	if (params) {
 		for (const [k, v] of Object.entries(params)) {
@@ -132,8 +130,8 @@ export async function request<T>(options: AliCloudRequestOptions<T>) {
 }
 
 async function requirePayload(res: Response) {
-	let body;
-	let last;
+	let body: unknown;
+	let last: unknown;
 	try {
 		const type = res.headers.get('content-type');
 		if (type?.includes('application/json')) {
@@ -177,7 +175,7 @@ export interface AliCloudResponse<T = any> {
 	Data: T;
 }
 
-interface KnownHeaders {
+interface _KnownHeaders {
 	'x-acs-action'?: string;
 	'x-acs-version'?: string;
 	'x-acs-signature-nonce'?: string;
@@ -189,7 +187,7 @@ interface KnownHeaders {
 }
 
 export function stringOfMultipartFormData(data: FormData): { body: string; headers: Record<string, string> } {
-	const boundary = '----FormBoundary' + Math.random().toString(16);
+	const boundary = `----FormBoundary${Math.random().toString(16)}`;
 	const headers: Record<string, string> = { 'content-type': `multipart/form-data; boundary=${boundary}` };
 	let body = '';
 	for (const [k, v] of data.entries()) {

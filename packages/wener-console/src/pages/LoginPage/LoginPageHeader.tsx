@@ -1,4 +1,4 @@
-import React, { type ComponentPropsWithoutRef, type FC, type ReactNode } from 'react';
+import type { ComponentPropsWithoutRef, FC, ReactNode } from 'react';
 
 export interface LoginPageHeaderProps extends ComponentPropsWithoutRef<'div'> {
 	logo?: ReactNode;

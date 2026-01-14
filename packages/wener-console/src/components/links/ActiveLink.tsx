@@ -1,4 +1,4 @@
-import React, { Children, cloneElement, useEffect, useState, type ReactElement } from 'react';
+import { Children, cloneElement, useEffect, useState, type ReactElement } from 'react';
 import type { LinkProps } from 'next/link';
 import Link from 'next/link';
 import { useRouter } from 'next/router';

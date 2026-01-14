@@ -115,3 +115,24 @@ export type SearchLogTopics = {
 	Errors: SearchLogErrors[];
 	Infos: SearchLogInfos[];
 };
+
+export type LogContextInfo = {
+	/** Log source IP */
+	Source: string;
+	/** Log filename */
+	Filename: string;
+	/** Log content */
+	Content: string;
+	/** Log package sequence number */
+	PkgId: string;
+	/** Log sequence number within package */
+	PkgLogId: number;
+	/** Log timestamp (milliseconds) */
+	BTime: number;
+	/** Host name of log source */
+	HostName?: string;
+	/** Raw log (only present when index creation exception occurred) */
+	RawLog?: string;
+	/** Index creation exception reason */
+	IndexStatus?: string;
+};

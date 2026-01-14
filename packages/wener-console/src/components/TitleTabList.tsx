@@ -1,4 +1,4 @@
-import React, { type ComponentPropsWithRef, type ReactNode } from 'react';
+import type { ComponentPropsWithRef, ReactNode } from 'react';
 import { NavLink } from 'react-router';
 import { flexRender, useControllable, type FlexRenderable } from '@wener/reaction';
 import { clsx } from 'clsx';

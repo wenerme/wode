@@ -35,8 +35,8 @@ export const Zoom: FC<ZoomProps> = ({ active, onActiveChange, children, ...props
 	);
 };
 
-function useInjectScript(fn: () => Promise<{ default: any }>) {
-	const [content, setContent] = React.useState<string | null>(null);
+function _useInjectScript(fn: () => Promise<{ default: any }>) {
+	const [_content, setContent] = React.useState<string | null>(null);
 	useEffect(() => {
 		fn().then((v) => {
 			setContent(v.default);

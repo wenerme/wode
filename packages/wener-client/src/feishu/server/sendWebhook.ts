@@ -157,11 +157,7 @@ export async function sendWebhook({
 		},
 	});
 	let out: BotHookResponse;
-	try {
-		out = await res.json();
-	} catch (e) {
-		throw e;
-	}
+	out = await res.json();
 	if (out.code !== 0) {
 		throw Object.assign(new Error(`FeishuWebhook(${out.code}) ${out.msg}`), { payload: out });
 	}

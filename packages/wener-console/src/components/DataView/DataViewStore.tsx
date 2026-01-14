@@ -149,7 +149,7 @@ export function createDataViewStore<T extends Identifiable = any>(
 	} = {},
 ) {
 	return create(
-		mutative<DataViewStoreState<T>>((setState, getState, store) => {
+		mutative<DataViewStoreState<T>>((setState, getState, _store) => {
 			const events: DataViewEmitter = createEmitter('DataViewEmitter');
 
 			// Default state

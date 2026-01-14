@@ -11,11 +11,11 @@ export class Currents {
 	static readonly #storage = new AsyncLocalStorage<Map<any, any>>();
 
 	static get storage(): AsyncLocalStorage<Map<any, any>> {
-		return this.#storage;
+		return Currents.#storage;
 	}
 
 	static get store(): Map<any, any> | undefined {
-		return this.#storage.getStore();
+		return Currents.#storage.getStore();
 	}
 
 	static clear(key: Type | string | symbol | any) {
@@ -47,7 +47,7 @@ export class Currents {
 	static getStore(require: boolean): Map<any, any> | undefined;
 
 	static getStore(require = true) {
-		const store = this.store;
+		const store = Currents.store;
 		if (!store && require) {
 			throw Errors.InternalServerError.asError('Currents not ready');
 			// store = new Map();
@@ -73,7 +73,7 @@ export class Currents {
 			}
 		}
 		store ||= new Map();
-		return this.#storage.run(store, f);
+		return Currents.#storage.run(store, f);
 	}
 
 	static create<T = unknown, K = unknown>(key: K): ContextToken<T, K> {
@@ -121,11 +121,12 @@ class Token<T, K> implements ContextToken<T, K> {
 		return Currents.get(this.key, def);
 	};
 
-	ifPresent = <V>(f: (v: T) => V) => {
+	ifPresent = <V>(f: (v: T) => V): V | undefined => {
 		const found = this.get();
 		if (found !== undefined) {
 			return f(found);
 		}
+		return undefined;
 	};
 
 	require = (): T => {

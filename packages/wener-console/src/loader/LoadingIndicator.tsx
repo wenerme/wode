@@ -1,4 +1,4 @@
-import React, { type CSSProperties, type FC } from 'react';
+import type { CSSProperties, FC } from 'react';
 import clsx from 'clsx';
 import { DotsFadeLoader } from './DotsFadeLoader/DotsFadeLoader';
 

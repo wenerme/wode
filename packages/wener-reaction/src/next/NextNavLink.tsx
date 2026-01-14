@@ -1,6 +1,6 @@
 'use client';
 
-import React, { forwardRef, type ComponentProps, type FC, type ReactNode } from 'react';
+import { forwardRef, type ComponentProps, type FC, type ReactNode } from 'react';
 import { maybeFunction, type MaybeFunction } from '@wener/utils';
 import { clsx } from 'clsx';
 import Link from 'next/link';

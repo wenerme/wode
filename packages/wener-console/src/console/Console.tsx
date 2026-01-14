@@ -8,18 +8,16 @@ import { ErrorSuspenseBoundary, LoadingIndicator } from './index';
 export namespace Console {
 	export const App = ({ children, content }: { children?: ReactNode; content?: ReactNode }) => {
 		return (
-			<>
-				<ConsoleAuth.Root>
-					<Root>
-						<ConsoleAuth.Ready>
-							{children}
-							<ConsoleAuth.Block>
-								<ErrorSuspenseBoundary>{content}</ErrorSuspenseBoundary>
-							</ConsoleAuth.Block>
-						</ConsoleAuth.Ready>
-					</Root>
-				</ConsoleAuth.Root>
-			</>
+			<ConsoleAuth.Root>
+				<Root>
+					<ConsoleAuth.Ready>
+						{children}
+						<ConsoleAuth.Block>
+							<ErrorSuspenseBoundary>{content}</ErrorSuspenseBoundary>
+						</ConsoleAuth.Block>
+					</ConsoleAuth.Ready>
+				</Root>
+			</ConsoleAuth.Root>
 		);
 	};
 

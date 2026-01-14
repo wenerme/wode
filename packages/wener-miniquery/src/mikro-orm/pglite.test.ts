@@ -9,10 +9,11 @@ import {
 	Entity,
 	MikroORM,
 	OneToOne,
-	Opt,
+	type Opt,
 	PrimaryKey,
 	Property,
 	ReflectMetadataProvider,
+	SqlEntityManager,
 	types,
 } from '@mikro-orm/postgresql';
 import { afterAll, beforeAll, describe, expect, test } from 'vitest';
@@ -70,7 +71,7 @@ class UserProfileEntity extends BaseEntity {
 
 let pglite: PGlite;
 let socketServer: PGLiteSocketServer;
-let orm: MikroORM;
+let orm: Awaited<ReturnType<typeof MikroORM.init>>;
 // pg library expects a directory and will append .s.PGSQL.5432
 // So we create a directory and put the socket file in it
 const SOCKET_DIR = join(tmpdir(), `pglite-test-${Date.now()}`);
@@ -350,7 +351,7 @@ describe('PGlite MikroORM Miniquery Tests', () => {
 		// Run all test cases
 		for (const [query, assertion] of testCases) {
 			const mikroQuery = toMikroOrmQuery(query, { em, Entity: UserEntity });
-			const results = await repo.qb().where(mikroQuery).getResult();
+			const results = await (em as SqlEntityManager).createQueryBuilder(UserEntity).where(mikroQuery).getResult();
 			assertion(results);
 		}
 
@@ -453,7 +454,10 @@ describe('PGlite MikroORM Miniquery Tests', () => {
 		// Run all test cases
 		for (const [query, assertion] of testCases) {
 			const mikroQuery = toMikroOrmQuery(query, { em, Entity: UserProfileEntity });
-			const results = await profileRepo.qb().where(mikroQuery).getResult();
+			const results = await (em as SqlEntityManager)
+				.createQueryBuilder(UserProfileEntity)
+				.where(mikroQuery)
+				.getResult();
 			assertion(results);
 		}
 

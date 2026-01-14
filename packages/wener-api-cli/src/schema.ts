@@ -11,7 +11,7 @@ import { z } from 'zod';
 export const ServerConfigSchema = z.object({
 	url: z.string(), // OpenAPI spec URL (JSON or YAML)
 	baseUrl: z.string().nullish(), // API base URL (auto-detected from spec if not provided)
-	headers: z.record(z.string()).nullish(), // Default headers for all requests
+	headers: z.record(z.string(), z.string()).nullish(), // Default headers for all requests
 	type: z.literal('openapi').default('openapi'),
 	include: z.array(z.string()).nullish(), // Glob patterns to include operations (matches operationId, path, tags)
 	exclude: z.array(z.string()).nullish(), // Glob patterns to exclude operations
@@ -22,8 +22,8 @@ export type ServerConfig = z.infer<typeof ServerConfigSchema>;
  * API-CLI config format
  */
 export const ApiCliConfigSchema = z.object({
-	env: z.record(z.string()).nullish(), // Environment variables to set before substitution
-	servers: z.record(ServerConfigSchema).nullish(),
+	env: z.record(z.string(), z.string()).nullish(), // Environment variables to set before substitution
+	servers: z.record(z.string(), ServerConfigSchema).nullish(),
 });
 export type ApiCliConfig = z.infer<typeof ApiCliConfigSchema>;
 

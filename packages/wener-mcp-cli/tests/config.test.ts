@@ -6,7 +6,7 @@ import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, test } from 'vitest';
-import { discoverConfigs, getServerConfig, listServerNames, loadConfig, loadConfigFromPath } from '../src/config';
+import { discoverConfigs, getServerConfig, listServerNames, loadConfigFromPath } from '../src/config';
 
 describe('config', () => {
 	let tempDir: string;

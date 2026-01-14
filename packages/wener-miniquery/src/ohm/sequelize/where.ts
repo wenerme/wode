@@ -49,7 +49,7 @@ export function toSequelizeWhere(
 
 const DefaultFunctions: WhereContext['functions'] = { date: { arity: 1 }, length: { arity: 1 } };
 
-function checkFunctions(name: string, args: any[] = [], o: WhereContext) {
+function checkFunctions(name: string, _args: any[] = [], o: WhereContext) {
 	if (!o.functions[name]) {
 		throw new Error(`Invalid function: ${name}`);
 	}

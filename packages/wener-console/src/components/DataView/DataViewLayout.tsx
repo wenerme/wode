@@ -6,8 +6,7 @@ import {
 	type CSSProperties,
 	type ReactNode,
 } from 'react';
-import type { PanelOnCollapse, PanelOnExpand } from 'react-resizable-panels';
-import { Panel, PanelGroup } from 'react-resizable-panels';
+import { Group, Panel, type PanelProps } from 'react-resizable-panels';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { cn } from '@wener/console';
 import { HeaderContentFooterLayout } from '@wener/console/components';
@@ -24,8 +23,6 @@ type PanelConfig = {
 	id?: string;
 	maxSize?: number | undefined;
 	minSize?: number | undefined;
-	onCollapse?: PanelOnCollapse;
-	onExpand?: PanelOnExpand;
 };
 
 const _rightConfig: PanelConfig = {
@@ -82,15 +79,15 @@ export namespace DataViewLayout {
 
 		return (
 			<HeaderContentFooterLayout header={header} {...props}>
-				<PanelGroup direction='horizontal'>
+				<Group orientation='horizontal'>
 					{hasLeftPanel && (left ?? <LeftPanel>{leftPanel}</LeftPanel>)}
 
-					<Panel id={'content'} order={2}>
+					<Panel id={'content'}>
 						<HeaderContentFooterLayout footer={footer}>{children}</HeaderContentFooterLayout>
 					</Panel>
 
 					{hasRightPanel && (right ?? <RightPanel>{rightPanel}</RightPanel>)}
-				</PanelGroup>
+				</Group>
 			</HeaderContentFooterLayout>
 		);
 	};
@@ -98,18 +95,18 @@ export namespace DataViewLayout {
 	export const LeftPanel = ({ children }: { children?: ReactNode }) => {
 		return (
 			<>
-				<Panel id='left' order={1} className={'relative'} {..._leftConfig}>
+				<Panel id='left' className={'relative'} {..._leftConfig}>
 					{children}
 				</Panel>
 				<PanelResizeLineHandle />
 			</>
 		);
 	};
-	export const RightPanel = ({ children, ...props }: ComponentProps<typeof Panel>) => {
+	export const RightPanel = ({ children, ...props }: PanelProps) => {
 		return (
 			<>
 				<PanelResizeLineHandle />
-				<Panel id='right' order={3} className={'relative'} {..._rightConfig} {...props}>
+				<Panel id='right' className={'relative'} {..._rightConfig} {...props}>
 					{children}
 				</Panel>
 			</>

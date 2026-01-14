@@ -1,5 +1,5 @@
-import { type OpUnitType, type UnitTypeLongPlural } from 'dayjs';
-import { type Duration } from 'dayjs/plugin/duration';
+import type { OpUnitType, UnitTypeLongPlural } from 'dayjs';
+import type { Duration } from 'dayjs/plugin/duration';
 import { parseDuration } from './parseDuration';
 
 type FormatDurationOptions = {

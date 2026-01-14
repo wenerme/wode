@@ -4,7 +4,7 @@
 
 import { debug, getTimeoutMs } from './config';
 import { buildRequest, filterOperations, listOperations, loadSpec } from './openapi';
-import type { ParsedOperation, ParsedSpec, RequestConfig, ServerConfig } from './schema';
+import type { ParsedOperation, ParsedSpec, ServerConfig } from './schema';
 
 // Re-export
 export { debug, getTimeoutMs };
@@ -123,7 +123,7 @@ export function findOperation(
 	// If method is specified, treat target as path
 	if (method) {
 		const methodUpper = method.toUpperCase();
-		let path = target.startsWith('/') ? target : '/' + target;
+		let path = target.startsWith('/') ? target : `/${target}`;
 
 		// First try exact match
 		const exact = findByMethodPath(methodUpper, path);
@@ -160,7 +160,7 @@ export function findOperation(
 	const methodMatch = target.match(/^(GET|POST|PUT|DELETE|PATCH|HEAD|OPTIONS)\/(.+)$/i);
 	if (methodMatch) {
 		const matchedMethod = methodMatch[1].toUpperCase();
-		let path = '/' + methodMatch[2];
+		let path = `/${methodMatch[2]}`;
 
 		// First try exact match
 		const exact = findByMethodPath(matchedMethod, path);
@@ -183,7 +183,7 @@ export function findOperation(
 	// Try as path-only (starts with / or looks like a path)
 	// This allows: info server/api/v1/users or info server/users
 	if (target.includes('/') || !target.match(/^[a-zA-Z_][a-zA-Z0-9_]*$/)) {
-		let path = target.startsWith('/') ? target : '/' + target;
+		let path = target.startsWith('/') ? target : `/${target}`;
 
 		// Try exact path match (any method)
 		for (const op of filteredOps) {
@@ -214,7 +214,7 @@ export function findOperationsByPath(
 ): Array<{ operation: ParsedOperation; pathParams?: Record<string, string> }> {
 	const filteredOps = getFilteredOperations(client);
 	const results: Array<{ operation: ParsedOperation; pathParams?: Record<string, string> }> = [];
-	let path = target.startsWith('/') ? target : '/' + target;
+	let path = target.startsWith('/') ? target : `/${target}`;
 
 	// Try exact path match
 	for (const op of filteredOps) {

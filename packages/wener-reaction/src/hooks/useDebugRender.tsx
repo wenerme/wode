@@ -12,11 +12,11 @@ export function useDebugRender(
 	...rest: any[]
 ): DebugRenderLogger;
 export function useDebugRender(o: any, ...rest: any[]): DebugRenderLogger {
+	const counterRef = useRef(0);
+
 	if (process.env.NODE_ENV === 'production') {
 		return useMemo(() => Object.assign(() => undefined, createNoopLogger()), []);
 	}
-
-	const counterRef = useRef(0);
 	counterRef.current++;
 
 	const { name, onRender, id = undefined, logger = _logger } = typeof o === 'string' ? { name: o, onRender: true } : o;

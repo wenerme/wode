@@ -6,7 +6,7 @@ export function parseDate(value: Date | string | undefined | null): Date | undef
 		return value;
 	}
 	const parsed = new Date(value);
-	if (isNaN(parsed.getTime())) {
+	if (Number.isNaN(parsed.getTime())) {
 		return undefined;
 	}
 	return parsed;

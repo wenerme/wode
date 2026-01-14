@@ -119,7 +119,7 @@ export function parseOpenApiSpec(content: string, sourceUrl?: string): ParsedSpe
 /**
  * Parse operations from OpenAPI paths
  */
-function parseOperations(spec: Record<string, unknown>, sourceUrl?: string): ParsedOperation[] {
+function parseOperations(spec: Record<string, unknown>, _sourceUrl?: string): ParsedOperation[] {
 	const operations: ParsedOperation[] = [];
 	const paths = spec.paths as Record<string, Record<string, unknown>> | undefined;
 
@@ -386,7 +386,7 @@ export function buildRequest(
 	let url = baseUrl.replace(/\/$/, '') + path;
 	const queryString = new URLSearchParams(queryParams).toString();
 	if (queryString) {
-		url += '?' + queryString;
+		url += `?${queryString}`;
 	}
 
 	return {
@@ -419,7 +419,7 @@ function globToRegex(pattern: string): RegExp {
 			.replace(/\*\*/g, '.*')
 			.replace(/\*/g, '[^/]*')
 			.replace(/\?/g, '.');
-		p = escapedPrefix + '(?:/.*)?';
+		p = `${escapedPrefix}(?:/.*)?`;
 	} else {
 		p = pattern
 			.replace(/[.+^${}()|[\]\\]/g, '\\$&')

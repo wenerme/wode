@@ -1,4 +1,4 @@
-import { experimental_SmartCoercionPlugin as SmartCoercionPlugin } from '@orpc/json-schema';
+import { SmartCoercionPlugin } from '@orpc/json-schema';
 import { OpenAPIGenerator } from '@orpc/openapi';
 import { OpenAPIHandler } from '@orpc/openapi/fetch';
 import { onError, type Router } from '@orpc/server';

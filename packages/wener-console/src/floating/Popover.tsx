@@ -1,4 +1,4 @@
-import React, {
+import {
 	cloneElement,
 	isValidElement,
 	useMemo,
@@ -141,7 +141,7 @@ interface Props {
 	bubbles?: boolean;
 }
 
-function PopoverComponent({ children, render, placement, modal = true, bubbles = true }: Props) {
+function _PopoverComponent({ children, render, placement, modal = true, bubbles = true }: Props) {
 	const [open, setOpen] = useState(false);
 
 	const nodeId = useFloatingNodeId();

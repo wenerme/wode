@@ -35,7 +35,7 @@ export function resolveEntityRef(...args: any[]) {
 	return getEntityManager().getReference(Entity, entityId as string, { wrapped: true }) as any;
 }
 
-export interface ResolveEntityRefOptions<E = StandardBaseEntity> {
+export interface ResolveEntityRefOptions<_E = StandardBaseEntity> {
 	entityId?: string;
 	entityType?: string;
 	entity?: IdentifiableEntity;

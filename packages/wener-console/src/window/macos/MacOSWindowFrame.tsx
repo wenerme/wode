@@ -1,4 +1,3 @@
-import React from 'react';
 import { cn } from '../../utils/cn';
 import { getWindowDragHandleClassname } from '../const';
 import type { WindowFrameProps } from '../WindowFrame';

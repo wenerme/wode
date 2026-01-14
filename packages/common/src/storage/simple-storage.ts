@@ -1,6 +1,6 @@
-import { mkdir, readFile, writeFile } from 'fs/promises';
-import { homedir } from 'os';
-import { dirname, join } from 'path';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { homedir } from 'node:os';
+import { dirname, join } from 'node:path';
 import consola from 'consola';
 
 const logger = consola.withTag('simple-storage');
@@ -100,7 +100,7 @@ export class SimpleStorage<T = any> {
 		try {
 			await readFile(this.filePath, 'utf-8');
 			return true;
-		} catch (error) {
+		} catch (_error) {
 			return false;
 		}
 	}

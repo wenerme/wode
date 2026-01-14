@@ -1,4 +1,3 @@
-import React from 'react';
 import type { Meta } from '@storybook/react-vite';
 import { GradientSpinner, PlantRotating, PulseBubble, SolarSystemSpinner } from './AlexWarnesCssLoader';
 import { BarsSpinner } from './BarsSpinner';

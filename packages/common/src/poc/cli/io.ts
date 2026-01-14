@@ -11,7 +11,7 @@ export async function copy({ dest, content }: { dest: string; content: string })
 				return { changed: false };
 			}
 		}
-	} catch (e) {}
+	} catch (_e) {}
 	await fs.writeFile(dest, content, {});
 	return { changed: true };
 }

@@ -58,7 +58,7 @@ export class WechatWebhookHandler {
 	}
 
 	async decryptPayload(xml: string | WechatWebhookEncryptPayload): Promise<WechatMessageDecryptResult> {
-		const { iv, key, parser } = this.options;
+		const { iv: _iv, key: _key, parser } = this.options;
 		const data = this.parse(xml);
 		const enc = Buffer.from(data.Encrypt, 'base64');
 

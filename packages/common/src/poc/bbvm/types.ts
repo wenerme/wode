@@ -9,7 +9,7 @@ export interface Runtime<
 	StringHandler = Handler,
 	PageHandler = Handler,
 	ResourceHandler = Handler,
-	FileHandler = Handler,
+	_FileHandler = Handler,
 > {
 	FloatToInt: (v: Float32) => Int32;
 	IntToFloat: (v: Int32) => Float32;
@@ -235,7 +235,7 @@ export enum Opcode {
 	EXIT = 0xf,
 }
 
-export const enum CompareType {
+export enum CompareType {
 	Z = 1, // Equal
 	B, // Blow
 	BE, // Blow or Equal
@@ -244,7 +244,7 @@ export const enum CompareType {
 	NZ, // Not Equal
 }
 
-export const enum DataType {
+export enum DataType {
 	DWORD,
 	WORD,
 	BYTE,
@@ -252,7 +252,7 @@ export const enum DataType {
 	INT,
 }
 
-export const enum CalculateType {
+export enum CalculateType {
 	ADD,
 	SUB,
 	MUL,

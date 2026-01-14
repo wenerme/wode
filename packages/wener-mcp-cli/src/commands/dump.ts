@@ -54,7 +54,7 @@ async function collectServerTools(
 	serverName: string,
 	serverWithSource: ServerWithSource,
 ): Promise<{ server: string; tools: ToolInfo[]; error?: string }> {
-	let client;
+	let client: Client;
 	let close: () => Promise<void> = async () => {};
 
 	try {

@@ -109,7 +109,7 @@ export namespace Daisy {
 		return size ? Sizes[size] : undefined;
 	}
 
-	function sizeOf(type: ComponentType, size: SizeType = 'md') {
+	function _sizeOf(type: ComponentType, size: SizeType = 'md') {
 		return size ? Sizes[size][type] : undefined;
 	}
 }
@@ -122,7 +122,7 @@ type ComponentDef = {
 	modifiers?: string[];
 };
 
-const Components: ComponentDef[] = [
+const _Components: ComponentDef[] = [
 	{
 		name: 'button',
 		size: true,

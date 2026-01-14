@@ -1,4 +1,4 @@
-import React, { type ComponentPropsWithRef } from 'react';
+import type { ComponentPropsWithRef } from 'react';
 import { ResourceStatusSchema } from '@wener/common/resource/schema';
 import { getSchemaOptionLabel, type TypeSchema } from '@wener/common/schema';
 import { cn } from '@wener/console';
@@ -45,10 +45,8 @@ export const ResourceStatusBadge = ({
 	}
 	const label = getSchemaOptionLabel(schema, status) || status;
 	return (
-		<>
-			<div className={cn('badge badge-soft', classNames, className)} {...props}>
-				{label}
-			</div>
-		</>
+		<div className={cn('badge badge-soft', classNames, className)} {...props}>
+			{label}
+		</div>
 	);
 };

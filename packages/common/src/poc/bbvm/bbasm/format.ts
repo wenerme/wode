@@ -1,5 +1,5 @@
 import { formatInstruction } from '../format';
-import { Assembly } from './types';
+import type { Assembly } from './types';
 
 export function formatAssembly(asm: Assembly) {
 	if (asm.opcode !== undefined) {
@@ -21,7 +21,7 @@ export function formatAssembly(asm: Assembly) {
 			let out = ['DATA', symbol, dataTypeName];
 			out.push(
 				asm
-					.values!.map((v) => {
+					.values?.map((v) => {
 						if (typeof v === 'string') {
 							// escape quotes
 							return `"${v.replace(/"/g, '\\"')}"`;

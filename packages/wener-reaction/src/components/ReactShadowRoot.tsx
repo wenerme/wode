@@ -1,15 +1,14 @@
-import React, { createRef, PureComponent, type ReactNode, type RefObject } from 'react';
+import { createRef, PureComponent, type ReactNode, type RefObject } from 'react';
 import ReactDOM from 'react-dom';
 
 const hasWindow = typeof window !== 'undefined';
 const constructableStylesheetsSupported =
-	hasWindow
-	&& window.ShadowRoot
-	&& Object.prototype.hasOwnProperty.call(window.ShadowRoot, 'adoptedStyleSheets')
-	&& window.CSSStyleSheet
-	&& Object.prototype.hasOwnProperty.call(window.CSSStyleSheet, 'replace');
-const shadowRootSupported =
-	hasWindow && window.Element && Object.prototype.hasOwnProperty.call(window.Element, 'attachShadow');
+	hasWindow &&
+	window.ShadowRoot &&
+	Object.hasOwn(window.ShadowRoot, 'adoptedStyleSheets') &&
+	window.CSSStyleSheet &&
+	Object.hasOwn(window.CSSStyleSheet, 'replace');
+const shadowRootSupported = hasWindow && window.Element && Object.hasOwn(window.Element, 'attachShadow');
 
 export interface ReactShadowRootProps {
 	delegatesFocus?: boolean;

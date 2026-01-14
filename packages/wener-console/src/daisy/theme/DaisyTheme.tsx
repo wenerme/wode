@@ -82,19 +82,16 @@ export namespace DaisyTheme {
 					window.removeEventListener('storage', handleStorageChange);
 				});
 			}
-			// system
-			{
-				store.setState((s) => {
-					s.system = getPrefersColorSchema();
-				});
-				closer.push(
-					watchPrefersColorSchema(() => {
-						store.setState((s) => {
-							s.system = getPrefersColorSchema();
-						});
-					}),
-				);
-			}
+			store.setState((s) => {
+				s.system = getPrefersColorSchema();
+			});
+			closer.push(
+				watchPrefersColorSchema(() => {
+					store.setState((s) => {
+						s.system = getPrefersColorSchema();
+					});
+				}),
+			);
 			// persist
 			{
 				let last = StateSchema.parse(store.getState());
@@ -109,23 +106,19 @@ export namespace DaisyTheme {
 				//
 				closer.push(unsub);
 			}
-
-			// active
-			{
-				// const element = document.documentElement;
-				store.subscribe((s) => {
-					let active = getActiveTheme(s);
-					let schema = getThemeSchema(active);
-					if (s.active === active && s.schema === schema) {
-						return;
-					}
-					store.setState({ active, schema });
-					const el = globalThis.document?.documentElement;
-					// setElementThemeAttribute(active, element);
-					el?.setAttribute('data-theme', active);
-					el?.setAttribute('data-color-mode', schema);
-				});
-			}
+			// const element = document.documentElement;
+			store.subscribe((s) => {
+				let active = getActiveTheme(s);
+				let schema = getThemeSchema(active);
+				if (s.active === active && s.schema === schema) {
+					return;
+				}
+				store.setState({ active, schema });
+				const el = globalThis.document?.documentElement;
+				// setElementThemeAttribute(active, element);
+				el?.setAttribute('data-theme', active);
+				el?.setAttribute('data-color-mode', schema);
+			});
 
 			return () => {
 				closer.forEach((c) => c());

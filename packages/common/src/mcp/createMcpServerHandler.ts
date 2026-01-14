@@ -1,21 +1,21 @@
-import {
-	type CallToolRequest,
-	type CallToolResult,
-	type ListResourcesRequest,
-	type ListResourcesResult,
-	type ListResourceTemplatesRequest,
-	type ListResourceTemplatesResult,
-	type ListToolsRequest,
-	type ListToolsResult,
-	type ReadResourceRequest,
-	type ReadResourceResult,
-	type Tool,
+import type {
+	CallToolRequest,
+	CallToolResult,
+	ListResourcesRequest,
+	ListResourcesResult,
+	ListResourceTemplatesRequest,
+	ListResourceTemplatesResult,
+	ListToolsRequest,
+	ListToolsResult,
+	ReadResourceRequest,
+	ReadResourceResult,
+	Tool,
 } from '@modelcontextprotocol/sdk/types.js';
 import type { ProcedureClient } from '@orpc/server';
 import type { JsonSchemaDef } from '@wener/common/jsonschema';
 import { toJsonSchema } from '@wener/common/schema';
 import { snakeCase } from 'es-toolkit';
-import { z } from 'zod';
+import type { z } from 'zod';
 
 export const McpMetaKey = {
 	tool: 'McpTool',
@@ -73,12 +73,12 @@ export function createMcpServerHandler<C extends Record<string, any>>(
 
 	return {
 		tools,
-		listTool: async (req: ListToolsRequest): Promise<ListToolsResult> => {
+		listTool: async (_req: ListToolsRequest): Promise<ListToolsResult> => {
 			return { tools };
 		},
 		listResources: async (req: ListResourcesRequest): Promise<ListResourcesResult> => {
 			// Check if impl has listResources method
-			const fn = (impl as any)['listResources'];
+			const fn = (impl as any).listResources;
 			if (typeof fn === 'function') {
 				return await fn(req);
 			}
@@ -86,14 +86,14 @@ export function createMcpServerHandler<C extends Record<string, any>>(
 		},
 		readResource: async (req: ReadResourceRequest): Promise<ReadResourceResult> => {
 			// Check if impl has readResource method
-			const fn = (impl as any)['readResource'];
+			const fn = (impl as any).readResource;
 			if (typeof fn === 'function') {
 				return await fn(req);
 			}
 			throw new Error('readResource not implemented');
 		},
 		listResourceTemplate: async (req: ListResourceTemplatesRequest): Promise<ListResourceTemplatesResult> => {
-			const fn = (impl as any)['listResourceTemplate'];
+			const fn = (impl as any).listResourceTemplate;
 			if (typeof fn === 'function') {
 				return await fn(req);
 			}

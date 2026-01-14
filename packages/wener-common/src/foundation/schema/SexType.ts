@@ -12,7 +12,9 @@ export type SexType = EnumValues<typeof SexType>;
 export const SexTypeSchema = z
 	.union([
 		//
-		z.literal(SexType.Male).describe('男'),
+		z
+			.literal(SexType.Male)
+			.describe('男'),
 		z.literal(SexType.Female).describe('女'),
 	])
 	.describe('性别')

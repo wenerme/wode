@@ -3,9 +3,9 @@ import sdl from '@kmamal/sdl';
 import { sleep } from '@wener/utils';
 import { createCanvas } from 'canvas';
 import { BasicGuiRuntime } from './BasicGuiRuntime';
-import { BasicVm } from './BBVM';
+import type { BasicVm } from './BBVM';
 
-export async function runBbvm({}: {} = {}) {
+export async function runBbvm(_options: object = {}) {
 	const scale = 2;
 	const px = (x: number) => x * scale;
 	const window = sdl.video.createWindow({ title: 'BBVM', width: px(240), height: px(320) });

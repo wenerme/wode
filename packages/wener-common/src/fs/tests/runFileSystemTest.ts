@@ -1,6 +1,6 @@
 import { expect } from 'vitest';
 import { FileSystemError, FileSystemErrorCode } from '../FileSystemError';
-import type { IFileSystem } from '../IFileSystem';
+import type { IFileSystem, IServerFileSystem } from '../IFileSystem';
 
 export type RunFileSystemTestOptions = {
 	writableStream?: boolean;
@@ -10,7 +10,7 @@ export type RunFileSystemTestOptions = {
 	abort?: boolean;
 };
 
-export async function runFileSystemTest(fs: IFileSystem, options: RunFileSystemTestOptions = {}) {
+export async function runFileSystemTest(fs: IFileSystem | IServerFileSystem, options: RunFileSystemTestOptions = {}) {
 	const { writableStream = true, readableStream = true, readStream = true, writeStream = true, abort = true } = options;
 	// should be implemented
 	const stat = await fs.stat('/README.txt');
@@ -65,21 +65,22 @@ export async function runFileSystemTest(fs: IFileSystem, options: RunFileSystemT
 	await expect(fs.writeFile('/', 'test')).rejects.toMatchObject({ code: FileSystemErrorCode.EINVAL });
 
 	// should support streaming operations
-	if (readStream && fs.createReadStream) {
+	const serverFs = fs as IServerFileSystem;
+	if (readStream && 'createReadStream' in fs) {
 		await fs.writeFile('/stream.txt', 'Hello, World!');
 
 		// Test createReadStream
-		const readStream = fs.createReadStream('/stream.txt');
-		expect(readStream).toBeDefined();
+		const readStreamObj = serverFs.createReadStream('/stream.txt');
+		expect(readStreamObj).toBeDefined();
 
 		const chunks: Buffer[] = [];
-		for await (const chunk of readStream) {
+		for await (const chunk of readStreamObj) {
 			chunks.push(chunk);
 		}
 		expect(Buffer.concat(chunks).toString()).toBe('Hello, World!');
 
 		// Test createReadStream with range
-		const rangeStream = fs.createReadStream('/stream.txt', { range: { start: 0, end: 4 } });
+		const rangeStream = serverFs.createReadStream('/stream.txt', { range: { start: 0, end: 4 } });
 		const rangeChunks: Buffer[] = [];
 		for await (const chunk of rangeStream) {
 			rangeChunks.push(chunk);
@@ -87,37 +88,37 @@ export async function runFileSystemTest(fs: IFileSystem, options: RunFileSystemT
 		expect(Buffer.concat(rangeChunks).toString()).toBe('Hello');
 	}
 
-	if (writeStream && fs.createWriteStream) {
+	if (writeStream && 'createWriteStream' in fs) {
 		// Test createWriteStream
-		const writeStream = fs.createWriteStream('/write-test.txt');
-		expect(writeStream).toBeDefined();
+		const writeStreamObj = serverFs.createWriteStream('/write-test.txt');
+		expect(writeStreamObj).toBeDefined();
 
-		writeStream.write('Test content');
-		writeStream.end();
+		writeStreamObj.write('Test content');
+		writeStreamObj.end();
 
-		await new Promise((resolve) => writeStream.on('finish', resolve));
+		await new Promise((resolve) => writeStreamObj.on('finish', resolve));
 		expect(await fs.readFile('/write-test.txt', { encoding: 'text' })).toBe('Test content');
 	}
 
 	// should support Web Streams API
-	if (readableStream) {
+	if (readableStream && fs.createReadableStream) {
 		await fs.writeFile('/webstream.txt', 'Web Stream Test');
 
 		// Test createReadableStream
-		const readableStream = fs.createReadableStream('/webstream.txt');
-		expect(readableStream).toBeDefined();
+		const readableStreamObj = fs.createReadableStream('/webstream.txt');
+		expect(readableStreamObj).toBeDefined();
 
-		const reader = readableStream.getReader();
+		const reader = readableStreamObj.getReader();
 		const { value } = await reader.read();
 		expect(value?.toString()).toBe('Web Stream Test');
 	}
 
-	if (writableStream) {
+	if (writableStream && fs.createWritableStream) {
 		// Test createWritableStream
-		const writableStream = fs.createWritableStream('/web-write-test.txt');
-		expect(writableStream).toBeDefined();
+		const writableStreamObj = fs.createWritableStream('/web-write-test.txt');
+		expect(writableStreamObj).toBeDefined();
 
-		const writer = writableStream.getWriter();
+		const writer = writableStreamObj.getWriter();
 		await writer.write(Buffer.from('Web Stream Write Test'));
 		await writer.close();
 
@@ -125,30 +126,30 @@ export async function runFileSystemTest(fs: IFileSystem, options: RunFileSystemT
 	}
 
 	// should handle streaming errors
-	if (abort && readStream && fs.createReadStream) {
+	if (abort && readStream && 'createReadStream' in fs) {
 		const controller2 = new AbortController();
 
 		// Test read stream with abort
-		const readStream = fs.createReadStream('/README.txt', { signal: controller2.signal });
+		const readStreamObj = serverFs.createReadStream('/README.txt', { signal: controller2.signal });
 		controller2.abort();
 
 		await expect(
 			new Promise((_, reject) => {
-				readStream.on('error', reject);
+				readStreamObj.on('error', reject);
 			}),
 		).rejects.toThrow(Error);
 	}
 
-	if (abort && writeStream && fs.createWriteStream) {
+	if (abort && writeStream && 'createWriteStream' in fs) {
 		// Test write stream with abort
 		const controller3 = new AbortController();
-		const writeStream = fs.createWriteStream('/abort-test.txt', { signal: controller3.signal });
+		const writeStreamObj = serverFs.createWriteStream('/abort-test.txt', { signal: controller3.signal });
 		controller3.abort();
 
 		await expect(
 			new Promise((_, reject) => {
-				writeStream.on('error', reject);
-				writeStream.write('test');
+				writeStreamObj.on('error', reject);
+				writeStreamObj.write('test');
 			}),
 		).rejects.toThrow(Error);
 	}

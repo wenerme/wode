@@ -1,4 +1,3 @@
-import React from 'react';
 import { BiError } from 'react-icons/bi';
 import { GrDocumentMissing } from 'react-icons/gr';
 import type { Meta, StoryObj } from '@storybook/react-vite';

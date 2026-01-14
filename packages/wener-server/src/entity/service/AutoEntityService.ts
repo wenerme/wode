@@ -57,30 +57,30 @@ export class AutoEntityService
 	}
 
 	createEntity<E extends StandardBaseEntity>(
-		req: CreateEntityOptions<RequiredEntityData<E>>,
+		_req: CreateEntityOptions<RequiredEntityData<E>>,
 	): Promise<EntityResult<E>> {
 		throw Errors.NotImplemented.throw();
 	}
 
 	updateEntity<E extends StandardBaseEntity>(
-		ent: ResolveEntityOptions<E>,
-		opts: UpdateEntityOptions<any>,
+		_ent: ResolveEntityOptions<E>,
+		_opts: UpdateEntityOptions<any>,
 	): Promise<EntityResult<E>> {
 		throw Errors.NotImplemented.throw();
 	}
 
 	patchEntity<E extends StandardBaseEntity>(
-		ent: ResolveEntityOptions<E>,
-		opts: UpdateEntityOptions<any>,
+		_ent: ResolveEntityOptions<E>,
+		_opts: UpdateEntityOptions<any>,
 	): Promise<EntityResult<E>> {
 		throw Errors.NotImplemented.throw();
 	}
 
-	createQueryBuilder({ em }: { em?: EntityManager }): Promise<{ builder: QueryBuilder<StandardBaseEntity> }> {
+	createQueryBuilder({ em: _em }: { em?: EntityManager }): Promise<{ builder: QueryBuilder<StandardBaseEntity> }> {
 		throw Errors.NotImplemented.throw();
 	}
 
-	findAllEntity(req: FindAllEntityOptions<StandardBaseEntity>): Promise<FindAllEntityResult<StandardBaseEntity>> {
+	findAllEntity(_req: FindAllEntityOptions<StandardBaseEntity>): Promise<FindAllEntityResult<StandardBaseEntity>> {
 		throw Errors.NotImplemented.throw();
 	}
 
@@ -88,19 +88,19 @@ export class AutoEntityService
 		throw Errors.NotImplemented.throw();
 	}
 
-	create(req: CreateEntityRequest & { data: RequiredEntityData<StandardBaseEntity> }): Promise<StandardBaseEntity> {
+	create(_req: CreateEntityRequest & { data: RequiredEntityData<StandardBaseEntity> }): Promise<StandardBaseEntity> {
 		throw Errors.NotImplemented.throw();
 	}
 
-	list(req: ListEntityRequest): Promise<{ total: number; data: StandardBaseEntity[] }> {
+	list(_req: ListEntityRequest): Promise<{ total: number; data: StandardBaseEntity[] }> {
 		throw Errors.NotImplemented.throw();
 	}
 
-	find(req: ListEntityRequest): Promise<StandardBaseEntity[]> {
+	find(_req: ListEntityRequest): Promise<StandardBaseEntity[]> {
 		throw Errors.NotImplemented.throw();
 	}
 
-	count(req: CountEntityRequest): Promise<number> {
+	count(_req: CountEntityRequest): Promise<number> {
 		throw Errors.NotImplemented.throw();
 	}
 

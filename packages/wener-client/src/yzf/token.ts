@@ -51,8 +51,8 @@ export function createRefreshableTokenProvider({
 		}
 
 		if (
-			lastRefreshAt - Date.now() > 1000 * 60 * 3 // 3min
-			|| token.expiresAt.getTime() - Date.now() > 1000 * 60 * 5 // 5min
+			lastRefreshAt - Date.now() > 1000 * 60 * 3 || // 3min
+			token.expiresAt.getTime() - Date.now() > 1000 * 60 * 5 // 5min
 		) {
 			// use provider token instead cached
 			const neo = await ping(await getToken());

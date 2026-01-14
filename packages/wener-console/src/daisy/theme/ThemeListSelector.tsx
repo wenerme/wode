@@ -1,4 +1,4 @@
-import React, { type FC, type HTMLAttributes } from 'react';
+import type { FC, HTMLAttributes } from 'react';
 import classNames from 'clsx';
 import { DaisyTheme } from './DaisyTheme';
 import { getSupportedThemes } from './getSupportedThemes';

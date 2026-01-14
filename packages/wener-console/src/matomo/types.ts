@@ -181,7 +181,7 @@ declare global {
 	}
 }
 
-interface MatomoAsyncTracker {}
+type MatomoAsyncTracker = {};
 
 interface Matomo {
 	getTracker(trackerUrl?: string, siteId?: string): MatomoTracker;

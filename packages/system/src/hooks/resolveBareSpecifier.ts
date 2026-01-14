@@ -1,4 +1,5 @@
-import { parseModuleId, type Logger } from '@wener/utils';
+import { parseModuleId } from '@wener/utils';
+import type { Logger } from '@wener/utils/logger';
 import { getGlobalSystem, type SystemJS } from '../utils/getGlobalSystem';
 
 export function resolveBareSpecifier({
@@ -6,7 +7,12 @@ export function resolveBareSpecifier({
 	System = getGlobalSystem(),
 	logger = console,
 	cache = false,
-}: { protocol?: string; System?: SystemJS; logger?: Logger; cache?: boolean } = {}) {
+}: {
+	protocol?: string;
+	System?: SystemJS;
+	logger?: Logger;
+	cache?: boolean;
+} = {}) {
 	const orig = System.constructor.prototype.resolve.bind(System);
 	const map = new Map();
 	const prefix = `${protocol}:`;

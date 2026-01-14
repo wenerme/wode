@@ -1,4 +1,4 @@
-import React, { type FC, type HTMLProps } from 'react';
+import type { FC, HTMLProps } from 'react';
 import { mergeProps } from '@wener/reaction/universal';
 import styles from './DotsFadeLoader.module.css';
 

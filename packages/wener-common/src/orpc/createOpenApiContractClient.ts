@@ -43,8 +43,8 @@ export type CreateContractClientOptions = {
 	baseUrl?: string;
 	apiKey?: string;
 	headers?: Record<string, string> | Headers;
-	getApiKey?: () => string | void;
-	getHeaders?: (headers: Headers) => Headers | void;
+	getApiKey?: () => string | undefined;
+	getHeaders?: (headers: Headers) => Headers | undefined;
 	plugins?: StandardLinkPlugin<any>[];
 	fetch?: LinkFetchClientOptions<any>['fetch'];
 	batch?: BatchLinkPluginOptions<any> | boolean;

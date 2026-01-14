@@ -45,7 +45,7 @@ function getStatics(component: any): Record<string | symbol, boolean> {
 	}
 
 	// React v16.12 and above
-	return TYPE_STATICS[component['$$typeof']] || REACT_STATICS;
+	return TYPE_STATICS[component.$$typeof] || REACT_STATICS;
 }
 
 const defineProperty = Object.defineProperty;
@@ -133,18 +133,13 @@ export function hoistNonReactStatics<
 
 		for (let i = 0; i < keys.length; ++i) {
 			const key = keys[i];
-			if (
-				!KNOWN_STATICS[key]
-				&& !(excludelist && excludelist[key])
-				&& !(sourceStatics && sourceStatics[key])
-				&& !(targetStatics && targetStatics[key])
-			) {
+			if (!KNOWN_STATICS[key] && !excludelist?.[key] && !sourceStatics?.[key] && !targetStatics?.[key]) {
 				const descriptor = getOwnPropertyDescriptor(sourceComponent, key);
 				if (descriptor) {
 					try {
 						// Avoid failures from read-only properties
 						defineProperty(targetComponent, key, descriptor);
-					} catch (e) {}
+					} catch (_e) {}
 				}
 			}
 		}

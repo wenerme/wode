@@ -49,7 +49,7 @@ function createBuiltin({ now = () => new Date() }: { now?: () => Date } = {}) {
 				return null;
 			}
 			let date = new Date(v);
-			if (isNaN(date.getTime())) {
+			if (Number.isNaN(date.getTime())) {
 				console.error(`Invalid date: ${v}`);
 				return null;
 			}

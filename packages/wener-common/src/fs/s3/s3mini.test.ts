@@ -249,8 +249,8 @@ describe('s3mini listObjects behavior', () => {
 		const normalizedPrefix = prefix.replace(/^\/+/, '').replace(/\/+$/, '');
 
 		const stripPrefix = (key: string): string => {
-			if (!normalizedPrefix || !key.startsWith(normalizedPrefix + '/')) {
-				return key.startsWith('/') ? key : '/' + key;
+			if (!normalizedPrefix || !key.startsWith(`${normalizedPrefix}/`)) {
+				return key.startsWith('/') ? key : `/${key}`;
 			}
 			const withoutPrefix = key.slice(normalizedPrefix.length);
 			return withoutPrefix || '/';

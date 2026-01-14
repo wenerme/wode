@@ -75,7 +75,7 @@ test('serialize', () => {
 				<Ctx.Provider value={'X'}>
 					<Ctx.Consumer>{Echo}</Ctx.Consumer>
 				</Ctx.Provider>
-				<div tabIndex={1} key={1}>
+				<div key={1}>
 					Hello
 					<React.Fragment>Wener</React.Fragment>
 				</div>
@@ -99,8 +99,8 @@ test('serialize', () => {
 		act(() => {
 			rb = create(out as React.ReactElement);
 		});
-		assert.deepEqual(ra!.toJSON(), rb!.toJSON());
-		expect(ra!.toJSON(), 'render').matchSnapshot();
+		assert.deepEqual(ra?.toJSON(), rb?.toJSON());
+		expect(ra?.toJSON(), 'render').matchSnapshot();
 	}
 });
 

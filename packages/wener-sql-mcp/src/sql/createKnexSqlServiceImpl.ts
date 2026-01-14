@@ -1,6 +1,5 @@
-import { implement, type Implementer } from '@orpc/server';
+import { implement, } from '@orpc/server';
 import type { Knex } from 'knex';
-import { z } from 'zod';
 import { isQuerySql } from './sql-utils';
 import { SqlServiceContract } from './SqlServiceContract';
 
@@ -67,7 +66,7 @@ export function createKnexSqlServiceImpl(config: KnexSqlServiceConfig): any {
 	const isReadOnlyQuery = isQuerySql;
 
 	// Helper function to convert rows to CSV
-	function rowsToCsv(rows: Record<string, any>[]): string {
+	function _rowsToCsv(rows: Record<string, any>[]): string {
 		if (rows.length === 0) {
 			return '';
 		}
@@ -135,7 +134,7 @@ export function createKnexSqlServiceImpl(config: KnexSqlServiceConfig): any {
 				version,
 				type: dbType,
 			};
-		} catch (error) {
+		} catch (_error) {
 			return {
 				version: 'Unknown',
 				type: 'Unknown',
@@ -241,7 +240,7 @@ export function createKnexSqlServiceImpl(config: KnexSqlServiceConfig): any {
 					params = [name];
 					break;
 				case 'pg':
-				case 'postgresql':
+				case 'postgresql': {
 					const schemaName = schema || 'public';
 					query = `
 						SELECT 
@@ -280,6 +279,7 @@ export function createKnexSqlServiceImpl(config: KnexSqlServiceConfig): any {
 					`;
 					params = [name, schemaName, name, schemaName, name, schemaName, name, schemaName];
 					break;
+				}
 				case 'sqlite3':
 					query = `PRAGMA table_info(?)`;
 					params = [name];
@@ -372,7 +372,7 @@ export function createKnexSqlServiceImpl(config: KnexSqlServiceConfig): any {
 					description: `${obj.type} in ${obj.schema || 'default'} schema`,
 				})),
 			};
-		} catch (error) {
+		} catch (_error) {
 			return { resources: [] };
 		}
 	}
@@ -381,7 +381,7 @@ export function createKnexSqlServiceImpl(config: KnexSqlServiceConfig): any {
 	async function readResource(uri: string) {
 		try {
 			// Parse URI: client://schema/table/data
-			const match = uri.match(/^(\w+):\/\/([^\/]+)\/([^\/]+)\/data$/);
+			const match = uri.match(/^(\w+):\/\/([^/]+)\/([^/]+)\/data$/);
 			if (!match) {
 				throw new Error(`Invalid resource URI: ${uri}`);
 			}
@@ -485,7 +485,7 @@ export function createKnexSqlServiceImpl(config: KnexSqlServiceConfig): any {
 				throw new Error('DDL operations are not allowed in readonly mode');
 			}
 
-			const result = await executeQuery(input.query);
+			const _result = await executeQuery(input.query);
 
 			return {
 				message: `DDL operation executed successfully.`,

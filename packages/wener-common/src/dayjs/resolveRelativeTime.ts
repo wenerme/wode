@@ -87,7 +87,7 @@ export function resolveRelativeTime(s: string | Date | number, now?: Date | unde
 			out = new Date(s);
 		}
 		if (out) {
-			if (isNaN(out.getTime())) {
+			if (Number.isNaN(out.getTime())) {
 				throw new Error(`Invalid date: ${s}`);
 			}
 			return out;

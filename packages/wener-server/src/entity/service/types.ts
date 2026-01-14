@@ -42,7 +42,7 @@ interface ModifyEntityRequest<T> extends GetEntityRequest {
 	data: T;
 }
 
-interface ActionResponse<T = any> {
+interface _ActionResponse<T = any> {
 	status?: number;
 	code?: string | number;
 	message?: string;

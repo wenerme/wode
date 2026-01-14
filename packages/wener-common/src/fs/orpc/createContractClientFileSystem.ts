@@ -16,7 +16,7 @@ import type {
 	WriteFileOptions,
 } from '../IFileSystem';
 import { resolveData } from '../utils';
-import { FileSystemContract } from './FileSystemContract';
+import type { FileSystemContract } from './FileSystemContract';
 
 type FileSystemContractClient = ContractRouterClient<typeof FileSystemContract>;
 
@@ -41,7 +41,7 @@ class ContractFS implements IFileSystem {
 		}));
 	}
 
-	async stat(entry: string, options?: StatOptions) {
+	async stat(entry: string, _options?: StatOptions) {
 		const { data } = await this.client.stat({ path: entry });
 		return {
 			...data,
@@ -72,7 +72,7 @@ class ContractFS implements IFileSystem {
 
 	async writeFile(path: string, data: WritableData, options?: WriteFileOptions) {
 		let buf = resolveData(data);
-		await this.client.writeFile({ path, base64: ArrayBuffers.toBase64(buf), ...options });
+		await this.client.writeFile({ path, base64: ArrayBuffers.toBase64(buf as BufferSource), ...options });
 	}
 
 	async rename(oldPath: string, newPath: string, options?: RenameOptions) {
@@ -105,11 +105,11 @@ class ContractFS implements IFileSystem {
 		});
 	}
 
-	createReadStream(path: string, options?: CreateReadStreamOptions): Readable {
+	createReadStream(_path: string, _options?: CreateReadStreamOptions): Readable {
 		throw new Error('createReadStream is not implemented in ContractFS');
 	}
 
-	createWriteStream(path: string, options?: CreateWriteStreamOptions): Writable {
+	createWriteStream(_path: string, _options?: CreateWriteStreamOptions): Writable {
 		throw new Error('createWriteStream is not implemented in ContractFS');
 	}
 }

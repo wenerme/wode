@@ -54,7 +54,7 @@ export function parseBytes(str: string): ParseBytesResult | undefined {
 		multiplier = UnitMultipliers[unit];
 	}
 
-	if (isNaN(value) || multiplier === undefined) {
+	if (Number.isNaN(value) || multiplier === undefined) {
 		return undefined;
 	}
 

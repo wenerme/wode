@@ -31,7 +31,7 @@ export function formatS3Url(
 		} else {
 			url = new URL(`https://${ep}`);
 		}
-	} catch (error) {
+	} catch (_error) {
 		throw new Error(`Invalid endpoint: ${ep}`);
 	}
 
@@ -58,7 +58,7 @@ export function formatS3Url(
 
 	if (port) {
 		const portNum = Number(port);
-		if (isNaN(portNum) || portNum < 1 || portNum > 65535) {
+		if (Number.isNaN(portNum) || portNum < 1 || portNum > 65535) {
 			throw new Error('Port must be a valid number between 1 and 65535');
 		}
 		url.port = String(portNum);

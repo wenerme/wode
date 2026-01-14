@@ -54,7 +54,7 @@ export interface Block {
 }
 
 // fixme typing
-export interface Link {}
+export type Link = {};
 
 /**
  * 任务块的内容实体。注意你只能获取任务块的任务 ID，无法创建或编辑任务块。如需获取任务详情，调用获取任务详情接口。
@@ -364,7 +364,7 @@ export interface Equation {
 /**
  * 未支持的 TextElementData 内容实体，为空结构体。
  */
-export interface UndefinedElement {}
+export type UndefinedElement = {};
 
 /**
  * 文本局部样式内容实体。
@@ -556,7 +556,7 @@ export interface Objective {
 /**
  * OKR 进展块的内容实体，为空结构体。
  */
-export interface OkrProgress {}
+export type OkrProgress = {};
 
 /**
  * OKR 进展信息块的内容实体。
@@ -601,7 +601,7 @@ export interface ProgressRate {
 /**
  * 引用容器块的内容实体，为空结构体。
  */
-export interface QuoteContainer {}
+export type QuoteContainer = {};
 
 /**
  * 电子表格块的内容实体。目前只支持指定 row_size 和 column_size 创建空 Sheet。
@@ -697,7 +697,7 @@ export interface TableMergeInfo {
 /**
  * 单元格块的内容实体，为空结构体。
  */
-export interface TableCell {}
+export type TableCell = {};
 
 /**
  * 分栏列块的内容实体。
@@ -859,7 +859,7 @@ export interface Diagram {
 /**
  * 分割线 Block 的内容实体，为空结构体。
  */
-export interface Divider {}
+export type Divider = {};
 
 /**
  * 文件块的内容实体。文件块不能独立存在，须与视图块一同出现。文件视图是通过视图块的 view_type 实现的，包括卡片视图和预览视图。在创建文件块时，系统会自动生成默认的视图块的内容实体。了解如何插入文件，参考常见问题。

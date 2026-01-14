@@ -4,7 +4,7 @@ import { inspect } from 'node:util';
 import type { Plugin } from 'esbuild';
 import typescript from 'typescript';
 
-const theFinder = new RegExp(/((?<![\(\s]\s*['"])@\w*[\w\d]\s*(?![;])[\((?=\s)])/);
+const theFinder = new RegExp(/((?<![(\s]\s*['"])@\w*[\w\d]\s*(?![;])[((?=\s)])/);
 
 // const stripComments = require('strip-comments');
 // const findDecorators = (fileContent?: string) => theFinder.test(stripComments(fileContent));
@@ -73,7 +73,7 @@ function parseTsConfig(tsconfig?: string, cwd = process.cwd()) {
 
 	let loadedConfig = {};
 	let baseDir = cwd;
-	let configFileName;
+	let _configFileName: string | undefined;
 	if (fileName) {
 		const text = typescript.sys.readFile(fileName);
 		if (text === undefined) throw new Error(`failed to read '${fileName}'`);
@@ -87,7 +87,7 @@ function parseTsConfig(tsconfig?: string, cwd = process.cwd()) {
 
 		loadedConfig = result.config;
 		baseDir = path.dirname(fileName);
-		configFileName = fileName;
+		_configFileName = fileName;
 	}
 
 	const parsedTsConfig = typescript.parseJsonConfigFileContent(loadedConfig, typescript.sys, baseDir);

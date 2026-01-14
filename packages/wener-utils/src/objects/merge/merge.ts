@@ -12,9 +12,7 @@ function cloneUnlessOtherwiseSpecified(value: any, options: Options) {
 }
 
 function defaultArrayMerge(target: any, source: any, options: Options) {
-	return target.concat(source).map(function (element: any) {
-		return cloneUnlessOtherwiseSpecified(element, options);
-	});
+	return target.concat(source).map((element: any) => cloneUnlessOtherwiseSpecified(element, options));
 }
 
 type Merger = (x: any, y: any, options: Options) => any;
@@ -29,9 +27,7 @@ function getMergeFunction(key: any, options: Options): Merger {
 
 function getEnumerableOwnPropertySymbols(target: any): any {
 	return Object.getOwnPropertySymbols
-		? Object.getOwnPropertySymbols(target).filter(function (symbol) {
-				return Object.propertyIsEnumerable.call(target, symbol);
-			})
+		? Object.getOwnPropertySymbols(target).filter((symbol) => Object.propertyIsEnumerable.call(target, symbol))
 		: [];
 }
 
@@ -50,10 +46,10 @@ function propertyIsOnObject(object: any, property: any) {
 // Protects from prototype poisoning and unexpected merging up the prototype chain.
 function propertyIsUnsafe(target: any, key: string) {
 	return (
-		propertyIsOnObject(target, key) // Properties are safe to merge if they don't exist in the target yet,
-		&& !(
-			Object.hasOwnProperty.call(target, key) // unsafe if they exist up the prototype chain,
-			&& Object.propertyIsEnumerable.call(target, key)
+		propertyIsOnObject(target, key) && // Properties are safe to merge if they don't exist in the target yet,
+		!(
+			Object.prototype.hasOwnProperty.call(target, key) && // unsafe if they exist up the prototype chain,
+			Object.propertyIsEnumerable.call(target, key)
 		)
 	); // and also unsafe if they're nonenumerable.
 }
@@ -110,9 +106,7 @@ merge.all = function deepmergeAll(array: any[], options?: MergeOptions) {
 		throw new Error('first argument should be an array');
 	}
 
-	return array.reduce(function (prev, next) {
-		return merge(prev, next, options);
-	}, {});
+	return array.reduce((prev, next) => merge(prev, next, options), {});
 };
 
 export interface MergeOptions {

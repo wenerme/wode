@@ -1,6 +1,7 @@
 import type { Readable, Writable } from 'node:stream';
 import { computeIfAbsent } from '@wener/utils';
 import { basename, dirname, normalize } from 'pathe';
+import { FileSystemError } from './FileSystemError';
 import { findMimeType } from './findMimeType';
 import type {
 	CopyOptions,
@@ -27,21 +28,14 @@ type MemoryDirectory = IFileStat & {
 	children: MemoryNode[];
 };
 
-export function createMemoryFileSystem(
-	options: {
-		root?: MemoryDirectory;
-	} = {},
-): IFileSystem {
+export function createMemoryFileSystem(options: { root?: MemoryDirectory } = {}): IFileSystem {
 	return new MemFS(options);
 }
 
-class MemoryFileSystemError extends Error {
-	code?: string;
-
-	constructor(message: string, code?: string) {
-		super(message);
+class MemoryFileSystemError extends FileSystemError {
+	constructor(message: string, code: string) {
+		super(message, code);
 		this.name = 'MemoryFileSystemError';
-		this.code = code;
 	}
 }
 
@@ -408,7 +402,7 @@ class MemFS implements IFileSystem {
 
 		const self = this;
 		const stream = new Writable({
-			write(chunk: Buffer, encoding: BufferEncoding, callback: (error?: Error | null) => void) {
+			write(chunk: Buffer, _encoding: BufferEncoding, callback: (error?: Error | null) => void) {
 				if (signal?.aborted) {
 					callback(new MemoryFileSystemError('Operation aborted', 'ABORT_ERR'));
 					return;
@@ -487,7 +481,9 @@ class MemFS implements IFileSystem {
 			let c = computeIfAbsent(this.cache, mf, () => ({}) as Cache);
 			if (!c.url) {
 				let mime = findMimeType(mf.name) || 'application/octet-stream';
-				c.url = URL.createObjectURL(new Blob([mf.content], { type: mime }));
+				// Convert Buffer to Uint8Array for Blob compatibility with TypeScript 5.x strict typing
+				const blobPart = typeof mf.content === 'string' ? mf.content : new Uint8Array(mf.content);
+				c.url = URL.createObjectURL(new Blob([blobPart], { type: mime }));
 			}
 
 			return c.url;

@@ -1,4 +1,4 @@
-import { verifyNetflixProxy, VerifyResult } from '@/poc/netflix/verifyNetflixProxy';
+import { verifyNetflixProxy, type VerifyResult } from '@/poc/netflix/verifyNetflixProxy';
 
 export interface RunNetflixCheckOptions {
 	proxy?: string[];

@@ -9,10 +9,10 @@ export function addPreload(
 		return false;
 	}
 
-	let resolvedId;
+	let resolvedId: string | undefined;
 	try {
 		resolvedId = System.resolve(id);
-	} catch (e) {}
+	} catch (_e) {}
 
 	if (!override && resolvedId && System.has(resolvedId)) {
 		return false;
@@ -23,7 +23,7 @@ export function addPreload(
 	try {
 		void new URL(id);
 		isBareSpecifier = false;
-	} catch (e) {}
+	} catch (_e) {}
 
 	if (typeof preload === 'function') {
 		// resolved by named register

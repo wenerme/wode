@@ -45,7 +45,7 @@ export type CreateWriteStreamOptions = OperationOptions & {
 };
 export type StatOptions = OperationOptions & {};
 
-type WritableData = string | ArrayBuffer | ArrayBufferView | ReadableStream;
+type WritableData = string | ArrayBuffer | ArrayBufferView<ArrayBufferLike> | ReadableStream;
 
 /**
  * Universal file system interface (browser & server compatible)
@@ -99,4 +99,3 @@ export type IFileStat = {
 	meta: Record<string, any>;
 	size: number;
 };
-

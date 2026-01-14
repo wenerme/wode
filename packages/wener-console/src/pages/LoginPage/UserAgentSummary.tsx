@@ -1,4 +1,4 @@
-import React, { type ComponentPropsWithoutRef, type FC } from 'react';
+import type { ComponentPropsWithoutRef, FC } from 'react';
 import { BiLogoChrome } from 'react-icons/bi';
 import { HiMiniLanguage } from 'react-icons/hi2';
 import { MdDarkMode, MdLightMode } from 'react-icons/md';
@@ -33,7 +33,7 @@ const Browser = () => {
 	if (!brand) {
 		return <small className={'text-error text-xs opacity-75'}>请使用新版本的 Chrome 浏览器</small>;
 	}
-	const old = parseInt(version) < 100;
+	const old = parseInt(version, 10) < 100;
 
 	return (
 		<div className={'inline-flex items-center'}>

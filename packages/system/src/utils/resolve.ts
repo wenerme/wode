@@ -7,7 +7,8 @@ function loop(exports: any, keys: Set<string>): string | undefined {
 	}
 
 	if (exports) {
-		let idx, tmp;
+		let idx: number | string;
+		let tmp: string | undefined;
 		if (Array.isArray(exports)) {
 			for (idx = 0; idx < exports.length; idx++) {
 				if ((tmp = loop(exports[idx], keys))) return tmp;
@@ -32,7 +33,7 @@ function bail(name: string, entry: string, condition?: number): undefined {
 }
 
 function toName(name: string, entry: string) {
-	return entry === name ? '.' : entry[0] === '.' ? entry : entry.replace(new RegExp('^' + name + '/'), './');
+	return entry === name ? '.' : entry[0] === '.' ? entry : entry.replace(new RegExp(`^${name}/`), './');
 }
 
 export interface ResolveOptions {
@@ -53,7 +54,7 @@ export function resolve(pkg: any, entry = '.', options: ResolveOptions = {}): st
 		const { browser, require, unsafe, conditions = [] } = options;
 
 		let target = toName(name, entry);
-		if (target[0] !== '.') target = './' + target;
+		if (target[0] !== '.') target = `./${target}`;
 
 		if (typeof exports === 'string') {
 			return target === '.' ? exports : bail(name, target);
@@ -63,8 +64,8 @@ export function resolve(pkg: any, entry = '.', options: ResolveOptions = {}): st
 		unsafe || allows.add(require ? 'require' : 'import');
 		unsafe || allows.add(browser ? 'browser' : 'node');
 
-		let key;
-		let tmp;
+		let key: string;
+		let tmp: string | undefined;
 		let isSingle = false;
 
 		for (key in exports) {
@@ -105,7 +106,7 @@ export function resolve(pkg: any, entry = '.', options: ResolveOptions = {}): st
  */
 export function legacy(pkg: any, options: { browser?: boolean | string; fields?: string[] } = {}) {
 	let i = 0;
-	let value;
+	let value: unknown;
 	let browser = options.browser;
 	const fields = options.fields ?? ['module', 'main'];
 
@@ -126,7 +127,7 @@ export function legacy(pkg: any, options: { browser?: boolean | string; fields?:
 				continue;
 			}
 
-			return typeof value === 'string' ? './' + value.replace(/^\.?\//, '') : value;
+			return typeof value === 'string' ? `./${value.replace(/^\.?\//, '')}` : value;
 		}
 	}
 }

@@ -84,7 +84,7 @@ runMcpServerCommand({
 
 					const tokenInfo = await tokenStorage.getTokenInfo(config.appId);
 
-					if (tokenInfo && tokenInfo.hasTokens) {
+					if (tokenInfo?.hasTokens) {
 						logger.info('Authentication Status:', {
 							authenticated: true,
 							isExpired: tokenInfo.isExpired,
@@ -115,7 +115,7 @@ runMcpServerCommand({
 					const config = getFeishuMcpConfig();
 
 					logger.info('Feishu MCP Configuration:', {
-						appId: config.appId.substring(0, 8) + '...',
+						appId: `${config.appId.substring(0, 8)}...`,
 						domain: config.domain,
 						timeout: config.timeout,
 						readonly: config.readonly,

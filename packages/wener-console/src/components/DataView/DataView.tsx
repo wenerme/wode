@@ -141,7 +141,7 @@ export namespace DataView {
 				const state = store.getState();
 				console.log(`[DEBUG] DataViewState`, state);
 				console.log(`use window._DataViewStore to access the store`);
-				(window as any)['_DataViewStore'] = store;
+				(window as any)._DataViewStore = store;
 			},
 		});
 	};

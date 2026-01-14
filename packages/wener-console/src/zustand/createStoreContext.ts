@@ -32,7 +32,7 @@ export function createStoreContext<S extends StoreApi<unknown>>() {
 
 	const useContextStore: UseContextStore<S> = <StateSlice = ExtractState<S>>(
 		selector?: (state: ExtractState<S>) => StateSlice,
-		equalityFn?: (a: StateSlice, b: StateSlice) => boolean,
+		_equalityFn?: (a: StateSlice, b: StateSlice) => boolean,
 	) => {
 		const store = useContext(ZustandContext);
 		if (!store) {

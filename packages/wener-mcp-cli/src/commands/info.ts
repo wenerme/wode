@@ -2,7 +2,7 @@
  * Info command - Show server or tool details
  */
 
-import { connectToServer, listTools, safeClose } from '../client';
+import { type Client, connectToServer, listTools, safeClose } from '../client';
 import { getServerConfig, loadConfig } from '../config';
 import { ErrorCode, formatCliError, serverConnectionError, toolNotFoundError } from '../errors';
 import { formatJson, formatServerDetails, formatToolSchema } from '../output';
@@ -35,7 +35,7 @@ export async function infoCommand(options: InfoOptions): Promise<void> {
 
 	const serverWithSource = getServerConfig(config, serverName);
 
-	let client;
+	let client: Client;
 	let close: () => Promise<void> = async () => {};
 
 	try {

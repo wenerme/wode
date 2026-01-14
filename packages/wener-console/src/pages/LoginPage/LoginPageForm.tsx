@@ -1,4 +1,4 @@
-import React, { type ComponentPropsWithoutRef, type FC } from 'react';
+import type { ComponentPropsWithoutRef, FC } from 'react';
 import { useForm } from 'react-hook-form';
 import { CiLock, CiUser } from 'react-icons/ci';
 import { PiBuildingsThin } from 'react-icons/pi';

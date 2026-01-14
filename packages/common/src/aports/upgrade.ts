@@ -72,9 +72,9 @@ if (ids.length) {
 }
 
 if (ids.length === 1) {
-	await upgrade({ pkg: ids[0], next: argv['to'], dry: parseBoolean(argv['dry-run']) });
+	await upgrade({ pkg: ids[0], next: argv.to, dry: parseBoolean(argv['dry-run']) });
 } else if (ids.length) {
-	if (argv['to']) {
+	if (argv.to) {
 		throw new Error(`--to only support single package`);
 	}
 	for (const id of ids) {

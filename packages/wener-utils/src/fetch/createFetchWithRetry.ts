@@ -24,19 +24,19 @@ export function createFetchWithRetry({
 	// https://github.com/jonbern/fetch-retry/blob/master/index.js
 
 	return function fetchRetry(input: string | URL | Request, init?: RequestInit) {
-		return new Promise(function (resolve, reject) {
-			var wrappedFetch = function (attempt: number) {
+		return new Promise((resolve, reject) => {
+			var wrappedFetch = (attempt: number) => {
 				// As of node 18, this is no longer needed since node comes with native support for fetch:
 				/* istanbul ignore next */
 				var _input = typeof Request !== 'undefined' && input instanceof Request ? input.clone() : input;
 				fetch(_input, init)
-					.then(function (response) {
+					.then((response) => {
 						if (Array.isArray(retryOn) && retryOn.indexOf(response.status) === -1) {
 							resolve(response);
 						} else if (typeof retryOn === 'function') {
 							try {
 								return Promise.resolve(retryOn(attempt, null, response))
-									.then(function (retryOnResponse) {
+									.then((retryOnResponse) => {
 										if (retryOnResponse) {
 											retry(attempt, null, response);
 										} else {
@@ -56,19 +56,19 @@ export function createFetchWithRetry({
 						}
 						return;
 					})
-					.catch(function (error) {
+					.catch((error) => {
 						if (typeof retryOn === 'function') {
 							try {
 								// eslint-disable-next-line no-undef
 								Promise.resolve(retryOn(attempt, error, null))
-									.then(function (retryOnResponse) {
+									.then((retryOnResponse) => {
 										if (retryOnResponse) {
 											retry(attempt, error, null);
 										} else {
 											reject(error);
 										}
 									})
-									.catch(function (error) {
+									.catch((error) => {
 										reject(error);
 									});
 							} catch (error) {
@@ -84,7 +84,7 @@ export function createFetchWithRetry({
 
 			function retry(attempt: number, error: any, response: Response | null) {
 				let delay = typeof retryDelay === 'function' ? retryDelay(attempt, error, response) : retryDelay;
-				setTimeout(function () {
+				setTimeout(() => {
 					wrappedFetch(++attempt);
 				}, delay);
 			}

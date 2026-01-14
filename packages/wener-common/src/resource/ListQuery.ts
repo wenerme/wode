@@ -25,7 +25,10 @@ export const ListQuerySchema = z.object({
 	deleted: z.coerce.boolean().optional(),
 });
 
-type ListQueryOverride = ListQueryInput | undefined | ((input: ListQueryInput) => ListQueryInput | undefined | void);
+type ListQueryOverride =
+	| ListQueryInput
+	| undefined
+	| ((input: ListQueryInput) => ListQueryInput | undefined | undefined);
 
 export function resolveListQuery(target: ListQueryInput | undefined, ...args: ListQueryOverride[]): ListQuery {
 	let out = args.reduce((a: ListQueryInput, source) => {

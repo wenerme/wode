@@ -162,7 +162,7 @@ function resolveRequest({
 
 	if (timeout) {
 		timeoutController = new AbortController();
-		setTimeout(() => timeoutController!.abort(), timeout);
+		setTimeout(() => timeoutController?.abort(), timeout);
 
 		if (signal) {
 			const controller = new AbortController();
@@ -270,7 +270,7 @@ function calculateDelay(
 		delayMs = config.delay(attempt);
 	} else {
 		// Exponential backoff: delay * factor^attempt
-		delayMs = config.delay * Math.pow(config.factor, attempt);
+		delayMs = config.delay * config.factor ** attempt;
 	}
 
 	// Apply max delay limit
@@ -318,12 +318,7 @@ async function executeWithRetry<T>(
 
 			// Call onFailedAttempt callback if provided
 			if (config.onFailedAttempt) {
-				try {
-					await config.onFailedAttempt(context);
-				} catch (callbackError) {
-					// If callback throws, abort all retries
-					throw callbackError;
-				}
+				await config.onFailedAttempt(context);
 			}
 
 			// Check if we should retry

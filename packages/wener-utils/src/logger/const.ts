@@ -1,4 +1,4 @@
-import type { Logger } from './types';
+import type { Logger, Writer } from './types';
 
 export let logger: Logger = console;
 export function setLogger(l: Logger) {
@@ -6,7 +6,7 @@ export function setLogger(l: Logger) {
 }
 
 export function createNoopLogger(): Logger {
-	const noop = () => {};
+	const noop: Writer = () => {};
 	return {
 		log: noop,
 		info: noop,
@@ -14,5 +14,5 @@ export function createNoopLogger(): Logger {
 		error: noop,
 		debug: noop,
 		trace: noop,
-	} as any;
+	};
 }

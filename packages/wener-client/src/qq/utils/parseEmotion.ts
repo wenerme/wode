@@ -24,7 +24,7 @@ export function parseEmotion(message: string): Array<Element> {
 			(c, v) => {
 				c[v.cn] = v;
 				v.en && (c[v.en] = v);
-				v.alias && v.alias.forEach((a) => (c[a] = v));
+				v.alias?.forEach((a) => (c[a] = v));
 				return c;
 			},
 			{} as { [key: string]: Emotion },
@@ -36,7 +36,7 @@ export function parseEmotion(message: string): Array<Element> {
 	}
 
 	const o: Element[] = [];
-	let m;
+	let m: RegExpExecArray | null;
 	let last = 0;
 	while ((m = regex.exec(message))) {
 		const pre = message.substring(last, m.index);

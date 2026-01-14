@@ -3,7 +3,7 @@
  * Only allows tools that have readOnlyHint: true annotation
  */
 
-import { callTool, connectToServer, getTimeoutMs, listTools, safeClose, type ToolInfo } from '../client';
+import { callTool, connectToServer, getTimeoutMs, listTools, safeClose, } from '../client';
 import { getServerConfig, loadConfig } from '../config';
 import {
 	ErrorCode,
@@ -130,7 +130,7 @@ export async function queryCommand(options: QueryOptions): Promise<void> {
 		process.exit(ErrorCode.CLIENT_ERROR);
 	}
 
-	let client;
+	let client: Client;
 	let close: () => Promise<void> = async () => {};
 
 	try {

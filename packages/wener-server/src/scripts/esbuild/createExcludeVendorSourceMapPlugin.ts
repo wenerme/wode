@@ -10,11 +10,12 @@ export const createExcludeVendorSourceMapPlugin = ({ filter }: { filter: RegExp 
 			if (args.path.endsWith('.js')) {
 				return {
 					contents:
-						fs.readFileSync(args.path, 'utf8')
-						+ '\n//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIiJdLCJtYXBwaW5ncyI6IkEifQ==',
+						fs.readFileSync(args.path, 'utf8') +
+						'\n//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIiJdLCJtYXBwaW5ncyI6IkEifQ==',
 					loader: 'default',
 				};
 			}
+			return undefined;
 		});
 	},
 });

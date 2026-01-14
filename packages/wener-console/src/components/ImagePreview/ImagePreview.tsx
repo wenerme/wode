@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useContext, useEffect, useState, type FC, type HTMLProps } from 'react';
+import { useContext, useEffect, useState, type FC, type HTMLProps } from 'react';
 import { HiChevronDoubleLeft, HiChevronDoubleRight, HiXMark } from 'react-icons/hi2';
 import {
 	PiArrowClockwise,

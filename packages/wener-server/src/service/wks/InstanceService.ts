@@ -7,7 +7,7 @@ import { ExposeService, type LocalService } from '../server';
 @Service({ name: 'wks.InstanceService' })
 export class InstanceServiceStub {
 	@Method({})
-	getInstanceId(req: unknown): string {
+	getInstanceId(_req: unknown): string {
 		throw new RemoteMethodNotImplemented();
 	}
 }
@@ -20,7 +20,7 @@ type LocalInstanceService = LocalService<InstanceServiceStub>;
 @Injectable()
 export class InstanceService implements LocalInstanceService {
 	@Method({})
-	getInstanceId(req: unknown) {
+	getInstanceId(_req: unknown) {
 		return App.instanceId;
 	}
 }

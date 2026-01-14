@@ -14,5 +14,3 @@ export function getPackageDir(currentDir: string = process.cwd()) {
 	}
 	return currentDir;
 }
-
-function findUp() {}

@@ -51,14 +51,14 @@ export function getMssqlConfig(): MssqlConfig {
 	if (port) {
 		try {
 			config.port = parseInt(port, 10);
-		} catch (error) {
+		} catch (_error) {
 			logger.warn(`Invalid MSSQL_PORT value: ${port}. Using default port 1433.`);
 		}
 	}
 
 	// Encryption settings for Azure SQL (matching Python reference behavior)
 	// Check if we're connecting to Azure SQL
-	if (config.server && config.server.includes('.database.windows.net')) {
+	if (config.server?.includes('.database.windows.net')) {
 		config.encrypt = true; // Azure SQL requires encryption
 		logger.info('Detected Azure SQL, enabling encryption');
 	} else {

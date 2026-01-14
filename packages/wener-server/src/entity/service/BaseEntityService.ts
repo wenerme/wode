@@ -72,7 +72,7 @@ export class BaseEntityService<E extends StandardBaseEntity>
 		return resolveEntitySearch({ ...opts, Entity: this.Entity, hasFeature: this.hasFeature });
 	}
 
-	async claimEntityOwner(ent: ResolveEntityOptions<E>, opts: ClaimEntityOwnerOptions): Promise<EntityResult<E>> {
+	async claimEntityOwner(ent: ResolveEntityOptions<E>, _opts: ClaimEntityOwnerOptions): Promise<EntityResult<E>> {
 		const userId = Contexts.userId.require();
 		const { entity } = await this.requireEntity(ent);
 		Errors.BadRequest.check(hasEntityFeature(entity, EntityFeature.HasOwnerRef), '资源不支持所有权');
@@ -91,7 +91,7 @@ export class BaseEntityService<E extends StandardBaseEntity>
 		return { entity };
 	}
 
-	async releaseEntityOwner(ent: ResolveEntityOptions<E>, opts: ReleaseEntityOwnerOptions): Promise<EntityResult<E>> {
+	async releaseEntityOwner(ent: ResolveEntityOptions<E>, _opts: ReleaseEntityOwnerOptions): Promise<EntityResult<E>> {
 		const { entity } = await this.requireEntity(ent);
 		Errors.BadRequest.check(hasEntityFeature(entity, EntityFeature.HasOwnerRef), '资源不支持所有权');
 		entity.ownerId = undefined;
@@ -191,9 +191,9 @@ export class BaseEntityService<E extends StandardBaseEntity>
 			try {
 				entity = await this.em.upsert(this.Entity, data as any, {
 					onConflictFields,
-					// @ts-ignore
+					// @ts-expect-error
 					onConflictMergeFields,
-					// @ts-ignore
+					// @ts-expect-error
 					onConflictExcludeFields: [...onConflictExcludeFields, 'id', 'uid', 'tid', 'createdAt', 'deletedAt'],
 					onConflictAction,
 				});

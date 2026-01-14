@@ -19,7 +19,7 @@ MDAwMDAwMDAwMDAwMDAwMA==
 		block: {
 			type: 'RSA PRIVATE KEY',
 			header: { 'Proc-Type': '4,ENCRYPTED', 'DEK-Info': 'DES-EDE3-CBC,ABC' },
-			bytes: ArrayBuffers.from('0'.repeat(64)),
+			bytes: ArrayBuffers.from('0'.repeat(64), 'utf8', Uint8Array),
 		},
 		head: 'Nice\n',
 		tail: 'Hello\n',

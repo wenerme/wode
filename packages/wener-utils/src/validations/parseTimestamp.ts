@@ -21,7 +21,7 @@ export function parseTimestamp(raw?: string | number | Date): Date | undefined {
 		return new Date(n);
 	} else if (typeof raw === 'string') {
 		const date = new Date(raw);
-		if (!isNaN(+date)) {
+		if (!Number.isNaN(+date)) {
 			return date;
 		}
 	}

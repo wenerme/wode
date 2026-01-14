@@ -1,5 +1,4 @@
 import { describe, expect, test } from 'vitest';
-import { formatSort } from './formatSort';
 import { parseSort } from './parseSort';
 
 describe('parseSort', () => {

@@ -141,7 +141,7 @@ interface HostConfig {
 	hydratableInstance: never;
 	publicInstance: null;
 	formInstance: never;
-	hostContext: {};
+	hostContext: null;
 	childSet: never;
 	timeoutHandle: number;
 	noTimeout: -1;
@@ -160,7 +160,7 @@ function getInstanceProps(props: Reconciler.Fiber['pendingProps']): HostConfig['
 	return instanceProps;
 }
 
-const NO_CONTEXT: HostConfig['hostContext'] = {};
+const NO_CONTEXT: HostConfig['hostContext'] = null;
 
 let currentUpdatePriority: number = NoEventPriority;
 
@@ -200,9 +200,9 @@ const reconciler = /* @__PURE__ */ createReconciler<
 	insertBefore: (parent, child, beforeChild) => parent.children.splice(parent.children.indexOf(beforeChild), 0, child),
 	removeChild: (parent, child) => parent.children.splice(parent.children.indexOf(child), 1),
 	removeChildFromContainer: (container) => (container.head = null),
-	getPublicInstance: () => null,
-	getRootHostContext: () => NO_CONTEXT,
-	getChildHostContext: () => NO_CONTEXT,
+	getPublicInstance: (): HostConfig['publicInstance'] => null,
+	getRootHostContext: (): HostConfig['hostContext'] => NO_CONTEXT,
+	getChildHostContext: (): HostConfig['hostContext'] => NO_CONTEXT,
 	shouldSetTextContent: () => false,
 	finalizeInitialChildren: () => false,
 	commitUpdate: (instance, _type, _prevProps, nextProps) => (instance.props = getInstanceProps(nextProps)),
@@ -228,7 +228,9 @@ const reconciler = /* @__PURE__ */ createReconciler<
 	suspendInstance() {},
 	waitForCommitToBeReady: () => null,
 	NotPendingTransition: null,
-	HostTransitionContext: /* @__PURE__ */ React.createContext<HostConfig['TransitionStatus']>(null),
+	// React reconciler expects internal ReactContext type with private properties
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	HostTransitionContext: /* @__PURE__ */ React.createContext<HostConfig['TransitionStatus']>(null) as any,
 	setCurrentUpdatePriority(newPriority: number) {
 		currentUpdatePriority = newPriority;
 	},
@@ -265,9 +267,12 @@ const reconciler = /* @__PURE__ */ createReconciler<
 function logRecoverableError(error: any): void {
 	// In modern browsers, reportError will dispatch an error event,
 	// emulating an uncaught JavaScript error.
-	if (typeof reportError === 'function') return reportError(error);
-	// In older browsers and test environments, fallback to console.error.
-	else return console.error(error);
+	if (typeof reportError === 'function') {
+		reportError(error);
+	} else {
+		// In older browsers and test environments, fallback to console.error.
+		console.error(error);
+	}
 }
 
 const container: HostContainer = { head: null };

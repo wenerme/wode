@@ -1,4 +1,4 @@
-import React, { useState, type FC, type ReactNode } from 'react';
+import { useState, type FC, type ReactNode } from 'react';
 import { HiUsers } from 'react-icons/hi2';
 import { clsx } from 'clsx';
 import { Button } from '../../daisy';

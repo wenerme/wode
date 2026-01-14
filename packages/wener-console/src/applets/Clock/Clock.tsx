@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, type ComponentPropsWithoutRef, type FC } from 'react';
+import { useEffect, useReducer, type ComponentPropsWithoutRef, type FC } from 'react';
 import styled from '@emotion/styled';
 import { clsx } from 'clsx';
 
@@ -261,7 +261,7 @@ export const Clock: FC<ComponentPropsWithoutRef<'div'>> = ({ className, children
 
 	const clockText = () => {
 		let hh: string | number = h,
-			ampm,
+			ampm: string,
 			mm: string | number = m;
 
 		// We change the hours from 24 to 12 hours and establish whether it is AM or PM
@@ -273,7 +273,7 @@ export const Clock: FC<ComponentPropsWithoutRef<'div'>> = ({ className, children
 		}
 
 		// We detect when it's 0 AM and transform to 12 AM
-		if (hh == 0) {
+		if (hh === 0) {
 			hh = 12;
 		}
 

@@ -2,17 +2,18 @@ import { exec } from 'node:child_process';
 import fs from 'node:fs/promises';
 import { pascalCase } from '@wener/utils';
 import { test } from 'vitest';
-import { RecognizeIdcardRoot } from '../OcrV20210707.types';
 import type { ApiDoc, TypeSchema } from './spec';
 
 const alias: Record<string, string> = { RecognizeIdcardResponse: 'RecognizeIdcardRoot' };
 
-test(
+// Skip: This is a code generator, not a unit test - it writes to source files and requires network
+test.skip(
 	'gen',
+	{ timeout: 60 * 5 * 1000 },
 	async () => {
 		// return
 		const gen = async ({ product, version }: { product: string; version: string }) => {
-			let doc;
+			let doc: ApiDoc;
 			try {
 				doc = JSON.parse(await fs.readFile(`./ignored/${product}-${version}.json`, 'utf8'));
 			} catch {
@@ -44,23 +45,19 @@ function buildType(schema: TypeSchema) {
 	let type = schema.type;
 	switch (type) {
 		case 'object': {
-			{
-				type = '{';
-				for (const [name, vs] of Object.entries(schema.properties!)) {
-					type += `\n/** ${vs.description} */\n${name}${vs.required ? '' : '?'}: ${buildType(vs)};`;
-				}
-
-				type += '\n}';
+			type = '{';
+			for (const [name, vs] of Object.entries(schema.properties!)) {
+				type += `\n/** ${vs.description} */\n${name}${vs.required ? '' : '?'}: ${buildType(vs)};`;
 			}
+
+			type += '\n}';
 
 			break;
 		}
 
 		case 'string': {
-			{
-				if (schema.format === 'binary') {
-					type += '| BufferSource';
-				}
+			if (schema.format === 'binary') {
+				type += '| BufferSource';
 			}
 
 			break;
@@ -87,10 +84,10 @@ function buildType(schema: TypeSchema) {
 }
 
 function writeApi(doc: ApiDoc) {
-	const out = [];
-	const ext = [];
-	let nsName;
-	let interfaceName;
+	const out: string[] = [];
+	const ext: string[] = [];
+	let nsName: string;
+	let interfaceName: string;
 
 	out.push(`
 import { AliCloudClientOptions } from './AliCloudClient';
@@ -107,108 +104,105 @@ import { AliCloudClientOptions } from './AliCloudClient';
       $version: '${version}';
     `);
 	}
+	for (const [name, v] of Object.entries(doc.apis)) {
+		const { summary, deprecated, title, description, operationType } = v;
+		out.push('/**');
+		out.push(
+			[
+				summary.trim(),
+				'  ',
+				description ? ['@remarks', '  ', title, description] : undefined,
+				' ',
+				deprecated ? '@deprecated' : '',
+				operationType === 'read' && '@readonly',
+				' ',
+				`@acs-operation-type ${operationType}`,
+			]
+				.flat()
+				.filter(Boolean)
+				.map((v) => String(v).trim())
+				.join('\n')
+				.trim()
+				.replaceAll(/^/gm, '* '),
+			'*/',
+			`\t${name}(req: ${name}Request,opts?:AliCloudClientOptions): Promise<${name}Response>;`,
+		);
 
-	{
-		for (const [name, v] of Object.entries(doc.apis)) {
-			const { summary, deprecated, title, description, operationType } = v;
-			out.push('/**');
-			out.push(
-				[
-					summary.trim(),
-					'  ',
-					description ? ['@remarks', '  ', title, description] : undefined,
-					' ',
-					deprecated ? '@deprecated' : '',
-					operationType === 'read' && '@readonly',
-					' ',
-					`@acs-operation-type ${operationType}`,
-				]
-					.flat()
-					.filter(Boolean)
-					.map((v) => String(v).trim())
-					.join('\n')
-					.trim()
-					.replaceAll(/^/gm, '* '),
-				'*/',
-				`\t${name}(req: ${name}Request,opts?:AliCloudClientOptions): Promise<${name}Response>;`,
-			);
+		const requestName = `${name}Request`;
+		const responseName = `${name}Response`;
 
-			const requestName = `${name}Request`;
-			const responseName = `${name}Response`;
+		if (alias[requestName]) {
+			out.unshift(`import {type ${alias[requestName]} from './${nsName}.types';`);
+			ext.push(`export type ${name}Request = ${alias[requestName]};`);
+		} else {
+			ext.push(`export interface ${name}Request {`);
 
-			if (alias[requestName]) {
-				out.unshift(`import {type ${alias[requestName]} from './${nsName}.types';`);
-				ext.push(`export type ${name}Request = ${alias[requestName]};`);
-			} else {
-				ext.push(`export interface ${name}Request {`);
-
-				{
-					const { parameters } = v;
-					for (const { name, in: _in, schema } of parameters) {
-						if (_in === 'body' && name !== 'body') {
-							throw new Error(`Invalid body name ${name}`);
-						}
-
-						ext.push('/**');
-						const { title, description } = schema;
-						ext.push(
-							[title, description, `@acs-in ${_in}`]
-								.flat()
-								.filter(Boolean)
-								.map((v) => String(v).trim())
-								.join('\n')
-								.trim()
-								.replaceAll(/^/gm, '* '),
-							'*/',
-						);
-						writeField({ name, schema, out: ext });
+			{
+				const { parameters } = v;
+				for (const { name, in: _in, schema } of parameters) {
+					if (_in === 'body' && name !== 'body') {
+						throw new Error(`Invalid body name ${name}`);
 					}
+
+					ext.push('/**');
+					const { title, description } = schema;
+					ext.push(
+						[title, description, `@acs-in ${_in}`]
+							.flat()
+							.filter(Boolean)
+							.map((v) => String(v).trim())
+							.join('\n')
+							.trim()
+							.replaceAll(/^/gm, '* '),
+						'*/',
+					);
+					writeField({ name, schema, out: ext });
+				}
+			}
+
+			ext.push('}');
+		}
+
+		// response
+		if (alias[responseName]) {
+			out.unshift(`import {type ${alias[responseName]}} from './${nsName}.types';`);
+			ext.push(`export type ${responseName} = ${alias[responseName]};`);
+		} else {
+			let schema = v.responses['200'].schema;
+			// wrapper
+			{
+				const { Data, RequestId, Code, Message } = schema.properties || {};
+				if (Data && Code && Message && RequestId) {
+					schema = Data;
+				}
+			}
+
+			if (schema.properties) {
+				ext.push(`export interface ${name}Response {`);
+				for (const [name, vs] of Object.entries(schema.properties)) {
+					ext.push('/**');
+					const { title, description } = vs;
+					ext.push(
+						[title, description]
+							.flat()
+							.filter(Boolean)
+							.map((v) => String(v).trim())
+							.join('\n')
+							.trim()
+							.replaceAll(/^/gm, '* '),
+						'*/',
+					);
+					writeField({ name, schema: vs, out: ext });
 				}
 
 				ext.push('}');
-			}
-
-			// response
-			if (alias[responseName]) {
-				out.unshift(`import {type ${alias[responseName]}} from './${nsName}.types';`);
-				ext.push(`export type ${responseName} = ${alias[responseName]};`);
 			} else {
-				let schema = v.responses['200'].schema;
-				// wrapper
-				{
-					const { Data, RequestId, Code, Message } = schema.properties || {};
-					if (Data && Code && Message && RequestId) {
-						schema = Data;
-					}
-				}
-
-				if (schema.properties) {
-					ext.push(`export interface ${name}Response {`);
-					for (const [name, vs] of Object.entries(schema.properties)) {
-						ext.push('/**');
-						const { title, description } = vs;
-						ext.push(
-							[title, description]
-								.flat()
-								.filter(Boolean)
-								.map((v) => String(v).trim())
-								.join('\n')
-								.trim()
-								.replaceAll(/^/gm, '* '),
-							'*/',
-						);
-						writeField({ name, schema: vs, out: ext });
-					}
-
-					ext.push('}');
+				// primitive
+				if (schema.type === 'string') {
+					// may unwrap to json
+					ext.push(`export type ${name}Response = ${schema.type} | object;`);
 				} else {
-					// primitive
-					if (schema.type === 'string') {
-						// may unwrap to json
-						ext.push(`export type ${name}Response = ${schema.type} | object;`);
-					} else {
-						ext.push(`export type ${name}Response = ${buildType(schema)};`);
-					}
+					ext.push(`export type ${name}Response = ${buildType(schema)};`);
 				}
 			}
 		}

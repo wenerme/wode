@@ -1,4 +1,4 @@
-import React, { type ComponentPropsWithoutRef, type FC, type ReactNode } from 'react';
+import type { ComponentPropsWithoutRef, FC, ReactNode } from 'react';
 import { clsx } from 'clsx';
 import { WechatBrandIcon, WecomBrandIcon } from '../../icons';
 import { cn } from '../../utils/cn';
