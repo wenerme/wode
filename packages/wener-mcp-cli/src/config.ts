@@ -5,9 +5,11 @@
 
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { homedir } from 'node:os';
-import { join, resolve } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
+import { parse as parseToml } from 'smol-toml';
 import {
 	ClaudeConfigSchema,
+	ConfigSourceTypes,
 	CursorConfigSchema,
 	GeminiConfigSchema,
 	isHttpServer,
@@ -15,6 +17,7 @@ import {
 	McpServersConfigSchema,
 	normalizeHttpConfig,
 	type ConfigSource,
+	type ConfigSourceType,
 	type McpCliConfig,
 	type MergedConfig,
 	type ServerConfig,
@@ -204,6 +207,97 @@ interface ConfigLocation {
 }
 
 /**
+ * Find a file by searching upward from cwd to root (stops at .git directory or home)
+ */
+function findUpSync(filename: string, cwd: string = process.cwd()): string | null {
+	const home = homedir();
+	let current = resolve(cwd);
+
+	while (current) {
+		const filePath = join(current, filename);
+		if (existsSync(filePath)) {
+			return filePath;
+		}
+
+		// Stop at .git directory or home directory
+		const gitPath = join(current, '.git');
+		if (existsSync(gitPath) || current === home) {
+			return null;
+		}
+
+		const parent = dirname(current);
+		if (parent === current) {
+			// Reached filesystem root
+			return null;
+		}
+		current = parent;
+	}
+
+	return null;
+}
+
+/**
+ * Parse codex TOML config file and extract MCP servers
+ * Codex format: [mcp_servers.server_name] sections
+ */
+function parseCodexConfig(content: string): Record<string, ServerConfig> {
+	const servers: Record<string, ServerConfig> = {};
+
+	try {
+		const parsed = parseToml(content) as Record<string, unknown>;
+		const mcpServers = parsed.mcp_servers as Record<string, unknown> | undefined;
+
+		if (!mcpServers || typeof mcpServers !== 'object') {
+			return servers;
+		}
+
+		for (const [name, serverConfig] of Object.entries(mcpServers)) {
+			if (!serverConfig || typeof serverConfig !== 'object') {
+				continue;
+			}
+
+			const config = serverConfig as Record<string, unknown>;
+
+			// Skip disabled servers
+			if (config.enabled === false) {
+				debug(`Skipping disabled codex server: ${name}`);
+				continue;
+			}
+
+			if (config.command && typeof config.command === 'string') {
+				// Stdio server
+				const stdioConfig: ServerConfig = {
+					command: config.command,
+				};
+				if (Array.isArray(config.args)) {
+					stdioConfig.args = config.args.map(String);
+				}
+				if (config.env && typeof config.env === 'object') {
+					stdioConfig.env = config.env as Record<string, string>;
+				}
+				if (config.cwd && typeof config.cwd === 'string') {
+					stdioConfig.cwd = config.cwd;
+				}
+				servers[name] = stdioConfig;
+			} else if (config.url && typeof config.url === 'string') {
+				// HTTP server
+				const httpConfig: ServerConfig = {
+					url: config.url,
+				};
+				if (config.headers && typeof config.headers === 'object') {
+					httpConfig.headers = config.headers as Record<string, string>;
+				}
+				servers[name] = httpConfig;
+			}
+		}
+	} catch (error) {
+		debug(`Failed to parse codex TOML: ${(error as Error).message}`);
+	}
+
+	return servers;
+}
+
+/**
  * Get all config search paths for a given working directory
  */
 function getConfigSearchPaths(cwd: string = process.cwd()): ConfigLocation[] {
@@ -218,12 +312,22 @@ function getConfigSearchPaths(cwd: string = process.cwd()): ConfigLocation[] {
 		label: './.mcp-cli.local.json',
 	});
 
-	// mcp-cli specific config
+	// mcp-cli specific config - also try findup
 	paths.push({
 		path: resolve(cwd, '.mcp-cli.json'),
 		type: 'mcp',
 		label: './.mcp-cli.json',
 	});
+
+	// Try findup for .mcp-cli.json (search upward to .git or HOME)
+	const foundMcpCliJson = findUpSync('.mcp-cli.json', cwd);
+	if (foundMcpCliJson && foundMcpCliJson !== resolve(cwd, '.mcp-cli.json')) {
+		paths.push({
+			path: foundMcpCliJson,
+			type: 'mcp',
+			label: foundMcpCliJson.replace(home, '~'),
+		});
+	}
 
 	// Claude standard: .mcp.json (hidden file)
 	paths.push({
@@ -242,6 +346,13 @@ function getConfigSearchPaths(cwd: string = process.cwd()): ConfigLocation[] {
 		path: resolve(cwd, '.gemini', 'mcp_config.json'),
 		type: 'gemini',
 		label: './.gemini/mcp_config.json',
+	});
+
+	// Codex config - project level
+	paths.push({
+		path: resolve(cwd, '.codex', 'config.toml'),
+		type: 'codex',
+		label: './.codex/config.toml',
 	});
 
 	// User-level configs
@@ -275,6 +386,13 @@ function getConfigSearchPaths(cwd: string = process.cwd()): ConfigLocation[] {
 		label: '~/.gemini/antigravity/mcp_config.json',
 	});
 
+	// Codex config - user level
+	paths.push({
+		path: join(home, '.codex', 'config.toml'),
+		type: 'codex',
+		label: '~/.codex/config.toml',
+	});
+
 	// Legacy mcp_servers.json locations
 	paths.push({
 		path: resolve(cwd, 'mcp_servers.json'),
@@ -305,6 +423,12 @@ function parseConfigFile(
 	content: string,
 	location: ConfigLocation,
 ): { servers: Record<string, ServerConfig>; options?: McpCliConfig } | null {
+	// Handle codex TOML config
+	if (location.type === 'codex') {
+		const servers = parseCodexConfig(content);
+		return { servers };
+	}
+
 	let parsed: unknown;
 	try {
 		parsed = JSON.parse(content);
@@ -487,17 +611,13 @@ function filterServers(
 
 	// Apply include filter (whitelist)
 	if (include && include.length > 0) {
-		filtered = new Map(
-			Array.from(filtered.entries()).filter(([name]) => matchesPatterns(name, include)),
-		);
+		filtered = new Map(Array.from(filtered.entries()).filter(([name]) => matchesPatterns(name, include)));
 		debug(`Include filter applied: ${filtered.size} servers remaining`);
 	}
 
 	// Apply exclude filter (blacklist) - takes precedence
 	if (exclude && exclude.length > 0) {
-		filtered = new Map(
-			Array.from(filtered.entries()).filter(([name]) => !matchesPatterns(name, exclude)),
-		);
+		filtered = new Map(Array.from(filtered.entries()).filter(([name]) => !matchesPatterns(name, exclude)));
 		debug(`Exclude filter applied: ${filtered.size} servers remaining`);
 	}
 
@@ -516,7 +636,8 @@ export function discoverConfigs(cwd?: string, options?: { skipDiscovery?: boolea
 
 	// Track extends paths to load and config options
 	let extendsToLoad: string[] = [];
-	let discoveryConfig = true;
+	// discoveryConfig can be: true (all), false (none), or string[] (selective)
+	let discoveryConfig: boolean | string[] = true;
 	let includePatterns: string[] = [];
 	let excludePatterns: string[] = [];
 	const loadedPaths = new Set<string>();
@@ -537,8 +658,8 @@ export function discoverConfigs(cwd?: string, options?: { skipDiscovery?: boolea
 		if (inlineConfig.options?.extends) {
 			extendsToLoad = [...inlineConfig.options.extends];
 		}
-		if (inlineConfig.options?.discoveryConfig === false) {
-			discoveryConfig = false;
+		if (inlineConfig.options?.discoveryConfig !== undefined) {
+			discoveryConfig = inlineConfig.options.discoveryConfig;
 		}
 		if (inlineConfig.options?.include) {
 			includePatterns = [...inlineConfig.options.include];
@@ -564,8 +685,8 @@ export function discoverConfigs(cwd?: string, options?: { skipDiscovery?: boolea
 		if (result.options?.extends && extendsToLoad.length === 0) {
 			extendsToLoad = [...result.options.extends];
 		}
-		if (result.options?.discoveryConfig === false) {
-			discoveryConfig = false;
+		if (result.options?.discoveryConfig !== undefined && discoveryConfig === true) {
+			discoveryConfig = result.options.discoveryConfig;
 		}
 		if (result.options?.include && includePatterns.length === 0) {
 			includePatterns = [...result.options.include];
@@ -603,13 +724,22 @@ export function discoverConfigs(cwd?: string, options?: { skipDiscovery?: boolea
 	}
 
 	// If discoveryConfig is disabled or skipDiscovery is set, skip other configs
-	if (!discoveryConfig || options?.skipDiscovery) {
+	if (discoveryConfig === false || options?.skipDiscovery) {
 		debug('Discovery disabled, skipping other configs');
 	} else {
 		// Load remaining configs (non mcp-cli)
 		const otherPaths = searchPaths.filter((p) => !p.label.includes('mcp-cli'));
 		for (const location of otherPaths) {
 			if (loadedPaths.has(location.path)) continue;
+
+			// If discoveryConfig is an array, check if this source type is allowed
+			if (Array.isArray(discoveryConfig)) {
+				const allowedTypes = discoveryConfig.map((t) => t.toLowerCase());
+				if (!allowedTypes.includes(location.type)) {
+					debug(`Skipping ${location.label} (type ${location.type} not in discoveryConfig)`);
+					continue;
+				}
+			}
 
 			const result = loadConfigFile(location);
 			if (!result) continue;

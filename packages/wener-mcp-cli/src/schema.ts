@@ -77,22 +77,32 @@ export type McpServersConfig = z.infer<typeof McpServersConfigSchema>;
 
 /**
  * MCP-CLI specific config format with extends and discoveryConfig
+ * discoveryConfig can be:
+ * - false: disable all discovery
+ * - true: enable all discovery (default)
+ * - array: selective discovery, e.g. ["gemini", "codex", "claude"]
  */
 export const McpCliConfigSchema = z.object({
 	mcpServers: z.record(ServerConfigSchema).optional(),
 	extends: z.array(z.string()).optional(),
-	discoveryConfig: z.boolean().optional(),
+	discoveryConfig: z.union([z.boolean(), z.array(z.string())]).optional(),
 	include: z.array(z.string()).optional(),
 	exclude: z.array(z.string()).optional(),
 });
 export type McpCliConfig = z.infer<typeof McpCliConfigSchema>;
 
 /**
+ * Config source types
+ */
+export const ConfigSourceTypes = ['claude', 'cursor', 'gemini', 'mcp', 'codex'] as const;
+export type ConfigSourceType = (typeof ConfigSourceTypes)[number];
+
+/**
  * Config source information - tracks where the config was found
  */
 export interface ConfigSource {
 	path: string;
-	type: 'claude' | 'cursor' | 'gemini' | 'mcp';
+	type: ConfigSourceType;
 	label: string;
 }
 

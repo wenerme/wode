@@ -1,15 +1,17 @@
 # @wener/mcp-cli
 
+English | [中文](./README.zh-CN.md)
+
 A lightweight CLI for interacting with [MCP (Model Context Protocol)](https://modelcontextprotocol.io/) servers.
 
 ## Features
 
-- 🔍 **Multi-source Config Discovery** - Automatically discovers MCP configs from Claude, Cursor, Gemini, and standard locations
-- 📍 **Source Tracking** - Shows where each server config was found
-- 🔄 **Deduplication** - Handles duplicate server names across configs with warnings
-- 🤖 **Agent-Optimized** - Designed for AI coding agents
-- 🔌 **Universal** - Supports both stdio and HTTP MCP servers
-- 💡 **Actionable Errors** - Structured error messages with recovery suggestions
+- **Multi-source Config Discovery** - Automatically discovers MCP configs from Claude, Cursor, Gemini, Codex, and standard locations
+- **Source Tracking** - Shows where each server config was found
+- **Deduplication** - Handles duplicate server names across configs with warnings
+- **Agent-Optimized** - Designed for AI coding agents
+- **Universal** - Supports both stdio and HTTP MCP servers
+- **Actionable Errors** - Structured error messages with recovery suggestions
 
 ## Installation
 
@@ -30,10 +32,11 @@ The CLI discovers MCP configuration from multiple sources in priority order:
 
 1. **Project-level configs** (checked first):
    - `./.mcp-cli.local.json` (local overrides, highest priority, gitignored)
-   - `./.mcp-cli.json` (mcp-cli specific)
+   - `./.mcp-cli.json` (mcp-cli specific, supports findup to parent directories)
    - `./.mcp.json` (Claude standard)
    - `./.cursor/mcp.json`
    - `./.gemini/mcp_config.json`
+   - `./.codex/config.toml` (Codex TOML format)
    - `./mcp_servers.json`
 
 2. **User-level configs**:
@@ -42,6 +45,7 @@ The CLI discovers MCP configuration from multiple sources in priority order:
    - `~/.claude.json` (with `mcpServers` key)
    - `~/.cursor/mcp.json`
    - `~/.gemini/antigravity/mcp_config.json`
+   - `~/.codex/config.toml`
    - `~/.mcp_servers.json`
    - `~/.config/mcp/mcp_servers.json`
 
@@ -87,7 +91,7 @@ The `.mcp-cli.json` and `.mcp-cli.local.json` files support additional options:
 | Option | Description |
 |--------|-------------|
 | `extends` | Array of config file paths to inherit servers from |
-| `discoveryConfig` | Set to `false` to disable auto-discovery of other config files |
+| `discoveryConfig` | Set to `false` to disable auto-discovery, or array like `["gemini", "codex"]` for selective discovery |
 | `include` | Glob patterns to filter servers (whitelist). Only matching servers are loaded |
 | `exclude` | Glob patterns to exclude servers (blacklist). Takes precedence over include |
 
@@ -102,6 +106,12 @@ The `.mcp-cli.json` and `.mcp-cli.local.json` files support additional options:
 {
   "include": ["dev-*"],           // Only dev-* servers
   "exclude": ["*-mysql", "*-pg"]  // Exclude database servers
+}
+```
+
+```json
+{
+  "discoveryConfig": ["codex", "gemini"]  // Only discover codex and gemini configs
 }
 ```
 
@@ -260,6 +270,18 @@ mcp-cli rm notion
 mcp-cli rm notion asana airtable
 ```
 
+#### `dump <format>` - Export tools in various formats
+
+Export MCP tools in formats suitable for other systems.
+
+```bash
+# Export tools in chat-completions format (uses server__tool naming)
+mcp-cli dump request-tools
+
+# JSON output with error details
+mcp-cli dump request-tools --json
+```
+
 ## Environment Variables
 
 | Variable | Description | Default |
@@ -297,6 +319,7 @@ mcp-cli tools [server]                   # List available tools
 mcp-cli grep <pattern>                   # Search tool names and descriptions
 mcp-cli resources [server]               # List MCP resources
 mcp-cli read <server>/<resource>         # Read an MCP resource
+mcp-cli dump request-tools               # Export tools in chat-completions format
 ```
 
 ## Development
