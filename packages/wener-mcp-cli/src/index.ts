@@ -8,16 +8,20 @@
  *   mcp-cli grep <pattern>              Search tools by glob pattern
  *   mcp-cli info <server>/<tool>        Show tool schema
  *   mcp-cli call <server>/<tool> <json> Call tool with arguments
+ *   mcp-cli query <server>/<tool> <json> Query read-only tool
  *   mcp-cli resources [server]          List MCP resources
  *   mcp-cli read <server>/<resource>    Read an MCP resource
  *   mcp-cli add [options] <name> <url|command> [args...]  Add server config
  *   mcp-cli rm <name>...                Remove server config(s)
+ *   mcp-cli dump <format>               Export tools in various formats
  */
 import { Command } from 'commander';
 import { addCommand } from './commands/add';
 import { callCommand } from './commands/call';
+import { dumpCommand } from './commands/dump';
 import { grepCommand } from './commands/grep';
 import { infoCommand } from './commands/info';
+import { queryCommand } from './commands/query';
 import { readCommand } from './commands/read';
 import { resourcesCommand } from './commands/resources';
 import { rmCommand } from './commands/rm';
@@ -89,12 +93,14 @@ program
 	.command('servers')
 	.description('List all connected MCP servers and their tools')
 	.option('-s, --show-sources', 'Show config source for each server', false)
+	.option('-v, --verbose', 'Show extra tool info (annotations)', false)
 	.action(async (options) => {
 		const globalOpts = program.opts();
 		await serversCommand({
 			withDescriptions: globalOpts.withDescriptions,
 			json: globalOpts.json,
 			showSources: options.showSources,
+			verbose: options.verbose,
 			configPath: globalOpts.config,
 		});
 	});
@@ -148,6 +154,20 @@ program
 	.action(async (target, args) => {
 		const globalOpts = program.opts();
 		await callCommand({
+			target,
+			args,
+			json: globalOpts.json,
+			configPath: globalOpts.config,
+		});
+	});
+
+// query command - Execute a read-only tool
+program
+	.command('query <target> [args]')
+	.description('Query a read-only tool (only tools with readOnlyHint: true)')
+	.action(async (target, args) => {
+		const globalOpts = program.opts();
+		await queryCommand({
 			target,
 			args,
 			json: globalOpts.json,
@@ -218,6 +238,24 @@ program
 		await rmCommand({
 			names,
 			json: globalOpts.json,
+		});
+	});
+
+// dump command - Export tools in various formats
+program
+	.command('dump')
+	.description('Export MCP tools in various formats')
+	.argument('<format>', 'Output format: request-tools (chat-completions format)')
+	.action(async (format) => {
+		const globalOpts = program.opts();
+		if (format !== 'request-tools') {
+			console.error(`Unknown format: ${format}. Supported formats: request-tools`);
+			process.exit(1);
+		}
+		await dumpCommand({
+			format,
+			json: globalOpts.json,
+			configPath: globalOpts.config,
 		});
 	});
 

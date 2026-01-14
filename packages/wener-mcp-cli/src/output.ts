@@ -34,12 +34,29 @@ function color(text: string, colorCode: string): string {
 }
 
 /**
+ * Format tool annotations as compact string
+ */
+function formatAnnotationsCompact(annotations: ToolInfo['annotations']): string {
+	if (!annotations) return '';
+
+	const hints: string[] = [];
+	if (annotations.readOnlyHint) hints.push('readonly');
+	if (annotations.destructiveHint) hints.push('destructive');
+	if (annotations.idempotentHint) hints.push('idempotent');
+	if (annotations.openWorldHint) hints.push('open-world');
+
+	if (hints.length === 0) return '';
+	return `[${hints.join(', ')}]`;
+}
+
+/**
  * Format server list for display
  */
 export function formatServerList(
 	servers: Array<{ name: string; tools: ToolInfo[]; source?: ConfigSource }>,
 	withDescriptions: boolean,
 	showSource = false,
+	verbose = false,
 ): string {
 	const lines: string[] = [];
 
@@ -51,11 +68,21 @@ export function formatServerList(
 		lines.push(serverLine);
 
 		for (const tool of server.tools) {
-			if (withDescriptions && tool.description) {
-				lines.push(`  • ${tool.name} - ${color(tool.description, colors.dim)}`);
-			} else {
-				lines.push(`  • ${tool.name}`);
+			let toolLine = `  • ${tool.name}`;
+
+			// Add annotation hints if verbose
+			if (verbose && tool.annotations) {
+				const hints = formatAnnotationsCompact(tool.annotations);
+				if (hints) {
+					toolLine += ` ${color(hints, colors.yellow)}`;
+				}
 			}
+
+			if (withDescriptions && tool.description) {
+				toolLine += ` - ${color(tool.description, colors.dim)}`;
+			}
+
+			lines.push(toolLine);
 		}
 
 		lines.push('');
@@ -152,6 +179,31 @@ export function formatToolSchema(serverName: string, tool: ToolInfo): string {
 	if (tool.description) {
 		lines.push(`${color('Description:', colors.bold)}`);
 		lines.push(`  ${tool.description}`);
+		lines.push('');
+	}
+
+	// Show annotations if present
+	if (tool.annotations) {
+		lines.push(`${color('Annotations:', colors.bold)}`);
+		if (tool.annotations.title) {
+			lines.push(`  ${color('Title:', colors.yellow)} ${tool.annotations.title}`);
+		}
+		if (tool.annotations.readOnlyHint !== undefined) {
+			const hint = tool.annotations.readOnlyHint ? color('true', colors.green) : 'false';
+			lines.push(`  ${color('Read-only:', colors.yellow)} ${hint}`);
+		}
+		if (tool.annotations.destructiveHint !== undefined) {
+			const hint = tool.annotations.destructiveHint ? color('true', '\x1b[31m') : 'false';
+			lines.push(`  ${color('Destructive:', colors.yellow)} ${hint}`);
+		}
+		if (tool.annotations.idempotentHint !== undefined) {
+			const hint = tool.annotations.idempotentHint ? 'true' : 'false';
+			lines.push(`  ${color('Idempotent:', colors.yellow)} ${hint}`);
+		}
+		if (tool.annotations.openWorldHint !== undefined) {
+			const hint = tool.annotations.openWorldHint ? 'true' : 'false';
+			lines.push(`  ${color('Open-world:', colors.yellow)} ${hint}`);
+		}
 		lines.push('');
 	}
 

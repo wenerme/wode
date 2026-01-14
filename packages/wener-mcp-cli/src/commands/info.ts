@@ -65,6 +65,7 @@ export async function infoCommand(options: InfoOptions): Promise<void> {
 						name: tool.name,
 						description: tool.description,
 						inputSchema: tool.inputSchema,
+						...(tool.annotations ? { annotations: tool.annotations } : {}),
 					}),
 				);
 			} else {
@@ -84,6 +85,7 @@ export async function infoCommand(options: InfoOptions): Promise<void> {
 							name: t.name,
 							description: t.description,
 							inputSchema: t.inputSchema,
+							...(t.annotations ? { annotations: t.annotations } : {}),
 						})),
 					}),
 				);

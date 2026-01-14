@@ -20,6 +20,7 @@ export interface ServersOptions {
 	withDescriptions: boolean;
 	json: boolean;
 	showSources: boolean;
+	verbose: boolean;
 	configPath?: string;
 }
 
@@ -105,6 +106,7 @@ export async function serversCommand(options: ServersOptions): Promise<void> {
 					name: t.name,
 					description: t.description,
 					inputSchema: t.inputSchema,
+					...(options.verbose && t.annotations ? { annotations: t.annotations } : {}),
 				})),
 				error: s.error,
 			})),
@@ -113,7 +115,7 @@ export async function serversCommand(options: ServersOptions): Promise<void> {
 		};
 		console.log(formatJson(jsonOutput));
 	} else {
-		console.log(formatServerList(displayServers, options.withDescriptions, options.showSources));
+		console.log(formatServerList(displayServers, options.withDescriptions, options.showSources, options.verbose));
 
 		if (options.showSources && config.sources.length > 0) {
 			console.log('');
