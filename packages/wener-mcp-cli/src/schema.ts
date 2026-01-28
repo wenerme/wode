@@ -88,6 +88,7 @@ export const McpCliConfigSchema = z.object({
 	discoveryConfig: z.union([z.boolean(), z.array(z.string())]).optional(),
 	include: z.array(z.string()).optional(),
 	exclude: z.array(z.string()).optional(),
+	env: z.record(z.string(), z.string()).optional(),
 });
 export type McpCliConfig = z.infer<typeof McpCliConfigSchema>;
 
