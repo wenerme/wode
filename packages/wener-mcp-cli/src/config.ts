@@ -7,6 +7,7 @@ import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { parse as parseToml } from 'smol-toml';
+import { z } from 'zod';
 import {
 	ClaudeConfigSchema,
 	CursorConfigSchema,
@@ -100,20 +101,62 @@ export function getRetryDelayMs(): number {
 }
 
 /**
- * Cached Claude settings env vars
+ * Cached env vars from all sources
  */
-let claudeEnvCache: Record<string, string> | null = null;
+let envCache: Record<string, string> | null = null;
+
+/**
+ * Parse a .env file content into key-value pairs
+ */
+function parseDotEnv(content: string): Record<string, string> {
+	const env: Record<string, string> = {};
+	for (const line of content.split('\n')) {
+		const trimmed = line.trim();
+		// Skip empty lines and comments
+		if (!trimmed || trimmed.startsWith('#')) continue;
+		const eqIndex = trimmed.indexOf('=');
+		if (eqIndex === -1) continue;
+		const key = trimmed.slice(0, eqIndex).trim();
+		let value = trimmed.slice(eqIndex + 1).trim();
+		// Remove surrounding quotes
+		if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
+			value = value.slice(1, -1);
+		}
+		env[key] = value;
+	}
+	return env;
+}
+
+/**
+ * Load environment variables from .env files
+ * Reads from .env and .env.local in cwd
+ */
+function loadDotEnvFiles(cwd: string = process.cwd()): Record<string, string> {
+	const env: Record<string, string> = {};
+	const dotEnvPaths = [join(cwd, '.env'), join(cwd, '.env.local')];
+
+	for (const dotEnvPath of dotEnvPaths) {
+		if (existsSync(dotEnvPath)) {
+			try {
+				const content = readFileSync(dotEnvPath, 'utf-8');
+				const parsed = parseDotEnv(content);
+				Object.assign(env, parsed);
+				debug(`Loaded env vars from ${dotEnvPath}`);
+			} catch (error) {
+				debug(`Failed to load .env from ${dotEnvPath}: ${(error as Error).message}`);
+			}
+		}
+	}
+
+	return env;
+}
 
 /**
  * Load environment variables from Claude settings files
  * Reads from ~/.claude/settings.json and .claude/settings.local.json
  */
 function loadClaudeSettingsEnv(): Record<string, string> {
-	if (claudeEnvCache !== null) {
-		return claudeEnvCache;
-	}
-
-	claudeEnvCache = {};
+	const env: Record<string, string> = {};
 	const home = homedir();
 
 	const settingsPaths = [join(home, '.claude', 'settings.json'), join(process.cwd(), '.claude', 'settings.local.json')];
@@ -124,7 +167,7 @@ function loadClaudeSettingsEnv(): Record<string, string> {
 				const content = readFileSync(settingsPath, 'utf-8');
 				const settings = JSON.parse(content);
 				if (settings.env && typeof settings.env === 'object') {
-					Object.assign(claudeEnvCache, settings.env);
+					Object.assign(env, settings.env);
 					debug(`Loaded env vars from ${settingsPath}`);
 				}
 			} catch (error) {
@@ -133,20 +176,66 @@ function loadClaudeSettingsEnv(): Record<string, string> {
 		}
 	}
 
-	return claudeEnvCache;
+	return env;
 }
 
 /**
- * Get environment variable value, checking process.env and Claude settings
+ * Cached .env file vars
+ */
+let dotEnvCache: Record<string, string> = {};
+
+/**
+ * Config env vars loaded from mcp-cli config files
+ */
+let configEnvCache: Record<string, string> = {};
+
+/**
+ * Set .env file vars (called during config discovery)
+ */
+function setDotEnv(env: Record<string, string>): void {
+	Object.assign(dotEnvCache, env);
+	envCache = null;
+}
+
+/**
+ * Set config env vars (called during config loading)
+ */
+export function setConfigEnv(env: Record<string, string>): void {
+	Object.assign(configEnvCache, env);
+	// Invalidate cache when config env changes
+	envCache = null;
+}
+
+/**
+ * Load all environment variables from various sources
+ * Priority (later overrides earlier): .env < .env.local < claude settings < config.env
+ * Note: process.env is checked first in getEnvValue, so it has highest priority
+ */
+function loadAllEnv(): Record<string, string> {
+	if (envCache !== null) {
+		return envCache;
+	}
+
+	envCache = {
+		...dotEnvCache,
+		...loadClaudeSettingsEnv(),
+		...configEnvCache,
+	};
+
+	return envCache;
+}
+
+/**
+ * Get environment variable value, checking all sources
  */
 function getEnvValue(varName: string): string | undefined {
-	// First check process.env
+	// First check process.env (highest priority for system-level vars)
 	if (process.env[varName] !== undefined) {
 		return process.env[varName];
 	}
-	// Fall back to Claude settings
-	const claudeEnv = loadClaudeSettingsEnv();
-	return claudeEnv[varName];
+	// Then check loaded env from files
+	const allEnv = loadAllEnv();
+	return allEnv[varName];
 }
 
 /**
@@ -461,7 +550,8 @@ function parseConfigFile(
 		return null;
 	}
 
-	return { servers: result.data.mcpServers ?? {} };
+	const data = result.data as { mcpServers?: Record<string, ServerConfig> };
+	return { servers: data.mcpServers ?? {} };
 }
 
 /**
@@ -514,10 +604,11 @@ function addServersToConfig(
 
 		if (servers.has(name)) {
 			// Track duplicate
-			const existing = duplicateMap.get(name) ?? [servers.get(name)?.source];
+			const existingServer = servers.get(name)!;
+			const existing = duplicateMap.get(name) ?? [existingServer.source];
 			existing.push(source);
 			duplicateMap.set(name, existing);
-			debug(`Duplicate server: ${name} (keeping first from ${servers.get(name)?.source.label})`);
+			debug(`Duplicate server: ${name} (keeping first from ${existingServer.source.label})`);
 		} else {
 			servers.set(name, {
 				name,
@@ -634,6 +725,14 @@ export function discoverConfigs(cwd?: string, options?: { skipDiscovery?: boolea
 	const sources: ConfigSource[] = [];
 	const duplicateMap = new Map<string, ConfigSource[]>();
 
+	// Reset env caches for fresh discovery
+	envCache = null;
+	dotEnvCache = {};
+	configEnvCache = {};
+
+	// Pre-load .env files from working directory
+	setDotEnv(loadDotEnvFiles(workingDir));
+
 	// Track extends paths to load and config options
 	let extendsToLoad: string[] = [];
 	// discoveryConfig can be: true (all), false (none), or string[] (selective)
@@ -643,7 +742,7 @@ export function discoverConfigs(cwd?: string, options?: { skipDiscovery?: boolea
 	let excludePatterns: string[] = [];
 	const loadedPaths = new Set<string>();
 
-	// Helper to update options from a config (first one wins for each option)
+	// Helper to update options from a config (first one wins for each option, env merges)
 	const updateOptions = (configOptions?: McpCliConfig) => {
 		if (!configOptions) return;
 		if (configOptions.extends && extendsToLoad.length === 0) {
@@ -659,6 +758,11 @@ export function discoverConfigs(cwd?: string, options?: { skipDiscovery?: boolea
 		if (configOptions.exclude && excludePatterns.length === 0) {
 			excludePatterns = [...configOptions.exclude];
 		}
+		// Merge env vars (later configs override earlier ones)
+		if (configOptions.env) {
+			setConfigEnv(configOptions.env);
+			debug(`Loaded ${Object.keys(configOptions.env).length} env vars from config`);
+		}
 	};
 
 	// 1. First, check MCP_CLI_CONFIG_INLINE env var for inline config (highest priority)
@@ -671,8 +775,9 @@ export function discoverConfigs(cwd?: string, options?: { skipDiscovery?: boolea
 		};
 		sources.push(source);
 		debug('Found inline config: MCP_CLI_CONFIG_INLINE');
-		addServersToConfig(servers, duplicateMap, inlineConfig.servers, source);
+		// Load env first so it's available for server config substitution
 		updateOptions(inlineConfig.options);
+		addServersToConfig(servers, duplicateMap, inlineConfig.servers, source);
 	}
 
 	// 2. Find and load PRIMARY .mcp-cli.json via findup (controls discoveryConfig)
@@ -689,8 +794,9 @@ export function discoverConfigs(cwd?: string, options?: { skipDiscovery?: boolea
 			loadedPaths.add(primaryConfigPath);
 			sources.push(result.source);
 			debug(`Found primary config: ${location.label}`);
-			addServersToConfig(servers, duplicateMap, result.servers, result.source);
+			// Load env first so it's available for server config substitution
 			updateOptions(result.options);
+			addServersToConfig(servers, duplicateMap, result.servers, result.source);
 		}
 	}
 
@@ -709,8 +815,7 @@ export function discoverConfigs(cwd?: string, options?: { skipDiscovery?: boolea
 			loadedPaths.add(localPath);
 			sources.push(result.source);
 			debug(`Found local override config: ${location.label}`);
-			addServersToConfig(servers, duplicateMap, result.servers, result.source);
-			// Only update extends/include/exclude, NOT discoveryConfig from local overrides
+			// Only update extends/include/exclude/env, NOT discoveryConfig from local overrides
 			if (result.options?.extends && extendsToLoad.length === 0) {
 				extendsToLoad = [...result.options.extends];
 			}
@@ -720,6 +825,12 @@ export function discoverConfigs(cwd?: string, options?: { skipDiscovery?: boolea
 			if (result.options?.exclude && excludePatterns.length === 0) {
 				excludePatterns = [...result.options.exclude];
 			}
+			// Load env before processing servers
+			if (result.options?.env) {
+				setConfigEnv(result.options.env);
+				debug(`Loaded ${Object.keys(result.options.env).length} env vars from local config`);
+			}
+			addServersToConfig(servers, duplicateMap, result.servers, result.source);
 		}
 	}
 
@@ -736,8 +847,9 @@ export function discoverConfigs(cwd?: string, options?: { skipDiscovery?: boolea
 			loadedPaths.add(userConfigPath);
 			sources.push(result.source);
 			debug(`Found user config: ${location.label}`);
-			addServersToConfig(servers, duplicateMap, result.servers, result.source);
+			// Load env first so it's available for server config substitution
 			updateOptions(result.options);
+			addServersToConfig(servers, duplicateMap, result.servers, result.source);
 		}
 	}
 
