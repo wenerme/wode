@@ -8,6 +8,7 @@ import {
 	listTools,
 	processWithConcurrency,
 	safeClose,
+	type Client,
 	type ToolInfo,
 } from '../client';
 import { debug, getServerConfig, listServerNames, loadConfig, type ServerWithSource } from '../config';

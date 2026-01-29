@@ -3,17 +3,17 @@
  * MCP-CLI - A lightweight CLI for interacting with MCP servers
  *
  * Commands:
- *   mcp-cli servers                     List all servers and tools
- *   mcp-cli tools [server]              List available tools
- *   mcp-cli grep <pattern>              Search tools by glob pattern
- *   mcp-cli info <server>/<tool>        Show tool schema
- *   mcp-cli call <server>/<tool> <json> Call tool with arguments
- *   mcp-cli query <server>/<tool> <json> Query read-only tool
- *   mcp-cli resources [server]          List MCP resources
- *   mcp-cli read <server>/<resource>    Read an MCP resource
+ *   mcp-cli servers                      List all servers and tools
+ *   mcp-cli tools [server]               List available tools
+ *   mcp-cli grep <pattern>               Search tools by glob pattern
+ *   mcp-cli info <server>/<tool>         Show tool schema (REQUIRED before call/query)
+ *   mcp-cli query <server>/<tool> <json> Query read-only tool (PREFERRED for agents)
+ *   mcp-cli call <server>/<tool> <json>  Call any tool (use query for readonly)
+ *   mcp-cli resources [server]           List MCP resources
+ *   mcp-cli read <server>/<resource>     Read an MCP resource
  *   mcp-cli add [options] <name> <url|command> [args...]  Add server config
- *   mcp-cli rm <name>...                Remove server config(s)
- *   mcp-cli dump <format>               Export tools in various formats
+ *   mcp-cli rm <name>...                 Remove server config(s)
+ *   mcp-cli dump <format>                Export tools in various formats
  */
 import { Command } from 'commander';
 import { addCommand } from './commands/add';
@@ -65,10 +65,12 @@ Configuration:
     MCP_TIMEOUT       Request timeout in seconds (default: 1800)
 
 Examples:
-  mcp-cli servers                          List all servers and tools
-  mcp-cli info myserver/mytool             Show tool schema (REQUIRED before call)
-  mcp-cli call myserver/mytool '{"arg":1}' Call tool with JSON args
-  mcp-cli call myserver/mytool - <<'EOF'   Read JSON from stdin (heredoc)
+  mcp-cli servers                           List all servers and tools
+  mcp-cli servers -v                        Show tools with signatures & annotations
+  mcp-cli info myserver/mytool              Show tool schema (REQUIRED before call/query)
+  mcp-cli query myserver/search '{"q":"x"}' Query read-only tool (safe, recommended)
+  mcp-cli call myserver/update '{"id":1}'   Call any tool (use with caution)
+  mcp-cli call myserver/mytool - <<'EOF'    Read JSON from stdin (heredoc)
   mcp-cli add notion https://mcp.notion.com/mcp --transport http
   mcp-cli add myserver -- npx -y some-mcp-server
   mcp-cli rm myserver
@@ -76,9 +78,19 @@ Examples:
   # Inline config for testing
   MCP_CLI_CONFIG_INLINE='{"mcpServers":{"test":{"command":"echo"}},"include":["test"]}' mcp-cli servers
 
-Agent Usage:
-  IMPORTANT: Always run "mcp-cli info <server>/<tool>" before "mcp-cli call"
-  to inspect the tool schema and required parameters.
+Agent Usage (IMPORTANT):
+  1. ALWAYS run "mcp-cli info <server>/<tool>" FIRST to get the schema
+  2. Use "mcp-cli query" for read-only operations (tools with readOnlyHint: true)
+     - Safer: only invokes tools explicitly marked as read-only
+     - Easier to allowlist: can permit "query" while restricting "call"
+  3. Use "mcp-cli call" only for write/mutating operations
+     - Can invoke ANY tool, including destructive ones
+     - Requires explicit permission in production environments
+
+  Recommended pattern for agents:
+    mcp-cli info server/tool     # Check schema first
+    mcp-cli query server/tool    # For read-only (preferred)
+    mcp-cli call server/tool     # For mutations (restricted)
 `,
 	);
 
@@ -147,13 +159,13 @@ program
 		});
 	});
 
-// call command - Execute a tool
+// query command - Execute a read-only tool (PREFERRED for agents)
 program
-	.command('call <target> [args]')
-	.description('Call a tool with JSON arguments (format: server/tool)')
+	.command('query <target> [args]')
+	.description('Query a read-only tool - PREFERRED for agents (only readOnlyHint: true tools)')
 	.action(async (target, args) => {
 		const globalOpts = program.opts();
-		await callCommand({
+		await queryCommand({
 			target,
 			args,
 			json: globalOpts.json,
@@ -161,13 +173,13 @@ program
 		});
 	});
 
-// query command - Execute a read-only tool
+// call command - Execute any tool (use query for readonly)
 program
-	.command('query <target> [args]')
-	.description('Query a read-only tool (only tools with readOnlyHint: true)')
+	.command('call <target> [args]')
+	.description('Call any tool with JSON arguments - use "query" for read-only operations')
 	.action(async (target, args) => {
 		const globalOpts = program.opts();
-		await queryCommand({
+		await callCommand({
 			target,
 			args,
 			json: globalOpts.json,
