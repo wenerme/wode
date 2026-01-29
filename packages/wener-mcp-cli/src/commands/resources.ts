@@ -2,7 +2,7 @@
  * Resources command - List and read MCP resources
  */
 
-import { type Client, connectToServer, listResources, safeClose } from '../client';
+import { connectToServer, listResources, safeClose, type Client } from '../client';
 import { getServerConfig, listServerNames, loadConfig } from '../config';
 import { ErrorCode, formatCliError, serverConnectionError } from '../errors';
 import { formatJson, formatResourceList } from '../output';

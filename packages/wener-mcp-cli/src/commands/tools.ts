@@ -2,7 +2,7 @@
  * Tools command - List available tools from a server
  */
 
-import { type Client, connectToServer, listTools, safeClose } from '../client';
+import { connectToServer, listTools, safeClose, type Client } from '../client';
 import { getServerConfig, listServerNames, loadConfig } from '../config';
 import { ErrorCode, formatCliError, serverConnectionError } from '../errors';
 import { formatJson, formatServerDetails } from '../output';

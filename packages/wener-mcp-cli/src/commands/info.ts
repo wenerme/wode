@@ -2,7 +2,7 @@
  * Info command - Show server or tool details
  */
 
-import { type Client, connectToServer, listTools, safeClose } from '../client';
+import { connectToServer, listTools, safeClose, type Client } from '../client';
 import { getServerConfig, loadConfig } from '../config';
 import { ErrorCode, formatCliError, serverConnectionError, toolNotFoundError } from '../errors';
 import { formatJson, formatServerDetails, formatToolSchema } from '../output';

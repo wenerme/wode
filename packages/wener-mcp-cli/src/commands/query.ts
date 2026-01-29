@@ -3,7 +3,7 @@
  * Only allows tools that have readOnlyHint: true annotation
  */
 
-import { callTool, connectToServer, getTimeoutMs, listTools, safeClose, } from '../client';
+import { callTool, connectToServer, getTimeoutMs, listTools, safeClose, type Client } from '../client';
 import { getServerConfig, loadConfig } from '../config';
 import {
 	ErrorCode,
