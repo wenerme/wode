@@ -320,6 +320,7 @@ export class TencentLogClient {
 	}
 
 	async searchLog(request: SearchLogRequest): Promise<SearchLogResponse> {
+		// NOTE 分析请求不支持多 topics
 		return this.request('SearchLog', request);
 	}
 
@@ -378,7 +379,15 @@ export class TencentLogClient {
 			});
 		}
 
-		return (await this.listTopic(q)).Topics;
+		let topics = (await this.listTopic(q)).Topics;
+
+		// Fallback to partial matching if exact match fails
+		if (names.length && (!topics || topics.length === 0)) {
+			const allTopics = await this.listTopic({ Limit: 100 });
+			topics = allTopics.Topics?.filter((t) => names.some((n) => t.TopicName?.includes(n)));
+		}
+
+		return topics;
 	}
 
 	async listTopicByLogset(

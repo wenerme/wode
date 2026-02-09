@@ -48,7 +48,7 @@ export { maybeFunction, type MaybeFunction } from './langs/MaybeFunction';
 export { memoize } from './langs/memoize';
 export { mixin } from './langs/mixin';
 export { parseBoolean } from './langs/parseBoolean';
-export { parseDate } from './langs/parseDate';
+export { parseDate, type MaybeDate } from './langs/parseDate';
 export { shallowClone } from './langs/shallowClone';
 export { shallowEqual } from './langs/shallowEqual';
 

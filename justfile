@@ -1,8 +1,10 @@
+all-fmt:
+	pnpm -r exec just fmt
 
 [no-cd]
 fmt *args:
 	pwd
-	pnpm biome format --write ./src {{args}}
+	pnpm biome format --write ./src package.json {{args}}
 
 [no-cd]
 lint *args:
@@ -23,3 +25,18 @@ typecheck *args:
 publint:
 	pwd
 	bunx publint
+
+[no-cd]
+lib-build:
+	-rm -rf lib/*
+	pnpm swc ./src -d ./lib --strip-leading-paths --copy-files --ignore '**/*.test.ts'
+	bunx ts-add-js-extension --dir=lib
+
+[no-cd]
+lib-publish: lib-build
+	pnpm version patch --no-workspaces-update
+	pnpm publish --registry https://registry.npmjs.org --access public --no-git-checks
+
+[no-cd]
+knip:
+	bunx knip

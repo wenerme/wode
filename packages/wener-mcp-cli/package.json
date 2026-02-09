@@ -44,9 +44,9 @@
 	},
 	"devDependencies": {
 		"@modelcontextprotocol/sdk": "^1.25.3",
-		"@types/node": "^24.10.9",
+		"@types/node": "^24.10.10",
 		"@wener/utils": "workspace:^1.1.58",
-		"commander": "^14.0.2",
+		"commander": "^14.0.3",
 		"common": "workspace:^1.0.0",
 		"esbuild": "^0.27.2",
 		"smol-toml": "^1.6.0",

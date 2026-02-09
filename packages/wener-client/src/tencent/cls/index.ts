@@ -18,6 +18,7 @@ export type {
 	PutLogsResponse,
 	SearchLogRequest,
 	SearchLogResponse,
+	DescribeLogContextRequest,
 } from './TencentLogClient';
 export type * from './types';
 export { isTopicId } from './utils';

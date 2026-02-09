@@ -15,14 +15,14 @@
 		"@wener/console": "workspace:^3.0.2",
 		"@wener/reaction": "workspace:^1.2.27",
 		"@wener/utils": "workspace:^1.1.58",
-		"react": "^19.2.3",
-		"react-dom": "^19.2.3"
+		"react": "^19.2.4",
+		"react-dom": "^19.2.4"
 	},
 	"devDependencies": {
 		"@tailwindcss/vite": "^4.1.18",
-		"@types/react": "^19.2.9",
+		"@types/react": "^19.2.10",
 		"@types/react-dom": "^19.2.3",
-		"@vitejs/plugin-react": "^5.1.2",
+		"@vitejs/plugin-react": "^5.1.3",
 		"vite": "^7.3.1"
 	}
 }

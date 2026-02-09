@@ -18,20 +18,8 @@
 		"api-cli": "./dist/index.mjs"
 	},
 	"main": "./dist/index.mjs",
-	"files": [
-		"dist",
-		"src",
-		"README.md"
-	],
-	"keywords": [
-		"openapi",
-		"swagger",
-		"rest",
-		"api",
-		"cli",
-		"http",
-		"client"
-	],
+	"files": ["dist", "src", "README.md"],
+	"keywords": ["openapi", "swagger", "rest", "api", "cli", "http", "client"],
 	"scripts": {
 		"build": "tsx src/scripts/bundle.ts",
 		"dev": "tsx src/index.ts",
@@ -41,8 +29,8 @@
 		"typecheck": "tsc --noEmit"
 	},
 	"devDependencies": {
-		"@types/node": "^24.10.9",
-		"commander": "^14.0.2",
+		"@types/node": "^24.10.10",
+		"commander": "^14.0.3",
 		"esbuild": "^0.27.2",
 		"tsx": "^4.21.0",
 		"typescript": "^5.9.3",

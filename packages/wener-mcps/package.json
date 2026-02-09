@@ -1,0 +1,83 @@
+{
+	"name": "@wener/mcps",
+	"version": "1.0.0",
+	"description": "",
+	"author": "",
+	"bin": {
+		"mcps": "./dist/mcps-cli.mjs"
+	},
+	"main": "./dist/index.mjs",
+	"imports": {
+		"#/*": "./*"
+	},
+	"exports": {
+		".": {
+			"import": "./dist/index.mjs",
+			"types": "./src/index.ts"
+		}
+	},
+	"files": [
+		"dist",
+		"src",
+		"README.md"
+	],
+	"keywords": [],
+	"scripts": {
+		"build": "bun run ./src/scripts/bundle.ts",
+		"dev": "bun --watch src/mcps-cli.ts",
+		"dev:web": "vite",
+		"prepublishOnly": "pnpm build",
+		"test": "vitest run",
+		"typecheck": "tsc --noEmit"
+	},
+	"dependencies": {
+		"@ai-sdk/mcp": "^1.0.18",
+		"@ai-sdk/openai-compatible": "^2.0.26",
+		"@ai-sdk/react": "^3.0.71",
+		"@base-ui/react": "^1.1.0",
+		"@hono/mcp": "^0.2.3",
+		"@hono/node-server": "^1.19.9",
+		"@mikro-orm/better-sqlite": "^6.6.6",
+		"@mikro-orm/core": "^6.6.6",
+		"@wener/ai": "workspace:*",
+		"@modelcontextprotocol/sdk": "^1.25.3",
+		"@orpc/client": "^1.13.4",
+		"@orpc/contract": "^1.13.4",
+		"@orpc/json-schema": "^1.13.4",
+		"@orpc/openapi": "^1.13.4",
+		"@orpc/server": "^1.13.4",
+		"@orpc/zod": "^1.13.4",
+		"@streamdown/cjk": "^1.0.1",
+		"@streamdown/code": "^1.0.1",
+		"@streamdown/math": "^1.0.1",
+		"@streamdown/mermaid": "^1.0.1",
+		"@wener/client": "workspace:^1.0.26",
+		"@wener/common": "^2.0.3",
+		"ai": "^6.0.69",
+		"commander": "^14.0.3",
+		"common": "workspace:^1.0.0",
+		"consola": "^3.4.2",
+		"hono": "^4.11.7",
+		"kysely": "^0.28.11",
+		"lru-cache": "^11.2.5",
+		"lucide-react": "^0.562.0",
+		"mysql2": "^3.16.3",
+		"pg-query-stream": "^4.12.0",
+		"react-markdown": "^10.1.0",
+		"react-router-dom": "^7.13.0",
+		"std-env": "^3.10.0",
+		"streamdown": "^2.1.0",
+		"tarn": "^3.0.2",
+		"tedious": "^19.2.0",
+		"yaml": "^2.8.2",
+		"zod": "^4.3.6"
+	},
+	"devDependencies": {
+		"@hono/vite-dev-server": "^0.24.1",
+		"@types/better-sqlite3": "^7.6.13",
+		"openai": "^6.17.0",
+		"react": "^19.2.4",
+		"react-dom": "^19.2.4"
+	},
+	"publishConfig": {}
+}
