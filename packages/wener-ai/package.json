@@ -1,0 +1,102 @@
+{
+	"name": "@wener/ai",
+	"version": "0.1.0",
+	"type": "module",
+	"description": "AI utilities and MCP server definitions",
+	"author": "wener",
+	"license": "ISC",
+	"packageManager": "pnpm@10.28.0",
+	"exports": {
+		"./openai": "./src/openai/index.ts",
+		"./openai/schema": "./src/openai/schema/index.ts",
+		"./anthropic": "./src/anthropic/index.ts",
+		"./anthropic/schema": "./src/anthropic/schema/index.ts",
+		"./google": "./src/google/index.ts",
+		"./google/schema": "./src/google/schema/index.ts",
+		"./mcp": "./src/mcp/index.ts",
+		"./mcp/prometheus": "./src/mcp/prometheus/index.ts",
+		"./mcp/relay": "./src/mcp/relay/index.ts",
+		"./mcp/sql": "./src/mcp/sql/index.ts",
+		"./mcp/tencent-cls": "./src/mcp/tencent-cls/index.ts",
+		"./mcp/apolloconfig": "./src/mcp/apolloconfig/index.ts"
+	},
+	"files": ["lib", "src", "README.md"],
+	"keywords": ["ai", "mcp"],
+	"peerDependencies": {
+		"kysely": "*",
+		"mysql2": "*",
+		"tarn": "*",
+		"tedious": "*"
+	},
+	"peerDependenciesMeta": {
+		"kysely": { "optional": true },
+		"mysql2": { "optional": true },
+		"tarn": { "optional": true },
+		"tedious": { "optional": true }
+	},
+	"dependencies": {
+		"@modelcontextprotocol/sdk": "^1.25.3",
+		"@wener/client": "workspace:^1.0.26",
+		"@wener/common": "^2.0.3",
+		"consola": "^3.4.2",
+		"zod": "^4.3.6"
+	},
+	"devDependencies": {
+		"kysely": "^0.28.11",
+		"mysql2": "^3.16.3",
+		"tarn": "^3.0.2",
+		"tedious": "^19.2.0"
+	},
+	"publishConfig": {
+		"exports": {
+			"./openai": {
+				"types": "./src/openai/index.ts",
+				"default": "./lib/openai/index.js"
+			},
+			"./openai/schema": {
+				"types": "./src/openai/schema/index.ts",
+				"default": "./lib/openai/schema/index.js"
+			},
+			"./anthropic": {
+				"types": "./src/anthropic/index.ts",
+				"default": "./lib/anthropic/index.js"
+			},
+			"./anthropic/schema": {
+				"types": "./src/anthropic/schema/index.ts",
+				"default": "./lib/anthropic/schema/index.js"
+			},
+			"./google": {
+				"types": "./src/google/index.ts",
+				"default": "./lib/google/index.js"
+			},
+			"./google/schema": {
+				"types": "./src/google/schema/index.ts",
+				"default": "./lib/google/schema/index.js"
+			},
+			"./mcp": {
+				"types": "./src/mcp/index.ts",
+				"default": "./lib/mcp/index.js"
+			},
+			"./mcp/prometheus": {
+				"types": "./src/mcp/prometheus/index.ts",
+				"default": "./lib/mcp/prometheus/index.js"
+			},
+			"./mcp/relay": {
+				"types": "./src/mcp/relay/index.ts",
+				"default": "./lib/mcp/relay/index.js"
+			},
+			"./mcp/sql": {
+				"types": "./src/mcp/sql/index.ts",
+				"default": "./lib/mcp/sql/index.js"
+			},
+			"./mcp/tencent-cls": {
+				"types": "./src/mcp/tencent-cls/index.ts",
+				"default": "./lib/mcp/tencent-cls/index.js"
+			},
+			"./mcp/apolloconfig": {
+				"types": "./src/mcp/apolloconfig/index.ts",
+				"default": "./lib/mcp/apolloconfig/index.js"
+			}
+		}
+	}
+}

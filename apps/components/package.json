@@ -1,39 +1,39 @@
 {
-  "name": "components",
-  "version": "0.1.0",
-  "type": "module",
-  "private": true,
-  "imports": {
-    "#/*": "./src/*"
-  },
-  "scripts": {
-    "build": "waku build",
-    "dev": "waku dev --port 3060",
-    "start": "waku start",
-    "deploy": "waku build && wrangler deploy",
-    "registry:build": "shadcn build",
-    "storybook": "storybook dev -p 6053 --no-open"
-  },
-  "dependencies": {
-    "@base-ui/react": "^1.1.0",
-    "@phosphor-icons/react": "^2.1.10",
-    "class-variance-authority": "^0.7.1",
-    "clsx": "^2.1.1",
-    "react": "~19.2.3",
-    "react-dom": "~19.2.3",
-    "react-server-dom-webpack": "~19.2.3",
-    "shadcn": "^3.7.0",
-    "tailwind-merge": "^3.4.0",
-    "waku": "1.0.0-alpha.2"
-  },
-  "devDependencies": {
-    "@storybook/addon-docs": "^10.2.0",
-    "@storybook/addon-links": "^10.2.0",
-    "@storybook/react": "^10.2.0",
-    "@storybook/react-vite": "^10.2.0",
-    "@tailwindcss/vite": "^4.1.18",
-    "@vitejs/plugin-react-swc": "^4.2.2",
-    "storybook": "^10.2.0",
-    "wrangler": "^4.60.0"
-  }
+	"name": "components",
+	"version": "0.1.0",
+	"type": "module",
+	"private": true,
+	"imports": {
+		"#/*": "./src/*"
+	},
+	"scripts": {
+		"build": "waku build",
+		"dev": "waku dev --port 3060",
+		"start": "waku start",
+		"deploy": "waku build && wrangler deploy",
+		"registry:build": "shadcn build",
+		"storybook": "storybook dev -p 6053 --no-open"
+	},
+	"dependencies": {
+		"@base-ui/react": "^1.1.0",
+		"@phosphor-icons/react": "^2.1.10",
+		"class-variance-authority": "^0.7.1",
+		"clsx": "^2.1.1",
+		"react": "~19.2.4",
+		"react-dom": "~19.2.4",
+		"react-server-dom-webpack": "~19.2.4",
+		"shadcn": "^3.8.2",
+		"tailwind-merge": "^3.4.0",
+		"waku": "1.0.0-alpha.2"
+	},
+	"devDependencies": {
+		"@storybook/addon-docs": "^10.2.4",
+		"@storybook/addon-links": "^10.2.4",
+		"@storybook/react": "^10.2.4",
+		"@storybook/react-vite": "^10.2.4",
+		"@tailwindcss/vite": "^4.1.18",
+		"@vitejs/plugin-react-swc": "^4.2.3",
+		"storybook": "^10.2.4",
+		"wrangler": "^4.62.0"
+	}
 }

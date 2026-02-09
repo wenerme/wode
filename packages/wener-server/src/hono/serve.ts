@@ -1,18 +1,19 @@
 import type { MaybePromise } from '@wener/utils';
 
-type ServeFn = (
-	o: { fetch: (request: Request) => MaybePromise<Response>; port?: number },
-	cb: (o: { address: string; port: number }) => void,
-) => any;
+interface ServeOptions {
+	fetch: (request: Request) => MaybePromise<Response>;
+	port?: number;
+	/** Connection idle timeout in seconds (Bun only) */
+	idleTimeout?: number;
+}
 
-export async function serve(
-	o: { fetch: (request: Request) => MaybePromise<Response>; port?: number },
-	cb: (o: { address: string; port: number }) => void,
-) {
+type ServeFn = (o: ServeOptions, cb: (o: { address: string; port: number }) => void) => any;
+
+export async function serve(o: ServeOptions, cb: (o: { address: string; port: number }) => void) {
 	let serve: ServeFn;
 	if (process.versions.bun) {
-		serve = ({ fetch, port }: { fetch: (req: Request) => MaybePromise<Response>; port?: number }, cb: Function) => {
-			const svr = Bun.serve({ fetch, port });
+		serve = ({ fetch, port, idleTimeout }: ServeOptions, cb: Function) => {
+			const svr = Bun.serve({ fetch, port, idleTimeout });
 			cb({ address: svr.hostname, port: svr.port });
 			return svr;
 		};

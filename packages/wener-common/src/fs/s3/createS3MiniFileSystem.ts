@@ -168,63 +168,102 @@ class S3FS implements IFileSystem {
 		const prefixWithSlash = dirPrefix ? (dirPrefix.endsWith('/') ? dirPrefix : `${dirPrefix}/`) : '';
 
 		try {
-			// When delimiter is '/', S3 returns:
-			// - Files: Key without trailing /, Size > 0
-			// - Directories: Key with trailing /, Size: 0
-			const delimiter = recursive ? undefined : '/';
+			const delimiter = recursive ? '' : '/';
 
-			const objects = await this.client.listObjects(delimiter ?? '', prefixWithSlash, undefined, {
-				delimiter,
-				signal,
-			});
+			// S3mini doesn't expose CommonPrefixes from delimiter-based listing.
+			// For non-recursive listing, we do two calls:
+			// 1. With delimiter to get direct files
+			// 2. Without delimiter to infer directory prefixes
+			let objects: Array<{ Key: string; Size: number | string; LastModified?: Date | string; ETag?: string }> = [];
+			let commonPrefixes: string[] = [];
 
-			if (!objects || objects.length === 0) {
+			if (delimiter && !recursive) {
+				const directObjects = await this.client.listObjects(delimiter, prefixWithSlash, undefined, {
+					delimiter,
+					signal,
+				});
+				if (directObjects) {
+					objects = directObjects;
+				}
+
+				// Infer CommonPrefixes by listing all objects recursively
+				const allObjectsRecursive = await this.client.listObjects('', prefixWithSlash, 1000, { signal });
+				if (allObjectsRecursive) {
+					const prefixSet = new Set<string>();
+					for (const obj of allObjectsRecursive) {
+						const key = obj.Key || '';
+						if (!key || !key.startsWith(prefixWithSlash)) continue;
+
+						const relativeKey = key.slice(prefixWithSlash.length);
+						const firstSlash = relativeKey.indexOf('/');
+						if (firstSlash > 0) {
+							prefixSet.add(prefixWithSlash + relativeKey.slice(0, firstSlash + 1));
+						}
+					}
+					commonPrefixes = Array.from(prefixSet).sort();
+				}
+			} else {
+				const listResult = await this.client.listObjects(delimiter, prefixWithSlash, undefined, { signal });
+				if (listResult) {
+					objects = listResult;
+				}
+			}
+
+			if (!objects.length && !commonPrefixes.length) {
 				return [];
 			}
 
 			let results: IFileStat[] = [];
-			const seenPaths = new Set<string>();
 
+			// Process inferred CommonPrefixes (directories)
+			for (const prefix of commonPrefixes) {
+				this.checkAborted(signal);
+				if (prefixWithSlash && !prefix.startsWith(prefixWithSlash)) continue;
+
+				const relativePrefix = prefixWithSlash ? prefix.slice(prefixWithSlash.length) : prefix;
+				const dirName = relativePrefix.replace(/\/$/, '');
+				if (!dirName) continue;
+
+				if (!recursive && depth === 1) {
+					if (dirName.indexOf('/') >= 0) continue;
+				}
+
+				const dirKey = prefix.endsWith('/') ? prefix : `${prefix}/`;
+				const stat = this.toFileStat(dirKey, {
+					Key: dirKey,
+					Size: 0,
+					LastModified: new Date(),
+				});
+
+				if (!hidden && stat.name.startsWith('.')) continue;
+				if (kind && stat.kind !== kind) continue;
+
+				results.push(stat);
+			}
+
+			// Process objects (files and explicit directory markers)
+			const seenDirs = new Set<string>();
 			for (const obj of objects) {
 				this.checkAborted(signal);
 
 				const key = obj.Key || '';
 				if (!key) continue;
+				if (prefixWithSlash && !key.startsWith(prefixWithSlash)) continue;
 
-				// Skip if not under our prefix
-				if (prefixWithSlash && !key.startsWith(prefixWithSlash)) {
-					continue;
-				}
-
-				// Strip the prefix from the key for relative path calculation
 				const relativeKey = prefixWithSlash ? key.slice(prefixWithSlash.length) : key;
+				if (!relativeKey || relativeKey === '/') continue;
 
-				// Skip empty relative keys (the directory itself)
-				if (!relativeKey || relativeKey === '/') {
-					continue;
-				}
-
-				// Directory: Key ends with '/' (from CommonPrefixes or explicit marker)
-				const _isDir = key.endsWith('/');
-
-				// For non-recursive, only show immediate children
 				if (!recursive && depth === 1) {
-					// For directories, the relative key looks like "dirname/"
-					// For files, the relative key looks like "filename"
-					// We only want immediate children, so no more slashes in the middle
-					const keyWithoutTrailingSlash = relativeKey.replace(/\/$/, '');
-					if (keyWithoutTrailingSlash.includes('/')) {
-						// This is deeper than one level, skip
-						continue;
-					}
+					const firstSlash = relativeKey.indexOf('/');
+					if (firstSlash >= 0) continue;
 				}
 
-				// Deduplicate by path
-				const pathKey = key.replace(/\/$/, ''); // Normalize for deduplication
-				if (seenPaths.has(pathKey)) {
-					continue;
+				const isDir = this.isDirectoryKey(key);
+				if (isDir) {
+					const dk = key.slice(0, -1);
+					if (seenDirs.has(dk)) continue;
+					seenDirs.add(dk);
 				}
-				seenPaths.add(pathKey);
 
 				const stat = this.toFileStat(key, {
 					Key: key,
@@ -233,15 +272,8 @@ class S3FS implements IFileSystem {
 					ETag: obj.ETag,
 				});
 
-				// Filter by hidden
-				if (!hidden && stat.name.startsWith('.')) {
-					continue;
-				}
-
-				// Filter by kind
-				if (kind && stat.kind !== kind) {
-					continue;
-				}
+				if (!hidden && stat.name.startsWith('.')) continue;
+				if (kind && stat.kind !== kind) continue;
 
 				results.push(stat);
 			}

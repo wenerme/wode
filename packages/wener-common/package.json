@@ -18,11 +18,14 @@
 		"./data": "./src/data/index.ts",
 		"./dayjs": "./src/dayjs/index.ts",
 		"./decimal": "./src/decimal/index.ts",
+		"./drain3": "./src/drain3/index.ts",
 		"./fs": "./src/fs/index.ts",
+		"./fs/webdav": "./src/fs/webdav/index.ts",
+		"./fs/s3mini": "./src/fs/s3/index.ts",
+		"./fs/minio": "./src/fs/minio/index.ts",
+		"./fs/server": "./src/fs/server/index.ts",
 		"./fs/orpc": "./src/fs/orpc/index.ts",
 		"./fs/orpc/server": "./src/fs/orpc/server/index.ts",
-		"./fs/s3": "./src/fs/s3/index.ts",
-		"./fs/server": "./src/fs/server/index.ts",
 		"./jsonschema": "./src/jsonschema/index.ts",
 		"./meta": "./src/meta/index.ts",
 		"./orpc": "./src/orpc/index.ts",
@@ -34,12 +37,7 @@
 		"./utils": "./src/utils/index.ts",
 		"./package.json": "./package.json"
 	},
-	"files": [
-		"lib",
-		"lib.d.ts",
-		"libs",
-		"src"
-	],
+	"files": ["lib", "lib.d.ts", "libs", "src"],
 	"keywords": [],
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1"
@@ -57,9 +55,9 @@
 		"ts-pattern": "^5.9.0"
 	},
 	"devDependencies": {
-		"@mikro-orm/better-sqlite": "^6.6.5",
-		"@mikro-orm/core": "^6.6.5",
-		"@mikro-orm/knex": "^6.6.5",
+		"@mikro-orm/better-sqlite": "^6.6.6",
+		"@mikro-orm/core": "^6.6.6",
+		"@mikro-orm/knex": "^6.6.6",
 		"@orpc/client": "^1.13.4",
 		"@orpc/contract": "^1.13.4",
 		"@orpc/openapi-client": "^1.13.4",
@@ -85,6 +83,7 @@
 		"emittery": "^1.2.0",
 		"micromatch": "^4.0.8",
 		"mime-types": "^3.0.2",
+		"minio": "^8.0.6",
 		"pathe": "^2.0.3",
 		"s3mini": "^0.9.1",
 		"webdav": "^5.8.0",
@@ -116,9 +115,29 @@
 				"types": "./src/decimal/index.ts",
 				"default": "./lib/decimal/index.js"
 			},
+			"./drain3": {
+				"types": "./src/drain3/index.ts",
+				"default": "./lib/drain3/index.js"
+			},
 			"./fs": {
 				"types": "./src/fs/index.ts",
 				"default": "./lib/fs/index.js"
+			},
+			"./fs/webdav": {
+				"types": "./src/fs/webdav/index.ts",
+				"default": "./lib/fs/webdav/index.js"
+			},
+			"./fs/s3mini": {
+				"types": "./src/fs/s3/index.ts",
+				"default": "./lib/fs/s3/index.js"
+			},
+			"./fs/minio": {
+				"types": "./src/fs/minio/index.ts",
+				"default": "./lib/fs/minio/index.js"
+			},
+			"./fs/server": {
+				"types": "./src/fs/server/index.ts",
+				"default": "./lib/fs/server/index.js"
 			},
 			"./fs/orpc": {
 				"types": "./src/fs/orpc/index.ts",
@@ -127,14 +146,6 @@
 			"./fs/orpc/server": {
 				"types": "./src/fs/orpc/server/index.ts",
 				"default": "./lib/fs/orpc/server/index.js"
-			},
-			"./fs/s3": {
-				"types": "./src/fs/s3/index.ts",
-				"default": "./lib/fs/s3/index.js"
-			},
-			"./fs/server": {
-				"types": "./src/fs/server/index.ts",
-				"default": "./lib/fs/server/index.js"
 			},
 			"./jsonschema": {
 				"types": "./src/jsonschema/index.ts",
