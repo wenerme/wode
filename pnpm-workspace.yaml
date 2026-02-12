@@ -29,7 +29,6 @@ minimumReleaseAgeExclude:
 strictPeerDependencies: false
 linkWorkspacePackages: true
 preferWorkspacePackages: true
-saveWorkspaceProtocol: false
 dedupeDirectDeps: true
 
 # Package version overrides

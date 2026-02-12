@@ -99,7 +99,7 @@ export async function runFetchApkIndex({
 			repoMeta.lastModifiedTime = index.mtime;
 			repoMeta.description = index.description;
 			repoMeta.version = index.description;
-			await em.persistAndFlush(repoMeta);
+			await em.persist(repoMeta).flush();
 
 			let pkgs = packages.map((v) => {
 				const {

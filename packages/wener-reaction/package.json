@@ -24,8 +24,20 @@
 		"./zustand": "./src/zustand/index.ts",
 		"./package.json": "./package.json"
 	},
-	"files": ["Makefile", "dist", "lib", "src", "tsconfig.json"],
-	"keywords": ["components", "react", "hooks", "util", "tool"],
+	"files": [
+		"Makefile",
+		"dist",
+		"lib",
+		"src",
+		"tsconfig.json"
+	],
+	"keywords": [
+		"components",
+		"react",
+		"hooks",
+		"util",
+		"tool"
+	],
 	"scripts": {
 		"build": "make build",
 		"clean": "make clean",
@@ -50,7 +62,7 @@
 		"react-dom": "^19.2.0",
 		"react-is": "^19.2.0",
 		"react-reconciler": "^0.33.0",
-		"react-router-dom": "^7.13.0",
+		"react-router-dom": "^7.13.1",
 		"valtio": "^2.3.0",
 		"zustand": "^5.0.11"
 	},

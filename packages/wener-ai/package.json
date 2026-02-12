@@ -1,6 +1,6 @@
 {
 	"name": "@wener/ai",
-	"version": "0.1.0",
+	"version": "0.1.7",
 	"type": "module",
 	"description": "AI utilities and MCP server definitions",
 	"author": "wener",
@@ -18,34 +18,65 @@
 		"./mcp/relay": "./src/mcp/relay/index.ts",
 		"./mcp/sql": "./src/mcp/sql/index.ts",
 		"./mcp/tencent-cls": "./src/mcp/tencent-cls/index.ts",
-		"./mcp/apolloconfig": "./src/mcp/apolloconfig/index.ts"
+		"./mcp/apolloconfig": "./src/mcp/apolloconfig/index.ts",
+		"./mcp/feishu": "./src/mcp/feishu/index.ts",
+		"./mcp/gemini-search": "./src/mcp/gemini-search/index.ts"
 	},
-	"files": ["lib", "src", "README.md"],
-	"keywords": ["ai", "mcp"],
+	"files": [
+		"lib",
+		"src",
+		"README.md"
+	],
+	"keywords": [
+		"ai",
+		"mcp"
+	],
 	"peerDependencies": {
+		"@ai-sdk/google": "*",
+		"@larksuiteoapi/node-sdk": "*",
+		"ai": "*",
 		"kysely": "*",
 		"mysql2": "*",
 		"tarn": "*",
 		"tedious": "*"
 	},
 	"peerDependenciesMeta": {
-		"kysely": { "optional": true },
-		"mysql2": { "optional": true },
-		"tarn": { "optional": true },
-		"tedious": { "optional": true }
+		"@ai-sdk/google": {
+			"optional": true
+		},
+		"@larksuiteoapi/node-sdk": {
+			"optional": true
+		},
+		"ai": {
+			"optional": true
+		},
+		"kysely": {
+			"optional": true
+		},
+		"mysql2": {
+			"optional": true
+		},
+		"tarn": {
+			"optional": true
+		},
+		"tedious": {
+			"optional": true
+		}
 	},
 	"dependencies": {
-		"@modelcontextprotocol/sdk": "^1.25.3",
-		"@wener/client": "workspace:^1.0.26",
-		"@wener/common": "^2.0.3",
+		"@modelcontextprotocol/sdk": "^1.27.1",
+		"@wener/client": "workspace:^1.0.27",
+		"@wener/common": "^2.0.5",
 		"consola": "^3.4.2",
 		"zod": "^4.3.6"
 	},
 	"devDependencies": {
+		"@ai-sdk/google": "^3.0.34",
+		"ai": "^6.0.105",
 		"kysely": "^0.28.11",
-		"mysql2": "^3.16.3",
+		"mysql2": "^3.18.2",
 		"tarn": "^3.0.2",
-		"tedious": "^19.2.0"
+		"tedious": "^19.2.1"
 	},
 	"publishConfig": {
 		"exports": {
@@ -96,6 +127,14 @@
 			"./mcp/apolloconfig": {
 				"types": "./src/mcp/apolloconfig/index.ts",
 				"default": "./lib/mcp/apolloconfig/index.js"
+			},
+			"./mcp/feishu": {
+				"types": "./src/mcp/feishu/index.ts",
+				"default": "./lib/mcp/feishu/index.js"
+			},
+			"./mcp/gemini-search": {
+				"types": "./src/mcp/gemini-search/index.ts",
+				"default": "./lib/mcp/gemini-search/index.js"
 			}
 		}
 	}

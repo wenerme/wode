@@ -1,1 +1,1 @@
-export { TencentClsMcpServerDef, TencentClsMcpServerHandlerDef } from './def';
+export { TencentClsHeaderNames, TencentClsMcpServerHandlerDef, TencentClsMcpServerHandlerDef as TencentClsMcpServerDef } from './def';

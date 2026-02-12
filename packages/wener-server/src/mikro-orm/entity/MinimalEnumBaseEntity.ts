@@ -1,4 +1,5 @@
-import { BaseEntity, Entity, PrimaryKey, Property, types } from '@mikro-orm/core';
+import { BaseEntity, types } from '@mikro-orm/core';
+import { Entity, PrimaryKey, Property } from '@mikro-orm/decorators/legacy';
 
 @Entity({ abstract: true })
 export class MinimalEnumBaseEntity extends BaseEntity {

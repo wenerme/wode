@@ -1,6 +1,6 @@
 {
 	"name": "@wener/common",
-	"version": "2.0.3",
+	"version": "2.0.5",
 	"type": "module",
 	"description": "Common utils for console & server",
 	"repository": {
@@ -37,7 +37,12 @@
 		"./utils": "./src/utils/index.ts",
 		"./package.json": "./package.json"
 	},
-	"files": ["lib", "lib.d.ts", "libs", "src"],
+	"files": [
+		"lib",
+		"lib.d.ts",
+		"libs",
+		"src"
+	],
 	"keywords": [],
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1"
@@ -55,18 +60,17 @@
 		"ts-pattern": "^5.9.0"
 	},
 	"devDependencies": {
-		"@mikro-orm/better-sqlite": "^6.6.6",
-		"@mikro-orm/core": "^6.6.6",
-		"@mikro-orm/knex": "^6.6.6",
-		"@orpc/client": "^1.13.4",
-		"@orpc/contract": "^1.13.4",
-		"@orpc/openapi-client": "^1.13.4",
-		"@orpc/server": "^1.13.4",
+		"@mikro-orm/core": "7.0.0-rc.2",
+		"@mikro-orm/decorators": "7.0.0-rc.2",
+		"@mikro-orm/sql": "7.0.0-rc.2",
+		"@orpc/client": "^1.13.5",
+		"@orpc/contract": "^1.13.5",
+		"@orpc/openapi-client": "^1.13.5",
+		"@orpc/server": "^1.13.5",
 		"@sinclair/typebox": "^0.34.48",
 		"@sinclair/typebox-codegen": "^0.11.1",
 		"@types/argon2-browser": "^1.18.4",
 		"@types/bcrypt": "^6.0.0",
-		"@types/better-sqlite3": "^7.6.13",
 		"@types/micromatch": "^4.0.10",
 		"@types/mime-types": "^3.0.1",
 		"ajv-formats": "^3.0.1",
@@ -80,13 +84,14 @@
 		"consola": "^3.4.2",
 		"dayjs": "^1.11.19",
 		"decimal.js": "^10.6.0",
-		"emittery": "^1.2.0",
+		"emittery": "^1.2.1",
+		"kysely": "^0.28.11",
 		"micromatch": "^4.0.8",
 		"mime-types": "^3.0.2",
-		"minio": "^8.0.6",
+		"minio": "^8.0.7",
 		"pathe": "^2.0.3",
 		"s3mini": "^0.9.1",
-		"webdav": "^5.8.0",
+		"webdav": "^5.9.0",
 		"zod": "^4.3.6"
 	},
 	"publishConfig": {

@@ -2,7 +2,7 @@ import type { DescribeLogContextRequest, SearchLogRequest } from '@wener/client/
 import { Drain } from '@wener/common/drain3';
 import { ClusterLogsInputSchema, LogContextInputSchema, SearchInputSchema } from '../schemas';
 import type { TencentClsContext } from '../server';
-import { cleanObject, formatBTime, parseTimeRange, toToon } from '../utils';
+import { formatBTime, parseTimeRange, toToon } from '../utils';
 
 export function registerSearchTools(ctx: TencentClsContext) {
 	const { server, getClient, textResult, jsonResult } = ctx;
@@ -66,13 +66,15 @@ export function registerSearchTools(ctx: TencentClsContext) {
 				const isAnalysisQuery = query?.includes('|');
 
 				// If SQL analysis query, return AnalysisRecords directly
-				if (isAnalysisQuery && res.AnalysisRecords?.length) {
+				if (isAnalysisQuery) {
 					const records: any[] = [];
-					for (const record of res.AnalysisRecords) {
-						try {
-							records.push(JSON.parse(record));
-						} catch {
-							records.push(record);
+					if (res.AnalysisRecords) {
+						for (const record of res.AnalysisRecords) {
+							try {
+								records.push(JSON.parse(record));
+							} catch {
+								records.push(record);
+							}
 						}
 					}
 					return jsonResult({
@@ -80,6 +82,8 @@ export function registerSearchTools(ctx: TencentClsContext) {
 						analysis: true,
 						columns: res.Columns?.map((c) => c.Name),
 						records,
+						samplingRate: res.SamplingRate,
+						requestId: res.RequestId,
 					});
 				}
 

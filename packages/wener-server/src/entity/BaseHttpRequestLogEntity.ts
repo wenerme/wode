@@ -1,4 +1,5 @@
-import { Entity, Property, types, type Opt } from '@mikro-orm/core';
+import { types, type Opt } from '@mikro-orm/core';
+import { Entity, Property } from '@mikro-orm/decorators/legacy';
 import type { Bytes } from '@wener/utils';
 import { StandardBaseEntity } from './StandardBaseEntity';
 

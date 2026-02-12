@@ -1,3 +1,5 @@
+import? 'local.just'
+
 all-fmt:
 	pnpm -r exec just fmt
 
@@ -28,7 +30,7 @@ publint:
 
 [no-cd]
 lib-build:
-	-rm -rf lib/*
+	-rm -rf lib/* dist/*
 	pnpm swc ./src -d ./lib --strip-leading-paths --copy-files --ignore '**/*.test.ts'
 	bunx ts-add-js-extension --dir=lib
 

@@ -1,8 +1,16 @@
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { SSEClientTransport } from '@modelcontextprotocol/sdk/client/sse.js';
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { registerRelayTools } from './tools';
+import { Server } from '@modelcontextprotocol/sdk/server/index.js';
+import {
+	CallToolRequestSchema,
+	ListResourcesRequestSchema,
+	ListToolsRequestSchema,
+	ReadResourceRequestSchema,
+} from '@modelcontextprotocol/sdk/types.js';
+import consola from 'consola';
+
+const log = consola.withTag('mcp-relay');
 
 export interface CreateRelayMcpServerOptions {
 	/** Target MCP server URL */
@@ -18,20 +26,24 @@ export interface CreateRelayMcpServerOptions {
 }
 
 export interface RelayContext {
-	server: McpServer;
+	server: Server;
 	getClient: () => Promise<Client>;
 	textResult: (text: string) => { content: { type: 'text'; text: string }[] };
 	jsonResult: (data: unknown) => { content: { type: 'text'; text: string }[] };
 }
 
-/**
- * Create an MCP server that relays requests to another MCP server.
- * This is useful for proxying MCP servers through a unified endpoint.
- */
 export function createRelayMcpServer(options: CreateRelayMcpServerOptions) {
 	const { url, transport = 'http', headers = {}, name = 'mcp-relay', version = '1.0.0' } = options;
 
-	const server = new McpServer({ name, version });
+	const server = new Server(
+		{ name, version },
+		{
+			capabilities: {
+				tools: {},
+				resources: {},
+			},
+		},
+	);
 
 	let _client: Client | undefined;
 	let _transport: SSEClientTransport | StreamableHTTPClientTransport | undefined;
@@ -63,16 +75,32 @@ export function createRelayMcpServer(options: CreateRelayMcpServerOptions) {
 		return _client;
 	};
 
-	const textResult = (text: string) => ({ content: [{ type: 'text' as const, text }] });
-	const jsonResult = (data: unknown) => ({ content: [{ type: 'text' as const, text: JSON.stringify(data, null, 2) }] });
+	server.setRequestHandler(ListToolsRequestSchema, async () => {
+		const client = await getClient();
+		return client.listTools();
+	});
 
-	// =========================================================================
-	// Register Tools
-	// =========================================================================
+	server.setRequestHandler(CallToolRequestSchema, async (request) => {
+		const client = await getClient();
+		return client.callTool({
+			name: request.params.name,
+			arguments: request.params.arguments,
+		});
+	});
 
-	const ctx: RelayContext = { server, getClient, textResult, jsonResult };
+	server.setRequestHandler(ListResourcesRequestSchema, async () => {
+		try {
+			const client = await getClient();
+			return client.listResources();
+		} catch {
+			return { resources: [] };
+		}
+	});
 
-	registerRelayTools(ctx);
+	server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
+		const client = await getClient();
+		return client.readResource({ uri: request.params.uri });
+	});
 
 	return {
 		server,

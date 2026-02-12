@@ -64,8 +64,8 @@ export class BaseEntityService<E extends StandardBaseEntity>
 
 	applySearch({ builder, search }: { builder: QueryBuilder<E>; search: string }) {
 		const { and, or } = this.resolveSearch({ search });
-		and?.length && builder.andWhere(and);
-		or?.length && builder.andWhere({ $or: or });
+		and?.length && builder.andWhere(and as any);
+		or?.length && builder.andWhere({ $or: or } as any);
 	}
 
 	resolveSearch(opts: ResolveSearchOptions) {
@@ -79,7 +79,7 @@ export class BaseEntityService<E extends StandardBaseEntity>
 		Errors.BadRequest.check(userId, '未能获取到当前用户信息');
 		Errors.Forbidden.check(!entity.ownerId, '资源已经被分配');
 		setOwnerRef(entity, userId);
-		await this.em.persistAndFlush(entity);
+		await this.em.persist(entity).flush();
 		return { entity };
 	}
 
@@ -87,7 +87,7 @@ export class BaseEntityService<E extends StandardBaseEntity>
 		const { entity } = await this.requireEntity(ent);
 		Errors.BadRequest.check(hasEntityFeature(entity, EntityFeature.HasOwnerRef), '资源不支持所有权');
 		setOwnerRef(entity, opts.ownerId);
-		await this.em.persistAndFlush(entity);
+		await this.em.persist(entity).flush();
 		return { entity };
 	}
 
@@ -96,12 +96,12 @@ export class BaseEntityService<E extends StandardBaseEntity>
 		Errors.BadRequest.check(hasEntityFeature(entity, EntityFeature.HasOwnerRef), '资源不支持所有权');
 		entity.ownerId = undefined;
 		entity.ownerType = undefined;
-		await this.em.persistAndFlush(entity);
+		await this.em.persist(entity).flush();
 		return { entity };
 	}
 
 	async createQueryBuilder({ em = this.em }: { em?: EntityManager } = {}): Promise<{ builder: QueryBuilder<E> }> {
-		return createQueryBuilder(em, this.Entity);
+		return createQueryBuilder(em, this.Entity) as any;
 	}
 
 	async requireEntity(req: ResolveEntityOptions<E>, ext?: FindOneOptions<E>): Promise<EntityResult<E>> {
@@ -154,7 +154,7 @@ export class BaseEntityService<E extends StandardBaseEntity>
 			}
 
 			writeEntityAuditLog({ entity, action: EntityAuditAction.Undelete, em });
-			await em.persistAndFlush(entity);
+			await em.persist(entity).flush();
 			return { entity };
 		});
 	}
@@ -167,7 +167,7 @@ export class BaseEntityService<E extends StandardBaseEntity>
 			}
 
 			writeEntityAuditLog({ entity, action: EntityAuditAction.Purge, em, before: entity.toPOJO() });
-			await em.removeAndFlush(entity);
+			await em.remove(entity).flush();
 			return { entity };
 		});
 	}
@@ -191,9 +191,7 @@ export class BaseEntityService<E extends StandardBaseEntity>
 			try {
 				entity = await this.em.upsert(this.Entity, data as any, {
 					onConflictFields,
-					// @ts-expect-error
 					onConflictMergeFields,
-					// @ts-expect-error
 					onConflictExcludeFields: [...onConflictExcludeFields, 'id', 'uid', 'tid', 'createdAt', 'deletedAt'],
 					onConflictAction,
 				});
@@ -204,7 +202,7 @@ export class BaseEntityService<E extends StandardBaseEntity>
 			writeEntityAuditLog({ entity, action: EntityAuditAction.Upsert, before: data, em });
 		} else {
 			entity = repo.create(data as any);
-			await em.persistAndFlush(entity);
+			await em.persist(entity).flush();
 			writeEntityAuditLog({ entity, action: EntityAuditAction.Create, after: entity.toPOJO() });
 			await em.flush();
 		}
@@ -225,7 +223,7 @@ export class BaseEntityService<E extends StandardBaseEntity>
 				entity.extensions = setData(entity.extensions, { data: extensions, partial: true });
 			}
 			writeEntityAuditLog({ entity, action: EntityAuditAction.Update, em, before, after: entity.toPOJO() });
-			await em.persistAndFlush(entity);
+			await em.persist(entity).flush();
 			return { entity };
 		});
 	}
@@ -246,7 +244,7 @@ export class BaseEntityService<E extends StandardBaseEntity>
 				}
 			}
 			writeEntityAuditLog({ entity, action: EntityAuditAction.Patch, em, before, after: entity.toPOJO() });
-			await em.persistAndFlush(entity);
+			await em.persist(entity).flush();
 			return { entity };
 		});
 	}
@@ -281,7 +279,7 @@ export class BaseEntityService<E extends StandardBaseEntity>
 		Errors.BadRequest.check(hasEntityFeature(entity, EntityFeature.HasStateStatus), '资源不支持状态');
 		entity.status = opts.status;
 		entity.state = opts.state || entity.state;
-		await this.em.persistAndFlush(entity);
+		await this.em.persist(entity).flush();
 		return { entity };
 	}
 
@@ -289,7 +287,7 @@ export class BaseEntityService<E extends StandardBaseEntity>
 		let { entity } = await this.requireEntity(ent);
 		Errors.BadRequest.check(hasEntityFeature(entity, EntityFeature.HasNotes), '资源不支持备注');
 		entity.notes = opts.notes;
-		await this.em.persistAndFlush(entity);
+		await this.em.persist(entity).flush();
 		return { entity };
 	}
 }

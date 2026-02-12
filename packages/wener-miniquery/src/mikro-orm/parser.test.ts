@@ -1,30 +1,19 @@
-import {
-	BaseEntity,
-	Collection,
-	Entity,
-	ManyToMany,
-	MikroORM,
-	OneToOne,
-	PrimaryKey,
-	Property,
-	ReflectMetadataProvider,
-	types,
-} from '@mikro-orm/core';
-import { defineConfig } from '@mikro-orm/sqlite';
+import { BaseEntity, Collection, MikroORM, types } from '@mikro-orm/core';
+import { Entity, ManyToMany, OneToOne, PrimaryKey, Property } from '@mikro-orm/decorators/legacy';
+import { ReflectMetadataProvider } from '@mikro-orm/decorators/legacy';
+import { SqliteDriver, NodeSqliteDialect } from '@mikro-orm/sql';
 import { expect, test } from 'vitest';
 import { DemoQueryExamples } from '../ast/ast.test';
 import { toMikroOrmQuery } from './toMikroOrmQuery';
 
 async function getOrm() {
-	const orm = await MikroORM.init(
-		defineConfig({
-			entities: [UserProfileEntity, UserEntity, GroupEntity, GroupMemberEntity],
-			discovery: { disableDynamicFileAccess: true, requireEntitiesArray: true },
-			dbName: ':memory:',
-			metadataProvider: ReflectMetadataProvider,
-			// debug: true,
-		}),
-	);
+	const orm = await MikroORM.init({
+		driver: SqliteDriver,
+		entities: [UserProfileEntity, UserEntity, GroupEntity, GroupMemberEntity],
+		dbName: ':memory:',
+		driverOptions: new NodeSqliteDialect(':memory:'),
+		metadataProvider: ReflectMetadataProvider,
+	});
 	let em = orm.em.fork();
 	for (const schema of [
 		`
@@ -79,7 +68,7 @@ test('miniquery', async () => {
 	for (const v of valid) {
 		let query = toMikroOrmQuery(v, { em, Entity: UserEntity });
 		try {
-			const builder = repo.qb().where(query);
+			const builder = repo.qb().where(query as any);
 			console.log(`Query: ${v} \n\t ${builder.getQuery()}`);
 			await builder.getResultAndCount();
 		} catch (e) {

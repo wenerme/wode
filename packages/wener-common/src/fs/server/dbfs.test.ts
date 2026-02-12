@@ -1,20 +1,19 @@
-import type { EntityManager } from '@mikro-orm/knex';
-import { beforeEach, describe, test } from 'vitest';
+import type { EntityManager } from '@mikro-orm/sql';
+import { beforeEach, describe, expect, test } from 'vitest';
 import { runFileSystemTest } from '../tests/runFileSystemTest';
 import { createDatabaseFileSystem, FileNodeMetaEntity } from './createDatabaseFileSystem';
 import { loadTestDatabase } from './loadTestDatabase';
 
-// Skip: createDatabaseFileSystem imports from @wener/server which is not a dependency of wener-common
-describe.skip('DatabaseFileSystem', () => {
+describe('DatabaseFileSystem', () => {
 	let fs: ReturnType<typeof createDatabaseFileSystem>;
 	let em: EntityManager;
 
 	beforeEach(async () => {
 		const { em: entityManager } = await loadTestDatabase();
-		em = entityManager as any; // Type cast to match expected EntityManager type
+		em = entityManager as any;
 
 		fs = createDatabaseFileSystem({
-			getEntityManager: () => em as any,
+			getEntityManager: () => (em as any).fork(),
 		});
 
 		// Setup initial state: ensure root directory exists and create /README.txt
@@ -32,9 +31,9 @@ describe.skip('DatabaseFileSystem', () => {
 			btime: new Date(),
 			ctime: new Date(),
 			mtime: new Date(),
-		});
-		await em.persistAndFlush(readmeFile);
-	}, 30000); // Increase timeout to 30 seconds
+		} as any);
+		await em.persist(readmeFile).flush();
+	}, 30000);
 
 	test('common tests', async () => {
 		await runFileSystemTest(fs, {
@@ -44,5 +43,10 @@ describe.skip('DatabaseFileSystem', () => {
 			writeStream: false,
 			abort: false,
 		});
-	}, 60000); // Increase timeout to 60 seconds
+	}, 60000);
+
+	test('root node exists', async () => {
+		const stat = await fs.stat('/');
+		expect(stat.kind).toBe('directory');
+	});
 });

@@ -1,5 +1,6 @@
 import 'reflect-metadata';
-import { Entity, MetadataStorage } from '@mikro-orm/core';
+import { MetadataStorage } from '@mikro-orm/core';
+import { Entity } from '@mikro-orm/decorators/legacy';
 import { expect, test } from 'vitest';
 import { defineEntity, getEntityDef } from './defineEntity';
 import { StandardBaseEntity } from './StandardBaseEntity';

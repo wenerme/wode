@@ -206,7 +206,7 @@ export function createFetchWithCache<T extends BaseHttpRequestLogEntity>({
 							}
 
 							e.responsePayload = events as any;
-							await em.persistAndFlush(e);
+							await em.persist(e).flush();
 						});
 						res = new Response(a, res);
 					}
@@ -243,7 +243,7 @@ export function createFetchWithCache<T extends BaseHttpRequestLogEntity>({
 							}
 
 							e.responseBody = Buffer.concat(buffers);
-							await em.persistAndFlush(e);
+							await em.persist(e).flush();
 						});
 						res = new Response(a, res);
 					}
@@ -260,7 +260,7 @@ export function createFetchWithCache<T extends BaseHttpRequestLogEntity>({
 				}
 			}
 			if (!ctx.hit) {
-				await em.persistAndFlush(e);
+				await em.persist(e).flush();
 			}
 			await onAfterRequest();
 		}

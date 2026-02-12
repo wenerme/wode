@@ -1,26 +1,26 @@
-import type { EntityManager, MikroORM, Options } from '@mikro-orm/better-sqlite';
+import os from 'node:os';
+import type { EntityManager, MikroORM, Options } from '@mikro-orm/core';
+import type { SqliteDriver } from '@mikro-orm/sql';
 
-async function createLocalDatabase(options: Partial<Options>): LocalDatabase {
-	// https://github.com/nalgeon/sqlean
-	const { defineConfig, MikroORM } = await import('@mikro-orm/better-sqlite');
-	// ~/.local/state/wener/wode.local.db
-	const orm = await MikroORM.init(
-		defineConfig({
-			// dbName: 'wode.local.db',
-			dbName: `${os.homedir()}/.local/state/wener/wode.local.db`,
-			entities: [],
-			...options,
-		}),
-	);
-	const em = orm;
-	return { orm, em };
+async function createLocalDatabase(options: Partial<Options<SqliteDriver>>): Promise<LocalDatabase> {
+	const { MikroORM } = await import('@mikro-orm/core');
+	const { SqliteDriver: Driver, NodeSqliteDialect } = await import('@mikro-orm/sql');
+	const dbName = `${os.homedir()}/.local/state/wener/wode.local.db`;
+	const orm = await MikroORM.init({
+		driver: Driver,
+		dbName,
+		entities: [],
+		driverOptions: new NodeSqliteDialect(dbName),
+		...options,
+	});
+	return { orm, em: orm.em };
 }
 
 type LocalDatabase = { orm: MikroORM; em: EntityManager };
 
 let _localDatabase: LocalDatabase | undefined;
 
-export async function loadLocalDatabase(options: Partial<Options>) {
+export async function loadLocalDatabase(options: Partial<Options<SqliteDriver>>) {
 	if (_localDatabase) {
 		throw new Error('Local database already loaded');
 	}
@@ -31,7 +31,7 @@ export async function loadLocalDatabase(options: Partial<Options>) {
 		get em() {
 			throw new Error('Local database not loaded');
 		},
-	};
+	} as any;
 	try {
 		_localDatabase = await createLocalDatabase(options);
 	} catch (e) {
@@ -41,8 +41,8 @@ export async function loadLocalDatabase(options: Partial<Options>) {
 }
 
 export function getLocalDatabase() {
-	if (_localDatabase) {
-		throw new Error('Local database already loaded');
+	if (!_localDatabase) {
+		throw new Error('Local database not loaded');
 	}
-	throw new Error('Local database not loaded');
+	return _localDatabase;
 }

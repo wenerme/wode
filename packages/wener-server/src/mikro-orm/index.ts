@@ -9,3 +9,4 @@ export { setMikroORM, getMikroORM, getEntityManager, runInTransaction, requireCo
 export { OrmModule, type OrmModuleOptions } from './OrmModule';
 
 export { defineMikroOrmOptions } from './defineMikroOrmOptions';
+export { createSqliteDialect } from './createSqliteDialect';

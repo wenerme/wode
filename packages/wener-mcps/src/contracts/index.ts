@@ -1,4 +1,4 @@
-export { AuditContract, AuditEventSchema, AuditQuerySchema, AuditStatsSchema, type AuditEvent } from './AuditContract';
+export { AuditContract, AuditEventSchema, AuditQuerySchema, AuditStatsSchema, type AuditEvent } from '../audit/AuditContract';
 export {
 	McpsContract,
 	ServiceOverviewSchema,

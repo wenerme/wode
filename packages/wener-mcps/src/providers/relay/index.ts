@@ -1,1 +1,1 @@
-export { RelayMcpServerDef, RelayMcpServerHandlerDef } from './def';
+export { RelayHeaderNames, RelayMcpServerHandlerDef, RelayMcpServerHandlerDef as RelayMcpServerDef } from './def';

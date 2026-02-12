@@ -1,24 +1,18 @@
 import { z } from 'zod';
 
-// Header name constants for config parsing
-export const HeaderNames = {
-	CLS_SECRET_ID: 'X-CLS-SECRET-ID',
-	CLS_SECRET_KEY: 'X-CLS-SECRET-KEY',
-	CLS_REGION: 'X-CLS-REGION',
-	CLS_ENDPOINT: 'X-CLS-ENDPOINT',
-	DB_URL: 'X-DB-URL',
-	DB_READ_URL: 'X-DB-READ-URL',
-	DB_WRITE_URL: 'X-DB-WRITE-URL',
-	SERVICE_URL: 'X-SERVICE-URL',
+/**
+ * Shared header name constants.
+ * Provider-specific headers are defined in each provider's def.ts
+ * (e.g. TencentClsHeaderNames, SqlHeaderNames, etc.)
+ */
+export const HeaderNames = Object.freeze({
+	__proto__: null,
 	TOKEN: 'X-TOKEN',
-	MCP_URL: 'X-MCP-URL',
-	MCP_TYPE: 'X-MCP-TYPE',
 	MCP_COMMAND: 'X-MCP-COMMAND',
-	// Tool filtering headers
 	MCP_READONLY: 'X-MCP-Readonly',
 	MCP_INCLUDE: 'X-MCP-Include',
 	MCP_EXCLUDE: 'X-MCP-Exclude',
-} as const;
+} as const);
 
 // Base server config with common fields
 export const BaseServerConfigSchema = z.object({
@@ -53,6 +47,24 @@ export const PrometheusConfigSchema = BaseServerConfigSchema.extend({
 });
 export type PrometheusConfig = z.infer<typeof PrometheusConfigSchema>;
 
+// Feishu/Lark config
+export const FeishuConfigSchema = BaseServerConfigSchema.extend({
+	type: z.literal('feishu'),
+	appId: z.string().optional().describe('Feishu App ID'),
+	appSecret: z.string().optional().describe('Feishu App Secret'),
+	domain: z.string().optional().describe('feishu (China) or lark (International)'),
+});
+export type FeishuConfig = z.infer<typeof FeishuConfigSchema>;
+
+// Gemini Web Search config
+export const GeminiSearchConfigSchema = BaseServerConfigSchema.extend({
+	type: z.literal('gemini-web-search'),
+	apiKey: z.string().optional().describe('Gemini API key'),
+	baseUrl: z.string().optional().describe('Gemini API base URL'),
+	model: z.string().optional().describe('Gemini model name (default: gemini-3-flash-preview)'),
+});
+export type GeminiSearchConfig = z.infer<typeof GeminiSearchConfigSchema>;
+
 // Relay config for proxying to other MCP servers
 export const RelayConfigSchema = BaseServerConfigSchema.extend({
 	type: z.literal('relay'),
@@ -63,13 +75,35 @@ export const RelayConfigSchema = BaseServerConfigSchema.extend({
 });
 export type RelayConfig = z.infer<typeof RelayConfigSchema>;
 
-// Union of all server configs
-export const ServerConfigSchema = z.discriminatedUnion('type', [
+// Apollo Config center
+export const ApolloConfigConfigSchema = BaseServerConfigSchema.extend({
+	type: z.literal('apolloconfig'),
+	url: z.string().optional().describe('Apollo Config server URL'),
+	appId: z.string().optional().describe('Application ID'),
+	appSecret: z.string().optional().describe('App secret for authentication'),
+	cluster: z.string().optional().describe('Cluster name (default: "default")'),
+	namespace: z.string().optional().describe('Default namespace'),
+});
+export type ApolloConfigConfig = z.infer<typeof ApolloConfigConfigSchema>;
+
+// Known server config schemas
+const KnownServerConfigSchema = z.discriminatedUnion('type', [
 	TencentClsConfigSchema,
 	SqlConfigSchema,
 	PrometheusConfigSchema,
+	FeishuConfigSchema,
+	GeminiSearchConfigSchema,
 	RelayConfigSchema,
+	ApolloConfigConfigSchema,
 ]);
+
+// Catch-all for custom/extension server types (e.g. platform-admin, fusionops-admin)
+const GenericServerConfigSchema = BaseServerConfigSchema.extend({
+	type: z.string(),
+}).passthrough();
+
+// Union of known types with generic fallback for extensibility
+export const ServerConfigSchema = z.union([KnownServerConfigSchema, GenericServerConfigSchema]);
 export type ServerConfig = z.infer<typeof ServerConfigSchema>;
 
 /**

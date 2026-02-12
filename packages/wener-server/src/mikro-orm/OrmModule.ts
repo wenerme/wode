@@ -2,7 +2,6 @@ import { EntityManager as CoreEntityManager, MikroORM as CoreMikroORM, type AnyE
 import { MikroOrmModule, type EntityName, type MikroOrmModuleFeatureOptions } from '@mikro-orm/nestjs';
 import type { MikroOrmModuleAsyncOptions } from '@mikro-orm/nestjs/typings';
 import {
-	knex,
 	EntityManager as PostgreSqlEntityManager,
 	MikroORM as PostgreSqlMikroORM,
 	type AbstractSqlConnection,
@@ -61,15 +60,8 @@ function setup(module: DynamicModule) {
 	module.exports ||= [];
 	module.providers ||= [];
 	module.providers.push(
-		{
-			provide: knex,
-			useFactory(orm: CoreMikroORM) {
-				return (orm.em.getConnection() as AbstractSqlConnection).getKnex();
-			},
-			inject: [CoreMikroORM],
-		},
 		{ provide: PostgreSqlMikroORM, useExisting: CoreMikroORM },
 		{ provide: PostgreSqlEntityManager, useExisting: CoreEntityManager },
 	);
-	module.exports.push(PostgreSqlMikroORM, PostgreSqlEntityManager, knex);
+	module.exports.push(PostgreSqlMikroORM, PostgreSqlEntityManager);
 }

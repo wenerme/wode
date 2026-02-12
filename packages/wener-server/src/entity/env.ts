@@ -1,4 +1,5 @@
-import { Entity, MetadataStorage } from '@mikro-orm/core';
+import { MetadataStorage } from '@mikro-orm/core';
+import { Entity } from '@mikro-orm/decorators/legacy';
 import { Errors, getObjectId } from '@wener/utils';
 
 /**

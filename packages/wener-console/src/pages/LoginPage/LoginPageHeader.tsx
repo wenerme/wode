@@ -5,6 +5,10 @@ export interface LoginPageHeaderProps extends ComponentPropsWithoutRef<'div'> {
 	title?: string;
 	subtitle?: ReactNode;
 	onRegister?: () => void;
+	labels?: {
+		registerPrompt?: string;
+		registerAction?: string;
+	};
 }
 
 export const LoginPageHeader: FC<LoginPageHeaderProps> = ({
@@ -12,6 +16,7 @@ export const LoginPageHeader: FC<LoginPageHeaderProps> = ({
 	title,
 	subtitle,
 	onRegister,
+	labels,
 	className,
 	...props
 }) => {
@@ -23,9 +28,9 @@ export const LoginPageHeader: FC<LoginPageHeaderProps> = ({
 			{subtitle && <h2 className='mt-8 text-2xl leading-9 font-bold tracking-tight opacity-80'>{subtitle}</h2>}
 			{onRegister && (
 				<p className='mt-2 text-sm leading-6 opacity-60'>
-					尚未加入?{' '}
-					<button type={'button'} onClick={onRegister} className='font-semibold text-indigo-600 hover:text-indigo-500'>
-						现在注册
+					{labels?.registerPrompt ?? '尚未加入?'}{' '}
+					<button type={'button'} onClick={onRegister} className='font-semibold text-primary hover:text-primary/80'>
+						{labels?.registerAction ?? '现在注册'}
 					</button>
 				</p>
 			)}

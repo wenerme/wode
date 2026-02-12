@@ -6,26 +6,29 @@ import { CORSPlugin } from '@orpc/server/plugins';
 import { ZodToJsonSchemaConverter } from '@orpc/zod/zod4';
 import type { Hono } from 'hono';
 import { html } from 'hono/html';
-import { AuditRouter } from './audit';
 import { createMcpsRouter } from './mcps-router';
 import type { McpsConfig } from './schema';
+import type { StatsProvider } from './server';
 
 export interface RegisterApiRoutesOptions {
 	app: Hono;
 	config: McpsConfig;
+	/** Additional oRPC routers registered by plugins (e.g. audit) */
+	apiRouters?: Record<string, any>;
+	/** Optional stats provider from audit plugin */
+	statsProvider?: StatsProvider;
 }
 
 /**
- * Register oRPC API routes for audit and MCPS
+ * Register oRPC API routes for MCPS.
+ * Audit router is not included by default - use setupAudit() plugin to add it.
  */
-export function registerApiRoutes({ app, config }: RegisterApiRoutesOptions) {
-	// Create MCPS router with config context
-	const McpsRouter = createMcpsRouter({ config });
+export function registerApiRoutes({ app, config, apiRouters, statsProvider }: RegisterApiRoutesOptions) {
+	const McpsRouter = createMcpsRouter({ config, statsProvider });
 
-	// Combined router for all APIs
-	const combinedRouter = {
-		audit: AuditRouter,
+	const combinedRouter: Record<string, any> = {
 		mcps: McpsRouter,
+		...apiRouters,
 	};
 
 	const handleByRpc = new RPCHandler(combinedRouter);

@@ -163,7 +163,7 @@ export class EntityBaseService<E extends StandardBaseEntity> extends BaseEntityS
 		let { builder } = await this.createQueryBuilder();
 
 		Errors.BadRequest.check(id, 'id is required');
-		builder.andWhere({ id });
+		builder.andWhere({ id } as any);
 
 		builder = applySelection({ builder, query: req });
 		if (lockMode) {
@@ -196,9 +196,7 @@ export class EntityBaseService<E extends StandardBaseEntity> extends BaseEntityS
 			try {
 				entity = await this.em.upsert(this.Entity, data as any, {
 					onConflictFields,
-					// @ts-expect-error
 					onConflictMergeFields,
-					// @ts-expect-error
 					onConflictExcludeFields: [...onConflictExcludeFields, 'id', 'uid', 'tid', 'createdAt', 'deletedAt'],
 					onConflictAction,
 				});
@@ -209,7 +207,7 @@ export class EntityBaseService<E extends StandardBaseEntity> extends BaseEntityS
 			writeEntityAuditLog({ entity, action: EntityAuditAction.Upsert, before: data, em });
 		} else {
 			entity = repo.create(data as any);
-			await em.persistAndFlush(entity);
+			await em.persist(entity).flush();
 			writeEntityAuditLog({ entity, action: EntityAuditAction.Create, after: entity.toPOJO() });
 			await em.flush();
 		}
@@ -224,7 +222,7 @@ export class EntityBaseService<E extends StandardBaseEntity> extends BaseEntityS
 		const before = entity.toPOJO();
 		entity.assign(trimUndefined(data));
 		writeEntityAuditLog({ entity, action: EntityAuditAction.Update, em, before, after: entity.toPOJO() });
-		await em.persistAndFlush(entity);
+		await em.persist(entity).flush();
 		return entity;
 	}
 
@@ -241,7 +239,7 @@ export class EntityBaseService<E extends StandardBaseEntity> extends BaseEntityS
 				entity.extensions = setData(entity.extensions, { data: extensions, partial: true });
 			}
 			writeEntityAuditLog({ entity, action: EntityAuditAction.Patch, em, before, after: entity.toPOJO() });
-			await em.persistAndFlush(entity);
+			await em.persist(entity).flush();
 			return entity;
 		});
 	}
@@ -278,7 +276,7 @@ export class EntityBaseService<E extends StandardBaseEntity> extends BaseEntityS
 			entity.deletedById = undefined;
 		}
 		writeEntityAuditLog({ entity, action: EntityAuditAction.Undelete, em });
-		await em.persistAndFlush(entity);
+		await em.persist(entity).flush();
 		return entity;
 	}
 
@@ -286,7 +284,7 @@ export class EntityBaseService<E extends StandardBaseEntity> extends BaseEntityS
 		const { em } = this;
 		const entity = await this.get({ ...r, deleted: true });
 		writeEntityAuditLog({ entity, action: EntityAuditAction.Purge, em, before: entity.toPOJO() });
-		await em.removeAndFlush(entity);
+		await em.remove(entity).flush();
 		return entity;
 	}
 
@@ -303,9 +301,7 @@ export class EntityBaseService<E extends StandardBaseEntity> extends BaseEntityS
 		const entities = await em.transactional(async (em) => {
 			const entities = await em.upsertMany(this.Entity, data, {
 				onConflictFields,
-				// @ts-expect-error
 				onConflictMergeFields,
-				// @ts-expect-error
 				onConflictExcludeFields: [...onConflictExcludeFields, 'id', 'tid', 'createdAt', 'deletedAt'],
 				onConflictAction,
 			});
@@ -321,7 +317,7 @@ export class EntityBaseService<E extends StandardBaseEntity> extends BaseEntityS
 		Errors.BadRequest.check(hasEntityFeature(ent, EntityFeature.HasOwnerRef), '资源不支持归属');
 		Errors.Forbidden.check(!ent.ownerId, '资源已经被分配');
 		setOwnerRef(ent, userId);
-		await this.em.persistAndFlush(ent);
+		await this.em.persist(ent).flush();
 		return { data: ent };
 	}
 
@@ -330,7 +326,7 @@ export class EntityBaseService<E extends StandardBaseEntity> extends BaseEntityS
 		const ent = await this.get(req);
 		Errors.BadRequest.check(hasEntityFeature(ent, EntityFeature.HasOwnerRef), '资源不支持归属');
 		setOwnerRef(ent, ownerId);
-		await this.em.persistAndFlush(ent);
+		await this.em.persist(ent).flush();
 		return { data: ent };
 	}
 
@@ -340,7 +336,7 @@ export class EntityBaseService<E extends StandardBaseEntity> extends BaseEntityS
 		Errors.BadRequest.check(hasEntityFeature(ent, EntityFeature.HasOwnerRef), '资源不支持归属');
 		Errors.Forbidden.check(ent.ownerId === userId, '资源不属于当前用户');
 		setOwnerRef(ent, null);
-		await this.em.persistAndFlush(ent);
+		await this.em.persist(ent).flush();
 		return { data: ent };
 	}
 
