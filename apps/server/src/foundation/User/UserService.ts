@@ -48,7 +48,7 @@ export class UserService extends CustomBaseEntityService<UserEntity> {
 		if (needMigration) {
 			this.log.log(`Migrate password for ${user.id}`);
 			await user.setPassword(password);
-			await this.em.persistAndFlush(user);
+			await this.em.persist(user).flush();
 		}
 
 		return match;

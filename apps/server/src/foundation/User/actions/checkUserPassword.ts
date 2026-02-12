@@ -68,7 +68,7 @@ export async function checkUserPassword({
 		if (!user.password.startsWith('$')) {
 			log.debug(`user ${user.id} migration password`);
 			user.password = await hashPassword(password);
-			await em.persistAndFlush(user);
+			await em.persist(user).flush();
 		}
 	}
 

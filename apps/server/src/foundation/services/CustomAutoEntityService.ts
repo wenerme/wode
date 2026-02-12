@@ -29,7 +29,7 @@ export class CustomAutoEntityService extends AutoEntityService {
 		const { entity: user } = await this.resolveEntity({ id: opts.userId });
 
 		entity.user = user;
-		await this.em.persistAndFlush(entity);
+		await this.em.persist(entity).flush();
 
 		return { entity, user };
 	}
@@ -44,7 +44,7 @@ export class CustomAutoEntityService extends AutoEntityService {
 		}
 
 		entity.user = undefined;
-		await this.em.persistAndFlush(entity);
+		await this.em.persist(entity).flush();
 
 		return { entity };
 	}
@@ -59,7 +59,7 @@ export class CustomAutoEntityService extends AutoEntityService {
 		const { entity: target } = await this.resolveEntity({ id: opts.customerId });
 
 		entity.customer = target;
-		await this.em.persistAndFlush(entity);
+		await this.em.persist(entity).flush();
 
 		return { entity, target };
 	}
@@ -74,7 +74,7 @@ export class CustomAutoEntityService extends AutoEntityService {
 		}
 		const before = entity.customer;
 		entity.customer = undefined;
-		await this.em.persistAndFlush(entity);
+		await this.em.persist(entity).flush();
 
 		return { entity, before };
 	}
@@ -84,7 +84,7 @@ export class CustomAutoEntityService extends AutoEntityService {
 		let { entity } = await es.requireEntity(ent);
 		Errors.BadRequest.check(hasEntityFeature2(entity, EntityFeature.HasNotes), '资源不支持所有权');
 		entity.notes = opts.notes;
-		await this.em.persistAndFlush(entity);
+		await this.em.persist(entity).flush();
 		return { entity };
 	}
 }

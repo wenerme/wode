@@ -34,4 +34,3 @@ export type { ClusterUpdateType, DrainOptions, ExtractedParameter, SearchStrateg
 
 export type { PersistenceHandler } from './persistence/PersistenceHandler';
 export { MemoryPersistence } from './persistence/MemoryPersistence';
-export { FilePersistence } from './persistence/FilePersistence';

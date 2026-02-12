@@ -25,8 +25,21 @@
 		"./types": "./src/types.d.ts",
 		"./package.json": "./package.json"
 	},
-	"files": ["lib", "src", "tsconfig.json"],
-	"keywords": ["utils", "core library", "helper", "camelcase", "get", "set", "template", "lodash"],
+	"files": [
+		"lib",
+		"src",
+		"tsconfig.json"
+	],
+	"keywords": [
+		"utils",
+		"core library",
+		"helper",
+		"camelcase",
+		"get",
+		"set",
+		"template",
+		"lodash"
+	],
 	"scripts": {
 		"build": "make build",
 		"clean": "make clean",
@@ -38,7 +51,7 @@
 		"@types/ws": "^8.18.1",
 		"https-proxy-agent": "^7.0.6",
 		"node-fetch": "^3.3.2",
-		"undici": "^7.20.0",
+		"undici": "^7.22.0",
 		"zod": "^4.3.6"
 	},
 	"publishConfig": {

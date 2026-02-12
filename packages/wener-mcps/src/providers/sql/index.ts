@@ -1,1 +1,1 @@
-export { SqlMcpServerDef, SqlMcpServerHandlerDef } from './def';
+export { SqlHeaderNames, SqlMcpServerHandlerDef, SqlMcpServerHandlerDef as SqlMcpServerDef } from './def';

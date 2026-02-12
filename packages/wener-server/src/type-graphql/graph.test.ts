@@ -1,4 +1,4 @@
-import { Entity } from '@mikro-orm/core';
+import { Entity } from '@mikro-orm/decorators/legacy';
 import { Injectable } from '@nestjs/common';
 import { mixin, type Constructor } from '@wener/utils';
 import { GraphQLDateTime } from 'graphql-scalars';

@@ -155,7 +155,7 @@ export function createFetchWithCache({
 							}
 
 							e.responsePayload = events as any;
-							await em.persistAndFlush(e);
+							await em.persist(e).flush();
 						});
 						res = new Response(a, res);
 					}
@@ -192,7 +192,7 @@ export function createFetchWithCache({
 							}
 
 							e.responseBody = Buffer.concat(buffers);
-							await em.persistAndFlush(e);
+							await em.persist(e).flush();
 						});
 						res = new Response(a, res);
 					}
@@ -208,7 +208,7 @@ export function createFetchWithCache({
 					e.ok = parseInt(code) === 0;
 				}
 			}
-			await em.persistAndFlush(e);
+			await em.persist(e).flush();
 			await config.onAfterRequest?.(ctx);
 		}
 	};

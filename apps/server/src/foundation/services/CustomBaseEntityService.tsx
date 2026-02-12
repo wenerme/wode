@@ -10,7 +10,7 @@ export class CustomBaseEntityService<E extends StandardBaseEntity> extends Entit
 	//   Errors.BadRequest.check(hasEntityFeature(entity, EntityFeature.HasStateStatus), '资源不支持状态');
 	//   entity.status = opts.status;
 	//   entity.state = opts.state || entity.state;
-	//   await this.em.persistAndFlush(entity);
+	//   await this.em.persist(entity).flush();
 	//   return { entity };
 	// }
 
@@ -33,7 +33,7 @@ export class CustomBaseEntityService<E extends StandardBaseEntity> extends Entit
 				}
 			}
 			writeEntityAuditLog({ entity, action: EntityAuditAction.Patch, em, before, after: entity.toPOJO() });
-			await em.persistAndFlush(entity);
+			await em.persist(entity).flush();
 			return entity;
 		});
 	}

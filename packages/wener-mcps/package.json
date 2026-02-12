@@ -1,6 +1,7 @@
 {
 	"name": "@wener/mcps",
-	"version": "1.0.0",
+	"version": "1.0.7",
+	"type": "module",
 	"description": "",
 	"author": "",
 	"bin": {
@@ -11,73 +12,170 @@
 		"#/*": "./*"
 	},
 	"exports": {
-		".": {
-			"import": "./dist/index.mjs",
-			"types": "./src/index.ts"
-		}
+		".": "./src/index.ts",
+		"./server": "./src/server/index.ts",
+		"./entities": "./src/audit/entities/index.ts",
+		"./contracts": "./src/contracts/index.ts",
+		"./chat": "./src/chat/index.ts",
+		"./providers": "./src/providers/McpServerHandlerDef.ts",
+		"./providers/defs": "./src/providers/defs.ts",
+		"./providers/prometheus": "./src/providers/prometheus/index.ts",
+		"./providers/tencent-cls": "./src/providers/tencent-cls/index.ts",
+		"./providers/sql": "./src/providers/sql/index.ts",
+		"./providers/relay": "./src/providers/relay/index.ts",
+		"./providers/feishu": "./src/providers/feishu/index.ts",
+		"./providers/gemini-search": "./src/providers/gemini-search/index.ts",
+		"./cli": "./src/cli.ts",
+		"./audit/server": "./src/audit/server/index.ts"
 	},
 	"files": [
 		"dist",
+		"lib",
 		"src",
 		"README.md"
 	],
 	"keywords": [],
 	"scripts": {
 		"build": "bun run ./src/scripts/bundle.ts",
-		"dev": "bun --watch src/mcps-cli.ts",
+		"dev": "pnpm tsx --watch src/mcps-cli.ts",
 		"dev:web": "vite",
-		"prepublishOnly": "pnpm build",
+		"prepublishOnly": "make build",
 		"test": "vitest run",
 		"typecheck": "tsc --noEmit"
 	},
+	"peerDependencies": {
+		"@mikro-orm/core": "*",
+		"@mikro-orm/decorators": "*",
+		"@mikro-orm/sql": "*",
+		"@wener/server": "*"
+	},
+	"peerDependenciesMeta": {
+		"@mikro-orm/core": {
+			"optional": true
+		},
+		"@mikro-orm/decorators": {
+			"optional": true
+		},
+		"@mikro-orm/sql": {
+			"optional": true
+		},
+		"@wener/server": {
+			"optional": true
+		}
+	},
 	"dependencies": {
-		"@ai-sdk/mcp": "^1.0.18",
-		"@ai-sdk/openai-compatible": "^2.0.26",
-		"@ai-sdk/react": "^3.0.71",
-		"@base-ui/react": "^1.1.0",
-		"@hono/mcp": "^0.2.3",
+		"emittery": "^1.2.1"
+	},
+	"devDependencies": {
+		"@ai-sdk/mcp": "^1.0.22",
+		"@ai-sdk/openai-compatible": "^2.0.31",
+		"@ai-sdk/react": "^3.0.107",
+		"@base-ui/react": "^1.2.0",
+		"@hono/mcp": "^0.2.4",
 		"@hono/node-server": "^1.19.9",
-		"@mikro-orm/better-sqlite": "^6.6.6",
-		"@mikro-orm/core": "^6.6.6",
-		"@wener/ai": "workspace:*",
-		"@modelcontextprotocol/sdk": "^1.25.3",
-		"@orpc/client": "^1.13.4",
-		"@orpc/contract": "^1.13.4",
-		"@orpc/json-schema": "^1.13.4",
-		"@orpc/openapi": "^1.13.4",
-		"@orpc/server": "^1.13.4",
-		"@orpc/zod": "^1.13.4",
-		"@streamdown/cjk": "^1.0.1",
-		"@streamdown/code": "^1.0.1",
-		"@streamdown/math": "^1.0.1",
-		"@streamdown/mermaid": "^1.0.1",
-		"@wener/client": "workspace:^1.0.26",
-		"@wener/common": "^2.0.3",
-		"ai": "^6.0.69",
+		"@hono/vite-dev-server": "^0.25.0",
+		"@larksuiteoapi/node-sdk": "^1.59.0",
+		"@mikro-orm/core": "7.0.0-rc.2",
+		"@mikro-orm/decorators": "7.0.0-rc.2",
+		"@mikro-orm/sql": "7.0.0-rc.2",
+		"@modelcontextprotocol/sdk": "^1.27.1",
+		"@orpc/client": "^1.13.5",
+		"@orpc/contract": "^1.13.5",
+		"@orpc/json-schema": "^1.13.5",
+		"@orpc/openapi": "^1.13.5",
+		"@orpc/server": "^1.13.5",
+		"@orpc/zod": "^1.13.5",
+		"@streamdown/cjk": "^1.0.2",
+		"@streamdown/code": "^1.0.3",
+		"@streamdown/math": "^1.0.2",
+		"@streamdown/mermaid": "^1.0.2",
+		"@wener/ai": "workspace:^0.1.7",
+		"@wener/client": "workspace:^1.0.27",
+		"@wener/common": "^2.0.5",
+		"@wener/server": "workspace:^2.0.5",
+		"ai": "^6.0.105",
 		"commander": "^14.0.3",
-		"common": "workspace:^1.0.0",
 		"consola": "^3.4.2",
-		"hono": "^4.11.7",
+		"hono": "^4.12.3",
 		"kysely": "^0.28.11",
-		"lru-cache": "^11.2.5",
-		"lucide-react": "^0.562.0",
-		"mysql2": "^3.16.3",
-		"pg-query-stream": "^4.12.0",
+		"lru-cache": "^11.2.6",
+		"lucide-react": "^0.575.0",
+		"mysql2": "^3.18.2",
+		"openai": "^6.25.0",
+		"pg-query-stream": "^4.13.0",
+		"react": "^19.2.4",
+		"react-dom": "^19.2.4",
 		"react-markdown": "^10.1.0",
-		"react-router-dom": "^7.13.0",
+		"react-router-dom": "^7.13.1",
 		"std-env": "^3.10.0",
-		"streamdown": "^2.1.0",
+		"streamdown": "^2.3.0",
 		"tarn": "^3.0.2",
-		"tedious": "^19.2.0",
+		"tedious": "^19.2.1",
 		"yaml": "^2.8.2",
 		"zod": "^4.3.6"
 	},
-	"devDependencies": {
-		"@hono/vite-dev-server": "^0.24.1",
-		"@types/better-sqlite3": "^7.6.13",
-		"openai": "^6.17.0",
-		"react": "^19.2.4",
-		"react-dom": "^19.2.4"
-	},
-	"publishConfig": {}
+	"publishConfig": {
+		"exports": {
+			".": {
+				"types": "./src/index.ts",
+				"default": "./lib/index.js"
+			},
+			"./server": {
+				"types": "./src/server/index.ts",
+				"default": "./lib/server/index.js"
+			},
+			"./entities": {
+				"types": "./src/audit/entities/index.ts",
+				"default": "./lib/audit/entities/index.js"
+			},
+			"./contracts": {
+				"types": "./src/contracts/index.ts",
+				"default": "./lib/contracts/index.js"
+			},
+			"./chat": {
+				"types": "./src/chat/index.ts",
+				"default": "./lib/chat/index.js"
+			},
+			"./providers": {
+				"types": "./src/providers/McpServerHandlerDef.ts",
+				"default": "./lib/providers/McpServerHandlerDef.js"
+			},
+			"./providers/defs": {
+				"types": "./src/providers/defs.ts",
+				"default": "./lib/providers/defs.js"
+			},
+			"./providers/prometheus": {
+				"types": "./src/providers/prometheus/index.ts",
+				"default": "./lib/providers/prometheus/index.js"
+			},
+			"./providers/tencent-cls": {
+				"types": "./src/providers/tencent-cls/index.ts",
+				"default": "./lib/providers/tencent-cls/index.js"
+			},
+			"./providers/sql": {
+				"types": "./src/providers/sql/index.ts",
+				"default": "./lib/providers/sql/index.js"
+			},
+			"./providers/relay": {
+				"types": "./src/providers/relay/index.ts",
+				"default": "./lib/providers/relay/index.js"
+			},
+			"./providers/feishu": {
+				"types": "./src/providers/feishu/index.ts",
+				"default": "./lib/providers/feishu/index.js"
+			},
+			"./providers/gemini-search": {
+				"types": "./src/providers/gemini-search/index.ts",
+				"default": "./lib/providers/gemini-search/index.js"
+			},
+			"./cli": {
+				"types": "./src/cli.ts",
+				"default": "./lib/cli.js"
+			},
+			"./audit/server": {
+				"types": "./src/audit/server/index.ts",
+				"default": "./lib/audit/server/index.js"
+			}
+		}
+	}
 }

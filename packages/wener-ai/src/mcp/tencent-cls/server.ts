@@ -35,7 +35,7 @@ export function createTencentClsMcpServer(options: CreateTencentClsMcpServerOpti
 
 	const textResult = (text: string) => ({ content: [{ type: 'text' as const, text }] });
 	const jsonResult = (data: unknown) => ({
-		content: [{ type: 'text' as const, text: JSON.stringify(cleanObject(data), null, 2) }],
+		content: [{ type: 'text' as const, text: JSON.stringify(data, null, 2) }],
 	});
 
 	// Register the search guide as a resource
@@ -70,25 +70,4 @@ export function createTencentClsMcpServer(options: CreateTencentClsMcpServerOpti
 			await server.close();
 		},
 	};
-}
-
-/**
- * Recursively clean object by removing null, undefined, and empty string values
- */
-function cleanObject(obj: unknown): unknown {
-	if (obj === null || obj === undefined) return undefined;
-	if (Array.isArray(obj)) {
-		return obj.map(cleanObject);
-	}
-	if (typeof obj === 'object') {
-		const result: Record<string, unknown> = {};
-		for (const [key, value] of Object.entries(obj as Record<string, unknown>)) {
-			const cleaned = cleanObject(value);
-			if (cleaned !== undefined && cleaned !== null && cleaned !== '') {
-				result[key] = cleaned;
-			}
-		}
-		return result;
-	}
-	return obj;
 }

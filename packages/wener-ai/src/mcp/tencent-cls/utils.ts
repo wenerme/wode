@@ -151,27 +151,6 @@ export function formatBTime(input: string): string {
 }
 
 /**
- * Recursively clean object by removing null, undefined, and empty string values
- */
-export function cleanObject(obj: unknown): unknown {
-	if (obj === null || obj === undefined) return undefined;
-	if (Array.isArray(obj)) {
-		return obj.map(cleanObject);
-	}
-	if (typeof obj === 'object') {
-		const result: Record<string, unknown> = {};
-		for (const [key, value] of Object.entries(obj as Record<string, unknown>)) {
-			const cleaned = cleanObject(value);
-			if (cleaned !== undefined && cleaned !== null && cleaned !== '') {
-				result[key] = cleaned;
-			}
-		}
-		return result;
-	}
-	return obj;
-}
-
-/**
  * Convert data to TOON format for compact output
  * https://github.com/toon-format/toon
  */

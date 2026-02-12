@@ -1,4 +1,5 @@
-import { Entity, Property, types, type Opt, type Ref } from '@mikro-orm/core';
+import { types, type Opt, type Ref } from '@mikro-orm/core';
+import { Entity, Property } from '@mikro-orm/decorators/legacy';
 import type { Constructor } from '@wener/utils';
 import { Feature } from '../../Feature';
 import { EntityFeature } from '../enum';

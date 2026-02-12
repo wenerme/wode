@@ -1,4 +1,4 @@
-import { QueryOrder, type EntityClass, type FilterQuery, type QBFilterQuery } from '@mikro-orm/core';
+import { QueryOrder, type EntityClass, type FilterQuery } from '@mikro-orm/core';
 import type { QueryBuilder } from '@mikro-orm/postgresql';
 import { parseSort, resolvePagination } from '@wener/common/data';
 import { toMikroOrmQuery } from '@wener/miniquery/mikro-orm';
@@ -59,7 +59,7 @@ export async function findAllEntity<E extends StandardBaseEntity>(
 
 		{
 			const and = buildFilterQuery(opts);
-			and.length && builder.andWhere({ $and: and });
+			and.length && builder.andWhere({ $and: and } as any);
 		}
 
 		if (search) {
@@ -67,8 +67,8 @@ export async function findAllEntity<E extends StandardBaseEntity>(
 				await resolveCtx.applySearch({ builder, search });
 			} else if (resolveSearch) {
 				const { and = [], or = [] } = await resolveSearch({ search });
-				and.length && builder.andWhere({ $and: and });
-				or.length && builder.andWhere({ $or: or });
+				and.length && builder.andWhere({ $and: and } as any);
+				or.length && builder.andWhere({ $or: or } as any);
 			}
 		}
 	}
@@ -107,7 +107,7 @@ export async function findAllEntity<E extends StandardBaseEntity>(
 			out.data = data;
 			out.total = count;
 		} else if (needTotal) {
-			out.total = await builder.count();
+			out.total = await builder.count() as any;
 		} else if (needData) {
 			out.data = await builder.getResult();
 		}
@@ -136,7 +136,7 @@ function buildFilterQuery({
 	}
 	for (let q of filters.map((v) => v?.trim()).filter(Boolean)) {
 		try {
-			all.push(toMikroOrmQuery(q) as QBFilterQuery);
+			all.push(toMikroOrmQuery(q) as FilterQuery<any>);
 		} catch (error: any) {
 			throw Errors.BadRequest.asError({ message: 'Invalid filter', description: error?.message as string });
 		}

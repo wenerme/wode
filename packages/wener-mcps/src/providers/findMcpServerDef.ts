@@ -1,9 +1,5 @@
 import { getAllMcpServerHandlerDefs, type McpServerHandlerDef } from './McpServerHandlerDef';
-// Import all server definitions to ensure they are registered
-import './prometheus/def';
-import './tencent-cls/def';
-import './sql/def';
-import './relay/def';
+import './defs';
 
 /**
  * Find MCP server definitions matching a predicate

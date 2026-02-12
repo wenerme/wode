@@ -35,7 +35,7 @@ export class AuthService {
 			});
 		}
 
-		await em.removeAndFlush(entities);
+		await em.remove(entities).flush();
 		return { count: entities.length };
 	}
 
@@ -74,7 +74,7 @@ export class AuthService {
 
 		// fixme invalid token
 
-		await this.em.persistAndFlush(user);
+		await this.em.persist(user).flush();
 		return { user };
 	}
 }

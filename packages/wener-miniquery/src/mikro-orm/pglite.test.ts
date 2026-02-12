@@ -3,19 +3,9 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { PGlite } from '@electric-sql/pglite';
 import { PGLiteSocketServer } from '@electric-sql/pglite-socket';
-import {
-	BaseEntity,
-	defineConfig,
-	Entity,
-	MikroORM,
-	OneToOne,
-	type Opt,
-	PrimaryKey,
-	Property,
-	ReflectMetadataProvider,
-	SqlEntityManager,
-	types,
-} from '@mikro-orm/postgresql';
+import { BaseEntity, MikroORM, type Opt, types } from '@mikro-orm/core';
+import { Entity, OneToOne, PrimaryKey, Property } from '@mikro-orm/decorators/legacy';
+import { defineConfig, type SqlEntityManager } from '@mikro-orm/postgresql';
 import { afterAll, beforeAll, describe, expect, test } from 'vitest';
 import { toMikroOrmQuery } from './toMikroOrmQuery';
 
@@ -104,7 +94,7 @@ async function getOrm() {
 		orm = await MikroORM.init(
 			defineConfig({
 				entities: [UserEntity, UserProfileEntity],
-				discovery: { disableDynamicFileAccess: true, requireEntitiesArray: true },
+				
 				dbName: 'postgres',
 				// Use driverOptions to configure pg connection for Unix socket
 				driverOptions: {
@@ -115,14 +105,13 @@ async function getOrm() {
 						password: 'postgres',
 					},
 				},
-				metadataProvider: ReflectMetadataProvider,
+				
 				// debug: true,
 			}),
 		);
 
 		// Create schema
-		const schema = orm.getSchemaGenerator();
-		await schema.createSchema();
+		await orm.schema.create();
 	}
 
 	return { orm, em: orm.em.fork() };
@@ -189,7 +178,7 @@ describe('PGlite MikroORM Miniquery Tests', () => {
 			}),
 		];
 
-		await em.persistAndFlush(users);
+		await em.persist(users).flush();
 
 		// Test queries with expected results
 		const testCases: Array<[string, (results: UserEntity[]) => void]> = [
@@ -351,12 +340,12 @@ describe('PGlite MikroORM Miniquery Tests', () => {
 		// Run all test cases
 		for (const [query, assertion] of testCases) {
 			const mikroQuery = toMikroOrmQuery(query, { em, Entity: UserEntity });
-			const results = await (em as SqlEntityManager).createQueryBuilder(UserEntity).where(mikroQuery).getResult();
+			const results = await (em as SqlEntityManager).createQueryBuilder(UserEntity).where(mikroQuery as any).getResult();
 			assertion(results);
 		}
 
 		// Clean up
-		await em.removeAndFlush(users);
+		await em.remove(users).flush();
 	});
 
 	test('should query UserProfileEntity with various query patterns', async () => {
@@ -375,7 +364,7 @@ describe('PGlite MikroORM Miniquery Tests', () => {
 			age: 30,
 		});
 
-		await em.persistAndFlush([user1, user2]);
+		await em.persist([user1, user2]).flush();
 
 		const profiles = [
 			profileRepo.create({
@@ -394,7 +383,7 @@ describe('PGlite MikroORM Miniquery Tests', () => {
 			}),
 		];
 
-		await em.persistAndFlush(profiles);
+		await em.persist(profiles).flush();
 
 		// Test queries with expected results
 		const testCases: Array<[string, (results: UserProfileEntity[]) => void]> = [
@@ -456,12 +445,12 @@ describe('PGlite MikroORM Miniquery Tests', () => {
 			const mikroQuery = toMikroOrmQuery(query, { em, Entity: UserProfileEntity });
 			const results = await (em as SqlEntityManager)
 				.createQueryBuilder(UserProfileEntity)
-				.where(mikroQuery)
+				.where(mikroQuery as any)
 				.getResult();
 			assertion(results);
 		}
 
 		// Clean up
-		await em.removeAndFlush([...profiles, user1, user2]);
+		await em.remove([...profiles, user1, user2]).flush();
 	});
 });

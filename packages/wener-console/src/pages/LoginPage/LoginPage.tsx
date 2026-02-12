@@ -1,7 +1,7 @@
 import type { ComponentPropsWithoutRef, ReactNode } from 'react';
 import { GrSystem } from 'react-icons/gr';
 import { LoginPageFooter } from './LoginPageFooter';
-import { LoginPageForm, type LoginFormData } from './LoginPageForm';
+import { LoginPageForm, type LoginFormData, type LoginFormMode, type LoginFormProps } from './LoginPageForm';
 import { LoginPageHeader } from './LoginPageHeader';
 import { LoginPageHero } from './LoginPageHero';
 import { LoginPageLayout } from './LoginPageLayout';
@@ -23,6 +23,8 @@ export namespace LoginPage {
 		showOrg?: boolean;
 		hero?: ReactNode;
 		logo?: ReactNode;
+		mode?: LoginFormMode;
+		formLabels?: LoginFormProps['labels'];
 
 		onForgetPassword?: () => void;
 		onRegister?: () => void;
@@ -53,6 +55,8 @@ export namespace LoginPage {
 		className,
 		onForgetPassword,
 		onRegister,
+		mode,
+		formLabels,
 		...props
 	}: CompositeProps) => {
 		const content = (
@@ -64,6 +68,8 @@ export namespace LoginPage {
 					orgValue={title}
 					onForgetPassword={onForgetPassword}
 					onRegister={onRegister}
+					mode={mode}
+					labels={formLabels}
 				/>
 				{socials && <LoginPageSocialLogin socials={socials} />}
 				{children}

@@ -1,19 +1,17 @@
 import { implement } from '@orpc/server';
 import { McpsContract, type ModelInfo, type ServerInfo, type ServerTypeInfo, type ToolInfo } from '../contracts';
 import { findMcpServerDef } from '../providers/findMcpServerDef';
-import { getAuditStats, queryAuditEvents } from './audit';
 import type { McpsConfig } from './schema';
+import type { StatsProvider } from './server';
 
-// Simple glob pattern matching
 function matchGlob(pattern: string, text: string): boolean {
 	const regexPattern = pattern
-		.replace(/[.+^${}()|[\]\\]/g, '\\$&') // Escape regex special chars except * and ?
+		.replace(/[.+^${}()|[\]\\]/g, '\\$&')
 		.replace(/\*/g, '.*')
 		.replace(/\?/g, '.');
 	return new RegExp(`^${regexPattern}$`, 'i').test(text);
 }
 
-// Build server types from registry
 function getServerTypes(): ServerTypeInfo[] {
 	return findMcpServerDef().map((def) => ({
 		type: def.name,
@@ -22,7 +20,6 @@ function getServerTypes(): ServerTypeInfo[] {
 	}));
 }
 
-// Build endpoints from server types
 function getEndpoints(): string[] {
 	const mcpEndpoints = findMcpServerDef().map((def) => `/mcp/${def.name}`);
 	const chatEndpoints = [
@@ -38,22 +35,27 @@ function getEndpoints(): string[] {
 
 export interface McpsRouterContext {
 	config: McpsConfig;
+	/** Optional stats provider (e.g. from audit plugin) */
+	statsProvider?: StatsProvider;
 }
 
-/**
- * Create MCPS Router with config context
- */
-export function createMcpsRouter(ctx: McpsRouterContext) {
-	const { config } = ctx;
+const emptyStats = {
+	totalRequests: 0,
+	totalErrors: 0,
+	avgDurationMs: 0,
+	byServer: [] as Array<{ name: string; count: number }>,
+	byMethod: [] as Array<{ method: string; count: number }>,
+};
 
-	// Build server info list
+export function createMcpsRouter(ctx: McpsRouterContext) {
+	const { config, statsProvider } = ctx;
+
 	const servers: ServerInfo[] = Object.entries(config.servers).map(([name, serverConfig]) => ({
 		name,
 		type: serverConfig.type,
 		disabled: serverConfig.disabled,
 	}));
 
-	// Build model info list
 	const models: ModelInfo[] = (config.models ?? []).map((model) => ({
 		name: model.name,
 		adapter: model.adapter,
@@ -76,10 +78,13 @@ export function createMcpsRouter(ctx: McpsRouterContext) {
 		}),
 
 		stats: implement(McpsContract.stats).handler(async ({ input }) => {
-			const auditStats = getAuditStats(input);
+			if (!statsProvider) {
+				return { ...emptyStats, byEndpoint: [] };
+			}
 
-			// Build endpoint stats from audit events
-			const { events } = queryAuditEvents({ limit: 10000 });
+			const auditStats = statsProvider.getStats(input);
+			const { events } = statsProvider.queryEvents({ limit: 10000 });
+
 			const endpointCounts = new Map<string, number>();
 			for (const event of events) {
 				const endpoint = event.path || 'unknown';
@@ -88,12 +93,9 @@ export function createMcpsRouter(ctx: McpsRouterContext) {
 			const byEndpoint = Array.from(endpointCounts.entries())
 				.map(([endpoint, count]) => ({ endpoint, count }))
 				.sort((a, b) => b.count - a.count)
-				.slice(0, 20); // Top 20 endpoints
+				.slice(0, 20);
 
-			return {
-				...auditStats,
-				byEndpoint,
-			};
+			return { ...auditStats, byEndpoint };
 		}),
 
 		servers: implement(McpsContract.servers).handler(async () => {
@@ -105,17 +107,7 @@ export function createMcpsRouter(ctx: McpsRouterContext) {
 		}),
 
 		tools: implement(McpsContract.tools).handler(async ({ input }) => {
-			// TODO: This is a placeholder that returns empty tools list.
-			// Full implementation would require connecting to each MCP server
-			// and calling tools/list. Consider caching tool lists and
-			// refreshing periodically or on demand.
 			const tools: ToolInfo[] = [];
-
-			// For now, return an empty list.
-			// When MCP servers support persistent connections or when we
-			// implement a tool registry, this will be populated.
-
-			// Apply filters if provided
 			let filteredTools = tools;
 
 			if (input.server) {

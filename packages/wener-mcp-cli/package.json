@@ -43,12 +43,12 @@
 		"typecheck": "tsc --noEmit"
 	},
 	"devDependencies": {
-		"@modelcontextprotocol/sdk": "^1.25.3",
-		"@types/node": "^24.10.10",
+		"@modelcontextprotocol/sdk": "^1.27.1",
+		"@types/node": "^24.11.0",
 		"@wener/utils": "workspace:^1.1.58",
 		"commander": "^14.0.3",
 		"common": "workspace:^1.0.0",
-		"esbuild": "^0.27.2",
+		"esbuild": "^0.27.3",
 		"smol-toml": "^1.6.0",
 		"ts-node": "^10.9.2",
 		"tsx": "^4.21.0",

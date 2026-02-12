@@ -10,7 +10,7 @@ export * from './types';
 export * from './converters';
 
 // Audit
-export * from './audit';
+export * from '../audit/chat';
 
 // Handler
 export { createChatHandler, type ChatHandlerOptions } from './handler';

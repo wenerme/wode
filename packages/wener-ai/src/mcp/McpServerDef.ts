@@ -1,8 +1,11 @@
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import type { Server } from '@modelcontextprotocol/sdk/server/index.js';
 
 export interface McpServerInstance {
-	server: McpServer;
+	server: McpServer | Server;
 	close: () => Promise<void>;
+	/** Optional async initialization (e.g., relay discovers target tools) */
+	init?: () => Promise<void>;
 }
 
 export interface ValidationResult {

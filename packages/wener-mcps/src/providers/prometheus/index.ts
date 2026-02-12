@@ -1,1 +1,1 @@
-export { PrometheusMcpServerDef, PrometheusMcpServerHandlerDef } from './def';
+export { PrometheusHeaderNames, PrometheusMcpServerHandlerDef, PrometheusMcpServerHandlerDef as PrometheusMcpServerDef } from './def';

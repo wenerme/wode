@@ -39,7 +39,18 @@ const commonOptions: esbuild.BuildOptions = {
 	sourcemap: false,
 	legalComments: 'none',
 	// External native modules
-	external: ['better-sqlite3', 'oracledb', 'mariadb/callback', 'mysql'],
+	external: [
+		'better-sqlite3',
+		'bun:sqlite',
+		'kysely-bun-sqlite',
+		'oracledb',
+		'mariadb/callback',
+		'mysql',
+		'@nestjs/websockets',
+		'@nestjs/microservices',
+		'@nestjs/platform-express',
+		'@larksuiteoapi/node-sdk',
+	],
 };
 
 // Ensure dist directory exists

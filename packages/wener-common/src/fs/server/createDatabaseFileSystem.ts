@@ -1,21 +1,8 @@
 import * as crypto from 'node:crypto';
 import { basename, dirname, join, normalize } from 'node:path';
-import {
-	Cascade,
-	Collection,
-	Entity,
-	ManyToOne,
-	OneToMany,
-	OneToOne,
-	Property,
-	types,
-	Unique,
-	type Opt,
-	type Rel,
-} from '@mikro-orm/core';
-import type { EntityManager } from '@mikro-orm/knex';
-import { TenantBaseEntity } from '@wener/server/entity';
-import { getEntityManager } from '@wener/server/mikro-orm';
+import { BaseEntity, Cascade, Collection, type Opt, type Rel } from '@mikro-orm/core';
+import { Entity, ManyToOne, OneToMany, OneToOne, PrimaryKey, Property, Unique } from '@mikro-orm/decorators/legacy';
+import type { EntityManager } from '@mikro-orm/sql';
 import type { CopyOptions } from 'fs-extra';
 import { FileSystemError, FileSystemErrorCode } from '../FileSystemError';
 import type {
@@ -49,11 +36,13 @@ class DBFS implements IFileSystem {
 	options: IDatabaseFileSystemOptions;
 
 	constructor(options: Partial<IDatabaseFileSystemOptions> = {}) {
+		if (!options.getEntityManager) {
+			throw new Error('getEntityManager is required for DBFS');
+		}
 		this.options = {
-			getEntityManager: () => getEntityManager<EntityManager>().fork(),
 			smallFileThreshold: 512,
 			...options,
-		};
+		} as IDatabaseFileSystemOptions;
 	}
 
 	get em() {
@@ -87,7 +76,7 @@ class DBFS implements IFileSystem {
 			mtime: now,
 		});
 		try {
-			await em.persistAndFlush(rootDir);
+			await em.persist(rootDir).flush();
 			return rootDir;
 		} catch (error: any) {
 			// If root already exists (race condition), fetch and return it
@@ -103,7 +92,7 @@ class DBFS implements IFileSystem {
 		}
 	}
 
-	async stat(path: string, _options?: StatOptions): Promise<IFileStat> {
+	async stat(path: string, options?: StatOptions): Promise<IFileStat> {
 		// Validate input
 		if (!path || typeof path !== 'string') {
 			throw new FileSystemError('Invalid path', FileSystemErrorCode.EINVAL);
@@ -121,7 +110,7 @@ class DBFS implements IFileSystem {
 		return !!(await this._getNodeByPath(path, this.em));
 	}
 
-	async readdir(dir: string, _options?: ReaddirOptions): Promise<IFileStat[]> {
+	async readdir(dir: string, options?: ReaddirOptions): Promise<IFileStat[]> {
 		const em = this.em;
 		const parentNode = await this._getNodeByPath(dir, em);
 
@@ -169,7 +158,7 @@ class DBFS implements IFileSystem {
 				mtime: now,
 			});
 			try {
-				await em.persistAndFlush(rootDir);
+				await em.persist(rootDir).flush();
 			} catch (error: any) {
 				// If root already exists (race condition), ignore the error
 				if (!error.message?.includes('UNIQUE constraint') && !error.message?.includes('duplicate')) {
@@ -188,7 +177,6 @@ class DBFS implements IFileSystem {
 
 		if (!parentNode) {
 			if (options.recursive) {
-				// 递归创建父目录
 				await this._mkdirInTransaction(parentPath, options, em);
 				parentNode = await this._getNodeByPath(parentPath, em);
 			} else {
@@ -206,13 +194,11 @@ class DBFS implements IFileSystem {
 
 		if (existing) {
 			if (existing.kind === FileKind.directory) {
-				// Directory already exists, return silently
 				return;
 			}
 			throw new FileSystemError(`A file with the same name already exists: ${path}`, FileSystemErrorCode.EEXIST);
 		}
 
-		// Create directory using EntityManager
 		const now = new Date();
 		const newDir = em.create(FileNodeMetaEntity, {
 			tid: parentNode.tid,
@@ -225,7 +211,7 @@ class DBFS implements IFileSystem {
 			ctime: now,
 			mtime: now,
 		});
-		await em.persistAndFlush(newDir);
+		await em.persist(newDir).flush();
 	}
 
 	readFile(path: string, options?: ReadFileOptions & { encoding: 'text' }): Promise<string>;
@@ -245,24 +231,22 @@ class DBFS implements IFileSystem {
 		if (node.kind !== FileKind.file)
 			throw new FileSystemError(`Path is not a file: ${path}`, FileSystemErrorCode.EISDIR);
 
-		let buffer: Buffer;
+		let data: Buffer | Uint8Array;
 		if (node.content) {
-			// 小文件优化 - content is already loaded
-			buffer = node.content;
+			data = node.content;
 		} else {
-			// Large file: load from file_node_content table using QueryBuilder
 			const fileContentQb = em.createQueryBuilder(FileNodeContentEntity, 'fc');
 			fileContentQb.where({ node: node });
 			const fileContent = await fileContentQb.getSingleResult();
 			if (!fileContent) throw new FileSystemError('File content is missing', FileSystemErrorCode.ENOENT);
-			buffer = fileContent.content;
+			data = fileContent.content;
 		}
 
-		return options?.encoding === 'text' ? buffer.toString('utf-8') : buffer;
+		const buf = Buffer.isBuffer(data) ? data : Buffer.from(data);
+		return options?.encoding === 'text' ? buf.toString('utf-8') : buf;
 	}
 
 	async writeFile(path: string, data: string | Buffer, options: WriteFileOptions = {}): Promise<void> {
-		// Validate input
 		if (!path || typeof path !== 'string') {
 			throw new FileSystemError('Invalid path', FileSystemErrorCode.EINVAL);
 		}
@@ -278,33 +262,26 @@ class DBFS implements IFileSystem {
 			const parentPath = dirname(path);
 			const filename = basename(path);
 
-			// Validate filename
 			if (!filename) {
 				throw new FileSystemError('filename cannot be empty', FileSystemErrorCode.EINVAL);
 			}
 
-			// 确保父目录存在 - create it within the transaction
 			await this._mkdirInTransaction(parentPath, { recursive: true }, em);
 			const parentNode = await this._getNodeByPath(parentPath, em);
 			if (!parentNode) throw new FileSystemError('Failed to establish parent directory', FileSystemErrorCode.EINVAL);
 
-			// Find existing node using QueryBuilder
 			const nodeQb = em.createQueryBuilder(FileNodeMetaEntity, 'f');
 			nodeQb.where({ parent: parentNode, filename });
 			let node = await nodeQb.getSingleResult();
 
 			if (node) {
-				// 文件已存在
 				if (!overwrite) throw new FileSystemError(`File already exists: ${path}`, FileSystemErrorCode.EEXIST);
 				if (node.kind === FileKind.directory)
 					throw new FileSystemError(`Cannot overwrite a directory with a file: ${path}`, FileSystemErrorCode.EISDIR);
 
-				// 更新节点
 				node.size = size;
 				node.mtime = new Date();
-				// ... 其他时间戳
 			} else {
-				// 新建文件
 				const now = new Date();
 				node = em.create(FileNodeMetaEntity, {
 					tid: parentNode.tid,
@@ -319,49 +296,41 @@ class DBFS implements IFileSystem {
 				});
 			}
 
-			// 处理文件内容
 			if (size <= this.options.smallFileThreshold!) {
-				// Small file: store in file_node_meta.content
 				node.content = bufferData;
-				// If there was large file content, delete it
-				// Use QueryBuilder to avoid relationship issues
 				const existingContentQb = em.createQueryBuilder(FileNodeContentEntity, 'fc');
 				existingContentQb.where({ node: node });
 				const existingContent = await existingContentQb.getSingleResult();
 				if (existingContent) {
-					await em.removeAndFlush(existingContent);
+					await em.remove(existingContent).flush();
 				}
 			} else {
-				// Large file: store in file_node_content table
-				node.content = undefined; // Clear small file content
+				node.content = undefined;
 				const md5 = crypto.createHash('md5').update(bufferData).digest('hex');
 				const sha256 = crypto.createHash('sha256').update(bufferData).digest('hex');
 
-				// Check if fileContent already exists using QueryBuilder
 				const fileContentQb = em.createQueryBuilder(FileNodeContentEntity, 'fc');
 				fileContentQb.where({ node: node });
 				let fileContent = await fileContentQb.getSingleResult();
 
 				if (fileContent) {
-					// Update existing content
 					fileContent.content = bufferData;
 					fileContent.size = size;
 					fileContent.md5 = md5;
 					fileContent.sha256 = sha256;
 				} else {
-					// Create new content entity
 					fileContent = em.create(FileNodeContentEntity, {
-						node: node, // Use node relationship as primary key
+						node: node,
 						tid: node.tid,
 						content: bufferData,
 						size: size,
 						md5: md5,
 						sha256: sha256,
-					});
+					} as any);
 				}
 			}
 
-			await em.persistAndFlush(node);
+			await em.persist(node).flush();
 		});
 	}
 
@@ -369,12 +338,11 @@ class DBFS implements IFileSystem {
 		await this.em.transactional(async (em) => {
 			const node = await this._getNodeByPath(path, em);
 			if (!node) {
-				if (options.force) return; // force=true, 不存在也算成功
+				if (options.force) return;
 				throw new FileSystemError(`Path not found: ${path}`, FileSystemErrorCode.ENOENT);
 			}
 
 			if (node.kind === FileKind.directory && !options.recursive) {
-				// Check if directory has children using QueryBuilder
 				const childrenQb = em.createQueryBuilder(FileNodeMetaEntity, 'f');
 				childrenQb.where({ parent: node });
 				childrenQb.select('id');
@@ -384,8 +352,7 @@ class DBFS implements IFileSystem {
 				}
 			}
 
-			// 使用 orphanRemoval: true, ORM会自动处理子节点和内容的删除
-			await em.removeAndFlush(node);
+			await em.remove(node).flush();
 		});
 	}
 
@@ -407,8 +374,8 @@ class DBFS implements IFileSystem {
 			if (existingDest) {
 				if (!options.overwrite)
 					throw new FileSystemError(`Destination path already exists: ${newPath}`, FileSystemErrorCode.EEXIST);
-				if (node.id === existingDest.id) return; // 移动到原位置，什么都不做
-				await em.removeAndFlush(existingDest);
+				if (node.id === existingDest.id) return;
+				await em.remove(existingDest).flush();
 			}
 
 			node.parent = newParentNode;
@@ -437,41 +404,33 @@ class DBFS implements IFileSystem {
 			if (existingDest) {
 				if (!options.overwrite)
 					throw new FileSystemError(`Destination path already exists: ${destPath}`, FileSystemErrorCode.EEXIST);
-				// Delete existing destination within the same transaction
-				await em.removeAndFlush(existingDest);
+				await em.remove(existingDest).flush();
 			}
 
 			await this._copyNode(srcNode, destParentNode, destFilename, em);
 		});
 	}
 
-	createReadStream(_path: string, _options?: CreateReadStreamOptions): never {
+	createReadStream(path: string, options?: CreateReadStreamOptions): never {
 		throw new Error('Streaming read is not supported by DBFS yet.');
 	}
 
-	createWriteStream(_path: string, _options?: CreateWriteStreamOptions): never {
+	createWriteStream(path: string, options?: CreateWriteStreamOptions): never {
 		throw new Error('Streaming write is not supported by DBFS yet.');
 	}
 
-	createReadableStream(_path: string, _options?: CreateReadStreamOptions): ReadableStream {
+	createReadableStream(path: string, options?: CreateReadStreamOptions): ReadableStream {
 		throw new Error('ReadableStream is not supported by DBFS yet.');
 	}
 
-	createWritableStream(_path: string, _options?: CreateWriteStreamOptions): WritableStream {
+	createWritableStream(path: string, options?: CreateWriteStreamOptions): WritableStream {
 		throw new Error('WritableStream is not supported by DBFS yet.');
 	}
 
-	/**
-	 * 将路径字符串解析为数据库中的节点。这是大部分操作的基础。
-	 * @param pathStr 绝对路径, e.g., /home/user/file.txt
-	 * @param em EntityManager 实例
-	 * @returns 找到的节点或 null
-	 */
 	private async _getNodeByPath(pathStr: string, em: EntityManager): Promise<FileNodeMetaEntity | null> {
 		const normalized = normalize(pathStr);
 
 		if (normalized === '/') {
-			// Use QueryBuilder to avoid automatic relationship loading
 			const qb = em.createQueryBuilder(FileNodeMetaEntity, 'f');
 			qb.where({ parent: null });
 			const rootNode = await qb.getSingleResult();
@@ -480,13 +439,11 @@ class DBFS implements IFileSystem {
 
 		const parts = normalized.split('/').filter((p) => p);
 
-		// Get root node
 		const rootQb = em.createQueryBuilder(FileNodeMetaEntity, 'f');
 		rootQb.where({ parent: null });
 		let currentNode = await rootQb.getSingleResult();
 		if (!currentNode) return null;
 
-		// Traverse path parts
 		for (const part of parts) {
 			const childQb = em.createQueryBuilder(FileNodeMetaEntity, 'f');
 			childQb.where({ parent: currentNode, filename: part });
@@ -498,11 +455,7 @@ class DBFS implements IFileSystem {
 		return currentNode;
 	}
 
-	/**
-	 * 将数据库实体转换为 IFileStat 接口
-	 */
 	private _toFileStat(node: FileNodeMetaEntity, path: string): IFileStat {
-		// Handle mtime - it might be a Date object or a string from raw query
 		let mtime: number;
 		if (node.mtime instanceof Date) {
 			mtime = node.mtime.getTime();
@@ -512,7 +465,6 @@ class DBFS implements IFileSystem {
 			mtime = Date.now();
 		}
 
-		// Handle size - convert bigint to number if needed
 		let size: number;
 		if (typeof node.size === 'bigint') {
 			size = Number(node.size);
@@ -527,7 +479,6 @@ class DBFS implements IFileSystem {
 			size: size,
 			mtime: mtime,
 			meta: node.metadata || {},
-			// `directory` 字段可以根据 path 动态计算
 			directory: dirname(path),
 		};
 	}
@@ -538,44 +489,42 @@ class DBFS implements IFileSystem {
 		newName: string,
 		em: EntityManager,
 	): Promise<void> {
-		// 1. 复制节点本身
 		const now = new Date();
+		const copiedContent = srcNode.content ? Buffer.from(srcNode.content) : undefined;
 		const newNode = em.create(FileNodeMetaEntity, {
 			tid: srcNode.tid,
 			filename: newName,
 			parent: destParent,
 			kind: srcNode.kind,
 			size: srcNode.size,
-			metadata: srcNode.metadata, // deep copy metadata
-			content: srcNode.content, // copy small file content
+			metadata: srcNode.metadata ? { ...srcNode.metadata } : undefined,
+			content: copiedContent,
 			atime: now,
 			btime: now,
 			ctime: now,
 			mtime: now,
 		});
 
-		// 2. 复制大文件内容 (如果存在) - use QueryBuilder to avoid relationship loading
 		if (!srcNode.content) {
 			const srcFileContentQb = em.createQueryBuilder(FileNodeContentEntity, 'fc');
 			srcFileContentQb.where({ node: srcNode });
 			const srcFileContent = await srcFileContentQb.getSingleResult();
 			if (srcFileContent) {
-				const _newContent = em.create(FileNodeContentEntity, {
-					node: newNode, // Use node relationship as primary key
+				em.create(FileNodeContentEntity, {
+					node: newNode,
 					tid: srcNode.tid,
-					content: srcFileContent.content,
+					content: srcFileContent.content ? Buffer.from(srcFileContent.content) : srcFileContent.content,
 					size: srcFileContent.size,
 					md5: srcFileContent.md5,
 					sha256: srcFileContent.sha256,
 					mimeType: srcFileContent.mimeType,
-					metadata: srcFileContent.metadata,
-				});
+					metadata: srcFileContent.metadata ? { ...srcFileContent.metadata } : undefined,
+				} as any);
 			}
 		}
 
-		await em.persistAndFlush(newNode);
+		await em.persist(newNode).flush();
 
-		// 3. 如果是目录，递归复制子节点
 		if (srcNode.kind === FileKind.directory) {
 			const childrenQb = em.createQueryBuilder(FileNodeMetaEntity, 'f');
 			childrenQb.where({ parent: srcNode });
@@ -589,25 +538,36 @@ class DBFS implements IFileSystem {
 
 @Entity({ tableName: 'file_node_meta' })
 @Unique({ properties: ['tid', 'parent', 'filename'] })
-export class FileNodeMetaEntity extends TenantBaseEntity {
-	@Property({ type: types.string, nullable: false, comment: '文件名' })
+export class FileNodeMetaEntity extends BaseEntity {
+	@PrimaryKey({ type: 'text', onCreate: () => crypto.randomUUID() })
+	id!: string & Opt;
+
+	@Property({ type: 'text', nullable: true })
+	tid?: string;
+
+	@Property({ type: 'text', nullable: false })
 	filename!: string;
-	@Property({ type: types.bigint, nullable: false, default: 0, comment: '文件大小' })
+
+	@Property({ type: 'integer', nullable: false, default: 0 })
 	size!: number & Opt;
-	@Property({ type: types.string, nullable: false, comment: '文件类型' })
+
+	@Property({ type: 'text', nullable: false })
 	kind!: FileKind;
 
-	@Property({ type: types.datetime, nullable: false, defaultRaw: 'CURRENT_TIMESTAMP' })
+	@Property({ type: 'text', nullable: false })
 	atime!: Date & Opt;
-	@Property({ type: types.datetime, nullable: false, defaultRaw: 'CURRENT_TIMESTAMP' })
+
+	@Property({ type: 'text', nullable: false })
 	btime!: Date & Opt;
-	@Property({ type: types.datetime, nullable: false, defaultRaw: 'CURRENT_TIMESTAMP' })
+
+	@Property({ type: 'text', nullable: false })
 	ctime!: Date & Opt;
-	@Property({ type: types.datetime, nullable: false, defaultRaw: 'CURRENT_TIMESTAMP' })
+
+	@Property({ type: 'text', nullable: false })
 	mtime!: Date & Opt;
 
-	@Property({ type: types.json, nullable: false, defaultRaw: '{}' })
-	metadata!: Record<string, any>;
+	@Property({ type: 'json', nullable: false, default: '{}' })
+	metadata!: Record<string, any> & Opt;
 
 	@ManyToOne(() => FileNodeMetaEntity, { nullable: true, cascade: [] })
 	parent?: Rel<FileNodeMetaEntity>;
@@ -623,46 +583,50 @@ export class FileNodeMetaEntity extends TenantBaseEntity {
 		cascade: [Cascade.ALL],
 	})
 	fileContent?: Rel<FileNodeContentEntity>;
-	@Property({ type: types.blob, nullable: true, comment: '文件内容' })
-	content?: Buffer; // for small file, e.g. < 64k
 
-	//region content
+	@Property({ type: 'blob', nullable: true })
+	content?: Buffer;
 
 	get parentId() {
 		return this.parent?.id as Opt<string | undefined>;
 	}
-
-	//endregion
 }
 
 @Entity({ tableName: 'file_node_content' })
-export class FileNodeContentEntity extends TenantBaseEntity {
+export class FileNodeContentEntity extends BaseEntity {
+	@PrimaryKey({ type: 'text', onCreate: () => crypto.randomUUID() })
+	id!: string & Opt;
+
+	@Property({ type: 'text', nullable: true })
+	tid?: string;
+
 	@OneToOne({ entity: () => FileNodeMetaEntity, owner: true, joinColumn: 'node_id' })
 	node!: Rel<FileNodeMetaEntity>;
 
-	@Property({ type: types.integer, nullable: false })
-	size!: number; // 保留 size 方便查询分析
+	@Property({ type: 'integer', nullable: false })
+	size!: number;
 
-	@Property({ type: types.blob, lazy: true, comment: '文件内容' })
+	@Property({ type: 'blob', lazy: true })
 	content!: Buffer;
 
-	@Property({ type: types.string, nullable: true })
+	@Property({ type: 'text', nullable: true })
 	mimeType?: string;
 
-	@Property({ type: types.string, nullable: false })
+	@Property({ type: 'text', nullable: true })
 	md5?: string;
-	@Property({ type: types.string, nullable: false })
+
+	@Property({ type: 'text', nullable: true })
 	sha256?: string;
 
-	@Property({ type: types.string, nullable: true })
+	@Property({ type: 'text', nullable: true })
 	text?: string;
-	@Property({ type: types.integer, nullable: true })
-	width?: number;
-	@Property({ type: types.integer, nullable: true })
-	height?: number;
-	// @Property({ type: types.integer, nullable: true })
-	// length?: number;
 
-	@Property({ type: types.json, nullable: false, defaultRaw: '{}' })
-	metadata!: Record<string, any>;
+	@Property({ type: 'integer', nullable: true })
+	width?: number;
+
+	@Property({ type: 'integer', nullable: true })
+	height?: number;
+
+	@Property({ type: 'json', nullable: false, default: '{}' })
+	metadata!: Record<string, any> & Opt;
 }

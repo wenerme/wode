@@ -6,7 +6,7 @@ import consola from 'consola';
 import { Hono } from 'hono';
 import { streamSSE } from 'hono/streaming';
 import type { ChatConfig, ModelConfig } from '../server/schema';
-import { ChatProtocol, createAuditContext, extractClientIp } from './audit';
+import { ChatProtocol, createAuditContext, extractClientIp } from '../audit/chat';
 import {
 	openaiToAnthropicRequest,
 	anthropicToOpenaiResponse,
@@ -747,8 +747,8 @@ export function createChatHandler(options: ChatHandlerOptions = {}) {
 			let previousContext: { input: unknown; output: unknown[] } | null = null;
 			if (request.previous_response_id) {
 				try {
-					const { isDbInitialized, getEntityManager } = await import('../server/db');
-					const { ResponseEntity } = await import('../entities');
+					const { isDbInitialized, getEntityManager } = await import('../audit/server/db');
+					const { ResponseEntity } = await import('../audit/entities');
 					if (isDbInitialized()) {
 						const em = getEntityManager().fork();
 						const prevResponse = await em.findOne(ResponseEntity, { responseId: request.previous_response_id });
@@ -840,8 +840,8 @@ export function createChatHandler(options: ChatHandlerOptions = {}) {
 
 			// Store response for future previous_response_id lookups
 			try {
-				const { isDbInitialized, getEntityManager } = await import('../server/db');
-				const { ResponseEntity } = await import('../entities');
+				const { isDbInitialized, getEntityManager } = await import('../audit/server/db');
+				const { ResponseEntity } = await import('../audit/entities');
 				if (isDbInitialized()) {
 					const em = getEntityManager().fork();
 					const responseEntity = new ResponseEntity();

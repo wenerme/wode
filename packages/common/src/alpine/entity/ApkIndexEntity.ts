@@ -1,4 +1,5 @@
-import { Entity, Property, types, type Opt } from '@mikro-orm/core';
+import { types, type Opt } from '@mikro-orm/core';
+import { Entity, Property } from '@mikro-orm/decorators/legacy';
 import { StandardBaseEntity } from '@wener/nestjs/entity';
 
 @Entity({ tableName: 'apk_index', schema: 'alpine' })

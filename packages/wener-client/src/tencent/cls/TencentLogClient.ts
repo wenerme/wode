@@ -250,6 +250,7 @@ export type TencentLogClientInit = {
 	clientSecret: string;
 	region?: string;
 	endpoint?: string;
+	debug?: boolean;
 };
 
 export type TencentLogClientOptions = {
@@ -258,6 +259,7 @@ export type TencentLogClientOptions = {
 	clientSecret: string;
 	region: string;
 	endpoint: string;
+	debug?: boolean;
 };
 
 export class TencentLogClient {
@@ -319,9 +321,21 @@ export class TencentLogClient {
 		return this.request('UploadLog', request);
 	}
 
-	async searchLog(request: SearchLogRequest): Promise<SearchLogResponse> {
+	async searchLog(req: SearchLogRequest): Promise<SearchLogResponse> {
 		// NOTE 分析请求不支持多 topics
-		return this.request('SearchLog', request);
+		const res = await this.request<SearchLogResponse>('SearchLog', req);
+		if (this.options.debug) {
+			const info = {
+				query: req.Query?.slice(0, 200),
+				topicId: req.TopicId,
+				analysis: res.Analysis,
+				resultsCount: res.Results?.length ?? 0,
+				analysisRecordsCount: res.AnalysisRecords?.length ?? 0,
+				requestId: res.RequestId,
+			};
+			console.log('[CLS:SearchLog]', JSON.stringify(info));
+		}
+		return res;
 	}
 
 	searchLogStream(request: Omit<SearchLogStreamOptions, 'client'>) {
@@ -357,6 +371,9 @@ export class TencentLogClient {
 				ids.push(t.TopicId);
 			}
 		}
+		if (this.options.debug) {
+			console.log('[CLS:resolveTopicIds]', JSON.stringify({ needle, resolved: ids }));
+		}
 		return ids;
 	}
 
@@ -379,9 +396,15 @@ export class TencentLogClient {
 			});
 		}
 
-		let topics = (await this.listTopic(q)).Topics;
+		// Try exact match first (PreciseSearch: 1) to avoid ambiguous fuzzy matching
+		let topics = names.length ? (await this.listTopic({ ...q, PreciseSearch: 1 })).Topics : (await this.listTopic(q)).Topics;
 
-		// Fallback to partial matching if exact match fails
+		// Fallback to fuzzy match if exact match finds nothing
+		if (names.length && (!topics || topics.length === 0)) {
+			topics = (await this.listTopic(q)).Topics;
+		}
+
+		// Fallback to partial matching if API filtering finds nothing
 		if (names.length && (!topics || topics.length === 0)) {
 			const allTopics = await this.listTopic({ Limit: 100 });
 			topics = allTopics.Topics?.filter((t) => names.some((n) => t.TopicName?.includes(n)));

@@ -151,6 +151,8 @@ export function registerAnalysisTools(ctx: TencentClsContext) {
 				return jsonResult({
 					records,
 					columns: res.Columns?.map((c) => c.Name),
+					samplingRate: res.SamplingRate,
+					requestId: res.RequestId,
 				});
 			} catch (e) {
 				return textResult(`Error: ${e instanceof Error ? e.message : String(e)}`);

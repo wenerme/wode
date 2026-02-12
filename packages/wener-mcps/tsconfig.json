@@ -10,8 +10,6 @@
 		"noEmit": true,
 		"jsx": "react-jsx",
 		"types": ["node"],
-		"experimentalDecorators": true,
-		"emitDecoratorMetadata": true,
 		"noImplicitAny": false,
 		"paths": {
 			"#/*": ["./src/*"]

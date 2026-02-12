@@ -35,7 +35,7 @@ export function writeAuditLog({
 	if (flush) {
 		return runInTransaction(
 			async (em) => {
-				await em.persistAndFlush(entity);
+				await em.persist(entity).flush();
 				return entity;
 			},
 			{ em: em as any },

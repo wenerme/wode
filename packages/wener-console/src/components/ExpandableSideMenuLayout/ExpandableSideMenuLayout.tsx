@@ -141,7 +141,7 @@ const SideMenuItem: FC<{ item: ExpandableSideMenuItemProps; expanded?: boolean; 
 					href={href}
 					end={end}
 					title={label}
-					className={({ isActive }) => clsx(expanded ? '' : 'justify-center p-2', isActive ? 'active' : 'inactive')}
+					className={({ isActive }) => clsx(expanded ? '' : 'justify-center p-2', isActive && 'menu-active')}
 				>
 					{({ isActive: active }) => {
 						let ico = flexRender(
