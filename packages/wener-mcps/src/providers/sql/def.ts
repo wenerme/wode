@@ -17,25 +17,19 @@ export const SqlMcpServerHandlerDef = defineMcpServerHandler<CreateSqlMcpServerO
 	],
 
 	resolveConfig(config, headers) {
-		const readUrl =
-			config.dbReadUrl ||
+		const url =
 			config.dbUrl ||
-			headers?.get(SqlHeaderNames.DB_READ_URL) ||
-			headers?.get(SqlHeaderNames.DB_URL) ||
-			config.headers?.[SqlHeaderNames.DB_READ_URL] ||
-			config.headers?.[SqlHeaderNames.DB_URL];
-
-		const writeUrl =
+			config.dbReadUrl ||
 			config.dbWriteUrl ||
+			headers?.get(SqlHeaderNames.DB_URL) ||
+			headers?.get(SqlHeaderNames.DB_READ_URL) ||
 			headers?.get(SqlHeaderNames.DB_WRITE_URL) ||
+			config.headers?.[SqlHeaderNames.DB_URL] ||
+			config.headers?.[SqlHeaderNames.DB_READ_URL] ||
 			config.headers?.[SqlHeaderNames.DB_WRITE_URL];
 
-		const url = readUrl || writeUrl;
 		if (!url) return null;
 
-		return {
-			url,
-			...(writeUrl ? { writeUrl } : {}),
-		};
+		return { url };
 	},
 });

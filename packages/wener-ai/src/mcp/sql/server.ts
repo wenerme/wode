@@ -78,7 +78,7 @@ export function createSqlMcpServer(options: CreateSqlMcpServerOptions) {
 	// Register Tools
 	// =========================================================================
 
-	const readOnly = options.readOnly ?? !options.writeUrl;
+	const readOnly = options.readOnly ?? false;
 	const ctx: SqlContext = { server, readOnly, getDb, textResult, jsonResult };
 
 	registerQueryTools(ctx);
