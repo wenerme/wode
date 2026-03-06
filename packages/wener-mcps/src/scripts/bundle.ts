@@ -50,6 +50,7 @@ const commonOptions: esbuild.BuildOptions = {
 		'@nestjs/microservices',
 		'@nestjs/platform-express',
 		'@larksuiteoapi/node-sdk',
+		'yaml',
 	],
 };
 
