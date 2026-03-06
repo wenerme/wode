@@ -4,7 +4,7 @@ import { SqlInputSchema } from '../schemas';
 import { formatTable } from '../utils';
 
 export function registerQueryTools(ctx: SqlContext) {
-	const { server, getDb, textResult, jsonResult } = ctx;
+	const { server, readOnly, getDb, textResult, jsonResult } = ctx;
 
 	server.registerTool(
 		'query_json',
@@ -42,57 +42,59 @@ export function registerQueryTools(ctx: SqlContext) {
 		},
 	);
 
-	server.registerTool(
-		'exec_dml',
-		{
-			description: 'Execute DML statements (INSERT, UPDATE, DELETE)',
-			inputSchema: SqlInputSchema,
-		},
-		async ({ sql: sqlStr }) => {
-			try {
-				const { db } = await getDb();
-				const result = await sql.raw(sqlStr).execute(db);
-				return textResult(`Affected rows: ${result.numAffectedRows ?? 0}`);
-			} catch (e) {
-				return textResult(`Error: ${e instanceof Error ? e.message : e}`);
-			}
-		},
-	);
-
-	server.registerTool(
-		'exec_ddl',
-		{
-			description: 'Execute DDL statements (CREATE, ALTER, DROP)',
-			inputSchema: SqlInputSchema.pick({ sql: true }),
-		},
-		async ({ sql: sqlStr }) => {
-			try {
-				const { db } = await getDb();
-				await sql.raw(sqlStr).execute(db);
-				return textResult('DDL executed successfully');
-			} catch (e) {
-				return textResult(`Error: ${e instanceof Error ? e.message : e}`);
-			}
-		},
-	);
-
-	server.registerTool(
-		'exec_sql',
-		{
-			description: 'Execute any SQL statement',
-			inputSchema: SqlInputSchema,
-		},
-		async ({ sql: sqlStr }) => {
-			try {
-				const { db } = await getDb();
-				const result = await sql.raw(sqlStr).execute(db);
-				if (result.rows && result.rows.length > 0) {
-					return jsonResult(result.rows);
+	if (!readOnly) {
+		server.registerTool(
+			'exec_dml',
+			{
+				description: 'Execute DML statements (INSERT, UPDATE, DELETE)',
+				inputSchema: SqlInputSchema,
+			},
+			async ({ sql: sqlStr }) => {
+				try {
+					const { db } = await getDb();
+					const result = await sql.raw(sqlStr).execute(db);
+					return textResult(`Affected rows: ${result.numAffectedRows ?? 0}`);
+				} catch (e) {
+					return textResult(`Error: ${e instanceof Error ? e.message : e}`);
 				}
-				return textResult('SQL executed successfully');
-			} catch (e) {
-				return textResult(`Error: ${e instanceof Error ? e.message : e}`);
-			}
-		},
-	);
+			},
+		);
+
+		server.registerTool(
+			'exec_ddl',
+			{
+				description: 'Execute DDL statements (CREATE, ALTER, DROP)',
+				inputSchema: SqlInputSchema.pick({ sql: true }),
+			},
+			async ({ sql: sqlStr }) => {
+				try {
+					const { db } = await getDb();
+					await sql.raw(sqlStr).execute(db);
+					return textResult('DDL executed successfully');
+				} catch (e) {
+					return textResult(`Error: ${e instanceof Error ? e.message : e}`);
+				}
+			},
+		);
+
+		server.registerTool(
+			'exec_sql',
+			{
+				description: 'Execute any SQL statement',
+				inputSchema: SqlInputSchema,
+			},
+			async ({ sql: sqlStr }) => {
+				try {
+					const { db } = await getDb();
+					const result = await sql.raw(sqlStr).execute(db);
+					if (result.rows && result.rows.length > 0) {
+						return jsonResult(result.rows);
+					}
+					return textResult('SQL executed successfully');
+				} catch (e) {
+					return textResult(`Error: ${e instanceof Error ? e.message : e}`);
+				}
+			},
+		);
+	}
 }

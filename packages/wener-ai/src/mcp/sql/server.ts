@@ -10,6 +10,8 @@ export interface CreateSqlMcpServerOptions {
 	readUrl?: string;
 	/** Database URL for write operations (overrides url for writes) */
 	writeUrl?: string;
+	/** When true, only register read-only tools (query_json, exec_query, get_version, list_objects, describe_object). Defaults to true when writeUrl is not provided. */
+	readOnly?: boolean;
 	/** Server name */
 	name?: string;
 	/** Server version */
@@ -18,6 +20,7 @@ export interface CreateSqlMcpServerOptions {
 
 export interface SqlContext {
 	server: McpServer;
+	readOnly: boolean;
 	getDb: () => Promise<{ db: Kysely<any>; dialect: Dialect }>;
 	textResult: (text: string) => { content: { type: 'text'; text: string }[] };
 	jsonResult: (data: unknown) => { content: { type: 'text'; text: string }[] };
@@ -75,7 +78,8 @@ export function createSqlMcpServer(options: CreateSqlMcpServerOptions) {
 	// Register Tools
 	// =========================================================================
 
-	const ctx: SqlContext = { server, getDb, textResult, jsonResult };
+	const readOnly = options.readOnly ?? !options.writeUrl;
+	const ctx: SqlContext = { server, readOnly, getDb, textResult, jsonResult };
 
 	registerQueryTools(ctx);
 	registerMetadataTools(ctx);
