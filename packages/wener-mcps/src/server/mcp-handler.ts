@@ -60,6 +60,16 @@ export function filterTools(tools: any[], options: ToolFilterOptions): any[] {
 export function createMcpLoggingHandler(transport: StreamableHTTPTransport, serverName: string) {
 	const originalHandleRequest = transport.handleRequest.bind(transport);
 
+	const buildFilteredResponse = (response: Response, body: string) => {
+		const headers = new Headers(response.headers);
+		headers.delete('content-length');
+		headers.delete('transfer-encoding');
+		return new Response(body, {
+			status: response.status,
+			headers,
+		});
+	};
+
 	return async (c: Parameters<typeof transport.handleRequest>[0]) => {
 		const startTime = Date.now();
 
@@ -171,10 +181,7 @@ export function createMcpLoggingHandler(transport: StreamableHTTPTransport, serv
 
 							// Return new SSE response with filtered tools
 							const newSseData = `event: message\ndata: ${JSON.stringify(responseData)}\n\n`;
-							return new Response(newSseData, {
-								status: response.status,
-								headers: response.headers,
-							});
+							return buildFilteredResponse(response, newSseData);
 						}
 					}
 				} else {
@@ -192,10 +199,7 @@ export function createMcpLoggingHandler(transport: StreamableHTTPTransport, serv
 							);
 						}
 
-						return new Response(JSON.stringify(responseData), {
-							status: response.status,
-							headers: response.headers,
-						});
+						return buildFilteredResponse(response, JSON.stringify(responseData));
 					}
 				}
 			} catch (e) {

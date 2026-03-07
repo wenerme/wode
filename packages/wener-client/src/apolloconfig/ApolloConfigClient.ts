@@ -1,5 +1,5 @@
 import type { FetchLike } from '@wener/utils';
-import { request, type RequestOptions } from './request';
+import { type RequestOptions, request } from './request';
 import type {
 	ApolloConfigResponse,
 	CommonConfigOptions,

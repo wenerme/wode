@@ -1,6 +1,6 @@
 import { getUserStore } from '@wener/console/console';
 import { getGlobalStates } from '@wener/utils';
-import { defineAbilityForUser, type ConsoleAbility } from './casl';
+import { type ConsoleAbility, defineAbilityForUser } from './casl';
 
 type UserAbility = {
 	can: ConsoleAbility['can'];

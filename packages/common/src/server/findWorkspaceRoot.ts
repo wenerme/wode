@@ -3,8 +3,8 @@
  */
 
 import { existsSync } from 'node:fs';
-import { dirname, join, resolve } from 'node:path';
 import { homedir } from 'node:os';
+import { dirname, join, resolve } from 'node:path';
 
 export interface FindUpOptions {
 	/** Starting directory (default: process.cwd()) */

@@ -1,5 +1,5 @@
-import { createMemoryRouter, type RouteObject } from 'react-router';
 import { createReactContext } from '@wener/reaction';
+import { createMemoryRouter, type RouteObject } from 'react-router';
 import { createStore } from 'zustand';
 import { mutative } from 'zustand-mutative';
 import { LoadingIndicator } from '../components';

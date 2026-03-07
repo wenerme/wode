@@ -1,1 +1,1 @@
-export { createMinioFileSystem, type CreateMinioFileSystemOptions } from './createMinioFileSystem';
+export { type CreateMinioFileSystemOptions, createMinioFileSystem } from './createMinioFileSystem';

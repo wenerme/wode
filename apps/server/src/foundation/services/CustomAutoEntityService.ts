@@ -108,7 +108,7 @@ interface BindCustomerOptions {
 	customerId: string;
 }
 
-interface UnbindCustomerOptions {}
+type UnbindCustomerOptions = {};
 
 interface BindEntityUserOptions {
 	userId: string;

@@ -1,10 +1,10 @@
 #!/usr/bin/env tsx
-import { getFeishuDevDocsConfig, validateFeishuDevDocsConfig } from './src/server/config';
-import { createFeishuDevDocsServiceImpl } from './src/devdocs/createFeishuDevDocsServiceImpl';
 import consola from 'consola';
 import * as fs from 'fs/promises';
-import * as path from 'path';
 import { homedir } from 'os';
+import * as path from 'path';
+import { createFeishuDevDocsServiceImpl } from './src/devdocs/createFeishuDevDocsServiceImpl';
+import { getFeishuDevDocsConfig, validateFeishuDevDocsConfig } from './src/server/config';
 
 const logger = consola.withTag('cache-test');
 
@@ -18,7 +18,7 @@ async function testCache() {
 
 		logger.info('Configuration:', {
 			domain: config.domain,
-			cache: config.cache
+			cache: config.cache,
 		});
 
 		// Create service implementation
@@ -57,7 +57,7 @@ async function testCache() {
 		const cacheDir = path.join(homedir(), '.cache', 'wener-feishu-devdocs-mcp');
 		try {
 			const files = await fs.readdir(cacheDir);
-			const jsonFiles = files.filter(f => f.endsWith('.json'));
+			const jsonFiles = files.filter((f) => f.endsWith('.json'));
 			logger.info(`📁 Cache directory contains ${jsonFiles.length} cache files`);
 
 			if (jsonFiles.length > 0) {
@@ -69,7 +69,7 @@ async function testCache() {
 					query: cacheEntry.query,
 					timestamp: new Date(cacheEntry.timestamp).toISOString(),
 					expiry: cacheEntry.expiry ? new Date(cacheEntry.expiry).toISOString() : 'none',
-					resultsCount: cacheEntry.data?.results?.length || 0
+					resultsCount: cacheEntry.data?.results?.length || 0,
 				});
 			}
 		} catch (error) {
@@ -84,7 +84,6 @@ async function testCache() {
 		}
 
 		logger.success('🎉 Cache test completed successfully!');
-
 	} catch (error) {
 		logger.error('❌ Cache test failed:', error instanceof Error ? error.message : String(error));
 		process.exit(1);

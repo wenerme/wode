@@ -1,5 +1,5 @@
 import { defineMcpServer } from '../McpServerDef';
-import { createSqlMcpServer, type CreateSqlMcpServerOptions } from './server';
+import { type CreateSqlMcpServerOptions, createSqlMcpServer } from './server';
 
 export const SqlMcpServerDef = defineMcpServer<CreateSqlMcpServerOptions>({
 	name: 'sql',

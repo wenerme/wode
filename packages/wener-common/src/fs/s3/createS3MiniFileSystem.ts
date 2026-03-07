@@ -1,6 +1,6 @@
 import { basename, dirname, normalize } from 'node:path';
 import { Readable } from 'node:stream';
-import { formatS3Url, parseS3Url, type ParseS3UrlOptions } from '@wener/common/s3';
+import { formatS3Url, type ParseS3UrlOptions, parseS3Url } from '@wener/common/s3';
 import { S3mini, sanitizeETag } from 's3mini';
 import type {
 	CopyOptions,

@@ -1,10 +1,10 @@
-import type { RelayContext } from '../server';
 import {
-	ListToolsInputSchema,
 	CallToolInputSchema,
 	ListResourcesInputSchema,
+	ListToolsInputSchema,
 	ReadResourceInputSchema,
 } from '../schemas';
+import type { RelayContext } from '../server';
 
 export function registerRelayTools(ctx: RelayContext) {
 	const { server, getClient, textResult, jsonResult } = ctx;

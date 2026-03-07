@@ -1,4 +1,3 @@
-import { inspect } from 'util';
 import type { HttpBindings } from '@hono/node-server';
 import { OpenAPIGenerator } from '@orpc/openapi';
 import { OpenAPIHandler } from '@orpc/openapi/fetch';
@@ -11,6 +10,7 @@ import {
 } from '@orpc/zod/zod4';
 import type { Hono } from 'hono';
 import { html } from 'hono/html';
+import { inspect } from 'util';
 
 export function handleRPCContract(app: Hono<{ Bindings: HttpBindings }>, router: Router<any, any>) {
 	{

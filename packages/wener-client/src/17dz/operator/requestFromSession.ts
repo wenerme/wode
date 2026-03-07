@@ -1,5 +1,5 @@
 import type { MaybePromise } from '@wener/utils';
-import { request, type RequestOptions } from '../request';
+import { type RequestOptions, request } from '../request';
 
 export type SessionRequestOptions<T> = RequestOptions<T> & {
 	cookie?: MaybePromise<string | undefined> | (() => MaybePromise<string | undefined>);

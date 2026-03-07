@@ -1,1 +1,1 @@
-export { ActionEventType, type ActionEventData, type ActionEventEmitter } from './ActionEventType';
+export { type ActionEventData, type ActionEventEmitter, ActionEventType } from './ActionEventType';

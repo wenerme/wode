@@ -16,7 +16,11 @@ export async function writeApkBuild({
 	ver,
 	rel,
 	write = true,
-}: { ver?: string; rel?: string | number; write?: boolean } = {}) {
+}: {
+	ver?: string;
+	rel?: string | number;
+	write?: boolean;
+} = {}) {
 	let apkbuild = await fs.readFile('APKBUILD', 'utf-8');
 
 	if (ver) apkbuild = apkbuild.replace(/^pkgver=.*/m, `pkgver=${ver}`);

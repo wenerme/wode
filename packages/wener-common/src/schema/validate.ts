@@ -1,4 +1,4 @@
-import { Kind as TypeBoxKind, type TSchema } from '@sinclair/typebox';
+import { type TSchema, Kind as TypeBoxKind } from '@sinclair/typebox';
 import '@sinclair/typebox';
 import { TypeCompiler } from '@sinclair/typebox/compiler';
 import { ifPresent } from '@wener/utils';

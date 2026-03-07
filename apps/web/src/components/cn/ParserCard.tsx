@@ -1,5 +1,5 @@
-import React from 'react';
 import { Button } from '@wener/console/daisy';
+import type React from 'react';
 import type { Parser } from './parseIt';
 
 export const ParserCard: React.FC<{

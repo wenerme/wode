@@ -1,6 +1,6 @@
 import { randomPick } from '../utils/randomPick';
-import { mod31, Mod31Chars } from './mod31';
-import { USICRegistryBureauCode, type ParsedUSCI } from './usci';
+import { Mod31Chars, mod31 } from './mod31';
+import { type ParsedUSCI, USICRegistryBureauCode } from './usci';
 
 export function randomUSCI(info: Partial<ParsedUSCI> = {}): ParsedUSCI {
 	info.registryBureauCode ||= randomPick(Object.keys(USICRegistryBureauCode));
@@ -19,10 +19,10 @@ export function randomUSCI(info: Partial<ParsedUSCI> = {}): ParsedUSCI {
 		.map(() => Mod31Chars[Math.floor(Math.random() * 31)])
 		.join('');
 	const s =
-		String(info.registryBureauCode)
-		+ String(info.registryBureauTypeCode)
-		+ String(info.registryBureauDistrictCode)
-		+ String(info.subjectCode);
+		String(info.registryBureauCode) +
+		String(info.registryBureauTypeCode) +
+		String(info.registryBureauDistrictCode) +
+		String(info.subjectCode);
 	info.checkCode = Mod31Chars[mod31(s)];
 	info.raw = s + info.checkCode;
 	return info as ParsedUSCI;

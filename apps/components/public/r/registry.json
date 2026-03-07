@@ -1,51 +1,51 @@
 {
-  "$schema": "https://ui.shadcn.com/schema/registry.json",
-  "name": "wener-components",
-  "homepage": "https://wener.me",
-  "items": [
-    {
-      "name": "hello-button",
-      "type": "registry:component",
-      "title": "Hello Button",
-      "description": "A simple hello button component for testing the registry",
-      "files": [
-        {
-          "path": "registry/default/ui/hello-button.tsx",
-          "type": "registry:component"
-        }
-      ]
-    },
-    {
-      "name": "console-layout",
-      "type": "registry:block",
-      "title": "Console Layout",
-      "description": "A responsive console layout with Menu, Main, Dock, and Composite",
-      "files": [
-        {
-          "path": "registry/default/blocks/console-layout/console-layout.tsx",
-          "type": "registry:component"
-        },
-        {
-          "path": "registry/default/blocks/console-layout/index.ts",
-          "type": "registry:component"
-        }
-      ]
-    },
-    {
-      "name": "login-page",
-      "type": "registry:block",
-      "title": "Login Page",
-      "description": "A login page layout with Header, Footer, Hero, and Composite",
-      "files": [
-        {
-          "path": "registry/default/blocks/login-page/login-page.tsx",
-          "type": "registry:component"
-        },
-        {
-          "path": "registry/default/blocks/login-page/index.ts",
-          "type": "registry:component"
-        }
-      ]
-    }
-  ]
+	"$schema": "https://ui.shadcn.com/schema/registry.json",
+	"name": "wener-components",
+	"homepage": "https://wener.me",
+	"items": [
+		{
+			"name": "hello-button",
+			"type": "registry:component",
+			"title": "Hello Button",
+			"description": "A simple hello button component for testing the registry",
+			"files": [
+				{
+					"path": "registry/default/ui/hello-button.tsx",
+					"type": "registry:component"
+				}
+			]
+		},
+		{
+			"name": "console-layout",
+			"type": "registry:block",
+			"title": "Console Layout",
+			"description": "A responsive console layout with Menu, Main, Dock, and Composite",
+			"files": [
+				{
+					"path": "registry/default/blocks/console-layout/console-layout.tsx",
+					"type": "registry:component"
+				},
+				{
+					"path": "registry/default/blocks/console-layout/index.ts",
+					"type": "registry:component"
+				}
+			]
+		},
+		{
+			"name": "login-page",
+			"type": "registry:block",
+			"title": "Login Page",
+			"description": "A login page layout with Header, Footer, Hero, and Composite",
+			"files": [
+				{
+					"path": "registry/default/blocks/login-page/login-page.tsx",
+					"type": "registry:component"
+				},
+				{
+					"path": "registry/default/blocks/login-page/index.ts",
+					"type": "registry:component"
+				}
+			]
+		}
+	]
 }

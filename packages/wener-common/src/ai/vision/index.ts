@@ -1,2 +1,2 @@
-export { ImageAnnotationSchema, type ImageAnnotation } from './ImageAnnotationSchema';
-export { resolveImageAnnotation, type ResolvedImageAnnotation } from './resolveImageAnnotation';
+export { type ImageAnnotation, ImageAnnotationSchema } from './ImageAnnotationSchema';
+export { type ResolvedImageAnnotation, resolveImageAnnotation } from './resolveImageAnnotation';

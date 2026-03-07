@@ -3,14 +3,12 @@
  * Provides unified AI model gateway with protocol conversion
  */
 
-// Types
-export * from './types';
-
-// Converters
-export * from './converters';
-
 // Audit
 export * from '../audit/chat';
 
+// Converters
+export * from './converters';
 // Handler
-export { createChatHandler, type ChatHandlerOptions } from './handler';
+export { type ChatHandlerOptions, createChatHandler } from './handler';
+// Types
+export * from './types';

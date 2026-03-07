@@ -1,7 +1,7 @@
 import type { FetchLike } from '@wener/utils';
-import { request, sign, type RequestOptions } from './request';
-import { searchAnalysisLogStream, type SearchAnalysisLogStreamOptions } from './searchAnalysisLogStream';
-import { searchLogStream, type SearchLogStreamOptions } from './searchLogStream';
+import { type RequestOptions, request, sign } from './request';
+import { type SearchAnalysisLogStreamOptions, searchAnalysisLogStream } from './searchAnalysisLogStream';
+import { type SearchLogStreamOptions, searchLogStream } from './searchLogStream';
 import type {
 	Column,
 	Filter,
@@ -397,7 +397,9 @@ export class TencentLogClient {
 		}
 
 		// Try exact match first (PreciseSearch: 1) to avoid ambiguous fuzzy matching
-		let topics = names.length ? (await this.listTopic({ ...q, PreciseSearch: 1 })).Topics : (await this.listTopic(q)).Topics;
+		let topics = names.length
+			? (await this.listTopic({ ...q, PreciseSearch: 1 })).Topics
+			: (await this.listTopic(q)).Topics;
 
 		// Fallback to fuzzy match if exact match finds nothing
 		if (names.length && (!topics || topics.length === 0)) {

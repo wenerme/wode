@@ -30,8 +30,7 @@ export function createFeishuMcpServer(options: CreateFeishuMcpServerOptions) {
 	const getClient = async () => {
 		if (!_client) {
 			const lark = await import('@larksuiteoapi/node-sdk');
-			const larkDomain =
-				domain === 'feishu' ? lark.Domain.Feishu : domain === 'lark' ? lark.Domain.Lark : domain;
+			const larkDomain = domain === 'feishu' ? lark.Domain.Feishu : domain === 'lark' ? lark.Domain.Lark : domain;
 			_client = new lark.Client({
 				appId,
 				appSecret,

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, type PropsWithChildren } from 'react';
+import React, { type PropsWithChildren, useEffect, useState } from 'react';
 import { AuthStatus, useAuthStore, useAuthStoreContext } from './AuthStore';
 
 export const AuthBlock: React.FC<

@@ -1,4 +1,4 @@
-import { useEffect, type FC, type PropsWithChildren } from 'react';
+import { type FC, type PropsWithChildren, useEffect } from 'react';
 import { useInRouterContext } from 'react-router';
 import { useRouteTitles } from '../../router';
 import { ReactRouterTracker } from './ReactRouterTracker';

@@ -1,16 +1,16 @@
+import type { MaybePromise } from '@wener/utils';
 import {
+	type ComponentType,
 	createContext,
-	forwardRef,
+	type FC,
 	Fragment,
+	forwardRef,
 	lazy,
+	type ReactNode,
 	useContext,
 	useMemo,
 	useRef,
-	type ComponentType,
-	type FC,
-	type ReactNode,
 } from 'react';
-import type { MaybePromise } from '@wener/utils';
 
 export interface DefineComponentOptions<P extends {} = {}> {
 	name: string;

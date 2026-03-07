@@ -1,8 +1,8 @@
-import React, { memo, useMemo, type ComponentPropsWithoutRef, type CSSProperties } from 'react';
+import { FloatingFocusManager, useTransitionStyles } from '@floating-ui/react';
+import React, { type ComponentPropsWithoutRef, type CSSProperties, memo, useMemo } from 'react';
 import { HiMiniArrowsPointingIn } from 'react-icons/hi2';
 import { PiBrowsersLight } from 'react-icons/pi';
 import { VscClose, VscCloseAll, VscPrimitiveSquare } from 'react-icons/vsc';
-import { FloatingFocusManager, useTransitionStyles } from '@floating-ui/react';
 import { usePopover } from '../../floating';
 import { getRootWindow } from '../ReactWindow';
 import { Window } from '../Window';

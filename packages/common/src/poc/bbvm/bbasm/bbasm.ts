@@ -1,6 +1,6 @@
 import { marshalInstruction } from '@/poc/bbvm/marshalInstruction';
 import { getOpcodeLength } from '@/poc/bbvm/rt';
-import { parse, type ParseOptions } from './parser';
+import { type ParseOptions, parse } from './parser';
 import { AsmOpCodes, type Assembly } from './types';
 
 export function parseAssembly(input: string, options?: ParseOptions) {

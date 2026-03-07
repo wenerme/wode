@@ -70,7 +70,12 @@ export function feishuDocxToMarkdown(blocks: FeishuBlock[], options?: ConvertOpt
 		}
 	}
 
-	return lines.join('\n').replace(/\n{3,}/g, '\n\n').trim() + '\n';
+	return (
+		lines
+			.join('\n')
+			.replace(/\n{3,}/g, '\n\n')
+			.trim() + '\n'
+	);
 }
 
 // ---- Block Types (numeric enum matching Feishu API) ----
@@ -226,7 +231,15 @@ export interface FeishuBlock {
 	grid_column?: { width_ratio?: number };
 	iframe?: { component?: { type?: number; url?: string } };
 	image?: { token?: string; width?: number; height?: number; align?: number };
-	table?: { cells?: string[]; property: { row_size: number; column_size: number; column_width?: number[]; merge_info?: Array<{ row_span?: number; col_span?: number }> } };
+	table?: {
+		cells?: string[];
+		property: {
+			row_size: number;
+			column_size: number;
+			column_width?: number[];
+			merge_info?: Array<{ row_span?: number; col_span?: number }>;
+		};
+	};
 	table_cell?: Record<string, never>;
 	view?: { view_type?: number };
 	quote_container?: Record<string, never>;
@@ -616,11 +629,7 @@ function renderChildren(
 
 // ---- Internal: Table rendering ----
 
-function renderTable(
-	block: FeishuBlock,
-	blockMap: Map<string, FeishuBlock>,
-	opts: Required<ConvertOptions>,
-): string {
+function renderTable(block: FeishuBlock, blockMap: Map<string, FeishuBlock>, opts: Required<ConvertOptions>): string {
 	const tableData = block.table;
 	if (!tableData?.property) return '';
 

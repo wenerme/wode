@@ -1,4 +1,4 @@
-import { createElement, forwardRef, type ComponentType } from 'react';
+import { type ComponentType, createElement, forwardRef } from 'react';
 import { mergeProps as defaultMergeProps } from '../utils/mergeProps';
 import { hoistNonReactStatics } from './hoistNonReactStatics';
 

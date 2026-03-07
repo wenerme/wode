@@ -1,4 +1,4 @@
-import { Entity, Property, types, type Opt } from '@mikro-orm/core';
+import { Entity, type Opt, Property, types } from '@mikro-orm/core';
 import { EntitySchema, TenantBaseEntity } from '@wener/nestjs/entity';
 
 @EntitySchema({ idType: 'at' })

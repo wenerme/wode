@@ -3,9 +3,10 @@
  * Only allows tools that have readOnlyHint: true annotation
  */
 
-import { callTool, connectToServer, getTimeoutMs, listTools, safeClose, type Client } from '../client';
+import { type Client, callTool, connectToServer, getTimeoutMs, listTools, safeClose } from '../client';
 import { getServerConfig, loadConfig } from '../config';
 import {
+	type CliError,
 	ErrorCode,
 	formatCliError,
 	invalidJsonArgsError,
@@ -13,7 +14,6 @@ import {
 	serverConnectionError,
 	toolExecutionError,
 	toolNotFoundError,
-	type CliError,
 } from '../errors';
 import { formatJson, formatToolResult } from '../output';
 

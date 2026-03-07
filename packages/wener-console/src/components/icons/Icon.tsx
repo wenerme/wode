@@ -1,6 +1,6 @@
-import type { ComponentPropsWithoutRef, FC, ReactNode } from 'react';
-import { flexRender, type FlexRenderable } from '@wener/reaction';
+import { type FlexRenderable, flexRender } from '@wener/reaction';
 import { parseBoolean } from '@wener/utils';
+import type { ComponentPropsWithoutRef, FC, ReactNode } from 'react';
 import { cn } from '../../utils/cn';
 import type { AnyComponentProps } from '../props';
 import { ActionIcon } from './ActionIcon';

@@ -1,4 +1,4 @@
-import { feishuDocxToMarkdown, type FeishuBlock } from '../feishu-docx-markdown';
+import { type FeishuBlock, feishuDocxToMarkdown } from '../feishu-docx-markdown';
 import { ListWikiNodesInputSchema, ListWikiSpacesInputSchema, ReadWikiInputSchema } from '../schemas';
 import type { FeishuMcpContext } from '../server';
 
@@ -129,8 +129,7 @@ Resolves the wiki node to its underlying document and returns content in the req
 	server.registerTool(
 		'list_wiki_nodes',
 		{
-			description:
-				'List nodes (pages) in a wiki space. Can list root nodes or children of a specific parent node.',
+			description: 'List nodes (pages) in a wiki space. Can list root nodes or children of a specific parent node.',
 			inputSchema: ListWikiNodesInputSchema,
 			annotations: { readOnlyHint: true },
 		},

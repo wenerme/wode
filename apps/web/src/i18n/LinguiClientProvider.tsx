@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState, type FC, type ReactNode } from 'react';
-import { setupI18n, type AllMessages, type Messages } from '@lingui/core';
+import { type AllMessages, type Messages, setupI18n } from '@lingui/core';
 import { I18nProvider } from '@lingui/react';
+import React, { type FC, type ReactNode, useState } from 'react';
 import { getI18nStore } from '@/i18n/loadI18n';
 
 export function LinguiClientProvider({

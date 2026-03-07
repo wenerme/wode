@@ -1,5 +1,5 @@
-import type { TencentClsContext } from '../server';
 import { DescribeTopicInputSchema, ListTopicsInputSchema } from '../schemas';
+import type { TencentClsContext } from '../server';
 
 export function registerTopicTools(ctx: TencentClsContext) {
 	const { server, getClient, textResult, jsonResult } = ctx;

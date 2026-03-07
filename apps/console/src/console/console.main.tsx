@@ -1,10 +1,10 @@
-import React, { lazy } from 'react';
-import ReactDOM from 'react-dom/client';
 import type { BuildInfo } from '@wener/console/buildinfo';
 import { ComponentProvider, Image, ProdOnly, UpdateNotification, WebVitals } from '@wener/console/components';
 import { ErrorSuspenseBoundary, SiteLogo } from '@wener/console/console';
 import { AuthBlock, AuthSidecar } from '@wener/console/foundation/auth';
 import { SiteLoader, SiteSidecar } from '@wener/console/foundation/site';
+import React, { lazy } from 'react';
+import ReactDOM from 'react-dom/client';
 import Splash from '#/assets/LoginSplash.jpg';
 import { EnvironmentInit } from '#/console/EnvironmentInit';
 import { LibInit } from '#/console/LibInit';

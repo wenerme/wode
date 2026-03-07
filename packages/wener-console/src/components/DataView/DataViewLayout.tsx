@@ -1,42 +1,33 @@
+import { useVirtualizer } from '@tanstack/react-virtual';
+import { cn } from '@wener/console';
+import { HeaderContentFooterLayout } from '@wener/console/components';
 import {
-	useCallback,
-	useRef,
 	type ComponentProps,
 	type ComponentPropsWithRef,
 	type CSSProperties,
 	type ReactNode,
+	useCallback,
+	useRef,
 } from 'react';
 import { Group, Panel, type PanelProps } from 'react-resizable-panels';
-import { useVirtualizer } from '@tanstack/react-virtual';
-import { cn } from '@wener/console';
-import { HeaderContentFooterLayout } from '@wener/console/components';
 import { ActionIcon } from '../icons/ActionIcon';
 import { LeftContentRightLayout } from '../LeftContentRightLayout';
 import { PanelResizeLineHandle } from '../ResizablePanel';
 import { Tabs } from '../Tabs';
 import { MeasureSize } from './MeasureSize';
 
-type PanelConfig = {
-	collapsedSize?: number | undefined;
-	collapsible?: boolean | undefined;
-	defaultSize?: number | undefined;
-	id?: string;
-	maxSize?: number | undefined;
-	minSize?: number | undefined;
-};
-
-const _rightConfig: PanelConfig = {
-	defaultSize: 30,
-	minSize: 20,
-	maxSize: 60,
+const _rightConfig = {
+	defaultSize: '30%',
+	minSize: '20%',
+	maxSize: '60%',
 	collapsible: true,
-};
-const _leftConfig: PanelConfig = {
-	defaultSize: 15,
-	minSize: 10,
-	maxSize: 35,
+} as const;
+const _leftConfig = {
+	defaultSize: '15%',
+	minSize: '10%',
+	maxSize: '35%',
 	collapsible: true,
-};
+} as const;
 
 export namespace DataViewLayout {
 	type CompositeProps = ComponentPropsWithRef<'div'> & {

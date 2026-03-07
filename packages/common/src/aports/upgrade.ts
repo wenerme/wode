@@ -14,7 +14,7 @@ import 'zx/globals';
 import { parseBoolean } from '@wener/utils';
 import { readApkBuild, writeApkBuild } from './utils/apkbuild';
 import { getAportsRepos, readAportsContext } from './utils/aports';
-import { parsePackageId, type ParsedPackageId } from './utils/pkg';
+import { type ParsedPackageId, parsePackageId } from './utils/pkg';
 
 export function getDayjs() {
 	return (getDayjs.dayjs ||= (() => {

@@ -1,8 +1,8 @@
-import React, { type ComponentProps, type FC, type ReactNode } from 'react';
 import { Tabs } from '@base-ui/react/tabs';
 import { cn } from '@wener/console';
 import { Daisy } from '@wener/console/daisy';
-import { flexRender, type FlexRenderable } from '@wener/reaction';
+import { type FlexRenderable, flexRender } from '@wener/reaction';
+import React, { type ComponentProps, type FC, type ReactNode } from 'react';
 import { isNodeTypeOf } from '../utils/isNodeTypeOf';
 
 export type DaisyTabsCompositeProps = Omit<DaisyTabsRootProps, 'content' | 'title'> & {

@@ -1,3 +1,4 @@
+import { clsx } from 'clsx';
 import React, {
 	type ComponentPropsWithoutRef,
 	type ComponentPropsWithRef,
@@ -5,7 +6,6 @@ import React, {
 	type ReactElement,
 	type ReactNode,
 } from 'react';
-import { clsx } from 'clsx';
 import { Icon, LeftContentRightLayout } from '../../components';
 import { cn } from '../../utils/cn';
 import { NavLink } from '../links';

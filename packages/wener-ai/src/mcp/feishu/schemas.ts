@@ -66,10 +66,7 @@ export const CreateDocumentInputSchema = z.object({
 export const WriteDocumentInputSchema = z.object({
 	document_id: z.string().min(1).describe('Document ID (token)'),
 	content: z.string().min(1).describe('Content to write (markdown or HTML)'),
-	content_type: z
-		.enum(['markdown', 'html'])
-		.default('markdown')
-		.describe('Content format: markdown or html'),
+	content_type: z.enum(['markdown', 'html']).default('markdown').describe('Content format: markdown or html'),
 	append: z.boolean().default(false).describe('Append instead of replacing existing content'),
 });
 

@@ -1,8 +1,7 @@
-import type { BaseEntity, EventArgs, FlushEventArgs, TransactionEventArgs } from '@mikro-orm/core';
-import type { EntityManager } from '@mikro-orm/core';
+import type { BaseEntity, EntityManager, EventArgs, FlushEventArgs, TransactionEventArgs } from '@mikro-orm/core';
 import type { StandardBaseEntity } from '@wener/server/entity';
 import { getEntityManager } from '@wener/server/mikro-orm';
-import Emittery from 'emittery';
+import type Emittery from 'emittery';
 // import { getRemoteEmitter, RemoteEvents } from '@/server/events/RemoteEmitter';
 import { getSystemEmitter } from './SystemEmitter';
 

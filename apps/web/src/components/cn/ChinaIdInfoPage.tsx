@@ -1,14 +1,15 @@
 'use client';
 
-import React, { useEffect } from 'react';
-import { HiMagnifyingGlass, HiOutlineXCircle } from 'react-icons/hi2';
 import { isDefined } from '@wener/utils';
+import type React from 'react';
+import { useEffect } from 'react';
+import { HiMagnifyingGlass, HiOutlineXCircle } from 'react-icons/hi2';
 import { useImmer } from 'use-immer';
 import { ChinaCitizenIdDescription } from '@/components/cn/ChinaCitizenIdDescription';
 import { ParserCard } from '@/components/cn/ParserCard';
 import { Parsers } from '@/components/cn/Parsers';
 import { UnifiedSocialCreditIdDescription } from '@/components/cn/UnifiedSocialCreditIdDescription';
-import { tryParse, type ParseResult } from './parseIt';
+import { type ParseResult, tryParse } from './parseIt';
 
 export const ChinaIdInfoPage = () => {
 	const [state, update] = useImmer<{

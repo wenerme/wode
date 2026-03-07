@@ -4,7 +4,7 @@ import { ArrayBuffers, classOf, type FetchLike } from '@wener/utils';
 import { createParser, type ParsedEvent } from 'eventsource-parser';
 import type { BaseHttpRequestLogEntity } from './BaseHttpRequestLogEntity';
 import { FetchCache, type FetchCacheConfig, type FetchCacheHookContext, type FetchCacheOptions } from './FetchCache';
-import { findHttpRequestCache, type FindCacheOptions } from './findHttpRequestCache';
+import { type FindCacheOptions, findHttpRequestCache } from './findHttpRequestCache';
 import { removeNullChar } from './removeNullChar';
 
 export interface CreateFetchWithCacheOptions<T extends BaseHttpRequestLogEntity> {

@@ -13,10 +13,10 @@ export function hexdump(buffer: ArrayBuffer, offset: number = 0, length: number 
 			}
 		}
 		lines.push(
-			bytes.join(' ')
-				+ ' '.repeat(3 * (16 - bytes.length))
-				+ '  '
-				+ bytes.map((b) => (b.length === 1 ? ' ' : '') + String.fromCharCode(parseInt(b, 16))).join(''),
+			bytes.join(' ') +
+				' '.repeat(3 * (16 - bytes.length)) +
+				'  ' +
+				bytes.map((b) => (b.length === 1 ? ' ' : '') + String.fromCharCode(parseInt(b, 16))).join(''),
 		);
 	}
 	return lines.join('\n');

@@ -1,12 +1,12 @@
 'use client';
 
-import type React from 'react';
-import { useMemo, useState } from 'react';
-import { HiDuplicate } from 'react-icons/hi';
 import { Button } from '@wener/console/daisy';
 import { useAsyncEffect } from '@wener/reaction';
 import { ArrayBuffers, copy, md5 } from '@wener/utils';
 import { HashLockOutlined } from 'common/icons';
+import type React from 'react';
+import { useMemo, useState } from 'react';
+import { HiDuplicate } from 'react-icons/hi';
 import { SearchPageLayout } from '@/components/SearchPageLayout';
 
 export const HashPage = () => {

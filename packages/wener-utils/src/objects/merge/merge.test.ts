@@ -1,6 +1,6 @@
 import { assert, describe, test } from 'vitest';
 import { isPlainObject } from '../../langs/isPlainObject';
-import { merge, type MergeOptions } from './merge';
+import { type MergeOptions, merge } from './merge';
 
 describe('custom-array-merge', () => {
 	test('custom merge array', () => {

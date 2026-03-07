@@ -1,7 +1,7 @@
 import 'reflect-metadata';
-import { MetadataStorage, type EntityClass, type EntityProperty, type Type } from '@mikro-orm/core';
+import { type EntityClass, type EntityProperty, MetadataStorage, type Type } from '@mikro-orm/core';
 import type { JsonSchemaDef } from '@wener/common/jsonschema';
-import { computeIfAbsent, type AbstractConstructor, type Constructor } from '@wener/utils';
+import { type AbstractConstructor, type Constructor, computeIfAbsent } from '@wener/utils';
 import { Features } from '../Feature';
 
 const ENTITY_FIELD_SCHEMA_METADATA_KEY = 'Entity:Field:Schema:Metadata:Options';

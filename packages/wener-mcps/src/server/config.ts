@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import consola from 'consola';
 import YAML from 'yaml';
-import { McpsConfigSchema, type McpsConfig, type ServerConfig } from './schema';
+import { type McpsConfig, McpsConfigSchema, type ServerConfig } from './schema';
 
 const log = consola.withTag('config');
 

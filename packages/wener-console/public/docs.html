@@ -10,9 +10,7 @@
 <body>
 </body>
 <script>
-  {
-
-    function getSpecUrl() {
+  function getSpecUrl() {
       let href = new URL(location.href);
       let url = href.searchParams.get('spec-url')
       if (url) {
@@ -67,6 +65,5 @@
       };
       setup(attrs)
     })
-  }
 </script>
 </html>

@@ -28,10 +28,12 @@
 		"./server": "./src/server/index.ts",
 		"./tencent/cls": "./src/tencent/cls/index.ts",
 		"./wechat": "./src/wechat/index.ts",
+		"./wechat/bot": "./src/wechat/bot/index.ts",
 		"./wechat/miniprogram": "./src/wechat/miniprogram/index.ts",
 		"./wechat/server": "./src/wechat/server/index.ts",
 		"./wechat/webhook": "./src/wechat/webhook/index.ts",
 		"./wecom": "./src/wecom/index.ts",
+		"./wecom/bot": "./src/wecom/bot/index.ts",
 		"./wecom/archive": "./src/wecom/archive/index.ts",
 		"./wecom/archive/bun": "./src/wecom/archive/bun/index.ts",
 		"./wecom/archive/server": "./src/wecom/archive/server/index.ts",
@@ -39,14 +41,11 @@
 		"./wecom/webhook": "./src/wecom/webhook/index.ts",
 		"./xunfei/spark": "./src/xunfei/spark/index.ts",
 		"./yzf": "./src/yzf/index.ts",
+		"./feishu/docs": "./src/feishu/docs/index.ts",
+		"./feishu/docs/markdown": "./src/feishu/docs/markdown/index.ts",
 		"./package.json": "./package.json"
 	},
-	"files": [
-		"lib.d.ts",
-		"src",
-		"lib",
-		"libs"
-	],
+	"files": ["lib.d.ts", "src", "lib", "libs"],
 	"keywords": [],
 	"scripts": {
 		"build": "make build",
@@ -60,20 +59,20 @@
 	"devDependencies": {
 		"@alicloud/openapi-client": "^0.4.15",
 		"@sinclair/typebox": "^0.34.48",
-		"@types/bun": "^1.3.9",
+		"@types/bun": "^1.3.11",
 		"@types/crypto-js": "^4.2.2",
 		"@types/node-rsa": "^1.1.4",
 		"@wecom/jssdk": "^2.3.4",
 		"cookie": "^1.1.1",
 		"crypto-js": "^4.2.0",
-		"dayjs": "^1.11.19",
-		"fast-xml-parser": "^5.4.1",
+		"dayjs": "^1.11.20",
+		"fast-xml-parser": "^5.5.7",
 		"node-rsa": "^1.1.1",
-		"puppeteer": "^24.37.5",
-		"puppeteer-core": "^24.37.5",
+		"puppeteer": "^24.40.0",
+		"puppeteer-core": "^24.40.0",
 		"ts-pattern": "^5.9.0",
-		"undici": "^7.22.0",
-		"vitest": "^4.0.18",
+		"undici": "^7.24.5",
+		"vitest": "^4.1.0",
 		"ws": "^8.19.0"
 	},
 	"publishConfig": {
@@ -142,6 +141,10 @@
 				"types": "./src/wechat/index.ts",
 				"default": "./lib/wechat/index.js"
 			},
+			"./wechat/bot": {
+				"types": "./src/wechat/bot/index.ts",
+				"default": "./lib/wechat/bot/index.js"
+			},
 			"./wechat/miniprogram": {
 				"types": "./src/wechat/miniprogram/index.ts",
 				"default": "./lib/wechat/miniprogram/index.js"
@@ -157,6 +160,10 @@
 			"./wecom": {
 				"types": "./src/wecom/index.ts",
 				"default": "./lib/wecom/index.js"
+			},
+			"./wecom/bot": {
+				"types": "./src/wecom/bot/index.ts",
+				"default": "./lib/wecom/bot/index.js"
 			},
 			"./wecom/archive": {
 				"types": "./src/wecom/archive/index.ts",
@@ -185,6 +192,14 @@
 			"./yzf": {
 				"types": "./src/yzf/index.ts",
 				"default": "./lib/yzf/index.js"
+			},
+			"./feishu/docs": {
+				"types": "./src/feishu/docs/index.ts",
+				"default": "./lib/feishu/docs/index.js"
+			},
+			"./feishu/docs/markdown": {
+				"types": "./src/feishu/docs/markdown/index.ts",
+				"default": "./lib/feishu/docs/markdown/index.js"
 			},
 			"./package.json": "./package.json"
 		}

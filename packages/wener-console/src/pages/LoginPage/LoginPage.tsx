@@ -1,7 +1,7 @@
 import type { ComponentPropsWithoutRef, ReactNode } from 'react';
 import { GrSystem } from 'react-icons/gr';
 import { LoginPageFooter } from './LoginPageFooter';
-import { LoginPageForm, type LoginFormData, type LoginFormMode, type LoginFormProps } from './LoginPageForm';
+import { type LoginFormData, type LoginFormMode, type LoginFormProps, LoginPageForm } from './LoginPageForm';
 import { LoginPageHeader } from './LoginPageHeader';
 import { LoginPageHero } from './LoginPageHero';
 import { LoginPageLayout } from './LoginPageLayout';

@@ -1,5 +1,5 @@
-import type { FC, HTMLProps } from 'react';
 import { mergeProps } from '@wener/reaction/universal';
+import type { FC, HTMLProps } from 'react';
 import styles from './DotsFadeLoader.module.css';
 
 export const DotsFadeLoader: FC<Omit<HTMLProps<HTMLDivElement>, 'ref' | 'children' | 'as'>> = (props) => {

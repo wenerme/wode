@@ -1,4 +1,4 @@
-import { hmac, type FetchLike } from '@wener/utils';
+import { type FetchLike, hmac } from '@wener/utils';
 
 export type FeishuWebhookMessagePayload = MessageTypeContent & {
 	timestamp?: string;

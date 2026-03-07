@@ -1,5 +1,5 @@
+import { AnalyzeInputSchema, FieldValuesInputSchema, HistogramInputSchema } from '../schemas';
 import type { TencentClsContext } from '../server';
-import { HistogramInputSchema, FieldValuesInputSchema, AnalyzeInputSchema } from '../schemas';
 import { parseTimeRange } from '../utils';
 
 export function registerAnalysisTools(ctx: TencentClsContext) {

@@ -94,7 +94,7 @@ async function getOrm() {
 		orm = await MikroORM.init(
 			defineConfig({
 				entities: [UserEntity, UserProfileEntity],
-				
+
 				dbName: 'postgres',
 				// Use driverOptions to configure pg connection for Unix socket
 				driverOptions: {
@@ -105,7 +105,7 @@ async function getOrm() {
 						password: 'postgres',
 					},
 				},
-				
+
 				// debug: true,
 			}),
 		);
@@ -340,7 +340,10 @@ describe('PGlite MikroORM Miniquery Tests', () => {
 		// Run all test cases
 		for (const [query, assertion] of testCases) {
 			const mikroQuery = toMikroOrmQuery(query, { em, Entity: UserEntity });
-			const results = await (em as SqlEntityManager).createQueryBuilder(UserEntity).where(mikroQuery as any).getResult();
+			const results = await (em as SqlEntityManager)
+				.createQueryBuilder(UserEntity)
+				.where(mikroQuery as any)
+				.getResult();
 			assertion(results);
 		}
 

@@ -37,15 +37,19 @@ export async function createKyselyInstance(
 		case 'postgres': {
 			const { Pool } = await import('pg');
 			const { PostgresDialect } = await import('kysely');
+			const pool = new Pool({
+				connectionString: url,
+				connectionTimeoutMillis: 30000,
+				idleTimeoutMillis: 30000,
+				max: 10,
+				statement_timeout: 120_000,
+				query_timeout: 120_000,
+			});
+			pool.on('error', (err) => {
+				console.error('[pg] Pool client error:', err.message);
+			});
 			db = new Kysely({
-				dialect: new PostgresDialect({
-					pool: new Pool({
-						connectionString: url,
-						connectionTimeoutMillis: 30000, // 30 seconds
-						idleTimeoutMillis: 30000,
-						max: 10,
-					}),
-				}),
+				dialect: new PostgresDialect({ pool }),
 			});
 			break;
 		}

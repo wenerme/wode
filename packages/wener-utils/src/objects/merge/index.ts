@@ -1,1 +1,1 @@
-export { merge, type MergeOptions } from './merge';
+export { type MergeOptions, merge } from './merge';

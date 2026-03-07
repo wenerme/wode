@@ -1,2 +1,2 @@
-export { createPrometheusMcpServer, type CreatePrometheusMcpServerOptions, type PrometheusContext } from './server';
 export { PrometheusMcpServerDef } from './def';
+export { type CreatePrometheusMcpServerOptions, createPrometheusMcpServer, type PrometheusContext } from './server';

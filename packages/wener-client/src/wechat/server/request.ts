@@ -1,4 +1,4 @@
-import { doRequest, type DoRequestOptions } from '../../utils/doRequest';
+import { type DoRequestOptions, doRequest } from '../../utils/doRequest';
 
 export type RequestOptions<OUT = any, IN = OUT> = DoRequestOptions<OUT, IN> & {};
 

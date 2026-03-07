@@ -2,12 +2,12 @@ import {
 	createFetchWithLogging,
 	createLogger,
 	Errors,
-	maybeFunction,
 	type FetchLike,
 	type MaybePromise,
+	maybeFunction,
 } from '@wener/utils';
 import { decrypt } from './decrypt';
-import { request, type RequestOptions, type Token, type TokenProvider } from './request';
+import { type RequestOptions, request, type Token, type TokenProvider } from './request';
 import { ping } from './token';
 import type {
 	CompanyInfoResponse,

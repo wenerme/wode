@@ -1,8 +1,8 @@
 import {
 	dumpRequest,
 	dumpResponse,
-	isPlainObject,
 	type FetchLike,
+	isPlainObject,
 	type MaybeArray,
 	type MaybePromise,
 } from '@wener/utils';

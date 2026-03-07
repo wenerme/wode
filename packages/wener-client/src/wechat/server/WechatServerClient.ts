@@ -6,7 +6,7 @@ import {
 	type ExpiryValueHolder,
 } from '../../ExpiryValue';
 import { getAccessToken, getStableAccessToken } from './getAccessToken';
-import { request, type RequestOptions } from './request';
+import { type RequestOptions, request } from './request';
 import type { GetDomainInfoResponse, GetOpenAPIQuotaResponse, GetPhoneNumberResponse } from './types';
 
 export interface WechatServerClientInit {

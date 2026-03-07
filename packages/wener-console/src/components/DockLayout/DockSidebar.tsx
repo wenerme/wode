@@ -1,5 +1,5 @@
-import type { ComponentPropsWithRef } from 'react';
 import { clsx } from 'clsx';
+import type { ComponentPropsWithRef } from 'react';
 
 export type DockSidebarProps = ComponentPropsWithRef<'div'> & {
 	/**

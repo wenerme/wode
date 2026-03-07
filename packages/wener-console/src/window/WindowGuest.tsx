@@ -1,12 +1,12 @@
-import { memo, useEffect, type ComponentProps, type ComponentPropsWithoutRef, type FC, type ReactNode } from 'react';
-import { Rnd } from 'react-rnd';
 import { useEvent } from '@wener/reaction';
 import { Closer } from '@wener/utils';
 import { clsx } from 'clsx';
+import { type ComponentProps, type ComponentPropsWithoutRef, type FC, memo, type ReactNode, useEffect } from 'react';
+import { Rnd } from 'react-rnd';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
 import { getWindowDragCancelClassname, getWindowDragHandleClassname } from './const';
-import { getRootWindow, WindowContext, type ReactWindow } from './ReactWindow';
+import { getRootWindow, type ReactWindow, WindowContext } from './ReactWindow';
 import { WindowController } from './WindowController';
 import { WindowFrame } from './WindowFrame';
 

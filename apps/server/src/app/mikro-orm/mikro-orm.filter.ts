@@ -1,5 +1,5 @@
 import { DriverException, NotFoundError, ValidationError } from '@mikro-orm/core';
-import { Catch, Logger, type ArgumentsHost, type ExceptionFilter } from '@nestjs/common';
+import { type ArgumentsHost, Catch, type ExceptionFilter, Logger } from '@nestjs/common';
 
 // import type { FastifyReply } from 'fastify';
 

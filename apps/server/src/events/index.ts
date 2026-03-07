@@ -1,2 +1,2 @@
-export { getSystemEmitter, SystemEvents, type SystemEmitter } from './SystemEmitter';
-export { getEntityEmitter, EntityEvents, type EntityEmitter } from './EntityEmitter';
+export { type EntityEmitter, EntityEvents, getEntityEmitter } from './EntityEmitter';
+export { getSystemEmitter, type SystemEmitter, SystemEvents } from './SystemEmitter';

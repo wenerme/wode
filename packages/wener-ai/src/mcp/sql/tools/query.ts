@@ -1,6 +1,6 @@
 import { sql } from 'kysely';
-import type { SqlContext } from '../server';
 import { SqlInputSchema } from '../schemas';
+import type { SqlContext } from '../server';
 import { formatTable } from '../utils';
 
 export function registerQueryTools(ctx: SqlContext) {

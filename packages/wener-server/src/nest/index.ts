@@ -1,3 +1,3 @@
+export { getAppContext, getAppContextAsync, setAppContext } from './AppContext';
+export { type BuildDynamicModuleOptions, buildDynamicModule } from './buildDynamicModule';
 export { resolveProvides } from './resolveProvides';
-export { buildDynamicModule, type BuildDynamicModuleOptions } from './buildDynamicModule';
-export { setAppContext, getAppContextAsync, getAppContext } from './AppContext';

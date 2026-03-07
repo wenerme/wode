@@ -1,7 +1,7 @@
+import { classOf, type MaybeFunction, maybeFunction, Promises } from '@wener/utils';
 import type { ReactElement } from 'react';
 import toast, { type DefaultToastOptions } from 'react-hot-toast';
 import { HiXMark } from 'react-icons/hi2';
-import { classOf, maybeFunction, Promises, type MaybeFunction } from '@wener/utils';
 import { resolveErrorMessage } from './resolveErrorMessage';
 
 type Renderable = ReactElement | string | null;

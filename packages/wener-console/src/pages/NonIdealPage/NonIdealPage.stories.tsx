@@ -1,6 +1,6 @@
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { BiError } from 'react-icons/bi';
 import { GrDocumentMissing } from 'react-icons/gr';
-import type { Meta, StoryObj } from '@storybook/react-vite';
 import { NonIdealPage } from './NonIdealPage';
 
 const meta: Meta<typeof NonIdealPage.Layout> = {

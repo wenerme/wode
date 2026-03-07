@@ -1,5 +1,4 @@
-import { readFile, writeFile } from 'node:fs/promises';
-import { stat } from 'node:fs/promises';
+import { readFile, stat, writeFile } from 'node:fs/promises';
 import type { PersistenceHandler } from './PersistenceHandler';
 
 /**

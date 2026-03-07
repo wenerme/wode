@@ -1,4 +1,4 @@
-import { Entity, ManyToOne, Unique, type Rel } from '@mikro-orm/core';
+import { Entity, ManyToOne, type Rel, Unique } from '@mikro-orm/core';
 import { TenantBaseEntity, withRequiredEntityRefEntity } from '@wener/nestjs/entity';
 import { mixin } from '@wener/utils';
 import { AuthRoleEntity } from './AuthRoleEntity';

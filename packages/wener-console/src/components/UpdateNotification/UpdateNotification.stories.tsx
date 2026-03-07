@@ -1,5 +1,5 @@
-import { useState } from 'react';
 import type { Meta } from '@storybook/react-vite';
+import { useState } from 'react';
 import { UpdateNotificationToast } from './UpdateNotificationToast';
 
 const meta: Meta = {

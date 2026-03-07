@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { parsePackageId, type ParsedPackageId } from './parsePackageId';
+import { type ParsedPackageId, parsePackageId } from './parsePackageId';
 
 test('parsePackageId', () => {
 	for (const [a, b] of [

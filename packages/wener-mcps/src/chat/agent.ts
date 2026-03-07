@@ -3,7 +3,7 @@
  * Uses AI SDK with MCP tools for agentic chat
  */
 import { createOpenAICompatible } from '@ai-sdk/openai-compatible';
-import { generateText, streamText, type Tool, stepCountIs } from 'ai';
+import { generateText, stepCountIs, streamText, type Tool } from 'ai';
 import consola from 'consola';
 import type { Hono } from 'hono';
 import { streamSSE } from 'hono/streaming';

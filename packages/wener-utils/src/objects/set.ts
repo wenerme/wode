@@ -1,4 +1,4 @@
-import { parseObjectPath, type ObjectKey, type ObjectPath } from './parseObjectPath';
+import { type ObjectKey, type ObjectPath, parseObjectPath } from './parseObjectPath';
 
 /**
  * Deep set

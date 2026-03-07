@@ -1,4 +1,4 @@
-import { BaseEntity, MetadataStorage, type EntityClass } from '@mikro-orm/core';
+import { BaseEntity, type EntityClass, MetadataStorage } from '@mikro-orm/core';
 import { Errors } from '@wener/utils';
 import { Features } from '../Feature';
 import { getTypeOfEntityTypeId } from './parseEntityTypeId';

@@ -79,7 +79,7 @@ export function _clone(x: any): any {
 		}
 
 		for (i = 0, list = Object.getOwnPropertyNames(x); i < list.length; i++) {
-			if (Object.prototype.hasOwnProperty.call(tmp, (k = list[i])) && tmp[k] === x[k]) continue;
+			if (Object.hasOwn(tmp, (k = list[i])) && tmp[k] === x[k]) continue;
 			set(tmp, k, Object.getOwnPropertyDescriptor(x, k));
 		}
 	}

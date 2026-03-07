@@ -1,6 +1,6 @@
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { PiChartLineLight, PiGearLight, PiUserLight } from 'react-icons/pi';
-import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Tabs } from './Tabs';
 
 const meta: Meta<typeof Tabs.Composite> = {

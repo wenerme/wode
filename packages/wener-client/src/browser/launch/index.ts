@@ -1,2 +1,2 @@
-export { launch, type LaunchOptions } from './launch';
 export { connect } from './connect';
+export { type LaunchOptions, launch } from './launch';

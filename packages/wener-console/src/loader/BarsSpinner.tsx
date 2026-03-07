@@ -1,5 +1,5 @@
-import type { FC } from 'react';
 import styled from '@emotion/styled';
+import type { FC } from 'react';
 
 const BarsSpinnerBox = styled.div<{ bars: number }>`
 	position: relative;

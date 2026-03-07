@@ -1,6 +1,6 @@
-import { useEffect, useReducer, type ComponentPropsWithoutRef, type FC } from 'react';
 import styled from '@emotion/styled';
 import { clsx } from 'clsx';
+import { type ComponentPropsWithoutRef, type FC, useEffect, useReducer } from 'react';
 
 // noinspection CssUnresolvedCustomProperty
 const Container = styled.div`

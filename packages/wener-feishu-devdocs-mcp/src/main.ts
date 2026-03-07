@@ -1,10 +1,10 @@
 import { implement } from '@orpc/server';
 import { setContractHandler } from 'common/mcp';
 import { runMcpServerCommand } from 'common/mcp/server';
-import { consola, type ConsolaInstance } from 'consola';
+import { type ConsolaInstance, consola } from 'consola';
 import { FeishuDevDocsServiceContract } from './devdocs';
 import { FeishuDevDocsClient } from './devdocs/feishu-devdocs-client';
-import { getFeishuDevDocsConfig, type FeishuDevDocsConfig } from './server/config';
+import { type FeishuDevDocsConfig, getFeishuDevDocsConfig } from './server/config';
 
 const AppInfo = {
 	name: process.env.PACKAGE_NAME || 'wener-feishu-devdocs',

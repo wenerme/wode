@@ -1,19 +1,19 @@
 {
-  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "console-layout",
-  "title": "Console Layout",
-  "description": "A responsive console layout with Menu, Main, Dock, and Composite",
-  "files": [
-    {
-      "path": "registry/default/blocks/console-layout/console-layout.tsx",
-      "content": "import type { ComponentPropsWithRef, ReactNode } from 'react';\nimport { cn } from '@/lib/utils';\n\nexport namespace ConsoleLayout {\n  export type RootProps = ComponentPropsWithRef<'div'>;\n  export type MenuProps = ComponentPropsWithRef<'aside'>;\n  export type MainProps = ComponentPropsWithRef<'main'>;\n  export type DockProps = ComponentPropsWithRef<'aside'>;\n\n  export interface CompositeProps extends Omit<ComponentPropsWithRef<'div'>, 'children'> {\n    menu?: ReactNode;\n    dock?: ReactNode;\n    children?: ReactNode;\n  }\n\n  /**\n   * Composite layout combining Menu, Main, and Dock in a single component\n   */\n  export function Composite({ menu, dock, children, className, ...props }: CompositeProps) {\n    return (\n      <Root className={className} {...props}>\n        {menu && <Menu>{menu}</Menu>}\n        <Main>{children}</Main>\n        {dock && <Dock>{dock}</Dock>}\n      </Root>\n    );\n  }\n\n  /**\n   * Root layout container with responsive flex layout\n   * - Mobile: column layout (flex-col)\n   * - Desktop: row layout (flex-row)\n   */\n  export function Root({ children, className, ...props }: RootProps) {\n    return (\n      <div\n        className={cn('flex h-screen w-full overflow-hidden', 'flex-col md:flex-row', className)}\n        {...props}\n      >\n        {children}\n      </div>\n    );\n  }\n\n  /**\n   * Left sidebar menu area\n   * - Fixed width (57px on desktop)\n   * - Supports top/center/bottom sections via children\n   */\n  export function Menu({ children, className, ...props }: MenuProps) {\n    return (\n      <aside\n        className={cn(\n          'border-color flex items-center bg-base-100',\n          'order-1 w-full border-b px-2',\n          'md:order-1 md:h-full md:w-[57px] md:flex-col md:border-b-0 md:border-r md:px-0',\n          className,\n        )}\n        {...props}\n      >\n        {children}\n      </aside>\n    );\n  }\n\n  /**\n   * Main content area\n   * - Fills remaining space\n   * - Has internal scroll container\n   */\n  export function Main({ children, className, ...props }: MainProps) {\n    return (\n      <main className={cn('relative order-2 h-full flex-1 overflow-auto', className)} {...props}>\n        <div className={'scrollbar-thin absolute inset-0 isolate'}>{children}</div>\n      </main>\n    );\n  }\n\n  /**\n   * Right/Bottom dock area\n   * - Mobile: top display\n   * - Desktop: right side display\n   */\n  export function Dock({ children, className, ...props }: DockProps) {\n    return (\n      <aside\n        className={cn(\n          'border-color flex items-center bg-base-100',\n          'order-3 w-full border-t px-2',\n          'md:order-3 md:h-full md:w-[57px] md:flex-col md:border-l md:border-t-0 md:px-0',\n          className,\n        )}\n        {...props}\n      >\n        {children}\n      </aside>\n    );\n  }\n}\n",
-      "type": "registry:component"
-    },
-    {
-      "path": "registry/default/blocks/console-layout/index.ts",
-      "content": "export { ConsoleLayout } from './console-layout';\n",
-      "type": "registry:component"
-    }
-  ],
-  "type": "registry:block"
+	"$schema": "https://ui.shadcn.com/schema/registry-item.json",
+	"name": "console-layout",
+	"title": "Console Layout",
+	"description": "A responsive console layout with Menu, Main, Dock, and Composite",
+	"files": [
+		{
+			"path": "registry/default/blocks/console-layout/console-layout.tsx",
+			"content": "import type { ComponentPropsWithRef, ReactNode } from 'react';\nimport { cn } from '@/lib/utils';\n\nexport namespace ConsoleLayout {\n  export type RootProps = ComponentPropsWithRef<'div'>;\n  export type MenuProps = ComponentPropsWithRef<'aside'>;\n  export type MainProps = ComponentPropsWithRef<'main'>;\n  export type DockProps = ComponentPropsWithRef<'aside'>;\n\n  export interface CompositeProps extends Omit<ComponentPropsWithRef<'div'>, 'children'> {\n    menu?: ReactNode;\n    dock?: ReactNode;\n    children?: ReactNode;\n  }\n\n  /**\n   * Composite layout combining Menu, Main, and Dock in a single component\n   */\n  export function Composite({ menu, dock, children, className, ...props }: CompositeProps) {\n    return (\n      <Root className={className} {...props}>\n        {menu && <Menu>{menu}</Menu>}\n        <Main>{children}</Main>\n        {dock && <Dock>{dock}</Dock>}\n      </Root>\n    );\n  }\n\n  /**\n   * Root layout container with responsive flex layout\n   * - Mobile: column layout (flex-col)\n   * - Desktop: row layout (flex-row)\n   */\n  export function Root({ children, className, ...props }: RootProps) {\n    return (\n      <div\n        className={cn('flex h-screen w-full overflow-hidden', 'flex-col md:flex-row', className)}\n        {...props}\n      >\n        {children}\n      </div>\n    );\n  }\n\n  /**\n   * Left sidebar menu area\n   * - Fixed width (57px on desktop)\n   * - Supports top/center/bottom sections via children\n   */\n  export function Menu({ children, className, ...props }: MenuProps) {\n    return (\n      <aside\n        className={cn(\n          'border-color flex items-center bg-base-100',\n          'order-1 w-full border-b px-2',\n          'md:order-1 md:h-full md:w-[57px] md:flex-col md:border-b-0 md:border-r md:px-0',\n          className,\n        )}\n        {...props}\n      >\n        {children}\n      </aside>\n    );\n  }\n\n  /**\n   * Main content area\n   * - Fills remaining space\n   * - Has internal scroll container\n   */\n  export function Main({ children, className, ...props }: MainProps) {\n    return (\n      <main className={cn('relative order-2 h-full flex-1 overflow-auto', className)} {...props}>\n        <div className={'scrollbar-thin absolute inset-0 isolate'}>{children}</div>\n      </main>\n    );\n  }\n\n  /**\n   * Right/Bottom dock area\n   * - Mobile: top display\n   * - Desktop: right side display\n   */\n  export function Dock({ children, className, ...props }: DockProps) {\n    return (\n      <aside\n        className={cn(\n          'border-color flex items-center bg-base-100',\n          'order-3 w-full border-t px-2',\n          'md:order-3 md:h-full md:w-[57px] md:flex-col md:border-l md:border-t-0 md:px-0',\n          className,\n        )}\n        {...props}\n      >\n        {children}\n      </aside>\n    );\n  }\n}\n",
+			"type": "registry:component"
+		},
+		{
+			"path": "registry/default/blocks/console-layout/index.ts",
+			"content": "export { ConsoleLayout } from './console-layout';\n",
+			"type": "registry:component"
+		}
+	],
+	"type": "registry:block"
 }

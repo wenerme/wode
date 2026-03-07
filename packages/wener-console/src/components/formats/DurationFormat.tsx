@@ -1,5 +1,5 @@
-import { useMemo, type ComponentPropsWithRef, type FC, type ReactNode } from 'react';
 import { formatDuration, type MaybeDuration } from '@wener/common/dayjs';
+import { type ComponentPropsWithRef, type FC, type ReactNode, useMemo } from 'react';
 
 export type DurationFormatProps = {
 	value?: MaybeDuration;

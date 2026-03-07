@@ -1,7 +1,7 @@
 import { match, P } from 'ts-pattern';
 import type { JsonSchemaDef } from '../jsonschema';
-import { toJsonSchema } from './toJsonSchema';
 import type { SchemaOutput, TypeSchema } from './TypeSchema';
+import { toJsonSchema } from './toJsonSchema';
 
 export function createSchemaData<S extends TypeSchema>(
 	ts: S,

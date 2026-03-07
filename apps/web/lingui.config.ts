@@ -1,5 +1,5 @@
 /** @type {import('@lingui/conf').LinguiConfig} */
-import { type LinguiConfig } from '@lingui/conf';
+import type { LinguiConfig } from '@lingui/conf';
 
 const conf: LinguiConfig = {
 	locales: ['zh-CN', 'en'],

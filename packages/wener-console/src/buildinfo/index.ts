@@ -1,1 +1,1 @@
-export { getBuildInfo, type BuildInfo } from './getBuildInfo';
+export { type BuildInfo, getBuildInfo } from './getBuildInfo';

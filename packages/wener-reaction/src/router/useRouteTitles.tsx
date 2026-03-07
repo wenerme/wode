@@ -1,5 +1,5 @@
-import { useMatches, type UIMatch } from 'react-router-dom';
 import type { MaybeFunction } from '@wener/utils';
+import { type UIMatch, useMatches } from 'react-router-dom';
 
 interface RouteObjectHandleWithTitle {
 	title: RouteHandleTitle;

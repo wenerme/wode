@@ -1,4 +1,4 @@
-import { Collection, type BaseEntity } from '@mikro-orm/core';
+import { type BaseEntity, Collection } from '@mikro-orm/core';
 import { Entity, ManyToOne, OneToMany } from '@mikro-orm/decorators/legacy';
 import type { Constructor } from '@wener/utils';
 import { Feature } from '../../Feature';

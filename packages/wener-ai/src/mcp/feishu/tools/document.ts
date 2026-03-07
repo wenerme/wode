@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { feishuDocxToMarkdown, type FeishuBlock } from '../feishu-docx-markdown';
+import { type FeishuBlock, feishuDocxToMarkdown } from '../feishu-docx-markdown';
 import {
 	CreateDocumentInputSchema,
 	GetDocumentContentInputSchema,

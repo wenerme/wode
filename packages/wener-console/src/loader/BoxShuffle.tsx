@@ -1,5 +1,5 @@
-import type { FC, ReactNode } from 'react';
 import styled from '@emotion/styled';
+import type { FC, ReactNode } from 'react';
 
 const cbox = (_props: any) => `
 position: absolute;

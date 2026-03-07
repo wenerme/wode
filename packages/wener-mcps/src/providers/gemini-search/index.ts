@@ -1,5 +1,5 @@
 export {
+	type GeminiSearchConfig,
 	GeminiSearchHeaderNames,
 	GeminiSearchMcpServerHandlerDef,
-	type GeminiSearchConfig,
 } from './def';

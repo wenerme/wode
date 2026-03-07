@@ -1,15 +1,15 @@
-import { describe, it, expect } from 'vitest';
-import {
-	openaiToAnthropicMessages,
-	openaiToAnthropicRequest,
-	anthropicToOpenaiResponse,
-	openaiToGeminiContents,
-	openaiToGeminiRequest,
-	geminiToOpenaiResponse,
-} from './converters';
-import type { ChatMessage } from '@wener/ai/openai/schema';
 import type { MessagesResponse } from '@wener/ai/anthropic/schema';
 import type { GenerateContentResponse } from '@wener/ai/google/schema';
+import type { ChatMessage } from '@wener/ai/openai/schema';
+import { describe, expect, it } from 'vitest';
+import {
+	anthropicToOpenaiResponse,
+	geminiToOpenaiResponse,
+	openaiToAnthropicMessages,
+	openaiToAnthropicRequest,
+	openaiToGeminiContents,
+	openaiToGeminiRequest,
+} from './converters';
 
 describe('OpenAI to Anthropic conversion', () => {
 	it('should convert system message to system prompt', () => {

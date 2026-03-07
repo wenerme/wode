@@ -1,5 +1,5 @@
-import { PiHeart } from 'react-icons/pi';
 import type { Meta } from '@storybook/react-vite';
+import { PiHeart } from 'react-icons/pi';
 import { SiteLogo } from '../console/components';
 import { ComponentProvider } from './ComponentProvider';
 

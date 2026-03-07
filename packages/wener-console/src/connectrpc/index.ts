@@ -1,5 +1,5 @@
 import type { DescMessage, DescMethodUnary, DescService, MessageInitShape, MessageShape } from '@bufbuild/protobuf';
-import { createClient, type Client, type ConnectError, type Transport } from '@connectrpc/connect';
+import { type Client, type ConnectError, createClient, type Transport } from '@connectrpc/connect';
 import { useQuery as _useConnectQuery, type UseQueryOptions } from '@connectrpc/connect-query';
 import { createConnectTransport } from '@connectrpc/connect-web';
 import type { SkipToken, UseQueryResult } from '@tanstack/react-query';

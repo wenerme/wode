@@ -1,9 +1,9 @@
 'use client';
 
+import { useMounted } from '@wener/reaction';
 import type React from 'react';
 import { useId } from 'react';
 import { createPortal } from 'react-dom';
-import { useMounted } from '@wener/reaction';
 
 export const UpdateNotificationToast: React.FC<UpdateNotificationToastProps> = (props) => {
 	const id = useId();

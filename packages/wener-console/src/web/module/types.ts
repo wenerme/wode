@@ -1,7 +1,7 @@
+import type { MaybePromise } from '@wener/utils';
 import type { ReactElement } from 'react';
 import type { ArrayPath, Path, PathValue } from 'react-hook-form';
 import type { RouteObject } from 'react-router';
-import type { MaybePromise } from '@wener/utils';
 
 export interface ModuleStore<O extends Record<string, any> = Record<string, any>> {
 	set<P extends Path<O> | ArrayPath<O>, V extends PathValue<O, P>>(

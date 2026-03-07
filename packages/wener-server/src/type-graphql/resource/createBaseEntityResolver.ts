@@ -1,4 +1,4 @@
-import { MikroORM, type EntityManager, type EntityRepository } from '@mikro-orm/postgresql';
+import { type EntityManager, type EntityRepository, MikroORM } from '@mikro-orm/postgresql';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import type { Constructor } from '@wener/utils';
 import { Resolver } from 'type-graphql';

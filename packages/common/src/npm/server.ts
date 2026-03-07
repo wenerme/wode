@@ -1,4 +1,4 @@
-export { createUnpkg, type CreateUnpkgOptions } from './createUnpkg';
-export { createUnpkgHandler, type CreateUnpkgHandlerOptions } from './createUnpkgHandler';
 export { createBearerAuthFetch } from './createBearerAuthFetch';
+export { type CreateUnpkgOptions, createUnpkg } from './createUnpkg';
+export { type CreateUnpkgHandlerOptions, createUnpkgHandler } from './createUnpkgHandler';
 export { SQLiteStorage, type SQLiteStorageOptions } from './SQLiteStorage';

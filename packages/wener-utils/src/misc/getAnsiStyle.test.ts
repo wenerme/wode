@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { getAnsiStyle, type AnsiFormatOptions } from './getAnsiStyle';
+import { type AnsiFormatOptions, getAnsiStyle } from './getAnsiStyle';
 
 describe('getAnsiStyle', () => {
 	const style = getAnsiStyle(true);

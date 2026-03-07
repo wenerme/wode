@@ -241,12 +241,7 @@ export class Drain {
 	 * @param includeParams Consider tokens matched to wildcard parameters in similarity threshold
 	 * @returns Best match cluster or null
 	 */
-	private fastMatch(
-		clusterIds: number[],
-		tokens: string[],
-		simTh: number,
-		includeParams: boolean,
-	): LogCluster | null {
+	private fastMatch(clusterIds: number[], tokens: string[], simTh: number, includeParams: boolean): LogCluster | null {
 		let matchCluster: LogCluster | null = null;
 
 		let maxSim = -1;

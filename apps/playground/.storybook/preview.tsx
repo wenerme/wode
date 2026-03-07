@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
 import type { Decorator, Preview } from '@storybook/react-vite';
 import { DaisyTheme, getSupportedThemes } from '@wener/console/daisy';
+import React, { useEffect } from 'react';
 import '#/globals.css';
 
 // import '@/i18n';

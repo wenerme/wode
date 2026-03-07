@@ -1,10 +1,10 @@
 import { StreamableHTTPTransport } from '@hono/mcp';
+import type { McpServerInstance } from '@wener/ai/mcp';
 import consola from 'consola';
 import type { Hono } from 'hono';
 import type { LRUCache } from 'lru-cache';
-import type { McpServerInstance } from '@wener/ai/mcp';
-import { getMcpServerHandlerDef, type McpServerHandlerDef } from '../providers/McpServerHandlerDef';
 import { findMcpServerDef } from '../providers/findMcpServerDef';
+import { getMcpServerHandlerDef, type McpServerHandlerDef } from '../providers/McpServerHandlerDef';
 import { createMcpLoggingHandler } from './mcp-handler';
 import type { McpsConfig, ServerConfig } from './schema';
 
@@ -95,6 +95,13 @@ async function handleMcpRequest(c: any, def: McpServerHandlerDef, options: any, 
 	const transport = new StreamableHTTPTransport();
 	try {
 		await item.server.connect(transport);
+
+		const prevOnclose = transport.onclose;
+		transport.onclose = () => {
+			prevOnclose?.();
+			item?.close?.().catch((e) => log.debug(`[${name}] cleanup:`, e));
+		};
+
 		const handleRequest = createMcpLoggingHandler(transport, name);
 		return await handleRequest(c);
 	} catch (e) {

@@ -1,4 +1,4 @@
-import { types, type Opt } from '@mikro-orm/core';
+import { type Opt, types } from '@mikro-orm/core';
 import { BeforeCreate, Entity, Filter, Property, Unique } from '@mikro-orm/decorators/legacy';
 import { getCurrentTenantId } from '../app';
 import { CurrentTenantIdFilter } from './CurrentTenantIdFilter';

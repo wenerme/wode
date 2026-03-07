@@ -1,12 +1,12 @@
-import type { ReactNode } from 'react';
 import type { BoundedUseStore } from '@wener/reaction/zustand';
+import type { ReactNode } from 'react';
 import { AuthBlock, AuthReady, AuthSidecar } from '../../../foundation/auth';
 import {
+	type AuthStore,
 	AuthStoreContext,
 	createAuthStore,
 	useAuthStore,
 	useAuthStoreContext,
-	type AuthStore,
 } from '../../../foundation/auth/AuthStore';
 
 export namespace ConsoleAuth {

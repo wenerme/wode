@@ -7,9 +7,8 @@ import { NodeSqliteDialect } from '@mikro-orm/sql';
  */
 export async function createSqliteDialect(dbName: string) {
 	if (typeof (globalThis as any).Bun !== 'undefined') {
-		// @ts-ignore bun-only module
+		// @ts-expect-error bun-only module
 		const { BunSqliteDialect } = await import('kysely-bun-sqlite');
-		// @ts-ignore bun-only module
 		const { Database } = await import('bun:sqlite');
 		return new BunSqliteDialect({ database: new Database(dbName) });
 	}

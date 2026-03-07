@@ -1,5 +1,5 @@
 import { defineMcpServer } from '../McpServerDef';
-import { createRelayMcpServer, type CreateRelayMcpServerOptions } from './server';
+import { type CreateRelayMcpServerOptions, createRelayMcpServer } from './server';
 
 export const RelayMcpServerDef = defineMcpServer<CreateRelayMcpServerOptions>({
 	name: 'relay',

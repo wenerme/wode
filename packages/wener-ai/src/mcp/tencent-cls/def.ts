@@ -1,5 +1,5 @@
 import { defineMcpServer } from '../McpServerDef';
-import { createTencentClsMcpServer, type CreateTencentClsMcpServerOptions } from './server';
+import { type CreateTencentClsMcpServerOptions, createTencentClsMcpServer } from './server';
 
 export const TencentClsMcpServerDef = defineMcpServer<CreateTencentClsMcpServerOptions>({
 	name: 'tencent-cls',

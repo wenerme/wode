@@ -1,6 +1,6 @@
 import { firstOfMaybeArray } from '@wener/utils';
-import { toJsonSchema } from './toJsonSchema';
 import type { TypeSchema } from './TypeSchema';
+import { toJsonSchema } from './toJsonSchema';
 
 export function findJsonSchemaByPath(schema: TypeSchema, objectPath: string) {
 	schema = toJsonSchema(schema);

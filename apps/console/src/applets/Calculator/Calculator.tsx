@@ -1,6 +1,6 @@
+import styled from '@emotion/styled';
 import type { MouseEventHandler } from 'react';
 import React from 'react';
-import styled from '@emotion/styled';
 
 class AutoScalingText extends React.Component<React.PropsWithChildren<{}>> {
 	state = {

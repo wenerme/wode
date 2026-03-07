@@ -1,4 +1,4 @@
-import { SqlMcpServerDef, type CreateSqlMcpServerOptions } from '@wener/ai/mcp/sql';
+import { type CreateSqlMcpServerOptions, SqlMcpServerDef } from '@wener/ai/mcp/sql';
 import type { SqlConfig } from '../../server/schema';
 import { defineMcpServerHandler } from '../McpServerHandlerDef';
 

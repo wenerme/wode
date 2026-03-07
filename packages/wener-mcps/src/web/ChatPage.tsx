@@ -25,7 +25,7 @@ import {
 	XCircle,
 	Zap,
 } from 'lucide-react';
-import { useCallback, useEffect, useRef, useState, memo, type KeyboardEvent } from 'react';
+import { type KeyboardEvent, memo, useCallback, useEffect, useRef, useState } from 'react';
 import { Streamdown } from 'streamdown';
 
 // Types

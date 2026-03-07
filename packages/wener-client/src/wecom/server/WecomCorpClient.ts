@@ -1,13 +1,13 @@
 import type { FetchLike } from '@wener/utils';
 import {
-	createExpireValueHolder,
 	type CreateExpireValueHolderOptions,
+	createExpireValueHolder,
 	type ExpiryValueHolder,
 } from '../../ExpiryValue';
 import { getValue, type MaybeValueHolder } from '../../ValueHolder';
 import { createJsSdkSignature } from '../../wechat';
 import type { CreateUserRequest, DepartmentInput, DepartmentOutput, GeneralResponse } from './api';
-import { request, type RequestOptions } from './request';
+import { type RequestOptions, request } from './request';
 import type {
 	BatchGetExternalContactByUserResponse,
 	ExternalContactTagGroup,
@@ -307,7 +307,7 @@ export class WecomCorpClient {
 	 */
 	async batchDeleteUser({ useridlist }: { useridlist: string[] }) {
 		return this.request<GeneralResponse>({
-			url: '/cgi-bin/user/delete',
+			url: '/cgi-bin/user/batchdelete',
 			params: { access_token: true },
 			body: { useridlist },
 		});
@@ -385,7 +385,7 @@ export class WecomCorpClient {
 	 */
 	async getDepartment({ id }: { id: number | string }) {
 		return this.request<{ department: DepartmentOutput }>({
-			url: '/cgi-bin/department/delete',
+			url: '/cgi-bin/department/get',
 			params: { access_token: true, id },
 		});
 	}
@@ -521,7 +521,7 @@ export class WecomCorpClient {
 		group_name?: string;
 		order?: number;
 		tag: { name: string; order?: number };
-		ahentid?: number;
+		agentid?: number;
 	}) {
 		return this.request<{ tag_group: ExternalContactTagGroup }>({
 			url: '/cgi-bin/externalcontact/add_corp_tag',
@@ -576,7 +576,7 @@ export class WecomCorpClient {
 
 	async deleteTag(params: { tagid: number }) {
 		return this.request<Record<string, unknown>>({
-			url: '/cgi-bin/tag/update',
+			url: '/cgi-bin/tag/delete',
 			params: { ...params, access_token: true },
 		});
 	}
@@ -639,7 +639,7 @@ export class WecomCorpClient {
 	 * @see {https://developer.work.weixin.qq.com/document/path/90227 获取应用}
 	 */
 	async setAgent(body: SetAgentRequest) {
-		return this.request<GeneralResponse>({ url: '/cgi-bin/agent/get', params: { access_token: true }, body });
+		return this.request<GeneralResponse>({ url: '/cgi-bin/agent/set', params: { access_token: true }, body });
 	}
 
 	/**

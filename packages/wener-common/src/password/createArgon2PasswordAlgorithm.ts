@@ -1,4 +1,4 @@
-import { maybeFunction, type MaybeFunction, type MaybePromise } from '@wener/utils';
+import { type MaybeFunction, type MaybePromise, maybeFunction } from '@wener/utils';
 import type { Password } from './Password';
 
 type Provide = {

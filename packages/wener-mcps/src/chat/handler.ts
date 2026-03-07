@@ -2,25 +2,26 @@
  * Chat API Handler
  * Provides unified AI model gateway with protocol conversion
  */
+
+import { CreateMessageRequestSchema } from '@wener/ai/anthropic';
+import { CreateGenerateContentRequestSchema } from '@wener/ai/google';
+import {
+	type CreateChatCompletionRequest,
+	CreateChatCompletionRequestSchema,
+	type CreateResponseRequest,
+	CreateResponseRequestSchema,
+} from '@wener/ai/openai';
 import consola from 'consola';
 import { Hono } from 'hono';
 import { streamSSE } from 'hono/streaming';
-import type { ChatConfig, ModelConfig } from '../server/schema';
 import { ChatProtocol, createAuditContext, extractClientIp } from '../audit/chat';
+import type { ChatConfig, ModelConfig } from '../server/schema';
 import {
-	openaiToAnthropicRequest,
 	anthropicToOpenaiResponse,
-	openaiToGeminiRequest,
 	geminiToOpenaiResponse,
+	openaiToAnthropicRequest,
+	openaiToGeminiRequest,
 } from './converters';
-import {
-	CreateChatCompletionRequestSchema,
-	type CreateChatCompletionRequest,
-	CreateResponseRequestSchema,
-	type CreateResponseRequest,
-} from '@wener/ai/openai';
-import { CreateMessageRequestSchema } from '@wener/ai/anthropic';
-import { CreateGenerateContentRequestSchema } from '@wener/ai/google';
 
 const log = consola.withTag('chat');
 

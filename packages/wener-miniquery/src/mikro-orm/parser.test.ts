@@ -1,7 +1,13 @@
 import { BaseEntity, Collection, MikroORM, types } from '@mikro-orm/core';
-import { Entity, ManyToMany, OneToOne, PrimaryKey, Property } from '@mikro-orm/decorators/legacy';
-import { ReflectMetadataProvider } from '@mikro-orm/decorators/legacy';
-import { SqliteDriver, NodeSqliteDialect } from '@mikro-orm/sql';
+import {
+	Entity,
+	ManyToMany,
+	OneToOne,
+	PrimaryKey,
+	Property,
+	ReflectMetadataProvider,
+} from '@mikro-orm/decorators/legacy';
+import { NodeSqliteDialect, SqliteDriver } from '@mikro-orm/sql';
 import { expect, test } from 'vitest';
 import { DemoQueryExamples } from '../ast/ast.test';
 import { toMikroOrmQuery } from './toMikroOrmQuery';
