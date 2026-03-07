@@ -1,5 +1,5 @@
-export { useRouteTitles } from './useRouteTitles';
 export { lazyRoute } from './lazyRoute';
+export { useRouteTitles } from './useRouteTitles';
 
 // declare module 'react-router-dom' {
 //   export interface IndexRouteObject {

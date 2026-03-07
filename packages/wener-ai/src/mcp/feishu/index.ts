@@ -1,3 +1,3 @@
-export { createFeishuMcpServer, type CreateFeishuMcpServerOptions, type FeishuMcpContext } from './server';
 export { FeishuMcpServerDef } from './def';
-export { feishuDocxToMarkdown, type FeishuBlock, type ConvertOptions } from './feishu-docx-markdown';
+export { type ConvertOptions, type FeishuBlock, feishuDocxToMarkdown } from './feishu-docx-markdown';
+export { type CreateFeishuMcpServerOptions, createFeishuMcpServer, type FeishuMcpContext } from './server';

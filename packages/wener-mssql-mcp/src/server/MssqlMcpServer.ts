@@ -1,5 +1,5 @@
 import { StreamableHTTPTransport } from '@hono/mcp';
-import { serve, type HttpBindings } from '@hono/node-server';
+import { type HttpBindings, serve } from '@hono/node-server';
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import {
@@ -15,7 +15,7 @@ import { logger } from 'hono/logger';
 import { MssqlResources } from '../MssqlResources';
 import { MssqlTools } from '../MssqlTools';
 import { getMssqlConfig } from './config';
-import { createConnectionPool, type ConnectionPool } from './connection';
+import { type ConnectionPool, createConnectionPool } from './connection';
 
 export interface MssqlMcpServerConfig {
 	port?: number;

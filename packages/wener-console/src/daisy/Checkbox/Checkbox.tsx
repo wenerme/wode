@@ -1,6 +1,6 @@
-import { forwardRef, useEffect, useRef, type HTMLProps } from 'react';
 import { mergeRefs } from '@wener/reaction';
 import classNames from 'clsx';
+import { forwardRef, type HTMLProps, useEffect, useRef } from 'react';
 import type { DaisyModifierProps } from '../utils/daisy';
 import { daisy, omit } from '../utils/daisy';
 

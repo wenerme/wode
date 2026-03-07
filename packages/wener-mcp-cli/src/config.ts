@@ -7,18 +7,18 @@ import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { parse as parseToml } from 'smol-toml';
-import { z } from 'zod';
+import type { z } from 'zod';
 import {
 	ClaudeConfigSchema,
+	type ConfigSource,
 	CursorConfigSchema,
 	GeminiConfigSchema,
 	isHttpServer,
+	type McpCliConfig,
 	McpCliConfigSchema,
 	McpServersConfigSchema,
-	normalizeHttpConfig,
-	type ConfigSource,
-	type McpCliConfig,
 	type MergedConfig,
+	normalizeHttpConfig,
 	type ServerConfig,
 	type ServerWithSource,
 } from './schema';

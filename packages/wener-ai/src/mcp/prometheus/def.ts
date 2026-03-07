@@ -1,5 +1,5 @@
 import { defineMcpServer } from '../McpServerDef';
-import { createPrometheusMcpServer, type CreatePrometheusMcpServerOptions } from './server';
+import { type CreatePrometheusMcpServerOptions, createPrometheusMcpServer } from './server';
 
 export const PrometheusMcpServerDef = defineMcpServer<CreatePrometheusMcpServerOptions>({
 	name: 'prometheus',

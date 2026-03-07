@@ -1,7 +1,7 @@
 import { z } from 'zod';
+import { DescribeObjectInputSchema, ListObjectsInputSchema } from '../schemas';
 import type { SqlContext } from '../server';
-import { ListObjectsInputSchema, DescribeObjectInputSchema } from '../schemas';
-import { getVersion, listObjects, describeObject } from '../utils';
+import { describeObject, getVersion, listObjects } from '../utils';
 
 export function registerMetadataTools(ctx: SqlContext) {
 	const { server, getDb, textResult, jsonResult } = ctx;

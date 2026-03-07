@@ -1,6 +1,6 @@
+import { dlopen, FFIType, type Library, type Pointer, ptr, type Symbols, suffix, toBuffer } from 'bun:ffi';
 import fs from 'node:fs';
 import path from 'node:path';
-import { dlopen, FFIType, ptr, suffix, toBuffer, type Library, type Pointer, type Symbols } from 'bun:ffi';
 import { decryptRandomKey, maybeBase64 } from '../server/decryptRandomKey';
 import type { ArchiveMessage } from './../types';
 

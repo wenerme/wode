@@ -1,2 +1,2 @@
-export { createGeminiSearchMcpServer, type CreateGeminiSearchMcpServerOptions } from './server';
 export { GeminiSearchMcpServerDef } from './def';
+export { type CreateGeminiSearchMcpServerOptions, createGeminiSearchMcpServer } from './server';

@@ -1,14 +1,14 @@
-export { ApolloConfigClient } from './ApolloConfigClient';
 export type { ApolloConfigClientInit, ApolloConfigClientOptions } from './ApolloConfigClient';
-export { request } from './request';
+export { ApolloConfigClient } from './ApolloConfigClient';
 export type { RequestOptions } from './request';
+export { request } from './request';
 export type {
-	ApolloConfigResponse,
-	NotificationItem,
-	NotificationResponse,
 	ApolloConfigOptions,
-	GetConfigOptions,
-	NotificationOptions,
+	ApolloConfigResponse,
 	CommonConfigOptions,
+	GetConfigOptions,
+	NotificationItem,
+	NotificationOptions,
+	NotificationResponse,
 	WatchOptions,
 } from './types';

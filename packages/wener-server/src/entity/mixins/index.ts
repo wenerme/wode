@@ -1,3 +1,4 @@
+export type * from './types';
 export { withAuditorRefEntity } from './withAuditorRefEntity';
 export { withCodeEntity } from './withCodeEntity';
 export { withCustomerRefEntity } from './withCustomerRefEntity';
@@ -15,6 +16,5 @@ export { withSystemManagedEntity } from './withSystemManagedEntity';
 export { withTagsEntity } from './withTagsEntity';
 export { withTidEntity } from './withTidEntity';
 export { withTitleDescriptionEntity } from './withTitleDescriptionEntity';
-export { withVendorRefEntity, requireVendorRefEntity } from './withVendorRefEntity';
+export { requireVendorRefEntity, withVendorRefEntity } from './withVendorRefEntity';
 export { withVersionEntity } from './withVersionEntity';
-export type * from './types';

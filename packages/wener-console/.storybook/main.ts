@@ -23,7 +23,7 @@ const config: StorybookConfig = {
 		disableTelemetry: true,
 		disableWhatsNewNotifications: true,
 		builder: {
-			name: getAbsolutePath("@storybook/builder-vite"),
+			name: getAbsolutePath('@storybook/builder-vite'),
 			options: {},
 		},
 	},

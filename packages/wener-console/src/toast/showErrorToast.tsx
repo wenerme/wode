@@ -1,5 +1,5 @@
-import { toast } from 'react-hot-toast';
 import { classOf } from '@wener/utils';
+import { toast } from 'react-hot-toast';
 import { resolveErrorMessage } from './resolveErrorMessage';
 
 export function showErrorToast(error: Error | any) {

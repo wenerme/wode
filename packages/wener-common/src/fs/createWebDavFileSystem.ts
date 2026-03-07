@@ -1,6 +1,6 @@
 import type { Readable, Writable } from 'node:stream';
-import { maybeFunction, type MaybeFunction } from '@wener/utils';
-import type { FileStat, GetDirectoryContentsOptions, ResponseDataDetailed, WebDAVClient } from 'webdav';
+import { type MaybeFunction, maybeFunction } from '@wener/utils';
+import type { FileStat, ResponseDataDetailed, WebDAVClient } from 'webdav';
 import type {
 	IFileStat,
 	IFileSystem,
@@ -77,11 +77,6 @@ class WebdavFS implements IFileSystem {
 		path: string,
 		{ glob, recursive, depth, kind, hidden, signal }: ReaddirOptions = {},
 	): Promise<IFileStat[]> {
-		// webdav depth 只支持 0,1
-		let o: GetDirectoryContentsOptions = {};
-		if (recursive) {
-			o.deep = true;
-		}
 		let res = await this.client.getDirectoryContents(path, {
 			deep: recursive,
 			signal,

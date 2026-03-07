@@ -1,4 +1,4 @@
-export { SystemAboutPage } from './SystemAboutPage';
 export { AppearanceSettingPage } from './AppearanceSettingPage/AppearanceSettingPage';
-export { LoginPage, type LoginFormData } from './LoginPage';
+export { type LoginFormData, LoginPage } from './LoginPage';
 export { NonIdealPage } from './NonIdealPage/NonIdealPage';
+export { SystemAboutPage } from './SystemAboutPage';

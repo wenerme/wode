@@ -1,7 +1,7 @@
-import type { ComponentPropsWithRef } from 'react';
 import { ResourceStatusSchema } from '@wener/common/resource/schema';
 import { getSchemaOptionLabel, type TypeSchema } from '@wener/common/schema';
 import { cn } from '@wener/console';
+import type { ComponentPropsWithRef } from 'react';
 
 export const ResourceStatusBadge = ({
 	data,

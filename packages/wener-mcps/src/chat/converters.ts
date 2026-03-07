@@ -4,9 +4,10 @@
  * These converters work with loosely-typed objects to support passthrough of
  * provider-specific fields that aren't in the standard schema.
  */
-import type { CreateChatCompletionRequest, CreateChatCompletionResponse, Message } from '@wener/ai/openai';
+
 import type { CreateMessageRequest, CreateMessageResponse } from '@wener/ai/anthropic';
 import type { CreateGenerateContentRequest, CreateGenerateContentResponse } from '@wener/ai/google';
+import type { CreateChatCompletionRequest, CreateChatCompletionResponse, Message } from '@wener/ai/openai';
 
 // Type aliases for converter functions
 type ChatMessage = Message;

@@ -1,4 +1,4 @@
-import { i18n, setupI18n, type I18n } from '@lingui/core';
+import { type I18n, i18n, setupI18n } from '@lingui/core';
 import { setI18n } from '@lingui/react/server';
 import { createStore } from 'zustand';
 import { mutative } from 'zustand-mutative';

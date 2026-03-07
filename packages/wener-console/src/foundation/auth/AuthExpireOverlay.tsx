@@ -1,6 +1,6 @@
+import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import { HiMiniArrowPath, HiOutlineNoSymbol, HiMiniArrowRightOnRectangle as LoginIcon } from 'react-icons/hi2';
-import clsx from 'clsx';
 import { Button, NonIdealState } from '../../daisy';
 import { useAuthStore } from './AuthStore';
 import { getAuthAction } from './getAuthAction';

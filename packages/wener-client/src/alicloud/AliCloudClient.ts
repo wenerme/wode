@@ -1,6 +1,6 @@
 import type { Constructor, FetchLike } from '@wener/utils';
 import type { AliCloudApis } from './apis';
-import { request, type AliCloudRequestOptions } from './request';
+import { type AliCloudRequestOptions, request } from './request';
 
 export interface AliCloudClientOptions {
 	endpoint?: string;

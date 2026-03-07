@@ -2,7 +2,7 @@
 
 import type { FC } from 'react';
 import { useMounted } from '../hooks/useMounted';
-import { renderAlternative, type AlternativeRendererProps } from '../render/renderAlternative';
+import { type AlternativeRendererProps, renderAlternative } from '../render/renderAlternative';
 
 /**
  * Only render when mounted or client side

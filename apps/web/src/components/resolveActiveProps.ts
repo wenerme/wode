@@ -1,6 +1,6 @@
-import type { CSSProperties, ReactNode } from 'react';
 import { cn } from '@wener/console';
-import { isDefined, maybeFunction, parseBoolean, type MaybeFunction } from '@wener/utils';
+import { isDefined, type MaybeFunction, maybeFunction, parseBoolean } from '@wener/utils';
+import type { CSSProperties, ReactNode } from 'react';
 
 export type ActiveProps = {
 	active?: boolean;

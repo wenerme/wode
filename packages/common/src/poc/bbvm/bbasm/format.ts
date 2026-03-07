@@ -20,8 +20,8 @@ export function formatAssembly(asm: Assembly) {
 			/// todo
 			let out = ['DATA', symbol, dataTypeName];
 			out.push(
-				asm
-					.values?.map((v) => {
+				asm.values
+					?.map((v) => {
 						if (typeof v === 'string') {
 							// escape quotes
 							return `"${v.replace(/"/g, '\\"')}"`;

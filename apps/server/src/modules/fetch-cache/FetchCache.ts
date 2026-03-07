@@ -6,11 +6,11 @@ export class FetchCache {
 	private static readonly Storage = new AsyncLocalStorage<FetchCacheConfig>();
 
 	static get() {
-		return this.Storage.getStore()?.last;
+		return FetchCache.Storage.getStore()?.last;
 	}
 
 	static set(v: HttpRequestLog, hit: boolean) {
-		const store = this.Storage.getStore();
+		const store = FetchCache.Storage.getStore();
 		if (store) {
 			store.last = v;
 			store.lastHit = hit;
@@ -18,23 +18,23 @@ export class FetchCache {
 	}
 
 	static getConfig() {
-		return this.Storage.getStore();
+		return FetchCache.Storage.getStore();
 	}
 
 	static isLastHit() {
-		return this.Storage.getStore()?.lastHit;
+		return FetchCache.Storage.getStore()?.lastHit;
 	}
 
 	static skip<T = void>(f: () => MaybePromise<T>) {
-		return this.Storage.run({ ...this.Storage.getStore(), use: 'request' }, f);
+		return FetchCache.Storage.run({ ...FetchCache.Storage.getStore(), use: 'request' }, f);
 	}
 
 	static fallback<T = void>(conf: FetchCacheConfig, f: () => MaybePromise<T>) {
-		return this.Storage.run({ ...conf, ...this.Storage.getStore() }, f);
+		return FetchCache.Storage.run({ ...conf, ...FetchCache.Storage.getStore() }, f);
 	}
 
 	static run<T = void>(conf: FetchCacheConfig, f: () => MaybePromise<T>) {
-		return this.Storage.run({ ...this.Storage.getStore(), ...conf }, f);
+		return FetchCache.Storage.run({ ...FetchCache.Storage.getStore(), ...conf }, f);
 	}
 }
 

@@ -47,6 +47,18 @@ export const PrometheusConfigSchema = BaseServerConfigSchema.extend({
 });
 export type PrometheusConfig = z.infer<typeof PrometheusConfigSchema>;
 
+// Grafana config
+export const GrafanaConfigSchema = BaseServerConfigSchema.extend({
+	type: z.literal('grafana'),
+	url: z.string().optional().describe('Grafana server URL'),
+	serviceAccountToken: z.string().optional().describe('Grafana service account token'),
+	orgId: z.union([z.number(), z.string()]).optional().describe('Grafana org ID'),
+	username: z.string().optional().describe('Grafana basic auth username'),
+	password: z.string().optional().describe('Grafana basic auth password'),
+	timeoutMs: z.union([z.number(), z.string()]).optional().describe('Grafana request timeout in milliseconds'),
+});
+export type GrafanaConfig = z.infer<typeof GrafanaConfigSchema>;
+
 // Feishu/Lark config
 export const FeishuConfigSchema = BaseServerConfigSchema.extend({
 	type: z.literal('feishu'),
@@ -75,6 +87,13 @@ export const RelayConfigSchema = BaseServerConfigSchema.extend({
 });
 export type RelayConfig = z.infer<typeof RelayConfigSchema>;
 
+// ClickHouse config
+export const ClickHouseConfigSchema = BaseServerConfigSchema.extend({
+	type: z.literal('clickhouse'),
+	dbUrl: z.string().optional().describe('ClickHouse connection URL (http://, https://, tcp://, clickhouse://)'),
+});
+export type ClickHouseConfig = z.infer<typeof ClickHouseConfigSchema>;
+
 // Apollo Config center
 export const ApolloConfigConfigSchema = BaseServerConfigSchema.extend({
 	type: z.literal('apolloconfig'),
@@ -90,7 +109,9 @@ export type ApolloConfigConfig = z.infer<typeof ApolloConfigConfigSchema>;
 const KnownServerConfigSchema = z.discriminatedUnion('type', [
 	TencentClsConfigSchema,
 	SqlConfigSchema,
+	ClickHouseConfigSchema,
 	PrometheusConfigSchema,
+	GrafanaConfigSchema,
 	FeishuConfigSchema,
 	GeminiSearchConfigSchema,
 	RelayConfigSchema,

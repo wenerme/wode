@@ -1,11 +1,11 @@
 import { readFile, unlink } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { describe, it, expect, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { Drain } from './Drain';
-import { TemplateMiner } from './TemplateMiner';
 import { FilePersistence } from './persistence/FilePersistence';
 import { MemoryPersistence } from './persistence/MemoryPersistence';
+import { TemplateMiner } from './TemplateMiner';
 
 describe('Drain', () => {
 	describe('basic functionality', () => {

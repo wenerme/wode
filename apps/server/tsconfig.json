@@ -12,7 +12,6 @@
 		"noUnusedLocals": false,
 		"noUnusedParameters": false,
 		"allowUnusedLabels": true,
-		"baseUrl": ".",
 		"paths": {
 			"#/*": ["./src/*"]
 		}

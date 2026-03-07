@@ -1,5 +1,5 @@
 import { forEachJsonSchema, type JsonSchemaDef } from '../jsonschema';
-import { toJsonSchema, type TypeSchema } from '../schema';
+import { type TypeSchema, toJsonSchema } from '../schema';
 
 export const RedactedText = '[redacted]';
 

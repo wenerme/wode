@@ -1,4 +1,4 @@
-import { toast, type Renderable } from 'react-hot-toast';
+import { type Renderable, toast } from 'react-hot-toast';
 import { warn } from './warn';
 
 export function showSuccessToast(msg: Renderable | { message: string }) {

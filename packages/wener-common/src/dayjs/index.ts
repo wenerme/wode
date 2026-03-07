@@ -1,5 +1,5 @@
 export { dayjs } from './dayjs';
-export { parseDuration, type MaybeDuration } from './parseDuration';
 export { formatDuration } from './formatDuration';
+export { type MaybeDuration, parseDuration } from './parseDuration';
 
 export { resolveRelativeTime } from './resolveRelativeTime';

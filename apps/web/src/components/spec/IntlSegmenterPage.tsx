@@ -1,8 +1,8 @@
 'use client';
 
+import { useDeepCompareEffect } from '@wener/reaction';
 import React, { useEffect } from 'react';
 import { HiXCircle } from 'react-icons/hi2';
-import { useDeepCompareEffect } from '@wener/reaction';
 import { useMutative } from 'use-mutative';
 
 export const IntlSegmenterPage = () => {

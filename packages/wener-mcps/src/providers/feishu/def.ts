@@ -1,4 +1,4 @@
-import { FeishuMcpServerDef, type CreateFeishuMcpServerOptions } from '@wener/ai/mcp/feishu';
+import { type CreateFeishuMcpServerOptions, FeishuMcpServerDef } from '@wener/ai/mcp/feishu';
 import type { FeishuConfig } from '../../server/schema';
 import { defineMcpServerHandler } from '../McpServerHandlerDef';
 

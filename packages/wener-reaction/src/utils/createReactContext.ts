@@ -1,5 +1,5 @@
-import { createContext, type Context } from 'react';
 import { getGlobalStates } from '@wener/utils';
+import { type Context, createContext } from 'react';
 
 /**
  * Create a React Context with a global state, will keep the same context in development mode with HMR.

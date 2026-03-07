@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
 import { useInterval } from '@wener/reaction';
 import type { MaybePromise } from '@wener/utils';
+import { useEffect, useRef, useState } from 'react';
 import { UpdateNotificationToast } from './UpdateNotificationToast';
 
 export function UpdateNotification({ getVersion }: { getVersion?: () => MaybePromise<string | undefined> }) {

@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
+import { BasicVm } from '@/poc/bbvm/BBVM';
 import { compile } from '@/poc/bbvm/bbasm/bbasm';
 import { parse } from '@/poc/bbvm/bbasm/parser';
-import { BasicVm } from '@/poc/bbvm/BBVM';
 import { formatInstruction } from '@/poc/bbvm/format';
 import { marshalInstruction } from '@/poc/bbvm/marshalInstruction';
 import { readInstruction } from '@/poc/bbvm/readInstruction';

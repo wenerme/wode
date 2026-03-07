@@ -1,6 +1,6 @@
+import _ from 'lodash';
 import React from 'react';
 import { act, create, type ReactTestRenderer } from 'react-test-renderer';
-import _ from 'lodash';
 import { assert, expect, test } from 'vitest';
 import { deserialize, serialize } from './serialize';
 

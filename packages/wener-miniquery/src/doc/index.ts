@@ -1,2 +1,2 @@
 export { formatDocumentQuery } from './formatDocumentQuery';
-export type { DocumentQuery, AnyDocumentQuery } from './types';
+export type { AnyDocumentQuery, DocumentQuery } from './types';

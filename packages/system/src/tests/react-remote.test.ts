@@ -1,9 +1,9 @@
-import React from 'react';
 import { createNoopLogger } from '@wener/utils';
 import { polyfillCrypto } from '@wener/utils/server';
 import { polyfillJsDom } from '@wener/utils/server/jsdom';
 import { polyfillWebSocket } from '@wener/utils/server/ws';
-import { assert, beforeAll, expect, test, type TestContext } from 'vitest';
+import React from 'react';
+import { assert, beforeAll, expect, type TestContext, test } from 'vitest';
 import { loadBrowserSystem } from '../loaders/loadBrowserSystem';
 import { addPreload } from '../utils/addPreload';
 import { getGlobalSystem, type SystemJS } from '../utils/getGlobalSystem';

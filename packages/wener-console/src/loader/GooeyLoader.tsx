@@ -1,5 +1,5 @@
-import type { FC, HTMLAttributes } from 'react';
 import styled from '@emotion/styled';
+import type { FC, HTMLAttributes } from 'react';
 
 const GooeyLoaderContainer = styled.div`
 	width: 200px;

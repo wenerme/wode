@@ -1,6 +1,6 @@
 import 'reflect-metadata';
-import { getOwnMetadata } from 'reflect-metadata/no-conflict';
 import { computeIfAbsent, Errors } from '@wener/utils';
+import { getOwnMetadata } from 'reflect-metadata/no-conflict';
 
 /**
  * Decorator to declare features for a class

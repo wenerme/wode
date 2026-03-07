@@ -1,6 +1,6 @@
 import { Client, fetchExchange } from '@urql/core';
 import { devtoolsExchange } from '@urql/devtools';
-import { cacheExchange, type CacheExchangeOpts, type KeyingConfig } from '@urql/exchange-graphcache';
+import { type CacheExchangeOpts, cacheExchange, type KeyingConfig } from '@urql/exchange-graphcache';
 import { persistedExchange } from '@urql/exchange-persisted';
 import { retryExchange } from '@urql/exchange-retry';
 import { ms } from '@wener/utils';

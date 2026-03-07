@@ -1,5 +1,5 @@
-import React, { type JSXElementConstructor, type ReactElement, type ReactNode } from 'react';
 import { arrayOfMaybeArray, type MaybeArray } from '@wener/utils';
+import React, { type JSXElementConstructor, type ReactElement, type ReactNode } from 'react';
 
 export function isNodeTypeOf(
 	ele: ReactNode,

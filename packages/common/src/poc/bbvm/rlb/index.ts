@@ -1,1 +1,1 @@
-export { loadImages, type ImageInfo } from './rlb';
+export { type ImageInfo, loadImages } from './rlb';

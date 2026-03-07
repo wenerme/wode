@@ -47,7 +47,7 @@ export async function runDemoApiServer() {
 		let knex = em.getKnex();
 		const {
 			current_user: currentUser,
-			version: version,
+			version,
 			current_catalog: database,
 		} = (await knex.raw('select current_user, current_catalog, version()')).rows[0];
 		const searchPath = (await knex.raw('show search_path')).rows[0].search_path;

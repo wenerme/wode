@@ -1,4 +1,3 @@
-import { cloneElement, isValidElement, useEffect, useId, useState, type ReactNode } from 'react';
 import {
 	FloatingFocusManager,
 	FloatingOverlay,
@@ -9,6 +8,7 @@ import {
 	useInteractions,
 	useRole,
 } from '@floating-ui/react';
+import { cloneElement, isValidElement, type ReactNode, useEffect, useId, useState } from 'react';
 
 interface Props {
 	render: (data: { close: () => void; labelId: string; descriptionId: string }) => ReactNode;

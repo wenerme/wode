@@ -1,8 +1,8 @@
 'use client';
 
-import type React from 'react';
-import { useState, type FC } from 'react';
 import { Button } from '@wener/console/daisy';
+import type React from 'react';
+import { type FC, useState } from 'react';
 import * as semver from 'semver';
 import { SemVer } from 'semver';
 import { SearchBox } from '@/components/SearchBox';

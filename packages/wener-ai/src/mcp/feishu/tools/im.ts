@@ -1,4 +1,9 @@
-import { ListChatsInputSchema, ListMessagesInputSchema, ReplyMessageInputSchema, SendMessageInputSchema } from '../schemas';
+import {
+	ListChatsInputSchema,
+	ListMessagesInputSchema,
+	ReplyMessageInputSchema,
+	SendMessageInputSchema,
+} from '../schemas';
 import type { FeishuMcpContext } from '../server';
 
 export function registerImTools(ctx: FeishuMcpContext) {

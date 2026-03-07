@@ -1,10 +1,10 @@
 {
-  "name": "app",
-  "version": "1.0.0",
-  "type": "module",
-  "dependencies": {
-    "class-transformer": "*",
-    "sharp": "*",
-    "jsdom": "^22"
-  }
+	"name": "app",
+	"version": "1.0.0",
+	"type": "module",
+	"dependencies": {
+		"class-transformer": "*",
+		"sharp": "*",
+		"jsdom": "^22"
+	}
 }

@@ -1,5 +1,5 @@
-import type { FC } from 'react';
 import classNames from 'clsx';
+import type { FC } from 'react';
 
 const Colors = {
 	primary: ['bg-primary', 'text-primary-content'],

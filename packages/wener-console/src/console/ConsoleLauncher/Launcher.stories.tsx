@@ -1,6 +1,6 @@
+import type { Meta } from '@storybook/react-vite';
 import { useEffect } from 'react';
 import { PiClock } from 'react-icons/pi';
-import type { Meta } from '@storybook/react-vite';
 import { Launcher } from './Launcher';
 
 const meta: Meta = {

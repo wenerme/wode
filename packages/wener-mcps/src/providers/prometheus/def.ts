@@ -1,4 +1,4 @@
-import { PrometheusMcpServerDef, type CreatePrometheusMcpServerOptions } from '@wener/ai/mcp/prometheus';
+import { type CreatePrometheusMcpServerOptions, PrometheusMcpServerDef } from '@wener/ai/mcp/prometheus';
 import type { PrometheusConfig } from '../../server/schema';
 import { defineMcpServerHandler } from '../McpServerHandlerDef';
 

@@ -1,6 +1,6 @@
+import { defineApplet } from '@wener/console/console';
 import React, { lazy } from 'react';
 import { PiHardHatLight } from 'react-icons/pi';
-import { defineApplet } from '@wener/console/console';
 
 const Content = lazy(() => import('./Playground').then((m) => ({ default: m.Playground })));
 

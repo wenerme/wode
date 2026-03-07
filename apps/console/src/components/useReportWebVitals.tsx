@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { onCLS, onFCP, onFID, onINP, onLCP, onTTFB, type Metric } from 'web-vitals';
+import { type Metric, onCLS, onFCP, onFID, onINP, onLCP, onTTFB } from 'web-vitals';
 
 export function useReportWebVitals(reportWebVitalsFn: (metric: Metric) => void) {
 	useEffect(() => {

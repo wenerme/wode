@@ -22,6 +22,13 @@ servers:
     type: prometheus
     url: http://prometheus:9090
 
+  grafana:
+    type: grafana
+    url: http://grafana:3000
+    serviceAccountToken: ${GRAFANA_SERVICE_ACCOUNT_TOKEN}
+    orgId: 1
+    timeoutMs: 60000
+
   logs:
     type: tencent-cls
     clientId: ${CLS_CLIENT_ID}
@@ -44,6 +51,7 @@ servers:
 |------|------|------|-------------|
 | `sql` | `/mcp/sql` | SQL 查询（MySQL、PostgreSQL、SQLite、MSSQL） | `X-DB-URL`, `X-DB-READ-URL`, `X-DB-WRITE-URL` |
 | `prometheus` | `/mcp/prometheus` | Prometheus 监控查询 | `X-SERVICE-URL` |
+| `grafana` | `/mcp/grafana` | Grafana dashboards / datasources / alerting / logs / Prometheus 查询 | `X-GRAFANA-URL`\*, `X-GRAFANA-SERVICE-ACCOUNT-TOKEN`, `X-GRAFANA-ORG-ID`, `X-GRAFANA-USERNAME`, `X-GRAFANA-PASSWORD` |
 | `tencent-cls` | `/mcp/tencent-cls` | 腾讯云日志服务 | `X-CLS-SECRET-ID`\*, `X-CLS-SECRET-KEY`\*, `X-CLS-REGION`, `X-CLS-ENDPOINT` |
 | `relay` | `/mcp/relay` | 代理转发到其他 MCP 服务器 | `X-MCP-URL`\*, `X-MCP-TYPE` |
 
@@ -68,6 +76,55 @@ servers:
   metrics:
     type: prometheus
     url: http://prometheus:9090
+```
+
+### grafana
+
+Grafana 至少需要：
+
+- `url`: Grafana 地址
+- 一种认证方式：
+  - `serviceAccountToken`
+  - 或 `username` + `password`
+
+常用可选项：
+
+- `orgId`: 指定 Grafana org
+- `timeoutMs`: Grafana 请求超时，毫秒
+- `headers`: 额外透传给 Grafana 的自定义请求头
+
+```yaml
+servers:
+  grafana:
+    type: grafana
+    url: http://grafana:3000
+    serviceAccountToken: ${GRAFANA_SERVICE_ACCOUNT_TOKEN}
+    orgId: 1
+    timeoutMs: 60000
+    headers:
+      X-Scope-OrgID: tenant-a
+```
+
+如果你不用 service account token，也可以走 basic auth：
+
+```yaml
+servers:
+  grafana:
+    type: grafana
+    url: http://grafana:3000
+    username: admin
+    password: ${GRAFANA_PASSWORD}
+    orgId: 1
+```
+
+动态图配置示例：
+
+```bash
+curl http://localhost:8036/mcp/grafana \
+  -H "X-GRAFANA-URL: http://grafana:3000" \
+  -H "X-GRAFANA-SERVICE-ACCOUNT-TOKEN: $GRAFANA_SERVICE_ACCOUNT_TOKEN" \
+  -H "X-GRAFANA-ORG-ID: 1" \
+  -d '{"jsonrpc":"2.0","method":"tools/list","id":1}'
 ```
 
 ### tencent-cls
@@ -112,6 +169,23 @@ curl http://localhost:8036/mcp/sql \
 | `X-MCP-Include` | 包含匹配的工具（glob，如 `query_*`） |
 | `X-MCP-Exclude` | 排除匹配的工具（glob，如 `execute_*`） |
 
+配合 `@wener/mcp-cli` 使用时：
+
+- `mcp-cli query server/tool` 只允许调用带 `readOnlyHint: true` 的工具
+- `mcp-cli call server/tool` 才能调用写工具
+
+例如：
+
+```bash
+MCP_CLI_CONFIG_INLINE='{"mcpServers":{"grafana":{"url":"http://127.0.0.1:8036/mcp/grafana"}},"include":["grafana"]}' \
+  mcp-cli query grafana/query_prometheus '{"datasourceUid":"df3iuuyaa9tkwa","expr":"1","queryType":"instant","endTime":"now","stepSeconds":60}'
+
+MCP_CLI_CONFIG_INLINE='{"mcpServers":{"grafana":{"url":"http://127.0.0.1:8036/mcp/grafana"}},"include":["grafana"]}' \
+  mcp-cli query grafana/create_folder '{"title":"demo"}'
+```
+
+第二条会因为 `create_folder` 不是只读工具而被拒绝。
+
 ## 配置文件
 
 按优先级从高到低（后者被前者覆盖）：
@@ -124,7 +198,7 @@ curl http://localhost:8036/mcp/sql \
 ```yaml
 servers:
   name:
-    type: sql | prometheus | tencent-cls | relay
+    type: sql | prometheus | grafana | tencent-cls | relay
     disabled: false  # 可选，禁用该服务器
     # ... 各类型特定配置
 

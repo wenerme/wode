@@ -15,10 +15,7 @@ export function shallowEqual<T, U>(objA: T, objB: U) {
 		return false;
 	}
 	for (let i = 0; i < keysA.length; i++) {
-		if (
-			!Object.prototype.hasOwnProperty.call(objB, keysA[i]) ||
-			!Object.is(objA[keysA[i] as keyof T], objB[keysA[i] as keyof U])
-		) {
+		if (!Object.hasOwn(objB, keysA[i]) || !Object.is(objA[keysA[i] as keyof T], objB[keysA[i] as keyof U])) {
 			return false;
 		}
 	}

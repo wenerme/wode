@@ -7,7 +7,7 @@ import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js'
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
 import type { Resource, Tool } from '@modelcontextprotocol/sdk/types.js';
 import { debug, getConcurrencyLimit, getMaxRetries, getRetryDelayMs, getTimeoutMs } from './config';
-import { getServerUrl, isHttpServer, type HttpServerConfig, type ServerConfig, type StdioServerConfig } from './schema';
+import { getServerUrl, type HttpServerConfig, isHttpServer, type ServerConfig, type StdioServerConfig } from './schema';
 
 // Re-export for convenience
 export { Client, debug, getTimeoutMs, getConcurrencyLimit };

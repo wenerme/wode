@@ -1,4 +1,4 @@
-import { parseModuleId, type Logger } from '@wener/utils';
+import { type Logger, parseModuleId } from '@wener/utils';
 import { getContentType } from './mime';
 import type { Unpkg } from './Unpkg';
 
@@ -54,9 +54,9 @@ file
 				id = `${name}@${ver}`;
 				versionPath = true;
 			} else if (
-				firstSegment === '-'
-				&& segments.length === 2
-				&& (tarballMatchGroups = segments[1].match(/^(?<name>.+)-(?<version>.+)\.tgz$/)?.groups)
+				firstSegment === '-' &&
+				segments.length === 2 &&
+				(tarballMatchGroups = segments[1].match(/^(?<name>.+)-(?<version>.+)\.tgz$/)?.groups)
 			) {
 				// detect tarball
 				// /-/:name-:version.tgz

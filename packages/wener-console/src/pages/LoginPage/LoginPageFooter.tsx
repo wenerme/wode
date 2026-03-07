@@ -1,4 +1,4 @@
-import { Fragment, type ComponentPropsWithoutRef, type FC, type ReactNode } from 'react';
+import { type ComponentPropsWithoutRef, type FC, Fragment, type ReactNode } from 'react';
 import { cn } from '../../utils/cn';
 
 type LinkProps = {

@@ -3,10 +3,10 @@ import { timestampFromDate } from '@bufbuild/protobuf/wkt';
 import { ifPresent } from '@wener/utils';
 import {
 	AgentService,
-	InfoResponseSchema,
-	ReloadResponseSchema,
 	type InfoRequest,
+	InfoResponseSchema,
 	type ReloadRequest,
+	ReloadResponseSchema,
 } from 'common/gen/pb/wener/wode/agent/v1/AgentService_pb';
 import dayjs from 'dayjs';
 

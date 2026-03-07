@@ -25,7 +25,7 @@ export function getDefaultMikroOrmOptions({
 		serialization: {
 			forceObject: true,
 		},
-		
+
 		resultCache: {
 			adapter: MemoryCacheAdapter,
 			expiration: 5000, // 5s

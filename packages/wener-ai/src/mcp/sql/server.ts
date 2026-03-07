@@ -1,7 +1,7 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import type { Kysely } from 'kysely';
 import { registerMetadataTools, registerQueryTools } from './tools';
-import { createKyselyInstance, detectDialect, type Dialect } from './utils';
+import { createKyselyInstance, type Dialect, detectDialect } from './utils';
 
 export interface CreateSqlMcpServerOptions {
 	/** Database connection URL (mysql://, postgres://, sqlite://, mssql://) */

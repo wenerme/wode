@@ -3,7 +3,7 @@ import { Features } from '../../Feature';
 import { EntityFeature } from '../enum';
 import { StandardBaseEntity } from '../StandardBaseEntity';
 import type { AnyStandardEntity } from '../types';
-import { resolveEntityContext, type ResolveEntityContextOptions } from './resolveEntityContext';
+import { type ResolveEntityContextOptions, resolveEntityContext } from './resolveEntityContext';
 
 export type ResolveEntityOptions<E extends StandardBaseEntity, O extends {} = {}> =
 	| (BuildResolveEntityOptions & {

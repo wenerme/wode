@@ -17,7 +17,7 @@
 /* eslint-disable */
 
 import type { Message } from '@bufbuild/protobuf';
-import { fileDesc, messageDesc, type GenFile, type GenMessage } from '@bufbuild/protobuf/codegenv2';
+import { fileDesc, type GenFile, type GenMessage, messageDesc } from '@bufbuild/protobuf/codegenv2';
 
 /**
  * Describes the file google/api/http.proto.

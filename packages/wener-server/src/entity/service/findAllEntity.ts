@@ -1,11 +1,11 @@
-import { QueryOrder, type EntityClass, type FilterQuery } from '@mikro-orm/core';
+import { type EntityClass, type FilterQuery, QueryOrder } from '@mikro-orm/core';
 import type { QueryBuilder } from '@mikro-orm/postgresql';
 import { parseSort, resolvePagination } from '@wener/common/data';
 import { toMikroOrmQuery } from '@wener/miniquery/mikro-orm';
 import { Errors, type MaybePromise } from '@wener/utils';
 import type { StandardBaseEntity } from '../StandardBaseEntity';
 import { resolveEntitySearch } from './applySearch';
-import { resolveEntityContext, type ResolveEntityContextOptions } from './resolveEntityContext';
+import { type ResolveEntityContextOptions, resolveEntityContext } from './resolveEntityContext';
 import { toKnexOrder } from './toKnexOrder';
 
 export interface FindAllEntityOptions<E extends StandardBaseEntity> {
@@ -107,7 +107,7 @@ export async function findAllEntity<E extends StandardBaseEntity>(
 			out.data = data;
 			out.total = count;
 		} else if (needTotal) {
-			out.total = await builder.count() as any;
+			out.total = (await builder.count()) as any;
 		} else if (needData) {
 			out.data = await builder.getResult();
 		}

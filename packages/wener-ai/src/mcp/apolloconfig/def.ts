@@ -1,5 +1,5 @@
 import { defineMcpServer } from '../McpServerDef';
-import { createApolloConfigMcpServer, type CreateApolloConfigMcpServerOptions } from './server';
+import { type CreateApolloConfigMcpServerOptions, createApolloConfigMcpServer } from './server';
 
 export const ApolloConfigMcpServerDef = defineMcpServer<CreateApolloConfigMcpServerOptions>({
 	name: 'apolloconfig',

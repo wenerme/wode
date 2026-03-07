@@ -6,7 +6,7 @@ import { getAppAccessTokenInternal } from './getAppAccessTokenInternal';
 import { getExpiryValueOrRequest } from './getExpiryValueOrRequest';
 import { getTenantAccessTokenInternal } from './getTenantAccessTokenInternal';
 import { refreshAccessToken } from './refreshAccessToken';
-import { request, type RequestOptions } from './request';
+import { type RequestOptions, request } from './request';
 
 type IdType = 'open_id' | 'union_id' | 'user_id' | 'email' | 'chat_id';
 

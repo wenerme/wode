@@ -1,5 +1,5 @@
-import type { ComponentPropsWithoutRef, FC, ReactNode } from 'react';
 import { clsx } from 'clsx';
+import type { ComponentPropsWithoutRef, FC, ReactNode } from 'react';
 import { WechatBrandIcon, WecomBrandIcon } from '../../icons';
 import { cn } from '../../utils/cn';
 

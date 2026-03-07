@@ -1,14 +1,14 @@
 import { Entity } from '@mikro-orm/decorators/legacy';
 import { Injectable } from '@nestjs/common';
-import { mixin, type Constructor } from '@wener/utils';
+import { type Constructor, mixin } from '@wener/utils';
 import { GraphQLDateTime } from 'graphql-scalars';
 import {
+	type AuthCheckerInterface,
+	type BuildSchemaOptions,
 	buildSchema,
 	InterfaceType,
 	ObjectType,
 	Resolver,
-	type AuthCheckerInterface,
-	type BuildSchemaOptions,
 	type ResolverData,
 } from 'type-graphql';
 import { expect, test } from 'vitest';

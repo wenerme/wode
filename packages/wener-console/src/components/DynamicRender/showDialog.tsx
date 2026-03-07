@@ -1,5 +1,5 @@
-import { useEffect, useState, type ComponentPropsWithRef, type ReactNode } from 'react';
 import { Promises } from '@wener/utils';
+import { type ComponentPropsWithRef, type ReactNode, useEffect, useState } from 'react';
 import { DynamicRender } from './';
 import type { DynamicRenderer } from './DynamicRender';
 

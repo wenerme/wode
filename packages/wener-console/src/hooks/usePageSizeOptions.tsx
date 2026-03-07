@@ -1,6 +1,6 @@
+import { useDeepCompareMemo } from '@wener/reaction';
 import type React from 'react';
 import { createContext, useContext } from 'react';
-import { useDeepCompareMemo } from '@wener/reaction';
 
 interface PageSizeOptionsContextObject {
 	defaultPageSize: number;

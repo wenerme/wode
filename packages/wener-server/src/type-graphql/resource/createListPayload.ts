@@ -1,4 +1,4 @@
-import { computeIfAbsent, type Constructor } from '@wener/utils';
+import { type Constructor, computeIfAbsent } from '@wener/utils';
 import { Field, Int, ObjectType } from 'type-graphql';
 import { getObjectName } from '../getObjectName';
 import { getTypeCache } from '../getTypeCache';

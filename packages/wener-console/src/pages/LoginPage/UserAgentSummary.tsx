@@ -1,8 +1,8 @@
+import { useMounted } from '@wener/reaction';
 import type { ComponentPropsWithoutRef, FC } from 'react';
 import { BiLogoChrome } from 'react-icons/bi';
 import { HiMiniLanguage } from 'react-icons/hi2';
 import { MdDarkMode, MdLightMode } from 'react-icons/md';
-import { useMounted } from '@wener/reaction';
 import { cn } from '../../utils/cn';
 import { getUserAgentPreferences } from '../../utils/UserAgentPreference';
 

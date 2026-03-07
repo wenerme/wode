@@ -1,6 +1,6 @@
 import { serve } from '@hono/node-server';
 import consola from 'consola';
-import { createServer, type CreateServerOptions } from './server/server';
+import { type CreateServerOptions, createServer } from './server/server';
 
 const log = consola.withTag('mcps');
 
@@ -35,7 +35,12 @@ async function shutdown() {
 process.on('SIGINT', () => void shutdown());
 process.on('SIGTERM', () => void shutdown());
 
-export async function startServer(options: { port: string; cwd: string; discoveryConfig: boolean; setup?: CreateServerOptions['setup'] }) {
+export async function startServer(options: {
+	port: string;
+	cwd: string;
+	discoveryConfig: boolean;
+	setup?: CreateServerOptions['setup'];
+}) {
 	const port = Number.parseInt(options.port, 10);
 	const { app, printEndpoints, finalize } = createServer({
 		cwd: options.cwd,

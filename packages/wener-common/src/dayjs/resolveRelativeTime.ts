@@ -1,4 +1,4 @@
-import { parseDate, type MaybeDate } from '@wener/utils';
+import { type MaybeDate, parseDate } from '@wener/utils';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import quarterOfYear from 'dayjs/plugin/quarterOfYear';

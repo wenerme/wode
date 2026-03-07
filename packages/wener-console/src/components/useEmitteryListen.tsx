@@ -1,5 +1,5 @@
-import { useEffect, useRef } from 'react';
 import type Emittery from 'emittery';
+import { useEffect, useRef } from 'react';
 
 export function useEmitteryListen<E>(
 	e: Emittery<E>,

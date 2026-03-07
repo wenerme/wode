@@ -1,5 +1,5 @@
 import { defineMcpServer } from '../McpServerDef';
-import { createGeminiSearchMcpServer, type CreateGeminiSearchMcpServerOptions } from './server';
+import { type CreateGeminiSearchMcpServerOptions, createGeminiSearchMcpServer } from './server';
 
 export const GeminiSearchMcpServerDef = defineMcpServer<CreateGeminiSearchMcpServerOptions>({
 	name: 'gemini-web-search',

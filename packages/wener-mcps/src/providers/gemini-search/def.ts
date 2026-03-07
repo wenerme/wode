@@ -1,4 +1,4 @@
-import { GeminiSearchMcpServerDef, type CreateGeminiSearchMcpServerOptions } from '@wener/ai/mcp/gemini-search';
+import { type CreateGeminiSearchMcpServerOptions, GeminiSearchMcpServerDef } from '@wener/ai/mcp/gemini-search';
 import { defineMcpServerHandler } from '../McpServerHandlerDef';
 
 export const GeminiSearchHeaderNames = Object.freeze({
@@ -37,9 +37,7 @@ export const GeminiSearchMcpServerHandlerDef = defineMcpServerHandler<
 			headers?.get(GeminiSearchHeaderNames.BASE_URL) ||
 			config.headers?.[GeminiSearchHeaderNames.BASE_URL];
 		const model =
-			config.model ||
-			headers?.get(GeminiSearchHeaderNames.MODEL) ||
-			config.headers?.[GeminiSearchHeaderNames.MODEL];
+			config.model || headers?.get(GeminiSearchHeaderNames.MODEL) || config.headers?.[GeminiSearchHeaderNames.MODEL];
 
 		const opts: CreateGeminiSearchMcpServerOptions = {};
 		if (apiKey) opts.apiKey = apiKey;

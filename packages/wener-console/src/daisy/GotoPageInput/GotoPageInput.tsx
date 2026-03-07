@@ -1,4 +1,4 @@
-import { useState, type FC } from 'react';
+import { type FC, useState } from 'react';
 import { Button } from '../Button/Button';
 
 export const GotoPageInput: FC<{

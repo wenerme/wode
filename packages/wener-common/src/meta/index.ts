@@ -1,5 +1,4 @@
-export { createMetadataKey, defineMetadata, getMetadata } from './defineMetadata';
+export { defineFileType, type FileTypeDef, getFileType } from './defineFileType';
 
 export { defineInit, type InitDef, runInit } from './defineInit';
-
-export { defineFileType, getFileType, type FileTypeDef } from './defineFileType';
+export { createMetadataKey, defineMetadata, getMetadata } from './defineMetadata';

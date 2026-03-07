@@ -1,21 +1,21 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import {
+	type Association,
 	col,
+	type DataType,
 	DataTypes,
 	fn,
-	Op,
-	where,
-	type Association,
-	type DataType,
 	type Includeable,
 	type IncludeOptions,
 	type Model,
 	type ModelStatic,
+	Op,
 	type Sequelize,
 	type WhereOptions,
+	where,
 } from '@sequelize/core';
 import type { MatchResult } from 'ohm-js';
-import { toMiniQueryAST, type MiniQueryASTNode } from '../ast';
+import { type MiniQueryASTNode, toMiniQueryAST } from '../ast';
 
 export interface SequelizeWhereOptions {
 	sequelize: Sequelize;

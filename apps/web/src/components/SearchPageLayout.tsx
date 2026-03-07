@@ -1,9 +1,9 @@
+import { type FlexRenderable, flexRender } from '@wener/reaction';
+import { clsx } from 'clsx';
+import { useSearchParams } from 'next/navigation';
 import type React from 'react';
 import type { ReactNode } from 'react';
 import { BsSearch } from 'react-icons/bs';
-import { flexRender, type FlexRenderable } from '@wener/reaction';
-import { clsx } from 'clsx';
-import { useSearchParams } from 'next/navigation';
 
 export const SearchPageLayout: React.FC<{
 	name?: string;

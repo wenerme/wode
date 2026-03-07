@@ -1,5 +1,5 @@
-import { GrSystem } from 'react-icons/gr';
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { GrSystem } from 'react-icons/gr';
 import { Image } from '../../components';
 import { LoginPage } from './LoginPage';
 

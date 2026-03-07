@@ -6,12 +6,12 @@ import type { JsonObject, Message } from '@bufbuild/protobuf';
 import {
 	enumDesc,
 	fileDesc,
-	messageDesc,
-	serviceDesc,
 	type GenEnum,
 	type GenFile,
 	type GenMessage,
 	type GenService,
+	messageDesc,
+	serviceDesc,
 } from '@bufbuild/protobuf/codegenv2';
 import { file_google_protobuf_struct, file_google_protobuf_timestamp, type Timestamp } from '@bufbuild/protobuf/wkt';
 import { file_google_api_annotations } from '../../../google/api/annotations_pb';

@@ -1,9 +1,9 @@
 'use client';
 
-import React, { type FC } from 'react';
 import { useCompareEffect } from '@wener/reaction';
 import { deepEqual } from '@wener/utils';
 import { Eta } from 'eta';
+import React, { type FC } from 'react';
 import { useMutative } from 'use-mutative';
 
 const eta = new Eta();

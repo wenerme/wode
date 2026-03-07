@@ -1,5 +1,5 @@
+import { type MaybeFunction, maybeFunction } from '@wener/utils';
 import { cache } from 'react';
-import { maybeFunction, type MaybeFunction } from '@wener/utils';
 
 export const createServerContext = <T>(defaultValue: MaybeFunction<T>): [() => T, (v: T) => void] => {
 	const getRef = cache(() => ({ current: maybeFunction(defaultValue) }));

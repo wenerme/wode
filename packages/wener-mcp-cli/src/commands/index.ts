@@ -1,9 +1,9 @@
-export { serversCommand, type ServersOptions } from './servers';
-export { toolsCommand, type ToolsOptions } from './tools';
-export { grepCommand, globToRegex, type GrepOptions } from './grep';
-export { infoCommand, type InfoOptions } from './info';
-export { callCommand, type CallOptions } from './call';
-export { resourcesCommand, type ResourcesOptions } from './resources';
-export { readCommand, type ReadOptions } from './read';
-export { addCommand, type AddOptions } from './add';
-export { rmCommand, type RmOptions } from './rm';
+export { type AddOptions, addCommand } from './add';
+export { type CallOptions, callCommand } from './call';
+export { type GrepOptions, globToRegex, grepCommand } from './grep';
+export { type InfoOptions, infoCommand } from './info';
+export { type ReadOptions, readCommand } from './read';
+export { type ResourcesOptions, resourcesCommand } from './resources';
+export { type RmOptions, rmCommand } from './rm';
+export { type ServersOptions, serversCommand } from './servers';
+export { type ToolsOptions, toolsCommand } from './tools';

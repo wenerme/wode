@@ -1,4 +1,4 @@
-import { MetadataStorage, Utils, type Dictionary, type EntityMetadata } from '@mikro-orm/core';
+import { type Dictionary, type EntityMetadata, MetadataStorage, Utils } from '@mikro-orm/core';
 
 export function patchMikroORMMetadataStorage() {
 	if (patchMikroORMMetadataStorage.original) {
@@ -17,9 +17,7 @@ export function patchMikroORMMetadataStorage() {
 		let _idMap = new WeakMap();
 		let nameMap = new Map<string, number>();
 		const PATH_SYMBOL = MS.PATH_SYMBOL;
-		MS.getMetadataFromDecorator = <T = any>(
-			target: T & Dictionary & { [key: symbol]: string },
-		): EntityMetadata<T> => {
+		MS.getMetadataFromDecorator = <T = any>(target: T & Dictionary & { [key: symbol]: string }): EntityMetadata<T> => {
 			if (PATH_SYMBOL && !Object.hasOwn(target, PATH_SYMBOL)) {
 				Object.defineProperty(target, PATH_SYMBOL, {
 					value: (Utils as any).lookupPathFromDecorator?.(target.name) ?? target.name,

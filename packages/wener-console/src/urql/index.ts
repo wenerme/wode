@@ -1,8 +1,8 @@
-export { createUrqlClient } from './createUrqlClient';
-export { batchFetchExchange } from './batchFetchExchange';
 export {
+	useClient as useUrqlClient,
 	useMutation as useUrqlMutation,
 	useQuery as useUrqlQuery,
 	useSubscription as useUrqlSubscription,
-	useClient as useUrqlClient,
 } from 'urql';
+export { batchFetchExchange } from './batchFetchExchange';
+export { createUrqlClient } from './createUrqlClient';

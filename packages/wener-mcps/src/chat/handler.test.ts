@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import type { ChatConfig } from '../server/schema';
 import { createChatHandler } from './handler';
 

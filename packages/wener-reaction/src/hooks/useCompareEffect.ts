@@ -1,5 +1,5 @@
-import { useEffect, useRef, type DependencyList, type EffectCallback } from 'react';
 import { shallowEqual } from '@wener/utils';
+import { type DependencyList, type EffectCallback, useEffect, useRef } from 'react';
 
 /**
  * useCompareEffect will call callback if deps is changed

@@ -1,4 +1,4 @@
-import { Inject, Injectable, Module, type INestApplication } from '@nestjs/common';
+import { type INestApplication, Inject, Injectable, Module } from '@nestjs/common';
 import { FastifyAdapter } from '@nestjs/platform-fastify';
 import { Test } from '@nestjs/testing';
 import type { NatsConnection } from 'nats';

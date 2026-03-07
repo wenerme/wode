@@ -1,5 +1,5 @@
-import type { ComponentPropsWithRef, FC, ReactNode } from 'react';
 import classNames from 'clsx';
+import type { ComponentPropsWithRef, FC, ReactNode } from 'react';
 import type { IntentType } from '../const';
 
 export interface NonIdealStateProps extends Omit<ComponentPropsWithRef<'div'>, 'title'> {

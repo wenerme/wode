@@ -1,7 +1,7 @@
 import { ChevronDown, ChevronUp, RefreshCw, Stethoscope } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { HashRouter, Routes, Route, NavLink, Navigate } from 'react-router-dom';
+import { HashRouter, Navigate, NavLink, Route, Routes } from 'react-router-dom';
 import type { AuditEvent } from '../contracts';
 import type { ModelInfo, RequestStats, ServerInfo, ServerTypeInfo, ServiceOverview } from '../contracts/McpsContract';
 import { ChatPage } from './ChatPage';

@@ -2,15 +2,15 @@ import { Field, ID, InterfaceType } from 'type-graphql';
 import { BaseNode } from '../BaseNode';
 import { RelayNode } from '../relay';
 
-export { HasTagsNode } from './HasTagsNode';
-export { HasDisplayOrderNode } from './HasDisplayOrderNode';
-export { HasNotesNode } from './HasNotesNode';
-export { HasMetadataNode } from './HasMetadataNode';
-export { HasCodeNode } from './HasCodeNode';
-export { HasOwnerRefNode } from './HasOwnerRefNode';
 export { HasAuditorRefNode } from './HasAuditorRefNode';
-export { HasStateStatusNode } from './HasStateStatusNode';
+export { HasCodeNode } from './HasCodeNode';
+export { HasDisplayOrderNode } from './HasDisplayOrderNode';
+export { HasMetadataNode } from './HasMetadataNode';
+export { HasNotesNode } from './HasNotesNode';
+export { HasOwnerRefNode } from './HasOwnerRefNode';
 export { HasSlugNode } from './HasSlugNode';
+export { HasStateStatusNode } from './HasStateStatusNode';
+export { HasTagsNode } from './HasTagsNode';
 
 @InterfaceType({
 	implements: [BaseNode],

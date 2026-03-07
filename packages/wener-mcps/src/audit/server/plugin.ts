@@ -30,21 +30,22 @@ async function persistToDb(event: AuditEvent, id: string): Promise<void> {
 		const { ensureDbInitialized, RequestLogEntity } = await import('./db.js');
 		const orm = await ensureDbInitialized(storedDbConfig);
 		const em = orm.em.fork();
+		const path = event.path || '';
 
 		const logEntry = new RequestLogEntity();
 		logEntry.requestId = id;
 		logEntry.timestamp = new Date(event.timestamp);
 		logEntry.method = event.method;
-		logEntry.path = event.path;
+		logEntry.path = path;
 		logEntry.serverName = event.serverName ?? undefined;
 		logEntry.serverType = event.serverType ?? undefined;
 		logEntry.status = event.status ?? undefined;
 		logEntry.durationMs = event.durationMs ?? undefined;
 		logEntry.error = event.error ?? undefined;
 		logEntry.requestHeaders = event.requestHeaders ?? undefined;
-		if (event.path.startsWith('/mcp/')) {
+		if (path.startsWith('/mcp/')) {
 			logEntry.requestType = 'mcp';
-		} else if (event.path.startsWith('/v1/')) {
+		} else if (path.startsWith('/v1/')) {
 			logEntry.requestType = 'chat';
 		} else {
 			logEntry.requestType = 'api';
@@ -203,16 +204,19 @@ export function setupAudit(ctx: McpsServerContext, options?: { auditConfig?: Aud
 
 	// Subscribe to request events
 	ctx.emitter.on(McpsEventType.Request, (event) => {
+		const path = event.path || '';
+		if (!path) return;
+
 		const shouldAudit =
-			event.path.startsWith('/mcp/') ||
-			event.path.startsWith('/v1/') ||
-			(event.path.startsWith('/api/') && event.method !== 'GET');
+			path.startsWith('/mcp/') ||
+			path.startsWith('/v1/') ||
+			(path.startsWith('/api/') && event.method !== 'GET');
 
 		if (shouldAudit) {
 			addAuditEvent({
 				timestamp: event.timestamp,
 				method: event.method,
-				path: event.path,
+				path,
 				serverName: event.serverName,
 				serverType: event.serverType,
 				status: event.status,

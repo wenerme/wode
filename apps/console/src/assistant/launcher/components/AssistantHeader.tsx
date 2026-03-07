@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 import { FiSearch } from 'react-icons/fi';
 import { useAssistantLauncherMutate, useAssistantLauncherState } from '../AssistantLauncherState';
 

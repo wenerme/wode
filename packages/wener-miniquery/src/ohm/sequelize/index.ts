@@ -1,1 +1,1 @@
-export { toSequelizeWhere, type SequelizeWhereOptions } from './where';
+export { type SequelizeWhereOptions, toSequelizeWhere } from './where';

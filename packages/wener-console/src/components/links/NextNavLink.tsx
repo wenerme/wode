@@ -1,7 +1,7 @@
-import { useEffect, useState, type ReactElement } from 'react';
 import type { LinkProps } from 'next/link';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { type ReactElement, useEffect, useState } from 'react';
 
 export interface NextNavLinkProps extends LinkProps {
 	children: ReactElement | ((o: { isActive: boolean }) => ReactElement);

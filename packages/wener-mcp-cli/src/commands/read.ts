@@ -2,7 +2,7 @@
  * Read command - Read an MCP resource
  */
 
-import { connectToServer, readResource, safeClose, type Client } from '../client';
+import { type Client, connectToServer, readResource, safeClose } from '../client';
 import { getServerConfig, loadConfig } from '../config';
 import { ErrorCode, formatCliError, invalidTargetError, serverConnectionError } from '../errors';
 import { formatJson } from '../output';

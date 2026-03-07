@@ -1,6 +1,6 @@
+import { copy } from '@wener/utils';
 import type React from 'react';
 import { HiMiniDocumentDuplicate } from 'react-icons/hi2';
-import { copy } from '@wener/utils';
 import { showSuccessToast } from '../../toast';
 import { EmptyPlaceholder } from './EmptyPlaceholder';
 import { formatPhoneNumber } from './formatPhoneNumber';

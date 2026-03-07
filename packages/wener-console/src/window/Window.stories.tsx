@@ -1,6 +1,6 @@
+import type { Meta } from '@storybook/react-vite';
 import { useEffect, useRef } from 'react';
 import { PiAppleLogo, PiWindowsLogo } from 'react-icons/pi';
-import type { Meta } from '@storybook/react-vite';
 import { useStore } from 'zustand';
 import { ComponentProvider } from '../components';
 import { useRootWindow } from './ReactWindow';

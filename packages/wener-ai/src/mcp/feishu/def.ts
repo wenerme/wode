@@ -1,5 +1,5 @@
 import { defineMcpServer } from '../McpServerDef';
-import { createFeishuMcpServer, type CreateFeishuMcpServerOptions } from './server';
+import { type CreateFeishuMcpServerOptions, createFeishuMcpServer } from './server';
 
 export const FeishuMcpServerDef = defineMcpServer<CreateFeishuMcpServerOptions>({
 	name: 'feishu',

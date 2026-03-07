@@ -28,12 +28,10 @@
 export { Drain } from './Drain';
 export { LogCluster } from './LogCluster';
 export { Node } from './Node';
-export { TemplateMiner } from './TemplateMiner';
-
-export type { ClusterUpdateType, DrainOptions, ExtractedParameter, SearchStrategy } from './types';
-
-export type { PersistenceHandler } from './persistence/PersistenceHandler';
 export { MemoryPersistence } from './persistence/MemoryPersistence';
+export type { PersistenceHandler } from './persistence/PersistenceHandler';
+export { TemplateMiner } from './TemplateMiner';
+export type { ClusterUpdateType, DrainOptions, ExtractedParameter, SearchStrategy } from './types';
 
 // nee server
 // export { FilePersistence } from './persistence/FilePersistence';

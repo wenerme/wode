@@ -31,7 +31,7 @@ export function loadScripts(
 ): Promise<HTMLScriptElement | HTMLScriptElement[]> {
 	if (Array.isArray(src)) {
 		return Promise.resolve().then(async () => {
-			const all = [];
+			const all: HTMLScriptElement[] = [];
 			for (const s of src) {
 				all.push(await loadScripts(s));
 			}

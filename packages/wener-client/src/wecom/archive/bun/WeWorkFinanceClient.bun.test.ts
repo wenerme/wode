@@ -1,5 +1,5 @@
-import fs from 'node:fs/promises';
 import { describe } from 'bun:test';
+import fs from 'node:fs/promises';
 import { createWeWorkFinanceClientFromEnv } from './WeWorkFinanceClient';
 
 const __dirname = new URL('.', import.meta.url).pathname;

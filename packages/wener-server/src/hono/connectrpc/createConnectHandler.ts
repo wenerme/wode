@@ -2,7 +2,7 @@ import { Code, ConnectError, createConnectRouter } from '@connectrpc/connect';
 import { Logger } from '@nestjs/common';
 import { getContext } from '@wener/server';
 import { Errors, type MaybePromise } from '@wener/utils';
-import { serveNodeConnect, type ServeNodeConnectOptions } from './serveNodeConnect';
+import { type ServeNodeConnectOptions, serveNodeConnect } from './serveNodeConnect';
 import type { ConnectRpcServiceDef } from './types';
 
 function getConnectErrorCodeFromHttpStatus(status: number): Code {

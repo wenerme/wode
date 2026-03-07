@@ -1,12 +1,12 @@
-import React, { useState, type FC, type ReactNode } from 'react';
-import { createHashRouter, Outlet, RouterProvider } from 'react-router';
 import { ErrorSuspenseBoundary, useAsyncEffect, useDebugRender } from '@wener/reaction';
+import React, { type FC, type ReactNode, useState } from 'react';
+import { createHashRouter, Outlet, RouterProvider } from 'react-router';
 import { useStore } from 'zustand';
 import { isDev } from '../const';
 import { useLogger } from '../hooks';
 import { NonIdealPage } from '../pages';
 import type { RouteObjects } from '../router';
-import { getConsoleContext, type DynamicModule } from '../web';
+import { type DynamicModule, getConsoleContext } from '../web';
 import { LoadingIndicator } from './components';
 import { RootRouterReactor } from './components/RootRouterReactor';
 import { getRouteStore, getSiteStore } from './context';

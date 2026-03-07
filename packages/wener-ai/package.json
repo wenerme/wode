@@ -1,6 +1,6 @@
 {
 	"name": "@wener/ai",
-	"version": "0.1.10",
+	"version": "0.1.13",
 	"type": "module",
 	"description": "AI utilities and MCP server definitions",
 	"author": "wener",
@@ -20,7 +20,9 @@
 		"./mcp/tencent-cls": "./src/mcp/tencent-cls/index.ts",
 		"./mcp/apolloconfig": "./src/mcp/apolloconfig/index.ts",
 		"./mcp/feishu": "./src/mcp/feishu/index.ts",
-		"./mcp/gemini-search": "./src/mcp/gemini-search/index.ts"
+		"./mcp/gemini-search": "./src/mcp/gemini-search/index.ts",
+		"./mcp/clickhouse": "./src/mcp/clickhouse/index.ts",
+		"./mcp/grafana": "./src/mcp/grafana/index.ts"
 	},
 	"files": [
 		"lib",
@@ -33,6 +35,7 @@
 	],
 	"peerDependencies": {
 		"@ai-sdk/google": "*",
+		"@clickhouse/client": "*",
 		"@larksuiteoapi/node-sdk": "*",
 		"ai": "*",
 		"kysely": "*",
@@ -42,6 +45,9 @@
 	},
 	"peerDependenciesMeta": {
 		"@ai-sdk/google": {
+			"optional": true
+		},
+		"@clickhouse/client": {
 			"optional": true
 		},
 		"@larksuiteoapi/node-sdk": {
@@ -66,15 +72,16 @@
 	"dependencies": {
 		"@modelcontextprotocol/sdk": "^1.27.1",
 		"@wener/client": "workspace:^1.0.27",
-		"@wener/common": "^2.0.5",
+		"@wener/common": "^2.0.6",
 		"consola": "^3.4.2",
 		"zod": "^4.3.6"
 	},
 	"devDependencies": {
-		"@ai-sdk/google": "^3.0.34",
-		"ai": "^6.0.105",
-		"kysely": "^0.28.11",
-		"mysql2": "^3.18.2",
+		"@ai-sdk/google": "^3.0.43",
+		"@clickhouse/client": "^1.18.2",
+		"ai": "^6.0.116",
+		"kysely": "^0.28.13",
+		"mysql2": "^3.20.0",
 		"tarn": "^3.0.2",
 		"tedious": "^19.2.1"
 	},
@@ -128,6 +135,10 @@
 				"types": "./src/mcp/apolloconfig/index.ts",
 				"default": "./lib/mcp/apolloconfig/index.js"
 			},
+			"./mcp/grafana": {
+				"types": "./src/mcp/grafana/index.ts",
+				"default": "./lib/mcp/grafana/index.js"
+			},
 			"./mcp/feishu": {
 				"types": "./src/mcp/feishu/index.ts",
 				"default": "./lib/mcp/feishu/index.js"
@@ -135,6 +146,10 @@
 			"./mcp/gemini-search": {
 				"types": "./src/mcp/gemini-search/index.ts",
 				"default": "./lib/mcp/gemini-search/index.js"
+			},
+			"./mcp/clickhouse": {
+				"types": "./src/mcp/clickhouse/index.ts",
+				"default": "./lib/mcp/clickhouse/index.js"
 			}
 		}
 	}

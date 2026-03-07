@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, type FC } from 'react';
+import { type FC, useEffect } from 'react';
 import { TrackerStore } from './MatomoTrackerStore';
 
 export const MatomoTracker: FC<{ siteId: string; url: string; useUserId?: () => string | undefined }> = ({

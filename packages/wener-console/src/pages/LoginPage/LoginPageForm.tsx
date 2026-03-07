@@ -1,7 +1,7 @@
-import { useState, type ComponentPropsWithoutRef, type FC } from 'react';
+import { type ComponentPropsWithoutRef, type FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { CiLock, CiUser, CiMail } from 'react-icons/ci';
-import { PiBuildingsThin, PiEyeThin, PiEyeSlashThin } from 'react-icons/pi';
+import { CiLock, CiMail, CiUser } from 'react-icons/ci';
+import { PiBuildingsThin, PiEyeSlashThin, PiEyeThin } from 'react-icons/pi';
 import { ReactHookForm } from '../../react-hook-form';
 
 export type LoginFormData = {
@@ -139,12 +139,7 @@ export const LoginPageForm: FC<LoginFormProps> = ({
 							required: true,
 						})}
 					/>
-					<button
-						type='button'
-						className='btn join-item'
-						onClick={() => setShowPassword(!showPassword)}
-						tabIndex={-1}
-					>
+					<button type='button' className='btn join-item' onClick={() => setShowPassword(!showPassword)} tabIndex={-1}>
 						{showPassword ? <PiEyeSlashThin className='h-5 w-5' /> : <PiEyeThin className='h-5 w-5' />}
 					</button>
 				</div>

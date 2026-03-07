@@ -3,7 +3,7 @@ import type { QueryBuilder } from '@mikro-orm/postgresql';
 import { Features } from '../../Feature';
 import { EntityFeature } from '../enum';
 import { StandardBaseEntity } from '../StandardBaseEntity';
-import { resolveSearch, type ResolveSearchOptions } from './resolveSearch';
+import { type ResolveSearchOptions, resolveSearch } from './resolveSearch';
 
 export interface ApplySearchOptions extends ResolveSearchOptions<{ and: any[]; or: any[] }> {
 	search?: string;

@@ -1,4 +1,4 @@
-import { createChildLogger, sleep, type Logger } from '@wener/utils';
+import { createChildLogger, type Logger, sleep } from '@wener/utils';
 import type { Browser, ElementHandle, Page } from 'puppeteer-core';
 import { YqdzUrls } from './const';
 import { getSession } from './getSession';

@@ -1,5 +1,6 @@
 import type { OpUnitType, UnitTypeLongPlural } from 'dayjs';
 import type { Duration } from 'dayjs/plugin/duration';
+import { formatNumber } from '../utils/formatNumber';
 import { parseDuration } from './parseDuration';
 
 type FormatDurationOptions = {
@@ -29,7 +30,6 @@ export function formatDuration(value: MaybeDuration, o?: FormatDurationOptions):
 	}
 
 	let { format, humanize, iso } = o || {};
-	// Use local variables instead of modifying o directly
 	switch (format) {
 		case 'human':
 		case 'humanize':
@@ -56,18 +56,17 @@ export function formatDuration(value: MaybeDuration, o?: FormatDurationOptions):
 	}
 
 	// auto format
-	// 1h2m3s
 	if (v.asDays() > 1) {
 		let s = v.toISOString();
 		return s.replace('P', '').replace('T', '').toLowerCase();
 	}
 
 	{
-		let parts: string[] = [];
-		let h = v.hours();
-		let m = v.minutes();
-		let s = v.seconds();
-		let ms = v.milliseconds();
+		const parts: string[] = [];
+		const h = v.hours();
+		const m = v.minutes();
+		const s = v.seconds();
+		const ms = v.milliseconds();
 
 		if (h > 0) {
 			parts.push(`${h}h`);
@@ -78,8 +77,8 @@ export function formatDuration(value: MaybeDuration, o?: FormatDurationOptions):
 		if (s > 0) {
 			parts.push(`${s}s`);
 		}
-		if (ms > 0 || (h === 0 && m === 0 && s === 0)) {
-			parts.push(`${ms}ms`);
+		if (ms > 0 || parts.length === 0) {
+			parts.push(`${formatNumber(ms, 2)}ms`);
 		}
 		return parts.join('');
 	}

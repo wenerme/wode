@@ -21,7 +21,7 @@ export function parseObjectPath(s: ObjectPathLike): ObjectPath {
 		return parts;
 	}
 
-	const result = [];
+	const result: Array<string | number> = [];
 	for (const part of parts) {
 		if (!part.endsWith(']')) {
 			result.push(part);

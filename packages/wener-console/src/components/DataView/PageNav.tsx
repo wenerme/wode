@@ -1,6 +1,6 @@
+import { clamp } from '@wener/utils';
 import { useEffect, useState } from 'react';
 import { PiArrowLeftThin, PiArrowLineLeftThin, PiArrowLineRightThin, PiArrowRightThin } from 'react-icons/pi';
-import { clamp } from '@wener/utils';
 
 export type PageNavProps = {
 	canPrev?: boolean;

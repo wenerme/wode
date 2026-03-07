@@ -1,6 +1,5 @@
-
 import type { BasicVm } from '@/poc/bbvm/BBVM';
-import type { Float32, Int32, } from './types';
+import type { Float32, Int32 } from './types';
 
 export class BaseRuntime {
 	vm!: BasicVm;
@@ -71,7 +70,16 @@ export class BaseRuntime {
 
 	DrawCircle(_page: PageHdr, _cx: Int32, _cy: Int32, _cr: Int32): void {}
 
-	PageCopyExt2(_dst: PageHdr, _src: PageHdr, _x: Int32, _y: Int32, _w: Int32, _h: Int32, _cx: Int32, _cy: Int32): void {}
+	PageCopyExt2(
+		_dst: PageHdr,
+		_src: PageHdr,
+		_x: Int32,
+		_y: Int32,
+		_w: Int32,
+		_h: Int32,
+		_cx: Int32,
+		_cy: Int32,
+	): void {}
 
 	FloatToInt(v: Float32): Int32 {
 		return Math.floor(v);
@@ -352,7 +360,17 @@ export class BaseRuntime {
 		return 0;
 	}
 
-	ShowPic(_page: PageHdr, _res: ResHdr, _dx: Int32, _dy: Int32, _w: Int32, _h: Int32, _x: Int32, _y: Int32, _mode: Int32) {}
+	ShowPic(
+		_page: PageHdr,
+		_res: ResHdr,
+		_dx: Int32,
+		_dy: Int32,
+		_w: Int32,
+		_h: Int32,
+		_x: Int32,
+		_y: Int32,
+		_mode: Int32,
+	) {}
 
 	PageFill(_hdr: PageHdr, _x: Int32, _y: Int32, _w: Int32, _h: Int32, _color: Int32) {}
 
@@ -388,7 +406,6 @@ function createRandom(seed: number | string = Date.now()) {
 }
 
 class Hdr extends Number {
-
 	get id(): Int32 {
 		return +this;
 	}

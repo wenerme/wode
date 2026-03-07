@@ -1,10 +1,10 @@
-import type React from 'react';
-import type { ReactNode } from 'react';
 import { Trans } from '@lingui/macro';
 import { useLingui } from '@lingui/react';
 import { cn } from '@wener/console';
 import { flexRender } from '@wener/reaction/universal';
 import Link from 'next/link';
+import type React from 'react';
+import type { ReactNode } from 'react';
 import { getHomeEntryItems } from '@/data/const';
 import { getEntryTags } from '@/data/defineEntry';
 import { FootNoteLink } from '../FootNoteLink';

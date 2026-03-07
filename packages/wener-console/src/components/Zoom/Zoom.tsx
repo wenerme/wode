@@ -1,6 +1,6 @@
-import React, { lazy, Suspense, useCallback, useEffect, type FC } from 'react';
-import type { ControlledProps } from 'react-medium-image-zoom';
 import { useControllable } from '@wener/reaction';
+import React, { type FC, lazy, Suspense, useCallback, useEffect } from 'react';
+import type { ControlledProps } from 'react-medium-image-zoom';
 
 export type ZoomProps = {
 	active?: boolean;

@@ -1,4 +1,4 @@
-import { Type, type Static } from '@sinclair/typebox';
+import { type Static, Type } from '@sinclair/typebox';
 
 type ResourceStateActive = Static<typeof ResourceStateActive>;
 const ResourceStateActive = Type.Literal('Active', { title: '启用' });

@@ -2,9 +2,10 @@
  * Chat Request Audit Service
  * Records all chat/LLM API requests for auditing and metering
  */
-import type { Context } from 'hono';
+
 import consola from 'consola';
-import type { ChatProtocolType, RequestStatus as RequestStatusType, ChatAuditStats } from './types';
+import type { Context } from 'hono';
+import type { ChatAuditStats, ChatProtocolType, RequestStatus as RequestStatusType } from './types';
 
 const log = consola.withTag('chat-audit');
 

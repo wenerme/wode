@@ -1,5 +1,5 @@
 import type { MaybePromise } from '@wener/utils';
-import { doRequest, type DoRequestOptions } from '../utils/doRequest';
+import { type DoRequestOptions, doRequest } from '../utils/doRequest';
 import type { ResultResponse } from './types';
 
 export interface Token {

@@ -1,6 +1,6 @@
-import { createContext, use, type ReactNode, type ReactPortal } from 'react';
-import { createPortal } from 'react-dom';
 import { getGlobalThis } from '@wener/utils';
+import { createContext, type ReactNode, type ReactPortal, use } from 'react';
+import { createPortal } from 'react-dom';
 
 const ContainerContext = createContext<HTMLElement | undefined>(undefined);
 

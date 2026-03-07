@@ -4,7 +4,11 @@ export function createFetchWithProxyByUndici({
 	proxy,
 	fetch,
 	undici,
-}: { proxy?: string; fetch?: FetchLike; undici?: MaybePromise<{ fetch: any; ProxyAgent: any }> } = {}): FetchLike {
+}: {
+	proxy?: string;
+	fetch?: FetchLike;
+	undici?: MaybePromise<{ fetch: any; ProxyAgent: any }>;
+} = {}): FetchLike {
 	if (!proxy) {
 		return fetch || globalThis.fetch;
 	}

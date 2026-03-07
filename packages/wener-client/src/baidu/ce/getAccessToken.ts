@@ -1,4 +1,4 @@
-import { Errors, getGlobalThis, type FetchLike } from '@wener/utils';
+import { Errors, type FetchLike, getGlobalThis } from '@wener/utils';
 
 export async function getAccessToken({
 	fetch = getGlobalThis().fetch,

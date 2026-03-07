@@ -29,21 +29,20 @@ export function serialize(element: React.ReactNode, { refs = new Map(), refOf, r
 					}
 					break;
 				}
-				case 'react.element':
-					{
-						let type = v.type;
-						// omit _owner, _store, key, ref
-						type = refs.get(type) || type;
-						// add new components
-						if (register && typeof type !== 'string' && type?.displayName) {
-							refs.set(type, type.displayName);
-							type = type?.displayName;
-						}
-						if (typeof type !== 'string') {
-							throw new Error(`Deserialization error: unable to resolve component "${String(type)}"`);
-						}
-						return { type };
+				case 'react.element': {
+					let type = v.type;
+					// omit _owner, _store, key, ref
+					type = refs.get(type) || type;
+					// add new components
+					if (register && typeof type !== 'string' && type?.displayName) {
+						refs.set(type, type.displayName);
+						type = type?.displayName;
 					}
+					if (typeof type !== 'string') {
+						throw new Error(`Deserialization error: unable to resolve component "${String(type)}"`);
+					}
+					return { type };
+				}
 			}
 
 			throw new Error(`Serialization error: unable to resolve ref of ${type} "${String(v)}"`);

@@ -1,2 +1,2 @@
-export { formatLogObject } from './formatLogObject';
 export { createStandardConsolaReporter } from './createStandardConsolaReporter';
+export { formatLogObject } from './formatLogObject';

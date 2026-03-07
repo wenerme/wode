@@ -1,1 +1,1 @@
-export { runLoginFlow, getSession, type RunLoginFlowOptions } from './login';
+export { getSession, type RunLoginFlowOptions, runLoginFlow } from './login';

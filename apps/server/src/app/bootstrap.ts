@@ -1,11 +1,11 @@
 import 'reflect-metadata';
 import {
-	Logger,
 	type INestApplication,
 	type INestApplicationContext,
+	Logger,
 	type NestApplicationOptions,
 } from '@nestjs/common';
-import { NestFactory, type AbstractHttpAdapter } from '@nestjs/core';
+import { type AbstractHttpAdapter, NestFactory } from '@nestjs/core';
 import { setAppContext } from '@wener/nestjs';
 import { App } from '@wener/nestjs/app';
 import type { MaybePromise } from '@wener/utils';

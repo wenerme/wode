@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, type DependencyList, type EffectCallback } from 'react';
+import { type DependencyList, type EffectCallback, useCallback, useEffect, useMemo, useRef } from 'react';
 import type { Equivalence } from '../typing';
 
 /**

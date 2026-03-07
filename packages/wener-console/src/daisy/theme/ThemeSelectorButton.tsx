@@ -1,7 +1,7 @@
+import classNames from 'clsx';
 import { useState } from 'react';
 import { HiChevronDown, HiColorSwatch } from 'react-icons/hi';
 import { MdSettings } from 'react-icons/md';
-import classNames from 'clsx';
 import { DaisyTheme } from './DaisyTheme';
 import { getSupportedThemes } from './getSupportedThemes';
 import { ThemePreviewCard } from './ThemePreviewCard';

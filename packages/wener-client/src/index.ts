@@ -1,2 +1,2 @@
-export * from './ValueHolder';
 export * from './ExpiryValue';
+export * from './ValueHolder';

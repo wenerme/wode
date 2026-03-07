@@ -7,7 +7,7 @@ import {
 	ReadResourceRequestSchema,
 } from '@modelcontextprotocol/sdk/types.js';
 import { createRouterClient, os } from '@orpc/server';
-import { consola, type ConsolaInstance } from 'consola';
+import { type ConsolaInstance, consola } from 'consola';
 import { createMcpServerHandler } from './createMcpServerHandler';
 
 export function setContractHandler(

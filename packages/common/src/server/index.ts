@@ -1,1 +1,1 @@
-export { findUpSync, findWorkspaceRoot, findGitRoot, type FindUpOptions } from './findWorkspaceRoot';
+export { type FindUpOptions, findGitRoot, findUpSync, findWorkspaceRoot } from './findWorkspaceRoot';

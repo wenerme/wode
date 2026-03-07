@@ -1,6 +1,6 @@
-import type { ComponentPropsWithoutRef, FC } from 'react';
-import { flexRender, type FlexRenderable } from '@wener/reaction';
+import { type FlexRenderable, flexRender } from '@wener/reaction';
 import { isDefined, parseBoolean } from '@wener/utils';
+import type { ComponentPropsWithoutRef, FC } from 'react';
 import { cn } from '../utils/cn';
 
 export type ActiveToggleIconProps = Omit<ComponentPropsWithoutRef<'div'>, 'className'> & {

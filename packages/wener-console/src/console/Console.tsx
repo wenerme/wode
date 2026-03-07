@@ -1,6 +1,6 @@
-import { useEffect, useState, type ReactNode } from 'react';
+import { type InitDef, runInit } from '@wener/common/meta';
+import { type ReactNode, useEffect, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
-import { runInit, type InitDef } from '@wener/common/meta';
 import { DaisyTheme } from '../daisy';
 import { ConsoleAuth } from './components/ConsoleAuth/ConsoleAuth';
 import { ErrorSuspenseBoundary, LoadingIndicator } from './index';

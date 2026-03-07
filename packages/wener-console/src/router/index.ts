@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react';
 import type { LazyRouteFunction, RouteObject, UIMatch } from 'react-router';
 
-export { useRouteTitles } from './useRouteTitles';
 export { usePrompt } from './usePrompt';
+export { useRouteTitles } from './useRouteTitles';
 
 declare module 'react-router' {
 	export interface IndexRouteObject {

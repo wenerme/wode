@@ -5,7 +5,7 @@
 import { getAnsiStyle } from '@wener/utils';
 import { formatJsonSchema } from 'common/utils';
 import type { ResourceInfo, ToolInfo } from './client';
-import { getServerUrl, isHttpServer, type ConfigSource, type ServerConfig } from './schema';
+import { type ConfigSource, getServerUrl, isHttpServer, type ServerConfig } from './schema';
 
 // Get ANSI style formatter (auto-detects color support)
 const ansi = getAnsiStyle();

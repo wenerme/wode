@@ -1,1 +1,1 @@
-export { getAccessToken, type GetAccessTokenPayload } from './getAccessToken';
+export { type GetAccessTokenPayload, getAccessToken } from './getAccessToken';

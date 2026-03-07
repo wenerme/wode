@@ -138,3 +138,10 @@ test-*.ts
 .env.*.local
 
 .wrangler/
+local/
+.agents/
+.agent/
+.claude/
+AGENTS.md
+CLAUDE.md
+GEMINI.md

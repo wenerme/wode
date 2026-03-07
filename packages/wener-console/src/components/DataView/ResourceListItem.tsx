@@ -1,6 +1,6 @@
-import { useMemo, type ComponentPropsWithRef, type ReactNode } from 'react';
+import { type AnyResource, getTitleOfResource } from '@wener/common/resource';
+import { type ComponentPropsWithRef, type ReactNode, useMemo } from 'react';
 import { PiCalendarBlank } from 'react-icons/pi';
-import { getTitleOfResource, type AnyResource } from '@wener/common/resource';
 import { DataViewLayout } from './DataViewLayout';
 
 type IAnyResource = AnyResource & {

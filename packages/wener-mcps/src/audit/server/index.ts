@@ -1,8 +1,8 @@
 export {
-	setupAudit,
 	AuditRouter,
 	addAuditEvent,
-	queryAuditEvents,
-	getAuditStats,
 	clearAuditEvents,
+	getAuditStats,
+	queryAuditEvents,
+	setupAudit,
 } from './plugin';

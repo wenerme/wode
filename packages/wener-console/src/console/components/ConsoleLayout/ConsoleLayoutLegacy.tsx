@@ -1,6 +1,6 @@
-import React, { type PropsWithChildren, type ReactNode } from 'react';
 import { SiteLogo } from '@wener/console/console';
 import { useContextStore } from '@wener/console/hooks';
+import React, { type PropsWithChildren, type ReactNode } from 'react';
 import { IconSidebarLayout } from '../../../components/IconSidebarLayout/IconSidebarLayout';
 import { DockLayout } from '../DockLayout';
 import type { ConsoleLayoutContext, DashMenu } from './ConsoleLayoutContext';

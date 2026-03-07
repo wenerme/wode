@@ -1,9 +1,9 @@
 {
-  "name": "app",
-  "version": "1.0.0",
-  "type": "module",
-  "dependencies": {
-    "class-transformer": "*",
-    "sharp": "*"
-  }
+	"name": "app",
+	"version": "1.0.0",
+	"type": "module",
+	"dependencies": {
+		"class-transformer": "*",
+		"sharp": "*"
+	}
 }
