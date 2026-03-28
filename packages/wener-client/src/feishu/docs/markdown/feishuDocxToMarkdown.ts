@@ -620,18 +620,30 @@ function renderBlock(
 	// When nested as children of list items, render as indented sub-items.
 	{
 		const embeddedLabel =
-			type === BlockType.Board ? '画板' :
-			type === BlockType.Sheet ? '电子表格' :
-			type === BlockType.Bitable ? '多维表格' :
-			type === BlockType.Mindnote ? '思维笔记' : undefined;
+			type === BlockType.Board
+				? '画板'
+				: type === BlockType.Sheet
+					? '电子表格'
+					: type === BlockType.Bitable
+						? '多维表格'
+						: type === BlockType.Mindnote
+							? '思维笔记'
+							: undefined;
 		if (embeddedLabel) {
 			const embeddedToken =
-				type === BlockType.Board ? block.board?.token :
-				type === BlockType.Sheet ? block.sheet?.token :
-				type === BlockType.Bitable ? block.bitable?.token :
-				block.mindnote?.token;
+				type === BlockType.Board
+					? block.board?.token
+					: type === BlockType.Sheet
+						? block.sheet?.token
+						: type === BlockType.Bitable
+							? block.bitable?.token
+							: block.mindnote?.token;
 			const bullet = indent > 0 ? `${prefix}- ` : '';
-			return annotateBlock(bid, embeddedToken ? `${bullet}[${embeddedLabel}](${embeddedToken})\n` : `${bullet}[${embeddedLabel}]\n`, opts);
+			return annotateBlock(
+				bid,
+				embeddedToken ? `${bullet}[${embeddedLabel}](${embeddedToken})\n` : `${bullet}[${embeddedLabel}]\n`,
+				opts,
+			);
 		}
 	}
 

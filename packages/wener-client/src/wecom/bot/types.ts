@@ -87,8 +87,7 @@ export interface WecomBotEventCallbackPacket extends WecomBotPacket<WecomBotEven
 
 export type WecomBotIncomingCallbackPacket = WecomBotMessageCallbackPacket | WecomBotEventCallbackPacket;
 
-export interface WecomBotResponsePacket<TBody = Record<string, unknown>>
-	extends WecomBotPacket<TBody> {
+export interface WecomBotResponsePacket<TBody = Record<string, unknown>> extends WecomBotPacket<TBody> {
 	headers: WecomBotPacketHeaders & { req_id: string };
 	errcode: number;
 	errmsg: string;
@@ -136,4 +135,3 @@ export type WecomBotCommandRequest =
 			cmd: 'aibot_send_msg';
 			body: WecomBotSendMessageBody;
 	  };
-

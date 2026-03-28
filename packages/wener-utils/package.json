@@ -25,21 +25,8 @@
 		"./types": "./src/types.d.ts",
 		"./package.json": "./package.json"
 	},
-	"files": [
-		"lib",
-		"src",
-		"tsconfig.json"
-	],
-	"keywords": [
-		"utils",
-		"core library",
-		"helper",
-		"camelcase",
-		"get",
-		"set",
-		"template",
-		"lodash"
-	],
+	"files": ["lib", "src", "tsconfig.json"],
+	"keywords": ["utils", "core library", "helper", "camelcase", "get", "set", "template", "lodash"],
 	"scripts": {
 		"build": "make build",
 		"clean": "make clean",

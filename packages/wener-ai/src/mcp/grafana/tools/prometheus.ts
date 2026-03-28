@@ -144,17 +144,13 @@ export function registerPrometheusTools(ctx: GrafanaContext) {
 		},
 		async ({ datasourceUid, labelName, metric, matchers, startTime, endTime }) => {
 			const range = resolveTimeRange({ from: startTime, to: endTime });
-			return ctx.client.datasourceProxyRequest(
-				datasourceUid,
-				`/api/v1/label/${encodeURIComponent(labelName)}/values`,
-				{
-					params: {
-						'match[]': buildPromSelector(metric || undefined, matchers),
-						start: range.fromIso,
-						end: range.toIso,
-					},
+			return ctx.client.datasourceProxyRequest(datasourceUid, `/api/v1/label/${encodeURIComponent(labelName)}/values`, {
+				params: {
+					'match[]': buildPromSelector(metric || undefined, matchers),
+					start: range.fromIso,
+					end: range.toIso,
 				},
-			);
+			});
 		},
 	);
 

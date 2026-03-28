@@ -24,20 +24,8 @@
 		"./zustand": "./src/zustand/index.ts",
 		"./package.json": "./package.json"
 	},
-	"files": [
-		"Makefile",
-		"dist",
-		"lib",
-		"src",
-		"tsconfig.json"
-	],
-	"keywords": [
-		"components",
-		"react",
-		"hooks",
-		"util",
-		"tool"
-	],
+	"files": ["Makefile", "dist", "lib", "src", "tsconfig.json"],
+	"keywords": ["components", "react", "hooks", "util", "tool"],
 	"scripts": {
 		"build": "make build",
 		"clean": "make clean",

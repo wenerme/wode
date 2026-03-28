@@ -67,11 +67,7 @@ function hasEmitterApi(socket: WecomSocketLike): socket is WecomSocketLike & {
 	return typeof socket.on === 'function';
 }
 
-function addSocketListener(
-	socket: WecomSocketLike,
-	type: string,
-	handler: (...args: unknown[]) => void,
-): () => void {
+function addSocketListener(socket: WecomSocketLike, type: string, handler: (...args: unknown[]) => void): () => void {
 	if (hasAddEventListener(socket)) {
 		socket.addEventListener(type, handler);
 		return () => socket.removeEventListener(type, handler);
@@ -224,10 +220,7 @@ export class WecomBotClient {
 		);
 	}
 
-	async respondWelcome(
-		reqId: string,
-		body: WecomBotOutgoingMessageBody,
-	): Promise<WecomBotResponsePacket> {
+	async respondWelcome(reqId: string, body: WecomBotOutgoingMessageBody): Promise<WecomBotResponsePacket> {
 		return this.sendCommand(
 			{
 				cmd: 'aibot_respond_welcome_msg',
@@ -237,10 +230,7 @@ export class WecomBotClient {
 		);
 	}
 
-	async respondMessage(
-		reqId: string,
-		body: WecomBotOutgoingMessageBody,
-	): Promise<WecomBotResponsePacket> {
+	async respondMessage(reqId: string, body: WecomBotOutgoingMessageBody): Promise<WecomBotResponsePacket> {
 		return this.sendCommand(
 			{
 				cmd: 'aibot_respond_msg',
@@ -250,10 +240,7 @@ export class WecomBotClient {
 		);
 	}
 
-	async respondUpdateMessage(
-		reqId: string,
-		body: Record<string, unknown>,
-	): Promise<WecomBotResponsePacket> {
+	async respondUpdateMessage(reqId: string, body: Record<string, unknown>): Promise<WecomBotResponsePacket> {
 		return this.sendCommand(
 			{
 				cmd: 'aibot_respond_update_msg',
@@ -345,9 +332,7 @@ export class WecomBotClient {
 			}
 		} catch {}
 
-		throw new WecomBotClientError(
-			'WebSocket is unavailable. Provide options.createWebSocket or run in Bun/Node>=22.',
-		);
+		throw new WecomBotClientError('WebSocket is unavailable. Provide options.createWebSocket or run in Bun/Node>=22.');
 	}
 
 	private waitSocketOpen(socket: WecomSocketLike): Promise<void> {

@@ -17,12 +17,9 @@ export const WechatBotMessageItemType = Object.freeze({
 	Video: 5,
 } as const);
 
-export type WechatBotMessageTypeValue =
-	(typeof WechatBotMessageType)[keyof typeof WechatBotMessageType];
-export type WechatBotMessageStateValue =
-	(typeof WechatBotMessageState)[keyof typeof WechatBotMessageState];
-export type WechatBotMessageItemTypeValue =
-	(typeof WechatBotMessageItemType)[keyof typeof WechatBotMessageItemType];
+export type WechatBotMessageTypeValue = (typeof WechatBotMessageType)[keyof typeof WechatBotMessageType];
+export type WechatBotMessageStateValue = (typeof WechatBotMessageState)[keyof typeof WechatBotMessageState];
+export type WechatBotMessageItemTypeValue = (typeof WechatBotMessageItemType)[keyof typeof WechatBotMessageItemType];
 
 export interface WechatBotBaseInfo {
 	channel_version: string;

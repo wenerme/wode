@@ -49,9 +49,7 @@ export class WechatBotClient {
 	private running = false;
 	private pollAbortController: AbortController | null = null;
 	private loopPromise: Promise<void> | null = null;
-	private readonly options: Required<
-		Pick<WechatBotClientOptions, 'autoReLogin' | 'maxBackoffMs' | 'sendChunkLimit'>
-	> &
+	private readonly options: Required<Pick<WechatBotClientOptions, 'autoReLogin' | 'maxBackoffMs' | 'sendChunkLimit'>> &
 		Omit<WechatBotClientOptions, 'autoReLogin' | 'maxBackoffMs' | 'sendChunkLimit'>;
 
 	constructor(options: WechatBotClientOptions = {}) {
@@ -152,11 +150,7 @@ export class WechatBotClient {
 		await this.sendTypingInternal(userId, 2, options);
 	}
 
-	private async sendTypingInternal(
-		userId: string,
-		status: 1 | 2,
-		options: WechatBotSendOptions = {},
-	): Promise<void> {
+	private async sendTypingInternal(userId: string, status: 1 | 2, options: WechatBotSendOptions = {}): Promise<void> {
 		const credentials = await this.ensureCredentials();
 		const contextToken = options.contextToken ?? this.contextTokenMap.get(userId);
 		if (!contextToken) {
@@ -258,10 +252,7 @@ export class WechatBotClient {
 	}
 
 	private rememberContextToken(message: WechatBotMessage): void {
-		const userId =
-			message.message_type === WechatBotMessageType.User
-				? message.from_user_id
-				: message.to_user_id;
+		const userId = message.message_type === WechatBotMessageType.User ? message.from_user_id : message.to_user_id;
 		if (userId && message.context_token) {
 			this.contextTokenMap.set(userId, message.context_token);
 		}

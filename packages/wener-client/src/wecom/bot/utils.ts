@@ -71,7 +71,9 @@ export function extractWecomBotMessageText(body: WecomBotMessageCallbackBody): s
 			return '(video)';
 		case 'mixed': {
 			const items = body.mixed?.msg_item ?? [];
-			const lines = items.map((item) => extractMixedItemText(item as unknown as Record<string, unknown>)).filter(Boolean);
+			const lines = items
+				.map((item) => extractMixedItemText(item as unknown as Record<string, unknown>))
+				.filter(Boolean);
 			return lines.join('\n');
 		}
 		default:
@@ -92,4 +94,3 @@ export function toWecomSendChatType(chatType: 'single' | 'group' | 0 | 1 | 2 | u
 export function parseWecomPacket(rawText: string): WecomBotPacket {
 	return JSON.parse(rawText) as WecomBotPacket;
 }
-

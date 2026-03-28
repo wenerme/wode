@@ -39,18 +39,8 @@
 		"./zustand": "./src/zustand/index.ts",
 		"./package.json": "./package.json"
 	},
-	"files": [
-		"lib",
-		"src"
-	],
-	"keywords": [
-		"admin",
-		"console",
-		"react",
-		"daisy",
-		"tailwindcss",
-		"builder"
-	],
+	"files": ["lib", "src"],
+	"keywords": ["admin", "console", "react", "daisy", "tailwindcss", "builder"],
 	"scripts": {
 		"build": "make build",
 		"build-storybook": "storybook build",

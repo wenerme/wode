@@ -19,16 +19,8 @@
 		"./search": "./src/search/index.ts",
 		"./package.json": "./package.json"
 	},
-	"files": [
-		"lib",
-		"src",
-		"tsconfig.json"
-	],
-	"keywords": [
-		"sql",
-		"builder",
-		"dsl"
-	],
+	"files": ["lib", "src", "tsconfig.json"],
+	"keywords": ["sql", "builder", "dsl"],
 	"scripts": {
 		"build": "make build",
 		"deploy": "make deploy",

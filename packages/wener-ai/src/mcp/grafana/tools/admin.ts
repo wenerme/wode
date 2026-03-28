@@ -104,7 +104,8 @@ export function registerAdminTools(ctx: GrafanaContext) {
 			}),
 			readOnly: true,
 		},
-		({ roleUID }) => ctx.client.request({ path: `/api/access-control/roles/${encodeURIComponent(roleUID)}/assignments` }),
+		({ roleUID }) =>
+			ctx.client.request({ path: `/api/access-control/roles/${encodeURIComponent(roleUID)}/assignments` }),
 	);
 
 	registerJsonTool(

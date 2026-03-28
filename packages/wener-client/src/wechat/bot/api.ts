@@ -90,9 +90,7 @@ export function buildWechatBotAuthHeaders(token: string): Headers {
 	return headers;
 }
 
-export function createWechatBotBaseInfo(
-	channelVersion = DEFAULT_WECHAT_BOT_CHANNEL_VERSION,
-): WechatBotBaseInfo {
+export function createWechatBotBaseInfo(channelVersion = DEFAULT_WECHAT_BOT_CHANNEL_VERSION): WechatBotBaseInfo {
 	return {
 		channel_version: channelVersion,
 	};
@@ -136,12 +134,7 @@ export async function fetchWechatBotQrCode(
 	baseUrl = DEFAULT_WECHAT_BOT_BASE_URL,
 	options: WechatBotRequestOptions = {},
 ): Promise<WechatBotQrCodeResponse> {
-	return requestWechatBotGet<WechatBotQrCodeResponse>(
-		baseUrl,
-		'/ilink/bot/get_bot_qrcode?bot_type=3',
-		{},
-		options,
-	);
+	return requestWechatBotGet<WechatBotQrCodeResponse>(baseUrl, '/ilink/bot/get_bot_qrcode?bot_type=3', {}, options);
 }
 
 export async function pollWechatBotQrStatus(
@@ -219,13 +212,10 @@ export async function sendWechatBotTyping(
 	payload: WechatBotSendTypingPayload,
 	options: WechatBotRequestOptions = {},
 ): Promise<Record<string, unknown>> {
-	return requestWechatBotPost<Record<string, unknown>>(
-		baseUrl,
-		'/ilink/bot/sendtyping',
-		payload,
-		token,
-		{ timeoutMs: options.timeoutMs ?? 15000, signal: options.signal },
-	);
+	return requestWechatBotPost<Record<string, unknown>>(baseUrl, '/ilink/bot/sendtyping', payload, token, {
+		timeoutMs: options.timeoutMs ?? 15000,
+		signal: options.signal,
+	});
 }
 
 export function buildWechatBotTextMessage(

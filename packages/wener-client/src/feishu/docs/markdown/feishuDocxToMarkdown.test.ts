@@ -1,7 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import { buildMarkdownFromDocBlock, type FeishuBlock } from './feishuDocxToMarkdown';
 
-function makeBlock(id: string, type: number, data: Record<string, any> = {}, parentId = '', children?: string[]): FeishuBlock {
+function makeBlock(
+	id: string,
+	type: number,
+	data: Record<string, any> = {},
+	parentId = '',
+	children?: string[],
+): FeishuBlock {
 	return { block_id: id, block_type: type, parent_id: parentId, children, ...data } as FeishuBlock;
 }
 
@@ -75,16 +81,23 @@ describe('buildMarkdownFromDocBlock', () => {
 	it('should handle strikethrough + inline_code', () => {
 		const blocks: FeishuBlock[] = [
 			makeBlock('page', 1, { page: textElements('') }, '', ['p1']),
-			makeBlock('p1', 2, {
-				text: {
-					elements: [{
-						text_run: {
-							content: 'max-tokens-3-5-sonnet',
-							text_element_style: { strikethrough: true, inline_code: true },
-						},
-					}],
+			makeBlock(
+				'p1',
+				2,
+				{
+					text: {
+						elements: [
+							{
+								text_run: {
+									content: 'max-tokens-3-5-sonnet',
+									text_element_style: { strikethrough: true, inline_code: true },
+								},
+							},
+						],
+					},
 				},
-			}, 'page'),
+				'page',
+			),
 		];
 		const md = buildMarkdownFromDocBlock(blocks, { includeTitle: false });
 		expect(md).toContain('~~`max-tokens-3-5-sonnet`~~');
@@ -93,16 +106,23 @@ describe('buildMarkdownFromDocBlock', () => {
 	it('should handle strikethrough + bold', () => {
 		const blocks: FeishuBlock[] = [
 			makeBlock('page', 1, { page: textElements('') }, '', ['p1']),
-			makeBlock('p1', 2, {
-				text: {
-					elements: [{
-						text_run: {
-							content: 'deleted bold text',
-							text_element_style: { strikethrough: true, bold: true },
-						},
-					}],
+			makeBlock(
+				'p1',
+				2,
+				{
+					text: {
+						elements: [
+							{
+								text_run: {
+									content: 'deleted bold text',
+									text_element_style: { strikethrough: true, bold: true },
+								},
+							},
+						],
+					},
 				},
-			}, 'page'),
+				'page',
+			),
 		];
 		const md = buildMarkdownFromDocBlock(blocks, { includeTitle: false });
 		expect(md).toContain('~~**deleted bold text**~~');
@@ -122,12 +142,18 @@ describe('buildMarkdownFromDocBlock', () => {
 	it('should render table with correct structure', () => {
 		const blocks: FeishuBlock[] = [
 			makeBlock('page', 1, { page: textElements('') }, '', ['t1']),
-			makeBlock('t1', 31, {
-				table: {
-					cells: ['c1', 'c2', 'c3', 'c4'],
-					property: { row_size: 2, column_size: 2 },
+			makeBlock(
+				't1',
+				31,
+				{
+					table: {
+						cells: ['c1', 'c2', 'c3', 'c4'],
+						property: { row_size: 2, column_size: 2 },
+					},
 				},
-			}, 'page', ['c1', 'c2', 'c3', 'c4']),
+				'page',
+				['c1', 'c2', 'c3', 'c4'],
+			),
 			makeBlock('c1', 32, {}, 't1', ['h1']),
 			makeBlock('c2', 32, {}, 't1', ['h2']),
 			makeBlock('c3', 32, {}, 't1', ['d1']),
@@ -157,12 +183,20 @@ describe('buildMarkdownFromDocBlock', () => {
 	it('should render task block as indented sub-item under todo', () => {
 		const blocks: FeishuBlock[] = [
 			makeBlock('page', 1, { page: textElements('') }, '', ['todo1']),
-			makeBlock('todo1', 17, { todo: { ...textElements('实现 disconnect_strategy'), style: { done: false } } }, 'page', ['task1']),
+			makeBlock(
+				'todo1',
+				17,
+				{ todo: { ...textElements('实现 disconnect_strategy'), style: { done: false } } },
+				'page',
+				['task1'],
+			),
 			makeBlock('task1', 35, { task: { task_id: '8b6fdfb1-5a02-4da8-9ef1-e4c5063d2bf9' } }, 'todo1'),
 		];
 		const md = buildMarkdownFromDocBlock(blocks, { includeTitle: false });
 		expect(md).toContain('- [ ] 实现 disconnect_strategy');
-		expect(md).toContain('  - [任务](https://applink.feishu.cn/client/todo/detail?guid=8b6fdfb1-5a02-4da8-9ef1-e4c5063d2bf9)');
+		expect(md).toContain(
+			'  - [任务](https://applink.feishu.cn/client/todo/detail?guid=8b6fdfb1-5a02-4da8-9ef1-e4c5063d2bf9)',
+		);
 		expect(md).not.toMatch(/disconnect_strategy\[任务\]/);
 	});
 
@@ -194,12 +228,14 @@ describe('buildMarkdownFromDocBlock', () => {
 	it('should render mention_user with entityInfo name', () => {
 		const blocks: FeishuBlock[] = [
 			makeBlock('page', 1, { page: textElements('') }, '', ['p1']),
-			makeBlock('p1', 2, {
-				text: { elements: [
-					{ text_run: { content: '联系 ' } },
-					{ mention_user: { user_id: 'ou_abc123' } },
-				] },
-			}, 'page'),
+			makeBlock(
+				'p1',
+				2,
+				{
+					text: { elements: [{ text_run: { content: '联系 ' } }, { mention_user: { user_id: 'ou_abc123' } }] },
+				},
+				'page',
+			),
 		];
 		const md = buildMarkdownFromDocBlock(blocks, {
 			includeTitle: false,

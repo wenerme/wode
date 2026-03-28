@@ -20,4 +20,3 @@ export class WecomBotClientError extends Error {
 		this.payload = options.payload;
 	}
 }
-

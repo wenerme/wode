@@ -83,14 +83,19 @@ function applyDashboardVariables(query: string, variables: Record<string, string
 	return result;
 }
 
-function extractPanelQueries(dashboard: Record<string, unknown>, panelId?: number, variables: Record<string, string> = {}) {
+function extractPanelQueries(
+	dashboard: Record<string, unknown>,
+	panelId?: number,
+	variables: Record<string, string> = {},
+) {
 	const panels = collectPanels(dashboard).filter((panel) => (panelId ? Number(panel.id) === panelId : true));
 	return panels.flatMap((panel) => {
 		const targets = Array.isArray(panel.targets) ? panel.targets : [];
 		return targets.map((target) => {
 			const item = toRecord(target);
 			const datasource = toRecord(item.datasource);
-			const rawQuery = pickFirstString(item.expr, item.query, item.rawSql, item.queryText, item.editorText, item.sql) || '';
+			const rawQuery =
+				pickFirstString(item.expr, item.query, item.rawSql, item.queryText, item.editorText, item.sql) || '';
 			return {
 				title: String(panel.title || ''),
 				query: rawQuery,

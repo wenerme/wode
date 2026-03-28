@@ -24,15 +24,8 @@
 		"./mcp/clickhouse": "./src/mcp/clickhouse/index.ts",
 		"./mcp/grafana": "./src/mcp/grafana/index.ts"
 	},
-	"files": [
-		"lib",
-		"src",
-		"README.md"
-	],
-	"keywords": [
-		"ai",
-		"mcp"
-	],
+	"files": ["lib", "src", "README.md"],
+	"keywords": ["ai", "mcp"],
 	"peerDependencies": {
 		"@ai-sdk/google": "*",
 		"@clickhouse/client": "*",

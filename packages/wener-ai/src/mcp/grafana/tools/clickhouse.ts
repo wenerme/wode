@@ -64,11 +64,6 @@ export function registerClickHouseTools(ctx: GrafanaContext) {
 			}),
 			readOnly: true,
 		},
-		({ datasourceUid, table, database }) =>
-			runClickHouseSql(
-				ctx,
-				datasourceUid,
-				`DESCRIBE TABLE ${database}.${table}`,
-			),
+		({ datasourceUid, table, database }) => runClickHouseSql(ctx, datasourceUid, `DESCRIBE TABLE ${database}.${table}`),
 	);
 }

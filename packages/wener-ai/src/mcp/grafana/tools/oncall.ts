@@ -35,7 +35,9 @@ export function registerOnCallTools(ctx: GrafanaContext) {
 			readOnly: true,
 		},
 		({ teamId, scheduleId, page }) =>
-			scheduleId ? onCallRequest(ctx, `/api/v1/schedules/${scheduleId}`) : onCallRequest(ctx, '/api/v1/schedules', { team_id: teamId, page }),
+			scheduleId
+				? onCallRequest(ctx, `/api/v1/schedules/${scheduleId}`)
+				: onCallRequest(ctx, '/api/v1/schedules', { team_id: teamId, page }),
 	);
 
 	registerJsonTool(

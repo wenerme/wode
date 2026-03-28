@@ -73,7 +73,10 @@ export function registerSiftTools(ctx: GrafanaContext) {
 				: Array.isArray((analyses as { items?: unknown[] }).items)
 					? (analyses as { items?: unknown[] }).items
 					: [];
-			return items.find((entry) => typeof entry === 'object' && entry && (entry as { id?: string }).id === analysisId) ?? null;
+			return (
+				items.find((entry) => typeof entry === 'object' && entry && (entry as { id?: string }).id === analysisId) ??
+				null
+			);
 		},
 	);
 

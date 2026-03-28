@@ -61,13 +61,7 @@ export function chunkWechatBotText(text: string, limit = 2000): string[] {
 		const lineCut = rest.lastIndexOf('\n', limit);
 		const spaceCut = rest.lastIndexOf(' ', limit);
 		const cut =
-			paragraphCut > limit / 2
-				? paragraphCut
-				: lineCut > limit / 2
-					? lineCut
-					: spaceCut > 0
-						? spaceCut
-						: limit;
+			paragraphCut > limit / 2 ? paragraphCut : lineCut > limit / 2 ? lineCut : spaceCut > 0 ? spaceCut : limit;
 		chunks.push(rest.slice(0, cut));
 		rest = rest.slice(cut).replace(/^\n+/, '');
 	}
