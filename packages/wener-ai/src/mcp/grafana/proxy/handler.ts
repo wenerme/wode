@@ -6,7 +6,13 @@ export function createProxiedToolName(datasourceType: string, toolName: string) 
 }
 
 export function createProxiedToolHandler(client: GrafanaProxiedClient, tool: Tool) {
-	return async ({ datasourceUid, arguments: forwardedArguments = {} }: { datasourceUid: string; arguments?: Record<string, unknown> }) => {
+	return async ({
+		datasourceUid,
+		arguments: forwardedArguments = {},
+	}: {
+		datasourceUid: string;
+		arguments?: Record<string, unknown>;
+	}) => {
 		if (datasourceUid !== client.datasourceUid) {
 			throw new Error(`Datasource ${datasourceUid} is not available for proxied tool ${tool.name}`);
 		}

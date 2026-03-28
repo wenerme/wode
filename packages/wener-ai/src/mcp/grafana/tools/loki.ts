@@ -42,12 +42,16 @@ export function registerLokiTools(ctx: GrafanaContext) {
 		},
 		async ({ datasourceUid, labelName, startRfc3339, endRfc3339 }) => {
 			const range = resolveTimeRange({ from: startRfc3339, to: endRfc3339 });
-			return ctx.client.datasourceProxyRequest(datasourceUid, `/loki/api/v1/label/${encodeURIComponent(labelName)}/values`, {
-				params: {
-					start: range.fromIso,
-					end: range.toIso,
+			return ctx.client.datasourceProxyRequest(
+				datasourceUid,
+				`/loki/api/v1/label/${encodeURIComponent(labelName)}/values`,
+				{
+					params: {
+						start: range.fromIso,
+						end: range.toIso,
+					},
 				},
-			});
+			);
 		},
 	);
 

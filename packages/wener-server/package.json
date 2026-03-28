@@ -40,12 +40,7 @@
 		"./utils": "./src/utils/index.ts",
 		"./package.json": "./package.json"
 	},
-	"files": [
-		"lib",
-		"package.json",
-		"src",
-		"tsconfig.json"
-	],
+	"files": ["lib", "package.json", "src", "tsconfig.json"],
 	"keywords": [],
 	"scripts": {
 		"build": "make build",

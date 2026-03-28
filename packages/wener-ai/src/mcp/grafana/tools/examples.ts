@@ -9,8 +9,14 @@ const ExampleCatalog = Object.freeze({
 		'histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket[5m])) by (le))',
 	],
 	loki: ['{job="api"} |= "error"', 'sum by (level) (count_over_time({job="api"}[5m]))'],
-	clickhouse: ['SELECT count(*) FROM logs', 'SELECT service, count(*) FROM logs GROUP BY service ORDER BY count(*) DESC LIMIT 20'],
-	elasticsearch: ['level:error AND service:api', '{"query":{"bool":{"filter":[{"range":{"@timestamp":{"gte":"now-1h"}}}]}}}'],
+	clickhouse: [
+		'SELECT count(*) FROM logs',
+		'SELECT service, count(*) FROM logs GROUP BY service ORDER BY count(*) DESC LIMIT 20',
+	],
+	elasticsearch: [
+		'level:error AND service:api',
+		'{"query":{"bool":{"filter":[{"range":{"@timestamp":{"gte":"now-1h"}}}]}}}',
+	],
 	cloudwatch: ['AWS/EC2 CPUUtilization Average', 'AWS/ApplicationELB RequestCount Sum'],
 } as const);
 

@@ -71,4 +71,3 @@ describe('wecom bot utils', () => {
 		expect(toWecomSendChatType(undefined)).toBe(0);
 	});
 });
-

@@ -15,4 +15,3 @@ export {
 	toWecomSendChatType,
 } from './utils';
 export type * from './types';
-

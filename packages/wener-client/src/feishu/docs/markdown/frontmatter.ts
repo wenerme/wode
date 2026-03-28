@@ -7,7 +7,9 @@ export interface ParsedFrontmatter<T extends Record<string, unknown> = Record<st
 }
 
 /** Parse YAML frontmatter from a markdown string. Uses simple key: value parsing, no YAML dep. */
-export function parseFrontmatter<T extends Record<string, unknown> = Record<string, unknown>>(raw: string): ParsedFrontmatter<T> {
+export function parseFrontmatter<T extends Record<string, unknown> = Record<string, unknown>>(
+	raw: string,
+): ParsedFrontmatter<T> {
 	const match = raw.match(FRONTMATTER_RE);
 	if (!match) {
 		return { frontmatter: {} as T, content: raw, raw };

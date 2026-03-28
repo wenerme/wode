@@ -18,21 +18,8 @@
 		"mssql-mcp": "./dist/main.mjs"
 	},
 	"main": "./dist/main.mjs",
-	"files": [
-		"dist",
-		"src",
-		"README.md"
-	],
-	"keywords": [
-		"mcp",
-		"mssql",
-		"sql-server",
-		"model-context-protocol",
-		"claude",
-		"anthropic",
-		"database",
-		"ai-tools"
-	],
+	"files": ["dist", "src", "README.md"],
+	"keywords": ["mcp", "mssql", "sql-server", "model-context-protocol", "claude", "anthropic", "database", "ai-tools"],
 	"scripts": {
 		"build": "node --loader ts-node/esm src/scripts/bundle.ts",
 		"clean": "rm -rf dist",

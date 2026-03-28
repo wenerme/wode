@@ -59,10 +59,11 @@ export function resolveGrafanaAuthOptions(options: GrafanaAuthOptions): Resolved
 		throw new Error(`Missing Grafana URL. Set ${GrafanaEnvNames.URL} or provide options.url`);
 	}
 
-	const serviceAccountToken = options.serviceAccountToken
-		|| process.env[GrafanaEnvNames.SERVICE_ACCOUNT_TOKEN]
-		|| process.env[GrafanaEnvNames.API_KEY]
-		|| undefined;
+	const serviceAccountToken =
+		options.serviceAccountToken ||
+		process.env[GrafanaEnvNames.SERVICE_ACCOUNT_TOKEN] ||
+		process.env[GrafanaEnvNames.API_KEY] ||
+		undefined;
 
 	const username = options.username || process.env[GrafanaEnvNames.USERNAME] || undefined;
 	const password = options.password || process.env[GrafanaEnvNames.PASSWORD] || undefined;
@@ -84,11 +85,7 @@ export function resolveGrafanaAuthOptions(options: GrafanaAuthOptions): Resolved
 	};
 }
 
-export function buildGrafanaHeaders(
-	options: ResolvedGrafanaAuthOptions,
-	headers?: HeadersInit,
-	contentType?: string,
-) {
+export function buildGrafanaHeaders(options: ResolvedGrafanaAuthOptions, headers?: HeadersInit, contentType?: string) {
 	const requestHeaders = new Headers(options.extraHeaders);
 	requestHeaders.set('Accept', 'application/json');
 

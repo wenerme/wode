@@ -57,7 +57,9 @@ export function createGrafanaMcpServer({
 		jsonResult,
 		enableProxiedTools,
 		writeEnabled,
-		enabledToolGroups: enabledToolGroups?.length ? new Set(enabledToolGroups.map((item) => item.toLowerCase())) : undefined,
+		enabledToolGroups: enabledToolGroups?.length
+			? new Set(enabledToolGroups.map((item) => item.toLowerCase()))
+			: undefined,
 		disabledToolGroups: disabledToolGroups?.length
 			? new Set(disabledToolGroups.map((item) => item.toLowerCase()))
 			: undefined,

@@ -28,19 +28,8 @@
 		"./src/*": "./src/*",
 		"./package.json": "./package.json"
 	},
-	"files": [
-		"dist",
-		"index.ts",
-		"lib",
-		"server.ts",
-		"src",
-		"tsconfig.json"
-	],
-	"keywords": [
-		"utils",
-		"system",
-		"helper"
-	],
+	"files": ["dist", "index.ts", "lib", "server.ts", "src", "tsconfig.json"],
+	"keywords": ["utils", "system", "helper"],
 	"scripts": {
 		"build": "make prepublish",
 		"clean": "make clean",

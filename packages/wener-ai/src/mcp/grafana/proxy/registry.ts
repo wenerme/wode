@@ -28,7 +28,10 @@ export async function registerProxiedDatasourceTools(ctx: GrafanaContext) {
 						description: `${tool.description ?? ''}\n\nProxied from datasource ${datasource.name} (${datasource.uid}). Pass remote tool arguments inside "arguments".`,
 						inputSchema: z.object({
 							datasourceUid: z.string().describe(`Datasource UID, expected ${datasource.uid}`),
-							arguments: z.record(z.string(), z.unknown()).default({}).describe('Arguments forwarded to the remote MCP tool'),
+							arguments: z
+								.record(z.string(), z.unknown())
+								.default({})
+								.describe('Arguments forwarded to the remote MCP tool'),
 						}),
 					},
 					async (input) => {
@@ -59,7 +62,9 @@ export async function registerProxiedDatasourceTools(ctx: GrafanaContext) {
 			}
 			proxiedClients.push(client);
 		} catch (error) {
-			ctx.log.warn(`Failed to register proxied datasource ${datasource.uid}: ${error instanceof Error ? error.message : String(error)}`);
+			ctx.log.warn(
+				`Failed to register proxied datasource ${datasource.uid}: ${error instanceof Error ? error.message : String(error)}`,
+			);
 		}
 	}
 

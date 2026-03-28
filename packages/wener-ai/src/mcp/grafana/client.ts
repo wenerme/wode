@@ -166,7 +166,11 @@ export class GrafanaApiClient {
 		return `/api/datasources/resource/uid/${encodeURIComponent(uid)}${path.startsWith('/') ? path : `/${path}`}`;
 	}
 
-	async datasourceProxyRequest<T = unknown>(uid: string, path: string, options: Omit<GrafanaRequestOptions, 'path'> = {}) {
+	async datasourceProxyRequest<T = unknown>(
+		uid: string,
+		path: string,
+		options: Omit<GrafanaRequestOptions, 'path'> = {},
+	) {
 		return this.request<T>({
 			...options,
 			path: this.datasourceProxyPath(uid, path),
