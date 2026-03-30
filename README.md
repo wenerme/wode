@@ -230,3 +230,8 @@ go.work
     - [Document](https://apis.wener.me/docs/rjsf-antd-theme/)
 
 <!-- LINK:END -->
+
+## Hosted deployment
+
+A hosted deployment is available on [Fronteir AI](https://fronteir.ai/mcp/wenerme-wener-mssql-mcp).
+
