@@ -1,7 +1,7 @@
 import os from 'node:os';
 import { EntityManager } from '@mikro-orm/postgresql';
 import { Inject, Injectable, Logger, type OnApplicationBootstrap, type OnModuleInit } from '@nestjs/common';
-import { App } from '@wener/nestjs/app';
+import { App } from '@wener/server/app';
 import { getEvents, getRemoteEvents } from '@/server/events';
 import { SystemEvents } from '@/server/events/events';
 import { handleRemoteSystemEvents } from '@/server/events/handleRemoteSystemEvents';

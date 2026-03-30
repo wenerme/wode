@@ -1,18 +1,16 @@
 {
 	"name": "@wener/ai",
-	"version": "0.1.13",
+	"version": "0.1.18",
 	"type": "module",
 	"description": "AI utilities and MCP server definitions",
 	"author": "wener",
 	"license": "ISC",
 	"packageManager": "pnpm@10.28.0",
+	"scripts": {
+		"prepublishOnly": "make build"
+	},
 	"exports": {
-		"./openai": "./src/openai/index.ts",
-		"./openai/schema": "./src/openai/schema/index.ts",
-		"./anthropic": "./src/anthropic/index.ts",
-		"./anthropic/schema": "./src/anthropic/schema/index.ts",
-		"./google": "./src/google/index.ts",
-		"./google/schema": "./src/google/schema/index.ts",
+		"./schema": "./src/schema/index.ts",
 		"./mcp": "./src/mcp/index.ts",
 		"./mcp/prometheus": "./src/mcp/prometheus/index.ts",
 		"./mcp/relay": "./src/mcp/relay/index.ts",
@@ -20,12 +18,20 @@
 		"./mcp/tencent-cls": "./src/mcp/tencent-cls/index.ts",
 		"./mcp/apolloconfig": "./src/mcp/apolloconfig/index.ts",
 		"./mcp/feishu": "./src/mcp/feishu/index.ts",
+		"./mcp/gemini-tools": "./src/mcp/gemini-tools/index.ts",
 		"./mcp/gemini-search": "./src/mcp/gemini-search/index.ts",
 		"./mcp/clickhouse": "./src/mcp/clickhouse/index.ts",
 		"./mcp/grafana": "./src/mcp/grafana/index.ts"
 	},
-	"files": ["lib", "src", "README.md"],
-	"keywords": ["ai", "mcp"],
+	"files": [
+		"lib",
+		"src",
+		"README.md"
+	],
+	"keywords": [
+		"ai",
+		"mcp"
+	],
 	"peerDependencies": {
 		"@ai-sdk/google": "*",
 		"@clickhouse/client": "*",
@@ -63,46 +69,26 @@
 		}
 	},
 	"dependencies": {
-		"@modelcontextprotocol/sdk": "^1.27.1",
-		"@wener/client": "workspace:^1.0.27",
+		"@modelcontextprotocol/sdk": "^1.29.0",
+		"@wener/client": "workspace:^1.0.29",
 		"@wener/common": "^2.0.6",
 		"consola": "^3.4.2",
-		"zod": "^4.3.6"
+		"zod": "^4.4.3"
 	},
 	"devDependencies": {
-		"@ai-sdk/google": "^3.0.43",
-		"@clickhouse/client": "^1.18.2",
-		"ai": "^6.0.116",
-		"kysely": "^0.28.13",
-		"mysql2": "^3.20.0",
+		"@ai-sdk/google": "^3.0.67",
+		"@clickhouse/client": "^1.18.3",
+		"ai": "^6.0.174",
+		"kysely": "^0.28.17",
+		"mysql2": "^3.22.3",
 		"tarn": "^3.0.2",
 		"tedious": "^19.2.1"
 	},
 	"publishConfig": {
 		"exports": {
-			"./openai": {
-				"types": "./src/openai/index.ts",
-				"default": "./lib/openai/index.js"
-			},
-			"./openai/schema": {
-				"types": "./src/openai/schema/index.ts",
-				"default": "./lib/openai/schema/index.js"
-			},
-			"./anthropic": {
-				"types": "./src/anthropic/index.ts",
-				"default": "./lib/anthropic/index.js"
-			},
-			"./anthropic/schema": {
-				"types": "./src/anthropic/schema/index.ts",
-				"default": "./lib/anthropic/schema/index.js"
-			},
-			"./google": {
-				"types": "./src/google/index.ts",
-				"default": "./lib/google/index.js"
-			},
-			"./google/schema": {
-				"types": "./src/google/schema/index.ts",
-				"default": "./lib/google/schema/index.js"
+			"./schema": {
+				"types": "./src/schema/index.ts",
+				"default": "./lib/schema/index.js"
 			},
 			"./mcp": {
 				"types": "./src/mcp/index.ts",
@@ -135,6 +121,10 @@
 			"./mcp/feishu": {
 				"types": "./src/mcp/feishu/index.ts",
 				"default": "./lib/mcp/feishu/index.js"
+			},
+			"./mcp/gemini-tools": {
+				"types": "./src/mcp/gemini-tools/index.ts",
+				"default": "./lib/mcp/gemini-tools/index.js"
 			},
 			"./mcp/gemini-search": {
 				"types": "./src/mcp/gemini-search/index.ts",

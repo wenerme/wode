@@ -3,14 +3,14 @@
  * Provides unified AI model gateway with protocol conversion
  */
 
-import { CreateMessageRequestSchema } from '@wener/ai/anthropic';
-import { CreateGenerateContentRequestSchema } from '@wener/ai/google';
 import {
-	type CreateChatCompletionRequest,
 	CreateChatCompletionRequestSchema,
-	type CreateResponseRequest,
+	CreateGenerateContentRequestSchema,
+	CreateMessageRequestSchema,
 	CreateResponseRequestSchema,
-} from '@wener/ai/openai';
+	type CreateChatCompletionRequest,
+	type CreateResponseRequest,
+} from '@wener/ai/schema';
 import consola from 'consola';
 import { Hono } from 'hono';
 import { streamSSE } from 'hono/streaming';

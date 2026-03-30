@@ -37,7 +37,12 @@
 		"./utils": "./src/utils/index.ts",
 		"./package.json": "./package.json"
 	},
-	"files": ["lib", "lib.d.ts", "libs", "src"],
+	"files": [
+		"lib",
+		"lib.d.ts",
+		"libs",
+		"src"
+	],
 	"keywords": [],
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1"
@@ -50,19 +55,19 @@
 		"@standard-schema/spec": "^1.1.0",
 		"@wener/utils": "^1.1.58",
 		"date-fns": "^4.1.0",
-		"es-toolkit": "^1.45.1",
-		"std-env": "^4.0.0",
+		"es-toolkit": "^1.46.1",
+		"std-env": "^4.1.0",
 		"ts-pattern": "^5.9.0"
 	},
 	"devDependencies": {
-		"@mikro-orm/core": "^7.0.3",
-		"@mikro-orm/decorators": "^7.0.3",
-		"@mikro-orm/sql": "^7.0.3",
-		"@orpc/client": "^1.13.9",
-		"@orpc/contract": "^1.13.9",
-		"@orpc/openapi-client": "^1.13.9",
-		"@orpc/server": "^1.13.9",
-		"@sinclair/typebox": "^0.34.48",
+		"@mikro-orm/core": "^7.0.13",
+		"@mikro-orm/decorators": "^7.0.13",
+		"@mikro-orm/sql": "^7.0.13",
+		"@orpc/client": "^1.14.1",
+		"@orpc/contract": "^1.14.1",
+		"@orpc/openapi-client": "^1.14.1",
+		"@orpc/server": "^1.14.1",
+		"@sinclair/typebox": "^0.34.49",
 		"@sinclair/typebox-codegen": "^0.11.1",
 		"@types/argon2-browser": "^1.18.4",
 		"@types/bcrypt": "^6.0.0",
@@ -80,14 +85,14 @@
 		"dayjs": "^1.11.20",
 		"decimal.js": "^10.6.0",
 		"emittery": "^2.0.0",
-		"kysely": "^0.28.13",
+		"kysely": "^0.28.17",
 		"micromatch": "^4.0.8",
 		"mime-types": "^3.0.2",
 		"minio": "^8.0.7",
 		"pathe": "^2.0.3",
-		"s3mini": "^0.9.1",
-		"webdav": "^5.9.0",
-		"zod": "^4.3.6"
+		"s3mini": "^0.9.4",
+		"webdav": "^5.10.0",
+		"zod": "^4.4.3"
 	},
 	"publishConfig": {
 		"exports": {

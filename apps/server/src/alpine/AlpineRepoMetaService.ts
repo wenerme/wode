@@ -1,6 +1,6 @@
 import { MikroORM } from '@mikro-orm/postgresql';
 import { Inject, Injectable } from '@nestjs/common';
-import { EntityBaseService } from '@wener/nestjs/entity/service';
+import { EntityBaseService } from '@wener/server/entity/service';
 import { AlpineRepoMetaEntity } from '@/alpine/entity/AlpineRepoMetaEntity';
 
 @Injectable()

@@ -4,8 +4,8 @@ import { useDisableIntrospection } from '@graphql-yoga/plugin-disable-introspect
 import { useGraphQLSSE } from '@graphql-yoga/plugin-graphql-sse';
 import type { HttpBindings } from '@hono/node-server';
 import { Logger } from '@nestjs/common';
-import { getContext } from '@wener/nestjs';
-import { Contexts } from '@wener/nestjs/app';
+import { getContext } from '@wener/server';
+import { Contexts } from '@wener/server/app';
 import { Errors } from '@wener/utils';
 import { GraphQLError, GraphQLSchema } from 'graphql';
 import { createYoga, type YogaInitialContext, type YogaSchemaDefinition, type YogaServerOptions } from 'graphql-yoga';

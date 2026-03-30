@@ -1,4 +1,3 @@
-import { Queue, type QueueOptions } from 'bullmq';
 import type Redis from 'ioredis';
 import Redlock from 'redlock';
 import { createRedis } from '@/server/redis/redis';
@@ -18,11 +17,4 @@ export function getRedlock(): Redlock {
 		retryJitter: 200,
 		automaticExtensionThreshold: 500,
 	}));
-}
-
-export function createBullQueue<DataType = any, ResultType = any, NameType extends string = string>(
-	name: string,
-	opts?: Partial<QueueOptions>,
-): Queue<DataType, ResultType, NameType> {
-	return new Queue<DataType, ResultType, NameType>(name, { connection: getRedis(), ...opts });
 }

@@ -1,6 +1,6 @@
-import { loadEnvs } from '@wener/nestjs';
-import { App } from '@wener/nestjs/app';
-import { patchMikroORMMetadataStorage } from '@wener/nestjs/entity';
+import { loadEnvs } from '@wener/server';
+import { App } from '@wener/server/app';
+import { patchMikroORMMetadataStorage } from '@wener/server/entity';
 
 patchMikroORMMetadataStorage();
 process.env.APP_NAME = 'wener-apis';

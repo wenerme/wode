@@ -1,4 +1,4 @@
-import { Contexts, getCurrentTenantId } from '@wener/nestjs/app';
+import { Contexts, getCurrentTenantId } from '@wener/server/app';
 import { Errors } from '@wener/utils';
 
 export {
@@ -7,7 +7,7 @@ export {
 	getFallbackTenantId,
 	getStaticTenantId,
 	requireTenantId,
-} from '@wener/nestjs/app';
+} from '@wener/server/app';
 
 export function requireUserId() {
 	const uid = Contexts.userId.get();

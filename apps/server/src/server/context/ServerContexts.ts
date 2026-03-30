@@ -1,6 +1,6 @@
-import { Currents } from '@wener/nestjs';
-import { setCurrentContext } from '@wener/nestjs/app';
-import type { StandardBaseEntity, TenantBaseEntity } from '@wener/nestjs/entity';
+import { Currents } from '@wener/server';
+import { setCurrentContext } from '@wener/server/app';
+import type { StandardBaseEntity, TenantBaseEntity } from '@wener/server/entity';
 import type { AccessTokenEntity } from '@/foundation/Auth/entity';
 import type { TenantEntity } from '@/foundation/Tenant/entity/TenantEntity';
 import type { UserEntity } from '@/foundation/User/UserEntity';

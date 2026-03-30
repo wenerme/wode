@@ -142,6 +142,7 @@ local/
 .agents/
 .agent/
 .claude/
+.serena/
 AGENTS.md
 CLAUDE.md
 GEMINI.md

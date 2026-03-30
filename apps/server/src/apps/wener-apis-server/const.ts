@@ -1,4 +1,4 @@
-import { buildDynamicModule, resolveProvides } from '@wener/nestjs/nest';
+import { buildDynamicModule, resolveProvides } from '@wener/server/nest';
 import { getGlobalStates } from '@wener/utils';
 import { AlpinePackageMetaService } from '@/alpine/AlpinePackageMetaService';
 import { AlpineRepoMetaService } from '@/alpine/AlpineRepoMetaService';

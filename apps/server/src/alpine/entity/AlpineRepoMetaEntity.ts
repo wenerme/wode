@@ -1,5 +1,5 @@
-import { Entity, type Opt, Property, types } from '@mikro-orm/core';
-import { EntitySchema, StandardBaseEntity } from '@wener/nestjs/entity';
+import { Entity, Property, types, type Opt } from '@mikro-orm/core';
+import { EntitySchema, StandardBaseEntity } from '@wener/server/entity';
 
 @EntitySchema({ idType: 'alprm' })
 @Entity({ tableName: 'alpine_repo_meta' })

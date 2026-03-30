@@ -1,11 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Contexts } from '@wener/nestjs/app';
+import { Contexts } from '@wener/server/app';
 import {
 	GeneralResponseObject,
 	RelayMutationInput,
 	RelayMutationPayload,
 	runRelayClientMutation,
-} from '@wener/nestjs/type-graphql';
+} from '@wener/server/type-graphql';
 import { Errors } from '@wener/utils';
 import { Arg, Authorized, Field, InputType, Int, Mutation, ObjectType, Resolver } from 'type-graphql';
 import { AuthService } from '@/foundation/Auth/AuthService';

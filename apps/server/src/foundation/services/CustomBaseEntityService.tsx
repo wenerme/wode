@@ -1,7 +1,7 @@
-import { type EntityData, LockMode } from '@mikro-orm/core';
-import type { StandardBaseEntity } from '@wener/nestjs/entity';
-import { EntityAuditAction, writeEntityAuditLog } from '@wener/nestjs/entity/audit';
-import { EntityBaseService, type PatchEntityRequest } from '@wener/nestjs/entity/service';
+import { LockMode, type EntityData } from '@mikro-orm/core';
+import type { StandardBaseEntity } from '@wener/server/entity';
+import { EntityAuditAction, writeEntityAuditLog } from '@wener/server/entity/audit';
+import { EntityBaseService, type PatchEntityRequest } from '@wener/server/entity/service';
 import { setData } from '@/entity/base/setData';
 
 export class CustomBaseEntityService<E extends StandardBaseEntity> extends EntityBaseService<E> {

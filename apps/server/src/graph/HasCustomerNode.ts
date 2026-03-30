@@ -1,4 +1,4 @@
-import { BaseNode, RelayNode } from '@wener/nestjs/type-graphql';
+import { BaseNode, RelayNode } from '@wener/server/type-graphql';
 import { Field, InterfaceType } from 'type-graphql';
 
 @InterfaceType({

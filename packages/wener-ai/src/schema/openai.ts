@@ -224,6 +224,22 @@ export const PredictionSchema = z.looseObject({
 	content: z.union([z.string(), z.array(z.looseObject({ type: z.literal('text'), text: z.string() }))]),
 });
 
+export const WebSearchOptionsSchema = z.looseObject({
+	search_context_size: z.enum(['low', 'medium', 'high']).nullable().optional(),
+	user_location: z
+		.looseObject({
+			type: z.literal('approximate'),
+			approximate: z.looseObject({
+				city: z.string().nullable().optional(),
+				country: z.string().nullable().optional(),
+				region: z.string().nullable().optional(),
+				timezone: z.string().nullable().optional(),
+			}),
+		})
+		.nullable()
+		.optional(),
+});
+
 // ============================================================================
 // Chat Completion Request
 // ============================================================================
@@ -307,9 +323,11 @@ export const CreateChatCompletionRequestSchema = z.looseObject({
 	seed: z.number().int().nullable().optional(),
 
 	// Service options
-	service_tier: z.enum(['auto', 'default', 'flex', 'priority']).nullable().optional(),
+	service_tier: z.enum(['auto', 'default', 'flex', 'scale', 'priority']).nullable().optional(),
 	store: z.boolean().nullable().optional(),
 	metadata: z.record(z.string(), z.string()).nullable().optional(),
+	verbosity: z.enum(['low', 'medium', 'high']).nullable().optional(),
+	web_search_options: WebSearchOptionsSchema.nullable().optional(),
 
 	// Reasoning/thinking (o-series, DeepSeek, Qwen)
 	reasoning_effort: z.enum(['low', 'medium', 'high']).nullable().optional(),
@@ -489,6 +507,12 @@ export const CreateResponseRequestSchema = z.looseObject({
 
 	// Streaming
 	stream: z.boolean().nullable().optional(),
+	stream_options: z
+		.looseObject({
+			include_usage: z.boolean().nullable().optional(),
+		})
+		.nullable()
+		.optional(),
 
 	// Tools
 	tools: z.array(ToolSchema).nullable().optional(),
@@ -507,6 +531,7 @@ export const CreateResponseRequestSchema = z.looseObject({
 	user: z.string().nullable().optional(),
 	metadata: z.record(z.string(), z.string()).nullable().optional(),
 	store: z.boolean().nullable().optional(),
+	service_tier: z.enum(['auto', 'default', 'flex', 'scale', 'priority']).nullable().optional(),
 
 	// Conversation
 	previous_response_id: z.string().nullable().optional(),

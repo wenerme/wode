@@ -1,14 +1,14 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { getContext } from '@wener/nestjs';
-import type { TenantBaseEntity } from '@wener/nestjs/entity';
-import { RelayMutationPayload, RelayNode, runRelayClientMutation } from '@wener/nestjs/type-graphql';
-import { HasOwnerRefNode, HasStateStatusNode } from '@wener/nestjs/type-graphql/interface';
+import { getContext } from '@wener/server';
+import type { TenantBaseEntity } from '@wener/server/entity';
+import { RelayMutationPayload, RelayNode, runRelayClientMutation } from '@wener/server/type-graphql';
+import { HasOwnerRefNode, HasStateStatusNode } from '@wener/server/type-graphql/interface';
 import {
 	MutationNodePayload,
 	MutationResourceInput,
 	ResolveResourceQueryInput,
-} from '@wener/nestjs/type-graphql/resource';
-import { type Constructor, Errors } from '@wener/utils';
+} from '@wener/server/type-graphql/resource';
+import { Errors, type Constructor } from '@wener/utils';
 import {
 	Arg,
 	Authorized,
@@ -96,7 +96,7 @@ export class HasUserNodePayload extends RelayMutationPayload {
 	data!: HasUserNode;
 }
 
-// import {ResolveResourceQueryInput} from '@wener/nestjs/type-graphql'
+// import {ResolveResourceQueryInput} from '@wener/server/type-graphql'
 
 @ObjectType()
 export class DeleteResourcePayload extends RelayMutationPayload {

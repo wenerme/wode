@@ -1,5 +1,5 @@
 import type { EntityManager } from '@mikro-orm/postgresql';
-import { getEntityManager } from '@wener/nestjs/mikro-orm';
+import { getEntityManager } from '@wener/server/mikro-orm';
 import { runSystemResourceImportSeed } from '@/foundation/jobs/runSystemResourceImportSeed';
 import { getEvents } from '@/server/events';
 import { SystemEvents } from '@/server/events/events';

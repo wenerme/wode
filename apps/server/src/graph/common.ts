@@ -1,4 +1,4 @@
-import { RelayMutationInput, RelayMutationPayload } from '@wener/nestjs/type-graphql';
+import { RelayMutationInput, RelayMutationPayload } from '@wener/server/type-graphql';
 import { ArgsType, Field, ID, InputType, ObjectType } from 'type-graphql';
 
 @ArgsType()

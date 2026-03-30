@@ -5,9 +5,15 @@
  * provider-specific fields that aren't in the standard schema.
  */
 
-import type { CreateMessageRequest, CreateMessageResponse } from '@wener/ai/anthropic';
-import type { CreateGenerateContentRequest, CreateGenerateContentResponse } from '@wener/ai/google';
-import type { CreateChatCompletionRequest, CreateChatCompletionResponse, Message } from '@wener/ai/openai';
+import type {
+	CreateChatCompletionRequest,
+	CreateChatCompletionResponse,
+	CreateGenerateContentRequest,
+	CreateGenerateContentResponse,
+	CreateMessageRequest,
+	CreateMessageResponse,
+	Message,
+} from '@wener/ai/schema';
 
 // Type aliases for converter functions
 type ChatMessage = Message;

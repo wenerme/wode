@@ -1,7 +1,7 @@
 import { EntityManager } from '@mikro-orm/postgresql';
 import { Inject, Injectable } from '@nestjs/common';
-import type { StandardBaseEntity } from '@wener/nestjs/entity';
-import { getEntityManager } from '@wener/nestjs/mikro-orm';
+import type { StandardBaseEntity } from '@wener/server/entity';
+import { getEntityManager } from '@wener/server/mikro-orm';
 import {
 	BaseObject,
 	createBaseEntityResolver,
@@ -10,8 +10,8 @@ import {
 	RelayMutationPayload,
 	runRelayClientMutation,
 	withBaseQuery,
-} from '@wener/nestjs/type-graphql';
-import { withStateStatusType } from '@wener/nestjs/type-graphql/mixins';
+} from '@wener/server/type-graphql';
+import { withStateStatusType } from '@wener/server/type-graphql/mixins';
 import { mixin } from '@wener/utils';
 import type { GraphQLResolveInfo } from 'graphql/type';
 import _ from 'lodash';
