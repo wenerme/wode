@@ -1,16 +1,16 @@
 import 'reflect-metadata';
-import { FileScalar, GraphQLJSONObjectScalar, NestContainerType, RelayNode } from '@wener/nestjs/type-graphql';
+import { FileScalar, GraphQLJSONObjectScalar, NestContainerType, RelayNode } from '@wener/server/type-graphql';
 import type { Constructor } from '@wener/utils';
 import BigNumber from 'bignumber.js';
 import dayjs from 'dayjs';
 import { GraphQLString } from 'graphql';
 import { GraphQLDateTime } from 'graphql-scalars';
 import {
+	buildSchema,
+	registerEnumType,
 	type AuthCheckerInterface,
 	type BuildSchemaOptions,
-	buildSchema,
 	type ResolverData,
-	registerEnumType,
 } from 'type-graphql';
 import { SystemRole } from '@/graph/const';
 import { getPubSub } from '@/graph/getPubSub';

@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { RelayNode } from '@wener/nestjs/type-graphql';
+import { RelayNode } from '@wener/server/type-graphql';
 import { Errors } from '@wener/utils';
 import { Arg, Authorized, ID, Query, Resolver } from 'type-graphql';
 import { CustomAutoEntityService } from '@/foundation/services/CustomAutoEntityService';

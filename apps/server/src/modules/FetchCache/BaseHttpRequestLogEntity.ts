@@ -1,5 +1,5 @@
-import { Entity, type Opt, Property, types } from '@mikro-orm/core';
-import { MinimalBaseEntity } from '@wener/nestjs/mikro-orm';
+import { Entity, Property, types, type Opt } from '@mikro-orm/core';
+import { MinimalBaseEntity } from '@wener/server/mikro-orm';
 
 @Entity({ abstract: true })
 export class BaseHttpRequestLogEntity extends MinimalBaseEntity {

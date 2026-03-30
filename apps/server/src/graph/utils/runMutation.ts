@@ -1,7 +1,7 @@
-import type { StandardBaseEntity } from '@wener/nestjs/entity';
-import type { EntityBaseService } from '@wener/nestjs/entity/service';
-import { runRelayClientMutation } from '@wener/nestjs/type-graphql';
-import type { BaseEntityResolver, CreateResourceInput, UpdateResourceInput } from '@wener/nestjs/type-graphql/resource';
+import type { StandardBaseEntity } from '@wener/server/entity';
+import type { EntityBaseService } from '@wener/server/entity/service';
+import { runRelayClientMutation } from '@wener/server/type-graphql';
+import type { BaseEntityResolver, CreateResourceInput, UpdateResourceInput } from '@wener/server/type-graphql/resource';
 
 export function runResolverUpdate<T, O, E extends StandardBaseEntity, SVC extends EntityBaseService<E>>(
 	resolver: BaseEntityResolver<O, E, SVC>,

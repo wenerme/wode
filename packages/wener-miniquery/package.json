@@ -19,8 +19,16 @@
 		"./search": "./src/search/index.ts",
 		"./package.json": "./package.json"
 	},
-	"files": ["lib", "src", "tsconfig.json"],
-	"keywords": ["sql", "builder", "dsl"],
+	"files": [
+		"lib",
+		"src",
+		"tsconfig.json"
+	],
+	"keywords": [
+		"sql",
+		"builder",
+		"dsl"
+	],
 	"scripts": {
 		"build": "make build",
 		"deploy": "make deploy",
@@ -31,12 +39,12 @@
 		"ts-pattern": "^5.9.0"
 	},
 	"devDependencies": {
-		"@electric-sql/pglite": "^0.4.1",
-		"@electric-sql/pglite-socket": "^0.1.1",
-		"@mikro-orm/core": "^7.0.3",
-		"@mikro-orm/decorators": "^7.0.3",
-		"@mikro-orm/postgresql": "^7.0.3",
-		"@mikro-orm/sql": "^7.0.3",
+		"@electric-sql/pglite": "^0.4.5",
+		"@electric-sql/pglite-socket": "^0.1.5",
+		"@mikro-orm/core": "^7.0.13",
+		"@mikro-orm/decorators": "^7.0.13",
+		"@mikro-orm/postgresql": "^7.0.13",
+		"@mikro-orm/sql": "^7.0.13",
 		"@sequelize/core": "7.0.0-alpha.48",
 		"ohm-js": "^17.5.0"
 	},

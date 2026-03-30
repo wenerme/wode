@@ -118,7 +118,6 @@ class WebFileSystem implements IFileSystem {
 		}
 
 		const entries: IFileStat[] = [];
-		// @ts-expect-error - FileSystemDirectoryHandle is async iterable in modern browsers
 		for await (const entry of (handle as FileSystemDirectoryHandle).values()) {
 			entries.push(await this._handleToStat(entry, join(path, entry.name)));
 		}

@@ -3,7 +3,7 @@
  * Based on OpenAI API specification
  */
 import { z } from 'zod';
-import { ContentPartSchema, MessageContentSchema, ToolCallSchema, ToolSchema, UsageSchema } from '../types';
+import { ContentPartSchema, MessageContentSchema, ToolCallSchema, ToolSchema, UsageSchema } from './openai.types';
 
 // ============================================================================
 // Message Types

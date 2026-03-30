@@ -1,5 +1,5 @@
 import { Inject } from '@nestjs/common';
-import { GeneralResponseObject, RelayMutationInput, runRelayClientMutation } from '@wener/nestjs/type-graphql';
+import { GeneralResponseObject, RelayMutationInput, runRelayClientMutation } from '@wener/server/type-graphql';
 import { Arg, Authorized, Mutation, Resolver } from 'type-graphql';
 import { runSystemMaintenance } from '@/foundation/jobs/runSystemMaintenance';
 import { SystemService } from '@/foundation/System/SystemService';

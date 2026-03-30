@@ -1,5 +1,5 @@
-import { Entity, type Hidden, Property, types, Unique } from '@mikro-orm/core';
-import { TenantBaseEntity, withStateStatusEntity } from '@wener/nestjs/entity';
+import { Entity, Property, types, Unique, type Hidden } from '@mikro-orm/core';
+import { TenantBaseEntity, withStateStatusEntity } from '@wener/server/entity';
 import { mixin } from '@wener/utils';
 import { hashPassword } from '@/foundation/User/actions/hashPassword';
 import { validatePassword } from '@/foundation/User/actions/validatePassword';

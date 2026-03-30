@@ -1,5 +1,5 @@
 import { Entity, Property, types, Unique } from '@mikro-orm/core';
-import { createStateStatusEntity, TenantBaseEntity, withSystemManagedEntity } from '@wener/nestjs/entity';
+import { createStateStatusEntity, TenantBaseEntity, withSystemManagedEntity } from '@wener/server/entity';
 import { mixin } from '@wener/utils';
 import { withRolesEntity } from './withRolesEntity';
 

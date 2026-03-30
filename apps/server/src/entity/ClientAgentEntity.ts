@@ -1,5 +1,5 @@
-import { Entity, type Opt, OptionalProps, Property, types } from '@mikro-orm/core';
-import { TenantBaseEntity } from '@wener/nestjs/entity';
+import { Entity, OptionalProps, Property, types, type Opt } from '@mikro-orm/core';
+import { TenantBaseEntity } from '@wener/server/entity';
 
 @Entity({ tableName: 'client_agent' })
 export class ClientAgentEntity extends TenantBaseEntity {

@@ -1,5 +1,5 @@
 import type { EntityManager } from '@mikro-orm/postgresql';
-import { getEntityManager } from '@wener/nestjs/mikro-orm';
+import { getEntityManager } from '@wener/server/mikro-orm';
 import { getEntitySeedDefs } from '@/foundation/meta/defineEntitySeed';
 import { requireTenantId } from '@/foundation/Tenant';
 

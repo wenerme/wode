@@ -78,7 +78,12 @@ export function formatDuration(value: MaybeDuration, o?: FormatDurationOptions):
 			parts.push(`${s}s`);
 		}
 		if (ms > 0 || parts.length === 0) {
-			parts.push(`${formatNumber(ms, 2)}ms`);
+			if (ms < 1 && parts.length === 0) {
+				const us = ms * 1000;
+				parts.push(us > 0 ? `${formatNumber(us, 2)}us` : '0ms');
+			} else {
+				parts.push(`${formatNumber(ms, 2)}ms`);
+			}
 		}
 		return parts.join('');
 	}

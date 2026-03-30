@@ -68,14 +68,14 @@ export const FeishuConfigSchema = BaseServerConfigSchema.extend({
 });
 export type FeishuConfig = z.infer<typeof FeishuConfigSchema>;
 
-// Gemini Web Search config
-export const GeminiSearchConfigSchema = BaseServerConfigSchema.extend({
-	type: z.literal('gemini-web-search'),
+// Gemini Tools config
+export const GeminiToolsConfigSchema = BaseServerConfigSchema.extend({
+	type: z.literal('gemini-tools'),
 	apiKey: z.string().optional().describe('Gemini API key'),
 	baseUrl: z.string().optional().describe('Gemini API base URL'),
 	model: z.string().optional().describe('Gemini model name (default: gemini-3-flash-preview)'),
 });
-export type GeminiSearchConfig = z.infer<typeof GeminiSearchConfigSchema>;
+export type GeminiToolsConfig = z.infer<typeof GeminiToolsConfigSchema>;
 
 // Relay config for proxying to other MCP servers
 export const RelayConfigSchema = BaseServerConfigSchema.extend({
@@ -113,7 +113,7 @@ const KnownServerConfigSchema = z.discriminatedUnion('type', [
 	PrometheusConfigSchema,
 	GrafanaConfigSchema,
 	FeishuConfigSchema,
-	GeminiSearchConfigSchema,
+	GeminiToolsConfigSchema,
 	RelayConfigSchema,
 	ApolloConfigConfigSchema,
 ]);

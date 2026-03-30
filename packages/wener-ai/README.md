@@ -16,8 +16,7 @@ Zod-based schema definitions for major AI providers, covering Chat Completions, 
 
 Each provider offers two schema flavors:
 
-- **Strict schemas** (`@wener/ai/<provider>/schema`) — precise `z.object()` definitions for strong validation
-- **Generic/loose schemas** (`@wener/ai/<provider>`) — `z.looseObject()` definitions that allow extra properties to pass through, suitable for protocol conversion, proxying, and auditing
+- **Strict schemas** and **Generic/loose schemas** are both exported from `@wener/ai/schema`
 
 ```ts
 // Generic (loose) — good for proxies and protocol conversion
@@ -27,26 +26,21 @@ import {
   CreateChatCompletionStreamChunkSchema,
   CreateResponseRequestSchema,
   UsageSchema,
-} from '@wener/ai/openai';
+} from '@wener/ai/schema';
 
 // Strict — good for direct API interaction
 import {
   ChatCompletionRequestSchema,
   ChatCompletionResponseSchema,
   ChatCompletionChunkSchema,
-} from '@wener/ai/openai/schema';
+} from '@wener/ai/schema';
 ```
 
 **Supported providers:**
 
 | Import path | Provider | Notes |
 | --- | --- | --- |
-| `@wener/ai/openai` | OpenAI | Chat Completions + Responses API |
-| `@wener/ai/openai/schema` | OpenAI | Strict schemas |
-| `@wener/ai/anthropic` | Anthropic | Claude-compatible schemas |
-| `@wener/ai/anthropic/schema` | Anthropic | Strict schemas |
-| `@wener/ai/google` | Google | Gemini-compatible schemas |
-| `@wener/ai/google/schema` | Google | Strict schemas |
+| `@wener/ai/schema` | OpenAI / Anthropic / Gemini | Generic + strict protocol schemas |
 
 ### MCP Server Definitions
 

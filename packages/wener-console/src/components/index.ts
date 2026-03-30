@@ -23,6 +23,7 @@ export { NavLink } from './links';
 export { OverlayScrollbar } from './OverlayScrollbar';
 export { ProdOnly } from './ProdOnly';
 export { renderSettingFormFromSchema } from './renderSettingFormFromSchema';
+export { StaticAppSidebarLayout, StaticAppSidebarLink, type StaticAppSidebarItem } from './StaticAppSidebarLayout';
 export { type TitleTabContentItem, TitleTabLayout } from './TitleTabLayout';
 export { getTitleTabItemKey, type TitleTabItem, TitleTabList } from './TitleTabList';
 export { UpdateNotification } from './UpdateNotification';

@@ -1,13 +1,13 @@
 import { EntityManager, MikroORM } from '@mikro-orm/postgresql';
 import { Inject, Injectable } from '@nestjs/common';
-import { Features } from '@wener/nestjs';
+import { Features } from '@wener/server';
 import {
 	EntityFeature,
 	type HasNotesEntity,
 	type IdentifiableEntity,
 	type StandardBaseEntity,
-} from '@wener/nestjs/entity';
-import { AutoEntityService, hasEntityFeature, type ResolveEntityOptions } from '@wener/nestjs/entity/service';
+} from '@wener/server/entity';
+import { AutoEntityService, hasEntityFeature, type ResolveEntityOptions } from '@wener/server/entity/service';
 import { Errors } from '@wener/utils';
 
 @Injectable()

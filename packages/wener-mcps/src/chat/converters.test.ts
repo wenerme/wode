@@ -1,6 +1,4 @@
-import type { MessagesResponse } from '@wener/ai/anthropic/schema';
-import type { GenerateContentResponse } from '@wener/ai/google/schema';
-import type { ChatMessage } from '@wener/ai/openai/schema';
+import type { ChatMessage, GenerateContentResponse, MessagesResponse } from '@wener/ai/schema';
 import { describe, expect, it } from 'vitest';
 import {
 	anthropicToOpenaiResponse,
