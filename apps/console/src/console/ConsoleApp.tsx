@@ -1,5 +1,3 @@
-import type React, { ReactNode } from 'react';
-
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import type { Client } from '@urql/core';
 import { getGraphQLUrl, getUrqlClient } from '@wener/console/client/graphql';
@@ -14,7 +12,9 @@ import { createUrqlClient } from '@wener/console/urql';
 import { WindowHost } from '@wener/console/window';
 import { ErrorSuspenseBoundary } from '@wener/reaction';
 import { getGlobalStates } from '@wener/utils';
-import { Outlet } from 'react-router-dom';
+import type React from 'react';
+import type { ReactNode } from 'react';
+import { Outlet } from 'react-router';
 import { Provider as UrqlProvider } from 'urql';
 import { ConsoleLayout } from '#/console/components/ConsoleLayout';
 import { loadModule } from '#/console/loadModule';

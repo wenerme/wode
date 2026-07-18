@@ -21,6 +21,7 @@ export const ReaddirInputSchema = z.object({
 	kind: FileKindSchema.optional(),
 	cursor: z.string().optional(),
 	hidden: z.boolean().default(false),
+	maxEntries: z.number().int().nonnegative().optional(),
 });
 const ReaddirOutputSchema = z.object({
 	data: FileStatSchema.array(),
@@ -57,6 +58,7 @@ const CopyInputSchema = z.object({
 const CopyOutputSchema = z.object({}).default({});
 const ReadFileInputSchema = z.object({
 	path: z.string(),
+	maxBytes: z.number().int().nonnegative().optional(),
 });
 const ReadFileOutputSchema = z.object({
 	base64: z.string(),

@@ -23,6 +23,10 @@
 		"./browserless": "./src/browserless/index.ts",
 		"./cubejs": "./src/cubejs/index.ts",
 		"./funasr": "./src/funasr/index.ts",
+		"./duckduckgo": "./src/duckduckgo/index.ts",
+		"./exa": "./src/exa/index.ts",
+		"./honcho": "./src/honcho/index.ts",
+		"./jina": "./src/jina/index.ts",
 		"./openai": "./src/openai/index.ts",
 		"./qq": "./src/qq/index.ts",
 		"./server": "./src/server/index.ts",
@@ -46,12 +50,7 @@
 		"./feishu/docs/markdown": "./src/feishu/docs/markdown/index.ts",
 		"./package.json": "./package.json"
 	},
-	"files": [
-		"lib.d.ts",
-		"src",
-		"lib",
-		"libs"
-	],
+	"files": ["lib.d.ts", "src", "lib", "libs"],
 	"keywords": [],
 	"scripts": {
 		"build": "make build",
@@ -65,21 +64,23 @@
 	"devDependencies": {
 		"@alicloud/openapi-client": "^0.4.15",
 		"@sinclair/typebox": "^0.34.49",
-		"@types/bun": "^1.3.13",
+		"@types/bun": "^1.3.14",
 		"@types/crypto-js": "^4.2.2",
 		"@types/node-rsa": "^1.1.4",
-		"@wecom/jssdk": "^2.4.0",
-		"cookie": "^1.1.1",
+		"@wecom/jssdk": "^2.4.2",
+		"cookie": "^2.0.1",
 		"crypto-js": "^4.2.0",
-		"dayjs": "^1.11.20",
-		"fast-xml-parser": "^5.7.2",
-		"node-rsa": "^1.1.1",
-		"puppeteer": "^24.42.0",
-		"puppeteer-core": "^24.42.0",
+		"dayjs": "^1.11.21",
+		"fast-xml-parser": "^5.9.3",
+		"node-rsa": "^2.0.0",
+		"puppeteer": "^25.3.0",
+		"puppeteer-core": "^25.3.0",
 		"ts-pattern": "^5.9.0",
-		"undici": "^8.2.0",
-		"vitest": "^4.1.5",
-		"ws": "^8.20.0"
+		"undici": "^8.7.0",
+		"vite": "npm:@voidzero-dev/vite-plus-core@0.2.5",
+		"vite-plus": "catalog:",
+		"ws": "^8.21.0",
+		"yaml": "^2.9.0"
 	},
 	"publishConfig": {
 		"exports": {
@@ -126,6 +127,22 @@
 			"./funasr": {
 				"types": "./src/funasr/index.ts",
 				"default": "./lib/funasr/index.js"
+			},
+			"./duckduckgo": {
+				"types": "./src/duckduckgo/index.ts",
+				"default": "./lib/duckduckgo/index.js"
+			},
+			"./exa": {
+				"types": "./src/exa/index.ts",
+				"default": "./lib/exa/index.js"
+			},
+			"./honcho": {
+				"types": "./src/honcho/index.ts",
+				"default": "./lib/honcho/index.js"
+			},
+			"./jina": {
+				"types": "./src/jina/index.ts",
+				"default": "./lib/jina/index.js"
 			},
 			"./openai": {
 				"types": "./src/openai/index.ts",

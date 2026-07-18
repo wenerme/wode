@@ -1,4 +1,4 @@
-import { assert, test } from 'vitest';
+import { assert, test } from 'vite-plus/test';
 import { createTranslate } from './createTranslate';
 
 test('exports', () => {

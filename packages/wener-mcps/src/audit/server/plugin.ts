@@ -5,14 +5,6 @@ import type { AuditConfig, DbConfig } from '../../server/schema';
 import type { McpsServerContext } from '../../server/server';
 import { AuditContract, type AuditEvent } from '../AuditContract';
 
-function headersToRecord(headers: Headers): Record<string, string> {
-	const record: Record<string, string> = {};
-	headers.forEach((value, key) => {
-		record[key] = value;
-	});
-	return record;
-}
-
 const auditStore = new LRUCache<string, AuditEvent>({
 	max: 10000,
 	ttl: 1000 * 60 * 60 * 24,
@@ -20,7 +12,6 @@ const auditStore = new LRUCache<string, AuditEvent>({
 
 let eventCounter = 0;
 let dbConfigured = false;
-let storedAuditConfig: AuditConfig | undefined;
 let storedDbConfig: DbConfig | undefined;
 
 async function persistToDb(event: AuditEvent, id: string): Promise<void> {
@@ -200,17 +191,13 @@ export function setupAudit(ctx: McpsServerContext, options?: { auditConfig?: Aud
 		storedDbConfig = auditDbConfig;
 		dbConfigured = true;
 	}
-	storedAuditConfig = auditConfig;
-
 	// Subscribe to request events
-	ctx.emitter.on(McpsEventType.Request, (event) => {
+	ctx.emitter.on(McpsEventType.Request, ({ data: event }) => {
 		const path = event.path || '';
 		if (!path) return;
 
 		const shouldAudit =
-			path.startsWith('/mcp/') ||
-			path.startsWith('/v1/') ||
-			(path.startsWith('/api/') && event.method !== 'GET');
+			path.startsWith('/mcp/') || path.startsWith('/v1/') || (path.startsWith('/api/') && event.method !== 'GET');
 
 		if (shouldAudit) {
 			addAuditEvent({

@@ -113,6 +113,31 @@ export function parseDivisionCode(code: string): ParsedDivisionCode | undefined 
 	};
 }
 
+export function randomDivisionCode(level: DivisionLevel = DivisionLevel.County): string {
+	const province = CodeNames[Math.floor(Math.random() * CodeNames.length)]?.value ?? '11';
+	if (level === DivisionLevel.Province) return province;
+
+	const city = Math.floor(Math.random() * 100)
+		.toString()
+		.padStart(2, '0');
+	if (level === DivisionLevel.City) return `${province}${city}`;
+
+	const county = Math.floor(Math.random() * 100)
+		.toString()
+		.padStart(2, '0');
+	if (level === DivisionLevel.County) return `${province}${city}${county}`;
+
+	const town = Math.floor(Math.random() * 1000)
+		.toString()
+		.padStart(3, '0');
+	if (level === DivisionLevel.Town) return `${province}${city}${county}${town}`;
+
+	const village = Math.floor(Math.random() * 1000)
+		.toString()
+		.padStart(3, '0');
+	return `${province}${city}${county}${town}${village}`;
+}
+
 export function formatDivisionCode({
 	province,
 	city,
@@ -148,7 +173,9 @@ export function formatDivisionCode({
 export namespace DivisionCode {
 	export const regex = DivisionCodeRegex;
 	export const parse = parseDivisionCode;
+	export const random = randomDivisionCode;
 	export const format = formatDivisionCode;
+	export type ParsedCode = ParsedDivisionCode;
 	export type Result = ParsedDivisionCode;
 	export const ResultSchema = ParsedDivisionCodeSchema;
 }

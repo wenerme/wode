@@ -1,4 +1,4 @@
-import { assert, test } from 'vitest';
+import { assert, test } from 'vite-plus/test';
 import { signv3 } from './signv3';
 
 test('signv3', async () => {

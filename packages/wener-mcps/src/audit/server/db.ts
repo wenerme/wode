@@ -1,4 +1,4 @@
-import { MikroORM, type Options } from '@mikro-orm/core';
+import { MikroORM } from '@mikro-orm/core';
 import { SqliteDriver } from '@mikro-orm/sql';
 import { createSqliteDialect } from '@wener/server/mikro-orm';
 import type { DbConfig } from '../../server/schema';
@@ -12,7 +12,7 @@ export { RequestLogEntity };
 let orm: MikroORM<SqliteDriver> | null = null;
 let initPromise: Promise<MikroORM<SqliteDriver>> | null = null;
 
-async function getOrmConfig(dbConfig?: DbConfig): Promise<Options<SqliteDriver>> {
+async function getOrmConfig(dbConfig?: DbConfig) {
 	const dbPath = dbConfig?.path || '.mcps.db';
 	return {
 		driver: SqliteDriver,
@@ -30,9 +30,10 @@ export async function ensureDbInitialized(dbConfig?: DbConfig): Promise<MikroORM
 
 	initPromise = (async () => {
 		const config = await getOrmConfig(dbConfig);
-		orm = await MikroORM.init(config);
-		await orm.schema.update();
-		return orm;
+		const initializedOrm = await MikroORM.init<SqliteDriver>(config as any);
+		await initializedOrm.schema.update();
+		orm = initializedOrm;
+		return initializedOrm;
 	})();
 
 	try {

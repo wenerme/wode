@@ -68,11 +68,9 @@ export function registerSiftTools(ctx: GrafanaContext) {
 		async ({ investigationId, analysisId }) => {
 			const analyses = await siftRequest(ctx, `/investigations/${investigationId}/analyses`);
 			if (!analyses || typeof analyses !== 'object') return analyses;
-			const items: unknown[] = Array.isArray((analyses as { data?: unknown[] }).data)
-				? (analyses as { data?: unknown[] }).data
-				: Array.isArray((analyses as { items?: unknown[] }).items)
-					? (analyses as { items?: unknown[] }).items
-					: [];
+			const dataItems = (analyses as { data?: unknown[] }).data;
+			const resultItems = (analyses as { items?: unknown[] }).items;
+			const items: unknown[] = Array.isArray(dataItems) ? dataItems : Array.isArray(resultItems) ? resultItems : [];
 			return (
 				items.find((entry) => typeof entry === 'object' && entry && (entry as { id?: string }).id === analysisId) ??
 				null

@@ -105,6 +105,7 @@ export function createConfig(opts: { daisyui?: any } = {}): Config {
 			'./src/**/*.{html,ts,tsx,js,jsx,mdx}',
 			'node_modules/common/src/**/*.{html,ts,tsx,js,jsx,mdx}',
 			'node_modules/@wener/console/src/**/*.{html,ts,tsx,js,jsx,mdx}',
+			'node_modules/@wener/ui/src/**/*.{html,ts,tsx,js,jsx,mdx}',
 		],
 		safelist: [{ pattern: /^(btn|input)-/ }],
 		darkMode: ['class'],

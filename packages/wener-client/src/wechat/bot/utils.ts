@@ -1,4 +1,4 @@
-import { WechatBotMessageItemType, type WechatBotMessageItem } from './types';
+import { type WechatBotMessageItem, WechatBotMessageItemType } from './types';
 
 export function extractWechatBotText(items: WechatBotMessageItem[]): string {
 	const parts: string[] = [];

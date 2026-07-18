@@ -1,4 +1,4 @@
-import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
+import { beforeAll, beforeEach, describe, expect, it } from 'vite-plus/test';
 import { ApolloConfigClient } from './ApolloConfigClient';
 import type { NotificationItem } from './types';
 

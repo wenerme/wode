@@ -1,16 +1,15 @@
+import type { ConnectionOptions, NatsConnection } from '@nats-io/nats-core';
 import { parseBoolean } from '@wener/utils';
-import type { ConnectionOptions, NatsConnection } from 'nats';
 import { z } from 'zod';
 
 export async function connect(opts: Partial<ConnectionOptions> = {}): Promise<NatsConnection> {
 	const isWs = Array.from(opts.servers ?? []).some((v) => /^ws?s:/.test(v));
 	if (isWs) {
-		// nextjs 用 ws 有问题
-		const { connect } = await import('nats.ws');
-		return connect(opts);
+		const { wsconnect } = await import('@nats-io/nats-core');
+		return wsconnect(opts);
 	}
 
-	const { connect } = await import('nats');
+	const { connect } = await import('@nats-io/transport-node');
 	return connect(opts);
 }
 
@@ -42,8 +41,12 @@ export function defineNatsConfig(
 		tls = {};
 	}
 
-	typeof opts.servers === 'string' && servers.unshift(opts.servers);
-	Array.isArray(opts.servers) && servers.unshift(...opts.servers);
+	if (typeof opts.servers === 'string') {
+		servers.unshift(opts.servers);
+	}
+	if (Array.isArray(opts.servers)) {
+		servers.unshift(...opts.servers);
+	}
 
 	opts = {
 		debug: parseBoolean(NATS_DEBUG),

@@ -1,18 +1,18 @@
-import { type Opt, types } from '@mikro-orm/core';
-import { Entity, Property } from '@mikro-orm/decorators/legacy';
+import { defineEntity, p } from '@mikro-orm/core';
+import { setEntitySchemaClass } from '../../entity/defineEntitySchemaClass';
 import { MinimalBaseEntity } from './MinimalBaseEntity';
 
-@Entity({ abstract: true })
-export abstract class MinimalResourceBaseEntity extends MinimalBaseEntity {
-	@Property({ type: types.string, nullable: true })
-	eid?: string;
+export const MinimalResourceBaseEntitySchema = defineEntity({
+	name: 'MinimalResourceBaseEntity',
+	abstract: true,
+	extends: MinimalBaseEntity,
+	properties: {
+		eid: p.string().nullable(),
+		attributes: p.json<Record<string, any>>().default('{}'),
+		properties: p.json<Record<string, any>>().default('{}'),
+		extensions: p.json<Record<string, any>>().default('{}'),
+	},
+});
 
-	@Property({ type: types.json, nullable: false, default: '{}' })
-	attributes!: Record<string, any> & Opt;
-
-	@Property({ type: types.json, nullable: false, default: '{}' })
-	properties!: Record<string, any> & Opt;
-
-	@Property({ type: types.json, nullable: false, default: '{}' })
-	extensions!: Record<string, any> & Opt;
-}
+export abstract class MinimalResourceBaseEntity extends MinimalResourceBaseEntitySchema.class {}
+setEntitySchemaClass(MinimalResourceBaseEntitySchema, MinimalResourceBaseEntity, MinimalBaseEntity);

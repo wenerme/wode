@@ -1,5 +1,4 @@
-import { BaseEntity, Config, type DefineConfig, type Hidden, type Opt, PrimaryKeyProp, types } from '@mikro-orm/core';
-import { Entity, PrimaryKey, Property } from '@mikro-orm/decorators/legacy';
+import { BaseEntity, Config, type DefineConfig, defineEntity, PrimaryKeyProp, p } from '@mikro-orm/core';
 
 export type StandardBaseEntityOptionalFields =
 	| 'id'
@@ -12,35 +11,28 @@ export type StandardBaseEntityOptionalFields =
 	| 'properties'
 	| 'extensions';
 
-@Entity({ abstract: true })
-export class StandardBaseEntity extends BaseEntity {
+export const StandardBaseEntitySchema = defineEntity({
+	name: 'StandardBaseEntity',
+	abstract: true,
+	extends: BaseEntity,
+	properties: {
+		id: p.string().primary().defaultRaw('public.gen_ulid()'),
+		uid: p.uuid().columnType('uuid').defaultRaw('gen_random_uuid()').unique(),
+		eid: p.string().nullable(),
+		createdAt: p.datetime().defaultRaw('current_timestamp'),
+		updatedAt: p
+			.datetime()
+			.defaultRaw('current_timestamp')
+			.onUpdate(() => new Date()),
+		deletedAt: p.datetime().nullable().hidden(),
+		attributes: p.json<Record<string, any>>().default('{}'),
+		properties: p.json<Record<string, any>>().default('{}'),
+		extensions: p.json<Record<string, any>>().default('{}'),
+	},
+});
+
+export class StandardBaseEntity extends StandardBaseEntitySchema.class {
 	[PrimaryKeyProp]?: 'id';
 	[Config]?: DefineConfig<{ forceObject: true }>;
-
-	@PrimaryKey({ type: types.string, defaultRaw: 'public.gen_ulid()', nullable: false })
-	id!: string & Opt;
-
-	@Property({ type: types.uuid, columnType: 'uuid', defaultRaw: `gen_random_uuid()`, unique: true, nullable: false })
-	uid!: string & Opt;
-
-	@Property({ type: types.string, nullable: true })
-	eid?: string;
-
-	@Property({ type: types.datetime, defaultRaw: 'current_timestamp' })
-	createdAt!: Date & Opt;
-
-	@Property({ type: types.datetime, defaultRaw: 'current_timestamp', onUpdate: () => new Date() })
-	updatedAt!: Date & Opt;
-
-	@Property({ type: types.datetime, nullable: true, hidden: true })
-	deletedAt?: Date & Hidden;
-
-	@Property({ type: types.json, nullable: false, default: '{}' })
-	attributes!: Record<string, any> & Opt;
-
-	@Property({ type: types.json, nullable: false, default: '{}' })
-	properties!: Record<string, any> & Opt;
-
-	@Property({ type: types.json, nullable: false, default: '{}' })
-	extensions!: Record<string, any> & Opt;
 }
+StandardBaseEntitySchema.setClass(StandardBaseEntity);

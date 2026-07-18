@@ -3,14 +3,14 @@ import { cn } from '@wener/console';
 import type React from 'react';
 import type { FC } from 'react';
 
-export const DaisyDrawerTrigger = Dialog.Trigger;
-export const DaisyDrawerRoot = Dialog.Root;
-export const DaisyDrawerPortal = Dialog.Portal;
+export const DaisyDrawerTrigger: typeof Dialog.Trigger = Dialog.Trigger;
+export const DaisyDrawerRoot: typeof Dialog.Root = Dialog.Root;
+export const DaisyDrawerPortal: typeof Dialog.Portal = Dialog.Portal;
 
 type OverlayProps = React.ComponentProps<typeof Dialog.Backdrop> & {};
 export const DaisyDrawerOverlay: FC<OverlayProps> = ({ children, className, ...props }) => {
 	return (
-		<Dialog.Backdrop className={'bg-base-300 fixed inset-0 z-30 opacity-75'} {...props}>
+		<Dialog.Backdrop className={cn('bg-base-300 fixed inset-0 z-30 opacity-75', className)} {...props}>
 			{children}
 		</Dialog.Backdrop>
 	);
@@ -39,7 +39,17 @@ export const DaisyDrawerDescription: FC<DescriptionProps> = ({ children, ...prop
 	return <Dialog.Description {...props}>{children}</Dialog.Description>;
 };
 
-export const DaisyDrawer = {
+type DaisyDrawerComponents = {
+	Trigger: typeof DaisyDrawerTrigger;
+	Root: typeof DaisyDrawerRoot;
+	Portal: typeof DaisyDrawerPortal;
+	Overlay: typeof DaisyDrawerOverlay;
+	Content: typeof DaisyDrawerContent;
+	Title: typeof DaisyDrawerTitle;
+	Description: typeof DaisyDrawerDescription;
+};
+
+export const DaisyDrawer: DaisyDrawerComponents = {
 	Trigger: DaisyDrawerTrigger,
 	Root: DaisyDrawerRoot,
 	Portal: DaisyDrawerPortal,
@@ -47,4 +57,4 @@ export const DaisyDrawer = {
 	Content: DaisyDrawerContent,
 	Title: DaisyDrawerTitle,
 	Description: DaisyDrawerDescription,
-} as const;
+};

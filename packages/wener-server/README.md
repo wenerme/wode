@@ -1,4 +1,3 @@
-
 # Server
 
 ## service
@@ -14,8 +13,8 @@ pnpm add @wener/{miniquery,nestjs,utils} dayjs reflect-metadata
 pnpm add @micro-orm/{core,nestjs,postgresql}
 # for zod based model validation
 pnpm add zod @anatine/zod-nestjs @anatine/zod-openapi
-# for Nats based microservice
-pnpm add nats nats.ws
+# for NATS based microservice
+pnpm add @nats-io/nats-core @nats-io/services @nats-io/transport-node
 # for file upload
 pnpm add @nest-lab/fastify-multer
 # nestjs deps

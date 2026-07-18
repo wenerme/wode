@@ -1,17 +1,18 @@
-import { types } from '@mikro-orm/core';
-import { Entity, Property } from '@mikro-orm/decorators/legacy';
+import { p } from '@mikro-orm/core';
 import type { Constructor } from '@wener/utils';
 import { Feature } from '../../Feature';
 import { EntityFeature } from '../enum';
+import { defineMixinEntity } from './defineMixinEntity';
 import type { HasSidEntity } from './types';
 
 export function withSidEntity<TBase extends Constructor>(Base: TBase) {
 	@Feature([EntityFeature.HasSid])
-	@Entity({ abstract: true })
 	abstract class HasSidMixinEntity extends Base implements HasSidEntity {
-		@Property({ type: types.bigint, nullable: false })
 		sid!: number;
 	}
 
-	return HasSidMixinEntity;
+	return defineMixinEntity(Base, HasSidMixinEntity, {
+		name: 'HasSidMixinEntity',
+		properties: { sid: p.bigint('number') },
+	});
 }

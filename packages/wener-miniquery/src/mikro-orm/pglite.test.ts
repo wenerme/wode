@@ -6,7 +6,7 @@ import { PGLiteSocketServer } from '@electric-sql/pglite-socket';
 import { BaseEntity, MikroORM, type Opt, types } from '@mikro-orm/core';
 import { Entity, OneToOne, PrimaryKey, Property } from '@mikro-orm/decorators/legacy';
 import { defineConfig, type SqlEntityManager } from '@mikro-orm/postgresql';
-import { afterAll, beforeAll, describe, expect, test } from 'vitest';
+import { afterAll, beforeAll, describe, expect, test } from 'vite-plus/test';
 import { toMikroOrmQuery } from './toMikroOrmQuery';
 
 @Entity({ tableName: 'users' })

@@ -41,7 +41,7 @@ var require,__filename,__dirname;
 		format: 'esm',
 		platform: 'node',
 		charset: 'utf8',
-		target: 'node20',
+		target: 'node24',
 		sourcemap: false,
 		legalComments: 'none',
 		// Bundle everything since we want a single executable

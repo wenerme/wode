@@ -1,4 +1,4 @@
-FROM wener/node:22
+FROM wener/node:24
 
 WORKDIR /app
 

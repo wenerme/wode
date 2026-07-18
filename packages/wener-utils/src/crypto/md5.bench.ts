@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { bench, describe } from 'vitest';
+import { bench, describe } from 'vite-plus/test';
 import { md5 } from './md5';
 
 describe('md5', () => {

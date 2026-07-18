@@ -4,16 +4,6 @@ import type { LazyRouteFunction, RouteObject, UIMatch } from 'react-router';
 export { usePrompt } from './usePrompt';
 export { useRouteTitles } from './useRouteTitles';
 
-declare module 'react-router' {
-	export interface IndexRouteObject {
-		meta?: KnownRouteObjectMeta;
-	}
-
-	export interface NonIndexRouteObject {
-		meta?: KnownRouteObjectMeta;
-	}
-}
-
 export interface KnownRouteObjectHandle {
 	title?: RouteHandleTitle;
 

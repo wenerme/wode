@@ -1,3 +1,4 @@
+import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 import { z } from 'zod';
 import type { GrafanaContext } from './server';
 
@@ -16,6 +17,18 @@ export function registerJsonTool<TSchema extends z.ZodTypeAny>(
 	},
 	handler: (input: z.infer<TSchema>) => Promise<unknown> | unknown,
 ) {
+	const callback = async (input: z.infer<TSchema>): Promise<CallToolResult> => {
+		try {
+			const data = await handler(input as z.infer<TSchema>);
+			if (data && typeof data === 'object' && 'content' in (data as Record<string, unknown>)) {
+				return data as CallToolResult;
+			}
+			return ctx.jsonResult(data);
+		} catch (error) {
+			return ctx.textResult(error instanceof Error ? error.message : String(error), true);
+		}
+	};
+
 	ctx.server.registerTool(
 		name,
 		{
@@ -23,17 +36,7 @@ export function registerJsonTool<TSchema extends z.ZodTypeAny>(
 			inputSchema: config.inputSchema,
 			annotations: config.readOnly ? { readOnlyHint: true } : undefined,
 		},
-		async (input: unknown) => {
-			try {
-				const data = await handler(input as z.infer<TSchema>);
-				if (data && typeof data === 'object' && 'content' in (data as Record<string, unknown>)) {
-					return data as any;
-				}
-				return ctx.jsonResult(data) as any;
-			} catch (error) {
-				return ctx.textResult(error instanceof Error ? error.message : String(error), true) as any;
-			}
-		},
+		callback as any,
 	);
 }
 

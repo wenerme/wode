@@ -1,5 +1,5 @@
 import { getGlobalThis } from '../web/getGlobalThis';
-import type { FetchLike } from './types';
+import type { FetchLike, FetchLikeInput } from './types';
 
 type RequestDelayFunction = (attempt: number, error: Error | null, response: Response | null) => number;
 type RequestRetryOnFunction = (
@@ -23,7 +23,7 @@ export function createFetchWithRetry({
 }: FetchWithRetryOptions = {}): FetchLike {
 	// https://github.com/jonbern/fetch-retry/blob/master/index.js
 
-	return function fetchRetry(input: string | URL | Request, init?: RequestInit) {
+	return function fetchRetry(input: FetchLikeInput, init?: RequestInit) {
 		return new Promise((resolve, reject) => {
 			var wrappedFetch = (attempt: number) => {
 				// As of node 18, this is no longer needed since node comes with native support for fetch:

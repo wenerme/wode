@@ -23,7 +23,7 @@ export const DockLayout: React.FC<{ children?: ReactNode; dock?: ReactNode }> = 
 	return (
 		<div className={clsx('flex h-screen w-full overflow-hidden', 'flex-col md:flex-row')}>
 			<main className={'relative order-5 h-full flex-1 overflow-auto'}>
-				<div className={'scrollbar-thin absolute inset-0'}>{children}</div>
+				<div className={'absolute inset-0 scrollbar-thin'}>{children}</div>
 			</main>
 			<aside
 				className={clsx(

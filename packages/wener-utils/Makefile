@@ -28,11 +28,12 @@ check-syntax:
 
 fmt-pkg:
 	pnpm tsx $(REPO_ROOT)/cli.ts pkg fmt --write
-	pnpm prettier --write package.json
+	pnpm exec vp fmt package.json
 
 build: build-lib
 
 build-lib:
+	node scripts/generate-slugify-data.mjs --check
 	rm -rf lib2
 	pnpm swc ./src -d ./lib2 --strip-leading-paths
 	npx -y ts-add-js-extension --dir=lib2
@@ -41,6 +42,7 @@ build-lib:
 	mv lib2 lib
 	rm -rf lib3
 
-publish2: build-lib
-	pnpm version patch --no-workspaces-update
+publish: build-lib
 	pnpm publish --registry https://registry.npmjs.org --access public --no-git-checks
+
+publish2: publish

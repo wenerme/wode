@@ -2,20 +2,10 @@ import { getUserStore } from '@wener/console/console';
 import { getGlobalStates } from '@wener/utils';
 import { type ConsoleAbility, defineAbilityForUser } from './casl';
 
-type UserAbility = {
-	can: ConsoleAbility['can'];
-	cannot: ConsoleAbility['cannot'];
-};
-
-export function getUserAbility(): UserAbility {
-	return getGlobalStates('UserAbility', (): UserAbility => {
+export function getUserAbility(): ConsoleAbility {
+	return getGlobalStates('UserAbility', (): ConsoleAbility => {
 		const user = getUserStore().getState();
-		let ab = defineAbilityForUser({ id: user.id, roles: (user.roles || []).map((v) => v.code) });
-
-		return {
-			can: ab.can.bind(ab),
-			cannot: ab.cannot.bind(ab),
-		};
+		return defineAbilityForUser({ id: user.id, roles: (user.roles || []).map((v) => v.code) });
 	});
 }
 

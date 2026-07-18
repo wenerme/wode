@@ -29,9 +29,7 @@ export const GeminiToolsMcpServerHandlerDef = defineMcpServerHandler<
 
 	resolveConfig(config, headers) {
 		const apiKey =
-			config.apiKey ||
-			headers?.get(GeminiToolsHeaderNames.API_KEY) ||
-			config.headers?.[GeminiToolsHeaderNames.API_KEY];
+			config.apiKey || headers?.get(GeminiToolsHeaderNames.API_KEY) || config.headers?.[GeminiToolsHeaderNames.API_KEY];
 		const baseUrl =
 			config.baseUrl ||
 			headers?.get(GeminiToolsHeaderNames.BASE_URL) ||

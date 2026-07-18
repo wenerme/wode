@@ -1,3 +1,4 @@
+export { WebVitals } from '../components/WebVitals';
 export { SiteLogo } from '../console/SiteLogo';
 export { ConsoleContext, getConsoleContext, setConsoleContext } from './ConsoleContext';
 
