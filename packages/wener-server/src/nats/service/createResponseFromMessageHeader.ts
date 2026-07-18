@@ -1,4 +1,4 @@
-import type { MsgHdrs } from 'nats';
+import type { MsgHdrs } from '@nats-io/nats-core';
 
 export function createResponseFromMessageHeader(
 	res: {

@@ -15,6 +15,8 @@ import type {
 	WritableData,
 	WriteFileOptions,
 } from '../IFileSystem';
+import { assertReaddirEntryLimit, validateReaddirMaxEntries } from '../readdirLimit';
+import { throwIfFileSystemAborted, validateReadFileMaxBytes } from '../resourceLimits';
 import { resolveData } from '../utils';
 import type { FileSystemContract } from './FileSystemContract';
 
@@ -34,7 +36,11 @@ class ContractFS implements IFileSystem {
 	}
 
 	async readdir(dir: string, options: ReaddirOptions = {}) {
+		throwIfFileSystemAborted(options.signal);
+		const maxEntries = validateReaddirMaxEntries(options.maxEntries);
 		const { data } = await this.client.readdir({ dir, ...options });
+		throwIfFileSystemAborted(options.signal);
+		assertReaddirEntryLimit(data.length, maxEntries, dir);
 		return data.map((stat) => ({
 			...stat,
 			mtime: stat.mtime.getTime(),
@@ -59,10 +65,15 @@ class ContractFS implements IFileSystem {
 	readFile(path: string, options?: ReadFileOptions & { encoding: 'text' }): Promise<string>;
 	readFile(path: string, options?: ReadFileOptions): Promise<Uint8Array>;
 	async readFile(path: string, options?: ReadFileOptions): Promise<string | Uint8Array> {
-		// Note: The contract doesn't currently support encoding options.
-		const { base64 } = await this.client.readFile({ path });
+		throwIfFileSystemAborted(options?.signal);
+		const maxBytes = validateReadFileMaxBytes(options?.maxBytes);
+		const { base64 } = await this.client.readFile({ path, maxBytes });
+		throwIfFileSystemAborted(options?.signal);
 		let enc = options?.encoding || 'binary';
 		let buf = ArrayBuffers.fromBase64(base64);
+		if (maxBytes !== undefined && buf.byteLength > maxBytes) {
+			throw new Error(`Remote read exceeded maxBytes ${maxBytes}`);
+		}
 		switch (enc) {
 			case 'text':
 				return ArrayBuffers.toString(buf);

@@ -1,4 +1,4 @@
-import { Entity, Property, types, type Opt } from '@mikro-orm/core';
+import { Entity, type Opt, Property, types } from '@mikro-orm/core';
 import { EntitySchema, StandardBaseEntity } from '@wener/server/entity';
 
 @EntitySchema({ idType: 'alppm' })

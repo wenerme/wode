@@ -1,7 +1,8 @@
 import { Logger } from '@nestjs/common';
 import { getHttpStatusText } from '@wener/utils';
-import type { NatsError } from 'nats';
 import { type ClientRequest, createResponseFromRequest } from '../../service';
+
+type NatsErrorLike = Error & { code?: string | number };
 
 export function createNatsErrorResponse({
 	error: e,
@@ -13,7 +14,7 @@ export function createNatsErrorResponse({
 	logger?: Logger;
 }) {
 	if (e && typeof e === 'object' && 'code' in e) {
-		const err = e as NatsError;
+		const err = e as NatsErrorLike;
 		log.error(`NatsError: ${e.code} ${err.message}`);
 		switch (e.code) {
 			case 'TIMEOUT': {

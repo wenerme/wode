@@ -17,10 +17,10 @@ import {
 } from './auth';
 import { isWechatBotSessionExpiredError } from './errors';
 import {
-	WechatBotMessageType,
 	type WechatBotCredentials,
 	type WechatBotIncomingMessage,
 	type WechatBotMessage,
+	WechatBotMessageType,
 } from './types';
 import { chunkWechatBotText, detectWechatBotMessageType, extractWechatBotText } from './utils';
 

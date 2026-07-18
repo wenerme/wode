@@ -1,5 +1,5 @@
 import { Buffer } from 'node:buffer';
-import { expect, test } from 'vitest';
+import { expect, test } from 'vite-plus/test';
 import { classOf } from '../langs/classOf';
 import { isBuffer } from './isBuffer';
 

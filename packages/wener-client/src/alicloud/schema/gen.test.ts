@@ -1,7 +1,7 @@
 import { exec } from 'node:child_process';
 import fs from 'node:fs/promises';
 import { pascalCase } from '@wener/utils';
-import { test } from 'vitest';
+import { test } from 'vite-plus/test';
 import type { ApiDoc, TypeSchema } from './spec';
 
 const alias: Record<string, string> = { RecognizeIdcardResponse: 'RecognizeIdcardRoot' };
@@ -32,7 +32,7 @@ test.skip(
 		await gen({ product: 'Dytnsapi', version: '2020-02-17' });
 		await gen({ product: 'ocr-api', version: '2021-07-07' });
 
-		await new Promise((resolve) => exec('pnpm prettier --write ./src/alicloud/*.ts', {}, resolve));
+		await new Promise((resolve) => exec('pnpm exec vp fmt ./src/alicloud/*.ts', {}, resolve));
 	},
 	{ timeout: 60 * 5 * 1000 },
 );

@@ -8,19 +8,19 @@ export function createFetchWithProxyByNodeFetch({
 	proxy?: string;
 	fetch?: FetchLike;
 } = {}): FetchLike {
-	const globalThis = getGlobalThis();
+	const globalObject = getGlobalThis();
 	if (!proxy) {
-		return fetch || globalThis.fetch;
+		return fetch || globalObject.fetch;
 	}
 
 	let agent: any;
-	const Request = globalThis.Request;
+	const Request = globalObject.Request;
 	let NodeRequest: any;
 	let NodeFetch: any;
 	return async (url, init?: RequestInit) => {
 		if (!agent) {
-			const { default: createHttpsProxyAgent } = await import('https-proxy-agent');
-			agent = (createHttpsProxyAgent as any)(proxy);
+			const { HttpsProxyAgent } = await import('https-proxy-agent');
+			agent = new HttpsProxyAgent(proxy);
 		}
 
 		// node-fetch 才可以，node v18 fetch 不支持

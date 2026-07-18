@@ -10,9 +10,9 @@ import {
 	createBcryptPasswordAlgorithm,
 	Password,
 } from '@wener/common/password';
-import { createBootstrap } from '@wener/server';
 import { createOpenAPIHono, runServer } from '@wener/server/hono';
 import { getEntityManager, OrmModule } from '@wener/server/mikro-orm';
+import { createBootstrap } from '@wener/server/nest';
 import { parseBoolean } from '@wener/utils';
 import { GraphQLSchema } from 'graphql/type';
 import { cors } from 'hono/cors';

@@ -1,5 +1,10 @@
 import { defineMcpServer } from '../McpServerDef';
-import { type CreateClickHouseMcpServerOptions, createClickHouseMcpServer } from './server';
+import {
+	type CreateClickHouseMcpServerOptions,
+	createClickHouseMcpServer,
+	DEFAULT_CLICKHOUSE_PROGRESS_HEADER_INTERVAL_MS,
+	DEFAULT_CLICKHOUSE_REQUEST_TIMEOUT_MS,
+} from './server';
 
 export const ClickHouseMcpServerDef = defineMcpServer<CreateClickHouseMcpServerOptions>({
 	name: 'clickhouse',
@@ -12,7 +17,13 @@ export const ClickHouseMcpServerDef = defineMcpServer<CreateClickHouseMcpServerO
 		return { valid: true };
 	},
 	getCacheKey(options) {
-		return `clickhouse::${options.url}`;
+		return [
+			'clickhouse',
+			options.url,
+			options.requestTimeoutMs ?? DEFAULT_CLICKHOUSE_REQUEST_TIMEOUT_MS,
+			options.progressHeaders ?? true,
+			String(options.progressHeaderIntervalMs ?? DEFAULT_CLICKHOUSE_PROGRESS_HEADER_INTERVAL_MS).replace(/_/g, ''),
+		].join('::');
 	},
 	create: createClickHouseMcpServer,
 });

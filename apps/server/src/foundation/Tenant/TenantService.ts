@@ -1,5 +1,5 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { EnsureRequestContext, EntityManager, MikroORM, type EntityRepository } from '@mikro-orm/postgresql';
+import { EnsureRequestContext, EntityManager, type EntityRepository, MikroORM } from '@mikro-orm/postgresql';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { getFallbackTenantId } from '@wener/server/app';
 import { isULID, isUUID } from '@wener/utils';
@@ -51,7 +51,7 @@ export class TenantService {
 
 	async resolveTenant({ tid }: { tid?: string }) {
 		const { repo, log } = this;
-		let query;
+		let query: Partial<Pick<TenantEntity, 'tid' | 'uid' | 'fullName'>> | undefined;
 		let tenant: TenantEntity | undefined | null;
 		if (tid) {
 			if (isULID(tid)) {

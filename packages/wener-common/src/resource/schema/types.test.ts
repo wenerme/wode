@@ -1,4 +1,4 @@
-import { describe, it } from 'vitest';
+import { describe, it } from 'vite-plus/test';
 import { createSchemaData, toJsonSchema } from '../../schema';
 import { renderJsonSchemaToMarkdownDoc } from '../../tools/renderJsonSchemaToMarkdownDoc';
 import { AnyResourceSchema } from './AnyResourceSchema';

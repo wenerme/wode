@@ -22,6 +22,8 @@ jobs:
       - name: Install
         run: |
           set -e
+          node -e 'const [major, minor] = process.versions.node.split(".").map(Number); if (major < 24 || (major === 24 && minor < 11)) { console.error(`Node >=24.11.0 is required, got ${process.version}`); process.exit(1) }'
+          pnpm --version
           # Install
           # may need Proxy
           # npm_config_proxy=http://127.0.0.1:1080 http_proxy=http://127.0.0.1:1080 https_proxy=http://127.0.0.1:1080
@@ -35,11 +37,11 @@ jobs:
 
       - name: Build
         env:
-          WXA_UPLOAD_KEY: "${{ secrets.WXA_UPLOAD_KEY }}"
-          DOCKER_REGISTRY: "${{ secrets.DOCKER_REGISTRY }}"
-          TURBO_TEAM: "${{ secrets.TURBO_TEAM }}"
-          TURBO_API: "${{ secrets.TURBO_API }}"
-          TURBO_TOKEN: "${{ secrets.TURBO_TOKEN }}"
+          WXA_UPLOAD_KEY: '${{ secrets.WXA_UPLOAD_KEY }}'
+          DOCKER_REGISTRY: '${{ secrets.DOCKER_REGISTRY }}'
+          TURBO_TEAM: '${{ secrets.TURBO_TEAM }}'
+          TURBO_API: '${{ secrets.TURBO_API }}'
+          TURBO_TOKEN: '${{ secrets.TURBO_TOKEN }}'
           TURBO_REMOTE_ONLY: true
         run: |
           set -e
@@ -54,15 +56,15 @@ jobs:
             (time $@ || echo $name >> $TMPDIR/run.fail.txt) 2>&1 > $TMPDIR/run.$name.txt
             echo "[$name] Done"
           }
-          
+
           echo Message:
           echo "${{github.event.head_commit.message}}" | sed -e "s/^/  /m"
-          
+
           echo Changes:
           # 空格分割
           echo ${{ steps.changes.outputs.files }} > $TMPDIR/changes
           cat $TMPDIR/changes | sed -e "s/^/  /m"
-          
+
           is-unchanged() {
             # manual
             echo "${{github.event.head_commit.message}}" | grep 'rebuild' && return 1
@@ -74,22 +76,22 @@ jobs:
             ! grep -q "$1" $TMPDIR/changes
             return $?
           }
-          
+
           #
-          
+
           make info
           # build packages
           make deploy
-          
-          
+
+
           #is-unchanged apps/apis || {
           #  cd apps/apis
           #  launch-as apis make build-standalone image-push &
           #  cd -
           #}
-          
+
           wait < <(jobs -p)
-          
+
           if [ -f $TMPDIR/run.fail.txt ]; then
             echo Failed:
             cat $TMPDIR/run.fail.txt | sed -e "s/^/  /m"

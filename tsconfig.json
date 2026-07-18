@@ -2,11 +2,7 @@
 	"compilerOptions": {
 		"target": "ESNext",
 		"module": "ESNext",
-		"lib": [
-			"dom",
-			"dom.iterable",
-			"ESNext"
-		],
+		"lib": ["dom", "dom.iterable", "ESNext"],
 		"composite": true,
 		"moduleResolution": "bundler",
 		"allowImportingTsExtensions": false,
@@ -29,9 +25,7 @@
 		"removeComments": false,
 		"stripInternal": true
 	},
-	"exclude": [
-		"node_modules"
-	],
+	"exclude": ["node_modules"],
 	"ts-node": {
 		"transpileOnly": true,
 		"swc": true,
@@ -50,6 +44,9 @@
 		},
 		{
 			"path": "./packages/system"
+		},
+		{
+			"path": "./packages/ui"
 		},
 		{
 			"path": "./packages/wener-client"

@@ -1,73 +1,38 @@
-import { type Opt, types } from '@mikro-orm/core';
-import { Entity, Property } from '@mikro-orm/decorators/legacy';
+import { defineEntity, p } from '@mikro-orm/core';
 import type { Bytes } from '@wener/utils';
+import { setEntitySchemaClass } from './defineEntitySchemaClass';
 import { StandardBaseEntity } from './StandardBaseEntity';
 
-@Entity({ abstract: true })
-export class BaseHttpRequestLogEntity extends StandardBaseEntity {
-	@Property({ type: types.string, nullable: true })
-	tid?: string;
+export const BaseHttpRequestLogEntitySchema = defineEntity({
+	name: 'BaseHttpRequestLogEntity',
+	abstract: true,
+	extends: StandardBaseEntity,
+	properties: {
+		tid: p.string().nullable(),
+		method: p.string(),
+		origin: p.string(),
+		pathname: p.string(),
+		url: p.string(),
+		query: p.json<Record<string, any>>().nullable(),
+		requestHeaders: p.json<Record<string, any>>().nullable(),
+		requestPayload: p.json<any>().nullable(),
+		requestBody: p.blob().$type<Bytes>().nullable(),
+		responseHeaders: p.json<Record<string, any>>().nullable(),
+		responsePayload: p.json<any>().nullable(),
+		responseBody: p.blob().$type<Bytes>().nullable(),
+		contentLength: p.integer().nullable(),
+		contentType: p.string().nullable(),
+		requestId: p.string().nullable(),
+		responseId: p.string().nullable(),
+		ok: p.boolean().nullable(),
+		statusCode: p.integer().nullable(),
+		statusText: p.string().nullable(),
+		duration: p.integer().nullable(),
+		hit: p.integer().default(0),
+	},
+});
 
-	@Property({ type: types.string, nullable: false })
-	method!: string;
-
-	@Property({ type: types.string, nullable: false })
-	origin!: string;
-
-	@Property({ type: types.string, nullable: false })
-	pathname!: string;
-
-	@Property({ type: types.string, nullable: false })
-	url!: string;
-
-	@Property({ type: types.json, nullable: true })
-	query!: Record<string, any>;
-
-	@Property({ type: types.json, nullable: true })
-	requestHeaders!: Record<string, any>;
-
-	@Property({ type: types.json, nullable: true })
-	requestPayload?: any;
-
-	@Property({ type: types.blob, nullable: true })
-	requestBody?: Bytes;
-
-	@Property({ type: types.json, nullable: true })
-	responseHeaders!: Record<string, any>;
-
-	@Property({ type: types.json, nullable: true })
-	responsePayload?: any;
-
-	@Property({ type: types.blob, nullable: true })
-	responseBody?: Bytes;
-
-	@Property({ type: types.integer, nullable: true })
-	contentLength?: number;
-
-	@Property({ type: types.string, nullable: true })
-	contentType?: string;
-
-	@Property({ type: types.string, nullable: true })
-	requestId?: string;
-
-	@Property({ type: types.string, nullable: true })
-	responseId?: string;
-
-	@Property({ type: types.boolean, nullable: true })
-	ok?: boolean;
-
-	@Property({ type: types.integer, nullable: true })
-	statusCode?: number;
-
-	@Property({ type: types.string, nullable: true })
-	statusText?: string;
-
-	@Property({ type: types.integer, nullable: true })
-	duration?: number;
-
-	@Property({ type: types.integer, nullable: false, default: 0 })
-	hit!: number & Opt;
-
+export class BaseHttpRequestLogEntity extends BaseHttpRequestLogEntitySchema.class {
 	fromUrl(o: string) {
 		const u = new URL(o);
 		u.searchParams.sort();
@@ -113,7 +78,11 @@ export class BaseHttpRequestLogEntity extends StandardBaseEntity {
 	}
 
 	toResponse(): Response {
-		const { responsePayload, responseBody, statusCode: status, responseHeaders: headers } = this;
-		return new Response(responseBody || JSON.stringify(responsePayload), { status, headers });
+		const { responsePayload, responseBody, responseHeaders: headers } = this;
+		return new Response(responseBody || JSON.stringify(responsePayload), {
+			status: this.statusCode ?? undefined,
+			headers: headers ?? undefined,
+		});
 	}
 }
+setEntitySchemaClass(BaseHttpRequestLogEntitySchema, BaseHttpRequestLogEntity, StandardBaseEntity);

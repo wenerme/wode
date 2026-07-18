@@ -1,4 +1,4 @@
-import { Entity, Enum, PrimaryKey, Property } from '@mikro-orm/decorators/es';
+import { Entity, Enum, PrimaryKey, Property } from '@mikro-orm/decorators/legacy';
 
 /**
  * MCP server type

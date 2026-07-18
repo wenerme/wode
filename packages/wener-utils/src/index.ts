@@ -27,6 +27,14 @@ export { parseObjectPath } from './objects/parseObjectPath';
 export { set } from './objects/set';
 export const sleep = Promises.sleep;
 export const isPromise = Promises.isPromise;
+export {
+	type AnsiFormatOptions,
+	type AnsiStyle,
+	type ConsoleColorOptions,
+	getAnsiStyle,
+	isConsoleColorEnabled,
+	stripAnsi,
+} from './ansi';
 export { TimeoutError, timeout } from './asyncs/timeout';
 // browser
 export { copy } from './browsers/copy';
@@ -59,6 +67,16 @@ export {
 	type FetchLike,
 	type FetchWithRetryOptions,
 } from './fetch';
+export {
+	type FormatHttpBodyOptions,
+	type FormatHttpDumpOptions,
+	formatHttpBody,
+	formatHttpDump,
+	type HttpDumpColorMode,
+	type HttpDumpDirection,
+	type HttpDumpHeaders,
+	type HttpDumpMessage,
+} from './fetch/formatHttpDump';
 // http
 export { getHttpStatusText, isRetryableHttpStatus } from './fetch/HttpStatus';
 // i18n
@@ -100,15 +118,15 @@ export { default as ms } from './libs/ms';
 export { clamp } from './maths/clamp';
 // math
 export { createRandom, type RNG, resolveRandom } from './maths/random';
-export { type AnsiFormatOptions, type AnsiStyle, getAnsiStyle, isConsoleColorEnabled } from './misc/getAnsiStyle';
 export { isModule, type Module } from './modules/isModule';
 // modules
 export { type ParsedModuleId, parseModuleId } from './modules/parseModuleId';
 // strings
-export { camelCase, pascalCase } from './strings/camelCase';
+export { type CamelCaseOptions, camelCase, pascalCase } from './strings/camelCase';
 export { formatBytes } from './strings/formatBytes';
 export { parseBytes } from './strings/parseBytes';
 export { renderTemplate } from './strings/renderTemplate';
+export { type Slugify, type SlugifyCharacterMap, type SlugifyOptions, slugify } from './strings/slugify';
 export type * from './types';
 export { isUUID } from './validations/isUUID';
 export { parseTimestamp } from './validations/parseTimestamp';

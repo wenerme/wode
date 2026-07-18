@@ -10,6 +10,7 @@ export {
 	type DataViewStore,
 	type DataViewStoreDumpState,
 	type DataViewStoreState,
+	type Identifiable,
 	type QueryInput,
 	type SortRule,
 	useDataViewActions,

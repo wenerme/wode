@@ -10,6 +10,8 @@ import type {
 	RmOptions,
 	WriteFileOptions,
 } from './IFileSystem';
+import { assertReaddirEntryLimit, validateReaddirMaxEntries } from './readdirLimit';
+import { validateReadFileMaxBytes } from './resourceLimits';
 import type { FileUrlOptions } from './types';
 
 class BrowserFSError extends Error {
@@ -136,7 +138,9 @@ class BrowserFS implements IFileSystem {
 		return !!handle;
 	}
 
-	async readdir(dir: string, _options?: ReaddirOptions): Promise<IFileStat[]> {
+	async readdir(dir: string, options?: ReaddirOptions): Promise<IFileStat[]> {
+		if (options?.signal?.aborted) throw new BrowserFSError('Operation aborted', 'ABORT_ERR');
+		const maxEntries = validateReaddirMaxEntries(options?.maxEntries);
 		const [handle] = await this._getHandle(dir);
 		if (!handle) {
 			throw new BrowserFSError(`Directory not found: ${dir}`, 'ENOENT');
@@ -149,6 +153,8 @@ class BrowserFS implements IFileSystem {
 		// FileSystemDirectoryHandle.values() is part of the File System Access API
 		// but not yet in TypeScript's lib.dom.d.ts
 		for await (const entry of (handle as any).values()) {
+			if (options?.signal?.aborted) throw new BrowserFSError('Operation aborted', 'ABORT_ERR');
+			assertReaddirEntryLimit(entries.length + 1, maxEntries, dir);
 			entries.push(await this._toFileStat(entry, join(dir, entry.name)));
 		}
 		return entries;
@@ -178,12 +184,19 @@ class BrowserFS implements IFileSystem {
 	readFile(path: string, options?: ReadFileOptions & { encoding: 'text' }): Promise<string>;
 	readFile(path: string, options?: ReadFileOptions): Promise<Uint8Array>;
 	async readFile(path: string, options?: ReadFileOptions): Promise<string | Uint8Array> {
+		if (options?.signal?.aborted) throw new BrowserFSError('Operation aborted', 'ABORT_ERR');
+		const maxBytes = validateReadFileMaxBytes(options?.maxBytes);
 		const [handle] = await this._getHandle(path);
+		if (options?.signal?.aborted) throw new BrowserFSError('Operation aborted', 'ABORT_ERR');
 		if (!handle || handle.kind !== 'file') {
 			throw new BrowserFSError(`File not found: ${path}`, 'ENOENT');
 		}
 		const file = await (handle as FileSystemFileHandle).getFile();
-		return options?.encoding === 'text' ? file.text() : file.bytes();
+		if (options?.signal?.aborted) throw new BrowserFSError('Operation aborted', 'ABORT_ERR');
+		const readable = maxBytes === undefined ? file : file.slice(0, maxBytes);
+		const bytes = new Uint8Array(await readable.arrayBuffer());
+		if (options?.signal?.aborted) throw new BrowserFSError('Operation aborted', 'ABORT_ERR');
+		return options?.encoding === 'text' ? new TextDecoder().decode(bytes) : bytes;
 	}
 
 	async writeFile(path: string, data: any, options: WriteFileOptions = {}): Promise<void> {

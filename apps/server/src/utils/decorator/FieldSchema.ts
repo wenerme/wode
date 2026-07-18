@@ -1,6 +1,6 @@
-import { MetadataStorage, type EntityMetadata, type EntityProperty, type Type } from '@mikro-orm/core';
+import { type EntityMetadata, type EntityProperty, MetadataStorage, type Type } from '@mikro-orm/core';
 import type { AbstractConstructor } from '@wener/server';
-import { computeIfAbsent, type Constructor } from '@wener/utils';
+import { type Constructor, computeIfAbsent } from '@wener/utils';
 
 export type FieldSchemaOptions = {
 	search?: boolean | 'exact';

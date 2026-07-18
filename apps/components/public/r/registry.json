@@ -1,7 +1,7 @@
 {
 	"$schema": "https://ui.shadcn.com/schema/registry.json",
 	"name": "wener-components",
-	"homepage": "https://wener.me",
+	"homepage": "https://ui-components.wener.me",
 	"items": [
 		{
 			"name": "hello-button",
@@ -12,6 +12,1115 @@
 				{
 					"path": "registry/default/ui/hello-button.tsx",
 					"type": "registry:component"
+				}
+			]
+		},
+		{
+			"name": "addressable-frame",
+			"type": "registry:ui",
+			"title": "Addressable Frame",
+			"description": "Composable frame chrome for URL, file, object, and other addressable content",
+			"dependencies": ["daisyui"],
+			"files": [
+				{
+					"path": "registry/default/ui/addressable-frame.tsx",
+					"type": "registry:ui",
+					"target": "@ui/addressable-frame.tsx"
+				}
+			]
+		},
+		{
+			"name": "header-content-footer-layout",
+			"type": "registry:ui",
+			"title": "Header Content Footer Layout",
+			"description": "A bounded flex-column layout with composable header, scrollable content, and footer slots",
+			"dependencies": ["daisyui"],
+			"files": [
+				{
+					"path": "registry/default/ui/header-content-footer-layout.tsx",
+					"type": "registry:ui",
+					"target": "@ui/header-content-footer-layout.tsx"
+				}
+			]
+		},
+		{
+			"name": "left-center-right-layout",
+			"type": "registry:ui",
+			"title": "Left Center Right Layout",
+			"description": "A stable three-slot horizontal layout with independently aligned left, geometric-center, and right content",
+			"files": [
+				{
+					"path": "registry/default/ui/left-center-right-layout.tsx",
+					"type": "registry:ui",
+					"target": "@ui/left-center-right-layout.tsx"
+				}
+			]
+		},
+		{
+			"name": "resizable",
+			"type": "registry:ui",
+			"title": "Resizable",
+			"description": "The shadcn resizable panel group, panel, and accessible separator for react-resizable-panels v4",
+			"dependencies": ["daisyui", "lucide-react", "react-resizable-panels@^4.12.1"],
+			"files": [
+				{
+					"path": "registry/default/ui/resizable.tsx",
+					"type": "registry:ui",
+					"target": "@ui/resizable.tsx"
+				}
+			]
+		},
+		{
+			"name": "path-address-bar",
+			"type": "registry:ui",
+			"title": "Path Address Bar",
+			"description": "A responsive breadcrumb and editable path address hybrid with ancestor overflow and contextual current-path actions",
+			"dependencies": ["@base-ui/react@^1.6.0", "daisyui", "lucide-react"],
+			"files": [
+				{
+					"path": "registry/default/ui/path-address-bar/path-address-model.ts",
+					"type": "registry:lib",
+					"target": "@components/path-address-bar/path-address-model.ts"
+				},
+				{
+					"path": "registry/default/ui/path-address-bar/path-address-bar-types.ts",
+					"type": "registry:lib",
+					"target": "@components/path-address-bar/path-address-bar-types.ts"
+				},
+				{
+					"path": "registry/default/ui/path-address-bar/path-address-bar-menu-item.tsx",
+					"type": "registry:component",
+					"target": "@components/path-address-bar/path-address-bar-menu-item.tsx"
+				},
+				{
+					"path": "registry/default/ui/path-address-bar/path-address-bar.tsx",
+					"type": "registry:component",
+					"target": "@components/path-address-bar/path-address-bar.tsx"
+				},
+				{
+					"path": "registry/default/ui/path-address-bar/index.ts",
+					"type": "registry:component",
+					"target": "@components/path-address-bar/index.ts"
+				}
+			]
+		},
+		{
+			"name": "file-viewer",
+			"type": "registry:ui",
+			"title": "File Viewer",
+			"description": "Bounded Text, Image, PDF, Audio, Video, and unsupported-file viewers with an optional filesystem adapter",
+			"dependencies": ["daisyui", "lucide-react"],
+			"files": [
+				{
+					"path": "registry/default/ui/addressable-frame.tsx",
+					"type": "registry:ui",
+					"target": "@ui/addressable-frame.tsx"
+				},
+				{
+					"path": "registry/default/ui/file-viewer/file-viewer-types.ts",
+					"type": "registry:lib",
+					"target": "@components/file-viewer/file-viewer-types.ts"
+				},
+				{
+					"path": "registry/default/ui/file-viewer/file-viewer-kind.ts",
+					"type": "registry:lib",
+					"target": "@components/file-viewer/file-viewer-kind.ts"
+				},
+				{
+					"path": "registry/default/ui/file-viewer/use-file-viewer-object-url.ts",
+					"type": "registry:lib",
+					"target": "@components/file-viewer/use-file-viewer-object-url.ts"
+				},
+				{
+					"path": "registry/default/ui/file-viewer/text-file-viewer.tsx",
+					"type": "registry:component",
+					"target": "@components/file-viewer/text-file-viewer.tsx"
+				},
+				{
+					"path": "registry/default/ui/file-viewer/media-file-viewers.tsx",
+					"type": "registry:component",
+					"target": "@components/file-viewer/media-file-viewers.tsx"
+				},
+				{
+					"path": "registry/default/ui/file-viewer/file-viewer.tsx",
+					"type": "registry:component",
+					"target": "@components/file-viewer/file-viewer.tsx"
+				},
+				{
+					"path": "registry/default/ui/file-viewer/file-system-file-viewer.tsx",
+					"type": "registry:component",
+					"target": "@components/file-viewer/file-system-file-viewer.tsx"
+				},
+				{
+					"path": "registry/default/ui/file-viewer/index.ts",
+					"type": "registry:component",
+					"target": "@components/file-viewer/index.ts"
+				}
+			]
+		},
+		{
+			"name": "status",
+			"type": "registry:ui",
+			"title": "Status",
+			"description": "A standalone semantic status indicator with plain, soft, solid, and outline presentations",
+			"dependencies": ["daisyui"],
+			"files": [
+				{
+					"path": "registry/default/ui/status.tsx",
+					"type": "registry:ui",
+					"target": "@ui/status.tsx"
+				}
+			]
+		},
+		{
+			"name": "formats",
+			"type": "registry:component",
+			"title": "Value Formats",
+			"description": "Common empty, text, number, currency, percent, bytes, duration, date, boolean, and phone value formatters",
+			"dependencies": ["daisyui"],
+			"files": [
+				{
+					"path": "registry/default/ui/formats/format-values.ts",
+					"type": "registry:lib",
+					"target": "@components/formats/format-values.ts"
+				},
+				{
+					"path": "registry/default/ui/formats/format-components.tsx",
+					"type": "registry:component",
+					"target": "@components/formats/format-components.tsx"
+				},
+				{
+					"path": "registry/default/ui/formats/index.ts",
+					"type": "registry:component",
+					"target": "@components/formats/index.ts"
+				}
+			]
+		},
+		{
+			"name": "hook-form",
+			"type": "registry:component",
+			"title": "Hook Form Basics",
+			"description": "React Hook Form provider, fields, submit/debug/data preview controls, and form state utilities",
+			"dependencies": ["daisyui", "react-hook-form"],
+			"files": [
+				{
+					"path": "registry/default/ui/hook-form/hook-form-utils.ts",
+					"type": "registry:lib",
+					"target": "@components/hook-form/hook-form-utils.ts"
+				},
+				{
+					"path": "registry/default/ui/hook-form/hook-form.tsx",
+					"type": "registry:component",
+					"target": "@components/hook-form/hook-form.tsx"
+				},
+				{
+					"path": "registry/default/ui/hook-form/index.ts",
+					"type": "registry:component",
+					"target": "@components/hook-form/index.ts"
+				}
+			]
+		},
+		{
+			"name": "zoom",
+			"type": "registry:component",
+			"title": "Image Zoom",
+			"description": "An accessible controlled or uncontrolled image zoom with native dialog behavior and animated viewport fitting",
+			"dependencies": ["lucide-react"],
+			"files": [
+				{
+					"path": "registry/default/ui/zoom.tsx",
+					"type": "registry:component"
+				}
+			]
+		},
+		{
+			"name": "web-vitals",
+			"type": "registry:component",
+			"title": "Web Vitals",
+			"description": "A headless, lazily loaded Core Web Vitals collector with callback and browser-event reporting",
+			"dependencies": ["web-vitals"],
+			"files": [
+				{
+					"path": "registry/default/ui/web-vitals.tsx",
+					"type": "registry:component"
+				}
+			]
+		},
+		{
+			"name": "update-notification",
+			"type": "registry:component",
+			"title": "Update Notification",
+			"description": "A headless web update detector with toast, banner, and inline notification presenters",
+			"dependencies": ["daisyui", "lucide-react"],
+			"files": [
+				{
+					"path": "registry/default/ui/update-notification/use-update-notification.ts",
+					"type": "registry:hook",
+					"target": "@components/update-notification/use-update-notification.ts"
+				},
+				{
+					"path": "registry/default/ui/update-notification/update-notification-display.tsx",
+					"type": "registry:component",
+					"target": "@components/update-notification/update-notification-display.tsx"
+				},
+				{
+					"path": "registry/default/ui/update-notification/update-notification.tsx",
+					"type": "registry:component",
+					"target": "@components/update-notification/update-notification.tsx"
+				},
+				{
+					"path": "registry/default/ui/update-notification/index.ts",
+					"type": "registry:component",
+					"target": "@components/update-notification/index.ts"
+				}
+			]
+		},
+		{
+			"name": "loaders",
+			"type": "registry:component",
+			"title": "Loading Primitives",
+			"description": "Accessible loaders, pending buttons, section and page indicators, local overlays, and list/table skeleton recipes",
+			"dependencies": ["daisyui"],
+			"files": [
+				{
+					"path": "registry/default/ui/loaders/loader.tsx",
+					"type": "registry:component",
+					"target": "@components/loaders/loader.tsx"
+				},
+				{
+					"path": "registry/default/ui/loaders/pending-button.tsx",
+					"type": "registry:component",
+					"target": "@components/loaders/pending-button.tsx"
+				},
+				{
+					"path": "registry/default/ui/loaders/loading-overlay.tsx",
+					"type": "registry:component",
+					"target": "@components/loaders/loading-overlay.tsx"
+				},
+				{
+					"path": "registry/default/ui/loaders/skeleton.tsx",
+					"type": "registry:component",
+					"target": "@components/loaders/skeleton.tsx"
+				},
+				{
+					"path": "registry/default/ui/loaders/index.ts",
+					"type": "registry:component",
+					"target": "@components/loaders/index.ts"
+				}
+			]
+		},
+		{
+			"name": "query-builder",
+			"type": "registry:component",
+			"title": "Query Builder",
+			"description": "Schema-driven nested query AST editor with immutable actions, draft state, validation, searchable fields, and custom value editors",
+			"dependencies": ["@base-ui/react", "daisyui", "lucide-react"],
+			"files": [
+				{
+					"path": "registry/default/ui/query-builder/query-model.ts",
+					"type": "registry:lib",
+					"target": "@components/query-builder/query-model.ts"
+				},
+				{
+					"path": "registry/default/ui/query-builder/query-state.ts",
+					"type": "registry:lib",
+					"target": "@components/query-builder/query-state.ts"
+				},
+				{
+					"path": "registry/default/ui/query-builder/query-json-schema.ts",
+					"type": "registry:lib",
+					"target": "@components/query-builder/query-json-schema.ts"
+				},
+				{
+					"path": "registry/default/ui/query-builder/query-messages.ts",
+					"type": "registry:lib",
+					"target": "@components/query-builder/query-messages.ts"
+				},
+				{
+					"path": "registry/default/ui/query-builder/use-query-builder.ts",
+					"type": "registry:hook",
+					"target": "@components/query-builder/use-query-builder.ts"
+				},
+				{
+					"path": "registry/default/ui/query-builder/query-editors.tsx",
+					"type": "registry:component",
+					"target": "@components/query-builder/query-editors.tsx"
+				},
+				{
+					"path": "registry/default/ui/query-builder/query-builder.tsx",
+					"type": "registry:component",
+					"target": "@components/query-builder/query-builder.tsx"
+				},
+				{
+					"path": "registry/default/ui/query-builder/index.ts",
+					"type": "registry:component",
+					"target": "@components/query-builder/index.ts"
+				}
+			]
+		},
+		{
+			"name": "ai-config-editor",
+			"type": "registry:ui",
+			"title": "AI Config Editor",
+			"description": "Controlled configuration editor shell with form/JSON modes, validation fallback, secret, collection, map, and JSON field primitives",
+			"dependencies": ["daisyui", "lucide-react"],
+			"files": [
+				{
+					"path": "registry/default/ui/ai-config-editor/ai-config-types.ts",
+					"type": "registry:lib",
+					"target": "@components/ui/ai-config-editor/ai-config-types.ts"
+				},
+				{
+					"path": "registry/default/ui/ai-config-editor/ai-config-messages.ts",
+					"type": "registry:lib",
+					"target": "@components/ui/ai-config-editor/ai-config-messages.ts"
+				},
+				{
+					"path": "registry/default/ui/ai-config-editor/ai-config-validation.ts",
+					"type": "registry:lib",
+					"target": "@components/ui/ai-config-editor/ai-config-validation.ts"
+				},
+				{
+					"path": "registry/default/ui/ai-config-editor/use-ai-config-draft.ts",
+					"type": "registry:hook",
+					"target": "@components/ui/ai-config-editor/use-ai-config-draft.ts"
+				},
+				{
+					"path": "registry/default/ui/ai-config-editor/use-stable-list-entries.ts",
+					"type": "registry:hook",
+					"target": "@components/ui/ai-config-editor/use-stable-list-entries.ts"
+				},
+				{
+					"path": "registry/default/ui/ai-config-editor/ai-config-fields.tsx",
+					"type": "registry:component",
+					"target": "@components/ui/ai-config-editor/ai-config-fields.tsx"
+				},
+				{
+					"path": "registry/default/ui/ai-config-editor/ai-config-collections.tsx",
+					"type": "registry:component",
+					"target": "@components/ui/ai-config-editor/ai-config-collections.tsx"
+				},
+				{
+					"path": "registry/default/ui/ai-config-editor/ai-config-layout.tsx",
+					"type": "registry:component",
+					"target": "@components/ui/ai-config-editor/ai-config-layout.tsx"
+				},
+				{
+					"path": "registry/default/ui/ai-config-editor/json-value-editor.tsx",
+					"type": "registry:component",
+					"target": "@components/ui/ai-config-editor/json-value-editor.tsx"
+				},
+				{
+					"path": "registry/default/ui/ai-config-editor/ai-config-editor.tsx",
+					"type": "registry:component",
+					"target": "@components/ui/ai-config-editor/ai-config-editor.tsx"
+				},
+				{
+					"path": "registry/default/ui/ai-config-editor/index.ts",
+					"type": "registry:component",
+					"target": "@components/ui/ai-config-editor/index.ts"
+				}
+			]
+		},
+		{
+			"name": "ai-provider-editor",
+			"type": "registry:block",
+			"title": "AI Provider Editor",
+			"description": "Controlled canonical Provider editor for identity, connection, plaintext API key, routing, capabilities, tags, and extensions",
+			"registryDependencies": ["https://ui-components.wener.me/r/ai-config-editor.json"],
+			"dependencies": ["@wener/ai@^0.1.21", "daisyui"],
+			"files": [
+				{
+					"path": "registry/default/blocks/ai-provider-editor/ai-provider-editor.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/ai-provider-editor/ai-provider-editor.tsx"
+				},
+				{
+					"path": "registry/default/blocks/ai-provider-editor/index.ts",
+					"type": "registry:component",
+					"target": "@components/blocks/ai-provider-editor/index.ts"
+				}
+			]
+		},
+		{
+			"name": "ai-endpoint-editor",
+			"type": "registry:block",
+			"title": "AI Endpoint Editor",
+			"description": "Controlled canonical Endpoint editor for Provider ownership, API connection, credentials, routing, tags, and extensions",
+			"registryDependencies": ["https://ui-components.wener.me/r/ai-config-editor.json"],
+			"dependencies": ["@wener/ai@^0.1.21", "daisyui"],
+			"files": [
+				{
+					"path": "registry/default/blocks/ai-endpoint-editor/ai-endpoint-editor-types.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/ai-endpoint-editor/ai-endpoint-editor-types.ts"
+				},
+				{
+					"path": "registry/default/blocks/ai-endpoint-editor/ai-endpoint-editor.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/ai-endpoint-editor/ai-endpoint-editor.tsx"
+				},
+				{
+					"path": "registry/default/blocks/ai-endpoint-editor/index.ts",
+					"type": "registry:component",
+					"target": "@components/blocks/ai-endpoint-editor/index.ts"
+				}
+			]
+		},
+		{
+			"name": "ai-model-editor",
+			"type": "registry:block",
+			"title": "AI Model Editor",
+			"description": "Controlled canonical Model editor with injected Provider/Endpoint references, modalities, capabilities, limits, cost, defaults, and status",
+			"registryDependencies": ["https://ui-components.wener.me/r/ai-config-editor.json"],
+			"dependencies": ["@wener/ai@^0.1.21", "daisyui"],
+			"files": [
+				{
+					"path": "registry/default/blocks/ai-model-editor/ai-model-editor-types.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/ai-model-editor/ai-model-editor-types.ts"
+				},
+				{
+					"path": "registry/default/blocks/ai-model-editor/ai-model-advanced-fields.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/ai-model-editor/ai-model-advanced-fields.tsx"
+				},
+				{
+					"path": "registry/default/blocks/ai-model-editor/ai-model-editor.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/ai-model-editor/ai-model-editor.tsx"
+				},
+				{
+					"path": "registry/default/blocks/ai-model-editor/index.ts",
+					"type": "registry:component",
+					"target": "@components/blocks/ai-model-editor/index.ts"
+				}
+			]
+		},
+		{
+			"name": "ai-service-editor",
+			"type": "registry:block",
+			"title": "AI Service Editor",
+			"description": "Controlled canonical Service editor for endpoint connection, plaintext authentication, credentials, capabilities, and extensions",
+			"registryDependencies": ["https://ui-components.wener.me/r/ai-config-editor.json"],
+			"dependencies": ["@wener/ai@^0.1.21", "daisyui"],
+			"files": [
+				{
+					"path": "registry/default/blocks/ai-service-editor/ai-service-editor-types.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/ai-service-editor/ai-service-editor-types.ts"
+				},
+				{
+					"path": "registry/default/blocks/ai-service-editor/ai-service-authentication-fields.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/ai-service-editor/ai-service-authentication-fields.tsx"
+				},
+				{
+					"path": "registry/default/blocks/ai-service-editor/ai-service-editor.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/ai-service-editor/ai-service-editor.tsx"
+				},
+				{
+					"path": "registry/default/blocks/ai-service-editor/index.ts",
+					"type": "registry:component",
+					"target": "@components/blocks/ai-service-editor/index.ts"
+				}
+			]
+		},
+		{
+			"name": "mcp-server-editor",
+			"type": "registry:block",
+			"title": "MCP Server Editor",
+			"description": "Controlled canonical MCP Server editor with streamable-http, SSE, and stdio transport-specific fields",
+			"registryDependencies": ["https://ui-components.wener.me/r/ai-config-editor.json"],
+			"dependencies": ["@wener/ai@^0.1.21", "daisyui"],
+			"files": [
+				{
+					"path": "registry/default/blocks/mcp-server-editor/mcp-server-editor.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/mcp-server-editor/mcp-server-editor.tsx"
+				},
+				{
+					"path": "registry/default/blocks/mcp-server-editor/index.ts",
+					"type": "registry:component",
+					"target": "@components/blocks/mcp-server-editor/index.ts"
+				}
+			]
+		},
+		{
+			"name": "agent-persona-editor",
+			"type": "registry:block",
+			"title": "Agent Persona Editor",
+			"description": "Controlled canonical Persona authoring editor with bounded lore entries and asset manifests, prompts, governance, sources, and rights",
+			"registryDependencies": ["https://ui-components.wener.me/r/ai-config-editor.json"],
+			"dependencies": ["@wener/ai@^0.1.21", "daisyui", "lucide-react"],
+			"files": [
+				{
+					"path": "registry/default/blocks/agent-persona-editor/agent-persona-editor-types.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/agent-persona-editor/agent-persona-editor-types.ts"
+				},
+				{
+					"path": "registry/default/blocks/agent-persona-editor/persona-lorebook-editor.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-persona-editor/persona-lorebook-editor.tsx"
+				},
+				{
+					"path": "registry/default/blocks/agent-persona-editor/persona-assets-editor.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-persona-editor/persona-assets-editor.tsx"
+				},
+				{
+					"path": "registry/default/blocks/agent-persona-editor/persona-authoring-fields.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-persona-editor/persona-authoring-fields.tsx"
+				},
+				{
+					"path": "registry/default/blocks/agent-persona-editor/persona-governance-fields.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-persona-editor/persona-governance-fields.tsx"
+				},
+				{
+					"path": "registry/default/blocks/agent-persona-editor/agent-persona-editor.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-persona-editor/agent-persona-editor.tsx"
+				},
+				{
+					"path": "registry/default/blocks/agent-persona-editor/index.ts",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-persona-editor/index.ts"
+				}
+			]
+		},
+		{
+			"name": "agent-skill-editor",
+			"type": "registry:block",
+			"title": "Agent Skill Editor",
+			"description": "Controlled canonical Skill editor with instructions, bounded requirements and resource manifests, and replaceable SKILL.md preview",
+			"registryDependencies": ["https://ui-components.wener.me/r/ai-config-editor.json"],
+			"dependencies": ["@wener/ai@^0.1.21", "daisyui", "lucide-react"],
+			"files": [
+				{
+					"path": "registry/default/blocks/agent-skill-editor/agent-skill-editor-types.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/agent-skill-editor/agent-skill-editor-types.ts"
+				},
+				{
+					"path": "registry/default/blocks/agent-skill-editor/skill-requirements-editor.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-skill-editor/skill-requirements-editor.tsx"
+				},
+				{
+					"path": "registry/default/blocks/agent-skill-editor/skill-resources-editor.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-skill-editor/skill-resources-editor.tsx"
+				},
+				{
+					"path": "registry/default/blocks/agent-skill-editor/skill-markdown-preview.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-skill-editor/skill-markdown-preview.tsx"
+				},
+				{
+					"path": "registry/default/blocks/agent-skill-editor/agent-skill-editor.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-skill-editor/agent-skill-editor.tsx"
+				},
+				{
+					"path": "registry/default/blocks/agent-skill-editor/index.ts",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-skill-editor/index.ts"
+				}
+			]
+		},
+		{
+			"name": "agent-config-studio",
+			"type": "registry:block",
+			"title": "Agent Config Studio",
+			"description": "Responsive controlled master/detail configuration tool for Provider, Endpoint, Model, Service, MCP, Persona, and Skill resources",
+			"registryDependencies": [
+				"https://ui-components.wener.me/r/ai-provider-editor.json",
+				"https://ui-components.wener.me/r/ai-endpoint-editor.json",
+				"https://ui-components.wener.me/r/ai-model-editor.json",
+				"https://ui-components.wener.me/r/ai-service-editor.json",
+				"https://ui-components.wener.me/r/mcp-server-editor.json",
+				"https://ui-components.wener.me/r/agent-persona-editor.json",
+				"https://ui-components.wener.me/r/agent-skill-editor.json"
+			],
+			"dependencies": ["lucide-react"],
+			"files": [
+				{
+					"path": "registry/default/blocks/agent-config-studio/agent-config-studio-types.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/agent-config-studio/agent-config-studio-types.ts"
+				},
+				{
+					"path": "registry/default/blocks/agent-config-studio/agent-config-studio-editor.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-config-studio/agent-config-studio-editor.tsx"
+				},
+				{
+					"path": "registry/default/blocks/agent-config-studio/agent-config-studio.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-config-studio/agent-config-studio.tsx"
+				},
+				{
+					"path": "registry/default/blocks/agent-config-studio/index.ts",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-config-studio/index.ts"
+				}
+			]
+		},
+		{
+			"name": "message",
+			"type": "registry:ui",
+			"title": "Message",
+			"description": "Composable message group, alignment, avatar, content, header, and footer primitives",
+			"files": [
+				{
+					"path": "registry/default/ui/message/message.tsx",
+					"type": "registry:ui",
+					"target": "@components/message/message.tsx"
+				},
+				{
+					"path": "registry/default/ui/message/index.ts",
+					"type": "registry:ui",
+					"target": "@components/message/index.ts"
+				}
+			]
+		},
+		{
+			"name": "message-scroller",
+			"type": "registry:ui",
+			"title": "Message Scroller",
+			"description": "Real-DOM transcript scroller with live-edge following, anchoring, reader intent, visibility, and commands",
+			"dependencies": ["@shadcn/react@0.2.1", "daisyui", "lucide-react"],
+			"files": [
+				{
+					"path": "registry/default/ui/message-scroller/message-scroller.tsx",
+					"type": "registry:ui",
+					"target": "@components/message-scroller/message-scroller.tsx"
+				},
+				{
+					"path": "registry/default/ui/message-scroller/index.ts",
+					"type": "registry:ui",
+					"target": "@components/message-scroller/index.ts"
+				}
+			]
+		},
+		{
+			"name": "agent-message",
+			"type": "registry:ui",
+			"title": "Agent Message",
+			"description": "AI SDK UIMessage presenter for streaming text, provider reasoning, multimodal files, sources, steps, tools, actions, metadata, and usage",
+			"registryDependencies": ["https://ui-components.wener.me/r/message.json"],
+			"dependencies": ["ai@7.0.31", "daisyui", "lucide-react", "streamdown@2.5.0"],
+			"files": [
+				{
+					"path": "registry/default/ui/agent-message/agent-message-types.ts",
+					"type": "registry:lib",
+					"target": "@components/agent-message/agent-message-types.ts"
+				},
+				{
+					"path": "registry/default/ui/agent-message/agent-message-value.ts",
+					"type": "registry:lib",
+					"target": "@components/agent-message/agent-message-value.ts"
+				},
+				{
+					"path": "registry/default/ui/agent-message/agent-markdown.tsx",
+					"type": "registry:component",
+					"target": "@components/agent-message/agent-markdown.tsx"
+				},
+				{
+					"path": "registry/default/ui/agent-message/agent-message-parts.tsx",
+					"type": "registry:component",
+					"target": "@components/agent-message/agent-message-parts.tsx"
+				},
+				{
+					"path": "registry/default/ui/agent-message/agent-message.tsx",
+					"type": "registry:component",
+					"target": "@components/agent-message/agent-message.tsx"
+				},
+				{
+					"path": "registry/default/ui/agent-message/index.ts",
+					"type": "registry:component",
+					"target": "@components/agent-message/index.ts"
+				}
+			]
+		},
+		{
+			"name": "agent-composer",
+			"type": "registry:ui",
+			"title": "Agent Composer",
+			"description": "Controlled text and multimodal file composer with bounded validation, previews, send and stop controls, and injectable tool slots",
+			"dependencies": ["daisyui", "lucide-react"],
+			"files": [
+				{
+					"path": "registry/default/ui/agent-composer/agent-composer-types.ts",
+					"type": "registry:lib",
+					"target": "@components/agent-composer/agent-composer-types.ts"
+				},
+				{
+					"path": "registry/default/ui/agent-composer/agent-composer-files.ts",
+					"type": "registry:lib",
+					"target": "@components/agent-composer/agent-composer-files.ts"
+				},
+				{
+					"path": "registry/default/ui/agent-composer/agent-composer-attachment.tsx",
+					"type": "registry:component",
+					"target": "@components/agent-composer/agent-composer-attachment.tsx"
+				},
+				{
+					"path": "registry/default/ui/agent-composer/agent-composer.tsx",
+					"type": "registry:component",
+					"target": "@components/agent-composer/agent-composer.tsx"
+				},
+				{
+					"path": "registry/default/ui/agent-composer/index.ts",
+					"type": "registry:component",
+					"target": "@components/agent-composer/index.ts"
+				}
+			]
+		},
+		{
+			"name": "agent-chat",
+			"type": "registry:block",
+			"title": "Agent Chat",
+			"description": "Controlled operational Chat block with AI SDK UIMessage transcript, reader-aware scrolling, multimodal composer, send, stop, and retry",
+			"dependencies": ["@shadcn/react@0.2.1", "ai@7.0.31", "daisyui", "lucide-react", "streamdown@2.5.0"],
+			"files": [
+				{
+					"path": "registry/default/ui/message/message.tsx",
+					"type": "registry:ui",
+					"target": "@components/ui/message/message.tsx"
+				},
+				{
+					"path": "registry/default/ui/message/index.ts",
+					"type": "registry:ui",
+					"target": "@components/ui/message/index.ts"
+				},
+				{
+					"path": "registry/default/ui/message-scroller/message-scroller.tsx",
+					"type": "registry:ui",
+					"target": "@components/ui/message-scroller/message-scroller.tsx"
+				},
+				{
+					"path": "registry/default/ui/message-scroller/index.ts",
+					"type": "registry:ui",
+					"target": "@components/ui/message-scroller/index.ts"
+				},
+				{
+					"path": "registry/default/ui/agent-message/agent-message-types.ts",
+					"type": "registry:lib",
+					"target": "@components/ui/agent-message/agent-message-types.ts"
+				},
+				{
+					"path": "registry/default/ui/agent-message/agent-message-value.ts",
+					"type": "registry:lib",
+					"target": "@components/ui/agent-message/agent-message-value.ts"
+				},
+				{
+					"path": "registry/default/ui/agent-message/agent-markdown.tsx",
+					"type": "registry:component",
+					"target": "@components/ui/agent-message/agent-markdown.tsx"
+				},
+				{
+					"path": "registry/default/ui/agent-message/agent-message-parts.tsx",
+					"type": "registry:component",
+					"target": "@components/ui/agent-message/agent-message-parts.tsx"
+				},
+				{
+					"path": "registry/default/ui/agent-message/agent-message.tsx",
+					"type": "registry:component",
+					"target": "@components/ui/agent-message/agent-message.tsx"
+				},
+				{
+					"path": "registry/default/ui/agent-message/index.ts",
+					"type": "registry:component",
+					"target": "@components/ui/agent-message/index.ts"
+				},
+				{
+					"path": "registry/default/ui/agent-composer/agent-composer-types.ts",
+					"type": "registry:lib",
+					"target": "@components/ui/agent-composer/agent-composer-types.ts"
+				},
+				{
+					"path": "registry/default/ui/agent-composer/agent-composer-files.ts",
+					"type": "registry:lib",
+					"target": "@components/ui/agent-composer/agent-composer-files.ts"
+				},
+				{
+					"path": "registry/default/ui/agent-composer/agent-composer-attachment.tsx",
+					"type": "registry:component",
+					"target": "@components/ui/agent-composer/agent-composer-attachment.tsx"
+				},
+				{
+					"path": "registry/default/ui/agent-composer/agent-composer.tsx",
+					"type": "registry:component",
+					"target": "@components/ui/agent-composer/agent-composer.tsx"
+				},
+				{
+					"path": "registry/default/ui/agent-composer/index.ts",
+					"type": "registry:component",
+					"target": "@components/ui/agent-composer/index.ts"
+				},
+				{
+					"path": "registry/default/blocks/agent-chat/agent-chat-types.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/agent-chat/agent-chat-types.ts"
+				},
+				{
+					"path": "registry/default/blocks/agent-chat/runtime-message-validation.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/agent-chat/runtime-message-validation.ts"
+				},
+				{
+					"path": "registry/default/blocks/agent-chat/agent-chat.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-chat/agent-chat.tsx"
+				},
+				{
+					"path": "registry/default/blocks/agent-chat/index.ts",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-chat/index.ts"
+				}
+			]
+		},
+		{
+			"name": "agent-ai-sdk",
+			"type": "registry:block",
+			"title": "Agent AI SDK Direct Adapter",
+			"description": "In-memory OpenAI-compatible connection editor, bounded model discovery and files, AI SDK ToolLoopAgent DirectChatTransport, and useChat lifecycle",
+			"registryDependencies": ["https://ui-components.wener.me/r/agent-chat.json"],
+			"dependencies": [
+				"@ai-sdk/openai-compatible@3.0.12",
+				"@ai-sdk/react@4.0.34",
+				"ai@7.0.31",
+				"daisyui",
+				"lucide-react",
+				"zod@4.4.3"
+			],
+			"files": [
+				{
+					"path": "registry/default/blocks/agent-ai-sdk/connection-config.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/agent-ai-sdk/connection-config.ts"
+				},
+				{
+					"path": "registry/default/blocks/agent-ai-sdk/safe-error.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/agent-ai-sdk/safe-error.ts"
+				},
+				{
+					"path": "registry/default/blocks/agent-ai-sdk/model-list.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/agent-ai-sdk/model-list.ts"
+				},
+				{
+					"path": "registry/default/blocks/agent-ai-sdk/file-parts.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/agent-ai-sdk/file-parts.ts"
+				},
+				{
+					"path": "registry/default/blocks/agent-ai-sdk/direct-transport-limits.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/agent-ai-sdk/direct-transport-limits.ts"
+				},
+				{
+					"path": "registry/default/blocks/agent-ai-sdk/direct-transport.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/agent-ai-sdk/direct-transport.ts"
+				},
+				{
+					"path": "registry/default/blocks/agent-ai-sdk/generation-transport.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/agent-ai-sdk/generation-transport.ts"
+				},
+				{
+					"path": "registry/default/blocks/agent-ai-sdk/tool-approval.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/agent-ai-sdk/tool-approval.ts"
+				},
+				{
+					"path": "registry/default/blocks/agent-ai-sdk/connection-editor.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-ai-sdk/connection-editor.tsx"
+				},
+				{
+					"path": "registry/default/blocks/agent-ai-sdk/ai-sdk-agent-chat.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-ai-sdk/ai-sdk-agent-chat.tsx"
+				},
+				{
+					"path": "registry/default/blocks/agent-ai-sdk/agent-chat-playground.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-ai-sdk/agent-chat-playground.tsx"
+				},
+				{
+					"path": "registry/default/blocks/agent-ai-sdk/index.ts",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-ai-sdk/index.ts"
+				}
+			]
+		},
+		{
+			"name": "agent-work",
+			"type": "registry:block",
+			"title": "Agent Work",
+			"description": "Controlled Chat and IFileSystem workspace composition with bounded AGENTS and explicit Skill context, read-only tools, responsive panes, and stable FileManager refresh",
+			"registryDependencies": ["https://ui-components.wener.me/r/file-manager.json"],
+			"dependencies": [
+				"@wener/ai@^0.1.21",
+				"@wener/common@^3.0.0",
+				"ai@7.0.31",
+				"daisyui",
+				"lucide-react",
+				"react-resizable-panels@^4.12.1",
+				"zod@4.4.3"
+			],
+			"files": [
+				{
+					"path": "registry/default/blocks/agent-work/workspace-types.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/agent-work/workspace-types.ts"
+				},
+				{
+					"path": "registry/default/blocks/agent-work/workspace-path.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/agent-work/workspace-path.ts"
+				},
+				{
+					"path": "registry/default/blocks/agent-work/workspace-context.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/agent-work/workspace-context.ts"
+				},
+				{
+					"path": "registry/default/blocks/agent-work/workspace-mutation-guard.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/agent-work/workspace-mutation-guard.ts"
+				},
+				{
+					"path": "registry/default/blocks/agent-work/instruction-composer.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/agent-work/instruction-composer.ts"
+				},
+				{
+					"path": "registry/default/blocks/agent-work/workspace-tools.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/agent-work/workspace-tools.ts"
+				},
+				{
+					"path": "registry/default/blocks/agent-work/use-agent-workspace-context.ts",
+					"type": "registry:hook",
+					"target": "@components/blocks/agent-work/use-agent-workspace-context.ts"
+				},
+				{
+					"path": "registry/default/blocks/agent-work/agent-work.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-work/agent-work.tsx"
+				},
+				{
+					"path": "registry/default/blocks/agent-work/index.ts",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-work/index.ts"
+				}
+			]
+		},
+		{
+			"name": "agent-coding",
+			"type": "registry:block",
+			"title": "Agent Coding",
+			"description": "Agent Work with an injected bounded command executor, approval-required write and bash tools, poisoned runtime isolation, and a controlled plain-text terminal",
+			"registryDependencies": ["https://ui-components.wener.me/r/agent-work.json"],
+			"dependencies": ["@wener/common@^3.0.0", "ai@7.0.31", "daisyui", "lucide-react", "zod@4.4.3"],
+			"files": [
+				{
+					"path": "registry/default/blocks/agent-coding/command-types.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/agent-coding/command-types.ts"
+				},
+				{
+					"path": "registry/default/blocks/agent-coding/command-runtime.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/agent-coding/command-runtime.ts"
+				},
+				{
+					"path": "registry/default/blocks/agent-coding/terminal-history.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/agent-coding/terminal-history.ts"
+				},
+				{
+					"path": "registry/default/blocks/agent-coding/coding-tools.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/agent-coding/coding-tools.ts"
+				},
+				{
+					"path": "registry/default/blocks/agent-coding/just-bash-executor.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/agent-coding/just-bash-executor.ts"
+				},
+				{
+					"path": "registry/default/blocks/agent-coding/agent-terminal.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-coding/agent-terminal.tsx"
+				},
+				{
+					"path": "registry/default/blocks/agent-coding/agent-coding.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-coding/agent-coding.tsx"
+				},
+				{
+					"path": "registry/default/blocks/agent-coding/index.ts",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-coding/index.ts"
+				}
+			]
+		},
+		{
+			"name": "agent-playground",
+			"type": "registry:block",
+			"title": "Agent Playground",
+			"description": "Complete transient Chat, Work, and Coding playground with connection, Persona and Skill selection, workspace context, approvals, terminal history, and lazy injected just-bash",
+			"registryDependencies": [
+				"https://ui-components.wener.me/r/agent-ai-sdk.json",
+				"https://ui-components.wener.me/r/agent-work.json",
+				"https://ui-components.wener.me/r/agent-coding.json"
+			],
+			"dependencies": ["@wener/ai@^0.1.21", "@wener/common@^3.0.0", "daisyui", "lucide-react"],
+			"files": [
+				{
+					"path": "registry/default/blocks/agent-playground/playground-runtime.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/agent-playground/playground-runtime.ts"
+				},
+				{
+					"path": "registry/default/blocks/agent-playground/use-command-runtime-transition.ts",
+					"type": "registry:hook",
+					"target": "@components/blocks/agent-playground/use-command-runtime-transition.ts"
+				},
+				{
+					"path": "registry/default/blocks/agent-playground/use-just-bash-executor.ts",
+					"type": "registry:hook",
+					"target": "@components/blocks/agent-playground/use-just-bash-executor.ts"
+				},
+				{
+					"path": "registry/default/blocks/agent-playground/playground-controls.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-playground/playground-controls.tsx"
+				},
+				{
+					"path": "registry/default/blocks/agent-playground/tool-approval-renderer.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-playground/tool-approval-renderer.tsx"
+				},
+				{
+					"path": "registry/default/blocks/agent-playground/agent-playground.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-playground/agent-playground.tsx"
+				},
+				{
+					"path": "registry/default/blocks/agent-playground/index.ts",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-playground/index.ts"
 				}
 			]
 		},
@@ -32,18 +1141,429 @@
 			]
 		},
 		{
-			"name": "login-page",
+			"name": "console-shell",
 			"type": "registry:block",
-			"title": "Login Page",
-			"description": "A login page layout with Header, Footer, Hero, and Composite",
+			"title": "Console Shell",
+			"description": "A router-agnostic console shell with rail, module navigation, page layout, and module home patterns",
+			"dependencies": ["daisyui", "lucide-react"],
 			"files": [
 				{
-					"path": "registry/default/blocks/login-page/login-page.tsx",
+					"path": "registry/default/blocks/console-shell/console-shell.tsx",
 					"type": "registry:component"
 				},
 				{
-					"path": "registry/default/blocks/login-page/index.ts",
+					"path": "registry/default/blocks/console-shell/console-module-home.tsx",
 					"type": "registry:component"
+				},
+				{
+					"path": "registry/default/blocks/console-shell/index.ts",
+					"type": "registry:component"
+				}
+			]
+		},
+		{
+			"name": "console-data-view",
+			"type": "registry:block",
+			"title": "Console Data View",
+			"description": "Composable data workspaces with resource side panels, operations metrics, attention queues, typed inventory tables, selection, and pagination",
+			"dependencies": ["daisyui", "lucide-react"],
+			"files": [
+				{
+					"path": "registry/default/blocks/console-data-view/console-data-view.tsx",
+					"type": "registry:component",
+					"target": "@components/console-data-view/console-data-view.tsx"
+				},
+				{
+					"path": "registry/default/blocks/console-data-view/console-data-view-ops.tsx",
+					"type": "registry:component",
+					"target": "@components/console-data-view/console-data-view-ops.tsx"
+				},
+				{
+					"path": "registry/default/blocks/console-data-view/index.ts",
+					"type": "registry:component",
+					"target": "@components/console-data-view/index.ts"
+				}
+			]
+		},
+		{
+			"name": "console-window",
+			"type": "registry:block",
+			"title": "Console Window",
+			"description": "Controlled window chrome with title bar, toolbar, content, status bar, and workspace layout patterns",
+			"dependencies": ["daisyui", "lucide-react"],
+			"files": [
+				{
+					"path": "registry/default/blocks/console-window/console-window.tsx",
+					"type": "registry:component"
+				},
+				{
+					"path": "registry/default/blocks/console-window/index.ts",
+					"type": "registry:component"
+				}
+			]
+		},
+		{
+			"name": "console-record-detail",
+			"type": "registry:block",
+			"title": "Console Record Detail",
+			"description": "A dense CRM and ERP record detail layout with command bar, identity header, accessible tabs, facts, activity, related records, context rail, and lifecycle states",
+			"dependencies": ["@base-ui/react", "daisyui", "lucide-react"],
+			"files": [
+				{
+					"path": "registry/default/blocks/console-record-detail/console-record-detail.tsx",
+					"type": "registry:component",
+					"target": "@components/console-record-detail/console-record-detail.tsx"
+				},
+				{
+					"path": "registry/default/blocks/console-record-detail/console-record-tabs.tsx",
+					"type": "registry:component",
+					"target": "@components/console-record-detail/console-record-tabs.tsx"
+				},
+				{
+					"path": "registry/default/blocks/console-record-detail/index.ts",
+					"type": "registry:component",
+					"target": "@components/console-record-detail/index.ts"
+				}
+			]
+		},
+		{
+			"name": "window-manager",
+			"type": "registry:block",
+			"title": "Window Manager",
+			"description": "A context-scoped multi-window runtime with drag, resize, z-order, window modes, dock, portals, keyboard controls, and opt-in persistence",
+			"dependencies": [
+				"@base-ui/react",
+				"daisyui",
+				"lucide-react",
+				"mutative@^1.3.0",
+				"re-resizable@^6.11.2",
+				"zustand@^5.0.14",
+				"zustand-mutative@^1.3.1"
+			],
+			"files": [
+				{
+					"path": "registry/default/blocks/window-manager/window-manager-types.ts",
+					"type": "registry:lib",
+					"target": "@components/window-manager/window-manager-types.ts"
+				},
+				{
+					"path": "registry/default/blocks/window-manager/window-manager-store.ts",
+					"type": "registry:lib",
+					"target": "@components/window-manager/window-manager-store.ts"
+				},
+				{
+					"path": "registry/default/blocks/window-manager/window-manager-context.tsx",
+					"type": "registry:component",
+					"target": "@components/window-manager/window-manager-context.tsx"
+				},
+				{
+					"path": "registry/default/blocks/window-manager/window-manager-chrome.tsx",
+					"type": "registry:component",
+					"target": "@components/window-manager/window-manager-chrome.tsx"
+				},
+				{
+					"path": "registry/default/blocks/window-manager/window-manager-dock.tsx",
+					"type": "registry:component",
+					"target": "@components/window-manager/window-manager-dock.tsx"
+				},
+				{
+					"path": "registry/default/blocks/window-manager/window-manager-motion.tsx",
+					"type": "registry:component",
+					"target": "@components/window-manager/window-manager-motion.tsx"
+				},
+				{
+					"path": "registry/default/blocks/window-manager/window-manager-host.tsx",
+					"type": "registry:component",
+					"target": "@components/window-manager/window-manager-host.tsx"
+				},
+				{
+					"path": "registry/default/blocks/window-manager/window-manager-persistence.tsx",
+					"type": "registry:component",
+					"target": "@components/window-manager/window-manager-persistence.tsx"
+				},
+				{
+					"path": "registry/default/blocks/window-manager/window-manager.tsx",
+					"type": "registry:component",
+					"target": "@components/window-manager/window-manager.tsx"
+				},
+				{
+					"path": "registry/default/blocks/window-manager/index.ts",
+					"type": "registry:component",
+					"target": "@components/window-manager/index.ts"
+				}
+			]
+		},
+		{
+			"name": "file-manager",
+			"type": "registry:block",
+			"title": "File Manager",
+			"description": "A filesystem-neutral file workspace with scoped state, navigation, search, list and grid views, CRUD, upload, download, copy and move operations, and bounded previews",
+			"dependencies": [
+				"@base-ui/react@^1.6.0",
+				"daisyui",
+				"emittery@^2.0.0",
+				"lucide-react",
+				"mutative@^1.3.0",
+				"react-resizable-panels@^4.12.1",
+				"zustand@^5.0.14",
+				"zustand-mutative@^1.3.1"
+			],
+			"files": [
+				{
+					"path": "registry/default/ui/addressable-frame.tsx",
+					"type": "registry:ui",
+					"target": "@ui/addressable-frame.tsx"
+				},
+				{
+					"path": "registry/default/ui/header-content-footer-layout.tsx",
+					"type": "registry:ui",
+					"target": "@ui/header-content-footer-layout.tsx"
+				},
+				{
+					"path": "registry/default/ui/resizable.tsx",
+					"type": "registry:ui",
+					"target": "@ui/resizable.tsx"
+				},
+				{
+					"path": "registry/default/ui/path-address-bar/path-address-model.ts",
+					"type": "registry:lib",
+					"target": "@components/path-address-bar/path-address-model.ts"
+				},
+				{
+					"path": "registry/default/ui/path-address-bar/path-address-bar-types.ts",
+					"type": "registry:lib",
+					"target": "@components/path-address-bar/path-address-bar-types.ts"
+				},
+				{
+					"path": "registry/default/ui/path-address-bar/path-address-bar-menu-item.tsx",
+					"type": "registry:component",
+					"target": "@components/path-address-bar/path-address-bar-menu-item.tsx"
+				},
+				{
+					"path": "registry/default/ui/path-address-bar/path-address-bar.tsx",
+					"type": "registry:component",
+					"target": "@components/path-address-bar/path-address-bar.tsx"
+				},
+				{
+					"path": "registry/default/ui/path-address-bar/index.ts",
+					"type": "registry:component",
+					"target": "@components/path-address-bar/index.ts"
+				},
+				{
+					"path": "registry/default/ui/file-viewer/file-viewer-types.ts",
+					"type": "registry:lib",
+					"target": "@components/file-viewer/file-viewer-types.ts"
+				},
+				{
+					"path": "registry/default/ui/file-viewer/file-viewer-kind.ts",
+					"type": "registry:lib",
+					"target": "@components/file-viewer/file-viewer-kind.ts"
+				},
+				{
+					"path": "registry/default/ui/file-viewer/use-file-viewer-object-url.ts",
+					"type": "registry:lib",
+					"target": "@components/file-viewer/use-file-viewer-object-url.ts"
+				},
+				{
+					"path": "registry/default/ui/file-viewer/text-file-viewer.tsx",
+					"type": "registry:component",
+					"target": "@components/file-viewer/text-file-viewer.tsx"
+				},
+				{
+					"path": "registry/default/ui/file-viewer/media-file-viewers.tsx",
+					"type": "registry:component",
+					"target": "@components/file-viewer/media-file-viewers.tsx"
+				},
+				{
+					"path": "registry/default/ui/file-viewer/file-viewer.tsx",
+					"type": "registry:component",
+					"target": "@components/file-viewer/file-viewer.tsx"
+				},
+				{
+					"path": "registry/default/ui/file-viewer/file-system-file-viewer.tsx",
+					"type": "registry:component",
+					"target": "@components/file-viewer/file-system-file-viewer.tsx"
+				},
+				{
+					"path": "registry/default/ui/file-viewer/index.ts",
+					"type": "registry:component",
+					"target": "@components/file-viewer/index.ts"
+				},
+				{
+					"path": "registry/default/blocks/file-manager/file-manager-utils.ts",
+					"type": "registry:lib",
+					"target": "@components/file-manager/file-manager-utils.ts"
+				},
+				{
+					"path": "registry/default/blocks/file-manager/file-manager-types.ts",
+					"type": "registry:lib",
+					"target": "@components/file-manager/file-manager-types.ts"
+				},
+				{
+					"path": "registry/default/blocks/file-manager/file-manager-store.ts",
+					"type": "registry:lib",
+					"target": "@components/file-manager/file-manager-store.ts"
+				},
+				{
+					"path": "registry/default/blocks/file-manager/file-manager-context.tsx",
+					"type": "registry:component",
+					"target": "@components/file-manager/file-manager-context.tsx"
+				},
+				{
+					"path": "registry/default/blocks/file-manager/file-manager-runtime.tsx",
+					"type": "registry:component",
+					"target": "@components/file-manager/file-manager-runtime.tsx"
+				},
+				{
+					"path": "registry/default/blocks/file-manager/file-manager-preview.tsx",
+					"type": "registry:component",
+					"target": "@components/file-manager/file-manager-preview.tsx"
+				},
+				{
+					"path": "registry/default/blocks/file-manager/file-manager.tsx",
+					"type": "registry:component",
+					"target": "@components/file-manager/file-manager.tsx"
+				},
+				{
+					"path": "registry/default/blocks/file-manager/file-manager-window.tsx",
+					"type": "registry:component",
+					"target": "@components/file-manager/file-manager-window.tsx"
+				},
+				{
+					"path": "registry/default/blocks/file-manager/index.ts",
+					"type": "registry:component",
+					"target": "@components/file-manager/index.ts"
+				}
+			]
+		},
+		{
+			"name": "file-picker",
+			"type": "registry:block",
+			"title": "File Picker",
+			"description": "Standard open-file, multi-file, directory, and save-target pickers with standalone and WindowManager promise APIs",
+			"registryDependencies": [
+				"https://ui-components.wener.me/r/file-manager.json",
+				"https://ui-components.wener.me/r/window-manager.json",
+				"https://ui-components.wener.me/r/left-center-right-layout.json"
+			],
+			"files": [
+				{
+					"path": "registry/default/blocks/file-picker/file-picker-types.ts",
+					"type": "registry:lib",
+					"target": "@components/file-picker/file-picker-types.ts"
+				},
+				{
+					"path": "registry/default/blocks/file-picker/file-picker-model.ts",
+					"type": "registry:lib",
+					"target": "@components/file-picker/file-picker-model.ts"
+				},
+				{
+					"path": "registry/default/blocks/file-picker/file-picker-store.ts",
+					"type": "registry:lib",
+					"target": "@components/file-picker/file-picker-store.ts"
+				},
+				{
+					"path": "registry/default/blocks/file-picker/file-picker-context.tsx",
+					"type": "registry:component",
+					"target": "@components/file-picker/file-picker-context.tsx"
+				},
+				{
+					"path": "registry/default/blocks/file-picker/file-picker-runtime.tsx",
+					"type": "registry:component",
+					"target": "@components/file-picker/file-picker-runtime.tsx"
+				},
+				{
+					"path": "registry/default/blocks/file-picker/file-picker.tsx",
+					"type": "registry:component",
+					"target": "@components/file-picker/file-picker.tsx"
+				},
+				{
+					"path": "registry/default/blocks/file-picker/file-picker-window.tsx",
+					"type": "registry:component",
+					"target": "@components/file-picker/file-picker-window.tsx"
+				},
+				{
+					"path": "registry/default/blocks/file-picker/index.ts",
+					"type": "registry:component",
+					"target": "@components/file-picker/index.ts"
+				}
+			]
+		},
+		{
+			"name": "console-preferences",
+			"type": "registry:block",
+			"title": "Console Preferences and About",
+			"description": "A DaisyUI appearance settings page with paired themes, searchable catalog, component previews, display preferences, persistence, and About",
+			"dependencies": ["daisyui", "lucide-react"],
+			"files": [
+				{
+					"path": "registry/default/blocks/console-preferences/console-theme.tsx",
+					"type": "registry:component",
+					"target": "@components/console-preferences/console-theme.tsx"
+				},
+				{
+					"path": "registry/default/blocks/console-preferences/console-theme-catalog.ts",
+					"type": "registry:component",
+					"target": "@components/console-preferences/console-theme-catalog.ts"
+				},
+				{
+					"path": "registry/default/blocks/console-preferences/console-theme-preview.tsx",
+					"type": "registry:component",
+					"target": "@components/console-preferences/console-theme-preview.tsx"
+				},
+				{
+					"path": "registry/default/blocks/console-preferences/console-theme-component-preview.tsx",
+					"type": "registry:component",
+					"target": "@components/console-preferences/console-theme-component-preview.tsx"
+				},
+				{
+					"path": "registry/default/blocks/console-preferences/console-display-settings.tsx",
+					"type": "registry:component",
+					"target": "@components/console-preferences/console-display-settings.tsx"
+				},
+				{
+					"path": "registry/default/blocks/console-preferences/console-about.tsx",
+					"type": "registry:component",
+					"target": "@components/console-preferences/console-about.tsx"
+				},
+				{
+					"path": "registry/default/blocks/console-preferences/console-about-client.tsx",
+					"type": "registry:component",
+					"target": "@components/console-preferences/console-about-client.tsx"
+				},
+				{
+					"path": "registry/default/blocks/console-preferences/index.ts",
+					"type": "registry:component",
+					"target": "@components/console-preferences/index.ts"
+				}
+			]
+		},
+		{
+			"name": "login-page",
+			"type": "registry:block",
+			"title": "Login Page",
+			"description": "A composable login page with customizable regions, form modes, social providers, hero, and secure footer links",
+			"dependencies": ["daisyui", "lucide-react", "react-hook-form"],
+			"files": [
+				{
+					"path": "registry/default/blocks/login-page/login-page.tsx",
+					"type": "registry:component",
+					"target": "@components/login-page/login-page.tsx"
+				},
+				{
+					"path": "registry/default/blocks/login-page/login-form.tsx",
+					"type": "registry:component",
+					"target": "@components/login-page/login-form.tsx"
+				},
+				{
+					"path": "registry/default/blocks/login-page/login-social.tsx",
+					"type": "registry:component",
+					"target": "@components/login-page/login-social.tsx"
+				},
+				{
+					"path": "registry/default/blocks/login-page/index.ts",
+					"type": "registry:component",
+					"target": "@components/login-page/index.ts"
 				}
 			]
 		}

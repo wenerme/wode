@@ -1,5 +1,5 @@
 import * as nodeFetch from 'node-fetch';
-import { beforeAll, expect, test } from 'vitest';
+import { beforeAll, expect, test } from 'vite-plus/test';
 import { polyfillBrowser } from './polyfillBrowser';
 import { polyfillFetch } from './polyfillFetch';
 
