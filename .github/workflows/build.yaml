@@ -41,13 +41,13 @@ jobs:
         run: pnpm -C apps/components verify
 
       - name: Upload components Pages artifact
-        if: github.event_name == 'push' && github.ref_name == github.event.repository.default_branch
+        if: github.repository == 'wenerme/wode' && github.event_name == 'push' && github.ref_name == github.event.repository.default_branch
         uses: actions/upload-pages-artifact@v3
         with:
           path: apps/components/storybook-static
 
   pages:
-    if: github.event_name == 'push' && github.ref_name == github.event.repository.default_branch
+    if: github.repository == 'wenerme/wode' && github.event_name == 'push' && github.ref_name == github.event.repository.default_branch
     needs: build
     runs-on: ubuntu-latest
     permissions:
