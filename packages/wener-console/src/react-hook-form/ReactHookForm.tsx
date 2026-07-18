@@ -39,7 +39,7 @@ type ContextState = {
 };
 
 export namespace ReactHookForm {
-	export let handleInvalid = _handleInvalid;
+	export const handleInvalid = _handleInvalid;
 	export const Root: FC<ReactHookFormProviderProps> = (_props) => {
 		return null;
 	};
@@ -74,12 +74,7 @@ export namespace ReactHookForm {
 		const { handleSubmit } = useFormContext();
 		const { onValid, onInvalid } = Errors.BadRequest.require(useContext(Context), 'ReactHookForm: context not exists');
 		return (
-			<form
-				{...props}
-				onSubmit={handleSubmit(onValid, onInvalid || _handleInvalid)}
-				autoComplete={'off'}
-				aria-autocomplete='none'
-			>
+			<form {...props} onSubmit={handleSubmit(onValid, onInvalid || _handleInvalid)} autoComplete={'off'}>
 				{children}
 			</form>
 		);

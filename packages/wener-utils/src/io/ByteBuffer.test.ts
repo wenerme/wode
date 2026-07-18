@@ -1,4 +1,4 @@
-import { assert, describe, test } from 'vitest';
+import { assert, describe, test } from 'vite-plus/test';
 import { ByteBuffer } from './ByteBuffer';
 
 describe('ByteBuffer', async () => {

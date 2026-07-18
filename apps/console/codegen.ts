@@ -29,7 +29,7 @@ const config: CodegenConfig = {
 	schema,
 	documents: 'src/**/!(*.d).{ts,tsx}',
 	ignoreNoDocuments: true,
-	hooks: { afterOneFileWrite: ['pnpm prettier --write'] },
+	hooks: { afterOneFileWrite: ['pnpm exec vp fmt'] },
 	generates: {
 		...(downloadSchema
 			? {

@@ -1,7 +1,7 @@
-import { type Opt, types } from '@mikro-orm/core';
-import { BeforeCreate, Entity, Filter, Property, Unique } from '@mikro-orm/decorators/legacy';
+import { defineEntity, p } from '@mikro-orm/core';
 import { getCurrentTenantId } from '../app';
 import { CurrentTenantIdFilter } from './CurrentTenantIdFilter';
+import { setEntitySchemaClass } from './defineEntitySchemaClass';
 import { StandardBaseEntity } from './StandardBaseEntity';
 
 export type TenantBaseEntityOptionalFields =
@@ -20,14 +20,19 @@ export type TenantBaseEntityOptionalFields =
 	| 'ownerUserId'
 	| 'ownerTeamId';
 
-@Entity({ abstract: true })
-@Filter(CurrentTenantIdFilter)
-@Unique({ properties: ['tid', 'eid'] })
-export class TenantBaseEntity extends StandardBaseEntity {
-	@Property({ type: types.string, nullable: false, defaultRaw: 'public.current_tenant_id()' })
-	tid!: string & Opt;
+export const TenantBaseEntitySchema = defineEntity({
+	name: 'TenantBaseEntity',
+	abstract: true,
+	extends: StandardBaseEntity,
+	filters: { [CurrentTenantIdFilter.name]: CurrentTenantIdFilter },
+	uniques: [{ properties: ['tid', 'eid'] }],
+	hooks: { beforeCreate: ['setTenantBeforeCreate'] },
+	properties: {
+		tid: p.string().defaultRaw('public.current_tenant_id()'),
+	},
+});
 
-	@BeforeCreate()
+export class TenantBaseEntity extends TenantBaseEntitySchema.class {
 	setTenantBeforeCreate() {
 		// TidFilter 不会处理 create
 		this.tid ||= getCurrentTenantId() || this.tid;
@@ -35,3 +40,4 @@ export class TenantBaseEntity extends StandardBaseEntity {
 
 	// upsert bind 有问题
 }
+setEntitySchemaClass(TenantBaseEntitySchema, TenantBaseEntity, StandardBaseEntity);

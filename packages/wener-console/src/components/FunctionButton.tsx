@@ -70,7 +70,7 @@ export namespace FunctionButton {
 		return <>{btn}</>;
 	};
 
-	export type SubmitButtonProps = ComponentPropsWithoutRef<'button'> & {
+	export type SubmitButtonProps = Omit<ComponentPropsWithoutRef<'button'>, 'key'> & {
 		size?: Daisy.SizeType;
 		loading?: boolean;
 	};
@@ -108,11 +108,11 @@ export namespace FunctionButton {
 		);
 	};
 
-	export const BindCustomer: FC<ButtonProps> = ({ children, className, ...props }) => {
+	export const BindCustomer: FC<ButtonProps> = (props) => {
 		return <Button icon={PiUserPlusLight} {...props} />;
 	};
 
-	export const BindUser: FC<ButtonProps> = ({ children, className, ...props }: ButtonProps) => {
+	export const BindUser: FC<ButtonProps> = (props) => {
 		return <Button icon={PiUserPlusLight} {...props} />;
 	};
 
@@ -136,7 +136,7 @@ export namespace FunctionButton {
 		loading,
 		ref,
 		...props
-	}: ButtonProps) => {
+	}: ButtonProps): ReactNode => {
 		const sz = Daisy.getSize(size);
 		const [_loading, setLoading] = useState(false);
 		loading ||= _loading;

@@ -1,36 +1,42 @@
-import { types } from '@mikro-orm/core';
-import { Entity, Property } from '@mikro-orm/decorators/legacy';
+import { p } from '@mikro-orm/core';
 import type { Constructor } from '@wener/utils';
 import { Feature } from '../../Feature';
 import { EntityFeature } from '../enum';
+import { defineMixinEntity } from './defineMixinEntity';
 import type { HasVendorRefEntity } from './types';
 
 export function withVendorRefEntity<TBase extends Constructor>(Base: TBase) {
 	@Feature([EntityFeature.HasVendorRef])
-	@Entity({ abstract: true })
 	class HasVendorRefMixinEntity extends Base implements HasVendorRefEntity {
 		// vendor
-		@Property({ type: types.string, nullable: true })
 		cid?: string;
 		// vendor external id
-		@Property({ type: types.string, nullable: true })
 		rid?: string;
 	}
 
-	return HasVendorRefMixinEntity;
+	return defineMixinEntity(Base, HasVendorRefMixinEntity, {
+		name: 'HasVendorRefMixinEntity',
+		properties: {
+			cid: p.string().nullable(),
+			rid: p.string().nullable(),
+		},
+	});
 }
 
 export function requireVendorRefEntity<TBase extends Constructor>(Base: TBase) {
 	@Feature([EntityFeature.HasVendorRef])
-	@Entity({ abstract: true })
 	class RequireVendorRefMixinEntity extends Base implements HasVendorRefEntity {
 		// vendor
-		@Property({ type: types.string, nullable: false })
 		cid!: string;
 		// vendor external id
-		@Property({ type: types.string, nullable: false })
 		rid!: string;
 	}
 
-	return RequireVendorRefMixinEntity;
+	return defineMixinEntity(Base, RequireVendorRefMixinEntity, {
+		name: 'RequireVendorRefMixinEntity',
+		properties: {
+			cid: p.string(),
+			rid: p.string(),
+		},
+	});
 }

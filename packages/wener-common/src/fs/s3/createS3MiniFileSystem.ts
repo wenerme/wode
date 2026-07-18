@@ -17,8 +17,10 @@ import type {
 	WritableData,
 	WriteFileOptions,
 } from '../IFileSystem';
+import { validateReaddirMaxEntries } from '../readdirLimit';
+import { rejectUnsupportedFileSystemLimit, validateReadFileMaxBytes } from '../resourceLimits';
 
-type CreateS3MiniFileSystemOptions = ParseS3UrlOptions & {
+export type CreateS3MiniFileSystemOptions = ParseS3UrlOptions & {
 	client?: S3mini;
 	/**
 	 * Optional prefix to scope all operations within a specific folder in the bucket.
@@ -163,60 +165,32 @@ class S3FS implements IFileSystem {
 	async readdir(dir: string, options: ReaddirOptions = {}): Promise<IFileStat[]> {
 		const { glob, recursive, depth = 1, kind, hidden = true, signal } = options;
 		this.checkAborted(signal);
+		rejectUnsupportedFileSystemLimit('readdir', 'maxEntries', validateReaddirMaxEntries(options.maxEntries));
 
 		const dirPrefix = this.normalizeKey(dir);
 		const prefixWithSlash = dirPrefix ? (dirPrefix.endsWith('/') ? dirPrefix : `${dirPrefix}/`) : '';
 
 		try {
-			const delimiter = recursive ? '' : '/';
-
-			// S3mini doesn't expose CommonPrefixes from delimiter-based listing.
-			// For non-recursive listing, we do two calls:
-			// 1. With delimiter to get direct files
-			// 2. Without delimiter to infer directory prefixes
+			const delimiter = '/';
 			let objects: Array<{ Key: string; Size: number | string; LastModified?: Date | string; ETag?: string }> = [];
-			let commonPrefixes: string[] = [];
+			const prefixSet = new Set<string>();
 
-			if (delimiter && !recursive) {
-				const directObjects = await this.client.listObjects(delimiter, prefixWithSlash, undefined, {
-					delimiter,
-					signal,
-				});
-				if (directObjects) {
-					objects = directObjects;
-				}
+			const directObjects = await this.client.listObjects(delimiter, prefixWithSlash, undefined, { delimiter, signal });
+			if (directObjects) objects = directObjects;
 
-				// Infer CommonPrefixes by listing all objects recursively
-				const allObjectsRecursive = await this.client.listObjects('', prefixWithSlash, 1000, { signal });
-				if (allObjectsRecursive) {
-					const prefixSet = new Set<string>();
-					for (const obj of allObjectsRecursive) {
-						const key = obj.Key || '';
-						if (!key || !key.startsWith(prefixWithSlash)) continue;
-
-						const relativeKey = key.slice(prefixWithSlash.length);
-						const firstSlash = relativeKey.indexOf('/');
-						if (firstSlash > 0) {
-							prefixSet.add(prefixWithSlash + relativeKey.slice(0, firstSlash + 1));
-						}
-					}
-					commonPrefixes = Array.from(prefixSet).sort();
-				}
-			} else {
-				const listResult = await this.client.listObjects(delimiter, prefixWithSlash, undefined, { signal });
-				if (listResult) {
-					objects = listResult;
-				}
+			for (const obj of objects) {
+				const key = obj.Key || '';
+				if (key && key.endsWith('/')) prefixSet.add(key);
 			}
 
-			if (!objects.length && !commonPrefixes.length) {
+			if (!objects.length && !prefixSet.size) {
 				return [];
 			}
 
 			let results: IFileStat[] = [];
 
 			// Process inferred CommonPrefixes (directories)
-			for (const prefix of commonPrefixes) {
+			for (const prefix of [...prefixSet].sort()) {
 				this.checkAborted(signal);
 				if (prefixWithSlash && !prefix.startsWith(prefixWithSlash)) continue;
 
@@ -242,7 +216,7 @@ class S3FS implements IFileSystem {
 			}
 
 			// Process objects (files and explicit directory markers)
-			const seenDirs = new Set<string>();
+			const seenDirs = new Set<string>([...prefixSet].map((item) => item.replace(/\/$/, '')));
 			for (const obj of objects) {
 				this.checkAborted(signal);
 
@@ -404,6 +378,7 @@ class S3FS implements IFileSystem {
 	async readFile(path: string, options: ReadFileOptions = {}): Promise<string | Uint8Array> {
 		const { encoding = 'binary', signal, onDownloadProgress } = options;
 		this.checkAborted(signal);
+		rejectUnsupportedFileSystemLimit('readFile', 'maxBytes', validateReadFileMaxBytes(options.maxBytes));
 
 		const key = this.normalizeKey(path);
 		if (!key) {

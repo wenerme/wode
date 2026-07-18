@@ -1,11 +1,14 @@
-import { BaseEntity, types } from '@mikro-orm/core';
-import { Entity, PrimaryKey, Property } from '@mikro-orm/decorators/legacy';
+import { BaseEntity, defineEntity, p } from '@mikro-orm/core';
 
-@Entity({ abstract: true })
-export class MinimalEnumBaseEntity extends BaseEntity {
-	@PrimaryKey({ type: types.string, columnType: 'text' })
-	value!: string;
+export const MinimalEnumBaseEntitySchema = defineEntity({
+	name: 'MinimalEnumBaseEntity',
+	abstract: true,
+	extends: BaseEntity,
+	properties: {
+		value: p.string().columnType('text').primary(),
+		label: p.string().columnType('text').nullable(),
+	},
+});
 
-	@Property({ type: types.string, columnType: 'text', nullable: true })
-	label?: string;
-}
+export class MinimalEnumBaseEntity extends MinimalEnumBaseEntitySchema.class {}
+MinimalEnumBaseEntitySchema.setClass(MinimalEnumBaseEntity);

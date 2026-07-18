@@ -1,4 +1,4 @@
-import { expect, test } from 'vitest';
+import { expect, test } from 'vite-plus/test';
 import { DEFAULT_WECOM_BOT_WS_URL, WecomBotClient } from './WecomBotClient';
 
 test('should use default wsUrl when options.wsUrl is undefined', () => {

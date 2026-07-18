@@ -2,7 +2,7 @@ import process from 'node:process';
 import { type INestApplication, Inject, Injectable, Module } from '@nestjs/common';
 import { FastifyAdapter } from '@nestjs/platform-fastify';
 import { Test } from '@nestjs/testing';
-import { afterAll, beforeAll, describe, expect, test } from 'vitest';
+import { afterAll, beforeAll, describe, expect, test } from 'vite-plus/test';
 import {
 	createServerLoggingMiddleware,
 	ExposeMethod,

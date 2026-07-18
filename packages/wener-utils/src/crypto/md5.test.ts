@@ -1,4 +1,4 @@
-import { assert, describe, test } from 'vitest';
+import { assert, describe, test } from 'vite-plus/test';
 import { md5 } from './md5';
 
 describe('md5', () => {

@@ -1,7 +1,7 @@
 import React, { type ReactElement } from 'react';
 import { BsBuildingFillGear, BsBuildingGear } from 'react-icons/bs';
 import { RiFocus2Fill, RiFocus2Line } from 'react-icons/ri';
-import type { RouteObject } from 'react-router-dom';
+import type { RouteObject } from 'react-router';
 import { createWorkRoutes } from '#/console/createWorkRoutes';
 
 const WorkModule = defineModule({

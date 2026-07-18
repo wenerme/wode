@@ -1,0 +1,86 @@
+{
+	"name": "@wener/ui",
+	"version": "0.1.0",
+	"type": "module",
+	"description": "Shared Wener UI primitives built on Base UI and Tailwind CSS",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/wenerme/wode.git",
+		"directory": "packages/ui"
+	},
+	"homepage": "https://github.com/wenerme/wode/tree/main/packages/ui",
+	"author": "wener",
+	"license": "MIT",
+	"exports": {
+		".": "./src/index.ts",
+		"./button": "./src/button.tsx",
+		"./dialog": "./src/dialog.tsx",
+		"./examples": "./src/examples/index.ts",
+		"./input": "./src/input.tsx",
+		"./popover": "./src/popover.tsx",
+		"./textarea": "./src/textarea.tsx",
+		"./utils": "./src/utils.ts",
+		"./package.json": "./package.json"
+	},
+	"files": ["lib", "src", "README.md"],
+	"keywords": ["react", "ui", "base-ui", "tailwindcss", "shadcn"],
+	"scripts": {
+		"build": "make build",
+		"prepack": "pnpm build",
+		"prepublishOnly": "pnpm build",
+		"typecheck": "tsc --noEmit"
+	},
+	"peerDependencies": {
+		"react": "*",
+		"react-dom": "*"
+	},
+	"dependencies": {
+		"@base-ui/react": "^1.6.0",
+		"clsx": "^2.1.1",
+		"tailwind-merge": "^3.6.0"
+	},
+	"devDependencies": {
+		"@types/react": "^19.2.17",
+		"@types/react-dom": "^19.2.3",
+		"react": "^19.2.7",
+		"react-dom": "^19.2.7",
+		"typescript": "7.0.2"
+	},
+	"publishConfig": {
+		"exports": {
+			".": {
+				"types": "./src/index.ts",
+				"default": "./lib/index.js"
+			},
+			"./button": {
+				"types": "./src/button.tsx",
+				"default": "./lib/button.js"
+			},
+			"./dialog": {
+				"types": "./src/dialog.tsx",
+				"default": "./lib/dialog.js"
+			},
+			"./examples": {
+				"types": "./src/examples/index.ts",
+				"default": "./lib/examples/index.js"
+			},
+			"./input": {
+				"types": "./src/input.tsx",
+				"default": "./lib/input.js"
+			},
+			"./popover": {
+				"types": "./src/popover.tsx",
+				"default": "./lib/popover.js"
+			},
+			"./textarea": {
+				"types": "./src/textarea.tsx",
+				"default": "./lib/textarea.js"
+			},
+			"./utils": {
+				"types": "./src/utils.ts",
+				"default": "./lib/utils.js"
+			},
+			"./package.json": "./package.json"
+		}
+	}
+}

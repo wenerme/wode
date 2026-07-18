@@ -1,5 +1,5 @@
 import { Buffer } from 'node:buffer';
-import { expect, test } from 'vitest';
+import { expect, test } from 'vite-plus/test';
 import { isTransferable } from './isTransferable';
 
 test('isTransferable', () => {

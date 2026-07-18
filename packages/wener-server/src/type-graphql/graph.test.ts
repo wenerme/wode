@@ -1,4 +1,4 @@
-import { Entity } from '@mikro-orm/decorators/legacy';
+import { defineEntity as defineMikroEntity } from '@mikro-orm/core';
 import { Injectable } from '@nestjs/common';
 import { type Constructor, mixin } from '@wener/utils';
 import { GraphQLDateTime } from 'graphql-scalars';
@@ -11,7 +11,7 @@ import {
 	Resolver,
 	type ResolverData,
 } from 'type-graphql';
-import { expect, test } from 'vitest';
+import { expect, test } from 'vite-plus/test';
 import { StandardBaseEntity } from '../entity';
 import { EntityBaseService } from '../entity/service';
 import { BaseNode } from './BaseNode';
@@ -72,8 +72,13 @@ export class ResourceObject extends mixin(BaseObject, withStateStatusType, withO
 	// deletedBy?: UserObject;
 }
 
-@Entity()
-class ResourceEntity extends StandardBaseEntity {}
+const ResourceEntitySchema = defineMikroEntity({
+	name: 'ResourceEntity',
+	extends: StandardBaseEntity,
+	properties: {},
+});
+class ResourceEntity extends ResourceEntitySchema.class {}
+ResourceEntitySchema.setClass(ResourceEntity);
 
 @Injectable()
 class ResourceService extends EntityBaseService<ResourceEntity> {}

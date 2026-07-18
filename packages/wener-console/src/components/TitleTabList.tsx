@@ -58,19 +58,14 @@ export const TitleTabList = ({
 					);
 					let isActive = key === current;
 					return href ? (
-						<NavLink
-							to={href}
-							role='tab'
-							className={({ isActive }) => clsx('tab', isActive && 'tab-active')}
-							key={index}
-						>
+						<NavLink to={href} role='tab' className={({ isActive }) => clsx('tab', isActive && 'tab-active')} key={key}>
 							{content}
 						</NavLink>
 					) : (
 						<a
 							role='tab'
 							className={clsx('tab', isActive && 'tab-active')}
-							key={index}
+							key={key}
 							onClick={() => {
 								setCurrent(key);
 							}}

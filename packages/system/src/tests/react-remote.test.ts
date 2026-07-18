@@ -3,7 +3,7 @@ import { polyfillCrypto } from '@wener/utils/server';
 import { polyfillJsDom } from '@wener/utils/server/jsdom';
 import { polyfillWebSocket } from '@wener/utils/server/ws';
 import React from 'react';
-import { assert, beforeAll, expect, type TestContext, test } from 'vitest';
+import { assert, beforeAll, expect, type TestContext, test } from 'vite-plus/test';
 import { loadBrowserSystem } from '../loaders/loadBrowserSystem';
 import { addPreload } from '../utils/addPreload';
 import { getGlobalSystem, type SystemJS } from '../utils/getGlobalSystem';

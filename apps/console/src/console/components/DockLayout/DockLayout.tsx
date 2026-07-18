@@ -10,7 +10,7 @@ import { HiOutlineLogout } from 'react-icons/hi';
 import { HiLockClosed, HiMiniArrowsPointingIn, HiOutlineIdentification, HiQuestionMarkCircle } from 'react-icons/hi2';
 import { PiBrowser, PiBrowsersLight } from 'react-icons/pi';
 import { VscClose, VscCloseAll, VscPrimitiveSquare } from 'react-icons/vsc';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { useStore } from 'zustand';
 import { shallow } from 'zustand/shallow';
 import { useStoreWithEqualityFn } from 'zustand/traditional';
@@ -22,7 +22,7 @@ export const DockLayout: React.FC<{ children?: ReactNode; dock?: ReactNode }> = 
 	return (
 		<div className={clsx('flex h-screen w-full overflow-hidden', 'flex-col md:flex-row')}>
 			<main className={'relative order-5 h-full flex-1 overflow-auto'}>
-				<div className={'scrollbar-thin absolute inset-0'}>{children}</div>
+				<div className={'absolute inset-0 scrollbar-thin'}>{children}</div>
 			</main>
 			<aside
 				className={clsx(
@@ -53,7 +53,7 @@ const UserAvatar = () => {
 					)}
 				</div>
 			</Link>
-			<hr className={'my-2 border-base-200'} />
+			<hr className={'border-base-200 my-2'} />
 			<ul className={'menu p-2'}>
 				<li key={'refreshProfile'}>
 					<button type={'button'} onClick={refreshProfile}>
@@ -118,7 +118,7 @@ const WindowControlPopoverContent: React.FC<ComponentPropsWithoutRef<'ul'>> = (p
 	const top = useMemo(() => root.top, []);
 	const count = root.windows.length;
 	return (
-		<ul className={'border-color menu menu-sm w-44 rounded-box border bg-base-100'} {...props}>
+		<ul className={'border-color menu menu-sm rounded-box bg-base-100 w-44 border'} {...props}>
 			{top && (
 				<>
 					<li className='menu-title'>当前窗口</li>
@@ -233,8 +233,8 @@ const WindowDock = memo<{ win: ReactWindow }>(({ win }) => {
 				type={'button'}
 				className={cn(
 					'h-10 w-10',
-					`flex items-center justify-center text-base-content hover:text-base-content`,
-					'rounded-lg bg-base-200',
+					`text-base-content hover:text-base-content flex items-center justify-center`,
+					'bg-base-200 rounded-lg',
 					!minimized ? `active bg-base-300` : 'opacity-75',
 				)}
 				{...getReferenceProps()}
@@ -249,7 +249,7 @@ const WindowDock = memo<{ win: ReactWindow }>(({ win }) => {
 				<FloatingPortal>
 					<FloatingFocusManager context={context}>
 						<div
-							className={'rounded bg-base-200 p-1 text-xs opacity-85'}
+							className={'bg-base-200 rounded p-1 text-xs opacity-85'}
 							ref={refs.setFloating}
 							{...getFloatingProps()}
 							style={floatingStyles}

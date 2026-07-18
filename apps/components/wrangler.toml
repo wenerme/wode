@@ -8,9 +8,7 @@ send_metrics = false
 # Static assets served from dist/public
 assets = { directory = "./dist/public", not_found_handling = "single-page-application" }
 
-routes = [
-	{ pattern = "ui-components.wener.me", custom_domain = true },
-]
+routes = [{ pattern = "ui-components.wener.me", custom_domain = true }]
 
 [observability]
 enabled = true

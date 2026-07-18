@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { expect, test } from 'vitest';
+import { expect, test } from 'vite-plus/test';
 import { renderReactNodeToMarkdown } from './renderReactNodeToMarkdown';
 import { renderReactNodeToText } from './renderReactNodeToText';
 

@@ -12,17 +12,13 @@
 	"author": "wener",
 	"license": "MIT",
 	"engines": {
-		"node": ">=18.0.0"
+		"node": ">=24.11.0"
 	},
 	"bin": {
 		"feishu-devdocs-mcp": "./dist/main.mjs"
 	},
 	"main": "./dist/main.mjs",
-	"files": [
-		"dist",
-		"src",
-		"README.md"
-	],
+	"files": ["dist", "src", "README.md"],
 	"keywords": [
 		"mcp",
 		"feishu",
@@ -41,18 +37,19 @@
 		"prepublishOnly": "pnpm build"
 	},
 	"devDependencies": {
-		"@hono/mcp": "^0.2.5",
-		"@hono/node-server": "^2.0.1",
+		"@hono/mcp": "^0.3.0",
+		"@hono/node-server": "^2.0.8",
 		"@modelcontextprotocol/sdk": "^1.29.0",
-		"@orpc/contract": "^1.14.1",
-		"@orpc/server": "^1.14.1",
-		"@types/node": "^24.12.2",
+		"@orpc/contract": "^1.14.7",
+		"@orpc/server": "^1.14.7",
+		"@types/node": "^24.13.3",
 		"@wener/utils": "^1.1.58",
-		"commander": "^14.0.3",
+		"commander": "^15.0.0",
 		"common": "workspace:^1.0.0",
 		"consola": "^3.4.2",
 		"dotenv": "^16.6.1",
-		"hono": "^4.12.16",
+		"hono": "^4.12.28",
+		"hono-rate-limiter": "^0.5.3",
 		"zod": "^4.4.3"
 	},
 	"publishConfig": {

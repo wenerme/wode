@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { expect, test } from 'vitest';
+import { expect, test } from 'vite-plus/test';
 import { ClientRegistry, RemoteServiceOf } from './client';
 import { createProxyClient } from './client/createProxyClient';
 import { createRemoteServiceClient } from './client/createRemoteServiceClient';

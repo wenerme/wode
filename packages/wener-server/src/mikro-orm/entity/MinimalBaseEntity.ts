@@ -1,5 +1,4 @@
-import { BaseEntity, type Opt, types } from '@mikro-orm/core';
-import { Entity, PrimaryKey, Property } from '@mikro-orm/decorators/legacy';
+import { BaseEntity, defineEntity, p } from '@mikro-orm/core';
 
 export type MinimalBaseEntityOptionalFields =
 	| 'id'
@@ -15,20 +14,21 @@ export type MinimalBaseEntityOptionalFields =
 /**
  * Add Minimal prefix to avoid conflict with real entity, MikroORM not allowed different entity with same name
  */
-@Entity({ abstract: true })
-export abstract class MinimalBaseEntity extends BaseEntity {
-	@PrimaryKey({ type: types.string, defaultRaw: 'public.gen_ulid()', nullable: false })
-	id!: string & Opt;
+export const MinimalBaseEntitySchema = defineEntity({
+	name: 'MinimalBaseEntity',
+	abstract: true,
+	extends: BaseEntity,
+	properties: {
+		id: p.string().primary().defaultRaw('public.gen_ulid()'),
+		uid: p.uuid().columnType('uuid').defaultRaw('gen_random_uuid()').unique(),
+		createdAt: p.datetime().defaultRaw('current_timestamp'),
+		updatedAt: p
+			.datetime()
+			.defaultRaw('current_timestamp')
+			.onUpdate(() => new Date()),
+		deletedAt: p.datetime().nullable(),
+	},
+});
 
-	@Property({ type: types.uuid, columnType: 'uuid', defaultRaw: 'gen_random_uuid()', unique: true, nullable: false })
-	uid!: string & Opt;
-
-	@Property({ type: types.datetime, defaultRaw: 'current_timestamp' })
-	createdAt!: Date & Opt;
-
-	@Property({ type: types.datetime, defaultRaw: 'current_timestamp', onUpdate: () => new Date() })
-	updatedAt!: Date & Opt;
-
-	@Property({ type: types.datetime, nullable: true })
-	deletedAt?: Date;
-}
+export abstract class MinimalBaseEntity extends MinimalBaseEntitySchema.class {}
+MinimalBaseEntitySchema.setClass(MinimalBaseEntity);

@@ -10,6 +10,7 @@
   - https://github.com/lukeed/templite
   - https://github.com/lukeed/rosetta
   - https://github.com/sindresorhus/camelcase
+  - https://github.com/simov/slugify
   - https://github.com/triggerdotdev/trigger.dev/blob/main/packages/core-backend/src/bloom.ts
   - ohash
   - humanlize-duration
@@ -40,6 +41,7 @@
   - templite
   - rosetta
   - camelcase
+  - slugify
 
 ## References
 

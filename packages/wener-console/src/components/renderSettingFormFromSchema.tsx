@@ -85,9 +85,9 @@ export function renderSettingFormFromSchema({ schema, level = 0, path = [], form
 			return (
 				<select {...register(name)} className={'select select-bordered select-sm'}>
 					<option value={''}>请选择</option>
-					{anyOf.map((item: any, index) => {
+					{anyOf.map((item: any) => {
 						return (
-							<option key={index} value={item.const}>
+							<option key={String(item.const ?? getLabel(item))} value={item.const}>
 								{getLabel(item)}
 							</option>
 						);

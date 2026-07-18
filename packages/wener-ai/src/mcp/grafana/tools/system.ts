@@ -1,5 +1,5 @@
-import { registerJsonTool, EmptySchema } from '../toolkit';
 import type { GrafanaContext } from '../server';
+import { EmptySchema, registerJsonTool } from '../toolkit';
 
 export function registerSystemTools(ctx: GrafanaContext) {
 	registerJsonTool(

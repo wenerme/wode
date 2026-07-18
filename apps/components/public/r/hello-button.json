@@ -6,7 +6,7 @@
 	"files": [
 		{
 			"path": "registry/default/ui/hello-button.tsx",
-			"content": "import { HandWavingIcon } from \"@phosphor-icons/react\"\n\nexport function HelloButton({ children = \"Hello from Wener Components!\" }: { children?: React.ReactNode }) {\n  return (\n    <button className=\"inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all bg-primary text-primary-foreground shadow-xs hover:bg-primary/90 h-9 px-4 py-2\">\n      <HandWavingIcon className=\"size-4\" />\n      {children}\n    </button>\n  )\n}\n",
+			"content": "import { HandWavingIcon } from '@phosphor-icons/react';\nimport { Button } from '@wener/ui/button';\nimport type { ReactNode } from 'react';\n\nexport function HelloButton({ children = 'Hello from Wener Components!' }: { children?: ReactNode }) {\n\treturn (\n\t\t<Button>\n\t\t\t<HandWavingIcon className='size-4' />\n\t\t\t{children}\n\t\t</Button>\n\t);\n}\n",
 			"type": "registry:component"
 		}
 	],

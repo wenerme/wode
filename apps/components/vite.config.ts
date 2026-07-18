@@ -1,6 +1,6 @@
 import tailwindcss from '@tailwindcss/vite';
-import react from '@vitejs/plugin-react-swc';
-import { defineConfig, type PluginOption } from 'vite';
+import react from '@vitejs/plugin-react';
+import { defineConfig, type PluginOption } from 'vite-plus';
 
 export default defineConfig({
 	plugins: [react(), tailwindcss()] as PluginOption[],

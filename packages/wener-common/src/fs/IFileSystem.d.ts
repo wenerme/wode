@@ -12,6 +12,8 @@ export type ReaddirOptions = OperationOptions & {
 	depth?: number;
 	kind?: FileKind;
 	hidden?: boolean;
+	/** Reject when this call would return more entries. Enforce before allocating results, or fail ENOTSUP before I/O. */
+	maxEntries?: number;
 };
 export type MkdirOptions = OperationOptions & {
 	recursive?: boolean;
@@ -19,6 +21,8 @@ export type MkdirOptions = OperationOptions & {
 // File operations
 export type ReadFileOptions = OperationOptions & {
 	encoding?: 'text' | 'binary';
+	/** Read at most this many bytes. Enforce before allocation, or fail ENOTSUP before unbounded I/O. */
+	maxBytes?: number;
 	onDownloadProgress?: (e: { loaded: number; total: number }) => void;
 };
 export type WriteFileOptions = OperationOptions & {

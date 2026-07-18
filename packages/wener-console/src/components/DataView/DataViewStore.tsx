@@ -9,7 +9,7 @@ import { createEmitter } from '../../events/createEmitter';
 import type { ComponentName, ComponentState } from '../ComponentsState';
 import { createViewComponentStateHook } from '../createViewComponentStateHook';
 
-type Identifiable = { id: string };
+export type Identifiable = { id: string };
 
 export type ViewMode = 'table' | 'list' | 'grid' | 'card' | string;
 
