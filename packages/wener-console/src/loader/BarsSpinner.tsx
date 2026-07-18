@@ -38,11 +38,9 @@ const BarsSpinnerBox = styled.div<{ bars: number }>`
 export const BarsSpinner: FC<{ bars?: number }> = ({ bars = 16 }) => {
 	return (
 		<BarsSpinnerBox bars={bars}>
-			{Array(bars)
-				.fill(null)
-				.map((_, i) => (
-					<div key={i} />
-				))}
+			{Array.from({ length: bars }, (_, i) => `bar-${i}`).map((key) => (
+				<div key={key} />
+			))}
 		</BarsSpinnerBox>
 	);
 };

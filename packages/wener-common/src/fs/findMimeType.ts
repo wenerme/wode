@@ -1,20 +1,12 @@
-import { types } from 'mime-types';
-import pathe from 'pathe';
+import { GeneratedMimeTypes } from './mimeTypes.generated';
 
-export function findMimeType(path: string | undefined | null) {
-	// fix extname error
-	// https://github.com/jshttp/mime-types/issues/111
-
-	if (!path || typeof path !== 'string') {
-		return false;
-	}
-
-	// get the extension ("ext" or ".ext" or full path)
-	const extension = pathe.extname(`x.${path}`).toLowerCase().slice(1);
-
-	if (!extension) {
-		return false;
-	}
-
-	return types[extension] || false;
+export function findMimeType(path: string | undefined | null): string | false {
+	if (!path || typeof path !== 'string') return false;
+	const cleanPath = path.split(/[?#]/, 1)[0].replaceAll('\\', '/');
+	const basename = cleanPath.slice(cleanPath.lastIndexOf('/') + 1);
+	const extension = basename.includes('.') ? basename.slice(basename.lastIndexOf('.') + 1) : basename;
+	const normalizedExtension = extension.toLowerCase();
+	return Object.hasOwn(GeneratedMimeTypes, normalizedExtension)
+		? GeneratedMimeTypes[normalizedExtension as keyof typeof GeneratedMimeTypes]
+		: false;
 }

@@ -12,48 +12,35 @@
 	"author": "wener",
 	"license": "MIT",
 	"engines": {
-		"node": ">=18.0.0"
+		"node": ">=24.11.0"
 	},
 	"bin": {
 		"mcp-cli": "./dist/index.mjs"
 	},
 	"main": "./dist/index.mjs",
-	"files": [
-		"dist",
-		"src",
-		"README.md"
-	],
-	"keywords": [
-		"mcp",
-		"model-context-protocol",
-		"cli",
-		"ai",
-		"tools",
-		"agents",
-		"claude",
-		"cursor",
-		"gemini"
-	],
+	"files": ["dist", "src", "README.md"],
+	"keywords": ["mcp", "model-context-protocol", "cli", "ai", "tools", "agents", "claude", "cursor", "gemini"],
 	"scripts": {
 		"build": "tsx src/scripts/bundle.ts",
 		"dev": "tsx src/index.ts",
-		"fmt": "pnpm prettier --write src",
+		"fmt": "vp fmt src",
 		"prepublishOnly": "pnpm build",
-		"test": "vitest run",
+		"test": "vp test run",
 		"typecheck": "tsc --noEmit"
 	},
 	"devDependencies": {
 		"@modelcontextprotocol/sdk": "^1.29.0",
-		"@types/node": "^24.12.2",
+		"@types/node": "^24.13.3",
 		"@wener/utils": "workspace:^1.1.58",
-		"commander": "^14.0.3",
+		"commander": "^15.0.0",
 		"common": "workspace:^1.0.0",
-		"esbuild": "^0.28.0",
-		"smol-toml": "^1.6.1",
+		"esbuild": "^0.28.1",
+		"smol-toml": "^1.7.0",
 		"ts-node": "^10.9.2",
-		"tsx": "^4.21.0",
-		"typescript": "^6.0.3",
-		"vitest": "^4.1.5",
+		"tsx": "^4.23.0",
+		"typescript": "7.0.2",
+		"vite": "npm:@voidzero-dev/vite-plus-core@0.2.5",
+		"vite-plus": "catalog:",
 		"zod": "^4.4.3"
 	},
 	"publishConfig": {

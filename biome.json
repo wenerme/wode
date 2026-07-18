@@ -95,7 +95,38 @@
 		}
 	},
 	"files": {
-		"includes": ["**", "!**/*.gen.ts", "!**/*_pb.d.ts", "!**/*_pb.js", "!**/parser.js"]
+		"includes": [
+			"**",
+			"!local",
+			"!.agents",
+			"!.claude",
+			"!.grit",
+			"!.idea",
+			"!.pi",
+			"!bin",
+			"!node_modules",
+			"!**/node_modules",
+			"!**/.next",
+			"!**/.turbo",
+			"!**/.cache",
+			"!**/dist",
+			"!**/storybook-static",
+			"!**/build",
+			"!**/builds",
+			"!**/coverage",
+			"!**/out",
+			"!**/lib",
+			"!**/ignored",
+			"!**/ignored/**",
+			"!apps/console/public/version.json",
+			"!packages/common/src/gen",
+			"!packages/common/src/protos",
+			"!**/*.tsbuildinfo",
+			"!**/*.gen.ts",
+			"!**/*_pb.d.ts",
+			"!**/*_pb.js",
+			"!**/parser.js"
+		]
 	},
 	"overrides": [
 		{

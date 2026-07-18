@@ -1,6 +1,6 @@
 import * as console from 'node:console';
 import { fieldPatternMatcher } from '@casl/ability';
-import { expect, test } from 'vitest';
+import { expect, test } from 'vite-plus/test';
 import { buildUserAbility } from '#/casl/casl';
 
 test('casl', () => {

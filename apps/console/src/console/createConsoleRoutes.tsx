@@ -2,17 +2,22 @@ import { isDev } from '@wener/console';
 import { lazyRoute } from '@wener/console/router';
 import React from 'react';
 import { HiColorSwatch, HiOutlineColorSwatch } from 'react-icons/hi';
-import type { RouteObject } from 'react-router-dom';
-import { Navigate } from 'react-router-dom';
+import type { RouteObject } from 'react-router';
+import { Navigate } from 'react-router';
 import { can } from '#/casl';
 import { SiteModules } from '#/console/modules/user.core/SiteModules';
+
+type ConsoleRouteObject = Omit<RouteObject, 'children'> & {
+	meta?: Record<string, unknown>;
+	children?: ConsoleRouteObject[];
+};
 
 const PageErrorState = () => {
 	// TODO
 	return null;
 };
 export function createConsoleRoutes(): RouteObject[] {
-	const routes: RouteObject[] = [
+	const routes: ConsoleRouteObject[] = [
 		{
 			index: true,
 			element: <Navigate to={'home'} replace />,
@@ -97,12 +102,12 @@ export function createConsoleRoutes(): RouteObject[] {
 
 	for (let [, { path, createRoutes }] of Object.entries(SiteModules)) {
 		if (can('view', 'page', path)) {
-			routes.push(...createRoutes());
+			routes.push(...(createRoutes() as ConsoleRouteObject[]));
 		}
 	}
 
 	if (isDev()) {
 		console.log(`Final Routes`, routes);
 	}
-	return routes;
+	return routes as RouteObject[];
 }

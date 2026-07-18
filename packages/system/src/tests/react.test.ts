@@ -1,6 +1,6 @@
 import { createNoopLogger } from '@wener/utils';
 import React from 'react';
-import { assert, beforeAll, expect, type TestContext, test } from 'vitest';
+import { assert, beforeAll, expect, type TestContext, test } from 'vite-plus/test';
 import { loadBrowserSystem } from '../loaders/loadBrowserSystem';
 import { addPreload } from '../utils/addPreload';
 import { getGlobalSystem, type SystemJS } from '../utils/getGlobalSystem';

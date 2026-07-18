@@ -50,22 +50,23 @@ export const DaisyDropdownMenuComposite = ({
 	let content = (
 		<Menu.Positioner side={'bottom'} align={'end'} sideOffset={5}>
 			<Menu.Popup className={cn('menu menu-sm rounded-box bg-base-200 z-30 w-52', className)}>
-				{items.map((item, key) => {
+				{items.map((item, index) => {
+					const itemKey = 'label' in item && item.label ? String(item.label) : `${item.type || 'item'}-${index}`;
 					return match(item)
 						.with({ type: 'label' }, ({ label, type, className, children, ...props }) => {
 							return (
-								<Menu.GroupLabel key={key} className={cn('menu-title', className)} {...props}>
+								<Menu.GroupLabel key={itemKey} className={cn('menu-title', className)} {...props}>
 									{label || children}
 								</Menu.GroupLabel>
 							);
 						})
 						.with({ type: 'separator' }, ({ type, className, ...props }) => {
-							return <Menu.Separator key={key} className={cn('bg-base-300 m-[5px] h-px', className)} {...props} />;
+							return <Menu.Separator key={itemKey} className={cn('bg-base-300 m-[5px] h-px', className)} {...props} />;
 						})
 						.otherwise(({ label, icon, type, className, children, ...props }) => {
 							return (
 								<Menu.Item
-									key={key}
+									key={itemKey}
 									{...props}
 									render={
 										<li

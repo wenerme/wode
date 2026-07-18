@@ -1,5 +1,5 @@
 import { inspect } from 'node:util';
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test } from 'vite-plus/test';
 import { formatQuery } from './formatQuery';
 import { parseQuery } from './parseQuery';
 import { resolveQuery } from './resolveQuery';

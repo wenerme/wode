@@ -12,9 +12,9 @@ export const MenuLayout: FC<{
 					<div className={'text-lg font-medium'}>{title}</div>
 				</header>
 				<ul className='menu menu-sm bg-base-100 py-2'>
-					{menu.map(({ href, label }, i) => {
+					{menu.map(({ href, label }) => {
 						return (
-							<li key={i}>
+							<li key={href || label}>
 								<a href={href}>{label}</a>
 							</li>
 						);
@@ -22,7 +22,7 @@ export const MenuLayout: FC<{
 				</ul>
 			</aside>
 			<main className={'relative h-full flex-1 overflow-auto'}>
-				<div className={'scrollbar-thin absolute inset-0'}>{children}</div>
+				<div className={'absolute inset-0 scrollbar-thin'}>{children}</div>
 			</main>
 		</div>
 	);

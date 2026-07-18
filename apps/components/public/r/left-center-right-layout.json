@@ -1,0 +1,15 @@
+{
+	"$schema": "https://ui.shadcn.com/schema/registry-item.json",
+	"name": "left-center-right-layout",
+	"title": "Left Center Right Layout",
+	"description": "A stable three-slot horizontal layout with independently aligned left, geometric-center, and right content",
+	"files": [
+		{
+			"path": "registry/default/ui/left-center-right-layout.tsx",
+			"content": "import type { ComponentPropsWithRef, ReactNode } from 'react';\nimport { cn } from '@/lib/utils';\n\nexport type LeftCenterRightLayoutProps = ComponentPropsWithRef<'div'> & {\n\tcenter?: ReactNode;\n\tcenterClassName?: string;\n\tleft?: ReactNode;\n\tleftClassName?: string;\n\tright?: ReactNode;\n\trightClassName?: string;\n};\n\nexport function LeftCenterRightLayout({\n\tcenter,\n\tcenterClassName,\n\tchildren,\n\tclassName,\n\tleft,\n\tleftClassName,\n\tright,\n\trightClassName,\n\t...props\n}: LeftCenterRightLayoutProps) {\n\treturn (\n\t\t<div\n\t\t\tdata-slot='left-center-right-layout'\n\t\t\tclassName={cn('grid min-w-0 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center', className)}\n\t\t\t{...props}\n\t\t>\n\t\t\t<div\n\t\t\t\tdata-slot='left-center-right-layout-left'\n\t\t\t\tclassName={cn('flex max-w-full min-w-0 justify-self-start overflow-hidden', leftClassName)}\n\t\t\t>\n\t\t\t\t{left}\n\t\t\t</div>\n\t\t\t<div\n\t\t\t\tdata-slot='left-center-right-layout-center'\n\t\t\t\tclassName={cn('flex max-w-full min-w-0 justify-self-center overflow-hidden', centerClassName)}\n\t\t\t>\n\t\t\t\t{center ?? children}\n\t\t\t</div>\n\t\t\t<div\n\t\t\t\tdata-slot='left-center-right-layout-right'\n\t\t\t\tclassName={cn('flex max-w-full min-w-0 justify-self-end overflow-hidden', rightClassName)}\n\t\t\t>\n\t\t\t\t{right}\n\t\t\t</div>\n\t\t</div>\n\t);\n}\n",
+			"type": "registry:ui",
+			"target": "@ui/left-center-right-layout.tsx"
+		}
+	],
+	"type": "registry:ui"
+}

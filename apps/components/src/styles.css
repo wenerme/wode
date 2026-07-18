@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@plugin "daisyui";
+@source "../node_modules/@wener/ui/src";
 
 @theme {
 	--font-sans: "Geist var", "Geist", system-ui, sans-serif;
@@ -20,7 +20,7 @@
 	--color-chart-1: var(--chart-1);
 	--color-ring: var(--ring);
 	--color-input: var(--input);
-	--color-border: var(--border);
+	--color-border: var(--shadcn-border);
 	--color-destructive: var(--destructive);
 	--color-muted-foreground: var(--muted-foreground);
 	--color-muted: var(--muted);
@@ -56,7 +56,7 @@
 	--accent: oklch(0.97 0 0);
 	--accent-foreground: oklch(0.205 0 0);
 	--destructive: oklch(0.58 0.22 27);
-	--border: oklch(0.922 0 0);
+	--shadcn-border: oklch(0.922 0 0);
 	--input: oklch(0.922 0 0);
 	--ring: oklch(0.708 0 0);
 	--chart-1: oklch(0.87 0.12 207);
@@ -91,7 +91,7 @@
 	--accent: oklch(0.371 0 0);
 	--accent-foreground: oklch(0.985 0 0);
 	--destructive: oklch(0.704 0.191 22.216);
-	--border: oklch(1 0 0 / 10%);
+	--shadcn-border: oklch(1 0 0 / 10%);
 	--input: oklch(1 0 0 / 15%);
 	--ring: oklch(0.556 0 0);
 	--chart-1: oklch(0.87 0.12 207);
@@ -111,7 +111,7 @@
 
 /* DaisyUI custom theme 'wener' */
 @plugin "daisyui" {
-	themes: wener --default;
+	themes: all;
 }
 
 @plugin "daisyui/theme" {
@@ -186,9 +186,62 @@
 	}
 }
 
-/* Shadcn base layer - border styles only, body colors handled by DaisyUI */
+/* Shadcn base layer with DaisyUI surface colors. */
 @layer base {
 	* {
 		@apply border-border outline-ring/50;
 	}
+
+	html,
+	body {
+		min-height: 100%;
+		background: var(--color-base-200);
+		color: var(--color-base-content);
+	}
+
+	button,
+	a {
+		-webkit-tap-highlight-color: transparent;
+	}
+}
+
+:root[data-radius="square"] {
+	--radius: 0.125rem;
+	--radius-box: 0.125rem;
+	--radius-field: 0.125rem;
+	--radius-selector: 0.125rem;
+}
+
+:root[data-radius="soft"] {
+	--radius: 0.45rem;
+	--radius-box: 0.5rem;
+	--radius-field: 0.25rem;
+	--radius-selector: 0.5rem;
+}
+
+:root[data-radius="rounded"] {
+	--radius: 0.75rem;
+	--radius-box: 0.75rem;
+	--radius-field: 0.5rem;
+	--radius-selector: 0.75rem;
+}
+
+:root[data-density="compact"] [data-console-density] {
+	--console-control-height: 2rem;
+	--console-row-padding: 0.5rem;
+}
+
+:root[data-density="comfortable"] [data-console-density],
+[data-console-density] {
+	--console-control-height: 2.25rem;
+	--console-row-padding: 0.75rem;
+}
+
+:root[data-motion="reduced"] *,
+:root[data-motion="reduced"] *::before,
+:root[data-motion="reduced"] *::after {
+	scroll-behavior: auto !important;
+	animation-duration: 0.01ms !important;
+	animation-iteration-count: 1 !important;
+	transition-duration: 0.01ms !important;
 }

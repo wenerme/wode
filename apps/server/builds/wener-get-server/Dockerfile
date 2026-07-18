@@ -1,4 +1,4 @@
-FROM quay.io/wener/node:18
+FROM quay.io/wener/node:24
 
 WORKDIR /app
 

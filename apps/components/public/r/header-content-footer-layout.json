@@ -1,0 +1,16 @@
+{
+	"$schema": "https://ui.shadcn.com/schema/registry-item.json",
+	"name": "header-content-footer-layout",
+	"title": "Header Content Footer Layout",
+	"description": "A bounded flex-column layout with composable header, scrollable content, and footer slots",
+	"dependencies": ["daisyui"],
+	"files": [
+		{
+			"path": "registry/default/ui/header-content-footer-layout.tsx",
+			"content": "import type { ComponentPropsWithRef, ReactNode } from 'react';\nimport { cn } from '@/lib/utils';\n\nexport type HeaderContentFooterLayoutProps = ComponentPropsWithRef<'div'> & {\n\tcontentClassName?: string;\n\tfooter?: ReactNode;\n\theader?: ReactNode;\n\tscrollContent?: boolean;\n};\n\nexport function HeaderContentFooterLayout({\n\tchildren,\n\tclassName,\n\tcontentClassName,\n\tfooter,\n\theader,\n\tscrollContent = true,\n\t...props\n}: HeaderContentFooterLayoutProps) {\n\treturn (\n\t\t<div data-slot='header-content-footer-layout' className={cn('flex min-h-0 min-w-0 flex-col', className)} {...props}>\n\t\t\t{header}\n\t\t\t<div\n\t\t\t\tdata-slot='header-content-footer-layout-content'\n\t\t\t\tclassName={cn('relative min-h-0 min-w-0 flex-1', scrollContent && 'overflow-auto', contentClassName)}\n\t\t\t>\n\t\t\t\t{children}\n\t\t\t</div>\n\t\t\t{footer}\n\t\t</div>\n\t);\n}\n",
+			"type": "registry:ui",
+			"target": "@ui/header-content-footer-layout.tsx"
+		}
+	],
+	"type": "registry:ui"
+}

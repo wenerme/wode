@@ -487,6 +487,18 @@ export const ResponseInputItemSchema = z.union([
 		content: z.union([z.string(), z.array(ContentPartSchema)]),
 	}),
 	z.looseObject({
+		type: z.literal('function_call'),
+		id: z.string().nullable().optional(),
+		call_id: z.string(),
+		name: z.string(),
+		arguments: z.string(),
+	}),
+	z.looseObject({
+		type: z.literal('function_call_output'),
+		call_id: z.string(),
+		output: z.union([z.string(), z.record(z.string(), z.any())]),
+	}),
+	z.looseObject({
 		type: z.literal('item_reference'),
 		id: z.string(),
 	}),
@@ -553,7 +565,7 @@ export type CreateResponseRequest = z.infer<typeof CreateResponseRequestSchema>;
 /**
  * Response output item
  */
-export const ResponseOutputItemSchema = z.looseObject({
+export const ResponseMessageOutputItemSchema = z.looseObject({
 	type: z.literal('message'),
 	id: z.string().nullable().optional(),
 	role: z.literal('assistant'),
@@ -566,6 +578,20 @@ export const ResponseOutputItemSchema = z.looseObject({
 	),
 	status: z.string().nullable().optional(),
 });
+
+export const ResponseFunctionCallOutputItemSchema = z.looseObject({
+	type: z.literal('function_call'),
+	id: z.string().nullable().optional(),
+	call_id: z.string(),
+	name: z.string(),
+	arguments: z.string(),
+	status: z.string().nullable().optional(),
+});
+
+export const ResponseOutputItemSchema = z.union([
+	ResponseMessageOutputItemSchema,
+	ResponseFunctionCallOutputItemSchema,
+]);
 
 /**
  * Generic Create Response Response

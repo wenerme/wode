@@ -4,12 +4,12 @@
  */
 
 import {
+	type CreateChatCompletionRequest,
 	CreateChatCompletionRequestSchema,
 	CreateGenerateContentRequestSchema,
 	CreateMessageRequestSchema,
-	CreateResponseRequestSchema,
-	type CreateChatCompletionRequest,
 	type CreateResponseRequest,
+	CreateResponseRequestSchema,
 } from '@wener/ai/schema';
 import consola from 'consola';
 import { Hono } from 'hono';

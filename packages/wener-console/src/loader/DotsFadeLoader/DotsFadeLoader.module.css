@@ -34,10 +34,10 @@
 	& > div:nth-of-type(9) {
 		animation-delay: 1s;
 	}
+}
 
-	@keyframes fade {
-		to {
-			opacity: 0.2;
-		}
+@keyframes fade {
+	to {
+		opacity: 0.2;
 	}
 }

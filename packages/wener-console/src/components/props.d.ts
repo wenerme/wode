@@ -1,3 +1,4 @@
+import type { MaybeFunction } from '@wener/utils';
 import type {
 	ComponentPropsWithRef,
 	CSSProperties,
@@ -7,7 +8,6 @@ import type {
 	ReactNode,
 	Ref,
 } from 'react';
-import type { MaybeFunction } from '@wener/utils';
 
 export type AsProps<E extends ElementType> = ComponentPropsWithRef<E> & {
 	as?: E;

@@ -1,13 +1,14 @@
-import { type Opt, types } from '@mikro-orm/core';
-import { Entity, Property } from '@mikro-orm/decorators/legacy';
+import { type Opt, p } from '@mikro-orm/core';
 import type { Constructor } from '@wener/utils';
+import { defineMixinEntity } from './defineMixinEntity';
 
 export function withSystemManagedEntity<TBase extends Constructor>(Base: TBase) {
-	@Entity({ abstract: true })
 	class HasSystemManagedMixinEntity extends Base {
-		@Property({ type: types.boolean, nullable: false, default: false })
 		systemManaged!: boolean & Opt;
 	}
 
-	return HasSystemManagedMixinEntity;
+	return defineMixinEntity(Base, HasSystemManagedMixinEntity, {
+		name: 'HasSystemManagedMixinEntity',
+		properties: { systemManaged: p.boolean().default(false) },
+	});
 }

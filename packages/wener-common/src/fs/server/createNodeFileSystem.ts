@@ -1,8 +1,4 @@
-import {
-	createReadStream as nodeCreateReadStream,
-	createWriteStream as nodeCreateWriteStream,
-	type Stats,
-} from 'node:fs';
+import { createReadStream as nodeCreateReadStream, createWriteStream as nodeCreateWriteStream } from 'node:fs';
 import fsp from 'node:fs/promises';
 import path from 'node:path';
 import { Readable, type Writable } from 'node:stream';
@@ -22,6 +18,14 @@ import type {
 	WritableData,
 	WriteFileOptions,
 } from '../IFileSystem';
+import { validateReaddirMaxEntries } from '../readdirLimit';
+import { validateReadFileMaxBytes } from '../resourceLimits';
+import { readNodeDirectory, toNodeFileStat } from './nodeFileSystemDirectory';
+import {
+	assertNodePathHasNoSymlink,
+	assertNodePathHasNoSymlinkSync,
+	readBoundedNodeFile,
+} from './nodeFileSystemLimits';
 
 export type INodeFileSystem = IServerFileSystem & {
 	readonly root: string;
@@ -30,6 +34,10 @@ export type INodeFileSystem = IServerFileSystem & {
 
 /**
  * Creates a Node.js filesystem adapter that implements the IFileSystem interface
+ *
+ * A configured root rejects lexical escapes and symlinks observed during each call. The adapter uses
+ * pathname-based Node APIs, so the host filesystem namespace must be trusted not to replace path segments
+ * concurrently. It is not a sandbox boundary against another same-host process racing rename/symlink changes.
  * @param options Configuration options for the filesystem
  * @param options.root Optional root directory to restrict all operations within
  */
@@ -92,7 +100,8 @@ class NodeFs implements IServerFileSystem, INodeFileSystem {
 		const resolvedPath = path.resolve(path.join(this.root, normalizedPath));
 
 		// Security check: ensure the path is within the root directory
-		if (!resolvedPath.startsWith(this.root)) {
+		const relative = path.relative(this.root, resolvedPath);
+		if (relative.startsWith(`..${path.sep}`) || relative === '..' || path.isAbsolute(relative)) {
 			throw new Error(`Security violation: Path ${filePath} attempts to access outside of the root directory`);
 		}
 
@@ -121,88 +130,24 @@ class NodeFs implements IServerFileSystem, INodeFileSystem {
 		return path.normalize(relativePath).replace(/\\/g, '/');
 	}
 
-	/**
-	 * Converts a system file stat to our IFileStat interface,
-	 * stripping the root prefix from paths
-	 */
-	private toFileStat(fullPath: string, fsStats: Stats): IFileStat {
-		const normalizedPath = this.stripRoot(fullPath);
-		const directoryPath = path.dirname(normalizedPath);
-		const directory = directoryPath === '.' ? '/' : directoryPath.replace(/\\/g, '/');
-
-		return {
-			directory,
-			path: normalizedPath,
-			name: path.basename(fullPath),
-			kind: fsStats.isDirectory() ? 'directory' : 'file',
-			mtime: fsStats.mtimeMs,
-			size: fsStats.size,
-			meta: {},
-		};
-	}
-
 	async readdir(dir: string, options: ReaddirOptions = {}): Promise<IFileStat[]> {
 		const { fs } = this;
-		const { glob, recursive, depth = 1, kind, hidden = true, signal } = options;
+		const { signal } = options;
+		const maxEntries = validateReaddirMaxEntries(options.maxEntries);
 		this.checkAborted(signal);
 
 		// Resolve the directory path with security checks
 		const resolvedDir = this.resolvePath(dir);
-
-		// Basic file listing
-		const entries = await fs.readdir(resolvedDir, { withFileTypes: true });
-		let results = await Promise.all(
-			entries
-				.filter((entry) => hidden || !entry.name.startsWith('.'))
-				.filter((entry) => !kind || (kind === 'directory' ? entry.isDirectory() : entry.isFile()))
-				.map(async (entry) => {
-					this.checkAborted(signal);
-
-					const entryFullPath = path.join(resolvedDir, entry.name);
-					const stat = await fs.stat(entryFullPath);
-
-					// Convert to external representation
-					return {
-						directory: this.stripRoot(resolvedDir),
-						path: this.stripRoot(entryFullPath),
-						name: entry.name,
-						kind: entry.isDirectory() ? 'directory' : 'file',
-						mtime: stat.mtimeMs,
-						size: stat.size,
-						meta: {},
-					} as IFileStat;
-				}),
-		);
-
-		// Handle recursive option
-		if (recursive || depth > 1) {
-			const subdirs = results.filter((entry) => entry.kind === 'directory');
-
-			for (const subdir of subdirs) {
-				this.checkAborted(signal);
-
-				const maxDepth = recursive ? Infinity : depth - 1;
-				if (maxDepth > 0) {
-					// Need to convert the path back to a full path for the recursive call
-					const _subdirFullPath = this.resolvePath(subdir.path);
-
-					const subEntries = await this.readdir(subdir.path, {
-						...options,
-						depth: maxDepth,
-					});
-					results = [...results, ...subEntries];
-				}
-			}
-		}
-
-		// Handle glob filtering
-		if (glob) {
-			const { matcher } = await import('micromatch');
-			const match = matcher(glob);
-			results = results.filter((entry) => match(entry.path));
-		}
-
-		return results;
+		await this.assertSafePath(resolvedDir);
+		return readNodeDirectory({
+			dir: resolvedDir,
+			fs,
+			maxEntries,
+			options,
+			readdir: (path, nextOptions) => this.readdir(path, nextOptions),
+			stripRoot: (value) => this.stripRoot(value),
+			throwIfAborted: () => this.checkAborted(signal),
+		});
 	}
 
 	async stat(filePath: string, options: StatOptions = {}): Promise<IFileStat> {
@@ -212,10 +157,13 @@ class NodeFs implements IServerFileSystem, INodeFileSystem {
 		this.checkAborted(signal);
 
 		const resolvedPath = this.resolvePath(filePath);
+		await this.assertSafePath(resolvedPath);
 
 		try {
 			const stat = await fs.stat(resolvedPath);
-			return this.toFileStat(resolvedPath, stat);
+			return toNodeFileStat(resolvedPath, path.basename(resolvedPath), stat.isDirectory(), stat, (value) =>
+				this.stripRoot(value),
+			);
 		} catch (err: any) {
 			if (err.code === 'ENOENT') {
 				throw new Error(`File not found: ${filePath}`);
@@ -231,6 +179,7 @@ class NodeFs implements IServerFileSystem, INodeFileSystem {
 		this.checkAborted(signal);
 
 		const resolvedPath = this.resolvePath(dirPath);
+		await this.assertSafePath(resolvedPath, true);
 
 		try {
 			await fs.mkdir(resolvedPath, { recursive });
@@ -249,9 +198,14 @@ class NodeFs implements IServerFileSystem, INodeFileSystem {
 		const { fs } = this;
 
 		const { encoding = 'binary', signal, onDownloadProgress } = options;
+		const maxBytes = validateReadFileMaxBytes(options.maxBytes);
 		this.checkAborted(signal);
 
 		const resolvedPath = this.resolvePath(path);
+		await this.assertSafePath(resolvedPath);
+		if (maxBytes !== undefined) {
+			return readBoundedNodeFile({ encoding, fs, maxBytes, onDownloadProgress, path: resolvedPath, signal });
+		}
 
 		try {
 			// Handle progress reporting if needed
@@ -303,6 +257,7 @@ class NodeFs implements IServerFileSystem, INodeFileSystem {
 		this.checkAborted(signal);
 
 		const resolvedPath = this.resolvePath(path);
+		await this.assertSafePath(resolvedPath, true);
 
 		// Check if file exists and overwrite is false
 		if (!overwrite) {
@@ -389,6 +344,7 @@ class NodeFs implements IServerFileSystem, INodeFileSystem {
 		this.checkAborted(signal);
 
 		const resolvedPath = this.resolvePath(path);
+		await this.assertSafePath(resolvedPath, force);
 
 		try {
 			await fs.rm(resolvedPath, { recursive, force });
@@ -408,6 +364,8 @@ class NodeFs implements IServerFileSystem, INodeFileSystem {
 
 		const resolvedOldPath = this.resolvePath(oldPath);
 		const resolvedNewPath = this.resolvePath(newPath);
+		await this.assertSafePath(resolvedOldPath);
+		await this.assertSafePath(resolvedNewPath, true);
 
 		// Check if target exists and overwrite is false
 		if (!overwrite) {
@@ -431,9 +389,12 @@ class NodeFs implements IServerFileSystem, INodeFileSystem {
 		const { fs } = this;
 
 		try {
-			await fs.access(this.resolvePath(path));
+			const resolvedPath = this.resolvePath(path);
+			await this.assertSafePath(resolvedPath);
+			await fs.access(resolvedPath);
 			return true;
-		} catch {
+		} catch (error) {
+			if (typeof error === 'object' && error !== null && 'code' in error && error.code === 'ELOOP') throw error;
 			return false;
 		}
 	}
@@ -446,6 +407,8 @@ class NodeFs implements IServerFileSystem, INodeFileSystem {
 
 		const resolvedSrc = this.resolvePath(src);
 		const resolvedDest = this.resolvePath(dest);
+		await this.assertSafePath(resolvedSrc);
+		await this.assertSafePath(resolvedDest, true);
 
 		// Check if source exists
 		try {
@@ -478,6 +441,7 @@ class NodeFs implements IServerFileSystem, INodeFileSystem {
 
 	createReadStream(filePath: string, options: CreateReadStreamOptions = {}): Readable {
 		const resolvedPath = this.resolvePath(filePath);
+		this.assertSafePathSync(resolvedPath);
 		const { signal, range } = options;
 		const stream = nodeCreateReadStream(resolvedPath, {
 			start: range?.start,
@@ -491,6 +455,7 @@ class NodeFs implements IServerFileSystem, INodeFileSystem {
 
 	createWriteStream(filePath: string, options: CreateWriteStreamOptions = {}): Writable {
 		const resolvedPath = this.resolvePath(filePath);
+		this.assertSafePathSync(resolvedPath, true);
 		const { signal } = options;
 		const stream = nodeCreateWriteStream(resolvedPath, { flags: options.overwrite === false ? 'wx' : 'w' });
 
@@ -504,6 +469,14 @@ class NodeFs implements IServerFileSystem, INodeFileSystem {
 		return path.dirname(filePath);
 	}
 
+	private assertSafePath(filePath: string, allowMissing = false): Promise<void> {
+		return assertNodePathHasNoSymlink({ allowMissing, fs: this.fs, path: filePath, root: this.root });
+	}
+
+	private assertSafePathSync(filePath: string, allowMissing = false): void {
+		assertNodePathHasNoSymlinkSync({ allowMissing, path: filePath, root: this.root });
+	}
+
 	getUrl(needle: IFileStat | string) {
 		if (typeof needle === 'object' && needle?.kind !== 'file') {
 			return;
@@ -513,6 +486,8 @@ class NodeFs implements IServerFileSystem, INodeFileSystem {
 			return;
 		}
 		// file://
-		return pathToFileURL(this.resolvePath(path)).toString();
+		const resolvedPath = this.resolvePath(path);
+		this.assertSafePathSync(resolvedPath);
+		return pathToFileURL(resolvedPath).toString();
 	}
 }

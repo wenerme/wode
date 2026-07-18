@@ -3,7 +3,7 @@
 A powerful Microsoft SQL Server MCP (Model Context Protocol) server that enables Claude Desktop to interact with SQL Server databases through natural language queries.
 
 [![npm version](https://badge.fury.io/js/%40wener%2Fmssql-mcp.svg)](https://www.npmjs.com/package/@wener/mssql-mcp)
-[![Node.js Version](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen.svg)](https://nodejs.org/)
+[![Node.js Version](https://img.shields.io/badge/node-%3E%3D24.11.0-brightgreen.svg)](https://nodejs.org/)
 
 ## 🚀 Quick Start
 
@@ -64,12 +64,12 @@ Add to your `claude_desktop_config.json`:
 
 ```json
 {
-  "mcpServers": {
-    "mssql": {
-      "command": "npx",
-      "args": ["@wener/mssql-mcp", "--env-file", "/path/to/your/.env", "--stdio"]
-    }
-  }
+	"mcpServers": {
+		"mssql": {
+			"command": "npx",
+			"args": ["@wener/mssql-mcp", "--env-file", "/path/to/your/.env", "--stdio"]
+		}
+	}
 }
 ```
 
@@ -154,6 +154,7 @@ MSSQL_ACCESS_MODE=readonly
 ```
 
 This restricts operations to:
+
 - `SELECT` statements
 - `WITH` (Common Table Expressions)
 - `SHOW`, `DESCRIBE`, `EXPLAIN`, `DESC` commands
@@ -178,6 +179,7 @@ This restricts operations to:
 > "Find all orders placed in the last 30 days"
 
 Claude will automatically:
+
 1. 🔍 Explore available tables
 2. 📝 Write appropriate SQL queries
 3. 📊 Execute queries and format results

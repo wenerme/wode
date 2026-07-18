@@ -1,0 +1,21 @@
+{
+	"$schema": "https://ui.shadcn.com/schema/registry-item.json",
+	"name": "message",
+	"title": "Message",
+	"description": "Composable message group, alignment, avatar, content, header, and footer primitives",
+	"files": [
+		{
+			"path": "registry/default/ui/message/message.tsx",
+			"content": "import type { ComponentPropsWithRef } from 'react';\nimport { cn } from '@/lib/utils';\n\nexport type MessageGroupProps = ComponentPropsWithRef<'div'>;\n\nexport function MessageGroup({ className, ...props }: MessageGroupProps) {\n\treturn <div data-slot='message-group' className={cn('flex min-w-0 flex-col gap-2', className)} {...props} />;\n}\n\nexport type MessageProps = ComponentPropsWithRef<'div'> & {\n\talign?: 'start' | 'end';\n};\n\nexport function Message({ className, align = 'start', ...props }: MessageProps) {\n\treturn (\n\t\t<div\n\t\t\tdata-slot='message'\n\t\t\tdata-align={align}\n\t\t\tclassName={cn(\n\t\t\t\t'group/message relative flex w-full min-w-0 gap-2 text-sm data-[align=end]:flex-row-reverse',\n\t\t\t\tclassName,\n\t\t\t)}\n\t\t\t{...props}\n\t\t/>\n\t);\n}\n\nexport type MessageAvatarProps = ComponentPropsWithRef<'div'>;\n\nexport function MessageAvatar({ className, ...props }: MessageAvatarProps) {\n\treturn (\n\t\t<div\n\t\t\tdata-slot='message-avatar'\n\t\t\tclassName={cn(\n\t\t\t\t'bg-muted flex min-h-8 w-fit min-w-8 shrink-0 items-center justify-center self-end overflow-hidden rounded-full group-has-data-[slot=message-footer]/message:-translate-y-8',\n\t\t\t\tclassName,\n\t\t\t)}\n\t\t\t{...props}\n\t\t/>\n\t);\n}\n\nexport type MessageContentProps = ComponentPropsWithRef<'div'>;\n\nexport function MessageContent({ className, ...props }: MessageContentProps) {\n\treturn (\n\t\t<div\n\t\t\tdata-slot='message-content'\n\t\t\tclassName={cn(\n\t\t\t\t'flex w-full min-w-0 flex-col gap-2.5 wrap-break-word group-data-[align=end]/message:*:data-slot:self-end',\n\t\t\t\tclassName,\n\t\t\t)}\n\t\t\t{...props}\n\t\t/>\n\t);\n}\n\nexport type MessageHeaderProps = ComponentPropsWithRef<'div'>;\n\nexport function MessageHeader({ className, ...props }: MessageHeaderProps) {\n\treturn (\n\t\t<div\n\t\t\tdata-slot='message-header'\n\t\t\tclassName={cn(\n\t\t\t\t'text-muted-foreground flex max-w-full min-w-0 items-center px-3 text-xs font-medium group-has-data-[variant=ghost]/message:px-0',\n\t\t\t\tclassName,\n\t\t\t)}\n\t\t\t{...props}\n\t\t/>\n\t);\n}\n\nexport type MessageFooterProps = ComponentPropsWithRef<'div'>;\n\nexport function MessageFooter({ className, ...props }: MessageFooterProps) {\n\treturn (\n\t\t<div\n\t\t\tdata-slot='message-footer'\n\t\t\tclassName={cn(\n\t\t\t\t'text-muted-foreground flex max-w-full min-w-0 items-center gap-2 px-3 text-xs font-medium group-has-data-[variant=ghost]/message:px-0 group-data-[align=end]/message:justify-end',\n\t\t\t\tclassName,\n\t\t\t)}\n\t\t\t{...props}\n\t\t/>\n\t);\n}\n",
+			"type": "registry:ui",
+			"target": "@components/message/message.tsx"
+		},
+		{
+			"path": "registry/default/ui/message/index.ts",
+			"content": "export * from './message';\n",
+			"type": "registry:ui",
+			"target": "@components/message/index.ts"
+		}
+	],
+	"type": "registry:ui"
+}

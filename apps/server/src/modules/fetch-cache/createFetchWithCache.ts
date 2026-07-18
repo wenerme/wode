@@ -46,7 +46,7 @@ export function createFetchWithCache({
 				e.requestBody = await readStreamToBuffer(new Response(body).body!);
 				e.requestPayload = Object.fromEntries(Array.from(body.entries()).filter(([k, v]) => typeof v === 'string'));
 			} else if (body instanceof ReadableStream) {
-				let rs;
+				let rs: ReadableStream;
 				[init.body, rs] = body.tee();
 				e.requestBody = await readStreamToBuffer(rs);
 			} else if (typeof body === 'string') {

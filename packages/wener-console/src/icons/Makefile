@@ -7,7 +7,7 @@ optimize-svg:
 svgr:
 	npx -y @svgr/cli --typescript --out-dir . --memo --no-prettier --no-index -- $(PWD)/svg/icons $(PWD)/svg/brands $(PWD)/svg/color
 	ls *.tsx | xargs -n 1 basename -s .tsx | xargs -I {} echo "export { default as {} } from './{}'" > index.ts
-	pnpm prettier --write $(PWD)
+	pnpm exec vp fmt $(PWD)
 	git add .
 
 svgo:

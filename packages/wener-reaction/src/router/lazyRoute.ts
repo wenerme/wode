@@ -1,4 +1,4 @@
-import type { LazyRouteFunction, RouteObject } from 'react-router-dom';
+import type { LazyRouteFunction, RouteObject } from 'react-router';
 
 export type LazyRouteObject<R extends RouteObject = RouteObject> = Awaited<ReturnType<LazyRouteFunction<R>>>;
 

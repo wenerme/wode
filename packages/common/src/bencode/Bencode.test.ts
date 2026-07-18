@@ -1,5 +1,5 @@
 import { ArrayBuffers } from '@wener/utils';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vite-plus/test';
 import { Bencode } from './Bencode';
 
 const { encode, decode } = Bencode;

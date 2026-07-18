@@ -1,25 +1,21 @@
-import { types } from '@mikro-orm/core';
-import { BeforeCreate, BeforeUpdate, Entity, Property } from '@mikro-orm/decorators/legacy';
+import { p } from '@mikro-orm/core';
 import type { Constructor } from '@wener/utils';
 import { getCurrentUserId } from '../../app';
 import { Feature } from '../../Feature';
 import { EntityFeature } from '../enum';
 import { resolveEntityRef } from '../resolveEntityRef';
+import { defineMixinEntity } from './defineMixinEntity';
 import type { HasAuditorRefEntity } from './types';
 
 export function withAuditorRefEntity<TBase extends Constructor>(Base: TBase) {
 	// AuditorAware
 
 	@Feature([EntityFeature.HasAuditorRef])
-	@Entity({ abstract: true })
 	class HasAuditorRefMixinEntity extends Base implements HasAuditorRefEntity {
-		@Property({ type: types.string, nullable: true })
 		createdById?: string;
 
-		@Property({ type: types.string, nullable: true })
 		updatedById?: string;
 
-		@Property({ type: types.string, nullable: true })
 		deletedById?: string;
 
 		get createdBy() {
@@ -34,17 +30,26 @@ export function withAuditorRefEntity<TBase extends Constructor>(Base: TBase) {
 			return resolveEntityRef({ entityId: this.deletedById });
 		}
 
-		@BeforeCreate()
 		setAuditorBeforeCreate() {
 			this.createdById ||= getCurrentUserId();
 			this.updatedById ||= getCurrentUserId();
 		}
 
-		@BeforeUpdate()
 		setAuditorBeforeUpdate() {
 			this.updatedById = getCurrentUserId() || this.updatedById;
 		}
 	}
 
-	return HasAuditorRefMixinEntity;
+	return defineMixinEntity(Base, HasAuditorRefMixinEntity, {
+		name: 'HasAuditorRefMixinEntity',
+		hooks: {
+			beforeCreate: [(args) => (args.entity as HasAuditorRefMixinEntity).setAuditorBeforeCreate()],
+			beforeUpdate: [(args) => (args.entity as HasAuditorRefMixinEntity).setAuditorBeforeUpdate()],
+		},
+		properties: {
+			createdById: p.string().nullable(),
+			updatedById: p.string().nullable(),
+			deletedById: p.string().nullable(),
+		},
+	});
 }

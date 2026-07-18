@@ -46,11 +46,11 @@ build:
 dev:
 	$(EXEC) next dev
 else ifneq ($(wildcard vite.config.*),)
-# Vite
+# Vite+
 build:
-	$(EXEC) vite build
+	$(EXEC) vp build
 dev:
-	$(EXEC) vite dev
+	$(EXEC) vp dev
 else
 # Library
 WANT_CJS?=$(shell jq -r '.exports["."]|has("require")' package.json)
@@ -138,7 +138,7 @@ sync-mirror:
 endif
 
 fmt:
-	$(EXEC) prettier -w src package.json
+	$(EXEC) vp fmt src package.json
 
 fix: LINT_FIX=1
 fix: lint
@@ -159,7 +159,7 @@ endif
 test:
 	@printf $(COLOR_INFO) "Testing..."
 ifneq ($(wildcard vitest.config.*),)
-	$(EXEC) vitest run
+	$(EXEC) vp test run
 else ifneq ($(wildcard jest.config.*),)
 	$(EXEC) jest
 else ifneq ($(wildcard ava.config.*),)

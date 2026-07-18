@@ -1,4 +1,4 @@
-import { expect, test } from 'vitest';
+import { expect, test } from 'vite-plus/test';
 import { classOf } from '../langs/classOf';
 import { _clone } from './structuredClone';
 

@@ -68,7 +68,7 @@ export namespace ConsoleLayout {
 	export function Main({ children, className, ...props }: MainProps) {
 		return (
 			<main className={cn('relative order-2 h-full flex-1 overflow-auto', className)} {...props}>
-				<div className={'scrollbar-thin absolute inset-0 isolate'}>{children}</div>
+				<div className={'absolute inset-0 isolate scrollbar-thin'}>{children}</div>
 			</main>
 		);
 	}

@@ -1,4 +1,4 @@
-import { Module, type DynamicModule } from '@nestjs/common';
+import { type DynamicModule, Module } from '@nestjs/common';
 import type { ModuleMetadata } from '@nestjs/common/interfaces/modules/module-metadata.interface';
 import type { Constructor } from '@wener/server';
 import { OrmModule } from '@wener/server/mikro-orm';

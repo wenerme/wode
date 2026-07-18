@@ -12,7 +12,6 @@ Layouts
 /apps Applications, things with entrypoint
 	/console Console App use @wener/console as base
 	/server Server App use @wener/server as base, hono, mikro-orm, orpc, connectrpc, graphql
-	/web Legacy
 	/woodpecker-feishu-bot migrate to https://github.com/wenerme/woodpecker-feishu-bot
 /packages Libraries
 	/wener-* Packages that will publish to NPM as @wener/*
@@ -22,19 +21,19 @@ Layouts
 	/schemas Schema based database schema managment
 	atlas.hcl
 /proto Protobuf
-/wogo WIP
-/wode-assistant WIP
+/local/legacy/web Legacy local-only Next.js tools/demo app archive, not tracked
+/local/legacy/wogo Legacy local-only Go filesystem service experiment, not tracked
+/local/legacy/wode-assistant Legacy local-only assistant archive, not tracked
 
 buf.gen.yaml Buf generate config
 buf.yaml Buf schema config
-go.work
+
+apps/playground and apps/web are no longer tracked; migrate useful demos to packages/ui stories or console routes when needed.
 ```
 
 **OLD**
 
 - apps
-  - web http://apis.wener.me
-    - React, NextJS, Playground for experiments
   - console https://wode.wener.me
     - React, ViteJS, Console for Homelab, CRM, etc.
   - server

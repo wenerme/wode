@@ -13,10 +13,10 @@ export function useRouteTitles(id?: string): string[] {
 	return matches
 		.filter((v) => (v.handle as KnownRouteObjectHandle)?.title)
 		.map((match) => {
-			const { data, handle } = match;
+			const { loaderData, handle } = match;
 			const title = (handle as KnownRouteObjectHandle).title;
 			if (typeof title === 'function') {
-				return title(data, match as any);
+				return title(loaderData, match as any);
 			}
 			return String(title);
 		});

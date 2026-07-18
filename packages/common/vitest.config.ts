@@ -1,6 +1,5 @@
 import process from 'node:process';
-import { loadEnv } from 'vite';
-import { defineConfig } from 'vitest/config';
+import { defineConfig, loadEnv } from 'vite-plus';
 
 export default ({ mode }: { mode: string }) => {
 	const env = loadEnv(mode, process.cwd(), '');

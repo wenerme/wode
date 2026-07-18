@@ -28,19 +28,8 @@
 		"./src/*": "./src/*",
 		"./package.json": "./package.json"
 	},
-	"files": [
-		"dist",
-		"index.ts",
-		"lib",
-		"server.ts",
-		"src",
-		"tsconfig.json"
-	],
-	"keywords": [
-		"utils",
-		"system",
-		"helper"
-	],
+	"files": ["dist", "index.ts", "lib", "server.ts", "src", "tsconfig.json"],
+	"keywords": ["utils", "system", "helper"],
 	"scripts": {
 		"build": "make prepublish",
 		"clean": "make clean",
@@ -64,13 +53,13 @@
 		"systemjs": "^6.15.1"
 	},
 	"devDependencies": {
-		"@types/jsdom": "^28.0.1",
-		"@types/react": "^19.2.14",
+		"@types/jsdom": "^28.0.3",
+		"@types/react": "^19.2.17",
 		"@types/react-dom": "^19.2.3",
 		"@wener/utils": "workspace:^1.1.58",
 		"jsdom": "^29.1.1",
-		"react": "^19.2.5",
-		"react-dom": "^19.2.5"
+		"react": "^19.2.7",
+		"react-dom": "^19.2.7"
 	},
 	"publishConfig": {
 		"registry": "https://registry.npmjs.org",

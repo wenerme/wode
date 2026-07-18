@@ -80,11 +80,11 @@ export const DaisyTabsComposite = ({
 	let content: ReactNode = null;
 	if (hasContent) {
 		content = tabs.map((item, index) => {
-			const key = item.key ?? String(index);
+			const key = item.key ?? `tab-${index}`;
 			let c = isNodeTypeOf(item.content, [DaisyTabsPanel, Tabs.Panel]) ? (
 				item.content
 			) : (
-				<DaisyTabsPanel key={index} value={key || String(index)}>
+				<DaisyTabsPanel key={key} value={key || String(index)}>
 					{item.content}
 				</DaisyTabsPanel>
 			);

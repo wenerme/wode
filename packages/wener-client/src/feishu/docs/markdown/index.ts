@@ -1,4 +1,3 @@
-export { buildMarkdownFromDocBlock } from './feishuDocxToMarkdown';
 export type {
 	ConvertOptions,
 	FeishuBlock,
@@ -6,5 +5,6 @@ export type {
 	FeishuTextElement,
 	FeishuTextElementStyle,
 } from './feishuDocxToMarkdown';
-export { parseFrontmatter, stringifyFrontmatter, mergeFrontmatter } from './frontmatter';
+export { buildMarkdownFromDocBlock } from './feishuDocxToMarkdown';
 export type { ParsedFrontmatter } from './frontmatter';
+export { mergeFrontmatter, parseFrontmatter, stringifyFrontmatter } from './frontmatter';

@@ -1,7 +1,7 @@
 import { readFile, unlink } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vite-plus/test';
 import { Drain } from './Drain';
 import { FilePersistence } from './persistence/FilePersistence';
 import { MemoryPersistence } from './persistence/MemoryPersistence';

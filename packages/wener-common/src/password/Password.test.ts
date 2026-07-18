@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test } from 'vite-plus/test';
 import { createArgon2PasswordAlgorithm } from './createArgon2PasswordAlgorithm';
 import { createBase64PasswordAlgorithm } from './createBase64PasswordAlgorithm';
 import { createBcryptPasswordAlgorithm } from './createBcryptPasswordAlgorithm';

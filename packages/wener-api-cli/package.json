@@ -12,42 +12,31 @@
 	"author": "wener",
 	"license": "MIT",
 	"engines": {
-		"node": ">=22.0.0"
+		"node": ">=24.11.0"
 	},
 	"bin": {
 		"api-cli": "./dist/index.mjs"
 	},
 	"main": "./dist/index.mjs",
-	"files": [
-		"dist",
-		"src",
-		"README.md"
-	],
-	"keywords": [
-		"openapi",
-		"swagger",
-		"rest",
-		"api",
-		"cli",
-		"http",
-		"client"
-	],
+	"files": ["dist", "src", "README.md"],
+	"keywords": ["openapi", "swagger", "rest", "api", "cli", "http", "client"],
 	"scripts": {
 		"build": "tsx src/scripts/bundle.ts",
 		"dev": "tsx src/index.ts",
-		"fmt": "pnpm prettier --write src package.json tsconfig.json vitest.config.ts",
+		"fmt": "vp fmt src package.json tsconfig.json vitest.config.ts",
 		"prepublishOnly": "pnpm build",
-		"test": "vitest run",
+		"test": "vp test run",
 		"typecheck": "tsc --noEmit"
 	},
 	"devDependencies": {
-		"@types/node": "^24.12.2",
-		"commander": "^14.0.3",
-		"esbuild": "^0.28.0",
-		"tsx": "^4.21.0",
-		"typescript": "^6.0.3",
-		"vitest": "^4.1.5",
-		"yaml": "^2.8.4",
+		"@types/node": "^24.13.3",
+		"commander": "^15.0.0",
+		"esbuild": "^0.28.1",
+		"tsx": "^4.23.0",
+		"typescript": "7.0.2",
+		"vite": "npm:@voidzero-dev/vite-plus-core@0.2.5",
+		"vite-plus": "catalog:",
+		"yaml": "^2.9.0",
 		"zod": "^4.4.3"
 	},
 	"publishConfig": {

@@ -204,21 +204,21 @@ export const Default = () => {
 
 	return (
 		<div className='flex flex-col gap-8 p-6'>
-			{formatGroups.map((group, groupIndex) => (
-				<div key={groupIndex} className='space-y-4'>
+			{formatGroups.map((group) => (
+				<div key={group.title} className='space-y-4'>
 					<div className='border-base-300 border-b pb-2'>
 						<h1 className='text-base-content text-2xl font-bold'>{group.title}</h1>
 						<p className='text-base-content/70 text-sm'>{group.description}</p>
 					</div>
 
 					<div className='grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3'>
-						{group.items.map((item, itemIndex) => (
-							<div key={itemIndex} className='card bg-base-100 border-base-200 border shadow-sm'>
+						{group.items.map((item) => (
+							<div key={item.title} className='card bg-base-100 border-base-200 border shadow-sm'>
 								<div className='card-body p-4'>
 									<h2 className='card-title text-primary text-lg font-semibold'>{item.title}</h2>
 									<div className='space-y-3'>
-										{item.children.map((child, childIndex) => (
-											<div key={childIndex} className='space-y-1'>
+										{item.children.map((child) => (
+											<div key={child.description} className='space-y-1'>
 												<h3 className='text-base-content/80 text-sm font-medium'>{child.description}</h3>
 												<div className='border-base-200 bg-base-50 min-h-[2rem] w-fit resize overflow-auto rounded border p-2 text-sm'>
 													{child.content}

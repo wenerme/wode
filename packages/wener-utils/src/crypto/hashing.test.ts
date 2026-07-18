@@ -1,4 +1,4 @@
-import { assert, beforeAll, expect, test } from 'vitest';
+import { assert, beforeAll, expect, test } from 'vite-plus/test';
 import { ArrayBuffers } from '../io/ArrayBuffers';
 import { polyfillCrypto } from '../server/polyfill/polyfillCrypto';
 import { isUUID } from '../validations/isUUID';

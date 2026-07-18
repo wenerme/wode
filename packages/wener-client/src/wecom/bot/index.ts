@@ -1,11 +1,5 @@
-export {
-	connectWecomBot,
-	DEFAULT_WECOM_BOT_WS_URL,
-	WecomBotClient,
-	waitForWecomBotReconnect,
-	type WecomBotClientOptions,
-} from './WecomBotClient';
 export { WecomBotClientError, type WecomBotClientErrorOptions } from './errors';
+export type * from './types';
 export {
 	extractWecomBotMessageText,
 	generateWecomReqId,
@@ -14,4 +8,10 @@ export {
 	normalizeWecomChatType,
 	toWecomSendChatType,
 } from './utils';
-export type * from './types';
+export {
+	connectWecomBot,
+	DEFAULT_WECOM_BOT_WS_URL,
+	WecomBotClient,
+	type WecomBotClientOptions,
+	waitForWecomBotReconnect,
+} from './WecomBotClient';

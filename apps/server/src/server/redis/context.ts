@@ -2,7 +2,7 @@ import type Redis from 'ioredis';
 import Redlock from 'redlock';
 import { createRedis } from '@/server/redis/redis';
 
-let _redis;
+let _redis: Redis | undefined;
 
 export function getRedis(): Redis {
 	return (_redis ||= createRedis());
