@@ -1,6 +1,6 @@
-import React, { useMemo, useState, type ComponentPropsWithRef, type ReactNode } from 'react';
 import { useInterval } from '@wener/reaction';
 import dayjs from 'dayjs';
+import { type ComponentPropsWithRef, type ReactNode, useMemo, useState } from 'react';
 import { cn } from '../utils/cn';
 import { WindowControlButton } from './standalone/WindowControlButton';
 import { WindowDockList } from './standalone/WindowDockList';

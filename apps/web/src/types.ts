@@ -1,5 +1,5 @@
-import type React from 'react';
 import type { MaybePromise } from '@wener/utils';
+import type React from 'react';
 
 export interface NextPageProps<P = Record<string, any>, S = Record<string, any>> {
 	params: P;

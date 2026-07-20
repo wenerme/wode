@@ -1,21 +1,10 @@
-import React, {
-	cloneElement,
-	isValidElement,
-	useMemo,
-	useState,
-	type CSSProperties,
-	type HTMLProps,
-	type JSX,
-	type ReactElement,
-	type ReactNode,
-} from 'react';
 import { autoUpdate } from '@floating-ui/dom';
 import type { Placement } from '@floating-ui/react';
 import {
-	flip,
 	FloatingFocusManager,
 	FloatingNode,
 	FloatingPortal,
+	flip,
 	offset,
 	shift,
 	useClick,
@@ -29,6 +18,17 @@ import {
 import type { FlexRenderable } from '@wener/reaction';
 import { flexRender, mergeRefs, useControllable } from '@wener/reaction';
 import { clsx } from 'clsx';
+import {
+	type CSSProperties,
+	cloneElement,
+	type HTMLProps,
+	isValidElement,
+	type JSX,
+	type ReactElement,
+	type ReactNode,
+	useMemo,
+	useState,
+} from 'react';
 import type { UseFloatingInteractionsOptions } from './useFloatingInteractions';
 import { useFloatingInteractions } from './useFloatingInteractions';
 
@@ -141,7 +141,7 @@ interface Props {
 	bubbles?: boolean;
 }
 
-function PopoverComponent({ children, render, placement, modal = true, bubbles = true }: Props) {
+function _PopoverComponent({ children, render, placement, modal = true, bubbles = true }: Props) {
 	const [open, setOpen] = useState(false);
 
 	const nodeId = useFloatingNodeId();

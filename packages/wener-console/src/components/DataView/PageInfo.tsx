@@ -1,4 +1,3 @@
-import type React from 'react';
 import { PiDotBold } from 'react-icons/pi';
 
 export type PageInfoProps = {
@@ -33,7 +32,7 @@ export const PageInfo = ({
 				>
 					{pageSize}
 				</div>
-				<ul tabIndex={0} className='menu dropdown-content rounded-box bg-base-100 z-[1] w-20 p-2 shadow'>
+				<ul className='menu dropdown-content rounded-box bg-base-100 z-[1] w-20 p-2 shadow'>
 					{pageSizeOptions.map((v) => {
 						return (
 							<li

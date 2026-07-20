@@ -1,8 +1,8 @@
-import React, { useState, type FC, type HTMLProps, type ReactElement, type ReactNode } from 'react';
+import { type FlexRenderable, flexRender, useControllable } from '@wener/reaction';
+import { clsx } from 'clsx';
+import { type FC, type HTMLProps, type ReactElement, type ReactNode, useState } from 'react';
 import { HiChevronDown, HiChevronRight } from 'react-icons/hi2';
 import { PiCaretDoubleLeftThin, PiCaretDoubleRightThin } from 'react-icons/pi';
-import { flexRender, useControllable, type FlexRenderable } from '@wener/reaction';
-import { clsx } from 'clsx';
 import { HeaderContentFooterLayout, LeftContentRightLayout, OverlayScrollbar } from '../../components';
 import { Tooltip } from '../../floating';
 import { NavLink } from '../links';
@@ -141,7 +141,7 @@ const SideMenuItem: FC<{ item: ExpandableSideMenuItemProps; expanded?: boolean; 
 					href={href}
 					end={end}
 					title={label}
-					className={({ isActive }) => clsx(expanded ? '' : 'justify-center p-2', isActive ? 'active' : 'inactive')}
+					className={({ isActive }) => clsx(expanded ? '' : 'justify-center p-2', isActive && 'menu-active')}
 				>
 					{({ isActive: active }) => {
 						let ico = flexRender(

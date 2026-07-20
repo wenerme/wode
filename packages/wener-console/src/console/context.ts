@@ -1,7 +1,7 @@
 import { getGlobalStates, setGlobalStates } from '@wener/utils';
 import { useStore } from 'zustand';
 import { getSiteStore as _getSiteStore, type SiteStore } from '../foundation/site/SiteStore';
-import { getConsoleEmitter as _getConsoleEmitter, ConsoleEventType, type ConsoleEmitter } from './ConsoleEmitter';
+import { getConsoleEmitter as _getConsoleEmitter, type ConsoleEmitter, ConsoleEventType } from './ConsoleEmitter';
 import { createRouteStore, type RouteStore } from './store/RouteStore';
 import { createUserStore, type UserStore } from './store/UserStore';
 

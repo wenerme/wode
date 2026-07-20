@@ -1,5 +1,5 @@
-import React, { type ComponentPropsWithoutRef, type FC, type ReactNode } from 'react';
 import { useDebounce } from '@wener/reaction';
+import type { ComponentPropsWithoutRef, FC, ReactNode } from 'react';
 import { cn } from '../../utils/cn';
 import { ErrorPlaceholder } from './ErrorPlaceholder';
 

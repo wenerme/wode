@@ -1,6 +1,6 @@
+import { dlopen, FFIType, type Library, type Pointer, ptr, type Symbols, suffix, toBuffer } from 'bun:ffi';
 import fs from 'node:fs';
 import path from 'node:path';
-import { dlopen, FFIType, ptr, suffix, toBuffer, type Library, type Pointer, type Symbols } from 'bun:ffi';
 import { decryptRandomKey, maybeBase64 } from '../server/decryptRandomKey';
 import type { ArchiveMessage } from './../types';
 
@@ -221,7 +221,14 @@ export class WeWorkFinanceClient {
 
 		const { sdk } = this;
 		const {
-			symbols: { GetMediaData, GetOutIndexBuf, GetData, GetIndexLen, GetDataLen, IsMediaDataFinish },
+			symbols: {
+				GetMediaData,
+				GetOutIndexBuf: _GetOutIndexBuf,
+				GetData: _GetData,
+				GetIndexLen,
+				GetDataLen,
+				IsMediaDataFinish,
+			},
 		} = loadLibrary();
 
 		// 	int GetMediaData(WeWorkFinanceSdk_t *sdk, const char *indexbuf, const char *sdkFileid, const char *proxy, const char *passwd, int timeout, MediaData_t *media_data);
@@ -305,7 +312,7 @@ function bufferOfString(s?: string) {
 function ptrOfStr(s?: string | Pointer) {
 	if (typeof s === 'string') {
 		// the buffer will held until string is freed
-		let buf = Buffer.from(s + '\0', 'utf8');
+		let buf = Buffer.from(`${s}\0`, 'utf8');
 		return ptr(buf);
 	}
 	return s ?? null;
@@ -427,7 +434,7 @@ function findLibrary({ filename, paths }: { filename: string; paths: MaybeArray<
 			} else {
 				f = v;
 			}
-		} catch (e) {}
+		} catch (_e) {}
 
 		if (f) {
 			break;
@@ -440,7 +447,10 @@ function findLibrary({ filename, paths }: { filename: string; paths: MaybeArray<
 export function loadLibrary({
 	filename,
 	paths,
-}: { filename?: string; paths?: MaybeArray<string> } = {}): WeWorkFinanceLibrary {
+}: {
+	filename?: string;
+	paths?: MaybeArray<string>;
+} = {}): WeWorkFinanceLibrary {
 	if (_library) return _library;
 	let f = findLibrary({ filename: filename || `libWeWorkFinanceSdk_C.${suffix}`, paths: paths || getLibraryPath() });
 
@@ -470,7 +480,7 @@ export function createWeWorkFinanceClientFromEnv({
 	...opts
 }: Partial<CreateWeWorkFinanceClientOptions> & { env?: Record<string, any> } = {}) {
 	let file = env.WWF_PRIVATE_KEY_FILE;
-	let privateKey;
+	let privateKey: string | undefined;
 	if (file) {
 		privateKey = fs.readFileSync(file, 'utf8');
 	}

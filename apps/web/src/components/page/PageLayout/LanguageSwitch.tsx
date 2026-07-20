@@ -1,7 +1,7 @@
-import React from 'react';
-import { PiGlobeLight } from 'react-icons/pi';
 import { Trans } from '@lingui/macro';
 import Link from 'next/link';
+import React from 'react';
+import { PiGlobeLight } from 'react-icons/pi';
 
 function setLocale(locale: string) {
 	// document.cookie = `lang=${locale}; path=/`;

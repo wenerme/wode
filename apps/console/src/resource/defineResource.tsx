@@ -1,6 +1,6 @@
+import { kebabCase, startCase } from 'es-toolkit';
 import React, { type ReactElement } from 'react';
 import { PiUsersLight } from 'react-icons/pi';
-import { kebabCase, startCase } from 'es-toolkit';
 import type { AnyResource } from './types/AnyResource';
 
 export interface DefineResourceOptions<T = AnyResource> {

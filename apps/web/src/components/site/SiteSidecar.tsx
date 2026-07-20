@@ -1,9 +1,5 @@
 'use client';
 
-import React, { memo, useEffect, useMemo, useState, type ComponentPropsWithoutRef } from 'react';
-import { HiMiniArrowsPointingIn } from 'react-icons/hi2';
-import { PiBrowser, PiBrowsersLight, PiCaretLeftLight, PiCaretRightLight } from 'react-icons/pi';
-import { VscClose, VscCloseAll, VscPrimitiveSquare } from 'react-icons/vsc';
 import { FloatingFocusManager, FloatingPortal, useTransitionStyles } from '@floating-ui/react';
 import * as LocaleMatcher from '@formatjs/intl-localematcher';
 import { cn } from '@wener/console';
@@ -11,12 +7,16 @@ import { DaisyTheme } from '@wener/console/daisy';
 import { usePopover } from '@wener/console/floating';
 import { useExposeDebug } from '@wener/console/hooks';
 import { WebVitals } from '@wener/console/web';
-import { getRootWindow, Window, type ReactWindow } from '@wener/console/window';
+import { getRootWindow, type ReactWindow, Window } from '@wener/console/window';
 import { DevOnly, MountedOnly, useDebugRender, useEventListener } from '@wener/reaction';
 import { clsx } from 'clsx';
 import { parse as parseCookie } from 'cookie';
 import { throttle } from 'es-toolkit';
 import { useSearchParams } from 'next/navigation';
+import React, { type ComponentPropsWithoutRef, memo, useEffect, useMemo, useState } from 'react';
+import { HiMiniArrowsPointingIn } from 'react-icons/hi2';
+import { PiBrowser, PiBrowsersLight, PiCaretLeftLight, PiCaretRightLight } from 'react-icons/pi';
+import { VscClose, VscCloseAll, VscPrimitiveSquare } from 'react-icons/vsc';
 import { shallow } from 'zustand/shallow';
 import { useStoreWithEqualityFn } from 'zustand/traditional';
 import { getI18nStore } from '@/i18n/loadI18n';

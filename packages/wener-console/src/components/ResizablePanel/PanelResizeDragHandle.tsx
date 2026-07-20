@@ -1,12 +1,11 @@
-import React from 'react';
-import { PanelResizeHandle as PanelResizeHandleImpl, type PanelResizeHandleProps } from 'react-resizable-panels';
 import { clsx } from 'clsx';
+import { Separator, type SeparatorProps } from 'react-resizable-panels';
 import styles from './PanelResizeDragHandle.module.css';
 
-export function PanelResizeDragHandle({ className, ...props }: PanelResizeHandleProps) {
+export function PanelResizeDragHandle({ className, ...props }: SeparatorProps) {
 	return (
-		<PanelResizeHandleImpl
-			className={clsx(styles.handle, 'data-[resize-handle-state=inactive]:opacity-20', className)}
+		<Separator
+			className={clsx(styles.handle, 'data-[separator=inactive]:opacity-20', className)}
 			style={{
 				'--size': '1rem',
 			}}
@@ -17,6 +16,6 @@ export function PanelResizeDragHandle({ className, ...props }: PanelResizeHandle
 					<path strokeLinecap='round' strokeLinejoin='round' d='M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5' />
 				</svg>
 			</div>
-		</PanelResizeHandleImpl>
+		</Separator>
 	);
 }

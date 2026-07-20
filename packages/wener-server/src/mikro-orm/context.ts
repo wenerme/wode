@@ -1,4 +1,4 @@
-import { MikroORM, RequestContext, type EntityManager, type TransactionOptions } from '@mikro-orm/core';
+import { type EntityManager, MikroORM, RequestContext, type TransactionOptions } from '@mikro-orm/core';
 import type { MaybeFunction, MaybePromise } from '@wener/utils';
 import { getContext } from '../ContextProvider';
 
@@ -23,7 +23,10 @@ export function getMikroORM<M extends MikroORM = MikroORM>() {
 export function getEntityManager<E extends EntityManager = EntityManager>({
 	fork,
 	em,
-}: { fork?: true; em?: E } = {}): E {
+}: {
+	fork?: true;
+	em?: E;
+} = {}): E {
 	em ||= RequestContext.getEntityManager() as E;
 	if (em && !fork) {
 		return em;

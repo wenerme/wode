@@ -1,6 +1,6 @@
 import type { Constructor } from '@wener/utils';
 import { Field, InputType, InterfaceType, ObjectType } from 'type-graphql';
-import { HasCodeNode, HasNotesNode } from '../interface';
+import { HasCodeNode } from '../interface';
 
 export function withCodeType<TBase extends Constructor>(Base: TBase) {
 	@InterfaceType({ implements: HasCodeNode })

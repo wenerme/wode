@@ -1,5 +1,5 @@
-import React from 'react';
 import { firstOfMaybeArray } from '@wener/utils';
+import React from 'react';
 import type { ZXCVBNResult } from 'zxcvbn';
 import { ZxcvbnPasswordStrength } from '@/components/zxcvbn/ZxcvbnPasswordStrength';
 import type { NextPageProps } from '@/types';

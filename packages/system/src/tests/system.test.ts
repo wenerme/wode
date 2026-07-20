@@ -1,6 +1,6 @@
 import { assert, beforeAll, expect, test } from 'vitest';
 import { loadServerSystem } from '../loaders/loadServerSystem';
-import { getGlobalSystem, type DeclareFn } from '../utils/getGlobalSystem';
+import { type DeclareFn, getGlobalSystem } from '../utils/getGlobalSystem';
 
 beforeAll(async () => {
 	await loadServerSystem({ hooks: false });

@@ -99,7 +99,7 @@ export namespace PHC {
 
 			// Convert Numbers into Numeric Strings and Buffers into B64 encoded strings.
 			pk.forEach((k) => {
-				const value = opts.params![k];
+				const value = opts.params?.[k];
 				if (typeof value === 'number') {
 					opts.params![k] = value.toString();
 				} else if (value instanceof Uint8Array) {
@@ -143,7 +143,7 @@ export namespace PHC {
 		return phcstr;
 	}
 
-	interface DeserializeResult {
+	export interface DeserializeResult {
 		id: string;
 		version?: number;
 		params?: Record<string, string | number>;
@@ -223,7 +223,7 @@ export namespace PHC {
 
 				// Convert Decimal Strings into Numbers
 				Object.keys(params).forEach((k) => {
-					const value = params![k];
+					const value = params?.[k];
 					if (typeof value === 'string' && decimalRegex.test(value)) {
 						params![k] = parseInt(value, 10);
 					}

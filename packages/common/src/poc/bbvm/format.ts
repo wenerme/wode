@@ -1,5 +1,5 @@
 import { getOpcodeLength } from './rt';
-import { AddressMode, CalculateType, DataType, Instruction, Opcode, Operand, RegisterType } from './types';
+import { AddressMode, CalculateType, DataType, type Instruction, Opcode, type Operand, RegisterType } from './types';
 
 export function formatDateType(value: DataType) {
 	switch (value) {

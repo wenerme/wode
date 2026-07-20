@@ -8,7 +8,7 @@ type HashFunction = {
 	(s: BinaryLike, o: 'buffer'): Promise<Bytes>;
 };
 
-function createDigestFunction(a: string): HashFunction {
+export function createDigestFunction(a: string): HashFunction {
 	return (async (s: BinaryLike, o: HashEncoding = 'hex') => {
 		const buffer = await crypto.subtle.digest(a, binaryOf(s));
 		if (o === 'buffer') {

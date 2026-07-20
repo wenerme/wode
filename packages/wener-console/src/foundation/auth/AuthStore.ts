@@ -1,8 +1,8 @@
-import { use, useEffect, useRef, type FC } from 'react';
 import { createReactContext } from '@wener/reaction';
 import { useNetworkStatus } from '@wener/reaction/store';
 import { createBoundedUseStore } from '@wener/reaction/zustand';
 import { getGlobalStates } from '@wener/utils';
+import { type FC, use, useEffect, useRef } from 'react';
 import { createStore } from 'zustand';
 import { mutative } from 'zustand-mutative';
 
@@ -24,7 +24,7 @@ interface SetAuthOptions {
 	expiresAt?: Date | string;
 }
 
-interface AuthStoreState {
+export interface AuthStoreState {
 	status: AuthStatusCode;
 	accessToken?: string;
 	refreshToken?: string;
@@ -41,7 +41,7 @@ export type AuthStore = ReturnType<typeof createAuthStore>;
 
 export function createAuthStore(init: Partial<AuthStoreState> = {}) {
 	return createStore(
-		mutative<AuthStoreState>((setState, getState, store) => {
+		mutative<AuthStoreState>((setState, _getState, _store) => {
 			return {
 				...init,
 				status: AuthStatus.Init,

@@ -98,7 +98,7 @@ export function parseApkIndex(txt: string): ApkIndexPackage[] {
 			case 'installSize':
 			case 'providerPriority':
 			case 'buildTime':
-				v = parseInt(v);
+				v = parseInt(v, 10);
 				break;
 			case 'depends':
 			case 'provides':

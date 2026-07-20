@@ -1,5 +1,5 @@
-import type { ComponentType } from 'react';
 import { getGlobalStates } from '@wener/utils';
+import type { ComponentType } from 'react';
 import { createStore } from 'zustand';
 import { mutative } from 'zustand-mutative';
 import { WindowFrame, type WindowFrameProps } from './WindowFrame';

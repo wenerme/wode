@@ -1,5 +1,5 @@
-import React, { type FC } from 'react';
 import { useWindowEventListener } from '@wener/reaction';
+import type { FC } from 'react';
 import { useImmer } from 'use-immer';
 import { useUserAgentPreferences } from '../../utils/UserAgentPreference';
 import { SystemAboutPageSection } from './SystemAboutPageSection';

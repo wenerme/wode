@@ -1,7 +1,7 @@
 import { match, P } from 'ts-pattern';
 import type { JsonSchemaDef } from '../jsonschema';
-import { toJsonSchema } from './toJsonSchema';
 import type { SchemaOutput, TypeSchema } from './TypeSchema';
+import { toJsonSchema } from './toJsonSchema';
 
 export function createSchemaData<S extends TypeSchema>(
 	ts: S,
@@ -54,8 +54,8 @@ function _create(schema: JsonSchemaDef, options: CreateOptions, ctx: { required:
 		.with({ oneOf: P.nonNullable }, (schema) => {
 			return _create(schema.oneOf[0], options, { required: false });
 		})
-		.with({ type: 'string' }, (schema) => '')
-		.with({ type: P.union('number', 'integer') }, (schema) => 0)
+		.with({ type: 'string' }, (_schema) => '')
+		.with({ type: P.union('number', 'integer') }, (_schema) => 0)
 		.with({ type: 'object' }, () => {
 			const out: Record<string, any> = {};
 
@@ -73,8 +73,8 @@ function _create(schema: JsonSchemaDef, options: CreateOptions, ctx: { required:
 			return out;
 		})
 		.with({ type: 'null' }, () => null)
-		.with({ type: 'boolean' }, (schema) => false)
-		.with({ type: 'array' }, (schema) => [])
+		.with({ type: 'boolean' }, (_schema) => false)
+		.with({ type: 'array' }, (_schema) => [])
 		.otherwise(() => {
 			return undefined;
 		});

@@ -2,7 +2,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { Readable } from 'node:stream';
 import zlib from 'node:zlib';
-import { createLazyPromise, parseModuleId, type FetchLike, type Logger } from '@wener/utils';
+import { createLazyPromise, type FetchLike, type Logger, parseModuleId } from '@wener/utils';
 import { LRUCache } from 'lru-cache';
 import semver from 'semver';
 import tar, { type ReadEntry } from 'tar';
@@ -188,7 +188,7 @@ export class Unpkg {
 					logger.info(`getPackageInfo: expired ${packageName}`);
 				}
 			}
-		} catch (e) {
+		} catch (_e) {
 			// file not exists
 		}
 
@@ -197,7 +197,7 @@ export class Unpkg {
 		logger.info(`getPackageInfo: fetch ${packageName} -> ${url}`);
 		let size = 2048;
 		out = await fetch(url).then((v) => {
-			size = parseInt(v.headers.get('content-length') || '') || size;
+			size = parseInt(v.headers.get('content-length') || '', 10) || size;
 			return v.json();
 		});
 		if (!out?._id) {
@@ -253,7 +253,7 @@ export class Unpkg {
 		const url = `${this.url}/${name}/${version || 'latest'}`;
 		let size = 1024;
 		out = await fetch(url).then((v) => {
-			size = parseInt(v.headers.get('content-length') || '') || size;
+			size = parseInt(v.headers.get('content-length') || '', 10) || size;
 			return v.json();
 		});
 		version = out.version;

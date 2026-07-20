@@ -11,7 +11,7 @@ import { z } from 'zod';
 export const StdioServerConfigSchema = z.object({
 	command: z.string(),
 	args: z.array(z.string()).optional(),
-	env: z.record(z.string()).optional(),
+	env: z.record(z.string(), z.string()).optional(),
 	cwd: z.string().optional(),
 });
 export type StdioServerConfig = z.infer<typeof StdioServerConfigSchema>;
@@ -25,7 +25,7 @@ export const HttpServerConfigSchema = z
 	.object({
 		url: z.string().optional(),
 		serverUrl: z.string().optional(),
-		headers: z.record(z.string()).optional(),
+		headers: z.record(z.string(), z.string()).optional(),
 		timeout: z.number().optional(),
 	})
 	.refine((data) => data.url || data.serverUrl, { message: 'Either url or serverUrl must be provided' });
@@ -43,7 +43,7 @@ export type ServerConfig = z.infer<typeof ServerConfigSchema>;
  * Structure: { mcpServers: { ... } }
  */
 export const ClaudeConfigSchema = z.object({
-	mcpServers: z.record(ServerConfigSchema).optional(),
+	mcpServers: z.record(z.string(), ServerConfigSchema).optional(),
 });
 export type ClaudeConfig = z.infer<typeof ClaudeConfigSchema>;
 
@@ -53,7 +53,7 @@ export type ClaudeConfig = z.infer<typeof ClaudeConfigSchema>;
  * Structure: { mcpServers: { ... } }
  */
 export const CursorConfigSchema = z.object({
-	mcpServers: z.record(ServerConfigSchema).optional(),
+	mcpServers: z.record(z.string(), ServerConfigSchema).optional(),
 });
 export type CursorConfig = z.infer<typeof CursorConfigSchema>;
 
@@ -63,7 +63,7 @@ export type CursorConfig = z.infer<typeof CursorConfigSchema>;
  * Structure: { mcpServers: { ... } } with serverUrl instead of url
  */
 export const GeminiConfigSchema = z.object({
-	mcpServers: z.record(ServerConfigSchema).optional(),
+	mcpServers: z.record(z.string(), ServerConfigSchema).optional(),
 });
 export type GeminiConfig = z.infer<typeof GeminiConfigSchema>;
 
@@ -71,16 +71,39 @@ export type GeminiConfig = z.infer<typeof GeminiConfigSchema>;
  * Unified MCP servers config (mcp_servers.json format)
  */
 export const McpServersConfigSchema = z.object({
-	mcpServers: z.record(ServerConfigSchema).optional(),
+	mcpServers: z.record(z.string(), ServerConfigSchema).optional(),
 });
 export type McpServersConfig = z.infer<typeof McpServersConfigSchema>;
+
+/**
+ * MCP-CLI specific config format with extends and discoveryConfig
+ * discoveryConfig can be:
+ * - false: disable all discovery
+ * - true: enable all discovery (default)
+ * - array: selective discovery, e.g. ["gemini", "codex", "claude"]
+ */
+export const McpCliConfigSchema = z.object({
+	mcpServers: z.record(z.string(), ServerConfigSchema).optional(),
+	extends: z.array(z.string()).optional(),
+	discoveryConfig: z.union([z.boolean(), z.array(z.string())]).optional(),
+	include: z.array(z.string()).optional(),
+	exclude: z.array(z.string()).optional(),
+	env: z.record(z.string(), z.string()).optional(),
+});
+export type McpCliConfig = z.infer<typeof McpCliConfigSchema>;
+
+/**
+ * Config source types
+ */
+export const ConfigSourceTypes = ['claude', 'cursor', 'gemini', 'mcp', 'codex'] as const;
+export type ConfigSourceType = (typeof ConfigSourceTypes)[number];
 
 /**
  * Config source information - tracks where the config was found
  */
 export interface ConfigSource {
 	path: string;
-	type: 'claude' | 'cursor' | 'gemini' | 'mcp';
+	type: ConfigSourceType;
 	label: string;
 }
 

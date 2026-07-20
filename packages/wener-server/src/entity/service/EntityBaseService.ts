@@ -1,13 +1,13 @@
-import { LockMode, type EntityData, type RequiredEntityData } from '@mikro-orm/core';
+import { type EntityData, LockMode, type RequiredEntityData } from '@mikro-orm/core';
 import type { EntityManager, EntityRepository, MikroORM, QueryBuilder } from '@mikro-orm/postgresql';
 import { Errors } from '@wener/utils';
 import { Contexts, getCurrentTenantId, getCurrentUserId } from '../../app';
 import { getMikroORM } from '../../mikro-orm';
 import { EntityAuditAction, writeEntityAuditLog } from '../audit';
 import { EntityFeature } from '../enum';
+import type { StandardBaseEntity } from '../StandardBaseEntity';
 import { setData } from '../setData';
 import { setOwnerRef } from '../setOwnerRef';
-import type { StandardBaseEntity } from '../StandardBaseEntity';
 import { applyListQuery } from './applyListQuery';
 import { applyQueryFilter } from './applyQueryFilter';
 import { applyResolveQuery, applySelection } from './applyResolveQuery';
@@ -64,11 +64,11 @@ export class EntityBaseService<E extends StandardBaseEntity> extends BaseEntityS
 	static #services = new Map<EntityClass<any> | string, EntityBaseService<any>>();
 
 	static getService<T>(entity: EntityClass<T> | string) {
-		return this.#services.get(entity) as T;
+		return EntityBaseService.#services.get(entity) as T;
 	}
 
 	static requireService<T extends StandardBaseEntity>(entity: EntityClass<T>): EntityBaseService<T> {
-		return this.#services.get(entity) || new EntityBaseService(getMikroORM(), entity);
+		return EntityBaseService.#services.get(entity) || new EntityBaseService(getMikroORM(), entity);
 	}
 
 	protected applyResolve<T extends QueryBuilder<E>, Q extends ResolveEntityRequest>({
@@ -163,7 +163,7 @@ export class EntityBaseService<E extends StandardBaseEntity> extends BaseEntityS
 		let { builder } = await this.createQueryBuilder();
 
 		Errors.BadRequest.check(id, 'id is required');
-		builder.andWhere({ id });
+		builder.andWhere({ id } as any);
 
 		builder = applySelection({ builder, query: req });
 		if (lockMode) {
@@ -196,9 +196,7 @@ export class EntityBaseService<E extends StandardBaseEntity> extends BaseEntityS
 			try {
 				entity = await this.em.upsert(this.Entity, data as any, {
 					onConflictFields,
-					// @ts-ignore
 					onConflictMergeFields,
-					// @ts-ignore
 					onConflictExcludeFields: [...onConflictExcludeFields, 'id', 'uid', 'tid', 'createdAt', 'deletedAt'],
 					onConflictAction,
 				});
@@ -209,7 +207,7 @@ export class EntityBaseService<E extends StandardBaseEntity> extends BaseEntityS
 			writeEntityAuditLog({ entity, action: EntityAuditAction.Upsert, before: data, em });
 		} else {
 			entity = repo.create(data as any);
-			await em.persistAndFlush(entity);
+			await em.persist(entity).flush();
 			writeEntityAuditLog({ entity, action: EntityAuditAction.Create, after: entity.toPOJO() });
 			await em.flush();
 		}
@@ -219,12 +217,12 @@ export class EntityBaseService<E extends StandardBaseEntity> extends BaseEntityS
 
 	async update(req: UpdateEntityRequest & { data: Partial<E> }) {
 		let { data } = req;
-		const { repo, em } = this;
+		const { em } = this;
 		const entity = await this.get(req);
 		const before = entity.toPOJO();
 		entity.assign(trimUndefined(data));
 		writeEntityAuditLog({ entity, action: EntityAuditAction.Update, em, before, after: entity.toPOJO() });
-		await em.persistAndFlush(entity);
+		await em.persist(entity).flush();
 		return entity;
 	}
 
@@ -241,13 +239,13 @@ export class EntityBaseService<E extends StandardBaseEntity> extends BaseEntityS
 				entity.extensions = setData(entity.extensions, { data: extensions, partial: true });
 			}
 			writeEntityAuditLog({ entity, action: EntityAuditAction.Patch, em, before, after: entity.toPOJO() });
-			await em.persistAndFlush(entity);
+			await em.persist(entity).flush();
 			return entity;
 		});
 	}
 
 	async delete(r: DeleteEntityRequest): Promise<GeneralResponse<E>> {
-		const { repo, em } = this;
+		const { em } = this;
 		// todo 允许不存在
 		const entity = await this.resolve(r);
 		if (!entity) {
@@ -271,22 +269,22 @@ export class EntityBaseService<E extends StandardBaseEntity> extends BaseEntityS
 	}
 
 	async undelete(r: UndeleteEntityRequest) {
-		const { repo, em } = this;
+		const { em } = this;
 		const entity = await this.get({ ...r, deleted: true });
 		entity.deletedAt = undefined;
 		if (hasEntityFeature(entity, EntityFeature.HasAuditorRef)) {
 			entity.deletedById = undefined;
 		}
 		writeEntityAuditLog({ entity, action: EntityAuditAction.Undelete, em });
-		await em.persistAndFlush(entity);
+		await em.persist(entity).flush();
 		return entity;
 	}
 
 	async purge(r: PurgeEntityRequest) {
-		const { repo, em } = this;
+		const { em } = this;
 		const entity = await this.get({ ...r, deleted: true });
 		writeEntityAuditLog({ entity, action: EntityAuditAction.Purge, em, before: entity.toPOJO() });
-		await em.removeAndFlush(entity);
+		await em.remove(entity).flush();
 		return entity;
 	}
 
@@ -303,9 +301,7 @@ export class EntityBaseService<E extends StandardBaseEntity> extends BaseEntityS
 		const entities = await em.transactional(async (em) => {
 			const entities = await em.upsertMany(this.Entity, data, {
 				onConflictFields,
-				// @ts-ignore
 				onConflictMergeFields,
-				// @ts-ignore
 				onConflictExcludeFields: [...onConflictExcludeFields, 'id', 'tid', 'createdAt', 'deletedAt'],
 				onConflictAction,
 			});
@@ -321,16 +317,16 @@ export class EntityBaseService<E extends StandardBaseEntity> extends BaseEntityS
 		Errors.BadRequest.check(hasEntityFeature(ent, EntityFeature.HasOwnerRef), '资源不支持归属');
 		Errors.Forbidden.check(!ent.ownerId, '资源已经被分配');
 		setOwnerRef(ent, userId);
-		await this.em.persistAndFlush(ent);
+		await this.em.persist(ent).flush();
 		return { data: ent };
 	}
 
 	async assignOwner({ ownerId, ...req }: AssignOwnerRequest): Promise<AssignOwnerResponse> {
-		const userId = Contexts.userId.require();
+		const _userId = Contexts.userId.require();
 		const ent = await this.get(req);
 		Errors.BadRequest.check(hasEntityFeature(ent, EntityFeature.HasOwnerRef), '资源不支持归属');
 		setOwnerRef(ent, ownerId);
-		await this.em.persistAndFlush(ent);
+		await this.em.persist(ent).flush();
 		return { data: ent };
 	}
 
@@ -340,7 +336,7 @@ export class EntityBaseService<E extends StandardBaseEntity> extends BaseEntityS
 		Errors.BadRequest.check(hasEntityFeature(ent, EntityFeature.HasOwnerRef), '资源不支持归属');
 		Errors.Forbidden.check(ent.ownerId === userId, '资源不属于当前用户');
 		setOwnerRef(ent, null);
-		await this.em.persistAndFlush(ent);
+		await this.em.persist(ent).flush();
 		return { data: ent };
 	}
 
@@ -372,7 +368,7 @@ export class EntityBaseService<E extends StandardBaseEntity> extends BaseEntityS
 	// }
 }
 
-function findByCursor<E extends EntityClass<any>>(o: {
+function _findByCursor<E extends EntityClass<any>>(_o: {
 	em: EntityManager;
 	builder: QueryBuilder<E>;
 	cursor: { first?: number; after?: string; last?: number; before?: string };

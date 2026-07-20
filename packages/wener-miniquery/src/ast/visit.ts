@@ -1,6 +1,6 @@
 import type { Expr } from './types';
 
-export function visit(expr: Expr, fn: (node: Expr) => void | boolean): void {
+export function visit(expr: Expr, fn: (node: Expr) => undefined | boolean): void {
 	if (fn(expr)) {
 		return;
 	}

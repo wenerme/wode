@@ -10,7 +10,7 @@ export function formatPhoneNumber(
 		return '';
 	}
 	if (mask) {
-		return value.slice(0, 3) + '****' + value.slice(-3);
+		return `${value.slice(0, 3)}****${value.slice(-3)}`;
 	}
 	return value;
 }

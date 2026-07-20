@@ -7,7 +7,7 @@ export function parseMention(s: string): Array<Element> {
 	const regex = /@(?<mention>\S+?)\u2005/g;
 	// const m = s.matchAll();
 	const o: Array<Element> = [];
-	let m;
+	let m: RegExpExecArray | null;
 	let last = 0;
 	while ((m = regex.exec(s))) {
 		const pre = s.substring(last, m.index);

@@ -1,14 +1,14 @@
-import type { Constructor } from '@wener/utils';
+import { getAppContext, type TypeToken } from './ApplicationContext';
 
-type ContextProvider = <O = any>(needle: Constructor<O> | Constructor | Function | string | symbol) => O;
+type ContextProvider = <O = any>(needle: TypeToken<O>) => O;
 export const getContext: ContextProvider = (needle) => {
-	if (!_contextProvider) {
+	if (!_getContext) {
 		throw new Error('ContextProvider is not set');
 	}
-	return _contextProvider(needle);
+	return _getContext(needle);
 };
-let _contextProvider: ContextProvider;
+let _getContext: ContextProvider = (needle: any) => getAppContext().get(needle);
 
 export function setContextProvider(fn: ContextProvider) {
-	_contextProvider = fn;
+	_getContext = fn;
 }

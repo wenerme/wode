@@ -1,5 +1,4 @@
 import type { EntityManager } from '@mikro-orm/postgresql';
-import { UserAuditAction } from './enum';
 import type { AuditContext } from './types';
 import { writeAuditLog } from './writeAuditLog';
 

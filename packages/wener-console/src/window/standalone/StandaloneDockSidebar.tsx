@@ -1,5 +1,5 @@
-import type React from 'react';
 import { clsx } from 'clsx';
+import type React from 'react';
 import { WindowControlButton } from './WindowControlButton';
 import { WindowDockList } from './WindowDockList';
 

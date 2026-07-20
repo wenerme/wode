@@ -1,4 +1,4 @@
-import React, { useEffect, type FC, type ReactNode } from 'react';
+import { type FC, type ReactNode, useEffect } from 'react';
 import { BiError, BiLogoChrome } from 'react-icons/bi';
 import { GrDocumentMissing } from 'react-icons/gr';
 import { HiMiniArrowLeft, HiMiniArrowPath, HiMiniHome, HiOutlineExclamationCircle } from 'react-icons/hi2';
@@ -185,7 +185,7 @@ const Browser = () => {
 
 	// 100  2022-03-29
 	// 90   2021-02-28
-	const old = Number.parseInt(version) < 100;
+	const old = Number.parseInt(version, 10) < 100;
 
 	return (
 		<div className={'inline-flex items-center'}>

@@ -1,4 +1,4 @@
-import { Contexts } from '@wener/nestjs/app';
+import { Contexts } from '@wener/server/app';
 import type { MaybePromise } from '@wener/utils';
 import { runContext } from '@/server/context/runContext';
 

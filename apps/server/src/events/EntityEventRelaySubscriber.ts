@@ -1,7 +1,7 @@
 import type { EventArgs, EventSubscriber, FlushEventArgs, TransactionEventArgs } from '@mikro-orm/core';
 import { Injectable, Logger } from '@nestjs/common';
 import type { StandardBaseEntity } from '@wener/server/entity';
-import { EntityEvents, getEntityEmitter, type EntityEmitter } from '#/events/EntityEmitter';
+import { type EntityEmitter, EntityEvents, getEntityEmitter } from '#/events/EntityEmitter';
 
 @Injectable()
 export class EntityEventRelaySubscriber implements EventSubscriber<StandardBaseEntity> {
@@ -23,10 +23,10 @@ export class EntityEventRelaySubscriber implements EventSubscriber<StandardBaseE
 	private static _instance: EntityEventRelaySubscriber;
 
 	static getInstance() {
-		if (!this._instance) {
-			this._instance = new EntityEventRelaySubscriber();
+		if (!EntityEventRelaySubscriber._instance) {
+			EntityEventRelaySubscriber._instance = new EntityEventRelaySubscriber();
 		}
-		return this._instance;
+		return EntityEventRelaySubscriber._instance;
 	}
 
 	onInit(args: EventArgs<StandardBaseEntity>) {

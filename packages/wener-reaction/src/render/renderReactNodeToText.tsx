@@ -13,18 +13,20 @@ export function renderReactNodeToText(node: ReactNode) {
 		if (Array.isArray(_node)) {
 			return _node.map((v) => walk(v)).join('');
 		} else if (typeof _node === 'object') {
-			if (typeof _node.type === 'function') {
-				return walk((_node as any).type(_node.props));
+			const elem = _node as ReactElement;
+			if (typeof elem.type === 'function') {
+				return walk((elem.type as (props: unknown) => ReactNode)(elem.props));
 			}
-			const children = Array.isArray(_node.props.children)
-				? _node.props.children.map((c: any) => walk(c)).join('')
-				: walk(_node.props.children);
+			const props = elem.props as Record<string, unknown>;
+			const children = Array.isArray(props.children)
+				? (props.children as unknown[]).map((c) => walk(c)).join('')
+				: walk(props.children);
 
 			switch (_node.type) {
 				case 'p':
 				case 'br':
 				case 'div':
-					return children + '\n';
+					return `${children}\n`;
 				default:
 					return children;
 			}

@@ -1,7 +1,7 @@
-import type React from 'react';
-import type { FC } from 'react';
 import { Dialog } from '@base-ui/react/dialog';
 import { cn } from '@wener/console';
+import type React from 'react';
+import type { FC } from 'react';
 
 export const DaisyDrawerTrigger = Dialog.Trigger;
 export const DaisyDrawerRoot = Dialog.Root;

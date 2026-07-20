@@ -3,7 +3,7 @@ import { Features } from '../../Feature';
 import { EntityFeature } from '../enum';
 import { StandardBaseEntity } from '../StandardBaseEntity';
 import type { AnyStandardEntity } from '../types';
-import { resolveEntityContext, type ResolveEntityContextOptions } from './resolveEntityContext';
+import { type ResolveEntityContextOptions, resolveEntityContext } from './resolveEntityContext';
 
 export type ResolveEntityOptions<E extends StandardBaseEntity, O extends {} = {}> =
 	| (BuildResolveEntityOptions & {
@@ -37,18 +37,18 @@ export function buildResolveEntityWhere<E>(
 ): { where: FilterQuery<E> & EntityProps<E>; hasWhere: boolean } {
 	const where: FilterQuery<AnyStandardEntity> = {};
 	if (opts.id) {
-		where['id'] = opts.id;
+		where.id = opts.id;
 	} else if (opts.uid) {
-		where['uid'] = opts.uid;
+		where.uid = opts.uid;
 	} else if (opts.eid) {
-		where['eid'] = opts.eid;
+		where.eid = opts.eid;
 	} else if (opts.sid && Features.hasFeature(Entity, EntityFeature.HasSid)) {
-		where['sid'] = opts.sid;
+		where.sid = opts.sid;
 	} else if (opts.code && Features.hasFeature(Entity, EntityFeature.HasCode)) {
-		where['code'] = opts.code;
+		where.code = opts.code;
 	} else if ((opts.cid || opts.rid) && Features.hasFeature(Entity, EntityFeature.HasVendorRef)) {
-		opts.cid && (where['cid'] = opts.cid);
-		opts.rid && (where['rid'] = opts.rid);
+		opts.cid && (where.cid = opts.cid);
+		opts.rid && (where.rid = opts.rid);
 	} else {
 		return { where: where as any, hasWhere: false };
 	}
@@ -63,7 +63,7 @@ export async function resolveEntity<E extends StandardBaseEntity>(
 	if (opts instanceof StandardBaseEntity) {
 		return { entity: opts };
 	}
-	const { repo, def, Entity } = resolveEntityContext(contextOptions);
+	const { repo, def: _def, Entity } = resolveEntityContext(contextOptions);
 	if (opts.entity) {
 		return { entity: opts.entity };
 	}

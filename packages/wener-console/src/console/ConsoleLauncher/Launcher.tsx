@@ -1,16 +1,16 @@
-import React, {
+import { getGlobalStates } from '@wener/utils';
+import { uniqBy } from 'es-toolkit';
+import {
+	type ComponentPropsWithoutRef,
 	cloneElement,
+	type FC,
 	isValidElement,
+	type ReactNode,
 	useEffect,
 	useRef,
-	type ComponentPropsWithoutRef,
-	type FC,
-	type ReactNode,
 } from 'react';
 import { createPortal } from 'react-dom';
 import { PiBrowser } from 'react-icons/pi';
-import { getGlobalStates } from '@wener/utils';
-import { uniqBy } from 'es-toolkit';
 import { createStore, useStore } from 'zustand';
 import { mutative } from 'zustand-mutative';
 import { getConsoleEmitter } from '../ConsoleEmitter';

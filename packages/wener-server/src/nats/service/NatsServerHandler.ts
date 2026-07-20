@@ -23,9 +23,13 @@ export class NatsServerHandler {
 		return this._started;
 	}
 
+	get svc(): ServiceRegistry {
+		return this._svc;
+	}
+
 	constructor(
-		@Inject(ModulesContainer) private readonly modulesContainer: ModulesContainer,
-		@Inject(ServiceRegistry) private readonly svc: ServiceRegistry,
+		@Inject(ModulesContainer) readonly modulesContainer: ModulesContainer,
+		@Inject(ServiceRegistry) readonly _svc: ServiceRegistry,
 		@Inject(NatsConn) readonly nc: NatsConn,
 		@Optional() @Inject(MODULE_OPTIONS_TOKEN) readonly options: NatsServiceServerModuleOptions = {},
 	) {

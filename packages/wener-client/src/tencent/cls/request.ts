@@ -1,6 +1,5 @@
-import { createHash, createHmac } from 'crypto';
+import { createHash, createHmac } from 'node:crypto';
 import type { FetchLike } from '@wener/utils';
-import { resolveRequest } from '../../utils/resolveRequest';
 
 export type RequestOptions = {
 	url: string;
@@ -28,15 +27,58 @@ export type SignOptions = {
 };
 
 export async function request<O = any>(options: RequestOptions): Promise<O> {
-	const { fetch = globalThis.fetch, method = 'POST', ...restOptions } = options;
+	let {
+		url,
+		baseUrl = '',
+		params = {},
+		data,
+		headers = {},
+		method = 'POST',
+		fetch = globalThis.fetch,
+		signal,
+	} = options;
 
-	// Resolve base request
-	const { url, init, headers } = resolveRequest({
-		...restOptions,
+	let u: URL;
+	if (baseUrl && !/^https?:\/\//.test(url)) {
+		if (!baseUrl.endsWith('/')) {
+			baseUrl += '/';
+		}
+		if (url.startsWith('/')) {
+			url = url.slice(1);
+		}
+		u = new URL(baseUrl + url);
+	} else {
+		u = new URL(url);
+	}
+
+	if (params) {
+		for (const [k, v] of Object.entries(params)) {
+			if (v === null || v === undefined) continue;
+			if (Array.isArray(v)) {
+				for (const vv of v) {
+					u.searchParams.append(k, String(vv));
+				}
+				continue;
+			}
+			u.searchParams.set(k, String(v));
+		}
+	}
+	u.searchParams.sort();
+
+	const req: RequestInit = {
 		method,
-	});
+		signal,
+		headers: {
+			'Content-Type': 'application/json',
+			...headers,
+		},
+	};
 
-	const response = await fetch(url.toString(), init);
+	if (data && (method === 'POST' || method === 'PUT' || method === 'PATCH')) {
+		req.body = JSON.stringify(data);
+	}
+
+	const response = await fetch(u.toString(), req);
 
 	if (!response.ok) {
 		throw new Error(`HTTP ${response.status}: ${response.statusText}`);
@@ -45,7 +87,7 @@ export async function request<O = any>(options: RequestOptions): Promise<O> {
 	let out: GeneralResponse<O>;
 	try {
 		out = JSON.parse(text) as GeneralResponse<O>;
-	} catch (e) {
+	} catch (_e) {
 		console.log(`Failed to parse response as JSON: ${text}`);
 		throw Object.assign(new Error(`HTTP ${response.status}: ${response.statusText}`), {
 			code: response.status,
@@ -78,7 +120,19 @@ type GeneralResponse<T> = {
 };
 
 export function sign(options: SignOptions): { authorization: string; timestamp: string } {
-	const { clientId, clientKey, service, region, action, version, timestamp, payload, method, host, uri } = options;
+	const {
+		clientId,
+		clientKey,
+		service,
+		region: _region,
+		action: _action,
+		version: _version,
+		timestamp,
+		payload,
+		method,
+		host,
+		uri,
+	} = options;
 
 	// 步骤 1：拼接规范请求串
 	const canonicalHeaders = `content-type:application/json\nhost:${host}\n`;

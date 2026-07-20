@@ -6,7 +6,7 @@ import { createDynamicImportPlugin } from './createDynamicImportPlugin';
 import { createExcludeVendorSourceMapPlugin } from './createExcludeVendorSourceMapPlugin';
 import { createTscPlugin } from './createTscPlugin';
 
-export async function bundle(server: string, opts?: BuildOptions | ((o: BuildOptions) => BuildOptions | void)) {
+export async function bundle(server: string, opts?: BuildOptions | ((o: BuildOptions) => BuildOptions | undefined)) {
 	let entry: string | undefined;
 	let out: string | undefined;
 	let name = server;
@@ -18,7 +18,7 @@ export async function bundle(server: string, opts?: BuildOptions | ((o: BuildOpt
 			try {
 				fs.statSync(v);
 				return true;
-			} catch (e) {}
+			} catch (_e) {}
 			return false;
 		});
 		if (!entry) {

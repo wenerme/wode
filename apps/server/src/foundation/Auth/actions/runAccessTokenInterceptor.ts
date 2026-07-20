@@ -1,4 +1,4 @@
-import { getContext } from '@wener/nestjs';
+import { getContext } from '@wener/server';
 import consola from 'consola';
 import type { ConsolaInstance } from 'consola/core';
 import { isDevelopment } from 'std-env';

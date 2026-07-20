@@ -1,9 +1,9 @@
+import { isDev } from '@wener/console';
+import { lazyRoute } from '@wener/console/router';
 import React from 'react';
 import { HiColorSwatch, HiOutlineColorSwatch } from 'react-icons/hi';
 import type { RouteObject } from 'react-router-dom';
 import { Navigate } from 'react-router-dom';
-import { isDev } from '@wener/console';
-import { lazyRoute } from '@wener/console/router';
 import { can } from '#/casl';
 import { SiteModules } from '#/console/modules/user.core/SiteModules';
 

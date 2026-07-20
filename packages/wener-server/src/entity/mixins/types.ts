@@ -97,7 +97,7 @@ export interface HasTitleDescriptionEntity {
 	description?: string;
 }
 
-interface IsConnectionEntity extends IdentifiableEntity {
+interface _IsConnectionEntity extends IdentifiableEntity {
 	entity1Id?: string;
 	entity1Type?: string;
 	entity1?: Ref<IdentifiableEntity>;
@@ -115,7 +115,7 @@ interface IsConnectionEntity extends IdentifiableEntity {
 	entityImage?: string;
 }
 
-interface IsRelationEntity<R extends IdentifiableEntity> extends IdentifiableEntity {
+interface _IsRelationEntity<R extends IdentifiableEntity> extends IdentifiableEntity {
 	entityId: string;
 	entityType: string;
 	entity: Ref<IdentifiableEntity>;

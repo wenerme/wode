@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import type { Duration } from 'dayjs/plugin/duration';
-import { checkDurationUnit, RelativeDurationUnits, type RelativeDurationUnit } from './resolveRelativeTime';
+import { checkDurationUnit, type RelativeDurationUnit, RelativeDurationUnits } from './resolveRelativeTime';
 
 export type TimeOperation =
 	| {

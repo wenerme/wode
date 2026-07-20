@@ -1,4 +1,4 @@
-import { createAlpineMirror, type AlpineMirror } from '../AlpineMirror';
+import { type AlpineMirror, createAlpineMirror } from '../AlpineMirror';
 
 export async function runAlpineRepoMirrorTest({
 	repo = createAlpineMirror(),

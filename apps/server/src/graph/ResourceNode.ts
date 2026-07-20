@@ -1,6 +1,6 @@
-import { BaseNode, RelayNode } from '@wener/nestjs/type-graphql';
-import { HasOwnerRefNode, HasStateStatusNode } from '@wener/nestjs/type-graphql/interface';
-import { withOwnerRefType, withStateStatusType } from '@wener/nestjs/type-graphql/mixins';
+import { BaseNode, RelayNode } from '@wener/server/type-graphql';
+import { HasOwnerRefNode, HasStateStatusNode } from '@wener/server/type-graphql/interface';
+import { withOwnerRefType, withStateStatusType } from '@wener/server/type-graphql/mixins';
 import { mixin } from '@wener/utils';
 import { Field, ID, InterfaceType, ObjectType } from 'type-graphql';
 import { OwnerNode } from '@/foundation/ResourceOwner/OwnerNode';

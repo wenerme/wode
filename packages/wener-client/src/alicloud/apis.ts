@@ -6,5 +6,5 @@ export interface AliCloudApis {
 	'ocr-api': { '2021-07-07': OcrV20210707.OcrV20210707Api };
 }
 
-export * as OcrV20210707 from './OcrV20210707';
 export * as DytnsV20200217 from './DytnsV20200217';
+export * as OcrV20210707 from './OcrV20210707';

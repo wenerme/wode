@@ -30,7 +30,7 @@ export function createMetadataKey<T = never>(a: any, b?: any): MetadataKey<T> {
 
 export function defineMetadata<T>(res: HasMetadata, key: MetadataKey<T>, opts: T): void;
 export function defineMetadata<T>(key: MetadataKey<T>, items: Array<[HasMetadata, T]>): void;
-export function defineMetadata<T>(a: any, b: any, c?: any) {
+export function defineMetadata<_T>(a: any, b: any, c?: any) {
 	if (Array.isArray(b)) {
 		const key = a;
 		const items = b;

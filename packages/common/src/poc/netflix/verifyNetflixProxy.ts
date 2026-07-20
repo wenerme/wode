@@ -1,4 +1,4 @@
-import { Closer, FetchLike } from '@wener/utils';
+import { Closer, type FetchLike } from '@wener/utils';
 
 export interface VerifyOptions {
 	fetch?: FetchLike;
@@ -43,7 +43,7 @@ export async function verifyNetflixProxy({ proxy, ...options }: VerifyOptions): 
 				u.username || u.password
 					? `Basic ${Buffer.from(`${decodeURIComponent(u.username)}:${decodeURIComponent(u.password)}`).toString('base64')}`
 					: undefined,
-			// @ts-ignore
+			// @ts-expect-error
 			protocol: u.protocol,
 			// clientFactory: (origin, opts) => {
 			//   return new Pool(origin, {

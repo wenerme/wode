@@ -662,7 +662,7 @@ export interface OperatorClientOptions extends Omit<SessionRequestOptions<any>, 
 
 // 大多都是 0,1,31,32
 
-const InvoiceTypes = [
+const _InvoiceTypes = [
 	{ label: '增值税专票', value: '' },
 	{ label: '增值税电子专票', value: '' },
 	{ label: '机动车发票', value: '' },
@@ -688,7 +688,7 @@ const InvoiceTypes = [
 	{ label: '数电票（普票）', value: '' },
 ];
 
-const OutputInvoiceClassOptions = [
+const _OutputInvoiceClassOptions = [
 	{ label: '增值税专票', value: '0' },
 	{ label: '增值税电子专票', value: '26' },
 	{ label: '机动车发票', value: '1' },

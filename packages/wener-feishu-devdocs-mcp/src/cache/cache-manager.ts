@@ -1,7 +1,7 @@
-import { createHash } from 'crypto';
-import * as fs from 'fs/promises';
-import { homedir } from 'os';
-import * as path from 'path';
+import { createHash } from 'node:crypto';
+import * as fs from 'node:fs/promises';
+import { homedir } from 'node:os';
+import * as path from 'node:path';
 import consola from 'consola';
 
 const logger = consola.withTag('cache-manager');
@@ -268,7 +268,7 @@ export class CacheManager {
 					if (!this.isValidEntry(entry)) {
 						expiredEntries++;
 					}
-				} catch (error) {
+				} catch (_error) {
 					// Skip invalid files
 					logger.debug('Skipping invalid cache file', { file });
 				}
@@ -323,7 +323,7 @@ export class CacheManager {
 							expiry: entry.expiry ? new Date(entry.expiry).toISOString() : 'none',
 						});
 					}
-				} catch (error) {
+				} catch (_error) {
 					// If we can't read the file, it's probably corrupted, so delete it
 					await fs.unlink(filePath);
 					deletedCount++;

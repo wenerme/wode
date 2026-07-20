@@ -1,5 +1,5 @@
-import React, { useEffect, type PropsWithChildren } from 'react';
 import type { Decorator, Preview } from '@storybook/react-vite';
+import React, { type PropsWithChildren, useEffect } from 'react';
 import { DaisyTheme, getSupportedThemes } from '../src/daisy';
 import '../src/console/globals.css';
 import { DynamicRender } from '../src/components/DynamicRender';

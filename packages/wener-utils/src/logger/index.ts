@@ -1,2 +1,2 @@
-export { type Logger } from './types';
-export { logger, setLogger, createNoopLogger } from './const';
+export { createNoopLogger, logger, setLogger } from './const';
+export type { Logger } from './types';

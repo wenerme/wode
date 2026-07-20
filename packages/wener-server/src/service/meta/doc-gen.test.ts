@@ -40,8 +40,8 @@ type HelloRequest = z.infer<typeof HelloRequestSchema>;
 @Service({ name: 'hello.HelloService' })
 class HelloService {
 	@Method({ input: HelloRequestSchema })
-	hello(req: HelloRequest) {}
+	hello(_req: HelloRequest) {}
 
 	@Method({ input: HelloRequestSchema })
-	hi(req: HelloRequest) {}
+	hi(_req: HelloRequest) {}
 }

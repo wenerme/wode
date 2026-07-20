@@ -1,6 +1,6 @@
-import { maybeFunction, type MaybeFunction } from '@wener/utils';
+import { type MaybeFunction, maybeFunction } from '@wener/utils';
 import { mapValues, omitBy, pick } from 'es-toolkit';
-import { maybeNumber, type MaybeNumber } from './maybeNumber';
+import { type MaybeNumber, maybeNumber } from './maybeNumber';
 
 export type PaginationInput = {
 	limit?: MaybeNumber;

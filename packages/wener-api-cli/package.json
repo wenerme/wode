@@ -1,0 +1,56 @@
+{
+	"name": "@wener/api-cli",
+	"version": "0.1.1",
+	"type": "module",
+	"description": "A lightweight CLI for interacting with REST APIs via OpenAPI specifications",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/wenerme/wode.git",
+		"directory": "packages/wener-api-cli"
+	},
+	"homepage": "https://github.com/wenerme/wode/tree/main/packages/wener-api-cli",
+	"author": "wener",
+	"license": "MIT",
+	"engines": {
+		"node": ">=22.0.0"
+	},
+	"bin": {
+		"api-cli": "./dist/index.mjs"
+	},
+	"main": "./dist/index.mjs",
+	"files": [
+		"dist",
+		"src",
+		"README.md"
+	],
+	"keywords": [
+		"openapi",
+		"swagger",
+		"rest",
+		"api",
+		"cli",
+		"http",
+		"client"
+	],
+	"scripts": {
+		"build": "tsx src/scripts/bundle.ts",
+		"dev": "tsx src/index.ts",
+		"fmt": "pnpm prettier --write src package.json tsconfig.json vitest.config.ts",
+		"prepublishOnly": "pnpm build",
+		"test": "vitest run",
+		"typecheck": "tsc --noEmit"
+	},
+	"devDependencies": {
+		"@types/node": "^24.12.2",
+		"commander": "^14.0.3",
+		"esbuild": "^0.28.0",
+		"tsx": "^4.21.0",
+		"typescript": "^6.0.3",
+		"vitest": "^4.1.5",
+		"yaml": "^2.8.4",
+		"zod": "^4.4.3"
+	},
+	"publishConfig": {
+		"access": "public"
+	}
+}

@@ -1,10 +1,10 @@
 'use client';
 
-import React, { forwardRef, type ComponentProps, type FC, type ReactNode } from 'react';
-import { maybeFunction, type MaybeFunction } from '@wener/utils';
+import { type MaybeFunction, maybeFunction } from '@wener/utils';
 import { clsx } from 'clsx';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { type ComponentProps, type FC, forwardRef, type ReactNode } from 'react';
 
 export interface NextNavLinkProps extends Omit<ComponentProps<typeof Link>, 'children' | 'className'> {
 	children?: MaybeFunction<ReactNode, [{ isActive: boolean }]>;

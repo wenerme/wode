@@ -1,17 +1,17 @@
 /**
  * DataView Storybook Stories
  */
-import React, { useEffect, useState } from 'react';
-import { PiChartLineLight, PiFunnelLight, PiGearLight, PiUserLight } from 'react-icons/pi';
+
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { AnyResource } from '@wener/common/resource';
+import { useEffect, useState } from 'react';
+import { PiChartLineLight, PiFunnelLight, PiGearLight, PiUserLight } from 'react-icons/pi';
 import {
 	createDataViewStore,
 	DataViewLayout,
 	DataViewProvider,
 	PageInfo,
 	PageNav,
-	useDataViewStore,
 	useDataViewStoreContext,
 } from './index';
 import { ResourceListItem } from './ResourceListItem';
@@ -1219,7 +1219,7 @@ function DataViewWithStore() {
 								key={item.id}
 								data={item}
 								selected={selected.includes(item.id)}
-								onSelectedChange={(s) => actions.toggleSelection(item.id)}
+								onSelectedChange={(_s) => actions.toggleSelection(item.id)}
 								onTitleClick={() => handleItemClick(item)}
 								actions={
 									<>

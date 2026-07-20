@@ -1,45 +1,33 @@
+import { useVirtualizer } from '@tanstack/react-virtual';
+import { cn } from '@wener/console';
+import { HeaderContentFooterLayout } from '@wener/console/components';
 import {
-	useCallback,
-	useRef,
 	type ComponentProps,
 	type ComponentPropsWithRef,
 	type CSSProperties,
 	type ReactNode,
+	useCallback,
+	useRef,
 } from 'react';
-import type { PanelOnCollapse, PanelOnExpand } from 'react-resizable-panels';
-import { Panel, PanelGroup } from 'react-resizable-panels';
-import { useVirtualizer } from '@tanstack/react-virtual';
-import { cn } from '@wener/console';
-import { HeaderContentFooterLayout } from '@wener/console/components';
+import { Group, Panel, type PanelProps } from 'react-resizable-panels';
 import { ActionIcon } from '../icons/ActionIcon';
 import { LeftContentRightLayout } from '../LeftContentRightLayout';
 import { PanelResizeLineHandle } from '../ResizablePanel';
 import { Tabs } from '../Tabs';
 import { MeasureSize } from './MeasureSize';
 
-type PanelConfig = {
-	collapsedSize?: number | undefined;
-	collapsible?: boolean | undefined;
-	defaultSize?: number | undefined;
-	id?: string;
-	maxSize?: number | undefined;
-	minSize?: number | undefined;
-	onCollapse?: PanelOnCollapse;
-	onExpand?: PanelOnExpand;
-};
-
-const _rightConfig: PanelConfig = {
-	defaultSize: 30,
-	minSize: 20,
-	maxSize: 60,
+const _rightConfig = {
+	defaultSize: '30%',
+	minSize: '20%',
+	maxSize: '60%',
 	collapsible: true,
-};
-const _leftConfig: PanelConfig = {
-	defaultSize: 15,
-	minSize: 10,
-	maxSize: 35,
+} as const;
+const _leftConfig = {
+	defaultSize: '15%',
+	minSize: '10%',
+	maxSize: '35%',
 	collapsible: true,
-};
+} as const;
 
 export namespace DataViewLayout {
 	type CompositeProps = ComponentPropsWithRef<'div'> & {
@@ -82,15 +70,15 @@ export namespace DataViewLayout {
 
 		return (
 			<HeaderContentFooterLayout header={header} {...props}>
-				<PanelGroup direction='horizontal'>
+				<Group orientation='horizontal'>
 					{hasLeftPanel && (left ?? <LeftPanel>{leftPanel}</LeftPanel>)}
 
-					<Panel id={'content'} order={2}>
+					<Panel id={'content'}>
 						<HeaderContentFooterLayout footer={footer}>{children}</HeaderContentFooterLayout>
 					</Panel>
 
 					{hasRightPanel && (right ?? <RightPanel>{rightPanel}</RightPanel>)}
-				</PanelGroup>
+				</Group>
 			</HeaderContentFooterLayout>
 		);
 	};
@@ -98,18 +86,18 @@ export namespace DataViewLayout {
 	export const LeftPanel = ({ children }: { children?: ReactNode }) => {
 		return (
 			<>
-				<Panel id='left' order={1} className={'relative'} {..._leftConfig}>
+				<Panel id='left' className={'relative'} {..._leftConfig}>
 					{children}
 				</Panel>
 				<PanelResizeLineHandle />
 			</>
 		);
 	};
-	export const RightPanel = ({ children, ...props }: ComponentProps<typeof Panel>) => {
+	export const RightPanel = ({ children, ...props }: PanelProps) => {
 		return (
 			<>
 				<PanelResizeLineHandle />
-				<Panel id='right' order={3} className={'relative'} {..._rightConfig} {...props}>
+				<Panel id='right' className={'relative'} {..._rightConfig} {...props}>
 					{children}
 				</Panel>
 			</>

@@ -1,4 +1,4 @@
-import { getEntityDef, parseEntityTypeId } from '@wener/nestjs/entity';
+import { getEntityDef, parseEntityTypeId } from '@wener/server/entity';
 
 export function resolveNodeType(value: any) {
 	if ('id' in value) {

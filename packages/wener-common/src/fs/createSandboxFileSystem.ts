@@ -1,5 +1,5 @@
 import { join, normalize, relative, sep } from 'pathe';
-import type { IFileStat, IFileSystem, IServerFileSystem, ReadFileOptions } from './IFileSystem';
+import type { IFileStat, IServerFileSystem, ReadFileOptions } from './IFileSystem';
 import { getPath } from './utils';
 
 class SandboxSecurityError extends Error {

@@ -1,5 +1,5 @@
 import { getOpcodeLength } from './rt';
-import { Instruction, Opcode } from './types';
+import { type Instruction, Opcode } from './types';
 
 export function marshalInstruction(inst: Instruction, view?: DataView, offset?: number) {
 	const opcodeLen = getOpcodeLength(inst.opcode);

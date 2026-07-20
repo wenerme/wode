@@ -127,6 +127,8 @@ local.mk
 local.test.ts
 *.local.test.ts
 *.lcoal.json
+*.local.yaml
+*local.just
 test-*.js
 test-*.ts
 
@@ -136,3 +138,11 @@ test-*.ts
 .env.*.local
 
 .wrangler/
+local/
+.agents/
+.agent/
+.claude/
+.serena/
+AGENTS.md
+CLAUDE.md
+GEMINI.md

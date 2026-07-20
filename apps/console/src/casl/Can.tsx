@@ -1,6 +1,6 @@
+import { Can as _Can, type CanProps as _CanProps } from '@casl/react';
 import type React from 'react';
 import { createContext, useContext } from 'react';
-import { Can as _Can, type CanProps as _CanProps } from '@casl/react';
 import type { ConsoleAbility } from './casl';
 import { getUserAbility } from './getUserAbility';
 

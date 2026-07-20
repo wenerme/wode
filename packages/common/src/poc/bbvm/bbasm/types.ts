@@ -1,5 +1,5 @@
-import { AddressMode, Instruction, Opcode, Operand } from '../types';
-import { Location } from './parser';
+import { AddressMode, type Instruction, Opcode, type Operand } from '../types';
+import type { Location } from './parser';
 
 export interface Assembly extends Instruction {
 	op: AsmOpCode;
@@ -91,12 +91,12 @@ export const AsmOpCodes: Record<string, AsmOpCodeInfo> = {
 	BLOCK: {
 		name: 'BLOCK',
 		pseudo: true,
-		getLength: (asm: Assembly) => {
+		getLength: (_asm: Assembly) => {
 			return 8;
 		},
 		compile: ({ asm, buffer, offset }: AssemblyCompileContext) => {
-			buffer.setInt32(offset, asm.values![0] as number);
-			buffer.setInt32(offset + 1, asm.values![1] as number, true);
+			buffer.setInt32(offset, asm.values?.[0] as number);
+			buffer.setInt32(offset + 1, asm.values?.[1] as number, true);
 		},
 	},
 	CALL: { name: 'CALL', code: Opcode.CALL },

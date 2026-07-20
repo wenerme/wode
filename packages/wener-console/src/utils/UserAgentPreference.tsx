@@ -32,7 +32,7 @@ function createUserAgentPreferenceStore({ watch = true }: { watch?: boolean } = 
 				close: () => void;
 				reset: () => void;
 			}
-		>((setState, getState, store) => {
+		>((setState, _getState, _store) => {
 			let initial: UserAgentPreferences = {
 				colorTheme: 'light',
 				contrast: 'no-preference',

@@ -1,8 +1,8 @@
-import React, { type ComponentPropsWithRef, type FC } from 'react';
-import { CgCompressRight, CgExpand } from 'react-icons/cg';
-import { HiMiniMinus, HiMiniXMark } from 'react-icons/hi2';
 import styled from '@emotion/styled';
 import { clsx } from 'clsx';
+import type { ComponentPropsWithRef, FC } from 'react';
+import { CgCompressRight, CgExpand } from 'react-icons/cg';
+import { HiMiniMinus, HiMiniXMark } from 'react-icons/hi2';
 import { getWindowDragCancelClassname } from '../const';
 
 const WindowController = styled.div`

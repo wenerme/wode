@@ -1,6 +1,6 @@
 import type { Readable, Writable } from 'node:stream';
-import { maybeFunction, type MaybeFunction } from '@wener/utils';
-import type { FileStat, GetDirectoryContentsOptions, ResponseDataDetailed, WebDAVClient } from 'webdav';
+import { type MaybeFunction, maybeFunction } from '@wener/utils';
+import type { FileStat, ResponseDataDetailed, WebDAVClient } from 'webdav';
 import type {
 	IFileStat,
 	IFileSystem,
@@ -9,6 +9,8 @@ import type {
 	ReadFileOptions,
 	RmOptions,
 	StatOptions,
+	WritableData,
+	WriteFileOptions,
 } from './IFileSystem';
 
 export function createWebDavFileSystem({ client }: { client: MaybeFunction<WebDAVClient> }): IFileSystem {
@@ -41,10 +43,10 @@ class WebdavFS implements IFileSystem {
 		const { filename: path, basename, lastmod, type: kind, etag, size, mime } = input;
 		let meta: Record<string, any> = {};
 		if (etag) {
-			meta['etag'] = etag;
+			meta.etag = etag;
 		}
 		if (mime) {
-			meta['mime'] = mime;
+			meta.mime = mime;
 		}
 		return {
 			directory: path.substring(0, path.lastIndexOf('/')) || '/',
@@ -59,12 +61,12 @@ class WebdavFS implements IFileSystem {
 
 	private getData<T>(input: ResponseDataDetailed<T> | T): T {
 		if (
-			input
-			&& typeof input === 'object'
-			&& 'data' in input
+			input &&
+			typeof input === 'object' &&
+			'data' in input &&
 			// 'headers' in input &&
-			&& 'status' in input
-			&& typeof input.status === 'number'
+			'status' in input &&
+			typeof input.status === 'number'
 		) {
 			return input.data;
 		}
@@ -75,11 +77,6 @@ class WebdavFS implements IFileSystem {
 		path: string,
 		{ glob, recursive, depth, kind, hidden, signal }: ReaddirOptions = {},
 	): Promise<IFileStat[]> {
-		// webdav depth 只支持 0,1
-		let o: GetDirectoryContentsOptions = {};
-		if (recursive) {
-			o.deep = true;
-		}
 		let res = await this.client.getDirectoryContents(path, {
 			deep: recursive,
 			signal,
@@ -135,11 +132,27 @@ class WebdavFS implements IFileSystem {
 		return this.getData(res);
 	}
 
-	async writeFile(path: string, data: string | Buffer | ArrayBuffer | Readable, options = {}): Promise<void> {
-		await this.client.putFileContents(path, data, options);
+	async writeFile(path: string, data: WritableData, options: WriteFileOptions = {}): Promise<void> {
+		// Convert web ReadableStream to something WebDAV client can handle
+		let webdavData: string | Buffer | ArrayBuffer | Readable = data as string | Buffer | ArrayBuffer | Readable;
+		if (data instanceof ReadableStream) {
+			// Convert web ReadableStream to Buffer
+			const reader = data.getReader();
+			const chunks: Uint8Array[] = [];
+			while (true) {
+				const { done, value } = await reader.read();
+				if (done) break;
+				if (value) chunks.push(value);
+			}
+			webdavData = Buffer.concat(chunks);
+		} else if (ArrayBuffer.isView(data) && !(data instanceof Buffer)) {
+			// Convert ArrayBufferView to Buffer
+			webdavData = Buffer.from(data.buffer, data.byteOffset, data.byteLength);
+		}
+		await this.client.putFileContents(path, webdavData, options);
 	}
 
-	async rm(path: string, { signal, force, recursive }: RmOptions = {}): Promise<void> {
+	async rm(path: string, { signal: _signal, force, recursive: _recursive }: RmOptions = {}): Promise<void> {
 		try {
 			await this.client.deleteFile(path);
 		} catch (e: any) {

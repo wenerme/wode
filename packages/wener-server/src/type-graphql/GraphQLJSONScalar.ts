@@ -2,11 +2,11 @@ export {
 	/**
 	 * @deprecated
 	 */
-	GraphQLJSONObject as GraphQLJSONObjectScalar,
+	GraphQLJSON as GraphQLJSONScalar,
 	/**
 	 * @deprecated
 	 */
-	GraphQLJSON as GraphQLJSONScalar,
+	GraphQLJSONObject as GraphQLJSONObjectScalar,
 } from 'graphql-scalars';
 
 // https://github.com/taion/graphql-type-json/blob/master/src/index.js

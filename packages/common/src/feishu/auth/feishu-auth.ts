@@ -86,7 +86,7 @@ export class FeishuAuth {
 	/**
 	 * Exchange authorization code for user access token
 	 */
-	async exchangeCodeForToken(code: string, redirectUri: string): Promise<FeishuTokenResponse> {
+	async exchangeCodeForToken(code: string, _redirectUri: string): Promise<FeishuTokenResponse> {
 		try {
 			const requestBody: FeishuOAuthTokenRequest = {
 				grant_type: 'authorization_code',

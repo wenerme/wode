@@ -2,7 +2,7 @@ import { Code, ConnectError, createConnectRouter } from '@connectrpc/connect';
 import { Logger } from '@nestjs/common';
 import { getContext } from '@wener/server';
 import { Errors, type MaybePromise } from '@wener/utils';
-import { serveNodeConnect, type ServeNodeConnectOptions } from './serveNodeConnect';
+import { type ServeNodeConnectOptions, serveNodeConnect } from './serveNodeConnect';
 import type { ConnectRpcServiceDef } from './types';
 
 function getConnectErrorCodeFromHttpStatus(status: number): Code {
@@ -83,7 +83,7 @@ export function createConnectHandler({
 				router.service(
 					Schema,
 					new Proxy(target, {
-						get(target, key, receiver) {
+						get(target, key, _receiver) {
 							let val = target[key];
 							if (!val || typeof val !== 'function' || typeof key !== 'string') return val;
 							const fn = val.bind(target);

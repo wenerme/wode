@@ -48,7 +48,7 @@ export function createFetchWithProxyByUndici({
 				let u: URL | undefined;
 				try {
 					u = new URL(proxy);
-				} catch (e) {}
+				} catch (_e) {}
 				if (!token && u && (u.username || u.password)) {
 					token = `Basic ${btoa(`${u.username || ''}:${u.password}`)}`;
 					u.username = '';
@@ -68,6 +68,6 @@ export function createFetchWithProxyByUndici({
 			// fixme should unwrap error https://github.com/nodejs/undici/issues/1248
 		}
 		init.dispatcher = agent;
-		return await fetch!(...args);
+		return (await fetch?.(...args))!;
 	};
 }

@@ -1,6 +1,6 @@
-import React, { lazy, Suspense, useCallback, useEffect, type FC } from 'react';
-import type { ControlledProps } from 'react-medium-image-zoom';
 import { useControllable } from '@wener/reaction';
+import React, { type FC, lazy, Suspense, useCallback, useEffect } from 'react';
+import type { ControlledProps } from 'react-medium-image-zoom';
 
 export type ZoomProps = {
 	active?: boolean;
@@ -35,8 +35,8 @@ export const Zoom: FC<ZoomProps> = ({ active, onActiveChange, children, ...props
 	);
 };
 
-function useInjectScript(fn: () => Promise<{ default: any }>) {
-	const [content, setContent] = React.useState<string | null>(null);
+function _useInjectScript(fn: () => Promise<{ default: any }>) {
+	const [_content, setContent] = React.useState<string | null>(null);
 	useEffect(() => {
 		fn().then((v) => {
 			setContent(v.default);

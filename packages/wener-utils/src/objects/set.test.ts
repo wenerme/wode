@@ -101,7 +101,7 @@ describe('set arrays', () => {
 	it('should create array instead of object via numeric key :: nested', () => {
 		const input: any = { a: 1 };
 		set(input, 'e.0.0', 123);
-		expect(input.e instanceof Array).toBeTruthy();
+		expect(Array.isArray(input.e)).toBeTruthy();
 		expect(input.e[0][0]).toBe(123);
 		expect(input).toEqual({ a: 1, e: [[123]] });
 	});
@@ -109,7 +109,7 @@ describe('set arrays', () => {
 	it('should be able to create object inside of array', () => {
 		const input: any = {};
 		set(input, ['x', '0', 'z'], 123);
-		expect(input.x instanceof Array).toBeTruthy();
+		expect(Array.isArray(input.x)).toBeTruthy();
 
 		expect(input).toEqual({ x: [{ z: 123 }] });
 	});
@@ -117,21 +117,21 @@ describe('set arrays', () => {
 	it('should create arrays with hole(s) if needed', () => {
 		const input: any = {};
 		set(input, ['x', '1', 'z'], 123);
-		expect(input.x instanceof Array).toBeTruthy();
+		expect(Array.isArray(input.x)).toBeTruthy();
 		expect(input).toEqual({ x: [undefined, { z: 123 }] });
 	});
 
 	it('should create object from decimal-like key :: array :: zero :: string', () => {
 		const input: any = {};
 		set(input, ['x', '10.0', 'z'], 123);
-		expect(input.x instanceof Array).toBeFalsy();
+		expect(Array.isArray(input.x)).toBeFalsy();
 		expect(input).toEqual({ x: { '10.0': { z: 123 } } });
 	});
 
 	it('should create array from decimal-like key :: array :: zero :: number', () => {
 		const input: any = {};
 		set(input, ['x', 10.0, 'z'], 123);
-		expect(input.x instanceof Array).toBeTruthy();
+		expect(Array.isArray(input.x)).toBeTruthy();
 
 		const x = Array(10);
 		x.push({ z: 123 });
@@ -141,7 +141,7 @@ describe('set arrays', () => {
 	it('should create object from decimal-like key :: array :: nonzero', () => {
 		const input: any = {};
 		set(input, ['x', '10.2', 'z'], 123);
-		expect(input.x instanceof Array).toBeFalsy();
+		expect(Array.isArray(input.x)).toBeFalsy();
 		expect(input).toEqual({ x: { '10.2': { z: 123 } } });
 	});
 });
@@ -200,7 +200,7 @@ describe('set pollution', () => {
 		expect(input.a instanceof Custom).toBeFalsy();
 
 		expect(input.a.constructor instanceof Object, '~> 123 -> {}').toBeTruthy();
-		expect(input.a.hasOwnProperty('constructor')).toBe(false);
+		expect(Object.hasOwn(input.a, 'constructor')).toBe(false);
 		expect(input).toEqual({ a: {} });
 	});
 
@@ -208,8 +208,8 @@ describe('set pollution', () => {
 		const input: any = {};
 
 		set(input, 'constructor.prototype.hello', 'world');
-		expect(input.hasOwnProperty('constructor')).toBe(false);
-		expect(input.hasOwnProperty('hello')).toBe(false);
+		expect(Object.hasOwn(input, 'constructor')).toBe(false);
+		expect(Object.hasOwn(input, 'hello')).toBe(false);
 
 		expect(input).toEqual({
 			// empty
@@ -253,14 +253,14 @@ describe('set assigns', () => {
 	it('should create Array via integer key :: string', () => {
 		const input: any = {};
 		set(input, ['foo', '0'], 123);
-		expect(input.foo instanceof Array).toBeTruthy();
+		expect(Array.isArray(input.foo)).toBeTruthy();
 		expect(input).toEqual({ foo: [123] });
 	});
 
 	it('should create Array via integer key :: number', () => {
 		const input: any = {};
 		set(input, ['foo', 0], 123);
-		expect(input.foo instanceof Array).toBeTruthy();
+		expect(Array.isArray(input.foo)).toBeTruthy();
 		expect(input).toEqual({ foo: [123] });
 	});
 });

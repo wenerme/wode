@@ -2,7 +2,7 @@
  * Call command - Execute a tool with arguments
  */
 
-import { callTool, connectToServer, getTimeoutMs, listTools, safeClose } from '../client';
+import { type Client, callTool, connectToServer, getTimeoutMs, listTools, safeClose } from '../client';
 import { getServerConfig, loadConfig } from '../config';
 import {
 	ErrorCode,
@@ -42,9 +42,12 @@ function parseTarget(target: string): { server: string; tool: string } {
 async function parseArgs(argsString?: string): Promise<Record<string, unknown>> {
 	let jsonString: string;
 
-	if (argsString) {
+	// "-" means read from stdin explicitly
+	const readFromStdin = argsString === '-' || (!argsString && !process.stdin.isTTY);
+
+	if (argsString && argsString !== '-') {
 		jsonString = argsString;
-	} else if (!process.stdin.isTTY) {
+	} else if (readFromStdin) {
 		// Read from stdin with timeout
 		const timeoutMs = getTimeoutMs();
 		const chunks: Buffer[] = [];
@@ -109,7 +112,7 @@ export async function callCommand(options: CallOptions): Promise<void> {
 		process.exit(ErrorCode.CLIENT_ERROR);
 	}
 
-	let client;
+	let client: Client;
 	let close: () => Promise<void> = async () => {};
 
 	try {

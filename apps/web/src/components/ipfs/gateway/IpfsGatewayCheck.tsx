@@ -1,12 +1,12 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
 import { Button } from '@wener/console/daisy';
+import React, { useEffect, useRef, useState } from 'react';
 import { useSnapshot } from 'valtio';
 import { FootNote } from '@/components/FootNote';
 import { FootNoteLink } from '@/components/FootNoteLink';
 import { useIpfsGatewayState } from '../gateway';
-import { checkGateways, compareCheckState, OnScriptloaded, type GatewayCheckNodeState } from './checker';
+import { checkGateways, compareCheckState, type GatewayCheckNodeState, OnScriptloaded } from './checker';
 import { getIpfsPublicGateways } from './getIpfsPublicGateways';
 
 const gateways = getIpfsPublicGateways();

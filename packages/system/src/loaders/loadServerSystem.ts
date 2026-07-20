@@ -6,7 +6,11 @@ export async function loadServerSystem({
 	hooks = true,
 	logger = createChildLogger(console, { m: 'SystemJS' }),
 	loadSystem,
-}: { hooks?: boolean | Array<SystemHookOption>; logger?: Logger; loadSystem?: () => Promise<void> } = {}) {
+}: {
+	hooks?: boolean | Array<SystemHookOption>;
+	logger?: Logger;
+	loadSystem?: () => Promise<void>;
+} = {}) {
 	if (getGlobalSystem()) {
 		return getGlobalSystem();
 	}

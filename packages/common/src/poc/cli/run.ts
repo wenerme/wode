@@ -1,4 +1,4 @@
-import { AsyncCloser, MaybePromise } from '@wener/utils';
+import { AsyncCloser, type MaybePromise } from '@wener/utils';
 import { Command } from 'commander';
 
 interface RootContext {
@@ -37,7 +37,7 @@ export interface RunOptions<O extends Record<string, any> = Record<string, any>>
 }
 
 export interface RunActionOptions<O extends Record<string, any> = Record<string, any>> {
-	run: (opts: RunOptions<O>) => MaybePromise<undefined | null | void>;
+	run: (opts: RunOptions<O>) => MaybePromise<undefined | null | undefined>;
 }
 
 export async function run<T>(f: () => MaybePromise<T>, { command = getRootCommand() }: { command?: Command } = {}) {

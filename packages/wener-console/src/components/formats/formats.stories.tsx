@@ -1,4 +1,3 @@
-import React from 'react';
 import type { Meta } from '@storybook/react-vite';
 import { AmountFormat } from './AmountFormat';
 import { DateFormat } from './DateFormat';

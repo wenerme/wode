@@ -1,7 +1,7 @@
-import React from 'react';
-import { AiFillApi, AiOutlineDownload } from 'react-icons/ai';
 import { Button } from '@wener/console/daisy';
 import { SettingLayout } from '@wener/console/web';
+import React from 'react';
+import { AiFillApi, AiOutlineDownload } from 'react-icons/ai';
 import { useSnapshot } from 'valtio';
 import { buildIpfsLink } from '../buildIpfsLink';
 import { getRecommendGateways, useIpfsGatewayState } from '../gateway';

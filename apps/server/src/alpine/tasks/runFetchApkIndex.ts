@@ -1,5 +1,5 @@
 import type { EntityManager } from '@mikro-orm/postgresql';
-import { getEntityManager } from '@wener/nestjs/mikro-orm';
+import { getEntityManager } from '@wener/server/mikro-orm';
 import { createAlpineMirror, getOfficialAlpineMirrorUrl } from 'common/alpine';
 import consola from 'consola';
 import type { ConsolaInstance } from 'consola/core';
@@ -99,7 +99,7 @@ export async function runFetchApkIndex({
 			repoMeta.lastModifiedTime = index.mtime;
 			repoMeta.description = index.description;
 			repoMeta.version = index.description;
-			await em.persistAndFlush(repoMeta);
+			await em.persist(repoMeta).flush();
 
 			let pkgs = packages.map((v) => {
 				const {

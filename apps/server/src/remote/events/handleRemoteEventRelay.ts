@@ -1,7 +1,7 @@
 import type { EventArgs } from '@mikro-orm/core';
-import { EntityEvents, getSystemEmitter, type SystemEmitter } from '#/events';
 import { pick } from 'es-toolkit';
-import { getRemoteEmitter, RemoteEvents, type RemoteEmitter } from './RemoteEmitter';
+import { EntityEvents, getSystemEmitter, type SystemEmitter } from '#/events';
+import { getRemoteEmitter, type RemoteEmitter, RemoteEvents } from './RemoteEmitter';
 
 export function handleRemoteEventRelay({
 	system = getSystemEmitter(),
@@ -30,24 +30,22 @@ export function handleRemoteEventRelay({
 		EntityEvents.EntityUpsertAfter,
 	] as const;
 	type EntityEvent = (typeof all)[number];
-	{
-		for (let name of all) {
-			closer.push(
-				system.on(name, (evt: EventArgs<any>) => {
-					let type = changeType[name];
-					{
-						const { entity } = evt;
-						const e = pick(entity, ['id', 'uid', 'tid', 'eid', 'cid', 'rid']);
+	for (let name of all) {
+		closer.push(
+			system.on(name, (evt: EventArgs<any>) => {
+				let type = changeType[name];
+				{
+					const { entity } = evt;
+					const e = pick(entity, ['id', 'uid', 'tid', 'eid', 'cid', 'rid']);
 
-						void remote.emit(remoteType[name], { entity: e });
-						void remote.emit(RemoteEvents.EntityChange, {
-							type,
-							entity: e,
-						});
-					}
-				}),
-			);
-		}
+					void remote.emit(remoteType[name], { entity: e });
+					void remote.emit(RemoteEvents.EntityChange, {
+						type,
+						entity: e,
+					});
+				}
+			}),
+		);
 	}
 	return () => {
 		closer.forEach((c) => c());

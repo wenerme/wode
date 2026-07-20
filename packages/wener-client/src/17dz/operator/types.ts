@@ -797,7 +797,7 @@ export interface _InvoiceInputListResponseItem {
 	yhszmName: any;
 }
 
-interface InputInvoice {
+interface _InputInvoice {
 	customerId: number; // 客户ID
 	id: number; // 发票唯一标识ID
 	invoiceClass: string; // 发票分类代码

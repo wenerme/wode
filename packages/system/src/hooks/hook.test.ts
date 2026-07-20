@@ -2,7 +2,7 @@ import { createNoopLogger } from '@wener/utils';
 import { assert, beforeAll, expect, test } from 'vitest';
 import { loadServerSystem } from '../loaders/loadServerSystem';
 import { addPreload } from '../utils/addPreload';
-import { DeclareFn, getGlobalSystem } from '../utils/getGlobalSystem';
+import { type DeclareFn, getGlobalSystem } from '../utils/getGlobalSystem';
 
 beforeAll(async () => {
 	await loadServerSystem({ logger: createNoopLogger() });
@@ -16,32 +16,26 @@ test('hooks works', async () => {
 	const System = getGlobalSystem();
 	expect(System).toBeTruthy();
 	assert.equal(System.resolve('@test/test'), 'package:@test/test');
+	// no override
+	assert.isTrue(addPreload('test', { default: 'test' }));
+	assert.isFalse(addPreload('test', { default: 'test1' }));
+	assert.isTrue(System.has(System.resolve('test')));
+	assert.equal((await System.import('test')).default, 'test');
+	// override
+	assert.isTrue(addPreload('test', { default: 'test1' }, { override: true }));
+	assert.equal((await System.import('test')).default, 'test1');
+	// async
+	assert.isTrue(addPreload('test1', () => Promise.resolve({ default: 'test1' })));
+	assert.equal((await System.import('test1')).default, 'test1');
 
-	// unaffected
-	{
-		// no override
-		assert.isTrue(addPreload('test', { default: 'test' }));
-		assert.isFalse(addPreload('test', { default: 'test1' }));
-		assert.isTrue(System.has(System.resolve('test')));
-		assert.equal((await System.import('test')).default, 'test');
-		// override
-		assert.isTrue(addPreload('test', { default: 'test1' }, { override: true }));
-		assert.equal((await System.import('test')).default, 'test1');
-	}
-	{
-		// async
-		assert.isTrue(addPreload('test1', () => Promise.resolve({ default: 'test1' })));
-		assert.equal((await System.import('test1')).default, 'test1');
-
-		// sync
-		assert.isTrue(addPreload('test2', () => ({ default: 'test2' })));
-		// no override
-		assert.isFalse(addPreload('test2', () => ({ default: 'test3' })));
-		assert.equal((await System.import('test2')).default, 'test2');
-		// override
-		assert.isTrue(addPreload('test2', () => ({ default: 'test3' }), { override: true }));
-		assert.equal((await System.import('test2')).default, 'test3');
-	}
+	// sync
+	assert.isTrue(addPreload('test2', () => ({ default: 'test2' })));
+	// no override
+	assert.isFalse(addPreload('test2', () => ({ default: 'test3' })));
+	assert.equal((await System.import('test2')).default, 'test2');
+	// override
+	assert.isTrue(addPreload('test2', () => ({ default: 'test3' }), { override: true }));
+	assert.equal((await System.import('test2')).default, 'test3');
 
 	{
 		const { default: meta } = await System.import('package:react/package.json');

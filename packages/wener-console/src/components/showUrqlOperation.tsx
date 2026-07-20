@@ -1,5 +1,5 @@
 import type { AnyVariables, OperationResult, OperationResultSource } from '@urql/core';
-import { resolveErrorMessage, showPromiseToast, type ShowPromiseToastOptions } from '../toast';
+import { resolveErrorMessage, type ShowPromiseToastOptions, showPromiseToast } from '../toast';
 
 type PartialRequired<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>;
 

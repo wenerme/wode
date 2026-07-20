@@ -1,5 +1,5 @@
-import fs from 'node:fs/promises';
 import { describe } from 'bun:test';
+import fs from 'node:fs/promises';
 import { createWeWorkFinanceClientFromEnv } from './WeWorkFinanceClient';
 
 const __dirname = new URL('.', import.meta.url).pathname;
@@ -8,7 +8,7 @@ describe('WeWorkFinanceClient', async () => {
 		console.log(`Skip test, missing env`);
 		return;
 	}
-	let privateKey;
+	let privateKey: string | undefined;
 
 	if (process.env.WWF_PRIVATE_KEY_FILE) {
 		privateKey = await fs.readFile(process.env.WWF_PRIVATE_KEY_FILE, 'utf-8');

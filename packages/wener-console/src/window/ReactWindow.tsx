@@ -1,5 +1,5 @@
-import { createContext, useContext, type ReactNode } from 'react';
 import { clamp, getGlobalStates, randomUUID } from '@wener/utils';
+import { createContext, type ReactNode, useContext } from 'react';
 import { createStore } from 'zustand';
 import { mutative } from 'zustand-mutative';
 
@@ -36,7 +36,7 @@ interface RootWindowState {
 
 function createRootWindowStore(init: Partial<RootWindowState> = {}) {
 	return createStore(
-		mutative<RootWindowState>((setState, getState, store) => {
+		mutative<RootWindowState>((_setState, _getState, _store) => {
 			return {
 				maximized: undefined,
 				windows: [],
@@ -173,7 +173,7 @@ function normalizeCoordinate(
 
 function createWindowStore(init: Partial<WindowState> = {}) {
 	return createStore(
-		mutative<WindowState>((setState, getState, store) => {
+		mutative<WindowState>((_setState, _getState, _store) => {
 			return normalize(init);
 		}),
 	);
@@ -182,12 +182,12 @@ function createWindowStore(init: Partial<WindowState> = {}) {
 type WindowStore = ReturnType<typeof createWindowStore>;
 
 export class ReactWindow extends EventTarget {
+	static MaximizedWindow?: ReactWindow;
+
 	public readonly id: string;
 	public readonly key: string;
 	readonly store: WindowStore;
 	readonly parent?: ReactWindow;
-
-	private static MaximizedWindow?: ReactWindow;
 
 	constructor({ id, key, store, parent }: { id: string; key?: string; store?: WindowStore; parent?: ReactWindow }) {
 		super();
@@ -263,7 +263,7 @@ export class ReactWindow extends EventTarget {
 			if (maximize && !s.maximized) {
 				s.maximized = true;
 				s.minimized = false;
-				s.properties['last'] = [s.x, s.y, s.width, s.height];
+				s.properties.last = [s.x, s.y, s.width, s.height];
 				s.width = window.innerWidth;
 				s.height = window.innerHeight;
 				s.x = 0;
@@ -272,7 +272,7 @@ export class ReactWindow extends EventTarget {
 			} else if (!maximize && s.maximized) {
 				s.maximized = false;
 				s.minimized = false;
-				const [x, y, width, height] = s.properties['last'] ?? [];
+				const [x, y, width, height] = s.properties.last ?? [];
 				s.width = width;
 				s.height = height;
 				s.x = x;
@@ -317,11 +317,11 @@ class ReactRootWindow extends ReactWindow {
 		return this.state.windows;
 	}
 
-	private handleFocusIn = (e: Event, win: ReactWindow) => {
+	private handleFocusIn = (_e: Event, win: ReactWindow) => {
 		this.setActive(win);
 	};
 
-	private handleFocusOut = (e: Event, win: ReactWindow) => {
+	private handleFocusOut = (_e: Event, win: ReactWindow) => {
 		if (win === this.current) {
 			this.current = undefined;
 		}
@@ -342,8 +342,9 @@ class ReactRootWindow extends ReactWindow {
 		}
 	}
 
-	private find(s: { key?: string }) {
+	private find(s: { key?: string }): ReactWindow | undefined {
 		if (s.key) return this.windows.find((v) => v.key === s.key);
+		return undefined;
 	}
 
 	toggle = (opts: WindowOpenOptions) => {

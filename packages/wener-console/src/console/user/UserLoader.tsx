@@ -1,5 +1,5 @@
-import React, { type FC, type PropsWithChildren } from 'react';
 import { usePromise } from '@wener/reaction';
+import type { FC, PropsWithChildren } from 'react';
 import { NonIdealState } from '../../daisy';
 import { resolveErrorMessage } from '../../toast';
 import { LoadingIndicator } from '../components';

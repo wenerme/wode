@@ -7,7 +7,7 @@ describe('md5', () => {
 	let iterations = 0;
 	bench(
 		'js',
-		function () {
+		() => {
 			iterations++;
 			md5(dataset[iterations % dataset.length]);
 		},
@@ -16,7 +16,7 @@ describe('md5', () => {
 
 	bench(
 		'native',
-		function () {
+		() => {
 			iterations++;
 			createHash('md5')
 				.update(dataset[iterations % dataset.length])

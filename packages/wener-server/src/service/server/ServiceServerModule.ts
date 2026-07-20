@@ -1,5 +1,5 @@
 import { ConfigurableModuleBuilder, Module } from '@nestjs/common';
-import { ServiceRegistry, type ServerMiddleware } from './ServiceRegistry';
+import { type ServerMiddleware, ServiceRegistry } from './ServiceRegistry';
 
 export interface ServiceServerModuleOptions {
 	middlewares?: ServerMiddleware[];

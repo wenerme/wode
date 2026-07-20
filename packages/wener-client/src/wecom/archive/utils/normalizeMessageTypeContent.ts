@@ -29,36 +29,36 @@ export function normalizeMessageTypeContent(msg: AnyArchiveMessage): MessageType
 		sphfeed,
 		vote,
 		todo,
-		time,
-		user,
+		time: _time,
+		user: _user,
 	} = msg;
 
 	let content: any =
-		revoke
-		|| image
-		|| file
-		|| emotion
-		|| video
-		|| text
-		|| voice
-		|| info
-		|| voip_doc_share
-		|| redpacket
-		|| link
-		|| location
-		|| meeting_voice_call
-		|| mixed
-		|| disagree
-		|| agree
-		|| weapp
-		|| chatrecord
-		|| card
-		|| meeting
-		|| vote
-		|| sphfeed
-		|| calendar
-		|| doc
-		|| todo;
+		revoke ||
+		image ||
+		file ||
+		emotion ||
+		video ||
+		text ||
+		voice ||
+		info ||
+		voip_doc_share ||
+		redpacket ||
+		link ||
+		location ||
+		meeting_voice_call ||
+		mixed ||
+		disagree ||
+		agree ||
+		weapp ||
+		chatrecord ||
+		card ||
+		meeting ||
+		vote ||
+		sphfeed ||
+		calendar ||
+		doc ||
+		todo;
 	// if (type === 'switch') {
 	//   content = {
 	//     // 具体为切换企业的成员的userid

@@ -1,4 +1,4 @@
-import { Kind as TypeBoxKind, type TSchema } from '@sinclair/typebox';
+import { type TSchema, Kind as TypeBoxKind } from '@sinclair/typebox';
 import '@sinclair/typebox';
 import { TypeCompiler } from '@sinclair/typebox/compiler';
 import { ifPresent } from '@wener/utils';
@@ -107,7 +107,7 @@ export function parseData<S extends TypeSchema>(schema: S, data: unknown): Schem
 	);
 }
 
-function formatIssues(schema: TypeSchema, issues: Array<ValidationIssue>): string {
+function _formatIssues(_schema: TypeSchema, _issues: Array<ValidationIssue>): string {
 	return '';
 }
 

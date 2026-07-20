@@ -1,4 +1,4 @@
-import React, { type ComponentPropsWithRef, type FC } from 'react';
+import type { ComponentPropsWithRef, FC } from 'react';
 import { MacOSWindowController } from './macos/MacOSWindowController';
 import { useWindowTheme } from './useWindowTheme';
 import { WindowsWindowController } from './windows/WindowsWindowController';

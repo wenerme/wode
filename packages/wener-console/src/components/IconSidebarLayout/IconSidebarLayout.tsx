@@ -1,3 +1,4 @@
+import { clsx } from 'clsx';
 import React, {
 	type ComponentPropsWithoutRef,
 	type ComponentPropsWithRef,
@@ -5,7 +6,6 @@ import React, {
 	type ReactElement,
 	type ReactNode,
 } from 'react';
-import { clsx } from 'clsx';
 import { Icon, LeftContentRightLayout } from '../../components';
 import { cn } from '../../utils/cn';
 import { NavLink } from '../links';
@@ -137,7 +137,7 @@ export namespace IconSidebarLayout {
 			return [<MenuBarItem key={key} item={item as NavItem} />];
 		};
 
-		return items.flatMap((item, i) => {
+		return items.flatMap((item, _i) => {
 			return renderItem(item);
 		});
 	}

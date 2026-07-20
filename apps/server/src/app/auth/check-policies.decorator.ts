@@ -10,4 +10,4 @@ interface IPolicyHandler {
 type PolicyHandlerCallback = (ability: AuthAbility) => boolean;
 export type PolicyHandler = IPolicyHandler | PolicyHandlerCallback;
 
-export interface AuthAbility {}
+export type AuthAbility = {};

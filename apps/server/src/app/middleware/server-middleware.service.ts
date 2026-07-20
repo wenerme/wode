@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Currents } from '@wener/nestjs';
+import { Currents } from '@wener/server';
 import type { NestMiddleware, NestRequest, NestResponse } from '../types';
 
 @Injectable()

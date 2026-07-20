@@ -1,6 +1,6 @@
 import { DivisionCode } from '@wener/utils/cn';
 import { randomPick } from '../utils/randomPick';
-import { mod31, Mod31Chars, Mode31Numbers } from './mod31';
+import { Mod31Chars, Mode31Numbers, mod31 } from './mod31';
 
 const RegistryBureauCode: Record<string, BureauCode> = {
 	1: {
@@ -49,7 +49,7 @@ export class UnifiedSocialCreditId {
 	}
 
 	static isValid(s: string) {
-		return this.Pattern.test(s) && this.parse(s).valid;
+		return UnifiedSocialCreditId.Pattern.test(s) && UnifiedSocialCreditId.parse(s).valid;
 	}
 
 	static parse(s: string) {

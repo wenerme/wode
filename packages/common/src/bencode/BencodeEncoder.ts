@@ -52,7 +52,7 @@ export class BencodeEncoder {
 				data = type === 'Boolean' ? Number(data) : data;
 				const maxLo = 0x80000000;
 				const hi = (data / maxLo) << 0;
-				const lo = data % maxLo << 0;
+				const lo = (data % maxLo) << 0;
 				const val = hi * maxLo + lo;
 				sum += 2 + String(val).length;
 				break;
@@ -121,7 +121,7 @@ export class BencodeEncoder {
 				data = type === 'Boolean' ? Number(data) : data;
 				const maxLo = 0x80000000;
 				const hi = (data / maxLo) << 0;
-				const lo = data % maxLo << 0;
+				const lo = (data % maxLo) << 0;
 				const val = hi * maxLo + lo;
 				buffers.push(ArrayBuffers.from(`i${val}e`));
 				if (process.env.NODE_ENV === 'development') {

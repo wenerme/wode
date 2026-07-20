@@ -1,7 +1,5 @@
 'use client';
 
-import React, { type FC, type PropsWithChildren } from 'react';
-import { Toaster } from 'react-hot-toast';
 import { dayjs } from '@wener/common/dayjs';
 import advancedFormat from 'dayjs/plugin/advancedFormat';
 import dayOfYear from 'dayjs/plugin/dayOfYear';
@@ -10,6 +8,8 @@ import isToday from 'dayjs/plugin/isToday';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
+import type { FC, PropsWithChildren } from 'react';
+import { Toaster } from 'react-hot-toast';
 import { DaisyTheme } from '../../daisy';
 import { useExposeDebug } from '../../hooks';
 

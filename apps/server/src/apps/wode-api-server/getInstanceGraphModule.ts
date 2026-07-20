@@ -1,4 +1,4 @@
-import { buildGraphModule } from '@wener/nestjs/type-graphql';
+import { buildGraphModule } from '@wener/server/type-graphql';
 import { getGlobalStates } from '@wener/utils';
 import { AccessTokenService } from '@/foundation/Auth/AccessTokenService';
 import { AuthService } from '@/foundation/Auth/AuthService';

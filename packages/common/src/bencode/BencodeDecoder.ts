@@ -12,7 +12,6 @@ interface Options {
 
 export class BencodeDecoder {
 	private readIndex = 0;
-	private view: Uint8Array = new Uint8Array(0);
 	#path: Array<string | number> = [];
 	#options: { bufferPath: string[]; buffer?: (k: string, v: ArrayBuffer) => any } = { bufferPath: [] };
 
@@ -47,7 +46,7 @@ export class BencodeDecoder {
 			throw new Error(`Invalid bencode string at ${pos}`);
 		}
 		const len = Number(ArrayBuffers.toString(view.subarray(pos, idx)));
-		if (isNaN(len)) {
+		if (Number.isNaN(len)) {
 			throw new Error(`Invalid bencode string length at ${pos}`);
 		}
 		pos = idx + 1;

@@ -1,2 +1,2 @@
-export * from './MetaService';
 export * from './InstanceService';
+export * from './MetaService';

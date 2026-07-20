@@ -1,4 +1,4 @@
-import React, { cloneElement, isValidElement, type ElementType, type ReactElement, type ReactNode } from 'react';
+import { cloneElement, type ElementType, isValidElement, type ReactElement, type ReactNode } from 'react';
 import { cn } from '../utils/cn';
 
 type RegionElementProps = { className?: string; children?: ReactNode };

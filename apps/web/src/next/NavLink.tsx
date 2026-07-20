@@ -1,9 +1,9 @@
 'use client';
 
-import React, { type FC, type ReactNode } from 'react';
 import Link, { type LinkProps } from 'next/link';
 import { usePathname } from 'next/navigation';
-import { resolveActiveProps, type ActiveProps } from '../components/resolveActiveProps';
+import React, { type FC, type ReactNode } from 'react';
+import { type ActiveProps, resolveActiveProps } from '../components/resolveActiveProps';
 
 export const NavLink: FC<LinkProps & ActiveProps & { children?: ReactNode }> = ({ children, href, ...props }) => {
 	const path = usePathname();

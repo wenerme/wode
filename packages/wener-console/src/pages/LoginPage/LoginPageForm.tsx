@@ -1,7 +1,7 @@
-import React, { type ComponentPropsWithoutRef, type FC } from 'react';
+import { type ComponentPropsWithoutRef, type FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { CiLock, CiUser } from 'react-icons/ci';
-import { PiBuildingsThin } from 'react-icons/pi';
+import { CiLock, CiMail, CiUser } from 'react-icons/ci';
+import { PiBuildingsThin, PiEyeSlashThin, PiEyeThin } from 'react-icons/pi';
 import { ReactHookForm } from '../../react-hook-form';
 
 export type LoginFormData = {
@@ -9,8 +9,11 @@ export type LoginFormData = {
 	ticket?: string;
 	password: string;
 	username: string;
+	email?: string;
 	remember?: boolean;
 };
+
+export type LoginFormMode = 'username' | 'email';
 
 export interface LoginFormProps extends Omit<ComponentPropsWithoutRef<'form'>, 'onSubmit'> {
 	onSubmit?: (data: LoginFormData) => void;
@@ -19,6 +22,16 @@ export interface LoginFormProps extends Omit<ComponentPropsWithoutRef<'form'>, '
 	orgValue?: string;
 	onForgetPassword?: () => void;
 	onRegister?: () => void;
+	mode?: LoginFormMode;
+	labels?: {
+		org?: string;
+		username?: string;
+		email?: string;
+		password?: string;
+		remember?: string;
+		forgetPassword?: string;
+		submit?: string;
+	};
 }
 
 export const LoginPageForm: FC<LoginFormProps> = ({
@@ -28,9 +41,12 @@ export const LoginPageForm: FC<LoginFormProps> = ({
 	orgValue,
 	onForgetPassword,
 	onRegister,
+	mode = 'username',
+	labels,
 	className,
 	...props
 }) => {
+	const [showPassword, setShowPassword] = useState(false);
 	const methods = useForm<LoginFormData>({
 		defaultValues,
 	});
@@ -39,6 +55,16 @@ export const LoginPageForm: FC<LoginFormProps> = ({
 		handleSubmit,
 		formState: { isValid, isSubmitting },
 	} = methods;
+
+	const l = {
+		org: labels?.org ?? '企业',
+		username: labels?.username ?? '用户',
+		email: labels?.email ?? 'Email',
+		password: labels?.password ?? '密码',
+		remember: labels?.remember ?? '记住登录',
+		forgetPassword: labels?.forgetPassword ?? '忘了密码？',
+		submit: labels?.submit ?? '登录',
+	};
 
 	return (
 		<form
@@ -55,7 +81,7 @@ export const LoginPageForm: FC<LoginFormProps> = ({
 						</span>
 						<input
 							className='input join-item flex-1'
-							placeholder={'企业'}
+							placeholder={l.org}
 							value={orgValue || undefined}
 							readOnly={Boolean(orgValue)}
 							required
@@ -66,42 +92,63 @@ export const LoginPageForm: FC<LoginFormProps> = ({
 					</div>
 				)}
 
-				<div className='join w-full'>
-					<span className={'btn join-item'}>
-						<CiUser className={'h-6 w-6'} />
-					</span>
-					<input
-						autoComplete='username'
-						className='input join-item flex-1'
-						placeholder={'用户'}
-						required
-						{...register('username', {
-							required: true,
-						})}
-					/>
-				</div>
+				{mode === 'email' ? (
+					<div className='join w-full'>
+						<span className={'btn join-item'}>
+							<CiMail className={'h-6 w-6'} />
+						</span>
+						<input
+							type='email'
+							autoComplete='email'
+							className='input join-item flex-1'
+							placeholder={l.email}
+							required
+							{...register('email', {
+								required: true,
+							})}
+						/>
+					</div>
+				) : (
+					<div className='join w-full'>
+						<span className={'btn join-item'}>
+							<CiUser className={'h-6 w-6'} />
+						</span>
+						<input
+							autoComplete='username'
+							className='input join-item flex-1'
+							placeholder={l.username}
+							required
+							{...register('username', {
+								required: true,
+							})}
+						/>
+					</div>
+				)}
 
 				<div className='join w-full'>
 					<span className={'btn join-item'}>
 						<CiLock className={'h-6 w-6'} />
 					</span>
 					<input
-						type='password'
+						type={showPassword ? 'text' : 'password'}
 						autoComplete='current-password'
 						className='input join-item flex-1'
-						placeholder={'密码'}
+						placeholder={l.password}
 						required
 						{...register('password', {
 							required: true,
 						})}
 					/>
+					<button type='button' className='btn join-item' onClick={() => setShowPassword(!showPassword)} tabIndex={-1}>
+						{showPassword ? <PiEyeSlashThin className='h-5 w-5' /> : <PiEyeThin className='h-5 w-5' />}
+					</button>
 				</div>
 			</div>
 
 			<div className='flex items-center justify-between'>
 				<label className='flex items-center'>
-					<input type='checkbox' className='checkbox h-4 w-4' {...register('remember')} />
-					<div className='ml-3 block text-sm leading-6 opacity-75 select-none'>记住登录</div>
+					<input type='checkbox' className='checkbox checkbox-sm' {...register('remember')} />
+					<div className='ml-3 block text-sm leading-6 opacity-75 select-none'>{l.remember}</div>
 				</label>
 
 				{onForgetPassword && (
@@ -109,22 +156,18 @@ export const LoginPageForm: FC<LoginFormProps> = ({
 						<button
 							type={'button'}
 							onClick={onForgetPassword}
-							className='font-semibold text-indigo-600 hover:text-indigo-500'
+							className='font-semibold text-primary hover:text-primary/80'
 						>
-							忘了密码？
+							{l.forgetPassword}
 						</button>
 					</div>
 				)}
 			</div>
 
 			<div>
-				<button
-					type='submit'
-					className='flex w-full items-center justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm leading-6 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
-					disabled={!isValid || isSubmitting}
-				>
+				<button type='submit' className='btn btn-primary w-full shadow-md' disabled={!isValid || isSubmitting}>
 					{isSubmitting && <span className='loading loading-spinner loading-xs'></span>}
-					登录
+					{l.submit}
 				</button>
 			</div>
 		</form>

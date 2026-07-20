@@ -1,4 +1,4 @@
-import { flexRender, type FlexRenderable } from '@wener/reaction';
+import { type FlexRenderable, flexRender } from '@wener/reaction';
 import type { ViewMode } from './ViewModeInput';
 
 export const ViewModeRenderer = ({

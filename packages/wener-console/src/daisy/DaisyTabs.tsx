@@ -1,8 +1,8 @@
-import React, { Fragment, type ComponentProps, type FC, type ReactNode } from 'react';
 import { Tabs } from '@base-ui/react/tabs';
 import { cn } from '@wener/console';
 import { Daisy } from '@wener/console/daisy';
-import { flexRender, type FlexRenderable } from '@wener/reaction';
+import { type FlexRenderable, flexRender } from '@wener/reaction';
+import React, { type ComponentProps, type FC, type ReactNode } from 'react';
 import { isNodeTypeOf } from '../utils/isNodeTypeOf';
 
 export type DaisyTabsCompositeProps = Omit<DaisyTabsRootProps, 'content' | 'title'> & {
@@ -79,21 +79,17 @@ export const DaisyTabsComposite = ({
 	let hasContent = tabs.some((v) => v.content);
 	let content: ReactNode = null;
 	if (hasContent) {
-		content = (
-			<Fragment>
-				{tabs.map((item, index) => {
-					const key = item.key ?? String(index);
-					let c = isNodeTypeOf(item.content, [DaisyTabsPanel, Tabs.Panel]) ? (
-						item.content
-					) : (
-						<DaisyTabsPanel key={index} value={key || String(index)}>
-							{item.content}
-						</DaisyTabsPanel>
-					);
-					return c;
-				})}
-			</Fragment>
-		);
+		content = tabs.map((item, index) => {
+			const key = item.key ?? String(index);
+			let c = isNodeTypeOf(item.content, [DaisyTabsPanel, Tabs.Panel]) ? (
+				item.content
+			) : (
+				<DaisyTabsPanel key={index} value={key || String(index)}>
+					{item.content}
+				</DaisyTabsPanel>
+			);
+			return c;
+		});
 	}
 	return (
 		<DaisyTabsRoot {...props}>

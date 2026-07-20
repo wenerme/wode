@@ -6,7 +6,7 @@ import { ConfigService } from '@nestjs/config';
 import { FastifyAdapter, type NestFastifyApplication } from '@nestjs/platform-fastify';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ms } from '@wener/utils';
-import { bootstrap, type BootstrapOptions } from './bootstrap';
+import { type BootstrapOptions, bootstrap } from './bootstrap';
 import type { ServerConfig } from './config';
 import { getStaticRootPath } from './util/getStaticRootPath';
 

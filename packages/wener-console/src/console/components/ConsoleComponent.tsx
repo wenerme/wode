@@ -1,7 +1,7 @@
 import type { ComponentPropsWithoutRef, ComponentPropsWithRef, ElementType, ErrorInfo, ReactNode } from 'react';
 import { GrSystem } from 'react-icons/gr';
 import { ErrorSuspenseBoundary as _ErrorSuspenseBoundary, Image as _Image, Link as _Link } from '../../components';
-import { defineComponent, type ContextComponentType } from '../../components/ComponentProvider';
+import { type ContextComponentType, defineComponent } from '../../components/ComponentProvider';
 import { EmptyPlaceholder as _EmptyPlaceholder } from '../../components/formats/EmptyPlaceholder';
 import { LoadingIndicator as _LoadingIndicator } from '../../loader';
 

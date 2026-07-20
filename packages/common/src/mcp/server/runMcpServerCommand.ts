@@ -62,13 +62,8 @@ function createHonoApp(config: RuntimeConfig): Hono {
 	const app = new Hono();
 
 	// Add request logging middleware
-	app.use(async (c, next) => {
-		let r;
-		try {
-			return (r = await next());
-		} catch (e) {
-			throw e;
-		}
+	app.use(async (_c, next) => {
+		return await next();
 	});
 
 	// CORS configuration
@@ -177,7 +172,7 @@ export async function runMcpServerCommand(options: McpServerOptions = {}) {
 				const config: RuntimeConfig = {
 					transport,
 					host: cmdOptions.host,
-					port: parseInt(cmdOptions.port),
+					port: parseInt(cmdOptions.port, 10),
 					verbose: cmdOptions.verbose || false,
 					envFile: cmdOptions.envFile,
 					stdio,

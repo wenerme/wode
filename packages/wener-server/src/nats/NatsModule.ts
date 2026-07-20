@@ -44,7 +44,7 @@ const log = new Logger(NatsModule.name);
 
 function maskUrl(s: string) {
 	if (!/^\w+:\/\//.test(s)) {
-		s = 'nats://' + s;
+		s = `nats://${s}`;
 	}
 
 	return s.replace(/:\/\/.*@/, '://***:***@');

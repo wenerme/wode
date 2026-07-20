@@ -1,7 +1,7 @@
 import fsp from 'node:fs/promises';
 import path from 'node:path';
 import { Readable, type Stream } from 'node:stream';
-import { isBuffer, maybeFunction, type MaybeFunction, type MaybePromise } from '@wener/utils';
+import { isBuffer, type MaybeFunction, type MaybePromise, maybeFunction } from '@wener/utils';
 import fs from 'fs-extra';
 
 export async function getCacheFile<M extends {} = Record<string, any>>({

@@ -1,0 +1,198 @@
+{
+	"name": "@wener/mcps",
+	"version": "1.0.13",
+	"type": "module",
+	"description": "",
+	"author": "",
+	"bin": {
+		"mcps": "./dist/mcps-cli.mjs"
+	},
+	"main": "./dist/index.mjs",
+	"imports": {
+		"#/*": "./*"
+	},
+	"exports": {
+		".": "./src/index.ts",
+		"./server": "./src/server/index.ts",
+		"./entities": "./src/audit/entities/index.ts",
+		"./contracts": "./src/contracts/index.ts",
+		"./chat": "./src/chat/index.ts",
+		"./providers": "./src/providers/McpServerHandlerDef.ts",
+		"./providers/defs": "./src/providers/defs.ts",
+		"./providers/prometheus": "./src/providers/prometheus/index.ts",
+		"./providers/tencent-cls": "./src/providers/tencent-cls/index.ts",
+		"./providers/sql": "./src/providers/sql/index.ts",
+		"./providers/relay": "./src/providers/relay/index.ts",
+		"./providers/feishu": "./src/providers/feishu/index.ts",
+		"./providers/gemini-tools": "./src/providers/gemini-tools/index.ts",
+		"./providers/gemini-search": "./src/providers/gemini-search/index.ts",
+		"./providers/clickhouse": "./src/providers/clickhouse/index.ts",
+		"./providers/grafana": "./src/providers/grafana/index.ts",
+		"./cli": "./src/cli.ts",
+		"./audit/server": "./src/audit/server/index.ts"
+	},
+	"files": [
+		"dist",
+		"lib",
+		"src",
+		"README.md"
+	],
+	"keywords": [],
+	"scripts": {
+		"build": "bun run ./src/scripts/bundle.ts",
+		"dev": "pnpm tsx --watch src/mcps-cli.ts",
+		"dev:web": "vite",
+		"prepublishOnly": "make build",
+		"test": "vitest run",
+		"typecheck": "tsc --noEmit"
+	},
+	"peerDependencies": {
+		"@mikro-orm/core": "*",
+		"@mikro-orm/decorators": "*",
+		"@mikro-orm/sql": "*",
+		"@wener/server": "*"
+	},
+	"peerDependenciesMeta": {
+		"@mikro-orm/core": {
+			"optional": true
+		},
+		"@mikro-orm/decorators": {
+			"optional": true
+		},
+		"@mikro-orm/sql": {
+			"optional": true
+		},
+		"@wener/server": {
+			"optional": true
+		}
+	},
+	"dependencies": {
+		"emittery": "^2.0.0"
+	},
+	"devDependencies": {
+		"@ai-sdk/mcp": "^1.0.39",
+		"@ai-sdk/openai-compatible": "^2.0.45",
+		"@ai-sdk/react": "^3.0.176",
+		"@base-ui/react": "^1.4.1",
+		"@hono/mcp": "^0.2.5",
+		"@hono/node-server": "^2.0.1",
+		"@hono/vite-dev-server": "^0.25.3",
+		"@larksuiteoapi/node-sdk": "^1.62.1",
+		"@mikro-orm/core": "^7.0.13",
+		"@mikro-orm/decorators": "^7.0.13",
+		"@mikro-orm/sql": "^7.0.13",
+		"@modelcontextprotocol/sdk": "^1.29.0",
+		"@orpc/client": "^1.14.1",
+		"@orpc/contract": "^1.14.1",
+		"@orpc/json-schema": "^1.14.1",
+		"@orpc/openapi": "^1.14.1",
+		"@orpc/server": "^1.14.1",
+		"@orpc/zod": "^1.14.1",
+		"@streamdown/cjk": "^1.0.3",
+		"@streamdown/code": "^1.1.1",
+		"@streamdown/math": "^1.0.2",
+		"@streamdown/mermaid": "^1.0.2",
+		"@vitejs/plugin-react": "^6.0.1",
+		"@wener/ai": "workspace:^0.1.18",
+		"@wener/client": "workspace:^1.0.29",
+		"@wener/common": "^2.0.6",
+		"@wener/server": "workspace:^2.0.6",
+		"ai": "^6.0.174",
+		"commander": "^14.0.3",
+		"consola": "^3.4.2",
+		"hono": "^4.12.16",
+		"kysely": "^0.28.17",
+		"lru-cache": "^11.3.5",
+		"lucide-react": "^1.14.0",
+		"mysql2": "^3.22.3",
+		"openai": "^6.35.0",
+		"pg-query-stream": "^4.14.0",
+		"react": "^19.2.5",
+		"react-dom": "^19.2.5",
+		"react-markdown": "^10.1.0",
+		"react-router-dom": "^7.14.2",
+		"std-env": "^4.1.0",
+		"streamdown": "^2.5.0",
+		"tarn": "^3.0.2",
+		"tedious": "^19.2.1",
+		"vite": "^8.0.10",
+		"yaml": "^2.8.4",
+		"zod": "^4.4.3"
+	},
+	"publishConfig": {
+		"exports": {
+			".": {
+				"types": "./src/index.ts",
+				"default": "./lib/index.js"
+			},
+			"./server": {
+				"types": "./src/server/index.ts",
+				"default": "./lib/server/index.js"
+			},
+			"./entities": {
+				"types": "./src/audit/entities/index.ts",
+				"default": "./lib/audit/entities/index.js"
+			},
+			"./contracts": {
+				"types": "./src/contracts/index.ts",
+				"default": "./lib/contracts/index.js"
+			},
+			"./chat": {
+				"types": "./src/chat/index.ts",
+				"default": "./lib/chat/index.js"
+			},
+			"./providers": {
+				"types": "./src/providers/McpServerHandlerDef.ts",
+				"default": "./lib/providers/McpServerHandlerDef.js"
+			},
+			"./providers/defs": {
+				"types": "./src/providers/defs.ts",
+				"default": "./lib/providers/defs.js"
+			},
+			"./providers/prometheus": {
+				"types": "./src/providers/prometheus/index.ts",
+				"default": "./lib/providers/prometheus/index.js"
+			},
+			"./providers/tencent-cls": {
+				"types": "./src/providers/tencent-cls/index.ts",
+				"default": "./lib/providers/tencent-cls/index.js"
+			},
+			"./providers/sql": {
+				"types": "./src/providers/sql/index.ts",
+				"default": "./lib/providers/sql/index.js"
+			},
+			"./providers/relay": {
+				"types": "./src/providers/relay/index.ts",
+				"default": "./lib/providers/relay/index.js"
+			},
+			"./providers/grafana": {
+				"types": "./src/providers/grafana/index.ts",
+				"default": "./lib/providers/grafana/index.js"
+			},
+			"./providers/feishu": {
+				"types": "./src/providers/feishu/index.ts",
+				"default": "./lib/providers/feishu/index.js"
+			},
+			"./providers/gemini-tools": {
+				"types": "./src/providers/gemini-tools/index.ts",
+				"default": "./lib/providers/gemini-tools/index.js"
+			},
+			"./providers/gemini-search": {
+				"types": "./src/providers/gemini-search/index.ts",
+				"default": "./lib/providers/gemini-search/index.js"
+			},
+			"./providers/clickhouse": {
+				"types": "./src/providers/clickhouse/index.ts",
+				"default": "./lib/providers/clickhouse/index.js"
+			},
+			"./cli": {
+				"types": "./src/cli.ts",
+				"default": "./lib/cli.js"
+			},
+			"./audit/server": {
+				"types": "./src/audit/server/index.ts",
+				"default": "./lib/audit/server/index.js"
+			}
+		}
+	}
+}

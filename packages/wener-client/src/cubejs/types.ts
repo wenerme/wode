@@ -401,7 +401,7 @@ export type SqlData = {
 
 export type MemberType = 'measures' | 'dimensions' | 'segments';
 
-type TOrderMember = { id: string; title: string; order: QueryOrder | 'none' };
+type _TOrderMember = { id: string; title: string; order: QueryOrder | 'none' };
 
 type TCubeMemberType = 'time' | 'number' | 'string' | 'boolean';
 
@@ -448,7 +448,7 @@ export type TCubeDimension = BaseCubeMember & { primaryKey?: boolean; suggestFil
 
 export type TCubeSegment = Omit<BaseCubeMember, 'type'>;
 
-type TCubeMemberByType<T> = T extends 'measures'
+type _TCubeMemberByType<T> = T extends 'measures'
 	? TCubeMeasure
 	: T extends 'dimensions'
 		? TCubeDimension
@@ -461,7 +461,7 @@ export type CubeMember = TCubeMeasure | TCubeDimension | TCubeSegment;
 /**
  * @deprecated use DryRunResponse
  */
-type TDryRunResponse = {
+type _TDryRunResponse = {
 	queryType: QueryType;
 	normalizedQueries: Query[];
 	pivotQuery: PivotQuery;
@@ -503,4 +503,4 @@ export type CubesMap = Record<string, CubeMap>;
 
 export type MetaResponse = { cubes: Cube[] };
 
-type FilterOperator = { name: string; title: string };
+type _FilterOperator = { name: string; title: string };

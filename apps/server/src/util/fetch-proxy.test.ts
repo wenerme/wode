@@ -1,4 +1,4 @@
-import { loadEnvs } from '@wener/nestjs';
+import { loadEnvs } from '@wener/server';
 import { assert, beforeAll, test } from 'vitest';
 import { createFetchWithProxyByUndici } from './createFetchWithProxyByUndici';
 import { requireResponseOk } from './requireResponseOk';

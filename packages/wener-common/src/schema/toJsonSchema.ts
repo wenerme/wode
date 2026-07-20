@@ -33,7 +33,7 @@ export function toJsonSchema(schema: TypeSchema): JsonSchemaDef {
 							// prefer nullable
 							match(js)
 								.with({ anyOf: [P.select(), { type: 'null' }] }, (select) => {
-									delete js['anyOf'];
+									delete js.anyOf;
 									Object.assign(js, select);
 									js.nullable = true;
 								})
@@ -70,9 +70,9 @@ function visit(js: JsonSchemaDef, f: (js: JsonSchemaDef) => void) {
 	const _visit = (
 		js: JsonSchemaDef,
 		f: (js: JsonSchemaDef) => void,
-		parent: JsonSchemaDef | undefined,
+		_parent: JsonSchemaDef | undefined,
 		path: string[],
-		k?: string,
+		_k?: string,
 	) => {
 		if (!js) {
 			return;
@@ -109,9 +109,9 @@ function visit(js: JsonSchemaDef, f: (js: JsonSchemaDef) => void) {
 	_visit(js, f, undefined, []);
 }
 
-function resolveJsonSchemaDef(
+function _resolveJsonSchemaDef(
 	js: JsonSchemaDef,
-	ctx?: {
+	_ctx?: {
 		parent: JsonSchemaDef;
 		key: string;
 	},
@@ -129,7 +129,7 @@ function resolveJsonSchemaDef(
 			for (const key in schema.properties) {
 				const prop = schema.properties[key];
 				if (prop) {
-					schema.properties[key] = resolveJsonSchemaDef(prop, { parent: schema, key });
+					schema.properties[key] = _resolveJsonSchemaDef(prop, { parent: schema, key });
 				}
 			}
 			return schema;

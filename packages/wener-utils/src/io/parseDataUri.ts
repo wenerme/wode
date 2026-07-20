@@ -30,7 +30,7 @@ export function parseDataUri(data: string): undefined | ParsedDataUri {
 	// params charset=utf-8
 	// params base64
 	// params a=b
-	let base64 = Boolean(params['base64']);
+	let base64 = Boolean(params.base64);
 	return {
 		type,
 		params,

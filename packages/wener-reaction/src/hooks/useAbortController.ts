@@ -1,4 +1,4 @@
-import { useEffect, useMemo, type DependencyList } from 'react';
+import { type DependencyList, useEffect, useMemo } from 'react';
 
 /**
  * useAbortController provide a AbortController for fetch like action, when unmount will abort the current action.

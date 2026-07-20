@@ -1,6 +1,6 @@
 import { getGlobalStates } from '@wener/utils';
 import type { JsonSchemaDef } from '../jsonschema';
-import { toJsonSchema, type SchemaOutput, type TypeSchema } from './index';
+import { type SchemaOutput, type TypeSchema, toJsonSchema } from './index';
 
 export namespace SchemaRegistry {
 	const types = getGlobalStates('@wener/common/resource/schema/SchemaRegistry', () => new Map<string, JsonSchemaDef>());
@@ -21,7 +21,7 @@ export namespace SchemaRegistry {
 	}
 
 	function getKey(s: TypeSchema | string) {
-		let key;
+		let key: string | undefined;
 		if (typeof s === 'string') {
 			key = s;
 		} else {

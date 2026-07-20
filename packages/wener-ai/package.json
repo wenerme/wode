@@ -1,0 +1,139 @@
+{
+	"name": "@wener/ai",
+	"version": "0.1.18",
+	"type": "module",
+	"description": "AI utilities and MCP server definitions",
+	"author": "wener",
+	"license": "ISC",
+	"packageManager": "pnpm@10.28.0",
+	"scripts": {
+		"prepublishOnly": "make build"
+	},
+	"exports": {
+		"./schema": "./src/schema/index.ts",
+		"./mcp": "./src/mcp/index.ts",
+		"./mcp/prometheus": "./src/mcp/prometheus/index.ts",
+		"./mcp/relay": "./src/mcp/relay/index.ts",
+		"./mcp/sql": "./src/mcp/sql/index.ts",
+		"./mcp/tencent-cls": "./src/mcp/tencent-cls/index.ts",
+		"./mcp/apolloconfig": "./src/mcp/apolloconfig/index.ts",
+		"./mcp/feishu": "./src/mcp/feishu/index.ts",
+		"./mcp/gemini-tools": "./src/mcp/gemini-tools/index.ts",
+		"./mcp/gemini-search": "./src/mcp/gemini-search/index.ts",
+		"./mcp/clickhouse": "./src/mcp/clickhouse/index.ts",
+		"./mcp/grafana": "./src/mcp/grafana/index.ts"
+	},
+	"files": [
+		"lib",
+		"src",
+		"README.md"
+	],
+	"keywords": [
+		"ai",
+		"mcp"
+	],
+	"peerDependencies": {
+		"@ai-sdk/google": "*",
+		"@clickhouse/client": "*",
+		"@larksuiteoapi/node-sdk": "*",
+		"ai": "*",
+		"kysely": "*",
+		"mysql2": "*",
+		"tarn": "*",
+		"tedious": "*"
+	},
+	"peerDependenciesMeta": {
+		"@ai-sdk/google": {
+			"optional": true
+		},
+		"@clickhouse/client": {
+			"optional": true
+		},
+		"@larksuiteoapi/node-sdk": {
+			"optional": true
+		},
+		"ai": {
+			"optional": true
+		},
+		"kysely": {
+			"optional": true
+		},
+		"mysql2": {
+			"optional": true
+		},
+		"tarn": {
+			"optional": true
+		},
+		"tedious": {
+			"optional": true
+		}
+	},
+	"dependencies": {
+		"@modelcontextprotocol/sdk": "^1.29.0",
+		"@wener/client": "workspace:^1.0.29",
+		"@wener/common": "^2.0.6",
+		"consola": "^3.4.2",
+		"zod": "^4.4.3"
+	},
+	"devDependencies": {
+		"@ai-sdk/google": "^3.0.67",
+		"@clickhouse/client": "^1.18.3",
+		"ai": "^6.0.174",
+		"kysely": "^0.28.17",
+		"mysql2": "^3.22.3",
+		"tarn": "^3.0.2",
+		"tedious": "^19.2.1"
+	},
+	"publishConfig": {
+		"exports": {
+			"./schema": {
+				"types": "./src/schema/index.ts",
+				"default": "./lib/schema/index.js"
+			},
+			"./mcp": {
+				"types": "./src/mcp/index.ts",
+				"default": "./lib/mcp/index.js"
+			},
+			"./mcp/prometheus": {
+				"types": "./src/mcp/prometheus/index.ts",
+				"default": "./lib/mcp/prometheus/index.js"
+			},
+			"./mcp/relay": {
+				"types": "./src/mcp/relay/index.ts",
+				"default": "./lib/mcp/relay/index.js"
+			},
+			"./mcp/sql": {
+				"types": "./src/mcp/sql/index.ts",
+				"default": "./lib/mcp/sql/index.js"
+			},
+			"./mcp/tencent-cls": {
+				"types": "./src/mcp/tencent-cls/index.ts",
+				"default": "./lib/mcp/tencent-cls/index.js"
+			},
+			"./mcp/apolloconfig": {
+				"types": "./src/mcp/apolloconfig/index.ts",
+				"default": "./lib/mcp/apolloconfig/index.js"
+			},
+			"./mcp/grafana": {
+				"types": "./src/mcp/grafana/index.ts",
+				"default": "./lib/mcp/grafana/index.js"
+			},
+			"./mcp/feishu": {
+				"types": "./src/mcp/feishu/index.ts",
+				"default": "./lib/mcp/feishu/index.js"
+			},
+			"./mcp/gemini-tools": {
+				"types": "./src/mcp/gemini-tools/index.ts",
+				"default": "./lib/mcp/gemini-tools/index.js"
+			},
+			"./mcp/gemini-search": {
+				"types": "./src/mcp/gemini-search/index.ts",
+				"default": "./lib/mcp/gemini-search/index.js"
+			},
+			"./mcp/clickhouse": {
+				"types": "./src/mcp/clickhouse/index.ts",
+				"default": "./lib/mcp/clickhouse/index.js"
+			}
+		}
+	}
+}

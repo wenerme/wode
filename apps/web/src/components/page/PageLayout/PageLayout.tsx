@@ -1,7 +1,7 @@
-import React, { type FC, type PropsWithChildren } from 'react';
-import { PiGithubLogoFill, PiListLight, PiMagnifyingGlassBold, PiXLogoFill } from 'react-icons/pi';
 import { WenerAvatarIcon } from 'common/icons';
 import Link from 'next/link';
+import React, { type FC, type PropsWithChildren } from 'react';
+import { PiGithubLogoFill, PiListLight, PiMagnifyingGlassBold, PiXLogoFill } from 'react-icons/pi';
 import { LanguageSwitch } from '@/components/page/PageLayout/LanguageSwitch';
 import { loadI18n } from '@/i18n';
 import type { NextPageProps } from '@/types';

@@ -19,7 +19,7 @@ ignoredOptionalDependencies:
 patchedDependencies:
   ts-node@11.0.0-beta.1: patches/ts-node.patch
 
-minimumReleaseAge: 600
+minimumReleaseAge: 1200
 minimumReleaseAgeExclude:
 - "@wener/*"
 - "@vitejs/*"
@@ -29,7 +29,6 @@ minimumReleaseAgeExclude:
 strictPeerDependencies: false
 linkWorkspacePackages: true
 preferWorkspacePackages: true
-saveWorkspaceProtocol: false
 dedupeDirectDeps: true
 
 # Package version overrides
@@ -46,3 +45,5 @@ updateConfig:
   ignoreDependencies:
   - '@types/node'
   - 'dotenv'
+
+saveWorkspaceProtocol: false

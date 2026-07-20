@@ -1,8 +1,8 @@
-import React, { Suspense } from 'react';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { ProdOnly } from '@wener/reaction/universal';
 import { cookies } from 'next/headers';
+import React, { Suspense } from 'react';
 import { SiteSidecar } from '@/components/site/SiteSidecar';
 import { getSiteData } from '@/data/getSiteData';
 import { loadI18n } from '@/i18n';

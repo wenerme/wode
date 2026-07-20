@@ -1,34 +1,28 @@
+import { BaseEntity, Collection, MikroORM, types } from '@mikro-orm/core';
 import {
-	BaseEntity,
-	Collection,
 	Entity,
 	ManyToMany,
-	MikroORM,
 	OneToOne,
 	PrimaryKey,
 	Property,
 	ReflectMetadataProvider,
-	types,
-} from '@mikro-orm/core';
-import { defineConfig } from '@mikro-orm/sqlite';
+} from '@mikro-orm/decorators/legacy';
+import { NodeSqliteDialect, SqliteDriver } from '@mikro-orm/sql';
 import { expect, test } from 'vitest';
 import { DemoQueryExamples } from '../ast/ast.test';
 import { toMikroOrmQuery } from './toMikroOrmQuery';
 
 async function getOrm() {
-	const orm = await MikroORM.init(
-		defineConfig({
-			entities: [UserProfileEntity, UserEntity, GroupEntity, GroupMemberEntity],
-			discovery: { disableDynamicFileAccess: true, requireEntitiesArray: true },
-			dbName: ':memory:',
-			metadataProvider: ReflectMetadataProvider,
-			// debug: true,
-		}),
-	);
+	const orm = await MikroORM.init({
+		driver: SqliteDriver,
+		entities: [UserProfileEntity, UserEntity, GroupEntity, GroupMemberEntity],
+		dbName: ':memory:',
+		driverOptions: new NodeSqliteDialect(':memory:'),
+		metadataProvider: ReflectMetadataProvider,
+	});
 	let em = orm.em.fork();
-	{
-		for (const schema of [
-			`
+	for (const schema of [
+		`
 				create table users
 				(
 					id    bigint primary key,
@@ -37,7 +31,7 @@ async function getOrm() {
 					attrs json
 				);
 			`,
-			`
+		`
 				create table user_profile
 				(
 					id      bigint primary key,
@@ -46,9 +40,8 @@ async function getOrm() {
 					attrs   json
 				);
       `,
-		]) {
-			await em.execute(schema);
-		}
+	]) {
+		await em.execute(schema);
 	}
 
 	return { orm, em };
@@ -81,7 +74,7 @@ test('miniquery', async () => {
 	for (const v of valid) {
 		let query = toMikroOrmQuery(v, { em, Entity: UserEntity });
 		try {
-			const builder = repo.qb().where(query);
+			const builder = repo.qb().where(query as any);
 			console.log(`Query: ${v} \n\t ${builder.getQuery()}`);
 			await builder.getResultAndCount();
 		} catch (e) {

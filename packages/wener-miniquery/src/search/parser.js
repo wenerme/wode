@@ -57,19 +57,19 @@ peg$SyntaxError.prototype.format = function (sources) {
 			var last = s.line === e.line ? e.column : line.length + 1;
 			var hatLen = last - s.column || 1;
 			str +=
-				'\n --> '
-				+ loc
-				+ '\n'
-				+ filler
-				+ ' |\n'
-				+ offset_s.line
-				+ ' | '
-				+ line
-				+ '\n'
-				+ filler
-				+ ' | '
-				+ peg$padEnd('', s.column - 1, ' ')
-				+ peg$padEnd('', hatLen, '^');
+				'\n --> ' +
+				loc +
+				'\n' +
+				filler +
+				' |\n' +
+				offset_s.line +
+				' | ' +
+				line +
+				'\n' +
+				filler +
+				' | ' +
+				peg$padEnd('', s.column - 1, ' ') +
+				peg$padEnd('', hatLen, '^');
 		} else {
 			str += '\n at ' + loc;
 		}

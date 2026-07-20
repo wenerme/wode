@@ -175,9 +175,9 @@ export const MssqlTools = {
 				// Provide more specific error messages for read-only violations
 				const errorMessage = error instanceof Error ? error.message : 'Unknown error';
 				const isReadOnlyError =
-					errorMessage.toLowerCase().includes('read only')
-					|| errorMessage.toLowerCase().includes('cannot execute')
-					|| errorMessage.toLowerCase().includes('not allowed');
+					errorMessage.toLowerCase().includes('read only') ||
+					errorMessage.toLowerCase().includes('cannot execute') ||
+					errorMessage.toLowerCase().includes('not allowed');
 
 				if (useReadOnlyTransaction && isReadOnlyError) {
 					return {

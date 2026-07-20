@@ -1,5 +1,5 @@
 import type { Provider } from '@nestjs/common';
-import { isClass, type Constructor } from '@wener/utils';
+import { type Constructor, isClass } from '@wener/utils';
 
 type ServiceClass = Constructor & { name: `${string}Service` | `${string}Impl` };
 

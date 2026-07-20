@@ -1,4 +1,5 @@
-import { BeforeCreate, BeforeUpdate, Entity, Property, types } from '@mikro-orm/core';
+import { types } from '@mikro-orm/core';
+import { BeforeCreate, BeforeUpdate, Entity, Property } from '@mikro-orm/decorators/legacy';
 import type { Constructor } from '@wener/utils';
 import { getCurrentUserId } from '../../app';
 import { Feature } from '../../Feature';

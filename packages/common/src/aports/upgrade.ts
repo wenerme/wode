@@ -14,7 +14,7 @@ import 'zx/globals';
 import { parseBoolean } from '@wener/utils';
 import { readApkBuild, writeApkBuild } from './utils/apkbuild';
 import { getAportsRepos, readAportsContext } from './utils/aports';
-import { parsePackageId, type ParsedPackageId } from './utils/pkg';
+import { type ParsedPackageId, parsePackageId } from './utils/pkg';
 
 export function getDayjs() {
 	return (getDayjs.dayjs ||= (() => {
@@ -72,9 +72,9 @@ if (ids.length) {
 }
 
 if (ids.length === 1) {
-	await upgrade({ pkg: ids[0], next: argv['to'], dry: parseBoolean(argv['dry-run']) });
+	await upgrade({ pkg: ids[0], next: argv.to, dry: parseBoolean(argv['dry-run']) });
 } else if (ids.length) {
-	if (argv['to']) {
+	if (argv.to) {
 		throw new Error(`--to only support single package`);
 	}
 	for (const id of ids) {

@@ -3,8 +3,8 @@ import containerQueries from '@tailwindcss/container-queries';
 import typography from '@tailwindcss/typography';
 import daisyuiPlugin from 'daisyui';
 import type { Config } from 'tailwindcss';
+import type { PluginCreator } from 'tailwindcss/types/config';
 import animatePlugin from 'tailwindcss-animate';
-import { PluginCreator } from 'tailwindcss/types/config';
 
 // const isPreferPx = Boolean(process.env.TW_PX);
 //
@@ -207,7 +207,7 @@ export function createConfig(opts: { daisyui?: any } = {}): Config {
 			// forms,
 			animatePlugin,
 			// https://github.com/tailwindlabs/tailwindcss.com/blob/ceb07ba4d7694ef48e108e66598a20ae31cced19/tailwind.config.js#L280-L284
-			function ({ addVariant }) {
+			(({ addVariant }) => {
 				addVariant(
 					'supports-backdrop-blur',
 					'@supports (backdrop-filter: blur(0)) or (-webkit-backdrop-filter: blur(0))',
@@ -217,7 +217,7 @@ export function createConfig(opts: { daisyui?: any } = {}): Config {
 				addVariant('scrollbar', '&::-webkit-scrollbar');
 				addVariant('scrollbar-track', '&::-webkit-scrollbar-track');
 				addVariant('scrollbar-thumb', '&::-webkit-scrollbar-thumb');
-			} satisfies PluginCreator,
+			}) satisfies PluginCreator,
 			// containerQuery,
 		],
 		daisyui: {

@@ -72,7 +72,7 @@ function addSchema(
 			onConflict = (_, neo) => neo;
 			break;
 		case 'throw':
-			onConflict = (old, neo) => {
+			onConflict = (_old, neo) => {
 				throw new Error(`Schema ${neo.$id} already exists`);
 			};
 			break;
@@ -119,8 +119,8 @@ function create<S>(schema: S, data?: any): TypeOfSchema<S> {
 		.with({ oneOf: P.nonNullable }, (schema) => {
 			return create(schema.oneOf[0]);
 		})
-		.with({ type: 'string' }, (schema) => '')
-		.with({ type: P.union('number', 'integer') }, (schema) => 0)
+		.with({ type: 'string' }, (_schema) => '')
+		.with({ type: P.union('number', 'integer') }, (_schema) => 0)
 		.with({ type: 'object' }, (schema: JsonSchemaDef) => {
 			let out = validate({ schema, data: data ?? {}, mutate: true });
 			if (!out.success) {
@@ -141,8 +141,8 @@ function create<S>(schema: S, data?: any): TypeOfSchema<S> {
 			return out.data;
 		})
 		.with({ type: 'null' }, () => null)
-		.with({ type: 'boolean' }, (schema) => false)
-		.with({ type: 'array' }, (schema) => [])
+		.with({ type: 'boolean' }, (_schema) => false)
+		.with({ type: 'array' }, (_schema) => [])
 		.otherwise(() => {
 			return undefined;
 		});

@@ -5,7 +5,10 @@ import { z } from 'zod';
 export function createProbeRoute({
 	ready,
 	live,
-}: { ready?: () => MaybePromise<void>; live?: () => MaybePromise<void> } = {}) {
+}: {
+	ready?: () => MaybePromise<void>;
+	live?: () => MaybePromise<void>;
+} = {}) {
 	const app = new OpenAPIHono();
 
 	app.openapi(
@@ -19,7 +22,7 @@ export function createProbeRoute({
 		async (c) => {
 			try {
 				await ready?.();
-			} catch (e) {
+			} catch (_e) {
 				c.status(500);
 				return c.json({ ok: false });
 			}
@@ -38,7 +41,7 @@ export function createProbeRoute({
 		async (c) => {
 			try {
 				await live?.();
-			} catch (e) {
+			} catch (_e) {
 				c.status(500);
 				return c.json({ ok: false });
 			}

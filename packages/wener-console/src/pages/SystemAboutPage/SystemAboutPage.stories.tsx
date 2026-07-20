@@ -1,6 +1,5 @@
-import React from 'react';
-import { GrSystem } from 'react-icons/gr';
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { GrSystem } from 'react-icons/gr';
 import { getBuildInfo } from '../../buildinfo';
 import { SystemAboutPage } from './SystemAboutPage';
 

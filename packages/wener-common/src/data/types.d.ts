@@ -25,14 +25,14 @@ export type ListQueryInput = {
 	deleted?: boolean;
 };
 
-type ListResult<T = any> = {
+type _ListResult<T = any> = {
 	/** List of items */
 	data: T[];
 	/** Total number of items */
 	total: number;
 };
 
-type PageInfo = {
+type _PageInfo = {
 	/** Whether there are more items */
 	hasNextPage: boolean;
 	/** Whether there are previous items */

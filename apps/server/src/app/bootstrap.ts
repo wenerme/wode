@@ -6,8 +6,8 @@ import {
 	type NestApplicationOptions,
 } from '@nestjs/common';
 import { NestFactory, type AbstractHttpAdapter } from '@nestjs/core';
-import { setAppContext } from '@wener/nestjs';
-import { App } from '@wener/nestjs/app';
+import { setAppContext } from '@wener/server';
+import { App } from '@wener/server/app';
 import type { MaybePromise } from '@wener/utils';
 
 export interface MicroserviceOptions extends Record<string, any> {}

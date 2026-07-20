@@ -30,7 +30,7 @@ export function withBaseQuery<TBase extends BaseEntityResolverConstructor<any, a
 
 		@Authorized()
 		@Query(() => Base.ObjectType, { name: `get${Base.ObjectName}` })
-		async get(@Args(() => GetResourceArgs) args: GetResourceArgs, @Ctx() ctx: any) {
+		async get(@Args(() => GetResourceArgs) args: GetResourceArgs, @Ctx() _ctx: any) {
 			return this.svc.get(args);
 		}
 

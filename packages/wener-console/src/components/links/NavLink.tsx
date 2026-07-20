@@ -1,4 +1,4 @@
-import React, { type ComponentPropsWithRef, type ComponentType, type ReactElement } from 'react';
+import type { ComponentPropsWithRef, ReactElement } from 'react';
 import { NavLink as RRNavLink, useInRouterContext } from 'react-router';
 import { StaticNavLink } from './StaticNavLink';
 

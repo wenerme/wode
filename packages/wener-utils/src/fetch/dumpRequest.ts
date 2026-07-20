@@ -135,7 +135,7 @@ export async function dumpBodyContent({
 			}
 			return result;
 		} catch (error) {
-			return result + `[Error reading FormData: ${error}]\n`;
+			return `${result}[Error reading FormData: ${error}]\n`;
 		}
 	} else if (body instanceof URLSearchParams) {
 		return `\n${body.toString()}\n`;

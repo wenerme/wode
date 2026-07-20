@@ -2,7 +2,7 @@
  * Tools command - List available tools from a server
  */
 
-import { connectToServer, listTools, safeClose } from '../client';
+import { type Client, connectToServer, listTools, safeClose } from '../client';
 import { getServerConfig, listServerNames, loadConfig } from '../config';
 import { ErrorCode, formatCliError, serverConnectionError } from '../errors';
 import { formatJson, formatServerDetails } from '../output';
@@ -35,7 +35,7 @@ export async function toolsCommand(options: ToolsOptions): Promise<void> {
 	}
 
 	const serverWithSource = getServerConfig(config, options.server);
-	let client;
+	let client: Client;
 	let close: () => Promise<void> = async () => {};
 
 	try {

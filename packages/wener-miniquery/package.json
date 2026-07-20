@@ -1,6 +1,6 @@
 {
 	"name": "@wener/miniquery",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"type": "module",
 	"description": "SQL Where like **safe** filter expression for ORM.",
 	"repository": {
@@ -35,17 +35,18 @@
 		"test": "make test"
 	},
 	"dependencies": {
-		"@wener/utils": "workspace:^1.1.56",
+		"@wener/utils": "workspace:^1.1.58",
 		"ts-pattern": "^5.9.0"
 	},
 	"devDependencies": {
-		"@electric-sql/pglite": "^0.3.14",
-		"@electric-sql/pglite-socket": "^0.0.19",
-		"@mikro-orm/core": "^6.6.3",
-		"@mikro-orm/postgresql": "^6.6.3",
-		"@mikro-orm/sqlite": "^6.6.3",
-		"@sequelize/core": "7.0.0-alpha.47",
-		"ohm-js": "^17.3.0"
+		"@electric-sql/pglite": "^0.4.5",
+		"@electric-sql/pglite-socket": "^0.1.5",
+		"@mikro-orm/core": "^7.0.13",
+		"@mikro-orm/decorators": "^7.0.13",
+		"@mikro-orm/postgresql": "^7.0.13",
+		"@mikro-orm/sql": "^7.0.13",
+		"@sequelize/core": "7.0.0-alpha.48",
+		"ohm-js": "^17.5.0"
 	},
 	"publishConfig": {
 		"exports": {

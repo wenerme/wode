@@ -37,5 +37,5 @@ export async function runServer<T extends Hono<any>>(opts: RunHonoServerOptions<
 	app = await onApp(app);
 
 	let { port = process.env.PORT } = opts;
-	return serve({ fetch: app.fetch, port: typeof port === 'string' ? Number.parseInt(port) : port }, onServe);
+	return serve({ fetch: app.fetch, port: typeof port === 'string' ? Number.parseInt(port, 10) : port }, onServe);
 }

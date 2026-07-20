@@ -32,7 +32,7 @@ export function parseChineseResidentIdNo(idNo: string): ParsedChineseResidentIdN
 		addressCode: division,
 		birthDate: `${year}-${month}-${day}`,
 		sequence: seq,
-		checkDigit: checkDigit.toUpperCase() === 'X' ? 10 : parseInt(checkDigit),
+		checkDigit: checkDigit.toUpperCase() === 'X' ? 10 : parseInt(checkDigit, 10),
 		sex: seq % 2 === 0 ? SexType.Male : SexType.Female,
 		age: new Date().getFullYear() - parseInt(year, 10),
 		valid: Mod11.validate(idNo),

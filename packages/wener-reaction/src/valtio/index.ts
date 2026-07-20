@@ -1,2 +1,2 @@
-export { proxyWithCompare } from './proxyWithCompare';
 export { proxyWith } from './proxyWith';
+export { proxyWithCompare } from './proxyWithCompare';

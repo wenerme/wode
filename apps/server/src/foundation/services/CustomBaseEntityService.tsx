@@ -1,7 +1,7 @@
 import { LockMode, type EntityData } from '@mikro-orm/core';
-import type { StandardBaseEntity } from '@wener/nestjs/entity';
-import { EntityAuditAction, writeEntityAuditLog } from '@wener/nestjs/entity/audit';
-import { EntityBaseService, type PatchEntityRequest } from '@wener/nestjs/entity/service';
+import type { StandardBaseEntity } from '@wener/server/entity';
+import { EntityAuditAction, writeEntityAuditLog } from '@wener/server/entity/audit';
+import { EntityBaseService, type PatchEntityRequest } from '@wener/server/entity/service';
 import { setData } from '@/entity/base/setData';
 
 export class CustomBaseEntityService<E extends StandardBaseEntity> extends EntityBaseService<E> {
@@ -10,7 +10,7 @@ export class CustomBaseEntityService<E extends StandardBaseEntity> extends Entit
 	//   Errors.BadRequest.check(hasEntityFeature(entity, EntityFeature.HasStateStatus), '资源不支持状态');
 	//   entity.status = opts.status;
 	//   entity.state = opts.state || entity.state;
-	//   await this.em.persistAndFlush(entity);
+	//   await this.em.persist(entity).flush();
 	//   return { entity };
 	// }
 
@@ -33,7 +33,7 @@ export class CustomBaseEntityService<E extends StandardBaseEntity> extends Entit
 				}
 			}
 			writeEntityAuditLog({ entity, action: EntityAuditAction.Patch, em, before, after: entity.toPOJO() });
-			await em.persistAndFlush(entity);
+			await em.persist(entity).flush();
 			return entity;
 		});
 	}

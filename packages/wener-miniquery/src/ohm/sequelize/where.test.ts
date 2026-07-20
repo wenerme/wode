@@ -1,19 +1,19 @@
 import {
 	DataTypes,
-	Sequelize,
 	type FindOptions,
 	type Includeable,
 	type ModelStatic,
+	type Sequelize,
 	type WhereOptions,
 } from '@sequelize/core';
-import { beforeAll, expect, test, type TestContext } from 'vitest';
+import { beforeAll, expect, type TestContext, test } from 'vitest';
 import { toMiniQueryAST } from '../ast';
 import { toSequelizeWhere } from './where';
 
-let sequelize: Sequelize;
+let sequelize: Sequelize = undefined!; // Tests are skipped, setup disabled
 beforeAll(async () => {
 	return;
-
+	/* disabled test setup
 	sequelize = new Sequelize('sqlite::memory:' as any);
 	const Profile = await sequelize.define(
 		'Profile',
@@ -62,6 +62,7 @@ beforeAll(async () => {
 	Image.belongsTo(Profile);
 
 	await sequelize.sync();
+	*/
 });
 // fixme 无法处理关联
 test.skip('sequelize where', async (t) => {

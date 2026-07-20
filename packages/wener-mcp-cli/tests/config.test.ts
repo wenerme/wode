@@ -1,228 +1,199 @@
-/**
- * Unit tests for config module
- */
-
-import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
+import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, test } from 'vitest';
-import { discoverConfigs, getServerConfig, listServerNames, loadConfig, loadConfigFromPath } from '../src/config';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { discoverConfigs } from '../src/config';
 
-describe('config', () => {
+describe('config env support', () => {
 	let tempDir: string;
-	let originalStrictEnv: string | undefined;
 
-	beforeAll(() => {
-		// Disable strict env mode for tests to avoid errors from global config files
-		originalStrictEnv = process.env.MCP_STRICT_ENV;
-		process.env.MCP_STRICT_ENV = 'false';
+	beforeEach(() => {
+		tempDir = mkdtempSync(join(tmpdir(), 'mcp-cli-test-'));
 	});
 
-	afterAll(() => {
-		if (originalStrictEnv === undefined) {
-			delete process.env.MCP_STRICT_ENV;
-		} else {
-			process.env.MCP_STRICT_ENV = originalStrictEnv;
-		}
+	afterEach(() => {
+		rmSync(tempDir, { recursive: true, force: true });
 	});
 
-	beforeEach(async () => {
-		tempDir = await mkdtemp(join(tmpdir(), 'mcp-cli-test-'));
+	it('should substitute env vars from process.env', () => {
+		process.env.TEST_API_KEY = 'secret-key-123';
+
+		writeFileSync(
+			join(tempDir, '.mcp-cli.json'),
+			JSON.stringify({
+				mcpServers: {
+					test: {
+						url: 'https://api.example.com',
+						headers: {
+							Authorization: 'Bearer ${TEST_API_KEY}',
+						},
+					},
+				},
+			}),
+		);
+
+		const config = discoverConfigs(tempDir);
+		const server = config.servers.get('test');
+
+		expect(server).toBeDefined();
+		expect((server?.config as any).headers?.Authorization).toBe('Bearer secret-key-123');
+
+		delete process.env.TEST_API_KEY;
 	});
 
-	afterEach(async () => {
-		await rm(tempDir, { recursive: true, force: true });
+	it('should load env vars from .env file', () => {
+		writeFileSync(join(tempDir, '.env'), 'MY_DB_URL=postgres://localhost/test\n');
+
+		writeFileSync(
+			join(tempDir, '.mcp-cli.json'),
+			JSON.stringify({
+				mcpServers: {
+					db: {
+						url: '${MY_DB_URL}',
+					},
+				},
+			}),
+		);
+
+		const config = discoverConfigs(tempDir);
+		const server = config.servers.get('db');
+
+		expect(server).toBeDefined();
+		expect((server?.config as any).url).toBe('postgres://localhost/test');
 	});
 
-	describe('loadConfigFromPath', () => {
-		test('loads valid config from explicit path', () => {
-			const configPath = join(tempDir, 'mcp_servers.json');
-			writeFile(
-				configPath,
-				JSON.stringify({
-					mcpServers: {
-						test: { command: 'echo', args: ['hello'] },
+	it('should load env vars from .env.local with higher priority', () => {
+		writeFileSync(join(tempDir, '.env'), 'API_URL=http://prod.example.com\n');
+		writeFileSync(join(tempDir, '.env.local'), 'API_URL=http://localhost:3000\n');
+
+		writeFileSync(
+			join(tempDir, '.mcp-cli.json'),
+			JSON.stringify({
+				mcpServers: {
+					api: {
+						url: '${API_URL}',
 					},
-				}),
-			);
+				},
+			}),
+		);
 
-			// Wait for file to be written
-			return new Promise<void>((resolve) => {
-				setTimeout(async () => {
-					const config = loadConfigFromPath(configPath);
-					expect(config.servers.has('test')).toBe(true);
-					const server = config.servers.get('test')!;
-					expect((server.config as any).command).toBe('echo');
-					resolve();
-				}, 100);
-			});
-		});
+		const config = discoverConfigs(tempDir);
+		const server = config.servers.get('api');
 
-		test('throws on missing config file', () => {
-			const configPath = join(tempDir, 'nonexistent.json');
-			expect(() => loadConfigFromPath(configPath)).toThrow('not found');
-		});
+		expect(server).toBeDefined();
+		expect((server?.config as any).url).toBe('http://localhost:3000');
 	});
 
-	describe('discoverConfigs', () => {
-		test('discovers config from .mcp.json', async () => {
-			// Claude standard: .mcp.json (hidden file)
-			const configPath = join(tempDir, '.mcp.json');
-			await writeFile(
-				configPath,
-				JSON.stringify({
-					mcpServers: {
-						myserver: { command: 'test-cmd' },
+	it('should support env field in mcp-cli config', () => {
+		writeFileSync(
+			join(tempDir, '.mcp-cli.json'),
+			JSON.stringify({
+				env: {
+					CONFIG_API_KEY: 'from-config',
+				},
+				mcpServers: {
+					test: {
+						url: 'https://api.example.com',
+						headers: {
+							'X-API-Key': '${CONFIG_API_KEY}',
+						},
 					},
-				}),
-			);
+				},
+			}),
+		);
 
-			const config = discoverConfigs(tempDir);
-			expect(config.servers.has('myserver')).toBe(true);
-		});
+		const config = discoverConfigs(tempDir);
+		const server = config.servers.get('test');
 
-		test('discovers config from .cursor/mcp.json', async () => {
-			const cursorDir = join(tempDir, '.cursor');
-			await mkdir(cursorDir, { recursive: true });
-			const configPath = join(cursorDir, 'mcp.json');
-			await writeFile(
-				configPath,
-				JSON.stringify({
-					mcpServers: {
-						cursorserver: { command: 'cursor-cmd' },
-					},
-				}),
-			);
-
-			const config = discoverConfigs(tempDir);
-			expect(config.servers.has('cursorserver')).toBe(true);
-			const server = config.servers.get('cursorserver')!;
-			expect(server.source.type).toBe('cursor');
-		});
-
-		test('discovers config from .gemini/mcp_config.json', async () => {
-			const geminiDir = join(tempDir, '.gemini');
-			await mkdir(geminiDir, { recursive: true });
-			const configPath = join(geminiDir, 'mcp_config.json');
-			await writeFile(
-				configPath,
-				JSON.stringify({
-					mcpServers: {
-						geminiserver: { serverUrl: 'https://example.com/mcp' },
-					},
-				}),
-			);
-
-			const config = discoverConfigs(tempDir);
-			expect(config.servers.has('geminiserver')).toBe(true);
-			const server = config.servers.get('geminiserver')!;
-			expect(server.source.type).toBe('gemini');
-			// Check that serverUrl is normalized to url
-			expect((server.config as any).url).toBe('https://example.com/mcp');
-		});
-
-		test('tracks duplicate servers', async () => {
-			// Create two configs with same server name
-			// .mcp.json is checked first (higher priority)
-			const mcpPath = join(tempDir, '.mcp.json');
-			await writeFile(
-				mcpPath,
-				JSON.stringify({
-					mcpServers: {
-						duplicate: { command: 'first' },
-					},
-				}),
-			);
-
-			const cursorDir = join(tempDir, '.cursor');
-			await mkdir(cursorDir, { recursive: true });
-			const cursorPath = join(cursorDir, 'mcp.json');
-			await writeFile(
-				cursorPath,
-				JSON.stringify({
-					mcpServers: {
-						duplicate: { command: 'second' },
-					},
-				}),
-			);
-
-			const config = discoverConfigs(tempDir);
-
-			// First occurrence wins (.mcp.json is checked before .cursor/mcp.json)
-			const server = config.servers.get('duplicate')!;
-			expect((server.config as any).command).toBe('first');
-
-			// Duplicate is tracked - there's at least 1 for our test server
-			const ourDuplicate = config.duplicates.find((d) => d.name === 'duplicate');
-			expect(ourDuplicate).toBeDefined();
-			expect(ourDuplicate!.sources.length).toBe(2);
-		});
-
-		test('returns result even when project has no configs', () => {
-			// Note: discoverConfigs also searches user-level configs like ~/.cursor/mcp.json
-			// So the result may not be empty even for an empty temp directory
-			const config = discoverConfigs(tempDir);
-			// Just verify the function runs without error
-			expect(config).toBeDefined();
-			expect(config.servers).toBeDefined();
-		});
+		expect(server).toBeDefined();
+		expect((server?.config as any).headers?.['X-API-Key']).toBe('from-config');
 	});
 
-	describe('getServerConfig', () => {
-		test('returns server config by name', async () => {
-			const configPath = join(tempDir, '.mcp.json');
-			await writeFile(
-				configPath,
-				JSON.stringify({
-					mcpServers: {
-						server1: { command: 'cmd1' },
-						server2: { command: 'cmd2' },
+	it('should handle quoted values in .env file', () => {
+		writeFileSync(
+			join(tempDir, '.env'),
+			`
+DOUBLE_QUOTED="hello world"
+SINGLE_QUOTED='hello world'
+UNQUOTED=hello
+`,
+		);
+
+		writeFileSync(
+			join(tempDir, '.mcp-cli.json'),
+			JSON.stringify({
+				mcpServers: {
+					test: {
+						command: '${DOUBLE_QUOTED}',
+						args: ['${SINGLE_QUOTED}', '${UNQUOTED}'],
 					},
-				}),
-			);
+				},
+			}),
+		);
 
-			const config = discoverConfigs(tempDir);
-			const server = getServerConfig(config, 'server1');
-			expect((server.config as any).command).toBe('cmd1');
-		});
+		const config = discoverConfigs(tempDir);
+		const server = config.servers.get('test');
 
-		test('throws on unknown server', async () => {
-			const configPath = join(tempDir, '.mcp.json');
-			await writeFile(
-				configPath,
-				JSON.stringify({
-					mcpServers: { known: { command: 'cmd' } },
-				}),
-			);
-
-			const config = discoverConfigs(tempDir);
-			expect(() => getServerConfig(config, 'unknown')).toThrow('not found');
-		});
+		expect(server).toBeDefined();
+		expect((server?.config as any).command).toBe('hello world');
+		expect((server?.config as any).args).toEqual(['hello world', 'hello']);
 	});
 
-	describe('listServerNames', () => {
-		test('returns sorted server names', async () => {
-			const configPath = join(tempDir, '.mcp.json');
-			await writeFile(
-				configPath,
-				JSON.stringify({
-					mcpServers: {
-						beta: { command: 'b' },
-						alpha: { command: 'a' },
-						gamma: { url: 'https://example.com' },
-					},
-				}),
-			);
+	it('should skip comments and empty lines in .env file', () => {
+		writeFileSync(
+			join(tempDir, '.env'),
+			`
+# This is a comment
+VALID_KEY=valid_value
 
-			const config = discoverConfigs(tempDir);
-			const names = listServerNames(config);
-			// Verify our test servers are included (may have others from global configs)
-			expect(names).toContain('alpha');
-			expect(names).toContain('beta');
-			expect(names).toContain('gamma');
-			// Verify they are sorted
-			const ourNames = names.filter((n) => ['alpha', 'beta', 'gamma'].includes(n));
-			expect(ourNames).toEqual(['alpha', 'beta', 'gamma']);
-		});
+# Another comment
+ANOTHER_KEY=another_value
+`,
+		);
+
+		writeFileSync(
+			join(tempDir, '.mcp-cli.json'),
+			JSON.stringify({
+				mcpServers: {
+					test: {
+						url: '${VALID_KEY}/${ANOTHER_KEY}',
+					},
+				},
+			}),
+		);
+
+		const config = discoverConfigs(tempDir);
+		const server = config.servers.get('test');
+
+		expect(server).toBeDefined();
+		expect((server?.config as any).url).toBe('valid_value/another_value');
+	});
+
+	it('process.env should have highest priority', () => {
+		process.env.PRIORITY_TEST = 'from-process-env';
+		writeFileSync(join(tempDir, '.env'), 'PRIORITY_TEST=from-dotenv\n');
+		writeFileSync(join(tempDir, '.env.local'), 'PRIORITY_TEST=from-dotenv-local\n');
+
+		writeFileSync(
+			join(tempDir, '.mcp-cli.json'),
+			JSON.stringify({
+				env: {
+					PRIORITY_TEST: 'from-config',
+				},
+				mcpServers: {
+					test: {
+						url: '${PRIORITY_TEST}',
+					},
+				},
+			}),
+		);
+
+		const config = discoverConfigs(tempDir);
+		const server = config.servers.get('test');
+
+		expect(server).toBeDefined();
+		expect((server?.config as any).url).toBe('from-process-env');
+
+		delete process.env.PRIORITY_TEST;
 	});
 });

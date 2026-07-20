@@ -1,5 +1,5 @@
 import { Entity, OptionalProps, Property, types, Unique } from '@mikro-orm/core';
-import { TenantBaseEntity } from '@wener/nestjs/entity';
+import { TenantBaseEntity } from '@wener/server/entity';
 
 @Entity({ tableName: 'storage_item' })
 @Unique({ properties: ['code'] })

@@ -2,11 +2,11 @@ import { Logger } from '@nestjs/common';
 import type { Msg, NatsError } from 'nats';
 import {
 	createResponseFromRequest,
-	ServiceRequestPayloadSchema,
-	ServiceResponsePayloadSchema,
 	type ServerRequest,
 	type ServerResponse,
 	type ServiceRegistry,
+	ServiceRequestPayloadSchema,
+	ServiceResponsePayloadSchema,
 } from '../../service';
 import { createMsgHdrFromResponse } from './createMsgHdrFromResponse';
 import { createResponseFromMessageHeader } from './createResponseFromMessageHeader';

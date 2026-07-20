@@ -1,4 +1,4 @@
-import { createChildLogger, loadScripts, type Logger } from '@wener/utils';
+import { createChildLogger, type Logger, loadScripts } from '@wener/utils';
 import { getGlobalSystem } from '../utils/getGlobalSystem';
 import { hookSystem, type SystemHookOption } from './hookSystem';
 

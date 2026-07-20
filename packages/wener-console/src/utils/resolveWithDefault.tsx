@@ -18,5 +18,7 @@ export function resolveElement<T>(
 		return undefined;
 	}
 	if (value === true || value === undefined) {
+		return render(undefined);
 	}
+	return render(value as T);
 }

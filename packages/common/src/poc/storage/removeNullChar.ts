@@ -15,7 +15,7 @@ export function removeNullChar(o: any): any {
 	return o;
 }
 
-function transform(o: any, by: (v: any) => any) {
+function _transform(o: any, by: (v: any) => any) {
 	if (typeof o !== 'object') {
 		return by(o);
 	}

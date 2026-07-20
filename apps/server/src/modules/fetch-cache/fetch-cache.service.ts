@@ -1,7 +1,7 @@
 import type { EntityManager } from '@mikro-orm/postgresql';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { KeyOfFetchCacheModuleOptions } from './const';
-import { createFetchWithCache, type CreateFetchWithCacheOptions } from './createFetchWithCache';
+import { type CreateFetchWithCacheOptions, createFetchWithCache } from './createFetchWithCache';
 import type { FetchCacheModuleOptions } from './fetch-cache.module';
 
 @Injectable()

@@ -3,7 +3,7 @@ type HeaderRecord = Record<string, string | string[]>;
 type Data = string | ArrayBuffer | ReadableStream;
 
 class ResponseHelper {
-	json(data: any, arg?: StatusCode | ResponseInit, headers?: HeaderRecord) {
+	json(data: any, _arg?: StatusCode | ResponseInit, headers?: HeaderRecord) {
 		return new Response(JSON.stringify(data), {
 			headers: {
 				'Content-Type': 'application/json',
@@ -48,7 +48,7 @@ class ResponseHelper {
 	}
 }
 
-function merge(a?: StatusCode | ResponseInit, b?: StatusCode | ResponseInit) {
+function _merge(a?: StatusCode | ResponseInit, b?: StatusCode | ResponseInit) {
 	const ia = typeof a === 'number' ? { status: a } : a || {};
 	const ib = typeof b === 'number' ? { status: b } : b || {};
 	return {

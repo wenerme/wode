@@ -36,7 +36,7 @@ export class AccessTokenService extends CustomBaseEntityService<AccessTokenEntit
 			...data,
 		} as RequiredEntityData<AccessTokenEntity>);
 
-		await this.em.persistAndFlush(token);
+		await this.em.persist(token).flush();
 
 		return token;
 	}
@@ -90,7 +90,7 @@ export class AccessTokenService extends CustomBaseEntityService<AccessTokenEntit
 			token.lastUsedAt = new Date();
 		}
 
-		await this.em.persistAndFlush(token);
+		await this.em.persist(token).flush();
 		return { accessToken: token, token, subject, refreshed };
 	}
 
@@ -137,7 +137,7 @@ export class AccessTokenService extends CustomBaseEntityService<AccessTokenEntit
 		});
 		// expire last one in 5min
 		token.expiresAt = dayjs().add(5, 'minutes').toDate();
-		await em.persistAndFlush([next, token]);
+		await em.persist([next, token]).flush();
 		return { last: token, token: next };
 	}
 }

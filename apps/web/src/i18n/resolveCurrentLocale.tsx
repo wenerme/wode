@@ -1,6 +1,6 @@
 import * as cookie from 'cookie';
 import { getLocales } from '@/i18n/getLocales';
-import { resolveRequestLocale, type ResolveRequestLocaleOptions } from '@/i18n/resolveRequestLocale';
+import { type ResolveRequestLocaleOptions, resolveRequestLocale } from '@/i18n/resolveRequestLocale';
 
 export async function resolveCurrentLocale(opts: Partial<ResolveRequestLocaleOptions> = {}) {
 	if (typeof window === 'undefined') {

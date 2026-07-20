@@ -1,8 +1,8 @@
 'use client';
 
-import React from 'react';
 import { getPrefersColorSchema } from '@wener/console';
 import { DaisyTheme, DaisyThemeDemo, ThemeListSelector } from '@wener/console/daisy';
+import React from 'react';
 import { useStore } from 'zustand';
 
 export const DaisyThemePage = () => {

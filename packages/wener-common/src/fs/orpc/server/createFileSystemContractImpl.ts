@@ -43,7 +43,7 @@ export function createFileSystemContractImpl(ifs: IFileSystem) {
 		}),
 		readFile: os.readFile.handler(async ({ input }) => {
 			return {
-				base64: ArrayBuffers.toBase64(await ifs.readFile(input.path, { encoding: 'binary' })),
+				base64: ArrayBuffers.toBase64((await ifs.readFile(input.path, { encoding: 'binary' })) as BufferSource),
 			};
 		}),
 		writeFile: os.writeFile.handler(async ({ input }) => {

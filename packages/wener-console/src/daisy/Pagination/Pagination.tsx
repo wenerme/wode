@@ -1,6 +1,6 @@
-import React, { type FC } from 'react';
-import { HiChevronLeft, HiChevronRight } from 'react-icons/hi2';
 import classNames from 'clsx';
+import type { FC } from 'react';
+import { HiChevronLeft, HiChevronRight } from 'react-icons/hi2';
 import { Button } from '../Button/Button';
 
 export const Pagination: FC<{

@@ -1,8 +1,7 @@
 import { marshalInstruction } from '@/poc/bbvm/marshalInstruction';
 import { getOpcodeLength } from '@/poc/bbvm/rt';
-import { Instruction, Opcode } from '@/poc/bbvm/types';
-import { parse, ParseOptions } from './parser';
-import { AsmOpCodes, Assembly } from './types';
+import { type ParseOptions, parse } from './parser';
+import { AsmOpCodes, type Assembly } from './types';
 
 export function parseAssembly(input: string, options?: ParseOptions) {
 	return parse(input, options) as Assembly[];
@@ -80,7 +79,7 @@ export function compile(all: Assembly[]) {
 	return out;
 }
 
-function assert<T>(v: T | undefined | null, message?: string): T {
+function _assert<T>(v: T | undefined | null, message?: string): T {
 	if (v === undefined || v === null) {
 		throw new Error(message || 'requireDefined');
 	}

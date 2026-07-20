@@ -12,11 +12,11 @@ export type ConsoleStore = ReturnType<typeof createConsoleStore>;
 
 export function createConsoleStore() {
 	return createStore(
-		mutative<ConsoleStoreState>((setState, getState, store) => {
+		mutative<ConsoleStoreState>((setState, _getState, _store) => {
 			return {
 				expired: false,
 				locked: false,
-				unlock: (options) => {
+				unlock: (_options) => {
 					setState((s) => {
 						s.locked = false;
 					});

@@ -35,7 +35,7 @@ export namespace Errors {
 	// InternalError  when an internal error in the JavaScript engine is thrown. E.g. "too much recursion".
 	// DOMException  when an error occurs in the DOM.
 
-	export const resolvers: ((e: any) => ErrorDetail | void)[] = [];
+	export const resolvers: ((e: any) => ErrorDetail | undefined)[] = [];
 
 	export function create(init: ErrorDetailInit): ErrorDetail {
 		return new DetailHolder(init);
@@ -72,7 +72,7 @@ export namespace Errors {
 		if (isError(e)) {
 			const { message, code, status } = e as any;
 			// can get status from NestJS HttpException
-			return new DetailHolder({ message, status: parseInt(status) || 500, code, cause: e });
+			return new DetailHolder({ message, status: parseInt(status, 10) || 500, code, cause: e });
 		}
 
 		return new DetailHolder({ message: e.message, status: 500, cause: e });

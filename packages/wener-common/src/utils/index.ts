@@ -1,5 +1,5 @@
-export { getEstimateProcessTime } from './getEstimateProcessTime';
+export { buildBaseUrl } from './buildBaseUrl';
 
 export { buildRedactorFormSchema } from './buildRedactorFormSchema';
-
-export { buildBaseUrl } from './buildBaseUrl';
+export { formatNumber } from './formatNumber';
+export { getEstimateProcessTime } from './getEstimateProcessTime';

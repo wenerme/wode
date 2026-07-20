@@ -1,4 +1,4 @@
-import { maybeFunction, type MaybeFunction } from '@wener/utils';
+import { type MaybeFunction, maybeFunction } from '@wener/utils';
 
 export function resolveFeatureOptions<T>(
 	value: boolean | T | undefined | null,

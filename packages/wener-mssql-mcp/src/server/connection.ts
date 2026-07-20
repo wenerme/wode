@@ -96,12 +96,12 @@ export function createConnectionPool(config: LocalMssqlConfig): ConnectionPool {
 					const errorMessage = error instanceof Error ? error.message : 'Unknown error';
 					const lower = errorMessage.toLowerCase();
 					if (
-						lower.includes('insert')
-						|| lower.includes('update')
-						|| lower.includes('delete')
-						|| lower.includes('create')
-						|| lower.includes('drop')
-						|| lower.includes('alter')
+						lower.includes('insert') ||
+						lower.includes('update') ||
+						lower.includes('delete') ||
+						lower.includes('create') ||
+						lower.includes('drop') ||
+						lower.includes('alter')
 					) {
 						// This suggests a write operation was attempted in read-only mode
 						throw new Error(`Read-only mode violation: Attempted write operation detected. ${errorMessage}`);
@@ -119,7 +119,7 @@ export function createConnectionPool(config: LocalMssqlConfig): ConnectionPool {
 				const transactionCheckResult = await request.query('SELECT @@TRANCOUNT as trancount');
 				const currentTranCount = transactionCheckResult.recordset[0]?.trancount || 0;
 
-				let result;
+				let result: sql.IResult<T>;
 
 				if (currentTranCount > 0) {
 					// Already in a transaction, execute directly

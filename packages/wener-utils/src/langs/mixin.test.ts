@@ -35,12 +35,12 @@ class BaseEnt extends BaseResource {
 }
 
 test('mixin deep not working', () => {
-	// @ts-ignore
+	// @ts-expect-error
 	class User extends mixin(BaseResource, createBarFields()) {}
 
 	let usr = new User();
 	// type not working
-	// @ts-ignore
+	// @ts-expect-error
 	expect(usr.foo, 'foo');
 	expect(usr).toEqual({ foo: 'foo', bar: 'bar', id: '' });
 });
@@ -48,7 +48,7 @@ test('mixin deep not working', () => {
 function createBarFields() {
 	return <TBase extends Constructor>(Base: TBase) => {
 		// nested type not working
-		// @ts-ignore
+		// @ts-expect-error
 		class HasBarMixin extends mixin(Base, withFooFields) {
 			bar?: string = 'bar';
 		}

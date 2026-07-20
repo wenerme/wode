@@ -1,5 +1,5 @@
-import React, { type FC } from 'react';
 import styled from '@emotion/styled';
+import type { FC } from 'react';
 
 // loader from https://codepen.io/AlexWarnes/pen/jXYYKL
 
