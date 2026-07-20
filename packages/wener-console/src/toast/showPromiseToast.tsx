@@ -1,22 +1,32 @@
+import { classOf, type MaybeFunction, maybeFunction, Promises } from '@wener/utils';
 import type { ReactElement } from 'react';
 import toast, { type DefaultToastOptions } from 'react-hot-toast';
-import { classOf, maybeFunction, Promises, type MaybeFunction } from '@wener/utils';
+import { HiXMark } from 'react-icons/hi2';
 import { resolveErrorMessage } from './resolveErrorMessage';
 
 type Renderable = ReactElement | string | null;
 
+export interface PromiseContext {
+	signal: AbortSignal;
+	abort: (reason?: any) => void;
+	setMessage: (message: Renderable) => void;
+}
+
+export type PromiseFactory<T> = (ctx: PromiseContext) => Promise<T>;
+
 export type ShowPromiseToastOptions<T> = {
-	promise: Promise<T>;
+	promise: Promise<T> | PromiseFactory<T>;
 	delay?: number;
 	action?: string;
-	swallow?: boolean; // swallow error
+	swallow?: boolean;
+	canAbort?: boolean;
 	loading?: MaybeFunction<Renderable>;
 	success?: MaybeFunction<Renderable, [T]>;
 	error?: MaybeFunction<Renderable, [any]>;
 };
 
 export async function showPromiseToast<T, S extends boolean = false>(
-	promise: Promise<T>,
+	promise: Promise<T> | PromiseFactory<T>,
 	opts?: Omit<ShowPromiseToastOptions<T>, 'promise'> & { swallow?: S },
 	def?: DefaultToastOptions,
 ): Promise<S extends true ? T | undefined : T>;
@@ -29,45 +39,90 @@ export async function showPromiseToast<T, S extends boolean>(
 	b?: any,
 	c?: any,
 ): Promise<S extends true ? T | undefined : T> {
-	let promise: Promise<T>;
-	let opts: ShowPromiseToastOptions<T> & {
-		swallow?: S;
-	};
+	let promiseOrFactory: Promise<T> | PromiseFactory<T>;
+	let opts: ShowPromiseToastOptions<T> & { swallow?: S };
 	let def: DefaultToastOptions;
-	if ('then' in a) {
-		promise = a;
-		opts = b;
-		def = c;
-	} else {
-		promise = a.promise;
+
+	if (a && typeof a === 'object' && 'promise' in a) {
+		promiseOrFactory = a.promise;
 		opts = a;
 		def = b;
+	} else {
+		promiseOrFactory = a;
+		opts = b;
+		def = c;
 	}
-	opts ||= {
-		promise,
-	};
+
+	opts ||= {} as ShowPromiseToastOptions<T> & { swallow?: S };
 	def ||= {};
 
 	const {
 		delay = 0,
 		swallow,
+		canAbort = false,
 		action = '操作',
 		loading = () => `${action}中...`,
-		success = (v: T) => `${action}成功`,
-		error = (err: any) => `${action}失败: ${resolveErrorMessage(err)}`,
+		success = (_v: T) => `${action}成功`,
+		error = (err: any) => {
+			if (err instanceof DOMException && err.name === 'AbortError') {
+				return null;
+			}
+			return `${action}失败: ${resolveErrorMessage(err)}`;
+		},
 	} = opts;
 
-	let toastId;
+	const abortController = new AbortController();
+	let toastId: string | undefined;
+	let currentMessage: Renderable = null;
+
+	const renderContent = (message: Renderable) => {
+		return canAbort ? (
+			<div className='flex items-center gap-2'>
+				<span>{message}</span>
+				<button
+					type='button'
+					className='btn btn-xs btn-circle btn-ghost'
+					onClick={() => {
+						abortController.abort();
+						toast.dismiss(toastId);
+					}}
+					title='取消'
+				>
+					<HiXMark className='w-4 h-4' />
+				</button>
+			</div>
+		) : (
+			message
+		);
+	};
+
+	const setMessage = (message: Renderable) => {
+		currentMessage = message;
+		if (!toastId) return;
+		toast.loading(renderContent(message), {
+			id: toastId,
+			...def,
+			...def.loading,
+		});
+	};
+
+	const ctx: PromiseContext = {
+		signal: abortController.signal,
+		abort: (reason?: any) => abortController.abort(reason),
+		setMessage,
+	};
+
+	const promise: Promise<T> = typeof promiseOrFactory === 'function' ? promiseOrFactory(ctx) : promiseOrFactory;
+
 	try {
 		let done = false;
-		// avoid await twice for Thenable
 		const p = Promise.resolve(promise);
 		await Promise.race([
 			Promises.sleep(delay).then(() => {
 				if (done) return;
-				let content = maybeFunction(loading);
-				if (content) {
-					toastId = toast.loading(content, {
+				const loadingContent = currentMessage || maybeFunction(loading);
+				if (loadingContent) {
+					toastId = toast.loading(renderContent(loadingContent), {
 						...def,
 						...def.loading,
 					});
@@ -77,7 +132,7 @@ export async function showPromiseToast<T, S extends boolean>(
 		]);
 		const out = await p;
 		done = true;
-		let message = maybeFunction(success, out);
+		const message = maybeFunction(success, out);
 		if (message) {
 			toast.success(message, {
 				id: toastId,
@@ -89,9 +144,11 @@ export async function showPromiseToast<T, S extends boolean>(
 		}
 		return out;
 	} catch (e) {
-		console.log(`ERROR ${classOf(e)}`, e);
+		if (!(e instanceof DOMException && e.name === 'AbortError')) {
+			console.log(`ERROR ${classOf(e)}`, e);
+		}
 
-		let message = maybeFunction(error, e);
+		const message = maybeFunction(error, e);
 		if (message) {
 			toast.error(message, {
 				id: toastId,

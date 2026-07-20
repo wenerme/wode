@@ -11,7 +11,6 @@
 		"removeComments": false,
 		"stripInternal": true,
 		"outDir": "lib",
-		"baseUrl": ".",
 		"rootDir": "./src",
 		"paths": {
 			"#/*": ["./src/*"]

@@ -1,5 +1,4 @@
 import type {
-	ComponentProps,
 	ComponentPropsWithRef,
 	CSSProperties,
 	ElementType,

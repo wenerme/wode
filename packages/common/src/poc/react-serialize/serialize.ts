@@ -16,9 +16,9 @@ interface SerializeOptionsResolved {
  */
 export function serialize(element: React.ReactNode, { refs = new Map(), refOf, register }: SerializeOptions = {}) {
 	return _ser(element, {
-		refOf: (type, v, o) => {
+		refOf: (type, v, _o) => {
 			switch (type) {
-				case 'function':
+				case 'function': {
 					let ref = refs.get(v);
 					if (!ref && register && typeof v.name === 'string') {
 						ref = v.name;
@@ -28,22 +28,21 @@ export function serialize(element: React.ReactNode, { refs = new Map(), refOf, r
 						return { $$ref: ref };
 					}
 					break;
-				case 'react.element':
-					{
-						let type = v.type;
-						// omit _owner, _store, key, ref
-						type = refs.get(type) || type;
-						// add new components
-						if (register && typeof type !== 'string' && type?.displayName) {
-							refs.set(type, type.displayName);
-							type = type?.displayName;
-						}
-						if (typeof type !== 'string') {
-							throw new Error(`Deserialization error: unable to resolve component "${String(type)}"`);
-						}
-						return { type };
+				}
+				case 'react.element': {
+					let type = v.type;
+					// omit _owner, _store, key, ref
+					type = refs.get(type) || type;
+					// add new components
+					if (register && typeof type !== 'string' && type?.displayName) {
+						refs.set(type, type.displayName);
+						type = type?.displayName;
 					}
-					break;
+					if (typeof type !== 'string') {
+						throw new Error(`Deserialization error: unable to resolve component "${String(type)}"`);
+					}
+					return { type };
+				}
 			}
 
 			throw new Error(`Serialization error: unable to resolve ref of ${type} "${String(v)}"`);
@@ -63,7 +62,7 @@ function _ser(x: any, o: SerializeOptionsResolved): any {
 
 	// element
 	{
-		let s;
+		let s: symbol | undefined;
 		if ((s = x.$$typeof) && typeof s === 'symbol') {
 			const to = Symbol.keyFor(s)!;
 			const ele: Record<string, any> = { ...refOf(to, x, o), $$typeof: to, props: _ser(x.props, o) };
@@ -88,7 +87,7 @@ export interface DeserializeOptions extends Partial<DeserializeOptionsResolved> 
  */
 export function deserialize(data: any, { refs = new Map(), ...options }: DeserializeOptions): React.ReactNode {
 	return _des(data, {
-		resolveOf: (type, value, options) => {
+		resolveOf: (type, value, _options) => {
 			switch (type) {
 				case 'function':
 					if (!refs.has(value.$$ref)) {
@@ -126,7 +125,7 @@ function _des(x: any, o: DeserializeOptionsResolved): any {
 
 	// element
 	{
-		let to;
+		let to: string | undefined;
 		if ((to = x.$$typeof)) {
 			if (to === 'function') {
 				return resolveOf(to, x, o);

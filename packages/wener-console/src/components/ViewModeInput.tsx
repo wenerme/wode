@@ -1,4 +1,4 @@
-import React, { type ComponentPropsWithRef, type ComponentType } from 'react';
+import type { ComponentPropsWithRef, ComponentType } from 'react';
 import {
 	PiCalendarDotsLight,
 	PiChartBarLight,

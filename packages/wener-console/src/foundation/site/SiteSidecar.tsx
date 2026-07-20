@@ -1,5 +1,5 @@
-import React, { lazy } from 'react';
 import { ProdOnly } from '@wener/reaction';
+import { lazy } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 import { useUserId } from '../../console/context';
 import { useSiteStore } from './SiteStore';
@@ -17,9 +17,5 @@ export const SiteSidecar = () => {
 		}),
 	);
 
-	return (
-		<>
-			<ProdOnly>{siteId && url && <MatomoTracker url={url} siteId={siteId} useUserId={useUserId} />}</ProdOnly>
-		</>
-	);
+	return <ProdOnly>{siteId && url && <MatomoTracker url={url} siteId={siteId} useUserId={useUserId} />}</ProdOnly>;
 };

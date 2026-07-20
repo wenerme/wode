@@ -1,5 +1,5 @@
 import type { EntityManager } from '@mikro-orm/postgresql';
-import { Contexts } from '@wener/nestjs/app';
+import { Contexts } from '@wener/server/app';
 import { EntityAuditAction } from './enum';
 import type { AuditContext } from './types';
 import { writeAuditLog } from './writeAuditLog';

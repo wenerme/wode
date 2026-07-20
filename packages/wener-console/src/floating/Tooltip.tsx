@@ -1,5 +1,5 @@
-import React, { cloneElement, Fragment, type CSSProperties, type ReactElement, type ReactNode } from 'react';
 import { FloatingPortal, type Placement } from '@floating-ui/react';
+import { type CSSProperties, cloneElement, Fragment, type ReactElement, type ReactNode } from 'react';
 import { cn } from '../utils/cn';
 import type { UseFloatingInteractionsOptions } from './useFloatingInteractions';
 import { usePopover } from './usePopover';

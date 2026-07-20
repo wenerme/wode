@@ -1,5 +1,5 @@
 import { forEachJsonSchema, type JsonSchemaDef } from '../jsonschema';
-import { toJsonSchema, type TypeSchema } from '../schema';
+import { type TypeSchema, toJsonSchema } from '../schema';
 
 export const RedactedText = '[redacted]';
 
@@ -60,10 +60,10 @@ export function buildRedactorFormSchema(
 	};
 }
 
-function buildReversibleRedactText({
+function _buildReversibleRedactText({
 	id,
-	type,
-	key,
+	type: _type,
+	key: _key,
 	timestamp,
 }: {
 	id?: string | number;

@@ -20,26 +20,22 @@ export async function launch({
 	dataDir = process.env.BROWSER_DATA_DIR || 'data/browsers',
 	cacheDir = path.join(dataDir, 'cache'),
 	defaultViewport = { width: 1265, height: 617 },
-	plugins: { adblock = false } = {},
+	plugins: { _adblock = false } = {},
 	args = [],
 	...options
 }: LaunchOptions): Promise<{ browser: Browser; reuse?: boolean }> {
 	const logger = createChildLogger(options.logger ?? createLogger(), { uid });
 	const userDataDir = path.join(dataDir, uid);
-
-	// try reconnect
-	{
-		try {
-			const browser = await connect({ name: uid, dataDir, cacheDir, ...options });
-			if (browser) {
-				return { browser: browser as any as Browser, reuse: true };
-			}
-		} catch (error) {
-			logger.debug(`Failed to connect browser: ${error}`);
+	try {
+		const browser = await connect({ name: uid, dataDir, cacheDir, ...options });
+		if (browser) {
+			return { browser: browser as any as Browser, reuse: true };
 		}
-
-		logger.info('Browser is not running');
+	} catch (error) {
+		logger.debug(`Failed to connect browser: ${error}`);
 	}
+
+	logger.info('Browser is not running');
 
 	// prepare & cleanup
 	await fs.mkdir(userDataDir, { recursive: true });

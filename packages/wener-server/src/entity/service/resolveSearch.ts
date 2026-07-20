@@ -35,7 +35,7 @@ export function resolveSearch<C = Record<string, any>>(
 	if (o.onTypedKey) {
 		const sp = s.split('_');
 		const [type, rest] = sp;
-		if (sp.length == 2 && type && isULID(rest)) {
+		if (sp.length === 2 && type && isULID(rest)) {
 			o.onTypedKey(s, ctx);
 			return;
 		}

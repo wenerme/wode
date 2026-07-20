@@ -1,6 +1,6 @@
 import { Entity } from '@mikro-orm/core';
-import type { IdentifiableEntity } from '@wener/nestjs/entity';
-import { getEntityManager } from '@wener/nestjs/mikro-orm';
+import type { IdentifiableEntity } from '@wener/server/entity';
+import { getEntityManager } from '@wener/server/mikro-orm';
 import type { Constructor } from '@wener/utils';
 import { AuthEntityRoleEntity } from '@/foundation/Auth/entity/AuthEntityRoleEntity';
 

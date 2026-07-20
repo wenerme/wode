@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 import { DivisionFormat, ValidFormat } from './Formats';
 import { mod31 } from './gb31200/mod31';
 import { UnifiedSocialCreditId } from './gb31200/UnifiedSocialCreditId';

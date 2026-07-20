@@ -5,7 +5,7 @@ type NetworkStatusResult = { online: boolean; offline: boolean; status: 'online'
 
 function getNetworkStatusStore() {
 	return getGlobalStates('NetworkStatusStore', () => {
-		return createStore<{ online: boolean }>((setState, getState, store) => {
+		return createStore<{ online: boolean }>((setState, _getState, _store) => {
 			let close: () => void = () => void 0;
 			requestIdleCallback(() => {
 				close = watch((online) => setState({ online: online }));

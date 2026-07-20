@@ -1,6 +1,6 @@
-import React, { type FC, type PropsWithChildren } from 'react';
 import { ComponentProvider } from '@wener/console/components';
 import { SiteLogo } from '@wener/console/console';
+import React, { type FC, type PropsWithChildren } from 'react';
 import { WenerLogo } from '#/instance/WenerLogo';
 
 export namespace Instance {

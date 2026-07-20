@@ -1,9 +1,9 @@
 import type { FetchLike } from '@wener/utils';
 import { getOfficialAlpineMirrorUrl } from './const';
 import { joinUrl } from './joinUrl';
-import { parseApkIndex, type ApkIndexPackage } from './repo/parseApkIndex';
-import { parseApkIndexArchive, type ApkIndexArchive } from './repo/parseApkIndexArchive';
-import { resolveRepositoryCoordinate, type RepositoryCoordinateInit } from './RepositoryCoordinate';
+import { type RepositoryCoordinateInit, resolveRepositoryCoordinate } from './RepositoryCoordinate';
+import { type ApkIndexPackage, parseApkIndex } from './repo/parseApkIndex';
+import { type ApkIndexArchive, parseApkIndexArchive } from './repo/parseApkIndexArchive';
 
 export function createAlpineMirror(
 	mirrorUrl = getOfficialAlpineMirrorUrl(),
@@ -14,7 +14,7 @@ export function createAlpineMirror(
 	} = {},
 ): AlpineMirror {
 	const coordinate = resolveRepositoryCoordinate({ mirrorUrl });
-	const request = async (path: string, {}: {} = {}) => {
+	const request = async (path: string, _options: object = {}) => {
 		let u = path;
 		if (!/^https?:\//.test(u)) {
 			u = joinUrl(coordinate.mirrorUrl, path);
@@ -76,7 +76,7 @@ export function createAlpineRepo({
 	const coordinate = resolveRepositoryCoordinate(_coord);
 	mirror ||= createAlpineMirror(coordinate.mirrorUrl);
 
-	const request = async (path: string, {}: {} = {}) => {
+	const request = async (path: string, _options: object = {}) => {
 		let u = path;
 		if (!/^https?:\//.test(u)) {
 			u = joinUrl(coordinate.repoUrl, path);

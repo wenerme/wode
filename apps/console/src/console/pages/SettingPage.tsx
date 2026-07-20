@@ -1,12 +1,12 @@
-import type { ReactNode } from 'react';
+import { ModuleMainLayout } from '@wener/console/console';
+import type { ExpandableSideMenuItemProps } from '@wener/console/web';
 import type React from 'react';
+import type { ReactNode } from 'react';
 import { AiFillExperiment, AiOutlineExperiment } from 'react-icons/ai';
 import { FaRegUser, FaUser } from 'react-icons/fa6';
 import { HiColorSwatch, HiOutlineColorSwatch } from 'react-icons/hi';
 import { HiOutlineCog } from 'react-icons/hi2';
 import { TiInfoLarge, TiInfoLargeOutline } from 'react-icons/ti';
-import { ModuleMainLayout } from '@wener/console/console';
-import type { ExpandableSideMenuItemProps } from '@wener/console/web';
 
 const SettingItems: ExpandableSideMenuItemProps[] = [
 	{

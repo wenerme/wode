@@ -1,12 +1,11 @@
-export type { AnyResource } from './types/AnyResource';
-export type { Identifiable } from './types/Identifiable';
-
 export {
+	type DefineResourceOptions,
 	defineResource,
 	getResourceSchemas,
 	isResource,
-	resolveResourceSchema,
-	type DefineResourceOptions,
-	type ResourceSchemaDef,
 	type ResolveResourceSchemaOptions,
+	type ResourceSchemaDef,
+	resolveResourceSchema,
 } from './defineResource';
+export type { AnyResource } from './types/AnyResource';
+export type { Identifiable } from './types/Identifiable';

@@ -1,7 +1,7 @@
 import type { EntityManager } from '@mikro-orm/postgresql';
-import { isEntityTypeId } from '@wener/nestjs/entity';
-import { resolveEntity } from '@wener/nestjs/entity/service';
-import { getEntityManager } from '@wener/nestjs/mikro-orm';
+import { isEntityTypeId } from '@wener/server/entity';
+import { resolveEntity } from '@wener/server/entity/service';
+import { getEntityManager } from '@wener/server/mikro-orm';
 import { Errors } from '@wener/utils';
 import consola from 'consola';
 import type { ConsolaInstance } from 'consola/core';
@@ -68,7 +68,7 @@ export async function checkUserPassword({
 		if (!user.password.startsWith('$')) {
 			log.debug(`user ${user.id} migration password`);
 			user.password = await hashPassword(password);
-			await em.persistAndFlush(user);
+			await em.persist(user).flush();
 		}
 	}
 

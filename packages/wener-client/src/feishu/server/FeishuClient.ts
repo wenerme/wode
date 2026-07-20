@@ -1,12 +1,12 @@
 import type { FetchLike } from '@wener/utils';
 import dayjs from 'dayjs';
 import type { ExpiryValue } from '../../ExpiryValue';
-import { MessageType } from '../../local/feishu/message-common';
+import type { MessageType } from '../../local/feishu/message-common';
 import { getAppAccessTokenInternal } from './getAppAccessTokenInternal';
 import { getExpiryValueOrRequest } from './getExpiryValueOrRequest';
 import { getTenantAccessTokenInternal } from './getTenantAccessTokenInternal';
 import { refreshAccessToken } from './refreshAccessToken';
-import { request, type RequestOptions } from './request';
+import { type RequestOptions, request } from './request';
 
 type IdType = 'open_id' | 'union_id' | 'user_id' | 'email' | 'chat_id';
 
@@ -76,7 +76,7 @@ export class FeishuClient {
 		let headers = {
 			...req.headers,
 		};
-		headers['authorization'] = `Bearer ${(await this.getTenetAccessToken()).value}`;
+		headers.authorization = `Bearer ${(await this.getTenetAccessToken()).value}`;
 		return request({
 			fetch: this.fetch,
 			...req,
@@ -162,7 +162,7 @@ export class FeishuClient {
 	}
 }
 type AccessTokenType = 'tenant_access_token' | 'user_access_token' | 'app_access_token';
-function getTokenType(s: string): AccessTokenType | undefined {
+function _getTokenType(s: string): AccessTokenType | undefined {
 	if (!s) return;
 	if (s.startsWith('t-')) {
 		return 'tenant_access_token';

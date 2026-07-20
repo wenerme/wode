@@ -1,4 +1,4 @@
-import { useEffect, useRef, type DependencyList } from 'react';
+import { type DependencyList, useEffect, useRef } from 'react';
 
 /**
  * useAsyncEffect accept async function call, which can accept an AbortController and return a Promise
@@ -6,14 +6,14 @@ import { useEffect, useRef, type DependencyList } from 'react';
  * @param deps DependencyList
  */
 export function useAsyncEffect(
-	effect: (o: { signal: AbortSignal }) => Promise<void | (() => void)>, // eslint-disable-line @typescript-eslint/no-invalid-void-type
+	effect: (o: { signal: AbortSignal }) => Promise<void | undefined | (() => void)>,
 	deps?: DependencyList,
 ): { abort: () => void } {
 	const abortRef = useRef<() => void>(undefined);
 	useEffect(() => {
 		const abortController = new AbortController();
 		abortRef.current = () => abortController.abort();
-		let cleanup: void | (() => void);
+		let cleanup: undefined | (() => void);
 		effect({ signal: abortController.signal })
 			.then((rs) => {
 				if (typeof rs === 'function') {

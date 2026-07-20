@@ -1,5 +1,5 @@
+export { type ClientMiddleware, ClientRegistry } from './ClientRegistry';
 export { RemoteMethodNotImplemented } from './RemoteMethodNotImplemented';
-export type * from './types';
-export { ClientRegistry, type ClientMiddleware } from './ClientRegistry';
 export { RemoteServiceOf } from './RemoteServiceOf';
-export { ServiceClientModule, SERVICE_CLIENT_CONNECTION } from './ServiceClientModule';
+export { SERVICE_CLIENT_CONNECTION, ServiceClientModule } from './ServiceClientModule';
+export type * from './types';

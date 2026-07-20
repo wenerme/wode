@@ -1,4 +1,4 @@
-import React, { type FC } from 'react';
+import type { FC } from 'react';
 
 export const PageSizeSelect: FC<{
 	value: number;
@@ -13,7 +13,7 @@ export const PageSizeSelect: FC<{
 				className={'select select-xs'}
 				value={String(value)}
 				onChange={(e) => {
-					onChange?.(parseInt(e.currentTarget.value));
+					onChange?.(parseInt(e.currentTarget.value, 10));
 				}}
 			>
 				{options.map((v) => (

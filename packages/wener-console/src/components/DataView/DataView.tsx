@@ -1,8 +1,8 @@
-import { useCallback, type ComponentPropsWithRef } from 'react';
 import { cn } from '@wener/console';
 import { NotReadyPlaceholder } from '@wener/console/components';
 import { DevOnly } from '@wener/reaction';
 import { pick } from 'es-toolkit';
+import { type ComponentPropsWithRef, useCallback } from 'react';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
 import { ActionIcon } from '../icons';
@@ -141,7 +141,7 @@ export namespace DataView {
 				const state = store.getState();
 				console.log(`[DEBUG] DataViewState`, state);
 				console.log(`use window._DataViewStore to access the store`);
-				(window as any)['_DataViewStore'] = store;
+				(window as any)._DataViewStore = store;
 			},
 		});
 	};

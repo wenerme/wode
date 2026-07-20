@@ -19,22 +19,22 @@ test('get typing', () => {
 	expectTypeOf(get(obj, 'nested.b.c')).toMatchTypeOf<boolean>();
 	expectTypeOf(get(obj, 'arr')).toMatchTypeOf<number[]>();
 	expectTypeOf(get(obj, 'arr[13]')).toMatchTypeOf<number>();
-	// @ts-ignore
+	// @ts-expect-error
 	expectTypeOf(get(obj, 'arr.13')).toMatchTypeOf<number>();
 	expectTypeOf(get(obj, 'nestedArr[3].other')).toMatchTypeOf<null>();
-	// @ts-ignore
+	// @ts-expect-error
 	expectTypeOf(get(obj, 'deep.deep')).toMatchTypeOf<string[]>();
 	expectTypeOf(get(obj, 'deep.arr[333]')).toMatchTypeOf<string>();
 	expectTypeOf(get(obj, 'deep.arr[333].length')).toMatchTypeOf<number>();
-	// @ts-ignore
+	// @ts-expect-error
 	expectTypeOf(get(obj, 'nested["b"]["c"]')).toMatchTypeOf<boolean>();
-	// @ts-ignore
+	// @ts-expect-error
 	expectTypeOf(get(obj, '')).toMatchTypeOf<never>();
 	expectTypeOf(get(obj, '', 3)).toMatchTypeOf<number>();
-	// @ts-ignore
+	// @ts-expect-error
 	expectTypeOf(get(obj, 'nested.asdfasdf')).toMatchTypeOf<never>();
 	expectTypeOf(get(obj, 'deeplvl1[1].deeplvl2.deeplvl3[88].deeplvl4.value')).toMatchTypeOf<RegExp>();
-	// @ts-ignore
+	// @ts-expect-error
 	expectTypeOf(get(obj, 'deeplvl1[1].deeplvl2.deeplvl1[88].deeplvl4.value')).toMatchTypeOf<never>();
 	expectTypeOf(get(obj, 'deeplvl1[1].deeplvl2.deeplvl1[88].deeplvl4.value', obj)).toMatchTypeOf<TestClass>();
 	expectTypeOf(get(obj, 'nested["dd"]', '')).toMatchTypeOf<string>();

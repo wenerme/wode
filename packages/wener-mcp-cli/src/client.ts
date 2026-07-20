@@ -7,10 +7,10 @@ import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js'
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
 import type { Resource, Tool } from '@modelcontextprotocol/sdk/types.js';
 import { debug, getConcurrencyLimit, getMaxRetries, getRetryDelayMs, getTimeoutMs } from './config';
-import { getServerUrl, isHttpServer, type HttpServerConfig, type ServerConfig, type StdioServerConfig } from './schema';
+import { getServerUrl, type HttpServerConfig, isHttpServer, type ServerConfig, type StdioServerConfig } from './schema';
 
 // Re-export for convenience
-export { debug, getTimeoutMs, getConcurrencyLimit };
+export { Client, debug, getTimeoutMs, getConcurrencyLimit };
 
 export interface ConnectedClient {
 	client: Client;
@@ -23,10 +23,22 @@ export interface ServerInfo {
 	protocolVersion?: string;
 }
 
+/**
+ * Tool annotations providing hints about tool behavior
+ */
+export interface ToolAnnotations {
+	title?: string;
+	readOnlyHint?: boolean;
+	destructiveHint?: boolean;
+	idempotentHint?: boolean;
+	openWorldHint?: boolean;
+}
+
 export interface ToolInfo {
 	name: string;
 	description?: string;
 	inputSchema: Record<string, unknown>;
+	annotations?: ToolAnnotations;
 }
 
 export interface ResourceInfo {
@@ -246,8 +258,17 @@ export async function listTools(client: Client): Promise<ToolInfo[]> {
 			name: tool.name,
 			description: tool.description,
 			inputSchema: tool.inputSchema as Record<string, unknown>,
+			annotations: tool.annotations as ToolAnnotations | undefined,
 		}));
 	}, 'list tools');
+}
+
+/**
+ * List only readonly tools from a connected client
+ */
+export async function listReadOnlyTools(client: Client): Promise<ToolInfo[]> {
+	const tools = await listTools(client);
+	return tools.filter((tool) => tool.annotations?.readOnlyHint === true);
 }
 
 /**

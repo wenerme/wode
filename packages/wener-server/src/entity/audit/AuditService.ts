@@ -1,7 +1,5 @@
-import { MikroORM } from '@mikro-orm/postgresql';
-import { Inject, Injectable } from '@nestjs/common';
+import type { MikroORM } from '@mikro-orm/postgresql';
 
-@Injectable()
 export class AuditService {
-	constructor(@Inject(MikroORM) protected readonly orm: MikroORM) {}
+	orm!: MikroORM;
 }

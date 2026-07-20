@@ -16,12 +16,12 @@ export function collectAuditData<T extends AuditData>(data: T): T {
 		data.clientAgent = userAgent;
 		// https://github.com/pbojinov/request-ip/blob/master/src/index.js#L55
 		data.clientIp =
-			ip
-			|| firstOfMaybeArray(req.headers?.['cf-connecting-ip'])
-			|| firstOfMaybeArray(req.headers?.['x-client-ip'])
-			|| firstOfMaybeArray(req.headers?.['cf-pseudo-ipv4'])
-			|| firstOfMaybeArray(req.headers?.['x-forwarded-for'])
-			|| req.socket.remoteAddress;
+			ip ||
+			firstOfMaybeArray(req.headers?.['cf-connecting-ip']) ||
+			firstOfMaybeArray(req.headers?.['x-client-ip']) ||
+			firstOfMaybeArray(req.headers?.['cf-pseudo-ipv4']) ||
+			firstOfMaybeArray(req.headers?.['x-forwarded-for']) ||
+			req.socket.remoteAddress;
 		meta.method = method;
 		meta.path = path;
 		if (url !== path) {

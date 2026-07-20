@@ -1,9 +1,9 @@
-import type { ReactNode } from 'react';
-import React from 'react';
-import { HiUsers } from 'react-icons/hi2';
 import { Popover, Transition } from '@headlessui/react';
 import { Button } from '@wener/console/daisy';
 import { clsx } from 'clsx';
+import type { ReactNode } from 'react';
+import React from 'react';
+import { HiUsers } from 'react-icons/hi2';
 
 export interface DockUserAvatarProps {
 	hasNotification?: boolean;

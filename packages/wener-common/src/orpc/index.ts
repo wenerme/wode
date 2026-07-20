@@ -1,2 +1,2 @@
-export { createRpcContractClient } from './createRpcContractClient';
 export { createOpenApiContractClient } from './createOpenApiContractClient';
+export { createRpcContractClient } from './createRpcContractClient';

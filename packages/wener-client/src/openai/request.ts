@@ -1,8 +1,8 @@
-import { getGlobalThis, type FetchLike } from '@wener/utils';
+import { type FetchLike, getGlobalThis } from '@wener/utils';
 import { buildRequest } from './buildRequest';
 import { OpenAiClientError } from './OpenAiClientError';
 
-export interface OpenAiRequestOptions<T> {
+export interface OpenAiRequestOptions<_T> {
 	fetch?: FetchLike;
 	baseUrl?: string;
 	method?: string;
@@ -21,11 +21,7 @@ export async function request<T>({
 
 	const res = await fetch(url, init);
 	let data: T;
-	try {
-		data = (await res.json()) as T;
-	} catch (error) {
-		throw error;
-	}
+	data = (await res.json()) as T;
 
 	if (!res.ok) {
 		const r = data as ErrorResponse;

@@ -9,14 +9,18 @@ export async function readApkBuild() {
 		.flatMap((v) => v.split('::'))
 		.map((v) => v.trim())
 		.filter((v) => /^https?:/.test(v));
-	return { name, ver, rel: parseInt(rel), sources };
+	return { name, ver, rel: parseInt(rel, 10), sources };
 }
 
 export async function writeApkBuild({
 	ver,
 	rel,
 	write = true,
-}: { ver?: string; rel?: string | number; write?: boolean } = {}) {
+}: {
+	ver?: string;
+	rel?: string | number;
+	write?: boolean;
+} = {}) {
 	let apkbuild = await fs.readFile('APKBUILD', 'utf-8');
 
 	if (ver) apkbuild = apkbuild.replace(/^pkgver=.*/m, `pkgver=${ver}`);

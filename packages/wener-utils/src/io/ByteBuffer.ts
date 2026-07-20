@@ -3,6 +3,10 @@ import type { Bytes } from './types';
 
 // type AnyBuffer = BufferSource | ArrayBufferLike;
 type AnyBuffer = ArrayBufferView<ArrayBuffer> | ArrayBuffer;
+type ArrayBufferWithMaxLengthConstructor = new (
+	byteLength: number,
+	options?: { maxByteLength?: number },
+) => ArrayBuffer;
 
 function asBuffer(o: AnyBuffer): ArrayBuffer {
 	if (o instanceof ArrayBuffer) {
@@ -49,7 +53,9 @@ export class ByteBuffer {
 	// #endian: 'big' | 'little' = 'big';
 	#bigEndian = true;
 
-	constructor(buffer: AnyBuffer = new ArrayBuffer(0, { maxByteLength: 1024 })) {
+	constructor(
+		buffer: AnyBuffer = new (ArrayBuffer as ArrayBufferWithMaxLengthConstructor)(0, { maxByteLength: 1024 }),
+	) {
 		this.#buffer = asBuffer(buffer);
 		// NOTE prefer view over buffer, avoid the slice overhead ?
 		this.#view = new DataView(this.#buffer);

@@ -1,3 +1,4 @@
+// biome-ignore-all format: just dont
 // prettier-ignore
 export function md5(inputString) {
   // https://stackoverflow.com/a/60467595/1870054
@@ -15,7 +16,7 @@ export function md5(inputString) {
     for(i=0;i<x.length;i++) blks[i>>2]|=x.charCodeAt(i)<<((i%4)*8);
     blks[i>>2]|=0x80<<((i%4)*8);blks[nblk*16-2]=x.length*8;return blks;
   }
-  var i,x=sb(""+inputString),a=1732584193,b=-271733879,c=-1732584194,d=271733878,olda,oldb,oldc,oldd;
+  var i,x=sb(`${inputString}`),a=1732584193,b=-271733879,c=-1732584194,d=271733878,olda,oldb,oldc,oldd;
   for(i=0;i<x.length;i+=16) {olda=a;oldb=b;oldc=c;oldd=d;
     a=ff(a,b,c,d,x[i+ 0], 7, -680876936);d=ff(d,a,b,c,x[i+ 1],12, -389564586);c=ff(c,d,a,b,x[i+ 2],17,  606105819);
     b=ff(b,c,d,a,x[i+ 3],22,-1044525330);a=ff(a,b,c,d,x[i+ 4], 7, -176418897);d=ff(d,a,b,c,x[i+ 5],12, 1200080426);

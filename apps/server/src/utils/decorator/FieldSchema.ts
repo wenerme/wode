@@ -1,5 +1,5 @@
 import { MetadataStorage, type EntityMetadata, type EntityProperty, type Type } from '@mikro-orm/core';
-import type { AbstractConstructor } from '@wener/nestjs';
+import type { AbstractConstructor } from '@wener/server';
 import { computeIfAbsent, type Constructor } from '@wener/utils';
 
 export type FieldSchemaOptions = {

@@ -1,5 +1,5 @@
-export * from './WechatConfig';
+export { code2session, getAccessToken, getStableAccessToken } from './getAccessToken';
 
-export { request, type RequestOptions } from './request';
-export { getStableAccessToken, getAccessToken, code2session } from './getAccessToken';
-export { WechatServerClient, type WechatServerClientOptions, type WechatServerClientInit } from './WechatServerClient';
+export { type RequestOptions, request } from './request';
+export * from './WechatConfig';
+export { WechatServerClient, type WechatServerClientInit, type WechatServerClientOptions } from './WechatServerClient';

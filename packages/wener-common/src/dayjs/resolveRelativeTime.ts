@@ -1,3 +1,4 @@
+import { parseDate } from '@wener/utils';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import quarterOfYear from 'dayjs/plugin/quarterOfYear';
@@ -75,26 +76,22 @@ dayjs.extend(weekOfYear);
  * resolveRelativeTime('now\\d', refDate);  // End of reference day
  * ```
  */
-export function resolveRelativeTime(s: string | Date | number, now?: Date | undefined): Date {
+export function resolveRelativeTime(s: string | Date, now?: Date | undefined): Date;
+export function resolveRelativeTime(s: MaybeDate, now?: Date | undefined): Date | undefined;
+export function resolveRelativeTime(s: MaybeDate, now?: Date | undefined): Date | undefined {
 	{
-		let out: Date | undefined;
-		if (!s) {
-		} else if (s instanceof Date) {
-			out = s;
-		} else if (typeof s === 'number') {
-			out = new Date(s);
-		} else if (!s.startsWith('now')) {
-			out = new Date(s);
-		}
+		let out = parseDate(s);
 		if (out) {
-			if (isNaN(out.getTime())) {
-				throw new Error(`Invalid date: ${s}`);
-			}
 			return out;
+		}
+		if (s == null) {
+			return;
 		}
 	}
 
-	if (typeof s !== 'string' || !s.startsWith('now')) {
+	if (typeof s === 'string' && s.startsWith('now')) {
+		// valid
+	} else {
 		throw new Error(`Invalid relative time format: ${s}`);
 	}
 
@@ -165,3 +162,4 @@ export function checkDurationUnit(u: string): asserts u is RelativeDurationUnit 
 		throw new Error(`Invalid unit: ${u}`);
 	}
 }
+type MaybeDate = string | Date | null | undefined;

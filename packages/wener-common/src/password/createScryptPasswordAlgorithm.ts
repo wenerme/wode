@@ -1,6 +1,6 @@
 import { randomBytes, scrypt, timingSafeEqual } from 'node:crypto';
 import { Errors } from '@wener/utils';
-import { Password } from './Password';
+import type { Password } from './Password';
 import { PHC } from './PHC';
 
 export function createScryptPasswordAlgorithm(
@@ -14,7 +14,7 @@ export function createScryptPasswordAlgorithm(
 	} = {},
 ): Password.PasswordAlgorithm {
 	let id = options.id || 'scrypt';
-	options.cost ||= Math.pow(2, 14);
+	options.cost ||= 2 ** 14;
 	options.blocksize ||= 8;
 	options.parallelism ||= 1;
 	options.saltlen ||= 16;
@@ -35,7 +35,7 @@ export function createScryptPasswordAlgorithm(
 			});
 		},
 
-		async verify(password: string, hash: string, opts): Promise<boolean> {
+		async verify(password: string, _hash: string, opts): Promise<boolean> {
 			try {
 				const salt = Errors.BadRequest.require(opts.salt);
 				const storedHash = Errors.BadRequest.require(opts.hash);
@@ -53,7 +53,7 @@ export function createScryptPasswordAlgorithm(
 						resolve(isMatch);
 					});
 				});
-			} catch (error) {
+			} catch (_error) {
 				return Promise.resolve(false);
 			}
 		},

@@ -1,5 +1,5 @@
-import React from 'react';
 import { arrayOfMaybeArray } from '@wener/utils';
+import React from 'react';
 import { HomePage } from '@/components/home/HomePage';
 import { PageLayout } from '@/components/page/PageLayout';
 import { getSiteData } from '@/data/getSiteData';

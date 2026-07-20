@@ -1,7 +1,7 @@
-import React, { type ComponentPropsWithRef, type FC } from 'react';
-import { PiMinusThin, PiSquareThin, PiXThin } from 'react-icons/pi';
 import styled from '@emotion/styled';
 import { clsx } from 'clsx';
+import type { ComponentPropsWithRef, FC } from 'react';
+import { PiMinusThin, PiSquareThin, PiXThin } from 'react-icons/pi';
 import { getWindowDragCancelClassname } from '../const';
 
 const WindowController = styled.div`

@@ -1,7 +1,7 @@
-import type React from 'react';
-import type { FC } from 'react';
 import { Collapsible } from '@base-ui/react/collapsible';
 import { cn } from '@wener/console';
+import type React from 'react';
+import type { FC } from 'react';
 
 type RootProps = React.ComponentProps<typeof Collapsible.Root>;
 

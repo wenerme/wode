@@ -12,7 +12,7 @@ export function createOpenAPIHono() {
 
 	app.route('/api', createProbeRoute());
 
-	app.onError((err, c) => {
+	app.onError((err, _c) => {
 		process.env.NODE_ENV === 'development' && console.error(err);
 		return Errors.resolve(err).asResponse();
 	});

@@ -1,20 +1,20 @@
-import React, { memo, useMemo, type ComponentPropsWithoutRef, type ReactNode } from 'react';
-import { HiOutlineLogout } from 'react-icons/hi';
-import { HiLockClosed, HiMiniArrowsPointingIn, HiOutlineIdentification, HiQuestionMarkCircle } from 'react-icons/hi2';
-import { PiBrowser, PiBrowsersLight } from 'react-icons/pi';
-import { VscClose, VscCloseAll, VscPrimitiveSquare } from 'react-icons/vsc';
-import { Link } from 'react-router-dom';
 import { FloatingFocusManager, FloatingPortal, useTransitionStyles } from '@floating-ui/react';
 import { cn } from '@wener/console';
 import { getUserStore } from '@wener/console/console';
 import { getUserAction } from '@wener/console/console/user';
 import { usePopover } from '@wener/console/floating';
-import { getRootWindow, Window, type ReactWindow } from '@wener/console/window';
-import { isDev } from '#/const';
+import { getRootWindow, type ReactWindow, Window } from '@wener/console/window';
 import clsx from 'clsx';
+import React, { type ComponentPropsWithoutRef, memo, type ReactNode, useMemo } from 'react';
+import { HiOutlineLogout } from 'react-icons/hi';
+import { HiLockClosed, HiMiniArrowsPointingIn, HiOutlineIdentification, HiQuestionMarkCircle } from 'react-icons/hi2';
+import { PiBrowser, PiBrowsersLight } from 'react-icons/pi';
+import { VscClose, VscCloseAll, VscPrimitiveSquare } from 'react-icons/vsc';
+import { Link } from 'react-router-dom';
 import { useStore } from 'zustand';
 import { shallow } from 'zustand/shallow';
 import { useStoreWithEqualityFn } from 'zustand/traditional';
+import { isDev } from '#/const';
 import { DockClock } from './DockClock';
 import { DockUserAvatar } from './DockUserAvatar';
 

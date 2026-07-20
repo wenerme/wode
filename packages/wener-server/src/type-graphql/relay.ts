@@ -16,7 +16,7 @@ https://github.com/graphql/graphql-relay-js/blob/main/src/connection/connection.
 	},
 })
 export abstract class RelayNode {
-	@Field((type) => ID)
+	@Field((_type) => ID)
 	id!: string;
 
 	static resolvers: TypeResolver<any, any>[] = [];

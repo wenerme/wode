@@ -1,6 +1,6 @@
-import React, { Suspense, type ComponentPropsWithoutRef, type FC } from 'react';
 import { cn } from '@wener/console';
 import { LoadingIndicator } from '@wener/console/loader';
+import React, { type ComponentPropsWithoutRef, type FC, Suspense } from 'react';
 
 export const PageContainer: FC<ComponentPropsWithoutRef<'div'>> = ({ children, className }) => {
 	return (

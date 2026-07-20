@@ -1,9 +1,9 @@
-import React from 'react';
-import { HiAdjustmentsHorizontal, HiOutlineAdjustmentsHorizontal } from 'react-icons/hi2';
-import { PiSquaresFour, PiSquaresFourLight } from 'react-icons/pi';
 import { getApplets, Launcher } from '@wener/console/console';
 import { ClockWidget } from '@wener/console/console/applets';
 import type { DynamicModule } from '@wener/console/web';
+import React from 'react';
+import { HiAdjustmentsHorizontal, HiOutlineAdjustmentsHorizontal } from 'react-icons/hi2';
+import { PiSquaresFour, PiSquaresFourLight } from 'react-icons/pi';
 import { CalculatorWidget } from '#/applets/Calculator/CalculatorWidget';
 import { PlaygroundWidget } from '#/applets/Playground/PlaygroundWidget';
 import { getUserAbility } from '#/casl';

@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { FileScalar, GraphQLJSONObjectScalar, NestContainerType, RelayNode } from '@wener/nestjs/type-graphql';
+import { FileScalar, GraphQLJSONObjectScalar, NestContainerType, RelayNode } from '@wener/server/type-graphql';
 import type { Constructor } from '@wener/utils';
 import BigNumber from 'bignumber.js';
 import dayjs from 'dayjs';

@@ -1,0 +1,140 @@
+{
+	"$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+	"formatter": {
+		"enabled": true,
+		"formatWithErrors": false,
+		"indentStyle": "tab",
+		"indentWidth": 2,
+		"lineEnding": "lf",
+		"lineWidth": 120,
+		"attributePosition": "auto",
+		"bracketSameLine": false,
+		"bracketSpacing": true,
+		"expand": "auto",
+		"useEditorconfig": true
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true,
+			"complexity": {
+				"noBannedTypes": "off",
+				"noStaticOnlyClass": "off"
+			},
+			"style": {
+				"noNonNullAssertion": "warn",
+				"noParameterAssign": "off",
+				"noUnusedTemplateLiteral": "off",
+				"useConst": "off"
+			},
+			"suspicious": {
+				"useIterableCallbackReturn": "off",
+				"noAssignInExpressions": "off",
+				"noExplicitAny": "off",
+				"noShadowRestrictedNames": "off"
+			},
+			"correctness": {
+				"useExhaustiveDependencies": "off",
+				"useHookAtTopLevel": "warn"
+			},
+			"a11y": {
+				"useSemanticElements": "warn",
+				"noLabelWithoutControl": "warn",
+				"useButtonType": "warn",
+				"useValidAnchor": "warn",
+				"noInteractiveElementToNoninteractiveRole": "warn",
+				"useKeyWithClickEvents": "warn",
+				"noNoninteractiveElementToInteractiveRole": "warn",
+				"useAnchorContent": "warn",
+				"useValidAriaProps": "warn",
+				"noAriaUnsupportedElements": "warn",
+				"noStaticElementInteractions": "warn",
+				"noRedundantAlt": "warn",
+				"useFocusableInteractive": "warn",
+				"noSvgWithoutTitle": "warn",
+				"useAltText": "warn",
+				"useAriaPropsSupportedByRole": "warn"
+			}
+		}
+	},
+	"javascript": {
+		"parser": {
+			"unsafeParameterDecoratorsEnabled": true
+		},
+		"formatter": {
+			"jsxQuoteStyle": "single",
+			"quoteProperties": "asNeeded",
+			"trailingCommas": "all",
+			"semicolons": "always",
+			"arrowParentheses": "always",
+			"bracketSameLine": false,
+			"quoteStyle": "single",
+			"attributePosition": "auto",
+			"bracketSpacing": true
+		}
+	},
+	"json": {
+		"formatter": {
+			"enabled": true,
+			"indentStyle": "tab"
+		}
+	},
+	"html": {
+		"formatter": {
+			"indentScriptAndStyle": false,
+			"selfCloseVoidElements": "always"
+		}
+	},
+	"css": {
+		"parser": {
+			"allowWrongLineComments": true,
+			"tailwindDirectives": true
+		},
+		"linter": {
+			"enabled": false
+		}
+	},
+	"files": {
+		"includes": ["**", "!**/*.gen.ts", "!**/*_pb.d.ts", "!**/*_pb.js", "!**/parser.js"]
+	},
+	"overrides": [
+		{
+			"includes": ["**/*.test.ts", "**/*.test.tsx", "**/*.spec.ts", "**/*.spec.tsx"],
+			"linter": {
+				"rules": {
+					"correctness": {
+						"noUnusedVariables": "off",
+						"noConstantCondition": "off"
+					}
+				}
+			}
+		},
+		{
+			"includes": ["**/icons/*.tsx"],
+			"linter": {
+				"rules": {
+					"a11y": {
+						"noSvgWithoutTitle": "off"
+					}
+				}
+			}
+		},
+		{
+			"includes": ["*.html", "*.css"],
+			"javascript": {
+				"formatter": {
+					"quoteStyle": "double"
+				}
+			}
+		},
+		{
+			"includes": ["*.sql"],
+			"formatter": {
+				"indentWidth": 4
+			}
+		},
+		{
+			"includes": ["*.jinja2"]
+		}
+	]
+}

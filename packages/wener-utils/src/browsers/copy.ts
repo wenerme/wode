@@ -17,7 +17,8 @@ function initCopy() {
 	}
 
 	function selectText() {
-		let range, selection;
+		let range: Range | undefined;
+		let selection: Selection | null;
 
 		if (isIOS()) {
 			range = document.createRange();

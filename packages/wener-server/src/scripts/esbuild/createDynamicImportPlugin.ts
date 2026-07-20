@@ -1,5 +1,5 @@
-import { promises as fsp } from 'fs';
-import Path from 'path';
+import { promises as fsp } from 'node:fs';
+import Path from 'node:path';
 import type { Plugin } from 'esbuild';
 import glob from 'fast-glob';
 
@@ -57,9 +57,9 @@ async function replaceImports(fileContents: string, resolveDir: string, config: 
 			const normalizedPath = Path.normalize(`${resolveDir}/${destinationFile}`);
 			fileContents = fileContents.replace(match[1], `\`${normalizedPath}\``);
 		} else if (
-			Array.isArray(config.transformExtensions)
-			&& config.transformExtensions.includes(fileExtension)
-			&& /^.*\${.*?}.*$/.test(destinationFile)
+			Array.isArray(config.transformExtensions) &&
+			config.transformExtensions.includes(fileExtension) &&
+			/^.*\${.*?}.*$/.test(destinationFile)
 		) {
 			importsToReplace.push({ fullImport: match[0], pathString: `\`${destinationFile}\`` });
 			const transformedDestination = destinationFile.replace(/\${.*?}/g, '**/*');

@@ -1,5 +1,5 @@
-import React from 'react';
 import { defineInit } from '@wener/common/meta';
+import React from 'react';
 
 export const EnvironmentInit = defineInit({
 	name: 'Environment',

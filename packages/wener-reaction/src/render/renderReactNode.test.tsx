@@ -1,4 +1,4 @@
-import React, { act, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { expect, test } from 'vitest';
 import { renderReactNodeToMarkdown } from './renderReactNodeToMarkdown';
 import { renderReactNodeToText } from './renderReactNodeToText';

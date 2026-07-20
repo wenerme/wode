@@ -1,5 +1,5 @@
-import React from 'react';
 import type { NextLayoutProps } from '@wener/reaction/next';
+import React from 'react';
 import { TabPageLayout } from '@/components/page/TabPageLayout';
 
 const PasswordPageTabs = [

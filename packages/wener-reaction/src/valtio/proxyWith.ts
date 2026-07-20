@@ -42,7 +42,7 @@ export function proxyWith<T extends Record<string, any>>({
 	if (_storage) {
 		try {
 			load = JSON.parse(_storage.getItem(name) || '{}');
-		} catch (e) {}
+		} catch (_e) {}
 	}
 
 	if (typeof initialState === 'function') {
@@ -58,7 +58,7 @@ export function proxyWith<T extends Record<string, any>>({
 		closers.push(
 			subscribe(state, () => {
 				const val = snapshot(state);
-				_storage!.setItem(name, JSON.stringify(val));
+				_storage?.setItem(name, JSON.stringify(val));
 			}),
 		);
 	}

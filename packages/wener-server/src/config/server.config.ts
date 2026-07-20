@@ -9,7 +9,7 @@ export const ServerConfig = z.object({
 });
 export type ServerConfig = z.infer<typeof ServerConfig>;
 
-export function getServerConfig(env = process.env) {
+export function getServerConfig(_env = process.env) {
 	const { PORT, SERVER_PORT = PORT, SERVER_PREFIX, SERVER_ORIGIN, SERVER_URL } = process.env;
 
 	const data = { port: SERVER_PORT, prefix: SERVER_PREFIX, origin: SERVER_ORIGIN, url: SERVER_URL };

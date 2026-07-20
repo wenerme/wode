@@ -1,6 +1,6 @@
 import { formatOpcode } from '@/poc/bbvm/format';
 import { getOpcodeLength } from '@/poc/bbvm/rt';
-import { AddressMode, Instruction, Opcode } from '@/poc/bbvm/types';
+import { AddressMode, type Instruction, Opcode } from '@/poc/bbvm/types';
 
 export function readInstruction(
 	buffer: DataView,

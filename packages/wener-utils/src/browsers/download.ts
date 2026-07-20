@@ -31,18 +31,16 @@ export async function download(filename: string, data: any, { type = 'applicatio
 		if (data instanceof Uint8Array) {
 			data = new Blob([data as Bytes], { type });
 		}
-		{
-			if (data instanceof File || data instanceof Blob || data instanceof MediaSource) {
-				a.href = URL.createObjectURL(data);
-				closer = () => {
-					URL.revokeObjectURL(a.href);
-				};
-			} else {
-				console.error(`invalid download data`, data);
-				throw new Error(`can not download ${data && Object.getPrototypeOf(data)}`);
-			}
-			a.click();
+		if (data instanceof File || data instanceof Blob || data instanceof MediaSource) {
+			a.href = URL.createObjectURL(data);
+			closer = () => {
+				URL.revokeObjectURL(a.href);
+			};
+		} else {
+			console.error(`invalid download data`, data);
+			throw new Error(`can not download ${data && Object.getPrototypeOf(data)}`);
 		}
+		a.click();
 	} finally {
 		closer();
 	}

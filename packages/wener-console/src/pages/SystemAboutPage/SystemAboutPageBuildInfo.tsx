@@ -1,8 +1,8 @@
-import React, { type FC, type ReactNode } from 'react';
+import { dayjs } from '@wener/common/dayjs';
+import type { FC, ReactNode } from 'react';
 import { GrSystem } from 'react-icons/gr';
 import { HiCheck } from 'react-icons/hi';
 import { ImLab } from 'react-icons/im';
-import { dayjs } from '@wener/common/dayjs';
 import type { BuildInfo } from '../../buildinfo';
 import { SystemAboutPageSection } from './SystemAboutPageSection';
 

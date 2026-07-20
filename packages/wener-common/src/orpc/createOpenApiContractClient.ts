@@ -1,4 +1,4 @@
-import { createORPCClient, type ClientContext } from '@orpc/client';
+import { type ClientContext, createORPCClient } from '@orpc/client';
 import type { LinkFetchClientOptions } from '@orpc/client/fetch';
 import type { BatchLinkPluginOptions, DedupeRequestsPluginOptions } from '@orpc/client/plugins';
 import type { StandardLinkPlugin } from '@orpc/client/standard';
@@ -43,8 +43,8 @@ export type CreateContractClientOptions = {
 	baseUrl?: string;
 	apiKey?: string;
 	headers?: Record<string, string> | Headers;
-	getApiKey?: () => string | void;
-	getHeaders?: (headers: Headers) => Headers | void;
+	getApiKey?: () => string | undefined;
+	getHeaders?: (headers: Headers) => Headers | undefined;
 	plugins?: StandardLinkPlugin<any>[];
 	fetch?: LinkFetchClientOptions<any>['fetch'];
 	batch?: BatchLinkPluginOptions<any> | boolean;

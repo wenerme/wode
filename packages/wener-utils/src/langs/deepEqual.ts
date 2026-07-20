@@ -13,7 +13,9 @@ function find(iter: any, tar: any, key?: any) {
  * @see {@link https://github.com/FormidableLabs/react-fast-compare/blob/master/index.js react-fast-compare/index.js}
  */
 export function deepEqual(foo: any, bar: any) {
-	let ctor, len, tmp;
+	let ctor: any;
+	let len: number;
+	let tmp: any;
 	if (foo === bar) return true;
 
 	if (foo && bar && (ctor = foo.constructor) === bar.constructor) {
@@ -46,13 +48,13 @@ export function deepEqual(foo: any, bar: any) {
 			if (foo.size !== bar.size) {
 				return false;
 			}
-			for (len of foo) {
-				tmp = len[0];
+			for (const entry of foo) {
+				tmp = (entry as [unknown, unknown])[0];
 				if (tmp && typeof tmp === 'object') {
 					tmp = find(bar, tmp);
 					if (!tmp) return false;
 				}
-				if (!deepEqual(len[1], bar.get(tmp))) {
+				if (!deepEqual((entry as [unknown, unknown])[1], bar.get(tmp))) {
 					return false;
 				}
 			}
@@ -101,6 +103,6 @@ export function deepEqual(foo: any, bar: any) {
 		}
 	}
 
-	// eslint-disable-next-line no-self-compare
+	// biome-ignore lint/suspicious/noSelfCompare: intentional NaN check
 	return foo !== foo && bar !== bar;
 }

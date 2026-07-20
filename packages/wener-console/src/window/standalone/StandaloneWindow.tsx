@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, type ReactNode } from 'react';
-import { PiCaretLeftLight, PiCaretRightLight } from 'react-icons/pi';
 import { DevOnly, useControllable } from '@wener/reaction';
+import { type ReactNode, useEffect, useRef } from 'react';
+import { PiCaretLeftLight, PiCaretRightLight } from 'react-icons/pi';
 import { Window, WindowDock } from '..';
 
 export const StandaloneWindow = ({

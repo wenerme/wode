@@ -5,7 +5,10 @@ import { RepoClient } from './RepoClient';
 export async function getMirrorStatus({
 	client = new RepoClient(),
 	mirrors,
-}: { client?: RepoClient; mirrors?: string[] } = {}) {
+}: {
+	client?: RepoClient;
+	mirrors?: string[];
+} = {}) {
 	mirrors ||= await client.getMirrors();
 	const details = await Promise.all(
 		mirrors.map(async (url) => {

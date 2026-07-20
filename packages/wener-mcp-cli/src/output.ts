@@ -2,35 +2,28 @@
  * Output formatting utilities
  */
 
+import { getAnsiStyle } from '@wener/utils';
+import { formatJsonSchema } from 'common/utils';
 import type { ResourceInfo, ToolInfo } from './client';
-import { getServerUrl, isHttpServer, type ConfigSource, type ServerConfig } from './schema';
+import { type ConfigSource, getServerUrl, isHttpServer, type ServerConfig } from './schema';
 
-// ANSI color codes
-const colors = {
-	reset: '\x1b[0m',
-	bold: '\x1b[1m',
-	dim: '\x1b[2m',
-	cyan: '\x1b[36m',
-	green: '\x1b[32m',
-	yellow: '\x1b[33m',
-	blue: '\x1b[34m',
-	magenta: '\x1b[35m',
-	gray: '\x1b[90m',
-};
+// Get ANSI style formatter (auto-detects color support)
+const ansi = getAnsiStyle();
 
 /**
- * Check if output should be colorized
+ * Format tool annotations as compact string
  */
-function shouldColorize(): boolean {
-	return process.stdout.isTTY && !process.env.NO_COLOR;
-}
+function formatAnnotationsCompact(annotations: ToolInfo['annotations']): string {
+	if (!annotations) return '';
 
-/**
- * Apply color if terminal supports it
- */
-function color(text: string, colorCode: string): string {
-	if (!shouldColorize()) return text;
-	return `${colorCode}${text}${colors.reset}`;
+	const hints: string[] = [];
+	if (annotations.readOnlyHint) hints.push('readonly');
+	if (annotations.destructiveHint) hints.push('destructive');
+	if (annotations.idempotentHint) hints.push('idempotent');
+	if (annotations.openWorldHint) hints.push('open-world');
+
+	if (hints.length === 0) return '';
+	return `[${hints.join(', ')}]`;
 }
 
 /**
@@ -40,22 +33,41 @@ export function formatServerList(
 	servers: Array<{ name: string; tools: ToolInfo[]; source?: ConfigSource }>,
 	withDescriptions: boolean,
 	showSource = false,
+	verbose = false,
 ): string {
 	const lines: string[] = [];
 
 	for (const server of servers) {
-		let serverLine = color(server.name, colors.bold + colors.cyan);
+		let serverLine = ansi.bold.cyan(server.name);
 		if (showSource && server.source) {
-			serverLine += ` ${color(`(${server.source.label})`, colors.gray)}`;
+			serverLine += ` ${ansi.gray(`(${server.source.label})`)}`;
 		}
 		lines.push(serverLine);
 
 		for (const tool of server.tools) {
-			if (withDescriptions && tool.description) {
-				lines.push(`  • ${tool.name} - ${color(tool.description, colors.dim)}`);
-			} else {
-				lines.push(`  • ${tool.name}`);
+			let toolLine = `  • ${tool.name}`;
+
+			// In verbose mode, show compact input schema
+			if (verbose && tool.inputSchema) {
+				const compactSchema = formatJsonSchema(tool.inputSchema as Record<string, unknown>);
+				if (compactSchema && compactSchema !== '{}') {
+					toolLine += ` ${ansi.gray(compactSchema)}`;
+				}
 			}
+
+			// Add annotation hints if verbose
+			if (verbose && tool.annotations) {
+				const hints = formatAnnotationsCompact(tool.annotations);
+				if (hints) {
+					toolLine += ` ${ansi.yellow(hints)}`;
+				}
+			}
+
+			if (withDescriptions && tool.description) {
+				toolLine += ` - ${ansi.dim(tool.description)}`;
+			}
+
+			lines.push(toolLine);
 		}
 
 		lines.push('');
@@ -74,9 +86,9 @@ export function formatSearchResults(
 	const lines: string[] = [];
 
 	for (const result of results) {
-		const path = `${color(result.server, colors.cyan)}/${color(result.tool.name, colors.green)}`;
+		const path = `${ansi.cyan(result.server)}/${ansi.green(result.tool.name)}`;
 		if (withDescriptions && result.tool.description) {
-			lines.push(`${path} - ${color(result.tool.description, colors.dim)}`);
+			lines.push(`${path} - ${ansi.dim(result.tool.description)}`);
 		} else {
 			lines.push(path);
 		}
@@ -97,27 +109,27 @@ export function formatServerDetails(
 ): string {
 	const lines: string[] = [];
 
-	lines.push(`${color('Server:', colors.bold)} ${color(serverName, colors.cyan)}`);
+	lines.push(`${ansi.bold('Server:')} ${ansi.cyan(serverName)}`);
 
 	if (source) {
-		lines.push(`${color('Source:', colors.bold)} ${source.label}`);
+		lines.push(`${ansi.bold('Source:')} ${source.label}`);
 	}
 
 	if (isHttpServer(config)) {
-		lines.push(`${color('Transport:', colors.bold)} HTTP`);
-		lines.push(`${color('URL:', colors.bold)} ${getServerUrl(config)}`);
+		lines.push(`${ansi.bold('Transport:')} HTTP`);
+		lines.push(`${ansi.bold('URL:')} ${getServerUrl(config)}`);
 	} else {
-		lines.push(`${color('Transport:', colors.bold)} stdio`);
-		lines.push(`${color('Command:', colors.bold)} ${config.command} ${(config.args || []).join(' ')}`);
+		lines.push(`${ansi.bold('Transport:')} stdio`);
+		lines.push(`${ansi.bold('Command:')} ${config.command} ${(config.args || []).join(' ')}`);
 	}
 
 	lines.push('');
-	lines.push(`${color(`Tools (${tools.length}):`, colors.bold)}`);
+	lines.push(ansi.bold(`Tools (${tools.length}):`));
 
 	for (const tool of tools) {
-		lines.push(`  ${color(tool.name, colors.green)}`);
+		lines.push(`  ${ansi.green(tool.name)}`);
 		if (withDescriptions && tool.description) {
-			lines.push(`    ${color(tool.description, colors.dim)}`);
+			lines.push(`    ${ansi.dim(tool.description)}`);
 		}
 
 		const schema = tool.inputSchema as {
@@ -125,7 +137,7 @@ export function formatServerDetails(
 			required?: string[];
 		};
 		if (schema.properties) {
-			lines.push(`    ${color('Parameters:', colors.yellow)}`);
+			lines.push(`    ${ansi.yellow('Parameters:')}`);
 			for (const [name, prop] of Object.entries(schema.properties)) {
 				const required = schema.required?.includes(name) ? 'required' : 'optional';
 				const type = prop.type || 'any';
@@ -145,17 +157,50 @@ export function formatServerDetails(
 export function formatToolSchema(serverName: string, tool: ToolInfo): string {
 	const lines: string[] = [];
 
-	lines.push(`${color('Tool:', colors.bold)} ${color(tool.name, colors.green)}`);
-	lines.push(`${color('Server:', colors.bold)} ${color(serverName, colors.cyan)}`);
+	lines.push(`${ansi.bold('Tool:')} ${ansi.green(tool.name)}`);
+	lines.push(`${ansi.bold('Server:')} ${ansi.cyan(serverName)}`);
 	lines.push('');
 
 	if (tool.description) {
-		lines.push(`${color('Description:', colors.bold)}`);
+		lines.push(ansi.bold('Description:'));
 		lines.push(`  ${tool.description}`);
 		lines.push('');
 	}
 
-	lines.push(`${color('Input Schema:', colors.bold)}`);
+	// Show annotations if present
+	if (tool.annotations) {
+		lines.push(ansi.bold('Annotations:'));
+		if (tool.annotations.title) {
+			lines.push(`  ${ansi.yellow('Title:')} ${tool.annotations.title}`);
+		}
+		if (tool.annotations.readOnlyHint !== undefined) {
+			const hint = tool.annotations.readOnlyHint ? ansi.green('true') : 'false';
+			lines.push(`  ${ansi.yellow('Read-only:')} ${hint}`);
+		}
+		if (tool.annotations.destructiveHint !== undefined) {
+			const hint = tool.annotations.destructiveHint ? ansi.red('true') : 'false';
+			lines.push(`  ${ansi.yellow('Destructive:')} ${hint}`);
+		}
+		if (tool.annotations.idempotentHint !== undefined) {
+			const hint = tool.annotations.idempotentHint ? 'true' : 'false';
+			lines.push(`  ${ansi.yellow('Idempotent:')} ${hint}`);
+		}
+		if (tool.annotations.openWorldHint !== undefined) {
+			const hint = tool.annotations.openWorldHint ? 'true' : 'false';
+			lines.push(`  ${ansi.yellow('Open-world:')} ${hint}`);
+		}
+		lines.push('');
+	}
+
+	// Show human-readable signature first
+	if (tool.inputSchema) {
+		const compactSchema = formatJsonSchema(tool.inputSchema as Record<string, unknown>);
+		lines.push(ansi.bold('Signature:'));
+		lines.push(`  ${ansi.green(tool.name)} ${ansi.cyan(compactSchema)}`);
+		lines.push('');
+	}
+
+	lines.push(ansi.bold('Input Schema:'));
 	lines.push(JSON.stringify(tool.inputSchema, null, 2));
 
 	return lines.join('\n');
@@ -167,18 +212,18 @@ export function formatToolSchema(serverName: string, tool: ToolInfo): string {
 export function formatResourceList(resources: ResourceInfo[], serverName: string, withDescriptions: boolean): string {
 	const lines: string[] = [];
 
-	lines.push(`${color('Server:', colors.bold)} ${color(serverName, colors.cyan)}`);
-	lines.push(`${color(`Resources (${resources.length}):`, colors.bold)}`);
+	lines.push(`${ansi.bold('Server:')} ${ansi.cyan(serverName)}`);
+	lines.push(ansi.bold(`Resources (${resources.length}):`));
 
 	for (const resource of resources) {
-		let line = `  ${color(resource.name, colors.green)}`;
+		let line = `  ${ansi.green(resource.name)}`;
 		if (resource.mimeType) {
-			line += ` ${color(`[${resource.mimeType}]`, colors.gray)}`;
+			line += ` ${ansi.gray(`[${resource.mimeType}]`)}`;
 		}
 		lines.push(line);
 
 		if (withDescriptions && resource.description) {
-			lines.push(`    ${color(resource.description, colors.dim)}`);
+			lines.push(`    ${ansi.dim(resource.description)}`);
 		}
 		lines.push(`    URI: ${resource.uri}`);
 	}
@@ -216,7 +261,7 @@ export function formatJson(data: unknown): string {
  * Format error message
  */
 export function formatError(message: string): string {
-	return color(`Error: ${message}`, '\x1b[31m');
+	return ansi.red(`Error: ${message}`);
 }
 
 /**
@@ -228,14 +273,14 @@ export function formatConfigSources(
 ): string {
 	const lines: string[] = [];
 
-	lines.push(color('Config Sources:', colors.bold));
+	lines.push(ansi.bold('Config Sources:'));
 	for (const source of sources) {
-		lines.push(`  ${color(source.type, colors.cyan)}: ${source.label}`);
+		lines.push(`  ${ansi.cyan(source.type)}: ${source.label}`);
 	}
 
 	if (duplicates.length > 0) {
 		lines.push('');
-		lines.push(color('Duplicates (first occurrence used):', colors.yellow));
+		lines.push(ansi.yellow('Duplicates (first occurrence used):'));
 		for (const dup of duplicates) {
 			lines.push(`  ${dup.name}: ${dup.sources.map((s) => s.label).join(', ')}`);
 		}

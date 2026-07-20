@@ -1,6 +1,6 @@
-import React, { useState, type FC, type ReactNode } from 'react';
-import { HiUsers } from 'react-icons/hi2';
 import { clsx } from 'clsx';
+import { type FC, type ReactNode, useState } from 'react';
+import { HiUsers } from 'react-icons/hi2';
 import { Button } from '../../daisy';
 
 export interface DockUserAvatarProps {

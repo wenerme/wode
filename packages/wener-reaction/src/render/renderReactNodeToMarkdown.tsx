@@ -20,7 +20,7 @@ export function renderReactNodeToMarkdown(node: ReactNode) {
 				case 'p':
 				case 'br':
 				case 'div':
-					return children + '\n';
+					return `${children}\n`;
 				case 'a':
 					return `[${children}](${props.href})`;
 				case 'strong':
@@ -35,7 +35,7 @@ export function renderReactNodeToMarkdown(node: ReactNode) {
 					return `\`\`\`\n${children}\n\`\`\``;
 				case 'ul':
 				case 'ol':
-					return children + '\n';
+					return `${children}\n`;
 				case 'li':
 					return `- ${children}\n`;
 				case 'img':

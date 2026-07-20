@@ -1,5 +1,5 @@
 import { ArrayBuffers } from '@wener/utils';
-import { Password } from './Password';
+import type { Password } from './Password';
 
 export function createBase64PasswordAlgorithm({ id = 'base64' }: { id?: string } = {}): Password.PasswordAlgorithm {
 	return {
@@ -7,7 +7,7 @@ export function createBase64PasswordAlgorithm({ id = 'base64' }: { id?: string }
 		async hash(password: string) {
 			return `$${id}$$${ArrayBuffers.toBase64(password).replace(/=/g, '')}`;
 		},
-		async verify(password: string, hash: string, opts) {
+		async verify(password: string, _hash: string, opts) {
 			return Boolean(opts.hash) && ArrayBuffers.toString(opts.hash!) === password;
 		},
 	};

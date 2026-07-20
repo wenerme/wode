@@ -1,5 +1,5 @@
+import { computeIfAbsent, getGlobalStates, type MaybeFunction, maybeFunction } from '@wener/utils';
 import { cache } from 'react';
-import { computeIfAbsent, getGlobalStates, maybeFunction, type MaybeFunction } from '@wener/utils';
 
 let _holder: any = typeof window === 'undefined' ? cache(() => ({})) : getGlobalStates();
 

@@ -1,9 +1,9 @@
-import type React from 'react';
-import { HiCog } from 'react-icons/hi2';
-import { Form, Link } from 'react-router-dom';
 import { IpfsOutlined } from 'common/icons';
 import { Button } from 'common/src/daisy';
 import { SearchPageLayout } from 'common/src/system/layouts';
+import type React from 'react';
+import { HiCog } from 'react-icons/hi2';
+import { Form, Link } from 'react-router-dom';
 import { buildIpfsLink } from './buildIpfsLink';
 
 export const IpfsAccess = () => {

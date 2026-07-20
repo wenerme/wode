@@ -1,9 +1,9 @@
-import React, { Fragment, use, useCallback, useState, type PropsWithChildren, type ReactNode } from 'react';
 import { createReactContext, FlexRenderer } from '@wener/reaction';
 import { getGlobalStates } from '@wener/utils';
+import { Fragment, type PropsWithChildren, type ReactNode, use, useCallback, useState } from 'react';
 import { createStore, useStore } from 'zustand';
-import { mutative } from 'zustand-mutative';
 import { useShallow } from 'zustand/react/shallow';
+import { mutative } from 'zustand-mutative';
 
 type DynamicRenderStoreState = {
 	items: Array<{
@@ -21,7 +21,7 @@ type DynamicRenderStore = ReturnType<typeof createDynamicRenderStore>;
 
 function createDynamicRenderStore() {
 	return createStore(
-		mutative<DynamicRenderStoreState>((setState, getState, store) => {
+		mutative<DynamicRenderStoreState>((setState, _getState, store) => {
 			const remove = (id: string) => {
 				setState((s) => {
 					s.items = s.items.filter((v) => v.id !== id);

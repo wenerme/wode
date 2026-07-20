@@ -1,4 +1,4 @@
-import type { QBFilterQuery } from '@mikro-orm/core';
+import type { FilterQuery } from '@mikro-orm/core';
 import type { QueryBuilder } from '@mikro-orm/postgresql';
 import { Logger } from '@nestjs/common';
 import { toMikroOrmQuery } from '@wener/miniquery/mikro-orm';
@@ -15,7 +15,7 @@ export function applyQueryFilter<T extends QueryBuilder<any>>({
 }) {
 	for (let q of [filter, ...filters].map((v) => v?.trim()).filter(Boolean)) {
 		try {
-			builder.andWhere(toMikroOrmQuery(q) as QBFilterQuery);
+			builder.andWhere(toMikroOrmQuery(q) as FilterQuery<any>);
 		} catch (error: any) {
 			log.error(`Invalid filter: ${filter} ${error}`);
 			throw Errors.BadRequest.asError({ message: 'Invalid filter', description: error?.message as string });

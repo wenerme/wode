@@ -1,5 +1,5 @@
 import { Inject } from '@nestjs/common';
-import { RelayMutationInput, RelayMutationPayload, runRelayClientMutation } from '@wener/nestjs/type-graphql';
+import { RelayMutationInput, RelayMutationPayload, runRelayClientMutation } from '@wener/server/type-graphql';
 import { Arg, Authorized, Field, InputType, Mutation, ObjectType, Resolver } from 'type-graphql';
 import { TenantService } from '@/foundation/Tenant';
 import { SystemRole } from '@/graph/const';

@@ -34,7 +34,7 @@ export function formatBytes(bytes: number, optionsOrSi: boolean | FormatBytesOpt
 	if (forceUnit && forceUnit !== 'B') {
 		const unitIndex = units.findIndex((u) => u.toLowerCase() === forceUnit.toLowerCase());
 		if (unitIndex !== -1) {
-			const value = bytes / Math.pow(thresh, unitIndex + 1);
+			const value = bytes / thresh ** (unitIndex + 1);
 			return `${value.toFixed(decimalPlaces)} ${units[unitIndex]}`;
 		}
 	}

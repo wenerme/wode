@@ -1,4 +1,4 @@
-import React, { useEffect, type FC, type PropsWithChildren } from 'react';
+import { type FC, type PropsWithChildren, useEffect } from 'react';
 import { useInRouterContext } from 'react-router';
 import { useRouteTitles } from '../../router';
 import { ReactRouterTracker } from './ReactRouterTracker';
@@ -19,7 +19,7 @@ const RouterReactor = () => {
 
 function useRouteTitleUpdate() {
 	if (!useInRouterContext()) {
-		return null;
+		return;
 	}
 	const titles = useRouteTitles();
 	const title = titles.join(' » ');

@@ -14,10 +14,10 @@ export function createStoreSelectorHook<S extends ReadonlyStoreApi<unknown>>(
 	(): ExtractState<S>;
 	<U>(selector: (state: ExtractState<S>) => U): U;
 } {
-	return function (f) {
+	return ((f) => {
 		let store = getStore();
 		return useStore(store, f as any);
-	} as {
+	}) as {
 		(): ExtractState<S>;
 		<U>(selector: (state: ExtractState<S>) => U): U;
 	};

@@ -1,4 +1,5 @@
-import { Collection, Entity, ManyToOne, OneToMany, type BaseEntity } from '@mikro-orm/core';
+import { type BaseEntity, Collection } from '@mikro-orm/core';
+import { Entity, ManyToOne, OneToMany } from '@mikro-orm/decorators/legacy';
 import type { Constructor } from '@wener/utils';
 import { Feature } from '../../Feature';
 import { EntityFeature } from '../enum';
@@ -6,8 +7,14 @@ import { resolveEntityRef } from '../resolveEntityRef';
 import type { IdentifiableEntity } from '../types';
 import type { IsHierarchyEntity } from './types';
 
-export function withHierarchyEntity<E extends IsHierarchyEntity<any>>(f: () => Constructor<E>) {
-	return <O extends BaseEntity & IdentifiableEntity, TBase extends Constructor<O>>(Base: TBase) => {
+export function withHierarchyEntity<E extends IsHierarchyEntity<any>>(
+	f: () => Constructor<E>,
+): <O extends BaseEntity & IdentifiableEntity, TBase extends Constructor<O>>(
+	Base: TBase,
+) => TBase & Constructor<IsHierarchyEntity<E>> {
+	return <O extends BaseEntity & IdentifiableEntity, TBase extends Constructor<O>>(
+		Base: TBase,
+	): TBase & Constructor<IsHierarchyEntity<E>> => {
 		@Feature([EntityFeature.IsHierarchy])
 		@Entity({ abstract: true })
 		class IsHierarchyMixinEntity
@@ -29,6 +36,6 @@ export function withHierarchyEntity<E extends IsHierarchyEntity<any>>(f: () => C
 			}
 		}
 
-		return IsHierarchyMixinEntity;
+		return IsHierarchyMixinEntity as TBase & Constructor<IsHierarchyEntity<E>>;
 	};
 }

@@ -12,17 +12,18 @@ import type {
 	CreateReadStreamOptions,
 	CreateWriteStreamOptions,
 	IFileStat,
-	IFileSystem,
+	IServerFileSystem,
 	MkdirOptions,
 	ReaddirOptions,
 	ReadFileOptions,
 	RenameOptions,
 	RmOptions,
 	StatOptions,
+	WritableData,
 	WriteFileOptions,
 } from '../IFileSystem';
 
-export type INodeFileSystem = IFileSystem & {
+export type INodeFileSystem = IServerFileSystem & {
 	readonly root: string;
 	resolvePath(filePath: string): string;
 };
@@ -38,7 +39,7 @@ export function createNodeFileSystem(options: { root?: string } = {}): INodeFile
 
 type IFS = typeof import('fs/promises');
 
-class NodeFs implements IFileSystem, INodeFileSystem {
+class NodeFs implements IServerFileSystem, INodeFileSystem {
 	readonly root: string;
 	private readonly fs: IFS;
 
@@ -113,7 +114,7 @@ class NodeFs implements IFileSystem, INodeFileSystem {
 		}
 
 		if (!relativePath.startsWith('/') && !relativePath.startsWith('\\')) {
-			relativePath = '/' + relativePath;
+			relativePath = `/${relativePath}`;
 		}
 
 		// Normalize to ensure consistent path separators
@@ -183,7 +184,7 @@ class NodeFs implements IFileSystem, INodeFileSystem {
 				const maxDepth = recursive ? Infinity : depth - 1;
 				if (maxDepth > 0) {
 					// Need to convert the path back to a full path for the recursive call
-					const subdirFullPath = this.resolvePath(subdir.path);
+					const _subdirFullPath = this.resolvePath(subdir.path);
 
 					const subEntries = await this.readdir(subdir.path, {
 						...options,
@@ -295,11 +296,7 @@ class NodeFs implements IFileSystem, INodeFileSystem {
 		}
 	}
 
-	async writeFile(
-		path: string,
-		data: string | Buffer | ArrayBuffer | Readable,
-		options: WriteFileOptions = {},
-	): Promise<void> {
+	async writeFile(path: string, data: WritableData, options: WriteFileOptions = {}): Promise<void> {
 		const { fs } = this;
 
 		const { signal, overwrite = true, onUploadProgress } = options;
@@ -354,12 +351,34 @@ class NodeFs implements IFileSystem, INodeFileSystem {
 					});
 				}
 			});
-		} else {
-			// Convert ArrayBuffer to Buffer if necessary
-			if (data instanceof ArrayBuffer) {
-				data = Buffer.from(data);
+		} else if (data instanceof ReadableStream) {
+			// Handle web ReadableStream
+			const reader = data.getReader();
+			const chunks: Uint8Array[] = [];
+			let loaded = 0;
+			while (true) {
+				const { done, value } = await reader.read();
+				if (done) break;
+				if (value) {
+					chunks.push(value);
+					loaded += value.length;
+					if (onUploadProgress) {
+						onUploadProgress({ loaded, total: -1 });
+					}
+				}
 			}
-			await fs.writeFile(resolvedPath, data);
+			await fs.writeFile(resolvedPath, Buffer.concat(chunks));
+		} else {
+			// Convert ArrayBuffer/ArrayBufferView to Buffer if necessary
+			let writeData: string | Buffer;
+			if (data instanceof ArrayBuffer) {
+				writeData = Buffer.from(data);
+			} else if (ArrayBuffer.isView(data)) {
+				writeData = Buffer.from(data.buffer, data.byteOffset, data.byteLength);
+			} else {
+				writeData = data;
+			}
+			await fs.writeFile(resolvedPath, writeData);
 		}
 	}
 

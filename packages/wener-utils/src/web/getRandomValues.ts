@@ -9,15 +9,15 @@ const _globalThis = getGlobalThis();
 // chrome 11+, safari 5+, nodejs 17.4+
 // https://developer.mozilla.org/en-US/docs/Web/API/Crypto/getRandomValues
 export let getRandomValues: <T extends RandomValuesArray>(typedArray: T) => T =
-	_globalThis.crypto?.getRandomValues?.bind(_globalThis.crypto)
-	|| (_globalThis as any).msCrypto?.getRandomValues?.bind((_globalThis as any).msCrypto)
-	|| _getRandomValues;
+	((_globalThis.crypto?.getRandomValues?.bind(_globalThis.crypto) ||
+		(_globalThis as any).msCrypto?.getRandomValues?.bind((_globalThis as any).msCrypto) ||
+		_getRandomValues) as <T extends RandomValuesArray>(typedArray: T) => T);
 
 function _getRandomValues<T extends RandomValuesArray>(buf: T): T {
-	const nodeCrypto = getNodeCrypto();
-	const wc = nodeCrypto?.webcrypto as Crypto | undefined;
+	const nodeCrypto = getNodeCrypto() as (typeof import('node:crypto') & { webcrypto?: Crypto }) | undefined;
+	const wc = nodeCrypto?.webcrypto;
 	if (wc?.getRandomValues) {
-		getRandomValues = wc.getRandomValues.bind(wc);
+		getRandomValues = wc.getRandomValues.bind(wc) as <T extends RandomValuesArray>(typedArray: T) => T;
 		return getRandomValues(buf);
 	}
 	if (nodeCrypto?.randomBytes) {

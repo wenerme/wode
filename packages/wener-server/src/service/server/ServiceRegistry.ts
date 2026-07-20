@@ -15,7 +15,7 @@ export class ServiceRegistry {
 	static #instance?: ServiceRegistry;
 
 	static get() {
-		return (this.#instance ||= new ServiceRegistry());
+		return (ServiceRegistry.#instance ||= new ServiceRegistry());
 	}
 
 	getServiceNames() {

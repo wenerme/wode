@@ -1,5 +1,5 @@
-import { createHmac } from 'crypto';
-import { type FetchLike } from '@wener/utils';
+import { createHmac } from 'node:crypto';
+import type { FetchLike } from '@wener/utils';
 import { parseJsonResponse } from '../utils/parseJsonResponse';
 import { resolveRequest } from '../utils/resolveRequest';
 

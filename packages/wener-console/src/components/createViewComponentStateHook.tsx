@@ -1,8 +1,8 @@
-import { useCallback } from 'react';
 import type { Selector } from '@wener/reaction';
-import { maybeFunction, type MaybeFunction } from '@wener/utils';
+import { type MaybeFunction, maybeFunction } from '@wener/utils';
 import type { Draft } from 'mutative';
-import { useStore, type StoreApi } from 'zustand';
+import { useCallback } from 'react';
+import { type StoreApi, useStore } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
 import type { HasComponentsState } from './ComponentsState';
 import type { SetState } from './types';

@@ -4,7 +4,7 @@ import { ArrayBuffers, classOf, type FetchLike } from '@wener/utils';
 import { createParser, type ParsedEvent } from 'eventsource-parser';
 import type { BaseHttpRequestLogEntity } from './BaseHttpRequestLogEntity';
 import { FetchCache, type FetchCacheConfig, type FetchCacheHookContext, type FetchCacheOptions } from './FetchCache';
-import { findHttpRequestCache, type FindCacheOptions } from './findHttpRequestCache';
+import { type FindCacheOptions, findHttpRequestCache } from './findHttpRequestCache';
 import { removeNullChar } from './removeNullChar';
 
 export interface CreateFetchWithCacheOptions<T extends BaseHttpRequestLogEntity> {
@@ -206,7 +206,7 @@ export function createFetchWithCache<T extends BaseHttpRequestLogEntity>({
 							}
 
 							e.responsePayload = events as any;
-							await em.persistAndFlush(e);
+							await em.persist(e).flush();
 						});
 						res = new Response(a, res);
 					}
@@ -243,7 +243,7 @@ export function createFetchWithCache<T extends BaseHttpRequestLogEntity>({
 							}
 
 							e.responseBody = Buffer.concat(buffers);
-							await em.persistAndFlush(e);
+							await em.persist(e).flush();
 						});
 						res = new Response(a, res);
 					}
@@ -260,7 +260,7 @@ export function createFetchWithCache<T extends BaseHttpRequestLogEntity>({
 				}
 			}
 			if (!ctx.hit) {
-				await em.persistAndFlush(e);
+				await em.persist(e).flush();
 			}
 			await onAfterRequest();
 		}

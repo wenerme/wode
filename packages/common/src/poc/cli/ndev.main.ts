@@ -6,7 +6,8 @@ import { getPackageDir } from '@wener/utils/server';
 import { Command } from 'commander';
 import { $ } from 'execa';
 import { runCommand } from '@/poc/cli/run';
-import { createEsbuildCommand } from '@/poc/esbuild/createEsbuildCommand';
+
+// import { createEsbuildCommand } from '../crea';
 
 function createRootCommand() {
 	// Node Dev
@@ -19,7 +20,7 @@ function createRootCommand() {
 	root.addCommand(createPkgCommand());
 	root.addCommand(createBuildCommand());
 	root.addCommand(createRepoCommand());
-	root.addCommand(createEsbuildCommand());
+	// root.addCommand(createEsbuildCommand());
 	root.addCommand(createJsonCommand());
 	root.command('info').action(async () => {
 		const o = { self: process.argv[1], cwd: process.cwd(), pkg_dir: getPackageDir(), repo_dir: await getRepoDir() };
@@ -172,7 +173,7 @@ async function scanPnpmLockDup() {
 		.map((v) => v.trim())
 		.map((v) => {
 			const { name, version, spec } =
-				v.match(/^\/(?<name>(@[^\/]+\/)?[^@]+)@(?<version>[^:(]+)(\((?<spec>.*?)\))?:$/)?.groups || {};
+				v.match(/^\/(?<name>(@[^/]+\/)?[^@]+)@(?<version>[^:(]+)(\((?<spec>.*?)\))?:$/)?.groups || {};
 			return { name, version, spec };
 		});
 

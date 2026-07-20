@@ -1,6 +1,6 @@
+import { ErrorSuspenseBoundary, PageErrorState } from '@wener/console/web';
 import React, { lazy } from 'react';
 import { Outlet, type RouteObject } from 'react-router-dom';
-import { ErrorSuspenseBoundary, PageErrorState } from '@wener/console/web';
 
 const IpfsPage = lazy(() => import('./IpfsPage'));
 const IpfsAccess = lazy(() => import('./IpfsAccess'));

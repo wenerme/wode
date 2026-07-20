@@ -1,1 +1,1 @@
-export { getRemoteEmitter, RemoteEvents, type RemoteEmitter } from './RemoteEmitter';
+export { getRemoteEmitter, type RemoteEmitter, RemoteEvents } from './RemoteEmitter';

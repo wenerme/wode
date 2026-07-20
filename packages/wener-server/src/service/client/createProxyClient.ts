@@ -27,7 +27,7 @@ export function createProxyClient<T>({
 		getPrototypeOf(target: ClientProxyTarget) {
 			return target.constructor?.prototype || null;
 		},
-		has(target, key): boolean {
+		has(_target, key): boolean {
 			switch (key) {
 				case 'toString':
 				case 'toJSON':

@@ -5,7 +5,7 @@ import { getContext } from '../ContextProvider';
 export class NestContainerType implements ContainerType {
 	private moduleRef?: ModuleRef;
 
-	get(someClass: any, resolverData: ResolverData<any>): any | Promise<any> {
+	get(someClass: any, _resolverData: ResolverData<any>): any | Promise<any> {
 		let ref = (this.moduleRef ||= getContext(ModuleRef));
 		return ref.get(someClass, { strict: false });
 	}

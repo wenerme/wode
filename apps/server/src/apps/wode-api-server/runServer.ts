@@ -10,9 +10,9 @@ import {
 	createBcryptPasswordAlgorithm,
 	Password,
 } from '@wener/common/password';
-import { createBootstrap } from '@wener/nestjs';
-import { createOpenAPIHono, runServer } from '@wener/nestjs/hono';
-import { getEntityManager, OrmModule } from '@wener/nestjs/mikro-orm';
+import { createBootstrap } from '@wener/server';
+import { createOpenAPIHono, runServer } from '@wener/server/hono';
+import { getEntityManager, OrmModule } from '@wener/server/mikro-orm';
 import { parseBoolean } from '@wener/utils';
 import { GraphQLSchema } from 'graphql/type';
 import { cors } from 'hono/cors';
@@ -47,7 +47,7 @@ export async function runDemoApiServer() {
 		let knex = em.getKnex();
 		const {
 			current_user: currentUser,
-			version: version,
+			version,
 			current_catalog: database,
 		} = (await knex.raw('select current_user, current_catalog, version()')).rows[0];
 		const searchPath = (await knex.raw('show search_path')).rows[0].search_path;

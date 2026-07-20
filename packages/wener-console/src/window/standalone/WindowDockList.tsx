@@ -1,6 +1,6 @@
+import { FloatingFocusManager, FloatingPortal } from '@floating-ui/react';
 import React, { memo } from 'react';
 import { PiBrowser } from 'react-icons/pi';
-import { FloatingFocusManager, FloatingPortal } from '@floating-ui/react';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
 import { useStoreWithEqualityFn } from 'zustand/traditional';

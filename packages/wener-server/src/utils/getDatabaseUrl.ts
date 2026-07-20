@@ -1,4 +1,4 @@
-export function getDatabaseUrl(name = '', env = globalThis.process?.env || {}) {
+export function getDatabaseUrl(name = '', env = globalThis.process?.env || {}): string | undefined {
 	name = name?.toUpperCase();
 	let keys = ['DATABASE_URL', 'DB_URL', 'DATABASE_DSN', 'DB_DSN'];
 	for (let v of keys) {
@@ -7,4 +7,5 @@ export function getDatabaseUrl(name = '', env = globalThis.process?.env || {}) {
 			return env[k];
 		}
 	}
+	return undefined;
 }

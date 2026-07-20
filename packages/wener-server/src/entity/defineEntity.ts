@@ -1,4 +1,4 @@
-import { BaseEntity, MetadataStorage, type EntityClass } from '@mikro-orm/core';
+import { BaseEntity, type EntityClass, MetadataStorage } from '@mikro-orm/core';
 import { Errors } from '@wener/utils';
 import { Features } from '../Feature';
 import { getTypeOfEntityTypeId } from './parseEntityTypeId';
@@ -37,7 +37,8 @@ export function defineEntity(o: DefineEntityOptions | DefineEntityOptions[]) {
 		return o.map((v) => defineEntity(v));
 	}
 	let def = o as EntityDef;
-	let meta = MetadataStorage.getMetadataFromDecorator(o.Entity);
+	let meta =
+		(MetadataStorage as any).getMetadataFromDecorator?.(o.Entity) ?? MetadataStorage.getMetadata(o.Entity.name, '');
 
 	def.metadata ||= {};
 	def.tableName ||= meta.tableName;

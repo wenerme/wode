@@ -36,7 +36,7 @@ test('parseChineseNumber', () => {
 
 function formatChineseNumber(v: number): string {
 	if (v < 0) {
-		return '负' + formatChineseNumber(-v);
+		return `负${formatChineseNumber(-v)}`;
 	}
 
 	// 数字对应的中文表示
@@ -88,7 +88,7 @@ function formatChineseNumber(v: number): string {
 export function formatChineseAmount0(amount: number): string {
 	// 检查金额是否合理
 	if (amount < 0) {
-		return '(负)' + formatChineseAmount0(-amount);
+		return `(负)${formatChineseAmount0(-amount)}`;
 	}
 	// 大写数字和单位
 	const digits = ['零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖'];
@@ -111,10 +111,10 @@ export function formatChineseAmount0(amount: number): string {
 	integerAmount = Math.floor(integerAmount / 100); // 转为元为单位
 
 	if (fen > 0) {
-		result = digits[fen] + '分' + result;
+		result = `${digits[fen]}分${result}`;
 	}
 	if (jiao > 0) {
-		result = digits[jiao] + '角' + result;
+		result = `${digits[jiao]}角${result}`;
 	}
 	if (cents === 0) {
 		result += '整';

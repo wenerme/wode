@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { HiLockClosed, HiMiniLockOpen } from 'react-icons/hi2';
 import { clsx } from 'clsx';
+import { useEffect, useState } from 'react';
+import { HiLockClosed, HiMiniLockOpen } from 'react-icons/hi2';
 import { getConsoleEmitter } from '../../console/ConsoleEmitter';
 import { ConsoleEventType } from '../../console/context';
 import { Button, NonIdealState } from '../../daisy';

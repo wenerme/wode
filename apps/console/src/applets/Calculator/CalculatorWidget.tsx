@@ -1,6 +1,6 @@
+import { defineApplet } from '@wener/console/console';
 import React, { lazy } from 'react';
 import { PiCalculatorLight } from 'react-icons/pi';
-import { defineApplet } from '@wener/console/console';
 
 const Content = lazy(() => import('./Calculator').then((m) => ({ default: m.Calculator })));
 

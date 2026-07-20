@@ -1,4 +1,3 @@
-export { TencentLogClient, type TencentLogClientInit } from './TencentLogClient';
 export type {
 	CreateLogsetRequest,
 	CreateLogsetResponse,
@@ -8,6 +7,7 @@ export type {
 	DeleteLogsetResponse,
 	DeleteTopicRequest,
 	DeleteTopicResponse,
+	DescribeLogContextRequest,
 	ListLogsetRequest,
 	ListLogsetResponse,
 	ListTopicRequest,
@@ -19,5 +19,6 @@ export type {
 	SearchLogRequest,
 	SearchLogResponse,
 } from './TencentLogClient';
+export { TencentLogClient, type TencentLogClientInit } from './TencentLogClient';
 export type * from './types';
 export { isTopicId } from './utils';

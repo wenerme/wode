@@ -21,7 +21,7 @@ function createError(message: string): ULIDError {
 // they do, we're no longer making ulids!
 const ENCODING = '0123456789ABCDEFGHJKMNPQRSTVWXYZ'; // Crockford's Base32
 const ENCODING_LEN = ENCODING.length;
-const TIME_MAX = Math.pow(2, 48) - 1;
+const TIME_MAX = 2 ** 48 - 1;
 const TIME_LEN = 10;
 const RANDOM_LEN = 16;
 
@@ -44,10 +44,10 @@ function replaceCharAt(str: string, index: number, char: string) {
 }
 
 function incrementBase32(str: string): string {
-	let done;
+	let done: string | undefined;
 	let index = str.length;
-	let char;
-	let charIndex;
+	let char: string | undefined;
+	let charIndex: number;
 	const maxCharIndex = ENCODING_LEN - 1;
 	while (!done && index-- >= 0) {
 		char = str[index];
@@ -68,7 +68,7 @@ function incrementBase32(str: string): string {
 }
 
 function encodeTime(now: number, len: number): string {
-	if (isNaN(now)) {
+	if (Number.isNaN(now)) {
 		throw new Error(`${now} must be a number`);
 	}
 	if (now > TIME_MAX) {
@@ -80,7 +80,7 @@ function encodeTime(now: number, len: number): string {
 	if (!Number.isInteger(now)) {
 		throw createError('time must be an integer');
 	}
-	let mod;
+	let mod: number;
 	let str = '';
 	for (; len > 0; len--) {
 		mod = now % ENCODING_LEN;
@@ -106,9 +106,9 @@ export function parseULID(id: string): { timestamp: number; random: string } {
 		.reduce((carry, char, index) => {
 			const encodingIndex = ENCODING.indexOf(char);
 			if (encodingIndex === -1) {
-				throw createError('invalid character found: ' + char);
+				throw createError(`invalid character found: ${char}`);
 			}
-			return (carry += encodingIndex * Math.pow(ENCODING_LEN, index));
+			return (carry += encodingIndex * ENCODING_LEN ** index);
 		}, 0);
 	if (time > TIME_MAX) {
 		throw createError('malformed ulid, timestamp too large');
@@ -123,7 +123,11 @@ export function createULID({
 	monotonic = true,
 	random = Math.random,
 	now = Date.now,
-}: { monotonic?: boolean; now?: () => number; random?: () => number } = {}) {
+}: {
+	monotonic?: boolean;
+	now?: () => number;
+	random?: () => number;
+} = {}) {
 	const encodeRandom = (len: number) => randomString(random, ENCODING, len);
 
 	if (!monotonic) {

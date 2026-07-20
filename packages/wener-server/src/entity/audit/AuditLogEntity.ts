@@ -1,4 +1,5 @@
-import { Entity, Property, types } from '@mikro-orm/core';
+import { types } from '@mikro-orm/core';
+import { Entity, Property } from '@mikro-orm/decorators/legacy';
 import { TenantBaseEntity } from '../TenantBaseEntity';
 
 @Entity({ tableName: 'audit_log' })

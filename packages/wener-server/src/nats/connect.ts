@@ -27,7 +27,7 @@ export function defineNatsConfig(
 		NATS_PASSWORD,
 		NATS_USERNAME,
 		NATS_TLS,
-		NATS_MAX_RECONNECT_ATTEMPTS,
+		NATS_MAX_RECONNECT_ATTEMPTS: _NATS_MAX_RECONNECT_ATTEMPTS,
 	} = env;
 	const servers: string[] = [];
 	let tls = null;
@@ -72,7 +72,7 @@ export function defineNatsConfig(
 	return opts;
 }
 
-const NatsOptionSchema = z.object({
+const _NatsOptionSchema = z.object({
 	debug: z.coerce.boolean().optional(),
 	name: z.string().optional(),
 	pass: z.string().optional(),

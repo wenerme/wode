@@ -1,0 +1,30 @@
+import { ApolloConfigMcpServerHandlerDef } from './apolloconfig';
+import { ClickHouseMcpServerHandlerDef } from './clickhouse';
+import { FeishuMcpServerHandlerDef } from './feishu';
+import { GeminiToolsMcpServerHandlerDef } from './gemini-tools';
+import { GrafanaMcpServerHandlerDef } from './grafana';
+import { registerMcpServerHandler } from './McpServerHandlerDef';
+import { PrometheusMcpServerHandlerDef } from './prometheus';
+import { RelayMcpServerHandlerDef } from './relay';
+import { SqlMcpServerHandlerDef } from './sql';
+import { TencentClsMcpServerHandlerDef } from './tencent-cls';
+
+registerMcpServerHandler(ApolloConfigMcpServerHandlerDef);
+registerMcpServerHandler(ClickHouseMcpServerHandlerDef);
+registerMcpServerHandler(FeishuMcpServerHandlerDef);
+registerMcpServerHandler(GrafanaMcpServerHandlerDef);
+registerMcpServerHandler(GeminiToolsMcpServerHandlerDef);
+registerMcpServerHandler(PrometheusMcpServerHandlerDef);
+registerMcpServerHandler(RelayMcpServerHandlerDef);
+registerMcpServerHandler(SqlMcpServerHandlerDef);
+registerMcpServerHandler(TencentClsMcpServerHandlerDef);
+
+export { ApolloConfigMcpServerHandlerDef } from './apolloconfig';
+export { ClickHouseMcpServerHandlerDef } from './clickhouse';
+export { FeishuMcpServerHandlerDef } from './feishu';
+export { GrafanaMcpServerHandlerDef } from './grafana';
+export { GeminiToolsMcpServerHandlerDef } from './gemini-tools';
+export { PrometheusMcpServerHandlerDef } from './prometheus';
+export { RelayMcpServerHandlerDef } from './relay';
+export { SqlMcpServerHandlerDef } from './sql';
+export { TencentClsMcpServerHandlerDef } from './tencent-cls';

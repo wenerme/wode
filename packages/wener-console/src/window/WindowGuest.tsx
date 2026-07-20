@@ -1,19 +1,12 @@
-import React, {
-	memo,
-	useEffect,
-	type ComponentProps,
-	type ComponentPropsWithoutRef,
-	type FC,
-	type ReactNode,
-} from 'react';
-import { Rnd } from 'react-rnd';
 import { useEvent } from '@wener/reaction';
 import { Closer } from '@wener/utils';
 import { clsx } from 'clsx';
+import { type ComponentProps, type ComponentPropsWithoutRef, type FC, memo, type ReactNode, useEffect } from 'react';
+import { Rnd } from 'react-rnd';
 import { useStore } from 'zustand';
 import { useShallow } from 'zustand/react/shallow';
 import { getWindowDragCancelClassname, getWindowDragHandleClassname } from './const';
-import { getRootWindow, WindowContext, type ReactWindow } from './ReactWindow';
+import { getRootWindow, type ReactWindow, WindowContext } from './ReactWindow';
 import { WindowController } from './WindowController';
 import { WindowFrame } from './WindowFrame';
 
@@ -97,12 +90,12 @@ export const WindowGuest = memo<{ win: ReactWindow }>(({ win }) => {
 		},
 		size: size,
 		position: position,
-		onDragStop: useEvent((e, d) => {
+		onDragStop: useEvent((_e, d) => {
 			if (!maximized) {
 				store.setState({ x: d.x, y: d.y });
 			}
 		}),
-		onResize: useEvent((e, direction, ref, delta, position) => {
+		onResize: useEvent((_e, _direction, ref, _delta, position) => {
 			if (!maximized) {
 				store.setState({
 					width: ref.offsetWidth,
@@ -240,7 +233,7 @@ const WinFrameContent: FC<{ win: ReactWindow }> = ({ win }) => {
 						onClick: () => {
 							win.maximize();
 						},
-						['data-active']: maximized || null,
+						'data-active': maximized || null,
 					}}
 				/>
 			}
@@ -270,6 +263,6 @@ const WindowContentRenderer: FC<{ render?: () => ReactNode }> = ({ render }) => 
 	return render?.();
 };
 
-function getWindowProps(win: ReactWindow): ComponentPropsWithoutRef<'div'> {
+function getWindowProps(_win: ReactWindow): ComponentPropsWithoutRef<'div'> {
 	return {};
 }

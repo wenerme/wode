@@ -1,5 +1,5 @@
-import React, { type FC, type HTMLAttributes } from 'react';
 import classNames from 'clsx';
+import type { FC, HTMLAttributes } from 'react';
 import { DaisyTheme } from './DaisyTheme';
 import { getSupportedThemes } from './getSupportedThemes';
 import { ThemePreviewCard } from './ThemePreviewCard';

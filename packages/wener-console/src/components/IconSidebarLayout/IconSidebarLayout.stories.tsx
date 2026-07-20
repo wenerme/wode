@@ -1,5 +1,5 @@
-import { HiCog, HiHome, HiInformationCircle, HiUser } from 'react-icons/hi2';
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { HiCog, HiHome, HiInformationCircle, HiUser } from 'react-icons/hi2';
 import { IconSidebarLayout } from './IconSidebarLayout';
 
 const meta: Meta<typeof IconSidebarLayout.Layout> = {

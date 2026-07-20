@@ -3,7 +3,7 @@
 exports[`ChineseResidentIdNo > should parse 1`] = `
 {
   "addressCode": "110105",
-  "age": 76,
+  "age": 77,
   "birthDate": "1949-12-31",
   "checkDigit": 10,
   "raw": "11010519491231002X",

@@ -10,10 +10,6 @@ export const DefaultMikroORMConfig: Partial<MikroORMOptions<any, any>> = {
 		global: 50,
 		options: {},
 	},
-	discovery: {
-		disableDynamicFileAccess: true,
-		requireEntitiesArray: true,
-	},
 	serialization: {
 		includePrimaryKeys: true,
 		forceObject: true,

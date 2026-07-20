@@ -23,7 +23,7 @@ export class CubeClient {
 		const { fetch, endpoint } = this.options;
 		// fixme
 		if (path.startsWith('/v1')) {
-			path = '/cubejs-api' + path;
+			path = `/cubejs-api${path}`;
 		}
 
 		const url = `${endpoint}${path}`;
@@ -38,7 +38,7 @@ export class CubeClient {
 		const res = await fetch(url, init);
 
 		if (!res.ok) {
-			let out;
+			let out: string | undefined;
 			try {
 				out = await res.text();
 			} catch {}

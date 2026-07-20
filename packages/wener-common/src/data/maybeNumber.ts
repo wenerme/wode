@@ -20,7 +20,7 @@ export function maybeNumber(v: MaybeNumber) {
 			}
 	}
 	const n = Number(v);
-	if (isNaN(n)) {
+	if (Number.isNaN(n)) {
 		return undefined;
 	}
 	return n;

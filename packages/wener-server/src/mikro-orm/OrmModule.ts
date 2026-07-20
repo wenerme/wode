@@ -1,14 +1,13 @@
-import { EntityManager as CoreEntityManager, MikroORM as CoreMikroORM, type AnyEntity } from '@mikro-orm/core';
-import { MikroOrmModule, type EntityName, type MikroOrmModuleFeatureOptions } from '@mikro-orm/nestjs';
-import type { MikroOrmModuleAsyncOptions } from '@mikro-orm/nestjs/typings';
+import { type AnyEntity, EntityManager as CoreEntityManager, MikroORM as CoreMikroORM } from '@mikro-orm/core';
+import { type EntityName, MikroOrmModule, type MikroOrmModuleFeatureOptions } from '@mikro-orm/nestjs';
+import type { MikroOrmModuleAsyncOptions } from '@mikro-orm/nestjs';
 import {
-	knex,
-	EntityManager as PostgreSqlEntityManager,
-	MikroORM as PostgreSqlMikroORM,
 	type AbstractSqlConnection,
 	type Options,
+	EntityManager as PostgreSqlEntityManager,
+	MikroORM as PostgreSqlMikroORM,
 } from '@mikro-orm/postgresql';
-import { Logger, type DynamicModule } from '@nestjs/common';
+import { type DynamicModule, Logger } from '@nestjs/common';
 import { createLazyPromise, type MaybePromise } from '@wener/utils';
 import { getMikroOrmConfig } from '../config/database.config';
 import { defineMikroOrmOptions } from './defineMikroOrmOptions';
@@ -29,8 +28,8 @@ export class OrmModule {
 			let module = await MikroOrmModule.forRootAsync({
 				...rest,
 				useFactory: async (...args) => {
-					let config = ((await useFactory?.(...args))
-						|| defineMikroOrmOptions({ entities: [], ...getMikroOrmConfig() })) as Options;
+					let config = ((await useFactory?.(...args)) ||
+						defineMikroOrmOptions({ entities: [], ...getMikroOrmConfig() })) as Options;
 					// dedup
 					config.entities = Array.from(new Set(config.entities)).filter(Boolean);
 					await onConfig?.(config, ...args);
@@ -44,7 +43,7 @@ export class OrmModule {
 	}
 
 	static forRoot(opts: OrmModuleOptions) {
-		return this.forRootAsync({ onConfig: opts.onConfig, useFactory: () => defineMikroOrmOptions(opts) });
+		return OrmModule.forRootAsync({ onConfig: opts.onConfig, useFactory: () => defineMikroOrmOptions(opts) });
 	}
 
 	static forFeature(
@@ -61,15 +60,8 @@ function setup(module: DynamicModule) {
 	module.exports ||= [];
 	module.providers ||= [];
 	module.providers.push(
-		{
-			provide: knex,
-			useFactory(orm: CoreMikroORM) {
-				return (orm.em.getConnection() as AbstractSqlConnection).getKnex();
-			},
-			inject: [CoreMikroORM],
-		},
 		{ provide: PostgreSqlMikroORM, useExisting: CoreMikroORM },
 		{ provide: PostgreSqlEntityManager, useExisting: CoreEntityManager },
 	);
-	module.exports.push(PostgreSqlMikroORM, PostgreSqlEntityManager, knex);
+	module.exports.push(PostgreSqlMikroORM, PostgreSqlEntityManager);
 }

@@ -1,5 +1,5 @@
-import { PiHardDrive } from 'react-icons/pi';
 import type { NextPageProps } from '@wener/reaction/next';
+import { PiHardDrive } from 'react-icons/pi';
 import { NordVPNActions } from '../data';
 
 export default async function (props: NextPageProps) {

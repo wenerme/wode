@@ -1,6 +1,6 @@
 {
 	"name": "@wener/common",
-	"version": "2.0.2",
+	"version": "2.0.6",
 	"type": "module",
 	"description": "Common utils for console & server",
 	"repository": {
@@ -18,11 +18,14 @@
 		"./data": "./src/data/index.ts",
 		"./dayjs": "./src/dayjs/index.ts",
 		"./decimal": "./src/decimal/index.ts",
+		"./drain3": "./src/drain3/index.ts",
 		"./fs": "./src/fs/index.ts",
+		"./fs/webdav": "./src/fs/webdav/index.ts",
+		"./fs/s3mini": "./src/fs/s3/index.ts",
+		"./fs/minio": "./src/fs/minio/index.ts",
+		"./fs/server": "./src/fs/server/index.ts",
 		"./fs/orpc": "./src/fs/orpc/index.ts",
 		"./fs/orpc/server": "./src/fs/orpc/server/index.ts",
-		"./fs/s3": "./src/fs/s3/index.ts",
-		"./fs/server": "./src/fs/server/index.ts",
 		"./jsonschema": "./src/jsonschema/index.ts",
 		"./meta": "./src/meta/index.ts",
 		"./orpc": "./src/orpc/index.ts",
@@ -50,17 +53,21 @@
 	},
 	"dependencies": {
 		"@standard-schema/spec": "^1.1.0",
-		"@wener/utils": "workspace:^1.1.56",
+		"@wener/utils": "^1.1.58",
 		"date-fns": "^4.1.0",
-		"es-toolkit": "^1.43.0",
-		"std-env": "^3.10.0",
+		"es-toolkit": "^1.46.1",
+		"std-env": "^4.1.0",
 		"ts-pattern": "^5.9.0"
 	},
 	"devDependencies": {
-		"@orpc/client": "^1.13.2",
-		"@orpc/contract": "^1.13.2",
-		"@orpc/openapi-client": "^1.13.2",
-		"@sinclair/typebox": "^0.34.47",
+		"@mikro-orm/core": "^7.0.13",
+		"@mikro-orm/decorators": "^7.0.13",
+		"@mikro-orm/sql": "^7.0.13",
+		"@orpc/client": "^1.14.1",
+		"@orpc/contract": "^1.14.1",
+		"@orpc/openapi-client": "^1.14.1",
+		"@orpc/server": "^1.14.1",
+		"@sinclair/typebox": "^0.34.49",
 		"@sinclair/typebox-codegen": "^0.11.1",
 		"@types/argon2-browser": "^1.18.4",
 		"@types/bcrypt": "^6.0.0",
@@ -75,14 +82,17 @@
 		"bcryptjs": "^3.0.3",
 		"chalk": "^5.6.2",
 		"consola": "^3.4.2",
-		"dayjs": "^1.11.19",
+		"dayjs": "^1.11.20",
 		"decimal.js": "^10.6.0",
-		"emittery": "^1.2.0",
+		"emittery": "^2.0.0",
+		"kysely": "^0.28.17",
 		"micromatch": "^4.0.8",
 		"mime-types": "^3.0.2",
+		"minio": "^8.0.7",
 		"pathe": "^2.0.3",
-		"s3mini": "^0.8.1",
-		"zod": "^4.3.5"
+		"s3mini": "^0.9.4",
+		"webdav": "^5.10.0",
+		"zod": "^4.4.3"
 	},
 	"publishConfig": {
 		"exports": {
@@ -110,9 +120,29 @@
 				"types": "./src/decimal/index.ts",
 				"default": "./lib/decimal/index.js"
 			},
+			"./drain3": {
+				"types": "./src/drain3/index.ts",
+				"default": "./lib/drain3/index.js"
+			},
 			"./fs": {
 				"types": "./src/fs/index.ts",
 				"default": "./lib/fs/index.js"
+			},
+			"./fs/webdav": {
+				"types": "./src/fs/webdav/index.ts",
+				"default": "./lib/fs/webdav/index.js"
+			},
+			"./fs/s3mini": {
+				"types": "./src/fs/s3/index.ts",
+				"default": "./lib/fs/s3/index.js"
+			},
+			"./fs/minio": {
+				"types": "./src/fs/minio/index.ts",
+				"default": "./lib/fs/minio/index.js"
+			},
+			"./fs/server": {
+				"types": "./src/fs/server/index.ts",
+				"default": "./lib/fs/server/index.js"
 			},
 			"./fs/orpc": {
 				"types": "./src/fs/orpc/index.ts",
@@ -121,14 +151,6 @@
 			"./fs/orpc/server": {
 				"types": "./src/fs/orpc/server/index.ts",
 				"default": "./lib/fs/orpc/server/index.js"
-			},
-			"./fs/s3": {
-				"types": "./src/fs/s3/index.ts",
-				"default": "./lib/fs/s3/index.js"
-			},
-			"./fs/server": {
-				"types": "./src/fs/server/index.ts",
-				"default": "./lib/fs/server/index.js"
 			},
 			"./jsonschema": {
 				"types": "./src/jsonschema/index.ts",

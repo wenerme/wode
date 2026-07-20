@@ -1,4 +1,5 @@
-import { Entity, Property, types, type Opt } from '@mikro-orm/core';
+import { type Opt, types } from '@mikro-orm/core';
+import { Entity, Property } from '@mikro-orm/decorators/legacy';
 import { MinimalBaseEntity } from './MinimalBaseEntity';
 
 @Entity({ abstract: true })

@@ -1,7 +1,7 @@
-import type { ReactNode } from 'react';
 import { Tabs as BaseTabs } from '@base-ui/react/tabs';
 import { cn } from '@wener/console';
-import { flexRender, type FlexRenderable } from '@wener/reaction';
+import { type FlexRenderable, flexRender } from '@wener/reaction';
+import type { ReactNode } from 'react';
 
 export namespace Tabs {
 	/*

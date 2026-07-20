@@ -9,7 +9,6 @@
 		"stripInternal": true,
 		"jsx": "react-jsx",
 		"outDir": "lib",
-		"baseUrl": ".",
 		"rootDir": "./src"
 	},
 	"exclude": ["node_modules"],

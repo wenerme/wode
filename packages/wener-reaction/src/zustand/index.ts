@@ -1,1 +1,1 @@
-export { createBoundedUseStore, type BoundedUseStore } from './createBoundedUseStore';
+export { type BoundedUseStore, createBoundedUseStore } from './createBoundedUseStore';

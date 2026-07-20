@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises';
 import type { EntityData } from '@mikro-orm/core';
-import { EntityManager } from '@mikro-orm/postgresql';
+import type { EntityManager } from '@mikro-orm/postgresql';
 import { ApkIndexEntity } from '../entity/ApkIndexEntity';
 import { getAlpineCacheDir } from './fs';
 import { parseApkIndexArchive } from './parseApkIndexArchive';

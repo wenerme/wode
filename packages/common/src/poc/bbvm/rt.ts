@@ -50,6 +50,7 @@ export function isCompareTypeMatch(a: CompareType, b: CompareType) {
 				case CompareType.AE:
 					return true;
 			}
+			break;
 		}
 		case CompareType.NZ: {
 			switch (b) {

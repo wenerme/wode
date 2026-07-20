@@ -1,4 +1,4 @@
-type Writer = (message?: any, ...args: any[]) => void;
+export type Writer = (message?: any, ...args: any[]) => void;
 
 export type Logger = {
 	log: Writer;

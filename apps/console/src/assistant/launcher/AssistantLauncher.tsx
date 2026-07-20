@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import type React from 'react';
+import { useEffect } from 'react';
 import { useAssistantLauncherMutate, useAssistantLauncherState } from './AssistantLauncherState';
 import { AssistantLayout } from './components/AssistantLayout';
 import { AssistantSidebar } from './components/AssistantSidebar';

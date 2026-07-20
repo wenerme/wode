@@ -1,7 +1,7 @@
 import { Module, type DynamicModule } from '@nestjs/common';
 import type { ModuleMetadata } from '@nestjs/common/interfaces/modules/module-metadata.interface';
-import type { Constructor } from '@wener/nestjs';
-import { OrmModule } from '@wener/nestjs/mikro-orm';
+import type { Constructor } from '@wener/server';
+import { OrmModule } from '@wener/server/mikro-orm';
 
 export interface BuildGraphModuleOptions {
 	resolvers: Constructor<any>[];

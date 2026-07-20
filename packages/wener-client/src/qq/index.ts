@@ -1,1 +1,1 @@
-export { parseEmotion, getEmotions } from './utils/parseEmotion';
+export { getEmotions, parseEmotion } from './utils/parseEmotion';

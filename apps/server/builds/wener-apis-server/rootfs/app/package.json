@@ -1,9 +1,9 @@
 {
-  "name": "app",
-  "version": "1.0.0",
-  "type": "module",
-  "dependencies": {
-    "class-transformer": "*",
-    "jsdom": "^22"
-  }
+	"name": "app",
+	"version": "1.0.0",
+	"type": "module",
+	"dependencies": {
+		"class-transformer": "*",
+		"jsdom": "^22"
+	}
 }

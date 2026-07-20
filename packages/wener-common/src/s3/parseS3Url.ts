@@ -27,7 +27,7 @@ export function parseS3Url({ url = process.env.S3_URL, ...rest }: ParseS3UrlOpti
 	let parsed: URL;
 	try {
 		parsed = new URL(normalizedUrl);
-	} catch (error) {
+	} catch (_error) {
 		throw new Error(`Invalid S3 URL: ${url}`);
 	}
 

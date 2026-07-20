@@ -1,5 +1,5 @@
+import { type MaybeFunction, maybeFunction } from '@wener/utils';
 import type { ComponentType, ReactNode } from 'react';
-import { maybeFunction, type MaybeFunction } from '@wener/utils';
 import { flexRender } from './flexRender';
 
 export type FlexRendererProps<P extends {}> = P & {

@@ -1,6 +1,6 @@
-import { useMemo, type ComponentPropsWithRef, type ReactNode } from 'react';
+import { type AnyResource, getTitleOfResource } from '@wener/common/resource';
+import { type ComponentPropsWithRef, type ReactNode, useMemo } from 'react';
 import { PiCalendarBlank } from 'react-icons/pi';
-import { getTitleOfResource, type AnyResource } from '@wener/common/resource';
 import { DataViewLayout } from './DataViewLayout';
 
 type IAnyResource = AnyResource & {
@@ -99,7 +99,7 @@ export function formatResourceMeta(data: IAnyResource): ReactNode {
 		);
 	}
 
-	return parts.length > 0 ? <>{parts.map((p, i) => (i > 0 ? [' • ', p] : p))}</> : null;
+	return parts.length > 0 ? parts.map((p, i) => (i > 0 ? [' • ', p] : p)) : null;
 }
 
 export type ResourceListItemProps = Omit<

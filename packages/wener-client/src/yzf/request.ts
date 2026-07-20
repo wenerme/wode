@@ -1,5 +1,5 @@
-import type { FetchLike, MaybePromise } from '@wener/utils';
-import { doRequest, type DoRequestOptions } from '../utils/doRequest';
+import type { MaybePromise } from '@wener/utils';
+import { type DoRequestOptions, doRequest } from '../utils/doRequest';
 import type { ResultResponse } from './types';
 
 export interface Token {
@@ -69,7 +69,7 @@ export async function requireSuccessResponse(r: Response) {
 	});
 }
 
-function serializeCookie(o: Record<string, any>) {
+function _serializeCookie(o: Record<string, any>) {
 	return Object.entries(o)
 		.map(([k, v]) => `${k}=${v}`)
 		.join('; ');

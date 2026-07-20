@@ -1,5 +1,5 @@
 import type { MaybePromise } from '@wener/utils';
-import { TencentLogClient, type SearchLogRequest, type SearchLogResponse } from './TencentLogClient';
+import type { SearchLogRequest, SearchLogResponse, TencentLogClient } from './TencentLogClient';
 import type { Column } from './types';
 
 export type SearchAnalysisLogStreamOptions = {

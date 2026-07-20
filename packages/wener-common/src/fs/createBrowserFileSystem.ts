@@ -37,7 +37,7 @@ type BrowserDirectory = IFileStat & {
 	};
 };
 
-type BrowserNode = BrowserFile | BrowserDirectory;
+type _BrowserNode = BrowserFile | BrowserDirectory;
 
 /**
  * Creates an IFileSystem instance backed by the browser's File System Access API.
@@ -136,7 +136,7 @@ class BrowserFS implements IFileSystem {
 		return !!handle;
 	}
 
-	async readdir(dir: string, options?: ReaddirOptions): Promise<IFileStat[]> {
+	async readdir(dir: string, _options?: ReaddirOptions): Promise<IFileStat[]> {
 		const [handle] = await this._getHandle(dir);
 		if (!handle) {
 			throw new BrowserFSError(`Directory not found: ${dir}`, 'ENOENT');
@@ -146,7 +146,9 @@ class BrowserFS implements IFileSystem {
 		}
 
 		const entries: IFileStat[] = [];
-		for await (const entry of (handle as FileSystemDirectoryHandle).values()) {
+		// FileSystemDirectoryHandle.values() is part of the File System Access API
+		// but not yet in TypeScript's lib.dom.d.ts
+		for await (const entry of (handle as any).values()) {
 			entries.push(await this._toFileStat(entry, join(dir, entry.name)));
 		}
 		return entries;
@@ -256,13 +258,13 @@ class BrowserFS implements IFileSystem {
 			await writable.close();
 		} else if (srcHandle.kind === 'directory') {
 			const newDirHandle = await destDirHandle.getDirectoryHandle(newName, { create: true });
-			for await (const entry of (srcHandle as FileSystemDirectoryHandle).values()) {
+			for await (const entry of (srcHandle as any).values()) {
 				await this._copyEntry(entry, newDirHandle, entry.name);
 			}
 		}
 	}
 
-	async createUrl(stat: IFileStat, options?: FileUrlOptions): Promise<string> {
+	async createUrl(stat: IFileStat, _options?: FileUrlOptions): Promise<string> {
 		// The handle is stored in the meta property in our _toFileStat method
 		const handle = stat.meta.handle as FileSystemHandle | undefined;
 		if (handle?.kind !== 'file') {

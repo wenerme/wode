@@ -130,7 +130,7 @@ export class KeychainAccess {
 			// e.g. password '∆˚ˆ©ƒ®∂çµ˚¬˙ƒ®†¥' becomes:
 			// password: 0xE28886CB9ACB86C2A9C692C2AEE28882C3A7C2B5CB9AC2ACCB99C692C2AEE280A0C2A5
 			if (/^password: 0x([0-9a-fA-F]+)/.test(password)) {
-				var hexPassword = password.match(/0x([0-9a-fA-F]+)/)?.[1];
+				const hexPassword = password.match(/0x([0-9a-fA-F]+)/)?.[1];
 				if (!hexPassword) {
 					return;
 				}
@@ -139,7 +139,7 @@ export class KeychainAccess {
 			// Otherwise the password will be in quotes:
 			// password: "passWithoutSlash"
 			else {
-				const out = password.match(/"(.*)\"/)?.[1];
+				const out = password.match(/"(.*)"/)?.[1];
 				return out;
 			}
 		}

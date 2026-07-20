@@ -1,3 +1,3 @@
-import { patchMikroORMMetadataStorage } from '@wener/nestjs/entity';
+import { patchMikroORMMetadataStorage } from '@wener/server/entity';
 
 patchMikroORMMetadataStorage();

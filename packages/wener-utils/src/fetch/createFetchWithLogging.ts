@@ -6,10 +6,13 @@ import type { FetchLike } from './types';
 export function createFetchWithLogging({
 	fetch,
 	log = console.log,
-}: { fetch?: FetchLike; log?: (s: string) => void } = {}): FetchLike {
+}: {
+	fetch?: FetchLike;
+	log?: (s: string) => void;
+} = {}): FetchLike {
 	return createFetchWith({
 		fetch,
-		onRequest: ({ url, req }) => {
+		onRequest: ({ url, req }): undefined => {
 			void dumpRequest({ url, req, log });
 		},
 		onResponse: ({ url, req, res }) => {

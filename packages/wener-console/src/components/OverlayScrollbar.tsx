@@ -1,4 +1,3 @@
-import React from 'react';
 import { OverlayScrollbarsComponent, type OverlayScrollbarsComponentProps } from 'overlayscrollbars-react';
 
 type OverlayScrollbarProps = OverlayScrollbarsComponentProps & {};

@@ -1,10 +1,11 @@
 import type { FetchLike } from '@wener/utils';
-import { request, sign, type RequestOptions } from './request';
-import { searchAnalysisLogStream, type SearchAnalysisLogStreamOptions } from './searchAnalysisLogStream';
-import { searchLogStream, type SearchLogStreamOptions } from './searchLogStream';
+import { type RequestOptions, request, sign } from './request';
+import { type SearchAnalysisLogStreamOptions, searchAnalysisLogStream } from './searchAnalysisLogStream';
+import { type SearchLogStreamOptions, searchLogStream } from './searchLogStream';
 import type {
 	Column,
 	Filter,
+	LogContextInfo,
 	LogGroup,
 	LogInfo,
 	LogItems,
@@ -208,12 +209,48 @@ export type DeleteTopicResponse = CommonListResponse;
 
 export type DeleteLogsetResponse = CommonListResponse;
 
+export type DescribeLogContextRequest = {
+	/** 日志主题 ID */
+	TopicId: string;
+	/**
+	 * 日志时间，格式：YYYY-mm-dd HH:MM:SS.FFF
+	 * 时区为 UTC+8
+	 */
+	BTime: string;
+	/** 日志包序号 */
+	PkgId: string;
+	/** 日志包内的日志序号 */
+	PkgLogId: number;
+	/** 前 N 条日志数量，默认值 10，最大值 100 */
+	PrevLogs?: number;
+	/** 后 N 条日志数量，默认值 10，最大值 100 */
+	NextLogs?: number;
+	/** 检索条件过滤，最大长度 12KB，仅支持检索条件，不支持 SQL 语句 */
+	Query?: string;
+	/** 起始时间，毫秒时间戳 */
+	From?: number;
+	/** 结束时间，毫秒时间戳 */
+	To?: number;
+};
+
+export type DescribeLogContextResponse = {
+	/** 日志上下文信息集合 */
+	LogContextInfos: LogContextInfo[];
+	/** 上文日志是否全部返回，true 为全部返回 */
+	PrevOver: boolean;
+	/** 下文日志是否全部返回，true 为全部返回 */
+	NextOver: boolean;
+	/** 唯一请求 ID */
+	RequestId: string;
+};
+
 export type TencentLogClientInit = {
 	fetch?: FetchLike;
 	clientId: string;
 	clientSecret: string;
 	region?: string;
 	endpoint?: string;
+	debug?: boolean;
 };
 
 export type TencentLogClientOptions = {
@@ -222,6 +259,7 @@ export type TencentLogClientOptions = {
 	clientSecret: string;
 	region: string;
 	endpoint: string;
+	debug?: boolean;
 };
 
 export class TencentLogClient {
@@ -283,8 +321,21 @@ export class TencentLogClient {
 		return this.request('UploadLog', request);
 	}
 
-	async searchLog(request: SearchLogRequest): Promise<SearchLogResponse> {
-		return this.request('SearchLog', request);
+	async searchLog(req: SearchLogRequest): Promise<SearchLogResponse> {
+		// NOTE 分析请求不支持多 topics
+		const res = await this.request<SearchLogResponse>('SearchLog', req);
+		if (this.options.debug) {
+			const info = {
+				query: req.Query?.slice(0, 200),
+				topicId: req.TopicId,
+				analysis: res.Analysis,
+				resultsCount: res.Results?.length ?? 0,
+				analysisRecordsCount: res.AnalysisRecords?.length ?? 0,
+				requestId: res.RequestId,
+			};
+			console.log('[CLS:SearchLog]', JSON.stringify(info));
+		}
+		return res;
 	}
 
 	searchLogStream(request: Omit<SearchLogStreamOptions, 'client'>) {
@@ -320,6 +371,9 @@ export class TencentLogClient {
 				ids.push(t.TopicId);
 			}
 		}
+		if (this.options.debug) {
+			console.log('[CLS:resolveTopicIds]', JSON.stringify({ needle, resolved: ids }));
+		}
 		return ids;
 	}
 
@@ -342,7 +396,23 @@ export class TencentLogClient {
 			});
 		}
 
-		return (await this.listTopic(q)).Topics;
+		// Try exact match first (PreciseSearch: 1) to avoid ambiguous fuzzy matching
+		let topics = names.length
+			? (await this.listTopic({ ...q, PreciseSearch: 1 })).Topics
+			: (await this.listTopic(q)).Topics;
+
+		// Fallback to fuzzy match if exact match finds nothing
+		if (names.length && (!topics || topics.length === 0)) {
+			topics = (await this.listTopic(q)).Topics;
+		}
+
+		// Fallback to partial matching if API filtering finds nothing
+		if (names.length && (!topics || topics.length === 0)) {
+			const allTopics = await this.listTopic({ Limit: 100 });
+			topics = allTopics.Topics?.filter((t) => names.some((n) => t.TopicName?.includes(n)));
+		}
+
+		return topics;
 	}
 
 	async listTopicByLogset(
@@ -378,5 +448,9 @@ export class TencentLogClient {
 
 	async deleteLogset(request: DeleteLogsetRequest): Promise<DeleteLogsetResponse> {
 		return this.request('DeleteLogset', request);
+	}
+
+	async describeLogContext(request: DescribeLogContextRequest): Promise<DescribeLogContextResponse> {
+		return this.request('DescribeLogContext', request);
 	}
 }

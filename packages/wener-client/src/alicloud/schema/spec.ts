@@ -23,7 +23,7 @@ export interface Components {
 	schemas: Schemas;
 }
 
-export interface Schemas {}
+export type Schemas = {};
 
 export interface ApiEntry {
 	summary: string;
@@ -114,7 +114,7 @@ export interface Message {
 	example: string;
 }
 
-export interface StaticInfo {}
+export type StaticInfo = {};
 
 export interface ErrorCodes4 {
 	'503': N5032[];

@@ -1,5 +1,5 @@
-import React, { type ComponentPropsWithoutRef, type FC, type ReactNode } from 'react';
 import { clsx } from 'clsx';
+import type { ComponentPropsWithoutRef, FC, ReactNode } from 'react';
 import { WechatBrandIcon, WecomBrandIcon } from '../../icons';
 import { cn } from '../../utils/cn';
 
@@ -20,10 +20,10 @@ export const LoginPageSocialLogin: FC<SocialLoginProps> = ({ socials, className,
 		<div className={cn('mt-10', className)} {...props}>
 			<div className='relative'>
 				<div className='absolute inset-0 flex items-center' aria-hidden='true'>
-					<div className='w-full border-t border-gray-200' />
+					<div className='w-full border-t border-base-300' />
 				</div>
 				<div className='relative flex justify-center text-sm leading-6 font-medium'>
-					<span className='bg-white px-6 opacity-80'>社交方式登录</span>
+					<span className='bg-base-100 px-6 opacity-80'>社交方式登录</span>
 				</div>
 			</div>
 

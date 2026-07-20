@@ -1,7 +1,7 @@
-import React from 'react';
-import { createMemoryRouter, type RouteObject } from 'react-router-dom';
 import type { Router } from '@remix-run/router';
 import { LoadingIndicator } from '@wener/console/loader';
+import React from 'react';
+import { createMemoryRouter, type RouteObject } from 'react-router-dom';
 import { createStore } from 'zustand';
 import { mutative } from 'zustand-mutative';
 

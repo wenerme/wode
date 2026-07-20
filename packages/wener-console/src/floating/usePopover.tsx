@@ -1,11 +1,19 @@
-import type React from 'react';
-import { useState } from 'react';
 import {
+	type AutoPlacementOptions,
 	autoPlacement,
 	autoUpdate,
+	type ExtendedRefs,
+	type FloatingContext,
 	flip,
+	type OffsetOptions,
 	offset,
+	type Placement,
 	shift,
+	type UseClickProps,
+	type UseDismissProps,
+	type UseHoverProps,
+	type UseInteractionsReturn,
+	type UseRoleProps,
 	useClick,
 	useDismiss,
 	useFloating,
@@ -13,17 +21,9 @@ import {
 	useHover,
 	useInteractions,
 	useRole,
-	type AutoPlacementOptions,
-	type ExtendedRefs,
-	type FloatingContext,
-	type OffsetOptions,
-	type Placement,
-	type UseClickProps,
-	type UseDismissProps,
-	type UseHoverProps,
-	type UseInteractionsReturn,
-	type UseRoleProps,
 } from '@floating-ui/react';
+import type React from 'react';
+import { useState } from 'react';
 
 export function usePopover(
 	props: {

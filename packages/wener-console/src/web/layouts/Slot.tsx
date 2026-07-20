@@ -1,14 +1,14 @@
-import React, {
+import { useCompareEffect } from '@wener/reaction';
+import {
+	type FC,
 	memo,
+	type PropsWithChildren,
+	type ReactNode,
 	useCallback,
 	useDebugValue,
 	useEffect,
 	useId,
-	type FC,
-	type PropsWithChildren,
-	type ReactNode,
 } from 'react';
-import { useCompareEffect } from '@wener/reaction';
 import { createStore } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 import { shallow } from 'zustand/shallow';

@@ -1,4 +1,4 @@
-import React, { type FC } from 'react';
+import type { FC } from 'react';
 import { Button } from '../../daisy';
 import { SystemAboutPageSection } from './SystemAboutPageSection';
 

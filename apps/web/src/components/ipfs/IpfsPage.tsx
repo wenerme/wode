@@ -1,10 +1,10 @@
+import { type ExpandableSideMenuItemProps, ExpandableSideMenuLayout, usePageLayoutState } from '@wener/console/web';
+import { IpfsOutlined } from 'common/icons';
 import type React from 'react';
 import type { ReactNode } from 'react';
 import { AiFillApi, AiOutlineApi, AiOutlineGateway } from 'react-icons/ai';
 import { HiCog } from 'react-icons/hi2';
 import { SiTestin } from 'react-icons/si';
-import { ExpandableSideMenuLayout, usePageLayoutState, type ExpandableSideMenuItemProps } from '@wener/console/web';
-import { IpfsOutlined } from 'common/icons';
 
 const MenuItems: ExpandableSideMenuItemProps[] = [
 	{ label: 'IPFS Access', href: '/ipfs', end: true, icon: <IpfsOutlined className={'h-5 w-5'} /> },

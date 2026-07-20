@@ -4,7 +4,10 @@ import { getGlobalThis } from '../../web/getGlobalThis';
 export function createFetchWithProxyByNodeFetch({
 	proxy,
 	fetch,
-}: { proxy?: string; fetch?: FetchLike } = {}): FetchLike {
+}: {
+	proxy?: string;
+	fetch?: FetchLike;
+} = {}): FetchLike {
 	const globalThis = getGlobalThis();
 	if (!proxy) {
 		return fetch || globalThis.fetch;

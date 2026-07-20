@@ -1,4 +1,4 @@
-import { FetchLike } from '@wener/utils';
+import type { FetchLike } from '@wener/utils';
 import YAML from 'yaml';
 
 interface RepoClientOptions {
@@ -64,7 +64,7 @@ export class RepoClient {
 
 	async getLastUpdated() {
 		const s = await this.request(`last-updated`).then((res) => res.text());
-		return new Date(parseInt(s) * 1000);
+		return new Date(parseInt(s, 10) * 1000);
 	}
 
 	async getLatestReleases({ arch = this.options.arch }: { arch?: string } = {}) {

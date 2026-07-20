@@ -17,7 +17,7 @@ CONTENT
 				/^(这是一条引用\/回复消息：|This is a quote\/reply:)\n["“](?<user>[^\n]+)[：:]\s?\n(?<quote>.*?)[”"]\n-{6}\n(?<content>.*)$/s,
 			) || msg.match(/^「(?<user>[^\n]+)：\n?(?<quote>.*?)」\n-( -){14}\n(?<content>.+)$/s);
 		if (m) {
-			return { user: m.groups?.user!, quote: m.groups?.quote!, content: m.groups?.content! };
+			return { user: m.groups?.user ?? '', quote: m.groups?.quote ?? '', content: m.groups?.content ?? '' };
 		}
 	}
 	return { content: msg };

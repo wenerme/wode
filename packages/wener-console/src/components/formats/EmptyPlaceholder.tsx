@@ -1,6 +1,5 @@
-import type { ElementType } from 'react';
-import React from 'react';
 import { clsx } from 'clsx';
+import type { ElementType } from 'react';
 import type { AsProps } from '../props';
 
 export type EmptyPlaceholderProps<E extends ElementType> = AsProps<E>;

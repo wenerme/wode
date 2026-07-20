@@ -4,7 +4,7 @@ import type { IFileStat, WritableData } from './IFileSystem';
 export function resolveData(data: WritableData) {
 	let buf: Uint8Array;
 	if (typeof data === 'string') {
-		buf = ArrayBuffers.toUint8Array(ArrayBuffers.from(data, 'utf8'));
+		buf = ArrayBuffers.toUint8Array(ArrayBuffers.from(data, 'utf8') as BufferSource);
 	} else if (data instanceof ArrayBuffer) {
 		buf = new Uint8Array(data);
 	} else if (data instanceof Uint8Array) {

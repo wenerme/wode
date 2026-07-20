@@ -1,37 +1,11 @@
 import 'reflect-metadata';
-import { Logger, type INestApplicationContext } from '@nestjs/common';
-import { createLazyPromise, type LazyPromise } from '@wener/utils';
-import { setContextProvider } from '../ContextProvider';
-
-const log = new Logger('ApplicationContext');
-
-let _context: INestApplicationContext;
-let _$context: LazyPromise<INestApplicationContext>;
+import type { INestApplicationContext } from '@nestjs/common';
+import { getAppContext as getApplicationContext, setAppContext as setApplicationContext } from '../ApplicationContext';
 
 export function setAppContext(ctx: INestApplicationContext) {
-	_context = ctx;
-	_$context?.resolve(ctx);
-	setContextProvider((needle) => {
-		const out = getAppContext().get(needle);
-		if (!out) {
-			log.warn(`getService(${String(needle)}) not found`);
-		}
-		return out as any;
-	});
-	log.log('setAppContext');
+	setApplicationContext(ctx);
 }
 
-export function getAppContextAsync() {
-	if (_context) {
-		return Promise.resolve(_context);
-	}
-	return (_$context ||= createLazyPromise());
-}
-
-export function getAppContext() {
-	if (!_context) {
-		throw new Error('appContext is not ready');
-	}
-
-	return _context;
+export function getAppContext<T extends INestApplicationContext = INestApplicationContext>(): T {
+	return getApplicationContext<T>();
 }

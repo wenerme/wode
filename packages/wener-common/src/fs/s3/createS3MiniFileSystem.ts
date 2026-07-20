@@ -1,6 +1,6 @@
 import { basename, dirname, normalize } from 'node:path';
 import { Readable } from 'node:stream';
-import { formatS3Url, parseS3Url, type ParseS3UrlOptions } from '@wener/common/s3';
+import { formatS3Url, type ParseS3UrlOptions, parseS3Url } from '@wener/common/s3';
 import { S3mini, sanitizeETag } from 's3mini';
 import type {
 	CopyOptions,
@@ -14,6 +14,7 @@ import type {
 	RenameOptions,
 	RmOptions,
 	StatOptions,
+	WritableData,
 	WriteFileOptions,
 } from '../IFileSystem';
 
@@ -71,7 +72,7 @@ export function createS3MiniFileSystem(options: CreateS3MiniFileSystemOptions = 
 class S3FS implements IFileSystem {
 	constructor(
 		readonly client: S3mini,
-		private readonly bucket: string,
+		readonly _bucket: string,
 		private readonly prefix: string = '',
 	) {}
 
@@ -87,7 +88,7 @@ class S3FS implements IFileSystem {
 
 		// Prepend prefix if set
 		if (this.prefix) {
-			return this.prefix + '/' + normalized;
+			return `${this.prefix}/${normalized}`;
 		}
 		return normalized;
 	}
@@ -96,9 +97,9 @@ class S3FS implements IFileSystem {
 	 * Remove prefix from S3 key to get the file system path
 	 */
 	private stripPrefix(key: string): string {
-		if (!this.prefix || !key.startsWith(this.prefix + '/')) {
+		if (!this.prefix || !key.startsWith(`${this.prefix}/`)) {
 			// If key doesn't start with prefix, return as-is (shouldn't happen normally)
-			return key.startsWith('/') ? key : '/' + key;
+			return key.startsWith('/') ? key : `/${key}`;
 		}
 		const withoutPrefix = key.slice(this.prefix.length);
 		return withoutPrefix || '/';
@@ -122,7 +123,7 @@ class S3FS implements IFileSystem {
 			return '/';
 		}
 		const dir = dirname(key).replace(/\\/g, '/');
-		return dir === '.' ? '/' : '/' + dir;
+		return dir === '.' ? '/' : `/${dir}`;
 	}
 
 	/**
@@ -164,66 +165,105 @@ class S3FS implements IFileSystem {
 		this.checkAborted(signal);
 
 		const dirPrefix = this.normalizeKey(dir);
-		const prefixWithSlash = dirPrefix ? (dirPrefix.endsWith('/') ? dirPrefix : dirPrefix + '/') : '';
+		const prefixWithSlash = dirPrefix ? (dirPrefix.endsWith('/') ? dirPrefix : `${dirPrefix}/`) : '';
 
 		try {
-			// When delimiter is '/', S3 returns:
-			// - Files: Key without trailing /, Size > 0
-			// - Directories: Key with trailing /, Size: 0
-			const delimiter = recursive ? undefined : '/';
+			const delimiter = recursive ? '' : '/';
 
-			const objects = await this.client.listObjects(delimiter ?? '', prefixWithSlash, undefined, {
-				delimiter,
-				signal,
-			});
+			// S3mini doesn't expose CommonPrefixes from delimiter-based listing.
+			// For non-recursive listing, we do two calls:
+			// 1. With delimiter to get direct files
+			// 2. Without delimiter to infer directory prefixes
+			let objects: Array<{ Key: string; Size: number | string; LastModified?: Date | string; ETag?: string }> = [];
+			let commonPrefixes: string[] = [];
 
-			if (!objects || objects.length === 0) {
+			if (delimiter && !recursive) {
+				const directObjects = await this.client.listObjects(delimiter, prefixWithSlash, undefined, {
+					delimiter,
+					signal,
+				});
+				if (directObjects) {
+					objects = directObjects;
+				}
+
+				// Infer CommonPrefixes by listing all objects recursively
+				const allObjectsRecursive = await this.client.listObjects('', prefixWithSlash, 1000, { signal });
+				if (allObjectsRecursive) {
+					const prefixSet = new Set<string>();
+					for (const obj of allObjectsRecursive) {
+						const key = obj.Key || '';
+						if (!key || !key.startsWith(prefixWithSlash)) continue;
+
+						const relativeKey = key.slice(prefixWithSlash.length);
+						const firstSlash = relativeKey.indexOf('/');
+						if (firstSlash > 0) {
+							prefixSet.add(prefixWithSlash + relativeKey.slice(0, firstSlash + 1));
+						}
+					}
+					commonPrefixes = Array.from(prefixSet).sort();
+				}
+			} else {
+				const listResult = await this.client.listObjects(delimiter, prefixWithSlash, undefined, { signal });
+				if (listResult) {
+					objects = listResult;
+				}
+			}
+
+			if (!objects.length && !commonPrefixes.length) {
 				return [];
 			}
 
 			let results: IFileStat[] = [];
-			const seenPaths = new Set<string>();
 
+			// Process inferred CommonPrefixes (directories)
+			for (const prefix of commonPrefixes) {
+				this.checkAborted(signal);
+				if (prefixWithSlash && !prefix.startsWith(prefixWithSlash)) continue;
+
+				const relativePrefix = prefixWithSlash ? prefix.slice(prefixWithSlash.length) : prefix;
+				const dirName = relativePrefix.replace(/\/$/, '');
+				if (!dirName) continue;
+
+				if (!recursive && depth === 1) {
+					if (dirName.indexOf('/') >= 0) continue;
+				}
+
+				const dirKey = prefix.endsWith('/') ? prefix : `${prefix}/`;
+				const stat = this.toFileStat(dirKey, {
+					Key: dirKey,
+					Size: 0,
+					LastModified: new Date(),
+				});
+
+				if (!hidden && stat.name.startsWith('.')) continue;
+				if (kind && stat.kind !== kind) continue;
+
+				results.push(stat);
+			}
+
+			// Process objects (files and explicit directory markers)
+			const seenDirs = new Set<string>();
 			for (const obj of objects) {
 				this.checkAborted(signal);
 
 				const key = obj.Key || '';
 				if (!key) continue;
+				if (prefixWithSlash && !key.startsWith(prefixWithSlash)) continue;
 
-				// Skip if not under our prefix
-				if (prefixWithSlash && !key.startsWith(prefixWithSlash)) {
-					continue;
-				}
-
-				// Strip the prefix from the key for relative path calculation
 				const relativeKey = prefixWithSlash ? key.slice(prefixWithSlash.length) : key;
+				if (!relativeKey || relativeKey === '/') continue;
 
-				// Skip empty relative keys (the directory itself)
-				if (!relativeKey || relativeKey === '/') {
-					continue;
-				}
-
-				// Directory: Key ends with '/' (from CommonPrefixes or explicit marker)
-				const isDir = key.endsWith('/');
-
-				// For non-recursive, only show immediate children
 				if (!recursive && depth === 1) {
-					// For directories, the relative key looks like "dirname/"
-					// For files, the relative key looks like "filename"
-					// We only want immediate children, so no more slashes in the middle
-					const keyWithoutTrailingSlash = relativeKey.replace(/\/$/, '');
-					if (keyWithoutTrailingSlash.includes('/')) {
-						// This is deeper than one level, skip
-						continue;
-					}
+					const firstSlash = relativeKey.indexOf('/');
+					if (firstSlash >= 0) continue;
 				}
 
-				// Deduplicate by path
-				const pathKey = key.replace(/\/$/, ''); // Normalize for deduplication
-				if (seenPaths.has(pathKey)) {
-					continue;
+				const isDir = this.isDirectoryKey(key);
+				if (isDir) {
+					const dk = key.slice(0, -1);
+					if (seenDirs.has(dk)) continue;
+					seenDirs.add(dk);
 				}
-				seenPaths.add(pathKey);
 
 				const stat = this.toFileStat(key, {
 					Key: key,
@@ -232,15 +272,8 @@ class S3FS implements IFileSystem {
 					ETag: obj.ETag,
 				});
 
-				// Filter by hidden
-				if (!hidden && stat.name.startsWith('.')) {
-					continue;
-				}
-
-				// Filter by kind
-				if (kind && stat.kind !== kind) {
-					continue;
-				}
+				if (!hidden && stat.name.startsWith('.')) continue;
+				if (kind && stat.kind !== kind) continue;
 
 				results.push(stat);
 			}
@@ -316,7 +349,7 @@ class S3FS implements IFileSystem {
 			}
 
 			// If object not found, try checking if it's a directory (prefix listing)
-			const dirKey = key.endsWith('/') ? key : key + '/';
+			const dirKey = key.endsWith('/') ? key : `${key}/`;
 			const objects = await this.client.listObjects('/', dirKey, 1, { delimiter: '/', signal });
 
 			if (objects && objects.length > 0) {
@@ -342,7 +375,7 @@ class S3FS implements IFileSystem {
 	}
 
 	async mkdir(path: string, options: MkdirOptions = {}): Promise<void> {
-		const { recursive = false, signal } = options;
+		const { recursive: _recursive = false, signal } = options;
 		this.checkAborted(signal);
 
 		// In S3, directories don't actually exist - they're just prefixes
@@ -353,7 +386,7 @@ class S3FS implements IFileSystem {
 		}
 
 		// Ensure it ends with / to indicate directory
-		const dirKey = key.endsWith('/') ? key : key + '/';
+		const dirKey = key.endsWith('/') ? key : `${key}/`;
 
 		// Try to create a marker object (0-byte object)
 		try {
@@ -403,11 +436,7 @@ class S3FS implements IFileSystem {
 		}
 	}
 
-	async writeFile(
-		path: string,
-		data: string | Buffer | ArrayBuffer | Readable | ArrayBufferView,
-		options: WriteFileOptions = {},
-	): Promise<void> {
+	async writeFile(path: string, data: WritableData, options: WriteFileOptions = {}): Promise<void> {
 		const { signal, overwrite = true, onUploadProgress } = options;
 		this.checkAborted(signal);
 
@@ -426,7 +455,24 @@ class S3FS implements IFileSystem {
 
 		// Convert data to buffer or string
 		let body: string | Buffer;
-		if (data instanceof Readable) {
+		if (data instanceof ReadableStream) {
+			// Handle web ReadableStream
+			const reader = data.getReader();
+			const chunks: Uint8Array[] = [];
+			let loaded = 0;
+			while (true) {
+				const { done, value } = await reader.read();
+				if (done) break;
+				if (value) {
+					chunks.push(value);
+					loaded += value.length;
+					if (onUploadProgress) {
+						onUploadProgress({ loaded, total: -1 });
+					}
+				}
+			}
+			body = Buffer.concat(chunks);
+		} else if (data instanceof Readable) {
 			// For streams, we need to read them into a buffer
 			const chunks: Buffer[] = [];
 			let loaded = 0;
@@ -466,12 +512,7 @@ class S3FS implements IFileSystem {
 			// ArrayBufferView
 			body = Buffer.from(data.buffer, data.byteOffset, data.byteLength);
 		}
-
-		try {
-			await this.client.putObject(key, body, undefined, undefined, undefined);
-		} catch (error: any) {
-			throw error;
-		}
+		await this.client.putObject(key, body, undefined, undefined, undefined);
 	}
 
 	async rm(path: string, options: RmOptions = {}): Promise<void> {
@@ -486,7 +527,7 @@ class S3FS implements IFileSystem {
 		try {
 			if (recursive) {
 				// List all objects with this prefix (no delimiter = recursive)
-				const prefix = key.endsWith('/') ? key : key + '/';
+				const prefix = key.endsWith('/') ? key : `${key}/`;
 				const objects = await this.client.listObjects('', prefix, undefined, { signal });
 
 				if (objects) {
@@ -538,13 +579,13 @@ class S3FS implements IFileSystem {
 		try {
 			// Check if it's a directory (has objects with prefix)
 			const isDir = oldKey.endsWith('/');
-			const prefix = isDir ? oldKey : oldKey + '/';
+			const prefix = isDir ? oldKey : `${oldKey}/`;
 
 			const objects = await this.client.listObjects('', prefix, undefined, { signal });
 
 			if (objects && objects.length > 0) {
 				// It's a directory or has multiple objects, move all
-				const newPrefix = newKey.endsWith('/') ? newKey : newKey + '/';
+				const newPrefix = newKey.endsWith('/') ? newKey : `${newKey}/`;
 
 				// Move all objects
 				await Promise.all(
@@ -591,7 +632,7 @@ class S3FS implements IFileSystem {
 			}
 
 			// Check if it's a directory
-			const dirKey = key.endsWith('/') ? key : key + '/';
+			const dirKey = key.endsWith('/') ? key : `${key}/`;
 			const objects = await this.client.listObjects('/', dirKey, 1, { delimiter: '/' });
 			return objects !== null && objects.length > 0;
 		} catch {
@@ -624,8 +665,8 @@ class S3FS implements IFileSystem {
 
 			if (srcStat.kind === 'directory') {
 				// Copy directory recursively
-				const srcPrefix = srcKey.endsWith('/') ? srcKey : srcKey + '/';
-				const destPrefix = destKey.endsWith('/') ? destKey : destKey + '/';
+				const srcPrefix = srcKey.endsWith('/') ? srcKey : `${srcKey}/`;
+				const destPrefix = destKey.endsWith('/') ? destKey : `${destKey}/`;
 
 				const objects = await this.client.listObjects(shallow ? '/' : '', srcPrefix, undefined, {
 					...(shallow ? { delimiter: '/' } : {}),
@@ -691,7 +732,7 @@ class S3FS implements IFileSystem {
 
 						// Convert ReadableStream to Node Readable
 						const reader = response.body.getReader();
-						const decoder = new TextDecoder();
+						const _decoder = new TextDecoder();
 
 						nodeStream = new Readable({
 							async read() {
@@ -781,7 +822,7 @@ class S3FS implements IFileSystem {
 			throw new Error('Cannot write to root directory');
 		}
 
-		const { signal, overwrite = true } = options;
+		const { signal, overwrite: _overwrite = true } = options;
 		this.checkAborted(signal);
 
 		// Create a WritableStream that buffers data and uploads when done
@@ -814,7 +855,7 @@ class S3FS implements IFileSystem {
 		});
 	}
 
-	getUrl(path: IFileStat | string, options?: any): string | undefined {
+	getUrl(path: IFileStat | string, _options?: any): string | undefined {
 		if (typeof path === 'object' && path?.kind !== 'file') {
 			return;
 		}

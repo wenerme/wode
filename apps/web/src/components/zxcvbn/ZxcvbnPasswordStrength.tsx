@@ -1,8 +1,8 @@
 'use client';
 
+import { Button } from '@wener/console/daisy';
 import type React from 'react';
 import { HiKey, HiMagnifyingGlass } from 'react-icons/hi2';
-import { Button } from '@wener/console/daisy';
 import type { ZXCVBNResult } from 'zxcvbn';
 import { ZxcvbnNote } from './ZxcvbnNote';
 

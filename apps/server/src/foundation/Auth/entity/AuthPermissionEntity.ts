@@ -1,5 +1,5 @@
 import { Entity, Property, types, Unique } from '@mikro-orm/core';
-import { TenantBaseEntity, withSystemManagedEntity } from '@wener/nestjs/entity';
+import { TenantBaseEntity, withSystemManagedEntity } from '@wener/server/entity';
 import { mixin } from '@wener/utils';
 
 @Entity({ tableName: 'auth_permission' })

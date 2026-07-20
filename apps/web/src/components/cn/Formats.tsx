@@ -1,7 +1,7 @@
+import { DivisionCode } from '@wener/utils/cn';
 import type React from 'react';
 import { useEffect, useState } from 'react';
 import { FaFemale, FaMale } from 'react-icons/fa';
-import { DivisionCode } from '@wener/utils/cn';
 
 // import { loadCounty } from '@wener/data/cn/division/loaders';
 

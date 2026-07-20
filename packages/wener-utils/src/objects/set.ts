@@ -1,4 +1,4 @@
-import { parseObjectPath, type ObjectKey, type ObjectPath } from './parseObjectPath';
+import { type ObjectKey, type ObjectPath, parseObjectPath } from './parseObjectPath';
 
 /**
  * Deep set
@@ -10,7 +10,8 @@ export function set<T extends object, V>(obj: T, key: ObjectKey | ObjectPath, va
 	let i = 0;
 	const len = path.length;
 	let current: any = obj;
-	let x, k;
+	let x: any;
+	let k: ObjectKey;
 	while (i < len) {
 		k = path[i++];
 		// Security: Prevent prototype pollution
@@ -32,14 +33,14 @@ export function set<T extends object, V>(obj: T, key: ObjectKey | ObjectPath, va
 						// !!~('' + path[i]).indexOf('.') checks if it contains a dot.
 						//
 						// @ts-expect-error hacky type check from dset
-						path[i] * 0 !== 0 || !!~('' + path[i]).indexOf('.') // eslint-disable-line
+						path[i] * 0 !== 0 || !!~`${path[i]}`.indexOf('.') // eslint-disable-line
 						? {}
 						: [];
 	}
 }
 
 export function merge(a: any, b: any) {
-	let k;
+	let k: string | number;
 	if (typeof a === 'object' && typeof b === 'object') {
 		if (Array.isArray(a) && Array.isArray(b)) {
 			for (k = 0; k < b.length; k++) {

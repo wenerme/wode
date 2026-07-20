@@ -1,8 +1,8 @@
-import React, { memo, type FC, type ReactNode } from 'react';
+import clsx from 'clsx';
+import { type FC, memo, type ReactNode } from 'react';
 import { HiOutlineLogout } from 'react-icons/hi';
 import { HiLockClosed, HiOutlineIdentification, HiQuestionMarkCircle } from 'react-icons/hi2';
 import { Link } from 'react-router';
-import clsx from 'clsx';
 import { useStore } from 'zustand';
 import { getUserStore } from '../../console/context';
 import { getAuthAction } from '../../console/user';

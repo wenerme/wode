@@ -12,7 +12,7 @@ export function createFetchWith({
 		url: string;
 		req: RequestInit;
 		next: (url: string, req: RequestInit) => Promise<Response>;
-	}) => MaybePromise<Response | void>;
+	}) => MaybePromise<Response | undefined | void>;
 	onResponse?: (ctx: { url: string; req: RequestInit; res: Response }) => MaybePromise<Response>;
 }) {
 	return async (urlOrRequest: string | URL | Request, init?: RequestInit & { fetch?: FetchLike }) => {

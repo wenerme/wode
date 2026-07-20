@@ -24,7 +24,7 @@ export type ExpireValueHolderInit<T = string> =
 export interface CreateExpireValueHolderOptions<T = string> {
 	value?: ExpireValueHolderInit<T>;
 	loader: () => Promise<{ value: T; expiresAt: number | Date }>;
-	onLoad?: (data: ExpiryValue<T>) => MaybePromise<void | ExpiryValue<T>>;
+	onLoad?: (data: ExpiryValue<T>) => MaybePromise<undefined | ExpiryValue<T>>;
 	isExpired?: (data: ExpiryValue<T>) => boolean;
 }
 
@@ -85,7 +85,7 @@ function tryParseDate(v?: any): Date | undefined {
 
 	if (typeof v === 'string') {
 		const d = new Date(v);
-		if (!isNaN(d.getTime())) {
+		if (!Number.isNaN(d.getTime())) {
 			return d;
 		}
 	}

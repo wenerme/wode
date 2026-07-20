@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { getCurrentTenantId, getCurrentUserId } from '@wener/nestjs/app';
-import { GeneralResponseObject } from '@wener/nestjs/type-graphql';
+import { getCurrentTenantId, getCurrentUserId } from '@wener/server/app';
+import { GeneralResponseObject } from '@wener/server/type-graphql';
 import { Authorized, Ctx, Query, Resolver } from 'type-graphql';
 import { SystemRole } from '@/graph/const';
 

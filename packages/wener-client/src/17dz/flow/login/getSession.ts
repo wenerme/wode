@@ -11,13 +11,13 @@ export async function getSession({
 	browser,
 	page: lastPage,
 	logger = console,
-	close = false,
+	_close = false,
 	reload = false,
 }: {
 	browser: Browser;
 	page?: Page;
 	logger?: Logger;
-	close?: boolean;
+	_close?: boolean;
 	reload?: boolean;
 }) {
 	logger = createChildLogger(logger, { action: '17dz/getSession' });

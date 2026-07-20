@@ -1,15 +1,17 @@
 # @wener/mcp-cli
 
+English | [中文](./README.zh-CN.md)
+
 A lightweight CLI for interacting with [MCP (Model Context Protocol)](https://modelcontextprotocol.io/) servers.
 
 ## Features
 
-- 🔍 **Multi-source Config Discovery** - Automatically discovers MCP configs from Claude, Cursor, Gemini, and standard locations
-- 📍 **Source Tracking** - Shows where each server config was found
-- 🔄 **Deduplication** - Handles duplicate server names across configs with warnings
-- 🤖 **Agent-Optimized** - Designed for AI coding agents
-- 🔌 **Universal** - Supports both stdio and HTTP MCP servers
-- 💡 **Actionable Errors** - Structured error messages with recovery suggestions
+- **Multi-source Config Discovery** - Automatically discovers MCP configs from Claude, Cursor, Gemini, Codex, and standard locations
+- **Source Tracking** - Shows where each server config was found
+- **Deduplication** - Handles duplicate server names across configs with warnings
+- **Agent-Optimized** - Designed for AI coding agents
+- **Universal** - Supports both stdio and HTTP MCP servers
+- **Actionable Errors** - Structured error messages with recovery suggestions
 
 ## Installation
 
@@ -30,10 +32,11 @@ The CLI discovers MCP configuration from multiple sources in priority order:
 
 1. **Project-level configs** (checked first):
    - `./.mcp-cli.local.json` (local overrides, highest priority, gitignored)
-   - `./.mcp-cli.json` (mcp-cli specific)
+   - `./.mcp-cli.json` (mcp-cli specific, supports findup to parent directories)
    - `./.mcp.json` (Claude standard)
    - `./.cursor/mcp.json`
    - `./.gemini/mcp_config.json`
+   - `./.codex/config.toml` (Codex TOML format)
    - `./mcp_servers.json`
 
 2. **User-level configs**:
@@ -42,6 +45,7 @@ The CLI discovers MCP configuration from multiple sources in priority order:
    - `~/.claude.json` (with `mcpServers` key)
    - `~/.cursor/mcp.json`
    - `~/.gemini/antigravity/mcp_config.json`
+   - `~/.codex/config.toml`
    - `~/.mcp_servers.json`
    - `~/.config/mcp/mcp_servers.json`
 
@@ -69,6 +73,57 @@ All config files use the same basic structure:
 ```
 
 **Note:** Gemini config uses `serverUrl` instead of `url` - both are supported.
+
+### MCP-CLI Specific Config Options
+
+The `.mcp-cli.json` and `.mcp-cli.local.json` files support additional options:
+
+```json
+{
+  "mcpServers": { ... },
+  "extends": ["../shared-mcp.json", "~/.mcp-servers.json"],
+  "discoveryConfig": false,
+  "include": ["dev-*", "prod-*"],
+  "exclude": ["*-test", "*-debug"]
+}
+```
+
+| Option | Description |
+|--------|-------------|
+| `extends` | Array of config file paths to inherit servers from |
+| `discoveryConfig` | Set to `false` to disable auto-discovery, or array like `["gemini", "codex"]` for selective discovery |
+| `include` | Glob patterns to filter servers (whitelist). Only matching servers are loaded |
+| `exclude` | Glob patterns to exclude servers (blacklist). Takes precedence over include |
+
+**Glob Pattern Syntax:**
+- `*` - matches any characters (except `/`)
+- `**` - matches any characters including `/`
+- `?` - matches single character
+- Case-insensitive matching
+
+**Examples:**
+```json
+{
+  "include": ["dev-*"],           // Only dev-* servers
+  "exclude": ["*-mysql", "*-pg"]  // Exclude database servers
+}
+```
+
+```json
+{
+  "discoveryConfig": ["codex", "gemini"]  // Only discover codex and gemini configs
+}
+```
+
+### Inline Config via Environment Variable
+
+You can pass config directly via the `MCP_CLI_CONFIG_INLINE` environment variable:
+
+```bash
+MCP_CLI_CONFIG_INLINE='{"mcpServers":{"test":{"command":"echo"}}}' mcp-cli servers
+```
+
+This has the highest priority and supports all options including `extends` and `discoveryConfig`.
 
 ### Environment Variable Substitution
 
@@ -150,12 +205,19 @@ mcp-cli info filesystem/read_file
 # Call a tool with JSON arguments
 mcp-cli call filesystem/read_file '{"path": "./README.md"}'
 
-# Read JSON from stdin
+# Read JSON from stdin (use "-" to explicitly read from stdin)
 echo '{"path": "./file"}' | mcp-cli call server/tool -
 
-# Using heredoc for complex JSON
-mcp-cli call server/tool - <<EOF
-{"content": "Text with 'quotes'"}
+# Using heredoc for complex JSON (use <<'EOF' to prevent variable expansion)
+mcp-cli call server/tool - <<'EOF'
+{"content": "Text with 'quotes' and $variables"}
+EOF
+
+# Multi-line SQL query example
+mcp-cli call mysql/exec_query - <<'EOF'
+{
+  "query": "SELECT * FROM users WHERE status = 'active' LIMIT 10"
+}
 EOF
 ```
 
@@ -208,10 +270,23 @@ mcp-cli rm notion
 mcp-cli rm notion asana airtable
 ```
 
+#### `dump <format>` - Export tools in various formats
+
+Export MCP tools in formats suitable for other systems.
+
+```bash
+# Export tools in chat-completions format (uses server__tool naming)
+mcp-cli dump request-tools
+
+# JSON output with error details
+mcp-cli dump request-tools --json
+```
+
 ## Environment Variables
 
 | Variable | Description | Default |
 |----------|-------------|---------|
+| `MCP_CLI_CONFIG_INLINE` | Inline JSON config (highest priority) | (none) |
 | `MCP_CONFIG_PATH` | Path to config file | (none) |
 | `MCP_DEBUG` | Enable debug output | `false` |
 | `MCP_TIMEOUT` | Request timeout (seconds) | `1800` (30 min) |
@@ -244,6 +319,7 @@ mcp-cli tools [server]                   # List available tools
 mcp-cli grep <pattern>                   # Search tool names and descriptions
 mcp-cli resources [server]               # List MCP resources
 mcp-cli read <server>/<resource>         # Read an MCP resource
+mcp-cli dump request-tools               # Export tools in chat-completions format
 ```
 
 ## Development

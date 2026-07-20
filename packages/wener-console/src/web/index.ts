@@ -1,10 +1,7 @@
-export type * from './module/types';
-
-export { usePageLayoutState } from './usePageLayoutState';
+export { SiteLogo } from '../console/SiteLogo';
+export { ConsoleContext, getConsoleContext, setConsoleContext } from './ConsoleContext';
 
 export { ModuleService } from './module/ModuleService';
-
+export type * from './module/types';
 export * from './prefs';
-export { SiteLogo } from '../console/SiteLogo';
-
-export { getConsoleContext, setConsoleContext, ConsoleContext } from './ConsoleContext';
+export { usePageLayoutState } from './usePageLayoutState';

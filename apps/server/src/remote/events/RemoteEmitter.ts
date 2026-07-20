@@ -1,6 +1,6 @@
 import { getGlobalStates } from '@wener/utils';
-import { SystemEvents } from '#/events/SystemEmitter';
 import Emittery from 'emittery';
+import { SystemEvents } from '#/events/SystemEmitter';
 
 export const RemoteEvents = {
 	ServerPing: 'server:ping',

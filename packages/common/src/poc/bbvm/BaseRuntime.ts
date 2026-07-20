@@ -1,6 +1,5 @@
-import { Simulate } from 'react-dom/test-utils';
-import { BasicVm } from '@/poc/bbvm/BBVM';
-import { Float32, Handler, Int32, Runtime } from './types';
+import type { BasicVm } from '@/poc/bbvm/BBVM';
+import type { Float32, Int32 } from './types';
 
 export class BaseRuntime {
 	vm!: BasicVm;
@@ -33,45 +32,54 @@ export class BaseRuntime {
 		console.log(`> ${v}`);
 	}
 
-	OpenFile(fd: Int32, fn: StringHdr, mode: Int32): void {}
+	OpenFile(_fd: Int32, _fn: StringHdr, _mode: Int32): void {}
 
-	CloseFile(fd: Int32) {}
+	CloseFile(_fd: Int32) {}
 
-	FileReadInt(fd: Int32, offset: Int32): Int32 {
+	FileReadInt(_fd: Int32, _offset: Int32): Int32 {
 		return 0;
 	}
 
-	FileReadFloat(fd: Int32, offset: Int32): Float32 {
+	FileReadFloat(_fd: Int32, _offset: Int32): Float32 {
 		return 0;
 	}
 
-	FileReadString(fd: Int32, offset: Int32, dst: StringHdr): void {}
+	FileReadString(_fd: Int32, _offset: Int32, _dst: StringHdr): void {}
 
-	FileEof(fd: Int32): Int32 {
+	FileEof(_fd: Int32): Int32 {
 		return 0;
 	}
 
-	FileLoc(fd: Int32): Int32 {
+	FileLoc(_fd: Int32): Int32 {
 		return 0;
 	}
 
-	FileLof(fd: Int32): Int32 {
+	FileLof(_fd: Int32): Int32 {
 		return 0;
 	}
 
-	FileSeek(fd: Int32, loc: Int32): void {}
+	FileSeek(_fd: Int32, _loc: Int32): void {}
 
-	FileWriteInt(fd: Int32, offset: Int32, v: Int32): void {}
+	FileWriteInt(_fd: Int32, _offset: Int32, _v: Int32): void {}
 
-	FileWriteFloat(fd: Int32, offset: Int32, v: Float32): void {}
+	FileWriteFloat(_fd: Int32, _offset: Int32, _v: Float32): void {}
 
-	FileWriteString(fd: Int32, offset: Int32, v: StringHdr): void {}
+	FileWriteString(_fd: Int32, _offset: Int32, _v: StringHdr): void {}
 
-	DrawRectangle(page: PageHdr, left: Int32, top: Int32, right: Int32, bottom: Int32): void {}
+	DrawRectangle(_page: PageHdr, _left: Int32, _top: Int32, _right: Int32, _bottom: Int32): void {}
 
-	DrawCircle(page: PageHdr, cx: Int32, cy: Int32, cr: Int32): void {}
+	DrawCircle(_page: PageHdr, _cx: Int32, _cy: Int32, _cr: Int32): void {}
 
-	PageCopyExt2(dst: PageHdr, src: PageHdr, x: Int32, y: Int32, w: Int32, h: Int32, cx: Int32, cy: Int32): void {}
+	PageCopyExt2(
+		_dst: PageHdr,
+		_src: PageHdr,
+		_x: Int32,
+		_y: Int32,
+		_w: Int32,
+		_h: Int32,
+		_cx: Int32,
+		_cy: Int32,
+	): void {}
 
 	FloatToInt(v: Float32): Int32 {
 		return Math.floor(v);
@@ -83,7 +91,6 @@ export class BaseRuntime {
 
 	AllocString(): StringHdr {
 		const id = this.strings.length;
-		const ctx = this;
 		let hdr = new StringHdr(id);
 		this.strings.push(hdr);
 		return hdr as StringHdr;
@@ -212,7 +219,7 @@ export class BaseRuntime {
 
 	VmTest(): void {}
 
-	Delay(ms: Int32): void {
+	Delay(_ms: Int32): void {
 		// fixme
 	}
 
@@ -224,7 +231,7 @@ export class BaseRuntime {
 		return this.random();
 	}
 
-	IsKeyPressed(key: Int32): Int32 {
+	IsKeyPressed(_key: Int32): Int32 {
 		return 0;
 	}
 
@@ -247,7 +254,7 @@ export class BaseRuntime {
 		return 0;
 	}
 
-	InputKeyCode(dst: StringHdr) {}
+	InputKeyCode(_dst: StringHdr) {}
 
 	SetPen(page: PageHdr, style: Int32, wid: Int32, color: Int32) {
 		page.penStyle = style;
@@ -285,11 +292,10 @@ export class BaseRuntime {
 	// AllocPage: () => PageHdr;
 	// FreePage: (hdr: PageHdr) => void;
 	// LoadImage: (fn: StringHdr, idx: Int32) => ResHdr;
-	SetLcd(w: Int32, h: Int32) {}
+	SetLcd(_w: Int32, _h: Int32) {}
 
 	AllocPage(): PageHdr {
 		const id = this.pages.length;
-		const ctx = this;
 		let hdr = new PageHdr(id);
 		this.pages.push(hdr);
 		return hdr as PageHdr;
@@ -300,25 +306,24 @@ export class BaseRuntime {
 		this.pages[hdr.id] = undefined;
 	}
 
-	LoadImage(fn: StringHdr, idx: Int32): ResHdr {
+	LoadImage(_fn: StringHdr, _idx: Int32): ResHdr {
 		const id = this.resources.length;
-		const ctx = this;
 		let hdr = new ResHdr(id);
 		this.resources.push(hdr);
 		return hdr as ResHdr;
 	}
 
-	SetFont(font: Int32) {}
+	SetFont(_font: Int32) {}
 
-	SetColor(font: Int32, back: Int32, frame: Int32) {}
+	SetColor(_font: Int32, _back: Int32, _frame: Int32) {}
 
-	PixelLocateCursor(x: Int32, y: Int32) {}
+	PixelLocateCursor(_x: Int32, _y: Int32) {}
 
-	PageCopyExt(dst: ResHdr, src: ResHdr, x: Int32, y: Int32) {}
+	PageCopyExt(_dst: ResHdr, _src: ResHdr, _x: Int32, _y: Int32) {}
 
-	SetBackgroundMode(mod: Int32) {}
+	SetBackgroundMode(_mod: Int32) {}
 
-	SetBrush(page: PageHdr, style: Int32) {}
+	SetBrush(_page: PageHdr, _style: Int32) {}
 
 	FreeRes(hdr: ResHdr) {
 		hdr.free = true;
@@ -329,17 +334,17 @@ export class BaseRuntime {
 		this.page = hdr;
 	}
 
-	PrintChar(v: Int32) {}
+	PrintChar(_v: Int32) {}
 
-	PageCopy(dst: PageHdr, src: PageHdr) {}
+	PageCopy(_dst: PageHdr, _src: PageHdr) {}
 
-	PrintFloat(v: Float32) {}
+	PrintFloat(_v: Float32) {}
 
 	InputInt() {
 		return 0;
 	}
 
-	InputString(dst: StringHdr) {}
+	InputString(_dst: StringHdr) {}
 
 	InputFloat() {
 		return 0;
@@ -349,19 +354,29 @@ export class BaseRuntime {
 		return 0;
 	}
 
-	DataReadString(hdr: StringHdr) {}
+	DataReadString(_hdr: StringHdr) {}
 
 	DataReadFloat() {
 		return 0;
 	}
 
-	ShowPic(page: PageHdr, res: ResHdr, dx: Int32, dy: Int32, w: Int32, h: Int32, x: Int32, y: Int32, mode: Int32) {}
+	ShowPic(
+		_page: PageHdr,
+		_res: ResHdr,
+		_dx: Int32,
+		_dy: Int32,
+		_w: Int32,
+		_h: Int32,
+		_x: Int32,
+		_y: Int32,
+		_mode: Int32,
+	) {}
 
-	PageFill(hdr: PageHdr, x: Int32, y: Int32, w: Int32, h: Int32, color: Int32) {}
+	PageFill(_hdr: PageHdr, _x: Int32, _y: Int32, _w: Int32, _h: Int32, _color: Int32) {}
 
-	PagePixel(hdr: PageHdr, x: Int32, y: Int32, color: Int32) {}
+	PagePixel(_hdr: PageHdr, _x: Int32, _y: Int32, _color: Int32) {}
 
-	PageReadPixel(hdr: PageHdr, x: Int32, y: Int32) {
+	PageReadPixel(_hdr: PageHdr, _x: Int32, _y: Int32) {
 		return 0;
 	}
 
@@ -391,10 +406,6 @@ function createRandom(seed: number | string = Date.now()) {
 }
 
 class Hdr extends Number {
-	constructor(id: number) {
-		super(id);
-	}
-
 	get id(): Int32 {
 		return +this;
 	}
