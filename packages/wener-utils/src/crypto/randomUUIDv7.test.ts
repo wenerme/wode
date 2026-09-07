@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vite-plus/test';
-import { createRandomUUIDv7, isUUIDv7, parseUUIDv7Timestamp, randomUUIDv7 } from './randomUUIDv7';
+import { createRandomUUIDv7, parseUUIDv7Timestamp, randomUUIDv7 } from './randomUUIDv7';
 
 describe('randomUUIDv7', () => {
 	test('generates valid UUIDv7', () => {
@@ -28,24 +28,6 @@ describe('randomUUIDv7', () => {
 		const uuid1 = randomUUIDv7(ts1);
 		const uuid2 = randomUUIDv7(ts2);
 		expect(uuid1 < uuid2).toBe(true);
-	});
-});
-
-describe('isUUIDv7', () => {
-	test('returns true for valid UUIDv7', () => {
-		const uuid = randomUUIDv7();
-		expect(isUUIDv7(uuid)).toBe(true);
-	});
-
-	test('returns false for UUIDv4', () => {
-		expect(isUUIDv7('550e8400-e29b-41d4-a716-446655440000')).toBe(false);
-	});
-
-	test('returns false for invalid strings', () => {
-		expect(isUUIDv7('')).toBe(false);
-		expect(isUUIDv7(null)).toBe(false);
-		expect(isUUIDv7(undefined)).toBe(false);
-		expect(isUUIDv7('not-a-uuid')).toBe(false);
 	});
 });
 

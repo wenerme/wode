@@ -38,15 +38,26 @@
 		"./resource/schema": "./src/resource/schema/index.ts",
 		"./s3": "./src/s3/index.ts",
 		"./schema": "./src/schema/index.ts",
+		"./server/utils": "./src/server/utils/index.ts",
 		"./utils": "./src/utils/index.ts",
 		"./package.json": "./package.json"
 	},
-	"files": ["lib", "lib.d.ts", "libs", "src"],
+	"files": [
+		"lib",
+		"lib.d.ts",
+		"libs",
+		"src"
+	],
 	"keywords": [],
 	"scripts": {
+		"build": "make build",
 		"check:fs-mime-types": "node scripts/generateMimeTypes.mjs --check",
 		"generate:fs-mime-types": "node scripts/generateMimeTypes.mjs",
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"prepublishOnly": "pnpm verify:publish",
+		"test": "pnpm --workspace-root exec vp test run --project @wener/common",
+		"test:built": "node ./tests/built-publish-subpath-smoke.mjs",
+		"typecheck": "tsc --noEmit",
+		"verify:publish": "pnpm --filter @wener/utils build && pnpm build && pnpm test:built"
 	},
 	"peerDependencies": {
 		"ajv": "*",
@@ -59,10 +70,14 @@
 		}
 	},
 	"dependencies": {
+		"@sinclair/typebox": "^0.34.49",
 		"@standard-schema/spec": "^1.1.0",
 		"@types/node": "^24.13.3",
 		"@types/wicg-file-system-access": "^2023.10.7",
 		"@wener/utils": "^1.1.59",
+		"ajv-formats": "^3.0.1",
+		"ajv-keywords": "^5.1.0",
+		"consola": "^3.4.2",
 		"date-fns": "^4.4.0",
 		"es-toolkit": "^1.49.0",
 		"pathe": "^2.0.3",
@@ -76,21 +91,17 @@
 		"@orpc/contract": "^1.14.7",
 		"@orpc/openapi-client": "^1.14.7",
 		"@orpc/server": "^1.14.7",
-		"@sinclair/typebox": "^0.34.49",
 		"@sinclair/typebox-codegen": "^0.11.1",
 		"@types/argon2-browser": "^1.18.4",
 		"@types/bcrypt": "^6.0.0",
 		"@types/micromatch": "^4.0.10",
 		"@types/mime-types": "^3.0.1",
-		"ajv-formats": "^3.0.1",
 		"ajv-i18n": "^4.2.0",
-		"ajv-keywords": "^5.1.0",
 		"argon2": "^0.44.0",
 		"argon2-browser": "^1.18.0",
 		"bcrypt": "^6.0.0",
 		"bcryptjs": "^3.0.3",
 		"chalk": "^5.6.2",
-		"consola": "^3.4.2",
 		"dayjs": "^1.11.21",
 		"decimal.js": "^10.6.0",
 		"emittery": "^2.0.0",
@@ -196,6 +207,10 @@
 			"./schema": {
 				"types": "./src/schema/index.ts",
 				"default": "./lib/schema/index.js"
+			},
+			"./server/utils": {
+				"types": "./src/server/utils/index.ts",
+				"default": "./lib/server/utils/index.js"
 			},
 			"./utils": {
 				"types": "./src/utils/index.ts",

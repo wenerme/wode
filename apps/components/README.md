@@ -27,18 +27,55 @@ npx shadcn view @wener/console-shell
 npx shadcn add @wener/console-shell
 ```
 
+## Registry Delivery
+
+`registry.json` is a small authored manifest that includes exactly eight domain manifests. The public catalog remains flat: every current item is available at `/r/<name>.json`, regardless of its authored source directory. Never edit `public/r/*.json` or `src/generated/registry-catalog.json`; regenerate both from `registry/` with `pnpm registry:build`.
+
+Canonical source ownership is intentionally hybrid:
+
+- `src/ui/` and `src/components/`: domain-neutral Core primitives and compositions.
+- `src/resource/`: query, data view, and record-detail workspaces.
+- `src/window/`: reusable window chrome and the WindowManager runtime.
+- `src/console/`: shell, navigation, and preferences.
+- `src/file/`: path, tree, file-type registry, viewer, manager, and picker.
+- `src/agent/`: configuration, chat, work, coding, and playground surfaces.
+- `src/auth/`: authentication surfaces.
+
+The eight `src/<domain>/registry.json` files are publishing metadata beside their owned source. Root `registry.json` and generated `public/r/*.json` are the Shadcn delivery adapter; they are not a second implementation tree.
+
+Registry dependencies follow one direction: Resource and Window may use Core; File may use Core and Window; Agent may use Core and File; Console may use Core, Resource, and Window; Auth may use Core. Core does not import a domain. Shared installed targets have one canonical leaf owner; aggregate items consume them through registry dependencies rather than re-declaring files. Every registry dependency must use the exact canonical `https://ui-components.wener.me/r/<name>.json` form; bare names, aliases, relative paths, and third-party URLs are rejected.
+
+Story source mirrors this model under `src/stories/{overview,core,resource,window,console,file,agent,auth,demo}`. Non-Demo Stories follow the same dependency direction; Demo is the only application-composition layer. Stories carry explicit CSF IDs, use only relative canonical Registry source imports, and cannot use `@components/*` or `@ui/*` registry aliases. The structural and Pages checks validate the current emitted IDs and taxonomy without a redirect map.
+
+Run the delivery checks from this package:
+
+```bash
+pnpm registry:build
+pnpm registry:check
+pnpm registry:consumer-check
+pnpm storybook:check
+pnpm typecheck
+pnpm test
+pnpm test:storybook
+pnpm pages:build
+```
+
+`registry:consumer-check` serves current generated JSON from a local loopback server, rewrites only exact canonical Wode self-registry dependencies in its disposable fixtures, and compiles fresh consumers without requesting the public registry. Each invoked `pnpm` command has a 120-second hard timeout through `SIGKILL` plus normal `close` settlement. Use `pnpm registry:consumer-check -- --all` before release for one fresh consumer per public item.
+
+Foundation delivery is intentionally deferred. Consumers own Tailwind, DaisyUI, themes, and fonts explicitly; no registry item installs a hidden global Foundation dependency.
+
 ## Console Registry Items
 
 - `console-shell`: global rail, collapsible module navigation, content shell, page layout, and module home.
 - `console-data-view`: search, table/grid composition, resource side panels, operations metrics, attention queues, typed inventory tables, selection, and pagination.
 - `console-window`: controlled, presentational window chrome, title bar, toolbar, content, status bar, and workspace layout.
 - `window-manager`: scoped multi-window runtime with drag/resize, z-order, minimize/maximize/fullscreen, dock, portals, keyboard control, events, and opt-in persistence.
-- `file-manager`: filesystem-neutral list/grid explorer with scoped state, collapsible resizable places/content/details panels, CRUD, upload/download, copy/move, bounded preview, text editing, batch results, and Memory/OPFS/local-directory Storybook adapters.
+- `file-manager`: filesystem-neutral list/grid explorer with scoped state, an asynchronous virtualized tree, a file-type registry, collapsible resizable panels, CRUD, bounded preview/editing, and Memory/OPFS/local-directory Storybook adapters.
 - `console-preferences`: DaisyUI appearance settings with system/light/dark theme mapping, searchable theme catalogs, density/radius/motion controls, Console and component previews, persistence, and About.
 - `console-layout`: legacy responsive Menu/Main/Dock layout retained for compatibility.
 - `login-page`: customizable Header, Form, SocialLogin, Hero, Footer, and full-region Composite for application-owned authentication flows.
 
-Other components include `addressable-frame`, composable chrome for URL, file, object, and other addressable content without owning navigation or loading runtime; `header-content-footer-layout`, a bounded flex-column layout with composable header, scrollable content, and footer slots; `left-center-right-layout`, a stable three-slot row for toolbars and status bars whose center remains at the geometric center; `resizable`, the shadcn v4 panel group, panel, and accessible separator; `path-address-bar`, a responsive breadcrumb and editable path hybrid with ancestor overflow and contextual current-path actions; `file-viewer`, bounded Text/Image/PDF/Audio/Video/unsupported viewers plus an optional structural filesystem adapter; `status`, a standalone semantic state indicator with plain and compact pill presentations; `loaders`, accessible spinner/dots/bars/ring primitives plus pending buttons, page/section indicators, local overlays, and deterministic list/table skeletons; `query-builder`, a schema-driven nested query AST editor with pure model/reducer/validation, JSON Schema field adaptation, controlled and draft state hooks, searchable fields, and injectable value editors; its default UI copy is Simplified Chinese and remains replaceable through the `messages` prop; `formats`, common value formatters for empty/text/number/currency/percent/bytes/duration/date/boolean/phone values; `hook-form`, React Hook Form basics for provider/form wiring, controlled fields, submit/debug/data-preview controls, dirty values, and field error summaries; `zoom`, an accessible controlled or uncontrolled image zoom with native dialog behavior; `web-vitals`, a headless collector that dynamically loads its measurement runtime only when enabled and mounted; and `update-notification`, a visibility-aware update detector with separate state plus toast, banner, and inline presenters. An additional minimal example is `hello-button`.
+Other components include `addressable-frame`, composable chrome for URL, file, object, and other addressable content without owning navigation or loading runtime; `header-content-footer-layout`, a bounded flex-column layout with composable header, scrollable content, and footer slots; `left-center-right-layout`, a stable three-slot row for toolbars and status bars whose center remains at the geometric center; `resizable`, the shadcn v4 panel group, panel, and accessible separator; `path-address-bar`, a responsive breadcrumb and editable path hybrid with ancestor overflow and contextual current-path actions; `file-tree`, an independently installable lazy and virtualized filesystem tree with bounded loading; `file-viewer`, bounded Text/Image/PDF/Audio/Video/unsupported viewers plus an optional structural filesystem adapter; `status`, a standalone semantic state indicator with plain and compact pill presentations; `loaders`, accessible spinner/dots/bars/ring primitives plus pending buttons, page/section indicators, local overlays, and deterministic list/table skeletons; `query-builder`, a schema-driven nested query AST editor with pure model/reducer/validation, JSON Schema field adaptation, controlled and draft state hooks, searchable fields, and injectable value editors; its default UI copy is Simplified Chinese and remains replaceable through the `messages` prop; `formats`, common value formatters for empty/text/number/currency/percent/bytes/duration/date/boolean/phone values; `hook-form`, React Hook Form basics for provider/form wiring, controlled fields, submit/debug/data-preview controls, dirty values, and field error summaries; `zoom`, an accessible controlled or uncontrolled image zoom with native dialog behavior; `web-vitals`, a headless collector that dynamically loads its measurement runtime only when enabled and mounted; and `update-notification`, a visibility-aware update detector with separate state plus toast, banner, and inline presenters. An additional minimal example is `hello-button`.
 
 ## Agent Configuration Editors
 
@@ -113,6 +150,25 @@ Theme state stores `themeMode` (`system`, `light`, or `dark`) separately from `l
 Install the generic block with `npx shadcn add @wener/file-manager`. Its `FileManagerFileSystem` type is a structural subset of `@wener/common/fs` `IFileSystem`, so Memory, OPFS, local directory, WebDAV, or application-owned adapters can be supplied without backend-specific UI branches.
 
 Use `showFileManager({ windowManager, fileManager, window })` to open the same manager inside a scoped WindowManager. The helper defaults to a reusable non-persistent window and does not depend on a global runtime; `renderFileManagerWindow(win)` plugs into the host content renderer.
+
+The sidebar combines Places and the independent `file-tree` registry item. `FileTree` accepts a structural async `readdir` adapter, lazy-loads expanded paths, virtualizes visible rows with `react-arborist`, and enforces configurable depth, node, cache, and concurrent-read limits. FileManager activation navigates the main workspace and uses the same file-type icon registry; picker variants restrict the tree to directories.
+
+Writable managers support native drag and drop across the current listing surface, directory rows/cards, and FileTree directory nodes. Internal entries move by default and copy while `Alt`/`Option` or `Ctrl` is held. External drops upload multiple local files; local directory recursion is intentionally rejected. Uploads default to 256 files, 100 MiB per file, and 512 MiB total, configurable through `maxUploadFiles`, `maxUploadBytes`, and `maxUploadTotalBytes`. Operations retain per-item completed/failed results, expose cancellation, map common filesystem errors to user-facing feedback, and can retry failed or unattempted items without replaying completed work. Read-only or upload-disabled managers prevent browser file navigation and show an explicit rejection.
+
+Directory listings default to 2,000 entries and can be raised through `maxListingEntries` up to the 10,000-entry hard limit. Downloads default to 256 MiB per file and 512 MiB per batch through `maxDownloadBytes` and `maxDownloadTotalBytes`; adapters receive a bounded `maxBytes` request and the returned byte length is checked again before delivery.
+
+`getFileManager()` returns the app-global file-type manager. Register definitions for matching, MIME inference, icons, list/grid display, details, viewers, and editors; the returned function removes that exact stack entry. Use `createFileManager({ parent: getFileManager(), definitions })` with `FileManagerRegistryProvider` for tenant, module, Story, or test isolation. Higher priority wins first, then match specificity, child scope, and registration order; a child definition with the same `id` fully shadows its parent until unregistered.
+
+```tsx
+const unregister = getFileManager().fileTypes.register({
+	id: 'workflow',
+	label: '工作流',
+	priority: 500,
+	match: { extensions: ['flow'] },
+	icon: WorkflowIcon,
+	viewer: { component: WorkflowViewer },
+});
+```
 
 Install `file-picker` for standard filesystem selection workflows. `FilePicker`/`showFilePicker({ multiple })` open one or more files, `DirectoryPicker`/`showDirectoryPicker()` choose a directory, and `SaveFilePicker`/`showSaveFilePicker()` return a validated save target with overwrite confirmation without writing the file. Programmatic picker cancellation resolves `undefined`; every WindowManager call owns an independent non-persistent window and promise.
 

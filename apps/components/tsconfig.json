@@ -3,6 +3,7 @@
 		"target": "ES2022",
 		"lib": ["dom", "dom.iterable", "esnext"],
 		"allowJs": true,
+		"allowImportingTsExtensions": true,
 		"skipLibCheck": true,
 		"strict": true,
 		"noEmit": true,
@@ -14,9 +15,29 @@
 		"jsx": "react-jsx",
 		"paths": {
 			"@/*": ["./src/*"],
+			"@components/agent-composer": ["./src/agent/agent-composer/index.ts"],
+			"@components/agent-message": ["./src/agent/agent-message/index.ts"],
+			"@components/blocks/console-layout/*": ["./src/console/console-layout/*"],
+			"@components/blocks/console-shell": ["./src/console/console-shell/index.ts"],
+			"@components/blocks/console-shell/*": ["./src/console/console-shell/*"],
+			"@components/blocks/console-window": ["./src/window/console-window/index.ts"],
+			"@components/blocks/console-window/*": ["./src/window/console-window/*"],
+			"@components/file-manager": ["./src/file/file-manager/index.ts"],
+			"@components/file-manager/*": ["./src/file/file-manager/*"],
+			"@components/file-tree": ["./src/file/file-tree/index.ts"],
+			"@components/file-tree/*": ["./src/file/file-tree/*"],
+			"@components/file-type-registry/*": ["./src/file/file-type-registry/*"],
+			"@components/file-viewer": ["./src/file/file-viewer/index.ts"],
+			"@components/file-viewer/*": ["./src/file/file-viewer/*"],
+			"@components/message-scroller": ["./src/agent/message-scroller/index.ts"],
+			"@components/path-address-bar": ["./src/file/path-address-bar/index.ts"],
+			"@components/path-address-bar/*": ["./src/file/path-address-bar/*"],
+			"@components/ui/ai-config-editor": ["./src/agent/ai-config-editor/index.ts"],
+			"@components/window-manager": ["./src/window/window-manager/index.ts"],
+			"@ui/*": ["./src/ui/*"],
 			"#/*": ["./src/*"]
 		}
 	},
-	"include": [".storybook/**/*", "src/**/*", "registry/**/*", "vite.config.ts", "vite.storybook.config.ts"],
+	"include": [".storybook/**/*", "src/**/*", "vite.config.ts", "vitest.config.ts"],
 	"exclude": ["node_modules", "dist"]
 }

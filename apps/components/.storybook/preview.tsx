@@ -3,8 +3,8 @@ import { useLayoutEffect } from 'react';
 import {
 	applyConsoleDisplaySettings,
 	defaultConsoleDisplaySettings,
-} from '../registry/default/blocks/console-preferences/console-theme';
-import { defaultConsoleThemeOptions } from '../registry/default/blocks/console-preferences/console-theme-catalog';
+} from '../src/console/console-preferences/console-theme';
+import { defaultConsoleThemeOptions } from '../src/console/console-preferences/console-theme-catalog';
 import '#/styles.css';
 
 type ThemeSyncProps = {
@@ -81,7 +81,18 @@ const preview: Preview = {
 		},
 		options: {
 			storySort: {
-				order: ['Overview', 'Console', ['Shell', 'Data View', 'Window & Frame', 'Preferences', 'Integrated'], 'Legacy'],
+				order: [
+					'Overview',
+					'Core',
+					['UI', 'Components', 'Blocks'],
+					'Resource',
+					'Window',
+					'Console',
+					'File',
+					'Agent',
+					'Auth',
+					'Demo',
+				],
 			},
 		},
 	},

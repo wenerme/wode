@@ -8,6 +8,7 @@ import { z } from 'zod';
 export const HeaderNames = Object.freeze({
 	__proto__: null,
 	TOKEN: 'X-TOKEN',
+	SERVICE_URL: 'X-SERVICE-URL',
 	MCP_COMMAND: 'X-MCP-COMMAND',
 	MCP_READONLY: 'X-MCP-Readonly',
 	MCP_INCLUDE: 'X-MCP-Include',

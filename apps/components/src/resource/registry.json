@@ -1,0 +1,197 @@
+{
+	"$schema": "https://ui.shadcn.com/schema/registry.json",
+	"items": [
+		{
+			"name": "query-builder",
+			"type": "registry:component",
+			"title": "Query Builder",
+			"description": "Schema-driven nested query AST editor with immutable actions, draft state, validation, searchable fields, and custom value editors",
+			"dependencies": ["@base-ui/react", "daisyui", "lucide-react"],
+			"files": [
+				{
+					"path": "./query-builder/query-model.ts",
+					"type": "registry:lib",
+					"target": "@components/query-builder/query-model.ts"
+				},
+				{
+					"path": "./query-builder/query-state-structure.ts",
+					"type": "registry:lib",
+					"target": "@components/query-builder/query-state-structure.ts"
+				},
+				{
+					"path": "./query-builder/query-state-traversal.ts",
+					"type": "registry:lib",
+					"target": "@components/query-builder/query-state-traversal.ts"
+				},
+				{
+					"path": "./query-builder/query-state-validation.ts",
+					"type": "registry:lib",
+					"target": "@components/query-builder/query-state-validation.ts"
+				},
+				{
+					"path": "./query-builder/query-state.ts",
+					"type": "registry:lib",
+					"target": "@components/query-builder/query-state.ts"
+				},
+				{
+					"path": "./query-builder/query-json-schema-types.ts",
+					"type": "registry:lib",
+					"target": "@components/query-builder/query-json-schema-types.ts"
+				},
+				{
+					"path": "./query-builder/query-json-schema-utils.ts",
+					"type": "registry:lib",
+					"target": "@components/query-builder/query-json-schema-utils.ts"
+				},
+				{
+					"path": "./query-builder/query-json-schema-resolution.ts",
+					"type": "registry:lib",
+					"target": "@components/query-builder/query-json-schema-resolution.ts"
+				},
+				{
+					"path": "./query-builder/query-json-schema.ts",
+					"type": "registry:lib",
+					"target": "@components/query-builder/query-json-schema.ts"
+				},
+				{
+					"path": "./query-builder/query-messages.ts",
+					"type": "registry:lib",
+					"target": "@components/query-builder/query-messages.ts"
+				},
+				{
+					"path": "./query-builder/use-query-builder.ts",
+					"type": "registry:hook",
+					"target": "@components/query-builder/use-query-builder.ts"
+				},
+				{
+					"path": "./query-builder/query-editor-utils.ts",
+					"type": "registry:lib",
+					"target": "@components/query-builder/query-editor-utils.ts"
+				},
+				{
+					"path": "./query-builder/query-field-picker.tsx",
+					"type": "registry:component",
+					"target": "@components/query-builder/query-field-picker.tsx"
+				},
+				{
+					"path": "./query-builder/query-scalar-editor.tsx",
+					"type": "registry:component",
+					"target": "@components/query-builder/query-scalar-editor.tsx"
+				},
+				{
+					"path": "./query-builder/query-list-editors.tsx",
+					"type": "registry:component",
+					"target": "@components/query-builder/query-list-editors.tsx"
+				},
+				{
+					"path": "./query-builder/query-editors.tsx",
+					"type": "registry:component",
+					"target": "@components/query-builder/query-editors.tsx"
+				},
+				{
+					"path": "./query-builder/query-builder-context.ts",
+					"type": "registry:lib",
+					"target": "@components/query-builder/query-builder-context.ts"
+				},
+				{
+					"path": "./query-builder/query-builder-rule.tsx",
+					"type": "registry:component",
+					"target": "@components/query-builder/query-builder-rule.tsx"
+				},
+				{
+					"path": "./query-builder/query-builder-group.tsx",
+					"type": "registry:component",
+					"target": "@components/query-builder/query-builder-group.tsx"
+				},
+				{
+					"path": "./query-builder/query-builder.tsx",
+					"type": "registry:component",
+					"target": "@components/query-builder/query-builder.tsx"
+				},
+				{
+					"path": "./query-builder/index.ts",
+					"type": "registry:component",
+					"target": "@components/query-builder/index.ts"
+				}
+			]
+		},
+		{
+			"name": "console-data-view",
+			"type": "registry:block",
+			"title": "Console Data View",
+			"description": "Composable data workspaces with resource side panels, operations metrics, attention queues, typed inventory tables, selection, and pagination",
+			"dependencies": ["@base-ui/react", "daisyui", "lucide-react"],
+			"files": [
+				{
+					"path": "./console-data-view/console-data-view.tsx",
+					"type": "registry:component",
+					"target": "@components/console-data-view/console-data-view.tsx"
+				},
+				{
+					"path": "./console-data-view/data-view-collection.tsx",
+					"type": "registry:component",
+					"target": "@components/console-data-view/data-view-collection.tsx"
+				},
+				{
+					"path": "./console-data-view/data-view-panels.tsx",
+					"type": "registry:component",
+					"target": "@components/console-data-view/data-view-panels.tsx"
+				},
+				{
+					"path": "./console-data-view/console-data-view-ops.tsx",
+					"type": "registry:component",
+					"target": "@components/console-data-view/console-data-view-ops.tsx"
+				},
+				{
+					"path": "./console-data-view/data-view-layout.tsx",
+					"type": "registry:component",
+					"target": "@components/console-data-view/data-view-layout.tsx"
+				},
+				{
+					"path": "./console-data-view/data-view-summary.tsx",
+					"type": "registry:component",
+					"target": "@components/console-data-view/data-view-summary.tsx"
+				},
+				{
+					"path": "./console-data-view/data-view-controls.tsx",
+					"type": "registry:component",
+					"target": "@components/console-data-view/data-view-controls.tsx"
+				},
+				{
+					"path": "./console-data-view/data-view-renderers.tsx",
+					"type": "registry:component",
+					"target": "@components/console-data-view/data-view-renderers.tsx"
+				},
+				{
+					"path": "./console-data-view/index.ts",
+					"type": "registry:component",
+					"target": "@components/console-data-view/index.ts"
+				}
+			]
+		},
+		{
+			"name": "console-record-detail",
+			"type": "registry:block",
+			"title": "Console Record Detail",
+			"description": "A dense CRM and ERP record detail layout with command bar, identity header, accessible tabs, facts, activity, related records, context rail, and lifecycle states",
+			"dependencies": ["@base-ui/react", "daisyui", "lucide-react"],
+			"files": [
+				{
+					"path": "./console-record-detail/console-record-detail.tsx",
+					"type": "registry:component",
+					"target": "@components/console-record-detail/console-record-detail.tsx"
+				},
+				{
+					"path": "./console-record-detail/console-record-tabs.tsx",
+					"type": "registry:component",
+					"target": "@components/console-record-detail/console-record-tabs.tsx"
+				},
+				{
+					"path": "./console-record-detail/index.ts",
+					"type": "registry:component",
+					"target": "@components/console-record-detail/index.ts"
+				}
+			]
+		}
+	]
+}

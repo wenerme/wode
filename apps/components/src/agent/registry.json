@@ -1,0 +1,709 @@
+{
+	"$schema": "https://ui.shadcn.com/schema/registry.json",
+	"items": [
+		{
+			"name": "ai-config-editor",
+			"type": "registry:ui",
+			"title": "AI Config Editor",
+			"description": "Controlled configuration editor shell with form/JSON modes, validation fallback, secret, collection, map, and JSON field primitives",
+			"dependencies": ["daisyui", "lucide-react"],
+			"files": [
+				{
+					"path": "./ai-config-editor/ai-config-types.ts",
+					"type": "registry:lib",
+					"target": "@components/ui/ai-config-editor/ai-config-types.ts"
+				},
+				{
+					"path": "./ai-config-editor/ai-config-messages.ts",
+					"type": "registry:lib",
+					"target": "@components/ui/ai-config-editor/ai-config-messages.ts"
+				},
+				{
+					"path": "./ai-config-editor/ai-config-validation.ts",
+					"type": "registry:lib",
+					"target": "@components/ui/ai-config-editor/ai-config-validation.ts"
+				},
+				{
+					"path": "./ai-config-editor/use-ai-config-draft.ts",
+					"type": "registry:hook",
+					"target": "@components/ui/ai-config-editor/use-ai-config-draft.ts"
+				},
+				{
+					"path": "./ai-config-editor/use-stable-list-entries.ts",
+					"type": "registry:hook",
+					"target": "@components/ui/ai-config-editor/use-stable-list-entries.ts"
+				},
+				{
+					"path": "./ai-config-editor/ai-config-fields.tsx",
+					"type": "registry:component",
+					"target": "@components/ui/ai-config-editor/ai-config-fields.tsx"
+				},
+				{
+					"path": "./ai-config-editor/ai-config-collections.tsx",
+					"type": "registry:component",
+					"target": "@components/ui/ai-config-editor/ai-config-collections.tsx"
+				},
+				{
+					"path": "./ai-config-editor/ai-config-layout.tsx",
+					"type": "registry:component",
+					"target": "@components/ui/ai-config-editor/ai-config-layout.tsx"
+				},
+				{
+					"path": "./ai-config-editor/json-value-editor.tsx",
+					"type": "registry:component",
+					"target": "@components/ui/ai-config-editor/json-value-editor.tsx"
+				},
+				{
+					"path": "./ai-config-editor/ai-config-editor.tsx",
+					"type": "registry:component",
+					"target": "@components/ui/ai-config-editor/ai-config-editor.tsx"
+				},
+				{
+					"path": "./ai-config-editor/index.ts",
+					"type": "registry:component",
+					"target": "@components/ui/ai-config-editor/index.ts"
+				}
+			]
+		},
+		{
+			"name": "message",
+			"type": "registry:ui",
+			"title": "Message",
+			"description": "Composable message group, alignment, avatar, content, header, and footer primitives",
+			"files": [
+				{
+					"path": "./message/message.tsx",
+					"type": "registry:ui",
+					"target": "@components/message/message.tsx"
+				},
+				{
+					"path": "./message/index.ts",
+					"type": "registry:ui",
+					"target": "@components/message/index.ts"
+				}
+			]
+		},
+		{
+			"name": "message-scroller",
+			"type": "registry:ui",
+			"title": "Message Scroller",
+			"description": "Real-DOM transcript scroller with live-edge following, anchoring, reader intent, visibility, and commands",
+			"dependencies": ["@shadcn/react@0.2.1", "daisyui", "lucide-react"],
+			"files": [
+				{
+					"path": "./message-scroller/message-scroller.tsx",
+					"type": "registry:ui",
+					"target": "@components/message-scroller/message-scroller.tsx"
+				},
+				{
+					"path": "./message-scroller/index.ts",
+					"type": "registry:ui",
+					"target": "@components/message-scroller/index.ts"
+				}
+			]
+		},
+		{
+			"name": "agent-message",
+			"type": "registry:ui",
+			"title": "Agent Message",
+			"description": "AI SDK UIMessage presenter for streaming text, provider reasoning, multimodal files, sources, steps, tools, actions, metadata, and usage",
+			"registryDependencies": ["https://ui-components.wener.me/r/message.json"],
+			"dependencies": ["ai@7.0.31", "daisyui", "lucide-react", "streamdown@2.5.0"],
+			"files": [
+				{
+					"path": "./agent-message/agent-message-types.ts",
+					"type": "registry:lib",
+					"target": "@components/agent-message/agent-message-types.ts"
+				},
+				{
+					"path": "./agent-message/agent-message-value.ts",
+					"type": "registry:lib",
+					"target": "@components/agent-message/agent-message-value.ts"
+				},
+				{
+					"path": "./agent-message/agent-markdown.tsx",
+					"type": "registry:component",
+					"target": "@components/agent-message/agent-markdown.tsx"
+				},
+				{
+					"path": "./agent-message/agent-message-parts.tsx",
+					"type": "registry:component",
+					"target": "@components/agent-message/agent-message-parts.tsx"
+				},
+				{
+					"path": "./agent-message/agent-message.tsx",
+					"type": "registry:component",
+					"target": "@components/agent-message/agent-message.tsx"
+				},
+				{
+					"path": "./agent-message/index.ts",
+					"type": "registry:component",
+					"target": "@components/agent-message/index.ts"
+				}
+			]
+		},
+		{
+			"name": "agent-composer",
+			"type": "registry:ui",
+			"title": "Agent Composer",
+			"description": "Controlled text and multimodal file composer with bounded validation, previews, send and stop controls, and injectable tool slots",
+			"dependencies": ["daisyui", "lucide-react"],
+			"files": [
+				{
+					"path": "./agent-composer/agent-composer-types.ts",
+					"type": "registry:lib",
+					"target": "@components/agent-composer/agent-composer-types.ts"
+				},
+				{
+					"path": "./agent-composer/agent-composer-files.ts",
+					"type": "registry:lib",
+					"target": "@components/agent-composer/agent-composer-files.ts"
+				},
+				{
+					"path": "./agent-composer/agent-composer-attachment.tsx",
+					"type": "registry:component",
+					"target": "@components/agent-composer/agent-composer-attachment.tsx"
+				},
+				{
+					"path": "./agent-composer/agent-composer.tsx",
+					"type": "registry:component",
+					"target": "@components/agent-composer/agent-composer.tsx"
+				},
+				{
+					"path": "./agent-composer/index.ts",
+					"type": "registry:component",
+					"target": "@components/agent-composer/index.ts"
+				}
+			]
+		},
+		{
+			"name": "ai-provider-editor",
+			"type": "registry:block",
+			"title": "AI Provider Editor",
+			"description": "Controlled canonical Provider editor for identity, connection, plaintext API key, routing, capabilities, tags, and extensions",
+			"registryDependencies": ["https://ui-components.wener.me/r/ai-config-editor.json"],
+			"dependencies": ["@wener/ai@^0.1.21", "daisyui"],
+			"files": [
+				{
+					"path": "./ai-provider-editor/ai-provider-editor.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/ai-provider-editor/ai-provider-editor.tsx"
+				},
+				{
+					"path": "./ai-provider-editor/index.ts",
+					"type": "registry:component",
+					"target": "@components/blocks/ai-provider-editor/index.ts"
+				}
+			]
+		},
+		{
+			"name": "ai-endpoint-editor",
+			"type": "registry:block",
+			"title": "AI Endpoint Editor",
+			"description": "Controlled canonical Endpoint editor for Provider ownership, API connection, credentials, routing, tags, and extensions",
+			"registryDependencies": ["https://ui-components.wener.me/r/ai-config-editor.json"],
+			"dependencies": ["@wener/ai@^0.1.21", "daisyui"],
+			"files": [
+				{
+					"path": "./ai-endpoint-editor/ai-endpoint-editor-types.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/ai-endpoint-editor/ai-endpoint-editor-types.ts"
+				},
+				{
+					"path": "./ai-endpoint-editor/ai-endpoint-editor.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/ai-endpoint-editor/ai-endpoint-editor.tsx"
+				},
+				{
+					"path": "./ai-endpoint-editor/index.ts",
+					"type": "registry:component",
+					"target": "@components/blocks/ai-endpoint-editor/index.ts"
+				}
+			]
+		},
+		{
+			"name": "ai-model-editor",
+			"type": "registry:block",
+			"title": "AI Model Editor",
+			"description": "Controlled canonical Model editor with injected Provider/Endpoint references, modalities, capabilities, limits, cost, defaults, and status",
+			"registryDependencies": ["https://ui-components.wener.me/r/ai-config-editor.json"],
+			"dependencies": ["@wener/ai@^0.1.21", "daisyui"],
+			"files": [
+				{
+					"path": "./ai-model-editor/ai-model-editor-types.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/ai-model-editor/ai-model-editor-types.ts"
+				},
+				{
+					"path": "./ai-model-editor/ai-model-advanced-fields.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/ai-model-editor/ai-model-advanced-fields.tsx"
+				},
+				{
+					"path": "./ai-model-editor/ai-model-editor.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/ai-model-editor/ai-model-editor.tsx"
+				},
+				{
+					"path": "./ai-model-editor/index.ts",
+					"type": "registry:component",
+					"target": "@components/blocks/ai-model-editor/index.ts"
+				}
+			]
+		},
+		{
+			"name": "ai-service-editor",
+			"type": "registry:block",
+			"title": "AI Service Editor",
+			"description": "Controlled canonical Service editor for endpoint connection, plaintext authentication, credentials, capabilities, and extensions",
+			"registryDependencies": ["https://ui-components.wener.me/r/ai-config-editor.json"],
+			"dependencies": ["@wener/ai@^0.1.21", "daisyui"],
+			"files": [
+				{
+					"path": "./ai-service-editor/ai-service-editor-types.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/ai-service-editor/ai-service-editor-types.ts"
+				},
+				{
+					"path": "./ai-service-editor/ai-service-authentication-fields.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/ai-service-editor/ai-service-authentication-fields.tsx"
+				},
+				{
+					"path": "./ai-service-editor/ai-service-editor.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/ai-service-editor/ai-service-editor.tsx"
+				},
+				{
+					"path": "./ai-service-editor/index.ts",
+					"type": "registry:component",
+					"target": "@components/blocks/ai-service-editor/index.ts"
+				}
+			]
+		},
+		{
+			"name": "mcp-server-editor",
+			"type": "registry:block",
+			"title": "MCP Server Editor",
+			"description": "Controlled canonical MCP Server editor with streamable-http, SSE, and stdio transport-specific fields",
+			"registryDependencies": ["https://ui-components.wener.me/r/ai-config-editor.json"],
+			"dependencies": ["@wener/ai@^0.1.21", "daisyui"],
+			"files": [
+				{
+					"path": "./mcp-server-editor/mcp-server-editor.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/mcp-server-editor/mcp-server-editor.tsx"
+				},
+				{
+					"path": "./mcp-server-editor/index.ts",
+					"type": "registry:component",
+					"target": "@components/blocks/mcp-server-editor/index.ts"
+				}
+			]
+		},
+		{
+			"name": "agent-persona-editor",
+			"type": "registry:block",
+			"title": "Agent Persona Editor",
+			"description": "Controlled canonical Persona authoring editor with bounded lore entries and asset manifests, prompts, governance, sources, and rights",
+			"registryDependencies": ["https://ui-components.wener.me/r/ai-config-editor.json"],
+			"dependencies": ["@wener/ai@^0.1.21", "daisyui", "lucide-react"],
+			"files": [
+				{
+					"path": "./agent-persona-editor/agent-persona-editor-types.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/agent-persona-editor/agent-persona-editor-types.ts"
+				},
+				{
+					"path": "./agent-persona-editor/persona-lorebook-editor.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-persona-editor/persona-lorebook-editor.tsx"
+				},
+				{
+					"path": "./agent-persona-editor/persona-assets-editor.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-persona-editor/persona-assets-editor.tsx"
+				},
+				{
+					"path": "./agent-persona-editor/persona-authoring-fields.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-persona-editor/persona-authoring-fields.tsx"
+				},
+				{
+					"path": "./agent-persona-editor/persona-governance-fields.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-persona-editor/persona-governance-fields.tsx"
+				},
+				{
+					"path": "./agent-persona-editor/agent-persona-editor.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-persona-editor/agent-persona-editor.tsx"
+				},
+				{
+					"path": "./agent-persona-editor/index.ts",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-persona-editor/index.ts"
+				}
+			]
+		},
+		{
+			"name": "agent-skill-editor",
+			"type": "registry:block",
+			"title": "Agent Skill Editor",
+			"description": "Controlled canonical Skill editor with instructions, bounded requirements and resource manifests, and replaceable SKILL.md preview",
+			"registryDependencies": ["https://ui-components.wener.me/r/ai-config-editor.json"],
+			"dependencies": ["@wener/ai@^0.1.21", "daisyui", "lucide-react"],
+			"files": [
+				{
+					"path": "./agent-skill-editor/agent-skill-editor-types.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/agent-skill-editor/agent-skill-editor-types.ts"
+				},
+				{
+					"path": "./agent-skill-editor/skill-requirements-editor.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-skill-editor/skill-requirements-editor.tsx"
+				},
+				{
+					"path": "./agent-skill-editor/skill-resources-editor.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-skill-editor/skill-resources-editor.tsx"
+				},
+				{
+					"path": "./agent-skill-editor/skill-markdown-preview.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-skill-editor/skill-markdown-preview.tsx"
+				},
+				{
+					"path": "./agent-skill-editor/agent-skill-editor.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-skill-editor/agent-skill-editor.tsx"
+				},
+				{
+					"path": "./agent-skill-editor/index.ts",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-skill-editor/index.ts"
+				}
+			]
+		},
+		{
+			"name": "agent-config-studio",
+			"type": "registry:block",
+			"title": "Agent Config Studio",
+			"description": "Responsive controlled master/detail configuration tool for Provider, Endpoint, Model, Service, MCP, Persona, and Skill resources",
+			"registryDependencies": [
+				"https://ui-components.wener.me/r/ai-config-editor.json",
+				"https://ui-components.wener.me/r/ai-provider-editor.json",
+				"https://ui-components.wener.me/r/ai-endpoint-editor.json",
+				"https://ui-components.wener.me/r/ai-model-editor.json",
+				"https://ui-components.wener.me/r/ai-service-editor.json",
+				"https://ui-components.wener.me/r/mcp-server-editor.json",
+				"https://ui-components.wener.me/r/agent-persona-editor.json",
+				"https://ui-components.wener.me/r/agent-skill-editor.json"
+			],
+			"dependencies": ["@wener/ai@^0.1.21", "lucide-react"],
+			"files": [
+				{
+					"path": "./agent-config-studio/agent-config-studio-types.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/agent-config-studio/agent-config-studio-types.ts"
+				},
+				{
+					"path": "./agent-config-studio/agent-config-studio-editor.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-config-studio/agent-config-studio-editor.tsx"
+				},
+				{
+					"path": "./agent-config-studio/agent-config-studio.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-config-studio/agent-config-studio.tsx"
+				},
+				{
+					"path": "./agent-config-studio/index.ts",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-config-studio/index.ts"
+				}
+			]
+		},
+		{
+			"name": "agent-chat",
+			"type": "registry:block",
+			"title": "Agent Chat",
+			"description": "Controlled operational Chat block with AI SDK UIMessage transcript, reader-aware scrolling, multimodal composer, send, stop, and retry",
+			"registryDependencies": [
+				"https://ui-components.wener.me/r/agent-composer.json",
+				"https://ui-components.wener.me/r/agent-message.json",
+				"https://ui-components.wener.me/r/message-scroller.json"
+			],
+			"dependencies": ["@shadcn/react@0.2.1", "ai@7.0.31", "daisyui", "lucide-react", "streamdown@2.5.0"],
+			"files": [
+				{
+					"path": "./agent-chat/agent-chat-types.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/agent-chat/agent-chat-types.ts"
+				},
+				{
+					"path": "./agent-chat/runtime-message-validation.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/agent-chat/runtime-message-validation.ts"
+				},
+				{
+					"path": "./agent-chat/agent-chat.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-chat/agent-chat.tsx"
+				},
+				{
+					"path": "./agent-chat/index.ts",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-chat/index.ts"
+				}
+			]
+		},
+		{
+			"name": "agent-ai-sdk",
+			"type": "registry:block",
+			"title": "Agent AI SDK Direct Adapter",
+			"description": "In-memory OpenAI-compatible connection editor, bounded model discovery and files, AI SDK ToolLoopAgent DirectChatTransport, and useChat lifecycle",
+			"registryDependencies": [
+				"https://ui-components.wener.me/r/agent-chat.json",
+				"https://ui-components.wener.me/r/agent-message.json"
+			],
+			"dependencies": [
+				"@ai-sdk/openai-compatible@3.0.12",
+				"@ai-sdk/react@4.0.34",
+				"ai@7.0.31",
+				"daisyui",
+				"lucide-react",
+				"zod@4.4.3"
+			],
+			"files": [
+				{
+					"path": "./agent-ai-sdk/connection-config.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/agent-ai-sdk/connection-config.ts"
+				},
+				{
+					"path": "./agent-ai-sdk/safe-error.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/agent-ai-sdk/safe-error.ts"
+				},
+				{
+					"path": "./agent-ai-sdk/model-list.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/agent-ai-sdk/model-list.ts"
+				},
+				{
+					"path": "./agent-ai-sdk/file-parts.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/agent-ai-sdk/file-parts.ts"
+				},
+				{
+					"path": "./agent-ai-sdk/direct-transport-limits.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/agent-ai-sdk/direct-transport-limits.ts"
+				},
+				{
+					"path": "./agent-ai-sdk/direct-transport.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/agent-ai-sdk/direct-transport.ts"
+				},
+				{
+					"path": "./agent-ai-sdk/generation-transport.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/agent-ai-sdk/generation-transport.ts"
+				},
+				{
+					"path": "./agent-ai-sdk/tool-approval.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/agent-ai-sdk/tool-approval.ts"
+				},
+				{
+					"path": "./agent-ai-sdk/connection-editor.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-ai-sdk/connection-editor.tsx"
+				},
+				{
+					"path": "./agent-ai-sdk/ai-sdk-agent-chat.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-ai-sdk/ai-sdk-agent-chat.tsx"
+				},
+				{
+					"path": "./agent-ai-sdk/agent-chat-playground.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-ai-sdk/agent-chat-playground.tsx"
+				},
+				{
+					"path": "./agent-ai-sdk/index.ts",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-ai-sdk/index.ts"
+				}
+			]
+		},
+		{
+			"name": "agent-work",
+			"type": "registry:block",
+			"title": "Agent Work",
+			"description": "Controlled Chat and IFileSystem workspace composition with bounded AGENTS and explicit Skill context, read-only tools, responsive panes, and stable FileManager refresh",
+			"registryDependencies": [
+				"https://ui-components.wener.me/r/file-manager.json",
+				"https://ui-components.wener.me/r/resizable.json"
+			],
+			"dependencies": [
+				"@wener/ai@^0.1.21",
+				"@wener/common@^3.0.0",
+				"ai@7.0.31",
+				"daisyui",
+				"lucide-react",
+				"react-resizable-panels@^4.12.1",
+				"zod@4.4.3"
+			],
+			"files": [
+				{
+					"path": "./agent-work/workspace-types.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/agent-work/workspace-types.ts"
+				},
+				{
+					"path": "./agent-work/workspace-path.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/agent-work/workspace-path.ts"
+				},
+				{
+					"path": "./agent-work/workspace-context.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/agent-work/workspace-context.ts"
+				},
+				{
+					"path": "./agent-work/workspace-mutation-guard.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/agent-work/workspace-mutation-guard.ts"
+				},
+				{
+					"path": "./agent-work/instruction-composer.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/agent-work/instruction-composer.ts"
+				},
+				{
+					"path": "./agent-work/workspace-tools.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/agent-work/workspace-tools.ts"
+				},
+				{
+					"path": "./agent-work/use-agent-workspace-context.ts",
+					"type": "registry:hook",
+					"target": "@components/blocks/agent-work/use-agent-workspace-context.ts"
+				},
+				{
+					"path": "./agent-work/agent-work.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-work/agent-work.tsx"
+				},
+				{
+					"path": "./agent-work/index.ts",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-work/index.ts"
+				}
+			]
+		},
+		{
+			"name": "agent-coding",
+			"type": "registry:block",
+			"title": "Agent Coding",
+			"description": "Agent Work with an injected bounded command executor, approval-required write and bash tools, poisoned runtime isolation, and a controlled plain-text terminal",
+			"registryDependencies": ["https://ui-components.wener.me/r/agent-work.json"],
+			"dependencies": ["@wener/common@^3.0.0", "ai@7.0.31", "daisyui", "just-bash@^3.1.0", "lucide-react", "zod@4.4.3"],
+			"files": [
+				{
+					"path": "./agent-coding/command-types.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/agent-coding/command-types.ts"
+				},
+				{
+					"path": "./agent-coding/command-runtime.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/agent-coding/command-runtime.ts"
+				},
+				{
+					"path": "./agent-coding/terminal-history.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/agent-coding/terminal-history.ts"
+				},
+				{
+					"path": "./agent-coding/coding-tools.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/agent-coding/coding-tools.ts"
+				},
+				{
+					"path": "./agent-coding/just-bash-executor.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/agent-coding/just-bash-executor.ts"
+				},
+				{
+					"path": "./agent-coding/agent-terminal.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-coding/agent-terminal.tsx"
+				},
+				{
+					"path": "./agent-coding/agent-coding.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-coding/agent-coding.tsx"
+				},
+				{
+					"path": "./agent-coding/index.ts",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-coding/index.ts"
+				}
+			]
+		},
+		{
+			"name": "agent-playground",
+			"type": "registry:block",
+			"title": "Agent Playground",
+			"description": "Complete transient Chat, Work, and Coding playground with connection, Persona and Skill selection, workspace context, approvals, terminal history, and lazy injected just-bash",
+			"registryDependencies": [
+				"https://ui-components.wener.me/r/agent-ai-sdk.json",
+				"https://ui-components.wener.me/r/agent-chat.json",
+				"https://ui-components.wener.me/r/agent-work.json",
+				"https://ui-components.wener.me/r/agent-coding.json"
+			],
+			"dependencies": ["@wener/ai@^0.1.21", "@wener/common@^3.0.0", "ai@7.0.31", "daisyui", "lucide-react"],
+			"files": [
+				{
+					"path": "./agent-playground/playground-runtime.ts",
+					"type": "registry:lib",
+					"target": "@components/blocks/agent-playground/playground-runtime.ts"
+				},
+				{
+					"path": "./agent-playground/use-command-runtime-transition.ts",
+					"type": "registry:hook",
+					"target": "@components/blocks/agent-playground/use-command-runtime-transition.ts"
+				},
+				{
+					"path": "./agent-playground/use-just-bash-executor.ts",
+					"type": "registry:hook",
+					"target": "@components/blocks/agent-playground/use-just-bash-executor.ts"
+				},
+				{
+					"path": "./agent-playground/playground-controls.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-playground/playground-controls.tsx"
+				},
+				{
+					"path": "./agent-playground/tool-approval-renderer.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-playground/tool-approval-renderer.tsx"
+				},
+				{
+					"path": "./agent-playground/agent-playground.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-playground/agent-playground.tsx"
+				},
+				{
+					"path": "./agent-playground/index.ts",
+					"type": "registry:component",
+					"target": "@components/blocks/agent-playground/index.ts"
+				}
+			]
+		}
+	]
+}

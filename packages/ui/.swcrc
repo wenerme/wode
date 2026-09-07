@@ -1,0 +1,25 @@
+{
+	"$schema": "https://swc.rs/schema.json",
+	"module": {
+		"type": "es6"
+	},
+	"jsc": {
+		"parser": {
+			"syntax": "typescript",
+			"tsx": true,
+			"dynamicImport": true
+		},
+		"transform": {
+			"react": {
+				"runtime": "automatic",
+				"development": false
+			}
+		},
+		"keepClassNames": true
+	},
+	"exclude": ["\\.test\\.tsx?$", "\\.stories\\.tsx?$"],
+	"minify": false,
+	"env": {
+		"targets": "maintained node versions"
+	}
+}

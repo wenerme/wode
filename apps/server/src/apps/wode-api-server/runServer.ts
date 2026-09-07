@@ -24,7 +24,7 @@ import { serveExternalProxy } from '@/server/proxy/serveExternalProxy';
 import { createBaseRoute } from '@/server/routes/createBaseRoute';
 import { buildGraphQLSchema, ContextGraphAuthChecker } from '@/server/yoga/buildGraphQLSchema';
 import { createYogaServer } from '@/server/yoga/createYogaServer';
-import { serveYoga } from '@/server/yoga/serveYoga';
+import { serveYoga } from '@wener/server/hono/yoga';
 import { getInstanceGraphModule } from './getInstanceGraphModule';
 import { setupDayjs } from './setupDayjs';
 

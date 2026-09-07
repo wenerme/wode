@@ -1,4 +1,4 @@
-import registry from '../../registry.json';
+import registry from '../generated/registry-catalog.json';
 
 export default async function HomePage() {
 	return (
