@@ -1,4 +1,4 @@
-import { expect, test } from 'vitest';
+import { expect, test } from 'vite-plus/test';
 import { BasicVm } from '@/poc/bbvm/BBVM';
 import { compile } from '@/poc/bbvm/bbasm/bbasm';
 import { parse } from '@/poc/bbvm/bbasm/parser';

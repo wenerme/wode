@@ -12,7 +12,6 @@ const auditStore = new LRUCache<string, AuditEvent>({
 
 let eventCounter = 0;
 let dbConfigured = false;
-let storedAuditConfig: AuditConfig | undefined;
 let storedDbConfig: DbConfig | undefined;
 
 async function persistToDb(event: AuditEvent, id: string): Promise<void> {
@@ -192,10 +191,8 @@ export function setupAudit(ctx: McpsServerContext, options?: { auditConfig?: Aud
 		storedDbConfig = auditDbConfig;
 		dbConfigured = true;
 	}
-	storedAuditConfig = auditConfig;
-
 	// Subscribe to request events
-	ctx.emitter.on(McpsEventType.Request, (event) => {
+	ctx.emitter.on(McpsEventType.Request, ({ data: event }) => {
 		const path = event.path || '';
 		if (!path) return;
 

@@ -68,6 +68,6 @@ export function registerGrafanaToolGroups(ctx: GrafanaContext) {
 	}
 }
 
-export { registerSystemTools } from './system';
-export { registerDatasourceTools } from './datasource';
 export { registerDashboardTools } from './dashboard';
+export { registerDatasourceTools } from './datasource';
+export { registerSystemTools } from './system';

@@ -748,9 +748,9 @@ export function ChatPage() {
 														<div className='bg-primary text-primary-content rounded-2xl rounded-br-md px-4 py-2'>
 															{message.images && message.images.length > 0 && (
 																<div className='flex flex-wrap gap-2 mb-2'>
-																	{message.images.map((img, i) => (
+																	{message.images.map((img) => (
 																		<img
-																			key={i}
+																			key={img.base64 || img.url}
 																			src={img.base64 || img.url}
 																			alt='uploaded'
 																			className='max-h-32 rounded'
@@ -948,7 +948,7 @@ export function ChatPage() {
 					{images.length > 0 && (
 						<div className='flex flex-wrap gap-2 mb-2'>
 							{images.map((img, i) => (
-								<div key={i} className='relative'>
+								<div key={img.base64 || img.url} className='relative'>
 									<img src={img.base64 || img.url} alt='preview' className='h-16 rounded' />
 									<button
 										type='button'

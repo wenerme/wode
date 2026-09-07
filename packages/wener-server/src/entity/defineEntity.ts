@@ -1,10 +1,11 @@
-import { BaseEntity, type EntityClass, MetadataStorage } from '@mikro-orm/core';
+import { BaseEntity, type EntityClass, type EntitySchema, MetadataStorage } from '@mikro-orm/core';
 import { Errors } from '@wener/utils';
 import { Features } from '../Feature';
 import { getTypeOfEntityTypeId } from './parseEntityTypeId';
 
 export interface DefineEntityOptions {
 	Entity: EntityClass<any>;
+	EntitySchema?: EntitySchema<any>;
 	idType?: string;
 	tableName?: string;
 	typeName?: string;
@@ -37,13 +38,16 @@ export function defineEntity(o: DefineEntityOptions | DefineEntityOptions[]) {
 		return o.map((v) => defineEntity(v));
 	}
 	let def = o as EntityDef;
-	let meta =
-		(MetadataStorage as any).getMetadataFromDecorator?.(o.Entity) ?? MetadataStorage.getMetadata(o.Entity.name, '');
+	const meta =
+		(o.EntitySchema as any)?.meta ??
+		(MetadataStorage as any).getMetadataFromDecorator?.(o.Entity) ??
+		(MetadataStorage as any).find?.(o.Entity.name) ??
+		MetadataStorage.getMetadata(o.Entity.name, '');
 
 	def.metadata ||= {};
-	def.tableName ||= meta.tableName;
-	def.schema ||= meta.schema;
-	def.typeName ||= meta.className.replace(/Entity$/, '');
+	def.tableName ||= meta?.tableName;
+	def.schema ||= meta?.schema;
+	def.typeName ||= (meta?.className || o.Entity.name).replace(/Entity$/, '');
 	def.title ||= def.typeName;
 	def.features = Array.from(new Set((def.features || []).concat(Features.getFeatures(o.Entity))));
 

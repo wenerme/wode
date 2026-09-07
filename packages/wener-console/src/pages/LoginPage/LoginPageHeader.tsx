@@ -29,7 +29,7 @@ export const LoginPageHeader: FC<LoginPageHeaderProps> = ({
 			{onRegister && (
 				<p className='mt-2 text-sm leading-6 opacity-60'>
 					{labels?.registerPrompt ?? '尚未加入?'}{' '}
-					<button type={'button'} onClick={onRegister} className='font-semibold text-primary hover:text-primary/80'>
+					<button type={'button'} onClick={onRegister} className='text-primary hover:text-primary/80 font-semibold'>
 						{labels?.registerAction ?? '现在注册'}
 					</button>
 				</p>

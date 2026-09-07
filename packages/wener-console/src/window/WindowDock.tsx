@@ -49,7 +49,7 @@ Main
 		return (
 			<div className={cn('flex h-full w-full overflow-hidden', 'flex-col md:flex-row', className)} {...props}>
 				<main className={'relative order-5 h-full flex-1 overflow-auto'}>
-					<div className={'scrollbar-thin absolute inset-0'}>{children}</div>
+					<div className={'absolute inset-0 scrollbar-thin'}>{children}</div>
 				</main>
 				{dock}
 			</div>

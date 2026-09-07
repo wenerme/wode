@@ -10,7 +10,7 @@ import { debug, getConcurrencyLimit, getMaxRetries, getRetryDelayMs, getTimeoutM
 import { getServerUrl, type HttpServerConfig, isHttpServer, type ServerConfig, type StdioServerConfig } from './schema';
 
 // Re-export for convenience
-export { Client, debug, getTimeoutMs, getConcurrencyLimit };
+export { Client, debug, getConcurrencyLimit, getTimeoutMs };
 
 export interface ConnectedClient {
 	client: Client;

@@ -10,9 +10,9 @@ import {
 	createBcryptPasswordAlgorithm,
 	Password,
 } from '@wener/common/password';
-import { createBootstrap } from '@wener/server';
 import { createOpenAPIHono, runServer } from '@wener/server/hono';
 import { getEntityManager, OrmModule } from '@wener/server/mikro-orm';
+import { createBootstrap } from '@wener/server/nest';
 import { parseBoolean } from '@wener/utils';
 import { GraphQLSchema } from 'graphql/type';
 import { cors } from 'hono/cors';
@@ -24,7 +24,7 @@ import { serveExternalProxy } from '@/server/proxy/serveExternalProxy';
 import { createBaseRoute } from '@/server/routes/createBaseRoute';
 import { buildGraphQLSchema, ContextGraphAuthChecker } from '@/server/yoga/buildGraphQLSchema';
 import { createYogaServer } from '@/server/yoga/createYogaServer';
-import { serveYoga } from '@/server/yoga/serveYoga';
+import { serveYoga } from '@wener/server/hono/yoga';
 import { getInstanceGraphModule } from './getInstanceGraphModule';
 import { setupDayjs } from './setupDayjs';
 

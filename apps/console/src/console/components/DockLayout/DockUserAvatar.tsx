@@ -67,8 +67,8 @@ export const DockUserAvatar: React.FC<DockUserAvatarProps> = ({
 						leaveFrom='opacity-100 translate-y-0'
 						leaveTo='opacity-0 translate-y-1'
 					>
-						<Popover.Panel className='absolute right-full top-0 z-10 mr-2 w-[180px]'>
-							<div className='bg-base-100/50 overflow-hidden rounded-lg p-3 shadow-lg ring-1 ring-black ring-opacity-5 backdrop-blur'>
+						<Popover.Panel className='absolute top-0 right-full z-10 mr-2 w-[180px]'>
+							<div className='bg-base-100/50 ring-opacity-5 overflow-hidden rounded-lg p-3 shadow-lg ring-1 ring-black backdrop-blur'>
 								{children}
 							</div>
 						</Popover.Panel>

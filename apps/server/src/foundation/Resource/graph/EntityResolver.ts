@@ -8,7 +8,7 @@ import {
 	MutationResourceInput,
 	ResolveResourceQueryInput,
 } from '@wener/server/type-graphql/resource';
-import { Errors, type Constructor } from '@wener/utils';
+import { type Constructor, Errors } from '@wener/utils';
 import {
 	Arg,
 	Authorized,

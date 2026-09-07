@@ -1,8 +1,7 @@
 packages:
-- 'apps/*'
-- 'packages/*'
-- 'components/*'
-- wode-assistant/frontend
+  - 'apps/*'
+  - 'packages/*'
+  - 'components/*'
 
 allowBuilds:
   '@swc/core': true
@@ -12,38 +11,73 @@ allowBuilds:
   canvas: true
   esbuild: true
   sharp: true
+catalog:
+  '@vitest/browser-playwright': 4.1.10
+  vite: npm:@voidzero-dev/vite-plus-core@0.2.5
+  vite-plus: 0.2.5
+  vitest: 4.1.10
+dedupeDirectDeps: true
 
 ignoredOptionalDependencies:
-- fsevents
-
-patchedDependencies:
-  ts-node@11.0.0-beta.1: patches/ts-node.patch
+  - fsevents
+linkWorkspacePackages: true
 
 minimumReleaseAge: 1200
 minimumReleaseAgeExclude:
-- "@wener/*"
-- "@vitejs/*"
-- vite
-- react
+  - ai
+  - shadcn
+  - '@ai-sdk/*'
+  - '@shadcn/*'
+  - '@wener/*'
+  - '@storybook/*'
+  - '@vitejs/*'
+  - vite
+  - react
+  - react-router
+  - storybook
+  - vite-plus
+  - '@voidzero-dev/*'
+  - typescript
+  - '@typescript/*'
+  - oxlint
+  - '@oxlint/*'
+  - oxlint-tsgolint
+  - '@oxlint-tsgolint/*'
+  - oxfmt
+  - '@oxfmt/*'
+  - vitest
+  - '@vitest/*'
 
-strictPeerDependencies: false
-linkWorkspacePackages: true
-preferWorkspacePackages: true
-dedupeDirectDeps: true
+# Override dotenv version across the entire workspace
+overrides:
+  '@storybook/react@10.5.0>typescript': 5.9.3
+  dotenv: ^16
+  hono-rate-limiter: ^0.5.3
+  vite: 'catalog:'
+  vitest: 'catalog:'
 
 # Package version overrides
 packageExtensions:
   dotenv:
     peerDependencies:
-      "@types/node": "*"
+      '@types/node': '*'
 
-# Override dotenv version across the entire workspace
-overrides:
-  dotenv: ^16
+patchedDependencies:
+  ts-node@11.0.0-beta.1: patches/ts-node.patch
+peerDependencyRules:
+  allowAny:
+    - vite
+    - vitest
+  allowedVersions:
+    vite: '*'
+    vitest: '*'
+preferWorkspacePackages: true
+
+saveWorkspaceProtocol: false
+
+strictPeerDependencies: false
 
 updateConfig:
   ignoreDependencies:
-  - '@types/node'
-  - 'dotenv'
-
-saveWorkspaceProtocol: false
+    - '@types/node'
+    - 'dotenv'

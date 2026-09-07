@@ -1,24 +1,40 @@
-import type { ConstructorOptions, ResourceLoaderConstructorOptions } from 'jsdom';
+import type { ConstructorOptions } from 'jsdom';
 import { getGlobalThis } from '../../web/getGlobalThis';
+
+type JsDomWindowOptions = ConstructorOptions & {
+	proxy?: string;
+	strictSSL?: boolean;
+	userAgent?: string;
+};
+
+type JsDomResources = {
+	dispatcher?: unknown;
+	userAgent?: string;
+};
 
 export async function polyfillJsDom() {
 	if (typeof window !== 'undefined') {
 		return false;
 	}
 
-	const globalThis = getGlobalThis();
+	const globalObject = getGlobalThis();
 
-	const { ResourceLoader, JSDOM } = await import('jsdom');
+	const { JSDOM } = await import('jsdom');
 
-	// https://github.com/lukechilds/window/blob/master/src/index.js
-	// eslint-disable-next-line @typescript-eslint/no-extraneous-class
-	class Window {
-		constructor(opts: ResourceLoaderConstructorOptions & ConstructorOptions = {}) {
-			const { proxy, strictSSL, userAgent, ...jsdomOpts } = opts;
-			const resources = new ResourceLoader({ proxy, strictSSL, userAgent });
-			// biome-ignore lint/correctness/noConstructorReturn: intentional proxy pattern
-			return new JSDOM('', Object.assign(jsdomOpts, { resources })).window;
+	async function createWindow(opts: JsDomWindowOptions = {}) {
+		const { proxy, strictSSL, userAgent, ...jsdomOpts } = opts;
+		const resources: JsDomResources = {};
+		if (userAgent) resources.userAgent = userAgent;
+		if (proxy) {
+			const { ProxyAgent } = await import('undici');
+			const tls = strictSSL === undefined ? undefined : { rejectUnauthorized: strictSSL };
+			resources.dispatcher = new ProxyAgent({
+				uri: proxy,
+				...(tls ? { proxyTls: tls, requestTls: tls } : {}),
+			});
 		}
+		const options = Object.keys(resources).length ? { ...jsdomOpts, resources } : jsdomOpts;
+		return new JSDOM('', options as ConstructorOptions).window;
 	}
 
 	// https://github.com/lukechilds/browser-env/blob/master/src/index.js
@@ -33,19 +49,18 @@ export async function polyfillJsDom() {
 	};
 	// IIFE executed on import to return an array of global Node.js properties that
 	// conflict with global browser properties.
-	const protectedProperties = (() =>
-		Object.getOwnPropertyNames(new Window(defaultJsdomConfig)).filter(
-			(prop) => typeof globalThis[prop as keyof typeof globalThis] !== 'undefined',
-		))();
+	const protectedProperties = Object.getOwnPropertyNames(await createWindow(defaultJsdomConfig)).filter(
+		(prop) => typeof globalObject[prop as keyof typeof globalObject] !== 'undefined',
+	);
 
-	function installEnv(...args: any[]) {
+	async function installEnv(...args: unknown[]) {
 		// Sets up global browser environment
 		// Extract options from args
-		const properties = args.filter((arg: any) => Array.isArray(arg))[0];
-		const userJsdomConfig = args.filter((arg: any) => !Array.isArray(arg))[0];
+		const properties = args.find((arg): arg is string[] => Array.isArray(arg));
+		const userJsdomConfig = args.find((arg): arg is JsDomWindowOptions => isObject(arg) && !Array.isArray(arg));
 
 		// Create window object
-		const window = new Window(Object.assign({}, userJsdomConfig, defaultJsdomConfig));
+		const window = await createWindow(Object.assign({}, userJsdomConfig, defaultJsdomConfig));
 
 		// Get all global browser properties
 		Object.getOwnPropertyNames(window)
@@ -66,12 +81,19 @@ export async function polyfillJsDom() {
 			// Copy what's left to the Node.js global scope
 			.forEach((prop) => {
 				// console.debug(`define globalThis.${prop}`);
-				Object.defineProperty(globalThis, prop, { configurable: true, get: () => window[prop as keyof Window] as any });
+				Object.defineProperty(globalObject, prop, {
+					configurable: true,
+					get: () => window[prop as keyof typeof window],
+				});
 			});
 
 		return window;
 	}
 
-	installEnv({ url: 'http://localhost' });
+	await installEnv({ url: 'http://localhost' });
 	return true;
+}
+
+function isObject(value: unknown): value is Record<string, unknown> {
+	return typeof value === 'object' && value !== null;
 }

@@ -1,4 +1,4 @@
-import { afterAll, beforeEach, describe, expect, test } from 'vitest';
+import { afterAll, beforeEach, describe, expect, test } from 'vite-plus/test';
 import { createMinioFileSystem } from '../minio/createMinioFileSystem';
 
 const S3_URL = process.env.S3_URL;

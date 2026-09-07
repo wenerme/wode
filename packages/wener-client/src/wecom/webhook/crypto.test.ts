@@ -1,7 +1,7 @@
 import { hex, sha1 } from '@wener/utils';
 import { polyfillCrypto } from '@wener/utils/server';
 import { XMLParser } from 'fast-xml-parser';
-import { assert, test } from 'vitest';
+import { assert, test } from 'vite-plus/test';
 import { createWechatWebhookHandler } from '../../wechat/webhook';
 
 test('parse', async () => {

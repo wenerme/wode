@@ -1,5 +1,5 @@
 import { createMetadataKey, defineMetadata } from '@wener/common/meta';
-import { defineEntity, type DefineEntityOptions } from '@wener/server/entity';
+import { type DefineEntityOptions, defineEntity } from '@wener/server/entity';
 import type { Constructor } from '@wener/utils';
 import _ from 'lodash';
 

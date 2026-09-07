@@ -12,7 +12,7 @@ const TitleDivider: React.FC<PropsWithChildren> = ({ children }) => {
 };
 
 function renderMenuItems(items: DashMenu[]): ReactNode[] {
-	return items.map((item, i) => {
+	return items.map((item) => {
 		if ('type' in item) {
 			if (item.type === 'group') {
 				return [
@@ -22,7 +22,7 @@ function renderMenuItems(items: DashMenu[]): ReactNode[] {
 			}
 			return null;
 		}
-		return [<MenuBarItem key={`${i}-${item.title}`} item={item} />];
+		return [<MenuBarItem key={item.href || item.title} item={item} />];
 	});
 }
 

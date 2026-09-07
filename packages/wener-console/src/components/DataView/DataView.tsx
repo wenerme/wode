@@ -144,6 +144,7 @@ export namespace DataView {
 				(window as any)._DataViewStore = store;
 			},
 		});
+		return null;
 	};
 
 	const QueryStatus = () => {

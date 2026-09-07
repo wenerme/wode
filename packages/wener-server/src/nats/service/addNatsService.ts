@@ -1,5 +1,6 @@
+import type { NatsConnection } from '@nats-io/nats-core';
+import { type ServiceMsg, Svcm } from '@nats-io/services';
 import { Logger } from '@nestjs/common';
-import type { NatsConnection, NatsError, ServiceMsg } from 'nats';
 import { App } from '../../app';
 import { getServerServiceSchema, getServiceName, ServiceRegistry } from '../../service';
 import { handleNatsServiceRequest } from './handleNatsServiceRequest';
@@ -29,8 +30,8 @@ export async function addNatsService({
 	const log = logger || new Logger(`NatsService@${name}`);
 
 	let sub = name.replaceAll(/[.]/g, '_');
-	log.log(`listen ${sub} { ${ss.methods.map((v) => v.name)} }`);
-	const svc = await nc.services.add({
+	log.log(`listen ${sub} { ${ss.methods.map((v) => v.name).join(', ')} }`);
+	const svc = await new Svcm(nc).add({
 		version: ss.options.version || '1.0.0',
 		name: sub,
 		queue: App.service,
@@ -47,8 +48,8 @@ export async function addNatsService({
 				//   response: ms.response,
 				// }),
 			},
-			handler: async (err: NatsError | null, msg: ServiceMsg) => {
-				await handleNatsServiceRequest({ err, msg, registry, logger: log });
+			handler: (err: Error | null, msg: ServiceMsg) => {
+				void handleNatsServiceRequest({ err, msg, registry, logger: log }).catch((error) => log.error(String(error)));
 			},
 		});
 	}

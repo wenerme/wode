@@ -1,4 +1,4 @@
-import { Can as _Can, type CanProps as _CanProps } from '@casl/react';
+import { Can as _Can, type CanProps as _CanProps, AbilityProvider as CaslAbilityProvider } from '@casl/react';
 import type React from 'react';
 import { createContext, useContext } from 'react';
 import type { ConsoleAbility } from './casl';
@@ -13,7 +13,11 @@ export function useAbility() {
 export type CanProps = Omit<_CanProps<ConsoleAbility>, 'ability'>;
 export const Can: React.FC<CanProps> = (props) => {
 	const ab = useAbility();
-	return <_Can<ConsoleAbility, true> ability={ab} {...(props as any)} />;
+	return (
+		<CaslAbilityProvider value={ab}>
+			<_Can<ConsoleAbility> {...(props as _CanProps<ConsoleAbility>)} />
+		</CaslAbilityProvider>
+	);
 };
 
 export namespace Ability {

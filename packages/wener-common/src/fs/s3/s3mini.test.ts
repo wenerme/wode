@@ -1,5 +1,5 @@
 import { S3mini } from 's3mini';
-import { afterAll, beforeAll, describe, expect, test } from 'vitest';
+import { afterAll, beforeAll, describe, expect, test } from 'vite-plus/test';
 
 /**
  * Tests for s3mini and S3 filesystem behavior

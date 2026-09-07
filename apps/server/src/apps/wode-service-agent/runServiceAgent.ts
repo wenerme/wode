@@ -1,7 +1,7 @@
 import type { ConnectRouter } from '@connectrpc/connect';
 import { Logger } from '@nestjs/common';
 import { createOpenAPIHono, runServer } from '@wener/server/hono';
-import { serveNodeConnect } from '@/server/connect/serveNodeConnect';
+import { serveNodeConnect } from '@wener/server/hono/connectrpc';
 import { AgentConnectService } from '@/services/AgentConnectService';
 
 /*

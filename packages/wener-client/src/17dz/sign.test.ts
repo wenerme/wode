@@ -1,5 +1,5 @@
 import { ArrayBuffers } from '@wener/utils';
-import { assert, test } from 'vitest';
+import { assert, test } from 'vite-plus/test';
 import { sign } from './sign';
 
 test('sign', async () => {

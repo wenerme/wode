@@ -1,6 +1,7 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 import consola from 'consola';
-import { resolveGrafanaAuthOptions, type GrafanaAuthOptions } from './auth';
+import { type GrafanaAuthOptions, resolveGrafanaAuthOptions } from './auth';
 import { grafanaClientCache } from './cache';
 import { registerProxiedDatasourceTools } from './proxy/registry';
 import { registerGrafanaToolGroups } from './tools';
@@ -20,8 +21,8 @@ export type GrafanaContext = {
 	server: McpServer;
 	client: ReturnType<typeof grafanaClientCache.getOrCreate>;
 	log: typeof log;
-	textResult: (text: string, isError?: boolean) => { content: { type: 'text'; text: string }[]; isError?: boolean };
-	jsonResult: (data: unknown) => { content: { type: 'text'; text: string }[] };
+	textResult: (text: string, isError?: boolean) => CallToolResult;
+	jsonResult: (data: unknown) => CallToolResult;
 	enableProxiedTools: boolean;
 	writeEnabled: boolean;
 	enabledToolGroups?: Set<string>;

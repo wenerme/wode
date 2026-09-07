@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vite-plus/test';
 import { REDACTED_HEADER_VALUE, redactRequestHeaders } from './redactRequestHeaders';
 
 describe('redactRequestHeaders', () => {
@@ -30,8 +30,8 @@ describe('redactRequestHeaders', () => {
 			'x-db-read-url': REDACTED_HEADER_VALUE,
 			'x-db-url': REDACTED_HEADER_VALUE,
 			'x-db-write-url': REDACTED_HEADER_VALUE,
-			'x-gemini-api-key': REDACTED_HEADER_VALUE,
 			'x-forwarded-authorization': REDACTED_HEADER_VALUE,
+			'x-gemini-api-key': REDACTED_HEADER_VALUE,
 			'x-grafana-org-id': '9',
 			'x-grafana-password': REDACTED_HEADER_VALUE,
 			'x-grafana-service-account-token': REDACTED_HEADER_VALUE,

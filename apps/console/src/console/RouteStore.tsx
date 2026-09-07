@@ -1,21 +1,22 @@
-import type { Router } from '@remix-run/router';
 import { LoadingIndicator } from '@wener/console/loader';
 import React from 'react';
-import { createMemoryRouter, type RouteObject } from 'react-router-dom';
+import { createMemoryRouter, type RouteObject } from 'react-router';
 import { createStore } from 'zustand';
 import { mutative } from 'zustand-mutative';
+
+type ReactRouter = ReturnType<typeof createMemoryRouter>;
 
 interface RouteState {
 	// content
 	routes: RouteObject[];
 	// root router
-	router: Router;
+	router: ReactRouter;
 	// history: RemixHistory;
 }
 
-function createRouteStore(initial: Partial<RouteState> = {}) {
+export function createRouteStore(initial: Partial<RouteState> = {}) {
 	return createStore(
-		mutative<RouteState>((setState, getState, store) => {
+		mutative<RouteState>(() => {
 			const routes = initial.routes ?? [
 				{
 					index: true,
@@ -31,5 +32,3 @@ function createRouteStore(initial: Partial<RouteState> = {}) {
 		}),
 	);
 }
-
-type RouteStore = ReturnType<typeof createRouteStore>;

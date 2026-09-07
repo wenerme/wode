@@ -24,11 +24,12 @@ function renderLink({ text, url }: { text?: string; url?: string }) {
 }
 
 function joinNode(nodes: ReactNode[], join: ReactNode) {
-	return nodes.filter(Boolean).map((n, i) => {
-		const last = i >= nodes.length - 1;
+	const filtered = nodes.filter(Boolean);
+	return filtered.map((node, i) => {
+		const last = i >= filtered.length - 1;
 		return (
-			<Fragment key={i}>
-				{n}
+			<Fragment key={typeof node === 'string' ? node : i}>
+				{node}
 				{!last && join}
 			</Fragment>
 		);

@@ -4,7 +4,7 @@ import { describe } from 'node:test';
 import { fileURLToPath } from 'node:url';
 import { polyfillCrypto } from '@wener/utils/server';
 import { globby } from 'globby';
-import { expect, test } from 'vitest';
+import { expect, test } from 'vite-plus/test';
 import { Bencode } from '../bencode/Bencode';
 import { parseTorrent } from './parseTorrent';
 
