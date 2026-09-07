@@ -1,17 +1,18 @@
-import { type Opt, types } from '@mikro-orm/core';
-import { Entity, Property } from '@mikro-orm/decorators/legacy';
+import { type Opt, p } from '@mikro-orm/core';
 import type { Constructor } from '@wener/utils';
 import { Feature } from '../../Feature';
 import { EntityFeature } from '../enum';
+import { defineMixinEntity } from './defineMixinEntity';
 import type { HasDisplayOrderEntity } from './types';
 
 export function withDisplayOrderEntity<TBase extends Constructor>(Base: TBase) {
 	@Feature([EntityFeature.HasDisplayOrder])
-	@Entity({ abstract: true })
 	abstract class HasDisplayOrderMixinEntity extends Base implements HasDisplayOrderEntity {
-		@Property({ type: types.double, nullable: false, default: 0 })
 		displayOrder!: number & Opt;
 	}
 
-	return HasDisplayOrderMixinEntity;
+	return defineMixinEntity(Base, HasDisplayOrderMixinEntity, {
+		name: 'HasDisplayOrderMixinEntity',
+		properties: { displayOrder: p.double().default(0) },
+	});
 }

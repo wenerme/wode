@@ -2,7 +2,7 @@
  * Unit tests for errors module
  */
 
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test } from 'vite-plus/test';
 import {
 	configInvalidJsonError,
 	configMissingFieldError,

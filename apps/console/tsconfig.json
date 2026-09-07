@@ -1,7 +1,7 @@
 {
 	"extends": ["../../tsconfig.base.json"],
 	"compilerOptions": {
-		"lib": ["dom", "dom.iterable", "WebWorker", "esnext.full"],
+		"lib": ["dom", "dom.iterable", "WebWorker", "esnext"],
 		"target": "es2018",
 		"allowJs": true,
 		"emitDecoratorMetadata": true,

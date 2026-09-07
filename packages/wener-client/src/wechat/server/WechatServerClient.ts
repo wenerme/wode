@@ -7,9 +7,9 @@ import {
 } from '../../ExpiryValue';
 import { getAccessToken, getStableAccessToken } from './getAccessToken';
 import { type RequestOptions, request } from './request';
-import type { GetDomainInfoResponse, GetOpenAPIQuotaResponse, GetPhoneNumberResponse } from './types';
 import type * as S from './schema';
 import type { GeneralResponse } from './schema';
+import type { GetDomainInfoResponse, GetOpenAPIQuotaResponse, GetPhoneNumberResponse } from './types';
 
 export interface WechatServerClientInit {
 	fetch?: FetchLike;

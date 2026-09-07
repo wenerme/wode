@@ -106,6 +106,7 @@ dist
 build/**
 dist/**
 .next/**
+storybook-static/
 
 
 packages/*/lib

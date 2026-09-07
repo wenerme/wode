@@ -1,5 +1,5 @@
 import { loadEnvs } from '@wener/server';
-import { assert, beforeAll, test } from 'vitest';
+import { assert, beforeAll, test } from 'vite-plus/test';
 import { createFetchWithProxyByUndici } from './createFetchWithProxyByUndici';
 import { requireResponseOk } from './requireResponseOk';
 

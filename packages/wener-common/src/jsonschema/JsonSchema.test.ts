@@ -1,6 +1,6 @@
 import type { TObject } from '@sinclair/typebox';
 import type { AnySchemaObject, JSONSchemaType } from 'ajv';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vite-plus/test';
 import { JsonSchema } from './JsonSchema';
 import type { JsonSchemaDef } from './types';
 

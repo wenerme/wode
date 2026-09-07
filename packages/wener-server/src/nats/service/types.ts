@@ -1,4 +1,4 @@
-import type { Msg } from 'nats';
+import type { Msg } from '@nats-io/nats-core';
 import type { ServerMiddleware } from '../../service';
 
 export interface NatsServiceServerModuleOptions {

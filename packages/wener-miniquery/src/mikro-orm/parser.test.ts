@@ -8,7 +8,7 @@ import {
 	ReflectMetadataProvider,
 } from '@mikro-orm/decorators/legacy';
 import { NodeSqliteDialect, SqliteDriver } from '@mikro-orm/sql';
-import { expect, test } from 'vitest';
+import { expect, test } from 'vite-plus/test';
 import { DemoQueryExamples } from '../ast/ast.test';
 import { toMikroOrmQuery } from './toMikroOrmQuery';
 

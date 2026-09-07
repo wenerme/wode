@@ -1,4 +1,4 @@
-import { GrafanaMcpServerDef, type CreateGrafanaMcpServerOptions } from '@wener/ai/mcp/grafana';
+import { type CreateGrafanaMcpServerOptions, GrafanaMcpServerDef } from '@wener/ai/mcp/grafana';
 import type { GrafanaConfig } from '../../server/schema';
 import { defineMcpServerHandler } from '../McpServerHandlerDef';
 
@@ -40,9 +40,9 @@ export const GrafanaMcpServerHandlerDef = defineMcpServerHandler<CreateGrafanaMc
 			if (!url) return null;
 
 			const serviceAccountToken =
-				config.serviceAccountToken
-				|| headers?.get(GrafanaHeaderNames.SERVICE_ACCOUNT_TOKEN)
-				|| config.headers?.[GrafanaHeaderNames.SERVICE_ACCOUNT_TOKEN];
+				config.serviceAccountToken ||
+				headers?.get(GrafanaHeaderNames.SERVICE_ACCOUNT_TOKEN) ||
+				config.headers?.[GrafanaHeaderNames.SERVICE_ACCOUNT_TOKEN];
 			const username =
 				config.username || headers?.get(GrafanaHeaderNames.USERNAME) || config.headers?.[GrafanaHeaderNames.USERNAME];
 			const password =

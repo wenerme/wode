@@ -1,8 +1,8 @@
 import { z } from 'zod';
 import type { GrafanaContext } from '../server';
 import { registerJsonTool } from '../toolkit';
-import { queryDatasource } from './query-helpers';
 import { resolveTimeRange, toRecord } from '../utils';
+import { queryDatasource } from './query-helpers';
 
 function collectPanels(root: Record<string, unknown>): Record<string, unknown>[] {
 	const panels = Array.isArray(root.panels) ? root.panels.map((item) => toRecord(item)) : [];

@@ -7,7 +7,7 @@ import {
 	InfoResponseSchema,
 	type ReloadRequest,
 	ReloadResponseSchema,
-} from 'common/gen/pb/wener/wode/agent/v1/AgentService_pb';
+} from 'common/protos/wode/agent/v1/AgentService_pb';
 import dayjs from 'dayjs';
 
 export class AgentConnectService {

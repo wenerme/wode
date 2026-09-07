@@ -42,7 +42,7 @@ function createLauncherStore() {
 function LauncherHost() {
 	const emitter = getConsoleEmitter();
 	useEffect(() => {
-		return emitter.on(ConsoleEventType.LauncherToggle, ({ open }) => {
+		return emitter.on(ConsoleEventType.LauncherToggle, ({ data: { open } }) => {
 			Launcher.toggle(open);
 		});
 	}, [emitter]);

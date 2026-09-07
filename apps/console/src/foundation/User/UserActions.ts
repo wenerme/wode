@@ -8,6 +8,9 @@ export namespace UserActions {
 		if (error) {
 			throw error;
 		}
-		return getFragmentData(CurrentUserFragment, data?.data!);
+		if (!data?.data) {
+			throw new Error('Current user data is empty');
+		}
+		return getFragmentData(CurrentUserFragment, data.data);
 	}
 }

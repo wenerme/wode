@@ -14,7 +14,7 @@ const TitleDivider: React.FC<PropsWithChildren> = ({ children }) => {
 
 function renderMenuItems(items: DashMenu[]): ReactNode[] {
 	const NavLink = AutoNavLink;
-	return items.map((item, i) => {
+	return items.map((item) => {
 		if ('type' in item) {
 			if (item.type === 'group') {
 				return [
@@ -24,7 +24,7 @@ function renderMenuItems(items: DashMenu[]): ReactNode[] {
 			}
 			return null;
 		}
-		return [<MenuBarItem NavLink={NavLink} key={`${i}-${item.title}`} item={item} />];
+		return [<MenuBarItem NavLink={NavLink} key={item.name || item.href || item.title} item={item} />];
 	});
 }
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import type { RouteObject } from 'react-router-dom';
+import type { RouteObject } from 'react-router';
 
 export function createWorkRoutes(): RouteObject[] {
 	return [

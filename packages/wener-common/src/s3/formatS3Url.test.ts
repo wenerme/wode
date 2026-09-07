@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vite-plus/test';
 import { formatS3Url } from './formatS3Url';
 import type { ParsedS3Options } from './parseS3Url';
 

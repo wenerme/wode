@@ -6,6 +6,7 @@ modules:
     - FILE_LOWER_SNAKE_CASE
     - FIELD_NOT_REQUIRED
     - PACKAGE_NO_IMPORT_CYCLE
+    - PACKAGE_VERSION_SUFFIX
     - ENUM_VALUE_PREFIX
     - ENUM_ZERO_VALUE_SUFFIX
     disallow_comment_ignores: true

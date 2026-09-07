@@ -117,7 +117,7 @@ export function createGeminiToolsMcpServer(options: CreateGeminiToolsMcpServerOp
 				const result = await generateText({
 					model: google(model),
 					tools: {
-						code_execution: google.tools.codeExecution(),
+						code_execution: google.tools.codeExecution({}),
 					},
 					toolChoice: 'required',
 					prompt: `${prompt}${langHint}`,
@@ -140,7 +140,7 @@ export function createGeminiToolsMcpServer(options: CreateGeminiToolsMcpServerOp
 					}
 					for (const tr of step.toolResults) {
 						if (tr.toolName === 'code_execution') {
-							const res = tr.result as { outcome?: string; output?: string };
+							const res = tr.output as { outcome?: string; output?: string };
 							if (res?.output) {
 								content.push({
 									type: 'text' as const,

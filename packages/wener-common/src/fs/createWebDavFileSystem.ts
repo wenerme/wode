@@ -12,6 +12,8 @@ import type {
 	WritableData,
 	WriteFileOptions,
 } from './IFileSystem';
+import { validateReaddirMaxEntries } from './readdirLimit';
+import { rejectUnsupportedFileSystemLimit, throwIfFileSystemAborted, validateReadFileMaxBytes } from './resourceLimits';
 
 export function createWebDavFileSystem({ client }: { client: MaybeFunction<WebDAVClient> }): IFileSystem {
 	let fs = new WebdavFS({ client });
@@ -75,8 +77,10 @@ class WebdavFS implements IFileSystem {
 
 	async readdir(
 		path: string,
-		{ glob, recursive, depth, kind, hidden, signal }: ReaddirOptions = {},
+		{ glob, recursive, depth, kind, hidden, signal, maxEntries }: ReaddirOptions = {},
 	): Promise<IFileStat[]> {
+		throwIfFileSystemAborted(signal);
+		rejectUnsupportedFileSystemLimit('readdir', 'maxEntries', validateReaddirMaxEntries(maxEntries));
 		let res = await this.client.getDirectoryContents(path, {
 			deep: recursive,
 			signal,
@@ -127,6 +131,8 @@ class WebdavFS implements IFileSystem {
 	}
 
 	async readFile(path: string, options: ReadFileOptions = {}): Promise<any> {
+		throwIfFileSystemAborted(options.signal);
+		rejectUnsupportedFileSystemLimit('readFile', 'maxBytes', validateReadFileMaxBytes(options.maxBytes));
 		const format = options.encoding === 'text' ? 'text' : 'binary';
 		const res = await this.client.getFileContents(path, { format, ...options });
 		return this.getData(res);

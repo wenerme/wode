@@ -1,0 +1,17 @@
+{
+	"extends": ["../../tsconfig.base.json"],
+	"compilerOptions": {
+		"target": "esnext",
+		"lib": ["dom", "dom.iterable", "esnext"],
+		"allowJs": false,
+		"experimentalDecorators": false,
+		"emitDecoratorMetadata": false,
+		"forceConsistentCasingInFileNames": true,
+		"incremental": true,
+		"jsx": "react-jsx",
+		"outDir": "lib",
+		"rootDir": "src"
+	},
+	"include": ["src/**/*.ts", "src/**/*.tsx"],
+	"exclude": ["node_modules"]
+}

@@ -1,7 +1,7 @@
+import type { Subscription } from '@nats-io/nats-core';
 import { Inject, Injectable, Logger, Optional } from '@nestjs/common';
 import { DiscoveryService, ModulesContainer } from '@nestjs/core';
 import { createLazyPromise } from '@wener/utils';
-import type { Subscription } from 'nats';
 import { App } from '../../app';
 import { EXPOSE_SERVICE_METADATA_KEY, ServiceRegistry } from '../../service';
 import { NatsConn } from '../NatsModule';
@@ -64,7 +64,7 @@ export class NatsServerHandler {
 						log.debug(`No reply subject: ${msg.subject}`);
 						return;
 					}
-					return handleNatsServiceRequest({ msg, registry: svc, logger: log });
+					void handleNatsServiceRequest({ msg, registry: svc, logger: log }).catch((error) => log.error(String(error)));
 				},
 				queue,
 			});

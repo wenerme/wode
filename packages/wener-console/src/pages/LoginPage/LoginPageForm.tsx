@@ -156,7 +156,7 @@ export const LoginPageForm: FC<LoginFormProps> = ({
 						<button
 							type={'button'}
 							onClick={onForgetPassword}
-							className='font-semibold text-primary hover:text-primary/80'
+							className='text-primary hover:text-primary/80 font-semibold'
 						>
 							{l.forgetPassword}
 						</button>

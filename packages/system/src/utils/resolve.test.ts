@@ -1,4 +1,4 @@
-import { assert, expect, test } from 'vitest';
+import { assert, expect, test } from 'vite-plus/test';
 import { legacy, resolve } from './resolve';
 
 test('resolve legacy', () => {

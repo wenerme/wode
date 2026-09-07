@@ -1,7 +1,5 @@
 import * as crypto from 'node:crypto';
 import { basename, dirname, join, normalize } from 'node:path';
-import { BaseEntity, Cascade, Collection, type Opt, type Rel } from '@mikro-orm/core';
-import { Entity, ManyToOne, OneToMany, OneToOne, PrimaryKey, Property, Unique } from '@mikro-orm/decorators/legacy';
 import type { EntityManager } from '@mikro-orm/sql';
 import type { CopyOptions } from 'fs-extra';
 import { FileSystemError, FileSystemErrorCode } from '../FileSystemError';
@@ -18,7 +16,15 @@ import type {
 	StatOptions,
 	WriteFileOptions,
 } from '../IFileSystem';
+import { assertReaddirEntryLimit, validateReaddirMaxEntries } from '../readdirLimit';
+import {
+	rejectUnsupportedFileSystemLimit,
+	throwIfFileSystemAborted,
+	validateReadFileMaxBytes,
+} from '../resourceLimits';
 import { FileKind } from '../types';
+import { FileNodeContentEntity } from './FileNodeContentEntity';
+import { FileNodeMetaEntity } from './FileNodeMetaEntity';
 
 export function createDatabaseFileSystem(options: Partial<IDatabaseFileSystemOptions> = {}): IDatabaseFileSystem {
 	return new DBFS(options);
@@ -111,6 +117,8 @@ class DBFS implements IFileSystem {
 	}
 
 	async readdir(dir: string, options?: ReaddirOptions): Promise<IFileStat[]> {
+		throwIfFileSystemAborted(options?.signal);
+		const maxEntries = validateReaddirMaxEntries(options?.maxEntries);
 		const em = this.em;
 		const parentNode = await this._getNodeByPath(dir, em);
 
@@ -124,7 +132,10 @@ class DBFS implements IFileSystem {
 		// Use QueryBuilder to avoid automatic relationship loading
 		const qb = em.createQueryBuilder(FileNodeMetaEntity, 'f');
 		qb.where({ parent: parentNode });
+		if (maxEntries !== undefined && maxEntries < Number.MAX_SAFE_INTEGER) qb.limit(maxEntries + 1);
 		const children = await qb.getResult();
+		throwIfFileSystemAborted(options?.signal);
+		assertReaddirEntryLimit(children.length, maxEntries, dir);
 
 		return children.map((child) => this._toFileStat(child, join(dir, child.filename)));
 	}
@@ -224,6 +235,8 @@ class DBFS implements IFileSystem {
 			encoding?: 'text' | 'binary' | string;
 		},
 	): Promise<string | Uint8Array> {
+		throwIfFileSystemAborted(options?.signal);
+		rejectUnsupportedFileSystemLimit('readFile', 'maxBytes', validateReadFileMaxBytes(options?.maxBytes));
 		const em = this.em;
 		const node = await this._getNodeByPath(path, em);
 
@@ -536,97 +549,5 @@ class DBFS implements IFileSystem {
 	}
 }
 
-@Entity({ tableName: 'file_node_meta' })
-@Unique({ properties: ['tid', 'parent', 'filename'] })
-export class FileNodeMetaEntity extends BaseEntity {
-	@PrimaryKey({ type: 'text', onCreate: () => crypto.randomUUID() })
-	id!: string & Opt;
-
-	@Property({ type: 'text', nullable: true })
-	tid?: string;
-
-	@Property({ type: 'text', nullable: false })
-	filename!: string;
-
-	@Property({ type: 'integer', nullable: false, default: 0 })
-	size!: number & Opt;
-
-	@Property({ type: 'text', nullable: false })
-	kind!: FileKind;
-
-	@Property({ type: 'text', nullable: false })
-	atime!: Date & Opt;
-
-	@Property({ type: 'text', nullable: false })
-	btime!: Date & Opt;
-
-	@Property({ type: 'text', nullable: false })
-	ctime!: Date & Opt;
-
-	@Property({ type: 'text', nullable: false })
-	mtime!: Date & Opt;
-
-	@Property({ type: 'json', nullable: false, default: '{}' })
-	metadata!: Record<string, any> & Opt;
-
-	@ManyToOne(() => FileNodeMetaEntity, { nullable: true, cascade: [] })
-	parent?: Rel<FileNodeMetaEntity>;
-
-	@OneToMany({ entity: () => FileNodeMetaEntity, mappedBy: 'parent', orphanRemoval: true })
-	children = new Collection<FileNodeMetaEntity>(this);
-
-	@OneToOne({
-		entity: () => FileNodeContentEntity,
-		mappedBy: 'node',
-		orphanRemoval: true,
-		nullable: true,
-		cascade: [Cascade.ALL],
-	})
-	fileContent?: Rel<FileNodeContentEntity>;
-
-	@Property({ type: 'blob', nullable: true })
-	content?: Buffer;
-
-	get parentId() {
-		return this.parent?.id as Opt<string | undefined>;
-	}
-}
-
-@Entity({ tableName: 'file_node_content' })
-export class FileNodeContentEntity extends BaseEntity {
-	@PrimaryKey({ type: 'text', onCreate: () => crypto.randomUUID() })
-	id!: string & Opt;
-
-	@Property({ type: 'text', nullable: true })
-	tid?: string;
-
-	@OneToOne({ entity: () => FileNodeMetaEntity, owner: true, joinColumn: 'node_id' })
-	node!: Rel<FileNodeMetaEntity>;
-
-	@Property({ type: 'integer', nullable: false })
-	size!: number;
-
-	@Property({ type: 'blob', lazy: true })
-	content!: Buffer;
-
-	@Property({ type: 'text', nullable: true })
-	mimeType?: string;
-
-	@Property({ type: 'text', nullable: true })
-	md5?: string;
-
-	@Property({ type: 'text', nullable: true })
-	sha256?: string;
-
-	@Property({ type: 'text', nullable: true })
-	text?: string;
-
-	@Property({ type: 'integer', nullable: true })
-	width?: number;
-
-	@Property({ type: 'integer', nullable: true })
-	height?: number;
-
-	@Property({ type: 'json', nullable: false, default: '{}' })
-	metadata!: Record<string, any> & Opt;
-}
+export { FileNodeContentEntity, FileNodeContentEntitySchema } from './FileNodeContentEntity';
+export { FileNodeMetaEntity, FileNodeMetaEntitySchema } from './FileNodeMetaEntity';

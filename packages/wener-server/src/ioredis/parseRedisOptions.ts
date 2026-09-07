@@ -10,9 +10,9 @@ export function parseRedisOptions(o: (RedisOptions & { url?: string }) | string)
 	let out = {
 		...opts,
 		host: u.hostname,
-		port: Number(u.port),
+		port: Number(u.port) || 6379,
 		password: opts.password || u.password,
-		username: opts.password || u.username,
+		username: opts.username || u.username,
 		db: Number(u.pathname.slice(1)) || 0,
 	};
 

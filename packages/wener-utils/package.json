@@ -1,6 +1,6 @@
 {
 	"name": "@wener/utils",
-	"version": "1.1.58",
+	"version": "1.1.59",
 	"type": "module",
 	"description": "Utils for daily use",
 	"repository": {
@@ -11,11 +11,16 @@
 	"homepage": "https://github.com/wenerme/wener/tree/main/packages/wener-utils",
 	"author": "wener",
 	"license": "MIT",
+	"engines": {
+		"node": ">=24.11.0"
+	},
 	"imports": {
 		"#/*": "./src/*"
 	},
 	"exports": {
 		".": "./src/index.ts",
+		"./ansi": "./src/ansi/index.ts",
+		"./fetch": "./src/fetch/index.ts",
 		"./logger": "./src/logger/index.ts",
 		"./schema/typebox": "./src/schema/typebox/index.ts",
 		"./server": "./src/server/index.ts",
@@ -25,33 +30,22 @@
 		"./types": "./src/types.d.ts",
 		"./package.json": "./package.json"
 	},
-	"files": [
-		"lib",
-		"src",
-		"tsconfig.json"
-	],
-	"keywords": [
-		"utils",
-		"core library",
-		"helper",
-		"camelcase",
-		"get",
-		"set",
-		"template",
-		"lodash"
-	],
+	"files": ["lib", "src", "scripts/generate-slugify-data.mjs", "tsconfig.json"],
+	"keywords": ["utils", "core library", "helper", "camelcase", "slugify", "get", "set", "template", "lodash"],
 	"scripts": {
 		"build": "make build",
 		"clean": "make clean",
+		"check:slugify-data": "node scripts/generate-slugify-data.mjs --check",
 		"dev": "make dev",
+		"generate:slugify-data": "node scripts/generate-slugify-data.mjs",
 		"test": "make test"
 	},
 	"devDependencies": {
 		"@sinclair/typebox": "^0.34.49",
 		"@types/ws": "^8.18.1",
-		"https-proxy-agent": "^9.0.0",
+		"https-proxy-agent": "^9.1.0",
 		"node-fetch": "^3.3.2",
-		"undici": "^8.2.0",
+		"undici": "^8.7.0",
 		"zod": "^4.4.3"
 	},
 	"publishConfig": {
@@ -61,6 +55,14 @@
 			".": {
 				"types": "./src/index.ts",
 				"default": "./lib/index.js"
+			},
+			"./ansi": {
+				"types": "./src/ansi/index.ts",
+				"default": "./lib/ansi/index.js"
+			},
+			"./fetch": {
+				"types": "./src/fetch/index.ts",
+				"default": "./lib/fetch/index.js"
 			},
 			"./logger": {
 				"types": "./src/logger/index.ts",

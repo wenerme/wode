@@ -1,4 +1,4 @@
-import { Entity, Property, types, type Opt } from '@mikro-orm/core';
+import { Entity, type Opt, Property, types } from '@mikro-orm/core';
 import { MinimalBaseEntity } from '@wener/server/mikro-orm';
 
 @Entity({ abstract: true })

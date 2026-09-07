@@ -1,21 +1,18 @@
-import { type Opt, type Ref, types } from '@mikro-orm/core';
-import { Entity, Property } from '@mikro-orm/decorators/legacy';
+import { type Opt, p, type Ref } from '@mikro-orm/core';
 import type { Constructor } from '@wener/utils';
 import { Feature } from '../../Feature';
 import { EntityFeature } from '../enum';
 import { resolveEntityRef } from '../resolveEntityRef';
 import { setCustomerRef } from '../setCustomerRef';
 import type { IdentifiableEntity } from '../types';
+import { defineMixinEntity } from './defineMixinEntity';
 import type { HasCustomerRefEntity } from './types';
 
 export function withCustomerRefEntity<TBase extends Constructor>(Base: TBase) {
 	@Feature([EntityFeature.HasCustomer])
-	@Entity({ abstract: true })
 	class HasCustomerRefMixinEntity extends Base implements HasCustomerRefEntity {
-		@Property({ type: types.string, nullable: true })
 		customerId?: string;
 
-		@Property({ type: types.string, nullable: true })
 		customerType?: string;
 
 		setCustomerRef(entity?: IdentifiableEntity | string | null) {
@@ -39,5 +36,11 @@ export function withCustomerRefEntity<TBase extends Constructor>(Base: TBase) {
 		}
 	}
 
-	return HasCustomerRefMixinEntity;
+	return defineMixinEntity(Base, HasCustomerRefMixinEntity, {
+		name: 'HasCustomerRefMixinEntity',
+		properties: {
+			customerId: p.string().nullable(),
+			customerType: p.string().nullable(),
+		},
+	});
 }

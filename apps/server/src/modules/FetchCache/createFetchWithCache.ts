@@ -72,7 +72,7 @@ export function createFetchWithCache<T extends BaseHttpRequestLogEntity>({
 			};
 			const getBinary = () => {
 				if (body instanceof ReadableStream) {
-					let rs;
+					let rs: ReadableStream;
 					[init.body, rs] = body.tee();
 					return readStreamToBuffer(rs);
 				}

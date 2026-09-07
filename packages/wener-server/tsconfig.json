@@ -9,6 +9,7 @@
 		"forceConsistentCasingInFileNames": true,
 		"incremental": true,
 		"jsx": "preserve",
+		"types": ["bun-types"],
 		"strictNullChecks": true
 	},
 	"include": ["src/**/*.ts", "src/**/*.tsx"],

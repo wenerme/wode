@@ -296,17 +296,20 @@ export const WithLeftPanel: Story = {
 			>
 				<div className='p-4'>
 					<div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3'>
-						{Array.from({ length: 12 }, (_, i) => (
-							<div key={i} className='card bg-base-200 shadow-sm'>
-								<div className='card-body'>
-									<h2 className='card-title'>项目 {i + 1}</h2>
-									<p>项目描述信息...</p>
-									<div className='card-actions justify-end'>
-										<button className='btn btn-primary btn-sm'>查看</button>
+						{Array.from({ length: 12 }, (_, i) => {
+							const projectNumber = i + 1;
+							return (
+								<div key={`project-${projectNumber}`} className='card bg-base-200 shadow-sm'>
+									<div className='card-body'>
+										<h2 className='card-title'>项目 {projectNumber}</h2>
+										<p>项目描述信息...</p>
+										<div className='card-actions justify-end'>
+											<button className='btn btn-primary btn-sm'>查看</button>
+										</div>
 									</div>
 								</div>
-							</div>
-						))}
+							);
+						})}
 					</div>
 				</div>
 			</DataViewLayout.Composite>
@@ -677,20 +680,24 @@ export const ListItemDemo: Story = {
 					<div className='card-body'>
 						<h3 className='card-title'>Multiple Items</h3>
 
-						{Array.from({ length: 5 }, (_, i) => (
-							<DataViewLayout.ListItem
-								key={i}
-								title={`Item ${i + 1}`}
-								description={`Brief description of item ${i + 1}`}
-								selected={selected.includes(i + 10)}
-								onSelectedChange={(s) => handleSelect(i + 10, s)}
-								onTitleClick={() => alert(`Clicked item ${i + 1}`)}
-								actions={<button className='btn btn-ghost btn-xs'>View</button>}
-								meta={`Created ${i + 1} days ago`}
-							>
-								Additional details and content for item {i + 1}
-							</DataViewLayout.ListItem>
-						))}
+						{Array.from({ length: 5 }, (_, i) => {
+							const itemNumber = i + 1;
+							const itemId = i + 10;
+							return (
+								<DataViewLayout.ListItem
+									key={`list-item-${itemNumber}`}
+									title={`Item ${itemNumber}`}
+									description={`Brief description of item ${itemNumber}`}
+									selected={selected.includes(itemId)}
+									onSelectedChange={(s) => handleSelect(itemId, s)}
+									onTitleClick={() => alert(`Clicked item ${itemNumber}`)}
+									actions={<button className='btn btn-ghost btn-xs'>View</button>}
+									meta={`Created ${itemNumber} days ago`}
+								>
+									Additional details and content for item {itemNumber}
+								</DataViewLayout.ListItem>
+							);
+						})}
 					</div>
 				</div>
 			</div>
@@ -1256,16 +1263,16 @@ export const DataViewWithStoreDemo: Story = {
 		store.getState().events.on('Refresh', () => {
 			console.log('Refreshing data...');
 		});
-		store.getState().events.on('DataChanged', ({ data, total }) => {
+		store.getState().events.on('DataChanged', ({ data: { data, total } }) => {
 			console.log('Data changed:', { count: data.length, total });
 		});
-		store.getState().events.on('SelectionChanged', ({ selected }) => {
+		store.getState().events.on('SelectionChanged', ({ data: { selected } }) => {
 			console.log('Selection changed:', selected);
 		});
-		store.getState().events.on('ActiveChanged', ({ active }) => {
+		store.getState().events.on('ActiveChanged', ({ data: { active } }) => {
 			console.log('Active changed:', active?.id);
 		});
-		store.getState().events.on('QueryChanged', ({ query }) => {
+		store.getState().events.on('QueryChanged', ({ data: { query } }) => {
 			console.log('Query changed:', query);
 		});
 

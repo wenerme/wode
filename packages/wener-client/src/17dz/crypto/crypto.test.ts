@@ -1,4 +1,4 @@
-import { assert, test } from 'vitest';
+import { assert, test } from 'vite-plus/test';
 import { decrypt } from './decrypt';
 import { encrypt } from './index';
 

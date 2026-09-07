@@ -1,6 +1,6 @@
 import type { MaybePromise } from '../asyncs/MaybePromise';
 import { getGlobalThis } from '../web/getGlobalThis';
-import type { FetchLike } from './types';
+import type { FetchLike, FetchLikeInput } from './types';
 
 export function createFetchWith({
 	fetch = getGlobalThis().fetch,
@@ -11,20 +11,20 @@ export function createFetchWith({
 	onRequest?: (ctx: {
 		url: string;
 		req: RequestInit;
-		next: (url: string, req: RequestInit) => Promise<Response>;
-	}) => MaybePromise<Response | undefined | void>;
+		next: (url: FetchLikeInput, req?: RequestInit) => Promise<Response>;
+	}) => MaybePromise<Response | undefined>;
 	onResponse?: (ctx: { url: string; req: RequestInit; res: Response }) => MaybePromise<Response>;
 }) {
-	return async (urlOrRequest: string | URL | Request, init?: RequestInit & { fetch?: FetchLike }) => {
+	return async (urlOrRequest: FetchLikeInput, init?: RequestInit & { fetch?: FetchLike }) => {
 		const url = String(urlOrRequest);
-		let req = init || {};
-		const nextFetch = req.fetch || fetch;
+		let req: RequestInit = init || {};
+		const nextFetch = init?.fetch || fetch;
 		const res =
 			(await onRequest({
 				url,
 				req,
 				next: (url, init) => {
-					req = init;
+					if (init) req = init;
 					return nextFetch(url, init);
 				},
 			})) ?? (await nextFetch(url, init));

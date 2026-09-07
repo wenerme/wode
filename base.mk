@@ -92,14 +92,14 @@ dev: ## start dev server
 	pnpm next dev --turbo
 else ifneq ($(wildcard vite.config.*),)
 build:
-	pnpm vite build
+	pnpm exec vp build
 dev:
-	pnpm vite dev
+	pnpm exec vp dev
 endif
 endif
 
 fmt: ## format code
-	pnpm prettier --cache --cache-strategy metadata --write ./src package.json $(wildcard *.ts postcss.config.* tailwind.config.* next.config.*)
+	pnpm exec vp fmt ./src package.json $(wildcard *.ts postcss.config.* tailwind.config.* next.config.*)
 
 help: ## show help message
 	@grep -E -h '\s##\s' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'

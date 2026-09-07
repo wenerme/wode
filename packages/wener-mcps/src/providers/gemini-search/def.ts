@@ -1,6 +1,6 @@
 // Backward compatibility - re-export from gemini-tools
-import { type CreateGeminiToolsMcpServerOptions } from '@wener/ai/mcp/gemini-tools';
-import { GeminiToolsMcpServerHandlerDef, type GeminiToolsConfig, GeminiToolsHeaderNames } from '../gemini-tools/def';
+import type { CreateGeminiToolsMcpServerOptions } from '@wener/ai/mcp/gemini-tools';
+import { type GeminiToolsConfig, GeminiToolsHeaderNames, GeminiToolsMcpServerHandlerDef } from '../gemini-tools/def';
 
 /** @deprecated Use GeminiToolsHeaderNames instead */
 export const GeminiSearchHeaderNames = GeminiToolsHeaderNames;

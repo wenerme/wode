@@ -1,3 +1,4 @@
+import { Button } from '@wener/ui/button';
 import React from 'react';
 import { FaHtml5 } from 'react-icons/fa';
 import { ImLab } from 'react-icons/im';
@@ -35,5 +36,9 @@ const MenuItems = [
 ];
 
 export const Playground = () => {
-	return <div className={'flex'}></div>;
+	return (
+		<div className={'flex gap-2 p-4'}>
+			<Button variant='outline'>@wener/ui ready</Button>
+		</div>
+	);
 };

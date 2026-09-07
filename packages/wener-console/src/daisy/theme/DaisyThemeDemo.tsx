@@ -157,7 +157,9 @@ export const DaisyThemeDemo = () => {
 				<div>
 					<div className='divider'>link</div>
 					<div className={'flex flex-col items-start'}>
-						<a className='link'>link</a>
+						<a className='link' aria-label='Default link example'>
+							link
+						</a>
 						<a className='link link-primary'>link-primary</a>
 						<a className='link link-secondary'>link-secondary</a>
 						<a className='link link-accent'>link-accent</a>

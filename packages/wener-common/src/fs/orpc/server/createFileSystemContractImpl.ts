@@ -9,7 +9,14 @@ export function createFileSystemContractImpl(ifs: IFileSystem) {
 	return {
 		readdir: os.readdir.handler(async ({ input }) => {
 			return {
-				data: await ifs.readdir(input.dir),
+				data: await ifs.readdir(input.dir, {
+					depth: input.depth,
+					glob: input.glob,
+					hidden: input.hidden,
+					kind: input.kind,
+					maxEntries: input.maxEntries,
+					recursive: input.recursive,
+				}),
 			};
 		}),
 		stat: os.stat.handler(async ({ input }) => {
@@ -43,7 +50,9 @@ export function createFileSystemContractImpl(ifs: IFileSystem) {
 		}),
 		readFile: os.readFile.handler(async ({ input }) => {
 			return {
-				base64: ArrayBuffers.toBase64((await ifs.readFile(input.path, { encoding: 'binary' })) as BufferSource),
+				base64: ArrayBuffers.toBase64(
+					(await ifs.readFile(input.path, { encoding: 'binary', maxBytes: input.maxBytes })) as BufferSource,
+				),
 			};
 		}),
 		writeFile: os.writeFile.handler(async ({ input }) => {

@@ -1,13 +1,14 @@
-import { type Opt, types } from '@mikro-orm/core';
-import { Entity, Property } from '@mikro-orm/decorators/legacy';
+import { type Opt, p } from '@mikro-orm/core';
 import type { Constructor } from '@wener/utils';
+import { defineMixinEntity } from './defineMixinEntity';
 
 export function withVersionEntity<TBase extends Constructor>(Base: TBase) {
-	@Entity({ abstract: true })
 	class HasVersionMixinEntity extends Base {
-		@Property({ version: true, type: types.bigint, default: 0 })
 		version!: number & Opt;
 	}
 
-	return HasVersionMixinEntity;
+	return defineMixinEntity(Base, HasVersionMixinEntity, {
+		name: 'HasVersionMixinEntity',
+		properties: { version: p.bigint('number').default(0).version() },
+	});
 }

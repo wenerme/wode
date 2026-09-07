@@ -1,21 +1,18 @@
-import { type Opt, type Ref, types } from '@mikro-orm/core';
-import { Entity, Property } from '@mikro-orm/decorators/legacy';
+import { type Opt, p, type Ref } from '@mikro-orm/core';
 import type { Constructor } from '@wener/utils';
 import { Feature } from '../../Feature';
 import { EntityFeature } from '../enum';
 import { resolveEntityRef } from '../resolveEntityRef';
 import { setEntityRef } from '../setEntityRef';
 import type { IdentifiableEntity } from '../types';
+import { defineMixinEntity } from './defineMixinEntity';
 import type { HasEntityRefEntity } from './types';
 
 export function withEntityRefEntity<TBase extends Constructor>(Base: TBase) {
 	@Feature([EntityFeature.HasEntityRef])
-	@Entity({ abstract: true })
 	class HasEntityRefMixinEntity extends Base implements HasEntityRefEntity {
-		@Property({ type: types.string, nullable: true })
 		entityId?: string;
 
-		@Property({ type: types.string, nullable: true })
 		entityType?: string;
 
 		setEntityRef(entity?: IdentifiableEntity | string | null) {
@@ -39,5 +36,11 @@ export function withEntityRefEntity<TBase extends Constructor>(Base: TBase) {
 		}
 	}
 
-	return HasEntityRefMixinEntity;
+	return defineMixinEntity(Base, HasEntityRefMixinEntity, {
+		name: 'HasEntityRefMixinEntity',
+		properties: {
+			entityId: p.string().nullable(),
+			entityType: p.string().nullable(),
+		},
+	});
 }

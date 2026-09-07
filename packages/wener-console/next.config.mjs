@@ -21,7 +21,9 @@ const nextConfig = {
 		optimizePackageImports: ['react-icons', 'antd'],
 		serverComponentsExternalPackages: [
 			'ws',
-			'nats.ws',
+			'@nats-io/nats-core',
+			'@nats-io/services',
+			'@nats-io/transport-node',
 			'bcrypt',
 			'better-sqlite3',
 			'@mikro-orm/better-sqlite',
@@ -87,20 +89,20 @@ const nextConfig = {
 			'@nestjs/websockets/socket-module',
 			'class-transformer/storage',
 			'ws',
-			'nats',
-			'nats.ws',
+			'@nats-io/nats-core',
+			'@nats-io/services',
+			'@nats-io/transport-node',
 			'canvas',
 			'jsdom',
 		];
 		if (isServer) {
 			config.plugins.push(
 				new webpack.IgnorePlugin({
-					checkResource(resource, context) {
+					checkResource(resource, _context) {
 						if (lazyImports.includes(resource)) {
 							try {
 								require.resolve(resource);
-							} catch (err) {
-								// console.log(`Ignore ${resource} ${err}`)
+							} catch {
 								return true;
 							}
 						}

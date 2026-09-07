@@ -1,0 +1,17 @@
+export const registryAliases = {
+	'@': new URL('./src/', import.meta.url).pathname,
+	'@components/agent-composer': new URL('./src/agent/agent-composer', import.meta.url).pathname,
+	'@components/agent-message': new URL('./src/agent/agent-message', import.meta.url).pathname,
+	'@components/blocks/console-layout': new URL('./src/console/console-layout', import.meta.url).pathname,
+	'@components/blocks/console-shell': new URL('./src/console/console-shell', import.meta.url).pathname,
+	'@components/blocks/console-window': new URL('./src/window/console-window', import.meta.url).pathname,
+	'@components/file-manager': new URL('./src/file/file-manager', import.meta.url).pathname,
+	'@components/file-tree': new URL('./src/file/file-tree', import.meta.url).pathname,
+	'@components/file-type-registry': new URL('./src/file/file-type-registry', import.meta.url).pathname,
+	'@components/file-viewer': new URL('./src/file/file-viewer', import.meta.url).pathname,
+	'@components/message-scroller': new URL('./src/agent/message-scroller', import.meta.url).pathname,
+	'@components/path-address-bar': new URL('./src/file/path-address-bar', import.meta.url).pathname,
+	'@components/ui/ai-config-editor': new URL('./src/agent/ai-config-editor', import.meta.url).pathname,
+	'@components/window-manager': new URL('./src/window/window-manager', import.meta.url).pathname,
+	'@ui': new URL('./src/ui', import.meta.url).pathname,
+};

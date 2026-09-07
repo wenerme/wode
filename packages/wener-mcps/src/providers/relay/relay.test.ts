@@ -1,5 +1,5 @@
 import { createRelayMcpServer } from '@wener/ai/mcp/relay';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vite-plus/test';
 
 describe('createRelayMcpServer', () => {
 	describe('deepwiki relay', () => {

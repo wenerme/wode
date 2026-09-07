@@ -1,5 +1,5 @@
+import type { Msg } from '@nats-io/nats-core';
 import { Logger } from '@nestjs/common';
-import type { Msg, NatsError } from 'nats';
 import {
 	createResponseFromRequest,
 	type ServerRequest,
@@ -21,7 +21,7 @@ export async function handleNatsServiceRequest({
 	msg: Msg;
 	registry: ServiceRegistry;
 	logger?: Logger;
-	err?: NatsError | null;
+	err?: Error | null;
 }) {
 	if (err) {
 		log.error(String(err));
@@ -33,7 +33,7 @@ export async function handleNatsServiceRequest({
 	}
 
 	let res: ServerResponse | undefined;
-	let cause: any | undefined;
+	let cause: unknown;
 	let req: ServerRequest;
 	try {
 		log.debug(`<- ${msg.subject}`);
@@ -58,9 +58,12 @@ export async function handleNatsServiceRequest({
 
 	if (!res) {
 		if (cause) {
-			log.error(`Handle ${req.service}#${req.method} error: ${cause}`);
-			process.env.NODE_ENV === 'development' && console.error(cause);
-			res = createResponseFromRequest(req, { status: 500, description: String(cause) });
+			const causeText = formatUnknownError(cause);
+			log.error(`Handle ${req.service}#${req.method} error: ${causeText}`);
+			if (process.env.NODE_ENV === 'development') {
+				console.error(cause);
+			}
+			res = createResponseFromRequest(req, { status: 500, description: causeText });
 		} else if (!res) {
 			res = createResponseFromRequest(req, { status: 500, description: 'Invalid Response' });
 		}
@@ -69,4 +72,21 @@ export async function handleNatsServiceRequest({
 	const { headers: _, ...write } = ServiceResponsePayloadSchema.parse(res);
 	const hdr = createMsgHdrFromResponse(res);
 	msg.respond(JSON.stringify(write), { headers: hdr });
+}
+
+function formatUnknownError(error: unknown): string {
+	if (error instanceof Error) {
+		return error.message;
+	}
+	if (typeof error === 'string') {
+		return error;
+	}
+	if (error == null || typeof error === 'number' || typeof error === 'boolean' || typeof error === 'bigint') {
+		return String(error);
+	}
+	try {
+		return JSON.stringify(error);
+	} catch {
+		return Object.prototype.toString.call(error);
+	}
 }

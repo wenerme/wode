@@ -21,9 +21,9 @@ build-libs:
 #npx tailwindcss -i ./src/app/styles/global.css -o ./dist/global.css --minify
 #ls -lash dist/global.css
 #pnpm tsx rem2px.ts
-#	pnpm esbuild --external:{node:*,stream,crypto,path,fs,next,undici,nats.ws,nats,@mikro-orm/*,@nestjs/*} --platform=browser --charset=utf8 --legal-comments=external --bundle --define:process.env.NODE_ENV=\"production\" --define:__DEV__=false --minify --outfile=dist/qiyehuo.admin.js ./src/libs/qiyehuo.admin/index.tsx
-#pnpm esbuild --external:{node:*,stream,crypto,path,fs,next,undici,nats.ws,nats,@mikro-orm/*,@nestjs/*} --platform=browser --charset=utf8 --legal-comments=external --bundle --define:process.env.NODE_ENV=\"production\" --define:__DEV__=false --minify-syntax --outfile=dist/qiyehuo.admin.js ./src/libs/qiyehuo.admin/index.tsx
-#pnpm esbuild --external:{node:*,stream,crypto,path,next,@vercel/og,fs,undici,nats.ws,nats,@mikro-orm/*,@nestjs/*} --platform=browser --charset=utf8 --legal-comments=external --bundle --define:process.env.NODE_ENV=\"production\" --define:__DEV__=false --minify-syntax --outfile=dist/qiyehuo.admin.js ./src/libs/qiyehuo.admin/index.tsx
+#	pnpm esbuild --external:{node:*,stream,crypto,path,fs,next,undici,@nats-io/nats-core,@nats-io/services,@nats-io/transport-node,@mikro-orm/*,@nestjs/*} --platform=browser --charset=utf8 --legal-comments=external --bundle --define:process.env.NODE_ENV=\"production\" --define:__DEV__=false --minify --outfile=dist/qiyehuo.admin.js ./src/libs/qiyehuo.admin/index.tsx
+#pnpm esbuild --external:{node:*,stream,crypto,path,fs,next,undici,@nats-io/nats-core,@nats-io/services,@nats-io/transport-node,@mikro-orm/*,@nestjs/*} --platform=browser --charset=utf8 --legal-comments=external --bundle --define:process.env.NODE_ENV=\"production\" --define:__DEV__=false --minify-syntax --outfile=dist/qiyehuo.admin.js ./src/libs/qiyehuo.admin/index.tsx
+#pnpm esbuild --external:{node:*,stream,crypto,path,next,@vercel/og,fs,undici,@nats-io/nats-core,@nats-io/services,@nats-io/transport-node,@mikro-orm/*,@nestjs/*} --platform=browser --charset=utf8 --legal-comments=external --bundle --define:process.env.NODE_ENV=\"production\" --define:__DEV__=false --minify-syntax --outfile=dist/qiyehuo.admin.js ./src/libs/qiyehuo.admin/index.tsx
 
 dbg-libs:
 	NODE_ENV=development TW_PX=1 pnpm tsx ./src/libs/bundle.ts
@@ -47,7 +47,7 @@ dev-web-next:
 	PORT=$(PORT) NODE_ENV=development pnpm next dev --turbo
 
 dev-web-vite:
-	NODE_ENV=development pnpm vite --port $(PORT) --host
+	NODE_ENV=development pnpm exec vp dev --port $(PORT) --host
 
 dev-server:
 	NODE_ENV=development pnpm node --loader ts-node/esm --watch ./src/server/main.ts
@@ -55,7 +55,7 @@ dev-server:
 build-web: write-version build-web-vite
 
 build-web-vite:
-	NODE_ENV=production pnpm vite build
+	NODE_ENV=production pnpm exec vp build
 
 build-server:
 	NODE_ENV=production pnpm swc ./src -d ./lib/out --strip-leading-paths
@@ -80,7 +80,7 @@ web-image-static:
 # $(git diff --name-only --diff-filter d | grep '\.tsx?$' | xargs)
 gql-gen:
 	pnpm graphql-codegen --config codegen.ts
-	pnpm prettier --write src/gql
+	pnpm exec vp fmt src/gql
 
 gql-gen-dl: export DOWNLOAD_SCHEMA=1
 gql-gen-dl: gql-gen

@@ -18,7 +18,7 @@ export async function bundle(server: string, opts?: BuildOptions | ((o: BuildOpt
 			try {
 				fs.statSync(v);
 				return true;
-			} catch (_e) {}
+			} catch {}
 			return false;
 		});
 		if (!entry) {
@@ -64,7 +64,7 @@ var require,__filename,__dirname;
 		format: 'esm',
 		platform: 'node',
 		charset: 'utf8',
-		target: 'node20',
+		target: 'node24',
 		sourcemap: true,
 		// 如果只需要 stack trace 则不需要 sourcesContent
 		// https://esbuild.github.io/api/#sources-content

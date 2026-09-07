@@ -1,4 +1,4 @@
-import { expect, test } from 'vitest';
+import { expect, test } from 'vite-plus/test';
 import { compile, parseAssembly } from './bbasm';
 import { formatAssembly } from './format';
 import { hexdump } from './hexdump';

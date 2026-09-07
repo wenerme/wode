@@ -33,7 +33,7 @@ export function set<T extends object, V>(obj: T, key: ObjectKey | ObjectPath, va
 						// !!~('' + path[i]).indexOf('.') checks if it contains a dot.
 						//
 						// @ts-expect-error hacky type check from dset
-						path[i] * 0 !== 0 || !!~`${path[i]}`.indexOf('.') // eslint-disable-line
+						path[i] * 0 !== 0 || ~`${path[i]}`.indexOf('.') // eslint-disable-line
 						? {}
 						: [];
 	}

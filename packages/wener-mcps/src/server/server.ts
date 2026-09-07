@@ -1,6 +1,7 @@
 import type { McpServerInstance } from '@wener/ai/mcp';
 import consola from 'consola';
-import { Hono, type Context, type Next } from 'hono';
+import type { Context, Next } from 'hono';
+import { Hono } from 'hono';
 import { logger } from 'hono/logger';
 import { LRUCache } from 'lru-cache';
 import { isDevelopment } from 'std-env';
@@ -8,7 +9,7 @@ import { findMcpServerDef } from '../providers/findMcpServerDef';
 import { registerApiRoutes } from './api-routes';
 import { registerChatRoutes } from './chat-routes';
 import { loadConfig, loadEnvFiles, substituteEnvVars } from './config';
-import { createMcpsEmitter, McpsEventType, type McpsEmitter } from './events';
+import { createMcpsEmitter, type McpsEmitter, McpsEventType } from './events';
 import { registerMcpRoutes } from './mcp-routes';
 import { redactRequestHeaders } from './redactRequestHeaders';
 

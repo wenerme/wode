@@ -1,5 +1,5 @@
+import { headers, type NatsConnection } from '@nats-io/nats-core';
 import { Logger } from '@nestjs/common';
-import { headers, type NatsConnection } from 'nats';
 import { type ClientRequest, type ClientResponse, ServiceResponsePayloadSchema } from '../../service';
 import { createNatsErrorResponse } from './createNatsErrorResponse';
 import { createResponseFromMessageHeader } from './createResponseFromMessageHeader';
@@ -30,7 +30,7 @@ export async function requestNatsService({
 		createResponseFromMessageHeader(res, msg.headers);
 		return res;
 	} catch (error) {
-		log.error(`Unexpected ${req.service}:${req.method} ${error}`);
+		log.error(`Unexpected ${req.service}:${req.method} ${String(error)}`);
 		return createNatsErrorResponse({ error, req, logger: log });
 	}
 }

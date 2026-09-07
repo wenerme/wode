@@ -1,5 +1,4 @@
 FROM oven/bun:1-alpine
-#FROM quay.io/wener/node:18
 
 WORKDIR /app
 

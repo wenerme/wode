@@ -16,6 +16,8 @@ import type {
 	StatOptions,
 	WriteFileOptions,
 } from '../IFileSystem';
+import { validateReaddirMaxEntries } from '../readdirLimit';
+import { rejectUnsupportedFileSystemLimit, validateReadFileMaxBytes } from '../resourceLimits';
 
 export type CreateMinioFileSystemOptions = ParseS3UrlOptions & {
 	client?: Client;
@@ -166,6 +168,7 @@ class MinioFS implements IFileSystem {
 	async readdir(dir: string, options: ReaddirOptions = {}): Promise<IFileStat[]> {
 		const { glob, recursive, depth = 1, kind, hidden = true, signal } = options;
 		this.checkAborted(signal);
+		rejectUnsupportedFileSystemLimit('readdir', 'maxEntries', validateReaddirMaxEntries(options.maxEntries));
 
 		const dirPrefix = this.normalizeKey(dir);
 		const prefixWithSlash = dirPrefix ? (dirPrefix.endsWith('/') ? dirPrefix : dirPrefix + '/') : '';
@@ -466,6 +469,7 @@ class MinioFS implements IFileSystem {
 	async readFile(path: string, options: ReadFileOptions = {}): Promise<string | Uint8Array> {
 		const { encoding = 'binary', signal, onDownloadProgress } = options;
 		this.checkAborted(signal);
+		rejectUnsupportedFileSystemLimit('readFile', 'maxBytes', validateReadFileMaxBytes(options.maxBytes));
 
 		const key = this.normalizeKey(path);
 		if (!key) {

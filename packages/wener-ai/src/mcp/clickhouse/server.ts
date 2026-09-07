@@ -1,12 +1,22 @@
+import type { ClickHouseClientConfigOptions, ClickHouseSettings } from '@clickhouse/client';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { registerMetadataTools, registerQueryTools } from './tools';
-import { parseClickHouseUrl } from './utils';
+import { type ClickHouseConnectionConfig, parseClickHouseUrl } from './utils';
+
+export const DEFAULT_CLICKHOUSE_REQUEST_TIMEOUT_MS = 120_000;
+export const DEFAULT_CLICKHOUSE_PROGRESS_HEADER_INTERVAL_MS = '50000';
 
 export interface CreateClickHouseMcpServerOptions {
 	/** ClickHouse connection URL (http://, https://, tcp://, clickhouse://) */
 	url?: string;
 	/** When true, only register read-only tools. Defaults to false. */
 	readOnly?: boolean;
+	/** HTTP request timeout in milliseconds. Defaults to 120s. */
+	requestTimeoutMs?: number;
+	/** Enable ClickHouse progress headers to keep long-running HTTP queries alive. Defaults to true. */
+	progressHeaders?: boolean;
+	/** Interval for progress headers in milliseconds. Defaults to 50s (below common 60s LB idle timeout). */
+	progressHeaderIntervalMs?: number | string;
 	/** Server name */
 	name?: string;
 	/** Server version */
@@ -19,6 +29,37 @@ export interface ClickHouseContext {
 	getClient: () => Promise<import('@clickhouse/client').ClickHouseClient>;
 	textResult: (text: string) => { content: { type: 'text'; text: string }[] };
 	jsonResult: (data: unknown) => { content: { type: 'text'; text: string }[] };
+}
+
+export function createClickHouseClientConfig(
+	config: ClickHouseConnectionConfig,
+	options: Pick<
+		CreateClickHouseMcpServerOptions,
+		'requestTimeoutMs' | 'progressHeaders' | 'progressHeaderIntervalMs'
+	> = {},
+): ClickHouseClientConfigOptions {
+	const requestTimeout = options.requestTimeoutMs ?? DEFAULT_CLICKHOUSE_REQUEST_TIMEOUT_MS;
+	const progressHeaders = options.progressHeaders ?? true;
+	const progressHeaderIntervalMs = String(
+		options.progressHeaderIntervalMs ?? DEFAULT_CLICKHOUSE_PROGRESS_HEADER_INTERVAL_MS,
+	).replace(/_/g, '');
+	const clickhouseSettings: ClickHouseSettings = {
+		output_format_json_quote_64bit_integers: 0,
+	};
+
+	if (progressHeaders) {
+		clickhouseSettings.send_progress_in_http_headers = 1;
+		clickhouseSettings.http_headers_progress_interval_ms = progressHeaderIntervalMs;
+	}
+
+	return {
+		url: config.url,
+		username: config.username,
+		password: config.password,
+		database: config.database,
+		request_timeout: requestTimeout,
+		clickhouse_settings: clickhouseSettings,
+	};
 }
 
 export function createClickHouseMcpServer(options: CreateClickHouseMcpServerOptions) {
@@ -37,16 +78,7 @@ export function createClickHouseMcpServer(options: CreateClickHouseMcpServerOpti
 				if (!url) throw new Error('ClickHouse URL must be provided');
 				const config = parseClickHouseUrl(url);
 				const { createClient } = await import('@clickhouse/client');
-				const client = createClient({
-					url: config.url,
-					username: config.username,
-					password: config.password,
-					database: config.database,
-					request_timeout: 120_000,
-					clickhouse_settings: {
-						output_format_json_quote_64bit_integers: 0,
-					},
-				});
+				const client = createClient(createClickHouseClientConfig(config, options));
 				const ping = await client.ping();
 				if (!ping.success) {
 					throw new Error(`ClickHouse ping failed: ${ping.error.message}`);

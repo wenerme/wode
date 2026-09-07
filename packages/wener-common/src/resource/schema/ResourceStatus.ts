@@ -1,5 +1,6 @@
 import { z } from 'zod/v4';
-import type { EnumValues } from './types';
+
+import type { EnumValues } from './EnumValues';
 
 export const ResourceStatus = Object.freeze({
 	__proto__: null,
@@ -64,6 +65,7 @@ export const ResourceStatusSchema = z
 		z.literal(ResourceStatus.Draft).describe('草稿'),
 		z.literal(ResourceStatus.Enabled).describe('已启用'),
 		z.literal(ResourceStatus.Expired).describe('已过期'),
+		z.literal(ResourceStatus.Failed).describe('失败'),
 		z.literal(ResourceStatus.InProgress).describe('进行中'),
 		z.literal(ResourceStatus.Inactive).describe('停用'),
 		z.literal(ResourceStatus.Initial).describe('初始'),

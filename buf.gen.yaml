@@ -2,21 +2,6 @@ version: v2
 plugins:
 # https://github.com/bufbuild/plugins/tree/main/plugins
 
-- local: protoc-gen-go
-  out: wogo/proto
-  opt: paths=source_relative
-- local: protoc-gen-connect-go
-  out: wogo/proto
-  opt:
-  - paths=source_relative
-  - simple
-- local: protoc-gen-connect-openapi
-  out: wogo/proto
-  strategy: all
-  opt:
-  - path=openapi.yaml
-  - format=yaml
-
 - local: ./node_modules/.bin/protoc-gen-es
   out: packages/common/src/protos
   opt: target=ts

@@ -1,5 +1,5 @@
+import type { NatsConnection } from '@nats-io/nats-core';
 import { ConfigurableModuleBuilder, Module } from '@nestjs/common';
-import type { NatsConnection } from 'nats';
 import { type ClientConnection, type ClientMiddleware, type ServerRequest, ServiceClientModule } from '../../service';
 import { SERVICE_CLIENT_MODULE_OPTIONS } from '../../service/client/ServiceClientModule';
 import { NATS_CONNECTION, NatsModule } from '../NatsModule';

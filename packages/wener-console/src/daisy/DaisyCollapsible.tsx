@@ -26,9 +26,16 @@ export const DaisyCollapsiblePanel: FC<PanelProps> = ({ className, ...props }) =
 	return <Collapsible.Panel className={cn('collapse-content', className)} {...props} />;
 };
 
-export const DaisyCollapsible = {
+type DaisyCollapsibleComponents = {
+	Root: typeof DaisyCollapsibleRoot;
+	Trigger: typeof DaisyCollapsibleTrigger;
+	Panel: typeof DaisyCollapsiblePanel;
+	Content: typeof DaisyCollapsiblePanel;
+};
+
+export const DaisyCollapsible: DaisyCollapsibleComponents = {
 	Root: DaisyCollapsibleRoot,
 	Trigger: DaisyCollapsibleTrigger,
 	Panel: DaisyCollapsiblePanel,
 	Content: DaisyCollapsiblePanel, // Backward compatibility alias
-} as const;
+};

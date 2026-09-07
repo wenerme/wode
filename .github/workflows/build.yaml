@@ -2,44 +2,67 @@ name: Build
 
 on:
   push:
-    branches: [ master ]
+    branches: [master, main, develop]
   pull_request:
-    branches: [ master ]
+    branches: [master, main, develop]
   workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
-      - uses: actions/checkout@v3
-      - name: Install Node.js
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
         with:
-          node-version: 18
-      - uses: pnpm/action-setup@v2.0.1
-        name: Install pnpm
-        id: pnpm-install
-        with:
-          version: 8
+          version: 10.33.0
           run_install: false
-      - name: Get pnpm store directory
-        id: pnpm-cache
-        run: |
-          echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
-      - name: Build Cache
-        id: build-cache
-        uses: actions/cache@v2
+      - name: Install Node.js
+        uses: actions/setup-node@v4
         with:
-          path: ${{ steps.pnpm-cache.outputs.pnpm_cache_dir }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
+          node-version: 24.11.1
+          cache: pnpm
 
-      - run: make ci
+      - name: Install Buf CLI
+        uses: bufbuild/buf-setup-action@v1
 
-      - name: Deploy Pages
-        uses: JamesIves/github-pages-deploy-action@releases/v4
+      - name: Verify workspace
+        run: make ci
+
+      - name: Install Storybook browser
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Verify components registry and Storybook
+        run: pnpm -C apps/components verify
+
+      - name: Upload components Pages artifact
+        if: github.repository == 'wenerme/wode' && github.event_name == 'push' && github.ref_name == github.event.repository.default_branch
+        uses: actions/upload-pages-artifact@v3
         with:
-          branch: gh-pages
-          folder: out/typedoc
-          single-commit: true
+          path: apps/components/storybook-static
+
+  pages:
+    if: github.repository == 'wenerme/wode' && github.event_name == 'push' && github.ref_name == github.event.repository.default_branch
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    steps:
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Deploy components Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

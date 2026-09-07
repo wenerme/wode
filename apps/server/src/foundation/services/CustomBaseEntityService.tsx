@@ -1,4 +1,4 @@
-import { LockMode, type EntityData } from '@mikro-orm/core';
+import { type EntityData, LockMode } from '@mikro-orm/core';
 import type { StandardBaseEntity } from '@wener/server/entity';
 import { EntityAuditAction, writeEntityAuditLog } from '@wener/server/entity/audit';
 import { EntityBaseService, type PatchEntityRequest } from '@wener/server/entity/service';

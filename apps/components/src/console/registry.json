@@ -1,0 +1,121 @@
+{
+	"$schema": "https://ui.shadcn.com/schema/registry.json",
+	"items": [
+		{
+			"name": "console-layout",
+			"type": "registry:block",
+			"title": "Console Layout",
+			"description": "A responsive console layout with Menu, Main, Dock, and Composite",
+			"files": [
+				{
+					"path": "./console-layout/console-layout.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/console-layout/console-layout.tsx"
+				},
+				{
+					"path": "./console-layout/index.ts",
+					"type": "registry:component",
+					"target": "@components/blocks/console-layout/index.ts"
+				},
+				{
+					"path": "./console-layout/console-layout-entry.ts",
+					"type": "registry:component",
+					"target": "@components/console-layout.ts"
+				}
+			]
+		},
+		{
+			"name": "console-shell",
+			"type": "registry:block",
+			"title": "Console Shell",
+			"description": "A router-agnostic console shell with rail, module navigation, page layout, and module home patterns",
+			"dependencies": ["daisyui", "lucide-react"],
+			"files": [
+				{
+					"path": "./console-shell/console-shell.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/console-shell/console-shell.tsx"
+				},
+				{
+					"path": "./console-shell/console-module-home.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/console-shell/console-module-home.tsx"
+				},
+				{
+					"path": "./console-shell/index.ts",
+					"type": "registry:component",
+					"target": "@components/blocks/console-shell/index.ts"
+				},
+				{
+					"path": "./console-shell/console-shell-entry.ts",
+					"type": "registry:component",
+					"target": "@components/console-shell.ts"
+				}
+			]
+		},
+		{
+			"name": "console-preferences",
+			"type": "registry:block",
+			"title": "Console Preferences and About",
+			"description": "A DaisyUI appearance settings page with paired themes, searchable catalog, component previews, display preferences, persistence, and About",
+			"dependencies": ["daisyui", "lucide-react"],
+			"files": [
+				{
+					"path": "./console-preferences/console-theme.tsx",
+					"type": "registry:component",
+					"target": "@components/console-preferences/console-theme.tsx"
+				},
+				{
+					"path": "./console-preferences/console-theme-catalog.ts",
+					"type": "registry:component",
+					"target": "@components/console-preferences/console-theme-catalog.ts"
+				},
+				{
+					"path": "./console-preferences/console-theme-preview.tsx",
+					"type": "registry:component",
+					"target": "@components/console-preferences/console-theme-preview.tsx"
+				},
+				{
+					"path": "./console-preferences/console-theme-component-preview.tsx",
+					"type": "registry:component",
+					"target": "@components/console-preferences/console-theme-component-preview.tsx"
+				},
+				{
+					"path": "./console-preferences/console-display-settings.tsx",
+					"type": "registry:component",
+					"target": "@components/console-preferences/console-display-settings.tsx"
+				},
+				{
+					"path": "./console-preferences/console-display-layout.tsx",
+					"type": "registry:component",
+					"target": "@components/console-preferences/console-display-layout.tsx"
+				},
+				{
+					"path": "./console-preferences/console-display-controls.tsx",
+					"type": "registry:component",
+					"target": "@components/console-preferences/console-display-controls.tsx"
+				},
+				{
+					"path": "./console-preferences/console-theme-catalog-view.tsx",
+					"type": "registry:component",
+					"target": "@components/console-preferences/console-theme-catalog-view.tsx"
+				},
+				{
+					"path": "./console-preferences/console-about.tsx",
+					"type": "registry:component",
+					"target": "@components/console-preferences/console-about.tsx"
+				},
+				{
+					"path": "./console-preferences/console-about-client.tsx",
+					"type": "registry:component",
+					"target": "@components/console-preferences/console-about-client.tsx"
+				},
+				{
+					"path": "./console-preferences/index.ts",
+					"type": "registry:component",
+					"target": "@components/console-preferences/index.ts"
+				}
+			]
+		}
+	]
+}

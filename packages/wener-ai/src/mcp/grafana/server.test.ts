@@ -1,4 +1,4 @@
-import { afterAll, describe, expect, it } from 'vitest';
+import { afterAll, describe, expect, it } from 'vite-plus/test';
 import { createGrafanaMcpServer } from './server';
 
 const ExpectedToolNames = [

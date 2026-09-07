@@ -1,5 +1,5 @@
 import { defineMcpServer } from '../McpServerDef';
-import { createGrafanaMcpServer, type CreateGrafanaMcpServerOptions } from './server';
+import { type CreateGrafanaMcpServerOptions, createGrafanaMcpServer } from './server';
 
 export const GrafanaMcpServerDef = defineMcpServer<CreateGrafanaMcpServerOptions>({
 	name: 'grafana',

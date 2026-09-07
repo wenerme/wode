@@ -1,7 +1,7 @@
 export { lazyRoute } from './lazyRoute';
 export { useRouteTitles } from './useRouteTitles';
 
-// declare module 'react-router-dom' {
+// declare module 'react-router' {
 //   export interface IndexRouteObject {
 //     meta?: KnownRouteObjectMeta;
 //   }

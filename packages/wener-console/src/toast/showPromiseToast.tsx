@@ -88,7 +88,7 @@ export async function showPromiseToast<T, S extends boolean>(
 					}}
 					title='取消'
 				>
-					<HiXMark className='w-4 h-4' />
+					<HiXMark className='h-4 w-4' />
 				</button>
 			</div>
 		) : (

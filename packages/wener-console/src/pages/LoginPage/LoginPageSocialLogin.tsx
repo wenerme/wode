@@ -20,7 +20,7 @@ export const LoginPageSocialLogin: FC<SocialLoginProps> = ({ socials, className,
 		<div className={cn('mt-10', className)} {...props}>
 			<div className='relative'>
 				<div className='absolute inset-0 flex items-center' aria-hidden='true'>
-					<div className='w-full border-t border-base-300' />
+					<div className='border-base-300 w-full border-t' />
 				</div>
 				<div className='relative flex justify-center text-sm leading-6 font-medium'>
 					<span className='bg-base-100 px-6 opacity-80'>社交方式登录</span>
@@ -28,8 +28,8 @@ export const LoginPageSocialLogin: FC<SocialLoginProps> = ({ socials, className,
 			</div>
 
 			<div className='mt-6 grid grid-cols-2 gap-4'>
-				{socials.map((social, index) => (
-					<button key={index} type='button' onClick={social.onClick} className={clsx('btn btn-sm rounded-md')}>
+				{socials.map((social) => (
+					<button key={social.name} type='button' onClick={social.onClick} className={clsx('btn btn-sm rounded-md')}>
 						{social.icon || (social.name === 'Wechat' && <WechatBrandIcon className={'h-4 w-4'} />)}
 						{social.name === 'Wechat' && !social.icon && (
 							<span className='text-sm leading-6 font-semibold'>Wechat</span>

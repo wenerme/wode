@@ -22,10 +22,6 @@ const config: StorybookConfig = {
 	core: {
 		disableTelemetry: true,
 		disableWhatsNewNotifications: true,
-		builder: {
-			name: '@storybook/builder-vite',
-			options: {},
-		},
 	},
 	// debug vite config
 	viteFinal: (config) => {

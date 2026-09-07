@@ -35,7 +35,7 @@ const commonOptions: esbuild.BuildOptions = {
 	format: 'esm',
 	platform: 'node',
 	charset: 'utf8',
-	target: 'node18',
+	target: 'node24',
 	sourcemap: false,
 	legalComments: 'none',
 	// External native modules

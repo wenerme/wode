@@ -24,32 +24,20 @@
 		"./zustand": "./src/zustand/index.ts",
 		"./package.json": "./package.json"
 	},
-	"files": [
-		"Makefile",
-		"dist",
-		"lib",
-		"src",
-		"tsconfig.json"
-	],
-	"keywords": [
-		"components",
-		"react",
-		"hooks",
-		"util",
-		"tool"
-	],
+	"files": ["Makefile", "dist", "lib", "src", "tsconfig.json"],
+	"keywords": ["components", "react", "hooks", "util", "tool"],
 	"scripts": {
 		"build": "make build",
 		"clean": "make clean",
 		"dev": "make dev"
 	},
 	"dependencies": {
-		"react": "^19.2.5",
-		"react-dom": "^19.2.5",
-		"react-is": "^19.2.5"
+		"react": "^19.2.7",
+		"react-dom": "^19.2.7",
+		"react-is": "^19.2.7",
+		"react-router": "^8.2.0"
 	},
 	"devDependencies": {
-		"@remix-run/router": "^1.23.2",
 		"@testing-library/jest-dom": "^6.9.1",
 		"@testing-library/react": "^16.3.2",
 		"@types/react-is": "^19.2.0",
@@ -57,14 +45,13 @@
 		"@wener/utils": "workspace:^1.1.58",
 		"clsx": "^2.1.1",
 		"mutative": "^1.3.0",
-		"next": "^16.2.4",
+		"next": "^16.2.10",
 		"react": "^19.2.0",
 		"react-dom": "^19.2.0",
 		"react-is": "^19.2.0",
 		"react-reconciler": "^0.33.0",
-		"react-router-dom": "^7.14.2",
 		"valtio": "^2.3.2",
-		"zustand": "^5.0.12"
+		"zustand": "^5.0.14"
 	},
 	"publishConfig": {
 		"registry": "https://registry.npmjs.org",

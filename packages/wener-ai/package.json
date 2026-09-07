@@ -1,16 +1,26 @@
 {
 	"name": "@wener/ai",
-	"version": "0.1.18",
+	"version": "0.1.21",
 	"type": "module",
 	"description": "AI utilities and MCP server definitions",
 	"author": "wener",
 	"license": "ISC",
-	"packageManager": "pnpm@10.28.0",
+	"packageManager": "pnpm@10.33.0",
+	"engines": {
+		"node": ">=24.11.0"
+	},
 	"scripts": {
-		"prepublishOnly": "make build"
+		"build": "make build",
+		"prepublishOnly": "pnpm verify:publish",
+		"test:built": "node ./tests/built-publish-subpath-smoke.mjs",
+		"test:schema": "pnpm --dir ../.. exec vp test run packages/wener-ai/tests",
+		"typecheck:schema": "tsc -p tsconfig.schema.json --noEmit",
+		"verify:publish": "pnpm build && pnpm test:built"
 	},
 	"exports": {
 		"./schema": "./src/schema/index.ts",
+		"./agent/persona": "./src/agent/persona/index.ts",
+		"./agent/skill": "./src/agent/skill/index.ts",
 		"./mcp": "./src/mcp/index.ts",
 		"./mcp/prometheus": "./src/mcp/prometheus/index.ts",
 		"./mcp/relay": "./src/mcp/relay/index.ts",
@@ -23,20 +33,13 @@
 		"./mcp/clickhouse": "./src/mcp/clickhouse/index.ts",
 		"./mcp/grafana": "./src/mcp/grafana/index.ts"
 	},
-	"files": [
-		"lib",
-		"src",
-		"README.md"
-	],
-	"keywords": [
-		"ai",
-		"mcp"
-	],
+	"files": ["lib", "src", "README.md"],
+	"keywords": ["ai", "mcp"],
 	"peerDependencies": {
-		"@ai-sdk/google": "*",
+		"@ai-sdk/google": "^4.0.18",
 		"@clickhouse/client": "*",
 		"@larksuiteoapi/node-sdk": "*",
-		"ai": "*",
+		"ai": "^7.0.31",
 		"kysely": "*",
 		"mysql2": "*",
 		"tarn": "*",
@@ -71,24 +74,32 @@
 	"dependencies": {
 		"@modelcontextprotocol/sdk": "^1.29.0",
 		"@wener/client": "workspace:^1.0.29",
-		"@wener/common": "^2.0.6",
+		"@wener/common": "workspace:^3.0.0",
 		"consola": "^3.4.2",
 		"zod": "^4.4.3"
 	},
 	"devDependencies": {
-		"@ai-sdk/google": "^3.0.67",
-		"@clickhouse/client": "^1.18.3",
-		"ai": "^6.0.174",
-		"kysely": "^0.28.17",
-		"mysql2": "^3.22.3",
-		"tarn": "^3.0.2",
-		"tedious": "^19.2.1"
+		"@ai-sdk/google": "^4.0.18",
+		"@clickhouse/client": "^1.23.1",
+		"ai": "^7.0.31",
+		"kysely": "^0.29.3",
+		"mysql2": "^3.22.6",
+		"tarn": "^3.1.0",
+		"tedious": "^20.0.0"
 	},
 	"publishConfig": {
 		"exports": {
 			"./schema": {
 				"types": "./src/schema/index.ts",
 				"default": "./lib/schema/index.js"
+			},
+			"./agent/persona": {
+				"types": "./src/agent/persona/index.ts",
+				"default": "./lib/agent/persona/index.js"
+			},
+			"./agent/skill": {
+				"types": "./src/agent/skill/index.ts",
+				"default": "./lib/agent/skill/index.js"
 			},
 			"./mcp": {
 				"types": "./src/mcp/index.ts",

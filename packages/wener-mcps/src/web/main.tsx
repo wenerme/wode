@@ -1,7 +1,7 @@
 import { ChevronDown, ChevronUp, RefreshCw, Stethoscope } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { HashRouter, Navigate, NavLink, Route, Routes } from 'react-router-dom';
+import { HashRouter, Navigate, NavLink, Route, Routes } from 'react-router';
 import type { AuditEvent } from '../contracts';
 import type { ModelInfo, RequestStats, ServerInfo, ServerTypeInfo, ServiceOverview } from '../contracts/McpsContract';
 import { ChatPage } from './ChatPage';
@@ -91,24 +91,24 @@ const serverTypeHeaders: Record<string, { required: string[]; optional?: string[
 function ServerTypeCard({ serverType }: { serverType: ServerTypeInfo }) {
 	const headers = serverTypeHeaders[serverType.type];
 	return (
-		<div className='card bg-base-100 shadow-sm border border-base-300'>
+		<div className='card bg-base-100 border-base-300 border shadow-sm'>
 			<div className='card-body p-4'>
-				<div className='flex items-center gap-2 mb-2'>
+				<div className='mb-2 flex items-center gap-2'>
 					<span className={`badge ${getServerTypeBadgeClass(serverType.type)}`}>{serverType.type}</span>
 				</div>
-				<p className='text-sm text-base-content/70 mb-2'>{serverType.description}</p>
-				<code className='text-xs bg-base-200 px-2 py-1 rounded block mb-2'>{serverType.dynamicEndpoint}</code>
+				<p className='text-base-content/70 mb-2 text-sm'>{serverType.description}</p>
+				<code className='bg-base-200 mb-2 block rounded px-2 py-1 text-xs'>{serverType.dynamicEndpoint}</code>
 				{headers && (
 					<div className='text-xs'>
 						<div className='text-base-content/50 mb-1'>Headers:</div>
 						<div className='flex flex-wrap gap-1'>
 							{headers.required.map((h) => (
-								<code key={h} className='bg-error/10 text-error px-1 rounded'>
+								<code key={h} className='bg-error/10 text-error rounded px-1'>
 									{h}
 								</code>
 							))}
 							{headers.optional?.map((h) => (
-								<code key={h} className='bg-base-200 px-1 rounded'>
+								<code key={h} className='bg-base-200 rounded px-1'>
 									{h}
 								</code>
 							))}
@@ -122,10 +122,10 @@ function ServerTypeCard({ serverType }: { serverType: ServerTypeInfo }) {
 
 function ServerCard({ server }: { server: ServerInfo }) {
 	return (
-		<div className='card bg-base-100 shadow-sm border border-base-300'>
-			<div className='card-body p-4 flex-row justify-between items-center'>
+		<div className='card bg-base-100 border-base-300 border shadow-sm'>
+			<div className='card-body flex-row items-center justify-between p-4'>
 				<div>
-					<div className='font-semibold text-base-content'>{server.name}</div>
+					<div className='text-base-content font-semibold'>{server.name}</div>
 					<span className={`badge badge-sm ${getServerTypeBadgeClass(server.type)}`}>{server.type}</span>
 				</div>
 				{server.disabled && <span className='badge badge-error badge-sm'>disabled</span>}
@@ -147,10 +147,10 @@ function ModelCard({ model }: { model: ModelInfo }) {
 	};
 
 	return (
-		<div className='card bg-base-100 shadow-sm border border-base-300'>
+		<div className='card bg-base-100 border-base-300 border shadow-sm'>
 			<div className='card-body p-4'>
-				<div className='flex justify-between items-start'>
-					<div className='font-semibold text-base-content mb-2'>{model.name}</div>
+				<div className='flex items-start justify-between'>
+					<div className='text-base-content mb-2 font-semibold'>{model.name}</div>
 					<button
 						type='button'
 						className='btn btn-xs btn-ghost'
@@ -158,13 +158,13 @@ function ModelCard({ model }: { model: ModelInfo }) {
 						disabled={checking}
 						title='Health check'
 					>
-						{checking ? <span className='loading loading-spinner loading-xs' /> : <Stethoscope className='w-4 h-4' />}
+						{checking ? <span className='loading loading-spinner loading-xs' /> : <Stethoscope className='h-4 w-4' />}
 					</button>
 				</div>
-				<div className='flex gap-2 flex-wrap'>
+				<div className='flex flex-wrap gap-2'>
 					{model.adapter && <span className='badge badge-secondary badge-sm'>{model.adapter}</span>}
 					{model.baseUrl && (
-						<span className='text-xs text-base-content/50 truncate max-w-48' title={model.baseUrl}>
+						<span className='text-base-content/50 max-w-48 truncate text-xs' title={model.baseUrl}>
 							{model.baseUrl}
 						</span>
 					)}
@@ -199,20 +199,20 @@ function OverviewPage() {
 	return (
 		<div className='space-y-6'>
 			{/* Stats Cards */}
-			<div className='grid grid-cols-2 md:grid-cols-4 gap-4'>
-				<div className='stat bg-base-100 rounded-box shadow-sm border border-base-300'>
+			<div className='grid grid-cols-2 gap-4 md:grid-cols-4'>
+				<div className='stat bg-base-100 rounded-box border-base-300 border shadow-sm'>
 					<div className='stat-value text-2xl'>{overview?.servers.length ?? 0}</div>
 					<div className='stat-desc'>Configured Servers</div>
 				</div>
-				<div className='stat bg-base-100 rounded-box shadow-sm border border-base-300'>
+				<div className='stat bg-base-100 rounded-box border-base-300 border shadow-sm'>
 					<div className='stat-value text-2xl'>{overview?.models.length ?? 0}</div>
 					<div className='stat-desc'>Model Configs</div>
 				</div>
-				<div className='stat bg-base-100 rounded-box shadow-sm border border-base-300'>
+				<div className='stat bg-base-100 rounded-box border-base-300 border shadow-sm'>
 					<div className='stat-value text-2xl'>{stats?.totalRequests ?? 0}</div>
 					<div className='stat-desc'>Total Requests</div>
 				</div>
-				<div className='stat bg-base-100 rounded-box shadow-sm border border-base-300'>
+				<div className='stat bg-base-100 rounded-box border-base-300 border shadow-sm'>
 					<div className={`stat-value text-2xl ${(stats?.totalErrors ?? 0) > 0 ? 'text-error' : ''}`}>
 						{stats?.totalErrors ?? 0}
 					</div>
@@ -222,33 +222,33 @@ function OverviewPage() {
 
 			{/* Supported Server Types */}
 			<div>
-				<h2 className='text-lg font-semibold mb-3 text-base-content'>Supported Server Types</h2>
-				<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>
+				<h2 className='text-base-content mb-3 text-lg font-semibold'>Supported Server Types</h2>
+				<div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4'>
 					{overview?.serverTypes.map((st) => (
 						<ServerTypeCard key={st.type} serverType={st} />
 					))}
 				</div>
-				<div className='mt-3 text-sm text-base-content/50'>
+				<div className='text-base-content/50 mt-3 text-sm'>
 					<span className='font-medium'>Common Headers:</span>{' '}
-					<code className='bg-base-200 px-1 rounded'>X-MCP-Readonly</code> (TRUE = only readonly tools){' '}
-					<code className='bg-base-200 px-1 rounded'>X-MCP-Include</code>{' '}
-					<code className='bg-base-200 px-1 rounded'>X-MCP-Exclude</code> (glob patterns for tool filtering)
+					<code className='bg-base-200 rounded px-1'>X-MCP-Readonly</code> (TRUE = only readonly tools){' '}
+					<code className='bg-base-200 rounded px-1'>X-MCP-Include</code>{' '}
+					<code className='bg-base-200 rounded px-1'>X-MCP-Exclude</code> (glob patterns for tool filtering)
 				</div>
 			</div>
 
 			{/* Configured Servers Preview */}
 			{overview && overview.servers.length > 0 && (
 				<div>
-					<h2 className='text-lg font-semibold mb-3 text-base-content'>
+					<h2 className='text-base-content mb-3 text-lg font-semibold'>
 						Configured Servers ({overview.servers.length})
 					</h2>
-					<div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+					<div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
 						{overview.servers.slice(0, 4).map((s) => (
 							<ServerCard key={s.name} server={s} />
 						))}
 					</div>
 					{overview.servers.length > 4 && (
-						<div className='text-center mt-4'>
+						<div className='mt-4 text-center'>
 							<NavLink to='/servers' className='btn btn-ghost btn-sm'>
 								View all {overview.servers.length} servers →
 							</NavLink>
@@ -260,9 +260,9 @@ function OverviewPage() {
 			{/* Request Stats by Method */}
 			{stats && stats.byMethod.length > 0 && (
 				<div>
-					<h2 className='text-lg font-semibold mb-3 text-base-content'>Requests by Method</h2>
-					<div className='overflow-x-auto bg-base-100 rounded-box shadow-sm border border-base-300'>
-						<table className='table table-zebra'>
+					<h2 className='text-base-content mb-3 text-lg font-semibold'>Requests by Method</h2>
+					<div className='bg-base-100 rounded-box border-base-300 overflow-x-auto border shadow-sm'>
+						<table className='table-zebra table'>
 							<thead>
 								<tr>
 									<th>Method</th>
@@ -303,16 +303,16 @@ function ServersPage() {
 
 	return (
 		<div>
-			<h2 className='text-lg font-semibold mb-3 text-base-content'>Configured Servers ({servers.length})</h2>
+			<h2 className='text-base-content mb-3 text-lg font-semibold'>Configured Servers ({servers.length})</h2>
 			{servers.length > 0 ? (
-				<div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+				<div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
 					{servers.map((s) => (
 						<ServerCard key={s.name} server={s} />
 					))}
 				</div>
 			) : (
-				<div className='card bg-base-100 shadow-sm border border-base-300'>
-					<div className='card-body text-center text-base-content/50'>No servers configured</div>
+				<div className='card bg-base-100 border-base-300 border shadow-sm'>
+					<div className='card-body text-base-content/50 text-center'>No servers configured</div>
 				</div>
 			)}
 		</div>
@@ -335,16 +335,16 @@ function ModelsPage() {
 
 	return (
 		<div>
-			<h2 className='text-lg font-semibold mb-3 text-base-content'>Model Configurations ({models.length})</h2>
+			<h2 className='text-base-content mb-3 text-lg font-semibold'>Model Configurations ({models.length})</h2>
 			{models.length > 0 ? (
-				<div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+				<div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
 					{models.map((m) => (
 						<ModelCard key={m.name} model={m} />
 					))}
 				</div>
 			) : (
-				<div className='card bg-base-100 shadow-sm border border-base-300'>
-					<div className='card-body text-center text-base-content/50'>No models configured</div>
+				<div className='card bg-base-100 border-base-300 border shadow-sm'>
+					<div className='card-body text-base-content/50 text-center'>No models configured</div>
 				</div>
 			)}
 		</div>
@@ -365,7 +365,7 @@ function LogRow({ event }: { event: AuditEvent }) {
 					<span className='badge badge-info badge-xs'>{event.method}</span>
 				</td>
 				<td>
-					<code className='text-xs truncate max-w-48 block' title={event.path}>
+					<code className='block max-w-48 truncate text-xs' title={event.path}>
 						{event.path}
 					</code>
 				</td>
@@ -379,7 +379,7 @@ function LogRow({ event }: { event: AuditEvent }) {
 				<td>
 					{hasDetails && (
 						<button type='button' className='btn btn-ghost btn-xs' onClick={() => setIsExpanded(!isExpanded)}>
-							{isExpanded ? <ChevronUp className='w-3 h-3' /> : <ChevronDown className='w-3 h-3' />}
+							{isExpanded ? <ChevronUp className='h-3 w-3' /> : <ChevronDown className='h-3 w-3' />}
 						</button>
 					)}
 				</td>
@@ -390,16 +390,16 @@ function LogRow({ event }: { event: AuditEvent }) {
 						<div className='space-y-2 text-xs'>
 							{event.requestHeaders && (
 								<div>
-									<div className='font-semibold mb-1'>Request Headers:</div>
-									<pre className='bg-base-100 p-2 rounded overflow-auto max-h-24'>
+									<div className='mb-1 font-semibold'>Request Headers:</div>
+									<pre className='bg-base-100 max-h-24 overflow-auto rounded p-2'>
 										{JSON.stringify(event.requestHeaders, null, 2)}
 									</pre>
 								</div>
 							)}
 							{event.requestBody != null && (
 								<div>
-									<div className='font-semibold mb-1'>Request Body:</div>
-									<pre className='bg-base-100 p-2 rounded overflow-auto max-h-48'>
+									<div className='mb-1 font-semibold'>Request Body:</div>
+									<pre className='bg-base-100 max-h-48 overflow-auto rounded p-2'>
 										{typeof event.requestBody === 'string'
 											? event.requestBody
 											: JSON.stringify(event.requestBody as object, null, 2)}
@@ -408,8 +408,8 @@ function LogRow({ event }: { event: AuditEvent }) {
 							)}
 							{event.responseBody != null && (
 								<div>
-									<div className='font-semibold mb-1'>Response Body:</div>
-									<pre className='bg-base-100 p-2 rounded overflow-auto max-h-48'>
+									<div className='mb-1 font-semibold'>Response Body:</div>
+									<pre className='bg-base-100 max-h-48 overflow-auto rounded p-2'>
 										{typeof event.responseBody === 'string'
 											? event.responseBody
 											: JSON.stringify(event.responseBody as object, null, 2)}
@@ -418,8 +418,8 @@ function LogRow({ event }: { event: AuditEvent }) {
 							)}
 							{event.error && (
 								<div>
-									<div className='font-semibold text-error mb-1'>Error:</div>
-									<pre className='bg-error/10 text-error p-2 rounded'>{event.error}</pre>
+									<div className='text-error mb-1 font-semibold'>Error:</div>
+									<pre className='bg-error/10 text-error rounded p-2'>{event.error}</pre>
 								</div>
 							)}
 						</div>
@@ -457,15 +457,15 @@ function LogsPage() {
 
 	return (
 		<div>
-			<div className='flex items-center justify-between mb-3'>
-				<h2 className='text-lg font-semibold text-base-content'>Logs</h2>
+			<div className='mb-3 flex items-center justify-between'>
+				<h2 className='text-base-content text-lg font-semibold'>Logs</h2>
 				<button type='button' className='btn btn-ghost btn-sm gap-1' onClick={fetchLogs} disabled={loading}>
-					{loading ? <span className='loading loading-spinner loading-xs' /> : <RefreshCw className='w-4 h-4' />}
+					{loading ? <span className='loading loading-spinner loading-xs' /> : <RefreshCw className='h-4 w-4' />}
 					Refresh
 				</button>
 			</div>
 
-			<div className='tabs tabs-boxed mb-4 bg-base-100 w-fit'>
+			<div className='tabs tabs-boxed bg-base-100 mb-4 w-fit'>
 				<button type='button' className={`tab ${tab === 'all' ? 'tab-active' : ''}`} onClick={() => setTab('all')}>
 					All ({allLogs.length})
 				</button>
@@ -477,8 +477,8 @@ function LogsPage() {
 				</button>
 			</div>
 
-			<div className='overflow-x-auto bg-base-100 rounded-box shadow-sm border border-base-300'>
-				<table className='table table-zebra table-sm'>
+			<div className='bg-base-100 rounded-box border-base-300 overflow-x-auto border shadow-sm'>
+				<table className='table-zebra table-sm table'>
 					<thead>
 						<tr>
 							<th>Time</th>
@@ -496,7 +496,7 @@ function LogsPage() {
 						))}
 						{currentLogs.length === 0 && (
 							<tr>
-								<td colSpan={7} className='text-center text-base-content/50'>
+								<td colSpan={7} className='text-base-content/50 text-center'>
 									No logs yet
 								</td>
 							</tr>
@@ -511,7 +511,7 @@ function LogsPage() {
 // Chat Page Wrapper
 function ChatPageWrapper() {
 	return (
-		<div className='card bg-base-100 shadow-sm border border-base-300 h-[calc(100vh-200px)]'>
+		<div className='card bg-base-100 border-base-300 h-[calc(100vh-200px)] border shadow-sm'>
 			<ChatPage />
 		</div>
 	);
@@ -520,7 +520,7 @@ function ChatPageWrapper() {
 // Inspector Page Wrapper
 function InspectorPageWrapper() {
 	return (
-		<div className='card bg-base-100 shadow-sm border border-base-300 h-[calc(100vh-200px)]'>
+		<div className='card bg-base-100 border-base-300 h-[calc(100vh-200px)] border shadow-sm'>
 			<McpInspectorPage />
 		</div>
 	);
@@ -535,20 +535,20 @@ function Layout({ children }: { children: React.ReactNode }) {
 	}, []);
 
 	return (
-		<div className='min-h-screen bg-base-200'>
+		<div className='bg-base-200 min-h-screen'>
 			<div className='container mx-auto max-w-7xl p-4 md:p-6'>
 				{/* Header */}
-				<div className='flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6'>
+				<div className='mb-6 flex flex-col items-start justify-between gap-4 md:flex-row md:items-center'>
 					<div>
-						<h1 className='text-2xl font-bold text-base-content'>MCPS Dashboard</h1>
-						<p className='text-sm text-base-content/60'>
+						<h1 className='text-base-content text-2xl font-bold'>MCPS Dashboard</h1>
+						<p className='text-base-content/60 text-sm'>
 							{overview?.name} v{overview?.version}
 						</p>
 					</div>
 				</div>
 
 				{/* Navigation */}
-				<nav className='tabs tabs-boxed mb-6 bg-base-100'>
+				<nav className='tabs tabs-boxed bg-base-100 mb-6'>
 					<NavLink to='/' end className={({ isActive }) => `tab ${isActive ? 'tab-active' : ''}`}>
 						Overview
 					</NavLink>

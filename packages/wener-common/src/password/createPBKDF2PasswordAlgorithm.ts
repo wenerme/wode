@@ -23,8 +23,7 @@ export function createPBKDF2PasswordAlgorithm({
 			if (opts?.salt) {
 				salt = opts.salt;
 			} else {
-				salt = new Uint8Array(saltlen);
-				crypto.getRandomValues(salt);
+				salt = crypto.getRandomValues(new Uint8Array(saltlen));
 			}
 
 			const rounds = opts?.rounds ?? iterations;

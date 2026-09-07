@@ -1,17 +1,18 @@
-import { types } from '@mikro-orm/core';
-import { Entity, Property } from '@mikro-orm/decorators/legacy';
+import { p } from '@mikro-orm/core';
 import type { Constructor } from '@wener/utils';
 import { Feature } from '../../Feature';
 import { EntityFeature } from '../enum';
+import { defineMixinEntity } from './defineMixinEntity';
 import type { HasSlugEntity } from './types';
 
 export function withSlugEntity<TBase extends Constructor>(Base: TBase) {
 	@Feature([EntityFeature.HasSlug])
-	@Entity({ abstract: true })
 	abstract class HasSlugMixinEntity extends Base implements HasSlugEntity {
-		@Property({ type: types.string, nullable: false })
 		slug?: string;
 	}
 
-	return HasSlugMixinEntity;
+	return defineMixinEntity(Base, HasSlugMixinEntity, {
+		name: 'HasSlugMixinEntity',
+		properties: { slug: p.string() },
+	});
 }

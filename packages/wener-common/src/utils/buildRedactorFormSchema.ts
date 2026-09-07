@@ -11,7 +11,7 @@ export function buildRedactorFormSchema(
 	}: {
 		shouldRedact?: (schema: JsonSchemaDef) => boolean;
 		replacer?: (key: string, value: any) => any;
-	},
+	} = {},
 ) {
 	let js = toJsonSchema(ts);
 

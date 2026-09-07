@@ -78,7 +78,7 @@ const SideMenuItem: FC<{ item: ExpandableSideMenuItemProps; expanded?: boolean; 
 					</span>
 				</li>
 				{!collapse &&
-					children.map((item, i) => {
+					children.map((item) => {
 						return (
 							<SideMenuItem
 								expanded
@@ -88,7 +88,7 @@ const SideMenuItem: FC<{ item: ExpandableSideMenuItemProps; expanded?: boolean; 
 									icon: <div className={'inline-block w-4'} />,
 									iconActive: undefined,
 								}}
-								key={`${label}/${i}`}
+								key={`${label}/${item.href || item.label}`}
 							/>
 						);
 					})}
@@ -213,8 +213,9 @@ export const ExpandableMenu: FC<ExpandableSideMenuLayoutProps> = ({
 		>
 			<OverlayScrollbar className={'h-full'}>
 				<ul className={clsx('menu bg-base-100 w-full gap-0.5', expanded ? 'p-2' : 'p-0')}>
-					{items.map((item, i) => {
-						return <SideMenuItem item={item} expanded={expanded} key={i} />;
+					{items.map((item) => {
+						const key = 'href' in item ? item.href : item.label;
+						return <SideMenuItem item={item} expanded={expanded} key={key} />;
 					})}
 				</ul>
 				{children}
