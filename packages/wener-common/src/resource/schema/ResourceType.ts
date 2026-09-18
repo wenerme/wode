@@ -1,5 +1,6 @@
 import { z } from 'zod/v4';
-import type { EnumValues } from './types';
+
+import type { EnumValues } from './EnumValues';
 
 export const ResourceType = Object.freeze({
 	__proto__: null,

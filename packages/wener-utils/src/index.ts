@@ -49,7 +49,6 @@ export { PEM } from './crypto/pem/pem';
 export {
 	type CreateRandomUUIDv7Options,
 	createRandomUUIDv7,
-	isUUIDv7,
 	parseUUIDv7Timestamp,
 	randomUUIDv7,
 } from './crypto/randomUUIDv7';
@@ -129,6 +128,8 @@ export { renderTemplate } from './strings/renderTemplate';
 export { type Slugify, type SlugifyCharacterMap, type SlugifyOptions, slugify } from './strings/slugify';
 export type * from './types';
 export { isUUID } from './validations/isUUID';
+export { isUUIDv4 } from './validations/isUUIDv4';
+export { isUUIDv7 } from './validations/isUUIDv7';
 export { parseTimestamp } from './validations/parseTimestamp';
 export { getGlobalThis } from './web/getGlobalThis';
 export { getRandomValues } from './web/getRandomValues';

@@ -13,21 +13,56 @@
 	"license": "MIT",
 	"exports": {
 		".": "./src/index.ts",
-		"./button": "./src/button.tsx",
-		"./dialog": "./src/dialog.tsx",
+		"./accordion": "./src/accordion/index.ts",
+		"./alert": "./src/alert/index.ts",
+		"./alert-dialog": "./src/alert-dialog/index.ts",
+		"./avatar": "./src/avatar/index.ts",
+		"./badge": "./src/badge/index.ts",
+		"./breadcrumb": "./src/breadcrumb/index.ts",
+		"./button": "./src/button/index.ts",
+		"./card": "./src/card/index.ts",
+		"./checkbox": "./src/checkbox/index.ts",
+		"./collapsible": "./src/collapsible/index.ts",
+		"./daisy": "./src/daisy/index.ts",
+		"./dialog": "./src/dialog/index.ts",
+		"./drawer": "./src/drawer/index.ts",
+		"./dropdown-menu": "./src/dropdown-menu/index.ts",
 		"./examples": "./src/examples/index.ts",
-		"./input": "./src/input.tsx",
-		"./popover": "./src/popover.tsx",
-		"./textarea": "./src/textarea.tsx",
-		"./utils": "./src/utils.ts",
+		"./field": "./src/field/index.ts",
+		"./fieldset": "./src/fieldset/index.ts",
+		"./file-input": "./src/file-input/index.ts",
+		"./input": "./src/input/index.ts",
+		"./kbd": "./src/kbd/index.ts",
+		"./label": "./src/label/index.ts",
+		"./loading": "./src/loading/index.ts",
+		"./menu": "./src/menu/index.ts",
+		"./pagination": "./src/pagination/index.ts",
+		"./popover": "./src/popover/index.ts",
+		"./progress": "./src/progress/index.ts",
+		"./radio-group": "./src/radio-group/index.ts",
+		"./select": "./src/select/index.ts",
+		"./separator": "./src/separator/index.ts",
+		"./sheet": "./src/sheet/index.ts",
+		"./skeleton": "./src/skeleton/index.ts",
+		"./slider": "./src/slider/index.ts",
+		"./status": "./src/status/index.ts",
+		"./switch": "./src/switch/index.ts",
+		"./table": "./src/table/index.ts",
+		"./tabs": "./src/tabs/index.ts",
+		"./textarea": "./src/textarea/index.ts",
+		"./toast": "./src/toast/index.ts",
+		"./tooltip": "./src/tooltip/index.ts",
+		"./utils": "./src/utils/index.ts",
 		"./package.json": "./package.json"
 	},
 	"files": ["lib", "src", "README.md"],
 	"keywords": ["react", "ui", "base-ui", "tailwindcss", "shadcn"],
 	"scripts": {
 		"build": "make build",
+		"check:source-lines": "node ../../apps/components/scripts/check-ui-source-lines.mjs --root packages/ui",
 		"prepack": "pnpm build",
 		"prepublishOnly": "pnpm build",
+		"test": "pnpm check:source-lines && pnpm build && pnpm --workspace-root exec vp test run packages/ui/tests",
 		"typecheck": "tsc --noEmit"
 	},
 	"peerDependencies": {
@@ -36,6 +71,7 @@
 	},
 	"dependencies": {
 		"@base-ui/react": "^1.6.0",
+		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
 		"tailwind-merge": "^3.6.0"
 	},
@@ -52,33 +88,165 @@
 				"types": "./src/index.ts",
 				"default": "./lib/index.js"
 			},
+			"./accordion": {
+				"types": "./src/accordion/index.ts",
+				"default": "./lib/accordion/index.js"
+			},
+			"./alert": {
+				"types": "./src/alert/index.ts",
+				"default": "./lib/alert/index.js"
+			},
+			"./alert-dialog": {
+				"types": "./src/alert-dialog/index.ts",
+				"default": "./lib/alert-dialog/index.js"
+			},
+			"./avatar": {
+				"types": "./src/avatar/index.ts",
+				"default": "./lib/avatar/index.js"
+			},
+			"./badge": {
+				"types": "./src/badge/index.ts",
+				"default": "./lib/badge/index.js"
+			},
+			"./breadcrumb": {
+				"types": "./src/breadcrumb/index.ts",
+				"default": "./lib/breadcrumb/index.js"
+			},
 			"./button": {
-				"types": "./src/button.tsx",
-				"default": "./lib/button.js"
+				"types": "./src/button/index.ts",
+				"default": "./lib/button/index.js"
+			},
+			"./card": {
+				"types": "./src/card/index.ts",
+				"default": "./lib/card/index.js"
+			},
+			"./checkbox": {
+				"types": "./src/checkbox/index.ts",
+				"default": "./lib/checkbox/index.js"
+			},
+			"./collapsible": {
+				"types": "./src/collapsible/index.ts",
+				"default": "./lib/collapsible/index.js"
+			},
+			"./daisy": {
+				"types": "./src/daisy/index.ts",
+				"default": "./lib/daisy/index.js"
 			},
 			"./dialog": {
-				"types": "./src/dialog.tsx",
-				"default": "./lib/dialog.js"
+				"types": "./src/dialog/index.ts",
+				"default": "./lib/dialog/index.js"
+			},
+			"./drawer": {
+				"types": "./src/drawer/index.ts",
+				"default": "./lib/drawer/index.js"
+			},
+			"./dropdown-menu": {
+				"types": "./src/dropdown-menu/index.ts",
+				"default": "./lib/dropdown-menu/index.js"
 			},
 			"./examples": {
 				"types": "./src/examples/index.ts",
 				"default": "./lib/examples/index.js"
 			},
+			"./field": {
+				"types": "./src/field/index.ts",
+				"default": "./lib/field/index.js"
+			},
+			"./fieldset": {
+				"types": "./src/fieldset/index.ts",
+				"default": "./lib/fieldset/index.js"
+			},
+			"./file-input": {
+				"types": "./src/file-input/index.ts",
+				"default": "./lib/file-input/index.js"
+			},
 			"./input": {
-				"types": "./src/input.tsx",
-				"default": "./lib/input.js"
+				"types": "./src/input/index.ts",
+				"default": "./lib/input/index.js"
+			},
+			"./kbd": {
+				"types": "./src/kbd/index.ts",
+				"default": "./lib/kbd/index.js"
+			},
+			"./label": {
+				"types": "./src/label/index.ts",
+				"default": "./lib/label/index.js"
+			},
+			"./loading": {
+				"types": "./src/loading/index.ts",
+				"default": "./lib/loading/index.js"
+			},
+			"./menu": {
+				"types": "./src/menu/index.ts",
+				"default": "./lib/menu/index.js"
+			},
+			"./pagination": {
+				"types": "./src/pagination/index.ts",
+				"default": "./lib/pagination/index.js"
 			},
 			"./popover": {
-				"types": "./src/popover.tsx",
-				"default": "./lib/popover.js"
+				"types": "./src/popover/index.ts",
+				"default": "./lib/popover/index.js"
+			},
+			"./progress": {
+				"types": "./src/progress/index.ts",
+				"default": "./lib/progress/index.js"
+			},
+			"./radio-group": {
+				"types": "./src/radio-group/index.ts",
+				"default": "./lib/radio-group/index.js"
+			},
+			"./select": {
+				"types": "./src/select/index.ts",
+				"default": "./lib/select/index.js"
+			},
+			"./separator": {
+				"types": "./src/separator/index.ts",
+				"default": "./lib/separator/index.js"
+			},
+			"./sheet": {
+				"types": "./src/sheet/index.ts",
+				"default": "./lib/sheet/index.js"
+			},
+			"./skeleton": {
+				"types": "./src/skeleton/index.ts",
+				"default": "./lib/skeleton/index.js"
+			},
+			"./slider": {
+				"types": "./src/slider/index.ts",
+				"default": "./lib/slider/index.js"
+			},
+			"./status": {
+				"types": "./src/status/index.ts",
+				"default": "./lib/status/index.js"
+			},
+			"./switch": {
+				"types": "./src/switch/index.ts",
+				"default": "./lib/switch/index.js"
+			},
+			"./table": {
+				"types": "./src/table/index.ts",
+				"default": "./lib/table/index.js"
+			},
+			"./tabs": {
+				"types": "./src/tabs/index.ts",
+				"default": "./lib/tabs/index.js"
 			},
 			"./textarea": {
-				"types": "./src/textarea.tsx",
-				"default": "./lib/textarea.js"
+				"types": "./src/textarea/index.ts",
+				"default": "./lib/textarea/index.js"
+			},
+			"./toast": {
+				"types": "./src/toast/index.ts",
+				"default": "./lib/toast/index.js"
+			},
+			"./tooltip": {
+				"types": "./src/tooltip/index.ts",
+				"default": "./lib/tooltip/index.js"
 			},
 			"./utils": {
-				"types": "./src/utils.ts",
-				"default": "./lib/utils.js"
+				"types": "./src/utils/index.ts",
+				"default": "./lib/utils/index.js"
 			},
 			"./package.json": "./package.json"
 		}

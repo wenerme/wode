@@ -1,0 +1,19 @@
+{
+	"$schema": "https://ui.shadcn.com/schema/registry-item.json",
+	"items": [
+		{
+			"name": "window-manager",
+			"type": "registry:block",
+			"files": [{ "path": "../../src/ui/status.tsx", "target": "@ui/status.tsx", "type": "registry:ui" }],
+			"registryDependencies": [
+				"https://ui-components.wener.me/r/file-manager.json",
+				"https://registry.example.com/r/third-party.json"
+			]
+		},
+		{
+			"name": "file-manager",
+			"type": "registry:block",
+			"files": [{ "path": "../../src/ui/status.tsx", "target": "@ui/status.tsx", "type": "registry:ui" }]
+		}
+	]
+}

@@ -1,0 +1,106 @@
+{
+	"$schema": "https://ui.shadcn.com/schema/registry.json",
+	"items": [
+		{
+			"name": "console-window",
+			"type": "registry:block",
+			"title": "Console Window",
+			"description": "Controlled window chrome with title bar, toolbar, content, status bar, and workspace layout patterns",
+			"dependencies": ["daisyui", "lucide-react"],
+			"files": [
+				{
+					"path": "./console-window/console-window.tsx",
+					"type": "registry:component",
+					"target": "@components/blocks/console-window/console-window.tsx"
+				},
+				{
+					"path": "./console-window/index.ts",
+					"type": "registry:component",
+					"target": "@components/blocks/console-window/index.ts"
+				},
+				{
+					"path": "./console-window/console-window-entry.ts",
+					"type": "registry:component",
+					"target": "@components/console-window.ts"
+				}
+			]
+		},
+		{
+			"name": "window-manager",
+			"type": "registry:block",
+			"title": "Window Manager",
+			"description": "A context-scoped multi-window runtime with drag, resize, z-order, window modes, dock, portals, keyboard controls, and opt-in persistence",
+			"dependencies": [
+				"@base-ui/react",
+				"daisyui",
+				"lucide-react",
+				"mutative@^1.3.0",
+				"re-resizable@^6.11.2",
+				"zustand@^5.0.14",
+				"zustand-mutative@^1.3.1"
+			],
+			"files": [
+				{
+					"path": "./window-manager/window-manager-types.ts",
+					"type": "registry:lib",
+					"target": "@components/window-manager/window-manager-types.ts"
+				},
+				{
+					"path": "./window-manager/window-manager-store-actions.ts",
+					"type": "registry:lib",
+					"target": "@components/window-manager/window-manager-store-actions.ts"
+				},
+				{
+					"path": "./window-manager/window-manager-store-helpers.ts",
+					"type": "registry:lib",
+					"target": "@components/window-manager/window-manager-store-helpers.ts"
+				},
+				{
+					"path": "./window-manager/window-manager-store.ts",
+					"type": "registry:lib",
+					"target": "@components/window-manager/window-manager-store.ts"
+				},
+				{
+					"path": "./window-manager/window-manager-context.tsx",
+					"type": "registry:component",
+					"target": "@components/window-manager/window-manager-context.tsx"
+				},
+				{
+					"path": "./window-manager/window-manager-chrome.tsx",
+					"type": "registry:component",
+					"target": "@components/window-manager/window-manager-chrome.tsx"
+				},
+				{
+					"path": "./window-manager/window-manager-dock.tsx",
+					"type": "registry:component",
+					"target": "@components/window-manager/window-manager-dock.tsx"
+				},
+				{
+					"path": "./window-manager/window-manager-motion.tsx",
+					"type": "registry:component",
+					"target": "@components/window-manager/window-manager-motion.tsx"
+				},
+				{
+					"path": "./window-manager/window-manager-host.tsx",
+					"type": "registry:component",
+					"target": "@components/window-manager/window-manager-host.tsx"
+				},
+				{
+					"path": "./window-manager/window-manager-persistence.tsx",
+					"type": "registry:component",
+					"target": "@components/window-manager/window-manager-persistence.tsx"
+				},
+				{
+					"path": "./window-manager/window-manager.tsx",
+					"type": "registry:component",
+					"target": "@components/window-manager/window-manager.tsx"
+				},
+				{
+					"path": "./window-manager/index.ts",
+					"type": "registry:component",
+					"target": "@components/window-manager/index.ts"
+				}
+			]
+		}
+	]
+}

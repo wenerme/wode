@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @source "../node_modules/@wener/ui/src";
+@source "../../../packages/ui/src";
 
 @theme {
 	--font-sans: "Geist var", "Geist", system-ui, sans-serif;

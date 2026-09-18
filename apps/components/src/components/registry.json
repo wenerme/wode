@@ -1,0 +1,188 @@
+{
+	"$schema": "https://ui.shadcn.com/schema/registry.json",
+	"items": [
+		{
+			"name": "hello-button",
+			"type": "registry:component",
+			"title": "Hello Button",
+			"description": "A simple hello button component for testing the registry",
+			"dependencies": ["daisyui", "lucide-react"],
+			"files": [
+				{
+					"path": "./hello-button.tsx",
+					"type": "registry:component",
+					"target": "@components/hello-button.tsx"
+				}
+			]
+		},
+		{
+			"name": "formats",
+			"type": "registry:component",
+			"title": "Value Formats",
+			"description": "Common empty, text, number, currency, percent, bytes, duration, date, boolean, and phone value formatters",
+			"dependencies": ["daisyui"],
+			"files": [
+				{
+					"path": "./formats/format-values.ts",
+					"type": "registry:lib",
+					"target": "@components/formats/format-values.ts"
+				},
+				{
+					"path": "./formats/format-components.tsx",
+					"type": "registry:component",
+					"target": "@components/formats/format-components.tsx"
+				},
+				{
+					"path": "./formats/index.ts",
+					"type": "registry:component",
+					"target": "@components/formats/index.ts"
+				}
+			]
+		},
+		{
+			"name": "hook-form",
+			"type": "registry:component",
+			"title": "Hook Form Basics",
+			"description": "React Hook Form provider, fields, submit/debug/data preview controls, and form state utilities",
+			"dependencies": ["daisyui", "react-hook-form"],
+			"files": [
+				{
+					"path": "./hook-form/hook-form-utils.ts",
+					"type": "registry:lib",
+					"target": "@components/hook-form/hook-form-utils.ts"
+				},
+				{
+					"path": "./hook-form/hook-form-types.ts",
+					"type": "registry:lib",
+					"target": "@components/hook-form/hook-form-types.ts"
+				},
+				{
+					"path": "./hook-form/hook-form-field.tsx",
+					"type": "registry:component",
+					"target": "@components/hook-form/hook-form-field.tsx"
+				},
+				{
+					"path": "./hook-form/hook-form-actions.tsx",
+					"type": "registry:component",
+					"target": "@components/hook-form/hook-form-actions.tsx"
+				},
+				{
+					"path": "./hook-form/hook-form.tsx",
+					"type": "registry:component",
+					"target": "@components/hook-form/hook-form.tsx"
+				},
+				{
+					"path": "./hook-form/index.ts",
+					"type": "registry:component",
+					"target": "@components/hook-form/index.ts"
+				}
+			]
+		},
+		{
+			"name": "zoom",
+			"type": "registry:component",
+			"title": "Image Zoom",
+			"description": "An accessible controlled or uncontrolled image zoom with native dialog behavior and animated viewport fitting",
+			"dependencies": ["lucide-react"],
+			"files": [
+				{
+					"path": "./zoom-geometry.ts",
+					"type": "registry:lib",
+					"target": "@components/zoom-geometry.ts"
+				},
+				{
+					"path": "./zoom-layout.ts",
+					"type": "registry:lib",
+					"target": "@components/zoom-layout.ts"
+				},
+				{
+					"path": "./zoom-runtime.ts",
+					"type": "registry:lib",
+					"target": "@components/zoom-runtime.ts"
+				},
+				{
+					"path": "./zoom.tsx",
+					"type": "registry:component",
+					"target": "@components/zoom.tsx"
+				}
+			]
+		},
+		{
+			"name": "web-vitals",
+			"type": "registry:component",
+			"title": "Web Vitals",
+			"description": "A headless, lazily loaded Core Web Vitals collector with callback and browser-event reporting",
+			"dependencies": ["web-vitals@5.3.0"],
+			"files": [
+				{
+					"path": "./web-vitals.tsx",
+					"type": "registry:component",
+					"target": "@components/web-vitals.tsx"
+				}
+			]
+		},
+		{
+			"name": "update-notification",
+			"type": "registry:component",
+			"title": "Update Notification",
+			"description": "A headless web update detector with toast, banner, and inline notification presenters",
+			"dependencies": ["daisyui", "lucide-react"],
+			"files": [
+				{
+					"path": "./update-notification/use-update-notification.ts",
+					"type": "registry:hook",
+					"target": "@components/update-notification/use-update-notification.ts"
+				},
+				{
+					"path": "./update-notification/update-notification-display.tsx",
+					"type": "registry:component",
+					"target": "@components/update-notification/update-notification-display.tsx"
+				},
+				{
+					"path": "./update-notification/update-notification.tsx",
+					"type": "registry:component",
+					"target": "@components/update-notification/update-notification.tsx"
+				},
+				{
+					"path": "./update-notification/index.ts",
+					"type": "registry:component",
+					"target": "@components/update-notification/index.ts"
+				}
+			]
+		},
+		{
+			"name": "loaders",
+			"type": "registry:component",
+			"title": "Loading Primitives",
+			"description": "Accessible loaders, pending buttons, section and page indicators, local overlays, and list/table skeleton recipes",
+			"dependencies": ["daisyui"],
+			"files": [
+				{
+					"path": "./loaders/loader.tsx",
+					"type": "registry:component",
+					"target": "@components/loaders/loader.tsx"
+				},
+				{
+					"path": "./loaders/pending-button.tsx",
+					"type": "registry:component",
+					"target": "@components/loaders/pending-button.tsx"
+				},
+				{
+					"path": "./loaders/loading-overlay.tsx",
+					"type": "registry:component",
+					"target": "@components/loaders/loading-overlay.tsx"
+				},
+				{
+					"path": "./loaders/skeleton.tsx",
+					"type": "registry:component",
+					"target": "@components/loaders/skeleton.tsx"
+				},
+				{
+					"path": "./loaders/index.ts",
+					"type": "registry:component",
+					"target": "@components/loaders/index.ts"
+				}
+			]
+		}
+	]
+}
