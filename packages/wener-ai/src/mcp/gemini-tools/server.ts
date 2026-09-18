@@ -10,7 +10,7 @@ export interface CreateGeminiToolsMcpServerOptions {
 	name?: string;
 	version?: string;
 	apiKey?: string;
-	/** Google Gemini API base URL. For PPIO: 'https://api.ppinfra.com/gemini/v1beta/models' */
+	/** Google Gemini API base URL for an OpenAI-compatible Gemini endpoint. */
 	baseUrl?: string;
 	model?: string;
 }
