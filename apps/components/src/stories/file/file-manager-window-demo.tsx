@@ -4,13 +4,13 @@ import { createMemoryFileSystem, type IFileSystem } from '@wener/common/fs';
 import { FolderOpen } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { renderFileManagerWindow, showFileManager } from '@/file/file-manager/file-manager-window';
+import { LeftCenterRightLayout } from '@/ui/left-center-right-layout';
 import {
 	createWindowManagerStore,
 	useWindowManagerActions,
 	WindowManagerHost,
 	WindowManagerProvider,
 } from '@/window/window-manager';
-import { LeftCenterRightLayout } from '@/ui/left-center-right-layout';
 
 export function FileManagerWindowDemo() {
 	const [fileSystem, setFileSystem] = useState<IFileSystem>();

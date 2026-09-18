@@ -1,10 +1,10 @@
-import type { Persona } from '@wener/ai/agent/persona';
 import {
 	AiConfigFieldGrid,
 	AiConfigSelectField,
 	AiConfigTextField,
 	AiConfigToggleField,
 } from '@components/ui/ai-config-editor';
+import type { Persona } from '@wener/ai/agent/persona';
 
 const visibility = ['private', 'unlisted', 'public'].map((value) => ({ value, label: value }));
 const ratings = ['unknown', 'general', 'teen', 'mature', 'restricted'].map((value) => ({ value, label: value }));

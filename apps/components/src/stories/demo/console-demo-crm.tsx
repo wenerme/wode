@@ -4,11 +4,11 @@ import { useLiveQuery } from '@tanstack/react-db';
 import { Pencil, Plus, RotateCcw } from 'lucide-react';
 import { type FormEvent, useEffect, useMemo, useRef, useState } from 'react';
 import { DataViewLayout, DataViewSearch } from '@/resource/console-data-view';
-import type { ContactRecord, CustomerRecord, CustomerStatus } from './console-demo-database';
-import { useConsoleDemoDataRuntime } from './console-demo-data-runtime';
 import { ConsoleCrmDeleteDialog as DeleteDialog } from './console-demo-crm-delete-dialog';
 import { CrmSummaryBody } from './console-demo-crm-summary';
 import { ContactTable, CustomerTable } from './console-demo-crm-table';
+import { useConsoleDemoDataRuntime } from './console-demo-data-runtime';
+import type { ContactRecord, CustomerRecord, CustomerStatus } from './console-demo-database';
 import { consoleDemoDataset } from './console-demo-dataset';
 
 export type ConsoleCrmPage = 'account' | 'contact';

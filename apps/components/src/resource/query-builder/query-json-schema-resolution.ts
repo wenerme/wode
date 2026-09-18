@@ -1,4 +1,3 @@
-import type { QueryOption } from './query-model';
 import type { QueryJsonSchema, QuerySchemaDiagnostic } from './query-json-schema-types';
 import {
 	decodePointerSegment,
@@ -16,6 +15,7 @@ import {
 	toPointer,
 	validateSchemaShape,
 } from './query-json-schema-utils';
+import type { QueryOption } from './query-model';
 
 export type ResolvedQuerySchema = { schema: QueryJsonSchema; stack: readonly string[] };
 

@@ -1,5 +1,12 @@
 'use client';
 
+import type {
+	FileManagerFileTypeDefinition,
+	FileManagerFileTypeIconProps,
+	FileManagerFileTypeMatchInput,
+	FileManagerFileTypeViewerProps,
+} from '@components/file-type-registry/file-manager-file-type-types';
+import { setFileManagerBuiltinDefinitions } from '@components/file-type-registry/file-manager-registry';
 import {
 	CaseSensitive,
 	Database,
@@ -17,16 +24,9 @@ import {
 	SquareTerminal,
 } from 'lucide-react';
 import type { ComponentType } from 'react';
+import { cn } from '@/lib/utils';
 import { AudioFileViewer, ImageFileViewer, PdfFileViewer, VideoFileViewer } from './media-file-viewers';
 import { TextFileViewer } from './text-file-viewer';
-import { cn } from '@/lib/utils';
-import type {
-	FileManagerFileTypeDefinition,
-	FileManagerFileTypeIconProps,
-	FileManagerFileTypeMatchInput,
-	FileManagerFileTypeViewerProps,
-} from '@components/file-type-registry/file-manager-file-type-types';
-import { setFileManagerBuiltinDefinitions } from '@components/file-type-registry/file-manager-registry';
 
 const textMimeTypes: Readonly<Record<string, string>> = {
 	conf: 'text/plain',

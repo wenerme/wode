@@ -1,4 +1,3 @@
-import type { Model, ModelCapabilities, ModelCost, ModelDefaults, ModelLimits } from '@wener/ai/schema';
 import {
 	type AiConfigEditorSlots,
 	AiConfigFieldGrid,
@@ -6,6 +5,7 @@ import {
 	AiConfigTextField,
 	AiConfigToggleField,
 } from '@components/ui/ai-config-editor';
+import type { Model, ModelCapabilities, ModelCost, ModelDefaults, ModelLimits } from '@wener/ai/schema';
 
 const capabilityFields: readonly { key: keyof Omit<ModelCapabilities, 'extensions'>; label: string }[] = [
 	{ key: 'messageGeneration', label: '消息生成' },

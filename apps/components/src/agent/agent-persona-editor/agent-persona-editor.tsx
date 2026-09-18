@@ -1,7 +1,5 @@
 'use client';
 
-import { type Persona, PersonaSchema } from '@wener/ai/agent/persona';
-import type { ReactNode } from 'react';
 import {
 	AiConfigEditor,
 	AiConfigFieldGrid,
@@ -15,6 +13,8 @@ import {
 	mergeResourceEditorMessages,
 	useAiConfigDraft,
 } from '@components/ui/ai-config-editor';
+import { type Persona, PersonaSchema } from '@wener/ai/agent/persona';
+import type { ReactNode } from 'react';
 import type {
 	AgentPersonaEditorField,
 	AgentPersonaEditorMessages,

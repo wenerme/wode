@@ -6,10 +6,7 @@
 			"type": "registry:block",
 			"title": "Console Window",
 			"description": "Controlled window chrome with title bar, toolbar, content, status bar, and workspace layout patterns",
-			"dependencies": [
-				"daisyui",
-				"lucide-react"
-			],
+			"dependencies": ["daisyui", "lucide-react"],
 			"files": [
 				{
 					"path": "./console-window/console-window.tsx",

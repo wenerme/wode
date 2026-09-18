@@ -42,12 +42,7 @@
 		"./utils": "./src/utils/index.ts",
 		"./package.json": "./package.json"
 	},
-	"files": [
-		"lib",
-		"lib.d.ts",
-		"libs",
-		"src"
-	],
+	"files": ["lib", "lib.d.ts", "libs", "src"],
 	"keywords": [],
 	"scripts": {
 		"build": "make build",

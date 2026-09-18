@@ -6,11 +6,7 @@
 			"type": "registry:block",
 			"title": "Login Page",
 			"description": "A composable login page with customizable regions, form modes, social providers, hero, and secure footer links",
-			"dependencies": [
-				"daisyui",
-				"lucide-react",
-				"react-hook-form"
-			],
+			"dependencies": ["daisyui", "lucide-react", "react-hook-form"],
 			"files": [
 				{
 					"path": "./login-page/login-page.tsx",

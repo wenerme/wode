@@ -1,10 +1,10 @@
 import Dexie, { type EntityTable } from 'dexie';
 import { CONSOLE_DEMO_SEED_VERSION, consoleDemoDataset } from './console-demo-dataset';
 import {
-	ContactRecordSchema,
 	type ContactRecord,
-	CustomerRecordSchema,
+	ContactRecordSchema,
 	type CustomerRecord,
+	CustomerRecordSchema,
 } from './console-demo-resource-schema';
 
 export type { ContactRecord, CustomerRecord, CustomerStatus } from './console-demo-resource-schema';

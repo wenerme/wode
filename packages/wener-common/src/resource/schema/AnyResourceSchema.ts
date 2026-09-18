@@ -1,13 +1,13 @@
 import { z } from 'zod/v4';
-import { SexTypeSchema } from './SexType';
-import { ResourceIdSchema } from './ResourceIdSchema';
-import { PhoneNumberSchema } from './PhoneNumberSchema';
-import { resourceIdSchemaOf } from './resourceIdSchemaOf';
 import { DisplayNameSchema } from './DisplayNameSchema';
-import { PasswordSchema } from './PasswordSchema';
-import { JsonDateTimeSchema } from './JsonDateTimeSchema';
 import { JsonDateSchema } from './JsonDateSchema';
+import { JsonDateTimeSchema } from './JsonDateTimeSchema';
 import { LoginNameSchema } from './LoginNameSchema';
+import { PasswordSchema } from './PasswordSchema';
+import { PhoneNumberSchema } from './PhoneNumberSchema';
+import { ResourceIdSchema } from './ResourceIdSchema';
+import { resourceIdSchemaOf } from './resourceIdSchemaOf';
+import { SexTypeSchema } from './SexType';
 
 export type AnyResource = z.infer<typeof AnyResourceSchema> & {
 	owner?: AnyResource;

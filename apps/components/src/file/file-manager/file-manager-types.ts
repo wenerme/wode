@@ -1,6 +1,6 @@
+import type { FileManagerRegistry } from '@components/file-type-registry/file-manager-file-type-types';
 import type Emittery from 'emittery';
 import type { ReactNode } from 'react';
-import type { FileManagerRegistry } from '@components/file-type-registry/file-manager-file-type-types';
 
 export const fileManagerUploadHardFileLimit = 4_096;
 export const fileManagerListingHardEntryLimit = 10_000;

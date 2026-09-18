@@ -10,6 +10,7 @@ import {
 	useMemo,
 	useState,
 } from 'react';
+import { cn } from '@/lib/utils';
 import {
 	type BooleanInput,
 	type DateInput,
@@ -32,7 +33,6 @@ import {
 	type NumberInput,
 	parseDateValue,
 } from './format-values';
-import { cn } from '@/lib/utils';
 
 export type FormatConfig = {
 	currency?: string;

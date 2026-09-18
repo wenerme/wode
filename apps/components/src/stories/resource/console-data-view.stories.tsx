@@ -4,17 +4,17 @@ import { useState } from 'react';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 import {
 	DataView,
+	type DataViewColumn,
 	DataViewEmpty,
 	DataViewHeader,
 	DataViewLayout,
 	DataViewSearch,
-	type DataViewColumn,
 } from '@/resource/console-data-view';
 import { Status } from '@/ui/status';
-import { type DemoRecord, demoRecords } from './resource-fixtures';
 import { ConsoleDataViewDemo } from './data-view-demo';
 import { DataViewResourceWorkspaceDemo } from './data-view-resource-workspace-demo';
 import { createFakeDemoRecords } from './fake-data-view-records';
+import { type DemoRecord, demoRecords } from './resource-fixtures';
 
 const meta = {
 	id: 'console-data-view',

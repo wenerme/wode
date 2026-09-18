@@ -1,6 +1,6 @@
+import type { QueryJsonSchema, QuerySchemaDiagnostic, QuerySchemaDiagnosticCode } from './query-json-schema-types';
 import type { QueryFieldKind, QueryJsonPrimitive } from './query-model';
 import { isQueryJsonValue } from './query-model';
-import type { QueryJsonSchema, QuerySchemaDiagnostic, QuerySchemaDiagnosticCode } from './query-json-schema-types';
 
 const allowedSchemaTypes = new Set(['null', 'object', 'array', 'string', 'number', 'integer', 'boolean']);
 

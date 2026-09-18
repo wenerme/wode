@@ -24,12 +24,12 @@ import {
 	validateFileManagerName,
 } from './file-manager-utils';
 
+export type { ExecuteFileManagerOperationOptions } from './file-manager-operation-executor';
 export {
 	executeFileManagerOperation,
 	FileManagerBatchOperationError,
 	FileManagerOperationCancelledError,
 } from './file-manager-operation-executor';
-export type { ExecuteFileManagerOperationOptions } from './file-manager-operation-executor';
 
 export type FileManagerRuntimeProps = {
 	fileSystem: FileManagerFileSystem;

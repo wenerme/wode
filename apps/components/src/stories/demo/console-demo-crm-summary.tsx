@@ -1,5 +1,5 @@
-import type { ContactRecord, CustomerRecord, TenantRecord } from './console-demo-resource-schema';
 import type { ConsoleCrmPage } from './console-demo-crm';
+import type { ContactRecord, CustomerRecord, TenantRecord } from './console-demo-resource-schema';
 
 export function CrmSummaryBody({
 	page,

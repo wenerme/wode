@@ -30,10 +30,10 @@ import {
 	ConsoleRecordTabs,
 } from '@/resource/console-record-detail';
 import {
+	type ContactRecord,
 	contactActivities,
 	contactOpportunities,
 	contactOrders,
-	type ContactRecord,
 	initialContactRecord,
 } from './console-record-detail-fixtures';
 

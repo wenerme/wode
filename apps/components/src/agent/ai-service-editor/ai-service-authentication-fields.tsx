@@ -1,5 +1,3 @@
-import type { Service } from '@wener/ai/schema';
-import type { ReactNode } from 'react';
 import {
 	AiConfigFieldGrid,
 	AiConfigKeyValueField,
@@ -7,6 +5,8 @@ import {
 	AiConfigTextField,
 	JsonValueEditor,
 } from '@components/ui/ai-config-editor';
+import type { Service } from '@wener/ai/schema';
+import type { ReactNode } from 'react';
 
 export type AiServiceAuthenticationFieldsProps = {
 	value: Service;

@@ -1,7 +1,5 @@
 'use client';
 
-import { DefaultApiRegistry, type Service, ServiceSchema } from '@wener/ai/schema';
-import type { ReactNode } from 'react';
 import {
 	AiConfigEditor,
 	AiConfigFieldGrid,
@@ -18,6 +16,8 @@ import {
 	mergeResourceEditorMessages,
 	useAiConfigDraft,
 } from '@components/ui/ai-config-editor';
+import { DefaultApiRegistry, type Service, ServiceSchema } from '@wener/ai/schema';
+import type { ReactNode } from 'react';
 import { AiServiceAuthenticationFields } from './ai-service-authentication-fields';
 import type { AiServiceEditorField, AiServiceEditorMessages, AiServiceEditorProps } from './ai-service-editor-types';
 

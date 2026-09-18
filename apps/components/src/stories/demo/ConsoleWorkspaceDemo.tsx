@@ -41,6 +41,7 @@ import {
 	ConsoleSidebarNav,
 	ConsoleStatus,
 } from '@/console/console-shell';
+import { DataViewResourceWorkspaceDemo } from '../resource/data-view-resource-workspace-demo';
 import {
 	ConsoleDocumentsContent,
 	ConsoleFilesContent,
@@ -54,9 +55,9 @@ import {
 	isRoutedModulePage,
 } from './console-demo-module-content';
 import {
+	type DataListPage,
 	type DemoModulePage,
 	type DemoPage,
-	type DataListPage,
 	getActiveTopModule,
 	getRoutedSidebar,
 	isDataListPage,
@@ -65,7 +66,6 @@ import {
 	userSettingsPages,
 } from './console-demo-navigation';
 import { demoModules, shellNav } from './console-fixtures';
-import { DataViewResourceWorkspaceDemo } from '../resource/data-view-resource-workspace-demo';
 
 export type { DemoPage } from './console-demo-navigation';
 

@@ -1,11 +1,11 @@
-import { ResourceIdSchema } from './ResourceIdSchema';
-import { PhoneNumberSchema } from './PhoneNumberSchema';
-import { resourceIdSchemaOf } from './resourceIdSchemaOf';
 import { DisplayNameSchema } from './DisplayNameSchema';
-import { PasswordSchema } from './PasswordSchema';
-import { JsonDateTimeSchema } from './JsonDateTimeSchema';
 import { JsonDateSchema } from './JsonDateSchema';
+import { JsonDateTimeSchema } from './JsonDateTimeSchema';
 import { LoginNameSchema } from './LoginNameSchema';
+import { PasswordSchema } from './PasswordSchema';
+import { PhoneNumberSchema } from './PhoneNumberSchema';
+import { ResourceIdSchema } from './ResourceIdSchema';
+import { resourceIdSchemaOf } from './resourceIdSchemaOf';
 
 export const rz = {
 	resourceIdOf: resourceIdSchemaOf,

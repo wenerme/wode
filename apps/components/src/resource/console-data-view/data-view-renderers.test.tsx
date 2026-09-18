@@ -2,11 +2,11 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vite-plus/test';
 import { DataViewLayout } from './data-view-layout';
 import {
+	type DataViewColumn,
 	DataViewListView,
 	DataViewSheetView,
 	DataViewTableView,
 	getVisibleColumns,
-	type DataViewColumn,
 } from './data-view-renderers';
 
 type Row = { id: string; name: string; owner: string; status: string };

@@ -1,3 +1,3 @@
-export { loadDotEnv, type LoadDotEnvOptions } from './loadDotEnv';
-export { loadEnvConf, type LoadEnvConfOptions } from './loadEnvConf';
+export { type LoadDotEnvOptions, loadDotEnv } from './loadDotEnv';
+export { type LoadEnvConfOptions, loadEnvConf } from './loadEnvConf';
 export { parseDotEnv } from './parseDotEnv';

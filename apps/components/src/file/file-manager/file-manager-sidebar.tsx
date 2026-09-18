@@ -1,18 +1,18 @@
 'use client';
 
-import { Folder, FolderTree, HardDrive } from 'lucide-react';
-import type { PanelImperativeHandle } from 'react-resizable-panels';
-import type { ComponentProps } from 'react';
-import { useEffect, useRef, useState } from 'react';
 import { FileTree } from '@components/file-tree';
 import { createFileTreeStore } from '@components/file-tree/file-tree-store';
 import type { FileTreeFileStat } from '@components/file-tree/file-tree-types';
+import { FileManagerFileTypeIcon, useFileManagerRegistry } from '@components/file-viewer/file-manager-registry';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@ui/resizable';
+import { Folder, FolderTree, HardDrive } from 'lucide-react';
+import type { ComponentProps } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import type { PanelImperativeHandle } from 'react-resizable-panels';
 import { cn } from '@/lib/utils';
 import { useFileManagerActions, useFileManagerStore, useFileManagerStoreContext } from './file-manager-context';
 import type { FileManagerDragAndDropController } from './file-manager-drag-drop';
 import { getFileManagerOperationRefreshPlan } from './file-manager-operation-utils';
-import { FileManagerFileTypeIcon, useFileManagerRegistry } from '@components/file-viewer/file-manager-registry';
 import type { FileManagerFileStat, FileManagerPlace } from './file-manager-types';
 import { normalizeFileManagerPath, toFileManagerFileTypeInput } from './file-manager-utils';
 

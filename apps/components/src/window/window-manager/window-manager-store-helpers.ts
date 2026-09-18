@@ -278,9 +278,9 @@ export function isWindowManagerWindowRecord(
 ): value is Record<string, ManagedWindow> & { [WINDOW_MANAGER_WINDOW_RECORD]: true } {
 	return Boolean(
 		value &&
-		typeof value === 'object' &&
-		Object.getPrototypeOf(value) === null &&
-		Reflect.get(value, WINDOW_MANAGER_WINDOW_RECORD) === true,
+			typeof value === 'object' &&
+			Object.getPrototypeOf(value) === null &&
+			Reflect.get(value, WINDOW_MANAGER_WINDOW_RECORD) === true,
 	);
 }
 
@@ -304,21 +304,21 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 function isManagedWindowRecordValue(value: unknown): value is ManagedWindow {
 	return Boolean(
 		isRecord(value) &&
-		typeof value.id === 'string' &&
-		typeof value.title === 'string' &&
-		isRecord(value.bounds) &&
-		isRecord(value.capabilities) &&
-		isRecord(value.size),
+			typeof value.id === 'string' &&
+			typeof value.title === 'string' &&
+			isRecord(value.bounds) &&
+			isRecord(value.capabilities) &&
+			isRecord(value.size),
 	);
 }
 
 function isBounds(value: unknown): value is WindowManagerBounds {
 	return Boolean(
 		isRecord(value) &&
-		isFiniteNumber(value.x) &&
-		isFiniteNumber(value.y) &&
-		isFinitePositive(value.width) &&
-		isFinitePositive(value.height),
+			isFiniteNumber(value.x) &&
+			isFiniteNumber(value.y) &&
+			isFinitePositive(value.width) &&
+			isFinitePositive(value.height),
 	);
 }
 

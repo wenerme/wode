@@ -1,5 +1,3 @@
-import type { Persona } from '@wener/ai/agent/persona';
-import type { ComponentPropsWithRef } from 'react';
 import type {
 	AiConfigEditorSlots,
 	AiConfigSchema,
@@ -7,6 +5,8 @@ import type {
 	AiResourceEditorMessageOverrides,
 	AiResourceEditorMessages,
 } from '@components/ui/ai-config-editor';
+import type { Persona } from '@wener/ai/agent/persona';
+import type { ComponentPropsWithRef } from 'react';
 
 export type AgentPersonaEditorField =
 	| 'id'

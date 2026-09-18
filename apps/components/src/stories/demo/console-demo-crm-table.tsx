@@ -1,5 +1,5 @@
 import { Pencil, Trash2 } from 'lucide-react';
-import { DataViewLayout, type DataViewColumn } from '@/resource/console-data-view';
+import { type DataViewColumn, DataViewLayout } from '@/resource/console-data-view';
 import { Status } from '@/ui/status';
 import type { ContactRecord, CustomerRecord, CustomerStatus } from './console-demo-database';
 
@@ -34,7 +34,7 @@ export function CustomerTable({
 			cell: (record) => <span className='font-medium'>{record.name}</span>,
 		},
 		{ id: 'owner', label: '负责人', width: '10rem', cell: (record) => record.owner },
-		{ id: 'status', label: '状态', width: '8rem', cell: (record) => <CustomerStatus status={record.status} /> },
+		{ id: 'status', label: '状态', width: '8rem', cell: (record) => <CustomerStatusBadge status={record.status} /> },
 		{
 			id: 'contacts',
 			label: '联系人',
@@ -170,7 +170,7 @@ function RowActions({
 	);
 }
 
-function CustomerStatus({ status }: { status: CustomerStatus }) {
+function CustomerStatusBadge({ status }: { status: CustomerStatus }) {
 	const values = { active: ['success', '正常'], prospect: ['warning', '潜在'], inactive: ['neutral', '停用'] } as const;
 	return (
 		<Status tone={values[status][0]} size='xs'>

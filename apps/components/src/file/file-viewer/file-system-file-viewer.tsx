@@ -1,20 +1,20 @@
 'use client';
 
-import { AlertCircle, FileText, LoaderCircle } from 'lucide-react';
-import type { ComponentPropsWithRef } from 'react';
-import { useCallback, useEffect, useRef, useState } from 'react';
 import type {
 	FileManagerFileTypeDefinition,
 	FileManagerRegistry,
 } from '@components/file-type-registry/file-manager-file-type-types';
-import { getFileManager, useFileManagerRegistry } from './file-manager-registry';
 import {
 	AddressableFrame,
 	AddressableFrameContent,
 	AddressableFrameFooter,
 	AddressableFrameHeader,
 } from '@ui/addressable-frame';
+import { AlertCircle, FileText, LoaderCircle } from 'lucide-react';
+import type { ComponentPropsWithRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
+import { getFileManager, useFileManagerRegistry } from './file-manager-registry';
 import { FileViewer } from './file-viewer';
 import { getFileSystemViewerMimeType, resolveFileSystemViewerType, toFileViewerKind } from './file-viewer-kind';
 import type { FileViewerFileDescriptor, FileViewerKind, FileViewerMessages } from './file-viewer-types';

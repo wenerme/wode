@@ -1,7 +1,5 @@
 'use client';
 
-import type { SkillResource } from '@wener/ai/agent/skill';
-import { Plus, Trash2 } from 'lucide-react';
 import {
 	AiConfigFieldGrid,
 	AiConfigSelectField,
@@ -10,6 +8,8 @@ import {
 	AiConfigToggleField,
 	useStableListEntries,
 } from '@components/ui/ai-config-editor';
+import type { SkillResource } from '@wener/ai/agent/skill';
+import { Plus, Trash2 } from 'lucide-react';
 
 const resourceTypes = ['reference', 'template', 'example', 'script', 'asset', 'schema', 'other'].map((value) => ({
 	value,

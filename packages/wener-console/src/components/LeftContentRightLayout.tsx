@@ -1,4 +1,5 @@
-import React, { type ElementType, type ReactNode } from 'react';
+import type React from 'react';
+import type { ElementType, ReactNode } from 'react';
 import { cn } from '../utils/cn';
 import type { AsProps } from './props';
 

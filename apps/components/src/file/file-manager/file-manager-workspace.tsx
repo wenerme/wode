@@ -1,17 +1,17 @@
 'use client';
 
-import { useRef, type ReactNode, type RefObject } from 'react';
+import { useFileManagerRegistry } from '@components/file-viewer/file-manager-registry';
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@ui/resizable';
+import { type ReactNode, type RefObject, useRef } from 'react';
 import type { PanelImperativeHandle } from 'react-resizable-panels';
 import { cn } from '@/lib/utils';
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@ui/resizable';
+import type { FileManagerProps } from './file-manager';
 import { useFileManagerActions, useFileManagerStore } from './file-manager-context';
 import type { FileManagerDragAndDropController } from './file-manager-drag-drop';
 import { FileManagerListing } from './file-manager-listing';
 import { FileManagerPreview } from './file-manager-preview';
 import { FileManagerSidebar } from './file-manager-sidebar';
 import type { FileManagerFileStat, FileManagerPlace } from './file-manager-types';
-import type { FileManagerProps } from './file-manager';
-import { useFileManagerRegistry } from '@components/file-viewer/file-manager-registry';
 
 export type FileManagerWorkspaceProps = {
 	busy: boolean;

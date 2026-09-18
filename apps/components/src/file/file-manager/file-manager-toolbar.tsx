@@ -1,5 +1,7 @@
 'use client';
 
+import { PathAddressBar } from '@components/path-address-bar';
+import { PathAddressBarMenuItem } from '@components/path-address-bar/path-address-bar-menu-item';
 import {
 	ArrowLeft,
 	ArrowRight,
@@ -25,12 +27,10 @@ import {
 import type { RefObject } from 'react';
 import type { PanelImperativeHandle } from 'react-resizable-panels';
 import { cn } from '@/lib/utils';
-import { PathAddressBar } from '@components/path-address-bar';
-import { PathAddressBarMenuItem } from '@components/path-address-bar/path-address-bar-menu-item';
+import type { FileManagerProps } from './file-manager';
 import { useFileManagerActions, useFileManagerStore } from './file-manager-context';
 import { FileManagerCommandButton, FileManagerNavigationButton, FileManagerViewButton } from './file-manager-controls';
 import type { FileManagerFileStat } from './file-manager-types';
-import type { FileManagerProps } from './file-manager';
 
 export type FileManagerToolbarProps = {
 	busy: boolean;

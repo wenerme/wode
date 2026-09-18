@@ -1,5 +1,5 @@
-import type { Persona } from '@wener/ai/agent/persona';
 import { AiConfigFieldGrid, AiConfigStringListField, AiConfigTextareaField } from '@components/ui/ai-config-editor';
+import type { Persona } from '@wener/ai/agent/persona';
 
 export type PersonaSectionFieldsProps = {
 	value: Persona;

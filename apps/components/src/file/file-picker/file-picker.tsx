@@ -1,9 +1,9 @@
 'use client';
 
+import { LeftCenterRightLayout } from '@ui/left-center-right-layout';
 import { FolderOpen, Save, X } from 'lucide-react';
 import { type FormEvent, type ReactNode, useEffect, useId, useMemo, useRef, useState } from 'react';
 import { useStore } from 'zustand';
-import { LeftCenterRightLayout } from '@ui/left-center-right-layout';
 import { createFileManagerStore, FileManager, type FileManagerStore } from '../file-manager';
 import { FilePickerProvider, useFilePickerActions, useFilePickerStore } from './file-picker-context';
 import { matchesFilePickerAccept } from './file-picker-model';

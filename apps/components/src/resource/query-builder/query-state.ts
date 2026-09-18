@@ -1,5 +1,6 @@
 import type { QueryGroup, QueryJsonValue, QueryNode, QueryRule } from './query-model';
 import { cloneQueryJsonValue, isQueryJsonValue } from './query-model';
+import { isNodeStructurallyValid, isQueryGroupValue, normalizeRuntimeMaxDepth } from './query-state-structure';
 import {
 	areQueriesEqual,
 	cloneNodePreservingIds,
@@ -7,7 +8,6 @@ import {
 	valuesEqual,
 	walkQuery,
 } from './query-state-traversal';
-import { isNodeStructurallyValid, isQueryGroupValue, normalizeRuntimeMaxDepth } from './query-state-structure';
 
 export type QueryAction =
 	| { type: 'insert-node'; parentId: string; node: QueryNode; index?: number }

@@ -1,7 +1,5 @@
 'use client';
 
-import { type McpServerConfig, McpServerConfigSchema, type McpTransport } from '@wener/ai/mcp';
-import type { ComponentPropsWithRef, ReactNode } from 'react';
 import {
 	AiConfigEditor,
 	type AiConfigEditorSlots,
@@ -23,6 +21,8 @@ import {
 	mergeResourceEditorMessages,
 	useAiConfigDraft,
 } from '@components/ui/ai-config-editor';
+import { type McpServerConfig, McpServerConfigSchema, type McpTransport } from '@wener/ai/mcp';
+import type { ComponentPropsWithRef, ReactNode } from 'react';
 
 export type McpServerEditorField =
 	| 'id'

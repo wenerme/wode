@@ -1,5 +1,9 @@
 'use client';
 
+import { FileManager, type FileManagerProps } from '@components/file-manager';
+import { createFileManagerStore } from '@components/file-manager/file-manager-store';
+import type { FileManagerStore } from '@components/file-manager/file-manager-types';
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@ui/resizable';
 import { Files, MessagesSquare } from 'lucide-react';
 import {
 	type ComponentPropsWithRef,
@@ -11,11 +15,7 @@ import {
 	useRef,
 	useState,
 } from 'react';
-import { FileManager, type FileManagerProps } from '@components/file-manager';
-import { createFileManagerStore } from '@components/file-manager/file-manager-store';
-import type { FileManagerStore } from '@components/file-manager/file-manager-types';
 import { cn } from '@/lib/utils';
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@ui/resizable';
 import type { AgentWorkspace, AgentWorkspaceContext } from './workspace-types';
 
 export type AgentWorkPane = 'chat' | 'workspace';

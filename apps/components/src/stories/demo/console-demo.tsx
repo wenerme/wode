@@ -12,11 +12,11 @@ import {
 	createConsoleDemoAutomationDatabaseName,
 	useConsoleDemoDataRuntime,
 } from './console-demo-data-runtime';
+import type { ConsoleDemoPartition } from './console-demo-database';
 import { CONSOLE_DEMO_COUNTS } from './console-demo-dataset';
+import { getPageFromPath, getPagePath, pagePaths, type RoutedDemoPage } from './console-demo-navigation';
 import type { ConsoleDemoDataRuntime } from './console-demo-react-db';
 import { type ConsoleDemoResourceCounts, subscribeConsoleDemoResourceCounts } from './console-demo-resource-counts';
-import type { ConsoleDemoPartition } from './console-demo-database';
-import { getPageFromPath, getPagePath, pagePaths, type RoutedDemoPage } from './console-demo-navigation';
 
 export type ConsoleDemoScreen = 'login' | 'register' | 'console';
 

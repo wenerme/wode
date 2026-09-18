@@ -1,5 +1,5 @@
 import { X } from 'lucide-react';
-import { useId, type ComponentPropsWithRef, type KeyboardEvent, type ReactNode } from 'react';
+import { type ComponentPropsWithRef, type KeyboardEvent, type ReactNode, useId } from 'react';
 import { cn } from '@/lib/utils';
 
 export type DataViewSummaryTab<Value extends string = string> = {

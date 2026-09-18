@@ -1,5 +1,3 @@
-import type { Service } from '@wener/ai/schema';
-import type { ComponentPropsWithRef } from 'react';
 import type {
 	AiConfigEditorOption,
 	AiConfigEditorSlots,
@@ -8,6 +6,8 @@ import type {
 	AiResourceEditorMessageOverrides,
 	AiResourceEditorMessages,
 } from '@components/ui/ai-config-editor';
+import type { Service } from '@wener/ai/schema';
+import type { ComponentPropsWithRef } from 'react';
 
 export type AiServiceEditorField =
 	| 'id'

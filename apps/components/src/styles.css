@@ -1,9 +1,9 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 @source "../node_modules/@wener/ui/src";
 @source "../../../packages/ui/src";
 
 @theme {
-	--font-sans: 'Geist var', 'Geist', system-ui, sans-serif;
+	--font-sans: "Geist var", "Geist", system-ui, sans-serif;
 
 	/* Shadcn theme configuration - only non-conflicting vars */
 	--color-sidebar-ring: var(--sidebar-ring);
@@ -116,7 +116,7 @@
 }
 
 @plugin "daisyui/theme" {
-	name: 'wener';
+	name: "wener";
 	default: true;
 	prefersdark: false;
 	color-scheme: light;
@@ -206,41 +206,41 @@
 	}
 }
 
-:root[data-radius='square'] {
+:root[data-radius="square"] {
 	--radius: 0.125rem;
 	--radius-box: 0.125rem;
 	--radius-field: 0.125rem;
 	--radius-selector: 0.125rem;
 }
 
-:root[data-radius='soft'] {
+:root[data-radius="soft"] {
 	--radius: 0.45rem;
 	--radius-box: 0.5rem;
 	--radius-field: 0.25rem;
 	--radius-selector: 0.5rem;
 }
 
-:root[data-radius='rounded'] {
+:root[data-radius="rounded"] {
 	--radius: 0.75rem;
 	--radius-box: 0.75rem;
 	--radius-field: 0.5rem;
 	--radius-selector: 0.75rem;
 }
 
-:root[data-density='compact'] [data-console-density] {
+:root[data-density="compact"] [data-console-density] {
 	--console-control-height: 2rem;
 	--console-row-padding: 0.5rem;
 }
 
-:root[data-density='comfortable'] [data-console-density],
+:root[data-density="comfortable"] [data-console-density],
 [data-console-density] {
 	--console-control-height: 2.25rem;
 	--console-row-padding: 0.75rem;
 }
 
-:root[data-motion='reduced'] *,
-:root[data-motion='reduced'] *::before,
-:root[data-motion='reduced'] *::after {
+:root[data-motion="reduced"] *,
+:root[data-motion="reduced"] *::before,
+:root[data-motion="reduced"] *::after {
 	scroll-behavior: auto !important;
 	animation-duration: 0.01ms !important;
 	animation-iteration-count: 1 !important;

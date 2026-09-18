@@ -4,13 +4,13 @@ import {
 	type AdminUserRecord,
 	type ContactRecord,
 	type CustomerRecord,
+	consoleDemoResourceSchemas,
 	type FormRecord,
 	type LeadRecord,
 	type MetaUserRecord,
 	type OpportunityRecord,
 	type OrderRecord,
 	type TenantRecord,
-	consoleDemoResourceSchemas,
 } from './console-demo-resource-schema';
 
 export const CONSOLE_DEMO_DATASET_SEED = 20260720;
