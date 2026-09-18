@@ -3,23 +3,23 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { MethodKind } from '@bufbuild/protobuf';
-import { GetMessageRequest, GetMessageResponse } from './WecomArchiveService_pb.js';
+import { GetMessageRequest, GetMessageResponse } from "./WecomArchiveService_pb.js";
+import { MethodKind } from "@bufbuild/protobuf";
 
 /**
  * @generated from service wode.wecom.archive.v1.WecomArchiveService
  */
 export const WecomArchiveService = {
-	typeName: 'wode.wecom.archive.v1.WecomArchiveService',
-	methods: {
-		/**
-		 * @generated from rpc wode.wecom.archive.v1.WecomArchiveService.GetMessage
-		 */
-		getMessage: {
-			name: 'GetMessage',
-			I: GetMessageRequest,
-			O: GetMessageResponse,
-			kind: MethodKind.Unary,
-		},
-	},
+  typeName: "wode.wecom.archive.v1.WecomArchiveService",
+  methods: {
+    /**
+     * @generated from rpc wode.wecom.archive.v1.WecomArchiveService.GetMessage
+     */
+    getMessage: {
+      name: "GetMessage",
+      I: GetMessageRequest,
+      O: GetMessageResponse,
+      kind: MethodKind.Unary,
+    },
+  }
 } as const;

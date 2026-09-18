@@ -3,132 +3,113 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { MethodKind } from '@bufbuild/protobuf';
-import {
-	CopyRequest,
-	CopyResponse,
-	ExistsRequest,
-	ExistsResponse,
-	MkdirRequest,
-	MkdirResponse,
-	ReaddirRequest,
-	ReaddirResponse,
-	ReadFileRequest,
-	ReadFileResponse,
-	RemoveRequest,
-	RemoveResponse,
-	RenameRequest,
-	RenameResponse,
-	StatRequest,
-	StatResponse,
-	WriteFileRequest,
-	WriteFileResponse,
-} from './FileSystemService_pb.js';
+import { CopyRequest, CopyResponse, ExistsRequest, ExistsResponse, MkdirRequest, MkdirResponse, ReaddirRequest, ReaddirResponse, ReadFileRequest, ReadFileResponse, RemoveRequest, RemoveResponse, RenameRequest, RenameResponse, StatRequest, StatResponse, WriteFileRequest, WriteFileResponse } from "./FileSystemService_pb.js";
+import { MethodKind } from "@bufbuild/protobuf";
 
 /**
  * @generated from service wode.fs.v1.FileSystemService
  */
 export const FileSystemService = {
-	typeName: 'wode.fs.v1.FileSystemService',
-	methods: {
-		/**
-		 * List directory contents
-		 *
-		 * @generated from rpc wode.fs.v1.FileSystemService.Readdir
-		 */
-		readdir: {
-			name: 'Readdir',
-			I: ReaddirRequest,
-			O: ReaddirResponse,
-			kind: MethodKind.Unary,
-		},
-		/**
-		 * Get file or directory status
-		 *
-		 * @generated from rpc wode.fs.v1.FileSystemService.Stat
-		 */
-		stat: {
-			name: 'Stat',
-			I: StatRequest,
-			O: StatResponse,
-			kind: MethodKind.Unary,
-		},
-		/**
-		 * Create a directory
-		 *
-		 * @generated from rpc wode.fs.v1.FileSystemService.Mkdir
-		 */
-		mkdir: {
-			name: 'Mkdir',
-			I: MkdirRequest,
-			O: MkdirResponse,
-			kind: MethodKind.Unary,
-		},
-		/**
-		 * Read file contents
-		 *
-		 * @generated from rpc wode.fs.v1.FileSystemService.ReadFile
-		 */
-		readFile: {
-			name: 'ReadFile',
-			I: ReadFileRequest,
-			O: ReadFileResponse,
-			kind: MethodKind.Unary,
-		},
-		/**
-		 * Write file contents
-		 *
-		 * @generated from rpc wode.fs.v1.FileSystemService.WriteFile
-		 */
-		writeFile: {
-			name: 'WriteFile',
-			I: WriteFileRequest,
-			O: WriteFileResponse,
-			kind: MethodKind.Unary,
-		},
-		/**
-		 * Rename a file or directory
-		 *
-		 * @generated from rpc wode.fs.v1.FileSystemService.Rename
-		 */
-		rename: {
-			name: 'Rename',
-			I: RenameRequest,
-			O: RenameResponse,
-			kind: MethodKind.Unary,
-		},
-		/**
-		 * Check if a path exists
-		 *
-		 * @generated from rpc wode.fs.v1.FileSystemService.Exists
-		 */
-		exists: {
-			name: 'Exists',
-			I: ExistsRequest,
-			O: ExistsResponse,
-			kind: MethodKind.Unary,
-		},
-		/**
-		 * Copy a file or directory
-		 *
-		 * @generated from rpc wode.fs.v1.FileSystemService.Copy
-		 */
-		copy: {
-			name: 'Copy',
-			I: CopyRequest,
-			O: CopyResponse,
-			kind: MethodKind.Unary,
-		},
-		/**
-		 * Remove a file or directory
-		 *
-		 * @generated from rpc wode.fs.v1.FileSystemService.Remove
-		 */
-		remove: {
-			name: 'Remove',
-			I: RemoveRequest,
-			O: RemoveResponse,
-			kind: MethodKind.Unary,
-		},
-	},
+  typeName: "wode.fs.v1.FileSystemService",
+  methods: {
+    /**
+     * List directory contents
+     *
+     * @generated from rpc wode.fs.v1.FileSystemService.Readdir
+     */
+    readdir: {
+      name: "Readdir",
+      I: ReaddirRequest,
+      O: ReaddirResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * Get file or directory status
+     *
+     * @generated from rpc wode.fs.v1.FileSystemService.Stat
+     */
+    stat: {
+      name: "Stat",
+      I: StatRequest,
+      O: StatResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * Create a directory
+     *
+     * @generated from rpc wode.fs.v1.FileSystemService.Mkdir
+     */
+    mkdir: {
+      name: "Mkdir",
+      I: MkdirRequest,
+      O: MkdirResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * Read file contents
+     *
+     * @generated from rpc wode.fs.v1.FileSystemService.ReadFile
+     */
+    readFile: {
+      name: "ReadFile",
+      I: ReadFileRequest,
+      O: ReadFileResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * Write file contents
+     *
+     * @generated from rpc wode.fs.v1.FileSystemService.WriteFile
+     */
+    writeFile: {
+      name: "WriteFile",
+      I: WriteFileRequest,
+      O: WriteFileResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * Rename a file or directory
+     *
+     * @generated from rpc wode.fs.v1.FileSystemService.Rename
+     */
+    rename: {
+      name: "Rename",
+      I: RenameRequest,
+      O: RenameResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * Check if a path exists
+     *
+     * @generated from rpc wode.fs.v1.FileSystemService.Exists
+     */
+    exists: {
+      name: "Exists",
+      I: ExistsRequest,
+      O: ExistsResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * Copy a file or directory
+     *
+     * @generated from rpc wode.fs.v1.FileSystemService.Copy
+     */
+    copy: {
+      name: "Copy",
+      I: CopyRequest,
+      O: CopyResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * Remove a file or directory
+     *
+     * @generated from rpc wode.fs.v1.FileSystemService.Remove
+     */
+    remove: {
+      name: "Remove",
+      I: RemoveRequest,
+      O: RemoveResponse,
+      kind: MethodKind.Unary,
+    },
+  }
 } as const;
