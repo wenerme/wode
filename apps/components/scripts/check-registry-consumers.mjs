@@ -47,7 +47,7 @@ try {
 		const consumerRoot = join(temporaryRoot, item.name);
 		console.log(`Checking clean consumer: ${item.name}`);
 		await createConsumer(consumerRoot);
-		await runPnpm(['install', '--offline', '--ignore-scripts'], consumerRoot);
+		await runPnpm(['install', '--prefer-offline', '--ignore-scripts'], consumerRoot);
 		await installLocalDependencyPackages(consumerRoot);
 		await runPnpm(
 			['exec', 'shadcn', 'add', `${registryBaseUrl}${item.name}.json`, '--yes', '--cwd', consumerRoot],
