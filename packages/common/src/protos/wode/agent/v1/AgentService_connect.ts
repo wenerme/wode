@@ -3,32 +3,32 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { InfoRequest, InfoResponse, ReloadRequest, ReloadResponse } from "./AgentService_pb.js";
-import { MethodKind } from "@bufbuild/protobuf";
+import { MethodKind } from '@bufbuild/protobuf';
+import { InfoRequest, InfoResponse, ReloadRequest, ReloadResponse } from './AgentService_pb.js';
 
 /**
  * @generated from service wode.agent.v1.AgentService
  */
 export const AgentService = {
-  typeName: "wode.agent.v1.AgentService",
-  methods: {
-    /**
-     * @generated from rpc wode.agent.v1.AgentService.Info
-     */
-    info: {
-      name: "Info",
-      I: InfoRequest,
-      O: InfoResponse,
-      kind: MethodKind.Unary,
-    },
-    /**
-     * @generated from rpc wode.agent.v1.AgentService.Reload
-     */
-    reload: {
-      name: "Reload",
-      I: ReloadRequest,
-      O: ReloadResponse,
-      kind: MethodKind.Unary,
-    },
-  }
+	typeName: 'wode.agent.v1.AgentService',
+	methods: {
+		/**
+		 * @generated from rpc wode.agent.v1.AgentService.Info
+		 */
+		info: {
+			name: 'Info',
+			I: InfoRequest,
+			O: InfoResponse,
+			kind: MethodKind.Unary,
+		},
+		/**
+		 * @generated from rpc wode.agent.v1.AgentService.Reload
+		 */
+		reload: {
+			name: 'Reload',
+			I: ReloadRequest,
+			O: ReloadResponse,
+			kind: MethodKind.Unary,
+		},
+	},
 } as const;

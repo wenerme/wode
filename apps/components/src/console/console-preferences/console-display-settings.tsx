@@ -4,8 +4,8 @@ import { Monitor, Moon, RotateCcw, Sun, Zap, ZapOff } from 'lucide-react';
 import type { ComponentPropsWithRef, ReactNode } from 'react';
 import { useEffect, useId, useState } from 'react';
 import {
-	ConsoleDisplaySettingsPreview,
 	type ConsoleDisplayPreviewMode,
+	ConsoleDisplaySettingsPreview,
 	SegmentedRadioGroup,
 	SettingsField,
 	ThemeSlotOption,
@@ -23,13 +23,13 @@ import {
 	type ConsoleThemeMode,
 	useConsoleDisplaySettings,
 } from './console-theme';
-import { ConsoleThemeCatalog } from './console-theme-catalog-view';
 import {
 	type ConsoleThemeColorScheme,
 	type ConsoleThemeOption,
 	defaultConsoleThemeOptions,
 	getConsoleThemesByColorScheme,
 } from './console-theme-catalog';
+import { ConsoleThemeCatalog } from './console-theme-catalog-view';
 import type { ConsoleThemePreviewSize, ConsoleThemePreviewTone } from './console-theme-component-preview';
 
 export type { ConsoleDisplayPreviewMode } from './console-display-controls';

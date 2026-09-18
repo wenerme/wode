@@ -1,4 +1,4 @@
-import { expect, userEvent, waitFor, within } from 'storybook/test';
+import { expect, userEvent, waitFor, type within } from 'storybook/test';
 
 export async function navigateTo(canvas: ReturnType<typeof within>, path: string) {
 	await userEvent.click(canvas.getByRole('button', { name: '编辑路径' }));

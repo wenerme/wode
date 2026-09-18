@@ -11,11 +11,11 @@ import {
 	Users,
 } from 'lucide-react';
 import { type MouseEvent, useState } from 'react';
-import { DataViewLayout, DataViewSearch, type DataViewColumn } from '@/resource/console-data-view';
 import { ConsolePage } from '@/console/console-shell';
+import { type DataViewColumn, DataViewLayout, DataViewSearch } from '@/resource/console-data-view';
 import { Status } from '@/ui/status';
 import { CONSOLE_DEMO_COUNTS } from './console-demo-dataset';
-import { type DataListPage, isDataListPage, type DemoPage } from './console-demo-navigation';
+import { type DataListPage, type DemoPage, isDataListPage } from './console-demo-navigation';
 import { type ConsoleDemoResourceListRow, getConsoleDemoResourcePageData } from './console-demo-resource-presenter';
 
 const pageDetails = {

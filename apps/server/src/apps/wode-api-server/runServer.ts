@@ -11,6 +11,7 @@ import {
 	Password,
 } from '@wener/common/password';
 import { createOpenAPIHono, runServer } from '@wener/server/hono';
+import { serveYoga } from '@wener/server/hono/yoga';
 import { getEntityManager, OrmModule } from '@wener/server/mikro-orm';
 import { createBootstrap } from '@wener/server/nest';
 import { parseBoolean } from '@wener/utils';
@@ -24,7 +25,6 @@ import { serveExternalProxy } from '@/server/proxy/serveExternalProxy';
 import { createBaseRoute } from '@/server/routes/createBaseRoute';
 import { buildGraphQLSchema, ContextGraphAuthChecker } from '@/server/yoga/buildGraphQLSchema';
 import { createYogaServer } from '@/server/yoga/createYogaServer';
-import { serveYoga } from '@wener/server/hono/yoga';
 import { getInstanceGraphModule } from './getInstanceGraphModule';
 import { setupDayjs } from './setupDayjs';
 

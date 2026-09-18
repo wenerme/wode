@@ -1,5 +1,5 @@
-import type { OpenAICompatibleConnectionDraft } from '../../agent/agent-ai-sdk/index.ts';
 import { validateOpenAICompatibleConnection } from '../../agent/agent-ai-sdk/connection-config.ts';
+import type { OpenAICompatibleConnectionDraft } from '../../agent/agent-ai-sdk/index.ts';
 
 declare const __WODE_STORYBOOK_OPENAI_CONNECTION__: unknown;
 

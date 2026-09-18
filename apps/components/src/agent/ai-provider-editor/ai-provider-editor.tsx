@@ -1,7 +1,5 @@
 'use client';
 
-import { DefaultApiRegistry, type Provider, ProviderSchema } from '@wener/ai/schema';
-import type { ComponentPropsWithRef, ReactNode } from 'react';
 import {
 	AiConfigEditor,
 	type AiConfigEditorOption,
@@ -25,6 +23,8 @@ import {
 	mergeResourceEditorMessages,
 	useAiConfigDraft,
 } from '@components/ui/ai-config-editor';
+import { DefaultApiRegistry, type Provider, ProviderSchema } from '@wener/ai/schema';
+import type { ComponentPropsWithRef, ReactNode } from 'react';
 
 export type AiProviderEditorField =
 	| 'id'

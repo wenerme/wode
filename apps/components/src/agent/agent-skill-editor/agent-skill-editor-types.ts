@@ -1,5 +1,3 @@
-import type { Skill } from '@wener/ai/agent/skill';
-import type { ComponentPropsWithRef, ComponentType } from 'react';
 import type {
 	AiConfigEditorSlots,
 	AiConfigSchema,
@@ -7,6 +5,8 @@ import type {
 	AiResourceEditorMessageOverrides,
 	AiResourceEditorMessages,
 } from '@components/ui/ai-config-editor';
+import type { Skill } from '@wener/ai/agent/skill';
+import type { ComponentPropsWithRef, ComponentType } from 'react';
 
 export type AgentSkillEditorField =
 	| 'id'

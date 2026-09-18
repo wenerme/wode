@@ -6,9 +6,7 @@
 			"type": "registry:ui",
 			"title": "Addressable Frame",
 			"description": "Composable frame chrome for URL, file, object, and other addressable content",
-			"dependencies": [
-				"daisyui"
-			],
+			"dependencies": ["daisyui"],
 			"files": [
 				{
 					"path": "./addressable-frame.tsx",
@@ -22,9 +20,7 @@
 			"type": "registry:ui",
 			"title": "Header Content Footer Layout",
 			"description": "A bounded flex-column layout with composable header, scrollable content, and footer slots",
-			"dependencies": [
-				"daisyui"
-			],
+			"dependencies": ["daisyui"],
 			"files": [
 				{
 					"path": "./header-content-footer-layout.tsx",
@@ -51,11 +47,7 @@
 			"type": "registry:ui",
 			"title": "Resizable",
 			"description": "The shadcn resizable panel group, panel, and accessible separator for react-resizable-panels v4",
-			"dependencies": [
-				"daisyui",
-				"lucide-react",
-				"react-resizable-panels@^4.12.1"
-			],
+			"dependencies": ["daisyui", "lucide-react", "react-resizable-panels@^4.12.1"],
 			"files": [
 				{
 					"path": "./resizable.tsx",
@@ -69,9 +61,7 @@
 			"type": "registry:ui",
 			"title": "Status",
 			"description": "A standalone semantic status indicator with plain, soft, solid, and outline presentations",
-			"dependencies": [
-				"daisyui"
-			],
+			"dependencies": ["daisyui"],
 			"files": [
 				{
 					"path": "./status.tsx",

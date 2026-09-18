@@ -3,32 +3,37 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { IcmpPingRequest, IcmpPingResponse, ResolveNameRequest, ResolveNameResponse } from "./NetworkAgentService_pb.js";
-import { MethodKind } from "@bufbuild/protobuf";
+import { MethodKind } from '@bufbuild/protobuf';
+import {
+	IcmpPingRequest,
+	IcmpPingResponse,
+	ResolveNameRequest,
+	ResolveNameResponse,
+} from './NetworkAgentService_pb.js';
 
 /**
  * @generated from service wode.agent.host.v1.NetworkAgentService
  */
 export const NetworkAgentService = {
-  typeName: "wode.agent.host.v1.NetworkAgentService",
-  methods: {
-    /**
-     * @generated from rpc wode.agent.host.v1.NetworkAgentService.IcmpPing
-     */
-    icmpPing: {
-      name: "IcmpPing",
-      I: IcmpPingRequest,
-      O: IcmpPingResponse,
-      kind: MethodKind.ServerStreaming,
-    },
-    /**
-     * @generated from rpc wode.agent.host.v1.NetworkAgentService.ResolveName
-     */
-    resolveName: {
-      name: "ResolveName",
-      I: ResolveNameRequest,
-      O: ResolveNameResponse,
-      kind: MethodKind.Unary,
-    },
-  }
+	typeName: 'wode.agent.host.v1.NetworkAgentService',
+	methods: {
+		/**
+		 * @generated from rpc wode.agent.host.v1.NetworkAgentService.IcmpPing
+		 */
+		icmpPing: {
+			name: 'IcmpPing',
+			I: IcmpPingRequest,
+			O: IcmpPingResponse,
+			kind: MethodKind.ServerStreaming,
+		},
+		/**
+		 * @generated from rpc wode.agent.host.v1.NetworkAgentService.ResolveName
+		 */
+		resolveName: {
+			name: 'ResolveName',
+			I: ResolveNameRequest,
+			O: ResolveNameResponse,
+			kind: MethodKind.Unary,
+		},
+	},
 } as const;

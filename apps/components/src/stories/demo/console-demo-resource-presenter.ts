@@ -1,5 +1,5 @@
+import { CONSOLE_DEMO_REFERENCE_DATE, type ConsoleDemoDataset, consoleDemoDataset } from './console-demo-dataset';
 import type { DataListPage } from './console-demo-navigation';
-import { CONSOLE_DEMO_REFERENCE_DATE, consoleDemoDataset, type ConsoleDemoDataset } from './console-demo-dataset';
 
 export type GeneratedResourcePage = DataListPage;
 export type ConsoleDemoResourceListRow = {

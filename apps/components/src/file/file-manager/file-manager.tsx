@@ -1,13 +1,13 @@
 'use client';
 
+import type { FileManagerRegistry } from '@components/file-type-registry/file-manager-file-type-types';
+import { FileManagerRegistryProvider, useFileManagerRegistry } from '@components/file-viewer/file-manager-registry';
 import type { ComponentPropsWithRef, ReactNode } from 'react';
 import { useEffect, useState } from 'react';
 import { FileManagerProvider, useFileManagerActions } from './file-manager-context';
-import type { FileManagerRegistry } from '@components/file-type-registry/file-manager-file-type-types';
-import { FileManagerRegistryProvider, useFileManagerRegistry } from '@components/file-viewer/file-manager-registry';
 import { FileManagerRuntime, type FileManagerRuntimeProps } from './file-manager-runtime';
-import { FileManagerSurface, type FileManagerSurfaceProps } from './file-manager-surface';
 import { createFileManagerStore } from './file-manager-store';
+import { FileManagerSurface, type FileManagerSurfaceProps } from './file-manager-surface';
 import type {
 	FileManagerAddressBarRenderProps,
 	FileManagerCapabilities,

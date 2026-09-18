@@ -1,8 +1,8 @@
-import type { ChatStatus, UIMessage } from 'ai';
-import type { ComponentPropsWithRef, ReactNode } from 'react';
 import type { AgentComposerMessages, AgentComposerProps, AgentComposerSubmitValue } from '@components/agent-composer';
 import type { AgentMessageMessages, AgentMessagePartRenderer, AgentMessageProps } from '@components/agent-message';
 import type { MessageScrollerMessages } from '@components/message-scroller';
+import type { ChatStatus, UIMessage } from 'ai';
+import type { ComponentPropsWithRef, ReactNode } from 'react';
 
 export type AgentChatMessages = {
 	empty: string;

@@ -1,6 +1,6 @@
 import { Download, LayoutList, Plus, RefreshCw, Sheet, Table2 } from 'lucide-react';
 import { useMemo, useState } from 'react';
-import { DataViewLayout, type DataViewColumn, type DataViewSortState } from '@/resource/console-data-view';
+import { type DataViewColumn, DataViewLayout, type DataViewSortState } from '@/resource/console-data-view';
 import { Status } from '@/ui/status';
 import { type DemoRecord, demoRecords } from './resource-fixtures';
 

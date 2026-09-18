@@ -2,8 +2,8 @@
 
 import { Activity, BookOpenCheck, Database, FileClock, Gauge, Server, SquareTerminal, X } from 'lucide-react';
 import type { ReactNode } from 'react';
-import { type ManagedWindow, useWindowManagerActions } from '@/window/window-manager';
 import { Status } from '@/ui/status';
+import { type ManagedWindow, useWindowManagerActions } from '@/window/window-manager';
 
 export function WindowManagerStoryContent({ win }: { win: ManagedWindow }) {
 	if (win.kind === 'overview') return <OverviewContent />;

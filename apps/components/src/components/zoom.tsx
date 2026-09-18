@@ -26,10 +26,10 @@ import {
 import { acquireDocumentScrollLock, prefersReducedMotion } from './zoom-runtime';
 
 export {
-	calculateZoomObjectFitRect,
-	calculateZoomTargetRect,
 	type CalculateZoomObjectFitRectInput,
 	type CalculateZoomTargetRectInput,
+	calculateZoomObjectFitRect,
+	calculateZoomTargetRect,
 	type ZoomRect,
 } from './zoom-geometry';
 

@@ -117,7 +117,7 @@
 			"!**/out",
 			"!**/lib",
 			"!**/ignored",
-			"!**/ignored/**",
+			"!**/ignored",
 			"!apps/console/public/version.json",
 			"!packages/common/src/gen",
 			"!packages/common/src/protos",

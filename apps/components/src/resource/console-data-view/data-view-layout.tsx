@@ -1,9 +1,15 @@
 'use client';
 
 import type { ComponentPropsWithRef, CSSProperties, ReactNode } from 'react';
-import { useEffect, useRef, useSyncExternalStore, type KeyboardEvent } from 'react';
+import { type KeyboardEvent, useEffect, useRef, useSyncExternalStore } from 'react';
 import { cn } from '@/lib/utils';
-import { DataViewActionBar, DataViewPageInfo, DataViewPagination, DataViewToolbar } from './console-data-view';
+import {
+	DataViewActionBar,
+	DataViewPageInfo,
+	DataViewPagination,
+	DataViewSearch,
+	DataViewToolbar,
+} from './console-data-view';
 import {
 	DataViewColumnControl,
 	DataViewFilter,
@@ -11,9 +17,8 @@ import {
 	DataViewSort,
 	DataViewViewSwitcher,
 } from './data-view-controls';
-import { DataViewSearch } from './console-data-view';
-import { DataViewSummary } from './data-view-summary';
 import { DataViewListView, DataViewSheetView, DataViewTableView } from './data-view-renderers';
+import { DataViewSummary } from './data-view-summary';
 
 type DataViewLayoutStyle = CSSProperties & {
 	'--data-view-summary-width'?: string;

@@ -4,7 +4,13 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { createMemoryFileSystem } from '@wener/common/fs';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 import { FileManager } from '@/file/file-manager';
-import { FileManagerWindowDemo } from './file-manager-window-demo';
+import {
+	FileManagerDemoExperience,
+	OpenCallbackFailureDemo,
+	RawFileNameKeyboardDemo,
+	ResponsiveContainerDemo,
+	RuntimeLifecycleCancellationDemo,
+} from './file-manager-story-boundary-demos';
 import {
 	BackendSwitchDemo,
 	BackendSwitchOpenDemo,
@@ -13,13 +19,6 @@ import {
 	ExternalPanelStateDemo,
 	SaveFailureDemo,
 } from './file-manager-story-demos';
-import {
-	FileManagerDemoExperience,
-	OpenCallbackFailureDemo,
-	RawFileNameKeyboardDemo,
-	ResponsiveContainerDemo,
-	RuntimeLifecycleCancellationDemo,
-} from './file-manager-story-boundary-demos';
 import {
 	createStoryDataTransfer,
 	dispatchStoryDrag,
@@ -35,6 +34,7 @@ import {
 	playMemoryWorkspace,
 	playStableGridFlow,
 } from './file-manager-story-plays';
+import { FileManagerWindowDemo } from './file-manager-window-demo';
 
 const meta = {
 	id: 'console-file-manager',

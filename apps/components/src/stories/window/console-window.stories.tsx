@@ -4,6 +4,13 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Database, FileJson, Play, Settings2, SquareTerminal } from 'lucide-react';
 import { useState } from 'react';
 import {
+	AddressableFrame,
+	AddressableFrameAddress,
+	AddressableFrameBar,
+	AddressableFrameContent,
+	AddressableFrameHeader,
+} from '@/ui/addressable-frame';
+import {
 	ConsoleWindow,
 	ConsoleWindowContent,
 	ConsoleWindowControls,
@@ -12,13 +19,6 @@ import {
 	ConsoleWindowToolbar,
 	ConsoleWindowWorkspace,
 } from '@/window/console-window';
-import {
-	AddressableFrame,
-	AddressableFrameAddress,
-	AddressableFrameBar,
-	AddressableFrameContent,
-	AddressableFrameHeader,
-} from '@/ui/addressable-frame';
 
 function WindowWorkspaceDemo() {
 	const [message, setMessage] = useState('Ready');

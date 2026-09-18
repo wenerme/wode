@@ -1,8 +1,5 @@
 'use client';
 
-import type { LorebookEntry, PersonaLorebook } from '@wener/ai/agent/persona';
-import { Plus, Trash2 } from 'lucide-react';
-import type { ComponentPropsWithRef } from 'react';
 import {
 	AiConfigFieldGrid,
 	AiConfigNumberField,
@@ -13,6 +10,9 @@ import {
 	JsonValueEditor,
 	useStableListEntries,
 } from '@components/ui/ai-config-editor';
+import type { LorebookEntry, PersonaLorebook } from '@wener/ai/agent/persona';
+import { Plus, Trash2 } from 'lucide-react';
+import type { ComponentPropsWithRef } from 'react';
 
 export type PersonaLorebookEditorProps = Omit<ComponentPropsWithRef<'div'>, 'onChange'> & {
 	value?: PersonaLorebook;

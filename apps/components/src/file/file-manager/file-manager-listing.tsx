@@ -1,15 +1,15 @@
 'use client';
 
-import { ArrowDownAZ, FolderOpen } from 'lucide-react';
-import type { ReactNode } from 'react';
-import { useShallow } from 'zustand/react/shallow';
-import { cn } from '@/lib/utils';
 import {
 	FileManagerFileTypeIcon,
 	getFileManagerFileTypeLabel,
 	renderFileManagerFileType,
 	useFileManagerRegistry,
 } from '@components/file-viewer/file-manager-registry';
+import { ArrowDownAZ, FolderOpen } from 'lucide-react';
+import type { ReactNode } from 'react';
+import { useShallow } from 'zustand/react/shallow';
+import { cn } from '@/lib/utils';
 import { useFileManagerActions, useFileManagerStore } from './file-manager-context';
 import type { FileManagerDragAndDropController } from './file-manager-drag-drop';
 import type { FileManagerFileStat } from './file-manager-types';

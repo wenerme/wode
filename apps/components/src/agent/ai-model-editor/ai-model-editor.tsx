@@ -1,7 +1,5 @@
 'use client';
 
-import { DefaultApiRegistry, type Model, ModelSchema } from '@wener/ai/schema';
-import type { ReactNode } from 'react';
 import {
 	AiConfigEditor,
 	AiConfigFieldGrid,
@@ -19,6 +17,8 @@ import {
 	mergeResourceEditorMessages,
 	useAiConfigDraft,
 } from '@components/ui/ai-config-editor';
+import { DefaultApiRegistry, type Model, ModelSchema } from '@wener/ai/schema';
+import type { ReactNode } from 'react';
 import { AiModelCapabilitiesFields, AiModelCostDefaultFields, AiModelLimitFields } from './ai-model-advanced-fields';
 import type { AiModelEditorField, AiModelEditorMessages, AiModelEditorProps } from './ai-model-editor-types';
 

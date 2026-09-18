@@ -3,59 +3,70 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { ResourceServiceCreateRequest, ResourceServiceCreateResponse, ResourceServiceDeleteRequest, ResourceServiceDeleteResponse, ResourceServiceGetRequest, ResourceServiceGetResponse, ResourceServiceListRequest, ResourceServiceListResponse, ResourceServiceUpdateRequest, ResourceServiceUpdateResponse } from "./ResourceService_pb.js";
-import { MethodKind } from "@bufbuild/protobuf";
+import { MethodKind } from '@bufbuild/protobuf';
+import {
+	ResourceServiceCreateRequest,
+	ResourceServiceCreateResponse,
+	ResourceServiceDeleteRequest,
+	ResourceServiceDeleteResponse,
+	ResourceServiceGetRequest,
+	ResourceServiceGetResponse,
+	ResourceServiceListRequest,
+	ResourceServiceListResponse,
+	ResourceServiceUpdateRequest,
+	ResourceServiceUpdateResponse,
+} from './ResourceService_pb.js';
 
 /**
  * @generated from service wode.resource.v1.ResourceService
  */
 export const ResourceService = {
-  typeName: "wode.resource.v1.ResourceService",
-  methods: {
-    /**
-     * @generated from rpc wode.resource.v1.ResourceService.Get
-     */
-    get: {
-      name: "Get",
-      I: ResourceServiceGetRequest,
-      O: ResourceServiceGetResponse,
-      kind: MethodKind.Unary,
-    },
-    /**
-     * @generated from rpc wode.resource.v1.ResourceService.List
-     */
-    list: {
-      name: "List",
-      I: ResourceServiceListRequest,
-      O: ResourceServiceListResponse,
-      kind: MethodKind.Unary,
-    },
-    /**
-     * @generated from rpc wode.resource.v1.ResourceService.Delete
-     */
-    delete: {
-      name: "Delete",
-      I: ResourceServiceDeleteRequest,
-      O: ResourceServiceDeleteResponse,
-      kind: MethodKind.Unary,
-    },
-    /**
-     * @generated from rpc wode.resource.v1.ResourceService.Create
-     */
-    create: {
-      name: "Create",
-      I: ResourceServiceCreateRequest,
-      O: ResourceServiceCreateResponse,
-      kind: MethodKind.Unary,
-    },
-    /**
-     * @generated from rpc wode.resource.v1.ResourceService.Update
-     */
-    update: {
-      name: "Update",
-      I: ResourceServiceUpdateRequest,
-      O: ResourceServiceUpdateResponse,
-      kind: MethodKind.Unary,
-    },
-  }
+	typeName: 'wode.resource.v1.ResourceService',
+	methods: {
+		/**
+		 * @generated from rpc wode.resource.v1.ResourceService.Get
+		 */
+		get: {
+			name: 'Get',
+			I: ResourceServiceGetRequest,
+			O: ResourceServiceGetResponse,
+			kind: MethodKind.Unary,
+		},
+		/**
+		 * @generated from rpc wode.resource.v1.ResourceService.List
+		 */
+		list: {
+			name: 'List',
+			I: ResourceServiceListRequest,
+			O: ResourceServiceListResponse,
+			kind: MethodKind.Unary,
+		},
+		/**
+		 * @generated from rpc wode.resource.v1.ResourceService.Delete
+		 */
+		delete: {
+			name: 'Delete',
+			I: ResourceServiceDeleteRequest,
+			O: ResourceServiceDeleteResponse,
+			kind: MethodKind.Unary,
+		},
+		/**
+		 * @generated from rpc wode.resource.v1.ResourceService.Create
+		 */
+		create: {
+			name: 'Create',
+			I: ResourceServiceCreateRequest,
+			O: ResourceServiceCreateResponse,
+			kind: MethodKind.Unary,
+		},
+		/**
+		 * @generated from rpc wode.resource.v1.ResourceService.Update
+		 */
+		update: {
+			name: 'Update',
+			I: ResourceServiceUpdateRequest,
+			O: ResourceServiceUpdateResponse,
+			kind: MethodKind.Unary,
+		},
+	},
 } as const;

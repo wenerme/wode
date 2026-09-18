@@ -1,10 +1,10 @@
+import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { createServer } from 'node:http';
-import { mkdtemp, readFile, rm, writeFile, mkdir } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { basename, dirname, join } from 'node:path';
-import { getRegistryDependencyName, publicRegistryUrl } from './registry-policy.mjs';
 import { appRoot, loadRegistryCatalog } from './registry-catalog.mjs';
-import { resolveLocalPackageDependency, packageNameFromSpec } from './registry-consumer-packages.mjs';
+import { packageNameFromSpec, resolveLocalPackageDependency } from './registry-consumer-packages.mjs';
+import { getRegistryDependencyName, publicRegistryUrl } from './registry-policy.mjs';
 import { runChildCommand } from './run-child-command.mjs';
 import { runSyncJsonCommand } from './run-sync-command.mjs';
 

@@ -1,6 +1,7 @@
 'use client';
 
 import { useChat } from '@ai-sdk/react';
+import type { AgentMessagePartRenderContext } from '@components/agent-message';
 import {
 	type ChatOnFinishCallback,
 	type ChatOnToolCallCallback,
@@ -10,7 +11,6 @@ import {
 	type UIMessage,
 } from 'ai';
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import type { AgentMessagePartRenderContext } from '@components/agent-message';
 import { AgentChat, type AgentChatProps, validateAgentRuntimeMessages } from '../agent-chat';
 import type { OpenAICompatibleConnectionConfig } from './connection-config';
 import { sameOpenAICompatibleConnection, validateOpenAICompatibleConnection } from './connection-config';
