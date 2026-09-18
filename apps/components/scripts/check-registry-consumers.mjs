@@ -197,7 +197,6 @@ async function createConsumer(root) {
 					'tailwind-merge': '3.6.0',
 				},
 				devDependencies: {
-					'@types/node': '24.13.3',
 					'@types/react': '19.2.17',
 					'@types/react-dom': '19.2.3',
 					typescript: '7.0.2',
@@ -247,7 +246,7 @@ async function createConsumer(root) {
 					jsx: 'react-jsx',
 					strict: true,
 					skipLibCheck: true,
-					types: ['node', 'react', 'react-dom'],
+					types: ['react', 'react-dom'],
 					noEmit: true,
 					paths: {
 						'@/*': ['./src/*'],
