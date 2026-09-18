@@ -299,6 +299,6 @@ function runPnpm(arguments_, cwd) {
 		command: pnpm,
 		arguments_,
 		cwd,
-		env: { ...process.env, npm_config_offline: 'true', npm_config_prefer_offline: 'true' },
+		env: { ...process.env, npm_config_prefer_offline: 'true' },
 	});
 }
