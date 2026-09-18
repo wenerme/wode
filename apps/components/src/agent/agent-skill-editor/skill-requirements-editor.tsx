@@ -1,7 +1,5 @@
 'use client';
 
-import type { SkillContextRequirement, SkillToolRequirement } from '@wener/ai/agent/skill';
-import { Plus, Trash2 } from 'lucide-react';
 import {
 	AiConfigFieldGrid,
 	AiConfigSelectField,
@@ -12,6 +10,8 @@ import {
 	JsonValueEditor,
 	useStableListEntries,
 } from '@components/ui/ai-config-editor';
+import type { SkillContextRequirement, SkillToolRequirement } from '@wener/ai/agent/skill';
+import { Plus, Trash2 } from 'lucide-react';
 
 const contextKinds = ['agents', 'file', 'directory', 'environment', 'capability', 'service', 'other'].map((value) => ({
 	value,

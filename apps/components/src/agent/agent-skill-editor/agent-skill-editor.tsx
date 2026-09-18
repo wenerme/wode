@@ -1,7 +1,5 @@
 'use client';
 
-import { type Skill, SkillSchema } from '@wener/ai/agent/skill';
-import type { ReactNode } from 'react';
 import {
 	AiConfigEditor,
 	AiConfigFieldGrid,
@@ -15,6 +13,8 @@ import {
 	mergeResourceEditorMessages,
 	useAiConfigDraft,
 } from '@components/ui/ai-config-editor';
+import { type Skill, SkillSchema } from '@wener/ai/agent/skill';
+import type { ReactNode } from 'react';
 import type {
 	AgentSkillEditorField,
 	AgentSkillEditorMessages,

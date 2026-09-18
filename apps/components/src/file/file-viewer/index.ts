@@ -1,6 +1,6 @@
-export * from './file-system-file-viewer';
 export * from './file-manager-file-types';
 export * from './file-manager-registry';
+export * from './file-system-file-viewer';
 export * from './file-viewer';
 export * from './file-viewer-kind';
 export * from './file-viewer-types';

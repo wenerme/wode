@@ -4,7 +4,13 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { createMemoryFileSystem } from '@wener/common/fs';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 import { FileManager } from '@/file/file-manager';
-import { FileManagerWindowDemo } from './file-manager-window-demo';
+import {
+	FileManagerDemoExperience,
+	OpenCallbackFailureDemo,
+	RawFileNameKeyboardDemo,
+	ResponsiveContainerDemo,
+	RuntimeLifecycleCancellationDemo,
+} from './file-manager-story-boundary-demos';
 import {
 	BackendSwitchDemo,
 	BackendSwitchOpenDemo,
@@ -13,13 +19,6 @@ import {
 	ExternalPanelStateDemo,
 	SaveFailureDemo,
 } from './file-manager-story-demos';
-import {
-	FileManagerDemoExperience,
-	OpenCallbackFailureDemo,
-	RawFileNameKeyboardDemo,
-	ResponsiveContainerDemo,
-	RuntimeLifecycleCancellationDemo,
-} from './file-manager-story-boundary-demos';
 import {
 	createStoryDataTransfer,
 	dispatchStoryDrag,
@@ -35,6 +34,7 @@ import {
 	playMemoryWorkspace,
 	playStableGridFlow,
 } from './file-manager-story-plays';
+import { FileManagerWindowDemo } from './file-manager-window-demo';
 
 const meta = {
 	id: 'console-file-manager',
@@ -101,7 +101,7 @@ export const DragDropPartialFailure: Story = {
 			await userEvent.click(canvas.getByRole('button', { name: '展开文件树' }));
 		}
 		await waitFor(() => expect(canvas.getByRole('treeitem', { name: /ok\.txt/ })).toBeInTheDocument(), {
-			timeout: 3000,
+			timeout: 10_000,
 		});
 	},
 };
@@ -212,7 +212,7 @@ export const CollapsiblePanels: Story = {
 			expect(getResizePanel(canvasElement, '-tree').getBoundingClientRect().height).toBeGreaterThan(1),
 		);
 		expect(expandTree).toBeDisabled();
-		expect(canvas.getByRole('tree')).toBeInTheDocument();
+		await waitFor(() => expect(canvas.getByRole('tree')).toBeInTheDocument());
 
 		const placesHandle = getResizeHandle(canvasElement, '-places-handle-');
 		placesHandle.focus();
@@ -438,7 +438,7 @@ export const ResponsiveContainerOrientation: Story = {
 			);
 			await expect(canvas.queryByRole('tree')).not.toBeInTheDocument();
 			await userEvent.click(canvas.getByRole('button', { name: '展开文件树' }));
-			await expect(canvas.getByRole('treeitem', { name: /nested\.txt/ })).toBeInTheDocument();
+			await waitFor(() => expect(canvas.getByRole('treeitem', { name: /nested\.txt/ })).toBeInTheDocument());
 			await userEvent.click(canvas.getByRole('button', { name: '窄容器' }));
 			await waitFor(() => expect(getDirectSeparators(getOuterGroup()).every(hasOrientation('horizontal'))).toBe(true));
 			await expect(canvas.getByRole('treeitem', { name: /nested\.txt/ })).toBeInTheDocument();

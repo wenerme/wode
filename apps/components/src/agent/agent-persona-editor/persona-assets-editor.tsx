@@ -1,8 +1,5 @@
 'use client';
 
-import type { PersonaAsset } from '@wener/ai/agent/persona';
-import { Plus, Trash2 } from 'lucide-react';
-import type { ComponentPropsWithRef } from 'react';
 import {
 	AiConfigFieldGrid,
 	AiConfigNumberField,
@@ -13,6 +10,9 @@ import {
 	AiConfigToggleField,
 	useStableListEntries,
 } from '@components/ui/ai-config-editor';
+import type { PersonaAsset } from '@wener/ai/agent/persona';
+import { Plus, Trash2 } from 'lucide-react';
+import type { ComponentPropsWithRef } from 'react';
 
 const assetTypes = ['avatar', 'icon', 'background', 'emotion', 'voice', 'model', 'document', 'other'].map((value) => ({
 	value,

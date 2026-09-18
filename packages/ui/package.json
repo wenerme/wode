@@ -55,18 +55,8 @@
 		"./utils": "./src/utils/index.ts",
 		"./package.json": "./package.json"
 	},
-	"files": [
-		"lib",
-		"src",
-		"README.md"
-	],
-	"keywords": [
-		"react",
-		"ui",
-		"base-ui",
-		"tailwindcss",
-		"shadcn"
-	],
+	"files": ["lib", "src", "README.md"],
+	"keywords": ["react", "ui", "base-ui", "tailwindcss", "shadcn"],
 	"scripts": {
 		"build": "make build",
 		"check:source-lines": "node ../../apps/components/scripts/check-ui-source-lines.mjs --root packages/ui",

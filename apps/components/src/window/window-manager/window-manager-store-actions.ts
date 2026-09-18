@@ -1,12 +1,3 @@
-import type {
-	ManagedWindow,
-	WindowManagerActions,
-	WindowManagerBounds,
-	WindowManagerCapabilities,
-	WindowManagerEvent,
-	WindowManagerRestoreMode,
-	WindowManagerState,
-} from './window-manager-types';
 import {
 	clampWindowManagerBounds,
 	createWindowManagerWindowRecord,
@@ -22,6 +13,15 @@ import {
 	raiseWindowManagerWindow,
 	restoreOtherFullscreenWindows,
 } from './window-manager-store-helpers';
+import type {
+	ManagedWindow,
+	WindowManagerActions,
+	WindowManagerBounds,
+	WindowManagerCapabilities,
+	WindowManagerEvent,
+	WindowManagerRestoreMode,
+	WindowManagerState,
+} from './window-manager-types';
 
 type CreateWindowManagerActionsOptions = {
 	cascadeOffset: number;

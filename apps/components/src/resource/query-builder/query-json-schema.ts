@@ -1,5 +1,3 @@
-import type { QueryField, QueryFieldKind, QueryJsonValue, QueryOption } from './query-model';
-import { isQueryJsonValue } from './query-model';
 import { resolveSchema } from './query-json-schema-resolution';
 import type {
 	QueryFieldsFromJsonSchemaOptions,
@@ -25,6 +23,8 @@ import {
 	stringValue,
 	toPointer,
 } from './query-json-schema-utils';
+import type { QueryField, QueryFieldKind, QueryJsonValue, QueryOption } from './query-model';
+import { isQueryJsonValue } from './query-model';
 
 export * from './query-json-schema-types';
 

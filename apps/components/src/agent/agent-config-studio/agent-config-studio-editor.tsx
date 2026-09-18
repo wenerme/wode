@@ -1,5 +1,6 @@
 'use client';
 
+import type { AiConfigSchema } from '@components/ui/ai-config-editor';
 import { type Persona, PersonaSchema } from '@wener/ai/agent/persona';
 import { getSkillIdentity, type Skill, SkillSchema } from '@wener/ai/agent/skill';
 import { type McpServerConfig, McpServerConfigSchema } from '@wener/ai/mcp';
@@ -14,7 +15,6 @@ import {
 	ServiceSchema,
 } from '@wener/ai/schema';
 import type { ReactNode } from 'react';
-import type { AiConfigSchema } from '@components/ui/ai-config-editor';
 import { AgentPersonaEditor } from '../agent-persona-editor';
 import { AgentSkillEditor } from '../agent-skill-editor';
 import { AiEndpointEditor } from '../ai-endpoint-editor';

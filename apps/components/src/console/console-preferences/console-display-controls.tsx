@@ -1,6 +1,6 @@
 'use client';
 
-import { Component, LayoutDashboard, Monitor, Sparkles } from 'lucide-react';
+import { Component, LayoutDashboard, type Monitor, Sparkles } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { useId } from 'react';
 import { cn } from '@/lib/utils';

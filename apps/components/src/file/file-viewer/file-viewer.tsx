@@ -1,17 +1,17 @@
 'use client';
 
-import type { ComponentPropsWithRef, ReactNode } from 'react';
-import { useMemo } from 'react';
 import type {
 	FileManagerFileTypeDefinition,
 	FileManagerRegistry,
 } from '@components/file-type-registry/file-manager-file-type-types';
+import type { ComponentPropsWithRef, ReactNode } from 'react';
+import { useMemo } from 'react';
+import { cn } from '@/lib/utils';
 import {
 	getBuiltinFileManagerFileType,
 	renderFileManagerFileType,
 	useFileManagerRegistry,
 } from './file-manager-registry';
-import { cn } from '@/lib/utils';
 import {
 	getFileTypeMimeType,
 	getFileViewerMimeType,

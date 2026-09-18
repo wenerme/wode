@@ -1,7 +1,6 @@
 'use client';
 
 import { FolderOpen } from 'lucide-react';
-import type { PanelImperativeHandle } from 'react-resizable-panels';
 import {
 	type ComponentPropsWithRef,
 	type KeyboardEvent,
@@ -12,14 +11,15 @@ import {
 	useRef,
 	useState,
 } from 'react';
+import type { PanelImperativeHandle } from 'react-resizable-panels';
 import { cn } from '@/lib/utils';
+import type { FileManagerProps, FileManagerSurfaceVariant } from './file-manager';
 import { useFileManagerActions, useFileManagerListing, useFileManagerStore } from './file-manager-context';
-import { useFileManagerDragAndDrop } from './file-manager-drag-drop';
 import { FileManagerDialog } from './file-manager-dialog';
+import { useFileManagerDragAndDrop } from './file-manager-drag-drop';
 import { FileManagerOperationFeedbackPanel } from './file-manager-operation-feedback';
 import { collectFileManagerUploadFiles } from './file-manager-operation-utils';
 import { FileManagerToolbar } from './file-manager-toolbar';
-import type { FileManagerProps, FileManagerSurfaceVariant } from './file-manager';
 import type { FileManagerFileStat, FileManagerOperation, FileManagerPlace } from './file-manager-types';
 import { sortFileManagerEntries } from './file-manager-utils';
 import { FileManagerWorkspace } from './file-manager-workspace';

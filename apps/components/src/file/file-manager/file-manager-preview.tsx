@@ -1,23 +1,23 @@
 'use client';
 
-import { Check, Clipboard } from 'lucide-react';
-import type { ComponentPropsWithRef } from 'react';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { useShallow } from 'zustand/react/shallow';
-import { readFileViewerBytes } from '@components/file-viewer/file-system-file-viewer';
-import { FileViewer } from '@components/file-viewer';
-import { toFileViewerKind } from '@components/file-viewer/file-viewer-kind';
-import type { FileViewerFileDescriptor, FileViewerKind } from '@components/file-viewer/file-viewer-types';
-import { HeaderContentFooterLayout } from '@ui/header-content-footer-layout';
-import { cn } from '@/lib/utils';
-import { useFileManagerActions, useFileManagerStore, useFileManagerStoreContext } from './file-manager-context';
 import type { FileManagerRegistry } from '@components/file-type-registry/file-manager-file-type-types';
+import { FileViewer } from '@components/file-viewer';
 import {
 	FileManagerFileTypeIcon,
 	getFileManagerFileTypeLabel,
 	renderFileManagerFileType,
 	useFileManagerRegistry,
 } from '@components/file-viewer/file-manager-registry';
+import { readFileViewerBytes } from '@components/file-viewer/file-system-file-viewer';
+import { toFileViewerKind } from '@components/file-viewer/file-viewer-kind';
+import type { FileViewerFileDescriptor, FileViewerKind } from '@components/file-viewer/file-viewer-types';
+import { HeaderContentFooterLayout } from '@ui/header-content-footer-layout';
+import { Check, Clipboard } from 'lucide-react';
+import type { ComponentPropsWithRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { useShallow } from 'zustand/react/shallow';
+import { cn } from '@/lib/utils';
+import { useFileManagerActions, useFileManagerStore, useFileManagerStoreContext } from './file-manager-context';
 import type { FileManagerFileStat, FileManagerFileSystem } from './file-manager-types';
 import {
 	formatFileManagerBytes,

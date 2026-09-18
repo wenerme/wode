@@ -1,7 +1,7 @@
+import { createFileManager, useFileManagerRegistry } from '@components/file-viewer/file-manager-registry';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vite-plus/test';
 import { FileManager } from './file-manager';
-import { createFileManager, useFileManagerRegistry } from '@components/file-viewer/file-manager-registry';
 import type { FileManagerFileSystem } from './file-manager-types';
 
 const fs = {} as FileManagerFileSystem;

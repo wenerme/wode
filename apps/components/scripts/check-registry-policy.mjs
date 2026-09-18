@@ -1,5 +1,6 @@
 import { access, lstat, readFile } from 'node:fs/promises';
 import { dirname, extname, join, relative, resolve } from 'node:path';
+import { appRoot, loadRegistryCatalog, rootRegistryPath } from './registry-catalog.mjs';
 import {
 	allowedSourceRoots,
 	getRegistryDependencyName,
@@ -8,7 +9,6 @@ import {
 	transitionalDuplicateSourceOwners,
 	transitionalDuplicateTargetOwners,
 } from './registry-policy.mjs';
-import { appRoot, loadRegistryCatalog, rootRegistryPath } from './registry-catalog.mjs';
 
 const runtimeProvidedPackages = new Set(['react', 'react-dom']);
 const catalog = await loadRegistryCatalog(process.env.WODE_REGISTRY_PATH ?? rootRegistryPath);

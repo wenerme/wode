@@ -1,7 +1,7 @@
 import type { ComponentType, ReactNode } from 'react';
+import { ListValueEditor, MultiOptionEditor } from './query-list-editors';
 import type { QueryBuilderMessages } from './query-messages';
 import type { QueryField, QueryJsonValue, QueryOperator, QueryRule } from './query-model';
-import { ListValueEditor, MultiOptionEditor } from './query-list-editors';
 import { ScalarEditor } from './query-scalar-editor';
 
 export type QueryValueEditorProps = {

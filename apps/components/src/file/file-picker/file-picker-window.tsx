@@ -1,13 +1,13 @@
 'use client';
 
-import type { ReactNode } from 'react';
-import { cn } from '@/lib/utils';
-import type { FileManagerFileStat } from '../file-manager';
 import type {
 	WindowManagerCapabilities,
 	WindowManagerOpenOptions,
 	WindowManagerStore,
 } from '@components/window-manager';
+import type { ReactNode } from 'react';
+import { cn } from '@/lib/utils';
+import type { FileManagerFileStat } from '../file-manager';
 import { DirectoryPicker, FilePicker, SaveFilePicker } from './file-picker';
 import type {
 	DirectoryPickerProps,

@@ -1,8 +1,5 @@
 'use client';
 
-import { LoaderCircle, RotateCcw } from 'lucide-react';
-import { type ReactNode, useEffect, useState } from 'react';
-import { cn } from '@/lib/utils';
 import { AgentComposer, type AgentComposerStatus } from '@components/agent-composer';
 import { AgentMessage } from '@components/agent-message';
 import {
@@ -13,6 +10,9 @@ import {
 	MessageScrollerProvider,
 	MessageScrollerViewport,
 } from '@components/message-scroller';
+import { LoaderCircle, RotateCcw } from 'lucide-react';
+import { type ReactNode, useEffect, useState } from 'react';
+import { cn } from '@/lib/utils';
 import type { AgentChatProps } from './agent-chat-types';
 import { resolveAgentChatMessages } from './agent-chat-types';
 import { validateAgentRuntimeMessages } from './runtime-message-validation';

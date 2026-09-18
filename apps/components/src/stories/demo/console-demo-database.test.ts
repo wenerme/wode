@@ -13,10 +13,10 @@ import {
 } from './console-demo-database';
 import { CONSOLE_DEMO_COUNTS, consoleDemoDataset } from './console-demo-dataset';
 import {
-	ContactRecordSchema,
 	type ContactRecord,
-	CustomerRecordSchema,
+	ContactRecordSchema,
 	type CustomerRecord,
+	CustomerRecordSchema,
 } from './console-demo-resource-schema';
 
 const databases = new Set<string>();

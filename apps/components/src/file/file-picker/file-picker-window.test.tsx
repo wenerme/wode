@@ -1,7 +1,7 @@
+import { createWindowManagerStore } from '@components/window-manager';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vite-plus/test';
 import type { FileManagerFileStat, FileManagerFileSystem } from '../file-manager';
-import { createWindowManagerStore } from '@components/window-manager';
 import {
 	FILE_PICKER_WINDOW_KIND,
 	renderFilePickerWindow,
