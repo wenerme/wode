@@ -23,7 +23,9 @@
 	"keywords": [],
 	"scripts": {
 		"build": "turbo run build --filter='!@wener/system'",
+		"check:ui-source-lines": "node --test apps/components/scripts/check-ui-source-lines.test.mjs && node apps/components/scripts/check-ui-source-lines.mjs",
 		"dev": "turbo run dev --parallel",
+		"duplicates:report": "jscpd --config .jscpd.json --workers 4 apps/server/src apps/console/src packages/wener-server/src packages/wener-client/src packages/wener-common/src packages/wener-utils/src packages/wener-ai/src packages/common/src",
 		"format": "vp fmt \"**/*.{ts,tsx,md}\"",
 		"preinstall": "npx only-allow pnpm"
 	},
@@ -56,6 +58,7 @@
 		"daisyui": "^5.6.15",
 		"esbuild": "^0.28.1",
 		"globby": "^16.2.1",
+		"jscpd": "5.0.12",
 		"jsdom": "^29.1.1",
 		"million": "^3.1.11",
 		"pg": "^8.22.0",

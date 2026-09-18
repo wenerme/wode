@@ -1,0 +1,379 @@
+{
+	"$schema": "https://ui.shadcn.com/schema/registry.json",
+	"items": [
+		{
+			"name": "path-address-bar",
+			"type": "registry:ui",
+			"title": "Path Address Bar",
+			"description": "A responsive breadcrumb and editable path address hybrid with ancestor overflow and contextual current-path actions",
+			"dependencies": ["@base-ui/react@^1.6.0", "daisyui", "lucide-react"],
+			"files": [
+				{
+					"path": "./path-address-bar/path-address-model.ts",
+					"type": "registry:lib",
+					"target": "@components/path-address-bar/path-address-model.ts"
+				},
+				{
+					"path": "./path-address-bar/path-address-bar-types.ts",
+					"type": "registry:lib",
+					"target": "@components/path-address-bar/path-address-bar-types.ts"
+				},
+				{
+					"path": "./path-address-bar/path-address-bar-menu-item.tsx",
+					"type": "registry:component",
+					"target": "@components/path-address-bar/path-address-bar-menu-item.tsx"
+				},
+				{
+					"path": "./path-address-bar/path-address-bar.tsx",
+					"type": "registry:component",
+					"target": "@components/path-address-bar/path-address-bar.tsx"
+				},
+				{
+					"path": "./path-address-bar/index.ts",
+					"type": "registry:component",
+					"target": "@components/path-address-bar/index.ts"
+				}
+			]
+		},
+		{
+			"name": "file-tree",
+			"type": "registry:ui",
+			"title": "File Tree",
+			"description": "An asynchronous virtualized filesystem tree with lazy loading, bounded caches, keyboard navigation, and backend-neutral file stats",
+			"dependencies": [
+				"clsx",
+				"emittery@^2.0.0",
+				"lucide-react",
+				"mutative@^1.3.0",
+				"react-arborist@^3.13.2",
+				"zustand@^5.0.14",
+				"zustand-mutative@^1.3.1"
+			],
+			"files": [
+				{
+					"path": "./file-tree/file-tree-types.ts",
+					"type": "registry:lib",
+					"target": "@components/file-tree/file-tree-types.ts"
+				},
+				{
+					"path": "./file-tree/file-tree-events.ts",
+					"type": "registry:lib",
+					"target": "@components/file-tree/file-tree-events.ts"
+				},
+				{
+					"path": "./file-tree/file-tree-path.ts",
+					"type": "registry:lib",
+					"target": "@components/file-tree/file-tree-path.ts"
+				},
+				{
+					"path": "./file-tree/file-tree-model.ts",
+					"type": "registry:lib",
+					"target": "@components/file-tree/file-tree-model.ts"
+				},
+				{
+					"path": "./file-tree/file-tree-store.ts",
+					"type": "registry:lib",
+					"target": "@components/file-tree/file-tree-store.ts"
+				},
+				{
+					"path": "./file-tree/file-tree-context.tsx",
+					"type": "registry:component",
+					"target": "@components/file-tree/file-tree-context.tsx"
+				},
+				{
+					"path": "./file-tree/file-tree-runtime.ts",
+					"type": "registry:lib",
+					"target": "@components/file-tree/file-tree-runtime.ts"
+				},
+				{
+					"path": "./file-tree/file-tree-row.tsx",
+					"type": "registry:component",
+					"target": "@components/file-tree/file-tree-row.tsx"
+				},
+				{
+					"path": "./file-tree/file-tree.tsx",
+					"type": "registry:component",
+					"target": "@components/file-tree/file-tree.tsx"
+				},
+				{
+					"path": "./file-tree/index.ts",
+					"type": "registry:component",
+					"target": "@components/file-tree/index.ts"
+				}
+			]
+		},
+		{
+			"name": "file-type-registry",
+			"type": "registry:ui",
+			"title": "File Type Registry",
+			"description": "Scoped stateless file-type matching, stack registration, renderer contracts, and resolution APIs",
+			"files": [
+				{
+					"path": "./file-type-registry/file-viewer-types.ts",
+					"type": "registry:lib",
+					"target": "@components/file-type-registry/file-viewer-types.ts"
+				},
+				{
+					"path": "./file-type-registry/file-manager-file-type-types.ts",
+					"type": "registry:lib",
+					"target": "@components/file-type-registry/file-manager-file-type-types.ts"
+				},
+				{
+					"path": "./file-type-registry/file-manager-registry.tsx",
+					"type": "registry:component",
+					"target": "@components/file-type-registry/file-manager-registry.tsx"
+				}
+			]
+		},
+		{
+			"name": "file-viewer",
+			"type": "registry:ui",
+			"title": "File Viewer",
+			"description": "Bounded Text, Image, PDF, Audio, Video, and unsupported-file viewers with an optional filesystem adapter",
+			"registryDependencies": [
+				"https://ui-components.wener.me/r/addressable-frame.json",
+				"https://ui-components.wener.me/r/file-type-registry.json"
+			],
+			"dependencies": ["daisyui", "lucide-react"],
+			"files": [
+				{
+					"path": "./file-viewer/file-viewer-types.ts",
+					"type": "registry:lib",
+					"target": "@components/file-viewer/file-viewer-types.ts"
+				},
+				{
+					"path": "./file-viewer/file-manager-file-types.tsx",
+					"type": "registry:component",
+					"target": "@components/file-viewer/file-manager-file-types.tsx"
+				},
+				{
+					"path": "./file-viewer/file-manager-registry.ts",
+					"type": "registry:component",
+					"target": "@components/file-viewer/file-manager-registry.ts"
+				},
+				{
+					"path": "./file-viewer/file-viewer-kind.ts",
+					"type": "registry:lib",
+					"target": "@components/file-viewer/file-viewer-kind.ts"
+				},
+				{
+					"path": "./file-viewer/use-file-viewer-object-url.ts",
+					"type": "registry:lib",
+					"target": "@components/file-viewer/use-file-viewer-object-url.ts"
+				},
+				{
+					"path": "./file-viewer/text-file-viewer.tsx",
+					"type": "registry:component",
+					"target": "@components/file-viewer/text-file-viewer.tsx"
+				},
+				{
+					"path": "./file-viewer/media-file-viewers.tsx",
+					"type": "registry:component",
+					"target": "@components/file-viewer/media-file-viewers.tsx"
+				},
+				{
+					"path": "./file-viewer/file-viewer.tsx",
+					"type": "registry:component",
+					"target": "@components/file-viewer/file-viewer.tsx"
+				},
+				{
+					"path": "./file-viewer/file-system-file-viewer.tsx",
+					"type": "registry:component",
+					"target": "@components/file-viewer/file-system-file-viewer.tsx"
+				},
+				{
+					"path": "./file-viewer/index.ts",
+					"type": "registry:component",
+					"target": "@components/file-viewer/index.ts"
+				}
+			]
+		},
+		{
+			"name": "file-manager",
+			"type": "registry:block",
+			"title": "File Manager",
+			"description": "A filesystem-neutral file workspace with scoped file-type registration, an asynchronous virtualized tree, drag-and-drop transfers and uploads, structured async operation feedback, CRUD operations, and bounded previews",
+			"registryDependencies": [
+				"https://ui-components.wener.me/r/addressable-frame.json",
+				"https://ui-components.wener.me/r/file-tree.json",
+				"https://ui-components.wener.me/r/file-type-registry.json",
+				"https://ui-components.wener.me/r/file-viewer.json",
+				"https://ui-components.wener.me/r/header-content-footer-layout.json",
+				"https://ui-components.wener.me/r/path-address-bar.json",
+				"https://ui-components.wener.me/r/resizable.json"
+			],
+			"dependencies": [
+				"@base-ui/react@^1.6.0",
+				"daisyui",
+				"emittery@^2.0.0",
+				"lucide-react",
+				"mutative@^1.3.0",
+				"react-resizable-panels@^4.12.1",
+				"zustand@^5.0.14",
+				"zustand-mutative@^1.3.1"
+			],
+			"files": [
+				{
+					"path": "./file-manager/file-manager-utils.ts",
+					"type": "registry:lib",
+					"target": "@components/file-manager/file-manager-utils.ts"
+				},
+				{
+					"path": "./file-manager/file-manager-types.ts",
+					"type": "registry:lib",
+					"target": "@components/file-manager/file-manager-types.ts"
+				},
+				{
+					"path": "./file-manager/file-manager-store.ts",
+					"type": "registry:lib",
+					"target": "@components/file-manager/file-manager-store.ts"
+				},
+				{
+					"path": "./file-manager/file-manager-context.tsx",
+					"type": "registry:component",
+					"target": "@components/file-manager/file-manager-context.tsx"
+				},
+				{
+					"path": "./file-manager/file-manager-controls.tsx",
+					"type": "registry:component",
+					"target": "@components/file-manager/file-manager-controls.tsx"
+				},
+				{
+					"path": "./file-manager/file-manager-dialog.tsx",
+					"type": "registry:component",
+					"target": "@components/file-manager/file-manager-dialog.tsx"
+				},
+				{
+					"path": "./file-manager/file-manager-drag-drop.tsx",
+					"type": "registry:component",
+					"target": "@components/file-manager/file-manager-drag-drop.tsx"
+				},
+				{
+					"path": "./file-manager/file-manager-listing.tsx",
+					"type": "registry:component",
+					"target": "@components/file-manager/file-manager-listing.tsx"
+				},
+				{
+					"path": "./file-manager/file-manager-operation-utils.ts",
+					"type": "registry:lib",
+					"target": "@components/file-manager/file-manager-operation-utils.ts"
+				},
+				{
+					"path": "./file-manager/file-manager-operation-feedback.tsx",
+					"type": "registry:component",
+					"target": "@components/file-manager/file-manager-operation-feedback.tsx"
+				},
+				{
+					"path": "./file-manager/file-manager-operation-executor.ts",
+					"type": "registry:lib",
+					"target": "@components/file-manager/file-manager-operation-executor.ts"
+				},
+				{
+					"path": "./file-manager/file-manager-runtime.tsx",
+					"type": "registry:component",
+					"target": "@components/file-manager/file-manager-runtime.tsx"
+				},
+				{
+					"path": "./file-manager/file-manager-preview.tsx",
+					"type": "registry:component",
+					"target": "@components/file-manager/file-manager-preview.tsx"
+				},
+				{
+					"path": "./file-manager/file-manager-sidebar.tsx",
+					"type": "registry:component",
+					"target": "@components/file-manager/file-manager-sidebar.tsx"
+				},
+				{
+					"path": "./file-manager/file-manager-surface.tsx",
+					"type": "registry:component",
+					"target": "@components/file-manager/file-manager-surface.tsx"
+				},
+				{
+					"path": "./file-manager/file-manager-toolbar.tsx",
+					"type": "registry:component",
+					"target": "@components/file-manager/file-manager-toolbar.tsx"
+				},
+				{
+					"path": "./file-manager/file-manager-workspace.tsx",
+					"type": "registry:component",
+					"target": "@components/file-manager/file-manager-workspace.tsx"
+				},
+				{
+					"path": "./file-manager/file-manager.tsx",
+					"type": "registry:component",
+					"target": "@components/file-manager/file-manager.tsx"
+				},
+				{
+					"path": "./file-manager/file-manager-window.tsx",
+					"type": "registry:component",
+					"target": "@components/file-manager/file-manager-window.tsx"
+				},
+				{
+					"path": "./file-manager/index.ts",
+					"type": "registry:component",
+					"target": "@components/file-manager/index.ts"
+				}
+			]
+		},
+		{
+			"name": "file-picker",
+			"type": "registry:block",
+			"title": "File Picker",
+			"description": "Standard open-file, multi-file, directory, and save-target pickers with standalone and WindowManager promise APIs",
+			"registryDependencies": [
+				"https://ui-components.wener.me/r/file-manager.json",
+				"https://ui-components.wener.me/r/window-manager.json",
+				"https://ui-components.wener.me/r/left-center-right-layout.json"
+			],
+			"dependencies": [
+				"emittery@^2.0.0",
+				"lucide-react",
+				"mutative@^1.3.0",
+				"zustand@^5.0.14",
+				"zustand-mutative@^1.3.1"
+			],
+			"files": [
+				{
+					"path": "./file-picker/file-picker-types.ts",
+					"type": "registry:lib",
+					"target": "@components/file-picker/file-picker-types.ts"
+				},
+				{
+					"path": "./file-picker/file-picker-model.ts",
+					"type": "registry:lib",
+					"target": "@components/file-picker/file-picker-model.ts"
+				},
+				{
+					"path": "./file-picker/file-picker-store.ts",
+					"type": "registry:lib",
+					"target": "@components/file-picker/file-picker-store.ts"
+				},
+				{
+					"path": "./file-picker/file-picker-context.tsx",
+					"type": "registry:component",
+					"target": "@components/file-picker/file-picker-context.tsx"
+				},
+				{
+					"path": "./file-picker/file-picker-runtime.tsx",
+					"type": "registry:component",
+					"target": "@components/file-picker/file-picker-runtime.tsx"
+				},
+				{
+					"path": "./file-picker/file-picker.tsx",
+					"type": "registry:component",
+					"target": "@components/file-picker/file-picker.tsx"
+				},
+				{
+					"path": "./file-picker/file-picker-window.tsx",
+					"type": "registry:component",
+					"target": "@components/file-picker/file-picker-window.tsx"
+				},
+				{
+					"path": "./file-picker/index.ts",
+					"type": "registry:component",
+					"target": "@components/file-picker/index.ts"
+				}
+			]
+		}
+	]
+}

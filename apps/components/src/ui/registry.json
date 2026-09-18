@@ -1,0 +1,74 @@
+{
+	"$schema": "https://ui.shadcn.com/schema/registry.json",
+	"items": [
+		{
+			"name": "addressable-frame",
+			"type": "registry:ui",
+			"title": "Addressable Frame",
+			"description": "Composable frame chrome for URL, file, object, and other addressable content",
+			"dependencies": ["daisyui"],
+			"files": [
+				{
+					"path": "./addressable-frame.tsx",
+					"type": "registry:ui",
+					"target": "@ui/addressable-frame.tsx"
+				}
+			]
+		},
+		{
+			"name": "header-content-footer-layout",
+			"type": "registry:ui",
+			"title": "Header Content Footer Layout",
+			"description": "A bounded flex-column layout with composable header, scrollable content, and footer slots",
+			"dependencies": ["daisyui"],
+			"files": [
+				{
+					"path": "./header-content-footer-layout.tsx",
+					"type": "registry:ui",
+					"target": "@ui/header-content-footer-layout.tsx"
+				}
+			]
+		},
+		{
+			"name": "left-center-right-layout",
+			"type": "registry:ui",
+			"title": "Left Center Right Layout",
+			"description": "A stable three-slot horizontal layout with independently aligned left, geometric-center, and right content",
+			"files": [
+				{
+					"path": "./left-center-right-layout.tsx",
+					"type": "registry:ui",
+					"target": "@ui/left-center-right-layout.tsx"
+				}
+			]
+		},
+		{
+			"name": "resizable",
+			"type": "registry:ui",
+			"title": "Resizable",
+			"description": "The shadcn resizable panel group, panel, and accessible separator for react-resizable-panels v4",
+			"dependencies": ["daisyui", "lucide-react", "react-resizable-panels@^4.12.1"],
+			"files": [
+				{
+					"path": "./resizable.tsx",
+					"type": "registry:ui",
+					"target": "@ui/resizable.tsx"
+				}
+			]
+		},
+		{
+			"name": "status",
+			"type": "registry:ui",
+			"title": "Status",
+			"description": "A standalone semantic status indicator with plain, soft, solid, and outline presentations",
+			"dependencies": ["daisyui"],
+			"files": [
+				{
+					"path": "./status.tsx",
+					"type": "registry:ui",
+					"target": "@ui/status.tsx"
+				}
+			]
+		}
+	]
+}

@@ -115,6 +115,9 @@ importers:
       globby:
         specifier: ^16.2.1
         version: 16.2.1
+      jscpd:
+        specifier: 5.0.12
+        version: 5.0.12
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1(@noble/hashes@2.2.0)(canvas@3.2.3)
@@ -235,6 +238,9 @@ importers:
       react:
         specifier: ~19.2.7
         version: 19.2.7
+      react-arborist:
+        specifier: ^3.13.2
+        version: 3.13.2(@types/hoist-non-react-statics@3.3.5)(@types/node@26.1.1)(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       react-dom:
         specifier: ~19.2.7
         version: 19.2.7(react@19.2.7)
@@ -299,6 +305,9 @@ importers:
       '@storybook/react-vite':
         specifier: 10.5.0
         version: 10.5.0(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(esbuild@0.28.1)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(rollup@4.60.2)(storybook@10.5.0(@types/react@19.2.17)(bufferutil@4.0.8)(prettier@3.8.3)(react@19.2.7)(utf-8-validate@6.0.4)(vite-plus@0.2.5(@opentelemetry/api@1.9.1)(@types/node@26.1.1)(@vitest/browser-playwright@4.1.10)(bufferutil@4.0.8)(esbuild@0.28.1)(jiti@2.7.0)(jsdom@29.1.1(@noble/hashes@2.2.0)(canvas@3.2.3))(msw@2.14.2(@types/node@26.1.1)(typescript@5.9.3))(sass@1.79.4)(terser@5.48.0)(tsx@4.23.0)(typescript@5.9.3)(utf-8-validate@6.0.4)(vite@8.1.5(@types/node@26.1.1)(esbuild@0.28.1)(jiti@2.7.0)(sass@1.79.4)(terser@5.48.0)(tsx@4.23.0)(yaml@2.9.0))(yaml@2.9.0)))(typescript@5.9.3)(vite@8.1.5(@types/node@26.1.1)(esbuild@0.28.1)(jiti@2.7.0)(sass@1.79.4)(terser@5.48.0)(tsx@4.23.0)(yaml@2.9.0))(webpack@5.104.1(@swc/core@1.15.43(@swc/helpers@0.5.23))(cssnano@8.0.2(postcss@8.5.16))(esbuild@0.28.1)(postcss@8.5.16))
+      '@swc/core':
+        specifier: 1.15.43
+        version: 1.15.43(@swc/helpers@0.5.23)
       '@tailwindcss/vite':
         specifier: ^4.3.2
         version: 4.3.2(vite@8.1.5(@types/node@26.1.1)(esbuild@0.28.1)(jiti@2.7.0)(sass@1.79.4)(terser@5.48.0)(tsx@4.23.0)(yaml@2.9.0))
@@ -1341,6 +1350,9 @@ importers:
       '@base-ui/react':
         specifier: ^1.6.0
         version: 1.6.0(@date-fns/tz@1.4.1)(@types/react@19.2.17)(date-fns@4.4.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      class-variance-authority:
+        specifier: ^0.7.1
+        version: 0.7.1
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -1506,6 +1518,9 @@ importers:
 
   packages/wener-common:
     dependencies:
+      '@sinclair/typebox':
+        specifier: ^0.34.49
+        version: 0.34.49
       '@standard-schema/spec':
         specifier: ^1.1.0
         version: 1.1.0
@@ -1521,6 +1536,15 @@ importers:
       ajv:
         specifier: '*'
         version: 8.20.0
+      ajv-formats:
+        specifier: ^3.0.1
+        version: 3.0.1(ajv@8.20.0)
+      ajv-keywords:
+        specifier: ^5.1.0
+        version: 5.1.0(ajv@8.20.0)
+      consola:
+        specifier: ^3.4.2
+        version: 3.4.2
       date-fns:
         specifier: ^4.4.0
         version: 4.4.0
@@ -1555,9 +1579,6 @@ importers:
       '@orpc/server':
         specifier: ^1.14.7
         version: 1.14.7(@opentelemetry/api@1.9.1)(fastify@5.10.0)(ws@8.21.0(bufferutil@4.0.8)(utf-8-validate@6.0.4))
-      '@sinclair/typebox':
-        specifier: ^0.34.49
-        version: 0.34.49
       '@sinclair/typebox-codegen':
         specifier: ^0.11.1
         version: 0.11.1
@@ -1573,15 +1594,9 @@ importers:
       '@types/mime-types':
         specifier: ^3.0.1
         version: 3.0.1
-      ajv-formats:
-        specifier: ^3.0.1
-        version: 3.0.1(ajv@8.20.0)
       ajv-i18n:
         specifier: ^4.2.0
         version: 4.2.0(ajv@8.20.0)
-      ajv-keywords:
-        specifier: ^5.1.0
-        version: 5.1.0(ajv@8.20.0)
       argon2:
         specifier: ^0.44.0
         version: 0.44.0
@@ -1597,9 +1612,6 @@ importers:
       chalk:
         specifier: ^5.6.2
         version: 5.6.2
-      consola:
-        specifier: ^3.4.2
-        version: 3.4.2
       dayjs:
         specifier: ^1.11.21
         version: 1.11.21
@@ -10528,6 +10540,44 @@ packages:
 
   js-yaml@4.3.0:
     resolution: {integrity: sha512-1td788aAnnZ5qs7V2QIRl1owjtYpbKt749Y3xauqQgwIIGF/xXWz1wMTEBx5O3LK3lXLVuqXPdPxj2BoFHaW9Q==}
+    hasBin: true
+
+  jscpd-darwin-arm64@5.0.12:
+    resolution: {integrity: sha512-CQCDYhQY9yOGGeauzkRGYW/QtXurPCjfDkEhUoM/M5UdmpzxfG3i9mnNsaheJ0RdFRf73mL7JaLVRP8U2l5/kA==}
+    cpu: [arm64]
+    os: [darwin]
+
+  jscpd-darwin-x64@5.0.12:
+    resolution: {integrity: sha512-7XNCDfChP9fPkIWLepd0zGnTov7/5mR7rJ5Utc1MdWFdgkN//qz6FAJ1FhQA0E/qjFedy9XTucfUCgLybSBsjw==}
+    cpu: [x64]
+    os: [darwin]
+
+  jscpd-linux-arm64-gnu@5.0.12:
+    resolution: {integrity: sha512-i/usHD0/8twzb2Qo4vFWcnuAD4IDLS6K/mTXwYy1CiJZDw4gmjfH45jtjdKUyoutTAiNs+ZWZgx1gIRljUbFuA==}
+    cpu: [arm64]
+    os: [linux]
+    libc: [glibc]
+
+  jscpd-linux-x64-gnu@5.0.12:
+    resolution: {integrity: sha512-TqaeSTaGawcqyXSrQvYJFtLRn4aQeHgphGGsq2ZtVAg+lPeuMmh81c3bl0yi2dL3gDX1RGBQKBVul1XQknOuoA==}
+    cpu: [x64]
+    os: [linux]
+    libc: [glibc]
+
+  jscpd-linux-x64-musl@5.0.12:
+    resolution: {integrity: sha512-WelugY1/rdoo0Y0sqJ2XQOIvyIZTfRe+vP3MJe4XvEUwPF0v+9SQoS34FnfblRhsddVixyNkgl7x/sHid9UMJw==}
+    cpu: [x64]
+    os: [linux]
+    libc: [musl]
+
+  jscpd-windows-x64-msvc@5.0.12:
+    resolution: {integrity: sha512-01x1klKjvfzI6Of5tI9u72x7TIQZQLLG6kMdsEPJKl/BXbskdknrfCepeTXRBbdFPKs25jfcd0klZ4OdDvww5w==}
+    cpu: [x64]
+    os: [win32]
+
+  jscpd@5.0.12:
+    resolution: {integrity: sha512-87dC+akj2mCywlt8p3xnRlDg0B55u4GDbfE9cuwOOeIxbEuWuIoNqGoYi65A0516aJ4EzAjGwBj1Qb/Ahc8WAQ==}
+    engines: {node: '>=18'}
     hasBin: true
 
   jsdom@29.1.1:
@@ -23136,6 +23186,33 @@ snapshots:
   js-yaml@4.3.0:
     dependencies:
       argparse: 2.0.1
+
+  jscpd-darwin-arm64@5.0.12:
+    optional: true
+
+  jscpd-darwin-x64@5.0.12:
+    optional: true
+
+  jscpd-linux-arm64-gnu@5.0.12:
+    optional: true
+
+  jscpd-linux-x64-gnu@5.0.12:
+    optional: true
+
+  jscpd-linux-x64-musl@5.0.12:
+    optional: true
+
+  jscpd-windows-x64-msvc@5.0.12:
+    optional: true
+
+  jscpd@5.0.12:
+    optionalDependencies:
+      jscpd-darwin-arm64: 5.0.12
+      jscpd-darwin-x64: 5.0.12
+      jscpd-linux-arm64-gnu: 5.0.12
+      jscpd-linux-x64-gnu: 5.0.12
+      jscpd-linux-x64-musl: 5.0.12
+      jscpd-windows-x64-msvc: 5.0.12
 
   jsdom@29.1.1(@noble/hashes@2.2.0)(canvas@3.2.3):
     dependencies:

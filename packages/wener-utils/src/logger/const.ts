@@ -16,3 +16,5 @@ export function createNoopLogger(): Logger {
 		trace: noop,
 	};
 }
+
+export const silent = createNoopLogger();

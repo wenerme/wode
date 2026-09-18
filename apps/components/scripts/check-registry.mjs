@@ -7,6 +7,7 @@ import { isDeepStrictEqual } from 'node:util';
 
 const appRoot = dirname(dirname(fileURLToPath(import.meta.url)));
 const expectedDir = join(appRoot, 'public', 'r');
+const catalogPath = join(appRoot, 'src', 'generated', 'registry-catalog.json');
 const outputDir = await mkdtemp(join(tmpdir(), 'wener-components-registry-'));
 const pnpm = process.platform === 'win32' ? 'pnpm.cmd' : 'pnpm';
 
@@ -30,6 +31,10 @@ try {
 		const actual = JSON.parse(await readFile(join(outputDir, file), 'utf8'));
 		if (!isDeepStrictEqual(expected, actual)) failures.push(`${file} is stale`);
 	}
+
+	const catalog = JSON.parse(await readFile(catalogPath, 'utf8'));
+	const expectedCatalog = JSON.parse(await readFile(join(expectedDir, 'registry.json'), 'utf8'));
+	if (!isDeepStrictEqual(catalog, expectedCatalog)) failures.push('src/generated/registry-catalog.json is stale');
 
 	if (failures.length > 0) {
 		console.error(`Registry check failed:\n- ${failures.join('\n- ')}`);

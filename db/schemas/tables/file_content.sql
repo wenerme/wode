@@ -1,6 +1,6 @@
 create table if not exists file_content
 (
-	id         text        not null default 'filec' || public.gen_ulid() primary key,
+	id         text        not null default 'filec_' || public.gen_ulid() primary key,
 	uid        uuid        not null default gen_random_uuid() unique,
 	created_at timestamptz not null default current_timestamp,
 	updated_at timestamptz not null default current_timestamp,

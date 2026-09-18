@@ -105,8 +105,8 @@ dist
 .turbo
 build/**
 dist/**
-storybook-static/
 .next/**
+storybook-static/
 
 
 packages/*/lib

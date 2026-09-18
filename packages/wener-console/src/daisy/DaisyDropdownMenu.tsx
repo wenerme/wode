@@ -4,7 +4,8 @@ import type { FlexRenderable } from '@wener/reaction';
 import { flexRender } from '@wener/reaction';
 import { clsx } from 'clsx';
 import { pick } from 'es-toolkit';
-import React, { type ComponentPropsWithoutRef, type FC, type ReactNode } from 'react';
+import type React from 'react';
+import type { ComponentPropsWithoutRef, FC, ReactNode } from 'react';
 import { match } from 'ts-pattern';
 import { isNodeTypeOf } from '../utils/isNodeTypeOf';
 

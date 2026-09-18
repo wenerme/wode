@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 
 const appRoot = dirname(dirname(fileURLToPath(import.meta.url)));
 const outputDir = join(appRoot, 'storybook-static');
-const registry = JSON.parse(await readFile(join(appRoot, 'registry.json'), 'utf8'));
+const registry = JSON.parse(await readFile(join(appRoot, 'public', 'r', 'registry.json'), 'utf8'));
 
 for (const file of ['index.html', 'iframe.html', 'index.json', 'r/registry.json', 'manifests/components.json']) {
 	await assertFile(file);
@@ -42,7 +42,7 @@ const storyIds = Object.entries(storyIndex.entries)
 	.filter(([, entry]) => entry.type === 'story')
 	.map(([id]) => id);
 
-for (const requiredStory of [
+const requiredStoryIds = [
 	'overview-registry--catalog',
 	'primitives-zoom--default',
 	'utilities-formats--catalog',
@@ -70,7 +70,9 @@ for (const requiredStory of [
 	'console-preferences--about',
 	'console-preferences--theme-catalog',
 	'console-integrated--resource-workspace',
-]) {
+];
+
+for (const requiredStory of requiredStoryIds) {
 	if (!storyIds.includes(requiredStory)) throw new Error(`Missing Storybook story: ${requiredStory}`);
 }
 

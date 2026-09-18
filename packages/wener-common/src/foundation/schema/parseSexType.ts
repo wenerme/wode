@@ -1,4 +1,4 @@
-import { SexType } from './SexType';
+import { SexType } from '../../resource/schema/SexType';
 
 export function parseSexType(s: string | null | undefined): undefined | SexType {
 	if (!s) return undefined;

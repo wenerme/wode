@@ -1,0 +1,27 @@
+{
+	"minTokens": 80,
+	"minLines": 12,
+	"mode": "weak",
+	"format": ["typescript", "tsx", "javascript", "jsx"],
+	"ignore": [
+		"**/*.test.*",
+		"**/*.spec.*",
+		"**/tests/**",
+		"**/stories/**",
+		"**/fixtures/**",
+		"**/__mocks__/**",
+		"**/local/**",
+		"**/protos/**",
+		"**/gen/**",
+		"**/poc/**",
+		"**/*.gen.*",
+		"**/*_pb.ts",
+		"**/*_connect.ts",
+		"**/parser.js"
+	],
+	"reporters": ["json"],
+	"output": "out/jscpd",
+	"absolute": true,
+	"noColors": true,
+	"noTips": true
+}

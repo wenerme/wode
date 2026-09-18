@@ -1,1 +1,1 @@
-export { SexType, SexTypeSchema } from './SexType';
+export { SexType, SexTypeSchema } from '../../resource/schema/SexType';

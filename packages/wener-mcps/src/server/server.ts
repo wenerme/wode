@@ -11,6 +11,7 @@ import { registerChatRoutes } from './chat-routes';
 import { loadConfig, loadEnvFiles, substituteEnvVars } from './config';
 import { createMcpsEmitter, type McpsEmitter, McpsEventType } from './events';
 import { registerMcpRoutes } from './mcp-routes';
+import { redactRequestHeaders } from './redactRequestHeaders';
 
 const log = consola.withTag('mcps');
 
@@ -171,14 +172,6 @@ export function createServer(options: CreateServerOptions = {}) {
 	return { app, config, emitter, serverCache, printEndpoints, finalize };
 }
 
-function headersToRecord(headers: Headers): Record<string, string> {
-	const record: Record<string, string> = {};
-	headers.forEach((value, key) => {
-		record[key] = value;
-	});
-	return record;
-}
-
 /**
  * Middleware that emits request events via the emitter.
  * Subscribers (like audit plugin) can listen and handle these events.
@@ -224,7 +217,7 @@ function requestEventMiddleware(emitter: McpsEmitter) {
 				status: c.res.status,
 				durationMs,
 				error,
-				requestHeaders: headersToRecord(c.req.raw.headers),
+				requestHeaders: redactRequestHeaders(c.req.raw.headers),
 			});
 		}
 	};

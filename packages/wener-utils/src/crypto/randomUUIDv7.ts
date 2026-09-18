@@ -57,15 +57,6 @@ export function parseUUIDv7Timestamp(uuid: string): number {
 	return parseInt(tsHex, 16);
 }
 
-/**
- * Check if a string is a valid UUIDv7
- */
-export function isUUIDv7(uuid: string | null | undefined): boolean {
-	if (!uuid) return false;
-	const match = uuid.match(/^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i);
-	return match !== null;
-}
-
 export interface CreateRandomUUIDv7Options {
 	now?: () => number;
 }
