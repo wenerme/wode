@@ -215,7 +215,7 @@ Storybook imports the registry source directly. It does not maintain a second co
 
 Storybook 10.5 runs all stories in two Vitest browser projects: the `wener` theme with a mobile viewport and the `night` theme with a desktop viewport. The Storybook dev server also exposes the local MCP endpoint at `http://localhost:6053/mcp`; register this URL in a compatible client's local MCP configuration.
 
-Agentic review, change detection, component manifests, and the experimental React docgen server are enabled for local Storybook development. Static builds publish the component manifest at `/manifests/components.json` and referenced metadata under `/services/core/`.
+Agentic review, change detection, and component manifests are enabled for Storybook. Static builds use the stable `react-docgen` path because Storybook's experimental React docgen server currently depends on compiler APIs removed in TypeScript 7. They publish the component manifest at `/manifests/components.json` and inline component metadata.
 
 The optional Claude and Codex ADE plugins are user-level experimental integrations and are not installed by the repository:
 

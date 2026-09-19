@@ -17,12 +17,8 @@ describe('console demo navigation surfaces', () => {
 		for (const page of dataListPages) expect(isDataListPage(page)).toBe(true);
 	});
 
-	it.each<DemoPage>([
-		'home',
-		'files',
-		'workspace',
-		'admin-settings',
-		'preferences',
-		'user-system',
-	])('keeps %s outside data list layout ownership', (page) => expect(isDataListPage(page)).toBe(false));
+	it.each<DemoPage>(['home', 'files', 'workspace', 'admin-settings', 'preferences', 'user-system'])(
+		'keeps %s outside data list layout ownership',
+		(page) => expect(isDataListPage(page)).toBe(false),
+	);
 });

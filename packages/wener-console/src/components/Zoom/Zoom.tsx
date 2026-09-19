@@ -43,10 +43,3 @@ function _useInjectScript(fn: () => Promise<{ default: any }>) {
 		});
 	}, []);
 }
-
-interface Module {
-	[Symbol.toStringTag]: 'Module';
-	default?: any;
-
-	[k: string | symbol]: any;
-}

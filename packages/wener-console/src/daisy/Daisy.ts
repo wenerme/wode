@@ -1,10 +1,4 @@
 export namespace Daisy {
-	type SemanticColorType = 'info' | 'success' | 'warning' | 'error';
-	type ThemeColorType = 'primary' | 'secondary' | 'accent';
-	type StatusModifierType = 'active' | 'disabled' | 'readonly' | 'loading' | 'open';
-	type AlignType = 'start' | 'center' | 'end';
-	type PositionType = 'top' | 'right' | 'bottom' | 'left';
-
 	const Sizes: Record<
 		SizeType,
 		{

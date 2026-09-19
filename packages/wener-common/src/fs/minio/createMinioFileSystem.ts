@@ -153,9 +153,7 @@ class MinioFS implements IFileSystem {
 			kind: isDir ? 'directory' : 'file',
 			mtime: obj.lastModified ? new Date(obj.lastModified).getTime() : Date.now(),
 			size: obj.size || 0,
-			meta: {
-				...(obj.etag ? { etag: obj.etag.replace(/"/g, '') } : {}),
-			},
+			meta: obj.etag ? { etag: obj.etag.replace(/"/g, '') } : {},
 		};
 	}
 
@@ -436,7 +434,7 @@ class MinioFS implements IFileSystem {
 	}
 
 	async mkdir(path: string, options: MkdirOptions = {}): Promise<void> {
-		const { recursive = false, signal } = options;
+		const { signal } = options;
 		this.checkAborted(signal);
 
 		// In S3, directories don't actually exist - they're just prefixes
@@ -591,11 +589,7 @@ class MinioFS implements IFileSystem {
 			stream = progressStream;
 		}
 
-		try {
-			await this.client.putObject(this.bucket, key, stream, size);
-		} catch (error: any) {
-			throw error;
-		}
+		await this.client.putObject(this.bucket, key, stream, size);
 	}
 
 	async rm(path: string, options: RmOptions = {}): Promise<void> {
@@ -1088,7 +1082,7 @@ class MinioFS implements IFileSystem {
 		});
 	}
 
-	createWriteStream(path: string, options?: CreateWriteStreamOptions): Writable {
+	createWriteStream(_path: string, _options?: CreateWriteStreamOptions): Writable {
 		throw new Error('Not implemented');
 	}
 
@@ -1098,7 +1092,7 @@ class MinioFS implements IFileSystem {
 			throw new Error('Cannot write to root directory');
 		}
 
-		const { signal, overwrite = true } = options;
+		const { signal } = options;
 		this.checkAborted(signal);
 
 		// Create a WritableStream that buffers data and uploads when done
@@ -1135,7 +1129,7 @@ class MinioFS implements IFileSystem {
 		});
 	}
 
-	getUrl(path: IFileStat | string, options?: any): string | undefined {
+	getUrl(path: IFileStat | string, _options?: any): string | undefined {
 		if (typeof path === 'object' && path?.kind !== 'file') {
 			return;
 		}

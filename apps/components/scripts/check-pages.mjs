@@ -11,10 +11,31 @@ for (const file of ['index.html', 'iframe.html', 'index.json', 'r/registry.json'
 }
 
 const componentsManifest = JSON.parse(await readFile(join(outputDir, 'manifests/components.json'), 'utf8'));
-if (componentsManifest.v !== 1 || Object.keys(componentsManifest.components ?? {}).length === 0) {
+if (![0, 1].includes(componentsManifest.v) || Object.keys(componentsManifest.components ?? {}).length === 0) {
 	throw new Error('Storybook components manifest is missing component metadata');
 }
+// react-docgen emits inline metadata (v0); the experimental docgen server emits references (v1).
+if (
+	componentsManifest.v === 0 &&
+	!Object.values(componentsManifest.components).some(
+		(component) => component.reactDocgen && component.stories?.some((story) => typeof story.snippet === 'string'),
+	)
+) {
+	throw new Error('Storybook components manifest is missing inline docgen metadata and story snippets');
+}
 for (const component of Object.values(componentsManifest.components)) {
+	if (componentsManifest.v === 0) {
+		if (
+			typeof component.id !== 'string' ||
+			typeof component.name !== 'string' ||
+			!Array.isArray(component.stories) ||
+			component.stories.length === 0 ||
+			component.stories.some((story) => typeof story.id !== 'string' || typeof story.name !== 'string')
+		) {
+			throw new Error(`Invalid inline Storybook component metadata: ${component.id}`);
+		}
+		continue;
+	}
 	for (const reference of [component.docgen?.$ref, component.stories?.$ref]) {
 		if (typeof reference !== 'string') throw new Error(`Missing Storybook component reference: ${component.id}`);
 		const [referencePath, fragment] = reference.split('#', 2);

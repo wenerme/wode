@@ -78,7 +78,7 @@ export function resolveGrafanaAuthOptions(options: GrafanaAuthOptions): Resolved
 		password,
 		extraHeaders: {
 			...parseExtraHeaders(process.env[GrafanaEnvNames.EXTRA_HEADERS]),
-			...(options.extraHeaders ?? {}),
+			...options.extraHeaders,
 		},
 		timeoutMs,
 		debug: Boolean(options.debug),

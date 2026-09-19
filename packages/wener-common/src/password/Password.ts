@@ -85,7 +85,7 @@ export namespace Password {
 	export async function hash(password: string, { algorithm, ...opts }: PasswordHashOptions = {}) {
 		let f = resolveAlgorithm(algorithm ?? DefaultAlgorithm);
 		let id = algorithm ?? DefaultAlgorithm;
-		typeof id !== 'string' && (id = f.name);
+		if (typeof id !== 'string') id = f.name;
 		return f.hash(password, { id, ...opts });
 	}
 }

@@ -50,11 +50,6 @@ export const AlpineRepoSchema = z.object({
 	size!: number & Opt;
  */
 
-type ListResponse<T> = {
-	data: T[];
-	total: number;
-};
-
 export const AlpineContract = {
 	// index: {
 	// 	info: oc.output(z.object({})),

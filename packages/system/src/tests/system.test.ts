@@ -12,7 +12,7 @@ test('SystemJS functional', async () => {
 	try {
 		System.resolve('test');
 		expect.fail('should not resolve');
-	} catch (e) {}
+	} catch {}
 
 	// will throw error but still valid
 	System.set('test0', { default: 'test0' });

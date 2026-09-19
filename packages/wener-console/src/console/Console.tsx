@@ -21,7 +21,7 @@ export namespace Console {
 		);
 	};
 
-	export const Root = ({ init, children }: { init?: Array<InitDef>; children?: ReactNode }) => {
+	export const Root = ({ init }: { init?: Array<InitDef>; children?: ReactNode }) => {
 		const { done } = useInit(init);
 
 		if (!done) {

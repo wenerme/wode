@@ -126,17 +126,16 @@ describe('AgentCommandRuntime', () => {
 		await first;
 	});
 
-	it.each([
-		{ mutationMayContinue: true, settled: true },
-		{ settled: false },
-		{ poisoned: true, settled: true },
-	])('poisons after an unsafe terminal result: $settled/$mutationMayContinue/$poisoned', async (unsafe) => {
-		const execute = vi.fn<AgentCommandExecutor['execute']>(async () => ({ ...success(), ...unsafe }));
-		const runtime = createAgentCommandRuntime({ execute });
-		expect((await runtime.execute({ command: 'first' })).poisoned).toBe(true);
-		expect(await runtime.execute({ command: 'second' })).toMatchObject({ exitCode: 125, poisoned: true });
-		expect(execute).toHaveBeenCalledOnce();
-	});
+	it.each([{ mutationMayContinue: true, settled: true }, { settled: false }, { poisoned: true, settled: true }])(
+		'poisons after an unsafe terminal result: $settled/$mutationMayContinue/$poisoned',
+		async (unsafe) => {
+			const execute = vi.fn<AgentCommandExecutor['execute']>(async () => ({ ...success(), ...unsafe }));
+			const runtime = createAgentCommandRuntime({ execute });
+			expect((await runtime.execute({ command: 'first' })).poisoned).toBe(true);
+			expect(await runtime.execute({ command: 'second' })).toMatchObject({ exitCode: 125, poisoned: true });
+			expect(execute).toHaveBeenCalledOnce();
+		},
+	);
 });
 
 function deferred<T>() {

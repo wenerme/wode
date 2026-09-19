@@ -32,8 +32,8 @@ export async function generateSchema({ file, dir = path.dirname(file) }: { file:
 				return;
 			}
 			resolve({ stderr, stdout });
-			stdout && console.log(`fmt:stdout: ${stdout}`);
-			stderr && console.error(`fmt:stderr: ${stderr}`);
+			if (stdout) console.log(`fmt:stdout: ${stdout}`);
+			if (stderr) console.error(`fmt:stderr: ${stderr}`);
 		});
 	});
 }

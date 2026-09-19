@@ -26,7 +26,7 @@ export function buildGraphModule(...ctx: BuildGraphModuleOptions[]) {
 			return {
 				module: GraphContextModule,
 				providers: [...providers, ...services, ...resolvers],
-				imports: [...(entities.length ? [OrmModule.forFeature(entities), ...imports] : [])],
+				imports: entities.length ? [OrmModule.forFeature(entities), ...imports] : [],
 			} as DynamicModule;
 		},
 	} satisfies BuildGraphModuleOptions & { module: DynamicModule };

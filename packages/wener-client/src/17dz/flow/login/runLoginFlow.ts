@@ -61,9 +61,9 @@ export async function runLoginFlow({
 			throw new Error('username or password input not found');
 		}
 
-		await $username.click({ clickCount: 3, button: 'left' });
+		await $username.click({ count: 3, button: 'left' });
 		await $username.type(username);
-		await $password.click({ clickCount: 3, button: 'left' });
+		await $password.click({ count: 3, button: 'left' });
 		await $password.type(password);
 
 		logger.debug('enter account info');

@@ -61,8 +61,7 @@ export interface SystemJS {
 	 * This represents the System base class, which can be extended or reinstantiated to create a custom System instance.
 	 * @category Core
 	 */
-	// biome-ignore lint/suspicious/noMisleadingInstantiator: SystemJS allows `new System.constructor()`
-	constructor(): SystemJS;
+	constructor: new () => SystemJS;
 
 	/**
 	 * Applies to the global loading extra.

@@ -31,8 +31,13 @@ jobs:
       - name: Install Buf CLI
         uses: bufbuild/buf-setup-action@v1
 
+      - name: Install just
+        uses: taiki-e/install-action@v2
+        with:
+          tool: just@1.38.0
+
       - name: Verify workspace
-        run: make ci
+        run: just ci
 
       - name: Install Storybook browser
         run: pnpm exec playwright install --with-deps chromium

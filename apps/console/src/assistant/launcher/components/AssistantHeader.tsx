@@ -8,13 +8,13 @@ export const AssistantHeader: React.FC = () => {
 
 	return (
 		<div
-			className='flex h-16 items-center justify-between border-b border-base-300 bg-base-100 px-4'
+			className='border-base-300 bg-base-100 flex h-16 items-center justify-between border-b px-4'
 			data-tauri-drag-region
 		>
 			{/* User Info */}
 			<div className='flex items-center gap-3'>
 				<div className='placeholder avatar'>
-					<div className='w-10 rounded-full bg-neutral text-neutral-content'>
+					<div className='bg-neutral text-neutral-content w-10 rounded-full'>
 						<span className='text-xl'>{state.user.displayName?.[0] || 'U'}</span>
 					</div>
 				</div>
@@ -27,11 +27,11 @@ export const AssistantHeader: React.FC = () => {
 			{/* Search */}
 			<div className='max-w-md flex-1 px-4'>
 				<div className='relative'>
-					<FiSearch className='text-base-content/50 absolute left-3 top-1/2 -translate-y-1/2' />
+					<FiSearch className='text-base-content/50 absolute top-1/2 left-3 -translate-y-1/2' />
 					<input
 						type='text'
 						placeholder='Search tools...'
-						className='input-bordered input input-sm w-full rounded-full bg-base-200 pl-9 focus:bg-base-100'
+						className='input-bordered input input-sm bg-base-200 focus:bg-base-100 w-full rounded-full pl-9'
 						value={state.searchQuery}
 						onChange={(e) => {
 							mutate.searchQuery = e.target.value;

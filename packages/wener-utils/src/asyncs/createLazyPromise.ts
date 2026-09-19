@@ -59,7 +59,7 @@ export function createLazyPromise<T = any>(
 			finally: lazy.finally?.bind(lazy),
 			resolve: _resolve,
 			reject: _reject,
-			// biome-ignore lint/suspicious/noThenProperty: intentional thenable implementation
+			// oxlint-disable-next-line unicorn/no-thenable -- Lazy promises must implement then to start execution when awaited.
 			then: (...args: any[]) => {
 				if (executor && !executed) {
 					executed = true;

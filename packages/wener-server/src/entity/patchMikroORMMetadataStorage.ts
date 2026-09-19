@@ -39,7 +39,7 @@ export function patchMikroORMMetadataStorage() {
 			const path = (Utils as any).lookupPathFromDecorator?.(name) ?? name;
 			const meta = MetadataStorage.getMetadata(name, path);
 
-			name !== target.name && Object.defineProperty(target, 'name', { value: name, writable: true });
+			if (name !== target.name) Object.defineProperty(target, 'name', { value: name, writable: true });
 			return meta;
 		};
 	}

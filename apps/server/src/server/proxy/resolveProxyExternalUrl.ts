@@ -5,9 +5,9 @@ export function resolveProxyExternalUrl(target: string | URL | undefined | null)
 	if (typeof target === 'string') {
 		try {
 			let url = target.includes('.') ? target : atob(target);
-			/^https?:\/\//.test(url) || (url = `https://${url}`);
+			if (!/^https?:\/\//.test(url)) url = `https://${url}`;
 			u = new URL(url);
-		} catch (e) {
+		} catch {
 			console.warn(`resolveExternalUrl: Invalid URL: ${target}`);
 			return undefined;
 		}

@@ -45,7 +45,7 @@ export async function request<T>({
 
 	let data: T;
 	try {
-		data = await WecomClientError.ok(res);
+		data = (await WecomClientError.ok(res)) as T;
 	} catch (error) {
 		if (onResponse) {
 			await onResponse({ res, req, err: error });
@@ -62,5 +62,5 @@ export async function request<T>({
 		data = (await onSuccess({ res, data })) ?? data;
 	}
 
-	return data;
+	return data as T;
 }

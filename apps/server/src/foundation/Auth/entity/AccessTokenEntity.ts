@@ -1,4 +1,5 @@
-import { Entity, type Opt, Property, types } from '@mikro-orm/core';
+import { type Opt, types } from '@mikro-orm/core';
+import { Entity, Property } from '@mikro-orm/decorators/legacy';
 import { EntitySchema, TenantBaseEntity } from '@wener/server/entity';
 
 @EntitySchema({ idType: 'at' })

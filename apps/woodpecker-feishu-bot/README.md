@@ -45,13 +45,13 @@ pipeline:
 
         📦️ <%= $.link(env.CI_REPO_NAME, env.CI_BUILD_LINK) %> · ⏳<%= env.CI_PIPELINE_FINISHED - env.CI_PIPELINE_STARTED %>
     when:
-      status: [ success, failure ]
+      status: [success, failure]
 ```
 
 ## settings
 
 | setting           | for                                     |
-|-------------------|-----------------------------------------|
+| ----------------- | --------------------------------------- |
 | feisbu_bot_url    |                                         |
 | feisbu_bot_secret |                                         |
 | content           |                                         |

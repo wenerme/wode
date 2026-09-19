@@ -26,12 +26,12 @@ type Value =
 	| Int8Array
 	| Int16Array
 	| Int32Array
-	| Number
 	| number
-	| Object
+	| number
+	| object
 	| Uint8Array
 	| Uint8ClampedArray
 	| Uint16Array
 	| Uint32Array
 	| string
-	| String;
+	| string;

@@ -1,4 +1,5 @@
-import { Entity, ManyToOne, type Rel, Unique } from '@mikro-orm/core';
+import { type Rel } from '@mikro-orm/core';
+import { Entity, ManyToOne, Unique } from '@mikro-orm/decorators/legacy';
 import { TenantBaseEntity, withRequiredEntityRefEntity } from '@wener/server/entity';
 import { mixin } from '@wener/utils';
 import { AuthRoleEntity } from './AuthRoleEntity';

@@ -42,10 +42,15 @@
 		"./utils": "./src/utils/index.ts",
 		"./package.json": "./package.json"
 	},
-	"files": ["lib", "lib.d.ts", "libs", "src"],
+	"files": [
+		"lib",
+		"lib.d.ts",
+		"libs",
+		"src"
+	],
 	"keywords": [],
 	"scripts": {
-		"build": "make build",
+		"build": "just -f ../../just/packages/wener-common.just build",
 		"check:fs-mime-types": "node scripts/generateMimeTypes.mjs --check",
 		"generate:fs-mime-types": "node scripts/generateMimeTypes.mjs",
 		"prepublishOnly": "pnpm verify:publish",
@@ -65,27 +70,27 @@
 		}
 	},
 	"dependencies": {
-		"@sinclair/typebox": "^0.34.49",
+		"@sinclair/typebox": "^0.34.52",
 		"@standard-schema/spec": "^1.1.0",
-		"@types/node": "^24.13.3",
+		"@types/node": "^24.13.5",
 		"@types/wicg-file-system-access": "^2023.10.7",
 		"@wener/utils": "^1.1.59",
 		"ajv-formats": "^3.0.1",
 		"ajv-keywords": "^5.1.0",
 		"consola": "^3.4.2",
 		"date-fns": "^4.4.0",
-		"es-toolkit": "^1.49.0",
+		"es-toolkit": "^1.52.0",
 		"pathe": "^2.0.3",
 		"std-env": "^4.2.0",
 		"ts-pattern": "^5.9.0"
 	},
 	"devDependencies": {
-		"@mikro-orm/core": "^7.1.5",
-		"@mikro-orm/sql": "^7.1.5",
-		"@orpc/client": "^1.14.7",
-		"@orpc/contract": "^1.14.7",
-		"@orpc/openapi-client": "^1.14.7",
-		"@orpc/server": "^1.14.7",
+		"@mikro-orm/core": "^7.2.0",
+		"@mikro-orm/sql": "^7.2.0",
+		"@orpc/client": "^1.15.1",
+		"@orpc/contract": "^1.15.1",
+		"@orpc/openapi-client": "^1.15.1",
+		"@orpc/server": "^1.15.1",
 		"@sinclair/typebox-codegen": "^0.11.1",
 		"@types/argon2-browser": "^1.18.4",
 		"@types/bcrypt": "^6.0.0",
@@ -97,17 +102,17 @@
 		"bcrypt": "^6.0.0",
 		"bcryptjs": "^3.0.3",
 		"chalk": "^5.6.2",
-		"dayjs": "^1.11.21",
+		"dayjs": "^1.11.23",
 		"decimal.js": "^10.6.0",
 		"emittery": "^2.0.0",
-		"just-bash": "^3.1.0",
-		"kysely": "^0.29.3",
+		"just-bash": "^3.4.2",
+		"kysely": "^0.29.6",
 		"micromatch": "^4.0.8",
 		"mime-types": "^3.0.2",
 		"minio": "^8.0.7",
 		"s3mini": "^0.9.5",
 		"webdav": "^5.10.0",
-		"zod": "^4.4.3"
+		"zod": "^4.6.5"
 	},
 	"publishConfig": {
 		"exports": {

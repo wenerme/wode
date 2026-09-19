@@ -67,7 +67,7 @@ export class AuthGuard implements CanActivate {
 		return true;
 	}
 
-	protected async handleToken(o: { token: string }): Promise<AuthPrincipal | undefined> {
+	protected async handleToken(_o: { token: string }): Promise<AuthPrincipal | undefined> {
 		return undefined;
 	}
 

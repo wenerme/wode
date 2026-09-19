@@ -22,7 +22,7 @@ export function createProbeRoute({
 		async (c) => {
 			try {
 				await ready?.();
-			} catch (_e) {
+			} catch {
 				c.status(500);
 				return c.json({ ok: false });
 			}
@@ -41,7 +41,7 @@ export function createProbeRoute({
 		async (c) => {
 			try {
 				await live?.();
-			} catch (_e) {
+			} catch {
 				c.status(500);
 				return c.json({ ok: false });
 			}

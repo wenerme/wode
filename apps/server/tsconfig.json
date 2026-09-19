@@ -18,7 +18,7 @@
 		}
 	},
 	"include": ["vitest.config.ts", "vite.config.ts", "lib.d.ts", "src/**/*.ts", "src/**/*.tsx"],
-	"exclude": ["node_modules"],
+	"exclude": ["node_modules", "src/**/ignored.test.ts", "src/ignored/**/*.ts", "src/app/graphql/**/*.ts"],
 	"ts-node": {
 		"transpileOnly": true,
 		"swc": true,

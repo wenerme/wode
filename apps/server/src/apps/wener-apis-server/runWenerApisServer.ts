@@ -16,8 +16,7 @@ import { logger } from 'hono/logger';
 import { getWenerApisDynamicModule } from '@/apps/wener-apis-server/const';
 import { DefaultMikroORMConfig } from '@/apps/wener-apis-server/DefaultMikroORMConfig';
 import { handleContract } from '@/apps/wener-apis-server/handleContract';
-import { EntityEventRelaySubscriber } from '@/server/events/EntityEventRelaySubscriber';
-import { createHonoAuth } from '@/server/hono/createHonoAuth';
+import { EntityEventRelaySubscriber } from '@/events/EntityEventRelaySubscriber';
 import { createHonoContext } from '@/server/hono/createHonoContext';
 import { getDatabaseUrl } from '@/utils/getDatabaseUrl';
 
@@ -44,19 +43,13 @@ export async function runWenerApisServer() {
 	const app = new Hono<{ Bindings: Bindings }>();
 	app.use(logger());
 	const withContext = createHonoContext();
-	const withAuth = createHonoAuth({
-		log,
-		allowBasicAuth: (c) => {
-			return c.req.path.startsWith('/webdav');
-		},
-	});
 	app.use(withContext);
 
 	app.get('/api/ready', (c) => c.json({ ok: true }));
 	app.get('/api/live', (c) => c.json({ ok: true }));
 
-	app.onError((err, c) => {
-		process.env.NODE_ENV === 'development' && console.error(err);
+	app.onError((err, _c) => {
+		if (process.env.NODE_ENV === 'development') console.error(err);
 		return Errors.resolve(err).asResponse();
 	});
 
@@ -99,7 +92,7 @@ export async function runWenerApisServer() {
 	imports: [
 		OrmModule.forRootAsync({
 			useFactory: async () => {
-				const { MikroORM, defineConfig } = await import('@mikro-orm/postgresql');
+				const { defineConfig } = await import('@mikro-orm/postgresql');
 				return defineConfig({
 					...DefaultMikroORMConfig,
 					clientUrl: getDatabaseUrl(),

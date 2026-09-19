@@ -1,231 +1,172 @@
-# wode
+# Wode
 
-Wener NodeJS Monorepo
+Wode is Wener's TypeScript monorepo for React console surfaces, reusable UI primitives, service and API tooling, AI/MCP integrations, and protobuf contracts.
 
-- WODE -> Wener nODE & DEMO
+The name comes from **Wener nODE & DEMO**. The repository is organized as a pnpm workspace and uses Just for reusable task recipes and Vite+ (`vp`) for formatting and tests.
 
-**Wokring on overwrite**
+## Repository layout
 
-Layouts
+| Path                                                                 | Responsibility                                                                                     |
+| -------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| `apps/components`                                                    | Waku component lab, Storybook catalog, and the shadcn-compatible Wode Registry.                    |
+| `apps/console`                                                       | The application console and app-specific routes, modules, and foundation code.                     |
+| `apps/server`                                                        | Server application entry points and API integrations.                                              |
+| `packages/ui`                                                        | Application-agnostic React primitives built with Base UI and Tailwind CSS.                         |
+| `packages/wener-console`                                             | Reusable console toolkit, layouts, resource views, loaders, and console integrations.              |
+| `packages/wener-common`                                              | Shared filesystem, resource, schema, and server-independent utilities.                             |
+| `packages/wener-server`                                              | Server helpers, entities, Hono/Nest integrations, ConnectRPC helpers, and NATS modules.            |
+| `packages/wener-ai`                                                  | AI SDK utilities, agent contracts, and MCP server definitions.                                     |
+| `packages/wener-client`                                              | Clients for external services and provider APIs.                                                   |
+| `packages/wener-mcps`                                                | MCP server implementations and audit/runtime support.                                              |
+| `packages/wener-mcp-cli`                                             | CLI for interacting with MCP servers.                                                              |
+| `packages/wener-feishu-devdocs-mcp`                                  | Feishu/Lark developer documentation MCP server.                                                    |
+| `packages/wener-mssql-mcp`                                           | Microsoft SQL Server MCP server.                                                                   |
+| `packages/wener-api-cli`                                             | CLI for REST APIs described by OpenAPI specifications.                                             |
+| `packages/wener-miniquery`                                           | Safe SQL-`WHERE`-like filter expressions for ORM queries.                                          |
+| `packages/wener-utils`, `packages/wener-reaction`, `packages/system` | General utilities, React helpers, and SystemJS support.                                            |
+| `proto`                                                              | Canonical protobuf source tree. Generated TypeScript is checked into the packages that consume it. |
 
+Legacy experiments and the former standalone web/playground applications are not part of the tracked workspace. New demos belong in the component stories or in an application route with an explicit owner.
+
+## Requirements
+
+- Node.js `>=24.11.0`
+- pnpm `10.33.0`
+- Just `1.38.0` or newer
+- Buf CLI for protobuf formatting, linting, and generation
+- Chromium for the browser-based Storybook tests
+
+The required package-manager and runtime versions are declared in the root `package.json`. Install pnpm with Corepack or through your preferred system package manager, then install dependencies:
+
+```bash
+corepack enable
+pnpm install
 ```
-/apps Applications, things with entrypoint
-	/console Console App use @wener/console as base
-	/server Server App use @wener/server as base, hono, mikro-orm, orpc, connectrpc, graphql
-	/woodpecker-feishu-bot migrate to https://github.com/wenerme/woodpecker-feishu-bot
-/packages Libraries
-	/wener-* Packages that will publish to NPM as @wener/*
-	/common Common for console & server, includes orpc contract, zod schema
-/db Database Schema
-	/migrations Migration based database schema
-	/schemas Schema based database schema managment
-	atlas.hcl
-/proto Protobuf
-/local/legacy/web Legacy local-only Next.js tools/demo app archive, not tracked
-/local/legacy/wogo Legacy local-only Go filesystem service experiment, not tracked
-/local/legacy/wode-assistant Legacy local-only assistant archive, not tracked
 
-buf.gen.yaml Buf generate config
-buf.yaml Buf schema config
+For the Storybook browser suite, install Chromium once on the development machine:
 
-apps/playground and apps/web are no longer tracked; migrate useful demos to packages/ui stories or console routes when needed.
+```bash
+pnpm exec playwright install --with-deps chromium
 ```
 
-**OLD**
+## Common commands
 
-- apps
-  - console https://wode.wener.me
-    - React, ViteJS, Console for Homelab, CRM, etc.
-  - server
-    - wode-api-server
-      - HonoJS, MikroORM, GraphQL, RESTful
-      - backend for web & console
-    - wode-worker
-      - BullMQ worker
-  - [wenerme/wode-stub](https://github.com/wenerme/wode-stub)
-    - Template for web + console + server project
-- packages
-  - @wener/reaction
-    - React hooks & utils
-  - @wener/utils
-    - Typescript
-    - Zero Dependencies
-  - @wener/torrent
-    - Bencode codec
-  - @wener/tiptap
-    - TipTap based Google Doc
-      - Extensions
-        - classNames, column-count, margin-{left,right,top,bottom}, line-height, font-size, text-indent, letter-spacing
-        - video, indent
-        - renderMarkdown
-        - parseMarkdown
-        - slash command
-  - @wener/unpkg
-    - Selfhost https://unpkg.com/ , https://cdn.jsdelivr.net/npm/ alternative
-  - @wener/wode
-    - common config
-  - @wener/client
-    - Wechat client
-    - Wecom/Wework client
-    - Xunfei spark client
-    - OpenAI chat client
-  - @wener/nextjs
-    - Nats based RPC service
-    - NextJS utils
-    - mikro-orm utils
-  - ethers - WIP
-    - Web3 utils
-  - @wener/system
-    - hooks to lets systemjs work with npm registry & package.json
+Run commands from the repository root unless a command includes `-C`.
 
+| Command                          | Purpose                                                                                      |
+| -------------------------------- | -------------------------------------------------------------------------------------------- |
+| `just dev`                       | Start workspace development tasks in parallel through Turbo.                                 |
+| `just build`                     | Build workspace packages and applications through Turbo.                                     |
+| `just test`                      | Run workspace tests through Turbo.                                                           |
+| `just fmt`                       | Format TypeScript, TSX, and Markdown with Vite+.                                             |
+| `just lint`                      | Run the Vite+ lint entry point.                                                              |
+| `just typecheck`                 | Run every package typecheck that defines one.                                                |
+| `just buf-fmt` / `just buf-lint` | Format or lint the canonical protobuf tree.                                                  |
+| `just buf-gen`                   | Generate protobuf clients and normalize generated output.                                    |
+| `just ci`                        | Run the CI baseline: frozen install, protobuf checks, Biome, typechecks, and selected tests. |
 
-## TODO
+Vite+ owns the repository's test and formatting workflow. New test files should import test APIs from `vite-plus/test` and run through `pnpm exec vp test run` or the package script that wraps it.
 
-- TipTapWord
-  - [ ] 媒体资源选中编辑时回显
-  - [ ] 媒体资源允许配置 URL
-  - [ ] TOC
-  - [ ] 属性编辑器
-  - [ ] LineHeight 菜单
-  - [ ] print
-  - [ ] toolbar memo
-- Typedoc
-  - package multi entryPoints
-    https://github.com/TypeStrong/typedoc/issues/1937
-- Web
-  - [ ] i18n need a refresh to works properly
+The root [`justfile`](justfile) imports reusable domain recipes from `just/*.just`. Recipes that operate in the caller's package use `[no-cd]`, so the same file can be reused without duplicating a Makefile in every package:
 
-<!-- LINK:BEGIN -->
+```bash
+cd packages/wener-common
+just -f ../../just/package.just package-fmt
+just -f ../../just/package.just package-typecheck
+just -f ../../just/packages/wener-common.just build
+```
 
-# Links
+Package-specific build and publish behavior belongs in `just/packages/*.just`; workspace-wide orchestration belongs in `just/workspace.just`, `just/ci.just`, and the domain files for Proto, components, and server entrypoints.
 
-**Summary**
+## Components and Registry
 
-| Repository                       | NPM                                   | Info                                                                                         |
-|----------------------------------|---------------------------------------|----------------------------------------------------------------------------------------------|
-| [@wener/utils][utils-repo]       | [![][utils-version]][utils-npm]       | [Doc][utils-doc]<br/> ![][utils-license]<br/>![][utils-size]<br/>![][utils-deps]             |
-| [@wener/system][system-repo]     | [![][system-version]][system-npm]     | [Doc][system-doc]<br/> ![][system-license]<br/>![][system-size]<br/>![][system-deps]         |
-| [@wener/reaction][reaction-repo] | [![][reaction-version]][reaction-npm] | [Doc][reaction-doc]<br/> ![][reaction-license]<br/>![][reaction-size]<br/>![][reaction-deps] |
-| [@wener/torrent][torrent-repo]   | [![][torrent-version]][torrent-npm]   | [Doc][torrent-doc]<br/> ![][torrent-license]<br/>![][torrent-size]<br/>![][torrent-deps]     |
-| [@wener/unpkg][unpkg-repo]       | [![][unpkg-version]][unpkg-npm]       | [Doc][unpkg-doc]<br/> ![][unpkg-license]<br/>![][unpkg-size]<br/>![][unpkg-deps]             |
-| [@wener/wode][wode-repo]         | [![][wode-version]][wode-npm]         | [Doc][wode-doc]<br/> ![][wode-license]<br/>![][wode-size]<br/>![][wode-deps]                 |
+`apps/components` is the source and delivery surface for reusable Wode console components. Its authored source is organized by domain under:
 
-[utils-repo]: https://github.com/wenerme/wode/tree/main/packages/utils
-[utils-npm]: https://www.npmjs.com/package/@wener/utils
+```text
+apps/components/src/
+├── agent/
+├── auth/
+├── components/
+├── console/
+├── file/
+├── resource/
+├── ui/
+└── window/
+```
 
-[utils-version]: https://img.shields.io/npm/v/@wener/utils
+The same source tree powers runtime usage, Storybook, and the generated flat Registry catalog. `apps/components/registry.json` and the domain manifests contain publishing metadata; generated files under `apps/components/public/r/` must be rebuilt rather than edited by hand.
 
-[utils-license]: https://img.shields.io/npm/l/@wener/utils
+Useful component commands:
 
-[utils-size]: https://badgen.net/bundlephobia/minzip/@wener/utils
+```bash
+pnpm -C apps/components dev
+pnpm -C apps/components storybook
+pnpm -C apps/components registry:build
+pnpm -C apps/components registry:check
+pnpm -C apps/components registry:consumer-check -- --all
+pnpm -C apps/components verify
+```
 
-[utils-deps]: https://badgen.net/bundlephobia/dependency-count/@wener/utils
+`verify` runs router and source checks, TypeScript, unit tests, browser Storybook tests, Story structure checks, Registry checks, clean consumer checks, the Waku build, and the Pages artifact check. See [`apps/components/README.md`](apps/components/README.md) for Registry ownership, dependency direction, and installation examples.
 
-[utils-doc]: https://wode.vercel.app/docs/modules/_wener_utils.html
+The public Registry uses flat addresses such as:
 
-[system-repo]: https://github.com/wenerme/wode/tree/main/packages/system
+```text
+https://ui-components.wener.me/r/console-shell.json
+```
 
-[system-npm]: https://www.npmjs.com/package/@wener/system
+Consumers can install an item with shadcn:
 
-[system-version]: https://img.shields.io/npm/v/@wener/system
+```bash
+npx shadcn add https://ui-components.wener.me/r/console-shell.json
+```
 
-[system-license]: https://img.shields.io/npm/l/@wener/system
+`packages/ui` is the lower-level primitive package. It exposes independent subpaths such as `@wener/ui/button`, `@wener/ui/dialog`, and `@wener/ui/input`. It uses Base UI for stateful behavior and Tailwind CSS/DaisyUI-compatible classes for presentation. Its verification commands are:
 
-[system-size]: https://badgen.net/bundlephobia/minzip/@wener/system
+```bash
+pnpm -C packages/ui test
+pnpm -C packages/ui typecheck
+pnpm -C packages/ui build
+```
 
-[system-deps]: https://badgen.net/bundlephobia/dependency-count/@wener/system
+Applications consuming `@wener/ui` must include the package source in their Tailwind scan and own their theme and font configuration. Application-specific routes, authentication, persistence, network calls, and server state stay outside the primitive package.
 
-[system-doc]: https://wode.vercel.app/docs/modules/_wener_system.html
+Server image operations require an explicit entrypoint and are never part of `just ci`:
 
-[reaction-repo]: https://github.com/wenerme/wode/tree/main/packages/reaction
+```bash
+just server-list
+just server-image wener-apis-server
+just server-deploy wener-apis-server
+```
 
-[reaction-npm]: https://www.npmjs.com/package/@wener/reaction
+The last command requires Docker credentials and a matching `apps/server/builds/<entrypoint>/Dockerfile`; it is intentionally separate from validation and package builds.
 
-[reaction-version]: https://img.shields.io/npm/v/@wener/reaction
+## Protobuf workflow
 
-[reaction-license]: https://img.shields.io/npm/l/@wener/reaction
+`proto/` is the canonical protobuf source directory. Buf configuration is kept at the repository root in `buf.yaml` and `buf.gen.yaml`. The shared recipes live under [`just/`](just/); package-specific entrypoints can use `just -f just/servers.just ...` when they need to preserve their working directory.
 
-[reaction-size]: https://badgen.net/bundlephobia/minzip/@wener/reaction
+```bash
+just buf-fmt
+just buf-lint
+just buf-gen
+```
 
-[reaction-deps]: https://badgen.net/bundlephobia/dependency-count/@wener/reaction
+Generation updates the checked-in clients under `packages/common/src/protos`. CI runs generation and verifies that the generated tree is clean, so generated changes must be committed together with their source or configuration change.
 
-[reaction-doc]: https://wode.vercel.app/docs/modules/_wener_reaction.html
+## CI and branches
 
-[torrent-repo]: https://github.com/wenerme/wode/tree/main/packages/torrent
+The GitHub Actions Build workflow runs on `main`, `develop`, and pull requests targeting those branches. It installs the declared pnpm, Node.js, and Just versions, runs `just ci`, installs Chromium, and verifies the complete components and Registry surface. The default public branch is `main`; `develop` is the protected integration branch.
 
-[torrent-npm]: https://www.npmjs.com/package/@wener/torrent
+Before opening a pull request, run at least:
 
-[torrent-version]: https://img.shields.io/npm/v/@wener/torrent
+```bash
+git diff --check
+just ci
+pnpm -C apps/components verify
+```
 
-[torrent-license]: https://img.shields.io/npm/l/@wener/torrent
+The root task entrypoint is `just`; there is no second root Makefile to keep in sync. Keep generated Registry and protobuf output deterministic, use Vite+ commands for new formatting and tests, and keep reusable UI contracts separate from application-specific behavior.
 
-[torrent-size]: https://badgen.net/bundlephobia/minzip/@wener/torrent
+## License
 
-[torrent-deps]: https://badgen.net/bundlephobia/dependency-count/@wener/torrent
-
-[torrent-doc]: https://wode.vercel.app/docs/modules/_wener_torrent.html
-
-[unpkg-repo]: https://github.com/wenerme/wode/tree/main/packages/unpkg
-
-[unpkg-npm]: https://www.npmjs.com/package/@wener/unpkg
-
-[unpkg-version]: https://img.shields.io/npm/v/@wener/unpkg
-
-[unpkg-license]: https://img.shields.io/npm/l/@wener/unpkg
-
-[unpkg-size]: https://badgen.net/bundlephobia/minzip/@wener/unpkg
-
-[unpkg-deps]: https://badgen.net/bundlephobia/dependency-count/@wener/unpkg
-
-[unpkg-doc]: https://wode.vercel.app/docs/modules/_wener_unpkg.html
-
-[wode-repo]: https://github.com/wenerme/wode/tree/main/packages/wode
-
-[wode-npm]: https://www.npmjs.com/package/@wener/wode
-
-[wode-version]: https://img.shields.io/npm/v/@wener/wode
-
-[wode-license]: https://img.shields.io/npm/l/@wener/wode
-
-[wode-size]: https://badgen.net/bundlephobia/minzip/@wener/wode
-
-[wode-deps]: https://badgen.net/bundlephobia/dependency-count/@wener/wode
-
-[wode-doc]: https://wode.vercel.app/docs/modules/_wener_wode.html
-
-- Site
-  - [wener.me](https://wener.me)
-    - Blog
-    - Github [wenerme/wener](https://github.com/wenerme/wener)
-  - [wode.vercel.app](https://wode.vercel.app/)
-    - Playground
-    - GitHub [wenerme/wode](https://github.com/wenerme/wode)
-  - [apis.wener.me](https://apis.wener.me/)
-    - APIs playground with docs & stories
-    - GitHub [wenerme/apis](https://github.com/wenerme/apis)
-- Library
-  - [@wener/reaction](https://www.npmjs.com/package/@wener/reaction) - ![VERSION](https://img.shields.io/npm/v/@wener/reaction) - ![LICENSE](https://img.shields.io/npm/l/@wener/reaction)
-    - [Docs](https://wode.vercel.app/docs/modules/_wener_reaction.html)
-    - React hooks, render, logical components
-    - helpful typing
-    - some external minimal helpful utils
-      - reduce packages
-  - [@wener/utils](https://www.npmjs.com/package/@wener/utils) - ![VERSION](https://img.shields.io/npm/v/@wener/utils) - ![LICENSE](https://img.shields.io/npm/l/@wener/utils)
-    - [Docs](https://wode.vercel.app/docs/modules/_wener_utils.html)
-    - utils for daily use
-    - zero dependencies
-  - [@wener/system](https://www.npmjs.com/package/@wener/system) - ![VERSION](https://img.shields.io/npm/v/@wener/system) - ![LICENSE](https://img.shields.io/npm/l/@wener/system)
-    - [Docs](https://wode.vercel.app/docs/modules/_wener_system.html)
-    - Utils for systemjs
-    - make systemjs work with npm & package.json
-  - [@wener/ui](https://www.npmjs.com/package/@wener/ui) - ![VERSION](https://img.shields.io/npm/v/@wener/ui) - ![LICENSE](https://img.shields.io/npm/l/@wener/ui)
-    - [Storybook](https://apis.wener.me/storybook/@wener/ui)
-    - [Document](https://apis.wener.me/docs/@wener/ui/)
-  - [@wener/tinyrpc](https://www.npmjs.com/package/@wener/tinyrpc) - ![VERSION](https://img.shields.io/npm/v/@wener/tinyrpc) - ![LICENSE](https://img.shields.io/npm/l/@wener/tinyrpc)
-    - [Document](https://apis.wener.me/docs/@wener/tinyrpc/)
-  - [rjsf-antd-theme](https://www.npmjs.com/package/rjsf-antd-theme) - ![VERSION](https://img.shields.io/npm/v/rjsf-antd-theme) - ![LICENSE](https://img.shields.io/npm/l/rjsf-antd-theme)
-    - Ant Design Theme for React Json Schema Form
-    - [Storybook](https://apis.wener.me/storybook/rjsf-antd-theme)
-    - [Document](https://apis.wener.me/docs/rjsf-antd-theme/)
-
-<!-- LINK:END -->
+Wode is released under the [MIT License](LICENSE).

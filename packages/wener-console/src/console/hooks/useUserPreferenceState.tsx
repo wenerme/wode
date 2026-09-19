@@ -13,7 +13,7 @@ export function useUserPreferenceState<T extends {}>({
 		defaultValue: (() => {
 			try {
 				return schema?.parse({}) || {};
-			} catch (_e) {}
+			} catch {}
 			return {};
 		}) as () => T,
 	});

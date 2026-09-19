@@ -35,7 +35,7 @@ export function buildDynamicModule(...all: Partial<BuildDynamicModuleOptions>[])
 		get module() {
 			return {
 				module: DynamicContextModule,
-				imports: [...(entities.length ? [OrmModule.forFeature(entities), ...imports] : [])],
+				imports: entities.length ? [OrmModule.forFeature(entities), ...imports] : [],
 				controllers,
 				providers: [...providers, ...services, ...resolvers],
 				exports,

@@ -1,7 +1,7 @@
 import type { EntityRepository } from '@mikro-orm/postgresql';
 import { HttpException, Logger } from '@nestjs/common';
 import { ArrayBuffers, classOf, type FetchLike } from '@wener/utils';
-import { createParser, type ParsedEvent } from 'eventsource-parser';
+import { createParser, type EventSourceMessage } from 'eventsource-parser';
 import type { BaseHttpRequestLogEntity } from './BaseHttpRequestLogEntity';
 import { FetchCache, type FetchCacheConfig, type FetchCacheHookContext, type FetchCacheOptions } from './FetchCache';
 import { type FindCacheOptions, findHttpRequestCache } from './findHttpRequestCache';
@@ -61,7 +61,7 @@ export function createFetchWithCache<T extends BaseHttpRequestLogEntity>({
 			const requestContentType = e.requestHeaders?.['content-type']?.split(';')[0];
 			const body = init.body;
 
-			const getText = async () => {
+			const getText = async (): Promise<string | undefined> => {
 				if (typeof body === 'string') {
 					return body;
 				}
@@ -69,8 +69,9 @@ export function createFetchWithCache<T extends BaseHttpRequestLogEntity>({
 				if (ArrayBuffers.isArrayBuffer(body)) {
 					return Buffer.from(body).toString('utf-8');
 				}
+				return undefined;
 			};
-			const getBinary = () => {
+			const getBinary = (): Promise<Buffer> | Buffer | undefined => {
 				if (body instanceof ReadableStream) {
 					let rs: ReadableStream;
 					[init.body, rs] = body.tee();
@@ -79,12 +80,13 @@ export function createFetchWithCache<T extends BaseHttpRequestLogEntity>({
 				if (ArrayBuffers.isArrayBuffer(body)) {
 					return Buffer.from(body);
 				}
+				return undefined;
 			};
 			switch (requestContentType) {
 				case 'application/json': {
 					{
 						// avoid readable stream lock
-						const text = await new Response(init.body).text();
+						const text = await new Response(init.body as BodyInit).text();
 						e.requestPayload = removeNullChar(JSON.parse(text));
 						init.body = text;
 					}
@@ -183,12 +185,11 @@ export function createFetchWithCache<T extends BaseHttpRequestLogEntity>({
 						void Promise.resolve().then(async () => {
 							const reader = b.getReader();
 
-							const events: Array<Omit<ParsedEvent, 'type'>> = [];
-							const parser = createParser((e) => {
-								if (e.type === 'event') {
-									const { type: _, ...evt } = e;
-									events.push(evt);
-								}
+							const events: EventSourceMessage[] = [];
+							const parser = createParser({
+								onEvent(e) {
+									events.push(e);
+								},
 							});
 							const codec = new TextDecoder();
 							while (true) {
@@ -265,23 +266,6 @@ export function createFetchWithCache<T extends BaseHttpRequestLogEntity>({
 			await onAfterRequest();
 		}
 	};
-}
-
-async function teeBuffer(rs: ReadableStream) {
-	const [a, b] = rs.tee();
-	const reader = b.getReader();
-	const buffers = [];
-	while (true) {
-		const result = await reader.read();
-		const { done, value } = result;
-		if (value) {
-			buffers.push(value);
-		}
-		if (done) {
-			break;
-		}
-	}
-	return [a, Buffer.concat(buffers)];
 }
 
 async function readStreamToBuffer(rs: ReadableStream) {

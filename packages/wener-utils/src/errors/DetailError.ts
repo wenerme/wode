@@ -13,6 +13,7 @@ export class DetailError extends Error {
 	readonly detail: ErrorDetail;
 	readonly status: number;
 	readonly description?: string;
+	readonly cause?: unknown;
 	constructor(detail: ErrorDetail) {
 		super(detail.message);
 		this.cause = detail.cause;

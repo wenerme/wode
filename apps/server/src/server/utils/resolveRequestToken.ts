@@ -1,5 +1,5 @@
 import { ArrayBuffers, firstOfMaybeArray } from '@wener/utils';
-import { parse as parseCookie } from 'cookie';
+import { parseCookie } from 'cookie';
 
 type ResolvedRequestToken = {
 	in: 'header' | 'query' | 'cookie';
@@ -24,6 +24,7 @@ export function resolveRequestToken({
 		} else if (headers) {
 			return firstOfMaybeArray(headers[name]);
 		}
+		return undefined;
 	};
 	if (headers) {
 		{
@@ -64,6 +65,7 @@ export function resolveRequestToken({
 			};
 		}
 	}
+	return undefined;
 }
 
 type ParsedAuthorization = {
@@ -93,7 +95,7 @@ function parseAuthorization(auth: string | undefined | null): ParsedAuthorizatio
 				let [username, password] = ArrayBuffers.toString(ArrayBuffers.fromBase64(token), 'utf-8').split(':', 2);
 				out.username = username;
 				out.password = password;
-			} catch (e) {
+			} catch {
 				// ignore
 			}
 			break;

@@ -457,7 +457,7 @@ export const CreateUserRequestSchema = z.object({
   /** 成员所属部门id列表，不超过100个。当不填写department或id为0时，成员会放在其他（待设置部门）下，当填写的部门不存在时，会在在其他（待设置部门）下 */
   department: z.array(z.number()).optional(),
   /** 部门内的排序值，默认为0，成员次序以创建时间从小到大排列。个数必须和参数department的个数一致，数值越大排序越前面。有效的值范围是[0, 2^32) */
-  order: z.array(z.number()).default(0).optional(),
+  order: z.array(z.number()).optional(),
   /** 职务信息。长度为0~128个字符 */
   position: z.string().min(0).max(128).optional(),
   /** 性别。1表示男性，2表示女性 (1-男性, 2-女性) */
@@ -525,7 +525,7 @@ export const GetUserResponseSchema = z.object({
   /** 成员所属部门id列表 */
   department: z.array(z.number()).optional(),
   /** 部门内的排序值，默认为0。数量必须和department一致，数值越大排序越前面。值范围是[0, 2^32) */
-  order: z.array(z.number()).default(0).optional(),
+  order: z.array(z.number()).optional(),
   /** 职务信息 */
   position: z.string().optional(),
   /** 手机号码 */
@@ -664,7 +664,7 @@ export const UpdateUserRequestSchema = z.object({
   /** 成员所属部门id列表，不超过100个 */
   department: z.array(z.number()).optional(),
   /** 部门内的排序值，默认为0。当有传入department时有效。数量必须和department一致，数值越大排序越前面。有效的值范围是[0, 2^32) */
-  order: z.array(z.number()).default(0).optional(),
+  order: z.array(z.number()).optional(),
   /** 职务信息。长度为0~128个utf8字符 */
   position: z.string().min(0).max(128).optional(),
   /** 性别。1表示男性，2表示女性 (1-男性, 2-女性) */

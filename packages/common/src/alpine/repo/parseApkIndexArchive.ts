@@ -1,5 +1,5 @@
 import { ArrayBuffers, createLazyPromise } from '@wener/utils';
-import pako from 'pako';
+import { inflate } from 'pako';
 import tar from 'tar-stream';
 import { toNodeReadableStream } from '../utils/toNodeReadableStream';
 
@@ -33,7 +33,7 @@ export function parseApkIndexArchive(
 
 	const extract = tar.extract();
 	extract.on('entry', (header, stream, next) => {
-		let contents: Uint8Array[] = [];
+		let contents: Uint8Array<ArrayBuffer>[] = [];
 		switch (header.name) {
 			case 'APKINDEX':
 				if (header.mtime) content.mtime = header.mtime;
@@ -51,7 +51,7 @@ export function parseApkIndexArchive(
 		}
 
 		stream.on('data', (chunk) => {
-			contents.push(chunk);
+			contents.push(new Uint8Array(Array.from(chunk as Uint8Array)));
 		});
 
 		stream.on('error', (e) => {
@@ -85,7 +85,7 @@ export function parseApkIndexArchive(
 	});
 
 	if (input instanceof ArrayBuffer) {
-		const data = pako.inflate(input);
+		const data = inflate(input);
 		extract.end(data);
 	} else {
 		let deco = new DecompressionStream('gzip');

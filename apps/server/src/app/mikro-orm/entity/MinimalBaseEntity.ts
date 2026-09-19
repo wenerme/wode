@@ -1,9 +1,10 @@
-import { BaseEntity, Entity, PrimaryKey, Property, types } from '@mikro-orm/core';
+import { BaseEntity, types } from '@mikro-orm/core';
+import { Entity, PrimaryKey, Property } from '@mikro-orm/decorators/legacy';
 
 export type MinimalOptionalEntityFields = 'id' | 'uid' | 'createdAt' | 'updatedAt' | 'sid';
 
 @Entity({ abstract: true })
-export abstract class MinimalBaseEntity<E extends MinimalBaseEntity<any>> extends BaseEntity<E, 'id'> {
+export abstract class MinimalBaseEntity<_E extends MinimalBaseEntity<any>> extends BaseEntity {
 	// [OptionalProps]?: MinimalOptionalEntityFields;
 
 	@PrimaryKey({ type: types.string, defaultRaw: 'public.gen_ulid()', nullable: false })

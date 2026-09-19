@@ -1,48 +1,19 @@
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import type { Client } from '@urql/core';
-import { getGraphQLUrl, getUrqlClient } from '@wener/console/client/graphql';
-import { ConsoleLoader, getAccessToken, getSiteStore, Launcher, type UserProfileData } from '@wener/console/console';
-import { UserAuthExpireOverlay, UserLoader, UserLockOverlay } from '@wener/console/console/user';
-import { getAuthState } from '@wener/console/foundation/auth';
-import type { RouteObjects } from '@wener/console/router';
-import { RootRouterReactor } from '@wener/console/src/console/components/RootRouterReactor';
-import { NotFoundPage, PageErrorState } from '@wener/console/src/web';
-import { showErrorToast, showSuccessToast } from '@wener/console/toast';
-import { createUrqlClient } from '@wener/console/urql';
+import { getUrqlClient } from '@wener/console/client/graphql';
+import { ConsoleLoader, Launcher, type UserProfileData } from '@wener/console/console';
+import {
+	AuthExpireOverlay as UserAuthExpireOverlay,
+	UserLoader,
+	AuthLockOverlay as UserLockOverlay,
+} from '@wener/console/console/user';
 import { WindowHost } from '@wener/console/window';
-import { ErrorSuspenseBoundary } from '@wener/reaction';
-import { getGlobalStates } from '@wener/utils';
-import type React from 'react';
-import type { ReactNode } from 'react';
-import { Outlet } from 'react-router';
 import { Provider as UrqlProvider } from 'urql';
 import { ConsoleLayout } from '#/console/components/ConsoleLayout';
 import { loadModule } from '#/console/loadModule';
 import { ReactQueryClientProvider } from '#/console/ReactQueryClientProvider';
-import { AuthActions } from '#/foundation/Auth/AuthActions';
 import { UserActions } from '#/foundation/User/UserActions';
-import schema from '#/gql/urql.schema.json' with { type: 'json' };
-import { resolveResourceSchema } from '#/resource';
-import type { LoginFormData } from '../../../../packages/wener-console/src/pages';
 
 export const ConsoleApp = () => {
-	const doLogin = async (o: LoginFormData) => {
-		try {
-			const out = await AuthActions.signInByPassword({
-				...o,
-			});
-			getAuthState().setAuth(out);
-			showSuccessToast('登录成功');
-			// if (await refreshProfile()) {
-			//   showSuccessToast(message || '登录成功');
-			// } else {
-			//   showErrorToast('登录检测失败');
-			// }
-		} catch (e) {
-			showErrorToast(e);
-		}
-	};
-	const { title } = getSiteStore().getState();
 	return (
 		<ReactQueryClientProvider>
 			<ReactQueryDevtools initialIsOpen={false} />
@@ -70,37 +41,3 @@ export const ConsoleApp = () => {
 		</ReactQueryClientProvider>
 	);
 };
-
-function createRootRoutes({
-	children,
-	render = (children) => children,
-}: {
-	children: RouteObjects;
-	render?: (content: ReactNode) => ReactNode;
-}): RouteObjects {
-	return [
-		{
-			element: (
-				<>
-					<RootRouterReactor />
-					{render(
-						<ErrorSuspenseBoundary>
-							<Outlet />
-						</ErrorSuspenseBoundary>,
-					)}
-				</>
-			),
-			errorElement: <PageErrorState />,
-			handle: {
-				title: getSiteStore().getState().title,
-			},
-			children: [
-				...children,
-				{
-					path: '*',
-					element: <NotFoundPage />,
-				},
-			],
-		},
-	];
-}

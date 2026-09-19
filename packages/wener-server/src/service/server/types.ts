@@ -4,7 +4,7 @@ import type { ServiceRequest, ServiceResponse } from '../schema';
 
 type IsValidArg<T> = T extends Record<string, unknown> ? (keyof T extends never ? false : true) : true;
 
-type AddParameters<T, X> = T extends (a: infer A, b: infer B) => infer R
+type AddParameters<T, X> = T extends (a: infer A, b: infer _B) => infer R
 	? IsValidArg<A> extends true
 		? (req: A, options: X) => MaybePromise<R>
 		: (req: any, options: X) => MaybePromise<R>

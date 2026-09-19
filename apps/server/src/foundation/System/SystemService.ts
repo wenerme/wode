@@ -2,9 +2,8 @@ import os from 'node:os';
 import { EntityManager } from '@mikro-orm/postgresql';
 import { Inject, Injectable, Logger, type OnApplicationBootstrap, type OnModuleInit } from '@nestjs/common';
 import { App } from '@wener/server/app';
-import { getEvents, getRemoteEvents } from '@/server/events';
-import { SystemEvents } from '@/server/events/events';
-import { handleRemoteSystemEvents } from '@/server/events/handleRemoteSystemEvents';
+import { getSystemEmitter, SystemEvents } from '@/events';
+import { getRemoteEmitter } from '@/remote/events';
 
 @Injectable()
 export class SystemService implements OnApplicationBootstrap, OnModuleInit {
@@ -29,8 +28,8 @@ export class SystemService implements OnApplicationBootstrap, OnModuleInit {
 		const { log } = this;
 		log.log('Server ready');
 
-		await getEvents().emit(SystemEvents.ServerReady, {});
-		await getRemoteEvents().emit(SystemEvents.ServerReady, getInstanceInfo());
+		await getSystemEmitter().emit(SystemEvents.ServerReady, {});
+		await getRemoteEmitter().emit(SystemEvents.ServerReady, getInstanceInfo());
 	}
 }
 

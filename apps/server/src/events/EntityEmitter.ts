@@ -81,13 +81,13 @@ export async function* watchEntity<E extends BaseEntity & { id: any }>({
 	signal?.addEventListener('abort', handleAbort);
 	try {
 		for await (let event of itor) {
-			if (event.entity.id !== id) {
+			if (event.data.entity.id !== id) {
 				continue;
 			}
 			await em.transactional((em) => em.refresh(entity));
 			yield {
 				entity,
-				type: event.type,
+				type: event.data.type,
 			};
 		}
 	} finally {

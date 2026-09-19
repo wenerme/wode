@@ -3,7 +3,6 @@ import type { CSSProperties, FC } from 'react';
 import { DotsFadeLoader } from './DotsFadeLoader/DotsFadeLoader';
 
 export const LoadingIndicator: FC<{ title?: string; className?: string; style?: CSSProperties }> = ({
-	title,
 	className,
 	style,
 }) => {

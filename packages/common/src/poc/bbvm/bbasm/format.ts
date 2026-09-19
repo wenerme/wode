@@ -31,9 +31,8 @@ export function formatAssembly(asm: Assembly) {
 							if (v.type === 'hex') {
 								return `%${v.hex}%`;
 							}
-						} else {
-							throw new Error(`Unknown data type: ${v}`);
 						}
+						throw new Error(`Unknown data type: ${v}`);
 					})
 					.join(', '),
 			);

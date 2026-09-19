@@ -32,7 +32,10 @@ test('sign', async () => {
 		false,
 		['sign'],
 	);
-	const encrypted = ArrayBuffers.toString(await crypto.subtle.sign('hmac', key, ArrayBuffers.from(encoded)), 'base64');
+	const encrypted = ArrayBuffers.toString(
+		await crypto.subtle.sign('hmac', key, ArrayBuffers.from(encoded) as BufferSource),
+		'base64',
+	);
 	assert.equal(encrypted, 'e65KGcYgpAwC+h4ckWsk/mPATUi1fz1QbRjYylvhRFY=');
 	assert.equal((await sign(params)).signature, 'e65KGcYgpAwC+h4ckWsk/mPATUi1fz1QbRjYylvhRFY=');
 });

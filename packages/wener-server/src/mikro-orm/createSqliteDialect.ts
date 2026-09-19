@@ -9,6 +9,7 @@ export async function createSqliteDialect(dbName: string) {
 	if (typeof (globalThis as any).Bun !== 'undefined') {
 		// @ts-expect-error bun-only module
 		const { BunSqliteDialect } = await import('kysely-bun-sqlite');
+		// @ts-ignore -- Bun-only module is unavailable to Node projects.
 		const { Database } = await import('bun:sqlite');
 		return new BunSqliteDialect({ database: new Database(dbName) });
 	}

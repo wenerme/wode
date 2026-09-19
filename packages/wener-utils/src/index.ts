@@ -36,6 +36,8 @@ export {
 	stripAnsi,
 } from './ansi';
 export { TimeoutError, timeout } from './asyncs/timeout';
+export { createChildLogger, createLogger, createNoopLogger, logger, setLogger, silent } from './logger';
+export type { Logger } from './logger';
 // browser
 export { copy } from './browsers/copy';
 export { download } from './browsers/download';

@@ -46,17 +46,13 @@ export function createYogaServer() {
 					return error;
 				}
 				log.error(`GraphQL Resolve Error: ${error}`);
-				isDev && console.error(error);
+				if (isDev) console.error(error);
 				let detail = Errors.resolve(error);
 				return new GraphQLError(detail.message, undefined, undefined, undefined, undefined);
 			},
 		},
 		plugins: [
-			// usePersistedOperations({
-			//   getPersistedOperation(hash: string) {
-			//     return getPersistedOperation(hash);
-			//   },
-			// }),
+			// usePersistedOperations(),
 			isDev
 				? null
 				: useDisableIntrospection({
@@ -86,10 +82,6 @@ interface UserContext {
 }
 
 export interface GraphContext extends YogaInitialContext, HttpBindings, UserContext {}
-
-function getPersistedOperation(hash: string) {
-	return null;
-}
 
 function isGraphiQLAllowed(req: Request) {
 	return req.url.includes('debug');

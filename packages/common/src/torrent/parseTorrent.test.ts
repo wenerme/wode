@@ -18,7 +18,7 @@ describe('parseTorrent', async () => {
 		files.sort();
 		for (const file of files) {
 			const r = await fs.readFile(file);
-			const { pieces, info, torrent, ...rest } = await parseTorrent(r);
+			const { pieces: _pieces, info: _info, torrent, ...rest } = await parseTorrent(r);
 			expect(rest, `should parse ${path.basename(file)}`).toMatchSnapshot();
 			const encode = Bencode.encode(torrent);
 			// await fs.writeFile('a', r);

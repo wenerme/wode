@@ -43,6 +43,6 @@ export function decryptRandomKey({
 	{
 		const key = new NodeRSA(privateKey);
 		key.setOptions({ encryptionScheme: 'pkcs1', environment: 'browser' });
-		return key.decrypt(maybeBase64(randomKey));
+		return Buffer.from(key.decrypt(maybeBase64(randomKey)));
 	}
 }

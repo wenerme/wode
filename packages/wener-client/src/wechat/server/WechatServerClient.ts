@@ -45,7 +45,12 @@ export class WechatServerClient {
 			fetch: globalThis.fetch,
 			accessToken: createExpireValueHolder({
 				value: accessToken,
-				onLoad: onAccessToken,
+				onLoad: onAccessToken
+					? (data) => {
+							onAccessToken(data);
+							return undefined;
+						}
+					: undefined,
 				loader: () => {
 					if (!appId || !appSecret) {
 						throw new Error('appId and appSecret is required');
@@ -58,7 +63,12 @@ export class WechatServerClient {
 
 			stableAccessToken: createExpireValueHolder({
 				value: stableAccessToken,
-				onLoad: onStableAccessToken,
+				onLoad: onStableAccessToken
+					? (data) => {
+							onStableAccessToken(data);
+							return undefined;
+						}
+					: undefined,
 				loader: () => {
 					if (!appId || !appSecret) {
 						throw new Error('appId and appSecret is required');

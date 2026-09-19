@@ -1,4 +1,4 @@
-import { Errors, type FetchLike } from '@wener/utils';
+import { type FetchLike } from '@wener/utils';
 import {
 	createExpireValueHolder,
 	type ExpireValueHolderInit,
@@ -27,13 +27,20 @@ export interface TencentDocsClientOptions {
 	debug: boolean;
 }
 
+type TencentDocsRequestParams = NonNullable<RequestOptions['params']>;
+
 export class TencentDocsClient {
 	static create({ clientId, clientSecret, accessToken, onAccessToken, ...init }: TencentDocsClientInit) {
 		return new TencentDocsClient({
 			debug: false,
 			accessToken: createExpireValueHolder({
 				value: accessToken,
-				onLoad: onAccessToken,
+				onLoad: onAccessToken
+					? (data) => {
+							onAccessToken(data);
+							return undefined;
+						}
+					: undefined,
 				loader: async () => {
 					// OAuth2 client_credentials grant
 					const res = await request<{
@@ -111,7 +118,7 @@ export class TencentDocsClient {
 	) {
 		return this.request<S.GetInnerAuthorizeCodeResponse>({
 			url: `/oauth/v2/inner/${platform}/authorize`,
-			params,
+			params: params as TencentDocsRequestParams,
 			...opts,
 		});
 	}
@@ -177,7 +184,7 @@ export class TencentDocsClient {
 	) {
 		return this.request<TencentDocsGeneralResponse>({
 			url: `/openapi/drive-addon/v2/files/${fileID}/thumbnail`,
-			params,
+			params: params as TencentDocsRequestParams,
 			...opts,
 		});
 	}
@@ -269,7 +276,7 @@ export class TencentDocsClient {
 	async getExportProgress(fileID: string, params: S.GetExportProgressRequest, opts?: Partial<RequestOptions<any>>) {
 		return this.request<S.GetExportProgressResponse>({
 			url: `/openapi/drive/v2/files/${fileID}/export-progress`,
-			params,
+			params: params as TencentDocsRequestParams,
 			...opts,
 		});
 	}
@@ -467,7 +474,7 @@ export class TencentDocsClient {
 	async getImportProgress(params: S.GetImportProgressRequest, opts?: Partial<RequestOptions<any>>) {
 		return this.request<S.GetImportProgressResponse>({
 			url: '/openapi/drive/v2/files/import-progress',
-			params,
+			params: params as TencentDocsRequestParams,
 			...opts,
 		});
 	}
@@ -512,7 +519,11 @@ export class TencentDocsClient {
 	 * @see https://docs.qq.com/open/document/app/openapi/v2/file/filter/filter.html
 	 */
 	async getFilter(params: S.GetFilterRequest, opts?: Partial<RequestOptions<any>>) {
-		return this.request<S.GetFilterResponse>({ url: '/openapi/drive/v2/filter', params, ...opts });
+		return this.request<S.GetFilterResponse>({
+			url: '/openapi/drive/v2/filter',
+			params: params as TencentDocsRequestParams,
+			...opts,
+		});
 	}
 	/**
 	 * 添加文件夹
@@ -526,7 +537,11 @@ export class TencentDocsClient {
 	 * @see https://docs.qq.com/open/document/app/openapi/v2/file/folders/list.html
 	 */
 	async getFolderList(folderID: string, params: S.GetFolderListRequest, opts?: Partial<RequestOptions<any>>) {
-		return this.request<S.GetFolderListResponse>({ url: `/openapi/drive/v2/folders/${folderID}`, params, ...opts });
+		return this.request<S.GetFolderListResponse>({
+			url: `/openapi/drive/v2/folders/${folderID}`,
+			params: params as TencentDocsRequestParams,
+			...opts,
+		});
 	}
 	/**
 	 * 查询文件夹信息
@@ -617,14 +632,22 @@ export class TencentDocsClient {
 	 * @see https://docs.qq.com/open/document/app/openapi/v2/file/search/search.html
 	 */
 	async searchDocuments(params: S.SearchDocumentsRequest, opts?: Partial<RequestOptions<any>>) {
-		return this.request<S.SearchDocumentsResponse>({ url: '/openapi/drive/v2/search', params, ...opts });
+		return this.request<S.SearchDocumentsResponse>({
+			url: '/openapi/drive/v2/search',
+			params: params as TencentDocsRequestParams,
+			...opts,
+		});
 	}
 	/**
 	 * fileID 转换
 	 * @see https://docs.qq.com/open/document/app/openapi/v2/file/util/converter.html
 	 */
 	async convertFileId(params: S.ConvertFileIdRequest, opts?: Partial<RequestOptions<any>>) {
-		return this.request<S.ConvertFileIdResponse>({ url: '/openapi/drive/v2/util/converter', params, ...opts });
+		return this.request<S.ConvertFileIdResponse>({
+			url: '/openapi/drive/v2/util/converter',
+			params: params as TencentDocsRequestParams,
+			...opts,
+		});
 	}
 	/**
 	 * 获取应用OpenAPI使用详情
@@ -712,7 +735,7 @@ export class TencentDocsClient {
 	async getConfidentialRules(params: S.GetConfidentialRulesRequest, opts?: Partial<RequestOptions<any>>) {
 		return this.request<S.GetConfidentialRulesResponse>({
 			url: '/openapi/drive/v3/confidential/rules',
-			params,
+			params: params as TencentDocsRequestParams,
 			...opts,
 		});
 	}
@@ -733,7 +756,7 @@ export class TencentDocsClient {
 	async getConfidentialTagsList(params: S.GetConfidentialTagsListRequest, opts?: Partial<RequestOptions<any>>) {
 		return this.request<S.GetConfidentialTagsListResponse>({
 			url: '/openapi/drive/v3/confidential/tags',
-			params,
+			params: params as TencentDocsRequestParams,
 			...opts,
 		});
 	}
@@ -904,7 +927,7 @@ export class TencentDocsClient {
 	) {
 		return this.request<S.GetFileAccessPermissionResponse>({
 			url: `/openapi/drive/v3/files/${fileId}/permissions:access`,
-			params,
+			params: params as TencentDocsRequestParams,
 			...opts,
 		});
 	}
@@ -975,7 +998,11 @@ export class TencentDocsClient {
 	 * @see https://docs.qq.com/open/document/private/openapi/file/task.html
 	 */
 	async getTaskProgress(taskId: string, params: S.GetTaskProgressRequest, opts?: Partial<RequestOptions<any>>) {
-		return this.request<S.GetTaskProgressResponse>({ url: `/openapi/drive/v3/tasks/${taskId}`, params, ...opts });
+		return this.request<S.GetTaskProgressResponse>({
+			url: `/openapi/drive/v3/tasks/${taskId}`,
+			params: params as TencentDocsRequestParams,
+			...opts,
+		});
 	}
 	/**
 	 * 取消任务

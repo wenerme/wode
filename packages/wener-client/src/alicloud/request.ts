@@ -93,7 +93,7 @@ export async function request<T>(options: AliCloudRequestOptions<T>) {
 		body = JSON.stringify(body);
 	}
 
-	init.body = body;
+	init.body = body as string | BufferSource | undefined;
 
 	{
 		const { headers } = await sign({ ...init, url: u.toString() }, options as any);
@@ -149,7 +149,7 @@ async function requirePayload(res: Response) {
 		throw last;
 	}
 
-	if (body && 'RequestId' in body) {
+	if (typeof body === 'object' && body && 'RequestId' in body) {
 		return body as AliCloudResponse;
 	}
 
@@ -196,7 +196,7 @@ export function stringOfMultipartFormData(data: FormData): { body: string; heade
 		if (ArrayBuffer.isView(v)) {
 			body += 'Content-Type: application/octet-stream';
 			body += 'Content-Transfer-Encoding: base64';
-			content = ArrayBuffers.toString(v, 'base64');
+			content = ArrayBuffers.toString(v as unknown as ArrayBufferView<ArrayBuffer>, 'base64');
 		}
 
 		body += `Content-Disposition: form-data; name="${k}"\r\n\r\n`;

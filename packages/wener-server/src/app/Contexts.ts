@@ -26,12 +26,12 @@ export function setCurrentContext({
 	clientId?: string;
 	request?: IncomingMessage;
 }) {
-	tenantId && Contexts.tenantId.set(tenantId);
-	userId && Contexts.userId.set(userId);
-	sessionId && Contexts.sessionId.set(sessionId);
-	clientId && Contexts.clientId.set(clientId);
-	requestId && Contexts.requestId.set(requestId);
-	request && Contexts.request.set(request);
+	if (tenantId) Contexts.tenantId.set(tenantId);
+	if (userId) Contexts.userId.set(userId);
+	if (sessionId) Contexts.sessionId.set(sessionId);
+	if (clientId) Contexts.clientId.set(clientId);
+	if (requestId) Contexts.requestId.set(requestId);
+	if (request) Contexts.request.set(request);
 }
 
 export function getCurrentContext() {

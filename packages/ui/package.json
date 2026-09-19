@@ -55,10 +55,20 @@
 		"./utils": "./src/utils/index.ts",
 		"./package.json": "./package.json"
 	},
-	"files": ["lib", "src", "README.md"],
-	"keywords": ["react", "ui", "base-ui", "tailwindcss", "shadcn"],
+	"files": [
+		"lib",
+		"src",
+		"README.md"
+	],
+	"keywords": [
+		"react",
+		"ui",
+		"base-ui",
+		"tailwindcss",
+		"shadcn"
+	],
 	"scripts": {
-		"build": "make build",
+		"build": "just -f ../../just/packages/ui.just build",
 		"check:source-lines": "node ../../apps/components/scripts/check-ui-source-lines.mjs --root packages/ui",
 		"prepack": "pnpm build",
 		"prepublishOnly": "pnpm build",
@@ -70,16 +80,16 @@
 		"react-dom": "*"
 	},
 	"dependencies": {
-		"@base-ui/react": "^1.6.0",
+		"@base-ui/react": "^1.8.0",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
-		"tailwind-merge": "^3.6.0"
+		"tailwind-merge": "^3.7.0"
 	},
 	"devDependencies": {
-		"@types/react": "^19.2.17",
-		"@types/react-dom": "^19.2.3",
-		"react": "^19.2.7",
-		"react-dom": "^19.2.7",
+		"@types/react": "^19.3.0",
+		"@types/react-dom": "^19.3.0",
+		"react": "^19.3.0",
+		"react-dom": "^19.3.0",
 		"typescript": "7.0.2"
 	},
 	"publishConfig": {

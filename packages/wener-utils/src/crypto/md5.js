@@ -12,7 +12,7 @@ export function md5(inputString) {
   function hh(a,b,c,d,x,s,t)  {return cm(b^c^d,a,b,x,s,t);}
   function ii(a,b,c,d,x,s,t)  {return cm(c^(b|(~d)),a,b,x,s,t);}
   function sb(x) {
-    var i;var nblk=((x.length+8)>>6)+1;var blks=new Array(nblk*16);for(i=0;i<nblk*16;i++) blks[i]=0;
+    var i;var nblk=((x.length+8)>>6)+1;var blks=Array.from({length:nblk*16},()=>0);
     for(i=0;i<x.length;i++) blks[i>>2]|=x.charCodeAt(i)<<((i%4)*8);
     blks[i>>2]|=0x80<<((i%4)*8);blks[nblk*16-2]=x.length*8;return blks;
   }

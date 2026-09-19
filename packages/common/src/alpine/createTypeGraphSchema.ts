@@ -1,9 +1,7 @@
-import { type DynamicModule, Injectable } from '@nestjs/common';
-import type { ModuleRef, ModulesContainer } from '@nestjs/core';
+import { Injectable } from '@nestjs/common';
 import { getEntityManager } from '@wener/nestjs/mikro-orm';
 import { BaseObject, NestContainerType } from '@wener/nestjs/type-graphql';
 import type { Constructor } from '@wener/utils';
-import { GraphQLSchema } from 'graphql';
 import { GraphQLDateTime } from 'graphql-scalars';
 import {
 	Args,
@@ -194,21 +192,3 @@ export async function createTypeGraphSchema() {
 
 	return { schema, providers: resolvers };
 }
-
-class TypeGraphSchemaModule {
-	static forRoot(): DynamicModule {
-		return {
-			module: TypeGraphSchemaModule,
-			providers: [
-				{
-					provide: GraphQLSchema,
-					useFactory: () => {
-						//
-					},
-				},
-			],
-		};
-	}
-}
-
-function _resolverContainer({ moduleRef, container }: { moduleRef: ModuleRef; container: ModulesContainer }) {}

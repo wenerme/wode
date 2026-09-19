@@ -1,4 +1,4 @@
-function isNumber(v: any): v is Number {
+function isNumber(v: any): v is number {
 	return typeof v === 'number' || v instanceof Number;
 }
 

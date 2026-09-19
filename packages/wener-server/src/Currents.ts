@@ -32,7 +32,7 @@ export class Currents {
 		const found = store?.get(key);
 		if (found === undefined) {
 			const neo = def instanceof Function ? def() : def;
-			if (!neo !== undefined) {
+			if (neo !== undefined) {
 				store?.set(key, neo);
 			}
 

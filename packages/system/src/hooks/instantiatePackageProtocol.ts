@@ -91,14 +91,19 @@ export function instantiatePackageProtocol({
 
 		// try modern exports
 		if (meta.exports) {
+			const exports = meta.exports as Record<string, unknown>;
 			try {
-				resolved = resolve(meta, path, { unsafe: true, conditions: ['system', 'production'] });
+				resolved = resolve({ ...meta, exports }, path, { unsafe: true, conditions: ['system', 'production'] });
 				// if exports only have default will also resolve, recheck the system condition
-				isSystem = Boolean(meta.exports['.']?.system);
-			} catch (_e) {
+				isSystem = Boolean((exports['.'] as Record<string, unknown> | undefined)?.system);
+			} catch {
 				try {
 					// at least use esm
-					resolved = resolve(meta, path, { browser: isBrowser, require: false, conditions: ['production'] });
+					resolved = resolve({ ...meta, exports }, path, {
+						browser: isBrowser,
+						require: false,
+						conditions: ['production'],
+					});
 				} catch (e) {
 					if (!path.endsWith('.js')) {
 						throw e;
@@ -124,7 +129,7 @@ export function instantiatePackageProtocol({
 				logger.debug(`try resolve package.json of sub-path ${path} through ${pkgUrl}`);
 				const { default: meta } = await loader.import(pkgUrl);
 				resolved = meta.exports
-					? resolve(meta)
+					? resolve({ ...meta, exports: meta.exports as Record<string, unknown> })
 					: legacy(meta, { browser: isBrowser, fields: ['module', 'import', 'main'] });
 				if (resolved) {
 					// xyz + ./index.js -> xyz/index.js

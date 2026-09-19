@@ -3,7 +3,6 @@ import type {
 	QueryGroup,
 	QueryJsonPrimitive,
 	QueryJsonValue,
-	QueryNode,
 	QueryOperator,
 	QueryRule,
 } from './query-model';

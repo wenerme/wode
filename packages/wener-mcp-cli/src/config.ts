@@ -935,7 +935,7 @@ export function loadConfigFromPath(configPath: string): MergedConfig {
 	let parsed: unknown;
 	try {
 		parsed = JSON.parse(content);
-	} catch (_error) {
+	} catch {
 		throw new Error(`Invalid JSON in config file: ${resolvedPath}`);
 	}
 

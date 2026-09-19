@@ -153,7 +153,10 @@ export function formatChineseAmount0(amount: number): string {
 	}
 
 	// 去除多余的零，调整单位和数位
-	result = result.replace(/零+/g, '零').replace(/零元/, '元').replace(/零万/, '万');
+	result = result
+		.replace(/零+/g, '零')
+		.replace(/零元/, '元')
+		.replace(/零万/, '万');
 
 	return result;
 }

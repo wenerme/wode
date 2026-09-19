@@ -1,9 +1,8 @@
 import { inspect } from 'node:util';
-import type { MikroORMOptions } from '@mikro-orm/core';
-import { MemoryCacheAdapter } from '@mikro-orm/postgresql';
+import { MemoryCacheAdapter, type Options } from '@mikro-orm/postgresql';
 import { Errors } from '@wener/utils';
 
-export const DefaultMikroORMConfig: Partial<MikroORMOptions<any, any>> = {
+export const DefaultMikroORMConfig: Partial<Options> = {
 	resultCache: {
 		adapter: MemoryCacheAdapter,
 		expiration: 1000, // 1s

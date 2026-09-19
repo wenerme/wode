@@ -100,7 +100,7 @@ export class SimpleStorage<T = any> {
 		try {
 			await readFile(this.filePath, 'utf-8');
 			return true;
-		} catch (_error) {
+		} catch {
 			return false;
 		}
 	}

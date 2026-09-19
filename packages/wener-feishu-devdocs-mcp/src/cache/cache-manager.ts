@@ -268,7 +268,7 @@ export class CacheManager {
 					if (!this.isValidEntry(entry)) {
 						expiredEntries++;
 					}
-				} catch (_error) {
+				} catch {
 					// Skip invalid files
 					logger.debug('Skipping invalid cache file', { file });
 				}
@@ -323,7 +323,7 @@ export class CacheManager {
 							expiry: entry.expiry ? new Date(entry.expiry).toISOString() : 'none',
 						});
 					}
-				} catch (_error) {
+				} catch {
 					// If we can't read the file, it's probably corrupted, so delete it
 					await fs.unlink(filePath);
 					deletedCount++;

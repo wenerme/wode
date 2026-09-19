@@ -1,3 +1,4 @@
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { SSEClientTransport } from '@modelcontextprotocol/sdk/client/sse.js';
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
@@ -8,10 +9,6 @@ import {
 	ListToolsRequestSchema,
 	ReadResourceRequestSchema,
 } from '@modelcontextprotocol/sdk/types.js';
-import consola from 'consola';
-
-const log = consola.withTag('mcp-relay');
-
 export interface CreateRelayMcpServerOptions {
 	/** Target MCP server URL */
 	url: string;
@@ -26,7 +23,7 @@ export interface CreateRelayMcpServerOptions {
 }
 
 export interface RelayContext {
-	server: Server;
+	server: McpServer;
 	getClient: () => Promise<Client>;
 	textResult: (text: string) => { content: { type: 'text'; text: string }[] };
 	jsonResult: (data: unknown) => { content: { type: 'text'; text: string }[] };
