@@ -61,8 +61,10 @@ export function resolve(pkg: any, entry = '.', options: ResolveOptions = {}): st
 		}
 
 		const allows = new Set(['default', ...conditions]);
-		unsafe || allows.add(require ? 'require' : 'import');
-		unsafe || allows.add(browser ? 'browser' : 'node');
+		if (!unsafe) {
+			allows.add(require ? 'require' : 'import');
+			allows.add(browser ? 'browser' : 'node');
+		}
 
 		let key: string;
 		let tmp: string | undefined;
@@ -84,14 +86,14 @@ export function resolve(pkg: any, entry = '.', options: ResolveOptions = {}): st
 		for (key in exports) {
 			tmp = key[key.length - 1];
 			if (tmp === '/' && target.startsWith(key)) {
-				return (tmp = loop(exports[key], allows)) ? tmp + target.substring(key.length) : bail(name, target, 1);
+				tmp = loop(exports[key], allows);
+				return tmp ? tmp + target.substring(key.length) : bail(name, target, 1);
 			}
 			if (tmp === '*' && target.startsWith(key.slice(0, -1))) {
 				// do not trigger if no *content* to inject
 				if (target.substring(key.length - 1).length > 0) {
-					return (tmp = loop(exports[key], allows))
-						? tmp.replace('*', target.substring(key.length - 1))
-						: bail(name, target, 1);
+					tmp = loop(exports[key], allows);
+					return tmp ? tmp.replace('*', target.substring(key.length - 1)) : bail(name, target, 1);
 				}
 			}
 		}
@@ -104,7 +106,7 @@ export function resolve(pkg: any, entry = '.', options: ResolveOptions = {}): st
 /**
  * resolve main, module, browser
  */
-export function legacy(pkg: any, options: { browser?: boolean | string; fields?: string[] } = {}) {
+export function legacy(pkg: any, options: { browser?: boolean | string; fields?: string[] } = {}): string | undefined {
 	let i = 0;
 	let value: unknown;
 	let browser = options.browser;
@@ -120,14 +122,15 @@ export function legacy(pkg: any, options: { browser?: boolean | string; fields?:
 				//
 			} else if (typeof value === 'object' && fields[i] === 'browser') {
 				if (typeof browser === 'string') {
-					value = value[(browser = toName(pkg.name, browser))];
+					value = (value as Record<string, unknown>)[(browser = toName(pkg.name, browser))];
 					if (value == null) return browser;
 				}
 			} else {
 				continue;
 			}
 
-			return typeof value === 'string' ? `./${value.replace(/^\.?\//, '')}` : value;
+			return typeof value === 'string' ? `./${value.replace(/^\.?\//, '')}` : undefined;
 		}
 	}
+	return undefined;
 }

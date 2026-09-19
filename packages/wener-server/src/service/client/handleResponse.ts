@@ -3,7 +3,6 @@ import type { ClientRequest, ClientResponse } from './types';
 
 export async function handleResponse({
 	res,
-	req,
 }: {
 	res: ClientResponse | AsyncIterator<ClientResponse>;
 	req: ClientRequest;

@@ -243,7 +243,7 @@ const Container = styled.div`
 	}
 `;
 
-export const Clock: FC<ComponentPropsWithoutRef<'div'>> = ({ className, children, ...props }) => {
+export const Clock: FC<ComponentPropsWithoutRef<'div'>> = ({ className, children: _children, ...props }) => {
 	// src https://www.cssscript.com/modern-clock-ui/
 
 	let date = new Date();

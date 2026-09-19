@@ -66,7 +66,6 @@ export class AliCloudClient {
 			methods: {},
 			constructor: AliCloudClient,
 		};
-		const client: AliCloudClient = this;
 		return new Proxy(ctx, {
 			getPrototypeOf(target: ProxyClientTarget) {
 				return target.constructor?.prototype || null;
@@ -79,7 +78,7 @@ export class AliCloudClient {
 
 				return false;
 			},
-			get(target, key) {
+			get: (target, key) => {
 				if (key === Symbol.hasInstance) {
 					let last = target.attrs.get(key);
 					if (!last) {
@@ -148,7 +147,7 @@ export class AliCloudClient {
 							...override,
 							params: { ...params, ...override.params },
 						};
-						return client.request(req);
+						return this.request(req);
 					});
 				}
 

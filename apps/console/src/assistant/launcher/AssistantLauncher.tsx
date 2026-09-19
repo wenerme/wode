@@ -70,13 +70,13 @@ export const AssistantLauncher: React.FC = () => {
 
 		if (ToolComponent) {
 			return (
-				<div className='h-screen w-screen overflow-hidden bg-base-100 text-base-content'>
+				<div className='bg-base-100 text-base-content h-screen w-screen overflow-hidden'>
 					<ToolComponent />
 				</div>
 			);
 		}
 		return (
-			<div className='flex h-screen w-screen items-center justify-center bg-base-100 text-error'>
+			<div className='bg-base-100 text-error flex h-screen w-screen items-center justify-center'>
 				Tool not found: {toolId}
 			</div>
 		);

@@ -23,7 +23,7 @@ export function parseEmotion(message: string): Array<Element> {
 		_lookup = getEmotions().reduce(
 			(c, v) => {
 				c[v.cn] = v;
-				v.en && (c[v.en] = v);
+				if (v.en) c[v.en] = v;
 				v.alias?.forEach((a) => (c[a] = v));
 				return c;
 			},

@@ -1,10 +1,13 @@
 import { OverlayScrollbarsComponent, type OverlayScrollbarsComponentProps } from 'overlayscrollbars-react';
+import type { ComponentType } from 'react';
+
+const OverlayScrollbars = OverlayScrollbarsComponent as ComponentType<any>;
 
 type OverlayScrollbarProps = OverlayScrollbarsComponentProps & {};
 
 export const OverlayScrollbar = ({ children, ...props }: OverlayScrollbarProps) => {
 	return (
-		<OverlayScrollbarsComponent
+		<OverlayScrollbars
 			defer
 			options={{
 				scrollbars: {
@@ -17,7 +20,7 @@ export const OverlayScrollbar = ({ children, ...props }: OverlayScrollbarProps) 
 			{...props}
 		>
 			{children}
-		</OverlayScrollbarsComponent>
+		</OverlayScrollbars>
 	);
 };
 OverlayScrollbar.displayName = 'OverlayScrollbar';

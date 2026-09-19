@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { createChildLogger, createLogger, type Logger } from '@wener/utils';
-import type { Browser, PuppeteerLaunchOptions } from 'puppeteer-core';
+import type { Browser, LaunchOptions as PuppeteerLaunchOptions } from 'puppeteer-core';
 import { connect } from './connect';
 
 export interface LaunchOptions {
@@ -20,7 +20,7 @@ export async function launch({
 	dataDir = process.env.BROWSER_DATA_DIR || 'data/browsers',
 	cacheDir = path.join(dataDir, 'cache'),
 	defaultViewport = { width: 1265, height: 617 },
-	plugins: { _adblock = false } = {},
+	plugins: _plugins = {},
 	args = [],
 	...options
 }: LaunchOptions): Promise<{ browser: Browser; reuse?: boolean }> {

@@ -40,7 +40,7 @@ export const LoginPageForm: FC<LoginFormProps> = ({
 	showOrg,
 	orgValue,
 	onForgetPassword,
-	onRegister,
+	onRegister: _onRegister,
 	mode = 'username',
 	labels,
 	className,

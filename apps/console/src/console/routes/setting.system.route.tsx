@@ -1,9 +1,9 @@
 import React from 'react';
 import type { RouteObject } from 'react-router';
-import { SystemAboutPage } from '../../../../../packages/wener-console/src/pages';
+import { SystemAboutPage } from '@wener/console/pages';
 
 export default {
-	element: <SystemAboutPage />,
+	element: <SystemAboutPage.Composite />,
 	handle: {
 		title: '关于',
 	},

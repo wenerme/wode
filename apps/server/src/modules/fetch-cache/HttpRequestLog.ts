@@ -1,8 +1,10 @@
-import { Entity, EntityRepositoryType, OptionalProps, Property, types } from '@mikro-orm/core';
+import { EntityRepositoryType, OptionalProps, types } from '@mikro-orm/core';
+import { Entity, Property } from '@mikro-orm/decorators/legacy';
+import type { FetchLikeInput } from '@wener/utils/fetch';
 import { MinimalBaseEntity, type MinimalOptionalEntityFields } from '../../app/mikro-orm/entity';
 import { HttpRequestLogRepository } from './HttpRequestLog.repository';
 
-@Entity({ customRepository: () => HttpRequestLogRepository, schema: '*' })
+@Entity({ repository: () => HttpRequestLogRepository, schema: '*' })
 export class HttpRequestLog extends MinimalBaseEntity<HttpRequestLog> {
 	[OptionalProps]?: MinimalOptionalEntityFields | 'attributes' | 'properties' | 'hit';
 
@@ -76,14 +78,14 @@ export class HttpRequestLog extends MinimalBaseEntity<HttpRequestLog> {
 			pathname: u.pathname,
 			url: u.href,
 			query: Object.fromEntries(u.searchParams.entries()),
-		});
+		} as any);
 		return this;
 	}
 
-	fromRequest(u: RequestInfo | URL, init: RequestInit = {}) {
+	fromRequest(u: FetchLikeInput, init: RequestInit = {}) {
 		if (typeof u === 'string') {
 			this.fromUrl(u);
-		} else if ('url' in u) {
+		} else if ('url' in u && typeof u.url === 'string') {
 			this.fromUrl(u.url);
 		} else {
 			this.fromUrl(u.toString());
@@ -92,7 +94,7 @@ export class HttpRequestLog extends MinimalBaseEntity<HttpRequestLog> {
 			method: init.method || 'GET',
 			requestHeaders: Object.fromEntries(new Headers(init.headers).entries()),
 			// requestPayload: init.body,
-		});
+		} as any);
 		return this;
 	}
 
@@ -105,12 +107,13 @@ export class HttpRequestLog extends MinimalBaseEntity<HttpRequestLog> {
 			contentLength: headers['content-length'] ? parseInt(headers['content-length']) : undefined,
 			contentType: headers['content-type'],
 			// responsePayload: resp.body,
-		});
+		} as any);
 		return this;
 	}
 
 	toResponse(): Response {
 		const { responsePayload, responseBody, statusCode: status, responseHeaders: headers } = this;
-		return new Response(responseBody || JSON.stringify(responsePayload), { status, headers });
+		const body = responseBody ? (responseBody as unknown as BodyInit) : JSON.stringify(responsePayload);
+		return new Response(body, { status, headers });
 	}
 }

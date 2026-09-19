@@ -27,12 +27,11 @@ export const Tooltip = ({
 	placement = 'top',
 	className,
 	// style,
-	...props
 }: TooltipProps) => {
 	// not works in SSR
 	if (typeof window === 'undefined') return children;
 
-	const { refs, getReferenceProps, getFloatingProps, floatingStyles, open, context } = usePopover({
+	const { refs, getReferenceProps, getFloatingProps, floatingStyles, open } = usePopover({
 		hover: true,
 		click,
 		placement,

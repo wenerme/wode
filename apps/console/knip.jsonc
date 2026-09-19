@@ -7,16 +7,16 @@
 		"src/web/instance/routes/*.{tsx}",
 		"src/console/routes/*.{tsx}",
 		"src/icons/index.ts",
-		"src/labs/*/index.ts"
+		"src/labs/*/index.ts",
 	],
 	"project": ["src/**/*.{ts,tsx}"],
 	"paths": {
-		"@/*": ["./src/*"]
+		"@/*": ["./src/*"],
 	},
 	// by codegen
 	"ignore": ["src/gql/*"],
 	"vitest": {
 		"config": ["vitest*.config.{js,mjs,ts,cjs,mts,cts}", "vitest.{workspace,projects}.{ts,js,json}"],
-		"entry": ["src/**/*.{bench,test,test-d,spec}.?(c|m)[jt]s?(x)"]
-	}
+		"entry": ["src/**/*.{bench,test,test-d,spec}.?(c|m)[jt]s?(x)"],
+	},
 }

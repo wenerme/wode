@@ -7,7 +7,7 @@ export class ServerMiddleware implements NestMiddleware {
 	private readonly logger = new Logger('HTTP');
 
 	use(req: NestRequest, response: NestResponse, next: (error?: Error | any) => void): void {
-		const { ip, method, url, originalUrl, path = originalUrl } = req as any;
+		const { ip, method, originalUrl, path = originalUrl } = req as any;
 		const userAgent = (req as any).headers?.['user-agent'] || '';
 
 		// fixme

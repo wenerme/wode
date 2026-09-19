@@ -53,7 +53,7 @@ export function createScryptPasswordAlgorithm(
 						resolve(isMatch);
 					});
 				});
-			} catch (_error) {
+			} catch {
 				return Promise.resolve(false);
 			}
 		},

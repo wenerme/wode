@@ -2,7 +2,6 @@ import { type AnyEntity, EntityManager as CoreEntityManager, MikroORM as CoreMik
 import type { MikroOrmModuleAsyncOptions } from '@mikro-orm/nestjs';
 import { type EntityName, MikroOrmModule, type MikroOrmModuleFeatureOptions } from '@mikro-orm/nestjs';
 import {
-	type AbstractSqlConnection,
 	type Options,
 	EntityManager as PostgreSqlEntityManager,
 	MikroORM as PostgreSqlMikroORM,

@@ -6,11 +6,7 @@ import { type Constructor, isClass } from '@wener/utils';
 type _ServiceClass = Constructor & { name: `${string}Service` | `${string}Impl` };
 
 type _ResolverClass = Constructor & { name: `${string}Resolver` };
-type EntityClass = Constructor & { name: `${string}Entity` };
-
 type AnyConstructor = Constructor<any> & { EntityType?: Function; ServiceType?: Function };
-
-type Provide = AnyConstructor | Provider;
 
 export function resolveProvides(_all: Array<AnyConstructor | Provider>): {
 	resolvers: Constructor<any>[]; // type graphql

@@ -1,5 +1,5 @@
 import type { FetchLike } from '@wener/utils';
-import Cookie from 'cookie';
+import { parseCookie } from 'cookie';
 import { request } from './request';
 
 export async function ping({
@@ -18,7 +18,7 @@ export async function ping({
 		transform({ res }) {
 			const s = res.headers.get('set-cookie');
 			if (s) {
-				const p = Cookie.parse(s);
+				const p = parseCookie(s);
 				if ('access_token' in p) {
 					return p.access_token;
 				}

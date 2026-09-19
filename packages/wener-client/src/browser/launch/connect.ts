@@ -5,7 +5,7 @@ import { createChildLogger, createLogger, type Logger } from '@wener/utils';
 export async function connect({
 	name: uid = 'default',
 	dataDir = process.env.BROWSER_DATA_DIR || 'data/browsers',
-	cacheDir = path.join(dataDir, 'cache'),
+	cacheDir: _cacheDir = path.join(dataDir, 'cache'),
 	...options
 }: {
 	name?: string;
@@ -46,4 +46,6 @@ export async function connect({
 			return browser;
 		}
 	}
+
+	return undefined;
 }

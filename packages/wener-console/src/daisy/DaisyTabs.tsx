@@ -34,7 +34,7 @@ export const DaisyTabsComposite = ({
 	variant,
 	title,
 	action,
-	ref,
+	ref: _ref,
 	...props
 }: DaisyTabsCompositeProps) => {
 	if (!list) {

@@ -39,12 +39,12 @@ pnpm add -g @wener/api-cli
 The CLI discovers API configuration from multiple sources in priority order:
 
 1. **Project-level configs** (checked first):
-	- `./.api-cli.local.json` (local overrides, highest priority, gitignored)
-	- `./.api-cli.json` (project config)
+   - `./.api-cli.local.json` (local overrides, highest priority, gitignored)
+   - `./.api-cli.json` (project config)
 
 2. **User-level configs**:
-	- `~/.api-cli.local.json`
-	- `~/.api-cli.json`
+   - `~/.api-cli.local.json`
+   - `~/.api-cli.json`
 
 > **Tip**: Use `.api-cli.local.json` to store API keys and secrets. Add it to `.gitignore` to prevent committing
 > sensitive data.
@@ -76,16 +76,16 @@ The CLI discovers API configuration from multiple sources in priority order:
 }
 ```
 
-| Field     | Description                                                    |
-|-----------|----------------------------------------------------------------|
-| `env`     | Environment variables to set (for `${VAR}` substitution)       |
-| `servers` | Server configurations                                          |
-| `url`     | OpenAPI spec URL (remote) or file path (local)                 |
-| `baseUrl` | API base URL (auto-detected from spec if not provided)         |
-| `headers` | Default request headers                                        |
-| `type`    | Spec type: `openapi` (default) or `swagger`                    |
-| `include` | Glob patterns to include operations (whitelist)                |
-| `exclude` | Glob patterns to exclude operations (blacklist, takes priority)|
+| Field     | Description                                                     |
+| --------- | --------------------------------------------------------------- |
+| `env`     | Environment variables to set (for `${VAR}` substitution)        |
+| `servers` | Server configurations                                           |
+| `url`     | OpenAPI spec URL (remote) or file path (local)                  |
+| `baseUrl` | API base URL (auto-detected from spec if not provided)          |
+| `headers` | Default request headers                                         |
+| `type`    | Spec type: `openapi` (default) or `swagger`                     |
+| `include` | Glob patterns to include operations (whitelist)                 |
+| `exclude` | Glob patterns to exclude operations (blacklist, takes priority) |
 
 ### Operation Filtering (include/exclude)
 
@@ -104,19 +104,21 @@ Use glob patterns to filter operations by operationId, path, or tags:
 ```
 
 Patterns match against:
+
 - **operationId**: `*pet*` matches `getPetById`, `addPet`, etc.
 - **path**: `/pet/**` matches `/pet`, `/pet/{petId}`, `/pet/findByStatus`
 - **METHOD path**: `GET /pet/*` matches GET operations on /pet paths
 - **tags**: `store` matches operations tagged with "store"
 
 Examples:
+
 ```json
 {
-	"include": ["*pet*"],           // Only pet-related operations
-	"include": ["/pet/**"],         // Only operations with /pet path
-	"include": ["store"],           // Only operations tagged "store"
-	"exclude": ["*upload*"],        // Exclude upload operations
-	"exclude": ["DELETE *"]         // Exclude all DELETE operations
+	"include": ["*pet*"], // Only pet-related operations
+	"include": ["/pet/**"], // Only operations with /pet path
+	"include": ["store"], // Only operations tagged "store"
+	"exclude": ["*upload*"], // Exclude upload operations
+	"exclude": ["DELETE *"] // Exclude all DELETE operations
 }
 ```
 
@@ -163,7 +165,7 @@ api-cli [options] [command]
 ### Global Options
 
 | Option                    | Description                    |
-|---------------------------|--------------------------------|
+| ------------------------- | ------------------------------ |
 | `-c, --config <path>`     | Path to specific config file   |
 | `-j, --json`              | Output as JSON (for scripting) |
 | `-d, --with-descriptions` | Include operation descriptions |
@@ -342,12 +344,12 @@ api-cli rm petstore myapi
 
 ## Environment Variables
 
-| Variable              | Description                                  | Default |
-|-----------------------|----------------------------------------------|---------|
-| `API_CLI_CONFIG_PATH` | Path to config file                          | (none)  |
-| `API_CLI_CONFIG_INLINE` | Inline JSON config (alternative to file)   | (none)  |
-| `API_CLI_DEBUG`       | Enable debug output                          | `false` |
-| `API_CLI_TIMEOUT`     | Request timeout (seconds)                    | `30`    |
+| Variable                | Description                              | Default |
+| ----------------------- | ---------------------------------------- | ------- |
+| `API_CLI_CONFIG_PATH`   | Path to config file                      | (none)  |
+| `API_CLI_CONFIG_INLINE` | Inline JSON config (alternative to file) | (none)  |
+| `API_CLI_DEBUG`         | Enable debug output                      | `false` |
+| `API_CLI_TIMEOUT`       | Request timeout (seconds)                | `30`    |
 
 ### Inline Configuration
 
@@ -405,7 +407,7 @@ pnpm build
 ## Related Projects
 
 - [@wener/mcp-cli](https://github.com/wenerme/wode/tree/main/packages/wener-mcp-cli) - MCP server CLI with similar
-	design patterns
+  design patterns
 
 ## License
 

@@ -11,9 +11,12 @@ type ServeFn = (o: ServeOptions, cb: (o: { address: string; port: number }) => v
 
 export async function serve(o: ServeOptions, cb: (o: { address: string; port: number }) => void) {
 	let serve: ServeFn;
-	if (process.versions.bun) {
+	const bun = (globalThis as any).Bun as
+		| { serve: (options: ServeOptions) => { hostname: string; port: number } }
+		| undefined;
+	if (process.versions.bun && bun) {
 		serve = ({ fetch, port, idleTimeout }: ServeOptions, cb: Function) => {
-			const svr = Bun.serve({ fetch, port, idleTimeout });
+			const svr = bun.serve({ fetch, port, idleTimeout });
 			cb({ address: svr.hostname, port: svr.port });
 			return svr;
 		};

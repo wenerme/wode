@@ -1,4 +1,5 @@
-import { Entity, OptionalProps, Property, types, Unique } from '@mikro-orm/core';
+import { types } from '@mikro-orm/core';
+import { Entity, Property, Unique } from '@mikro-orm/decorators/legacy';
 import { TenantBaseEntity } from '@wener/server/entity';
 
 @Entity({ tableName: 'storage_item' })

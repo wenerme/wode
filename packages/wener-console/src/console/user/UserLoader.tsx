@@ -14,7 +14,7 @@ export const UserLoader: FC<
 	const { loading, error } = usePromise(async () => {
 		if (!load) return;
 		let data = await load();
-		data && getUserStore().getState().load(data);
+		if (data) getUserStore().getState().load(data);
 	}, []);
 
 	if (loading) {

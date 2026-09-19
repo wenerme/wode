@@ -131,7 +131,7 @@ export namespace DataView {
 
 	export const Sidecar = () => {
 		const store = useViewStoreContext();
-		const { actions, events } = useStore(
+		const { events } = useStore(
 			store,
 			useShallow(({ actions, events, result }) => ({ events, actions, result })),
 		);

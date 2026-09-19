@@ -1,14 +1,7 @@
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { cn } from '@wener/console';
 import { HeaderContentFooterLayout } from '@wener/console/components';
-import {
-	type ComponentProps,
-	type ComponentPropsWithRef,
-	type CSSProperties,
-	type ReactNode,
-	useCallback,
-	useRef,
-} from 'react';
+import { type ComponentPropsWithRef, type CSSProperties, type ReactNode, useCallback, useRef } from 'react';
 import { Group, Panel, type PanelProps } from 'react-resizable-panels';
 import { ActionIcon } from '../icons/ActionIcon';
 import { LeftContentRightLayout } from '../LeftContentRightLayout';
@@ -167,7 +160,7 @@ export namespace DataViewLayout {
 		right?: ReactNode;
 	};
 
-	export const Footer = ({ children, className, ...props }: FooterProps) => {
+	export const Footer = ({ children: _children, className, ...props }: FooterProps) => {
 		/*
 ┌────────────────────────────────────────────────────────┐
 │ [children - flex layout with gap-2]                    │

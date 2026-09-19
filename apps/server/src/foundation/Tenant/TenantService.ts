@@ -1,5 +1,6 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { EnsureRequestContext, EntityManager, type EntityRepository, MikroORM } from '@mikro-orm/postgresql';
+import { EntityManager, type EntityRepository, MikroORM } from '@mikro-orm/postgresql';
+import { EnsureRequestContext } from '@mikro-orm/decorators/legacy';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { getFallbackTenantId } from '@wener/server/app';
 import { isULID, isUUID } from '@wener/utils';

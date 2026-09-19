@@ -1,5 +1,10 @@
 import type { FetchLike, MaybePromise } from '@wener/utils';
 
+type UndiciRequestInit = RequestInit & {
+	duplex?: 'half';
+	dispatcher?: unknown;
+};
+
 export function createFetchWithProxyByUndici({
 	proxy,
 	fetch,
@@ -14,7 +19,7 @@ export function createFetchWithProxyByUndici({
 	}
 	let agent: any;
 	return async (...args) => {
-		const init = (args[1] ||= {});
+		const init = (args[1] ||= {}) as UndiciRequestInit;
 		if (init.body instanceof ReadableStream) {
 			// https://github.com/nodejs/node/issues/46221
 			init.duplex ||= 'half';
@@ -30,6 +35,6 @@ export function createFetchWithProxyByUndici({
 			// (global as any)[Symbol.for('undici.globalDispatcher.1')] = agent;
 		}
 		init.dispatcher = agent;
-		return await fetch(...args);
+		return await fetch!(...args);
 	};
 }

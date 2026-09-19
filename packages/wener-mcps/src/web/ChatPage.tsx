@@ -106,45 +106,45 @@ function ToolCallDisplay({ toolCall }: { toolCall: ToolCall }) {
 	const [isOpen, setIsOpen] = useState(false);
 
 	return (
-		<div className='border border-base-300 rounded-lg my-2 overflow-hidden bg-base-100'>
+		<div className='border-base-300 bg-base-100 my-2 overflow-hidden rounded-lg border'>
 			<button
 				type='button'
-				className='w-full flex items-center justify-between p-2 hover:bg-base-200'
+				className='hover:bg-base-200 flex w-full items-center justify-between p-2'
 				onClick={() => setIsOpen(!isOpen)}
 			>
 				<div className='flex items-center gap-2'>
 					{toolCall.status === 'completed' ? (
-						<Check className='w-3.5 h-3.5 text-success' />
+						<Check className='text-success h-3.5 w-3.5' />
 					) : toolCall.status === 'error' ? (
-						<XCircle className='w-3.5 h-3.5 text-error' />
+						<XCircle className='text-error h-3.5 w-3.5' />
 					) : (
-						<Clock className='w-3.5 h-3.5 text-warning animate-pulse' />
+						<Clock className='text-warning h-3.5 w-3.5 animate-pulse' />
 					)}
-					<Wrench className='w-3.5 h-3.5 text-base-content/60' />
+					<Wrench className='text-base-content/60 h-3.5 w-3.5' />
 					<span className='font-mono text-sm'>{toolCall.name}</span>
 				</div>
-				{isOpen ? <ChevronUp className='w-4 h-4' /> : <ChevronDown className='w-4 h-4' />}
+				{isOpen ? <ChevronUp className='h-4 w-4' /> : <ChevronDown className='h-4 w-4' />}
 			</button>
 			{isOpen && (
-				<div className='p-2 space-y-2 text-xs border-t border-base-300'>
+				<div className='border-base-300 space-y-2 border-t p-2 text-xs'>
 					<div>
-						<div className='font-semibold text-base-content/70 mb-1'>Arguments:</div>
-						<pre className='bg-base-200 p-2 rounded overflow-auto max-h-32'>
+						<div className='text-base-content/70 mb-1 font-semibold'>Arguments:</div>
+						<pre className='bg-base-200 max-h-32 overflow-auto rounded p-2'>
 							{JSON.stringify(toolCall.arguments, null, 2)}
 						</pre>
 					</div>
 					{toolCall.result !== undefined && (
 						<div>
-							<div className='font-semibold text-base-content/70 mb-1'>Result:</div>
-							<pre className='bg-base-200 p-2 rounded overflow-auto max-h-32'>
+							<div className='text-base-content/70 mb-1 font-semibold'>Result:</div>
+							<pre className='bg-base-200 max-h-32 overflow-auto rounded p-2'>
 								{typeof toolCall.result === 'string' ? toolCall.result : JSON.stringify(toolCall.result, null, 2)}
 							</pre>
 						</div>
 					)}
 					{toolCall.error && (
 						<div>
-							<div className='font-semibold text-error mb-1'>Error:</div>
-							<pre className='bg-error/10 text-error p-2 rounded'>{toolCall.error}</pre>
+							<div className='text-error mb-1 font-semibold'>Error:</div>
+							<pre className='bg-error/10 text-error rounded p-2'>{toolCall.error}</pre>
 						</div>
 					)}
 				</div>
@@ -158,20 +158,20 @@ function ReasoningDisplay({ content, isStreaming }: { content: string; isStreami
 	const [isOpen, setIsOpen] = useState(true);
 
 	return (
-		<div className='border border-base-300 rounded-lg my-2 overflow-hidden bg-base-100'>
+		<div className='border-base-300 bg-base-100 my-2 overflow-hidden rounded-lg border'>
 			<button
 				type='button'
-				className='w-full flex items-center justify-between p-2 hover:bg-base-200'
+				className='hover:bg-base-200 flex w-full items-center justify-between p-2'
 				onClick={() => setIsOpen(!isOpen)}
 			>
-				<div className='flex items-center gap-2 text-base-content/70'>
-					<Brain className={`w-4 h-4 ${isStreaming ? 'animate-pulse' : ''}`} />
+				<div className='text-base-content/70 flex items-center gap-2'>
+					<Brain className={`h-4 w-4 ${isStreaming ? 'animate-pulse' : ''}`} />
 					<span className='text-sm'>{isStreaming ? 'Thinking...' : 'Reasoning'}</span>
 				</div>
-				{isOpen ? <ChevronUp className='w-4 h-4' /> : <ChevronDown className='w-4 h-4' />}
+				{isOpen ? <ChevronUp className='h-4 w-4' /> : <ChevronDown className='h-4 w-4' />}
 			</button>
 			{isOpen && (
-				<div className='p-3 text-sm text-base-content/80 prose prose-sm max-w-none border-t border-base-300'>
+				<div className='text-base-content/80 prose prose-sm border-base-300 max-w-none border-t p-3 text-sm'>
 					<MarkdownContent>{content || '...'}</MarkdownContent>
 				</div>
 			)}
@@ -613,22 +613,22 @@ export function ChatPage() {
 		<div className='flex h-full min-h-[600px]'>
 			{/* Sessions Sidebar */}
 			{showSidebar && (
-				<div className='w-56 border-r border-base-300 bg-base-100 flex flex-col flex-shrink-0'>
-					<div className='p-2 border-b border-base-300'>
+				<div className='border-base-300 bg-base-100 flex w-56 flex-shrink-0 flex-col border-r'>
+					<div className='border-base-300 border-b p-2'>
 						<button type='button' className='btn btn-primary btn-sm w-full gap-1' onClick={createSession}>
-							<MessageSquarePlus className='w-4 h-4' /> New Chat
+							<MessageSquarePlus className='h-4 w-4' /> New Chat
 						</button>
 					</div>
 					<div className='flex-1 overflow-y-auto'>
 						{sessions.length === 0 ? (
-							<div className='p-4 text-center text-base-content/50 text-sm'>No chat history</div>
+							<div className='text-base-content/50 p-4 text-center text-sm'>No chat history</div>
 						) : (
-							<ul className='menu p-1 gap-0.5'>
+							<ul className='menu gap-0.5 p-1'>
 								{sessions.map((session) => (
 									<li key={session.id}>
 										<button
 											type='button'
-											className={`flex justify-between items-center w-full text-left py-2 px-2 ${currentSessionId === session.id ? 'active' : ''}`}
+											className={`flex w-full items-center justify-between px-2 py-2 text-left ${currentSessionId === session.id ? 'active' : ''}`}
 											onClick={() => setCurrentSessionId(session.id)}
 										>
 											<span className='flex-1 truncate text-xs'>{session.title}</span>
@@ -640,7 +640,7 @@ export function ChatPage() {
 													deleteSession(session.id);
 												}}
 											>
-												<Trash2 className='w-3 h-3' />
+												<Trash2 className='h-3 w-3' />
 											</button>
 										</button>
 									</li>
@@ -652,19 +652,19 @@ export function ChatPage() {
 			)}
 
 			{/* Main Chat Area */}
-			<div className='flex-1 flex flex-col min-w-0'>
+			<div className='flex min-w-0 flex-1 flex-col'>
 				{/* Header */}
-				<div className='h-12 px-3 border-b border-base-300 bg-base-100 flex items-center gap-2 flex-shrink-0'>
+				<div className='border-base-300 bg-base-100 flex h-12 flex-shrink-0 items-center gap-2 border-b px-3'>
 					<button
 						type='button'
 						className='btn btn-ghost btn-sm btn-square'
 						onClick={() => setShowSidebar(!showSidebar)}
 					>
-						<Menu className='w-4 h-4' />
+						<Menu className='h-4 w-4' />
 					</button>
 
 					{/* Model Selector */}
-					<div className='flex-1 max-w-xs'>
+					<div className='max-w-xs flex-1'>
 						<Combobox.Root
 							items={models}
 							itemToStringValue={(item: ModelItem) => item.value}
@@ -679,14 +679,14 @@ export function ChatPage() {
 							<Combobox.Input placeholder='Select model...' className='input input-bordered input-sm w-full' />
 							<Combobox.Portal>
 								<Combobox.Positioner sideOffset={4}>
-									<Combobox.Popup className='bg-base-100 rounded-box shadow-lg border border-base-300 max-h-60 overflow-auto z-50'>
-										<Combobox.Empty className='p-2 text-sm text-base-content/50'>No models</Combobox.Empty>
+									<Combobox.Popup className='bg-base-100 rounded-box border-base-300 z-50 max-h-60 overflow-auto border shadow-lg'>
+										<Combobox.Empty className='text-base-content/50 p-2 text-sm'>No models</Combobox.Empty>
 										<Combobox.List className='p-1'>
 											{(item: ModelItem) => (
 												<Combobox.Item
 													key={item.id}
 													value={item}
-													className='p-2 rounded cursor-pointer hover:bg-base-200 data-[highlighted]:bg-base-200 text-sm'
+													className='hover:bg-base-200 data-[highlighted]:bg-base-200 cursor-pointer rounded p-2 text-sm'
 												>
 													{item.value}
 												</Combobox.Item>
@@ -705,21 +705,21 @@ export function ChatPage() {
 						className={`btn btn-ghost btn-sm btn-square ${showSettings ? 'btn-active' : ''}`}
 						onClick={() => setShowSettings(!showSettings)}
 					>
-						<Settings className='w-4 h-4' />
+						<Settings className='h-4 w-4' />
 					</button>
 				</div>
 
-				<div className='flex-1 flex overflow-hidden'>
+				<div className='flex flex-1 overflow-hidden'>
 					{/* Messages Area */}
 					<div className='flex-1 overflow-y-auto p-4'>
 						{messages.length === 0 && (
-							<div className='text-center text-base-content/50 py-8'>
+							<div className='text-base-content/50 py-8 text-center'>
 								<p>Start a conversation by sending a message.</p>
-								{selectedModel && <p className='text-sm mt-2 opacity-70'>Model: {selectedModel}</p>}
+								{selectedModel && <p className='mt-2 text-sm opacity-70'>Model: {selectedModel}</p>}
 							</div>
 						)}
 
-						<div className='space-y-6 max-w-3xl mx-auto'>
+						<div className='mx-auto max-w-3xl space-y-6'>
 							{messages.map((message) => (
 								<div key={message.id}>
 									{message.role === 'user' ? (
@@ -734,7 +734,7 @@ export function ChatPage() {
 															onChange={(e) => setEditContent(e.target.value)}
 															rows={3}
 														/>
-														<div className='flex gap-2 mt-2'>
+														<div className='mt-2 flex gap-2'>
 															<button type='button' className='btn btn-primary btn-xs' onClick={handleSaveEdit}>
 																Save & Send
 															</button>
@@ -747,7 +747,7 @@ export function ChatPage() {
 													<>
 														<div className='bg-primary text-primary-content rounded-2xl rounded-br-md px-4 py-2'>
 															{message.images && message.images.length > 0 && (
-																<div className='flex flex-wrap gap-2 mb-2'>
+																<div className='mb-2 flex flex-wrap gap-2'>
 																	{message.images.map((img) => (
 																		<img
 																			key={img.base64 || img.url}
@@ -760,13 +760,13 @@ export function ChatPage() {
 															)}
 															<p className='whitespace-pre-wrap'>{message.content}</p>
 														</div>
-														<div className='flex justify-end gap-1 mt-1'>
+														<div className='mt-1 flex justify-end gap-1'>
 															<button
 																type='button'
 																className='btn btn-ghost btn-xs opacity-50 hover:opacity-100'
 																onClick={() => handleEditMessage(message.id)}
 															>
-																<Edit2 className='w-3 h-3' />
+																<Edit2 className='h-3 w-3' />
 															</button>
 														</div>
 													</>
@@ -778,14 +778,14 @@ export function ChatPage() {
 										<div>
 											{message.error ? (
 												<div className='text-error flex items-center gap-2'>
-													<XCircle className='w-4 h-4' />
+													<XCircle className='h-4 w-4' />
 													<span>Error: {message.error}</span>
 													<button
 														type='button'
 														className='btn btn-ghost btn-xs'
 														onClick={() => handleRetry(message.id)}
 													>
-														<RefreshCw className='w-3 h-3' />
+														<RefreshCw className='h-3 w-3' />
 													</button>
 												</div>
 											) : (
@@ -803,10 +803,10 @@ export function ChatPage() {
 													</div>
 
 													{/* Actions and metadata */}
-													<div className='flex items-center gap-3 mt-2 text-xs text-base-content/50'>
+													<div className='text-base-content/50 mt-2 flex items-center gap-3 text-xs'>
 														{message.usage && (
 															<span className='flex items-center gap-1'>
-																<Zap className='w-3 h-3' />
+																<Zap className='h-3 w-3' />
 																{message.usage.totalTokens} tokens
 																{message.usage.promptTokens != null && (
 																	<span className='opacity-70'>
@@ -817,7 +817,7 @@ export function ChatPage() {
 														)}
 														{message.durationMs && (
 															<span className='flex items-center gap-1'>
-																<Clock className='w-3 h-3' />
+																<Clock className='h-3 w-3' />
 																{(message.durationMs / 1000).toFixed(1)}s
 															</span>
 														)}
@@ -831,14 +831,14 @@ export function ChatPage() {
 															className='btn btn-ghost btn-xs opacity-50 hover:opacity-100'
 															onClick={() => copyToClipboard(message.content)}
 														>
-															<Copy className='w-3 h-3' />
+															<Copy className='h-3 w-3' />
 														</button>
 														<button
 															type='button'
 															className='btn btn-ghost btn-xs opacity-50 hover:opacity-100'
 															onClick={() => handleRetry(message.id)}
 														>
-															<RefreshCw className='w-3 h-3' />
+															<RefreshCw className='h-3 w-3' />
 														</button>
 													</div>
 												</>
@@ -854,8 +854,8 @@ export function ChatPage() {
 
 					{/* Settings Panel */}
 					{showSettings && (
-						<div className='w-64 border-l border-base-300 bg-base-100 p-4 overflow-y-auto flex-shrink-0'>
-							<h3 className='font-semibold mb-4'>Settings</h3>
+						<div className='border-base-300 bg-base-100 w-64 flex-shrink-0 overflow-y-auto border-l p-4'>
+							<h3 className='mb-4 font-semibold'>Settings</h3>
 
 							<div className='space-y-4'>
 								<div>
@@ -913,11 +913,11 @@ export function ChatPage() {
 								<div className='divider text-xs'>MCP Servers</div>
 
 								{mcpServers.length === 0 ? (
-									<p className='text-xs text-base-content/50'>No servers configured</p>
+									<p className='text-base-content/50 text-xs'>No servers configured</p>
 								) : (
 									<div className='space-y-2'>
 										{mcpServers.map((server) => (
-											<label key={server.name} className='flex items-center gap-2 cursor-pointer'>
+											<label key={server.name} className='flex cursor-pointer items-center gap-2'>
 												<input
 													type='checkbox'
 													className='checkbox checkbox-xs checkbox-primary'
@@ -932,7 +932,7 @@ export function ChatPage() {
 													}}
 												/>
 												<span className='text-xs'>{server.name}</span>
-												<span className='text-xs text-base-content/50'>({server.type})</span>
+												<span className='text-base-content/50 text-xs'>({server.type})</span>
 											</label>
 										))}
 									</div>
@@ -943,19 +943,19 @@ export function ChatPage() {
 				</div>
 
 				{/* Input Area */}
-				<div className='p-3 border-t border-base-300 bg-base-100 flex-shrink-0'>
+				<div className='border-base-300 bg-base-100 flex-shrink-0 border-t p-3'>
 					{/* Image Previews */}
 					{images.length > 0 && (
-						<div className='flex flex-wrap gap-2 mb-2'>
+						<div className='mb-2 flex flex-wrap gap-2'>
 							{images.map((img, i) => (
 								<div key={img.base64 || img.url} className='relative'>
 									<img src={img.base64 || img.url} alt='preview' className='h-16 rounded' />
 									<button
 										type='button'
-										className='btn btn-circle btn-xs absolute -top-1 -right-1 btn-error'
+										className='btn btn-circle btn-xs btn-error absolute -top-1 -right-1'
 										onClick={() => removeImage(i)}
 									>
-										<X className='w-3 h-3' />
+										<X className='h-3 w-3' />
 									</button>
 								</div>
 							))}
@@ -976,12 +976,12 @@ export function ChatPage() {
 							className='btn btn-ghost btn-sm btn-square'
 							onClick={() => fileInputRef.current?.click()}
 						>
-							<ImagePlus className='w-4 h-4' />
+							<ImagePlus className='h-4 w-4' />
 						</button>
 						<input
 							ref={inputRef}
 							type='text'
-							className='input input-bordered flex-1 input-sm'
+							className='input input-bordered input-sm flex-1'
 							value={input}
 							onChange={(e) => setInput(e.target.value)}
 							onKeyDown={handleKeyDown}
@@ -990,11 +990,11 @@ export function ChatPage() {
 						/>
 						{isLoading ? (
 							<button type='button' className='btn btn-error btn-sm' onClick={handleStop}>
-								<Square className='w-4 h-4' />
+								<Square className='h-4 w-4' />
 							</button>
 						) : (
 							<button type='submit' className='btn btn-primary btn-sm' disabled={!input.trim() || !selectedModel}>
-								<Send className='w-4 h-4' />
+								<Send className='h-4 w-4' />
 							</button>
 						)}
 					</form>

@@ -19,12 +19,12 @@ export function visit(expr: Expr, fn: (node: Expr) => undefined | boolean): void
 			break;
 		}
 		case 'case': {
-			expr.condition && visit(expr.condition, fn);
+			if (expr.condition) visit(expr.condition, fn);
 			expr.cases.forEach((c) => {
 				visit(c.when, fn);
 				visit(c.then, fn);
 			});
-			expr.else && visit(expr.else, fn);
+			if (expr.else) visit(expr.else, fn);
 			break;
 		}
 		case 'unary':

@@ -30,21 +30,16 @@ describe('createOpfsFileSystem', () => {
 		expect(await fileSystem.stat('/')).toMatchObject({ kind: 'directory' });
 	});
 
-	test.each([
-		'',
-		'/tenant',
-		'tenant/',
-		'tenant//data',
-		'.',
-		'..',
-		'tenant\\data',
-	])('rejects invalid namespace path %j', async (path) => {
-		const root = createDirectoryHandle('root');
-		const getDirectory = vi.fn(async () => root.handle);
-		vi.stubGlobal('navigator', { storage: { getDirectory } });
-		await expect(createOpfsFileSystem({ path })).rejects.toBeInstanceOf(FileSystemError);
-		expect(getDirectory).not.toHaveBeenCalled();
-	});
+	test.each(['', '/tenant', 'tenant/', 'tenant//data', '.', '..', 'tenant\\data'])(
+		'rejects invalid namespace path %j',
+		async (path) => {
+			const root = createDirectoryHandle('root');
+			const getDirectory = vi.fn(async () => root.handle);
+			vi.stubGlobal('navigator', { storage: { getDirectory } });
+			await expect(createOpfsFileSystem({ path })).rejects.toBeInstanceOf(FileSystemError);
+			expect(getDirectory).not.toHaveBeenCalled();
+		},
+	);
 });
 
 describe('pickDirectoryFileSystem', () => {

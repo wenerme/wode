@@ -18,8 +18,20 @@
 		"api-cli": "./dist/index.mjs"
 	},
 	"main": "./dist/index.mjs",
-	"files": ["dist", "src", "README.md"],
-	"keywords": ["openapi", "swagger", "rest", "api", "cli", "http", "client"],
+	"files": [
+		"dist",
+		"src",
+		"README.md"
+	],
+	"keywords": [
+		"openapi",
+		"swagger",
+		"rest",
+		"api",
+		"cli",
+		"http",
+		"client"
+	],
 	"scripts": {
 		"build": "tsx src/scripts/bundle.ts",
 		"dev": "tsx src/index.ts",
@@ -28,16 +40,18 @@
 		"test": "vp test run",
 		"typecheck": "tsc --noEmit"
 	},
+	"dependencies": {
+		"yaml": "^2.9.1"
+	},
 	"devDependencies": {
-		"@types/node": "^24.13.3",
+		"@types/node": "^24.13.5",
 		"commander": "^15.0.0",
-		"esbuild": "^0.28.1",
-		"tsx": "^4.23.0",
+		"esbuild": "^0.28.2",
+		"tsx": "^4.23.13",
 		"typescript": "7.0.2",
 		"vite": "npm:@voidzero-dev/vite-plus-core@0.2.5",
 		"vite-plus": "catalog:",
-		"yaml": "^2.9.0",
-		"zod": "^4.4.3"
+		"zod": "^4.6.5"
 	},
 	"publishConfig": {
 		"access": "public"

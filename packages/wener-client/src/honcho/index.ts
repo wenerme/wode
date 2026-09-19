@@ -362,7 +362,7 @@ export class HonchoClient {
 		const timeoutMs = timeout ?? this.options.timeout;
 		const timeoutController = timeoutMs ? new AbortController() : undefined;
 		const timer = timeoutMs ? setTimeout(() => timeoutController?.abort(), timeoutMs) : undefined;
-		const requestHeaders = new Headers({ Accept: 'application/json', ...this.options.headers, ...(headers ?? {}) });
+		const requestHeaders = new Headers({ Accept: 'application/json', ...this.options.headers, ...headers });
 		if (this.options.apiKey && !requestHeaders.has('authorization'))
 			requestHeaders.set('authorization', `Bearer ${this.options.apiKey}`);
 		if (body !== undefined && !requestHeaders.has('content-type'))

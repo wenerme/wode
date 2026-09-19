@@ -89,9 +89,9 @@ export class BencodeEncoder {
 		const isBufferSource = data instanceof ArrayBuffer || isBuffer(data) || ArrayBuffer.isView(data);
 		if (isBufferSource) {
 			if (this.#options.isString(data)) {
-				buffers.push(ArrayBuffers.from(`${data.byteLength}:`));
+				buffers.push(toBufferSource(ArrayBuffers.from(`${data.byteLength}:`)));
 			}
-			buffers.push(data);
+			buffers.push(toBufferSource(data));
 			return;
 		}
 
@@ -112,8 +112,8 @@ export class BencodeEncoder {
 			case 'String':
 				{
 					const raw = ArrayBuffers.from(data);
-					buffers.push(ArrayBuffers.from(`${raw.byteLength}:`));
-					buffers.push(raw);
+					buffers.push(toBufferSource(ArrayBuffers.from(`${raw.byteLength}:`)));
+					buffers.push(toBufferSource(raw));
 				}
 				break;
 			case 'Boolean':
@@ -123,7 +123,7 @@ export class BencodeEncoder {
 				const hi = (data / maxLo) << 0;
 				const lo = (data % maxLo) << 0;
 				const val = hi * maxLo + lo;
-				buffers.push(ArrayBuffers.from(`i${val}e`));
+				buffers.push(toBufferSource(ArrayBuffers.from(`i${val}e`)));
 				if (process.env.NODE_ENV === 'development') {
 					if (val !== data) {
 						console.warn(
@@ -166,4 +166,11 @@ export class BencodeEncoder {
 				throw new TypeError(`Unsupported encode type ${type}`);
 		}
 	}
+}
+
+function toBufferSource(data: ArrayBuffer | ArrayBufferView): ArrayBuffer | Uint8Array<ArrayBuffer> {
+	if (data instanceof ArrayBuffer) {
+		return data;
+	}
+	return Uint8Array.from(new Uint8Array(data.buffer, data.byteOffset, data.byteLength));
 }

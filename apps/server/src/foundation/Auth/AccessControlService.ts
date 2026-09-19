@@ -23,7 +23,7 @@ export class AccessControlService {
 		let repo = this.em.getRepository(AuthEntityRoleEntity);
 		const all = await repo.findAll({ where: { entityId: user.id } });
 
-		return { roles: all.map((v) => v.role) };
+		return { roles: all.map((v: AuthEntityRoleEntity) => v.role) };
 
 		// await Promise.all([
 		//   user.roles.load({
@@ -44,23 +44,23 @@ export class AccessControlService {
 	}
 }
 
-interface ImportOptions<T> {
+export interface ImportOptions<T> {
 	base?: T;
 	values?: T[];
 	onConflict?: { fields?: string[]; action?: string; merge?: string[]; exclude?: string[] };
 }
 
-async function doImport<E extends StandardBaseEntity>({
+async function doImport<E extends StandardBaseEntity, T>({
 	repo,
 	base,
 	values = [],
 	onConflict = {},
-}: ImportOptions<EntityData<E>> & { repo: EntityRepository<E> }) {
+}: ImportOptions<T> & { repo: EntityRepository<E> }) {
 	if (base) {
 		values = values.map((v) => Object.assign({}, base, v));
 	}
 
-	const data = await repo.upsertMany(values, {
+	const data = await repo.upsertMany(values as EntityData<E>[], {
 		onConflictFields: onConflict.fields as any[],
 		onConflictMergeFields: onConflict.merge as any[],
 		onConflictExcludeFields: onConflict.exclude as any[],

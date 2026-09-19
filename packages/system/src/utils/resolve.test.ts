@@ -32,6 +32,6 @@ test('resolve exports', () => {
 		try {
 			resolve(pkg, './xyz.js');
 			expect.fail();
-		} catch (e) {}
+		} catch {}
 	}
 });

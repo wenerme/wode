@@ -29,7 +29,7 @@ import { requireTenantId } from '@/foundation/Tenant';
 import { UserObject } from '@/foundation/User/graph/UserResolver';
 import { HasCustomerNode } from '@/graph/HasCustomerNode';
 import { ResourceNode } from '@/graph/ResourceNode';
-import { getRemoteEvents } from '@/server/events';
+import { getRemoteEmitter } from '@/remote/events/RemoteEmitter';
 import { loadEntity } from '@/utils/orm/loadEntity';
 
 @InterfaceType({
@@ -316,8 +316,8 @@ export class EntityResolver {
 
 			yield entity;
 
-			for await (let event of getRemoteEvents().events('entity:change')) {
-				if (event.entity.id !== id) {
+			for await (let event of getRemoteEmitter().events('entity:change')) {
+				if (event.data.entity.id !== id) {
 					continue;
 				}
 				await svc.em.refresh(entity);

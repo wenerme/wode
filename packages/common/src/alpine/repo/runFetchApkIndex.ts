@@ -37,9 +37,9 @@ export async function runFetchApkIndex({ variants, em, force }: FetchApkIndexOpt
 	});
 
 	let repo = em.getRepository(ApkIndexEntity);
-	let foundAll: ApkIndexEntity[] = [];
+	let foundAll: Array<Pick<ApkIndexEntity, 'path' | 'description' | 'size'>> = [];
 	if (!force) {
-		foundAll = await repo.findAll({ where: { path: { $in: paths } }, fields: ['path', 'description'] });
+		foundAll = await repo.findAll({ where: { path: { $in: paths } }, fields: ['path', 'description', 'size'] });
 	}
 
 	const stats = { total: paths.length, size: 0, changed: 0 };
@@ -52,7 +52,7 @@ export async function runFetchApkIndex({ variants, em, force }: FetchApkIndexOpt
 				for (let repo of repos) {
 					const cc = client.with({ branch, arch, repo });
 					let path = `${branch}/${repo}/${arch}`;
-					let found: ApkIndexEntity | undefined = foundAll.find((v: ApkIndexEntity) => v.path === path);
+					let found = foundAll.find((v) => v.path === path);
 					const data = await parseApkIndexArchive(await fetch(cc.buildPackageIndexUrl()).then((v) => v.body!), {
 						skip: ({ content, name }) => {
 							// this is large, avoid load in memory
@@ -88,12 +88,12 @@ export async function runFetchApkIndex({ variants, em, force }: FetchApkIndexOpt
 		if (!data.content) {
 			throw new Error(`content is missing: ${data.path}`);
 		}
-		if (!data.path) {
-			throw new Error(`path is missing: ${data.id}`);
+		if (!data.path || typeof data.path !== 'string') {
+			throw new Error(`path is missing`);
 		}
 
 		await fs.mkdir(getAlpineCacheDir(data.path), { recursive: true });
-		await fs.writeFile(getAlpineCacheDir(`${data.path}/APKINDEX-${data.description}.txt`), data.content!);
+		await fs.writeFile(getAlpineCacheDir(`${data.path}/APKINDEX-${data.description}`), String(data.content));
 	}
 
 	let changedEntities: ApkIndexEntity[] = [];
@@ -101,7 +101,7 @@ export async function runFetchApkIndex({ variants, em, force }: FetchApkIndexOpt
 		changedEntities = await em.upsertMany(
 			ApkIndexEntity,
 			// content is too large
-			changed.map(({ content, ...rest }) => {
+			changed.map(({ content: _content, ...rest }) => {
 				return rest;
 			}),
 			{ onConflictFields: ['path'], onConflictMergeFields: ['description', 'lastModifiedTime', 'size'] },

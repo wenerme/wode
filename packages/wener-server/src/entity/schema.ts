@@ -159,8 +159,8 @@ export function getEntitySchema<T = unknown>(
 					// fixme typing
 					(fieldJsonschemaDef as { nullable?: boolean }).nullable = true;
 				}
-				entityFieldSchemaDef.title && (fieldJsonschemaDef.title ||= entityFieldSchemaDef.title);
-				entityFieldSchemaDef.description && (fieldJsonschemaDef.description ||= entityFieldSchemaDef.description);
+				if (entityFieldSchemaDef.title) fieldJsonschemaDef.title ||= entityFieldSchemaDef.title;
+				if (entityFieldSchemaDef.description) fieldJsonschemaDef.description ||= entityFieldSchemaDef.description;
 				if (prop.comment) {
 					if (!fieldJsonschemaDef.title) {
 						fieldJsonschemaDef.title = prop.comment;

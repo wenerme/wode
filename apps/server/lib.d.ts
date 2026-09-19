@@ -13,3 +13,18 @@ interface ReadonlyArray<T> {
 }
 
 type NonFalsy<T> = T extends false | 0 | '' | null | undefined | 0n ? never : T;
+
+declare module 'redlock' {
+	interface RedlockSettings {
+		retryCount?: number;
+		retryDelay?: number;
+		retryJitter?: number;
+		automaticExtensionThreshold?: number;
+	}
+
+	class Redlock {
+		constructor(clients: Iterable<unknown>, settings?: RedlockSettings);
+	}
+
+	export default Redlock;
+}

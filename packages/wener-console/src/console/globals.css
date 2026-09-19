@@ -1,17 +1,17 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 @source "..";
 
 @plugin "daisyui" {
 	themes: all;
-	root: ":root";
+	root: ':root';
 	logs: true;
 }
 
 @plugin "daisyui/theme" {
-	name: "purplewind";
+	name: 'purplewind';
 	default: false;
 	prefersdark: false;
-	color-scheme: "light";
+	color-scheme: 'light';
 	--color-base-100: oklch(96% 0.016 293.756);
 	--color-base-200: oklch(94% 0.029 294.588);
 	--color-base-300: oklch(89% 0.057 293.283);
@@ -66,10 +66,10 @@
 
 @layer utilities {
 	@font-face {
-		font-family: "color-emoji";
+		font-family: 'color-emoji';
 		src:
-			local("Apple Color Emoji"), local("Twemoji Mozilla"), local("Segoe UI Emoji"), local("Segoe UI Symbol"),
-			local("Noto Color Emoji"), local("EmojiOne Color"), local("Android Emoji");
+			local('Apple Color Emoji'), local('Twemoji Mozilla'), local('Segoe UI Emoji'), local('Segoe UI Symbol'),
+			local('Noto Color Emoji'), local('EmojiOne Color'), local('Android Emoji');
 
 		/* Emoji unicode blocks */
 		unicode-range:

@@ -26,13 +26,3 @@ export interface IStatefulBaseEntity extends IBaseEntity {
 	state?: string;
 	status?: string;
 }
-
-interface ICustomerBaseEntity extends IBaseEntity {
-	customerId?: string;
-	customerType?: string;
-
-	accountId?: string;
-	account?: IBaseEntity;
-	contactId?: string;
-	contact?: IBaseEntity;
-}

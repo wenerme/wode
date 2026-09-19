@@ -54,7 +54,7 @@ export const globalTypes = {
 		defaultValue: 'corporate',
 		toolbar: {
 			icon: 'circlehollow',
-			items: [...getSupportedThemes().map((v) => v.value)],
+			items: getSupportedThemes().map((v) => v.value),
 			dynamicTitle: true,
 		},
 	},

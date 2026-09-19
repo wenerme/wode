@@ -125,6 +125,6 @@ export function getAnsiStyle(color: ColorMode | ConsoleColorOptions = 'auto'): A
 }
 
 export function stripAnsi(value: string): string {
-	// biome-ignore lint/suspicious/noControlCharactersInRegex: ANSI escape stripping intentionally matches ESC.
+	// oxlint-disable-next-line no-control-regex -- ANSI escape stripping intentionally matches the ESC control character.
 	return value.replace(/\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])/g, '');
 }

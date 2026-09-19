@@ -9,7 +9,7 @@ export async function parseJsonResponse<T = any>(response: Response): Promise<T>
 	if (contentType?.includes('application/json')) {
 		try {
 			return JSON.parse(text);
-		} catch (_e) {
+		} catch {
 			throw new Error(`Failed to parse JSON response: ${text}`);
 		}
 	}

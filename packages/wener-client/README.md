@@ -47,19 +47,19 @@ import { createFetchWithProxy } from '@wener/utils/server';
 
 // debug - dump 所有请求和返回
 {
-  const fetch = createFetchWithLogging();
-  const aliCloudClient = new AliCloudClient({
-    fetch,
-    accessKeyId: process.env.ALIBABA_CLOUD_ACCESS_KEY_ID,
-    accessKeySecret: process.env.ALIBABA_CLOUD_ACCESS_KEY_SECRET,
-  });
+	const fetch = createFetchWithLogging();
+	const aliCloudClient = new AliCloudClient({
+		fetch,
+		accessKeyId: process.env.ALIBABA_CLOUD_ACCESS_KEY_ID,
+		accessKeySecret: process.env.ALIBABA_CLOUD_ACCESS_KEY_SECRET,
+	});
 }
 // 配置代理 - 例如 http://127.0.0.1:7890
 {
-  const fetch = createFetchWithProxy({
-    // 例如：企业微信如果配置白名单，可以考虑走代理
-    proxy: process.env.WECOM_PROXY,
-  });
+	const fetch = createFetchWithProxy({
+		// 例如：企业微信如果配置白名单，可以考虑走代理
+		proxy: process.env.WECOM_PROXY,
+	});
 }
 ```
 
@@ -70,13 +70,13 @@ import { createFetchWithProxy } from '@wener/utils/server';
 import { OpenAiClient } from '@wener/client/openai';
 
 const fetch = createFetchWithProxy({
-  proxy: process.env.OPENAI_PROXY,//e.g. 'http://127.0.0.1:7890',
+	proxy: process.env.OPENAI_PROXY, //e.g. 'http://127.0.0.1:7890',
 });
 const client = new OpenAiClient({
-  fetch,
-  headers: {
-    Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
-  },
+	fetch,
+	headers: {
+		Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+	},
 });
 // list models
 console.log(await client.getModels());
@@ -135,13 +135,13 @@ console.log(await client.getModels());
 import { request } from '@wener/client/alicloud';
 
 console.log(
-  await request({
-    endpoint: 'dytnsapi.aliyuncs.com',
-    action: 'QueryTagInfoBySelection',
-    version: '2020-02-17',
-    accessKeyId: process.env.ALIBABA_CLOUD_ACCESS_KEY_ID,
-    accessKeySecret: process.env.ALIBABA_CLOUD_ACCESS_KEY_SECRET,
-  }),
+	await request({
+		endpoint: 'dytnsapi.aliyuncs.com',
+		action: 'QueryTagInfoBySelection',
+		version: '2020-02-17',
+		accessKeyId: process.env.ALIBABA_CLOUD_ACCESS_KEY_ID,
+		accessKeySecret: process.env.ALIBABA_CLOUD_ACCESS_KEY_SECRET,
+	}),
 );
 ```
 
@@ -154,15 +154,15 @@ console.log(
 import { AliCloudClient } from '@wener/client/alicloud';
 
 const aliCloudClient = new AliCloudClient({
-  accessKeyId: process.env.ALIBABA_CLOUD_ACCESS_KEY_ID,
-  accessKeySecret: process.env.ALIBABA_CLOUD_ACCESS_KEY_SECRET,
+	accessKeyId: process.env.ALIBABA_CLOUD_ACCESS_KEY_ID,
+	accessKeySecret: process.env.ALIBABA_CLOUD_ACCESS_KEY_SECRET,
 });
 
 const api = aliCloudClient.getServiceClient({
-  // 输入 product 和 version 会有补全
-  // 更多的接口待生成
-  product: 'Dytnsapi',
-  version: '2020-02-17',
+	// 输入 product 和 version 会有补全
+	// 更多的接口待生成
+	product: 'Dytnsapi',
+	version: '2020-02-17',
 });
 console.log(await api.QueryTagListPage({}));
 ```
@@ -176,26 +176,26 @@ import { createFileExpiryValue } from '@wener/client/server';
 import { WecomCorpClient } from '@wener/client/wecom/server';
 
 const fetch = createFetchWithProxy({
-  // 如果配置白名单，可以考虑走代理
-  proxy: process.env.WECOM_PROXY,
+	// 如果配置白名单，可以考虑走代理
+	proxy: process.env.WECOM_PROXY,
 });
 
 let client: WecomCorpClient;
 client = new WecomCorpClient({
-  fetch,
-  corpId: process.env.WECOM_CORP_ID!,
-  corpSecret: process.env.WECOM_CORP_SECRET!,
-  // 缓存 token 到文件或别的地方
-  accessToken: createFileExpiryValue<string>({
-    path: 'wechat.token.json',
-    loader: async () => {
-      const { access_token, expires_at } = await client.getAccessToken();
-      return {
-        value: access_token,
-        expiresAt: expires_at,
-      };
-    },
-  }),
+	fetch,
+	corpId: process.env.WECOM_CORP_ID!,
+	corpSecret: process.env.WECOM_CORP_SECRET!,
+	// 缓存 token 到文件或别的地方
+	accessToken: createFileExpiryValue<string>({
+		path: 'wechat.token.json',
+		loader: async () => {
+			const { access_token, expires_at } = await client.getAccessToken();
+			return {
+				value: access_token,
+				expiresAt: expires_at,
+			};
+		},
+	}),
 });
 
 // 复用
@@ -215,20 +215,20 @@ console.log(`AccessToken`, await client.options.accessToken.get());
   - 未测试过 Windows
 
 ```bash
-make run-bun
+just -f ../../just/packages/wener-client.just run-bun
 # 执行测试，会输出 10 条消息
-WWF_CORP_ID=ID WWF_CORP_SECRET=SECRET bun test ./src/wecom/archive/bun/WeWorkFinanceClient.bun.test.ts  
+WWF_CORP_ID=ID WWF_CORP_SECRET=SECRET bun test ./src/wecom/archive/bun/WeWorkFinanceClient.bun.test.ts
 ```
 
 ```ts
 if (process.env.WWF_PRIVATE_KEY_FILE) {
-  privateKey = await fs.readFile(process.env.WWF_PRIVATE_KEY_FILE, 'utf-8');
+	privateKey = await fs.readFile(process.env.WWF_PRIVATE_KEY_FILE, 'utf-8');
 }
 
 const client = createWeWorkFinanceClientFromEnv({
-  corpId: process.env.WWF_CORP_ID,
-  corpSecret: process.env.WWF_CORP_SECRET,
-  privateKey,
+	corpId: process.env.WWF_CORP_ID,
+	corpSecret: process.env.WWF_CORP_SECRET,
+	privateKey,
 });
 // the original data
 const data = client.getChatData({ limit: 10 });
@@ -236,7 +236,7 @@ console.log(data);
 
 // the decrypted data
 if (privateKey) {
-  console.log(client.getMessage({ limit: 10 }));
+	console.log(client.getMessage({ limit: 10 }));
 }
 
 // get file

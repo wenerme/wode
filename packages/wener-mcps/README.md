@@ -47,13 +47,13 @@ servers:
 
 ## 内置 MCP 服务器
 
-| 类型 | 端点 | 说明 | 动态 Header |
-|------|------|------|-------------|
-| `sql` | `/mcp/sql` | SQL 查询（MySQL、PostgreSQL、SQLite、MSSQL） | `X-DB-URL`, `X-DB-READ-URL`, `X-DB-WRITE-URL` |
-| `prometheus` | `/mcp/prometheus` | Prometheus 监控查询 | `X-SERVICE-URL` |
-| `grafana` | `/mcp/grafana` | Grafana dashboards / datasources / alerting / logs / Prometheus 查询 | `X-GRAFANA-URL`\*, `X-GRAFANA-SERVICE-ACCOUNT-TOKEN`, `X-GRAFANA-ORG-ID`, `X-GRAFANA-USERNAME`, `X-GRAFANA-PASSWORD` |
-| `tencent-cls` | `/mcp/tencent-cls` | 腾讯云日志服务 | `X-CLS-SECRET-ID`\*, `X-CLS-SECRET-KEY`\*, `X-CLS-REGION`, `X-CLS-ENDPOINT` |
-| `relay` | `/mcp/relay` | 代理转发到其他 MCP 服务器 | `X-MCP-URL`\*, `X-MCP-TYPE` |
+| 类型          | 端点               | 说明                                                                 | 动态 Header                                                                                                          |
+| ------------- | ------------------ | -------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| `sql`         | `/mcp/sql`         | SQL 查询（MySQL、PostgreSQL、SQLite、MSSQL）                         | `X-DB-URL`, `X-DB-READ-URL`, `X-DB-WRITE-URL`                                                                        |
+| `prometheus`  | `/mcp/prometheus`  | Prometheus 监控查询                                                  | `X-SERVICE-URL`                                                                                                      |
+| `grafana`     | `/mcp/grafana`     | Grafana dashboards / datasources / alerting / logs / Prometheus 查询 | `X-GRAFANA-URL`\*, `X-GRAFANA-SERVICE-ACCOUNT-TOKEN`, `X-GRAFANA-ORG-ID`, `X-GRAFANA-USERNAME`, `X-GRAFANA-PASSWORD` |
+| `tencent-cls` | `/mcp/tencent-cls` | 腾讯云日志服务                                                       | `X-CLS-SECRET-ID`\*, `X-CLS-SECRET-KEY`\*, `X-CLS-REGION`, `X-CLS-ENDPOINT`                                          |
+| `relay`       | `/mcp/relay`       | 代理转发到其他 MCP 服务器                                            | `X-MCP-URL`\*, `X-MCP-TYPE`                                                                                          |
 
 `*` 为必填项
 
@@ -135,7 +135,7 @@ servers:
     type: tencent-cls
     clientId: ${CLS_SECRET_ID}
     clientSecret: ${CLS_SECRET_KEY}
-    region: ap-shanghai        # 默认 ap-shanghai
+    region: ap-shanghai # 默认 ap-shanghai
     # endpoint: cls.tencentcloudapi.com
 ```
 
@@ -146,7 +146,7 @@ servers:
   upstream:
     type: relay
     url: http://other-mcp:8000
-    transport: http  # http | sse
+    transport: http # http | sse
 ```
 
 ## 动态配置
@@ -163,11 +163,11 @@ curl http://localhost:8036/mcp/sql \
 
 所有 MCP 端点支持以下请求头：
 
-| Header | 说明 |
-|--------|------|
-| `X-MCP-Readonly` | 设为 `true` 仅返回只读工具 |
-| `X-MCP-Include` | 包含匹配的工具（glob，如 `query_*`） |
-| `X-MCP-Exclude` | 排除匹配的工具（glob，如 `execute_*`） |
+| Header           | 说明                                   |
+| ---------------- | -------------------------------------- |
+| `X-MCP-Readonly` | 设为 `true` 仅返回只读工具             |
+| `X-MCP-Include`  | 包含匹配的工具（glob，如 `query_*`）   |
+| `X-MCP-Exclude`  | 排除匹配的工具（glob，如 `execute_*`） |
 
 配合 `@wener/mcp-cli` 使用时：
 
@@ -199,13 +199,13 @@ MCP_CLI_CONFIG_INLINE='{"mcpServers":{"grafana":{"url":"http://127.0.0.1:8036/mc
 servers:
   name:
     type: sql | prometheus | grafana | tencent-cls | relay
-    disabled: false  # 可选，禁用该服务器
+    disabled: false # 可选，禁用该服务器
     # ... 各类型特定配置
 
 audit:
-  enabled: true       # 审计日志，默认开启
+  enabled: true # 审计日志，默认开启
   db:
-    path: .mcps.db    # SQLite 审计库路径
+    path: .mcps.db # SQLite 审计库路径
 ```
 
 ## CLI

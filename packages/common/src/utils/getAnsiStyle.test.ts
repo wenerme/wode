@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vite-plus/test';
-import { type AnsiFormatOptions, getAnsiStyle } from './getAnsiStyle';
+import { type AnsiFormatOptions, getAnsiStyle } from '@wener/utils';
 
 describe('getAnsiStyle', () => {
 	const style = getAnsiStyle(true);

@@ -1,7 +1,5 @@
 {
 	"compilerOptions": {
-		"composite": true,
-		"declaration": true,
 		// Module & Baseline
 		"module": "ESNext",
 		"target": "ESNext",
@@ -15,8 +13,8 @@
 		"allowImportingTsExtensions": false,
 		"allowSyntheticDefaultImports": true,
 		"verbatimModuleSyntax": true,
-		// composite need this
-		"noEmit": false,
+		// Workspace packages expose TypeScript source; SWC owns JavaScript output.
+		"noEmit": true,
 		// Best practices
 		"strict": true,
 		"skipLibCheck": true,

@@ -1,6 +1,13 @@
 import { createLazyPromise, randomUUID, timeout } from '@wener/utils';
 import type { OfflineRequestMessage, OfflineResponseMessage } from './types';
 
+interface FunAsrWebSocket {
+	on(type: string, listener: (...args: any[]) => void): void;
+	once(type: string, listener: (...args: any[]) => void): void;
+	off(type: string, listener: (...args: any[]) => void): void;
+	send(data: string | Buffer): void;
+}
+
 function toSrt(msg: OfflineResponseMessage) {
 	if (!msg.stamp_sents) {
 		return '';
@@ -47,7 +54,7 @@ export async function requestOffline({
 	itn,
 	timeout: timeoutMs,
 }: {
-	ws: WebSocket;
+	ws: FunAsrWebSocket;
 	data: Buffer;
 	hotwords?: Record<string, number>;
 	itn?: boolean;

@@ -34,6 +34,9 @@ const config: StorybookConfig = {
 		options: {},
 	},
 	docs: {},
+	typescript: {
+		reactDocgen: 'react-docgen',
+	},
 	core: {
 		disableTelemetry: true,
 		disableWhatsNewNotifications: true,
@@ -41,7 +44,8 @@ const config: StorybookConfig = {
 	features: {
 		changeDetection: true,
 		componentsManifest: true,
-		experimentalDocgenServer: true,
+		// The experimental extractor depends on compiler APIs removed in TypeScript 7.
+		experimentalDocgenServer: false,
 		experimentalReview: true,
 	},
 	viteFinal(viteConfig, { configType }) {

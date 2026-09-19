@@ -47,8 +47,8 @@ export function buildResolveEntityWhere<E>(
 	} else if (opts.code && Features.hasFeature(Entity, EntityFeature.HasCode)) {
 		where.code = opts.code;
 	} else if ((opts.cid || opts.rid) && Features.hasFeature(Entity, EntityFeature.HasVendorRef)) {
-		opts.cid && (where.cid = opts.cid);
-		opts.rid && (where.rid = opts.rid);
+		if (opts.cid) where.cid = opts.cid;
+		if (opts.rid) where.rid = opts.rid;
 	} else {
 		return { where: where as any, hasWhere: false };
 	}
@@ -85,7 +85,9 @@ export async function resolveEntity<E extends StandardBaseEntity>(
 	}
 
 	if (where.length) {
-		entity = await repo.findOne(where, pass);
+		// MikroORM 7's indexed-query conditional omits the documented OR-array
+		// form for repositories whose entity has inferred indexes.
+		entity = await repo.findOne(where as never, pass);
 	} else {
 		return {};
 	}

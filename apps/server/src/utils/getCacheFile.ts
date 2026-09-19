@@ -22,7 +22,7 @@ export async function getCacheFile<M extends {} = Record<string, any>>({
 			get metadata() {
 				try {
 					return JSON.parse(fs.readFileSync(metaFile, 'utf-8'));
-				} catch (e) {
+				} catch {
 					return {};
 				}
 			},
@@ -33,18 +33,19 @@ export async function getCacheFile<M extends {} = Record<string, any>>({
 				return fs.readFile(cacheFile);
 			},
 		};
-	} catch (e) {}
+	} catch {}
 
 	const result = await getContent();
 
 	if (result?.content) {
+		const content = await readContent(result.content);
 		try {
-			await fsp.writeFile(cacheFile, result.content);
+			await fsp.writeFile(cacheFile, content);
 		} catch (e) {
 			// if dir not exists create it
 			if ((e as any).code === 'ENOENT') {
 				await fs.mkdir(path.dirname(cacheFile), { recursive: true });
-				await fsp.writeFile(cacheFile, result.content);
+				await fsp.writeFile(cacheFile, content);
 			}
 		}
 	}
@@ -66,4 +67,15 @@ export async function getCacheFile<M extends {} = Record<string, any>>({
 			return fs.readFile(cacheFile);
 		},
 	};
+}
+
+async function readContent(content: Buffer | Stream | ReadableStream<Uint8Array>): Promise<Buffer> {
+	if (Buffer.isBuffer(content)) {
+		return content;
+	}
+	const chunks: Buffer[] = [];
+	for await (const chunk of content as AsyncIterable<Uint8Array | string>) {
+		chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
+	}
+	return Buffer.concat(chunks);
 }

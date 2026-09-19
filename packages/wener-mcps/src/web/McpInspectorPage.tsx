@@ -134,16 +134,16 @@ export function McpInspectorPage() {
 
 	if (loading) {
 		return (
-			<div className='flex justify-center items-center p-8'>
+			<div className='flex items-center justify-center p-8'>
 				<span className='loading loading-spinner loading-lg' />
 			</div>
 		);
 	}
 
 	return (
-		<div className='flex flex-col h-full min-h-[600px]'>
+		<div className='flex h-full min-h-[600px] flex-col'>
 			{/* Header with server dropdown */}
-			<div className='p-3 border-b border-base-300 bg-base-100 flex items-center gap-4'>
+			<div className='border-base-300 bg-base-100 flex items-center gap-4 border-b p-3'>
 				<h3 className='font-semibold'>MCP Inspector</h3>
 				<select className='select select-bordered select-sm w-64' value={selectedServer} onChange={handleServerChange}>
 					<option value=''>Select a server...</option>
@@ -160,17 +160,17 @@ export function McpInspectorPage() {
 			{/* Main content */}
 			<div className='flex flex-1 overflow-hidden'>
 				{/* Tools List */}
-				<div className='w-64 border-r border-base-300 bg-base-100 flex flex-col flex-shrink-0'>
-					<div className='p-3 border-b border-base-300'>
-						<h4 className='font-medium text-sm'>Tools {tools.length > 0 && `(${tools.length})`}</h4>
+				<div className='border-base-300 bg-base-100 flex w-64 flex-shrink-0 flex-col border-r'>
+					<div className='border-base-300 border-b p-3'>
+						<h4 className='text-sm font-medium'>Tools {tools.length > 0 && `(${tools.length})`}</h4>
 					</div>
 					<div className='flex-1 overflow-y-auto'>
 						{!selectedServer ? (
-							<div className='p-4 text-center text-base-content/50 text-sm'>Select a server above</div>
+							<div className='text-base-content/50 p-4 text-center text-sm'>Select a server above</div>
 						) : tools.length === 0 && !connecting ? (
-							<div className='p-4 text-center text-base-content/50 text-sm'>No tools available</div>
+							<div className='text-base-content/50 p-4 text-center text-sm'>No tools available</div>
 						) : (
-							<ul className='menu p-2 gap-1'>
+							<ul className='menu gap-1 p-2'>
 								{tools.map((tool) => (
 									<li key={tool.name}>
 										<button
@@ -180,7 +180,7 @@ export function McpInspectorPage() {
 										>
 											<span className='font-mono text-xs'>{tool.name}</span>
 											{tool.description && (
-												<span className='text-xs text-base-content/50 truncate w-full'>{tool.description}</span>
+												<span className='text-base-content/50 w-full truncate text-xs'>{tool.description}</span>
 											)}
 										</button>
 									</li>
@@ -191,27 +191,27 @@ export function McpInspectorPage() {
 				</div>
 
 				{/* Tool Execution Panel */}
-				<div className='flex-1 flex flex-col overflow-hidden'>
+				<div className='flex flex-1 flex-col overflow-hidden'>
 					{!selectedTool ? (
-						<div className='flex-1 flex items-center justify-center text-base-content/50'>Select a tool to execute</div>
+						<div className='text-base-content/50 flex flex-1 items-center justify-center'>Select a tool to execute</div>
 					) : (
 						<>
 							{/* Tool info */}
-							<div className='p-4 border-b border-base-300 bg-base-100'>
-								<h3 className='font-semibold mb-2'>{selectedTool.name}</h3>
-								{selectedTool.description && <p className='text-sm mb-3'>{selectedTool.description}</p>}
+							<div className='border-base-300 bg-base-100 border-b p-4'>
+								<h3 className='mb-2 font-semibold'>{selectedTool.name}</h3>
+								{selectedTool.description && <p className='mb-3 text-sm'>{selectedTool.description}</p>}
 								{selectedTool.inputSchema?.properties && (
-									<div className='text-xs text-base-content/70'>
+									<div className='text-base-content/70 text-xs'>
 										<strong>Parameters:</strong>
-										<ul className='ml-4 mt-1 space-y-0.5'>
+										<ul className='mt-1 ml-4 space-y-0.5'>
 											{Object.entries(selectedTool.inputSchema.properties).map(([name, prop]) => (
 												<li key={name}>
-													<code className='bg-base-200 px-1 rounded'>{name}</code>
-													<span className='ml-1 text-base-content/50'>({prop.type || 'any'})</span>
+													<code className='bg-base-200 rounded px-1'>{name}</code>
+													<span className='text-base-content/50 ml-1'>({prop.type || 'any'})</span>
 													{selectedTool.inputSchema?.required?.includes(name) && (
 														<span className='text-error ml-1'>*</span>
 													)}
-													{prop.description && <span className='ml-2 text-base-content/60'>- {prop.description}</span>}
+													{prop.description && <span className='text-base-content/60 ml-2'>- {prop.description}</span>}
 												</li>
 											))}
 										</ul>
@@ -220,8 +220,8 @@ export function McpInspectorPage() {
 							</div>
 
 							{/* Input */}
-							<div className='p-4 border-b border-base-300 bg-base-200'>
-								<label className='text-sm font-medium mb-2 block'>Arguments (JSON):</label>
+							<div className='border-base-300 bg-base-200 border-b p-4'>
+								<label className='mb-2 block text-sm font-medium'>Arguments (JSON):</label>
 								<textarea
 									className='textarea textarea-bordered w-full font-mono text-xs'
 									rows={5}
@@ -239,9 +239,9 @@ export function McpInspectorPage() {
 							</div>
 
 							{/* Result */}
-							<div className='flex-1 overflow-auto p-4 bg-base-200'>
-								<label className='text-sm font-medium mb-2 block'>Result:</label>
-								<pre className='bg-base-100 p-4 rounded-box text-xs overflow-auto max-h-[400px] border border-base-300'>
+							<div className='bg-base-200 flex-1 overflow-auto p-4'>
+								<label className='mb-2 block text-sm font-medium'>Result:</label>
+								<pre className='bg-base-100 rounded-box border-base-300 max-h-[400px] overflow-auto border p-4 text-xs'>
 									{toolResult || 'No result yet'}
 								</pre>
 							</div>

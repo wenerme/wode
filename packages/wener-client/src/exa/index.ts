@@ -278,7 +278,7 @@ export class ExaClient {
 		const timeoutMs = timeout ?? this.options.timeout;
 		const timeoutController = timeoutMs ? new AbortController() : undefined;
 		const timer = timeoutMs ? setTimeout(() => timeoutController?.abort(), timeoutMs) : undefined;
-		const requestHeaders = new Headers({ ...this.options.headers, ...(headers ?? {}) });
+		const requestHeaders = new Headers({ ...this.options.headers, ...headers });
 		if (this.options.apiKey && !requestHeaders.has('x-api-key')) requestHeaders.set('x-api-key', this.options.apiKey);
 		if (body !== undefined && !requestHeaders.has('content-type'))
 			requestHeaders.set('content-type', 'application/json');

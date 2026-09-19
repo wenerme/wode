@@ -6,7 +6,7 @@ interface Context {
 	get(token: symbol): any;
 }
 
-export class InjectToken<T> {
+export class InjectToken<_T> {
 	static of<T>(key: { readonly name: string } | string): Token<T> {
 		const name = typeof key === 'string' ? key : key.name;
 		const token = Object.assign(Symbol.for(`InjectToken(${String(name)})`), {

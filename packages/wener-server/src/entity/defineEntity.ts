@@ -60,7 +60,7 @@ export function defineEntity(o: DefineEntityOptions | DefineEntityOptions[]) {
 
 	_index.set(def.Entity, def);
 	_index.set(def.typeName, def);
-	def.idType && _index.set(def.idType, def);
+	if (def.idType) _index.set(def.idType, def);
 
 	_all.push(def);
 

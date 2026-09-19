@@ -6,9 +6,11 @@ export function PanelResizeDragHandle({ className, ...props }: SeparatorProps) {
 	return (
 		<Separator
 			className={clsx(styles.handle, 'data-[separator=inactive]:opacity-20', className)}
-			style={{
-				'--size': '1rem',
-			}}
+			style={
+				{
+					'--size': '1rem',
+				} as any
+			}
 			{...props}
 		>
 			<div>

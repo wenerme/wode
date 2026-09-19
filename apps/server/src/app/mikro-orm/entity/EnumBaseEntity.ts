@@ -1,7 +1,8 @@
-import { BaseEntity, Entity, PrimaryKey, Property, types } from '@mikro-orm/core';
+import { BaseEntity, types } from '@mikro-orm/core';
+import { Entity, PrimaryKey, Property } from '@mikro-orm/decorators/legacy';
 
 @Entity({ abstract: true })
-export class EnumBaseEntity<E extends EnumBaseEntity<any>> extends BaseEntity<E, 'value'> {
+export class EnumBaseEntity<_E extends EnumBaseEntity<any>> extends BaseEntity {
 	@PrimaryKey({ type: types.string, columnType: 'text' })
 	value!: string;
 

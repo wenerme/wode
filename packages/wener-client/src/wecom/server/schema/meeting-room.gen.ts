@@ -38,9 +38,9 @@ export const GetMeetingRoomBookingInfoRequestSchema = z.object({
   /** 会议室id */
   meetingroom_id: z.number().optional(),
   /** 查询预定的起始时间，默认为当前时间 [timestamp] */
-  start_time: z.number().default('current_time').optional(),
+  start_time: z.number().optional(),
   /** 查询预定的结束时间，默认为明日0时 [timestamp] */
-  end_time: z.number().default('tomorrow_00:00').optional(),
+  end_time: z.number().optional(),
   /** 会议室所在城市 */
   city: z.string().min(1).max(64).optional(),
   /** 会议室所在楼宇 */

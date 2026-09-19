@@ -22,7 +22,7 @@ export function ServersPage() {
 
 	if (loading) {
 		return (
-			<div className='flex justify-center items-center p-8'>
+			<div className='flex items-center justify-center p-8'>
 				<span className='loading loading-spinner loading-lg' />
 			</div>
 		);
@@ -40,13 +40,13 @@ export function ServersPage() {
 		<div className='space-y-6'>
 			{/* Server List */}
 			<div>
-				<h2 className='text-lg font-semibold mb-3'>MCP Servers ({servers.length})</h2>
-				<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
+				<h2 className='mb-3 text-lg font-semibold'>MCP Servers ({servers.length})</h2>
+				<div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3'>
 					{servers.map((server) => (
 						<div
 							key={server.name}
-							className={`card bg-base-100 shadow-sm border cursor-pointer transition-all ${
-								selectedServer === server.name ? 'border-primary ring-2 ring-primary/30' : 'border-base-300'
+							className={`card bg-base-100 cursor-pointer border shadow-sm transition-all ${
+								selectedServer === server.name ? 'border-primary ring-primary/30 ring-2' : 'border-base-300'
 							}`}
 							onClick={() => setSelectedServer(selectedServer === server.name ? null : server.name)}
 							onKeyDown={(e) =>
@@ -56,7 +56,7 @@ export function ServersPage() {
 							tabIndex={0}
 						>
 							<div className='card-body p-4'>
-								<div className='flex justify-between items-start'>
+								<div className='flex items-start justify-between'>
 									<div>
 										<div className='font-semibold'>{server.name}</div>
 										<span className={`badge badge-sm ${getServerTypeBadgeClass(server.type)}`}>{server.type}</span>
@@ -71,7 +71,7 @@ export function ServersPage() {
 
 			{/* Tools List */}
 			<div>
-				<div className='flex justify-between items-center mb-3'>
+				<div className='mb-3 flex items-center justify-between'>
 					<h2 className='text-lg font-semibold'>
 						Tools {selectedServer ? `(${selectedServer})` : ''} ({filteredTools.length})
 					</h2>
@@ -83,8 +83,8 @@ export function ServersPage() {
 				</div>
 
 				{filteredTools.length === 0 ? (
-					<div className='card bg-base-100 shadow-sm border border-base-300'>
-						<div className='card-body text-center text-base-content/50'>
+					<div className='card bg-base-100 border-base-300 border shadow-sm'>
+						<div className='card-body text-base-content/50 text-center'>
 							<p>No tools available.</p>
 							<p className='text-sm'>
 								Tools will appear here when MCP servers are connected and their tools are listed.
@@ -92,8 +92,8 @@ export function ServersPage() {
 						</div>
 					</div>
 				) : (
-					<div className='overflow-x-auto bg-base-100 rounded-box shadow-sm border border-base-300'>
-						<table className='table table-zebra'>
+					<div className='bg-base-100 rounded-box border-base-300 overflow-x-auto border shadow-sm'>
+						<table className='table-zebra table'>
 							<thead>
 								<tr>
 									<th>Tool</th>
@@ -111,10 +111,10 @@ export function ServersPage() {
 										<td>
 											<span className='badge badge-sm'>{tool.serverName}</span>
 										</td>
-										<td className='text-sm text-base-content/70'>{tool.description || '-'}</td>
+										<td className='text-base-content/70 text-sm'>{tool.description || '-'}</td>
 										<td>
 											{tool.inputSchemaCompact && (
-												<code className='text-xs bg-base-200 px-1 py-0.5 rounded'>{tool.inputSchemaCompact}</code>
+												<code className='bg-base-200 rounded px-1 py-0.5 text-xs'>{tool.inputSchemaCompact}</code>
 											)}
 										</td>
 									</tr>

@@ -329,7 +329,7 @@ const _TextRecognitionButton = () => {
 	);
 };
 
-const ActionButton: FC<HTMLProps<HTMLButtonElement>> = ({ className, type, ...props }) => {
+const ActionButton: FC<HTMLProps<HTMLButtonElement>> = ({ className, type: _type, ...props }) => {
 	return (
 		<button
 			type={'button'}
@@ -339,7 +339,7 @@ const ActionButton: FC<HTMLProps<HTMLButtonElement>> = ({ className, type, ...pr
 	);
 };
 
-const FuncButton: FC<HTMLProps<HTMLButtonElement>> = ({ className, type, ...props }) => {
+const FuncButton: FC<HTMLProps<HTMLButtonElement>> = ({ className, type: _type, ...props }) => {
 	const A = (props.href ? 'a' : 'button') as 'button';
 	return (
 		<A

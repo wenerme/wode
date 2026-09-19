@@ -98,7 +98,7 @@ class DBFS implements IFileSystem {
 		}
 	}
 
-	async stat(path: string, options?: StatOptions): Promise<IFileStat> {
+	async stat(path: string, _options?: StatOptions): Promise<IFileStat> {
 		// Validate input
 		if (!path || typeof path !== 'string') {
 			throw new FileSystemError('Invalid path', FileSystemErrorCode.EINVAL);
@@ -424,19 +424,19 @@ class DBFS implements IFileSystem {
 		});
 	}
 
-	createReadStream(path: string, options?: CreateReadStreamOptions): never {
+	createReadStream(_path: string, _options?: CreateReadStreamOptions): never {
 		throw new Error('Streaming read is not supported by DBFS yet.');
 	}
 
-	createWriteStream(path: string, options?: CreateWriteStreamOptions): never {
+	createWriteStream(_path: string, _options?: CreateWriteStreamOptions): never {
 		throw new Error('Streaming write is not supported by DBFS yet.');
 	}
 
-	createReadableStream(path: string, options?: CreateReadStreamOptions): ReadableStream {
+	createReadableStream(_path: string, _options?: CreateReadStreamOptions): ReadableStream {
 		throw new Error('ReadableStream is not supported by DBFS yet.');
 	}
 
-	createWritableStream(path: string, options?: CreateWriteStreamOptions): WritableStream {
+	createWritableStream(_path: string, _options?: CreateWriteStreamOptions): WritableStream {
 		throw new Error('WritableStream is not supported by DBFS yet.');
 	}
 

@@ -57,14 +57,17 @@ export class CustomAutoEntityService extends AutoEntityService {
 		Errors.BadRequest.check(hasEntityFeature(entity, EntityFeature.HasCustomer), '资源不支持绑定客户');
 
 		const { entity: target } = await this.resolveEntity({ id: opts.customerId });
+		Errors.NotFound.check(target, '客户不存在');
 
-		entity.customer = target;
+		entity.customer = this.em.getReference(target.constructor as any, target.id as string) as NonNullable<
+			typeof entity.customer
+		>;
 		await this.em.persist(entity).flush();
 
 		return { entity, target };
 	}
 
-	async unbindCustomer<E extends StandardBaseEntity>(req: ResolveEntityOptions<E>, opts: UnbindCustomerOptions) {
+	async unbindCustomer<E extends StandardBaseEntity>(req: ResolveEntityOptions<E>, _opts: UnbindCustomerOptions) {
 		const { entity } = await this.requireEntity(req);
 
 		Errors.BadRequest.check(hasEntityFeature(entity, EntityFeature.HasCustomer), '资源不支持绑定客户');

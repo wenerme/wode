@@ -223,7 +223,7 @@ Requires appropriate permissions on the document.`,
 					}
 				}
 
-				const descendants = blocks.map(({ parent_id, ...rest }: any) => {
+				const descendants = blocks.map(({ parent_id: _parent_id, ...rest }: any) => {
 					if (rest.block_type === 31 && rest.table) {
 						const { row_size, column_size } = rest.table.property;
 						return {

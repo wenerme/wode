@@ -27,7 +27,7 @@ async function cache(dir: string, url: string): Promise<string> {
 		await fs.stat(file);
 		console.info('[cache] hit', url);
 		return await fs.readFile(file, 'utf-8');
-	} catch (_e) {}
+	} catch {}
 	console.info('[cache] miss', url);
 	const text = await fetch(url).then((v) => {
 		if (v.status >= 300) {

@@ -64,8 +64,8 @@ export class BaseEntityService<E extends StandardBaseEntity>
 
 	applySearch({ builder, search }: { builder: QueryBuilder<E>; search: string }) {
 		const { and, or } = this.resolveSearch({ search });
-		and?.length && builder.andWhere(and as any);
-		or?.length && builder.andWhere({ $or: or } as any);
+		if (and?.length) builder.andWhere(and as any);
+		if (or?.length) builder.andWhere({ $or: or } as any);
 	}
 
 	resolveSearch(opts: ResolveSearchOptions) {

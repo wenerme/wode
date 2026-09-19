@@ -3,7 +3,7 @@ import { signv3 } from './signv3';
 
 test('signv3', async () => {
 	// https://help.aliyun.com/zh/sdk/product-overview/v3-request-structure-and-signature
-	const { authorization, signature } = await signv3(
+	const { signature } = await signv3(
 		{
 			method: 'POST',
 			url: 'https://ecs.cn-shanghai.aliyuncs.com/?ImageId=win2019_1809_x64_dtc_zh-cn_40G_alibase_20230811.vhd&RegionId=cn-shanghai',

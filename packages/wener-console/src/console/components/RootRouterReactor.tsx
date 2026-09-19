@@ -3,7 +3,7 @@ import { useInRouterContext } from 'react-router';
 import { useRouteTitles } from '../../router';
 import { ReactRouterTracker } from './ReactRouterTracker';
 
-export const RootRouterReactor: FC<PropsWithChildren> = ({ children }) => {
+export const RootRouterReactor: FC<PropsWithChildren> = () => {
 	return (
 		<>
 			<RouterReactor />

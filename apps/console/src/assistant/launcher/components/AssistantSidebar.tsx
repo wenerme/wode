@@ -19,7 +19,7 @@ export const AssistantSidebar: React.FC = () => {
 	};
 
 	return (
-		<div className='bg-base-200/50 flex h-full w-64 flex-col border-r border-base-300'>
+		<div className='bg-base-200/50 border-base-300 flex h-full w-64 flex-col border-r'>
 			{/* Tool List */}
 			<div className='flex-1 overflow-y-auto py-2'>
 				{filteredTools.length === 0 ? (
@@ -39,7 +39,7 @@ export const AssistantSidebar: React.FC = () => {
 			</div>
 
 			{/* Footer Menu */}
-			<div className='mt-auto border-t border-base-300 p-2'>
+			<div className='border-base-300 mt-auto border-t p-2'>
 				<div className='menu menu-horizontal w-full justify-between'>
 					<button className='btn btn-ghost btn-sm btn-square tooltip' data-tip={`Version ${state.info.version}`}>
 						<FiInfo />

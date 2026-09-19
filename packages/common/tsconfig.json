@@ -19,6 +19,17 @@
 			"#/*": ["./src/*"]
 		}
 	},
-	"exclude": ["node_modules"],
+	"exclude": [
+		"node_modules",
+		"src/alpine/createTypeGraphSchema.ts",
+		"src/poc/bbvm/bbvm.main.ts",
+		"src/poc/bbvm/runBbvm.ts",
+		"src/poc/cli/**",
+		"src/poc/contracts/**",
+		"src/poc/gost/**",
+		"src/poc/ignored/**",
+		"src/poc/netflix/**",
+		"src/poc/react-serialize/**"
+	],
 	"include": ["next-env.d.ts", "src"]
 }
