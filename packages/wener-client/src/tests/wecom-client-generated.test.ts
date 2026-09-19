@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test } from 'vite-plus/test';
 import { WecomCorpClient } from '../wecom/server/WecomCorpClient';
 
 function createMockClient() {
