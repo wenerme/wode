@@ -13,7 +13,7 @@ import { AuthActions } from '#/foundation/Auth/AuthActions';
 import { SiteActions } from '#/foundation/Site/SiteActions';
 import { InstanceInit } from '#/instance/instance.init';
 import { WenerLogo } from '#/instance/WenerLogo';
-import { LoginPage } from '../../../../packages/wener-console/src/pages';
+import { LoginPage } from '@wener/console/pages';
 import './globals.css';
 
 const ConsoleApp = lazy(() => import('./ConsoleApp').then(({ ConsoleApp }) => ({ default: ConsoleApp })));
@@ -34,7 +34,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 					/>
 					<AuthBlock
 						fallback={
-							<LoginPage
+							<LoginPage.Composite
 								title={''}
 								logo={<SiteLogo className={'h-10 w-10'} />}
 								onSubmit={() => {

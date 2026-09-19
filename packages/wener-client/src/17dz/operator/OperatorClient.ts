@@ -130,6 +130,7 @@ export class OperatorClient {
 			url: 'https://17dz.com/iitweb/iitweb/yqdz/customer/getCustomerSetting',
 			params,
 			transform({ data }) {
+				if (!data) throw new Error('17dz: missing customer setting data');
 				data.keyPassword = decrypt(data.keyPassword);
 				data.realNamePassword = decrypt(data.realNamePassword);
 				return data;
@@ -177,6 +178,7 @@ export class OperatorClient {
 			url: 'https://17dz.com/iitweb/iit/v2/single/singleCustomer/getCustomer',
 			params: { deptId, ...params },
 			transform({ data }) {
+				if (!data) throw new Error('17dz: missing single customer data');
 				data.keyPassword = decrypt(data.keyPassword);
 				data.oldPassward = decrypt(data.oldPassward);
 				data.realNamePassword = decrypt(data.realNamePassword);
@@ -271,6 +273,7 @@ export class OperatorClient {
 			url: 'https://17dz.com/xqy-portal-web/finance/account/session/accountSet',
 			headers: { Accountsettoken: params.token },
 			transform({ data }) {
+				if (!data) throw new Error('17dz: missing finance account set data');
 				data.iv = decrypt(data.iv);
 				data.key = decrypt(data.key);
 				return data;
@@ -298,6 +301,7 @@ export class OperatorClient {
 			url: 'https://17dz.com/xqy-portal-web/finance/account/session/accountSet',
 			body: data,
 			transform({ data }) {
+				if (!data) throw new Error('17dz: missing finance account set data');
 				data.iv = decrypt(data.iv);
 				data.key = decrypt(data.key);
 				return data;

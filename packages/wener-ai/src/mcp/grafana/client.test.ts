@@ -8,7 +8,9 @@ describe('GrafanaApiClient', () => {
 	});
 
 	it('adds auth, org, and extra headers to requests', async () => {
-		const fetchMock = vi.fn(async () => new Response(JSON.stringify({ ok: true }), { status: 200 }));
+		const fetchMock = vi.fn<(...args: Parameters<typeof fetch>) => Promise<Response>>(
+			async () => new Response(JSON.stringify({ ok: true }), { status: 200 }),
+		);
 		vi.stubGlobal('fetch', fetchMock);
 
 		const client = new GrafanaApiClient({

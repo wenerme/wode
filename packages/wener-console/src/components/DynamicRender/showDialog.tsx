@@ -135,7 +135,7 @@ const DynamicDialog = ({
 	title,
 	description,
 	content,
-	children,
+	children: _children,
 	action,
 	...props
 }: Omit<ComponentPropsWithRef<'dialog'>, 'title' | 'content'> & {

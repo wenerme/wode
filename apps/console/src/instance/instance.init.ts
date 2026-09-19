@@ -1,5 +1,5 @@
 import { defineInit } from '@wener/common/meta';
-import { ConsoleEvents, getConsoleContext } from '@wener/console/console';
+import { ConsoleEventType, getConsoleContext } from '@wener/console/console';
 import { getAuthStore } from '@wener/console/foundation/auth';
 
 export const InstanceInit = defineInit({
@@ -12,7 +12,7 @@ export const InstanceInit = defineInit({
 		ctx.getAccessToken = () => {
 			return getAuthStore().getState().accessToken;
 		};
-		emitter.on(ConsoleEvents.SignOut, () => {
+		emitter.on(ConsoleEventType.SignOut, () => {
 			authStore.getState().reset();
 		});
 	},

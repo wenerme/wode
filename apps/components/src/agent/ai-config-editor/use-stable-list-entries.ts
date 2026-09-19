@@ -29,7 +29,7 @@ function emptyStableList<T>(prefix: string): StableListState<T> {
 }
 
 function projectStableList<T>(previous: StableListState<T>, items: readonly T[], prefix: string): StableListState<T> {
-	const keys: Array<string | undefined> = new Array(items.length);
+	const keys: Array<string | undefined> = Array.from({ length: items.length }, () => undefined);
 	const usedPrevious = new Set<number>();
 	let sequence = previous.sequence;
 

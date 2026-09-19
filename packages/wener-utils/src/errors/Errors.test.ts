@@ -8,11 +8,12 @@ test('Errors', () => {
 		let b: string = a;
 		hole(b);
 	}
+	// oxlint-disable-next-line no-constant-condition -- Compile-only example: require throws for undefined.
 	if (false) {
 		// 不能同时 asserts 且返回
 		// https://stackoverflow.com/a/73252858/1870054
 		// https://github.com/microsoft/TypeScript/issues/34636
-		let a: string | undefined;
+		let a: string | undefined = undefined;
 		Errors.NotFound.require(a);
 		// let c: string = a;
 		// hole(c);

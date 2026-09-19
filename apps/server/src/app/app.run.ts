@@ -25,7 +25,7 @@ export async function runApplication(opts: ApplicationOptions) {
 		bodyLimit: 10 * 1024 * 1024, // 10MB
 	});
 	opts.options ??= {};
-	const { openapi = true, ...boot } = opts;
+	const { openapi = true, helmet = true, ...boot } = opts;
 	const http = Boolean(boot.http);
 	const microservice = Boolean(boot.microservice);
 
@@ -74,8 +74,11 @@ export async function runApplication(opts: ApplicationOptions) {
 		app.useStaticAssets({ root: staticRootPath, prefix });
 
 		log.log(`HttpAdapter: ${app.getHttpAdapter().constructor.name}`);
-		// https://docs.nestjs.com/security/helmet#use-with-fastify
-		await app.register(fastifyHelmet, { contentSecurityPolicy: false });
+		if (helmet) {
+			await app.register(fastifyHelmet as unknown as Parameters<NestFastifyApplication['register']>[0], {
+				contentSecurityPolicy: false,
+			});
+		}
 		app.enableCors({});
 
 		await app.startAllMicroservices();

@@ -38,10 +38,10 @@ export function setServerContext({
 		clientId,
 	};
 	setCurrentContext(ctx);
-	tenant && ServerContexts.tenant.set(tenant);
-	token && ServerContexts.token.set(token);
-	subject && ServerContexts.subject.set(subject);
-	user && ServerContexts.user.set(user);
+	if (tenant) ServerContexts.tenant.set(tenant);
+	if (token) ServerContexts.token.set(token);
+	if (subject) ServerContexts.subject.set(subject);
+	if (user) ServerContexts.user.set(user);
 
 	return ctx;
 }

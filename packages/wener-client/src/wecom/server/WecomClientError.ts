@@ -4,10 +4,10 @@
 export class WecomClientError extends Error {
 	readonly code: number;
 	readonly status?: number;
-	readonly body?: number;
+	readonly body?: unknown;
 
 	constructor(
-		{ message, code, status, body }: { message: string; code: number; status?: number; body?: number },
+		{ message, code, status, body }: { message: string; code: number; status?: number; body?: unknown },
 		public options?: ErrorOptions,
 	) {
 		super(message, options);
@@ -36,10 +36,15 @@ export class WecomClientError extends Error {
 			throw last;
 		}
 
-		if (res.status >= 400 || body?.errcode) {
+		if (res.status >= 400 || (isWecomErrorBody(body) && body.errcode)) {
 			let err: Error;
-			if (typeof body === 'object' && body) {
-				err = new WecomClientError({ message: body.errmsg, code: body.errcode, status: res.status, body });
+			if (isWecomErrorBody(body)) {
+				err = new WecomClientError({
+					message: body.errmsg ?? res.statusText,
+					code: body.errcode ?? res.status,
+					status: res.status,
+					body,
+				});
 			} else {
 				err = Object.assign(new Error(res.statusText), { status: res.status, body });
 			}
@@ -49,4 +54,10 @@ export class WecomClientError extends Error {
 
 		return body;
 	}
+}
+
+type WecomErrorBody = { errcode?: number; errmsg?: string };
+
+function isWecomErrorBody(value: unknown): value is WecomErrorBody {
+	return typeof value === 'object' && value !== null && ('errcode' in value || 'errmsg' in value);
 }

@@ -13,7 +13,7 @@ import dayjs from 'dayjs';
 export class AgentConnectService {
 	static Schema = AgentService;
 
-	info(req: InfoRequest) {
+	info(_req: InfoRequest) {
 		let uptime = process.uptime();
 
 		return create(InfoResponseSchema, {

@@ -1,3 +1,4 @@
+import type { RequiredEntityData } from '@mikro-orm/core';
 import type { StandardBaseEntity } from '@wener/server/entity';
 import type { EntityBaseService } from '@wener/server/entity/service';
 import { runRelayClientMutation } from '@wener/server/type-graphql';
@@ -18,7 +19,12 @@ export function runResolverCreate<T, O, E extends StandardBaseEntity, SVC extend
 	input: CreateResourceInput<T>,
 ) {
 	return runRelayClientMutation(input, async () => {
-		const data = await resolver.svc.create(input);
+		const request = {
+			...input,
+			id: (input.data as { id: string }).id,
+			data: input.data as RequiredEntityData<E>,
+		};
+		const data = await resolver.svc.create(request);
 		return { data };
 	});
 }

@@ -1,4 +1,4 @@
-import { Entity } from '@mikro-orm/core';
+import { Entity } from '@mikro-orm/decorators/legacy';
 import type { IdentifiableEntity } from '@wener/server/entity';
 import { getEntityManager } from '@wener/server/mikro-orm';
 import type { Constructor } from '@wener/utils';
@@ -11,7 +11,7 @@ export function withRolesEntity<TBase extends Constructor>(Base: TBase) {
 			const all = await getEntityManager()
 				.getRepository(AuthEntityRoleEntity)
 				.findAll({ where: { entityId: (this as any as IdentifiableEntity).id } });
-			return all.map((v) => v.related);
+			return all.map((v: AuthEntityRoleEntity) => v.related);
 		}
 	}
 

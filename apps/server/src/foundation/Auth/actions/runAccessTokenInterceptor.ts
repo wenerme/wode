@@ -4,7 +4,6 @@ import type { ConsolaInstance } from 'consola/core';
 import { isDevelopment } from 'std-env';
 import { AuthService } from '@/foundation/Auth/AuthService';
 import type { AccessTokenEntity } from '@/foundation/Auth/entity';
-import type { TenantEntity } from '@/foundation/Tenant/entity/TenantEntity';
 import { checkUserAllowed } from '@/foundation/User/actions/checkUserAllowed';
 import { checkUserPassword } from '@/foundation/User/actions/checkUserPassword';
 import type { UserEntity } from '@/foundation/User/UserEntity';
@@ -20,11 +19,10 @@ export async function runAccessTokenInterceptor({
 	allowBasicAuth?: () => boolean;
 	log?: ConsolaInstance;
 }) {
-	const { token, type, username, password } = resolveRequestToken(req) || {};
+	const { token, username, password } = resolveRequestToken(req) || {};
 	let authService = getContext(AuthService);
 	let user: UserEntity | undefined;
 	let accessToken: AccessTokenEntity | undefined;
-	let tenant: TenantEntity | undefined;
 	let canBasicAuth = allowBasicAuth?.() ?? false;
 
 	try {
@@ -32,7 +30,7 @@ export async function runAccessTokenInterceptor({
 			user = (await checkUserPassword({ username, password }))?.user;
 		} else if (token) {
 			// 不考虑 bearer 或 token 类型
-			({ subject: user, accessToken: accessToken } = await authService.resolveAccessToken({ accessToken: token }));
+			({ subject: user, accessToken } = await authService.resolveAccessToken({ accessToken: token }));
 		}
 
 		checkUserAllowed(user);
@@ -56,6 +54,6 @@ export async function runAccessTokenInterceptor({
 	return {
 		user,
 		accessToken,
-		tenant,
+		tenant: undefined,
 	};
 }

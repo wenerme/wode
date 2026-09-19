@@ -17,7 +17,7 @@ export function buildUserAbility(user: AuthUser, builder = new AbilityBuilder<Co
 		can('view', 'page', ['/', '/work', '/setting/**', '/about/', '/about']);
 	}
 
-	const { can, cannot } = builder;
+	const { can } = builder;
 
 	for (let role of user.roles) {
 		switch (role) {
@@ -34,5 +34,4 @@ export function defineAbilityForUser(user: AuthUser): ConsoleAbility {
 	return buildUserAbility(user).build();
 }
 
-type DefinePermissions = (user: AuthUser, builder: AbilityBuilder<ConsoleAbility>) => void;
 export type RoleName = string;

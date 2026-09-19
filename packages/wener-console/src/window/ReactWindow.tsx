@@ -401,7 +401,7 @@ class ReactRootWindow extends ReactWindow {
 		child.addEventListener('close', () => {
 			root.setState((s) => {
 				s.windows = s.windows.filter((v) => v !== child);
-				this.current === child && (this.current = undefined);
+				if (this.current === child) this.current = undefined;
 			});
 		});
 

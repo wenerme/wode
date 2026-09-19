@@ -1,6 +1,6 @@
 import Emittery from 'emittery';
 
-export class WodeAssistantSidecar extends Emittery {
+export class WodeAssistantSidecar extends Emittery<{ 'open-settings': undefined }> {
 	constructor() {
 		super();
 	}

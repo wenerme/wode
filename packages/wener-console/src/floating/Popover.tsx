@@ -21,7 +21,6 @@ import { clsx } from 'clsx';
 import {
 	type CSSProperties,
 	cloneElement,
-	type HTMLProps,
 	isValidElement,
 	type JSX,
 	type ReactElement,
@@ -174,7 +173,7 @@ function _PopoverComponent({ children, render, placement, modal = true, bubbles 
 					getReferenceProps({
 						ref: refs.setReference,
 						'data-open': open ? '' : undefined,
-					} as HTMLProps<Element>),
+					} as any),
 				)}
 			<FloatingPortal>
 				{open && (
@@ -182,7 +181,7 @@ function _PopoverComponent({ children, render, placement, modal = true, bubbles 
 						<div
 							className='rounded border border-slate-900/10 bg-white bg-clip-padding px-4 py-6 shadow-md'
 							ref={refs.setFloating}
-							style={floatingStyles}
+							style={floatingStyles as unknown as CSSProperties}
 							aria-labelledby={labelId}
 							aria-describedby={descriptionId}
 							{...getFloatingProps()}

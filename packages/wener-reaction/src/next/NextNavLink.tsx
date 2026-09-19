@@ -4,16 +4,16 @@ import { type MaybeFunction, maybeFunction } from '@wener/utils';
 import { clsx } from 'clsx';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { type ComponentProps, type FC, forwardRef, type ReactNode } from 'react';
+import { type ComponentPropsWithoutRef, forwardRef, type ReactNode } from 'react';
 
-export interface NextNavLinkProps extends Omit<ComponentProps<typeof Link>, 'children' | 'className'> {
+export interface NextNavLinkProps extends Omit<ComponentPropsWithoutRef<typeof Link>, 'children' | 'className'> {
 	children?: MaybeFunction<ReactNode, [{ isActive: boolean }]>;
 	className?: MaybeFunction<string, [{ isActive: boolean }]>;
 	activeClassName?: string;
 	inactiveClassName?: string;
 }
 
-export const NextNavLink: FC<NextNavLinkProps> = forwardRef(
+export const NextNavLink = forwardRef<HTMLAnchorElement, NextNavLinkProps>(
 	({ children, activeClassName, inactiveClassName, className, ...props }, ref) => {
 		let pathname = usePathname();
 		let isActive = pathname === props.href;

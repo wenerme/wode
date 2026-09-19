@@ -16,7 +16,7 @@ export function proxyWith<T extends Record<string, any>>({
 	initialState,
 	name,
 	storage,
-	globalThis = getGlobalThis(),
+	globalThis: globalObject = getGlobalThis(),
 	global,
 	broadcast,
 	proxy = proxyWithCompare,
@@ -35,14 +35,14 @@ export function proxyWith<T extends Record<string, any>>({
 	let load = {} as T;
 	let _storage: IStorage | undefined;
 	if (storage === true) {
-		_storage = globalThis.localStorage;
+		_storage = globalObject.localStorage;
 	} else if (storage) {
 		_storage = storage;
 	}
 	if (_storage) {
 		try {
 			load = JSON.parse(_storage.getItem(name) || '{}');
-		} catch (_e) {}
+		} catch {}
 	}
 
 	if (typeof initialState === 'function') {
@@ -64,8 +64,8 @@ export function proxyWith<T extends Record<string, any>>({
 	}
 
 	let bc: BroadcastChannel | undefined;
-	if (broadcast === true && 'BroadcastChannel' in globalThis) {
-		bc = new globalThis.BroadcastChannel(`valtio:${name}`);
+	if (broadcast === true && 'BroadcastChannel' in globalObject) {
+		bc = new globalObject.BroadcastChannel(`valtio:${name}`);
 	} else if (typeof broadcast === 'object') {
 		bc = broadcast;
 	}

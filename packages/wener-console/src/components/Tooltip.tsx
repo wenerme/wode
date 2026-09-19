@@ -23,7 +23,7 @@ export namespace Tooltip {
 		placement = 'top',
 		className,
 		disabled = false,
-		delay,
+		delay: _delay,
 	}: CompositeProps) {
 		// SSR 不支持
 		if (typeof window === 'undefined') return children;

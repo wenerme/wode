@@ -13,11 +13,11 @@ export const AssistantToolItem: React.FC<AssistantToolItemProps> = ({ tool, isAc
 		<div
 			onClick={onClick}
 			className={clsx(
-				'flex cursor-pointer items-center gap-3 p-3 transition-colors hover:bg-base-300',
+				'hover:bg-base-300 flex cursor-pointer items-center gap-3 p-3 transition-colors',
 				isActive ? 'bg-base-300' : 'bg-transparent',
 			)}
 		>
-			<div className='flex h-10 w-10 items-center justify-center rounded-full bg-base-100 text-xl shadow-sm'>
+			<div className='bg-base-100 flex h-10 w-10 items-center justify-center rounded-full text-xl shadow-sm'>
 				{tool.icon}
 			</div>
 			<div className='flex flex-1 flex-col overflow-hidden'>

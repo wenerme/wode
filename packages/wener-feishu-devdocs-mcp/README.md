@@ -53,14 +53,14 @@ feishu-devdocs-mcp --verbose --port 3001
 
 ### Environment Variables
 
-| Variable | Description | Required | Default |
-|----------|-------------|----------|---------|
-| `FEISHU_DEVDOCS_DOMAIN` | Feishu API domain | No | `https://open.feishu.cn` |
-| `FEISHU_DEVDOCS_MAX_RESULTS` | Maximum results to return | No | `5` |
-| `FEISHU_DEVDOCS_TIMEOUT` | Request timeout in milliseconds | No | `10000` |
-| `FEISHU_CACHE_ENABLED` | Enable/disable caching | No | `true` |
-| `FEISHU_CACHE_TTL` | Cache TTL in milliseconds | No | `86400000` (24 hours) |
-| `FEISHU_CACHE_DIR` | Custom cache directory path | No | `~/.cache/wener-feishu-devdocs-mcp/` |
+| Variable                     | Description                     | Required | Default                              |
+| ---------------------------- | ------------------------------- | -------- | ------------------------------------ |
+| `FEISHU_DEVDOCS_DOMAIN`      | Feishu API domain               | No       | `https://open.feishu.cn`             |
+| `FEISHU_DEVDOCS_MAX_RESULTS` | Maximum results to return       | No       | `5`                                  |
+| `FEISHU_DEVDOCS_TIMEOUT`     | Request timeout in milliseconds | No       | `10000`                              |
+| `FEISHU_CACHE_ENABLED`       | Enable/disable caching          | No       | `true`                               |
+| `FEISHU_CACHE_TTL`           | Cache TTL in milliseconds       | No       | `86400000` (24 hours)                |
+| `FEISHU_CACHE_DIR`           | Custom cache directory path     | No       | `~/.cache/wener-feishu-devdocs-mcp/` |
 
 ### Example Configuration
 
@@ -82,6 +82,7 @@ FEISHU_CACHE_TTL=86400000
 The MCP server implements intelligent local file-based caching to improve performance and reduce API calls:
 
 ### Cache Features
+
 - **Automatic caching**: Search results are automatically cached by query
 - **TTL-based expiration**: Configurable time-to-live (default: 24 hours)
 - **SHA-256 query hashing**: Secure and collision-resistant cache keys
@@ -89,27 +90,32 @@ The MCP server implements intelligent local file-based caching to improve perfor
 - **Cache statistics**: Monitor cache usage and performance
 
 ### Cache Location
+
 By default, cache files are stored in:
+
 - **Linux/macOS**: `~/.cache/wener-feishu-devdocs-mcp/`
 - **Custom path**: Set `FEISHU_CACHE_DIR` environment variable
 
 ### Cache Behavior
+
 1. **First request**: Fetches from API and stores in cache
 2. **Subsequent requests**: Returns cached result if not expired
 3. **Cache miss**: Expired or non-existent cache triggers fresh API call
 4. **Cache hit**: Significantly faster response times
 
 ### Disabling Cache
+
 To disable caching entirely:
+
 ```env
 FEISHU_CACHE_ENABLED=false
 ```
 
 ## MCP Tools
 
-| Tool | Description |
-|------|-------------|
-| `health_check` | Health check and API connectivity verification |
+| Tool                         | Description                                       |
+| ---------------------------- | ------------------------------------------------- |
+| `health_check`               | Health check and API connectivity verification    |
 | `recall_developer_documents` | Search and recall developer documentation content |
 
 ### Tool: `recall_developer_documents`
@@ -117,20 +123,23 @@ FEISHU_CACHE_ENABLED=false
 **Purpose**: Search through Feishu/Lark Open Platform developer documentation
 
 **Input**:
+
 - `query` (string, required): Search query for developer documentation
 
 **Output**:
+
 - `results` (string[]): Array of documentation content snippets
 - `query` (string): Original search query
 - `resultCount` (number): Number of results returned
 
 **Example Usage**:
+
 ```json
 {
-  "tool": "recall_developer_documents",
-  "arguments": {
-    "query": "how to create a Feishu bot"
-  }
+	"tool": "recall_developer_documents",
+	"arguments": {
+		"query": "how to create a Feishu bot"
+	}
 }
 ```
 
@@ -140,15 +149,15 @@ Add to your Claude Desktop configuration:
 
 ```json
 {
-  "mcpServers": {
-    "feishu-devdocs": {
-      "command": "npx",
-      "args": ["@wener/feishu-devdocs-mcp", "--stdio"],
-      "env": {
-        "FEISHU_DEVDOCS_DOMAIN": "https://open.feishu.cn"
-      }
-    }
-  }
+	"mcpServers": {
+		"feishu-devdocs": {
+			"command": "npx",
+			"args": ["@wener/feishu-devdocs-mcp", "--stdio"],
+			"env": {
+				"FEISHU_DEVDOCS_DOMAIN": "https://open.feishu.cn"
+			}
+		}
+	}
 }
 ```
 
@@ -177,10 +186,12 @@ FEISHU_DEVDOCS_DOMAIN=https://open.feishu.cn pnpm dev --stdio
 ## Domain Configuration
 
 ### Feishu (China Version)
+
 - Domain: `https://open.feishu.cn` (default)
 - Suitable for users in China
 
 ### Lark (International Version)
+
 - Domain: `https://open.larksuite.com`
 - Suitable for international users
 
@@ -198,6 +209,7 @@ FEISHU_DEVDOCS_DOMAIN=https://open.larksuite.com feishu-devdocs-mcp --stdio
 ## What Documentation is Searched
 
 The recall functionality searches through:
+
 - **Developer Guides**: Getting started, tutorials, best practices
 - **API References**: Server-side APIs, client-side APIs
 - **SDK Documentation**: Official SDKs and libraries
@@ -209,6 +221,7 @@ This covers all developer-facing documentation from the Feishu/Lark Open Platfor
 ## Error Handling
 
 The server includes comprehensive error handling for:
+
 - API connectivity issues
 - Network timeouts
 - Invalid queries
@@ -218,6 +231,7 @@ The server includes comprehensive error handling for:
 ## Comparison with Official Lark MCP
 
 This implementation:
+
 - **Focused Scope**: Developer documentation only vs. full API integration
 - **Zero Setup**: No app credentials or authentication required
 - **Lightweight**: Minimal dependencies and simple architecture

@@ -1,5 +1,9 @@
 import { ConsoleLoader, Launcher, type UserProfileData } from '@wener/console/console';
-import { UserAuthExpireOverlay, UserLoader, UserLockOverlay } from '@wener/console/console/user';
+import {
+	AuthExpireOverlay as UserAuthExpireOverlay,
+	UserLoader,
+	AuthLockOverlay as UserLockOverlay,
+} from '@wener/console/console/user';
 import { WindowHost } from '@wener/console/window';
 import React from 'react';
 import { loadModule } from '#/console/loadModule';

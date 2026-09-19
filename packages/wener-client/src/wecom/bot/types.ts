@@ -103,10 +103,10 @@ export type WecomBotOutgoingMessageBody =
 	| { msgtype: 'voice'; voice: { media_id: string } }
 	| { msgtype: 'video'; video: { media_id: string; title?: string; description?: string } };
 
-export interface WecomBotSendMessageBody extends WecomBotOutgoingMessageBody {
+export type WecomBotSendMessageBody = WecomBotOutgoingMessageBody & {
 	chatid: string;
 	chat_type?: 0 | 1 | 2;
-}
+};
 
 export type WecomBotCommandRequest =
 	| {

@@ -10,6 +10,7 @@
 		"node": ">=24.11.0"
 	},
 	"scripts": {
+		"typecheck": "tsc --noEmit",
 		"build": "just -f ../../just/packages/wener-ai.just build",
 		"prepublishOnly": "pnpm verify:publish",
 		"test:built": "node ./tests/built-publish-subpath-smoke.mjs",
@@ -79,19 +80,19 @@
 		}
 	},
 	"dependencies": {
-		"@modelcontextprotocol/sdk": "^1.29.0",
+		"@modelcontextprotocol/sdk": "^1.30.0",
 		"@wener/client": "workspace:^1.0.29",
 		"@wener/common": "workspace:^3.0.0",
 		"consola": "^3.4.2",
-		"zod": "^4.4.3"
+		"zod": "^4.6.5"
 	},
 	"devDependencies": {
-		"@ai-sdk/google": "^4.0.18",
+		"@ai-sdk/google": "^4.0.76",
 		"@clickhouse/client": "^1.23.1",
-		"ai": "^7.0.31",
-		"kysely": "^0.29.3",
-		"mysql2": "^3.22.6",
-		"tarn": "^3.1.0",
+		"ai": "^7.0.107",
+		"kysely": "^0.29.6",
+		"mysql2": "^3.24.4",
+		"tarn": "^3.1.2",
 		"tedious": "^20.0.0"
 	},
 	"publishConfig": {

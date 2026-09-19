@@ -44,13 +44,15 @@ export async function runDemoApiServer() {
 
 	if (isDev()) {
 		const em = getEntityManager<EntityManager>();
-		let knex = em.getKnex();
-		const {
-			current_user: currentUser,
-			version,
-			current_catalog: database,
-		} = (await knex.raw('select current_user, current_catalog, version()')).rows[0];
-		const searchPath = (await knex.raw('show search_path')).rows[0].search_path;
+		const connection = em.getConnection();
+		const [{ current_user: currentUser, version, current_catalog: database }] = await connection.execute<
+			Array<{ current_user: string; version: string; current_catalog: string }>
+		>('select current_user, current_catalog, version()', [], 'all');
+		const [{ search_path: searchPath }] = await connection.execute<Array<{ search_path: string }>>(
+			'show search_path',
+			[],
+			'all',
+		);
 		log.debug(`DB Conn: ${version} db=${database} current_user=${currentUser}, search_path=${searchPath}`);
 	}
 

@@ -11,9 +11,9 @@ export async function decryptData({
 	encryptedData: string;
 	iv: string;
 }) {
-	const keyData = ArrayBuffers.fromBase64(sessionKey);
-	const data = ArrayBuffers.from(encryptedData, 'base64');
-	const ivBuffer = ArrayBuffers.from(iv, 'base64');
+	const keyData = ArrayBuffers.fromBase64(sessionKey) as BufferSource;
+	const data = ArrayBuffers.from(encryptedData, 'base64') as BufferSource;
+	const ivBuffer = ArrayBuffers.from(iv, 'base64') as BufferSource;
 
 	const cryptoKey = await crypto.subtle.importKey('raw', keyData, { name: 'AES-CBC', length: 128 }, false, ['decrypt']);
 

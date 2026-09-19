@@ -44,8 +44,7 @@ export class ServiceRegistry {
 		this.handler = undefined;
 	}
 
-	addService({ service, target }: RegisterServiceOptions) {
-		const { log } = this;
+	addService({ service: _service, target }: RegisterServiceOptions) {
 		// log.log(`Register service=${reg.name} methods=${svc.methods.map((v) => v.name).join(',')}`);
 		const metadata = getServerServiceSchema(target.constructor);
 		const name = metadata?.name;

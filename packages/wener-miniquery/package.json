@@ -30,20 +30,21 @@
 		"dsl"
 	],
 	"scripts": {
+		"typecheck": "tsc --noEmit",
 		"build": "just -f ../../just/packages/wener-miniquery.just build",
 		"test": "just -f ../../just/package.just package-test"
 	},
 	"dependencies": {
-		"@wener/utils": "workspace:^1.1.58",
+		"@wener/utils": "workspace:^1.1.59",
 		"ts-pattern": "^5.9.0"
 	},
 	"devDependencies": {
-		"@electric-sql/pglite": "^0.5.4",
-		"@electric-sql/pglite-socket": "^0.2.7",
-		"@mikro-orm/core": "^7.1.5",
-		"@mikro-orm/decorators": "^7.1.5",
-		"@mikro-orm/postgresql": "^7.1.5",
-		"@mikro-orm/sql": "^7.1.5",
+		"@electric-sql/pglite": "^0.5.8",
+		"@electric-sql/pglite-socket": "^0.2.11",
+		"@mikro-orm/core": "^7.2.0",
+		"@mikro-orm/decorators": "^7.2.0",
+		"@mikro-orm/postgresql": "^7.2.0",
+		"@mikro-orm/sql": "^7.2.0",
 		"@sequelize/core": "7.0.0-alpha.48",
 		"ohm-js": "^17.5.0"
 	},

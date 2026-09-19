@@ -61,5 +61,5 @@ function buildScanQueryFilter({ cursor, after = cursor || '', before, where, fil
 			...arrayOfMaybeArray(where),
 			...[filer, ...filers].filter(Boolean).flatMap((v) => toMikroOrmQuery(v)),
 		],
-	};
+	} as any;
 }

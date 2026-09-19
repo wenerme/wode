@@ -1,4 +1,4 @@
-import { Contexts, getCurrentTenantId } from '@wener/server/app';
+import { Contexts } from '@wener/server/app';
 import { Errors } from '@wener/utils';
 
 export {

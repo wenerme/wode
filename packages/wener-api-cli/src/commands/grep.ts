@@ -63,7 +63,7 @@ export async function grepCommand(options: GrepOptions): Promise<void> {
 					results.push({ server: serverName, operation });
 				}
 			}
-		} catch (_error) {
+		} catch {
 			// Silently skip servers that fail to load
 			// Could add verbose flag to show these
 		}

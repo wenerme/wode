@@ -64,7 +64,7 @@ const WindowControlPopoverContent: React.FC<ComponentPropsWithoutRef<'ul'>> = (p
 	);
 };
 export const WindowControlButton = memo(() => {
-	const { refs, getFloatingProps, getReferenceProps, open, setOpen, floatingStyles, context, nodeId } = usePopover({
+	const { refs, getFloatingProps, getReferenceProps, setOpen, floatingStyles, context } = usePopover({
 		placement: 'left-start',
 	});
 	const { isMounted, styles } = useTransitionStyles(context, {

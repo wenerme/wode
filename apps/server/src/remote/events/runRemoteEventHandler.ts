@@ -65,7 +65,9 @@ events:instance:${InstanceId}:event:${EventName}
 	let seq = 1;
 
 	// local to remote
-	events.onAny((eventName, evt) => {
+	events.onAny((event) => {
+		const { name: eventName, data } = event;
+		let evt = data;
 		{
 			let meta = getMeta(evt);
 

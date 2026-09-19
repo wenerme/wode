@@ -3,8 +3,6 @@ import { expect, test } from 'vite-plus/test';
 import { renderReactNodeToMarkdown } from './renderReactNodeToMarkdown';
 import { renderReactNodeToText } from './renderReactNodeToText';
 
-type Element = { type: any; props: Record<string, any>; children?: any };
-
 test('renderText', async () => {
 	expect(
 		renderReactNodeToText(
@@ -26,7 +24,7 @@ test('renderText', async () => {
 	).toBe('Hello World!\nMy name is **Wener**.');
 
 	// https://github.com/pmndrs/react-nil
-	const { render, flushSync } = await import('./render');
+	await import('./render');
 
 	let ele = (
 		<>

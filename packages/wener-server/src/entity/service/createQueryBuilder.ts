@@ -12,7 +12,7 @@ export async function createQueryBuilder<E extends StandardBaseEntity>(
 		// enabled: getDatabaseContext().debug,
 	});
 	let cond = await em.applyFilters<E>(Entity.name as any, {}, {}, 'read');
-	cond && builder.andWhere(cond);
+	if (cond) builder.andWhere(cond);
 	// await builder will execute
 	return { builder };
 }

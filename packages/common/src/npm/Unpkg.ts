@@ -5,7 +5,8 @@ import zlib from 'node:zlib';
 import { createLazyPromise, type FetchLike, type Logger, parseModuleId } from '@wener/utils';
 import { LRUCache } from 'lru-cache';
 import semver from 'semver';
-import tar, { type ReadEntry } from 'tar';
+import * as tar from 'tar';
+import type { ReadEntry } from 'tar';
 import type { RegistryPackage, RegistryPackageJson } from './RegistryPackage';
 import type { UnpkgStorage } from './UnpkgStorage';
 
@@ -150,9 +151,9 @@ export class Unpkg {
 			return data;
 		}
 		this.logger.info(`getPackageTarball fetch ${packageName} -> ${url}`);
-		data = Buffer.from(await fetch(url).then((v) => v.arrayBuffer()));
-		await storage.saveRawFile({ url, name, version, data });
-		return data;
+		const raw = await fetch(url).then((v) => v.arrayBuffer());
+		await storage.saveRawFile({ url, name, version, data: raw });
+		return Buffer.from(raw);
 	}
 
 	/**
@@ -188,7 +189,7 @@ export class Unpkg {
 					logger.info(`getPackageInfo: expired ${packageName}`);
 				}
 			}
-		} catch (_e) {
+		} catch {
 			// file not exists
 		}
 

@@ -51,10 +51,10 @@ export function createBaseRoute() {
 						'application/json': {
 							schema: z.object({
 								method: z.string(),
-								query: z.record(z.string()),
-								queries: z.record(z.any()),
+								query: z.record(z.string(), z.string()),
+								queries: z.record(z.string(), z.any()),
 								cookies: z.any(),
-								headers: z.record(z.any()),
+								headers: z.record(z.string(), z.any()),
 								body: z.any(),
 								ua: z.any(),
 							}),

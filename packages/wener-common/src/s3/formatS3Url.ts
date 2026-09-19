@@ -31,7 +31,7 @@ export function formatS3Url(
 		} else {
 			url = new URL(`https://${ep}`);
 		}
-	} catch (_error) {
+	} catch {
 		throw new Error(`Invalid endpoint: ${ep}`);
 	}
 

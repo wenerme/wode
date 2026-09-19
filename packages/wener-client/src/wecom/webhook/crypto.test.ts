@@ -50,7 +50,7 @@ test('crypto', async () => {
 	}
 
 	console.log(out);
-	const { receiverId, payload, content } = await c.decryptPayload(out);
+	const { receiverId, payload } = await c.decryptPayload(out);
 	console.log(payload);
 	assert.equal(corpId, receiverId);
 });

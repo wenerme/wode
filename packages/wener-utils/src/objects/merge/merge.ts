@@ -38,7 +38,7 @@ function getKeys(target: any) {
 function propertyIsOnObject(object: any, property: any) {
 	try {
 		return property in object;
-	} catch (_) {
+	} catch {
 		return false;
 	}
 }
@@ -48,7 +48,7 @@ function propertyIsUnsafe(target: any, key: string) {
 	return (
 		propertyIsOnObject(target, key) && // Properties are safe to merge if they don't exist in the target yet,
 		!(
-			Object.hasOwn(target, key) && // unsafe if they exist up the prototype chain,
+			Object.prototype.hasOwnProperty.call(target, key) && // unsafe if they exist up the prototype chain,
 			Object.propertyIsEnumerable.call(target, key)
 		)
 	); // and also unsafe if they're nonenumerable.

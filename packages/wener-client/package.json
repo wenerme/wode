@@ -58,33 +58,34 @@
 	],
 	"keywords": [],
 	"scripts": {
+		"typecheck": "tsc --noEmit",
 		"build": "just -f ../../just/packages/wener-client.just build",
 		"test": "just -f ../../just/package.just package-test"
 	},
 	"dependencies": {
-		"@wener/utils": "^1.1.58",
-		"zod": "^4.4.3"
+		"@wener/utils": "^1.1.59",
+		"zod": "^4.6.5"
 	},
 	"devDependencies": {
 		"@alicloud/openapi-client": "^0.4.15",
-		"@sinclair/typebox": "^0.34.49",
-		"@types/bun": "^1.3.14",
+		"@sinclair/typebox": "^0.34.52",
+		"@types/bun": "^1.4.2",
 		"@types/crypto-js": "^4.2.2",
 		"@types/node-rsa": "^1.1.4",
-		"@wecom/jssdk": "^2.4.2",
+		"@wecom/jssdk": "^2.4.4",
 		"cookie": "^2.0.1",
 		"crypto-js": "^4.2.0",
-		"dayjs": "^1.11.21",
-		"fast-xml-parser": "^5.9.3",
+		"dayjs": "^1.11.23",
+		"fast-xml-parser": "^5.11.1",
 		"node-rsa": "^2.0.0",
-		"puppeteer": "^25.3.0",
-		"puppeteer-core": "^25.3.0",
+		"puppeteer": "^25.11.0",
+		"puppeteer-core": "^25.11.0",
 		"ts-pattern": "^5.9.0",
-		"undici": "^8.7.0",
+		"undici": "^8.10.2",
 		"vite": "npm:@voidzero-dev/vite-plus-core@0.2.5",
 		"vite-plus": "catalog:",
-		"ws": "^8.21.0",
-		"yaml": "^2.9.0"
+		"ws": "^8.21.3",
+		"yaml": "^2.9.1"
 	},
 	"publishConfig": {
 		"exports": {

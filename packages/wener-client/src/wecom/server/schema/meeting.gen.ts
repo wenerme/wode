@@ -340,9 +340,9 @@ export const ListAttendeeRequestSchema = z.object({
   /** 周期性会议子会议 ID。如果是周期性会议，此参数必传。可通过查询成员的会议列表、查询会议接口获取返回的子会议 ID。 */
   sub_meetingid: z.string().optional(),
   /** 参会时间过滤起始时间（单位秒）。时间区间不允许超过31天，如果为空默认当前时间前推31天；start_time 和 end_time 都没传时最大查询时间跨度9 [timestamp] */
-  start_time: z.number().default('当前时间前推31天').optional(),
+  start_time: z.number().optional(),
   /** 参会时间过滤终止时间（单位秒）。时间区间不允许超过31天，如果为空默认取当前时间；start_time 和 end_time 都没传时最大查询时间跨度90天。 [timestamp] */
-  end_time: z.number().default('当前时间').optional(),
+  end_time: z.number().optional(),
   /** 分页查询用，将上一个请求返回的next_cursor字段传入。第一次查询时可不传值。limit参数必须与首次调用获得cursor时传入的limit一致。 */
   cursor: z.string().optional(),
   /** 拉取参会成员条数，目前每页支持最大100条。 */
@@ -553,7 +553,7 @@ export const GetUserMeetingIdRequestSchema = z.object({
   /** 开始时间 [timestamp] */
   begin_time: z.number().optional(),
   /** 结束时间，时间跨度不超过180天。如果begin_time和end_time都没填的话，默认end_time为当前时间 [timestamp] */
-  end_time: z.number().default('当前时间').optional(),
+  end_time: z.number().optional(),
   /** 每次拉取的数据量，默认值和最大值都为100 */
   limit: z.number().max(100).default(100).optional(),
 });

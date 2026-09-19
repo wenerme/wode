@@ -13,13 +13,12 @@
   - hooks - Reusable hooks
   - icons - Reusable icons
 
-
 **exports**
 
 - ./ - utils, do not need react
 - ./web - web app based on react
 
-*components*
+_components_
 
 - ./daisy
 - ./loader
@@ -42,12 +41,10 @@ pnpm add overlayscrollbars overlayscrollbars-react tailwind-merge clsx
 
 ```json
 {
-  "baseUrl": ".",
-  "paths": {
-    "@/*": [
-      "./src/*"
-    ]
-  }
+	"baseUrl": ".",
+	"paths": {
+		"@/*": ["./src/*"]
+	}
 }
 ```
 

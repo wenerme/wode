@@ -1,5 +1,7 @@
-import { Entity, type Opt, Property, types } from '@mikro-orm/core';
+import { type Opt, types } from '@mikro-orm/core';
+import { Entity, Property } from '@mikro-orm/decorators/legacy';
 import { MinimalBaseEntity } from '@wener/server/mikro-orm';
+import type { FetchLikeInput } from '@wener/utils/fetch';
 
 @Entity({ abstract: true })
 export class BaseHttpRequestLogEntity extends MinimalBaseEntity {
@@ -90,10 +92,10 @@ export class BaseHttpRequestLogEntity extends MinimalBaseEntity {
 		return this;
 	}
 
-	fromRequest(u: RequestInfo | URL | string, init: RequestInit = {}) {
+	fromRequest(u: FetchLikeInput, init: RequestInit = {}) {
 		if (typeof u === 'string') {
 			this.fromUrl(u);
-		} else if ('url' in u) {
+		} else if ('url' in u && typeof u.url === 'string') {
 			this.fromUrl(u.url);
 		} else {
 			this.fromUrl(u.toString());
@@ -124,6 +126,7 @@ export class BaseHttpRequestLogEntity extends MinimalBaseEntity {
 
 	toResponse(): Response {
 		const { responsePayload, responseBody, statusCode: status, responseHeaders: headers } = this;
-		return new Response(responseBody || JSON.stringify(responsePayload), { status, headers });
+		const body = responseBody ? (responseBody as unknown as BodyInit) : JSON.stringify(responsePayload);
+		return new Response(body, { status, headers });
 	}
 }

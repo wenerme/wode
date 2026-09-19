@@ -1,10 +1,5 @@
 export { getHttpStatusText } from '@wener/utils';
-export {
-	getAppContext,
-	getTypeToken,
-	type IApplicationContext,
-	setAppContext,
-} from './ApplicationContext';
+export { getAppContext, getTypeToken, type IApplicationContext, setAppContext } from './ApplicationContext';
 export { getContext, setContextProvider } from './ContextProvider';
 export { type ContextToken, Currents } from './Currents';
 export { Feature, type FeatureOptions, Features } from './Feature';

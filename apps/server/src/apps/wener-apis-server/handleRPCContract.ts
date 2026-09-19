@@ -6,7 +6,7 @@ import { RPCHandler } from '@orpc/server/fetch';
 import { CORSPlugin, ResponseHeadersPlugin } from '@orpc/server/plugins';
 import {
 	experimental_ZodSmartCoercionPlugin as ZodSmartCoercionPlugin,
-	experimental_ZodToJsonSchemaConverter as ZodToJsonSchemaConverter,
+	ZodToJsonSchemaConverter,
 } from '@orpc/zod/zod4';
 import type { Hono } from 'hono';
 import { html } from 'hono/html';

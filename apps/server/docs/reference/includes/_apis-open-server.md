@@ -1,4 +1,3 @@
-
 <h1 id="api">API v1.0.0</h1>
 
 > 下滑查看接口示例。
@@ -7,9 +6,9 @@ API description
 
 Base URLs:
 
-* <a href="http://127.0.0.1:3000">http://127.0.0.1:3000</a>
+- <a href="http://127.0.0.1:3000">http://127.0.0.1:3000</a>
 
-* <a href="http://localhost:3000">http://localhost:3000</a>
+- <a href="http://localhost:3000">http://localhost:3000</a>
 
 # 认证
 
@@ -18,7 +17,7 @@ Base URLs:
 - HTTP Authentication, scheme: basic
 
 * API Key (cookie)
-    - Parameter Name: **connect.sid**, in: cookie. 
+  - Parameter Name: **connect.sid**, in: cookie.
 
 <h1 id="api-hash">Hash</h1>
 
@@ -73,16 +72,16 @@ curl -X POST http://127.0.0.1:3000/hash/digest \
 
 ```json
 {
-  "data": "string",
-  "encoding": "raw"
+	"data": "string",
+	"encoding": "raw"
 }
 ```
 
 <h3 id="hashcontroller_digest-parameters">参数</h3>
 
-|名字|位置|类型|必须|说明|
-|---|---|---|---|---|
-|body|body|[HashDigestRequest](#schemahashdigestrequest)|true|none|
+| 名字 | 位置 | 类型                                          | 必须 | 说明 |
+| ---- | ---- | --------------------------------------------- | ---- | ---- |
+| body | body | [HashDigestRequest](#schemahashdigestrequest) | true | none |
 
 > 响应示例
 
@@ -90,19 +89,19 @@ curl -X POST http://127.0.0.1:3000/hash/digest \
 
 ```json
 {
-  "base64": "string",
-  "sha1": "string",
-  "sha256": "string",
-  "sha384": "string",
-  "sha512": "string"
+	"base64": "string",
+	"sha1": "string",
+	"sha256": "string",
+	"sha384": "string",
+	"sha512": "string"
 }
 ```
 
 <h3 id="hashcontroller_digest-responses">响应</h3>
 
-|状态|含义|描述|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|[HashDigestResponse](#schemahashdigestresponse)|
+| 状态 | 含义                                                    | 描述 | Schema                                          |
+| ---- | ------------------------------------------------------- | ---- | ----------------------------------------------- |
+| 200  | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | [HashDigestResponse](#schemahashdigestresponse) |
 
 <aside class="success">
 不需要认证
@@ -117,17 +116,15 @@ curl -X POST http://127.0.0.1:3000/hash/digest \
 > 代码示例
 
 ```javascript
-
 fetch('http://127.0.0.1:3000/password/generate', {
-  method: 'GET'
-
+	method: 'GET',
 })
-.then(function(res) {
-    return res.json();
-}).then(function(body) {
-    console.log(body);
-});
-
+	.then(function (res) {
+		return res.json();
+	})
+	.then(function (body) {
+		console.log(body);
+	});
 ```
 
 ```http
@@ -146,22 +143,22 @@ curl -X GET http://127.0.0.1:3000/password/generate
 
 <h3 id="generate-random-password-parameters">参数</h3>
 
-|名字|位置|类型|必须|说明|
-|---|---|---|---|---|
-|n|query|number|false|none|
-|length|query|number|false|none|
-|numbers|query|boolean|false|Should the password include numbers|
-|lowercase|query|boolean|false|Should the password include lowercase characters|
-|uppercase|query|boolean|false|Should the password include uppercase characters|
-|excludeSimilarCharacters|query|boolean|false|Should exclude visually similar characters like "i" and "I"|
-|exclude|query|string|false|List of characters to be excluded from the password|
-|strict|query|boolean|false|Password should include at least one character from each pool|
+| 名字                     | 位置  | 类型    | 必须  | 说明                                                          |
+| ------------------------ | ----- | ------- | ----- | ------------------------------------------------------------- |
+| n                        | query | number  | false | none                                                          |
+| length                   | query | number  | false | none                                                          |
+| numbers                  | query | boolean | false | Should the password include numbers                           |
+| lowercase                | query | boolean | false | Should the password include lowercase characters              |
+| uppercase                | query | boolean | false | Should the password include uppercase characters              |
+| excludeSimilarCharacters | query | boolean | false | Should exclude visually similar characters like "i" and "I"   |
+| exclude                  | query | string  | false | List of characters to be excluded from the password           |
+| strict                   | query | boolean | false | Password should include at least one character from each pool |
 
 <h3 id="generate-random-password-responses">响应</h3>
 
-|状态|含义|描述|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|无|
+| 状态 | 含义                                                    | 描述 | Schema |
+| ---- | ------------------------------------------------------- | ---- | ------ |
+| 200  | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | 无     |
 
 <aside class="success">
 不需要认证
@@ -174,17 +171,15 @@ curl -X GET http://127.0.0.1:3000/password/generate
 > 代码示例
 
 ```javascript
-
 fetch('http://127.0.0.1:3000/password/zxcvbn/{password}', {
-  method: 'GET'
-
+	method: 'GET',
 })
-.then(function(res) {
-    return res.json();
-}).then(function(body) {
-    console.log(body);
-});
-
+	.then(function (res) {
+		return res.json();
+	})
+	.then(function (body) {
+		console.log(body);
+	});
 ```
 
 ```http
@@ -203,15 +198,15 @@ curl -X GET http://127.0.0.1:3000/password/zxcvbn/{password}
 
 <h3 id="check-password-by-zxcvbn-parameters">参数</h3>
 
-|名字|位置|类型|必须|说明|
-|---|---|---|---|---|
-|password|path|string|true|none|
+| 名字     | 位置 | 类型   | 必须 | 说明 |
+| -------- | ---- | ------ | ---- | ---- |
+| password | path | string | true | none |
 
 <h3 id="check-password-by-zxcvbn-responses">响应</h3>
 
-|状态|含义|描述|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|无|
+| 状态 | 含义                                                    | 描述 | Schema |
+| ---- | ------------------------------------------------------- | ---- | ------ |
+| 200  | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | 无     |
 
 <aside class="success">
 不需要认证
@@ -226,17 +221,15 @@ curl -X GET http://127.0.0.1:3000/password/zxcvbn/{password}
 > 代码示例
 
 ```javascript
-
 fetch('http://127.0.0.1:3000/semver/{version}?clean=true&coerce=true', {
-  method: 'GET'
-
+	method: 'GET',
 })
-.then(function(res) {
-    return res.json();
-}).then(function(body) {
-    console.log(body);
-});
-
+	.then(function (res) {
+		return res.json();
+	})
+	.then(function (body) {
+		console.log(body);
+	});
 ```
 
 ```http
@@ -255,17 +248,17 @@ curl -X GET http://127.0.0.1:3000/semver/{version}?clean=true&coerce=true
 
 <h3 id="semvercontroller_parse-parameters">参数</h3>
 
-|名字|位置|类型|必须|说明|
-|---|---|---|---|---|
-|version|path|string|true|none|
-|clean|query|boolean|true|none|
-|coerce|query|boolean|true|none|
+| 名字    | 位置  | 类型    | 必须 | 说明 |
+| ------- | ----- | ------- | ---- | ---- |
+| version | path  | string  | true | none |
+| clean   | query | boolean | true | none |
+| coerce  | query | boolean | true | none |
 
 <h3 id="semvercontroller_parse-responses">响应</h3>
 
-|状态|含义|描述|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|无|
+| 状态 | 含义                                                    | 描述 | Schema |
+| ---- | ------------------------------------------------------- | ---- | ------ |
+| 200  | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | 无     |
 
 <aside class="success">
 不需要认证
@@ -278,17 +271,15 @@ curl -X GET http://127.0.0.1:3000/semver/{version}?clean=true&coerce=true
 > 代码示例
 
 ```javascript
-
 fetch('http://127.0.0.1:3000/whoami', {
-  method: 'GET'
-
+	method: 'GET',
 })
-.then(function(res) {
-    return res.json();
-}).then(function(body) {
-    console.log(body);
-});
-
+	.then(function (res) {
+		return res.json();
+	})
+	.then(function (body) {
+		console.log(body);
+	});
 ```
 
 ```http
@@ -307,9 +298,9 @@ curl -X GET http://127.0.0.1:3000/whoami
 
 <h3 id="whoamicontroller_whoami_get-responses">响应</h3>
 
-|状态|含义|描述|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|无|
+| 状态 | 含义                                                    | 描述 | Schema |
+| ---- | ------------------------------------------------------- | ---- | ------ |
+| 200  | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | 无     |
 
 <aside class="success">
 不需要认证
@@ -322,17 +313,15 @@ curl -X GET http://127.0.0.1:3000/whoami
 > 代码示例
 
 ```javascript
-
 fetch('http://127.0.0.1:3000/whoami', {
-  method: 'POST'
-
+	method: 'POST',
 })
-.then(function(res) {
-    return res.json();
-}).then(function(body) {
-    console.log(body);
-});
-
+	.then(function (res) {
+		return res.json();
+	})
+	.then(function (body) {
+		console.log(body);
+	});
 ```
 
 ```http
@@ -351,9 +340,9 @@ curl -X POST http://127.0.0.1:3000/whoami
 
 <h3 id="whoamicontroller_whoami_post-responses">响应</h3>
 
-|状态|含义|描述|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|无|
+| 状态 | 含义                                                    | 描述 | Schema |
+| ---- | ------------------------------------------------------- | ---- | ------ |
+| 200  | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | 无     |
 
 <aside class="success">
 不需要认证
@@ -366,17 +355,15 @@ curl -X POST http://127.0.0.1:3000/whoami
 > 代码示例
 
 ```javascript
-
 fetch('http://127.0.0.1:3000/whoami', {
-  method: 'PUT'
-
+	method: 'PUT',
 })
-.then(function(res) {
-    return res.json();
-}).then(function(body) {
-    console.log(body);
-});
-
+	.then(function (res) {
+		return res.json();
+	})
+	.then(function (body) {
+		console.log(body);
+	});
 ```
 
 ```http
@@ -395,9 +382,9 @@ curl -X PUT http://127.0.0.1:3000/whoami
 
 <h3 id="whoamicontroller_whoami_put-responses">响应</h3>
 
-|状态|含义|描述|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|无|
+| 状态 | 含义                                                    | 描述 | Schema |
+| ---- | ------------------------------------------------------- | ---- | ------ |
+| 200  | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | 无     |
 
 <aside class="success">
 不需要认证
@@ -410,17 +397,15 @@ curl -X PUT http://127.0.0.1:3000/whoami
 > 代码示例
 
 ```javascript
-
 fetch('http://127.0.0.1:3000/whoami', {
-  method: 'DELETE'
-
+	method: 'DELETE',
 })
-.then(function(res) {
-    return res.json();
-}).then(function(body) {
-    console.log(body);
-});
-
+	.then(function (res) {
+		return res.json();
+	})
+	.then(function (body) {
+		console.log(body);
+	});
 ```
 
 ```http
@@ -439,9 +424,9 @@ curl -X DELETE http://127.0.0.1:3000/whoami
 
 <h3 id="whoamicontroller_whoami_delete-responses">响应</h3>
 
-|状态|含义|描述|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|无|
+| 状态 | 含义                                                    | 描述 | Schema |
+| ---- | ------------------------------------------------------- | ---- | ------ |
+| 200  | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | 无     |
 
 <aside class="success">
 不需要认证
@@ -454,17 +439,15 @@ curl -X DELETE http://127.0.0.1:3000/whoami
 > 代码示例
 
 ```javascript
-
 fetch('http://127.0.0.1:3000/whoami', {
-  method: 'PATCH'
-
+	method: 'PATCH',
 })
-.then(function(res) {
-    return res.json();
-}).then(function(body) {
-    console.log(body);
-});
-
+	.then(function (res) {
+		return res.json();
+	})
+	.then(function (body) {
+		console.log(body);
+	});
 ```
 
 ```http
@@ -483,9 +466,9 @@ curl -X PATCH http://127.0.0.1:3000/whoami
 
 <h3 id="whoamicontroller_whoami_patch-responses">响应</h3>
 
-|状态|含义|描述|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|无|
+| 状态 | 含义                                                    | 描述 | Schema |
+| ---- | ------------------------------------------------------- | ---- | ------ |
+| 200  | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | 无     |
 
 <aside class="success">
 不需要认证
@@ -498,17 +481,15 @@ curl -X PATCH http://127.0.0.1:3000/whoami
 > 代码示例
 
 ```javascript
-
 fetch('http://127.0.0.1:3000/whoami', {
-  method: 'OPTIONS'
-
+	method: 'OPTIONS',
 })
-.then(function(res) {
-    return res.json();
-}).then(function(body) {
-    console.log(body);
-});
-
+	.then(function (res) {
+		return res.json();
+	})
+	.then(function (body) {
+		console.log(body);
+	});
 ```
 
 ```http
@@ -527,9 +508,9 @@ curl -X OPTIONS http://127.0.0.1:3000/whoami
 
 <h3 id="whoamicontroller_whoami_options-responses">响应</h3>
 
-|状态|含义|描述|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|无|
+| 状态 | 含义                                                    | 描述 | Schema |
+| ---- | ------------------------------------------------------- | ---- | ------ |
+| 200  | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | 无     |
 
 <aside class="success">
 不需要认证
@@ -542,17 +523,15 @@ curl -X OPTIONS http://127.0.0.1:3000/whoami
 > 代码示例
 
 ```javascript
-
 fetch('http://127.0.0.1:3000/whoami', {
-  method: 'HEAD'
-
+	method: 'HEAD',
 })
-.then(function(res) {
-    return res.json();
-}).then(function(body) {
-    console.log(body);
-});
-
+	.then(function (res) {
+		return res.json();
+	})
+	.then(function (body) {
+		console.log(body);
+	});
 ```
 
 ```http
@@ -571,9 +550,9 @@ curl -X HEAD http://127.0.0.1:3000/whoami
 
 <h3 id="whoamicontroller_whoami_head-responses">响应</h3>
 
-|状态|含义|描述|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|无|
+| 状态 | 含义                                                    | 描述 | Schema |
+| ---- | ------------------------------------------------------- | ---- | ------ |
+| 200  | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | 无     |
 
 <aside class="success">
 不需要认证
@@ -586,17 +565,15 @@ curl -X HEAD http://127.0.0.1:3000/whoami
 > 代码示例
 
 ```javascript
-
 fetch('http://127.0.0.1:3000/ip', {
-  method: 'GET'
-
+	method: 'GET',
 })
-.then(function(res) {
-    return res.json();
-}).then(function(body) {
-    console.log(body);
-});
-
+	.then(function (res) {
+		return res.json();
+	})
+	.then(function (body) {
+		console.log(body);
+	});
 ```
 
 ```http
@@ -615,9 +592,9 @@ curl -X GET http://127.0.0.1:3000/ip
 
 <h3 id="ipcontroller_get-responses">响应</h3>
 
-|状态|含义|描述|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|无|
+| 状态 | 含义                                                    | 描述 | Schema |
+| ---- | ------------------------------------------------------- | ---- | ------ |
+| 200  | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | 无     |
 
 <aside class="success">
 不需要认证
@@ -632,17 +609,15 @@ curl -X GET http://127.0.0.1:3000/ip
 > 代码示例
 
 ```javascript
-
 fetch('http://127.0.0.1:3000/fetch-cache/request/{requestId}', {
-  method: 'GET'
-
+	method: 'GET',
 })
-.then(function(res) {
-    return res.json();
-}).then(function(body) {
-    console.log(body);
-});
-
+	.then(function (res) {
+		return res.json();
+	})
+	.then(function (body) {
+		console.log(body);
+	});
 ```
 
 ```http
@@ -661,15 +636,15 @@ curl -X GET http://127.0.0.1:3000/fetch-cache/request/{requestId}
 
 <h3 id="requestcontroller_get-parameters">参数</h3>
 
-|名字|位置|类型|必须|说明|
-|---|---|---|---|---|
-|requestId|path|string|true|none|
+| 名字      | 位置 | 类型   | 必须 | 说明 |
+| --------- | ---- | ------ | ---- | ---- |
+| requestId | path | string | true | none |
 
 <h3 id="requestcontroller_get-responses">响应</h3>
 
-|状态|含义|描述|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|无|
+| 状态 | 含义                                                    | 描述 | Schema |
+| ---- | ------------------------------------------------------- | ---- | ------ |
+| 200  | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | 无     |
 
 <aside class="info">
 认证方式:
@@ -685,22 +660,21 @@ cookie, bearer
 > 代码示例
 
 ```javascript
-
 const headers = {
-  'Authorization':'Bearer {access-token}'
+	Authorization: 'Bearer {access-token}',
 };
 
 fetch('http://127.0.0.1:3000/actuator/process', {
-  method: 'GET',
+	method: 'GET',
 
-  headers: headers
+	headers: headers,
 })
-.then(function(res) {
-    return res.json();
-}).then(function(body) {
-    console.log(body);
-});
-
+	.then(function (res) {
+		return res.json();
+	})
+	.then(function (body) {
+		console.log(body);
+	});
 ```
 
 ```http
@@ -720,9 +694,9 @@ curl -X GET http://127.0.0.1:3000/actuator/process \
 
 <h3 id="process-status-responses">响应</h3>
 
-|状态|含义|描述|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|无|
+| 状态 | 含义                                                    | 描述 | Schema |
+| ---- | ------------------------------------------------------- | ---- | ------ |
+| 200  | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | 无     |
 
 <aside class="info">
 认证方式:
@@ -736,22 +710,21 @@ bearer
 > 代码示例
 
 ```javascript
-
 const headers = {
-  'Authorization':'Bearer {access-token}'
+	Authorization: 'Bearer {access-token}',
 };
 
 fetch('http://127.0.0.1:3000/actuator/env', {
-  method: 'GET',
+	method: 'GET',
 
-  headers: headers
+	headers: headers,
 })
-.then(function(res) {
-    return res.json();
-}).then(function(body) {
-    console.log(body);
-});
-
+	.then(function (res) {
+		return res.json();
+	})
+	.then(function (body) {
+		console.log(body);
+	});
 ```
 
 ```http
@@ -771,9 +744,9 @@ curl -X GET http://127.0.0.1:3000/actuator/env \
 
 <h3 id="list-env-responses">响应</h3>
 
-|状态|含义|描述|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|无|
+| 状态 | 含义                                                    | 描述 | Schema |
+| ---- | ------------------------------------------------------- | ---- | ------ |
+| 200  | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | 无     |
 
 <aside class="info">
 认证方式:
@@ -787,23 +760,22 @@ bearer
 > 代码示例
 
 ```javascript
-
 const headers = {
-  'Accept':'application/json',
-  'Authorization':'Bearer {access-token}'
+	Accept: 'application/json',
+	Authorization: 'Bearer {access-token}',
 };
 
 fetch('http://127.0.0.1:3000/actuator/env/{name}', {
-  method: 'GET',
+	method: 'GET',
 
-  headers: headers
+	headers: headers,
 })
-.then(function(res) {
-    return res.json();
-}).then(function(body) {
-    console.log(body);
-});
-
+	.then(function (res) {
+		return res.json();
+	})
+	.then(function (body) {
+		console.log(body);
+	});
 ```
 
 ```http
@@ -825,9 +797,9 @@ curl -X GET http://127.0.0.1:3000/actuator/env/{name} \
 
 <h3 id="get-env-parameters">参数</h3>
 
-|名字|位置|类型|必须|说明|
-|---|---|---|---|---|
-|name|path|string|true|none|
+| 名字 | 位置 | 类型   | 必须 | 说明 |
+| ---- | ---- | ------ | ---- | ---- |
+| name | path | string | true | none |
 
 > 响应示例
 
@@ -839,9 +811,9 @@ curl -X GET http://127.0.0.1:3000/actuator/env/{name} \
 
 <h3 id="get-env-responses">响应</h3>
 
-|状态|含义|描述|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|Inline|
+| 状态 | 含义                                                    | 描述 | Schema |
+| ---- | ------------------------------------------------------- | ---- | ------ |
+| 200  | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | Inline |
 
 <h3 id="get-env-responseschema">响应内容</h3>
 
@@ -902,16 +874,16 @@ curl -X POST http://127.0.0.1:3000/actuator/env/{name} \
 
 ```json
 {
-  "value": "string"
+	"value": "string"
 }
 ```
 
 <h3 id="set-env-parameters">参数</h3>
 
-|名字|位置|类型|必须|说明|
-|---|---|---|---|---|
-|name|path|string|true|none|
-|body|body|[SetEnvBody](#schemasetenvbody)|true|none|
+| 名字 | 位置 | 类型                            | 必须 | 说明 |
+| ---- | ---- | ------------------------------- | ---- | ---- |
+| name | path | string                          | true | none |
+| body | body | [SetEnvBody](#schemasetenvbody) | true | none |
 
 > 响应示例
 
@@ -919,17 +891,17 @@ curl -X POST http://127.0.0.1:3000/actuator/env/{name} \
 
 ```json
 {
-  "name": "string",
-  "old": "string",
-  "neo": "string"
+	"name": "string",
+	"old": "string",
+	"neo": "string"
 }
 ```
 
 <h3 id="set-env-responses">响应</h3>
 
-|状态|含义|描述|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|[SetEnvResult](#schemasetenvresult)|
+| 状态 | 含义                                                    | 描述 | Schema                              |
+| ---- | ------------------------------------------------------- | ---- | ----------------------------------- |
+| 200  | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | [SetEnvResult](#schemasetenvresult) |
 
 <aside class="info">
 认证方式:
@@ -943,17 +915,15 @@ bearer
 > 代码示例
 
 ```javascript
-
 fetch('http://127.0.0.1:3000/actuator/health/readiness', {
-  method: 'GET'
-
+	method: 'GET',
 })
-.then(function(res) {
-    return res.json();
-}).then(function(body) {
-    console.log(body);
-});
-
+	.then(function (res) {
+		return res.json();
+	})
+	.then(function (body) {
+		console.log(body);
+	});
 ```
 
 ```http
@@ -972,9 +942,9 @@ curl -X GET http://127.0.0.1:3000/actuator/health/readiness
 
 <h3 id="healthcontroller_readiness-responses">响应</h3>
 
-|状态|含义|描述|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|无|
+| 状态 | 含义                                                    | 描述 | Schema |
+| ---- | ------------------------------------------------------- | ---- | ------ |
+| 200  | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | 无     |
 
 <aside class="success">
 不需要认证
@@ -987,17 +957,15 @@ curl -X GET http://127.0.0.1:3000/actuator/health/readiness
 > 代码示例
 
 ```javascript
-
 fetch('http://127.0.0.1:3000/actuator/health/liveness', {
-  method: 'GET'
-
+	method: 'GET',
 })
-.then(function(res) {
-    return res.json();
-}).then(function(body) {
-    console.log(body);
-});
-
+	.then(function (res) {
+		return res.json();
+	})
+	.then(function (body) {
+		console.log(body);
+	});
 ```
 
 ```http
@@ -1016,9 +984,9 @@ curl -X GET http://127.0.0.1:3000/actuator/health/liveness
 
 <h3 id="healthcontroller_liveness-responses">响应</h3>
 
-|状态|含义|描述|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|无|
+| 状态 | 含义                                                    | 描述 | Schema |
+| ---- | ------------------------------------------------------- | ---- | ------ |
+| 200  | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | 无     |
 
 <aside class="success">
 不需要认证
@@ -1031,17 +999,15 @@ curl -X GET http://127.0.0.1:3000/actuator/health/liveness
 > 代码示例
 
 ```javascript
-
 fetch('http://127.0.0.1:3000/actuator/health', {
-  method: 'GET'
-
+	method: 'GET',
 })
-.then(function(res) {
-    return res.json();
-}).then(function(body) {
-    console.log(body);
-});
-
+	.then(function (res) {
+		return res.json();
+	})
+	.then(function (body) {
+		console.log(body);
+	});
 ```
 
 ```http
@@ -1060,9 +1026,9 @@ curl -X GET http://127.0.0.1:3000/actuator/health
 
 <h3 id="healthcontroller_ping-responses">响应</h3>
 
-|状态|含义|描述|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|无|
+| 状态 | 含义                                                    | 描述 | Schema |
+| ---- | ------------------------------------------------------- | ---- | ------ |
+| 200  | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | 无     |
 
 <aside class="success">
 不需要认证
@@ -1077,17 +1043,15 @@ curl -X GET http://127.0.0.1:3000/actuator/health
 > 代码示例
 
 ```javascript
-
 fetch('http://127.0.0.1:3000/github/r/{owner}/{repo}/version', {
-  method: 'GET'
-
+	method: 'GET',
 })
-.then(function(res) {
-    return res.json();
-}).then(function(body) {
-    console.log(body);
-});
-
+	.then(function (res) {
+		return res.json();
+	})
+	.then(function (body) {
+		console.log(body);
+	});
 ```
 
 ```http
@@ -1106,27 +1070,27 @@ curl -X GET http://127.0.0.1:3000/github/r/{owner}/{repo}/version
 
 <h3 id="repocontroller_version-parameters">参数</h3>
 
-|名字|位置|类型|必须|说明|
-|---|---|---|---|---|
-|owner|path|string|true|none|
-|repo|path|string|true|none|
-|prerelease|query|boolean|false|none|
-|loose|query|boolean|false|none|
-|range|query|string|false|none|
-|calver|query|string|false|none|
+| 名字       | 位置  | 类型    | 必须  | 说明 |
+| ---------- | ----- | ------- | ----- | ---- |
+| owner      | path  | string  | true  | none |
+| repo       | path  | string  | true  | none |
+| prerelease | query | boolean | false | none |
+| loose      | query | boolean | false | none |
+| range      | query | string  | false | none |
+| calver     | query | string  | false | none |
 
 #### Enumerated Values
 
-|Parameter|Value|
-|---|---|
-|calver|only|
-|calver|ignore|
+| Parameter | Value  |
+| --------- | ------ |
+| calver    | only   |
+| calver    | ignore |
 
 <h3 id="repocontroller_version-responses">响应</h3>
 
-|状态|含义|描述|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|无|
+| 状态 | 含义                                                    | 描述 | Schema |
+| ---- | ------------------------------------------------------- | ---- | ------ |
+| 200  | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | 无     |
 
 <aside class="success">
 不需要认证
@@ -1139,17 +1103,15 @@ curl -X GET http://127.0.0.1:3000/github/r/{owner}/{repo}/version
 > 代码示例
 
 ```javascript
-
 fetch('http://127.0.0.1:3000/github/r/{owner}/{repo}/tag', {
-  method: 'GET'
-
+	method: 'GET',
 })
-.then(function(res) {
-    return res.json();
-}).then(function(body) {
-    console.log(body);
-});
-
+	.then(function (res) {
+		return res.json();
+	})
+	.then(function (body) {
+		console.log(body);
+	});
 ```
 
 ```http
@@ -1168,27 +1130,27 @@ curl -X GET http://127.0.0.1:3000/github/r/{owner}/{repo}/tag
 
 <h3 id="repocontroller_listtag-parameters">参数</h3>
 
-|名字|位置|类型|必须|说明|
-|---|---|---|---|---|
-|owner|path|string|true|none|
-|repo|path|string|true|none|
-|prerelease|query|boolean|false|none|
-|loose|query|boolean|false|none|
-|range|query|string|false|none|
-|calver|query|string|false|none|
+| 名字       | 位置  | 类型    | 必须  | 说明 |
+| ---------- | ----- | ------- | ----- | ---- |
+| owner      | path  | string  | true  | none |
+| repo       | path  | string  | true  | none |
+| prerelease | query | boolean | false | none |
+| loose      | query | boolean | false | none |
+| range      | query | string  | false | none |
+| calver     | query | string  | false | none |
 
 #### Enumerated Values
 
-|Parameter|Value|
-|---|---|
-|calver|only|
-|calver|ignore|
+| Parameter | Value  |
+| --------- | ------ |
+| calver    | only   |
+| calver    | ignore |
 
 <h3 id="repocontroller_listtag-responses">响应</h3>
 
-|状态|含义|描述|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|无|
+| 状态 | 含义                                                    | 描述 | Schema |
+| ---- | ------------------------------------------------------- | ---- | ------ |
+| 200  | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | 无     |
 
 <aside class="success">
 不需要认证
@@ -1203,17 +1165,15 @@ curl -X GET http://127.0.0.1:3000/github/r/{owner}/{repo}/tag
 > 代码示例
 
 ```javascript
-
 fetch('http://127.0.0.1:3000/alpine/pkg', {
-  method: 'GET'
-
+	method: 'GET',
 })
-.then(function(res) {
-    return res.json();
-}).then(function(body) {
-    console.log(body);
-});
-
+	.then(function (res) {
+		return res.json();
+	})
+	.then(function (body) {
+		console.log(body);
+	});
 ```
 
 ```http
@@ -1232,9 +1192,9 @@ curl -X GET http://127.0.0.1:3000/alpine/pkg
 
 <h3 id="packagecontroller_list-responses">响应</h3>
 
-|状态|含义|描述|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|无|
+| 状态 | 含义                                                    | 描述 | Schema |
+| ---- | ------------------------------------------------------- | ---- | ------ |
+| 200  | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | 无     |
 
 <aside class="success">
 不需要认证
@@ -1247,17 +1207,15 @@ curl -X GET http://127.0.0.1:3000/alpine/pkg
 > 代码示例
 
 ```javascript
-
 fetch('http://127.0.0.1:3000/alpine/pkg/-/flagged', {
-  method: 'GET'
-
+	method: 'GET',
 })
-.then(function(res) {
-    return res.json();
-}).then(function(body) {
-    console.log(body);
-});
-
+	.then(function (res) {
+		return res.json();
+	})
+	.then(function (body) {
+		console.log(body);
+	});
 ```
 
 ```http
@@ -1276,9 +1234,9 @@ curl -X GET http://127.0.0.1:3000/alpine/pkg/-/flagged
 
 <h3 id="packagecontroller_getflagged-responses">响应</h3>
 
-|状态|含义|描述|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|无|
+| 状态 | 含义                                                    | 描述 | Schema |
+| ---- | ------------------------------------------------------- | ---- | ------ |
+| 200  | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | 无     |
 
 <aside class="success">
 不需要认证
@@ -1291,17 +1249,15 @@ curl -X GET http://127.0.0.1:3000/alpine/pkg/-/flagged
 > 代码示例
 
 ```javascript
-
 fetch('http://127.0.0.1:3000/alpine/pkg/{pkg}', {
-  method: 'GET'
-
+	method: 'GET',
 })
-.then(function(res) {
-    return res.json();
-}).then(function(body) {
-    console.log(body);
-});
-
+	.then(function (res) {
+		return res.json();
+	})
+	.then(function (body) {
+		console.log(body);
+	});
 ```
 
 ```http
@@ -1320,9 +1276,9 @@ curl -X GET http://127.0.0.1:3000/alpine/pkg/{pkg}
 
 <h3 id="packagecontroller_getpkg-responses">响应</h3>
 
-|状态|含义|描述|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|无|
+| 状态 | 含义                                                    | 描述 | Schema |
+| ---- | ------------------------------------------------------- | ---- | ------ |
+| 200  | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | 无     |
 
 <aside class="success">
 不需要认证
@@ -1335,17 +1291,15 @@ curl -X GET http://127.0.0.1:3000/alpine/pkg/{pkg}
 > 代码示例
 
 ```javascript
-
 fetch('http://127.0.0.1:3000/alpine/pkg/{arch}/{repo}/{pkg}/{version}', {
-  method: 'GET'
-
+	method: 'GET',
 })
-.then(function(res) {
-    return res.json();
-}).then(function(body) {
-    console.log(body);
-});
-
+	.then(function (res) {
+		return res.json();
+	})
+	.then(function (body) {
+		console.log(body);
+	});
 ```
 
 ```http
@@ -1364,9 +1318,9 @@ curl -X GET http://127.0.0.1:3000/alpine/pkg/{arch}/{repo}/{pkg}/{version}
 
 <h3 id="packagecontroller_getversion-responses">响应</h3>
 
-|状态|含义|描述|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|无|
+| 状态 | 含义                                                    | 描述 | Schema |
+| ---- | ------------------------------------------------------- | ---- | ------ |
+| 200  | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | 无     |
 
 <aside class="success">
 不需要认证
@@ -1379,17 +1333,15 @@ curl -X GET http://127.0.0.1:3000/alpine/pkg/{arch}/{repo}/{pkg}/{version}
 > 代码示例
 
 ```javascript
-
 fetch('http://127.0.0.1:3000/alpine/mirror', {
-  method: 'GET'
-
+	method: 'GET',
 })
-.then(function(res) {
-    return res.json();
-}).then(function(body) {
-    console.log(body);
-});
-
+	.then(function (res) {
+		return res.json();
+	})
+	.then(function (body) {
+		console.log(body);
+	});
 ```
 
 ```http
@@ -1408,9 +1360,9 @@ curl -X GET http://127.0.0.1:3000/alpine/mirror
 
 <h3 id="mirrorcontroller_list-responses">响应</h3>
 
-|状态|含义|描述|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|无|
+| 状态 | 含义                                                    | 描述 | Schema |
+| ---- | ------------------------------------------------------- | ---- | ------ |
+| 200  | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | 无     |
 
 <aside class="success">
 不需要认证
@@ -1423,17 +1375,15 @@ curl -X GET http://127.0.0.1:3000/alpine/mirror
 > 代码示例
 
 ```javascript
-
 fetch('http://127.0.0.1:3000/alpine/content/{arch}/{repo}/{pkg}/{version}/*', {
-  method: 'GET'
-
+	method: 'GET',
 })
-.then(function(res) {
-    return res.json();
-}).then(function(body) {
-    console.log(body);
-});
-
+	.then(function (res) {
+		return res.json();
+	})
+	.then(function (body) {
+		console.log(body);
+	});
 ```
 
 ```http
@@ -1452,9 +1402,9 @@ curl -X GET http://127.0.0.1:3000/alpine/content/{arch}/{repo}/{pkg}/{version}/*
 
 <h3 id="contentcontroller_getcontent-responses">响应</h3>
 
-|状态|含义|描述|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|无|
+| 状态 | 含义                                                    | 描述 | Schema |
+| ---- | ------------------------------------------------------- | ---- | ------ |
+| 200  | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | 无     |
 
 <aside class="success">
 不需要认证
@@ -1467,17 +1417,15 @@ curl -X GET http://127.0.0.1:3000/alpine/content/{arch}/{repo}/{pkg}/{version}/*
 > 代码示例
 
 ```javascript
-
 fetch('http://127.0.0.1:3000/alpine/version', {
-  method: 'GET'
-
+	method: 'GET',
 })
-.then(function(res) {
-    return res.json();
-}).then(function(body) {
-    console.log(body);
-});
-
+	.then(function (res) {
+		return res.json();
+	})
+	.then(function (body) {
+		console.log(body);
+	});
 ```
 
 ```http
@@ -1496,9 +1444,9 @@ curl -X GET http://127.0.0.1:3000/alpine/version
 
 <h3 id="alpinecontroller_version-responses">响应</h3>
 
-|状态|含义|描述|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|无|
+| 状态 | 含义                                                    | 描述 | Schema |
+| ---- | ------------------------------------------------------- | ---- | ------ |
+| 200  | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | 无     |
 
 <aside class="success">
 不需要认证
@@ -1511,17 +1459,15 @@ curl -X GET http://127.0.0.1:3000/alpine/version
 > 代码示例
 
 ```javascript
-
 fetch('http://127.0.0.1:3000/alpine/latest', {
-  method: 'GET'
-
+	method: 'GET',
 })
-.then(function(res) {
-    return res.json();
-}).then(function(body) {
-    console.log(body);
-});
-
+	.then(function (res) {
+		return res.json();
+	})
+	.then(function (body) {
+		console.log(body);
+	});
 ```
 
 ```http
@@ -1540,9 +1486,9 @@ curl -X GET http://127.0.0.1:3000/alpine/latest
 
 <h3 id="alpinecontroller_versiontxt-responses">响应</h3>
 
-|状态|含义|描述|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|无|
+| 状态 | 含义                                                    | 描述 | Schema |
+| ---- | ------------------------------------------------------- | ---- | ------ |
+| 200  | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | 无     |
 
 <aside class="success">
 不需要认证
@@ -1557,17 +1503,15 @@ curl -X GET http://127.0.0.1:3000/alpine/latest
 > 代码示例
 
 ```javascript
-
 fetch('http://127.0.0.1:3000/qr/enc/{format}/{dataFormat}/*', {
-  method: 'GET'
-
+	method: 'GET',
 })
-.then(function(res) {
-    return res.json();
-}).then(function(body) {
-    console.log(body);
-});
-
+	.then(function (res) {
+		return res.json();
+	})
+	.then(function (body) {
+		console.log(body);
+	});
 ```
 
 ```http
@@ -1586,33 +1530,33 @@ curl -X GET http://127.0.0.1:3000/qr/enc/{format}/{dataFormat}/*
 
 <h3 id="encode-data-to-qr-code-parameters">参数</h3>
 
-|名字|位置|类型|必须|说明|
-|---|---|---|---|---|
-|format|path|string|true|none|
-|dataFormat|path|string|true|none|
-|*|path|string|true|none|
-|margin|path|any|false|none|
-|scale|path|any|false|none|
-|width|path|any|false|none|
-|fg|path|any|false|none|
-|bg|path|any|false|none|
-|level|path|any|false|none|
+| 名字       | 位置 | 类型   | 必须  | 说明 |
+| ---------- | ---- | ------ | ----- | ---- |
+| format     | path | string | true  | none |
+| dataFormat | path | string | true  | none |
+| *          | path | string | true  | none |
+| margin     | path | any    | false | none |
+| scale      | path | any    | false | none |
+| width      | path | any    | false | none |
+| fg         | path | any    | false | none |
+| bg         | path | any    | false | none |
+| level      | path | any    | false | none |
 
 #### Enumerated Values
 
-|Parameter|Value|
-|---|---|
-|format|png|
-|format|svg|
-|format|jpg|
-|dataFormat|base64|
-|dataFormat|raw|
+| Parameter  | Value  |
+| ---------- | ------ |
+| format     | png    |
+| format     | svg    |
+| format     | jpg    |
+| dataFormat | base64 |
+| dataFormat | raw    |
 
 <h3 id="encode-data-to-qr-code-responses">响应</h3>
 
-|状态|含义|描述|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|无|
+| 状态 | 含义                                                    | 描述 | Schema |
+| ---- | ------------------------------------------------------- | ---- | ------ |
+| 200  | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | 无     |
 
 <aside class="success">
 不需要认证
@@ -1665,28 +1609,27 @@ curl -X POST http://127.0.0.1:3000/qr/dec/{format} \
 
 ```yaml
 file: string
-
 ```
 
 <h3 id="qrcontroller_dec-parameters">参数</h3>
 
-|名字|位置|类型|必须|说明|
-|---|---|---|---|---|
-|format|path|string|true|none|
-|body|body|[FileUploadDto](#schemafileuploaddto)|true|QR code image file|
+| 名字   | 位置 | 类型                                  | 必须 | 说明               |
+| ------ | ---- | ------------------------------------- | ---- | ------------------ |
+| format | path | string                                | true | none               |
+| body   | body | [FileUploadDto](#schemafileuploaddto) | true | QR code image file |
 
 #### Enumerated Values
 
-|Parameter|Value|
-|---|---|
-|format|json|
-|format|text|
+| Parameter | Value |
+| --------- | ----- |
+| format    | json  |
+| format    | text  |
 
 <h3 id="qrcontroller_dec-responses">响应</h3>
 
-|状态|含义|描述|Schema|
-|---|---|---|---|
-|201|[Created](https://tools.ietf.org/html/rfc7231#section-6.3.2)|none|无|
+| 状态 | 含义                                                         | 描述 | Schema |
+| ---- | ------------------------------------------------------------ | ---- | ------ |
+| 201  | [Created](https://tools.ietf.org/html/rfc7231#section-6.3.2) | none | 无     |
 
 <aside class="success">
 不需要认证
@@ -1701,17 +1644,15 @@ file: string
 > 代码示例
 
 ```javascript
-
 fetch('http://127.0.0.1:3000/hn/item/{id}.json', {
-  method: 'GET'
-
+	method: 'GET',
 })
-.then(function(res) {
-    return res.json();
-}).then(function(body) {
-    console.log(body);
-});
-
+	.then(function (res) {
+		return res.json();
+	})
+	.then(function (body) {
+		console.log(body);
+	});
 ```
 
 ```http
@@ -1730,15 +1671,15 @@ curl -X GET http://127.0.0.1:3000/hn/item/{id}.json
 
 <h3 id="hncontroller_item-parameters">参数</h3>
 
-|名字|位置|类型|必须|说明|
-|---|---|---|---|---|
-|id|path|number|true|none|
+| 名字 | 位置 | 类型   | 必须 | 说明 |
+| ---- | ---- | ------ | ---- | ---- |
+| id   | path | number | true | none |
 
 <h3 id="hncontroller_item-responses">响应</h3>
 
-|状态|含义|描述|Schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|无|
+| 状态 | 含义                                                    | 描述 | Schema |
+| ---- | ------------------------------------------------------- | ---- | ------ |
+| 200  | [OK](https://tools.ietf.org/html/rfc7231#section-6.3.1) | none | 无     |
 
 <aside class="success">
 不需要认证
@@ -1755,25 +1696,24 @@ curl -X GET http://127.0.0.1:3000/hn/item/{id}.json
 
 ```json
 {
-  "data": "string",
-  "encoding": "raw"
+	"data": "string",
+	"encoding": "raw"
 }
-
 ```
 
 ### 属性
 
-|名字|类型|必须|限制|描述|
-|---|---|---|---|---|
-|data|string|true|无|无|
-|encoding|string|true|无|无|
+| 名字     | 类型   | 必须 | 限制 | 描述 |
+| -------- | ------ | ---- | ---- | ---- |
+| data     | string | true | 无   | 无   |
+| encoding | string | true | 无   | 无   |
 
 #### 枚举值
 
-|属性|值|
-|---|---|
-|encoding|raw|
-|encoding|base64|
+| 属性     | 值     |
+| -------- | ------ |
+| encoding | raw    |
+| encoding | base64 |
 
 <h2 id="tocS_HashDigestResponse">HashDigestResponse</h2>
 
@@ -1784,24 +1724,23 @@ curl -X GET http://127.0.0.1:3000/hn/item/{id}.json
 
 ```json
 {
-  "base64": "string",
-  "sha1": "string",
-  "sha256": "string",
-  "sha384": "string",
-  "sha512": "string"
+	"base64": "string",
+	"sha1": "string",
+	"sha256": "string",
+	"sha384": "string",
+	"sha512": "string"
 }
-
 ```
 
 ### 属性
 
-|名字|类型|必须|限制|描述|
-|---|---|---|---|---|
-|base64|string|true|无|无|
-|sha1|string|true|无|无|
-|sha256|string|true|无|无|
-|sha384|string|true|无|无|
-|sha512|string|true|无|无|
+| 名字   | 类型   | 必须 | 限制 | 描述 |
+| ------ | ------ | ---- | ---- | ---- |
+| base64 | string | true | 无   | 无   |
+| sha1   | string | true | 无   | 无   |
+| sha256 | string | true | 无   | 无   |
+| sha384 | string | true | 无   | 无   |
+| sha512 | string | true | 无   | 无   |
 
 <h2 id="tocS_SetEnvBody">SetEnvBody</h2>
 
@@ -1812,16 +1751,15 @@ curl -X GET http://127.0.0.1:3000/hn/item/{id}.json
 
 ```json
 {
-  "value": "string"
+	"value": "string"
 }
-
 ```
 
 ### 属性
 
-|名字|类型|必须|限制|描述|
-|---|---|---|---|---|
-|value|string|true|无|无|
+| 名字  | 类型   | 必须 | 限制 | 描述 |
+| ----- | ------ | ---- | ---- | ---- |
+| value | string | true | 无   | 无   |
 
 <h2 id="tocS_SetEnvResult">SetEnvResult</h2>
 
@@ -1832,20 +1770,19 @@ curl -X GET http://127.0.0.1:3000/hn/item/{id}.json
 
 ```json
 {
-  "name": "string",
-  "old": "string",
-  "neo": "string"
+	"name": "string",
+	"old": "string",
+	"neo": "string"
 }
-
 ```
 
 ### 属性
 
-|名字|类型|必须|限制|描述|
-|---|---|---|---|---|
-|name|string|true|无|无|
-|old|string|false|无|无|
-|neo|string|false|无|无|
+| 名字 | 类型   | 必须  | 限制 | 描述 |
+| ---- | ------ | ----- | ---- | ---- |
+| name | string | true  | 无   | 无   |
+| old  | string | false | 无   | 无   |
+| neo  | string | false | 无   | 无   |
 
 <h2 id="tocS_FileUploadDto">FileUploadDto</h2>
 
@@ -1856,14 +1793,12 @@ curl -X GET http://127.0.0.1:3000/hn/item/{id}.json
 
 ```json
 {
-  "file": "string"
+	"file": "string"
 }
-
 ```
 
 ### 属性
 
-|名字|类型|必须|限制|描述|
-|---|---|---|---|---|
-|file|string(binary)|true|无|无|
-
+| 名字 | 类型           | 必须 | 限制 | 描述 |
+| ---- | -------------- | ---- | ---- | ---- |
+| file | string(binary) | true | 无   | 无   |

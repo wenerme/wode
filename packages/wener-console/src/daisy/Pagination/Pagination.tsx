@@ -104,7 +104,7 @@ export function buildPageOptions(pageIndex: number, pageCount: number): number[]
 	let ops: number[] = [];
 	// 默认显示 5 个 - 包含最前最后就是7个
 	if (pageCount <= 7) {
-		ops = new Array(pageCount).fill(null).map((_, i) => i);
+		ops = Array.from({ length: pageCount }, (_, i) => i);
 	} else {
 		let min = clamp(pageIndex - 2, 0, pageCount - 1);
 		let max = clamp(pageIndex + 2, 0, pageCount - 1);

@@ -9,10 +9,6 @@ type ComponentProvide = {
 	use: ComponentType;
 };
 
-type ComponentContextValue = {
-	find: (provide: string | ComponentType) => ComponentType | undefined;
-};
-
 const ComponentContext = createReactContext<ComponentStore | undefined>('ComponentContext', undefined);
 
 type ComponentProviderProps = {

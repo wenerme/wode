@@ -51,7 +51,7 @@ export function getMssqlConfig(): MssqlConfig {
 	if (port) {
 		try {
 			config.port = parseInt(port, 10);
-		} catch (_error) {
+		} catch {
 			logger.warn(`Invalid MSSQL_PORT value: ${port}. Using default port 1433.`);
 		}
 	}

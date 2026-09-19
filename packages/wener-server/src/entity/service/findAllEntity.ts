@@ -59,7 +59,7 @@ export async function findAllEntity<E extends StandardBaseEntity>(
 
 		{
 			const and = buildFilterQuery(opts);
-			and.length && builder.andWhere({ $and: and } as any);
+			if (and.length) builder.andWhere({ $and: and } as any);
 		}
 
 		if (search) {
@@ -67,8 +67,8 @@ export async function findAllEntity<E extends StandardBaseEntity>(
 				await resolveCtx.applySearch({ builder, search });
 			} else if (resolveSearch) {
 				const { and = [], or = [] } = await resolveSearch({ search });
-				and.length && builder.andWhere({ $and: and } as any);
-				or.length && builder.andWhere({ $or: or } as any);
+				if (and.length) builder.andWhere({ $and: and } as any);
+				if (or.length) builder.andWhere({ $or: or } as any);
 			}
 		}
 	}
@@ -87,8 +87,8 @@ export async function findAllEntity<E extends StandardBaseEntity>(
 	// pagination
 	{
 		const { limit, offset } = resolvePagination(opts);
-		limit > 0 && builder.limit(limit);
-		offset > 0 && builder.offset(offset);
+		if (limit > 0) builder.limit(limit);
+		if (offset > 0) builder.offset(offset);
 	}
 
 	{

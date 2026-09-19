@@ -57,18 +57,18 @@ CLI 按优先级顺序从多个来源发现 MCP 配置：
 
 ```json
 {
-  "mcpServers": {
-    "server-name": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-filesystem"]
-    },
-    "remote-server": {
-      "url": "https://mcp.example.com/mcp",
-      "headers": {
-        "Authorization": "Bearer ${API_TOKEN}"
-      }
-    }
-  }
+	"mcpServers": {
+		"server-name": {
+			"command": "npx",
+			"args": ["-y", "@modelcontextprotocol/server-filesystem"]
+		},
+		"remote-server": {
+			"url": "https://mcp.example.com/mcp",
+			"headers": {
+				"Authorization": "Bearer ${API_TOKEN}"
+			}
+		}
+	}
 }
 ```
 
@@ -88,30 +88,32 @@ CLI 按优先级顺序从多个来源发现 MCP 配置：
 }
 ```
 
-| 选项 | 描述 |
-|--------|-------------|
-| `extends` | 要继承服务器的配置文件路径数组 |
+| 选项              | 描述                                                                         |
+| ----------------- | ---------------------------------------------------------------------------- |
+| `extends`         | 要继承服务器的配置文件路径数组                                               |
 | `discoveryConfig` | 设为 `false` 禁用自动发现；或设为数组如 `["gemini", "codex"]` 进行选择性发现 |
-| `include` | 用于过滤服务器的 glob 模式（白名单）。只加载匹配的服务器 |
-| `exclude` | 用于排除服务器的 glob 模式（黑名单）。优先于 include |
+| `include`         | 用于过滤服务器的 glob 模式（白名单）。只加载匹配的服务器                     |
+| `exclude`         | 用于排除服务器的 glob 模式（黑名单）。优先于 include                         |
 
 **Glob 模式语法**：
+
 - `*` - 匹配任意字符（除 `/`）
 - `**` - 匹配任意字符包括 `/`
 - `?` - 匹配单个字符
 - 不区分大小写匹配
 
 **示例**：
+
 ```json
 {
-  "include": ["dev-*"],           // 只有 dev-* 服务器
-  "exclude": ["*-mysql", "*-pg"]  // 排除数据库服务器
+	"include": ["dev-*"], // 只有 dev-* 服务器
+	"exclude": ["*-mysql", "*-pg"] // 排除数据库服务器
 }
 ```
 
 ```json
 {
-  "discoveryConfig": ["codex", "gemini"]  // 只发现 codex 和 gemini 配置
+	"discoveryConfig": ["codex", "gemini"] // 只发现 codex 和 gemini 配置
 }
 ```
 
@@ -130,6 +132,7 @@ MCP_CLI_CONFIG_INLINE='{"mcpServers":{"test":{"command":"echo"}}}' mcp-cli serve
 在配置中任意位置使用 `${VAR_NAME}` 语法。值在加载时被替换。
 
 CLI 还会从 Claude 设置文件读取环境变量：
+
 - `~/.claude/settings.json`
 - `.claude/settings.local.json`
 
@@ -143,13 +146,13 @@ mcp-cli [options] [command]
 
 ### 全局选项
 
-| 选项 | 描述 |
-|--------|-------------|
-| `-c, --config <path>` | 指定配置文件路径 |
-| `-j, --json` | 以 JSON 格式输出（用于脚本） |
-| `-d, --with-descriptions` | 包含工具描述 |
-| `-h, --help` | 显示帮助 |
-| `-V, --version` | 显示版本 |
+| 选项                      | 描述                         |
+| ------------------------- | ---------------------------- |
+| `-c, --config <path>`     | 指定配置文件路径             |
+| `-j, --json`              | 以 JSON 格式输出（用于脚本） |
+| `-d, --with-descriptions` | 包含工具描述                 |
+| `-h, --help`              | 显示帮助                     |
+| `-V, --version`           | 显示版本                     |
 
 ### 命令
 
@@ -282,16 +285,16 @@ mcp-cli dump request-tools --json
 
 ## 环境变量
 
-| 变量 | 描述 | 默认值 |
-|----------|-------------|---------|
-| `MCP_CLI_CONFIG_INLINE` | 内联 JSON 配置（最高优先级） | (无) |
-| `MCP_CONFIG_PATH` | 配置文件路径 | (无) |
-| `MCP_DEBUG` | 启用调试输出 | `false` |
-| `MCP_TIMEOUT` | 请求超时（秒） | `1800`（30 分钟） |
-| `MCP_CONCURRENCY` | 并行服务器连接数 | `5` |
-| `MCP_MAX_RETRIES` | 瞬态错误重试次数 | `3` |
-| `MCP_RETRY_DELAY` | 基础重试延迟（毫秒） | `1000` |
-| - | 缺失环境变量现在只是警告（不再报错） | - |
+| 变量                    | 描述                                 | 默认值            |
+| ----------------------- | ------------------------------------ | ----------------- |
+| `MCP_CLI_CONFIG_INLINE` | 内联 JSON 配置（最高优先级）         | (无)              |
+| `MCP_CONFIG_PATH`       | 配置文件路径                         | (无)              |
+| `MCP_DEBUG`             | 启用调试输出                         | `false`           |
+| `MCP_TIMEOUT`           | 请求超时（秒）                       | `1800`（30 分钟） |
+| `MCP_CONCURRENCY`       | 并行服务器连接数                     | `5`               |
+| `MCP_MAX_RETRIES`       | 瞬态错误重试次数                     | `3`               |
+| `MCP_RETRY_DELAY`       | 基础重试延迟（毫秒）                 | `1000`            |
+| -                       | 缺失环境变量现在只是警告（不再报错） | -                 |
 
 ## 与 AI Agent 配合使用
 

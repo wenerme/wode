@@ -57,18 +57,18 @@ All config files use the same basic structure:
 
 ```json
 {
-  "mcpServers": {
-    "server-name": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-filesystem"]
-    },
-    "remote-server": {
-      "url": "https://mcp.example.com/mcp",
-      "headers": {
-        "Authorization": "Bearer ${API_TOKEN}"
-      }
-    }
-  }
+	"mcpServers": {
+		"server-name": {
+			"command": "npx",
+			"args": ["-y", "@modelcontextprotocol/server-filesystem"]
+		},
+		"remote-server": {
+			"url": "https://mcp.example.com/mcp",
+			"headers": {
+				"Authorization": "Bearer ${API_TOKEN}"
+			}
+		}
+	}
 }
 ```
 
@@ -88,30 +88,32 @@ The `.mcp-cli.json` and `.mcp-cli.local.json` files support additional options:
 }
 ```
 
-| Option | Description |
-|--------|-------------|
-| `extends` | Array of config file paths to inherit servers from |
+| Option            | Description                                                                                           |
+| ----------------- | ----------------------------------------------------------------------------------------------------- |
+| `extends`         | Array of config file paths to inherit servers from                                                    |
 | `discoveryConfig` | Set to `false` to disable auto-discovery, or array like `["gemini", "codex"]` for selective discovery |
-| `include` | Glob patterns to filter servers (whitelist). Only matching servers are loaded |
-| `exclude` | Glob patterns to exclude servers (blacklist). Takes precedence over include |
+| `include`         | Glob patterns to filter servers (whitelist). Only matching servers are loaded                         |
+| `exclude`         | Glob patterns to exclude servers (blacklist). Takes precedence over include                           |
 
 **Glob Pattern Syntax:**
+
 - `*` - matches any characters (except `/`)
 - `**` - matches any characters including `/`
 - `?` - matches single character
 - Case-insensitive matching
 
 **Examples:**
+
 ```json
 {
-  "include": ["dev-*"],           // Only dev-* servers
-  "exclude": ["*-mysql", "*-pg"]  // Exclude database servers
+	"include": ["dev-*"], // Only dev-* servers
+	"exclude": ["*-mysql", "*-pg"] // Exclude database servers
 }
 ```
 
 ```json
 {
-  "discoveryConfig": ["codex", "gemini"]  // Only discover codex and gemini configs
+	"discoveryConfig": ["codex", "gemini"] // Only discover codex and gemini configs
 }
 ```
 
@@ -130,6 +132,7 @@ This has the highest priority and supports all options including `extends` and `
 Use `${VAR_NAME}` syntax anywhere in the config. Values are substituted at load time.
 
 The CLI also reads environment variables from Claude settings files:
+
 - `~/.claude/settings.json`
 - `.claude/settings.local.json`
 
@@ -143,13 +146,13 @@ mcp-cli [options] [command]
 
 ### Global Options
 
-| Option | Description |
-|--------|-------------|
-| `-c, --config <path>` | Path to specific config file |
-| `-j, --json` | Output as JSON (for scripting) |
-| `-d, --with-descriptions` | Include tool descriptions |
-| `-h, --help` | Show help |
-| `-V, --version` | Show version |
+| Option                    | Description                    |
+| ------------------------- | ------------------------------ |
+| `-c, --config <path>`     | Path to specific config file   |
+| `-j, --json`              | Output as JSON (for scripting) |
+| `-d, --with-descriptions` | Include tool descriptions      |
+| `-h, --help`              | Show help                      |
+| `-V, --version`           | Show version                   |
 
 ### Commands
 
@@ -284,16 +287,16 @@ mcp-cli dump request-tools --json
 
 ## Environment Variables
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `MCP_CLI_CONFIG_INLINE` | Inline JSON config (highest priority) | (none) |
-| `MCP_CONFIG_PATH` | Path to config file | (none) |
-| `MCP_DEBUG` | Enable debug output | `false` |
-| `MCP_TIMEOUT` | Request timeout (seconds) | `1800` (30 min) |
-| `MCP_CONCURRENCY` | Parallel server connections | `5` |
-| `MCP_MAX_RETRIES` | Retry attempts for transient errors | `3` |
-| `MCP_RETRY_DELAY` | Base retry delay (milliseconds) | `1000` |
-| - | Missing env vars are now warnings (never errors) | - |
+| Variable                | Description                                      | Default         |
+| ----------------------- | ------------------------------------------------ | --------------- |
+| `MCP_CLI_CONFIG_INLINE` | Inline JSON config (highest priority)            | (none)          |
+| `MCP_CONFIG_PATH`       | Path to config file                              | (none)          |
+| `MCP_DEBUG`             | Enable debug output                              | `false`         |
+| `MCP_TIMEOUT`           | Request timeout (seconds)                        | `1800` (30 min) |
+| `MCP_CONCURRENCY`       | Parallel server connections                      | `5`             |
+| `MCP_MAX_RETRIES`       | Retry attempts for transient errors              | `3`             |
+| `MCP_RETRY_DELAY`       | Base retry delay (milliseconds)                  | `1000`          |
+| -                       | Missing env vars are now warnings (never errors) | -               |
 
 ## Using with AI Agents
 

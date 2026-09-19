@@ -39,10 +39,10 @@ export function getBuildInfo(): BuildInfo {
 			version: buildInfo.date ? dayjs(buildInfo.date).format('YYYY.MM.DD') : '0.0.0',
 			isProd: Boolean(
 				buildInfo.commit.branch === 'main' ||
-					buildInfo.commit.branch === 'master' ||
-					buildInfo.commit.branch?.startsWith('release/') ||
-					buildInfo.commit.refName?.match(/^v\d/) ||
-					buildInfo.commit.refName?.match(/^release\//),
+				buildInfo.commit.branch === 'master' ||
+				buildInfo.commit.branch?.startsWith('release/') ||
+				buildInfo.commit.refName?.match(/^v\d/) ||
+				buildInfo.commit.refName?.match(/^release\//),
 			),
 		};
 		return Object.freeze({ ...midInfo, date: buildInfo.date, isDev: !midInfo.isProd });

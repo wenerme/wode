@@ -7,35 +7,30 @@ import type { ApiDoc, TypeSchema } from './spec';
 const alias: Record<string, string> = { RecognizeIdcardResponse: 'RecognizeIdcardRoot' };
 
 // Skip: This is a code generator, not a unit test - it writes to source files and requires network
-test.skip(
-	'gen',
-	{ timeout: 60 * 5 * 1000 },
-	async () => {
-		// return
-		const gen = async ({ product, version }: { product: string; version: string }) => {
-			let doc: ApiDoc;
-			try {
-				doc = JSON.parse(await fs.readFile(`./ignored/${product}-${version}.json`, 'utf8'));
-			} catch {
-				console.log(`Fetch ${product} ${version}`);
-				const res = await fetch(
-					`https://next.api.aliyun.com/meta/v1/products/${product}/versions/${version}/api-docs.json`,
-				);
-				doc = await res.json();
-				await fs.writeFile(`./ignored/${product}-${version}.json`, JSON.stringify(doc, null, 2));
-			}
+test.skip('gen', { timeout: 60 * 5 * 1000 }, async () => {
+	// return
+	const gen = async ({ product, version }: { product: string; version: string }) => {
+		let doc: ApiDoc;
+		try {
+			doc = JSON.parse(await fs.readFile(`./ignored/${product}-${version}.json`, 'utf8'));
+		} catch {
+			console.log(`Fetch ${product} ${version}`);
+			const res = await fetch(
+				`https://next.api.aliyun.com/meta/v1/products/${product}/versions/${version}/api-docs.json`,
+			);
+			doc = await res.json();
+			await fs.writeFile(`./ignored/${product}-${version}.json`, JSON.stringify(doc, null, 2));
+		}
 
-			const { ns: nsName, out } = writeApi(doc);
-			await fs.writeFile(`./src/alicloud/${nsName}.ts`, out.join('\n'));
-		};
+		const { ns: nsName, out } = writeApi(doc);
+		await fs.writeFile(`./src/alicloud/${nsName}.ts`, out.join('\n'));
+	};
 
-		await gen({ product: 'Dytnsapi', version: '2020-02-17' });
-		await gen({ product: 'ocr-api', version: '2021-07-07' });
+	await gen({ product: 'Dytnsapi', version: '2020-02-17' });
+	await gen({ product: 'ocr-api', version: '2021-07-07' });
 
-		await new Promise((resolve) => exec('pnpm exec vp fmt ./src/alicloud/*.ts', {}, resolve));
-	},
-	{ timeout: 60 * 5 * 1000 },
-);
+	await new Promise((resolve) => exec('pnpm exec vp fmt ./src/alicloud/*.ts', {}, resolve));
+});
 
 function writeField({ name, schema, out = [] }: { name: string; schema: TypeSchema; out?: any[] }) {
 	out.push(`  ${name}${schema.required ? '' : '?'}: ${buildType(schema)};`);

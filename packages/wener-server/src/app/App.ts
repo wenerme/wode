@@ -28,7 +28,6 @@ class DefaultApp implements App {
 	#name?: string;
 	#component?: string;
 	#mode?: string;
-	#env?: string;
 	#envs: Record<string, any> = {};
 
 	toJSON() {
@@ -110,16 +109,16 @@ class DefaultApp implements App {
 		let prefix = this.service;
 		let hostname = '';
 		let pid = 0;
-		const globalThis: any = getGlobalThis();
-		if (typeof globalThis.os === 'object' && 'hostname' in globalThis.os) {
-			hostname = globalThis.os
+		const global: any = getGlobalThis();
+		if (typeof global.os === 'object' && 'hostname' in global.os) {
+			hostname = global.os
 				.hostname()
 				.toLowerCase()
 				.replaceAll(/[^-a-z\d]/g, '-');
 		}
 
-		if (typeof globalThis.process === 'object' && 'pid' in globalThis.process) {
-			pid = globalThis.process.pid;
+		if (typeof global.process === 'object' && 'pid' in global.process) {
+			pid = global.process.pid;
 		}
 
 		prefix = hostname.startsWith(prefix) ? hostname : `${prefix}-${pid}`;
@@ -148,7 +147,6 @@ class DefaultApp implements App {
 		this.#name = undefined;
 		this.#instanceId = undefined;
 		this.#mode = undefined;
-		this.#env = undefined;
 	}
 }
 

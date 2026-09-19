@@ -48,7 +48,7 @@ export function createFetchWithProxyByUndici({
 				let u: URL | undefined;
 				try {
 					u = new URL(proxy);
-				} catch (_e) {}
+				} catch {}
 				if (!token && u && (u.username || u.password)) {
 					token = `Basic ${btoa(`${u.username || ''}:${u.password}`)}`;
 					u.username = '';

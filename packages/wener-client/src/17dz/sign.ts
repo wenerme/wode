@@ -27,7 +27,10 @@ export async function sign(headers: Record<string, any>, ctx?: Record<string, st
 		false,
 		['sign'],
 	);
-	const signature = ArrayBuffers.toString(await crypto.subtle.sign('hmac', key, ArrayBuffers.from(encoded)), 'base64');
+	const signature = ArrayBuffers.toString(
+		await crypto.subtle.sign('hmac', key, ArrayBuffers.from(encoded) as BufferSource),
+		'base64',
+	);
 
 	return { ...o, signature };
 }

@@ -1,7 +1,14 @@
-import type { EventArgs } from '@mikro-orm/core';
 import { pick } from 'es-toolkit';
+import type { StandardBaseEntity } from '@wener/server/entity';
 import { EntityEvents, getSystemEmitter, type SystemEmitter } from '#/events';
 import { getRemoteEmitter, type RemoteEmitter, RemoteEvents } from './RemoteEmitter';
+
+type RelayEntity = Omit<StandardBaseEntity, 'eid'> & {
+	tid: string;
+	eid?: string;
+	cid?: string;
+	rid?: string;
+};
 
 export function handleRemoteEventRelay({
 	system = getSystemEmitter(),
@@ -29,14 +36,13 @@ export function handleRemoteEventRelay({
 		EntityEvents.EntityUpdateAfter,
 		EntityEvents.EntityUpsertAfter,
 	] as const;
-	type EntityEvent = (typeof all)[number];
 	for (let name of all) {
 		closer.push(
-			system.on(name, (evt: EventArgs<any>) => {
+			system.on(name, (event) => {
 				let type = changeType[name];
 				{
-					const { entity } = evt;
-					const e = pick(entity, ['id', 'uid', 'tid', 'eid', 'cid', 'rid']);
+					const { entity } = event.data;
+					const e = pick(entity as RelayEntity, ['id', 'uid', 'tid', 'eid', 'cid', 'rid']);
 
 					void remote.emit(remoteType[name], { entity: e });
 					void remote.emit(RemoteEvents.EntityChange, {
