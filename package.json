@@ -14,11 +14,11 @@
 	"author": "wener",
 	"license": "MIT",
 	"private": true,
-	"packageManager": "pnpm@10.33.0",
+	"packageManager": "pnpm@12.4.2",
 	"engines": {
 		"node": ">=24.11.0",
 		"npm": ">=11.0.0",
-		"pnpm": ">=10.33.0"
+		"pnpm": ">=12.4.2"
 	},
 	"keywords": [],
 	"scripts": {

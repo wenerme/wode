@@ -24,8 +24,8 @@
 		"router:check": "node scripts/check-router-typegen.mjs",
 		"storybook": "storybook dev -p 6053 --no-open",
 		"storybook:check": "node scripts/check-story-structure.mjs && node scripts/check-story-structure-fixture.mjs",
-		"test:storybook": "vp test run --config vitest.config.ts",
-		"test": "vp test run --config vite.config.ts src",
+		"test:storybook": "node ../../scripts/run-ci-tests.mjs storybook",
+		"test": "node ../../scripts/run-ci-tests.mjs components",
 		"typecheck": "pnpm --workspace-root exec tsc --noEmit --project apps/components/tsconfig.json",
 		"verify": "pnpm router:check && pnpm check:source-lines && pnpm typecheck && pnpm test && pnpm test:storybook && pnpm storybook:check && pnpm registry:check && pnpm registry:consumer-check && pnpm build && pnpm pages:build"
 	},

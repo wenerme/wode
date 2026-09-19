@@ -47,13 +47,13 @@ export function getEntitySchema<T = unknown>(
 			return Object.values(MetadataStorage.getMetadata()).find((v) => v.className === name);
 		};
 
-		let protos = [];
+		const protos: Function[] = [];
 
 		{
-			let proto = type;
+			let proto: Function | null = type as Function;
 			while (proto) {
 				protos.push(proto);
-				proto = Object.getPrototypeOf(proto);
+				proto = Object.getPrototypeOf(proto) as Function | null;
 			}
 		}
 

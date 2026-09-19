@@ -1,8 +1,8 @@
 import { parseDate } from '@wener/utils';
 import dayjs from 'dayjs';
-import duration from 'dayjs/plugin/duration';
-import quarterOfYear from 'dayjs/plugin/quarterOfYear';
-import weekOfYear from 'dayjs/plugin/weekOfYear';
+import duration from 'dayjs/plugin/duration.js';
+import quarterOfYear from 'dayjs/plugin/quarterOfYear.js';
+import weekOfYear from 'dayjs/plugin/weekOfYear.js';
 
 dayjs.extend(duration);
 dayjs.extend(quarterOfYear);

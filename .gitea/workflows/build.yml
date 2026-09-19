@@ -23,6 +23,7 @@ jobs:
         run: |
           set -e
           node -e 'const [major, minor] = process.versions.node.split(".").map(Number); if (major < 24 || (major === 24 && minor < 11)) { console.error(`Node >=24.11.0 is required, got ${process.version}`); process.exit(1) }'
+          corepack install --global pnpm@12.4.2
           pnpm --version
           command -v just >/dev/null || apk add --no-cache just
           just --version
