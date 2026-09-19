@@ -58,7 +58,7 @@
 	"files": ["lib", "src", "README.md"],
 	"keywords": ["react", "ui", "base-ui", "tailwindcss", "shadcn"],
 	"scripts": {
-		"build": "make build",
+		"build": "just -f ../../just/packages/ui.just build",
 		"check:source-lines": "node ../../apps/components/scripts/check-ui-source-lines.mjs --root packages/ui",
 		"prepack": "pnpm build",
 		"prepublishOnly": "pnpm build",

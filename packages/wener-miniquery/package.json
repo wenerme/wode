@@ -19,12 +19,19 @@
 		"./search": "./src/search/index.ts",
 		"./package.json": "./package.json"
 	},
-	"files": ["lib", "src", "tsconfig.json"],
-	"keywords": ["sql", "builder", "dsl"],
+	"files": [
+		"lib",
+		"src",
+		"tsconfig.json"
+	],
+	"keywords": [
+		"sql",
+		"builder",
+		"dsl"
+	],
 	"scripts": {
-		"build": "make build",
-		"deploy": "make deploy",
-		"test": "make test"
+		"build": "just -f ../../just/packages/wener-miniquery.just build",
+		"test": "just -f ../../just/package.just package-test"
 	},
 	"dependencies": {
 		"@wener/utils": "workspace:^1.1.58",

@@ -30,15 +30,30 @@
 		"./types": "./src/types.d.ts",
 		"./package.json": "./package.json"
 	},
-	"files": ["lib", "src", "scripts/generate-slugify-data.mjs", "tsconfig.json"],
-	"keywords": ["utils", "core library", "helper", "camelcase", "slugify", "get", "set", "template", "lodash"],
+	"files": [
+		"lib",
+		"src",
+		"scripts/generate-slugify-data.mjs",
+		"tsconfig.json"
+	],
+	"keywords": [
+		"utils",
+		"core library",
+		"helper",
+		"camelcase",
+		"slugify",
+		"get",
+		"set",
+		"template",
+		"lodash"
+	],
 	"scripts": {
-		"build": "make build",
-		"clean": "make clean",
+		"build": "just -f ../../just/packages/wener-utils.just build",
+		"clean": "just -f ../../just/package.just package-clean",
 		"check:slugify-data": "node scripts/generate-slugify-data.mjs --check",
-		"dev": "make dev",
+		"dev": "just -f ../../just/packages/wener-utils.just dev",
 		"generate:slugify-data": "node scripts/generate-slugify-data.mjs",
-		"test": "make test"
+		"test": "just -f ../../just/package.just package-test"
 	},
 	"devDependencies": {
 		"@sinclair/typebox": "^0.34.49",

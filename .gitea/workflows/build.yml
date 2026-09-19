@@ -24,6 +24,8 @@ jobs:
           set -e
           node -e 'const [major, minor] = process.versions.node.split(".").map(Number); if (major < 24 || (major === 24 && minor < 11)) { console.error(`Node >=24.11.0 is required, got ${process.version}`); process.exit(1) }'
           pnpm --version
+          command -v just >/dev/null || apk add --no-cache just
+          just --version
           # Install
           # may need Proxy
           # npm_config_proxy=http://127.0.0.1:1080 http_proxy=http://127.0.0.1:1080 https_proxy=http://127.0.0.1:1080
@@ -79,9 +81,10 @@ jobs:
 
           #
 
-          make info
-          # build packages
-          make deploy
+          just info
+          # Build packages. Deployment is intentionally separate because this
+          # workspace has no shared Docker Bake target.
+          just build
 
 
           #is-unchanged apps/apis || {

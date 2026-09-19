@@ -34,9 +34,17 @@
 		"./protos/*": "./src/protos/*.ts",
 		"./package.json": "./package.json"
 	},
-	"files": ["lib", "lib.d.ts", "libs", "src"],
+	"files": [
+		"lib",
+		"lib.d.ts",
+		"libs",
+		"src"
+	],
 	"keywords": [],
 	"scripts": {
+		"build": "just -f ../../just/packages/common.just build",
+		"icons": "just -f ../../just/packages/common.just icons",
+		"svgo": "just -f ../../just/packages/common.just svgo",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"dependencies": {

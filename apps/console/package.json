@@ -7,12 +7,12 @@
 	},
 	"keywords": [],
 	"scripts": {
-		"build": "make build",
+		"build": "just -f ../../just/apps/console.just build",
 		"build-storybook": "storybook build",
-		"deploy": "make deploy",
+		"dev": "just -f ../../just/apps/console.just dev",
 		"preview": "vp dev --host 0.0.0.0",
 		"storybook": "storybook dev -p 6006",
-		"test": "make test"
+		"test": "just -f ../../just/apps/console.just test"
 	},
 	"dependencies": {
 		"@casl/ability": "^7.0.1",
@@ -174,7 +174,9 @@
 		"storybook": "10.5.0",
 		"svgo": "^4.0.1"
 	},
-	"browserslist": ["last 10 chrome version"],
+	"browserslist": [
+		"last 10 chrome version"
+	],
 	"scarfSettings": {
 		"defaultOptIn": false
 	}

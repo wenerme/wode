@@ -40,15 +40,24 @@
 		"./zustand": "./src/zustand/index.ts",
 		"./package.json": "./package.json"
 	},
-	"files": ["lib", "src"],
-	"keywords": ["admin", "console", "react", "daisy", "tailwindcss", "builder"],
+	"files": [
+		"lib",
+		"src"
+	],
+	"keywords": [
+		"admin",
+		"console",
+		"react",
+		"daisy",
+		"tailwindcss",
+		"builder"
+	],
 	"scripts": {
-		"build": "make build",
+		"build": "just -f ../../just/packages/wener-console.just build",
 		"build-storybook": "storybook build",
-		"deploy": "make deploy",
 		"preview": "vp dev --host 0.0.0.0",
 		"storybook": "storybook dev -p 6052",
-		"test": "make test"
+		"test": "just -f ../../just/package.just package-test"
 	},
 	"peerDependencies": {
 		"@floating-ui/dom": "*",

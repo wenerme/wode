@@ -22,11 +22,12 @@
 	},
 	"keywords": [],
 	"scripts": {
-		"build": "turbo run build --filter='!@wener/system'",
+		"build": "just build",
 		"check:ui-source-lines": "node --test apps/components/scripts/check-ui-source-lines.test.mjs && node apps/components/scripts/check-ui-source-lines.mjs",
-		"dev": "turbo run dev --parallel",
+		"dev": "just dev",
 		"duplicates:report": "jscpd --config .jscpd.json --workers 4 apps/server/src apps/console/src packages/wener-server/src packages/wener-client/src packages/wener-common/src packages/wener-utils/src packages/wener-ai/src packages/common/src",
-		"format": "vp fmt \"**/*.{ts,tsx,md}\"",
+		"format": "just fmt",
+		"test:tasks": "node scripts/test-just-packages.mjs && node scripts/test-just-recipes.mjs",
 		"preinstall": "npx only-allow pnpm"
 	},
 	"devDependencies": {
