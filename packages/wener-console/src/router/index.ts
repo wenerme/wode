@@ -21,7 +21,16 @@ export interface KnownRouteObjectMeta {
 	[key: string]: any;
 }
 
-export type RouteObjects = RouteObject[];
+type RouteObjectWithMeta =
+	| (Omit<Extract<RouteObject, { index: true }>, 'children'> & {
+			meta?: KnownRouteObjectMeta;
+	  })
+	| (Omit<Extract<RouteObject, { index?: false }>, 'children'> & {
+			meta?: KnownRouteObjectMeta;
+			children?: RouteObjectWithMeta[];
+	  });
+
+export type RouteObjects = RouteObjectWithMeta[];
 
 export type LazyRouteObject<R extends RouteObject = RouteObject> = Awaited<ReturnType<LazyRouteFunction<R>>>;
 

@@ -189,7 +189,7 @@ async function createConsumer(root) {
 				name: 'wener-registry-consumer-smoke',
 				private: true,
 				type: 'module',
-				packageManager: 'pnpm@10.33.0',
+				packageManager: 'pnpm@12.4.2',
 				dependencies: {
 					clsx: '2.1.1',
 					react: '19.2.7',
