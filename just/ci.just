@@ -12,6 +12,10 @@ ci:
     git diff --exit-code -- proto buf.yaml buf.gen.yaml packages/common/src/protos
     pnpm exec vp check --no-error-on-unmatched-pattern
     pnpm -r --if-present run typecheck
-    pnpm exec vp test run packages/wener-utils/src/langs/getObjectId.test.ts --config packages/wener-utils/vitest.config.ts
-    pnpm exec vp test run packages/wener-server/src/entity/defineEntity.test.ts packages/wener-server/src/entity/defineEntitySchemaClass.test.ts
-    pnpm exec vp test run packages/wener-common/src/fs/server/dbfs.test.ts
+    just test-ci
+
+# Without a base, run the complete offline baseline. For PR-like selection:
+
+# just test-ci --base origin/main
+test-ci *args:
+    node scripts/run-ci-tests.mjs baseline "$@"

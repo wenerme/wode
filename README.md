@@ -31,7 +31,7 @@ Legacy experiments and the former standalone web/playground applications are not
 ## Requirements
 
 - Node.js `>=24.11.0`
-- pnpm `10.33.0`
+- pnpm `12.4.2`
 - Just `1.38.0` or newer
 - Buf CLI for protobuf formatting, linting, and generation
 - Chromium for the browser-based Storybook tests
@@ -53,17 +53,18 @@ pnpm exec playwright install --with-deps chromium
 
 Run commands from the repository root unless a command includes `-C`.
 
-| Command                          | Purpose                                                                                      |
-| -------------------------------- | -------------------------------------------------------------------------------------------- |
-| `just dev`                       | Start workspace development tasks in parallel through Turbo.                                 |
-| `just build`                     | Build workspace packages and applications through Turbo.                                     |
-| `just test`                      | Run workspace tests through Turbo.                                                           |
-| `just fmt`                       | Format TypeScript, TSX, and Markdown with Vite+.                                             |
-| `just lint`                      | Run the Vite+ lint entry point.                                                              |
-| `just typecheck`                 | Run every package typecheck that defines one.                                                |
-| `just buf-fmt` / `just buf-lint` | Format or lint the canonical protobuf tree.                                                  |
-| `just buf-gen`                   | Generate protobuf clients and normalize generated output.                                    |
-| `just ci`                        | Run the CI baseline: frozen install, protobuf checks, Biome, typechecks, and selected tests. |
+| Command                           | Purpose                                                                                                 |
+| --------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `just dev`                        | Start workspace development tasks in parallel through Turbo.                                            |
+| `just build`                      | Build workspace packages and applications through Turbo.                                                |
+| `just test`                       | Run workspace tests through Turbo.                                                                      |
+| `just fmt`                        | Format TypeScript, TSX, and Markdown with Vite+.                                                        |
+| `just lint`                       | Run the Vite+ lint entry point.                                                                         |
+| `just typecheck`                  | Run every package typecheck that defines one.                                                           |
+| `just buf-fmt` / `just buf-lint`  | Format or lint the canonical protobuf tree.                                                             |
+| `just buf-gen`                    | Generate protobuf clients and normalize generated output.                                               |
+| `just ci`                         | Run the CI baseline: frozen install, protobuf checks, Biome, typechecks, and selected tests.            |
+| `just test-ci --base origin/main` | Run the offline CI tests related to changes since a Git base; use `just test-ci` for the full baseline. |
 
 Vite+ owns the repository's test and formatting workflow. New test files should import test APIs from `vite-plus/test` and run through `pnpm exec vp test run` or the package script that wraps it.
 
@@ -156,6 +157,8 @@ Generation updates the checked-in clients under `packages/common/src/protos`. CI
 ## CI and branches
 
 The GitHub Actions Build workflow runs on `main`, `develop`, and pull requests targeting those branches. It installs the declared pnpm, Node.js, and Just versions, runs `just ci`, installs Chromium, and verifies the complete components and Registry surface. The default public branch is `main`; `develop` is the protected integration branch.
+
+Pull requests provide their target commit as `WODE_TEST_BASE`. The CI test wrapper uses Vite+ related testing for ordinary source and Storybook changes, skips documentation-only changes, and falls back to full coverage for dependency, configuration, generated, deleted, or ambiguous inputs. Pushes and manual runs keep the full test baseline.
 
 Before opening a pull request, run at least:
 

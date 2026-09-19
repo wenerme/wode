@@ -66,7 +66,7 @@ export function usePopover(
 		whileElementsMounted: autoUpdate,
 	});
 
-	const list = [];
+	const list: Parameters<typeof useInteractions>[0] = [];
 
 	if (props.dismiss ?? true) {
 		const dismiss = useDismiss(context, typeof props.dismiss === 'object' ? props.dismiss : {});

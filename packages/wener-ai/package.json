@@ -5,7 +5,7 @@
 	"description": "AI utilities and MCP server definitions",
 	"author": "wener",
 	"license": "ISC",
-	"packageManager": "pnpm@10.33.0",
+	"packageManager": "pnpm@12.4.2",
 	"engines": {
 		"node": ">=24.11.0"
 	},
