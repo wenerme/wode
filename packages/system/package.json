@@ -28,13 +28,24 @@
 		"./src/*": "./src/*",
 		"./package.json": "./package.json"
 	},
-	"files": ["dist", "index.ts", "lib", "server.ts", "src", "tsconfig.json"],
-	"keywords": ["utils", "system", "helper"],
+	"files": [
+		"dist",
+		"index.ts",
+		"lib",
+		"server.ts",
+		"src",
+		"tsconfig.json"
+	],
+	"keywords": [
+		"utils",
+		"system",
+		"helper"
+	],
 	"scripts": {
-		"build": "make prepublish",
-		"clean": "make clean",
-		"dev": "make dev",
-		"test": "make test"
+		"build": "just -f ../../just/packages/system.just build",
+		"clean": "just -f ../../just/package.just package-clean",
+		"dev": "just -f ../../just/packages/system.just dev",
+		"test": "just -f ../../just/package.just package-test"
 	},
 	"peerDependencies": {
 		"node-fetch": "*",

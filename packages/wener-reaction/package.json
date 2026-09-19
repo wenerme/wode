@@ -24,12 +24,23 @@
 		"./zustand": "./src/zustand/index.ts",
 		"./package.json": "./package.json"
 	},
-	"files": ["Makefile", "dist", "lib", "src", "tsconfig.json"],
-	"keywords": ["components", "react", "hooks", "util", "tool"],
+	"files": [
+		"dist",
+		"lib",
+		"src",
+		"tsconfig.json"
+	],
+	"keywords": [
+		"components",
+		"react",
+		"hooks",
+		"util",
+		"tool"
+	],
 	"scripts": {
-		"build": "make build",
-		"clean": "make clean",
-		"dev": "make dev"
+		"build": "just -f ../../just/packages/wener-reaction.just build",
+		"clean": "just -f ../../just/package.just package-clean",
+		"dev": "just -f ../../just/packages/wener-reaction.just dev"
 	},
 	"dependencies": {
 		"react": "^19.2.7",

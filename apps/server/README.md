@@ -1,48 +1,40 @@
-# Server Set
+# Server applications
 
-## openai-proxy
+`apps/server` contains the server entrypoints that share the Wode application and package layers. Each entrypoint is discovered from `src/apps/<name>/main.ts` and is bundled through the shared recipes in [`../../just/servers.just`](../../just/servers.just).
 
-- OpenAI Proxy Server
-- save all request & response for auditing & training
-- OpenAI API Key relay - hide real key from client
-- [ ] transform image url
+Current entrypoints:
 
-```bash
-# ensure bun is installed
-which bun
-# dev
-PORT=8080 make dev:openai-proxy
-```
+- `wener-apis-server`
+- `wode-api-server`
+- `wode-service-agent`
 
-- PostgreSQL
-- MikroORM
-- Bun
-- Elysia
-
-## Layout
-
-- /builds
-  - docker-bake.hcl - docker-bake config
-  - <SERVER>/ - per server build
-    - Dockerfile
-- /public - static files
-- /src
-  - /app/ - common app framework
-  - /apps/<SERVER>/
-    - main.ts - SERVER main entry
-  - /modules/<MODULE>/
-    - index.ts - MODULE exports
-
----
-
-- SERVER should contain WebModule & Feature module.
-- feature module can share across SERVER
-- feature module expose Service
-  - RemoteService - service over nats
-  - LocalService - service impl
-
-## Dev
+List the available entrypoints from the repository root:
 
 ```bash
-mkdir -p src/{app,apps,libs,db,utils,scripts} src/client/{utils,schemas}
+just server-list
 ```
+
+Run or build one entrypoint:
+
+```bash
+just server-dev wode-api-server
+just server-build wode-api-server
+just server-run wode-api-server
+```
+
+The package build script builds all discovered entrypoints:
+
+```bash
+pnpm build
+```
+
+For direct package-local use, run the shared recipe file explicitly:
+
+```bash
+cd apps/server
+just -f ../../just/servers.just list
+just -f ../../just/servers.just dev wode-api-server
+just -f ../../just/servers.just build-all
+```
+
+Configuration is loaded by the selected application at runtime. Keep credentials in ignored `.env` files and do not commit environment-specific values.

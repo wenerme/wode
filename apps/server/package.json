@@ -11,8 +11,8 @@
 	},
 	"keywords": [],
 	"scripts": {
-		"build": "make build",
-		"fmt": "make fmt"
+		"build": "just -f ../../just/servers.just build-all",
+		"fmt": "just -f ../../just/package.just package-fmt"
 	},
 	"dependencies": {
 		"@apidevtools/json-schema-ref-parser": "^15.4.0",

@@ -45,7 +45,7 @@
 	"files": ["lib", "lib.d.ts", "libs", "src"],
 	"keywords": [],
 	"scripts": {
-		"build": "make build",
+		"build": "just -f ../../just/packages/wener-common.just build",
 		"check:fs-mime-types": "node scripts/generateMimeTypes.mjs --check",
 		"generate:fs-mime-types": "node scripts/generateMimeTypes.mjs",
 		"prepublishOnly": "pnpm verify:publish",

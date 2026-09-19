@@ -31,13 +31,18 @@
 		"./cli": "./src/cli.ts",
 		"./audit/server": "./src/audit/server/index.ts"
 	},
-	"files": ["dist", "lib", "src", "README.md"],
+	"files": [
+		"dist",
+		"lib",
+		"src",
+		"README.md"
+	],
 	"keywords": [],
 	"scripts": {
 		"build": "bun run ./src/scripts/bundle.ts",
 		"dev": "pnpm tsx --watch src/mcps-cli.ts",
 		"dev:web": "vp dev",
-		"prepublishOnly": "make build",
+		"prepublishOnly": "just -f ../../just/packages/wener-mcps.just build",
 		"test": "vp test run",
 		"typecheck": "tsc --noEmit"
 	},

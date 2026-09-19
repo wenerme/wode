@@ -50,12 +50,16 @@
 		"./feishu/docs/markdown": "./src/feishu/docs/markdown/index.ts",
 		"./package.json": "./package.json"
 	},
-	"files": ["lib.d.ts", "src", "lib", "libs"],
+	"files": [
+		"lib.d.ts",
+		"src",
+		"lib",
+		"libs"
+	],
 	"keywords": [],
 	"scripts": {
-		"build": "make build",
-		"deploy": "make deploy",
-		"test": "make test"
+		"build": "just -f ../../just/packages/wener-client.just build",
+		"test": "just -f ../../just/package.just package-test"
 	},
 	"dependencies": {
 		"@wener/utils": "^1.1.58",
