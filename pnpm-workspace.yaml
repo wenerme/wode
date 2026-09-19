@@ -4,13 +4,23 @@ packages:
   - 'components/*'
 
 allowBuilds:
+  '@mongodb-js/zstd': false
+  '@parcel/watcher': false
+  '@scarf/scarf': false
   '@swc/core': true
   argon2: true
   bcrypt: true
   better-sqlite3: true
+  bufferutil: false
   canvas: true
   esbuild: true
+  msw: false
+  node-liblzma: false
+  protobufjs: false
+  puppeteer: false
   sharp: true
+  utf-8-validate: false
+  workerd: false
 catalog:
   '@vitest/browser-playwright': 4.1.10
   vite: npm:@voidzero-dev/vite-plus-core@0.2.5
@@ -52,6 +62,7 @@ minimumReleaseAgeExclude:
 overrides:
   dotenv: ^16
   hono-rate-limiter: ^0.5.3
+  'ts-add-js-extension>typescript': 5.9.3
   typescript: 7.0.2
   vite: 'catalog:'
   vitest: 'catalog:'

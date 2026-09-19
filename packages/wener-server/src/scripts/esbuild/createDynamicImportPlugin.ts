@@ -44,8 +44,8 @@ export function createDynamicImportPlugin(config: DynamicImportConfig): Plugin {
 async function replaceImports(fileContents: string, resolveDir: string, config: DynamicImportConfig) {
 	const matches = fileContents.matchAll(/import\(([^)]+)\)/g);
 
-	const globImports = [];
-	const importsToReplace = [];
+	const globImports: string[] = [];
+	const importsToReplace: Array<{ fullImport: string; pathString: string }> = [];
 	for (const match of matches) {
 		// remove any comments and the ` characters not handling multiline comments very well
 		const destinationFile = match[1]?.replace(/(?:\/\*.*?\*\/)|(?:\/\/.*\n)|`/g, '').trim();
