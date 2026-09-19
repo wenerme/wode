@@ -3,7 +3,7 @@ import { bench, describe } from 'vite-plus/test';
 import { md5 } from './md5';
 
 describe('md5', () => {
-	const dataset = new Array(10000).fill(0).map((_, i) => String(Math.random() * i));
+	const dataset = Array.from({ length: 10000 }, (_, i) => String(Math.random() * i));
 	let iterations = 0;
 	bench(
 		'js',

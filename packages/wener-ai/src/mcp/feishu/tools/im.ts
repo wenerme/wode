@@ -7,7 +7,7 @@ import {
 import type { FeishuMcpContext } from '../server';
 
 export function registerImTools(ctx: FeishuMcpContext) {
-	const { server, getClient, log, jsonResult, textResult } = ctx;
+	const { server, getClient, log, jsonResult } = ctx;
 
 	server.registerTool(
 		'send_message',

@@ -13,7 +13,6 @@ variables:
   - BASH_TOOL_NAME
 -->
 
-
 # MCP CLI Command
 
 You have access to an \`mcp-cli\` CLI command for interacting with MCP (Model Context Protocol) servers.
@@ -28,6 +27,7 @@ This is a BLOCKING REQUIREMENT - like how you must use ${READ_TOOL_NAME} before 
 **ALWAYS** run mcp-cli info first, THEN make the call.
 
 **Why this is non-negotiable:**
+
 - MCP tool schemas NEVER match your expectations - parameter names, types, and requirements are tool-specific
 - Even tools with pre-approved permissions require schema checks
 - Every failed call wastes user time and demonstrates you're ignoring critical instructions
@@ -42,19 +42,23 @@ ${AVAILABLE_TOOLS_LIST.map((TOOL_ITEM)=>{let FULL_SERVER_TOOL_PATH=FORMAT_SERVER
 
 Commands (in order of execution):
 \`\`\`bash
+
 # STEP 1: ALWAYS CHECK SCHEMA FIRST (MANDATORY)
-mcp-cli info <server>/<tool>           # REQUIRED before ANY call - View JSON schema
+
+mcp-cli info <server>/<tool> # REQUIRED before ANY call - View JSON schema
 
 # STEP 2: Only after checking schema, make the call
-mcp-cli call <server>/<tool> '<json>'  # Only run AFTER mcp-cli info
-mcp-cli call <server>/<tool> -         # Invoke with JSON from stdin (AFTER mcp-cli info)
+
+mcp-cli call <server>/<tool> '<json>' # Only run AFTER mcp-cli info
+mcp-cli call <server>/<tool> - # Invoke with JSON from stdin (AFTER mcp-cli info)
 
 # Discovery commands (use these to find tools)
-mcp-cli servers                        # List all connected MCP servers
-mcp-cli tools [server]                 # List available tools (optionally filter by server)
-mcp-cli grep <pattern>                 # Search tool names and descriptions
-mcp-cli resources [server]             # List MCP resources
-mcp-cli read <server>/<resource>       # Read an MCP resource
+
+mcp-cli servers # List all connected MCP servers
+mcp-cli tools [server] # List available tools (optionally filter by server)
+mcp-cli grep <pattern> # Search tool names and descriptions
+mcp-cli resources [server] # List MCP resources
+mcp-cli read <server>/<resource> # Read an MCP resource
 \`\`\`
 
 **CORRECT Usage Pattern:**
@@ -98,25 +102,31 @@ WRONG - You must call mcp-cli info for ALL tools before making ANY mcp-cli call 
 
 Example usage:
 \`\`\`bash
+
 # Discover tools
-mcp-cli tools                          # See all available MCP tools
-mcp-cli grep "weather"                 # Find tools by description
+
+mcp-cli tools # See all available MCP tools
+mcp-cli grep "weather" # Find tools by description
 
 # Get tool details
-mcp-cli info <server>/<tool>           # View JSON schema for input and output if available
+
+mcp-cli info <server>/<tool> # View JSON schema for input and output if available
 
 # Simple tool call (no parameters)
+
 mcp-cli call weather/get_location '{}'
 
 # Tool call with parameters
+
 mcp-cli call database/query '{"table": "users", "limit": 10}'
 
 # Complex JSON using stdin (for nested objects/arrays)
+
 mcp-cli call api/send_request - <<'EOF'
 {
-  "endpoint": "/data",
-  "headers": {"Authorization": "Bearer token"},
-  "body": {"items": [1, 2, 3]}
+"endpoint": "/data",
+"headers": {"Authorization": "Bearer token"},
+"body": {"items": [1, 2, 3]}
 }
 EOF
 \`\`\`

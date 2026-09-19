@@ -64,7 +64,6 @@ Run commands from the repository root unless a command includes `-C`.
 | `just buf-fmt` / `just buf-lint` | Format or lint the canonical protobuf tree.                                                  |
 | `just buf-gen`                   | Generate protobuf clients and normalize generated output.                                    |
 | `just ci`                        | Run the CI baseline: frozen install, protobuf checks, Biome, typechecks, and selected tests. |
-| `just tasks-check`               | Check task files, argument boundaries, staging, and failure propagation without building.    |
 
 Vite+ owns the repository's test and formatting workflow. New test files should import test APIs from `vite-plus/test` and run through `pnpm exec vp test run` or the package script that wraps it.
 

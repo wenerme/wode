@@ -83,7 +83,7 @@ export function parseApkIndex(txt: string): ApkIndexPackage[] {
 	let build = create();
 	for (let line of txt.split('\n')) {
 		if (!line) {
-			build.pkg && out.push(build as any as ApkIndexPackage);
+			if (build.pkg) out.push(build as any as ApkIndexPackage);
 			build = create();
 			continue;
 		}

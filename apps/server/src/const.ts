@@ -8,7 +8,7 @@ try {
 	if (typeof window === 'undefined') {
 		({ NODE_ENV } = getGlobalThis().process?.env || {});
 	}
-} catch (e) {}
+} catch {}
 
 /* @__PURE__ */
 export function isProd() {

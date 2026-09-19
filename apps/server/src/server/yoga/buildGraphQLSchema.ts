@@ -5,20 +5,14 @@ import BigNumber from 'bignumber.js';
 import dayjs from 'dayjs';
 import { GraphQLString } from 'graphql';
 import { GraphQLDateTime } from 'graphql-scalars';
-import {
-	type AuthCheckerInterface,
-	type BuildSchemaOptions,
-	buildSchema,
-	type ResolverData,
-	registerEnumType,
-} from 'type-graphql';
+import { type AuthCheckerInterface, type BuildSchemaOptions, buildSchema, type ResolverData } from 'type-graphql';
 import { SystemRole } from '@/graph/const';
 import { getPubSub } from '@/graph/getPubSub';
 import { resolveNodeType } from '@/graph/utils/resolveNodeType';
 import type { GraphContext } from '@/server/yoga/createYogaServer';
 
 export function buildGraphQLSchema(opts: Omit<BuildSchemaOptions, 'resolvers'> & { resolvers: Constructor<any>[] }) {
-	RelayNode.resolvers.includes(resolveNodeType) || RelayNode.resolvers.push(resolveNodeType);
+	if (!RelayNode.resolvers.includes(resolveNodeType)) RelayNode.resolvers.push(resolveNodeType);
 
 	// registerEnumType(OwnerType, {
 	//   name: 'OwnerType',
@@ -49,7 +43,7 @@ export function buildGraphQLSchema(opts: Omit<BuildSchemaOptions, 'resolvers'> &
 export class ContextGraphAuthChecker implements AuthCheckerInterface<GraphContext> {
 	constructor() {}
 
-	check({ root, args, context, info }: ResolverData<any>, roles: string[]) {
+	check({ context }: ResolverData<any>, roles: string[]) {
 		if (roles.includes(SystemRole.Public)) {
 			return true;
 		}

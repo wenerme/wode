@@ -3,7 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { DynamicRender } from '@wener/console/components';
 import { DaisyTheme, getSupportedThemes } from '@wener/console/daisy';
 import { Window } from '@wener/console/window';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import '@/console/globals.css';
 
 // polyfills
@@ -61,7 +61,7 @@ export const globalTypes = {
 		defaultValue: 'corporate',
 		toolbar: {
 			icon: 'circlehollow',
-			items: [...getSupportedThemes().map((v) => v.value)],
+			items: getSupportedThemes().map((v) => v.value),
 			dynamicTitle: true,
 		},
 	},

@@ -62,7 +62,12 @@ export class WecomCorpClient {
 			fetch: globalThis.fetch,
 			accessToken: createExpireValueHolder<string>({
 				value: accessToken,
-				onLoad: onAccessToken,
+				onLoad: onAccessToken
+					? (data) => {
+							onAccessToken(data);
+							return undefined;
+						}
+					: undefined,
 				loader: async () => {
 					const { access_token, expires_at } = await this.getAccessToken();
 					return { value: access_token, expiresAt: expires_at };
@@ -70,7 +75,12 @@ export class WecomCorpClient {
 			}),
 			jsApiTicket: createExpireValueHolder<string>({
 				value: jsApiTicket,
-				onLoad: onJsApiTicket,
+				onLoad: onJsApiTicket
+					? (data) => {
+							onJsApiTicket(data);
+							return undefined;
+						}
+					: undefined,
 				loader: async () => {
 					const { ticket, expires_at } = await this.getJsApiTicket();
 					return { value: ticket, expiresAt: expires_at };
@@ -78,7 +88,12 @@ export class WecomCorpClient {
 			}),
 			agentJsApiTicket: createExpireValueHolder<string>({
 				value: agentJsApiTicket,
-				onLoad: onAgentJsApiTicket,
+				onLoad: onAgentJsApiTicket
+					? (data) => {
+							onAgentJsApiTicket(data);
+							return undefined;
+						}
+					: undefined,
 				loader: async () => {
 					const { ticket, expires_at } = await this.getAgentJsApiTicket();
 					return { value: ticket, expiresAt: expires_at };

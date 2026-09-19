@@ -175,4 +175,5 @@ async function upgrade({ pkg, dry = false, next }: { pkg: ParsedPackageId; dry?:
 		await $`git commit -m "${pkg.path}: upgrade to ${next}"`;
 		await $`git push gl`;
 	}
+	return undefined;
 }

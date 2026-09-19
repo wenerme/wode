@@ -11,7 +11,7 @@ export const NotReadyPlaceholder: FC<
 		refetch?: () => void;
 		empty?: boolean | number;
 	} & Omit<ComponentPropsWithoutRef<'div'>, 'content'>
-> = ({ loading, refetch, empty, children, error, className, content = children, ...props }) => {
+> = ({ loading, refetch: _refetch, empty, children, error, className, content = children, ...props }) => {
 	// 200-500ms
 	const _loading = useDebounce(loading, 250);
 	if (_loading) {

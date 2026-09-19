@@ -87,7 +87,7 @@ export async function request<O = any>(options: RequestOptions): Promise<O> {
 	let out: GeneralResponse<O>;
 	try {
 		out = JSON.parse(text) as GeneralResponse<O>;
-	} catch (_e) {
+	} catch {
 		console.log(`Failed to parse response as JSON: ${text}`);
 		throw Object.assign(new Error(`HTTP ${response.status}: ${response.statusText}`), {
 			code: response.status,

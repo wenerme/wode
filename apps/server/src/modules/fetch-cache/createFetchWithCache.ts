@@ -1,8 +1,8 @@
 import type { EntityManager } from '@mikro-orm/postgresql';
 import { HttpException, Logger } from '@nestjs/common';
 import { classOf, type FetchLike } from '@wener/utils';
-import { createParser, type ParsedEvent } from 'eventsource-parser';
-import { getEntityManager as _getEntityManager } from '../../app/mikro-orm/context';
+import { createParser, type EventSourceMessage } from 'eventsource-parser';
+import { getEntityManager as _getEntityManager } from '@wener/server/mikro-orm';
 import { FetchCache, type FetchCacheConfig, type FetchCacheHookContext } from './FetchCache';
 import { HttpRequestLog } from './HttpRequestLog';
 import type { FindCacheOptions } from './HttpRequestLog.repository';
@@ -44,7 +44,7 @@ export function createFetchWithCache({
 			const body = init.body;
 			if (body instanceof FormData) {
 				e.requestBody = await readStreamToBuffer(new Response(body).body!);
-				e.requestPayload = Object.fromEntries(Array.from(body.entries()).filter(([k, v]) => typeof v === 'string'));
+				e.requestPayload = Object.fromEntries(Array.from(body.entries()).filter(([, v]) => typeof v === 'string'));
 			} else if (body instanceof ReadableStream) {
 				let rs: ReadableStream;
 				[init.body, rs] = body.tee();
@@ -132,12 +132,11 @@ export function createFetchWithCache({
 						void Promise.resolve().then(async () => {
 							const reader = b.getReader();
 
-							const events: Array<Omit<ParsedEvent, 'type'>> = [];
-							const parser = createParser((e) => {
-								if (e.type === 'event') {
-									const { type: _, ...evt } = e;
-									events.push(evt);
-								}
+							const events: EventSourceMessage[] = [];
+							const parser = createParser({
+								onEvent(e) {
+									events.push(e);
+								},
 							});
 							const codec = new TextDecoder();
 							while (true) {
@@ -212,23 +211,6 @@ export function createFetchWithCache({
 			await config.onAfterRequest?.(ctx);
 		}
 	};
-}
-
-async function teeBuffer(rs: ReadableStream) {
-	const [a, b] = rs.tee();
-	const reader = b.getReader();
-	const buffers = [];
-	while (true) {
-		const result = await reader.read();
-		const { done, value } = result;
-		if (value) {
-			buffers.push(value);
-		}
-		if (done) {
-			break;
-		}
-	}
-	return [a, Buffer.concat(buffers)];
 }
 
 async function readStreamToBuffer(rs: ReadableStream) {

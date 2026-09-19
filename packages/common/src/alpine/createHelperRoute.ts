@@ -24,7 +24,9 @@ export function createHelperRoute() {
 		createRoute({
 			method: 'get',
 			path: '/live',
-			responses: { 200: { content: { 'text/plain': { schema: z.object({ ok: z.boolean() }) } }, description: 'Live' } },
+			responses: {
+				200: { content: { 'application/json': { schema: z.object({ ok: z.boolean() }) } }, description: 'Live' },
+			},
 		}),
 		(c) => {
 			return c.json({ ok: true });

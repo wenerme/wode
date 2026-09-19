@@ -3,7 +3,7 @@ export function cartesianProduct<T>(args: T[][]): T[][] {
 
 	const product: T[][] = [];
 	const counts = args.map((arr) => arr.length);
-	const counter = new Array(args.length).fill(0);
+	const counter = Array.from({ length: args.length }, () => 0);
 	const total = counts.reduce((acc, val) => acc * val, 1);
 
 	for (let i = 0; i < total; i++) {

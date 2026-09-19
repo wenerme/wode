@@ -1,3 +1,4 @@
+import type { RequiredEntityData } from '@mikro-orm/core';
 import { EntityManager } from '@mikro-orm/postgresql';
 import { Inject, Injectable } from '@nestjs/common';
 import type { StandardBaseEntity } from '@wener/server/entity';
@@ -27,10 +28,11 @@ import {
 	Resolver,
 	Root,
 } from 'type-graphql';
-import { AccessControlService } from '@/foundation/Auth/AccessControlService';
+import { AccessControlService, type ImportOptions } from '@/foundation/Auth/AccessControlService';
 import { AuthPermissionService } from '@/foundation/Auth/AuthPermissionService';
 import { AuthRoleService } from '@/foundation/Auth/AuthRoleService';
 import { AuthEntityRoleEntity } from '@/foundation/Auth/entity/AuthEntityRoleEntity';
+import { AuthEntityPermissionEntity } from '@/foundation/Auth/entity/AuthEntityPermissionEntity';
 import { AuthPermissionEntity } from '@/foundation/Auth/entity/AuthPermissionEntity';
 import { AuthRoleEntity } from '@/foundation/Auth/entity/AuthRoleEntity';
 import { UserEntity } from '@/foundation/User/UserEntity';
@@ -104,6 +106,22 @@ export class AuthPermissionInput {
 	description?: string;
 }
 
+function toAuthRoleData(input: AuthRoleInput): RequiredEntityData<AuthRoleEntity> {
+	return {
+		...input,
+		systemManaged: false,
+		state: 'Active',
+		status: 'Active',
+	} as RequiredEntityData<AuthRoleEntity>;
+}
+
+function toAuthPermissionData(input: AuthPermissionInput): RequiredEntityData<AuthPermissionEntity> {
+	return {
+		...input,
+		systemManaged: false,
+	} as RequiredEntityData<AuthPermissionEntity>;
+}
+
 @InputType()
 export class ImportAuthRoleInput extends createImportInput({ InputType: AuthRoleInput }) {}
 
@@ -137,24 +155,24 @@ export class HasRoleResolver {
 		let repo = em.getRepository(AuthEntityRoleEntity);
 		let all = await repo.findAll({ where: { entityId: root.id }, populate: ['related'] });
 
-		let roles: AuthRoleEntity[] = all.map((v) => v.role);
+		let roles: AuthRoleEntity[] = all.map((v: AuthEntityRoleEntity) => v.role);
 		{
 			let byId = _.keyBy(roles, (v) => v.id);
 			let found: AuthRoleEntity[] = roles;
 			while (found.length) {
 				let next = await repo.findAll({ where: { entityId: { $in: found.map((v) => v.id) } }, populate: ['related'] });
-				let nextRoles = next.map((v) => v.role);
+				let nextRoles = next.map((v: AuthEntityRoleEntity) => v.role);
 				// found new roles
-				found = nextRoles.filter((v) => !byId[v.id]);
+				found = nextRoles.filter((v: AuthRoleEntity) => !byId[v.id]);
 				roles = roles.concat(nextRoles);
 				byId = _.keyBy(roles, (v) => v.id);
 			}
-			roles = Object.values(byId);
+			roles = Object.values(byId) as AuthRoleEntity[];
 		}
 		if (root instanceof UserEntity) {
 			if (!roles.find((v) => v.code === SystemRole.User)) {
 				let usr = await em.getRepository(AuthRoleEntity).findOne({ code: SystemRole.User });
-				usr && roles.push(usr);
+				if (usr) roles.push(usr);
 			}
 			// fixme check employee
 		}
@@ -165,7 +183,7 @@ export class HasRoleResolver {
 	async roles(@Root() root: StandardBaseEntity) {
 		let repo = getEntityManager().getRepository(AuthEntityRoleEntity);
 		const all = await repo.findAll({ where: { entityId: root.id }, populate: ['related'] });
-		return all.map((v) => v.related);
+		return all.map((v: AuthEntityRoleEntity) => v.related);
 	}
 
 	//
@@ -229,7 +247,12 @@ export class AuthRoleResolver extends mixin(
 	@Mutation(() => ImportAuthRolePayload)
 	async importAuthRole(@Arg('input') input: ImportAuthRoleInput) {
 		return runRelayClientMutation(input, async () => {
-			const { data } = await this.acs.importRole(input);
+			const request: ImportOptions<RequiredEntityData<AuthRoleEntity>> = {
+				base: input.base && toAuthRoleData(input.base),
+				values: input.values?.map(toAuthRoleData),
+				onConflict: input.onConflict,
+			};
+			const { data } = await this.acs.importRole(request);
 			return { data: data };
 		});
 	}
@@ -237,7 +260,13 @@ export class AuthRoleResolver extends mixin(
 	@Authorized(SystemRole.SystemAdmin)
 	@FieldResolver(() => [AuthPermissionObject])
 	async permissions(@Root() root: AuthRoleEntity) {
-		return await root.permissions.load();
+		const all = await getEntityManager()
+			.getRepository(AuthEntityPermissionEntity)
+			.findAll({
+				where: { entityId: root.id },
+				populate: ['related'],
+			});
+		return all.map((v: AuthEntityPermissionEntity) => v.related);
 	}
 
 	// @Authorized(SystemRole.SystemAdmin)
@@ -292,11 +321,9 @@ export class AuthRoleResolver extends mixin(
 	}
 
 	@FieldResolver(() => HasRoleListPayload)
-	async findEntity(@Root() root: AuthRoleEntity, @Info() info: GraphQLResolveInfo) {
-		const fields = info.fieldNodes[0].selectionSet?.selections.map((selection) => (selection as any).name.value) || [];
-
+	async findEntity(@Root() root: AuthRoleEntity, @Info() _info: GraphQLResolveInfo) {
 		const [data, total] = await getEntityManager().getRepository(AuthEntityRoleEntity).findAndCount({ related: root });
-		let all = await Promise.all(data.map((v) => v.entity.load({ dataloader: true })));
+		let all = await Promise.all(data.map((v: AuthEntityRoleEntity) => v.entity.load({ dataloader: true })));
 		return { data: all, total };
 	}
 
@@ -321,14 +348,25 @@ export class AuthPermissionResolver extends mixin(
 	@Mutation(() => ImportAuthPermissionPayload)
 	async importAuthPermission(@Arg('input') input: ImportAuthPermissionInput) {
 		return runRelayClientMutation(input, async () => {
-			const { data } = await this.acs.importPermission(input);
+			const request: ImportOptions<RequiredEntityData<AuthPermissionEntity>> = {
+				base: input.base && toAuthPermissionData(input.base),
+				values: input.values?.map(toAuthPermissionData),
+				onConflict: input.onConflict,
+			};
+			const { data } = await this.acs.importPermission(request);
 			return { data: data };
 		});
 	}
 
 	@FieldResolver(() => [AuthRoleObject])
 	async roles(@Root() root: AuthPermissionEntity) {
-		return await root.roles.load();
+		const all = await getEntityManager()
+			.getRepository(AuthEntityPermissionEntity)
+			.findAll({
+				where: { related: root },
+				populate: ['entity'],
+			});
+		return all.map((v: AuthEntityPermissionEntity) => v.entity.load({ dataloader: true }));
 	}
 }
 

@@ -170,7 +170,7 @@ const WindowControlPopoverContent: React.FC<ComponentPropsWithoutRef<'ul'>> = (p
 	);
 };
 const WindowControl = memo(() => {
-	const { refs, getFloatingProps, getReferenceProps, open, setOpen, floatingStyles, context, nodeId } = usePopover({
+	const { refs, getFloatingProps, getReferenceProps, setOpen, floatingStyles, context } = usePopover({
 		placement: 'left-start',
 	});
 	const { isMounted, styles } = useTransitionStyles(context, {
@@ -197,7 +197,7 @@ const WindowControl = memo(() => {
 				<FloatingFocusManager context={context}>
 					<div ref={refs.setFloating} {...getFloatingProps()} style={floatingStyles} className={'z-50'}>
 						<WindowControlPopoverContent
-							style={styles}
+							style={styles as unknown as React.CSSProperties}
 							onClick={() => {
 								setOpen(false);
 							}}

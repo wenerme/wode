@@ -6,8 +6,8 @@ import type { ComponentPropsWithRef } from 'react';
 export const ResourceStatusBadge = ({
 	data,
 	status = data?.status,
-	reason = data?.statusReason,
-	state = data?.state,
+	reason: _reason = data?.statusReason,
+	state: _state = data?.state,
 	schema = ResourceStatusSchema,
 	className,
 	success,

@@ -128,7 +128,7 @@ export class AuthResolver {
 
 	@Authorized()
 	@Mutation(() => GeneralResponseObject)
-	async changePassword(@Arg('input', () => ChangePasswordInput) input: ChangePasswordInput) {
+	async changePassword(@Arg('input', () => ChangePasswordInput) _input: ChangePasswordInput) {
 		Errors.NotImplemented.throw('changePassword');
 	}
 }

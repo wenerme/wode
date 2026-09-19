@@ -95,7 +95,7 @@ export class AccessTokenService extends CustomBaseEntityService<AccessTokenEntit
 	}
 
 	async rotateToken({ accessToken, refreshToken }: { accessToken: string; refreshToken: string }) {
-		const { repo: accessTokenRepo, em, log } = this;
+		const { repo: accessTokenRepo, em } = this;
 		let token = await accessTokenRepo.findOne({ accessToken });
 		token = Errors.Unauthorized.require(token, 'invalid token');
 		if (token.expiresAt) {

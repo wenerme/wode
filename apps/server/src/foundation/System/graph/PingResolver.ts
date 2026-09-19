@@ -11,7 +11,7 @@ export class PingResolver {
 
 	@Authorized(SystemRole.Public)
 	@Query(() => GeneralResponseObject)
-	async ping(@Ctx() ctx: any) {
+	async ping(@Ctx() _ctx: any) {
 		this.log.log(`PING with Context tid=${getCurrentTenantId()} userId=${getCurrentUserId()}`);
 		return { message: 'OK' };
 	}

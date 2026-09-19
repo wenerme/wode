@@ -7,13 +7,14 @@ const STRING_DELIM = 0x3a; // : 58
 export const END_OF_TYPE = 0x65; // e 101
 
 interface Options {
-	buffer?: (path: string, value: ArrayBuffer) => any;
+	buffer?: (path: string, value: Uint8Array<ArrayBuffer>) => any;
 }
 
 export class BencodeDecoder {
 	private readIndex = 0;
+	private view: Uint8Array<ArrayBuffer> = new Uint8Array();
 	#path: Array<string | number> = [];
-	#options: { bufferPath: string[]; buffer?: (k: string, v: ArrayBuffer) => any } = { bufferPath: [] };
+	#options: { bufferPath: string[]; buffer?: (k: string, v: Uint8Array<ArrayBuffer>) => any } = { bufferPath: [] };
 
 	addBufferPath(...s: string[]) {
 		this.#options.bufferPath.push(...s);
@@ -25,7 +26,7 @@ export class BencodeDecoder {
 		return this;
 	}
 
-	#integer(): Number {
+	#integer(): number {
 		let { readIndex: pos, view } = this;
 		pos++; // marker
 
@@ -62,7 +63,12 @@ export class BencodeDecoder {
 	}
 
 	decode(view: BufferSource, start?: number, end?: number) {
-		this.view = ArrayBuffers.asView(Uint8Array, view, start, end ? end - (start ?? 0) : undefined);
+		this.view = ArrayBuffers.asView(
+			Uint8Array,
+			view,
+			start,
+			end ? end - (start ?? 0) : undefined,
+		) as Uint8Array<ArrayBuffer>;
 		this.readIndex = 0;
 		return this.#decode();
 	}

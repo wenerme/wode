@@ -8,7 +8,7 @@ import { type DependencyList, useEffect, useRef } from 'react';
 export function useTimeout(handler: () => void, delay: number, deps: DependencyList = [delay]) {
 	const ref = useRef<any>(undefined);
 	const clear = () => {
-		ref.current && clearTimeout(ref.current);
+		if (ref.current) clearTimeout(ref.current);
 	};
 	useEffect(() => {
 		if (delay < 0) {

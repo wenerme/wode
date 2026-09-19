@@ -48,6 +48,7 @@
 		"lodash"
 	],
 	"scripts": {
+		"typecheck": "tsc --noEmit",
 		"build": "just -f ../../just/packages/wener-utils.just build",
 		"clean": "just -f ../../just/package.just package-clean",
 		"check:slugify-data": "node scripts/generate-slugify-data.mjs --check",
@@ -56,12 +57,12 @@
 		"test": "just -f ../../just/package.just package-test"
 	},
 	"devDependencies": {
-		"@sinclair/typebox": "^0.34.49",
+		"@sinclair/typebox": "^0.34.52",
 		"@types/ws": "^8.18.1",
 		"https-proxy-agent": "^9.1.0",
 		"node-fetch": "^3.3.2",
-		"undici": "^8.7.0",
-		"zod": "^4.4.3"
+		"undici": "^8.10.2",
+		"zod": "^4.6.5"
 	},
 	"publishConfig": {
 		"registry": "https://registry.npmjs.org",

@@ -17,7 +17,8 @@ export interface IdentifiableEntity extends BaseEntity {
 }
 
 export interface AnyStandardEntity
-	extends StandardBaseEntity,
+	extends
+		StandardBaseEntity,
 		HasSidEntity,
 		HasCodeEntity,
 		HasCustomerRefEntity,

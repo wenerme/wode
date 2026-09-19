@@ -22,7 +22,11 @@ export class DynamicStore implements ModuleStore {
 			if (!Array.isArray(last)) {
 				last = [last];
 			}
-			Array.isArray(payload) ? last.push(...payload) : last.push(payload);
+			if (Array.isArray(payload)) {
+				last.push(...payload);
+			} else {
+				last.push(payload);
+			}
 			set(s, type, last, false);
 		});
 	}

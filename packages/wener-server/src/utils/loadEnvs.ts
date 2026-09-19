@@ -45,7 +45,7 @@ export async function loadEnvs({
 	for (const v of files) {
 		try {
 			await fs.stat(v);
-		} catch (_e) {
+		} catch {
 			continue;
 		}
 		if (!dotenv.config({ path: v }).error) {

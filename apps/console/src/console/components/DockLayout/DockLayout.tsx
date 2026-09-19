@@ -1,7 +1,7 @@
 import { FloatingFocusManager, FloatingPortal, useTransitionStyles } from '@floating-ui/react';
 import { cn } from '@wener/console';
 import { getUserStore } from '@wener/console/console';
-import { getUserAction } from '@wener/console/console/user';
+import { getAuthAction as getUserAction } from '@wener/console/console/user';
 import { usePopover } from '@wener/console/floating';
 import { getRootWindow, type ReactWindow, Window } from '@wener/console/window';
 import clsx from 'clsx';
@@ -169,7 +169,7 @@ const WindowControlPopoverContent: React.FC<ComponentPropsWithoutRef<'ul'>> = (p
 	);
 };
 const WindowControl = memo(() => {
-	const { refs, getFloatingProps, getReferenceProps, open, setOpen, floatingStyles, context, nodeId } = usePopover({
+	const { refs, getFloatingProps, getReferenceProps, setOpen, floatingStyles, context } = usePopover({
 		placement: 'left-start',
 	});
 	const { isMounted, styles } = useTransitionStyles(context, {
@@ -196,7 +196,7 @@ const WindowControl = memo(() => {
 				<FloatingFocusManager context={context}>
 					<div ref={refs.setFloating} {...getFloatingProps()} style={floatingStyles} className={'z-50'}>
 						<WindowControlPopoverContent
-							style={styles}
+							style={styles as any}
 							onClick={() => {
 								setOpen(false);
 							}}

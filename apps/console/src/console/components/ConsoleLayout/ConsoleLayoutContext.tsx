@@ -1,4 +1,4 @@
-import type { ReactElement, ReactNode } from 'react';
+import type { ReactElement } from 'react';
 
 export interface ConsoleLayoutContext {
 	console?: {
@@ -12,6 +12,7 @@ export interface ConsoleLayoutContext {
 }
 
 export interface DashMenuItem {
+	name?: string;
 	title: string;
 	href?: string;
 	icon: ReactElement;

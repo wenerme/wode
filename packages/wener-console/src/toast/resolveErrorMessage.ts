@@ -202,14 +202,6 @@ namespace URQLError {
 	}
 }
 
-interface CombinedError extends Error {
-	name: string;
-	message: string;
-	graphQLErrors: GraphQLError[];
-	networkError?: Error;
-	response?: any;
-}
-
 // import type { GraphQLError } from 'graphql'
 
 interface GraphQLError extends Error {

@@ -197,7 +197,9 @@ function useBrowserLocalStorageState<T>(
 const callbacks = new Set<(key: string) => void>();
 
 function triggerCallbacks(key: string): void {
-	for (const callback of [...callbacks]) {
+	// Snapshot subscribers so callbacks may subscribe or unsubscribe while being notified.
+	const pendingCallbacks = [...callbacks];
+	for (const callback of pendingCallbacks) {
 		callback(key);
 	}
 }

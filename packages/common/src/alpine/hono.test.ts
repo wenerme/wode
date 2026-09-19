@@ -1,7 +1,6 @@
 import { OpenAPIHono } from '@hono/zod-openapi';
-import { testClient } from 'hono/testing';
 import { expect, test } from 'vite-plus/test';
-import { createHelperRoute } from '@/poc/alpine/createHelperRoute';
+import { createHelperRoute } from './createHelperRoute';
 
 test('hono', async () => {
 	const app = new OpenAPIHono()
@@ -11,11 +10,4 @@ test('hono', async () => {
 			return c.json({ ok: true, value: 1 });
 		});
 	expect(await (await app.request('/api/v1')).json()).toEqual({ ok: true, value: 1 });
-
-	if (false) {
-		// 404 WHY ?
-		const cli: Record<string, any> = testClient(app);
-		console.log(await cli.app.v1.$get().then((v: any) => v.text()));
-		expect(await cli.app.v1.$get().then((v: any) => v.json())).toEqual({ ok: true, value: 1 });
-	}
 });

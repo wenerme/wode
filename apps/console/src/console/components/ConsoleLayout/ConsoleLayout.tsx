@@ -1,6 +1,6 @@
 import { SiteLogo } from '@wener/console/console';
 import { useContextStore } from '@wener/console/hooks';
-import { AutoNavLink, LeftSideMenuBarLayout } from '@wener/console/web';
+import { LeftSideMenuBarLayout } from '@wener/console/web';
 import type React from 'react';
 import type { PropsWithChildren, ReactNode } from 'react';
 import { DockLayout } from '../DockLayout';
@@ -13,7 +13,6 @@ const TitleDivider: React.FC<PropsWithChildren> = ({ children }) => {
 };
 
 function renderMenuItems(items: DashMenu[]): ReactNode[] {
-	const NavLink = AutoNavLink;
 	return items.map((item) => {
 		if ('type' in item) {
 			if (item.type === 'group') {
@@ -24,7 +23,7 @@ function renderMenuItems(items: DashMenu[]): ReactNode[] {
 			}
 			return null;
 		}
-		return [<MenuBarItem NavLink={NavLink} key={item.name || item.href || item.title} item={item} />];
+		return [<MenuBarItem key={item.name || item.href || item.title} item={item} />];
 	});
 }
 

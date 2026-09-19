@@ -15,12 +15,6 @@ export interface FileMetaObject {
 	ext?: string;
 }
 
-interface ServeFileOptions {
-	req: Request;
-	file: FileMetaObject;
-	getBuffer: () => MaybePromise<Buffer>;
-}
-
 interface ServeFileResult {
 	body?: Buffer;
 	status: number;
@@ -75,10 +69,9 @@ export async function serveFile({
 			});
 		};
 	}
-	let getStream = _getStream;
 	let getBuffer = _getBuffer;
 
-	const { createdAt: btime, updatedAt: mtime, size, ext = 'bin', mimeType = '', filename = `download.${ext}` } = file;
+	const { updatedAt: mtime, size, ext = 'bin', mimeType = '', filename = `download.${ext}` } = file;
 	let etag = file.sha256 || file.md5;
 	let headers: Record<string, string> = {};
 	let getData = getBuffer;

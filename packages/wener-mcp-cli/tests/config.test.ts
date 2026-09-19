@@ -36,7 +36,7 @@ describe('config env support', () => {
 		const server = config.servers.get('test');
 
 		expect(server).toBeDefined();
-		expect((server?.config as any).headers?.Authorization).toBe('Bearer secret-key-123');
+		expect((server?.config as any)?.headers?.Authorization).toBe('Bearer secret-key-123');
 
 		delete process.env.TEST_API_KEY;
 	});
@@ -59,7 +59,7 @@ describe('config env support', () => {
 		const server = config.servers.get('db');
 
 		expect(server).toBeDefined();
-		expect((server?.config as any).url).toBe('postgres://localhost/test');
+		expect((server?.config as any)?.url).toBe('postgres://localhost/test');
 	});
 
 	it('should load env vars from .env.local with higher priority', () => {
@@ -81,7 +81,7 @@ describe('config env support', () => {
 		const server = config.servers.get('api');
 
 		expect(server).toBeDefined();
-		expect((server?.config as any).url).toBe('http://localhost:3000');
+		expect((server?.config as any)?.url).toBe('http://localhost:3000');
 	});
 
 	it('should support env field in mcp-cli config', () => {
@@ -106,7 +106,7 @@ describe('config env support', () => {
 		const server = config.servers.get('test');
 
 		expect(server).toBeDefined();
-		expect((server?.config as any).headers?.['X-API-Key']).toBe('from-config');
+		expect((server?.config as any)?.headers?.['X-API-Key']).toBe('from-config');
 	});
 
 	it('should handle quoted values in .env file', () => {
@@ -135,8 +135,8 @@ UNQUOTED=hello
 		const server = config.servers.get('test');
 
 		expect(server).toBeDefined();
-		expect((server?.config as any).command).toBe('hello world');
-		expect((server?.config as any).args).toEqual(['hello world', 'hello']);
+		expect((server?.config as any)?.command).toBe('hello world');
+		expect((server?.config as any)?.args).toEqual(['hello world', 'hello']);
 	});
 
 	it('should skip comments and empty lines in .env file', () => {
@@ -166,7 +166,7 @@ ANOTHER_KEY=another_value
 		const server = config.servers.get('test');
 
 		expect(server).toBeDefined();
-		expect((server?.config as any).url).toBe('valid_value/another_value');
+		expect((server?.config as any)?.url).toBe('valid_value/another_value');
 	});
 
 	it('process.env should have highest priority', () => {
@@ -192,7 +192,7 @@ ANOTHER_KEY=another_value
 		const server = config.servers.get('test');
 
 		expect(server).toBeDefined();
-		expect((server?.config as any).url).toBe('from-process-env');
+		expect((server?.config as any)?.url).toBe('from-process-env');
 
 		delete process.env.PRIORITY_TEST;
 	});

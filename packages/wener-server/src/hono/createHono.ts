@@ -11,7 +11,7 @@ export function createHono() {
 	let app = new Hono<{ Bindings: Bindings }>();
 	app.use(logger());
 	app.onError((err) => {
-		process.env.NODE_ENV === 'development' && console.error(err);
+		if (process.env.NODE_ENV === 'development') console.error(err);
 		return Errors.resolve(err).asResponse();
 	});
 	return app;

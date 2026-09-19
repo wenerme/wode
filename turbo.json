@@ -3,7 +3,6 @@
 	"globalDependencies": [
 		"justfile",
 		"just/**/*.just",
-		"scripts/test-just-*.mjs",
 		"package.json",
 		"tsconfig.json",
 		"pnpm-lock.yaml",

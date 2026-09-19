@@ -178,8 +178,10 @@ function useAuthTokenPersist(store: AuthStore, storage: Storage) {
 				return;
 			}
 
-			accessToken ? storage.setItem('accessToken', accessToken) : deleteItem(storage, 'accessToken');
-			refreshToken ? storage.setItem('refreshToken', refreshToken) : deleteItem(storage, 'refreshToken');
+			if (accessToken) storage.setItem('accessToken', accessToken);
+			else deleteItem(storage, 'accessToken');
+			if (refreshToken) storage.setItem('refreshToken', refreshToken);
+			else deleteItem(storage, 'refreshToken');
 		});
 	}, [store]);
 }

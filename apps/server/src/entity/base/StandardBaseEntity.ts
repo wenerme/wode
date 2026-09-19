@@ -1,14 +1,5 @@
-import {
-	BaseEntity,
-	Config,
-	type DefineConfig,
-	Entity,
-	type Opt,
-	PrimaryKey,
-	PrimaryKeyProp,
-	Property,
-	types,
-} from '@mikro-orm/core';
+import { BaseEntity, Config, type DefineConfig, type Opt, PrimaryKeyProp, types } from '@mikro-orm/core';
+import { Entity, PrimaryKey, Property } from '@mikro-orm/decorators/legacy';
 
 export type StandardBaseEntityOptionalFields =
 	| 'id'

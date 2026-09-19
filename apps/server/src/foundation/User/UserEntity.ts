@@ -1,19 +1,23 @@
-import { Entity, type Hidden, Property, types, Unique } from '@mikro-orm/core';
+import { type Hidden, types } from '@mikro-orm/core';
+import { Entity, Property, Unique } from '@mikro-orm/decorators/legacy';
 import { TenantBaseEntity, withStateStatusEntity } from '@wener/server/entity';
 import { mixin } from '@wener/utils';
 import { hashPassword } from '@/foundation/User/actions/hashPassword';
 import { validatePassword } from '@/foundation/User/actions/validatePassword';
 
-@Entity({ tableName: 'users' })
-@Unique({ properties: ['tid', 'loginName'] })
-@Unique({ properties: ['tid', 'email'] })
-export class UserEntity extends mixin(
+const UserEntityBase = mixin(
 	TenantBaseEntity,
 	withStateStatusEntity({
 		state: 'Active',
 		status: 'Active',
 	}),
-) {
+) as typeof TenantBaseEntity;
+
+@Entity({ tableName: 'users' })
+@Unique({ properties: ['tid', 'loginName'] })
+@Unique({ properties: ['tid', 'email'] })
+export class UserEntity extends UserEntityBase {
+	status!: string;
 	@Property({ type: types.string })
 	fullName!: string;
 

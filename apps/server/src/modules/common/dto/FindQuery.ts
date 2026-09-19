@@ -2,7 +2,7 @@ import type { Type } from '@nestjs/common';
 import { ArgsType, Field, Int } from '@nestjs/graphql';
 import { ApiProperty } from '@nestjs/swagger';
 
-export interface IFindQuery<T> {
+export interface IFindQuery<_T> {
 	offset?: number;
 	limit?: number;
 	filter?: number;

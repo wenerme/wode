@@ -6,6 +6,14 @@ export interface SQLiteStorageOptions {
 	cache?: Database;
 }
 
+function toSQLiteBlob(data: BufferSource) {
+	if (data instanceof ArrayBuffer) {
+		return Buffer.from(data);
+	}
+
+	return Buffer.from(data.buffer, data.byteOffset, data.byteLength);
+}
+
 export class SQLiteStorage implements UnpkgStorage<SQLiteStorageOptions> {
 	cache: Database = undefined as any;
 	private readonly options: SQLiteStorageOptions = {};
@@ -34,28 +42,32 @@ export class SQLiteStorage implements UnpkgStorage<SQLiteStorageOptions> {
 				`INSERT OR IGNORE INTO tars (url, name, version, data)
          VALUES ($url, $name, $version, $data)`,
 			)
-			.run(o);
+			.run({ ...o, data: toSQLiteBlob(o.data) });
 	}
 
 	getRawFileDataByUrl(url: string) {
-		return this.cache
-			.prepare(
-				`select data
+		return (
+			this.cache
+				.prepare(
+					`select data
          from tars
          where url = ?`,
-			)
-			.get(url)?.data;
+				)
+				.get(url) as { data: BufferSource } | undefined
+		)?.data;
 	}
 
 	getPackageFileDataByPackageAndPath(o: { package: string; path: string }) {
-		return this.cache
-			.prepare(
-				`select data
+		return (
+			this.cache
+				.prepare(
+					`select data
          from files
          where package = $package
            and path = $path`,
-			)
-			.get(o)?.data;
+				)
+				.get(o) as { data: BufferSource } | undefined
+		)?.data;
 	}
 
 	hasPackageFile(pkg: string) {
@@ -77,18 +89,20 @@ export class SQLiteStorage implements UnpkgStorage<SQLiteStorageOptions> {
 				`INSERT OR IGNORE INTO files (package, path, size, data)
          VALUES ($package, $path, $size, $data)`,
 			)
-			.run(o);
+			.run({ ...o, data: toSQLiteBlob(o.data) });
 	}
 
 	getPackageMetaByNameAndVersion(param: { name: string; version: string }) {
-		return this.cache
-			.prepare(
-				`select meta
+		return (
+			this.cache
+				.prepare(
+					`select meta
          from packages
          where name = $name
            and version = $version`,
-			)
-			.get(param)?.meta;
+				)
+				.get(param) as { meta: string } | undefined
+		)?.meta;
 	}
 
 	savePackage(param: PackageEntity) {

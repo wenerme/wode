@@ -1,4 +1,5 @@
-import { Entity, type Opt, OptionalProps, Property, types } from '@mikro-orm/core';
+import { type Opt, types } from '@mikro-orm/core';
+import { Entity, Property } from '@mikro-orm/decorators/legacy';
 import { TenantBaseEntity } from '@wener/server/entity';
 
 @Entity({ tableName: 'client_agent' })

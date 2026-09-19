@@ -18,7 +18,8 @@ export namespace NonIdealPage {
 	export const Layout: FC<LayoutProps> = ({ title, icon, description, action, children }) => {
 		const inRouterContext = useInRouterContext();
 		let navigate = (v: any) => {
-			typeof v === 'string' ? (window.location.href = v) : window.history.back();
+			if (typeof v === 'string') window.location.href = v;
+			else window.history.back();
 		};
 		if (inRouterContext) {
 			navigate = useNavigate();
@@ -97,7 +98,8 @@ export namespace NonIdealPage {
 	}> = ({ error, title = '页面出错啦!', onReset, children }) => {
 		const inRouterContext = useInRouterContext();
 		let navigate = (v: any) => {
-			typeof v === 'string' ? (window.location.href = v) : window.history.back();
+			if (typeof v === 'string') window.location.href = v;
+			else window.history.back();
 		};
 		if (inRouterContext) {
 			navigate = useNavigate();

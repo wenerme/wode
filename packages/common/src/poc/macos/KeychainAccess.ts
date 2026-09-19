@@ -143,6 +143,7 @@ export class KeychainAccess {
 				return out;
 			}
 		}
+		return undefined;
 	}
 
 	async addGenericPassword({ password, ...filter }: AddPasswordOptions & { password: string }) {

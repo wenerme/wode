@@ -19,7 +19,7 @@ export function findHttpRequestCache<T extends BaseHttpRequestLogEntity>(
 	opts: FindCacheOptions,
 ) {
 	const { expires, url, method, cookie, requestPayload, schema } = opts;
-	const qb = repo.qb();
+	const qb: any = repo.qb();
 	let createdAt: Date | undefined;
 	if (expires) {
 		createdAt = new Date(Date.now() - ms(expires as `1`));

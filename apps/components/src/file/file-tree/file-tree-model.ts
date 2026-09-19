@@ -122,9 +122,9 @@ export function buildFileTreeData(state: FileTreeStoreState): FileTreeRenderNode
 function isRenderableDirectory(directory: FileTreeDirectoryState | undefined): directory is FileTreeDirectoryState {
 	return Boolean(
 		directory &&
-			(directory.status === 'ready' ||
-				((directory.status === 'idle' || directory.status === 'loading' || directory.status === 'queued') &&
-					directory.entries.length > 0)),
+		(directory.status === 'ready' ||
+			((directory.status === 'idle' || directory.status === 'loading' || directory.status === 'queued') &&
+				directory.entries.length > 0)),
 	);
 }
 

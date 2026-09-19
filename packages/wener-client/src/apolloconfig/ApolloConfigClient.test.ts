@@ -354,7 +354,7 @@ describe.skipIf(!runTests)('ApolloConfigClient', () => {
 				for await (const _ of generator) {
 					// Should not reach here
 				}
-			} catch (e) {
+			} catch {
 				// Expected
 			}
 

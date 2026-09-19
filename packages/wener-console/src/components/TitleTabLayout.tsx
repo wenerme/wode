@@ -15,7 +15,7 @@ export const TitleTabLayout: FC<
 		active?: string;
 		onActiveChange?: (active: string) => void;
 	} & Omit<ComponentPropsWithoutRef<'div'>, 'title'>
-> = ({ children, className, title, active, onActiveChange, tabs, action, ...props }) => {
+> = ({ children, className: _className, title, active, onActiveChange, tabs, action, ...props }) => {
 	let [activeIndex, setActiveIndex] = useControllable(active, onActiveChange, '');
 
 	// no href use first tab

@@ -741,7 +741,7 @@ export const VirtualListDemo: Story = {
 							<DataViewLayout.List
 								data={largeDataset}
 								estimatedItemSize={100}
-								renderItem={({ item, index }) => (
+								renderItem={({ item }) => (
 									<DataViewLayout.ListItem
 										key={item.id}
 										title={item.title}
@@ -930,8 +930,8 @@ export const ResourceListItemDemo: Story = {
 				email: 'john.doe@example.com',
 				phoneNumber: '+1-234-567-8900',
 				status: 'active',
-				createdAt: new Date(Date.now() - 86400000 * 30),
-				updatedAt: new Date(Date.now() - 3600000 * 2),
+				createdAt: new Date(Date.now() - 86400000 * 30).toISOString(),
+				updatedAt: new Date(Date.now() - 3600000 * 2).toISOString(),
 				createdBy: { id: '10', displayName: 'Admin User' },
 				updatedBy: { id: '11', displayName: 'HR Manager' },
 			},
@@ -941,8 +941,8 @@ export const ResourceListItemDemo: Story = {
 				title: 'Website Redesign Project',
 				description: 'Complete overhaul of company website with modern UI/UX',
 				status: 'in_progress',
-				createdAt: new Date(Date.now() - 86400000 * 15),
-				updatedAt: new Date(Date.now() - 86400000 * 1),
+				createdAt: new Date(Date.now() - 86400000 * 15).toISOString(),
+				updatedAt: new Date(Date.now() - 86400000 * 1).toISOString(),
 				createdBy: { id: '12', displayName: 'Project Manager' },
 			},
 			{
@@ -953,8 +953,8 @@ export const ResourceListItemDemo: Story = {
 				description: 'Integrate third-party payment gateway API',
 				notes: 'High priority - deadline next week',
 				status: 'pending',
-				createdAt: new Date(Date.now() - 86400000 * 5),
-				updatedAt: new Date(Date.now() - 86400000 * 5),
+				createdAt: new Date(Date.now() - 86400000 * 5).toISOString(),
+				updatedAt: new Date(Date.now() - 86400000 * 5).toISOString(),
 				createdBy: { id: '1', displayName: 'John Doe' },
 			},
 			{
@@ -965,8 +965,8 @@ export const ResourceListItemDemo: Story = {
 				description: 'Marketing specialist focusing on digital campaigns',
 				email: 'jane.smith@example.com',
 				status: 'active',
-				createdAt: new Date(Date.now() - 86400000 * 90),
-				updatedAt: new Date(Date.now() - 86400000 * 10),
+				createdAt: new Date(Date.now() - 86400000 * 90).toISOString(),
+				updatedAt: new Date(Date.now() - 86400000 * 10).toISOString(),
 				createdBy: { id: '10', displayName: 'Admin User' },
 				updatedBy: { id: '10', displayName: 'Admin User' },
 			},
@@ -977,8 +977,8 @@ export const ResourceListItemDemo: Story = {
 				description: 'Quarterly financial analysis and projections',
 				remark: 'Awaiting CFO approval',
 				status: 'draft',
-				createdAt: new Date(Date.now() - 86400000 * 7),
-				updatedAt: new Date(Date.now() - 3600000 * 6),
+				createdAt: new Date(Date.now() - 86400000 * 7).toISOString(),
+				updatedAt: new Date(Date.now() - 3600000 * 6).toISOString(),
 				createdBy: { id: '13', displayName: 'Finance Team' },
 				updatedBy: { id: '14', displayName: 'Accountant' },
 			},
@@ -1079,8 +1079,8 @@ const generateSampleData = (count: number): AnyResource[] => {
 		title: `Resource Item ${i + 1}`,
 		description: `This is the description for item ${i + 1}`,
 		status: ['active', 'pending', 'inactive'][i % 3],
-		createdAt: new Date(Date.now() - i * 3600000),
-		updatedAt: new Date(Date.now() - i * 1800000),
+		createdAt: new Date(Date.now() - i * 3600000).toISOString(),
+		updatedAt: new Date(Date.now() - i * 1800000).toISOString(),
 		createdBy: { id: `user-${(i % 10) + 1}`, displayName: `User ${(i % 10) + 1}` },
 	}));
 };

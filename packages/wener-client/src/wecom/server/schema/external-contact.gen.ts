@@ -544,7 +544,7 @@ export const GetGroupChatStatisticRequestSchema = z.object({
   /** 起始日期的时间戳，填当天的0时0分0秒。取值范围：昨天至前180天 [timestamp] */
   day_begin_time: z.number(),
   /** 结束日期的时间戳，填当天的0时0分0秒。如果不填，默认同 day_begin_time。取值范围：昨天至前180天 [timestamp] */
-  day_end_time: z.number().default('同 day_begin_time').optional(),
+  day_end_time: z.number().optional(),
   /** 群主过滤对象。如果不填，表示获取应用可见范围内全部群主的数据 */
   owner_filter: z.object({ userid_list: z.array(z.string()) }),
   /** 排序方式。1-新增群的数量，2-群总数，3-新增群人数，4-群总人数 (1-新增群的数量, 2-群总数, 3-新增群人数, 4-群总人数) */

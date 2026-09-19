@@ -1,3 +1,5 @@
+/// <reference types="bun" />
+
 import { dlopen, FFIType, type Library, type Pointer, ptr, type Symbols, suffix, toBuffer } from 'bun:ffi';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -151,7 +153,7 @@ export class WeWorkFinanceClient {
 		let sdk: Handler | null = null;
 		try {
 			log.log(`create sdk for ${corpId}`);
-			sdk = NewSdk()!;
+			sdk = NewSdk() as Pointer;
 			throwIfError(Init(sdk, ptrOfStr(corpId), ptrOfStr(corpSecret)), 'init');
 		} catch (e) {
 			log.error(`failed to create sdk for ${corpId}: ${e}`);
@@ -221,14 +223,7 @@ export class WeWorkFinanceClient {
 
 		const { sdk } = this;
 		const {
-			symbols: {
-				GetMediaData,
-				GetOutIndexBuf: _GetOutIndexBuf,
-				GetData: _GetData,
-				GetIndexLen,
-				GetDataLen,
-				IsMediaDataFinish,
-			},
+			symbols: { GetMediaData, GetOutIndexBuf: _GetOutIndexBuf, GetData: _GetData },
 		} = loadLibrary();
 
 		// 	int GetMediaData(WeWorkFinanceSdk_t *sdk, const char *indexbuf, const char *sdkFileid, const char *proxy, const char *passwd, int timeout, MediaData_t *media_data);
@@ -434,7 +429,7 @@ function findLibrary({ filename, paths }: { filename: string; paths: MaybeArray<
 			} else {
 				f = v;
 			}
-		} catch (_e) {}
+		} catch {}
 
 		if (f) {
 			break;
@@ -574,7 +569,7 @@ int is_finish;
 	//   },
 	// );
 	const len = GetDataLen(ptr);
-	let chunk = toBuffer(GetData(ptr)!, 0, len);
+	let chunk = toBuffer(GetData(ptr) as Pointer, 0, len);
 	return {
 		index: String(GetOutIndexBuf(ptr)),
 		finished: Boolean(IsMediaDataFinish(ptr)),
@@ -592,7 +587,7 @@ function getMediaDataPtr() {
 	const {
 		symbols: { NewMediaData },
 	} = loadLibrary();
-	return (media$ = NewMediaData()!);
+	return (media$ = NewMediaData() as Pointer);
 }
 
 function getSlicePtr() {
@@ -600,7 +595,7 @@ function getSlicePtr() {
 	const {
 		symbols: { NewSlice },
 	} = loadLibrary();
-	return (slice$ = NewSlice()!);
+	return (slice$ = NewSlice() as Pointer);
 }
 
 // const { free } = dlopen('/lib/x86_64-linux-gnu/libc.so.6', {

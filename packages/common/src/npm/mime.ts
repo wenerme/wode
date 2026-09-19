@@ -1,6 +1,9 @@
 import path from 'node:path';
-import mime from 'mime';
+import { Mime } from 'mime';
+import otherTypes from 'mime/types/other.js';
+import standardTypes from 'mime/types/standard.js';
 
+const mime = new Mime(standardTypes, otherTypes);
 mime.define(
 	{
 		'text/plain': [

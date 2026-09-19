@@ -81,15 +81,12 @@ describe('Persona schema', () => {
 		expect(LorebookEntrySchema.parse(persona.lorebook.entries[0]).content).toContain('fictional');
 	});
 
-	test.each([
-		'crawlState',
-		'queryRevision',
-		'rawArchive',
-		'archiveBytes',
-		'catalogSnapshot',
-	])('rejects crawler/archive field %s', (field) => {
-		expect(PersonaSchema.safeParse({ ...persona, [field]: 'forbidden' }).success).toBe(false);
-	});
+	test.each(['crawlState', 'queryRevision', 'rawArchive', 'archiveBytes', 'catalogSnapshot'])(
+		'rejects crawler/archive field %s',
+		(field) => {
+			expect(PersonaSchema.safeParse({ ...persona, [field]: 'forbidden' }).success).toBe(false);
+		},
+	);
 
 	test('rejects raw bytes in asset manifests and explicit metadata', () => {
 		const invalidAsset = structuredClone(persona);

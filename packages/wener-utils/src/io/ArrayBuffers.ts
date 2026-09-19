@@ -505,7 +505,7 @@ export namespace ArrayBuffers {
 	// base16 lookup table for efficient hex conversion
 	const hexLookupTable = (() => {
 		const alphabet = '0123456789abcdef';
-		const table = new Array(256);
+		const table: string[] = [];
 		for (let i = 0; i < 16; ++i) {
 			const i16 = i * 16;
 			for (let j = 0; j < 16; ++j) {

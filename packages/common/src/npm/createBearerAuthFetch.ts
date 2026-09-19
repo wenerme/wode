@@ -1,6 +1,6 @@
-import type { SimpleFetch } from './Unpkg';
+import type { FetchLike } from '@wener/utils';
 
-export function createBearerAuthFetch(token: string | (() => string), fetch: SimpleFetch = globalThis.fetch) {
+export function createBearerAuthFetch(token: string | (() => string), fetch: FetchLike = globalThis.fetch) {
 	return (url: string, init?: RequestInit) => {
 		return fetch(url, {
 			...init,

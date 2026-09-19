@@ -1,13 +1,12 @@
 import type { EntityManager } from '@mikro-orm/postgresql';
 import { getEntityManager } from '@wener/server/mikro-orm';
 import { runSystemResourceImportSeed } from '@/foundation/jobs/runSystemResourceImportSeed';
-import { getEvents } from '@/server/events';
-import { SystemEvents } from '@/server/events/events';
+import { getSystemEmitter, SystemEvents } from '@/events';
 
 export async function runSystemMaintenance({ em }: { em?: EntityManager } = {}) {
 	em = getEntityManager({ em });
 	await runSystemResourceImportSeed({ em });
 	// await runSystemJobMaintenance({ em });
 
-	await getEvents().emit(SystemEvents.Maintenance, { em });
+	await getSystemEmitter().emit(SystemEvents.Maintenance, { em });
 }

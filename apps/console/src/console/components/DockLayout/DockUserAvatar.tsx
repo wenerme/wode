@@ -22,8 +22,6 @@ export const DockUserAvatar: React.FC<DockUserAvatarProps> = ({
 	loginName,
 	avatarUrl,
 	onSignIn,
-	onSignOut,
-	actions,
 	children,
 }) => {
 	if (!loginName) {

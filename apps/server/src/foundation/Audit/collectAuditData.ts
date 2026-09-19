@@ -34,10 +34,3 @@ export function collectAuditData<T extends AuditData>(data: T): T {
 	data.instanceId ||= App.instanceId;
 	return data;
 }
-
-interface KnownHttpMetadata {
-	method?: string;
-	path?: string;
-	url?: string;
-	headers?: Record<string, string | string[]>;
-}

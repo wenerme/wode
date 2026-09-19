@@ -1644,7 +1644,7 @@ export const EwaybillGetResponseSchema = z.object({
   /** 总条数 */
   total_num: z.number().min(0).optional(),
   /** 账号列表 */
-  account_list: z.array(z.object({ delivery_id: z.string(), acct_type: z.number(), company_type: z.number(), shop_id: z.string(), acct_id: z.string(), status: z.number(), available: z.number().min(0), allocated: z.number().min(0), recycled: z.number().min(0), cancel: z.number().min(0), monthly_card: z.string(), site_info: z.object({ delivery_id: z.string(), site_status: z.number().min(1), site_code: z.string(), site_name: z.string(), address: z.object({ city_code: z.string(), city_name: z.string(), country_code: z.string(), detail_address: z.string(), district_code: z.string(), district_name: z.string(), province_code: z.string(), province_name: z.string(), street_code: z.string(), street_name: z.string() }), contact: z.object({ mobile: z.string(), name: z.string(), phone: z.string() }), site_fullname: z.string() }), share: z.object({ delivery_id: z.string(), site_code: z.string(), site_name: z.string(), acct_id: z.string(), nickname: z.string(), share_id: z.string(), shop_id: z.string(), monthly_card: z.string(), update_time: z.number().min(0) }), sender_address: z.object({ province: z.string(), city: z.string(), county: z.string(), street: z.string(), address: z.string() }), balance_retcode: z.number().min(0), balance_retmsg: z.string(), delivery_msg: z.string(), available: z.number().min(0), allocated: z.number().min(0), recycled: z.number().min(0), cancel: z.number().min(0) })).optional(),
+  account_list: z.array(z.object({ delivery_id: z.string(), acct_type: z.number(), company_type: z.number(), shop_id: z.string(), acct_id: z.string(), status: z.number(), available: z.number().min(0), allocated: z.number().min(0), recycled: z.number().min(0), cancel: z.number().min(0), monthly_card: z.string(), site_info: z.object({ delivery_id: z.string(), site_status: z.number().min(1), site_code: z.string(), site_name: z.string(), address: z.object({ city_code: z.string(), city_name: z.string(), country_code: z.string(), detail_address: z.string(), district_code: z.string(), district_name: z.string(), province_code: z.string(), province_name: z.string(), street_code: z.string(), street_name: z.string() }), contact: z.object({ mobile: z.string(), name: z.string(), phone: z.string() }), site_fullname: z.string() }), share: z.object({ delivery_id: z.string(), site_code: z.string(), site_name: z.string(), acct_id: z.string(), nickname: z.string(), share_id: z.string(), shop_id: z.string(), monthly_card: z.string(), update_time: z.number().min(0) }), sender_address: z.object({ province: z.string(), city: z.string(), county: z.string(), street: z.string(), address: z.string() }), balance_retcode: z.number().min(0), balance_retmsg: z.string(), delivery_msg: z.string() })).optional(),
 });
 export type EwaybillGetResponse = z.infer<typeof EwaybillGetResponseSchema>;
 
@@ -3876,7 +3876,7 @@ export const GetvipuserscoreResponseSchema = z.object({
 });
 export type GetvipuserscoreResponse = z.infer<typeof GetvipuserscoreResponseSchema>;
 
-export const V3GetResponseSchema = z.object({
+export const V3GetStatusResponseSchema = z.object({
   /** 关联的小程序appid */
   wxa_appid: z.string().optional(),
   /** 关联小程序信息 */
@@ -3884,7 +3884,7 @@ export const V3GetResponseSchema = z.object({
   /** 状态，1:上线，2:未上线，3:上线前测试状态。说明：状态为2、3时，只有白名单用户可以在小店看到会员入口。 (1-上线, 2-未上线, 3-上线前测试状态) */
   state: z.number().optional(),
 });
-export type V3GetResponse = z.infer<typeof V3GetResponseSchema>;
+export type V3GetStatusResponse = z.infer<typeof V3GetStatusResponseSchema>;
 
 /**
  * 获取指定地址下区域仓库的优先级

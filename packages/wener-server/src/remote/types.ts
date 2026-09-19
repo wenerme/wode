@@ -40,15 +40,6 @@ interface ModifyResourceRequest<T> extends GetResourceRequest {
 	data: T;
 }
 
-interface ActionResponse<T = any> {
-	status?: number;
-	code?: string | number;
-	message?: string;
-	detail?: Record<string, any>;
-	data?: T;
-	metadata?: Record<string, any>;
-}
-
 export interface GeneralActionResponse {
 	status?: number;
 	code?: string | number;

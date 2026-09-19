@@ -1,6 +1,6 @@
 import type { TObject } from '@sinclair/typebox';
-import type { AnySchemaObject, JSONSchemaType } from 'ajv';
-import { describe, expect, it } from 'vite-plus/test';
+import type { AnySchemaObject } from 'ajv';
+import { describe, expect, expectTypeOf, it } from 'vite-plus/test';
 import { JsonSchema } from './JsonSchema';
 import type { JsonSchemaDef } from './types';
 
@@ -20,16 +20,10 @@ describe('jsonschema', () => {
 	});
 
 	it('should match typebox types', () => {
-		let a: JsonSchemaDef | undefined;
-		let b: TObject<{}> | undefined;
-		a = b;
+		expectTypeOf<TObject<{}>>().toExtend<JsonSchemaDef>();
 	});
 
 	it('should match ajv types', () => {
-		let a: JsonSchemaDef | undefined;
-		let b: AnySchemaObject | undefined;
-		let c: JSONSchemaType<{}> | undefined;
-		a = b;
-		// a = c;
+		expectTypeOf<AnySchemaObject>().toExtend<JsonSchemaDef>();
 	});
 });

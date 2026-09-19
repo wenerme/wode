@@ -125,8 +125,6 @@ type ComponentContextObject = {
 	useComponent: <P extends {}>(comp: NameLike<P>) => UseComponentResult<P>;
 };
 
-type ComponentProviderState = {};
-
 type UseComponentResult<P> = [ComponentType<P>, { found: boolean }];
 
 const RootValue: ComponentContextObject = {

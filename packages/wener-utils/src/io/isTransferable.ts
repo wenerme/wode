@@ -1,6 +1,6 @@
 import { getGlobalThis } from '../web/getGlobalThis';
 
-const globalThis = getGlobalThis();
+const globalObject = getGlobalThis();
 
 /**
  * transferable object pass between workers, can work with structuredClone
@@ -17,7 +17,7 @@ export function isTransferable(v: any): v is TransferableObject {
 let _ctors: any[];
 
 function ctors() {
-	const o: any = globalThis.window || globalThis || global;
+	const o: any = globalObject.window || globalObject || global;
 	return [
 		o.ArrayBuffer,
 		o.MessagePort,

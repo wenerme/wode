@@ -11,7 +11,6 @@ type Updator<T> = (update: Partial<T> | ((state: T) => void)) => void;
 export namespace DaisyTheme {
 	const Context = DaisyThemeStoreContext;
 
-	type RootProps = {};
 	export const Root = () => {
 		return;
 	};

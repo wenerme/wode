@@ -1,6 +1,6 @@
 import { type Opt, types } from '@mikro-orm/core';
 import { Entity, Property } from '@mikro-orm/decorators/legacy';
-import { StandardBaseEntity } from '@wener/nestjs/entity';
+import { StandardBaseEntity } from '@wener/server/entity';
 
 @Entity({ tableName: 'apk_index', schema: 'alpine' })
 export class ApkIndexEntity extends StandardBaseEntity {

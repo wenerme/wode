@@ -76,20 +76,11 @@ export function formatResourceMeta(data: IAnyResource): ReactNode {
 		const dates: ReactNode[] = [<PiCalendarBlank key='icon' />];
 
 		if (updatedAt) {
-			dates.push(
-				<span key='updated'>
-					{typeof updatedAt === 'string' ? new Date(updatedAt).toLocaleDateString() : updatedAt.toLocaleDateString()}
-				</span>,
-			);
+			dates.push(<span key='updated'>{new Date(updatedAt).toLocaleDateString()}</span>);
 		}
 
 		if (createdAt && createdAt !== updatedAt) {
-			dates.push(
-				<span key='created'>
-					(创建:{' '}
-					{typeof createdAt === 'string' ? new Date(createdAt).toLocaleDateString() : createdAt.toLocaleDateString()})
-				</span>,
-			);
+			dates.push(<span key='created'>(创建: {new Date(createdAt).toLocaleDateString()})</span>);
 		}
 
 		parts.push(

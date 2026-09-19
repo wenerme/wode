@@ -6,7 +6,7 @@ import type { LRUCache } from 'lru-cache';
 import { findMcpServerDef } from '../providers/findMcpServerDef';
 import { getMcpServerHandlerDef, type McpServerHandlerDef } from '../providers/McpServerHandlerDef';
 import { createMcpLoggingHandler } from './mcp-handler';
-import type { McpsConfig, ServerConfig } from './schema';
+import type { McpsConfig } from './schema';
 
 const log = consola.withTag('mcps');
 

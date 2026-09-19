@@ -9,7 +9,7 @@ export const StaticNavLink = ({ href, children, className, ref, ...rest }: AutoN
 		new URL(globalThis.location?.href || 'http://127.0.0.1:3000').pathname.startsWith(href),
 	);
 	const onUrl = (s: string) => {
-		new URL(s).pathname.startsWith(href) ? setActive(true) : setActive(false);
+		setActive(new URL(s).pathname.startsWith(href));
 	};
 	const cbRef = useRef<(s: string) => void>(onUrl);
 	cbRef.current = onUrl;

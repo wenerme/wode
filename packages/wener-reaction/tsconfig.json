@@ -2,6 +2,7 @@
 	"extends": ["../../tsconfig.base.json"],
 	"compilerOptions": {
 		"jsx": "react-jsx",
+		"types": ["node"],
 		"importHelpers": true,
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true

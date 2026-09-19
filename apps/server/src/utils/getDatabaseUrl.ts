@@ -10,4 +10,5 @@ export function getDatabaseUrl(name = '') {
 			return env[k];
 		}
 	}
+	return undefined;
 }

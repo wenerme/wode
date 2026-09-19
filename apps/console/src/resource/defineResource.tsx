@@ -17,7 +17,7 @@ export interface DefineResourceOptions<T = AnyResource> {
 	onLoad?: (def: ResourceSchemaDef<T>) => void;
 }
 
-export interface ResourceSchemaDef<T = AnyResource> {
+export interface ResourceSchemaDef<_T = AnyResource> {
 	name: string;
 	idType: string;
 	typeName: string;

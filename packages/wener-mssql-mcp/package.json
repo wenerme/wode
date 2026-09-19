@@ -18,30 +18,44 @@
 		"mssql-mcp": "./dist/main.mjs"
 	},
 	"main": "./dist/main.mjs",
-	"files": ["dist", "src", "README.md"],
-	"keywords": ["mcp", "mssql", "sql-server", "model-context-protocol", "claude", "anthropic", "database", "ai-tools"],
+	"files": [
+		"dist",
+		"src",
+		"README.md"
+	],
+	"keywords": [
+		"mcp",
+		"mssql",
+		"sql-server",
+		"model-context-protocol",
+		"claude",
+		"anthropic",
+		"database",
+		"ai-tools"
+	],
 	"scripts": {
+		"typecheck": "tsc --noEmit",
 		"build": "tsx src/scripts/bundle.ts",
 		"clean": "rm -rf dist",
 		"dev": "tsx src/main.ts",
 		"prepublishOnly": "pnpm build"
 	},
 	"devDependencies": {
-		"@hono/mcp": "^0.3.0",
-		"@hono/node-server": "^2.0.8",
-		"@modelcontextprotocol/sdk": "^1.29.0",
+		"@hono/mcp": "^0.3.2",
+		"@hono/node-server": "^2.1.1",
+		"@modelcontextprotocol/sdk": "^1.30.0",
 		"@types/mssql": "^12.3.0",
-		"@types/node": "^24.13.3",
+		"@types/node": "^24.13.5",
 		"commander": "^15.0.0",
 		"consola": "^3.4.2",
 		"dotenv": "^16.6.1",
-		"esbuild": "^0.28.1",
-		"hono": "^4.12.28",
-		"hono-rate-limiter": "^0.5.3",
-		"mssql": "^12.7.0",
-		"tsx": "^4.23.0",
+		"esbuild": "^0.28.2",
+		"hono": "^4.13.8",
+		"hono-rate-limiter": "^0.5.4",
+		"mssql": "^12.7.2",
+		"tsx": "^4.23.13",
 		"typescript": "7.0.2",
-		"zod": "^4.4.3"
+		"zod": "^4.6.5"
 	},
 	"publishConfig": {
 		"access": "public"

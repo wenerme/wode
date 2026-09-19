@@ -12,11 +12,12 @@ describe('slugify', () => {
 		['foo_bar. -@-baz!', { strict: true }, 'foobar-baz'],
 		['foo_@_bar-baz!', { replacement: '_', strict: true }, 'foo_barbaz'],
 		[' foo bar ', { trim: false }, '-foo-bar-'],
-	] satisfies ReadonlyArray<
-		readonly [string, SlugifyOptions | string | undefined, string]
-	>)('converts %j with %j to %j', (input, options, expected) => {
-		expect(slugify(input, options)).toBe(expected);
-	});
+	] satisfies ReadonlyArray<readonly [string, SlugifyOptions | string | undefined, string]>)(
+		'converts %j with %j to %j',
+		(input, options, expected) => {
+			expect(slugify(input, options)).toBe(expected);
+		},
+	);
 
 	it('supports custom removal patterns', () => {
 		expect(slugify(`foo *+~.() bar '"!:@ baz`, { remove: /[$*_+~.()'"!\-:@]/g })).toBe('foo-bar-baz');

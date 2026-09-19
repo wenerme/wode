@@ -34,7 +34,7 @@ export function formatQuery(ast: Expr): string {
 			}
 			case 'case': {
 				let s = ['CASE'];
-				node.condition && s.push(visit(node.condition));
+				if (node.condition) s.push(visit(node.condition));
 				node.cases.forEach((c) => {
 					s.push(`WHEN ${visit(c.when)} THEN ${visit(c.then)}`);
 				});
