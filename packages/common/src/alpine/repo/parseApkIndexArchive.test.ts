@@ -1,6 +1,6 @@
 import { gzipSync } from 'node:zlib';
 import tar from 'tar-stream';
-import { assert, test } from 'vite-plus/test';
+import { assert, test } from 'vitest';
 import { parseApkIndexArchive } from './parseApkIndexArchive';
 
 async function createApkIndexArchive() {

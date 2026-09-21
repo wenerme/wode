@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vite-plus/test';
+import { describe, expect, it } from 'vitest';
 import { JinaReaderClient } from './index';
 
 describe('JinaReaderClient', () => {

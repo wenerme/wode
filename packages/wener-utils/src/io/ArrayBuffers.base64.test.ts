@@ -1,4 +1,4 @@
-import { assert, beforeAll, expect, test } from 'vite-plus/test';
+import { assert, beforeAll, expect, test } from 'vitest';
 import { ArrayBuffers } from './ArrayBuffers';
 
 beforeAll(() => {

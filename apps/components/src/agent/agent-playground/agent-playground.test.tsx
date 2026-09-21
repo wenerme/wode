@@ -4,7 +4,7 @@ import { createMemoryFileSystem, type IFileSystem } from '@wener/common/fs';
 import type { JustBashModuleLoader } from '@wener/common/fs/just-bash';
 import { act } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vite-plus/test';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { AgentCommandExecutor } from '../agent-coding';
 import { AgentPlayground, AgentRuntimeIdentityChangedCancelReason } from './agent-playground';
 import { getAgentSkillIdentity } from './playground-controls';

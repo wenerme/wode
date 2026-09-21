@@ -1,6 +1,6 @@
 import { ModelSchema, type Provider, ProviderSchema, ServiceSchema } from '@wener/ai/schema';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { describe, expect, it } from 'vite-plus/test';
+import { describe, expect, it } from 'vitest';
 import { AiModelEditor } from '../ai-model-editor';
 import { AiServiceEditor, parseServicePort } from '../ai-service-editor';
 import { AiProviderEditor } from './ai-provider-editor';

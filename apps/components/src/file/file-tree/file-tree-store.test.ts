@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vite-plus/test';
+import { describe, expect, it, vi } from 'vitest';
 import { FileTreeEventType } from './file-tree-events';
 import { createFileTreeStore } from './file-tree-store';
 import type { FileTreeFileStat, FileTreeFileSystem } from './file-tree-types';

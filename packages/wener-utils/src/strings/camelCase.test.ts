@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vite-plus/test';
+import { describe, expect, it } from 'vitest';
 import { type CamelCaseOptions, camelCase as rootCamelCase } from '../index';
 import { camelCase, pascalCase } from './camelCase';
 

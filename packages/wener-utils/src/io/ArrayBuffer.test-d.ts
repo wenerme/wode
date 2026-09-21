@@ -1,4 +1,4 @@
-import { expectTypeOf, test } from 'vite-plus/test';
+import { expectTypeOf, test } from 'vitest';
 import { ArrayBuffers } from './ArrayBuffers';
 
 test('my types work properly', () => {

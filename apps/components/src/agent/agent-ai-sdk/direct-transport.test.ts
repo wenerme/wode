@@ -1,5 +1,5 @@
 import type { UIMessage, UIMessageChunk } from 'ai';
-import { describe, expect, it, vi } from 'vite-plus/test';
+import { describe, expect, it, vi } from 'vitest';
 import { createOpenAICompatibleDirectTransport } from './direct-transport';
 import { resolveOpenAICompatibleDirectTransportLimits } from './direct-transport-limits';
 

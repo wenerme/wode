@@ -1,4 +1,4 @@
-import { test } from 'vite-plus/test';
+import { test } from 'vitest';
 import { createFileExpiryValue } from '../../server';
 import { WecomCorpClient } from './WecomCorpClient';
 

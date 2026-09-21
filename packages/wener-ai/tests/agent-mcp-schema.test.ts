@@ -7,7 +7,7 @@ import {
 	McpTransportSchema,
 	normalizeMcpServerConfig,
 } from '@wener/ai/mcp';
-import { describe, expect, test } from 'vite-plus/test';
+import { describe, expect, test } from 'vitest';
 
 const persona = {
 	id: 'persona-example',

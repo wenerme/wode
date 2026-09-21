@@ -1,5 +1,5 @@
 /* eslint no-template-curly-in-string:0 */
-import { expect, test } from 'vite-plus/test';
+import { expect, test } from 'vitest';
 import { renderTemplate } from './renderTemplate';
 
 test('renderTemplate', () => {

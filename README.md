@@ -2,7 +2,7 @@
 
 Wode is Wener's TypeScript monorepo for React console surfaces, reusable UI primitives, service and API tooling, AI/MCP integrations, and protobuf contracts.
 
-The name comes from **Wener nODE & DEMO**. The repository is organized as a pnpm workspace and uses Just for reusable task recipes and Vite+ (`vp`) for formatting and tests.
+The name comes from **Wener nODE & DEMO**. The repository is organized as a pnpm workspace and uses Just for reusable task recipes and Vite, Vitest, Oxfmt, and Oxlint for development workflows.
 
 ## Repository layout
 
@@ -66,7 +66,7 @@ Run commands from the repository root unless a command includes `-C`.
 | `just ci`                         | Run the CI baseline: frozen install, protobuf checks, Biome, typechecks, and selected tests.            |
 | `just test-ci --base origin/main` | Run the offline CI tests related to changes since a Git base; use `just test-ci` for the full baseline. |
 
-Vite+ owns the repository's test and formatting workflow. New test files should import test APIs from `vite-plus/test` and run through `pnpm exec vp test run` or the package script that wraps it.
+Vite and Vitest own the repository's test workflow. New test files should import test APIs from `vitest` and run through `pnpm exec vitest run` or the package script that wraps it.
 
 The root [`justfile`](justfile) imports reusable domain recipes from `just/*.just`. Recipes that operate in the caller's package use `[no-cd]`, so the same file can be reused without duplicating a Makefile in every package:
 

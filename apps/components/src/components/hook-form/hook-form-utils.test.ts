@@ -1,5 +1,5 @@
 import type { FieldErrors } from 'react-hook-form';
-import { describe, expect, it } from 'vite-plus/test';
+import { describe, expect, it } from 'vitest';
 import { formatFieldErrors, getDirtyFieldValues, getFieldErrors } from './hook-form-utils';
 
 describe('hook form utilities', () => {

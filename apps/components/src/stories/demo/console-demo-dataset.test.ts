@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vite-plus/test';
+import { describe, expect, it } from 'vitest';
 import { CONSOLE_DEMO_COUNTS, createConsoleDemoDataset, validateConsoleDemoDataset } from './console-demo-dataset';
 import { dataListPages } from './console-demo-navigation';
 import { getConsoleDemoResourcePageData } from './console-demo-resource-presenter';

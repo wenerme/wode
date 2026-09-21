@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it, vi } from 'vite-plus/test';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import {
 	applyConsoleDisplaySettings,
 	CONSOLE_DISPLAY_SETTINGS_EVENT,

@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vite-plus/test';
+import { describe, expect, it } from 'vitest';
 import { WechatBotMessageItemType } from './types';
 import { chunkWechatBotText, detectWechatBotMessageType, extractWechatBotText } from './utils';
 

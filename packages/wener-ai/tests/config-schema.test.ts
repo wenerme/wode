@@ -23,7 +23,7 @@ import {
 	ServiceSchema,
 	validateAiConfigBundle,
 } from '@wener/ai/schema';
-import { describe, expect, test } from 'vite-plus/test';
+import { describe, expect, test } from 'vitest';
 
 const canonicalBundle = {
 	schemaVersion: 1,

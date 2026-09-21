@@ -6,7 +6,7 @@ import { PGLiteSocketServer } from '@electric-sql/pglite-socket';
 import { BaseEntity, MikroORM, type Opt, types } from '@mikro-orm/core';
 import { Entity, OneToOne, PrimaryKey, Property } from '@mikro-orm/decorators/legacy';
 import { defineConfig, type SqlEntityManager } from '@mikro-orm/postgresql';
-import { afterAll, beforeAll, describe, expect, test } from 'vite-plus/test';
+import { afterAll, beforeAll, describe, expect, test } from 'vitest';
 import { toMikroOrmQuery } from './toMikroOrmQuery';
 
 @Entity({ tableName: 'users' })
@@ -33,7 +33,9 @@ class UserEntity extends BaseEntity {
 	attrs?: Record<string, any>;
 
 	@OneToOne(() => UserProfileEntity, 'user', { deleteRule: 'cascade' })
-	profile?: UserProfileEntity;
+	// Keep the relation target lazy: Vite+ emits design:type metadata for
+	// annotations, and the circular class reference is still in TDZ here.
+	profile?: any;
 }
 
 @Entity({ tableName: 'user_profile' })
@@ -56,7 +58,7 @@ class UserProfileEntity extends BaseEntity {
 	attrs?: Record<string, any>;
 
 	@OneToOne(() => UserEntity)
-	user!: UserEntity;
+	user!: any;
 }
 
 let pglite: PGlite;

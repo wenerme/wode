@@ -19,7 +19,7 @@ import {
 	parseApiEndpoint,
 	resolveApiTypeName,
 } from '@wener/ai/schema';
-import { describe, expect, test } from 'vite-plus/test';
+import { describe, expect, test } from 'vitest';
 
 function matched(path: string) {
 	const result = parseApiEndpoint(path);

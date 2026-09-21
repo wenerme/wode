@@ -89,7 +89,6 @@ var require,__filename,__dirname;
 			// 没有用到的依赖，以前版本会都依赖进来，但依赖可能不存在
 			// '@mikro-orm/mongodb',
 			// '@mikro-orm/sqlite',
-			// '@mikro-orm/better-sqlite',
 			// '@mikro-orm/mariadb',
 			// '@mikro-orm/entity-generator',
 			// '@mikro-orm/migrations',
@@ -97,7 +96,6 @@ var require,__filename,__dirname;
 			// SQL Driver
 			'@vscode/sqlite3',
 			'sqlite3',
-			'better-sqlite3',
 			'libsql',
 			'mysql2',
 			'mysql',

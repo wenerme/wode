@@ -1,0 +1,65 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.5.14/schema.json",
+  "files": {
+    "includes": [
+      "**",
+      "!packages/common/src/poc",
+      "!packages/common/src/protos",
+      "!packages/wener-client/libs/WeWorkFinanceSdk",
+      "!packages/wener-client/src/**/schema/*.gen.ts",
+      "!packages/wener-miniquery/src/**/parser.js",
+      "!**/*.gen.ts",
+      "!**/*_connect.ts",
+      "!**/*_pb.ts",
+      "!node_modules",
+      "!local",
+      "!.grit",
+      "!.claude",
+      "!.agents",
+      "!**/.next",
+      "!**/.wrangler",
+      "!**/storybook-static",
+      "!apps/server/builds",
+      "!apps/components/public/r",
+      "!bin",
+      "!lib",
+      "!dist",
+      "!out",
+      "!**/lib",
+      "!**/dist",
+      "!**/out"
+    ]
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "tab",
+    "lineWidth": 120,
+    "attributePosition": "auto",
+    "useEditorconfig": true
+  },
+  "javascript": {
+    "parser": {
+      "unsafeParameterDecoratorsEnabled": true
+    },
+    "formatter": {
+      "quoteStyle": "single",
+      "jsxQuoteStyle": "single",
+      "trailingCommas": "all"
+    }
+  },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
+    }
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "preset": "none",
+      "correctness": {
+        "recommended": true,
+        "noConstantCondition": "off"
+      }
+    }
+  }
+}

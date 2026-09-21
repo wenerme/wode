@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vite-plus/test';
+import { describe, expect, it, vi } from 'vitest';
 import { createFileManagerStore } from './file-manager-store';
 import type { FileManagerFileSystem } from './file-manager-types';
 import { fileManagerOperationHardItemLimit, fileManagerUploadHardFileLimit } from './file-manager-types';

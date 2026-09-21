@@ -1,6 +1,6 @@
 import type { UIMessage } from 'ai';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { describe, expect, it } from 'vite-plus/test';
+import { describe, expect, it } from 'vitest';
 import { AgentMessage, formatAgentMessageValue, projectAgentMessageValue } from './index';
 
 function message(id: string, role: UIMessage['role'], parts: UIMessage['parts']): UIMessage {

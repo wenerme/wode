@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vite-plus/test';
+import { describe, expect, test } from 'vitest';
 import { createRandomUUIDv7, parseUUIDv7Timestamp, randomUUIDv7 } from './randomUUIDv7';
 
 describe('randomUUIDv7', () => {

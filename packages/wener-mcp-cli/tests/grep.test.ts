@@ -2,7 +2,7 @@
  * Unit tests for grep command - glob pattern matching
  */
 
-import { describe, expect, test } from 'vite-plus/test';
+import { describe, expect, test } from 'vitest';
 import { globToRegex } from '../src/commands/grep';
 
 describe('globToRegex', () => {

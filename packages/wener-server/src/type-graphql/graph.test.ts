@@ -11,7 +11,7 @@ import {
 	Resolver,
 	type ResolverData,
 } from 'type-graphql';
-import { expect, test } from 'vite-plus/test';
+import { expect, test } from 'vitest';
 import { StandardBaseEntity } from '../entity';
 import { EntityBaseService } from '../entity/service';
 import { BaseNode } from './BaseNode';

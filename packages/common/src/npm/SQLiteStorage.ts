@@ -1,9 +1,9 @@
-import SQLite, { type Database } from 'better-sqlite3';
+import { DatabaseSync } from 'node:sqlite';
 import type { PackageEntity, PackageFileEntity, RawFileEntity, UnpkgStorage } from './UnpkgStorage';
 
 export interface SQLiteStorageOptions {
 	database?: string;
-	cache?: Database;
+	cache?: DatabaseSync;
 }
 
 function toSQLiteBlob(data: BufferSource) {
@@ -15,7 +15,7 @@ function toSQLiteBlob(data: BufferSource) {
 }
 
 export class SQLiteStorage implements UnpkgStorage<SQLiteStorageOptions> {
-	cache: Database = undefined as any;
+	cache: DatabaseSync = undefined as any;
 	private readonly options: SQLiteStorageOptions = {};
 
 	constructor(options: SQLiteStorageOptions = {}) {
@@ -27,9 +27,9 @@ export class SQLiteStorage implements UnpkgStorage<SQLiteStorageOptions> {
 		let cache = this.options.cache;
 		const { database } = this.options;
 		if (!cache) {
-			const db = (cache = new SQLite(database || 'unpkg.db', {}));
-			cache.pragma('journal_mode = WAL');
-			cache.pragma('synchronous = OFF');
+			const db = (cache = new DatabaseSync(database || 'unpkg.db', { allowBareNamedParameters: true }));
+			cache.exec('PRAGMA journal_mode = WAL');
+			cache.exec('PRAGMA synchronous = OFF');
 			SQLiteSchemas.forEach((v) => db.exec(v));
 		}
 		this.cache = cache;
@@ -111,7 +111,7 @@ export class SQLiteStorage implements UnpkgStorage<SQLiteStorageOptions> {
 				`INSERT OR IGNORE INTO packages (name, version, meta)
          VALUES ($name, $version, $meta)`,
 			)
-			.run(param);
+			.run({ name: param.name, version: param.version, meta: param.meta });
 	}
 }
 

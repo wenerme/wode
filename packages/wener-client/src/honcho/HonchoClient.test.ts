@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vite-plus/test';
+import { describe, expect, it } from 'vitest';
 import { HonchoClient, type HonchoClientError, normalizeHonchoEndpoint, normalizeHonchoPage } from './index';
 
 describe('HonchoClient', () => {

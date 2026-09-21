@@ -1,7 +1,5 @@
-import AES from 'crypto-js/aes';
-import Utf8 from 'crypto-js/enc-utf8';
-import ECB from 'crypto-js/mode-ecb';
-import Pkcs7 from 'crypto-js/pad-pkcs7';
+import { ecb } from '@noble/ciphers/aes.js';
+import { ArrayBuffers } from '@wener/utils';
 import { getCryptoKey } from './getCryptoKey';
 
 export function encrypt(s: string): string;
@@ -12,5 +10,5 @@ export function encrypt(s: string | undefined) {
 		return s;
 	}
 
-	return AES.encrypt(Utf8.parse(s), getCryptoKey(), { mode: ECB, padding: Pkcs7 }).toString();
+	return ArrayBuffers.toString(ecb(getCryptoKey()).encrypt(ArrayBuffers.from(s, 'utf8', Uint8Array)), 'base64');
 }

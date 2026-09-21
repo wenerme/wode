@@ -1,5 +1,5 @@
 import { types } from 'mime-types';
-import { describe, expect, it } from 'vite-plus/test';
+import { describe, expect, it } from 'vitest';
 import { findMimeType } from './findMimeType';
 import { GeneratedMimeTypes } from './mimeTypes.generated';
 

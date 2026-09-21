@@ -1,6 +1,6 @@
 /** @vitest-environment jsdom */
 
-import { describe, expect, it, vi } from 'vite-plus/test';
+import { describe, expect, it, vi } from 'vitest';
 import { AgentRuntimeFileError, convertAgentFilesToUIParts } from './file-parts';
 
 describe('convertAgentFilesToUIParts', () => {

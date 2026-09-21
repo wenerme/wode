@@ -182,10 +182,12 @@ class WebdavFS implements IFileSystem {
 	}
 
 	createReadStream(path: string, options = {}): Readable {
-		return this.client.createReadStream(path, options);
+		// webdav 5.11 exposes a platform-neutral structural stream type; its
+		// Node implementation is still a Node Readable at runtime.
+		return this.client.createReadStream(path, options) as unknown as Readable;
 	}
 
 	createWriteStream(path: string, options = {}): Writable {
-		return this.client.createWriteStream(path, options);
+		return this.client.createWriteStream(path, options) as unknown as Writable;
 	}
 }

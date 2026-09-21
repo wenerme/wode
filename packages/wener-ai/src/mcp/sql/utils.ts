@@ -70,7 +70,7 @@ export async function createKyselyInstance(
 			break;
 		}
 		case 'sqlite': {
-			const BetterSqlite3 = (await import('better-sqlite3')).default;
+			const { DatabaseSync } = await import('node:sqlite');
 			const { SqliteDialect } = await import('kysely');
 			let filename = url;
 			if (filename.startsWith('sqlite://')) {
@@ -80,7 +80,7 @@ export async function createKyselyInstance(
 			}
 			db = new Kysely({
 				dialect: new SqliteDialect({
-					database: new BetterSqlite3(filename),
+					database: createKyselySqliteDatabase(filename, DatabaseSync),
 				}),
 			});
 			break;
@@ -133,6 +133,25 @@ export async function createKyselyInstance(
 	await sql`SELECT 1`.execute(db);
 
 	return { db, ownsConnection: true };
+}
+
+function createKyselySqliteDatabase(filename: string, DatabaseSync: typeof import('node:sqlite').DatabaseSync) {
+	const database = new DatabaseSync(filename, { allowBareNamedParameters: true });
+
+	return {
+		close: () => database.close(),
+		prepare(source: string) {
+			const statement = database.prepare(source);
+			const reader = statement.columns().length > 0;
+
+			return {
+				reader,
+				all: (parameters: readonly unknown[]) => statement.all(...(parameters as any[])),
+				run: (parameters: readonly unknown[]) => statement.run(...(parameters as any[])),
+				iterate: (parameters: readonly unknown[]) => statement.iterate(...(parameters as any[])),
+			};
+		},
+	};
 }
 
 export async function getVersion(db: Kysely<any>, dialect: Dialect): Promise<string> {
