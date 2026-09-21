@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vite-plus/test';
+import { describe, expect, it } from 'vitest';
 import {
 	LIVE_OPENAI_CONNECTION_STORAGE_KEY,
 	readLiveOpenAIConnectionStoryState,

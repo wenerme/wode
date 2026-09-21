@@ -5,7 +5,7 @@ import { join } from 'node:path';
 
 import type { Logger } from '@wener/utils/logger';
 import { silent } from '@wener/utils/logger';
-import { test } from 'vite-plus/test';
+import { test } from 'vitest';
 import { loadDotEnv } from './loadDotEnv';
 
 async function withTempDotEnvDirectory(testCase: (cwd: string) => Promise<void>): Promise<void> {

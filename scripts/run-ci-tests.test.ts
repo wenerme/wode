@@ -2,7 +2,7 @@ import { execFileSync } from 'node:child_process';
 import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { afterEach, describe, expect, test, vi } from 'vite-plus/test';
+import { afterEach, describe, expect, test, vi } from 'vitest';
 import { createTestCommand, main, readChanges, selectTests } from './run-ci-tests.mjs';
 
 const temporaryRoots: string[] = [];

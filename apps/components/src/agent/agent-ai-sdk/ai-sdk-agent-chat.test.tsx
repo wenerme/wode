@@ -3,7 +3,7 @@
 import type { UIMessage } from 'ai';
 import { act, StrictMode, Suspense, startTransition } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vite-plus/test';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { AiSdkAgentChat } from './ai-sdk-agent-chat';
 
 let container: HTMLDivElement;

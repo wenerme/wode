@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vite-plus/test';
+import { describe, expect, test } from 'vitest';
 import { cartesianProduct } from './cartesianProduct';
 
 describe('cartesianProduct', () => {

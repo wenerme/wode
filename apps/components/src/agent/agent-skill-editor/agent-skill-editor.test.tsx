@@ -1,6 +1,6 @@
 import { SkillSchema } from '@wener/ai/agent/skill';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { describe, expect, it } from 'vite-plus/test';
+import { describe, expect, it } from 'vitest';
 import { AgentSkillEditor, formatSkillMarkdown } from './index';
 
 describe('AgentSkillEditor', () => {

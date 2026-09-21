@@ -97,14 +97,16 @@ interface FORWARD_REF_STATICS {
 }
 
 type NonReactStatics<S extends ComponentType<any>, C extends { [key: string]: true } = {}> = {
-	[key in Exclude<
-		keyof S,
-		S extends MemoExoticComponent<any>
-			? keyof MEMO_STATICS | keyof C
-			: S extends ForwardRefExoticComponent<any>
-				? keyof FORWARD_REF_STATICS | keyof C
-				: keyof REACT_STATICS | keyof KNOWN_STATICS | keyof C
-	>]: S[key];
+	[
+		key in Exclude<
+			keyof S,
+			S extends MemoExoticComponent<any>
+				? keyof MEMO_STATICS | keyof C
+				: S extends ForwardRefExoticComponent<any>
+					? keyof FORWARD_REF_STATICS | keyof C
+					: keyof REACT_STATICS | keyof KNOWN_STATICS | keyof C
+		>
+	]: S[key];
 };
 
 export function hoistNonReactStatics<

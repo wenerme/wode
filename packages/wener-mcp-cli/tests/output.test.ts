@@ -2,7 +2,7 @@
  * Unit tests for output formatting
  */
 
-import { beforeAll, describe, expect, test } from 'vite-plus/test';
+import { beforeAll, describe, expect, test } from 'vitest';
 import {
 	formatConfigSources,
 	formatError,

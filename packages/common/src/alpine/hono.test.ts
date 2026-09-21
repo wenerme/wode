@@ -1,5 +1,5 @@
 import { OpenAPIHono } from '@hono/zod-openapi';
-import { expect, test } from 'vite-plus/test';
+import { expect, test } from 'vitest';
 import { createHelperRoute } from './createHelperRoute';
 
 test('hono', async () => {

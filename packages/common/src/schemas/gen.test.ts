@@ -1,5 +1,5 @@
 import fs from 'node:fs/promises';
-import { test } from 'vite-plus/test';
+import { test } from 'vitest';
 import { generateSchema } from './generateSchema';
 
 test('schema/gen', async () => {

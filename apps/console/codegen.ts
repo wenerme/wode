@@ -29,7 +29,7 @@ const config: CodegenConfig = {
 	schema,
 	documents: 'src/**/!(*.d).{ts,tsx}',
 	ignoreNoDocuments: true,
-	hooks: { afterOneFileWrite: ['pnpm exec vp fmt'] },
+	hooks: { afterOneFileWrite: ['pnpm exec biome format --write'] },
 	generates: {
 		...(downloadSchema
 			? {

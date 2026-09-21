@@ -1,4 +1,4 @@
-import { assert, test } from 'vite-plus/test';
+import { assert, test } from 'vitest';
 import { SQLiteStorage } from './SQLiteStorage';
 
 test('SQLiteStorage stores ArrayBuffer and views using their exact byte ranges', async () => {

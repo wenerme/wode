@@ -75,14 +75,12 @@ export const ServiceCompatibilityInputSchema = z
 		const error = enabledCompatibilityError(value);
 		if (error) context.addIssue({ code: 'custom', message: error, path: ['enabled'] });
 	})
-	.transform(
-		({ api, url, disabled, ...canonical }): z.input<typeof ServiceSchema> => ({
-			...canonical,
-			apiType: canonical.apiType ?? api,
-			baseUrl: canonical.baseUrl ?? url,
-			enabled: canonical.enabled ?? !(disabled ?? false),
-		}),
-	)
+	.transform(({ api, url, disabled, ...canonical }): z.input<typeof ServiceSchema> => ({
+		...canonical,
+		apiType: canonical.apiType ?? api,
+		baseUrl: canonical.baseUrl ?? url,
+		enabled: canonical.enabled ?? !(disabled ?? false),
+	}))
 	.pipe(ServiceSchema);
 export type ServiceCompatibilityInput = z.input<typeof ServiceCompatibilityInputSchema>;
 

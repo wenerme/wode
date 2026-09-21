@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vite-plus/test';
+import { describe, expect, it, vi } from 'vitest';
 import { validateOpenAICompatibleConnection } from './connection-config';
 import { listOpenAICompatibleModels, OpenAICompatibleModelListError } from './model-list';
 import { toSafeAgentError } from './safe-error';

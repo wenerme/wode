@@ -7,7 +7,7 @@ import { EndpointSchema, ModelSchema, ProviderSchema, ServiceSchema } from '@wen
 import { act, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { describe, expect, it } from 'vite-plus/test';
+import { describe, expect, it } from 'vitest';
 import { AgentConfigStudio } from './agent-config-studio';
 import { endpointOptionsForProvider, resourcesForKind } from './agent-config-studio-editor';
 import type { AgentConfigStudioSelection } from './agent-config-studio-types';

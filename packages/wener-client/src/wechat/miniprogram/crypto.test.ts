@@ -1,6 +1,6 @@
 import { sha1 } from '@wener/utils';
 import { polyfillCrypto } from '@wener/utils/server';
-import { expect, test } from 'vite-plus/test';
+import { expect, test } from 'vitest';
 import { verifySignature } from './crypto';
 import { decryptData } from './decryptData';
 

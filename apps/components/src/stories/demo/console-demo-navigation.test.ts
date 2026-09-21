@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vite-plus/test';
+import { describe, expect, it } from 'vitest';
 import { type DemoPage, dataListPages, isDataListPage } from './console-demo-navigation';
 
 describe('console demo navigation surfaces', () => {

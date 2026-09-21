@@ -1,5 +1,5 @@
 import { renderToStaticMarkup } from 'react-dom/server';
-import { describe, expect, it } from 'vite-plus/test';
+import { describe, expect, it } from 'vitest';
 import { Message, MessageAvatar, MessageContent, MessageFooter, MessageGroup, MessageHeader } from './index';
 
 describe('Message', () => {

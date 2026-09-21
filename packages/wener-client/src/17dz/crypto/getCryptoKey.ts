@@ -1,7 +1,7 @@
-import Utf8 from 'crypto-js/enc-utf8';
+import { ArrayBuffers } from '@wener/utils';
 
 // https://17dz.com/iit-yqdz-web-pc/router.bundle.js enc.Utf8.parse
-const key = Utf8.parse('RGZwrjvQmQl2A4Hk');
+const key = ArrayBuffers.from('RGZwrjvQmQl2A4Hk', 'utf8', Uint8Array);
 
 export function getCryptoKey() {
 	return key;

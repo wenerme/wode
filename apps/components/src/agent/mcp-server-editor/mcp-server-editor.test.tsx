@@ -1,6 +1,6 @@
 import { McpServerConfigSchema } from '@wener/ai/mcp';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { describe, expect, it } from 'vite-plus/test';
+import { describe, expect, it } from 'vitest';
 import { changeMcpTransport, McpServerEditor } from './mcp-server-editor';
 
 describe('McpServerEditor', () => {

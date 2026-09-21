@@ -14,7 +14,7 @@
 		"build": "just -f ../../just/packages/wener-ai.just build",
 		"prepublishOnly": "pnpm verify:publish",
 		"test:built": "node ./tests/built-publish-subpath-smoke.mjs",
-		"test:schema": "pnpm --dir ../.. exec vp test run packages/wener-ai/tests",
+		"test:schema": "pnpm --dir ../.. exec vitest run packages/wener-ai/tests",
 		"typecheck:schema": "tsc -p tsconfig.schema.json --noEmit",
 		"verify:publish": "pnpm build && pnpm test:built"
 	},

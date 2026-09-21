@@ -95,13 +95,11 @@ export const ModelCostCompatibilityInputSchema = z
 		cache_read: OptionalNonNegativeSchema,
 		cache_write: OptionalNonNegativeSchema,
 	})
-	.transform(
-		({ cache_read, cache_write, ...canonical }): z.input<typeof ModelCostSchema> => ({
-			...canonical,
-			cacheRead: preferCanonical(canonical.cacheRead, cache_read),
-			cacheWrite: preferCanonical(canonical.cacheWrite, cache_write),
-		}),
-	)
+	.transform(({ cache_read, cache_write, ...canonical }): z.input<typeof ModelCostSchema> => ({
+		...canonical,
+		cacheRead: preferCanonical(canonical.cacheRead, cache_read),
+		cacheWrite: preferCanonical(canonical.cacheWrite, cache_write),
+	}))
 	.pipe(ModelCostSchema);
 
 const ModelDefaultsShape = {

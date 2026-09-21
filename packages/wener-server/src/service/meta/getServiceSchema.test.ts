@@ -1,4 +1,4 @@
-import { expect, test } from 'vite-plus/test';
+import { expect, test } from 'vitest';
 import { getServiceSchema } from './getServiceSchema';
 import { Method } from './Method';
 import { Service } from './Service';

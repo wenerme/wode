@@ -1,4 +1,4 @@
-import { assert, test } from 'vite-plus/test';
+import { assert, test } from 'vitest';
 import { loadCharToPinyinTable } from './loader';
 import { toPinyinPure } from './toPinyinPure';
 

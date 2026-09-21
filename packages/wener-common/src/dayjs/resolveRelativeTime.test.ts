@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import quarterOfYear from 'dayjs/plugin/quarterOfYear';
 import weekOfYear from 'dayjs/plugin/weekOfYear';
-import { describe, expect, it } from 'vite-plus/test';
+import { describe, expect, it } from 'vitest';
 import { resolveRelativeTime } from './resolveRelativeTime';
 
 dayjs.extend(quarterOfYear);
