@@ -1,6 +1,7 @@
 import { expect } from 'vitest';
 import { FileSystemError, FileSystemErrorCode } from '../FileSystemError';
-import type { IFileSystem, IServerFileSystem } from '../IFileSystem';
+import type { IFileSystem } from '../IFileSystem';
+import type { IServerFileSystem } from '../server/IFileSystem';
 
 export type RunFileSystemTestOptions = {
 	writableStream?: boolean;

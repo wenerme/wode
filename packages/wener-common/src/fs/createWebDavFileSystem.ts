@@ -1,4 +1,3 @@
-import type { Readable, Writable } from 'node:stream';
 import { type MaybeFunction, maybeFunction } from '@wener/utils';
 import type { FileStat, ResponseDataDetailed, WebDAVClient } from 'webdav';
 import type {
@@ -108,9 +107,7 @@ class WebdavFS implements IFileSystem {
 		}
 
 		if (glob) {
-			const { default: def, matcher = def.matcher } = await import('micromatch');
-			const match = matcher(glob);
-			out = out.filter((v) => match(v.filename));
+			out = out.filter((v) => matchesPosixGlob(v.filename, glob));
 		}
 		if (kind) {
 			out = out.filter((v) => v.type === kind);
@@ -139,23 +136,17 @@ class WebdavFS implements IFileSystem {
 	}
 
 	async writeFile(path: string, data: WritableData, options: WriteFileOptions = {}): Promise<void> {
-		// Convert web ReadableStream to something WebDAV client can handle
-		let webdavData: string | Buffer | ArrayBuffer | Readable = data as string | Buffer | ArrayBuffer | Readable;
-		if (data instanceof ReadableStream) {
-			// Convert web ReadableStream to Buffer
-			const reader = data.getReader();
-			const chunks: Uint8Array[] = [];
-			while (true) {
-				const { done, value } = await reader.read();
-				if (done) break;
-				if (value) chunks.push(value);
-			}
-			webdavData = Buffer.concat(chunks);
-		} else if (ArrayBuffer.isView(data) && !(data instanceof Buffer)) {
-			// Convert ArrayBufferView to Buffer
-			webdavData = Buffer.from(data.buffer, data.byteOffset, data.byteLength);
+		let webdavData: string | ArrayBuffer | Uint8Array;
+		if (typeof data === 'string' || data instanceof ArrayBuffer) {
+			webdavData = data;
+		} else if (data instanceof ReadableStream) {
+			webdavData = await readWebStream(data);
+		} else if (ArrayBuffer.isView(data)) {
+			webdavData = new Uint8Array(data.buffer, data.byteOffset, data.byteLength).slice();
+		} else {
+			throw new TypeError('Unsupported WebDAV file data');
 		}
-		await this.client.putFileContents(path, webdavData, options);
+		await this.client.putFileContents(path, webdavData as never, options);
 	}
 
 	async rm(path: string, { signal: _signal, force, recursive: _recursive }: RmOptions = {}): Promise<void> {
@@ -180,14 +171,48 @@ class WebdavFS implements IFileSystem {
 	async copy(src: string, dest: string, options = {}): Promise<void> {
 		await this.client.copyFile(src, dest, options);
 	}
+}
 
-	createReadStream(path: string, options = {}): Readable {
-		// webdav 5.11 exposes a platform-neutral structural stream type; its
-		// Node implementation is still a Node Readable at runtime.
-		return this.client.createReadStream(path, options) as unknown as Readable;
+function matchesPosixGlob(value: string, pattern: string): boolean {
+	let expression = '^';
+	for (let index = 0; index < pattern.length; index += 1) {
+		const character = pattern[index];
+		if (character === '*') {
+			if (pattern[index + 1] === '*') {
+				expression += '.*';
+				index += 1;
+			} else {
+				expression += '[^/]*';
+			}
+		} else if (character === '?') {
+			expression += '[^/]';
+		} else {
+			expression += character.replace(/[\\^$.*+?()[\]{}|]/gu, '\\$&');
+		}
 	}
+	return new RegExp(`${expression}$`, 'u').test(value);
+}
 
-	createWriteStream(path: string, options = {}): Writable {
-		return this.client.createWriteStream(path, options) as unknown as Writable;
+async function readWebStream(stream: ReadableStream): Promise<Uint8Array> {
+	const reader = stream.getReader();
+	const chunks: Uint8Array[] = [];
+	let total = 0;
+	try {
+		while (true) {
+			const { done, value } = await reader.read();
+			if (done) break;
+			const chunk = value instanceof Uint8Array ? value : new Uint8Array(value);
+			chunks.push(chunk);
+			total += chunk.byteLength;
+		}
+	} finally {
+		reader.releaseLock();
 	}
+	const output = new Uint8Array(total);
+	let offset = 0;
+	for (const chunk of chunks) {
+		output.set(chunk, offset);
+		offset += chunk.byteLength;
+	}
+	return output;
 }

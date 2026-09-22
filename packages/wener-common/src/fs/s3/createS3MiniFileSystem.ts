@@ -1,6 +1,5 @@
-import { basename, dirname, normalize } from 'node:path';
-import { Readable } from 'node:stream';
 import { formatS3Url, type ParseS3UrlOptions, parseS3Url } from '@wener/common/s3';
+import { basename, dirname, normalize } from 'pathe';
 import { S3mini, sanitizeETag } from 's3mini';
 import type {
 	CopyOptions,
@@ -270,9 +269,7 @@ class S3FS implements IFileSystem {
 
 			// Handle glob filtering
 			if (glob) {
-				const { matcher } = await import('micromatch');
-				const match = matcher(glob);
-				results = results.filter((entry) => match(entry.path));
+				results = results.filter((entry) => matchesPosixGlob(entry.path, glob));
 			}
 
 			return results;
@@ -428,8 +425,7 @@ class S3FS implements IFileSystem {
 			}
 		}
 
-		// Convert data to buffer or string
-		let body: string | Buffer;
+		let body: string | ArrayBuffer | Uint8Array;
 		if (data instanceof ReadableStream) {
 			// Handle web ReadableStream
 			const reader = data.getReader();
@@ -446,48 +442,15 @@ class S3FS implements IFileSystem {
 					}
 				}
 			}
-			body = Buffer.concat(chunks);
-		} else if (data instanceof Readable) {
-			// For streams, we need to read them into a buffer
-			const chunks: Buffer[] = [];
-			let loaded = 0;
-
-			if (onUploadProgress) {
-				data.on('data', (chunk: Buffer) => {
-					chunks.push(chunk);
-					loaded += chunk.length;
-					onUploadProgress({ loaded, total: -1 });
-				});
-			} else {
-				data.on('data', (chunk: Buffer) => {
-					chunks.push(chunk);
-				});
-			}
-
-			body = await new Promise<Buffer>((resolve, reject) => {
-				const allChunks: Buffer[] = [];
-				data.on('data', (chunk) => allChunks.push(chunk));
-				data.on('end', () => resolve(Buffer.concat(allChunks)));
-				data.on('error', reject);
-
-				if (signal) {
-					signal.addEventListener('abort', () => {
-						data.destroy();
-						reject(new Error('The operation was aborted'));
-					});
-				}
-			});
+			body = concatBytes(chunks);
 		} else if (data instanceof ArrayBuffer) {
-			body = Buffer.from(data);
-		} else if (data instanceof Buffer) {
 			body = data;
 		} else if (typeof data === 'string') {
 			body = data;
 		} else {
-			// ArrayBufferView
-			body = Buffer.from(data.buffer, data.byteOffset, data.byteLength);
+			body = new Uint8Array(data.buffer, data.byteOffset, data.byteLength).slice();
 		}
-		await this.client.putObject(key, body, undefined, undefined, undefined);
+		await this.client.putObject(key, body as never, undefined, undefined, undefined);
 	}
 
 	async rm(path: string, options: RmOptions = {}): Promise<void> {
@@ -681,74 +644,6 @@ class S3FS implements IFileSystem {
 		}
 	}
 
-	createReadStream(path: string, options: CreateReadStreamOptions = {}): Readable {
-		const key = this.normalizeKey(path);
-		if (!key) {
-			throw new Error('Cannot read root directory');
-		}
-
-		const { range, signal } = options;
-
-		// Use getObjectRaw with range support
-		const responsePromise = this.client.getObjectRaw(key, !range, range?.start, range?.end, { signal }, undefined);
-
-		// Convert Response to Readable stream
-		let nodeStream: Readable | null = null;
-
-		const stream = new Readable({
-			async read() {
-				if (!nodeStream) {
-					try {
-						const response = await responsePromise;
-						if (!response.body) {
-							this.emit('error', new Error('No response body'));
-							return;
-						}
-
-						// Convert ReadableStream to Node Readable
-						const reader = response.body.getReader();
-						const _decoder = new TextDecoder();
-
-						nodeStream = new Readable({
-							async read() {
-								try {
-									const { done, value } = await reader.read();
-									if (done) {
-										this.push(null);
-									} else {
-										this.push(Buffer.from(value));
-									}
-								} catch (err) {
-									this.emit('error', err);
-								}
-							},
-						});
-
-						nodeStream.on('data', (chunk) => {
-							this.push(chunk);
-						});
-
-						nodeStream.on('end', () => {
-							this.push(null);
-						});
-
-						nodeStream.on('error', (err) => {
-							this.emit('error', err);
-						});
-					} catch (err: any) {
-						this.emit('error', err);
-					}
-				}
-			},
-		});
-
-		signal?.addEventListener('abort', () => {
-			stream.destroy(new Error('The operation was aborted'));
-		});
-
-		return stream;
-	}
-
 	createReadableStream(path: string, options: CreateReadStreamOptions = {}): ReadableStream {
 		const key = this.normalizeKey(path);
 		if (!key) {
@@ -802,30 +697,19 @@ class S3FS implements IFileSystem {
 
 		// Create a WritableStream that buffers data and uploads when done
 		const buffer: Uint8Array[] = [];
-		let controller: WritableStreamDefaultController;
 		const client = this.client;
 		const checkAborted = this.checkAborted.bind(this);
 
 		return new WritableStream({
-			start(ctrl) {
-				controller = ctrl;
-			},
 			async write(chunk) {
-				buffer.push(chunk);
+				buffer.push(chunk instanceof Uint8Array ? chunk : new Uint8Array(chunk));
 			},
 			async close() {
-				try {
-					checkAborted(signal);
-					const data = Buffer.concat(buffer.map((chunk) => Buffer.from(chunk)));
-					await client.putObject(key, data, undefined, undefined, undefined);
-					// Controller closes automatically when close() completes successfully
-				} catch (error) {
-					controller.error(error);
-				}
+				checkAborted(signal);
+				await client.putObject(key, concatBytes(buffer) as never, undefined, undefined, undefined);
 			},
-			abort(reason) {
+			abort() {
 				buffer.length = 0;
-				controller.error(reason);
 			},
 		});
 	}
@@ -843,4 +727,35 @@ class S3FS implements IFileSystem {
 		// This is a fallback - real implementation would need presigned URLs
 		return undefined;
 	}
+}
+
+function concatBytes(chunks: readonly Uint8Array[]): Uint8Array {
+	const total = chunks.reduce((sum, chunk) => sum + chunk.byteLength, 0);
+	const output = new Uint8Array(total);
+	let offset = 0;
+	for (const chunk of chunks) {
+		output.set(chunk, offset);
+		offset += chunk.byteLength;
+	}
+	return output;
+}
+
+function matchesPosixGlob(value: string, pattern: string): boolean {
+	let expression = '^';
+	for (let index = 0; index < pattern.length; index += 1) {
+		const character = pattern[index];
+		if (character === '*') {
+			if (pattern[index + 1] === '*') {
+				expression += '.*';
+				index += 1;
+			} else {
+				expression += '[^/]*';
+			}
+		} else if (character === '?') {
+			expression += '[^/]';
+		} else {
+			expression += character.replace(/[\\^$.*+?()[\]{}|]/gu, '\\$&');
+		}
+	}
+	return new RegExp(`${expression}$`, 'u').test(value);
 }
