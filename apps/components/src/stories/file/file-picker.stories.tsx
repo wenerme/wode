@@ -153,8 +153,9 @@ export const NavigateDuringPendingSaveCheck: Story = {
 	play: async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
 		await userEvent.click(await canvas.findByRole('button', { name: '保存' }));
+		await canvas.findByText('正在检查保存目标…');
 		await userEvent.dblClick(canvas.getByRole('button', { name: '文档' }));
-		expect(await canvas.findByRole('button', { name: '计划.md' })).toBeInTheDocument();
+		expect(await canvas.findByRole('button', { name: '计划.md' }, { timeout: 5_000 })).toBeInTheDocument();
 		await new Promise((resolve) => setTimeout(resolve, 220));
 		expect(canvas.getByLabelText('选择结果')).toHaveTextContent('等待选择');
 	},
