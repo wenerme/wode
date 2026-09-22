@@ -138,16 +138,6 @@ function isObjectLike(value: unknown): value is object {
 	return (typeof value === 'object' && value !== null) || typeof value === 'function';
 }
 
-export type IServerFileSystem = IFileSystem & {
-	createReadStream(path: string, options?: CreateReadStreamOptions): import('node:stream').Readable;
-	createWriteStream(path: string, options?: CreateWriteStreamOptions): import('node:stream').Writable;
-	writeFile(
-		path: string,
-		data: FileSystemWritableData | Buffer | import('node:stream').Readable,
-		options?: WriteFileOptions,
-	): Promise<void>;
-};
-
 export type IFileStat = {
 	/** Parent path. */
 	directory: string;
