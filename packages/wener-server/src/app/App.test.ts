@@ -1,4 +1,4 @@
-import { test } from 'vite-plus/test';
+import { test } from 'vitest';
 import { App } from './App';
 
 test('App', async (_ctx) => {

@@ -1,4 +1,4 @@
-import { expect, test } from 'vite-plus/test';
+import { expect, test } from 'vitest';
 import { isSemanticZero, strip } from './strip';
 
 test('prune', () => {

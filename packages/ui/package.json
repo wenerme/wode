@@ -72,7 +72,7 @@
 		"check:source-lines": "node ../../apps/components/scripts/check-ui-source-lines.mjs --root packages/ui",
 		"prepack": "pnpm build",
 		"prepublishOnly": "pnpm build",
-		"test": "pnpm check:source-lines && pnpm build && pnpm --workspace-root exec vp test run packages/ui/tests",
+		"test": "pnpm check:source-lines && pnpm build && pnpm --workspace-root exec vitest run packages/ui/tests",
 		"typecheck": "tsc --noEmit"
 	},
 	"peerDependencies": {

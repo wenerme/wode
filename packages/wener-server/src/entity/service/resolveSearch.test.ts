@@ -1,4 +1,4 @@
-import { test } from 'vite-plus/test';
+import { test } from 'vitest';
 import { resolveSearch } from './resolveSearch';
 
 test('resolveSearch', () => {

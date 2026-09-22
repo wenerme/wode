@@ -1,6 +1,6 @@
 import { PersonaSchema } from '@wener/ai/agent/persona';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { describe, expect, it } from 'vite-plus/test';
+import { describe, expect, it } from 'vitest';
 import { AgentPersonaEditor, createLorebookEntry, createPersonaAsset } from './index';
 
 describe('AgentPersonaEditor', () => {

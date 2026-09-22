@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, test, vi } from 'vite-plus/test';
+import { afterEach, describe, expect, test, vi } from 'vitest';
 import { createOpfsFileSystem, isOpfsFileSystemSupported } from './createOpfsFileSystem';
 import { FileSystemError } from './FileSystemError';
 import { isDirectoryPickerFileSystemSupported, pickDirectoryFileSystem } from './pickDirectoryFileSystem';

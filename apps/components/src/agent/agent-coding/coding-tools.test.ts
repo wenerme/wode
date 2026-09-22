@@ -1,6 +1,6 @@
 import { createMemoryFileSystem } from '@wener/common/fs';
 import type { ToolSet } from 'ai';
-import { describe, expect, it, vi } from 'vite-plus/test';
+import { describe, expect, it, vi } from 'vitest';
 import { type CreateAgentCodingToolsOptions, createAgentCodingTools } from './coding-tools';
 import { createAgentCommandRuntime } from './command-runtime';
 import type { AgentCommandExecutor } from './command-types';

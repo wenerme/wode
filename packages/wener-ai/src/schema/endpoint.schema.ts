@@ -48,14 +48,12 @@ export const EndpointCompatibilityInputSchema = z
 		const error = enabledCompatibilityError(value);
 		if (error) context.addIssue({ code: 'custom', message: error, path: ['enabled'] });
 	})
-	.transform(
-		({ api, type, url, disabled, ...canonical }): z.input<typeof EndpointSchema> => ({
-			...canonical,
-			apiType: canonical.apiType ?? api ?? type,
-			baseUrl: canonical.baseUrl ?? url,
-			enabled: canonical.enabled ?? !(disabled ?? false),
-		}),
-	)
+	.transform(({ api, type, url, disabled, ...canonical }): z.input<typeof EndpointSchema> => ({
+		...canonical,
+		apiType: canonical.apiType ?? api ?? type,
+		baseUrl: canonical.baseUrl ?? url,
+		enabled: canonical.enabled ?? !(disabled ?? false),
+	}))
 	.pipe(EndpointSchema);
 export type EndpointCompatibilityInput = z.input<typeof EndpointCompatibilityInputSchema>;
 

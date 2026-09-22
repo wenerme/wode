@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vite-plus/test';
+import { describe, expect, it, vi } from 'vitest';
 import { validateOpenAICompatibleConnection } from './connection-config';
 import { listOpenAICompatibleModels, OpenAICompatibleModelListError } from './model-list';
 import { toSafeAgentError } from './safe-error';
@@ -35,6 +35,28 @@ describe('OpenAI-compatible connection config', () => {
 		expect(error.message).not.toContain('private-key');
 		expect(error.message).not.toContain('example.com/private');
 		expect(error.message.length).toBeLessThanOrEqual(320);
+	});
+
+	it('unwraps known SDK response wrappers and still redacts their cause', () => {
+		const cause = new Error('模型响应超过客户端安全限制。 Bearer private-key https://example.com/private');
+		const error = toSafeAgentError(new Error('Failed to process successful response', { cause }), ['private-key']);
+		expect(error.message).toContain('模型响应超过客户端安全限制');
+		expect(error.message).not.toMatch(/private-key|example\.com/iu);
+	});
+
+	it('bounds SDK cause traversal and tolerates invalid or cyclic causes', () => {
+		let deepError = new Error('最终安全错误。');
+		for (let depth = 0; depth < 4; depth += 1) {
+			deepError = new Error('Failed to process successful response', { cause: deepError });
+		}
+		expect(toSafeAgentError(deepError).message).toBe('最终安全错误。');
+
+		const cyclic = new Error('Failed to process successful response');
+		cyclic.cause = cyclic;
+		expect(toSafeAgentError(cyclic).message).toBe('Failed to process successful response');
+		expect(toSafeAgentError(new Error('Failed to process successful response', { cause: 'details' })).message).toBe(
+			'Failed to process successful response',
+		);
 	});
 });
 

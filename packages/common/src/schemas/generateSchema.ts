@@ -24,7 +24,7 @@ export async function generateSchema({ file, dir = path.dirname(file) }: { file:
 	await fs.writeFile(zodFile, Codegen.ModelToZod.Generate(model));
 
 	await new Promise((resolve, reject) => {
-		exec(`pnpm exec vp fmt "${dir}/{typebox,zod}/*.ts"`, (error, stdout, stderr) => {
+		exec(`pnpm exec biome format --write "${dir}/{typebox,zod}/*.ts"`, (error, stdout, stderr) => {
 			if (error) {
 				console.error(`exec error: ${error}`);
 				reject(error);

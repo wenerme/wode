@@ -1,5 +1,6 @@
 import process from 'node:process';
-import { configDefaults, defineConfig, loadEnv } from 'vite-plus';
+import { configDefaults, defineConfig } from 'vitest/config';
+import { loadEnv } from 'vite';
 
 // https://vitejs.dev/config/
 export default ({ mode }: { mode: string }) => {

@@ -12,7 +12,7 @@ import? 'local.just'
 # package.just, packages/*.just, servers.just and bake.just preserve the caller.
 
 import 'just/workspace.just'
-import 'just/vp.just'
+import 'just/tools.just'
 import 'just/buf.just'
 import 'just/ci.just'
 import 'just/components.just'

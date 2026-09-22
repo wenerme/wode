@@ -1,5 +1,5 @@
 import { renderToStaticMarkup } from 'react-dom/server';
-import { describe, expect, it, vi } from 'vite-plus/test';
+import { describe, expect, it, vi } from 'vitest';
 import type { FileManagerFileSystem } from './file-manager-types';
 import type { FileManagerWindowActions } from './file-manager-window';
 import { FILE_MANAGER_WINDOW_KIND, renderFileManagerWindow, showFileManager } from './file-manager-window';

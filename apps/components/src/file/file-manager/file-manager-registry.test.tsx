@@ -6,7 +6,7 @@ import {
 	useFileManagerRegistry,
 } from '@components/file-viewer/file-manager-registry';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { describe, expect, it } from 'vite-plus/test';
+import { describe, expect, it } from 'vitest';
 
 function definition(
 	id: string,

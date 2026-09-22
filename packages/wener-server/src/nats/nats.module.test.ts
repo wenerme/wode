@@ -2,7 +2,7 @@ import type { NatsConnection } from '@nats-io/nats-core';
 import { type INestApplication, Inject, Injectable, Module } from '@nestjs/common';
 import { FastifyAdapter } from '@nestjs/platform-fastify';
 import { Test } from '@nestjs/testing';
-import { afterAll, beforeAll, describe, expect, test } from 'vite-plus/test';
+import { afterAll, beforeAll, describe, expect, test } from 'vitest';
 import { InjectNatsClient, NatsConn, NatsModule } from './NatsModule';
 
 process.env.NATS_URL ||= process.env.TEST_NATS_URL || 'nats://demo.nats.io:4222';

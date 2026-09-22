@@ -2,7 +2,7 @@ set positional-arguments := true
 
 [no-cd]
 dev port=env_var_or_default("PORT", "3000"):
-    NODE_ENV=development pnpm exec vp dev --port "$1" --host
+    NODE_ENV=development pnpm exec pnpm exec vite --port "$1" --host
 
 [no-cd]
 build: build-web web-image
@@ -12,7 +12,7 @@ build-web: write-version build-web-vite
 
 [no-cd]
 build-web-vite:
-    NODE_ENV=production pnpm exec vp build
+    NODE_ENV=production pnpm exec pnpm exec vite build
 
 [no-cd]
 write-version:
@@ -28,4 +28,4 @@ web-image-static:
 
 [no-cd]
 test *args:
-    pnpm exec vp test run --config vitest.config.ts "$@"
+    pnpm exec vitest run --config vitest.config.ts "$@"

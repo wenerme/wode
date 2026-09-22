@@ -3,7 +3,7 @@
 import { type Provider, ProviderSchema } from '@wener/ai/schema';
 import { act, useState } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
-import { afterEach, beforeEach, describe, expect, it } from 'vite-plus/test';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { AiProviderEditor } from '../ai-provider-editor';
 
 const initial = ProviderSchema.parse({

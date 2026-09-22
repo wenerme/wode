@@ -1,5 +1,5 @@
 import { build } from 'esbuild';
-import { describe, expect, it } from 'vite-plus/test';
+import { describe, expect, it } from 'vitest';
 
 describe('@wener/common/fs/just-bash browser bundle', () => {
 	it('bundles without resolving the optional just-bash runtime or node:zlib', async () => {

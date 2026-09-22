@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vite-plus/test';
+import { describe, expect, test } from 'vitest';
 import { randomUUIDv7 } from '../crypto/randomUUIDv7';
 import { isUUID } from './isUUID';
 import { isUUIDv4 } from './isUUIDv4';

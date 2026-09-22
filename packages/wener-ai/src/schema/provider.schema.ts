@@ -61,14 +61,12 @@ export const ProviderCompatibilityInputSchema = z
 		const error = enabledCompatibilityError(value);
 		if (error) context.addIssue({ code: 'custom', message: error, path: ['enabled'] });
 	})
-	.transform(
-		({ api, url, disabled, ...canonical }): z.input<typeof ProviderSchema> => ({
-			...canonical,
-			apiType: canonical.apiType ?? api,
-			baseUrl: canonical.baseUrl ?? url,
-			enabled: canonical.enabled ?? !(disabled ?? false),
-		}),
-	)
+	.transform(({ api, url, disabled, ...canonical }): z.input<typeof ProviderSchema> => ({
+		...canonical,
+		apiType: canonical.apiType ?? api,
+		baseUrl: canonical.baseUrl ?? url,
+		enabled: canonical.enabled ?? !(disabled ?? false),
+	}))
 	.pipe(ProviderSchema);
 export type ProviderCompatibilityInput = z.input<typeof ProviderCompatibilityInputSchema>;
 

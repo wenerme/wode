@@ -1,4 +1,4 @@
-import { assert, describe, test } from 'vite-plus/test';
+import { assert, describe, test } from 'vitest';
 import { isPlainObject } from '../../langs/isPlainObject';
 import { type MergeOptions, merge } from './merge';
 

@@ -3,10 +3,10 @@ import { fileURLToPath } from 'node:url';
 import { storybookTest } from '@storybook/addon-vitest/vitest-plugin';
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
-import { defineConfig, type PluginOption } from 'vite-plus';
-import { playwright } from 'vite-plus/test/browser-playwright';
-import type { TestProjectConfiguration } from 'vite-plus/test/config';
-import { registryAliases } from './vite-registry-aliases';
+import { defineConfig, type PluginOption } from 'vite';
+import { playwright } from '@vitest/browser-playwright';
+import type { TestProjectConfiguration } from 'vitest/config';
+import { registryAliases } from './vite-registry-aliases.ts';
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const playwrightChannel = process.env.STORYBOOK_PLAYWRIGHT_CHANNEL;

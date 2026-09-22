@@ -4,7 +4,7 @@ import { type Endpoint, EndpointSchema } from '@wener/ai/schema';
 import { act, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { describe, expect, it } from 'vite-plus/test';
+import { describe, expect, it } from 'vitest';
 import { AiEndpointEditor } from './ai-endpoint-editor';
 
 const endpoint = EndpointSchema.parse({

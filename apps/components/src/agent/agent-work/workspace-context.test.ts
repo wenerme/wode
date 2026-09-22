@@ -1,6 +1,6 @@
 import type { Skill } from '@wener/ai/agent/skill';
 import { createMemoryFileSystem, type IFileSystem } from '@wener/common/fs';
-import { describe, expect, it } from 'vite-plus/test';
+import { describe, expect, it } from 'vitest';
 import { composeAgentInstructions } from './instruction-composer';
 import { loadAgentWorkspaceContext } from './workspace-context';
 import type { AgentWorkspace } from './workspace-types';

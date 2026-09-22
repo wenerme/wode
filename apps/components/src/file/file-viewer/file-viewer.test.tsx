@@ -1,5 +1,5 @@
 import { renderToStaticMarkup } from 'react-dom/server';
-import { describe, expect, it, vi } from 'vite-plus/test';
+import { describe, expect, it, vi } from 'vitest';
 import { createFileManager } from '@/file/file-viewer/file-manager-registry';
 import { FileViewer } from './file-viewer';
 import {

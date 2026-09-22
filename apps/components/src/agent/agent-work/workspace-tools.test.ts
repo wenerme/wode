@@ -1,6 +1,6 @@
 import { createMemoryFileSystem, type IFileStat, type IFileSystem } from '@wener/common/fs';
 import type { ToolSet } from 'ai';
-import { describe, expect, it, vi } from 'vite-plus/test';
+import { describe, expect, it, vi } from 'vitest';
 import { createAgentWorkspaceReadTools, MaxAgentWorkspaceListEntries } from './workspace-tools';
 import type { AgentWorkspace } from './workspace-types';
 

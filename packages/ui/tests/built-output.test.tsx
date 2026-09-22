@@ -1,5 +1,5 @@
 import { renderToStaticMarkup } from 'react-dom/server';
-import { describe, expect, it } from 'vite-plus/test';
+import { describe, expect, it } from 'vitest';
 import { Button } from '../lib/button/index.js';
 import { Card, CardBody, CardTitle } from '../lib/card/index.js';
 import { Input } from '../lib/input/index.js';

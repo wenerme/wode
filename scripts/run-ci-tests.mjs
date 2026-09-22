@@ -77,7 +77,7 @@ export function createTestCommand(suiteName, selection, root = repositoryRoot) {
 	const suite = suites[suiteName];
 	if (!suite) throw new Error(`Unknown CI test suite: ${suiteName}`);
 	const cwd = path.resolve(root, suite.directory);
-	const args = ['exec', 'vp', 'test'];
+	const args = ['exec', 'vitest'];
 	if (selection.mode === 'related') {
 		args.push('related', ...selection.files.map((file) => path.resolve(root, file)), '--run', '--passWithNoTests');
 	} else {

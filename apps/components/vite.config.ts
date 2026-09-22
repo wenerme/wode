@@ -1,6 +1,6 @@
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
-import { defineConfig, type PluginOption } from 'vite-plus';
+import { defineConfig, type PluginOption } from 'vite';
 import { registryAliases } from './vite-registry-aliases';
 
 export default defineConfig({

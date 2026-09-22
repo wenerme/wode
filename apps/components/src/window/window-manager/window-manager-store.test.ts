@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vite-plus/test';
+import { describe, expect, it, vi } from 'vitest';
 import { createWindowManagerSnapshot } from './window-manager-persistence';
 import { createWindowManagerStore, getWindowManagerInvariantErrors } from './window-manager-store';
 import { createWindowManagerTestStore } from './window-manager-store.test-support';

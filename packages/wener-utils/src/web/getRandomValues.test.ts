@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it, vi } from 'vite-plus/test';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 const FILL_BYTE = 0xa5;
 

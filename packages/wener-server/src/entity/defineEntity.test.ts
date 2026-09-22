@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { defineEntity as defineMikroEntity } from '@mikro-orm/core';
-import { expect, test } from 'vite-plus/test';
+import { expect, test } from 'vitest';
 import { defineEntity, getEntityDef } from './defineEntity';
 import { setEntitySchemaClass } from './defineEntitySchemaClass';
 import { StandardBaseEntity } from './StandardBaseEntity';

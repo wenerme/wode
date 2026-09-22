@@ -1,4 +1,4 @@
-import { expect, test } from 'vite-plus/test';
+import { expect, test } from 'vitest';
 import { randomUUID } from '../web/randomUUID';
 import { createULID, isULID, parseULID, ulid } from './ulid';
 

@@ -1,4 +1,4 @@
-import { test } from 'vite-plus/test';
+import { test } from 'vitest';
 import { z } from 'zod';
 import { getServiceSchema, type ServiceSchema } from './getServiceSchema';
 import { Method } from './Method';

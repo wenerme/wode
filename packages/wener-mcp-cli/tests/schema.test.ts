@@ -2,7 +2,7 @@
  * Unit tests for schema module
  */
 
-import { describe, expect, test } from 'vite-plus/test';
+import { describe, expect, test } from 'vitest';
 import {
 	ClaudeConfigSchema,
 	CursorConfigSchema,

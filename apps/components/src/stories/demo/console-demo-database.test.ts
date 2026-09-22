@@ -1,6 +1,6 @@
 import 'fake-indexeddb/auto';
 import Dexie from 'dexie';
-import { afterEach, describe, expect, it } from 'vite-plus/test';
+import { afterEach, describe, expect, it } from 'vitest';
 import {
 	ConsoleDemoDatabase,
 	deleteCustomers,

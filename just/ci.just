@@ -10,7 +10,7 @@ ci:
     just buf-gen
     git diff --check
     git diff --exit-code -- proto buf.yaml buf.gen.yaml packages/common/src/protos
-    pnpm exec vp check --no-error-on-unmatched-pattern
+    pnpm exec biome lint .
     pnpm -r --if-present run typecheck
     just test-ci
 
