@@ -6,11 +6,11 @@
   "dependencies": [
     "@wener/ai@^0.1.21",
     "@wener/common@^3.0.0",
-    "ai@7.0.31",
+    "ai@7.0.107",
     "daisyui",
     "lucide-react",
     "react-resizable-panels@^4.12.1",
-    "zod@4.4.3"
+    "zod@4.6.5"
   ],
   "registryDependencies": [
     "https://ui-components.wener.me/r/file-manager.json",

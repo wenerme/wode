@@ -5,11 +5,11 @@
   "description": "Agent Work with an injected bounded command executor, approval-required write and bash tools, poisoned runtime isolation, and a controlled plain-text terminal",
   "dependencies": [
     "@wener/common@^3.0.0",
-    "ai@7.0.31",
+    "ai@7.0.107",
     "daisyui",
     "just-bash@^3.1.0",
     "lucide-react",
-    "zod@4.4.3"
+    "zod@4.6.5"
   ],
   "registryDependencies": [
     "https://ui-components.wener.me/r/agent-work.json"

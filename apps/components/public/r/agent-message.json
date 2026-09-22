@@ -4,10 +4,10 @@
   "title": "Agent Message",
   "description": "AI SDK UIMessage presenter for streaming text, provider reasoning, multimodal files, sources, steps, tools, actions, metadata, and usage",
   "dependencies": [
-    "ai@7.0.31",
+    "ai@7.0.107",
     "daisyui",
     "lucide-react",
-    "streamdown@2.5.0"
+    "streamdown@2.6.0"
   ],
   "registryDependencies": [
     "https://ui-components.wener.me/r/message.json"

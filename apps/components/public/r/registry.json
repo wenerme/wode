@@ -93,7 +93,7 @@
       "title": "Message Scroller",
       "description": "Real-DOM transcript scroller with live-edge following, anchoring, reader intent, visibility, and commands",
       "dependencies": [
-        "@shadcn/react@0.2.1",
+        "@shadcn/react@0.3.1",
         "daisyui",
         "lucide-react"
       ],
@@ -116,10 +116,10 @@
       "title": "Agent Message",
       "description": "AI SDK UIMessage presenter for streaming text, provider reasoning, multimodal files, sources, steps, tools, actions, metadata, and usage",
       "dependencies": [
-        "ai@7.0.31",
+        "ai@7.0.107",
         "daisyui",
         "lucide-react",
-        "streamdown@2.5.0"
+        "streamdown@2.6.0"
       ],
       "registryDependencies": [
         "https://ui-components.wener.me/r/message.json"
@@ -489,11 +489,11 @@
       "title": "Agent Chat",
       "description": "Controlled operational Chat block with AI SDK UIMessage transcript, reader-aware scrolling, multimodal composer, send, stop, and retry",
       "dependencies": [
-        "@shadcn/react@0.2.1",
-        "ai@7.0.31",
+        "@shadcn/react@0.3.1",
+        "ai@7.0.107",
         "daisyui",
         "lucide-react",
-        "streamdown@2.5.0"
+        "streamdown@2.6.0"
       ],
       "registryDependencies": [
         "https://ui-components.wener.me/r/agent-composer.json",
@@ -529,12 +529,12 @@
       "title": "Agent AI SDK Direct Adapter",
       "description": "In-memory OpenAI-compatible connection editor, bounded model discovery and files, AI SDK ToolLoopAgent DirectChatTransport, and useChat lifecycle",
       "dependencies": [
-        "@ai-sdk/openai-compatible@3.0.12",
-        "@ai-sdk/react@4.0.34",
-        "ai@7.0.31",
+        "@ai-sdk/openai-compatible@3.0.53",
+        "@ai-sdk/react@4.0.110",
+        "ai@7.0.107",
         "daisyui",
         "lucide-react",
-        "zod@4.4.3"
+        "zod@4.6.5"
       ],
       "registryDependencies": [
         "https://ui-components.wener.me/r/agent-chat.json",
@@ -611,11 +611,11 @@
       "dependencies": [
         "@wener/ai@^0.1.21",
         "@wener/common@^3.0.0",
-        "ai@7.0.31",
+        "ai@7.0.107",
         "daisyui",
         "lucide-react",
         "react-resizable-panels@^4.12.1",
-        "zod@4.4.3"
+        "zod@4.6.5"
       ],
       "registryDependencies": [
         "https://ui-components.wener.me/r/file-manager.json",
@@ -676,11 +676,11 @@
       "description": "Agent Work with an injected bounded command executor, approval-required write and bash tools, poisoned runtime isolation, and a controlled plain-text terminal",
       "dependencies": [
         "@wener/common@^3.0.0",
-        "ai@7.0.31",
+        "ai@7.0.107",
         "daisyui",
         "just-bash@^3.1.0",
         "lucide-react",
-        "zod@4.4.3"
+        "zod@4.6.5"
       ],
       "registryDependencies": [
         "https://ui-components.wener.me/r/agent-work.json"
@@ -736,7 +736,7 @@
       "dependencies": [
         "@wener/ai@^0.1.21",
         "@wener/common@^3.0.0",
-        "ai@7.0.31",
+        "ai@7.0.107",
         "daisyui",
         "lucide-react"
       ],
@@ -939,7 +939,7 @@
       "title": "Web Vitals",
       "description": "A headless, lazily loaded Core Web Vitals collector with callback and browser-event reporting",
       "dependencies": [
-        "web-vitals@5.3.0"
+        "web-vitals@6.2.2"
       ],
       "files": [
         {

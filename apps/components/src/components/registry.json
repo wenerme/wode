@@ -112,7 +112,7 @@
 			"type": "registry:component",
 			"title": "Web Vitals",
 			"description": "A headless, lazily loaded Core Web Vitals collector with callback and browser-event reporting",
-			"dependencies": ["web-vitals@5.3.0"],
+			"dependencies": ["web-vitals@6.2.2"],
 			"files": [
 				{
 					"path": "./web-vitals.tsx",

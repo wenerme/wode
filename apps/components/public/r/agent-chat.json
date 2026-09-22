@@ -4,11 +4,11 @@
   "title": "Agent Chat",
   "description": "Controlled operational Chat block with AI SDK UIMessage transcript, reader-aware scrolling, multimodal composer, send, stop, and retry",
   "dependencies": [
-    "@shadcn/react@0.2.1",
-    "ai@7.0.31",
+    "@shadcn/react@0.3.1",
+    "ai@7.0.107",
     "daisyui",
     "lucide-react",
-    "streamdown@2.5.0"
+    "streamdown@2.6.0"
   ],
   "registryDependencies": [
     "https://ui-components.wener.me/r/agent-composer.json",
