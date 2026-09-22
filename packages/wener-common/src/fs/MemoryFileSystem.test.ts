@@ -77,6 +77,31 @@ describe('MemoryFileSystem', () => {
 		await fs.writeFile('/bounded.txt', 'abcdef');
 		expect(await fs.readFile('/bounded.txt', { encoding: 'text', maxBytes: 3 })).toBe('abc');
 		expect([...(await fs.readFile('/bounded.txt', { maxBytes: 4 }))]).toEqual([97, 98, 99, 100]);
+		await expect(fs.readFile('/bounded.txt', { maxBytes: -1 })).rejects.toMatchObject({ code: 'EINVAL' });
+	});
+
+	test('enforces aggregate capacity across replacements, copies, and removals', async () => {
+		const fs = createMemoryFileSystem({ maxBytes: 5 });
+		await fs.writeFile('/first.txt', '12345');
+		await expect(fs.writeFile('/overflow.txt', '1')).rejects.toMatchObject({ code: 'ENOSPC' });
+		expect(await fs.exists('/overflow.txt')).toBe(false);
+
+		await fs.writeFile('/first.txt', '12');
+		await fs.writeFile('/second.txt', '345');
+		await expect(fs.copy('/second.txt', '/copy.txt')).rejects.toMatchObject({ code: 'ENOSPC' });
+		await fs.rm('/second.txt');
+		await fs.copy('/first.txt', '/copy.txt');
+		expect(await fs.readFile('/copy.txt', { encoding: 'text' })).toBe('12');
+	});
+
+	test('serializes concurrent writes before applying aggregate capacity', async () => {
+		const fs = createMemoryFileSystem({ maxBytes: 5 });
+		const results = await Promise.allSettled([fs.writeFile('/first.txt', '123'), fs.writeFile('/second.txt', '456')]);
+
+		expect(results.filter((result) => result.status === 'fulfilled')).toHaveLength(1);
+		expect(results.filter((result) => result.status === 'rejected')).toHaveLength(1);
+		expect(results.find((result) => result.status === 'rejected')).toMatchObject({ reason: { code: 'ENOSPC' } });
+		expect(await fs.readdir('/')).toHaveLength(1);
 	});
 
 	test('returns sanitized stats', async () => {

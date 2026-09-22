@@ -20,7 +20,7 @@ const loadJustBash = () => import('just-bash/browser');
 
 type SessionOptions = Omit<CreateJustBashAgentSessionOptions, 'workspace'>;
 
-async function createSession(options: SessionOptions = {}, fs = createMemoryFileSystem()) {
+async function createSession(options: SessionOptions = {}, fs: IFileSystem = createMemoryFileSystem()) {
 	await fs.mkdir('/project/demo', { recursive: true });
 	const workspace = await createJustBashWorkspaceFromLoader(loadJustBash, {
 		fs,
