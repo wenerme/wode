@@ -1,16 +1,19 @@
 {
-	"$schema": "https://ui.shadcn.com/schema/registry-item.json",
-	"name": "hello-button",
-	"title": "Hello Button",
-	"description": "A simple hello button component for testing the registry",
-	"dependencies": ["daisyui", "lucide-react"],
-	"files": [
-		{
-			"path": "src/components/hello-button.tsx",
-			"content": "import { Hand } from 'lucide-react';\nimport type { ComponentPropsWithRef } from 'react';\nimport { cn } from '@/lib/utils';\n\nexport type HelloButtonProps = ComponentPropsWithRef<'button'>;\n\nexport function HelloButton({\n\tchildren = 'Hello from Wener Components!',\n\tclassName,\n\ttype = 'button',\n\t...props\n}: HelloButtonProps) {\n\treturn (\n\t\t<button type={type} className={cn('btn btn-primary', className)} {...props}>\n\t\t\t<Hand className='size-4' aria-hidden />\n\t\t\t{children}\n\t\t</button>\n\t);\n}\n",
-			"type": "registry:component",
-			"target": "@components/hello-button.tsx"
-		}
-	],
-	"type": "registry:component"
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "hello-button",
+  "title": "Hello Button",
+  "description": "A simple hello button component for testing the registry",
+  "dependencies": [
+    "daisyui",
+    "lucide-react"
+  ],
+  "files": [
+    {
+      "path": "src/components/hello-button.tsx",
+      "content": "import { Hand } from 'lucide-react';\nimport type { ComponentPropsWithRef } from 'react';\nimport { cn } from '@/lib/utils';\n\nexport type HelloButtonProps = ComponentPropsWithRef<'button'>;\n\nexport function HelloButton({\n\tchildren = 'Hello from Wener Components!',\n\tclassName,\n\ttype = 'button',\n\t...props\n}: HelloButtonProps) {\n\treturn (\n\t\t<button type={type} className={cn('btn btn-primary', className)} {...props}>\n\t\t\t<Hand className='size-4' aria-hidden />\n\t\t\t{children}\n\t\t</button>\n\t);\n}\n",
+      "type": "registry:component",
+      "target": "@components/hello-button.tsx"
+    }
+  ],
+  "type": "registry:component"
 }
