@@ -4,7 +4,7 @@
   "title": "Message Scroller",
   "description": "Real-DOM transcript scroller with live-edge following, anchoring, reader intent, visibility, and commands",
   "dependencies": [
-    "@shadcn/react@0.2.1",
+    "@shadcn/react@0.3.1",
     "daisyui",
     "lucide-react"
   ],

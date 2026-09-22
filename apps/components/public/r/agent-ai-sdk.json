@@ -4,12 +4,12 @@
   "title": "Agent AI SDK Direct Adapter",
   "description": "In-memory OpenAI-compatible connection editor, bounded model discovery and files, AI SDK ToolLoopAgent DirectChatTransport, and useChat lifecycle",
   "dependencies": [
-    "@ai-sdk/openai-compatible@3.0.12",
-    "@ai-sdk/react@4.0.34",
-    "ai@7.0.31",
+    "@ai-sdk/openai-compatible@3.0.53",
+    "@ai-sdk/react@4.0.110",
+    "ai@7.0.107",
     "daisyui",
     "lucide-react",
-    "zod@4.4.3"
+    "zod@4.6.5"
   ],
   "registryDependencies": [
     "https://ui-components.wener.me/r/agent-chat.json",

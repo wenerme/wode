@@ -6,7 +6,7 @@
   "dependencies": [
     "@wener/ai@^0.1.21",
     "@wener/common@^3.0.0",
-    "ai@7.0.31",
+    "ai@7.0.107",
     "daisyui",
     "lucide-react"
   ],

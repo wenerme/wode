@@ -131,7 +131,7 @@ function collectDeclaredPackageSpecs() {
 }
 
 function pnpmList(arguments_) {
-	return runSyncJsonCommand({ command: pnpm, arguments_: ['list', ...arguments_], cwd: appRoot });
+	return runSyncJsonCommand({ command: pnpm, arguments_: ['--filter', '.', 'list', ...arguments_], cwd: appRoot });
 }
 
 function collectInstalledPackages(inventory) {
