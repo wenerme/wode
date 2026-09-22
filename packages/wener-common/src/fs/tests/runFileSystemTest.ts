@@ -1,4 +1,4 @@
-import { expect } from 'vite-plus/test';
+import { expect } from 'vitest';
 import { FileSystemError, FileSystemErrorCode } from '../FileSystemError';
 import type { IFileSystem, IServerFileSystem } from '../IFileSystem';
 

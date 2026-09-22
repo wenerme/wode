@@ -1,7 +1,7 @@
 import devServer, { defaultOptions } from '@hono/vite-dev-server';
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
-import { defineConfig } from 'vite-plus';
+import { defineConfig } from 'vite';
 
 const tailwindcssPlugin: any = tailwindcss;
 const reactPlugin: any = react;

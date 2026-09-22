@@ -1,6 +1,6 @@
 import { CircleCheck } from 'lucide-react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { describe, expect, it } from 'vite-plus/test';
+import { describe, expect, it } from 'vitest';
 import { Status } from './status';
 
 describe('status primitive', () => {

@@ -2,7 +2,7 @@
 
 import { act, useState } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vite-plus/test';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { OpenAICompatibleConnectionConfig, OpenAICompatibleConnectionDraft } from './connection-config';
 import { OpenAICompatibleConnectionEditor } from './connection-editor';
 

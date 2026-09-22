@@ -1,9 +1,8 @@
-import AES from 'crypto-js/aes';
-import Utf8 from 'crypto-js/enc-utf8';
-import ECB from 'crypto-js/mode-ecb';
-import Pkcs7 from 'crypto-js/pad-pkcs7';
+import { ecb } from '@noble/ciphers/aes.js';
+import { ArrayBuffers } from '@wener/utils';
 
-const key = Utf8.parse('fintaxfintaxfint');
+const key = ArrayBuffers.from('fintaxfintaxfint', 'utf8', Uint8Array);
+const decoder = new TextDecoder('utf-8', { fatal: true });
 
 export function decrypt(s: string): string;
 export function decrypt(s: string | undefined): string | undefined;
@@ -13,5 +12,5 @@ export function decrypt(s: string | undefined) {
 		return s;
 	}
 
-	return Utf8.stringify(AES.decrypt(s, key, { mode: ECB, padding: Pkcs7 }));
+	return decoder.decode(ecb(key).decrypt(ArrayBuffers.from(s, 'base64', Uint8Array)));
 }

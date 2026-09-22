@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vite-plus/test';
+import { describe, expect, it } from 'vitest';
 import { getByPath, parseGrafanaTime, removeByPath, resolveTimeRange, setByPath } from './utils';
 
 describe('grafana utils', () => {

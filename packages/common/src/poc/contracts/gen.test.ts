@@ -2,7 +2,7 @@ import { writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { ethers } from 'ethers';
 import { sepolia } from 'viem/chains';
-import { test } from 'vite-plus/test';
+import { test } from 'vitest';
 import contracts from './contracts.json';
 import Out from './GeoWeb.json';
 

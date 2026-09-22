@@ -1,7 +1,7 @@
 import type { Persona } from '@wener/ai/agent/persona';
 import { getSkillIdentity, type Skill } from '@wener/ai/agent/skill';
 import { createMemoryFileSystem } from '@wener/common/fs';
-import { describe, expect, it } from 'vite-plus/test';
+import { describe, expect, it } from 'vitest';
 import { createAgentCommandRuntime } from '../agent-coding';
 import type { AgentWorkspaceContext } from '../agent-work';
 import { createAgentPlaygroundRuntimeConfiguration } from './playground-runtime';

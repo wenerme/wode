@@ -2,7 +2,7 @@ import '../package.just'
 
 [no-cd]
 fmt-pkg:
-    pnpm exec vp fmt package.json
+    pnpm exec biome format --write package.json
 
 [no-cd]
 build: build-lib

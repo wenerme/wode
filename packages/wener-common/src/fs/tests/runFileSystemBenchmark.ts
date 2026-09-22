@@ -1,5 +1,5 @@
 import { performance } from 'node:perf_hooks';
-import { expect } from 'vite-plus/test';
+import { expect } from 'vitest';
 import type { IFileSystem } from '../IFileSystem';
 
 export type RunFileSystemBenchmarkOptions = {

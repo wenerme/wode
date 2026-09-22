@@ -1,4 +1,4 @@
-import { test } from 'vite-plus/test';
+import { test } from 'vitest';
 import { CubeClient } from './CubeClient';
 
 test.skipIf(true)('CubeClient', async () => {

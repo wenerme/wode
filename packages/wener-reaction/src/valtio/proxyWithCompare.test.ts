@@ -1,5 +1,5 @@
 import { getVersion } from 'valtio';
-import { expect, test } from 'vite-plus/test';
+import { expect, test } from 'vitest';
 import { proxyWith } from './proxyWith';
 import { proxyWithCompare } from './proxyWithCompare';
 

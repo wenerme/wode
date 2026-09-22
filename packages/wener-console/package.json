@@ -58,7 +58,7 @@
 		"typecheck": "tsc --noEmit",
 		"build": "just -f ../../just/packages/wener-console.just build",
 		"build-storybook": "storybook build",
-		"preview": "vp dev --host 0.0.0.0",
+		"preview": "pnpm exec vite --host 0.0.0.0",
 		"storybook": "storybook dev -p 6052",
 		"test": "just -f ../../just/package.just package-test"
 	},
@@ -94,7 +94,7 @@
 		"std-env": "^4.2.0",
 		"tailwind-merge": "^3.7.0",
 		"use-mutative": "^1.3.1",
-		"web-vitals": "^5.3.0",
+		"web-vitals": "^6.2.2",
 		"zustand-mutative": "^1.3.1"
 	},
 	"devDependencies": {
@@ -107,8 +107,8 @@
 		"@floating-ui/react": "^0.27.20",
 		"@graphql-typed-document-node/core": "^3.2.0",
 		"@sinclair/typebox": "^0.34.52",
-		"@storybook/addon-links": "10.5.0",
-		"@storybook/react-vite": "10.5.0",
+		"@storybook/addon-links": "^10.6.0",
+		"@storybook/react-vite": "^10.6.0",
 		"@tailwindcss/vite": "^4.3.3",
 		"@tanstack/react-query": "^5.103.1",
 		"@types/react-is": "^19.3.0",
@@ -124,12 +124,12 @@
 		"graphql": "16.14.2",
 		"graphql-request": "^7.4.0",
 		"immer": "^11.1.18",
-		"lru-cache": "^11.5.2",
+		"lru-cache": "^11.5.3",
 		"next": "^16.3.5",
 		"react-icons": "^5.7.0",
 		"react-is": "^19.3.0",
 		"react-rnd": "^10.5.3",
-		"storybook": "10.5.0",
+		"storybook": "^10.6.0",
 		"ts-pattern": "^5.9.0",
 		"urql": "^5.0.4",
 		"wonka": "^6.3.6"

@@ -1,6 +1,6 @@
 import consola from 'consola';
 import { Consola, type ConsolaInstance } from 'consola/core';
-import { test } from 'vite-plus/test';
+import { test } from 'vitest';
 import { createStandardConsolaReporter } from './createStandardConsolaReporter';
 
 test('formatLogObject', async () => {

@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite-plus';
+import { defineConfig } from 'vite';
 
 // Keep the existing offline CI baseline explicit. The general workspace
 // config also discovers service-dependent and browser tests.

@@ -1,7 +1,7 @@
 import type { IFileSystem } from '@wener/common/fs';
 import { Tree } from 'react-arborist';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { describe, expect, it, vi } from 'vite-plus/test';
+import { describe, expect, it, vi } from 'vitest';
 import type { FileManagerFileSystem } from '../file-manager/file-manager-types';
 import { FileTree } from './file-tree';
 import { defaultFileTreeMessages } from './file-tree-model';

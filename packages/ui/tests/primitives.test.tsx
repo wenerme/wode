@@ -1,5 +1,5 @@
 import { renderToStaticMarkup } from 'react-dom/server';
-import { describe, expect, it } from 'vite-plus/test';
+import { describe, expect, it } from 'vitest';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../src/accordion';
 import { Alert, AlertDescription, AlertTitle } from '../src/alert';
 import { Badge } from '../src/badge';

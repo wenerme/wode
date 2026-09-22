@@ -61,6 +61,7 @@
 		"@types/ws": "^8.18.1",
 		"https-proxy-agent": "^9.1.0",
 		"node-fetch": "^3.3.2",
+		"tinybench": "^6.1.4",
 		"undici": "^8.10.2",
 		"zod": "^4.6.5"
 	},

@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vite-plus/test';
+import { describe, expect, test } from 'vitest';
 import * as S from '../wecom/server/schema';
 
 describe('wecom server schemas', () => {

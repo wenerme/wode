@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { expect, test } from 'vite-plus/test';
+import { expect, test } from 'vitest';
 import { renderReactNodeToMarkdown } from './renderReactNodeToMarkdown';
 import { renderReactNodeToText } from './renderReactNodeToText';
 
@@ -24,7 +24,17 @@ test('renderText', async () => {
 	).toBe('Hello World!\nMy name is **Wener**.');
 
 	// https://github.com/pmndrs/react-nil
-	await import('./render');
+	const { flushSync, render } = await import('./render');
+	const container = flushSync(() => render(<span data-value='first'>Hello</span>));
+	expect(container.head).toMatchObject({
+		type: 'span',
+		props: { 'data-value': 'first' },
+	});
+
+	flushSync(() => render(<strong>Updated</strong>));
+	expect(container.head).toMatchObject({ type: 'strong' });
+	flushSync(() => render(null));
+	expect(container.head).toBeNull();
 
 	let ele = (
 		<>

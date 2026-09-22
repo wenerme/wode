@@ -1,5 +1,5 @@
 import { ArrayBuffers } from '@wener/utils';
-import { describe, expect, it } from 'vite-plus/test';
+import { describe, expect, it } from 'vitest';
 import { PHC } from './PHC';
 
 const { deserialize, serialize } = PHC;

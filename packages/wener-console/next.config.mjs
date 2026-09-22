@@ -25,8 +25,6 @@ const nextConfig = {
 			'@nats-io/services',
 			'@nats-io/transport-node',
 			'bcrypt',
-			'better-sqlite3',
-			'@mikro-orm/better-sqlite',
 			'@mikro-orm/core',
 			'@mikro-orm/decorators',
 			'@mikro-orm/entity-generator',
@@ -69,7 +67,6 @@ const nextConfig = {
 	webpack: (config, { isServer, webpack }) => {
 		// https://github.com/typestack/class-transformer/issues/563
 		const lazyImports = [
-			'@mikro-orm/better-sqlite',
 			'@mikro-orm/core',
 			'@mikro-orm/decorators',
 			'@mikro-orm/entity-generator',

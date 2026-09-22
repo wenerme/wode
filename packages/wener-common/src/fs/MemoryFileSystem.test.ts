@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, test, vi } from 'vite-plus/test';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { createMemoryFileSystem } from './createMemoryFileSystem';
 import { runFileSystemTest } from './tests/runFileSystemTest';
 

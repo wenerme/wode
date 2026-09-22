@@ -8,7 +8,7 @@ import {
 	ReflectMetadataProvider,
 } from '@mikro-orm/decorators/legacy';
 import { NodeSqliteDialect, SqliteDriver } from '@mikro-orm/sql';
-import { expect, test } from 'vite-plus/test';
+import { expect, test } from 'vitest';
 import { DemoQueryExamples } from '../ast/ast.test';
 import { toMikroOrmQuery } from './toMikroOrmQuery';
 
@@ -116,7 +116,9 @@ class UserEntity extends BaseEntity {
 	attrs?: Record<string, any>;
 
 	@OneToOne(() => UserProfileEntity, 'user', { deleteRule: 'cascade' })
-	profile?: UserProfileEntity;
+	// Keep the relation target lazy: Vite+ emits design:type metadata for
+	// annotations, and the circular class reference is still in TDZ here.
+	profile?: any;
 
 	@ManyToMany(() => GroupEntity)
 	groups = new Collection<GroupEntity>(this);
@@ -135,7 +137,7 @@ class UserProfileEntity extends BaseEntity {
 	}
 
 	@OneToOne(() => UserEntity)
-	user!: UserEntity;
+	user!: any;
 }
 
 @Entity({ tableName: 'groups' })

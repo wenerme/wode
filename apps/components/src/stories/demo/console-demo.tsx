@@ -139,10 +139,7 @@ function ConsoleDemoWorkspace({
 	);
 	return (
 		<ConsoleDemoDataProvider databaseName={databaseName} partition={dataPartition} resetOnMount={resetDataOnMount}>
-			<MemoryRouter
-				initialEntries={[pagePaths[initialPage]]}
-				future={{ v7_relativeSplatPath: true, v7_startTransition: true }}
-			>
+			<MemoryRouter initialEntries={[pagePaths[initialPage]]}>
 				<RoutedConsoleRuntime store={store} userEmail={userEmail} userName={userName} onSignOut={onSignOut} />
 			</MemoryRouter>
 		</ConsoleDemoDataProvider>

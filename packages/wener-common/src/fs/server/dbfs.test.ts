@@ -1,6 +1,6 @@
 import { BaseEntity } from '@mikro-orm/core';
 import type { EntityManager } from '@mikro-orm/sql';
-import { beforeEach, describe, expect, test } from 'vite-plus/test';
+import { beforeEach, describe, expect, test } from 'vitest';
 import { runFileSystemBenchmark } from '../tests/runFileSystemBenchmark';
 import {
 	runFileSystemTestBasic,

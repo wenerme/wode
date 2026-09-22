@@ -1,5 +1,5 @@
 import { renderToStaticMarkup } from 'react-dom/server';
-import { describe, expect, it } from 'vite-plus/test';
+import { describe, expect, it } from 'vitest';
 import { WindowManagerControls, WindowManagerFrame, WindowManagerTitleBar } from './window-manager-chrome';
 import { useWindowManager, WindowManagerProvider } from './window-manager-context';
 import { WindowManagerDock } from './window-manager-dock';

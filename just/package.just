@@ -5,15 +5,15 @@ set positional-arguments := true
 
 [no-cd]
 package-fmt *args:
-    pnpm exec vp fmt src package.json "$@"
+    pnpm exec biome format --write src package.json "$@"
 
 [no-cd]
 package-lint *args:
-    pnpm exec vp lint src "$@"
+    pnpm exec biome lint src "$@"
 
 [no-cd]
 package-lint-fix *args:
-    pnpm exec vp lint --fix src "$@"
+    pnpm exec biome lint --write src "$@"
 
 [no-cd]
 package-typecheck *args:
@@ -40,14 +40,14 @@ package-test *args:
     fi
 
     if test -n "$config"; then
-        exec pnpm exec vp test run --config "$PWD/$config" "$@"
+        exec pnpm exec vitest run --config "$PWD/$config" "$@"
     fi
 
     repo_root="$(git rev-parse --show-toplevel)"
     root_config="$repo_root/vitest.config.ts"
     if test -f "$root_config"; then
         package_name="$(node -p "require('./package.json').name")"
-        exec pnpm --dir "$repo_root" exec vp test run --config "$root_config" --project "$package_name" "$@"
+        exec pnpm --dir "$repo_root" exec vitest run --config "$root_config" --project "$package_name" "$@"
     fi
 
     printf 'No Vitest/Vite test configuration found in %s.\n' "$PWD" >&2

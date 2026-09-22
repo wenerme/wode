@@ -1,4 +1,4 @@
-import { assert, test } from 'vite-plus/test';
+import { assert, test } from 'vitest';
 
 test('typed copy typed', () => {
 	const raw = Uint8Array.from([1, 2, 3, 4, 5]);
