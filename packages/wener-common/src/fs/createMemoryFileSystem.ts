@@ -5,8 +5,10 @@ import type {
 	CopyOptions,
 	CreateReadStreamOptions,
 	CreateWriteStreamOptions,
+	FileSystemOperationOptions,
+	FileSystemWritableData,
 	IFileStat,
-	IFileSystem,
+	IStreamableFileSystem,
 	MkdirOptions,
 	ReaddirOptions,
 	ReadFileOptions,
@@ -16,6 +18,7 @@ import type {
 	WriteFileOptions,
 } from './IFileSystem';
 import { assertReaddirEntryLimit, validateReaddirMaxEntries } from './readdirLimit';
+import { validateReadFileMaxBytes } from './resourceLimits';
 
 export type MemoryFileSystemContent = string | ArrayBuffer | ArrayBufferView<ArrayBufferLike>;
 
@@ -33,6 +36,13 @@ export type MemoryFileSystemNode = MemoryFileSystemFile | MemoryFileSystemDirect
 
 export type CreateMemoryFileSystemOptions = {
 	root?: MemoryFileSystemDirectory;
+	/** Maximum aggregate byte size of file contents. */
+	maxBytes?: number;
+};
+
+export type MemoryFileSystem = IStreamableFileSystem & {
+	/** Release object URLs created by this filesystem. */
+	dispose(): void;
 };
 
 type MemoryFile = IFileStat & {
@@ -46,11 +56,11 @@ type MemoryDirectory = IFileStat & {
 };
 
 type MemoryNode = MemoryFile | MemoryDirectory;
-type WritableData = string | ArrayBuffer | ArrayBufferView<ArrayBufferLike> | ReadableStream;
+type WritableData = FileSystemWritableData;
 type UrlCache = { url?: string };
 
-export function createMemoryFileSystem(options: CreateMemoryFileSystemOptions = {}): IFileSystem {
-	return new MemoryFileSystem(options);
+export function createMemoryFileSystem(options: CreateMemoryFileSystemOptions = {}): MemoryFileSystem {
+	return new MemoryFileSystemImplementation(options);
 }
 
 class MemoryFileSystemError extends FileSystemError {
@@ -60,12 +70,21 @@ class MemoryFileSystemError extends FileSystemError {
 	}
 }
 
-class MemoryFileSystem implements IFileSystem {
+class MemoryFileSystemImplementation implements MemoryFileSystem {
+	private readonly maxBytes: number | undefined;
+	private mutationTail: Promise<void> = Promise.resolve();
 	private readonly root: MemoryDirectory;
 	private readonly urlCache = new WeakMap<MemoryFile, UrlCache>();
+	private usedBytes = 0;
 
-	constructor({ root }: CreateMemoryFileSystemOptions = {}) {
+	constructor({ root, maxBytes }: CreateMemoryFileSystemOptions = {}) {
+		if (maxBytes !== undefined && (!Number.isSafeInteger(maxBytes) || maxBytes < 0)) {
+			throw new MemoryFileSystemError('maxBytes must be a non-negative safe integer', 'EINVAL');
+		}
+		this.maxBytes = maxBytes;
 		this.root = root ? this.cloneInitialDirectory(root, '/') : this.createDirectory('', '/');
+		this.usedBytes = this.getNodeBytes(this.root);
+		this.assertCapacity(this.usedBytes);
 	}
 
 	private createDirectory(name: string, path: string): MemoryDirectory {
@@ -180,8 +199,16 @@ class MemoryFileSystem implements IFileSystem {
 		return copy;
 	}
 
-	private async readWritableData(data: WritableData, signal?: AbortSignal): Promise<Uint8Array<ArrayBuffer>> {
-		if (!this.isReadableStream(data)) return this.toBytes(data);
+	private async readWritableData(
+		data: WritableData,
+		signal?: AbortSignal,
+		maxBytes?: number,
+	): Promise<Uint8Array<ArrayBuffer>> {
+		if (!this.isReadableStream(data)) {
+			const content = this.toBytes(data);
+			this.assertFileSize(content.byteLength, maxBytes);
+			return content;
+		}
 
 		const reader = data.getReader();
 		const chunks: Uint8Array<ArrayBuffer>[] = [];
@@ -200,9 +227,13 @@ class MemoryFileSystem implements IFileSystem {
 				const chunk = this.toBytes(value as MemoryFileSystemContent);
 				chunks.push(chunk);
 				total += chunk.byteLength;
+				this.assertFileSize(total, maxBytes);
 			}
 			this.throwIfAborted(signal);
 			return this.concatBytes(chunks, total);
+		} catch (error) {
+			await reader.cancel(error).catch(() => undefined);
+			throw error;
 		} finally {
 			signal?.removeEventListener('abort', onAbort);
 			reader.releaseLock();
@@ -225,6 +256,32 @@ class MemoryFileSystem implements IFileSystem {
 
 	private throwIfAborted(signal?: AbortSignal): void {
 		if (signal?.aborted) throw new MemoryFileSystemError('Operation aborted', 'ABORT_ERR');
+	}
+
+	private assertFileSize(size: number, maxBytes?: number): void {
+		if (maxBytes !== undefined && size > maxBytes) {
+			throw new MemoryFileSystemError(`File exceeds the remaining ${maxBytes} byte capacity`, 'ENOSPC');
+		}
+	}
+
+	private assertCapacity(size: number): void {
+		if (this.maxBytes !== undefined && size > this.maxBytes) {
+			throw new MemoryFileSystemError(`Filesystem exceeds the ${this.maxBytes} byte capacity`, 'ENOSPC');
+		}
+	}
+
+	private getNodeBytes(node: MemoryNode): number {
+		if (node.kind === 'file') return node.content.byteLength;
+		return node.children.reduce((total, child) => total + this.getNodeBytes(child), 0);
+	}
+
+	private enqueueMutation<T>(operation: () => Promise<T>): Promise<T> {
+		const result = this.mutationTail.then(operation, operation);
+		this.mutationTail = result.then(
+			() => undefined,
+			() => undefined,
+		);
+		return result;
 	}
 
 	private validateDestination(
@@ -313,7 +370,8 @@ class MemoryFileSystem implements IFileSystem {
 		return this.sanitizeStat(node);
 	}
 
-	async exists(path: string): Promise<boolean> {
+	async exists(path: string, options?: FileSystemOperationOptions): Promise<boolean> {
+		this.throwIfAborted(options?.signal);
 		return !!this.getNode(path)[0];
 	}
 
@@ -327,7 +385,11 @@ class MemoryFileSystem implements IFileSystem {
 		return node.children.map((child) => this.sanitizeStat(child));
 	}
 
-	async mkdir(path: string, options?: MkdirOptions): Promise<void> {
+	mkdir(path: string, options?: MkdirOptions): Promise<void> {
+		return this.enqueueMutation(() => this.mkdirInternal(path, options));
+	}
+
+	private async mkdirInternal(path: string, options?: MkdirOptions): Promise<void> {
 		this.throwIfAborted(options?.signal);
 		const normalized = this.normalizePath(path);
 		const [node] = this.getNode(normalized);
@@ -357,22 +419,24 @@ class MemoryFileSystem implements IFileSystem {
 		if (!node) throw new MemoryFileSystemError(`File not found: ${path}`, 'ENOENT');
 		if (node.kind !== 'file') throw new MemoryFileSystemError(`Is a directory: ${path}`, 'EISDIR');
 
-		const maxBytes = options?.maxBytes === undefined ? node.content.byteLength : Math.max(0, options.maxBytes);
+		const maxBytes = validateReadFileMaxBytes(options?.maxBytes) ?? node.content.byteLength;
 		const content = node.content.slice(0, maxBytes);
 		options?.onDownloadProgress?.({ loaded: content.byteLength, total: node.content.byteLength });
 		return options?.encoding === 'text' ? new TextDecoder().decode(content) : content;
 	}
 
-	async writeFile(path: string, data: WritableData, options: WriteFileOptions = {}): Promise<void> {
+	writeFile(path: string, data: WritableData, options: WriteFileOptions = {}): Promise<void> {
+		return this.enqueueMutation(() => this.writeFileInternal(path, data, options));
+	}
+
+	private async writeFileInternal(path: string, data: WritableData, options: WriteFileOptions): Promise<void> {
 		this.throwIfAborted(options.signal);
 		if (data === null || data === undefined) {
 			throw new MemoryFileSystemError('Invalid data: data cannot be null or undefined', 'EINVAL');
 		}
 
 		const { normalized, parentPath, name } = this.validateDestination(path, 'EINVAL');
-		const content = await this.readWritableData(data, options.signal);
-		const parent = this.findOrCreateDirectory(parentPath);
-		const existing = parent.children.find((child) => child.name === name);
+		const [existing] = this.getNode(normalized);
 		if (existing) {
 			if (options.overwrite === false) {
 				throw new MemoryFileSystemError(`File already exists: ${path}`, 'EEXIST');
@@ -380,6 +444,12 @@ class MemoryFileSystem implements IFileSystem {
 			if (existing.kind === 'directory') {
 				throw new MemoryFileSystemError(`Cannot overwrite a directory: ${path}`, 'EISDIR');
 			}
+		}
+		const previousSize = existing?.kind === 'file' ? existing.content.byteLength : 0;
+		const remainingCapacity = this.maxBytes === undefined ? undefined : this.maxBytes - this.usedBytes + previousSize;
+		const content = await this.readWritableData(data, options.signal, remainingCapacity);
+		const parent = this.findOrCreateDirectory(parentPath);
+		if (existing?.kind === 'file') {
 			this.revokeNodeUrls(existing);
 			existing.content = content;
 			existing.size = content.byteLength;
@@ -396,10 +466,15 @@ class MemoryFileSystem implements IFileSystem {
 				meta: {},
 			});
 		}
+		this.usedBytes += content.byteLength - previousSize;
 		options.onUploadProgress?.({ loaded: content.byteLength, total: content.byteLength });
 	}
 
-	async rm(path: string, options: RmOptions = {}): Promise<void> {
+	rm(path: string, options: RmOptions = {}): Promise<void> {
+		return this.enqueueMutation(() => this.rmInternal(path, options));
+	}
+
+	private async rmInternal(path: string, options: RmOptions): Promise<void> {
 		this.throwIfAborted(options.signal);
 		const normalized = this.normalizePath(path);
 		if (normalized === '/') throw new MemoryFileSystemError('Cannot remove the root directory', 'EBUSY');
@@ -414,9 +489,14 @@ class MemoryFileSystem implements IFileSystem {
 		}
 		this.revokeNodeUrls(node);
 		parent.children.splice(parent.children.indexOf(node), 1);
+		this.usedBytes -= this.getNodeBytes(node);
 	}
 
-	async rename(oldPath: string, newPath: string, options: RenameOptions = {}): Promise<void> {
+	rename(oldPath: string, newPath: string, options: RenameOptions = {}): Promise<void> {
+		return this.enqueueMutation(() => this.renameInternal(oldPath, newPath, options));
+	}
+
+	private async renameInternal(oldPath: string, newPath: string, options: RenameOptions): Promise<void> {
 		this.throwIfAborted(options.signal);
 		const sourcePath = this.normalizePath(oldPath);
 		if (sourcePath === '/') throw new MemoryFileSystemError('Cannot move the root directory', 'EBUSY');
@@ -436,6 +516,7 @@ class MemoryFileSystem implements IFileSystem {
 		if (destination) {
 			this.revokeNodeUrls(destination);
 			destinationParent.children.splice(destinationParent.children.indexOf(destination), 1);
+			this.usedBytes -= this.getNodeBytes(destination);
 		}
 		sourceParent.children.splice(sourceParent.children.indexOf(source), 1);
 		this.rebaseNode(source, destinationPath);
@@ -443,22 +524,29 @@ class MemoryFileSystem implements IFileSystem {
 		destinationParent.children.push(source);
 	}
 
-	async copy(srcPath: string, destPath: string, options: CopyOptions = {}): Promise<void> {
+	copy(srcPath: string, destPath: string, options: CopyOptions = {}): Promise<void> {
+		return this.enqueueMutation(() => this.copyInternal(srcPath, destPath, options));
+	}
+
+	private async copyInternal(srcPath: string, destPath: string, options: CopyOptions): Promise<void> {
 		this.throwIfAborted(options.signal);
 		const sourcePath = this.normalizePath(srcPath);
-		const { normalized: destinationPath, parentPath, name } = this.validateDestination(destPath);
+		const { normalized: destinationPath, parentPath } = this.validateDestination(destPath);
 		this.assertNonOverlappingPaths(sourcePath, destinationPath);
 
 		const [source] = this.getNode(sourcePath);
 		if (!source) throw new MemoryFileSystemError(`Source not found: ${srcPath}`, 'ENOENT');
 
-		const destinationParent = this.findOrCreateDirectory(parentPath);
-		const destination = destinationParent.children.find((child) => child.name === name);
+		const [destination] = this.getNode(destinationPath);
 		if (destination) {
 			if (!options.overwrite) throw new MemoryFileSystemError(`Destination exists: ${destPath}`, 'EEXIST');
 			this.assertReplaceable(source, destination);
 		}
 
+		const sourceBytes = source.kind === 'directory' && options.shallow ? 0 : this.getNodeBytes(source);
+		const destinationBytes = destination ? this.getNodeBytes(destination) : 0;
+		this.assertCapacity(this.usedBytes + sourceBytes - destinationBytes);
+		const destinationParent = this.findOrCreateDirectory(parentPath);
 		const clone = this.cloneNode(source, destinationPath, options.shallow ?? false);
 		if (destination) {
 			this.revokeNodeUrls(destination);
@@ -466,6 +554,7 @@ class MemoryFileSystem implements IFileSystem {
 		} else {
 			destinationParent.children.push(clone);
 		}
+		this.usedBytes += sourceBytes - destinationBytes;
 	}
 
 	getUrl(file: IFileStat | string): string | undefined {
@@ -509,10 +598,14 @@ class MemoryFileSystem implements IFileSystem {
 	createWritableStream(path: string, options: CreateWriteStreamOptions = {}): WritableStream<MemoryFileSystemContent> {
 		this.throwIfAborted(options.signal);
 		const chunks: Uint8Array<ArrayBuffer>[] = [];
+		let totalBytes = 0;
 		return new WritableStream<MemoryFileSystemContent>({
 			write: (chunk) => {
 				this.throwIfAborted(options.signal);
-				chunks.push(this.toBytes(chunk));
+				const bytes = this.toBytes(chunk);
+				this.assertFileSize(totalBytes + bytes.byteLength, this.maxBytes);
+				chunks.push(bytes);
+				totalBytes += bytes.byteLength;
 			},
 			close: async () => {
 				this.throwIfAborted(options.signal);
@@ -520,7 +613,12 @@ class MemoryFileSystem implements IFileSystem {
 			},
 			abort: () => {
 				chunks.length = 0;
+				totalBytes = 0;
 			},
 		});
+	}
+
+	dispose(): void {
+		this.revokeNodeUrls(this.root);
 	}
 }
