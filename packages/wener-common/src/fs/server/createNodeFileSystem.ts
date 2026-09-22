@@ -8,7 +8,6 @@ import type {
 	CreateReadStreamOptions,
 	CreateWriteStreamOptions,
 	IFileStat,
-	IServerFileSystem,
 	MkdirOptions,
 	ReaddirOptions,
 	ReadFileOptions,
@@ -20,6 +19,7 @@ import type {
 } from '../IFileSystem';
 import { validateReaddirMaxEntries } from '../readdirLimit';
 import { validateReadFileMaxBytes } from '../resourceLimits';
+import type { IServerFileSystem } from './IFileSystem';
 import { readNodeDirectory, toNodeFileStat } from './nodeFileSystemDirectory';
 import {
 	assertNodePathHasNoSymlink,

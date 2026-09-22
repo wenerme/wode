@@ -1,10 +1,7 @@
-import type { Readable, Writable } from 'node:stream';
 import type { ContractRouterClient } from '@orpc/contract';
 import { ArrayBuffers } from '@wener/utils';
 import type {
 	CopyOptions,
-	CreateReadStreamOptions,
-	CreateWriteStreamOptions,
 	IFileSystem,
 	MkdirOptions,
 	ReaddirOptions,
@@ -114,13 +111,5 @@ class ContractFS implements IFileSystem {
 			recursive: options?.recursive,
 			force: options?.force,
 		});
-	}
-
-	createReadStream(_path: string, _options?: CreateReadStreamOptions): Readable {
-		throw new Error('createReadStream is not implemented in ContractFS');
-	}
-
-	createWriteStream(_path: string, _options?: CreateWriteStreamOptions): Writable {
-		throw new Error('createWriteStream is not implemented in ContractFS');
 	}
 }
