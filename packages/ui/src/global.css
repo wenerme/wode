@@ -1,0 +1,31 @@
+@import "tailwindcss";
+@source "./";
+
+@plugin "daisyui" {
+	themes:
+		light --default,
+		dark --prefersdark;
+	root: ":root";
+	logs: false;
+}
+
+@layer base {
+	* {
+		@apply border-base-300 outline-primary/30;
+	}
+
+	html,
+	body {
+		min-height: 100%;
+	}
+
+	body {
+		background: var(--color-base-200);
+		color: var(--color-base-content);
+	}
+
+	button,
+	a {
+		-webkit-tap-highlight-color: transparent;
+	}
+}
