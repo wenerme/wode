@@ -13,6 +13,12 @@ describe('@wener/ui export contract', () => {
 	it('keeps every source family and publish export aligned', () => {
 		for (const [subpath, sourceTarget] of Object.entries(packageJson.exports)) {
 			if (subpath === './package.json') continue;
+			if (subpath.includes('*')) {
+				expect(sourceTarget).toContain('*');
+				const publishTarget = packageJson.publishConfig.exports[subpath];
+				expect(publishTarget).toBeDefined();
+				continue;
+			}
 			expect(fs.existsSync(path.join(packageRoot, sourceTarget))).toBe(true);
 
 			const publishTarget = packageJson.publishConfig.exports[subpath];
@@ -26,13 +32,17 @@ describe('@wener/ui export contract', () => {
 	it('does not expose implementation files outside family indexes', () => {
 		for (const [subpath, target] of Object.entries(packageJson.exports)) {
 			if (subpath === '.' || subpath === './package.json') continue;
-			expect(target).toMatch(/^\.\/src\/[a-z0-9-]+\/index\.ts$/);
+			if (subpath.includes('*')) {
+				expect(target).toMatch(/^\.\/src\/[a-z0-9-]+\/\*\/index\.ts$/);
+				continue;
+			}
+			expect(target).toMatch(/^\.\/src\/(?:[a-z0-9-]+\/){1,2}index\.ts$/);
 		}
 	});
 
 	it('loads every built publish entry', async () => {
 		for (const [subpath, target] of Object.entries(packageJson.publishConfig.exports)) {
-			if (subpath === './package.json') continue;
+			if (subpath === './package.json' || subpath.includes('*')) continue;
 			const publishTarget = typeof target === 'string' ? target : target.default;
 			const publishPath = path.join(packageRoot, publishTarget);
 			expect(fs.existsSync(publishPath), `${subpath} -> ${publishTarget}`).toBe(true);
