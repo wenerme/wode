@@ -13,6 +13,10 @@
 	"license": "MIT",
 	"exports": {
 		".": "./src/index.ts",
+		"./primitive": "./src/primitive/index.ts",
+		"./primitive/*": "./src/primitive/*/index.ts",
+		"./base": "./src/base/index.ts",
+		"./base/*": "./src/base/*/index.ts",
 		"./accordion": "./src/accordion/index.ts",
 		"./alert": "./src/alert/index.ts",
 		"./alert-dialog": "./src/alert-dialog/index.ts",
@@ -69,7 +73,9 @@
 	],
 	"scripts": {
 		"build": "just -f ../../just/packages/ui.just build",
-		"check:source-lines": "node ../../apps/components/scripts/check-ui-source-lines.mjs --root packages/ui",
+		"storybook": "storybook dev --no-open --port 6054",
+		"build-storybook": "storybook build",
+		"check:source-lines": "node scripts/check-source-lines.mjs",
 		"prepack": "pnpm build",
 		"prepublishOnly": "pnpm build",
 		"test": "pnpm check:source-lines && pnpm build && pnpm --workspace-root exec vitest run packages/ui/tests",
@@ -86,17 +92,39 @@
 		"tailwind-merge": "^3.7.0"
 	},
 	"devDependencies": {
+		"@storybook/addon-a11y": "^10.6.0",
+		"@storybook/addon-docs": "^10.6.0",
+		"@storybook/react-vite": "^10.6.0",
+		"@tailwindcss/vite": "^4.3.3",
 		"@types/react": "^19.3.0",
 		"@types/react-dom": "^19.3.0",
 		"react": "^19.3.0",
 		"react-dom": "^19.3.0",
-		"typescript": "7.0.2"
+		"storybook": "^10.6.0",
+		"typescript": "7.0.2",
+		"vite": "catalog:"
 	},
 	"publishConfig": {
 		"exports": {
 			".": {
 				"types": "./src/index.ts",
 				"default": "./lib/index.js"
+			},
+			"./primitive": {
+				"types": "./src/primitive/index.ts",
+				"default": "./lib/primitive/index.js"
+			},
+			"./primitive/*": {
+				"types": "./src/primitive/*/index.ts",
+				"default": "./lib/primitive/*/index.js"
+			},
+			"./base": {
+				"types": "./src/base/index.ts",
+				"default": "./lib/base/index.js"
+			},
+			"./base/*": {
+				"types": "./src/base/*/index.ts",
+				"default": "./lib/base/*/index.js"
 			},
 			"./accordion": {
 				"types": "./src/accordion/index.ts",
