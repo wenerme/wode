@@ -1,7 +1,6 @@
 packages:
   - 'apps/*'
   - 'packages/*'
-  - 'components/*'
 
 allowBuilds:
   '@mongodb-js/zstd': false
