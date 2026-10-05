@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
-import { Alert, AlertDescription, AlertTitle } from '../alert';
+import { Alert, AlertDescription } from '../alert';
 import { Badge } from '../badge';
 import { Button } from '../button';
 import { Card, CardBody, CardTitle } from '../card';
@@ -23,7 +23,7 @@ function PrimitiveShowcase() {
 					<div className='flex flex-wrap gap-2'>
 						<Button>主要操作</Button>
 						<Button variant='outline'>次要操作</Button>
-						<Badge tone='success' variant='soft'>
+						<Badge tone='neutral' variant='soft'>
 							Ready
 						</Badge>
 						<Link href='#docs'>查看文档</Link>
@@ -42,7 +42,7 @@ function PrimitiveShowcase() {
 			</Card>
 			<Alert tone='info'>
 				<div>
-					<AlertTitle>通用 UI 包</AlertTitle>
+					<div className='font-medium'>通用 UI 包</div>
 					<AlertDescription>这里只展示与产品、供应商和部署环境无关的基础组件。</AlertDescription>
 				</div>
 			</Alert>

@@ -46,16 +46,21 @@ jobs:
         run: just ci
 
       - name: Install Storybook browser
-        run: pnpm exec playwright install --with-deps chromium
+        run: pnpm -C packages/ui exec playwright install --with-deps chromium
 
-      - name: Verify components registry and Storybook
-        run: pnpm -C apps/components verify
+      - name: Test UI package
+        run: pnpm -C packages/ui test
 
-      - name: Upload components Pages artifact
+      - name: Build UI Storybook
+        run: pnpm -C packages/ui build-storybook:static
+        env:
+          STORYBOOK_BASE_PATH: /wode/
+
+      - name: Upload UI Storybook Pages artifact
         if: github.repository == 'wenerme/wode' && github.event_name == 'push' && github.ref_name == github.event.repository.default_branch
         uses: actions/upload-pages-artifact@v3
         with:
-          path: apps/components/storybook-static
+          path: packages/ui/storybook-static
 
   pages:
     if: github.repository == 'wenerme/wode' && github.event_name == 'push' && github.ref_name == github.event.repository.default_branch
@@ -74,6 +79,6 @@ jobs:
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
-      - name: Deploy components Pages
+      - name: Deploy UI Storybook Pages
         id: deployment
         uses: actions/deploy-pages@v4

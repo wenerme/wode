@@ -8,6 +8,7 @@ export * from './button';
 export * from './card';
 export * from './checkbox';
 export * from './collapsible';
+export * as Components from './components';
 export * from './daisy';
 export * from './dialog';
 export * from './drawer';
