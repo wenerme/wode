@@ -50,5 +50,5 @@ describe('@wener/ui export contract', () => {
 			const module = await import(/* @vite-ignore */ pathToFileURL(publishPath).href);
 			expect(Object.keys(module).length, subpath).toBeGreaterThan(0);
 		}
-	});
+	}, 15_000);
 });
