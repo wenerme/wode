@@ -6,8 +6,6 @@ import { parseArgs } from 'node:util';
 const repositoryRoot = fileURLToPath(new URL('../', import.meta.url));
 const suites = {
 	baseline: { directory: '.', config: 'vitest.ci.config.ts', args: [] },
-	components: { directory: 'apps/components', config: 'vite.config.ts', args: ['--dir', 'src'] },
-	storybook: { directory: 'apps/components', config: 'vitest.config.ts', args: [] },
 };
 
 /** Include staged, unstaged and untracked files for local use as well as PR commits. */
@@ -50,21 +48,8 @@ export function selectTests(suite, changes) {
 			return { mode: 'full', reason: `Configuration, dependency or non-module input: ${file}`, files: [] };
 		}
 	}
-	// Storybook transforms CSF into generated tests. A story file has a stable
-	// related-test boundary; component/config changes still run both projects.
-	if (suite === 'storybook') {
-		if (relevant.every(({ file }) => /^apps\/components\/src\/.*\.stories\.[cm]?[jt]sx?$/.test(file))) {
-			return { mode: 'related', reason: 'Select changed Storybook stories', files: relevant.map(({ file }) => file) };
-		}
-		return { mode: 'full', reason: 'Storybook generated-test coverage', files: [] };
-	}
 	if (suite === 'baseline' && relevant.some(({ file }) => file.startsWith('packages/'))) {
 		return { mode: 'full', reason: 'Shared package changes may affect every baseline project', files: [] };
-	}
-	// Vite may externalize workspace packages; do not rely on traversing them
-	// to select downstream component tests.
-	if (suite === 'components' && relevant.some(({ file }) => !file.startsWith('apps/components/src/'))) {
-		return { mode: 'full', reason: 'Changes outside the component source graph', files: [] };
 	}
 	return {
 		mode: 'related',
@@ -94,8 +79,7 @@ export function main(args = process.argv.slice(2), { root = repositoryRoot, env 
 		options: { base: { type: 'string' }, full: { type: 'boolean' }, 'dry-run': { type: 'boolean' } },
 	});
 	const [suiteName = 'baseline'] = positionals;
-	if (positionals.length > 1 || !suites[suiteName])
-		throw new Error('Expected suite: baseline, components or storybook');
+	if (positionals.length > 1 || !suites[suiteName]) throw new Error('Expected suite: baseline');
 	const base = values.base ?? env.WODE_TEST_BASE;
 	let selection = { mode: 'full', reason: 'No incremental base requested', files: [] };
 	if (values.full) {

@@ -8,7 +8,6 @@ The name comes from **Wener nODE & DEMO**. The repository is organized as a pnpm
 
 | Path                                                                 | Responsibility                                                                                     |
 | -------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| `apps/components`                                                    | Waku component lab, Storybook catalog, and the shadcn-compatible Wode Registry.                    |
 | `apps/console`                                                       | The application console and app-specific routes, modules, and foundation code.                     |
 | `apps/server`                                                        | Server application entry points and API integrations.                                              |
 | `packages/ui`                                                        | Application-agnostic React primitives built with Base UI and Tailwind CSS.                         |
@@ -34,7 +33,7 @@ Legacy experiments and the former standalone web/playground applications are not
 - pnpm `12.4.2`
 - Just `1.38.0` or newer
 - Buf CLI for protobuf formatting, linting, and generation
-- Chromium for the browser-based Storybook tests
+- Chromium for the package Storybook interaction tests
 
 The required package-manager and runtime versions are declared in the root `package.json`. Install pnpm with Corepack or through your preferred system package manager, then install dependencies:
 
@@ -43,10 +42,10 @@ corepack enable
 pnpm install
 ```
 
-For the Storybook browser suite, install Chromium once on the development machine:
+For the package Storybook interaction tests, install Chromium once on the development machine:
 
 ```bash
-pnpm exec playwright install --with-deps chromium
+pnpm -C packages/ui exec playwright install --with-deps chromium
 ```
 
 ## Common commands
@@ -79,50 +78,9 @@ just -f ../../just/packages/wener-common.just build
 
 Package-specific build and publish behavior belongs in `just/packages/*.just`; workspace-wide orchestration belongs in `just/workspace.just`, `just/ci.just`, and the domain files for Proto, components, and server entrypoints.
 
-## Components and Registry
+## UI package
 
-`apps/components` is the source and delivery surface for reusable Wode console components. Its authored source is organized by domain under:
-
-```text
-apps/components/src/
-├── agent/
-├── auth/
-├── components/
-├── console/
-├── file/
-├── resource/
-├── ui/
-└── window/
-```
-
-The same source tree powers runtime usage, Storybook, and the generated flat Registry catalog. `apps/components/registry.json` and the domain manifests contain publishing metadata; generated files under `apps/components/public/r/` must be rebuilt rather than edited by hand.
-
-Useful component commands:
-
-```bash
-pnpm -C apps/components dev
-pnpm -C apps/components storybook
-pnpm -C apps/components registry:build
-pnpm -C apps/components registry:check
-pnpm -C apps/components registry:consumer-check -- --all
-pnpm -C apps/components verify
-```
-
-`verify` runs router and source checks, TypeScript, unit tests, browser Storybook tests, Story structure checks, Registry checks, clean consumer checks, the Waku build, and the Pages artifact check. See [`apps/components/README.md`](apps/components/README.md) for Registry ownership, dependency direction, and installation examples.
-
-The public Registry uses flat addresses such as:
-
-```text
-https://ui-components.wener.me/r/console-shell.json
-```
-
-Consumers can install an item with shadcn:
-
-```bash
-npx shadcn add https://ui-components.wener.me/r/console-shell.json
-```
-
-`packages/ui` is the lower-level primitive package. It exposes independent subpaths such as `@wener/ui/button`, `@wener/ui/dialog`, and `@wener/ui/input`. It uses Base UI for stateful behavior and Tailwind CSS/DaisyUI-compatible classes for presentation. Its verification commands are:
+`packages/ui` owns the reusable, application-agnostic UI surface. It exposes independent subpaths such as `@wener/ui/button`, `@wener/ui/dialog`, `@wener/ui/input`, and the generic composed families under `@wener/ui/components/*`. It uses Base UI for stateful behavior and Tailwind CSS/DaisyUI-compatible classes for presentation. Its verification commands are:
 
 ```bash
 pnpm -C packages/ui test
@@ -156,7 +114,7 @@ Generation updates the checked-in clients under `packages/common/src/protos`. CI
 
 ## CI and branches
 
-The GitHub Actions Build workflow runs on `main`, `develop`, and pull requests targeting those branches. It installs the declared pnpm, Node.js, and Just versions, runs `just ci`, installs Chromium, and verifies the complete components and Registry surface. The default public branch is `main`; `develop` is the protected integration branch.
+The GitHub Actions Build workflow runs on `main`, `develop`, and pull requests targeting those branches. It installs the declared pnpm, Node.js, and Just versions, runs `just ci`, runs the package UI tests, and builds the package Storybook. The default public branch is `main`; `develop` is the protected integration branch.
 
 Pull requests provide their target commit as `WODE_TEST_BASE`. The CI test wrapper uses Vite+ related testing for ordinary source and Storybook changes, skips documentation-only changes, and falls back to full coverage for dependency, configuration, generated, deleted, or ambiguous inputs. Pushes and manual runs keep the full test baseline.
 
@@ -165,10 +123,11 @@ Before opening a pull request, run at least:
 ```bash
 git diff --check
 just ci
-pnpm -C apps/components verify
+pnpm -C packages/ui test
+pnpm -C packages/ui build-storybook:static
 ```
 
-The root task entrypoint is `just`; there is no second root Makefile to keep in sync. Keep generated Registry and protobuf output deterministic, use Vite+ commands for new formatting and tests, and keep reusable UI contracts separate from application-specific behavior.
+The root task entrypoint is `just`; there is no second root Makefile to keep in sync. Keep protobuf output deterministic, use Vite+ commands for new formatting and tests, and keep reusable UI contracts separate from application-specific behavior.
 
 ## License
 

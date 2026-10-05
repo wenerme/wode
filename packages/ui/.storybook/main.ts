@@ -10,7 +10,11 @@ function packagePath(packageName: string) {
 
 const config: StorybookConfig = {
 	stories: ['../src/**/*.stories.@(ts|tsx|mdx)'],
-	addons: [packagePath('@storybook/addon-a11y'), packagePath('@storybook/addon-docs')],
+	addons: [
+		packagePath('@storybook/addon-a11y'),
+		packagePath('@storybook/addon-docs'),
+		packagePath('@storybook/addon-vitest'),
+	],
 	framework: {
 		name: packagePath('@storybook/react-vite'),
 		options: {},
@@ -25,8 +29,9 @@ const config: StorybookConfig = {
 	features: {
 		experimentalReview: true,
 	},
-	async viteFinal(currentConfig) {
+	async viteFinal(currentConfig, { configType }) {
 		return mergeConfig(currentConfig, {
+			base: configType === 'PRODUCTION' ? (process.env.STORYBOOK_BASE_PATH ?? '/') : '/',
 			plugins: [tailwindcss()],
 			css: {
 				lightningcss: {

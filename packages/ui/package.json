@@ -17,6 +17,18 @@
 		"./primitive/*": "./src/primitive/*/index.ts",
 		"./base": "./src/base/index.ts",
 		"./base/*": "./src/base/*/index.ts",
+		"./components": "./src/components/index.ts",
+		"./components/*": "./src/components/*/index.ts",
+		"./addressable-frame": "./src/components/addressable-frame/index.ts",
+		"./formats": "./src/components/formats/index.ts",
+		"./header-content-footer-layout": "./src/components/header-content-footer-layout/index.ts",
+		"./hook-form": "./src/components/hook-form/index.ts",
+		"./left-center-right-layout": "./src/components/left-center-right-layout/index.ts",
+		"./loaders": "./src/components/loaders/index.ts",
+		"./resizable": "./src/components/resizable/index.ts",
+		"./update-notification": "./src/components/update-notification/index.ts",
+		"./web-vitals": "./src/components/web-vitals/index.ts",
+		"./zoom": "./src/components/zoom/index.ts",
 		"./accordion": "./src/accordion/index.ts",
 		"./alert": "./src/alert/index.ts",
 		"./alert-dialog": "./src/alert-dialog/index.ts",
@@ -75,10 +87,11 @@
 		"build": "just -f ../../just/packages/ui.just build",
 		"storybook": "storybook dev --no-open --port 6054",
 		"build-storybook": "storybook build",
+		"build-storybook:static": "storybook build --output-dir storybook-static",
 		"check:source-lines": "node scripts/check-source-lines.mjs",
 		"prepack": "pnpm build",
 		"prepublishOnly": "pnpm build",
-		"test": "pnpm check:source-lines && pnpm build && pnpm --workspace-root exec vitest run packages/ui/tests",
+		"test": "pnpm check:source-lines && pnpm build && vitest run --config vitest.config.ts",
 		"typecheck": "tsc --noEmit"
 	},
 	"peerDependencies": {
@@ -89,20 +102,28 @@
 		"@base-ui/react": "^1.8.0",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
-		"tailwind-merge": "^3.7.0"
+		"lucide-react": "^1.47.0",
+		"react-hook-form": "^7.88.0",
+		"react-resizable-panels": "^4.12.4",
+		"tailwind-merge": "^3.7.0",
+		"web-vitals": "^6.2.2"
 	},
 	"devDependencies": {
 		"@storybook/addon-a11y": "^10.6.0",
 		"@storybook/addon-docs": "^10.6.0",
+		"@storybook/addon-vitest": "^10.6.0",
 		"@storybook/react-vite": "^10.6.0",
 		"@tailwindcss/vite": "^4.3.3",
 		"@types/react": "^19.3.0",
 		"@types/react-dom": "^19.3.0",
+		"@vitest/browser-playwright": "catalog:",
+		"playwright": "^1.63.0",
 		"react": "^19.3.0",
 		"react-dom": "^19.3.0",
 		"storybook": "^10.6.0",
 		"typescript": "7.0.2",
-		"vite": "catalog:"
+		"vite": "catalog:",
+		"vitest": "catalog:"
 	},
 	"publishConfig": {
 		"exports": {
@@ -125,6 +146,54 @@
 			"./base/*": {
 				"types": "./src/base/*/index.ts",
 				"default": "./lib/base/*/index.js"
+			},
+			"./components": {
+				"types": "./src/components/index.ts",
+				"default": "./lib/components/index.js"
+			},
+			"./components/*": {
+				"types": "./src/components/*/index.ts",
+				"default": "./lib/components/*/index.js"
+			},
+			"./addressable-frame": {
+				"types": "./src/components/addressable-frame/index.ts",
+				"default": "./lib/components/addressable-frame/index.js"
+			},
+			"./formats": {
+				"types": "./src/components/formats/index.ts",
+				"default": "./lib/components/formats/index.js"
+			},
+			"./header-content-footer-layout": {
+				"types": "./src/components/header-content-footer-layout/index.ts",
+				"default": "./lib/components/header-content-footer-layout/index.js"
+			},
+			"./hook-form": {
+				"types": "./src/components/hook-form/index.ts",
+				"default": "./lib/components/hook-form/index.js"
+			},
+			"./left-center-right-layout": {
+				"types": "./src/components/left-center-right-layout/index.ts",
+				"default": "./lib/components/left-center-right-layout/index.js"
+			},
+			"./loaders": {
+				"types": "./src/components/loaders/index.ts",
+				"default": "./lib/components/loaders/index.js"
+			},
+			"./resizable": {
+				"types": "./src/components/resizable/index.ts",
+				"default": "./lib/components/resizable/index.js"
+			},
+			"./update-notification": {
+				"types": "./src/components/update-notification/index.ts",
+				"default": "./lib/components/update-notification/index.js"
+			},
+			"./web-vitals": {
+				"types": "./src/components/web-vitals/index.ts",
+				"default": "./lib/components/web-vitals/index.js"
+			},
+			"./zoom": {
+				"types": "./src/components/zoom/index.ts",
+				"default": "./lib/components/zoom/index.js"
 			},
 			"./accordion": {
 				"types": "./src/accordion/index.ts",
