@@ -8,3 +8,4 @@ export * from './resizable';
 export * from './update-notification';
 export * from './web-vitals';
 export * from './zoom';
+export * from './window-manager';

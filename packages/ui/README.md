@@ -14,7 +14,7 @@
 - Native `<input>` wrapper 使用 `controlSize` 选择 DaisyUI 尺寸，保留原生 `size?: number` 属性。
 - DaisyUI 负责 theme-aware visual classes；禁止动态拼接 `component-${value}`，确保 Tailwind 可以扫描完整 class。
 - 共享 `@wener/ui/daisy` 只提供受限 vocabulary type，不提供接受任意 modifier 的万能 builder。
-- Console、Resource、Window、File、Agent 和 Auth runtime 属于应用域，不进入本 package；应用侧 `registry.json` 只负责 Shadcn 发布元数据。
+- Console、Resource、File、Agent 和 Auth runtime 属于应用域，不进入本 package；应用侧 `registry.json` 只负责 Shadcn 发布元数据。
 - 本 package 的基础/展示 family 不要求逐项生成 `/r/*.json`。
 
 ## Public families
@@ -85,6 +85,7 @@
 - `update-notification`：由调用方提供版本检查函数的更新通知。
 - `web-vitals`：按需加载的浏览器性能收集器。
 - `zoom`：原生 dialog 图片缩放与布局计算。
+- `window-manager`：无业务 registry、权限和路由耦合的通用窗口工作区核心，包含窗口状态、布局、Dock、Chrome、拖拽缩放、持久化和渲染插槽。应用负责提供业务 data schema、权限判断和路由集成。
 
 ```tsx
 import { CurrencyFormat } from '@wener/ui/components/formats';
