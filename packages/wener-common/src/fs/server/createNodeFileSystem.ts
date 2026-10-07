@@ -3,6 +3,7 @@ import fsp from 'node:fs/promises';
 import path from 'node:path';
 import { Readable, type Writable } from 'node:stream';
 import { pathToFileURL } from 'node:url';
+import { FileSystemError } from '../FileSystemError';
 import type {
 	CopyOptions,
 	CreateReadStreamOptions,
@@ -166,7 +167,7 @@ class NodeFs implements IServerFileSystem, INodeFileSystem {
 			);
 		} catch (err: any) {
 			if (err.code === 'ENOENT') {
-				throw new Error(`File not found: ${filePath}`);
+				throw new FileSystemError(`File not found: ${filePath}`, 'ENOENT');
 			}
 			throw err;
 		}

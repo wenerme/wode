@@ -1,4 +1,4 @@
-import { normalize } from 'pathe';
+import { normalizeLenientPosixPath } from './base/paths';
 import { FileSystemError } from './FileSystemError';
 import type {
 	CopyOptions,
@@ -89,7 +89,8 @@ class ScopedFileSystemImplementation implements ScopedFileSystem {
 
 	private resolve(path: string): string {
 		const scopedPath = normalizeScopedPath(path);
-		return this.root === '/' ? scopedPath : `${this.root}${scopedPath}`;
+		if (this.root === '/') return scopedPath;
+		return scopedPath === '/' ? this.root : `${this.root}${scopedPath}`;
 	}
 
 	private toScopedStat(stat: IFileStat): IFileStat {
@@ -107,23 +108,12 @@ class ScopedFileSystemImplementation implements ScopedFileSystem {
 		if (this.root === '/') return absolute;
 		if (absolute === this.root) return '/';
 		if (absolute.startsWith(`${this.root}/`)) return absolute.slice(this.root.length);
-		throw new FileSystemError(`文件系统返回了scope之外的路径：${absolute}`, 'EIO');
+		throw new FileSystemError('文件系统返回了 scope 之外的路径', 'EIO');
 	}
 }
 
 function normalizeScopedPath(path: string): string {
 	if (typeof path !== 'string' || !path.trim()) throw new FileSystemError('文件系统路径不能为空', 'EINVAL');
-	const rawParts = path.replaceAll('\\', '/').split('/');
-	let depth = 0;
-	for (const part of rawParts) {
-		if (!part || part === '.') continue;
-		if (part === '..') {
-			if (depth === 0) throw new FileSystemError('路径不能离开文件系统根目录', 'EINVAL');
-			depth -= 1;
-			continue;
-		}
-		depth += 1;
-	}
-	const value = normalize(path.startsWith('/') ? path : `/${path}`);
-	return value === '.' ? '/' : value;
+	const value = normalizeLenientPosixPath(path);
+	return value === '/' ? '/' : value.replace(/\/+$/u, '');
 }
