@@ -13,6 +13,15 @@ export {
 	createOpfsFileSystem,
 	isOpfsFileSystemSupported,
 } from './createOpfsFileSystem';
+export {
+	type CreateOverlayFileSystemOptions,
+	createOverlayFileSystem,
+	type OverlayChange,
+	type OverlayChangeKind,
+	type OverlayFileSystem,
+	OverlayOpaqueMarker,
+	OverlayWhiteoutPrefix,
+} from './createOverlayFileSystem';
 export { createSandboxFileSystem } from './createSandboxFileSystem';
 export { createScopedFileSystem, type ScopedFileSystem } from './createScopedFileSystem';
 export { createWebFileSystem } from './createWebFileSystem';
