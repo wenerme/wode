@@ -35,6 +35,12 @@ describe('MemoryFileSystem', () => {
 		await runFileSystemTest(fs);
 	});
 
+	test('normalizes leading double slashes and backslash separators', async () => {
+		expect(await fs.readFile('//README.txt', { encoding: 'text' })).toBe('Hello');
+		await fs.writeFile('\\nested\\value.txt', 'value');
+		expect(await fs.readFile('/nested/value.txt', { encoding: 'text' })).toBe('value');
+	});
+
 	test('stores binary data without view widening and supports Web streams', async () => {
 		const source = new Uint8Array([99, 0, 255, 1, 98]);
 		await fs.writeFile('/binary.dat', source.subarray(1, 4));
