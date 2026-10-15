@@ -13,6 +13,8 @@
 	"license": "MIT",
 	"exports": {
 		".": "./src/index.ts",
+		"./api": "./src/api/index.ts",
+		"./api/*": "./src/api/*/index.ts",
 		"./17dz": "./src/17dz/index.ts",
 		"./17dz/crypto": "./src/17dz/crypto/index.ts",
 		"./17dz/flow": "./src/17dz/flow/index.ts",
@@ -48,7 +50,8 @@
 		"./yzf": "./src/yzf/index.ts",
 		"./feishu/docs": "./src/feishu/docs/index.ts",
 		"./feishu/docs/markdown": "./src/feishu/docs/markdown/index.ts",
-		"./package.json": "./package.json"
+		"./package.json": "./package.json",
+		"./ai/router": "./src/ai/router/index.ts"
 	},
 	"files": [
 		"lib.d.ts",
@@ -60,28 +63,44 @@
 	"scripts": {
 		"typecheck": "tsc --noEmit",
 		"build": "just -f ../../just/packages/wener-client.just build",
-		"test": "just -f ../../just/package.just package-test"
+		"test": "just -f ../../just/package.just package-test",
+		"test:api-inclusion": "API_FUZZ=1 vitest run tests/api-schema-inclusion",
+		"test:api-live": "vitest run tests/api-schema-inclusion/live-conversion.test.ts",
+		"test:ai-router": "vitest run src/ai/router tests/ai-router",
+		"test:ai-router:offline": "vitest run src/ai/router tests/ai-router/sdk-conversion.test.ts tests/ai-router/native-offline.test.ts tests/ai-router/pi-models.test.ts",
+		"update:api-oracles": "pnpm exec tsx tests/api-schema-inclusion/update-oracles.ts"
 	},
 	"dependencies": {
 		"@noble/ciphers": "^2.4.0",
 		"@wener/utils": "^1.1.59",
+		"eventsource-parser": "^4.1.1",
 		"zod": "^4.6.5"
 	},
 	"devDependencies": {
+		"@ai-sdk/anthropic": "^4.0.80",
+		"@ai-sdk/google": "^4.0.93",
+		"@ai-sdk/openai": "^4.0.94",
 		"@alicloud/openapi-client": "^0.4.15",
+		"@hono/node-server": "^2.1.4",
+		"@hono/zod-openapi": "^1.3.1",
 		"@sinclair/typebox": "^0.34.52",
 		"@types/bun": "^1.4.2",
 		"@types/node-rsa": "^1.1.4",
 		"@wecom/jssdk": "^2.4.4",
+		"ai": "^7.0.137",
+		"ajv": "^8.20.0",
 		"cookie": "^2.0.1",
 		"dayjs": "^1.11.23",
 		"fast-xml-parser": "^5.11.1",
+		"hono": "^4.13.13",
+		"json-schema-faker": "^0.6.3",
 		"node-rsa": "^2.0.0",
 		"puppeteer": "^25.11.0",
 		"puppeteer-core": "^25.11.0",
 		"ts-pattern": "^5.9.0",
 		"undici": "^8.10.2",
 		"vite": "catalog:",
+		"vitest": "^5.0.3",
 		"ws": "^8.21.3",
 		"yaml": "^2.9.1"
 	},
@@ -90,6 +109,14 @@
 			".": {
 				"types": "./src/index.ts",
 				"default": "./lib/index.js"
+			},
+			"./api": {
+				"types": "./src/api/index.ts",
+				"default": "./lib/api/index.js"
+			},
+			"./api/*": {
+				"types": "./src/api/*/index.ts",
+				"default": "./lib/api/*/index.js"
 			},
 			"./17dz": {
 				"types": "./src/17dz/index.ts",
@@ -231,7 +258,19 @@
 				"types": "./src/feishu/docs/markdown/index.ts",
 				"default": "./lib/feishu/docs/markdown/index.js"
 			},
-			"./package.json": "./package.json"
+			"./package.json": "./package.json",
+			"./ai/router": {
+				"types": "./src/ai/router/index.ts",
+				"default": "./lib/ai/router/index.js"
+			}
+		}
+	},
+	"peerDependencies": {
+		"hono": "^4.13.0"
+	},
+	"peerDependenciesMeta": {
+		"hono": {
+			"optional": true
 		}
 	}
 }

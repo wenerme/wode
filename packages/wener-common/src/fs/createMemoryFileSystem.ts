@@ -1,4 +1,6 @@
-import { basename, dirname, normalize } from 'pathe';
+import { basename, dirname } from 'pathe';
+import { createFileSystemErrors } from './base/errors';
+import { assertNonOverlappingPaths as assertPathsDoNotOverlap, normalizeFileSystemPath } from './base/paths';
 import { FileSystemError } from './FileSystemError';
 import { findMimeType } from './findMimeType';
 import type {
@@ -70,6 +72,8 @@ class MemoryFileSystemError extends FileSystemError {
 	}
 }
 
+const memoryErrors = createFileSystemErrors((message, code) => new MemoryFileSystemError(message, code));
+
 class MemoryFileSystemImplementation implements MemoryFileSystem {
 	private readonly maxBytes: number | undefined;
 	private mutationTail: Promise<void> = Promise.resolve();
@@ -130,10 +134,8 @@ class MemoryFileSystemImplementation implements MemoryFileSystem {
 	}
 
 	private normalizePath(path: string): string {
-		if (!path || typeof path !== 'string') {
-			throw new MemoryFileSystemError('Invalid path: path must be a non-empty string', 'EINVAL');
-		}
-		return normalize(path.startsWith('/') ? path : `/${path}`);
+		const normalized = normalizeFileSystemPath(path, 'lenient', memoryErrors);
+		return normalized === '/' ? '/' : normalized.replace(/\/+$/u, '');
 	}
 
 	private joinPath(parent: string, name: string): string {
@@ -296,14 +298,7 @@ class MemoryFileSystemImplementation implements MemoryFileSystem {
 	}
 
 	private assertNonOverlappingPaths(source: string, destination: string): void {
-		if (
-			source === '/' ||
-			source === destination ||
-			destination.startsWith(`${source}/`) ||
-			source.startsWith(`${destination}/`)
-		) {
-			throw new MemoryFileSystemError('Source and destination paths must not overlap', 'EINVAL');
-		}
+		assertPathsDoNotOverlap(source, destination, memoryErrors);
 	}
 
 	private assertReplaceable(source: MemoryNode, destination: MemoryNode): void {
