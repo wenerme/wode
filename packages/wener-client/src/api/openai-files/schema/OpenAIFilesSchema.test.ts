@@ -15,6 +15,24 @@ import {
 } from './index';
 
 describe('OpenAI Files schemas', () => {
+	test('保留可空 bytes、普通列表 object 和未知字段', () => {
+		const file = {
+			id: '',
+			object: 'file',
+			bytes: null,
+			created_at: 1,
+			filename: '',
+			purpose: 'user_data',
+			status: 'processed',
+			extra: { keep: [null] },
+		};
+		expect(OpenAIFileSchema.parse(file)).toEqual(file);
+		const list = { object: '', data: [file], has_more: false, first_id: '', last_id: '', extra: true };
+		expect(OpenAIFilesListResponseSchema.parse(list)).toEqual(list);
+		expect(OpenAIFileSchema.safeParse({ ...file, bytes: '1' }).success).toBe(false);
+		expect(OpenAIFilesListResponseSchema.safeParse({ ...list, object: 1 }).success).toBe(false);
+	});
+
 	test('解析列表 query 和分页响应', () => {
 		expect(
 			OpenAIFilesListRequestSchema.parse({ purpose: 'assistants', limit: '100', after: 'file-1', order: 'desc' }),

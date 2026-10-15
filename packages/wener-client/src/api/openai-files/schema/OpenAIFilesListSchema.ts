@@ -9,11 +9,11 @@ export const OpenAIFilesListRequestSchema = z.looseObject({
 });
 
 export const OpenAIFilesListResponseSchema = z.looseObject({
-	object: z.literal('list'),
-	data: z.array(OpenAIFileSchema),
-	has_more: z.boolean(),
-	first_id: z.string().min(1).optional(),
-	last_id: z.string().min(1).optional(),
+	object: z.string(),
+	data: z.array(OpenAIFileSchema).describe('File list'),
+	has_more: z.boolean().describe('More pages available'),
+	first_id: z.string().optional(),
+	last_id: z.string().optional(),
 });
 
 export type OpenAIFilesListRequest = z.infer<typeof OpenAIFilesListRequestSchema>;

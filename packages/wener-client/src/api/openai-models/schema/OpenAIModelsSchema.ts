@@ -7,7 +7,7 @@ export const OpenAIModelSchema = z.looseObject({
 	title: wireString.optional(),
 	description: z.string().optional(),
 	object: z.literal('model'),
-	created: z.number().int().nonnegative(),
+	created: z.number().multipleOf(1),
 	owned_by: z.string(),
 	apis: z.array(z.string()).optional(),
 	inputs: z.union([z.array(z.string()), z.looseObject({})]).optional(),
@@ -20,9 +20,9 @@ export const OpenAIModelSchema = z.looseObject({
 			}),
 		])
 		.optional(),
-	max_tokens: z.number().int().positive().optional(),
-	max_input_tokens: z.number().int().positive().optional(),
-	max_output_tokens: z.number().int().positive().optional(),
+	max_tokens: z.number().multipleOf(1).positive().optional(),
+	max_input_tokens: z.number().multipleOf(1).positive().optional(),
+	max_output_tokens: z.number().multipleOf(1).positive().optional(),
 	thinking_level_map: z.record(z.string(), z.unknown()).optional(),
 });
 

@@ -1,25 +1,23 @@
 import { z } from 'zod';
 
-const wireString = z.string().min(1);
-
 export const OpenAISkillSchema = z.looseObject({
-	id: wireString,
+	id: z.string().describe('Skill identifier'),
 	object: z.literal('skill'),
-	created_at: z.number().int().nonnegative(),
-	default_version: wireString,
-	description: wireString,
-	latest_version: wireString,
-	name: wireString,
+	created_at: z.number().multipleOf(1),
+	default_version: z.string(),
+	description: z.string(),
+	latest_version: z.string(),
+	name: z.string().describe('Skill name'),
 });
 
 export const OpenAISkillVersionSchema = z.looseObject({
-	id: wireString,
+	id: z.string(),
 	object: z.literal('skill.version'),
-	created_at: z.number().int().nonnegative(),
-	description: wireString,
-	name: wireString,
-	skill_id: wireString,
-	version: wireString,
+	created_at: z.number().multipleOf(1).nonnegative(),
+	description: z.string(),
+	name: z.string(),
+	skill_id: z.string(),
+	version: z.string(),
 });
 
 export type OpenAISkill = z.infer<typeof OpenAISkillSchema>;

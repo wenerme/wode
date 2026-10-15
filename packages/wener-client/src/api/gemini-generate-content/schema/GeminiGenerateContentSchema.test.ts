@@ -63,4 +63,19 @@ describe('Gemini GenerateContent schemas', () => {
 
 		expect(response).toMatchObject({ usageMetadata: { totalTokenCount: 13 }, modelVersion: 'gemini-private' });
 	});
+
+	test('保留扩展字段、未知结束原因及零和负数整数', () => {
+		const request = {
+			contents: [{ role: 'provider-role', parts: [{ text: 'hi', providerPart: { keep: true } }] }],
+			generationConfig: { candidateCount: 0, maxOutputTokens: -1, topK: -2 },
+		};
+		expect(GeminiGenerateContentRequestSchema.parse(request)).toStrictEqual(request);
+
+		const response = {
+			candidates: [{ index: -1, finishReason: 'PROVIDER_FINISHED', content: { parts: [] } }],
+			usageMetadata: { promptTokenCount: -1, candidatesTokenCount: 0, totalTokenCount: -1 },
+			providerResponse: { keep: true },
+		};
+		expect(GeminiGenerateContentResponseSchema.parse(response)).toStrictEqual(response);
+	});
 });

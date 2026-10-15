@@ -2,6 +2,17 @@ import { describe, expect, test } from 'vitest';
 import { OpenAIEmbeddingsRequestSchema, OpenAIEmbeddingsResponseSchema } from './OpenAIEmbeddingsSchema';
 
 describe('OpenAI Embeddings schemas', () => {
+	test('preserves multimodal image input and provider extensions without changing the request', () => {
+		const request = {
+			model: 'multimodal-embedding',
+			input: { prompt_string: 'Describe <media>', multimodal_data: ['aW1hZ2U='], provider_field: [null, false] },
+			encoding_format: 'float',
+		};
+		const copy = structuredClone(request);
+		expect(OpenAIEmbeddingsRequestSchema.parse(request)).toStrictEqual(copy);
+		expect(request).toStrictEqual(copy);
+	});
+
 	test('解析字符串与字符串数组输入请求', () => {
 		expect(OpenAIEmbeddingsRequestSchema.parse({ model: 'qwen3-embedding-8b', input: 'hello' })).toMatchObject({
 			model: 'qwen3-embedding-8b',

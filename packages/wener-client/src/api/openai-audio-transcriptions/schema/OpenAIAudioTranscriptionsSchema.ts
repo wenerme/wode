@@ -17,7 +17,7 @@ export const OpenAIAudioTranscriptionsRequestSchema = z.looseObject({
 export const OpenAITranscriptionSchema = z.looseObject({
 	text: z.string(),
 	language: z.string().optional(),
-	duration: z.number().finite().nonnegative().optional(),
+	duration: z.number().finite().optional(),
 	segments: z
 		.array(z.looseObject({ text: z.string(), start: z.number().finite(), end: z.number().finite() }))
 		.optional(),

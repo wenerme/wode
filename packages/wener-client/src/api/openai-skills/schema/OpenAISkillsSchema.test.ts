@@ -13,6 +13,13 @@ describe('OpenAI Skills schemas', () => {
 		expect(OpenAISkillsCreateRequestSchema.parse({ 'files[]': skillFile })['files[]']).toBe(skillFile);
 		expect(OpenAISkillsCreateRequestSchema.parse({ files: [skillFile] }).files).toEqual([skillFile]);
 		expect(OpenAISkillsCreateRequestSchema.safeParse({}).success).toBe(true);
+		const empty = { files: [], extra: { keep: null } };
+		expect(OpenAISkillsCreateRequestSchema.parse(empty)).toEqual(empty);
+		for (const files of ['', 'raw binary', ['', 'raw binary']]) {
+			const value = { files, extra: { keep: null } };
+			expect(OpenAISkillsCreateRequestSchema.parse(value)).toEqual(value);
+		}
+		expect(OpenAISkillsCreateRequestSchema.safeParse({ files: [123] }).success).toBe(false);
 	});
 
 	test('解析Skill和Skill Version响应', () => {

@@ -67,7 +67,10 @@ describe('OpenAI Uploads schemas', () => {
 		expect(OpenAIMD5Schema.parse('d41d8cd98f00b204e9800998ecf8427e')).toBe('d41d8cd98f00b204e9800998ecf8427e');
 		expect(OpenAIMD5Schema.parse('1B2M2Y8AsgTpgAmY7PhCfg==')).toBe('1B2M2Y8AsgTpgAmY7PhCfg==');
 		expect(OpenAIMD5Schema.parse('  ')).toBe('  ');
-		expect(OpenAIMD5Schema.safeParse('not-md5').success).toBe(false);
+		expect(OpenAIMD5Schema.parse('not-md5')).toBe('not-md5');
+		expect(OpenAIMD5Schema.safeParse(123).success).toBe(false);
+		const rawBody = { part_ids: ['', 'part-1'], md5: 'plain string', extra: { keep: null } };
+		expect(OpenAIUploadsCompleteRequestSchema.parse(rawBody)).toEqual(rawBody);
 		expect(
 			OpenAIUploadSchema.safeParse({
 				object: 'upload',
@@ -82,7 +85,7 @@ describe('OpenAI Uploads schemas', () => {
 		).toBe(false);
 	});
 
-	test('complete response 必须包含嵌套 File', () => {
+	test('complete response 保留可选或可空嵌套 File', () => {
 		const response = {
 			object: 'upload',
 			id: 'upload_1',
@@ -102,8 +105,18 @@ describe('OpenAI Uploads schemas', () => {
 				status: 'processed',
 			},
 		};
-		expect(OpenAIUploadsCompleteResponseSchema.parse(response).file.id).toBe('file-1');
-		expect(OpenAIUploadsCompleteResponseSchema.safeParse({ ...response, file: undefined }).success).toBe(false);
+		expect(OpenAIUploadsCompleteResponseSchema.parse(response).file?.id).toBe('file-1');
+		const { file, object, ...withoutFile } = response;
+		expect(OpenAIUploadsCompleteResponseSchema.parse(withoutFile)).toEqual(withoutFile);
+		expect(OpenAIUploadsCompleteResponseSchema.parse({ ...withoutFile, status: 'expired', file: null })).toEqual({
+			...withoutFile,
+			status: 'expired',
+			file: null,
+		});
+		expect(OpenAIUploadsCompleteResponseSchema.parse({ ...response, file: { ...file, bytes: null } })).toEqual({
+			...response,
+			file: { ...file, bytes: null },
+		});
 	});
 
 	test('OpenAPI/AJV 文档覆盖 Uploads 的 request 和 response schema', () => {
@@ -236,7 +249,7 @@ describe('OpenAI Uploads schemas', () => {
 		expect(validateAddPart({ data: 'part' })).toBe(true);
 		expect(validateAddPart({ data: '' })).toBe(false);
 		expect(validateComplete({ part_ids: [] })).toBe(true);
-		expect(validateComplete({ part_ids: [], md5: 'not-md5' })).toBe(false);
+		expect(validateComplete({ part_ids: [], md5: 'not-md5' })).toBe(true);
 		expect(OpenAIUploadPartFileSchema.meta()).toMatchObject({ type: 'string', format: 'binary', minLength: 1 });
 	});
 });

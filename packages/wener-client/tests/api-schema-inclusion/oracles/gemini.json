@@ -1,0 +1,2141 @@
+{
+	"source": {
+		"url": "https://generativelanguage.googleapis.com/$discovery/rest?version=v1beta",
+		"sha256": "b78dfa6587e81e8e5442132c9b647728c9fc4b1108543fbf26fea18b325d05e0",
+		"revision": "20261008",
+		"version": null,
+		"license": null
+	},
+	"cases": [
+		{
+			"name": "GenerateContentRequest -> GeminiGenerateContentRequestSchema",
+			"target": "GeminiGenerateContentRequestSchema",
+			"schema": {
+				"$ref": "#/$defs/GenerateContentRequest"
+			}
+		},
+		{
+			"name": "GenerateContentResponse -> GeminiGenerateContentResponseSchema",
+			"target": "GeminiGenerateContentResponseSchema",
+			"schema": {
+				"$ref": "#/$defs/GenerateContentResponse"
+			}
+		},
+		{
+			"name": "CountTokensRequest -> GeminiCountTokensRequestSchema",
+			"target": "GeminiCountTokensRequestSchema",
+			"schema": {
+				"$ref": "#/$defs/CountTokensRequest"
+			}
+		},
+		{
+			"name": "CountTokensResponse -> GeminiCountTokensResponseSchema",
+			"target": "GeminiCountTokensResponseSchema",
+			"schema": {
+				"$ref": "#/$defs/CountTokensResponse"
+			}
+		},
+		{
+			"name": "EmbedContentRequest -> GeminiEmbedContentRequestSchema",
+			"target": "GeminiEmbedContentRequestSchema",
+			"schema": {
+				"$ref": "#/$defs/EmbedContentRequest"
+			}
+		},
+		{
+			"name": "EmbedContentResponse -> GeminiEmbedContentResponseSchema",
+			"target": "GeminiEmbedContentResponseSchema",
+			"schema": {
+				"$ref": "#/$defs/EmbedContentResponse"
+			}
+		},
+		{
+			"name": "BatchEmbedContentsRequest -> GeminiBatchEmbedContentsRequestSchema",
+			"target": "GeminiBatchEmbedContentsRequestSchema",
+			"schema": {
+				"$ref": "#/$defs/BatchEmbedContentsRequest"
+			}
+		},
+		{
+			"name": "BatchEmbedContentsResponse -> GeminiBatchEmbedContentsResponseSchema",
+			"target": "GeminiBatchEmbedContentsResponseSchema",
+			"schema": {
+				"$ref": "#/$defs/BatchEmbedContentsResponse"
+			}
+		},
+		{
+			"name": "CachedContent -> GeminiCachedContentSchema",
+			"target": "GeminiCachedContentSchema",
+			"schema": {
+				"$ref": "#/$defs/CachedContent"
+			}
+		},
+		{
+			"name": "Content -> GenerateMessageWireSchema",
+			"target": "GenerateMessageWireSchema",
+			"schema": {
+				"$ref": "#/$defs/Content"
+			}
+		},
+		{
+			"name": "Part -> GenerateMessageWireContentPartSchema",
+			"target": "GenerateMessageWireContentPartSchema",
+			"schema": {
+				"$ref": "#/$defs/Part"
+			}
+		},
+		{
+			"name": "GenerateContentResponse -> GenerateMessageWireStreamEventSchema",
+			"target": "GenerateMessageWireStreamEventSchema",
+			"schema": {
+				"$ref": "#/$defs/GenerateContentResponse"
+			}
+		},
+		{
+			"name": "GenerateContentRequest -> GeminiGenerateContentRequestSchema (common)",
+			"target": "GenerateMessageWireRequestSchema",
+			"schema": {
+				"$ref": "#/$defs/GenerateContentRequest"
+			}
+		},
+		{
+			"name": "GenerateContentResponse -> GeminiGenerateContentResponseSchema (common)",
+			"target": "GenerateMessageWireResponseSchema",
+			"schema": {
+				"$ref": "#/$defs/GenerateContentResponse"
+			}
+		}
+	],
+	"$defs": {
+		"AttributionSourceId": {
+			"properties": {
+				"semanticRetrieverChunk": {
+					"$ref": "#/$defs/SemanticRetrieverChunk"
+				},
+				"groundingPassage": {
+					"$ref": "#/$defs/GroundingPassageId"
+				}
+			},
+			"type": "object"
+		},
+		"AudioResponseFormat": {
+			"type": "object",
+			"properties": {
+				"delivery": {
+					"type": "string",
+					"enum": ["DELIVERY_UNSPECIFIED", "INLINE", "URI"]
+				},
+				"bitRate": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"sampleRate": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"mimeType": {
+					"type": "string",
+					"enum": [
+						"MIME_TYPE_UNSPECIFIED",
+						"AUDIO_MP3",
+						"AUDIO_OGG_OPUS",
+						"AUDIO_L16",
+						"AUDIO_WAV",
+						"AUDIO_ALAW",
+						"AUDIO_MULAW"
+					]
+				}
+			}
+		},
+		"AudioTranscription": {
+			"type": "object",
+			"properties": {
+				"speakerLabel": {
+					"type": "string"
+				},
+				"words": {
+					"items": {
+						"$ref": "#/$defs/WordInfo"
+					},
+					"type": "array"
+				},
+				"text": {
+					"type": "string"
+				}
+			},
+			"required": ["text"]
+		},
+		"AudioTranscriptionConfig": {
+			"properties": {
+				"mode": {
+					"type": "string",
+					"enum": ["MODE_UNSPECIFIED", "VERBATIM", "SMART"]
+				},
+				"languageHints": {
+					"$ref": "#/$defs/LanguageHints"
+				},
+				"wordTimestamp": {
+					"type": "boolean"
+				},
+				"languageAuto": {
+					"$ref": "#/$defs/LanguageAuto"
+				},
+				"languageCodes": {
+					"items": {
+						"type": "string"
+					},
+					"type": "array"
+				},
+				"diarization": {
+					"type": "boolean"
+				},
+				"adaptationPhrases": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					}
+				},
+				"customVocabulary": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					}
+				}
+			},
+			"type": "object"
+		},
+		"BatchEmbedContentsRequest": {
+			"properties": {
+				"requests": {
+					"type": "array",
+					"items": {
+						"$ref": "#/$defs/EmbedContentRequest"
+					}
+				}
+			},
+			"type": "object",
+			"required": ["requests"]
+		},
+		"BatchEmbedContentsResponse": {
+			"type": "object",
+			"properties": {
+				"embeddings": {
+					"type": "array",
+					"items": {
+						"$ref": "#/$defs/ContentEmbedding"
+					}
+				},
+				"usageMetadata": {
+					"$ref": "#/$defs/EmbeddingUsageMetadata"
+				}
+			}
+		},
+		"Blob": {
+			"type": "object",
+			"properties": {
+				"mimeType": {
+					"type": "string"
+				},
+				"data": {
+					"type": "string",
+					"format": "byte"
+				},
+				"displayName": {
+					"type": "string"
+				}
+			}
+		},
+		"CachedContent": {
+			"properties": {
+				"name": {
+					"type": "string"
+				},
+				"tools": {
+					"items": {
+						"$ref": "#/$defs/Tool"
+					},
+					"type": "array"
+				},
+				"ttl": {
+					"type": "string",
+					"format": "google-duration"
+				},
+				"expireTime": {
+					"type": "string",
+					"format": "google-datetime"
+				},
+				"model": {
+					"type": "string"
+				},
+				"contents": {
+					"type": "array",
+					"items": {
+						"$ref": "#/$defs/Content"
+					}
+				},
+				"toolConfig": {
+					"$ref": "#/$defs/ToolConfig"
+				},
+				"systemInstruction": {
+					"$ref": "#/$defs/Content"
+				},
+				"createTime": {
+					"type": "string",
+					"format": "google-datetime"
+				},
+				"updateTime": {
+					"type": "string",
+					"format": "google-datetime"
+				},
+				"usageMetadata": {
+					"$ref": "#/$defs/CachedContentUsageMetadata"
+				},
+				"displayName": {
+					"type": "string"
+				}
+			},
+			"type": "object",
+			"required": ["model"]
+		},
+		"CachedContentUsageMetadata": {
+			"properties": {
+				"totalTokenCount": {
+					"format": "int32",
+					"type": "integer"
+				}
+			},
+			"type": "object"
+		},
+		"Candidate": {
+			"type": "object",
+			"properties": {
+				"index": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"finishMessage": {
+					"type": "string"
+				},
+				"safetyRatings": {
+					"items": {
+						"$ref": "#/$defs/SafetyRating"
+					},
+					"type": "array"
+				},
+				"tokenCount": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"urlContextMetadata": {
+					"$ref": "#/$defs/UrlContextMetadata"
+				},
+				"logprobsResult": {
+					"$ref": "#/$defs/LogprobsResult"
+				},
+				"groundingAttributions": {
+					"type": "array",
+					"items": {
+						"$ref": "#/$defs/GroundingAttribution"
+					}
+				},
+				"citationMetadata": {
+					"$ref": "#/$defs/CitationMetadata"
+				},
+				"avgLogprobs": {
+					"type": "number",
+					"format": "double"
+				},
+				"content": {
+					"$ref": "#/$defs/Content"
+				},
+				"groundingMetadata": {
+					"$ref": "#/$defs/GroundingMetadata"
+				},
+				"finishReason": {
+					"enum": [
+						"FINISH_REASON_UNSPECIFIED",
+						"STOP",
+						"MAX_TOKENS",
+						"SAFETY",
+						"RECITATION",
+						"LANGUAGE",
+						"OTHER",
+						"BLOCKLIST",
+						"PROHIBITED_CONTENT",
+						"SPII",
+						"MALFORMED_FUNCTION_CALL",
+						"IMAGE_SAFETY",
+						"IMAGE_PROHIBITED_CONTENT",
+						"IMAGE_OTHER",
+						"NO_IMAGE",
+						"IMAGE_RECITATION",
+						"UNEXPECTED_TOOL_CALL",
+						"TOO_MANY_TOOL_CALLS",
+						"MISSING_THOUGHT_SIGNATURE",
+						"MALFORMED_RESPONSE",
+						"ESCALATION",
+						"PUP_LIMITED_DISABLED"
+					],
+					"type": "string"
+				}
+			}
+		},
+		"CitationMetadata": {
+			"properties": {
+				"citationSources": {
+					"type": "array",
+					"items": {
+						"$ref": "#/$defs/CitationSource"
+					}
+				}
+			},
+			"type": "object"
+		},
+		"CitationSource": {
+			"type": "object",
+			"properties": {
+				"uri": {
+					"type": "string"
+				},
+				"endIndex": {
+					"format": "int32",
+					"type": "integer"
+				},
+				"startIndex": {
+					"format": "int32",
+					"type": "integer"
+				},
+				"license": {
+					"type": "string"
+				}
+			}
+		},
+		"CodeExecution": {
+			"properties": {},
+			"type": "object"
+		},
+		"CodeExecutionResult": {
+			"type": "object",
+			"properties": {
+				"id": {
+					"type": "string"
+				},
+				"outcome": {
+					"type": "string",
+					"enum": ["OUTCOME_UNSPECIFIED", "OUTCOME_OK", "OUTCOME_FAILED", "OUTCOME_DEADLINE_EXCEEDED"]
+				},
+				"output": {
+					"type": "string"
+				}
+			},
+			"required": ["outcome"]
+		},
+		"ComputerUse": {
+			"type": "object",
+			"properties": {
+				"environment": {
+					"type": "string",
+					"enum": ["ENVIRONMENT_UNSPECIFIED", "ENVIRONMENT_BROWSER", "ENVIRONMENT_MOBILE", "ENVIRONMENT_DESKTOP"]
+				},
+				"disabledSafetyPolicies": {
+					"items": {
+						"type": "string",
+						"enum": [
+							"SAFETY_POLICY_UNSPECIFIED",
+							"FINANCIAL_TRANSACTIONS",
+							"SENSITIVE_DATA_MODIFICATION",
+							"COMMUNICATION_TOOL",
+							"ACCOUNT_CREATION",
+							"DATA_MODIFICATION",
+							"USER_CONSENT_MANAGEMENT",
+							"LEGAL_TERMS_AND_AGREEMENTS"
+						]
+					},
+					"type": "array"
+				},
+				"enablePromptInjectionDetection": {
+					"type": "boolean"
+				},
+				"excludedPredefinedFunctions": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					}
+				}
+			},
+			"required": ["environment"]
+		},
+		"Content": {
+			"type": "object",
+			"properties": {
+				"parts": {
+					"items": {
+						"$ref": "#/$defs/Part"
+					},
+					"type": "array"
+				},
+				"role": {
+					"type": "string"
+				}
+			}
+		},
+		"ContentEmbedding": {
+			"properties": {
+				"values": {
+					"items": {
+						"format": "float",
+						"type": "number"
+					},
+					"type": "array"
+				},
+				"shape": {
+					"type": "array",
+					"items": {
+						"type": "integer",
+						"format": "int32"
+					}
+				}
+			},
+			"type": "object"
+		},
+		"CountTokensRequest": {
+			"type": "object",
+			"properties": {
+				"generateContentRequest": {
+					"$ref": "#/$defs/GenerateContentRequest"
+				},
+				"contents": {
+					"items": {
+						"$ref": "#/$defs/Content"
+					},
+					"type": "array"
+				}
+			}
+		},
+		"CountTokensResponse": {
+			"properties": {
+				"cacheTokensDetails": {
+					"type": "array",
+					"items": {
+						"$ref": "#/$defs/ModalityTokenCount"
+					}
+				},
+				"totalTokens": {
+					"format": "int32",
+					"type": "integer"
+				},
+				"cachedContentTokenCount": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"promptTokensDetails": {
+					"type": "array",
+					"items": {
+						"$ref": "#/$defs/ModalityTokenCount"
+					}
+				}
+			},
+			"type": "object"
+		},
+		"DynamicRetrievalConfig": {
+			"type": "object",
+			"properties": {
+				"dynamicThreshold": {
+					"type": "number",
+					"format": "float"
+				},
+				"mode": {
+					"type": "string",
+					"enum": ["MODE_UNSPECIFIED", "MODE_DYNAMIC"]
+				}
+			}
+		},
+		"EmbedContentConfig": {
+			"properties": {
+				"autoTruncate": {
+					"type": "boolean"
+				},
+				"taskType": {
+					"type": "string",
+					"enum": [
+						"TASK_TYPE_UNSPECIFIED",
+						"RETRIEVAL_QUERY",
+						"RETRIEVAL_DOCUMENT",
+						"SEMANTIC_SIMILARITY",
+						"CLASSIFICATION",
+						"CLUSTERING",
+						"QUESTION_ANSWERING",
+						"FACT_VERIFICATION",
+						"CODE_RETRIEVAL_QUERY"
+					]
+				},
+				"title": {
+					"type": "string"
+				},
+				"outputDimensionality": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"audioTrackExtraction": {
+					"type": "boolean"
+				},
+				"documentOcr": {
+					"type": "boolean"
+				}
+			},
+			"type": "object"
+		},
+		"EmbedContentRequest": {
+			"type": "object",
+			"properties": {
+				"model": {
+					"type": "string"
+				},
+				"title": {
+					"type": "string"
+				},
+				"content": {
+					"$ref": "#/$defs/Content"
+				},
+				"outputDimensionality": {
+					"format": "int32",
+					"type": "integer"
+				},
+				"embedContentConfig": {
+					"$ref": "#/$defs/EmbedContentConfig"
+				},
+				"taskType": {
+					"enum": [
+						"TASK_TYPE_UNSPECIFIED",
+						"RETRIEVAL_QUERY",
+						"RETRIEVAL_DOCUMENT",
+						"SEMANTIC_SIMILARITY",
+						"CLASSIFICATION",
+						"CLUSTERING",
+						"QUESTION_ANSWERING",
+						"FACT_VERIFICATION",
+						"CODE_RETRIEVAL_QUERY"
+					],
+					"type": "string"
+				}
+			},
+			"required": ["model", "content"]
+		},
+		"EmbedContentResponse": {
+			"type": "object",
+			"properties": {
+				"embedding": {
+					"$ref": "#/$defs/ContentEmbedding"
+				},
+				"usageMetadata": {
+					"$ref": "#/$defs/EmbeddingUsageMetadata"
+				}
+			}
+		},
+		"EmbeddingUsageMetadata": {
+			"type": "object",
+			"properties": {
+				"promptTokenDetails": {
+					"items": {
+						"$ref": "#/$defs/ModalityTokenCount"
+					},
+					"type": "array"
+				},
+				"promptTokenCount": {
+					"format": "int32",
+					"type": "integer"
+				}
+			}
+		},
+		"ExecutableCode": {
+			"properties": {
+				"id": {
+					"type": "string"
+				},
+				"code": {
+					"type": "string"
+				},
+				"language": {
+					"type": "string",
+					"enum": ["LANGUAGE_UNSPECIFIED", "PYTHON"]
+				}
+			},
+			"type": "object",
+			"required": ["code", "language"]
+		},
+		"FileData": {
+			"type": "object",
+			"properties": {
+				"displayName": {
+					"type": "string"
+				},
+				"mimeType": {
+					"type": "string"
+				},
+				"fileUri": {
+					"type": "string"
+				}
+			},
+			"required": ["fileUri"]
+		},
+		"FileSearch": {
+			"type": "object",
+			"properties": {
+				"topK": {
+					"format": "int32",
+					"type": "integer"
+				},
+				"fileSearchStoreNames": {
+					"items": {
+						"type": "string"
+					},
+					"type": "array"
+				},
+				"metadataFilter": {
+					"type": "string"
+				}
+			},
+			"required": ["fileSearchStoreNames"]
+		},
+		"FunctionCall": {
+			"properties": {
+				"args": {
+					"additionalProperties": {},
+					"type": "object"
+				},
+				"id": {
+					"type": "string"
+				},
+				"name": {
+					"type": "string"
+				}
+			},
+			"type": "object",
+			"required": ["name"]
+		},
+		"FunctionCallingConfig": {
+			"type": "object",
+			"properties": {
+				"mode": {
+					"type": "string",
+					"enum": ["MODE_UNSPECIFIED", "AUTO", "ANY", "NONE", "VALIDATED"]
+				},
+				"allowedFunctionNames": {
+					"items": {
+						"type": "string"
+					},
+					"type": "array"
+				}
+			}
+		},
+		"FunctionDeclaration": {
+			"type": "object",
+			"properties": {
+				"parameters": {
+					"$ref": "#/$defs/Schema"
+				},
+				"responseJsonSchema": {},
+				"description": {
+					"type": "string"
+				},
+				"behavior": {
+					"type": "string",
+					"enum": ["UNSPECIFIED", "BLOCKING", "NON_BLOCKING"]
+				},
+				"name": {
+					"type": "string"
+				},
+				"parametersJsonSchema": {},
+				"response": {
+					"$ref": "#/$defs/Schema"
+				}
+			},
+			"required": ["description", "name"]
+		},
+		"FunctionResponse": {
+			"properties": {
+				"response": {
+					"type": "object",
+					"additionalProperties": {}
+				},
+				"name": {
+					"type": "string"
+				},
+				"willContinue": {
+					"type": "boolean"
+				},
+				"parts": {
+					"items": {
+						"$ref": "#/$defs/FunctionResponsePart"
+					},
+					"type": "array"
+				},
+				"id": {
+					"type": "string"
+				},
+				"scheduling": {
+					"type": "string",
+					"enum": ["SCHEDULING_UNSPECIFIED", "SILENT", "WHEN_IDLE", "INTERRUPT"]
+				}
+			},
+			"type": "object",
+			"required": ["response", "name"]
+		},
+		"FunctionResponseBlob": {
+			"properties": {
+				"mimeType": {
+					"type": "string"
+				},
+				"data": {
+					"format": "byte",
+					"type": "string"
+				}
+			},
+			"type": "object"
+		},
+		"FunctionResponsePart": {
+			"type": "object",
+			"properties": {
+				"inlineData": {
+					"$ref": "#/$defs/FunctionResponseBlob"
+				}
+			}
+		},
+		"GenerateContentRequest": {
+			"type": "object",
+			"properties": {
+				"labels": {
+					"additionalProperties": {
+						"type": "string"
+					},
+					"type": "object"
+				},
+				"cachedContent": {
+					"type": "string"
+				},
+				"serviceTier": {
+					"type": "string",
+					"enum": ["unspecified", "standard", "flex", "priority"]
+				},
+				"model": {
+					"type": "string"
+				},
+				"toolConfig": {
+					"$ref": "#/$defs/ToolConfig"
+				},
+				"safetySettings": {
+					"items": {
+						"$ref": "#/$defs/SafetySetting"
+					},
+					"type": "array"
+				},
+				"store": {
+					"type": "boolean"
+				},
+				"tools": {
+					"items": {
+						"$ref": "#/$defs/Tool"
+					},
+					"type": "array"
+				},
+				"contents": {
+					"type": "array",
+					"items": {
+						"$ref": "#/$defs/Content"
+					}
+				},
+				"systemInstruction": {
+					"$ref": "#/$defs/Content"
+				},
+				"generationConfig": {
+					"$ref": "#/$defs/GenerationConfig"
+				}
+			},
+			"required": ["model", "contents"]
+		},
+		"GenerateContentResponse": {
+			"properties": {
+				"usageMetadata": {
+					"$ref": "#/$defs/UsageMetadata"
+				},
+				"promptFeedback": {
+					"$ref": "#/$defs/PromptFeedback"
+				},
+				"candidates": {
+					"type": "array",
+					"items": {
+						"$ref": "#/$defs/Candidate"
+					}
+				},
+				"modelVersion": {
+					"type": "string"
+				},
+				"responseId": {
+					"type": "string"
+				},
+				"modelStatus": {
+					"$ref": "#/$defs/ModelStatus"
+				}
+			},
+			"type": "object"
+		},
+		"GenerationConfig": {
+			"properties": {
+				"maxOutputTokens": {
+					"format": "int32",
+					"type": "integer"
+				},
+				"frequencyPenalty": {
+					"format": "float",
+					"type": "number"
+				},
+				"enableEnhancedCivicAnswers": {
+					"type": "boolean"
+				},
+				"translationConfig": {
+					"$ref": "#/$defs/TranslationConfig"
+				},
+				"responseModalities": {
+					"type": "array",
+					"items": {
+						"type": "string",
+						"enum": ["MODALITY_UNSPECIFIED", "TEXT", "IMAGE", "AUDIO"]
+					}
+				},
+				"imageConfig": {
+					"$ref": "#/$defs/ImageConfig"
+				},
+				"responseLogprobs": {
+					"type": "boolean"
+				},
+				"candidateCount": {
+					"format": "int32",
+					"type": "integer"
+				},
+				"logprobs": {
+					"format": "int32",
+					"type": "integer"
+				},
+				"audioTranscriptionConfig": {
+					"$ref": "#/$defs/AudioTranscriptionConfig"
+				},
+				"speechConfig": {
+					"$ref": "#/$defs/SpeechConfig"
+				},
+				"responseSchema": {
+					"$ref": "#/$defs/Schema"
+				},
+				"thinkingConfig": {
+					"$ref": "#/$defs/ThinkingConfig"
+				},
+				"stopSequences": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					}
+				},
+				"presencePenalty": {
+					"type": "number",
+					"format": "float"
+				},
+				"topP": {
+					"format": "float",
+					"type": "number"
+				},
+				"responseFormat": {
+					"$ref": "#/$defs/ResponseFormatConfig"
+				},
+				"temperature": {
+					"format": "float",
+					"type": "number"
+				},
+				"_responseJsonSchema": {},
+				"seed": {
+					"format": "int32",
+					"type": "integer"
+				},
+				"responseJsonSchema": {},
+				"responseMimeType": {
+					"type": "string"
+				},
+				"topK": {
+					"format": "int32",
+					"type": "integer"
+				},
+				"enableAffectiveDialog": {
+					"type": "boolean"
+				},
+				"mediaResolution": {
+					"type": "string",
+					"enum": [
+						"MEDIA_RESOLUTION_UNSPECIFIED",
+						"MEDIA_RESOLUTION_LOW",
+						"MEDIA_RESOLUTION_MEDIUM",
+						"MEDIA_RESOLUTION_HIGH"
+					]
+				}
+			},
+			"type": "object"
+		},
+		"GoogleAiGenerativelanguageV1betaGroundingSupport": {
+			"type": "object",
+			"properties": {
+				"segment": {
+					"$ref": "#/$defs/GoogleAiGenerativelanguageV1betaSegment"
+				},
+				"groundingChunkIndices": {
+					"type": "array",
+					"items": {
+						"format": "int32",
+						"type": "integer"
+					}
+				},
+				"renderedParts": {
+					"items": {
+						"type": "integer",
+						"format": "int32"
+					},
+					"type": "array"
+				},
+				"confidenceScores": {
+					"items": {
+						"format": "float",
+						"type": "number"
+					},
+					"type": "array"
+				}
+			}
+		},
+		"GoogleAiGenerativelanguageV1betaSegment": {
+			"type": "object",
+			"properties": {
+				"startIndex": {
+					"format": "int32",
+					"type": "integer"
+				},
+				"text": {
+					"type": "string"
+				},
+				"partIndex": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"endIndex": {
+					"format": "int32",
+					"type": "integer"
+				}
+			}
+		},
+		"GoogleMaps": {
+			"properties": {
+				"enableWidget": {
+					"type": "boolean"
+				}
+			},
+			"type": "object"
+		},
+		"GoogleSearch": {
+			"type": "object",
+			"properties": {
+				"timeRangeFilter": {
+					"$ref": "#/$defs/Interval"
+				},
+				"searchTypes": {
+					"$ref": "#/$defs/SearchTypes"
+				}
+			}
+		},
+		"GoogleSearchRetrieval": {
+			"type": "object",
+			"properties": {
+				"dynamicRetrievalConfig": {
+					"$ref": "#/$defs/DynamicRetrievalConfig"
+				}
+			}
+		},
+		"GroundingAttribution": {
+			"type": "object",
+			"properties": {
+				"content": {
+					"$ref": "#/$defs/Content"
+				},
+				"sourceId": {
+					"$ref": "#/$defs/AttributionSourceId"
+				}
+			}
+		},
+		"GroundingChunk": {
+			"type": "object",
+			"properties": {
+				"web": {
+					"$ref": "#/$defs/Web"
+				},
+				"maps": {
+					"$ref": "#/$defs/Maps"
+				},
+				"retrievedContext": {
+					"$ref": "#/$defs/RetrievedContext"
+				},
+				"image": {
+					"$ref": "#/$defs/Image"
+				}
+			}
+		},
+		"GroundingChunkCustomMetadata": {
+			"type": "object",
+			"properties": {
+				"numericValue": {
+					"type": "number",
+					"format": "float"
+				},
+				"key": {
+					"type": "string"
+				},
+				"stringValue": {
+					"type": "string"
+				},
+				"stringListValue": {
+					"$ref": "#/$defs/GroundingChunkStringList"
+				}
+			}
+		},
+		"GroundingChunkStringList": {
+			"type": "object",
+			"properties": {
+				"values": {
+					"items": {
+						"type": "string"
+					},
+					"type": "array"
+				}
+			}
+		},
+		"GroundingMetadata": {
+			"properties": {
+				"searchEntryPoint": {
+					"$ref": "#/$defs/SearchEntryPoint"
+				},
+				"webSearchQueries": {
+					"items": {
+						"type": "string"
+					},
+					"type": "array"
+				},
+				"imageSearchQueries": {
+					"items": {
+						"type": "string"
+					},
+					"type": "array"
+				},
+				"groundingSupports": {
+					"type": "array",
+					"items": {
+						"$ref": "#/$defs/GoogleAiGenerativelanguageV1betaGroundingSupport"
+					}
+				},
+				"retrievalMetadata": {
+					"$ref": "#/$defs/RetrievalMetadata"
+				},
+				"googleMapsWidgetContextToken": {
+					"type": "string"
+				},
+				"groundingChunks": {
+					"type": "array",
+					"items": {
+						"$ref": "#/$defs/GroundingChunk"
+					}
+				}
+			},
+			"type": "object"
+		},
+		"GroundingPassageId": {
+			"properties": {
+				"passageId": {
+					"type": "string"
+				},
+				"partIndex": {
+					"format": "int32",
+					"type": "integer"
+				}
+			},
+			"type": "object"
+		},
+		"Image": {
+			"type": "object",
+			"properties": {
+				"sourceUri": {
+					"type": "string"
+				},
+				"domain": {
+					"type": "string"
+				},
+				"title": {
+					"type": "string"
+				},
+				"imageUri": {
+					"type": "string"
+				}
+			}
+		},
+		"ImageConfig": {
+			"properties": {
+				"aspectRatio": {
+					"type": "string"
+				},
+				"imageSize": {
+					"type": "string"
+				}
+			},
+			"type": "object"
+		},
+		"ImageResponseFormat": {
+			"type": "object",
+			"properties": {
+				"mimeType": {
+					"type": "string",
+					"enum": ["MIME_TYPE_UNSPECIFIED", "IMAGE_JPEG"]
+				},
+				"aspectRatio": {
+					"type": "string",
+					"enum": [
+						"ASPECT_RATIO_UNSPECIFIED",
+						"ASPECT_RATIO_ONE_BY_ONE",
+						"ASPECT_RATIO_TWO_BY_THREE",
+						"ASPECT_RATIO_THREE_BY_TWO",
+						"ASPECT_RATIO_THREE_BY_FOUR",
+						"ASPECT_RATIO_FOUR_BY_THREE",
+						"ASPECT_RATIO_FOUR_BY_FIVE",
+						"ASPECT_RATIO_FIVE_BY_FOUR",
+						"ASPECT_RATIO_NINE_BY_SIXTEEN",
+						"ASPECT_RATIO_SIXTEEN_BY_NINE",
+						"ASPECT_RATIO_TWENTY_ONE_BY_NINE",
+						"ASPECT_RATIO_ONE_BY_EIGHT",
+						"ASPECT_RATIO_EIGHT_BY_ONE",
+						"ASPECT_RATIO_ONE_BY_FOUR",
+						"ASPECT_RATIO_FOUR_BY_ONE"
+					]
+				},
+				"imageSize": {
+					"type": "string",
+					"enum": [
+						"IMAGE_SIZE_UNSPECIFIED",
+						"IMAGE_SIZE_FIVE_TWELVE",
+						"IMAGE_SIZE_ONE_K",
+						"IMAGE_SIZE_TWO_K",
+						"IMAGE_SIZE_FOUR_K"
+					]
+				},
+				"delivery": {
+					"type": "string",
+					"enum": ["DELIVERY_UNSPECIFIED", "INLINE", "URI"]
+				}
+			}
+		},
+		"ImageSearch": {
+			"type": "object",
+			"properties": {}
+		},
+		"Interval": {
+			"properties": {
+				"startTime": {
+					"type": "string",
+					"format": "google-datetime"
+				},
+				"endTime": {
+					"format": "google-datetime",
+					"type": "string"
+				}
+			},
+			"type": "object"
+		},
+		"LanguageAuto": {
+			"properties": {},
+			"type": "object"
+		},
+		"LanguageHints": {
+			"properties": {
+				"languageCodes": {
+					"items": {
+						"type": "string"
+					},
+					"type": "array"
+				}
+			},
+			"type": "object",
+			"required": ["languageCodes"]
+		},
+		"LatLng": {
+			"properties": {
+				"latitude": {
+					"format": "double",
+					"type": "number"
+				},
+				"longitude": {
+					"format": "double",
+					"type": "number"
+				}
+			},
+			"type": "object"
+		},
+		"LogprobsResult": {
+			"type": "object",
+			"properties": {
+				"topCandidates": {
+					"type": "array",
+					"items": {
+						"$ref": "#/$defs/TopCandidates"
+					}
+				},
+				"chosenCandidates": {
+					"items": {
+						"$ref": "#/$defs/LogprobsResultCandidate"
+					},
+					"type": "array"
+				},
+				"logProbabilitySum": {
+					"format": "float",
+					"type": "number"
+				}
+			}
+		},
+		"LogprobsResultCandidate": {
+			"properties": {
+				"token": {
+					"type": "string"
+				},
+				"logProbability": {
+					"type": "number",
+					"format": "float"
+				},
+				"tokenId": {
+					"format": "int32",
+					"type": "integer"
+				}
+			},
+			"type": "object"
+		},
+		"Maps": {
+			"properties": {
+				"placeAnswerSources": {
+					"$ref": "#/$defs/PlaceAnswerSources"
+				},
+				"placeId": {
+					"type": "string"
+				},
+				"text": {
+					"type": "string"
+				},
+				"title": {
+					"type": "string"
+				},
+				"uri": {
+					"type": "string"
+				}
+			},
+			"type": "object"
+		},
+		"McpServer": {
+			"properties": {
+				"streamableHttpTransport": {
+					"$ref": "#/$defs/StreamableHttpTransport"
+				},
+				"name": {
+					"type": "string"
+				}
+			},
+			"type": "object"
+		},
+		"ModalityTokenCount": {
+			"properties": {
+				"tokenCount": {
+					"format": "int32",
+					"type": "integer"
+				},
+				"modality": {
+					"type": "string",
+					"enum": ["MODALITY_UNSPECIFIED", "TEXT", "IMAGE", "VIDEO", "AUDIO", "DOCUMENT"]
+				}
+			},
+			"type": "object"
+		},
+		"ModelStatus": {
+			"type": "object",
+			"properties": {
+				"retirementTime": {
+					"format": "google-datetime",
+					"type": "string"
+				},
+				"modelStage": {
+					"type": "string",
+					"enum": [
+						"MODEL_STAGE_UNSPECIFIED",
+						"UNSTABLE_EXPERIMENTAL",
+						"EXPERIMENTAL",
+						"PREVIEW",
+						"STABLE",
+						"LEGACY",
+						"DEPRECATED",
+						"RETIRED"
+					]
+				},
+				"message": {
+					"type": "string"
+				}
+			}
+		},
+		"MultiSpeakerVoiceConfig": {
+			"type": "object",
+			"properties": {
+				"speakerVoiceConfigs": {
+					"type": "array",
+					"items": {
+						"$ref": "#/$defs/SpeakerVoiceConfig"
+					}
+				}
+			},
+			"required": ["speakerVoiceConfigs"]
+		},
+		"Part": {
+			"properties": {
+				"speechMetadata": {
+					"$ref": "#/$defs/SpeechMetadata"
+				},
+				"executableCode": {
+					"$ref": "#/$defs/ExecutableCode"
+				},
+				"mediaResolution": {
+					"$ref": "#/$defs/V1mainMediaResolution"
+				},
+				"toolResponse": {
+					"$ref": "#/$defs/ToolResponse"
+				},
+				"thoughtSignature": {
+					"type": "string",
+					"format": "byte"
+				},
+				"functionCall": {
+					"$ref": "#/$defs/FunctionCall"
+				},
+				"codeExecutionResult": {
+					"$ref": "#/$defs/CodeExecutionResult"
+				},
+				"inlineData": {
+					"$ref": "#/$defs/Blob"
+				},
+				"audioTranscription": {
+					"$ref": "#/$defs/AudioTranscription"
+				},
+				"mediaProcessing": {
+					"type": "string",
+					"enum": ["MEDIA_PROCESSING_UNSPECIFIED", "STATIC", "AGENTIC"]
+				},
+				"functionResponse": {
+					"$ref": "#/$defs/FunctionResponse"
+				},
+				"videoMetadata": {
+					"$ref": "#/$defs/VideoMetadata"
+				},
+				"partMetadata": {
+					"additionalProperties": {},
+					"type": "object"
+				},
+				"fileData": {
+					"$ref": "#/$defs/FileData"
+				},
+				"text": {
+					"type": "string"
+				},
+				"thought": {
+					"type": "boolean"
+				},
+				"toolCall": {
+					"$ref": "#/$defs/ToolCall"
+				}
+			},
+			"type": "object"
+		},
+		"PlaceAnswerSources": {
+			"type": "object",
+			"properties": {
+				"reviewSnippets": {
+					"items": {
+						"$ref": "#/$defs/ReviewSnippet"
+					},
+					"type": "array"
+				}
+			}
+		},
+		"PrebuiltVoiceConfig": {
+			"properties": {
+				"voiceName": {
+					"type": "string"
+				}
+			},
+			"type": "object"
+		},
+		"PromptFeedback": {
+			"properties": {
+				"safetyRatings": {
+					"type": "array",
+					"items": {
+						"$ref": "#/$defs/SafetyRating"
+					}
+				},
+				"blockReason": {
+					"type": "string",
+					"enum": ["BLOCK_REASON_UNSPECIFIED", "SAFETY", "OTHER", "BLOCKLIST", "PROHIBITED_CONTENT", "IMAGE_SAFETY"]
+				}
+			},
+			"type": "object"
+		},
+		"ResponseFormatConfig": {
+			"properties": {
+				"image": {
+					"$ref": "#/$defs/ImageResponseFormat"
+				},
+				"audio": {
+					"$ref": "#/$defs/AudioResponseFormat"
+				},
+				"text": {
+					"$ref": "#/$defs/TextResponseFormat"
+				}
+			},
+			"type": "object"
+		},
+		"RetrievalConfig": {
+			"properties": {
+				"latLng": {
+					"$ref": "#/$defs/LatLng"
+				},
+				"languageCode": {
+					"type": "string"
+				}
+			},
+			"type": "object"
+		},
+		"RetrievalMetadata": {
+			"type": "object",
+			"properties": {
+				"googleSearchDynamicRetrievalScore": {
+					"type": "number",
+					"format": "float"
+				}
+			}
+		},
+		"RetrievedContext": {
+			"properties": {
+				"text": {
+					"type": "string"
+				},
+				"title": {
+					"type": "string"
+				},
+				"customMetadata": {
+					"items": {
+						"$ref": "#/$defs/GroundingChunkCustomMetadata"
+					},
+					"type": "array"
+				},
+				"uri": {
+					"type": "string"
+				},
+				"mediaId": {
+					"type": "string"
+				},
+				"pageNumber": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"fileSearchStore": {
+					"type": "string"
+				}
+			},
+			"type": "object"
+		},
+		"ReviewSnippet": {
+			"properties": {
+				"reviewId": {
+					"type": "string"
+				},
+				"title": {
+					"type": "string"
+				},
+				"googleMapsUri": {
+					"type": "string"
+				}
+			},
+			"type": "object"
+		},
+		"SafetyRating": {
+			"properties": {
+				"probability": {
+					"type": "string",
+					"enum": ["HARM_PROBABILITY_UNSPECIFIED", "NEGLIGIBLE", "LOW", "MEDIUM", "HIGH"]
+				},
+				"category": {
+					"enum": [
+						"HARM_CATEGORY_UNSPECIFIED",
+						"HARM_CATEGORY_DEROGATORY",
+						"HARM_CATEGORY_TOXICITY",
+						"HARM_CATEGORY_VIOLENCE",
+						"HARM_CATEGORY_SEXUAL",
+						"HARM_CATEGORY_MEDICAL",
+						"HARM_CATEGORY_DANGEROUS",
+						"HARM_CATEGORY_HARASSMENT",
+						"HARM_CATEGORY_HATE_SPEECH",
+						"HARM_CATEGORY_SEXUALLY_EXPLICIT",
+						"HARM_CATEGORY_DANGEROUS_CONTENT",
+						"HARM_CATEGORY_CIVIC_INTEGRITY",
+						"HARM_CATEGORY_JAILBREAK"
+					],
+					"type": "string"
+				},
+				"blocked": {
+					"type": "boolean"
+				}
+			},
+			"type": "object",
+			"required": ["probability", "category"]
+		},
+		"SafetySetting": {
+			"type": "object",
+			"properties": {
+				"threshold": {
+					"type": "string",
+					"enum": [
+						"HARM_BLOCK_THRESHOLD_UNSPECIFIED",
+						"BLOCK_LOW_AND_ABOVE",
+						"BLOCK_MEDIUM_AND_ABOVE",
+						"BLOCK_ONLY_HIGH",
+						"BLOCK_NONE",
+						"OFF"
+					]
+				},
+				"category": {
+					"type": "string",
+					"enum": [
+						"HARM_CATEGORY_UNSPECIFIED",
+						"HARM_CATEGORY_DEROGATORY",
+						"HARM_CATEGORY_TOXICITY",
+						"HARM_CATEGORY_VIOLENCE",
+						"HARM_CATEGORY_SEXUAL",
+						"HARM_CATEGORY_MEDICAL",
+						"HARM_CATEGORY_DANGEROUS",
+						"HARM_CATEGORY_HARASSMENT",
+						"HARM_CATEGORY_HATE_SPEECH",
+						"HARM_CATEGORY_SEXUALLY_EXPLICIT",
+						"HARM_CATEGORY_DANGEROUS_CONTENT",
+						"HARM_CATEGORY_CIVIC_INTEGRITY",
+						"HARM_CATEGORY_JAILBREAK"
+					]
+				}
+			},
+			"required": ["threshold", "category"]
+		},
+		"Schema": {
+			"properties": {
+				"maximum": {
+					"type": "number",
+					"format": "double"
+				},
+				"enum": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					}
+				},
+				"title": {
+					"type": "string"
+				},
+				"properties": {
+					"additionalProperties": {
+						"$ref": "#/$defs/Schema"
+					},
+					"type": "object"
+				},
+				"example": {},
+				"pattern": {
+					"type": "string"
+				},
+				"propertyOrdering": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					}
+				},
+				"minLength": {
+					"type": "string",
+					"format": "int64"
+				},
+				"description": {
+					"type": "string"
+				},
+				"nullable": {
+					"type": "boolean"
+				},
+				"format": {
+					"type": "string"
+				},
+				"maxProperties": {
+					"format": "int64",
+					"type": "string"
+				},
+				"items": {
+					"$ref": "#/$defs/Schema"
+				},
+				"minItems": {
+					"type": "string",
+					"format": "int64"
+				},
+				"maxLength": {
+					"type": "string",
+					"format": "int64"
+				},
+				"default": {},
+				"maxItems": {
+					"type": "string",
+					"format": "int64"
+				},
+				"anyOf": {
+					"type": "array",
+					"items": {
+						"$ref": "#/$defs/Schema"
+					}
+				},
+				"required": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					}
+				},
+				"minProperties": {
+					"type": "string",
+					"format": "int64"
+				},
+				"minimum": {
+					"type": "number",
+					"format": "double"
+				},
+				"type": {
+					"type": "string",
+					"enum": ["TYPE_UNSPECIFIED", "STRING", "NUMBER", "INTEGER", "BOOLEAN", "ARRAY", "OBJECT", "NULL"]
+				}
+			},
+			"type": "object",
+			"required": ["type"]
+		},
+		"SearchEntryPoint": {
+			"properties": {
+				"renderedContent": {
+					"type": "string"
+				},
+				"sdkBlob": {
+					"type": "string",
+					"format": "byte"
+				}
+			},
+			"type": "object"
+		},
+		"SearchTypes": {
+			"type": "object",
+			"properties": {
+				"imageSearch": {
+					"$ref": "#/$defs/ImageSearch"
+				},
+				"webSearch": {
+					"$ref": "#/$defs/WebSearch"
+				}
+			}
+		},
+		"SemanticRetrieverChunk": {
+			"properties": {
+				"chunk": {
+					"type": "string"
+				},
+				"source": {
+					"type": "string"
+				}
+			},
+			"type": "object"
+		},
+		"SpeakerVoiceConfig": {
+			"properties": {
+				"speaker": {
+					"type": "string"
+				},
+				"voiceConfig": {
+					"$ref": "#/$defs/VoiceConfig"
+				}
+			},
+			"type": "object",
+			"required": ["speaker", "voiceConfig"]
+		},
+		"SpeechConfig": {
+			"type": "object",
+			"properties": {
+				"voiceConfig": {
+					"$ref": "#/$defs/VoiceConfig"
+				},
+				"multiSpeakerVoiceConfig": {
+					"$ref": "#/$defs/MultiSpeakerVoiceConfig"
+				},
+				"languageCode": {
+					"type": "string"
+				}
+			}
+		},
+		"SpeechMetadata": {
+			"properties": {
+				"style": {
+					"type": "string"
+				},
+				"speaker": {
+					"type": "string"
+				}
+			},
+			"type": "object"
+		},
+		"StreamableHttpTransport": {
+			"type": "object",
+			"properties": {
+				"url": {
+					"type": "string"
+				},
+				"sseReadTimeout": {
+					"format": "google-duration",
+					"type": "string"
+				},
+				"timeout": {
+					"type": "string",
+					"format": "google-duration"
+				},
+				"headers": {
+					"additionalProperties": {
+						"type": "string"
+					},
+					"type": "object"
+				},
+				"terminateOnClose": {
+					"type": "boolean"
+				}
+			}
+		},
+		"TextResponseFormat": {
+			"type": "object",
+			"properties": {
+				"schema": {},
+				"mimeType": {
+					"type": "string",
+					"enum": ["MIME_TYPE_UNSPECIFIED", "APPLICATION_JSON", "TEXT_PLAIN"]
+				}
+			}
+		},
+		"ThinkingConfig": {
+			"properties": {
+				"thinkingLevel": {
+					"type": "string",
+					"enum": ["THINKING_LEVEL_UNSPECIFIED", "MINIMAL", "LOW", "MEDIUM", "HIGH"]
+				},
+				"includeThoughts": {
+					"type": "boolean"
+				},
+				"thinkingBudget": {
+					"type": "integer",
+					"format": "int32"
+				}
+			},
+			"type": "object"
+		},
+		"Tool": {
+			"type": "object",
+			"properties": {
+				"computerUse": {
+					"$ref": "#/$defs/ComputerUse"
+				},
+				"googleMaps": {
+					"$ref": "#/$defs/GoogleMaps"
+				},
+				"urlContext": {
+					"$ref": "#/$defs/UrlContext"
+				},
+				"googleSearch": {
+					"$ref": "#/$defs/GoogleSearch"
+				},
+				"codeExecution": {
+					"$ref": "#/$defs/CodeExecution"
+				},
+				"functionDeclarations": {
+					"items": {
+						"$ref": "#/$defs/FunctionDeclaration"
+					},
+					"type": "array"
+				},
+				"mcpServers": {
+					"items": {
+						"$ref": "#/$defs/McpServer"
+					},
+					"type": "array"
+				},
+				"googleSearchRetrieval": {
+					"$ref": "#/$defs/GoogleSearchRetrieval"
+				},
+				"fileSearch": {
+					"$ref": "#/$defs/FileSearch"
+				}
+			}
+		},
+		"ToolCall": {
+			"type": "object",
+			"properties": {
+				"args": {
+					"additionalProperties": {},
+					"type": "object"
+				},
+				"id": {
+					"type": "string"
+				},
+				"toolType": {
+					"type": "string",
+					"enum": [
+						"TOOL_TYPE_UNSPECIFIED",
+						"GOOGLE_SEARCH_WEB",
+						"GOOGLE_SEARCH_IMAGE",
+						"URL_CONTEXT",
+						"GOOGLE_MAPS",
+						"FILE_SEARCH"
+					]
+				},
+				"toolName": {
+					"type": "string"
+				}
+			},
+			"required": ["toolType"]
+		},
+		"ToolConfig": {
+			"type": "object",
+			"properties": {
+				"functionCallingConfig": {
+					"$ref": "#/$defs/FunctionCallingConfig"
+				},
+				"includeServerSideToolInvocations": {
+					"type": "boolean"
+				},
+				"retrievalConfig": {
+					"$ref": "#/$defs/RetrievalConfig"
+				}
+			}
+		},
+		"ToolResponse": {
+			"properties": {
+				"response": {
+					"additionalProperties": {},
+					"type": "object"
+				},
+				"id": {
+					"type": "string"
+				},
+				"toolType": {
+					"type": "string",
+					"enum": [
+						"TOOL_TYPE_UNSPECIFIED",
+						"GOOGLE_SEARCH_WEB",
+						"GOOGLE_SEARCH_IMAGE",
+						"URL_CONTEXT",
+						"GOOGLE_MAPS",
+						"FILE_SEARCH"
+					]
+				}
+			},
+			"type": "object",
+			"required": ["toolType"]
+		},
+		"TopCandidates": {
+			"type": "object",
+			"properties": {
+				"candidates": {
+					"type": "array",
+					"items": {
+						"$ref": "#/$defs/LogprobsResultCandidate"
+					}
+				}
+			}
+		},
+		"TranslationConfig": {
+			"type": "object",
+			"properties": {
+				"echoTargetLanguage": {
+					"type": "boolean"
+				},
+				"targetLanguageCode": {
+					"type": "string"
+				}
+			},
+			"required": ["targetLanguageCode"]
+		},
+		"UrlContext": {
+			"properties": {},
+			"type": "object"
+		},
+		"UrlContextMetadata": {
+			"type": "object",
+			"properties": {
+				"urlMetadata": {
+					"items": {
+						"$ref": "#/$defs/UrlMetadata"
+					},
+					"type": "array"
+				}
+			}
+		},
+		"UrlMetadata": {
+			"properties": {
+				"retrievedUrl": {
+					"type": "string"
+				},
+				"urlRetrievalStatus": {
+					"type": "string",
+					"enum": [
+						"URL_RETRIEVAL_STATUS_UNSPECIFIED",
+						"URL_RETRIEVAL_STATUS_SUCCESS",
+						"URL_RETRIEVAL_STATUS_ERROR",
+						"URL_RETRIEVAL_STATUS_PAYWALL",
+						"URL_RETRIEVAL_STATUS_UNSAFE"
+					]
+				}
+			},
+			"type": "object"
+		},
+		"UsageMetadata": {
+			"type": "object",
+			"properties": {
+				"promptTokenCount": {
+					"format": "int32",
+					"type": "integer"
+				},
+				"toolUsePromptTokenCount": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"candidatesTokenCount": {
+					"format": "int32",
+					"type": "integer"
+				},
+				"toolUsePromptTokensDetails": {
+					"items": {
+						"$ref": "#/$defs/ModalityTokenCount"
+					},
+					"type": "array"
+				},
+				"cachedContentTokenCount": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"candidatesTokensDetails": {
+					"items": {
+						"$ref": "#/$defs/ModalityTokenCount"
+					},
+					"type": "array"
+				},
+				"totalTokenCount": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"thoughtsTokenCount": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"serviceTier": {
+					"type": "string",
+					"enum": ["unspecified", "standard", "flex", "priority"]
+				},
+				"promptTokensDetails": {
+					"type": "array",
+					"items": {
+						"$ref": "#/$defs/ModalityTokenCount"
+					}
+				},
+				"cacheTokensDetails": {
+					"type": "array",
+					"items": {
+						"$ref": "#/$defs/ModalityTokenCount"
+					}
+				}
+			}
+		},
+		"V1mainMediaResolution": {
+			"type": "object",
+			"properties": {
+				"level": {
+					"type": "string",
+					"enum": [
+						"MEDIA_RESOLUTION_UNSPECIFIED",
+						"MEDIA_RESOLUTION_LOW",
+						"MEDIA_RESOLUTION_MEDIUM",
+						"MEDIA_RESOLUTION_HIGH",
+						"MEDIA_RESOLUTION_ULTRA_HIGH"
+					]
+				}
+			}
+		},
+		"VideoMetadata": {
+			"properties": {
+				"startOffset": {
+					"format": "google-duration",
+					"type": "string"
+				},
+				"fps": {
+					"format": "double",
+					"type": "number"
+				},
+				"endOffset": {
+					"format": "google-duration",
+					"type": "string"
+				}
+			},
+			"type": "object"
+		},
+		"VoiceConfig": {
+			"properties": {
+				"voice": {
+					"type": "string"
+				},
+				"prebuiltVoiceConfig": {
+					"$ref": "#/$defs/PrebuiltVoiceConfig"
+				}
+			},
+			"type": "object"
+		},
+		"Web": {
+			"properties": {
+				"uri": {
+					"type": "string"
+				},
+				"title": {
+					"type": "string"
+				}
+			},
+			"type": "object"
+		},
+		"WebSearch": {
+			"type": "object",
+			"properties": {}
+		},
+		"WordInfo": {
+			"properties": {
+				"startOffset": {
+					"type": "string",
+					"format": "google-duration"
+				},
+				"endOffset": {
+					"format": "google-duration",
+					"type": "string"
+				},
+				"word": {
+					"type": "string"
+				}
+			},
+			"type": "object",
+			"required": ["word"]
+		}
+	}
+}

@@ -55,7 +55,7 @@ describe('公开 API 包入口与兼容服务载荷', () => {
 		).toMatchObject({ usage: { output_tokens: 2 } });
 	});
 
-	test('支持 Anthropic 服务端工具，仍拒绝已知类型中的缺失字段', () => {
+	test('支持 Anthropic 服务端工具，并保留已知类型的非标准字段', () => {
 		const request = { model: 'local/assistant', max_tokens: 32_768, messages: [{ role: 'user', content: 'search' }] };
 		expect(
 			AnthropicMessagesRequestSchema.parse({
@@ -64,15 +64,15 @@ describe('公开 API 包入口与兼容服务载荷', () => {
 			}).tools,
 		).toHaveLength(1);
 		expect(
-			AnthropicMessagesRequestSchema.safeParse({ ...request, tools: [{ type: 'custom', name: 'invalid' }] }).success,
-		).toBe(false);
+			AnthropicMessagesRequestSchema.parse({ ...request, tools: [{ type: 'custom', name: 'invalid' }] }).tools,
+		).toEqual([{ type: 'custom', name: 'invalid' }]);
 		for (const source of [{ type: 'base64' }, { type: 'url', data: 'AA==' }]) {
 			expect(
-				AnthropicMessagesRequestSchema.safeParse({
+				AnthropicMessagesRequestSchema.parse({
 					...request,
 					messages: [{ role: 'user', content: [{ type: 'image', source }] }],
-				}).success,
-			).toBe(false);
+				}).messages[0],
+			).toEqual({ role: 'user', content: [{ type: 'image', source }] });
 		}
 	});
 
@@ -107,14 +107,14 @@ describe('公开 API 包入口与兼容服务载荷', () => {
 			}),
 		).toMatchObject({ id: 'chat-1' });
 		expect(
-			OpenAIChatCompletionsRequestSchema.safeParse({
+			OpenAIChatCompletionsRequestSchema.parse({
 				model: 'chat',
 				messages: [{ role: 'user', content: [{ type: 'input_audio' }] }],
-			}).success,
-		).toBe(false);
+			}),
+		).toMatchObject({ messages: [{ content: [{ type: 'input_audio' }] }] });
 	});
 
-	test('Responses 延续与 compact 保留加密状态，不放行缺失的 compaction 内容', () => {
+	test('Responses 延续与 compact 保留加密状态，也保留不完整的 compaction item', () => {
 		expect(
 			OpenAIResponsesRequestSchema.parse({ model: 'local/reasoning', previous_response_id: 'resp-1' }),
 		).toMatchObject({ previous_response_id: 'resp-1' });
@@ -135,11 +135,11 @@ describe('公开 API 包入口与兼容服务载荷', () => {
 			compacted.output,
 		);
 		expect(
-			OpenAIResponsesRequestSchema.safeParse({ model: 'local/reasoning', input: [{ type: 'compaction' }] }).success,
-		).toBe(false);
+			OpenAIResponsesRequestSchema.parse({ model: 'local/reasoning', input: [{ type: 'compaction' }] }).input,
+		).toEqual([{ type: 'compaction' }]);
 	});
 
-	test('Responses 接受内置/自定义工具并拒绝缺失名称的 function 工具', () => {
+	test('Responses 接受内置/自定义工具并保留缺失名称的 function 工具', () => {
 		const request = { model: 'local/reasoning', input: 'search' };
 		expect(
 			OpenAIResponsesRequestSchema.parse({
@@ -147,7 +147,9 @@ describe('公开 API 包入口与兼容服务载荷', () => {
 				tools: [{ type: 'web_search' }, { type: 'custom', name: 'code' }],
 			}).tools,
 		).toHaveLength(2);
-		expect(OpenAIResponsesRequestSchema.safeParse({ ...request, tools: [{ type: 'function' }] }).success).toBe(false);
+		expect(OpenAIResponsesRequestSchema.parse({ ...request, tools: [{ type: 'function' }] }).tools).toEqual([
+			{ type: 'function' },
+		]);
 	});
 
 	test('OpenAI batch 元数据和失败 JSONL 行，Anthropic batch 重用消息边界', () => {

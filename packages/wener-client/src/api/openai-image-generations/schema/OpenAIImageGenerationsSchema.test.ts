@@ -6,6 +6,34 @@ import {
 } from './OpenAIImageGenerationsSchema';
 
 describe('OpenAI Image Generations schemas', () => {
+	test('保留官方 nullable 参数、开放尺寸和扩展 quality', () => {
+		const request = {
+			model: '',
+			prompt: '',
+			background: null,
+			moderation: null,
+			n: null,
+			output_compression: null,
+			output_format: null,
+			partial_images: null,
+			quality: null,
+			response_format: null,
+			size: null,
+			stream: null,
+			style: null,
+			extra: { unchanged: [null, 'value'] },
+		};
+		expect(OpenAIImageGenerationsRequestSchema.parse(request)).toEqual(request);
+		for (const quality of ['xhigh', 'max']) {
+			const value = { model: 'gpt-image-2', prompt: 'image', quality, size: 'custom', output_compression: -1 };
+			expect(OpenAIImageGenerationsRequestSchema.parse(value)).toEqual(value);
+			const response = { created: 1, quality, extra: [1, null] };
+			expect(OpenAIImagesResponseSchema.parse(response)).toEqual(response);
+		}
+		expect(OpenAIImagesResponseSchema.safeParse({ created: 1, quality: null }).success).toBe(false);
+		expect(OpenAIImageGenerationsRequestSchema.safeParse({ model: 'm', prompt: 'p', n: '1' }).success).toBe(false);
+	});
+
 	test('解析gpt-image-2任意尺寸生成请求', () => {
 		expect(
 			OpenAIImageGenerationsRequestSchema.parse({

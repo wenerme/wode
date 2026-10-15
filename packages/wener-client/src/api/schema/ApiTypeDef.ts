@@ -1,3 +1,4 @@
+import { type ApiEndpointDef, getApiEndpointDefs } from './ApiEndpointDef';
 import { ApiType, normalizeApiType } from './ApiType';
 import type { EnumValues } from './types';
 
@@ -33,10 +34,11 @@ export interface ApiTypeDef {
 	readonly title: string;
 	readonly family: ApiFamily;
 	readonly capability: ModelCapability | null;
+	readonly endpoints: readonly ApiEndpointDef[];
 }
 
 function define(type: ApiType, title: string, family: ApiFamily, capability: ModelCapability | null): ApiTypeDef {
-	return Object.freeze({ type, title, family, capability });
+	return Object.freeze({ type, title, family, capability, endpoints: getApiEndpointDefs(type) });
 }
 
 export const ApiTypeDefs: Readonly<Record<ApiType, ApiTypeDef>> = Object.freeze({
