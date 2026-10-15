@@ -9,11 +9,15 @@ import {
 } from './OpenAIResponsesSchema';
 
 describe('OpenAI Responses schemas', () => {
-	test('已知内置工具不能绕过必需字段，而 tool_choice 只需要类型', () => {
+	test('官方 number 时间戳保留小数，不额外要求整数', () => {
+		const response = { id: 'resp-1', object: 'response', created_at: 1.5, model: 'm', output: [] };
+		expect(OpenAIResponsesResponseSchema.parse(response)).toStrictEqual(response);
+	});
+
+	test('已知内置工具不完整时由 fallback 原样保留，tool_choice 保留 provider 值', () => {
 		for (const tool of [{ type: 'file_search' }, { type: 'code_interpreter' }]) {
-			expect(
-				OpenAIResponsesRequestSchema.safeParse({ model: 'local/assistant', input: 'hi', tools: [tool] }).success,
-			).toBe(false);
+			const request = { model: 'local/assistant', input: 'hi', tools: [tool] };
+			expect(OpenAIResponsesRequestSchema.parse(request)).toStrictEqual(request);
 		}
 		expect(
 			OpenAIResponsesRequestSchema.parse({
@@ -33,6 +37,34 @@ describe('OpenAI Responses schemas', () => {
 				tools: [{ type: 'code_interpreter', container: 'cntr-1' }],
 			}).tools,
 		).toHaveLength(1);
+		expect(
+			OpenAIResponsesRequestSchema.parse({
+				model: 'local/assistant',
+				input: 'hi',
+				tool_choice: 'provider-mode',
+				max_output_tokens: 0,
+			}),
+		).toMatchObject({ tool_choice: 'provider-mode', max_output_tokens: 0 });
+	});
+
+	test('Responses 已知内容、条目和事件不完整时保留扩展字段', () => {
+		const request = {
+			input: [{ type: 'message', role: 'provider-role', content: [{ type: 'input_text', extension: true }] }],
+		};
+		expect(OpenAIResponsesRequestSchema.parse(request)).toStrictEqual(request);
+
+		const response = {
+			id: 'resp-1',
+			object: 'provider.response',
+			created_at: 1,
+			model: 'm',
+			output: [{ type: 'function_call', extension: { keep: true } }],
+			status: 'provider-status',
+		};
+		expect(OpenAIResponsesResponseSchema.parse(response)).toStrictEqual(response);
+
+		const event = { type: 'response.completed', extension: { keep: true } };
+		expect(OpenAIResponsesStreamEventSchema.parse(event)).toStrictEqual(event);
 	});
 
 	test('usage要求官方input/output details', () => {
@@ -98,7 +130,18 @@ describe('OpenAI Responses input schemas', () => {
 		expect(OpenAIResponsesInputTokensRequestSchema.parse({ model: 'gpt-5.6-luna', input }).input).toHaveLength(2);
 	});
 
-	test('Responses output要求message带type且不接受tool result', () => {
+	test('Responses 输入条目引用可省略 type，并保留原始字段', () => {
+		for (const item of [{ id: 'item-1' }, { type: 'item_reference', id: 'item-1', extension: { keep: null } }]) {
+			const request = { input: [item] };
+			expect(OpenAIResponsesRequestSchema.parse(request)).toStrictEqual(request);
+			expect(OpenAIResponsesInputTokensRequestSchema.parse(request)).toStrictEqual(request);
+		}
+		expect(OpenAIResponsesRequestSchema.parse({ input: [{ type: 'item_reference' }] })).toStrictEqual({
+			input: [{ type: 'item_reference' }],
+		});
+	});
+
+	test('Responses output 保留响应条目结构并保留官方工具结果资源', () => {
 		const base = {
 			id: 'resp-1',
 			object: 'response' as const,
@@ -109,12 +152,10 @@ describe('OpenAI Responses input schemas', () => {
 		expect(
 			OpenAIResponsesResponseSchema.safeParse({ ...base, output: [{ role: 'assistant', content: 'Hello' }] }).success,
 		).toBe(false);
-		expect(
-			OpenAIResponsesResponseSchema.safeParse({
-				...base,
-				output: [{ type: 'function_call_output', call_id: 'call-1', output: 'result' }],
-			}).success,
-		).toBe(false);
+		const result = { ...base, output: [{ type: 'function_call_output', call_id: 'call-1', output: 'result' }] };
+		expect(OpenAIResponsesResponseSchema.parse(result)).toStrictEqual(result);
+		const resource = { ...base, output: [{ type: 'function_call_output', id: 'item-1', output: 'result' }] };
+		expect(OpenAIResponsesResponseSchema.parse(resource)).toStrictEqual(resource);
 	});
 
 	test('解析响应', () => {

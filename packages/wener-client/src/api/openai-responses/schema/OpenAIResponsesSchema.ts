@@ -1,38 +1,20 @@
 import { z } from 'zod';
 
-const wireString = z.string().min(1);
-const knownContentPartTypes = new Set(['input_text', 'output_text', 'text', 'input_image', 'image', 'refusal']);
-const knownItemTypes = new Set(['message', 'function_call', 'function_call_output', 'reasoning', 'compaction']);
-const knownEventTypes = new Set([
-	'response.created',
-	'response.in_progress',
-	'response.output_item.added',
-	'response.output_item.done',
-	'response.content_part.added',
-	'response.content_part.done',
-	'response.output_text.delta',
-	'response.output_text.done',
-	'response.completed',
-	'response.incomplete',
-	'response.failed',
-	'error',
-]);
-
 export const OpenAIResponseTextContentPartSchema = z.looseObject({
 	type: z.enum(['input_text', 'output_text', 'text']),
-	text: z.string(),
+	text: z.string().describe('Text content'),
 });
 
 export const OpenAIResponseImageContentPartSchema = z
 	.looseObject({
 		type: z.enum(['input_image', 'image']),
-		image_url: z.string().min(1).optional(),
-		file_id: z.string().min(1).optional(),
-		detail: z.string().optional(),
+		image_url: z.string().nullish().describe('Image URL'),
+		file_id: z.string().nullish().describe('Uploaded file identifier'),
+		detail: z.string().optional().describe('Image detail'),
 	})
 	.refine(
-		(part) => part.image_url !== undefined || part.file_id !== undefined,
-		'image parts require image_url or file_id',
+		(part) => part.image_url !== undefined || part.file_id !== undefined || part.detail !== undefined,
+		'exact image parts require image_url, file_id, or detail',
 	);
 
 export const OpenAIResponseRefusalContentPartSchema = z.looseObject({
@@ -40,9 +22,8 @@ export const OpenAIResponseRefusalContentPartSchema = z.looseObject({
 	refusal: z.string(),
 });
 
-const OpenAIResponseUnknownContentPartSchema = z
-	.looseObject({ type: z.string().min(1) })
-	.refine((part) => !knownContentPartTypes.has(part.type), 'known content parts must satisfy their wire schema');
+// Exact branches run first; this fallback preserves unknown and incomplete known content parts.
+const OpenAIResponseUnknownContentPartSchema = z.looseObject({ type: z.string() });
 
 export const OpenAIResponseContentPartSchema = z.union([
 	OpenAIResponseTextContentPartSchema,
@@ -53,9 +34,9 @@ export const OpenAIResponseContentPartSchema = z.union([
 
 export const OpenAIResponseMessageItemSchema = z.looseObject({
 	type: z.literal('message'),
-	role: z.enum(['system', 'developer', 'user', 'assistant']),
-	content: z.union([z.string(), z.array(OpenAIResponseContentPartSchema)]),
-	status: z.string().optional(),
+	role: z.string().describe('Message role'),
+	content: z.union([z.string(), z.array(OpenAIResponseContentPartSchema)]).describe('Message content'),
+	status: z.string().optional().describe('Message status'),
 });
 
 /**
@@ -64,52 +45,48 @@ export const OpenAIResponseMessageItemSchema = z.looseObject({
  */
 export const OpenAIResponseInputMessageItemSchema = z.looseObject({
 	type: z.literal('message').optional(),
-	role: z.enum(['system', 'developer', 'user', 'assistant']),
-	content: z.union([z.string(), z.array(OpenAIResponseContentPartSchema)]),
-	status: z.string().optional(),
+	role: z.string().describe('Message role'),
+	content: z.union([z.string(), z.array(OpenAIResponseContentPartSchema)]).describe('Message content'),
+	status: z.string().optional().describe('Message status'),
 });
 
 export const OpenAIResponseFunctionToolSchema = z.looseObject({
 	type: z.literal('function'),
-	name: wireString,
-	description: z.string().optional(),
-	parameters: z.unknown().optional(),
-	strict: z.boolean().optional(),
+	name: z.string().describe('Function name'),
+	description: z.string().nullish().describe('Function description'),
+	parameters: z.unknown().optional().describe('Parameter JSON Schema'),
+	strict: z.boolean().nullish().describe('Strict parameter schema'),
 });
 
 export const OpenAIResponseCustomToolSchema = z.looseObject({
 	type: z.literal('custom'),
-	name: wireString,
+	name: z.string(),
 	description: z.string().optional(),
 	format: z.unknown().optional(),
 });
 
 export const OpenAIResponseFileSearchToolSchema = z.looseObject({
 	type: z.literal('file_search'),
-	vector_store_ids: z.array(wireString),
-	filters: z.unknown().optional(),
-	max_num_results: z.number().int().min(1).max(50).optional(),
-	ranking_options: z.looseObject({}).optional(),
+	vector_store_ids: z.array(z.string()).describe('Vector store identifiers'),
+	filters: z.unknown().optional().describe('Retrieval filters'),
+	max_num_results: z.number().multipleOf(1).optional().describe('Maximum retrieval results'),
+	ranking_options: z.looseObject({}).optional().describe('Result ranking options'),
 });
 
 export const OpenAIResponseCodeInterpreterToolSchema = z.looseObject({
 	type: z.literal('code_interpreter'),
 	container: z.union([
-		wireString,
+		z.string(),
 		z.looseObject({
 			type: z.literal('auto'),
-			file_ids: z.array(wireString).optional(),
+			file_ids: z.array(z.string()).optional(),
 			memory_limit: z.enum(['1g', '4g', '16g', '64g']).nullish(),
 			network_policy: z.unknown().optional(),
 		}),
 	]),
 });
 
-const knownToolTypes = new Set(['function', 'custom', 'file_search', 'code_interpreter']);
-
-const OpenAIResponseExtensionToolSchema = z
-	.looseObject({ type: wireString })
-	.refine((tool) => !knownToolTypes.has(tool.type), 'known tools must satisfy their wire schema');
+const OpenAIResponseExtensionToolSchema = z.looseObject({ type: z.string() });
 
 export const OpenAIResponseToolSchema = z.union([
 	OpenAIResponseFunctionToolSchema,
@@ -121,19 +98,23 @@ export const OpenAIResponseToolSchema = z.union([
 
 export const OpenAIResponseFunctionCallItemSchema = z.looseObject({
 	type: z.literal('function_call'),
-	call_id: wireString,
-	name: wireString,
-	arguments: z.string(),
-	id: z.string().optional(),
-	status: z.string().optional(),
+	call_id: z.string().describe('Tool call identifier'),
+	name: z.string().describe('Invoked function name'),
+	arguments: z.string().describe('JSON-encoded function arguments'),
+	id: z.string().optional().describe('Response item identifier'),
+	status: z.string().optional().describe('Call status'),
 });
 
 export const OpenAIResponseFunctionCallOutputItemSchema = z.looseObject({
 	type: z.literal('function_call_output'),
-	call_id: wireString,
-	output: z.union([z.string(), z.array(OpenAIResponseContentPartSchema)]),
+	call_id: z.string().describe('Associated tool call identifier'),
+	output: z.union([z.string(), z.array(OpenAIResponseContentPartSchema)]).describe('Tool output'),
 	id: z.string().optional(),
 	status: z.string().optional(),
+});
+
+export const OpenAIResponseFunctionCallOutputResourceSchema = OpenAIResponseFunctionCallOutputItemSchema.extend({
+	call_id: z.string().optional().describe('Associated tool call identifier'),
 });
 
 export const OpenAIResponseReasoningItemSchema = z.looseObject({
@@ -144,23 +125,30 @@ export const OpenAIResponseReasoningItemSchema = z.looseObject({
 	status: z.string().optional(),
 });
 
-const OpenAIResponseUnknownItemSchema = z
-	.looseObject({ type: z.string().min(1) })
-	.refine((item) => !knownItemTypes.has(item.type), 'known response items must satisfy their wire schema');
+// Exact branches run first; this fallback preserves unknown and incomplete known response items.
+const OpenAIResponseUnknownItemSchema = z.looseObject({ type: z.string() });
 
 export const OpenAIResponseCompactionItemSchema = z.looseObject({
-	id: wireString,
+	id: z.string(),
 	type: z.literal('compaction'),
-	encrypted_content: wireString,
+	encrypted_content: z.string(),
 });
 
 export const OpenAIResponseInputCompactionItemSchema = OpenAIResponseCompactionItemSchema.extend({
-	id: wireString.nullish(),
+	id: z.string().nullish(),
 });
+
+export const OpenAIResponseInputItemReferenceSchema = z.looseObject({
+	type: z.literal('item_reference').optional(),
+	id: z.string().describe('Reused input item identifier'),
+});
+
+const OpenAIResponseInputUnknownItemSchema = OpenAIResponseUnknownItemSchema;
 
 export const OpenAIResponseItemSchema = z.union([
 	OpenAIResponseMessageItemSchema,
 	OpenAIResponseFunctionCallItemSchema,
+	OpenAIResponseFunctionCallOutputResourceSchema,
 	OpenAIResponseReasoningItemSchema,
 	OpenAIResponseCompactionItemSchema,
 	OpenAIResponseUnknownItemSchema,
@@ -170,70 +158,76 @@ export const OpenAIResponseInputItemSchema = z.union([
 	OpenAIResponseInputMessageItemSchema,
 	OpenAIResponseFunctionCallItemSchema,
 	OpenAIResponseFunctionCallOutputItemSchema,
+	OpenAIResponseFunctionCallOutputResourceSchema,
 	OpenAIResponseReasoningItemSchema,
 	OpenAIResponseInputCompactionItemSchema,
-	OpenAIResponseUnknownItemSchema,
+	OpenAIResponseInputItemReferenceSchema,
+	OpenAIResponseInputUnknownItemSchema,
 ]);
 
 export const OpenAIResponseToolChoiceSchema = z.union([
-	z.enum(['none', 'auto', 'required']),
+	z.string(),
 	z.looseObject({
 		type: z.literal('function'),
-		name: wireString,
+		name: z.string(),
 	}),
-	z.looseObject({ type: z.literal('custom'), name: wireString }),
-	z
-		.looseObject({ type: wireString })
-		.refine(
-			(choice) => choice.type !== 'function' && choice.type !== 'custom',
-			'function and custom tool choices require a name',
-		),
+	z.looseObject({ type: z.literal('custom'), name: z.string() }),
+	z.looseObject({ type: z.string() }),
 ]);
 
 export const OpenAIResponsesRequestSchema = z.looseObject({
-	model: wireString,
-	input: z.union([z.string(), z.array(OpenAIResponseInputItemSchema)]).nullish(),
-	previous_response_id: wireString.nullish(),
-	instructions: z.string().optional(),
-	tools: z.array(OpenAIResponseToolSchema).optional(),
-	tool_choice: OpenAIResponseToolChoiceSchema.optional(),
-	parallel_tool_calls: z.boolean().optional(),
-	stream: z.boolean().optional(),
-	background: z.boolean().optional(),
-	max_output_tokens: z.number().int().positive().optional(),
-	temperature: z.number().finite().optional(),
-	top_p: z.number().finite().optional(),
-	reasoning: z.looseObject({ effort: z.string().optional(), summary: z.string().optional() }).optional(),
-	text: z.looseObject({ format: z.unknown().optional(), verbosity: z.string().optional() }).optional(),
-	metadata: z.record(z.string(), z.string()).optional(),
-	user: z.string().optional(),
+	model: z.string().optional().describe('Model identifier'),
+	input: z
+		.union([z.string(), z.array(OpenAIResponseInputItemSchema)])
+		.nullish()
+		.describe('Text or input items'),
+	previous_response_id: z.string().nullish().describe('Previous response identifier'),
+	instructions: z.string().nullish().describe('System instructions'),
+	tools: z.array(OpenAIResponseToolSchema).optional().describe('Available tools'),
+	tool_choice: OpenAIResponseToolChoiceSchema.optional().describe('Tool choice strategy'),
+	parallel_tool_calls: z.boolean().nullish().describe('Parallel tool calls allowed'),
+	stream: z.boolean().nullish().describe('Stream response'),
+	background: z.boolean().nullish().describe('Run in background'),
+	max_output_tokens: z.number().multipleOf(1).nullish().describe('Maximum output tokens'),
+	temperature: z.number().finite().nullish().describe('Sampling temperature'),
+	top_p: z.number().finite().nullish().describe('Nucleus sampling threshold'),
+	reasoning: z
+		.looseObject({ effort: z.string().nullish(), summary: z.string().nullish() })
+		.nullish()
+		.describe('Reasoning settings'),
+	text: z
+		.looseObject({ format: z.unknown().optional(), verbosity: z.string().nullish() })
+		.nullish()
+		.describe('Text output settings'),
+	metadata: z.record(z.string(), z.string()).nullish().describe('Additional request metadata'),
+	user: z.string().nullish().describe('End-user identifier'),
 });
 
 // Input Tokens 请求是 Responses 请求的子集：不含 stream/max_output_tokens 等生成参数
 export const OpenAIResponsesInputTokensRequestSchema = z.looseObject({
-	model: wireString,
-	input: z.union([z.string(), z.array(OpenAIResponseInputItemSchema)]),
-	instructions: z.string().optional(),
-	tools: z.array(OpenAIResponseToolSchema).optional(),
-	tool_choice: OpenAIResponseToolChoiceSchema.optional(),
-	parallel_tool_calls: z.boolean().optional(),
-	reasoning: z.looseObject({ effort: z.string().optional(), summary: z.string().optional() }).optional(),
-	text: z.looseObject({ format: z.unknown().optional(), verbosity: z.string().optional() }).optional(),
+	model: z.string().nullish(),
+	input: z.union([z.string(), z.array(OpenAIResponseInputItemSchema)]).nullish(),
+	instructions: z.string().nullish(),
+	tools: z.array(OpenAIResponseToolSchema).nullish(),
+	tool_choice: OpenAIResponseToolChoiceSchema.nullish(),
+	parallel_tool_calls: z.boolean().nullish(),
+	reasoning: z.looseObject({ effort: z.string().nullish(), summary: z.string().nullish() }).nullish(),
+	text: z.looseObject({ format: z.unknown().optional(), verbosity: z.string().nullish() }).nullish(),
 });
 export type OpenAIResponsesInputTokensRequest = z.infer<typeof OpenAIResponsesInputTokensRequestSchema>;
 
 export const OpenAIResponsesInputTokensResponseSchema = z.looseObject({
-	object: z.literal('response.input_tokens'),
-	input_tokens: z.number().int().nonnegative(),
+	object: z.string().min(1),
+	input_tokens: z.number().multipleOf(1),
 });
 export type OpenAIResponsesInputTokensResponse = z.infer<typeof OpenAIResponsesInputTokensResponseSchema>;
 
 export const OpenAIResponseUsageSchema = z.looseObject({
-	input_tokens: z.number().int().nonnegative(),
-	output_tokens: z.number().int().nonnegative(),
-	total_tokens: z.number().int().nonnegative(),
-	input_tokens_details: z.looseObject({ cached_tokens: z.number().int().nonnegative() }).optional(),
-	output_tokens_details: z.looseObject({ reasoning_tokens: z.number().int().nonnegative() }).optional(),
+	input_tokens: z.number().multipleOf(1).describe('Input token count'),
+	output_tokens: z.number().multipleOf(1).describe('Output token count'),
+	total_tokens: z.number().multipleOf(1).describe('Total token count'),
+	input_tokens_details: z.looseObject({ cached_tokens: z.number().multipleOf(1) }).optional(),
+	output_tokens_details: z.looseObject({ reasoning_tokens: z.number().multipleOf(1) }).optional(),
 });
 
 export const OpenAIResponseErrorSchema = z.looseObject({
@@ -244,100 +238,100 @@ export const OpenAIResponseErrorSchema = z.looseObject({
 });
 
 export const OpenAIResponsesResponseSchema = z.looseObject({
-	id: wireString,
-	object: z.literal('response'),
-	created_at: z.number().int().nonnegative(),
-	model: wireString,
-	status: z.enum(['queued', 'in_progress', 'completed', 'failed', 'incomplete', 'cancelled']),
-	output: z.array(OpenAIResponseItemSchema),
-	usage: OpenAIResponseUsageSchema.nullable().optional(),
-	error: OpenAIResponseErrorSchema.nullable().optional(),
-	incomplete_details: z.looseObject({}).nullable().optional(),
+	id: z.string().describe('Response identifier'),
+	object: z.string().min(1),
+	created_at: z.number().finite().describe('Creation time, Unix seconds'),
+	model: z.string().describe('Model identifier'),
+	status: z.string().optional().describe('Response status'),
+	output: z.array(OpenAIResponseItemSchema).describe('Output items'),
+	usage: OpenAIResponseUsageSchema.nullable().optional().describe('Token usage'),
+	error: OpenAIResponseErrorSchema.nullable().optional().describe('Request error'),
+	incomplete_details: z.looseObject({}).nullable().optional().describe('Incomplete response reason'),
 });
 
 export const OpenAIResponseCreatedEventSchema = z.looseObject({
 	type: z.literal('response.created'),
-	sequence_number: z.number().int().nonnegative(),
+	sequence_number: z.number().multipleOf(1),
 	response: OpenAIResponsesResponseSchema,
 });
 
 export const OpenAIResponseInProgressEventSchema = z.looseObject({
 	type: z.literal('response.in_progress'),
-	sequence_number: z.number().int().nonnegative(),
+	sequence_number: z.number().multipleOf(1),
 	response: OpenAIResponsesResponseSchema,
 });
 
 export const OpenAIResponseOutputItemAddedEventSchema = z.looseObject({
 	type: z.literal('response.output_item.added'),
-	sequence_number: z.number().int().nonnegative(),
-	output_index: z.number().int().nonnegative(),
+	sequence_number: z.number().multipleOf(1),
+	output_index: z.number().multipleOf(1),
 	item: OpenAIResponseItemSchema,
 });
 
 export const OpenAIResponseOutputItemDoneEventSchema = z.looseObject({
 	type: z.literal('response.output_item.done'),
-	sequence_number: z.number().int().nonnegative(),
-	output_index: z.number().int().nonnegative(),
+	sequence_number: z.number().multipleOf(1),
+	output_index: z.number().multipleOf(1),
 	item: OpenAIResponseItemSchema,
 });
 
 export const OpenAIResponseContentPartAddedEventSchema = z.looseObject({
 	type: z.literal('response.content_part.added'),
-	sequence_number: z.number().int().nonnegative(),
-	item_id: wireString,
-	output_index: z.number().int().nonnegative(),
-	content_index: z.number().int().nonnegative(),
+	sequence_number: z.number().multipleOf(1),
+	item_id: z.string(),
+	output_index: z.number().multipleOf(1),
+	content_index: z.number().multipleOf(1),
 	part: OpenAIResponseContentPartSchema,
 });
 
 export const OpenAIResponseContentPartDoneEventSchema = z.looseObject({
 	type: z.literal('response.content_part.done'),
-	sequence_number: z.number().int().nonnegative(),
-	item_id: wireString,
-	output_index: z.number().int().nonnegative(),
-	content_index: z.number().int().nonnegative(),
+	sequence_number: z.number().multipleOf(1),
+	item_id: z.string(),
+	output_index: z.number().multipleOf(1),
+	content_index: z.number().multipleOf(1),
 	part: OpenAIResponseContentPartSchema,
 });
 
 export const OpenAIResponseOutputTextDeltaEventSchema = z.looseObject({
 	type: z.literal('response.output_text.delta'),
-	sequence_number: z.number().int().nonnegative(),
-	item_id: wireString,
-	output_index: z.number().int().nonnegative(),
-	content_index: z.number().int().nonnegative(),
+	sequence_number: z.number().multipleOf(1),
+	item_id: z.string(),
+	output_index: z.number().multipleOf(1),
+	content_index: z.number().multipleOf(1),
 	delta: z.string(),
 });
 
 export const OpenAIResponseOutputTextDoneEventSchema = z.looseObject({
 	type: z.literal('response.output_text.done'),
-	sequence_number: z.number().int().nonnegative(),
-	item_id: wireString,
-	output_index: z.number().int().nonnegative(),
-	content_index: z.number().int().nonnegative(),
+	sequence_number: z.number().multipleOf(1),
+	item_id: z.string(),
+	output_index: z.number().multipleOf(1),
+	content_index: z.number().multipleOf(1),
 	text: z.string(),
 });
 
 export const OpenAIResponseCompletedEventSchema = z.looseObject({
 	type: z.literal('response.completed'),
-	sequence_number: z.number().int().nonnegative(),
+	sequence_number: z.number().multipleOf(1),
 	response: OpenAIResponsesResponseSchema,
 });
 
 export const OpenAIResponseIncompleteEventSchema = z.looseObject({
 	type: z.literal('response.incomplete'),
-	sequence_number: z.number().int().nonnegative(),
+	sequence_number: z.number().multipleOf(1),
 	response: OpenAIResponsesResponseSchema,
 });
 
 export const OpenAIResponseFailedEventSchema = z.looseObject({
 	type: z.literal('response.failed'),
-	sequence_number: z.number().int().nonnegative(),
+	sequence_number: z.number().multipleOf(1),
 	response: OpenAIResponsesResponseSchema,
 });
 
 export const OpenAIResponseErrorEventSchema = z.looseObject({
 	type: z.literal('error'),
-	sequence_number: z.number().int().nonnegative(),
+	sequence_number: z.number().multipleOf(1),
 	error: OpenAIResponseErrorSchema.optional(),
 	code: z.string().nullable().optional(),
 	message: z.string().optional(),
@@ -358,9 +352,10 @@ export const OpenAIResponseKnownStreamEventSchema = z.union([
 	OpenAIResponseErrorEventSchema,
 ]);
 
-const OpenAIResponseUnknownStreamEventSchema = z
-	.looseObject({ type: z.string().min(1).brand<'OpenAIResponseUnknownEventType'>() })
-	.refine((event) => !knownEventTypes.has(event.type), 'known response events must satisfy their wire schema');
+// Exact event branches run first; this fallback preserves unknown and incomplete known events.
+const OpenAIResponseUnknownStreamEventSchema = z.looseObject({
+	type: z.string().brand<'OpenAIResponseUnknownEventType'>(),
+});
 
 export const OpenAIResponsesStreamEventSchema = z.union([
 	OpenAIResponseKnownStreamEventSchema,

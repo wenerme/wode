@@ -32,8 +32,8 @@ describe('Gemini Embeddings schemas', () => {
 		).toHaveLength(2);
 	});
 
-	test('batchEmbedContents 至少一个 request', () => {
-		expect(GeminiBatchEmbedContentsRequestSchema.safeParse({ requests: [] }).success).toBe(false);
+	test('batchEmbedContents 保留官方数组结构，包括空数组', () => {
+		expect(GeminiBatchEmbedContentsRequestSchema.parse({ requests: [] })).toStrictEqual({ requests: [] });
 		expect(
 			GeminiBatchEmbedContentsRequestSchema.safeParse({
 				requests: [{ model: 'models/x', content: { parts: [{ text: 'a' }] } }],
@@ -43,20 +43,16 @@ describe('Gemini Embeddings schemas', () => {
 });
 
 describe('Gemini CountTokens schemas', () => {
-	test('contents 与 generateContentRequest 二选一', () => {
+	test('保留官方允许的 contents、generateContentRequest 和空结构', () => {
 		const contents = [{ parts: [{ text: 'hello' }] }];
 		expect(GeminiCountTokensRequestSchema.safeParse({ contents }).success).toBe(true);
 		expect(
 			GeminiCountTokensRequestSchema.safeParse({ generateContentRequest: { model: 'models/x', contents } }).success,
 		).toBe(true);
-		expect(GeminiCountTokensRequestSchema.safeParse({ contents, generateContentRequest: { contents } }).success).toBe(
-			false,
-		);
-		expect(GeminiCountTokensRequestSchema.safeParse({}).success).toBe(false);
-		expect(GeminiCountTokensRequestSchema.safeParse({ contents: [] }).success).toBe(false);
-		expect(GeminiCountTokensRequestSchema.safeParse({}).error?.issues[0]?.message).toBe(
-			'Exactly one of contents or generateContentRequest must be provided',
-		);
+		const both = { contents, generateContentRequest: { contents } };
+		expect(GeminiCountTokensRequestSchema.parse(both)).toStrictEqual(both);
+		expect(GeminiCountTokensRequestSchema.parse({})).toStrictEqual({});
+		expect(GeminiCountTokensRequestSchema.parse({ contents: [] })).toStrictEqual({ contents: [] });
 	});
 
 	test('proto3 JSON 省略零值时 totalTokens 可缺失', () => {

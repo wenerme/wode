@@ -1,9 +1,5 @@
 import { z } from 'zod';
 
-const wireString = z.string().min(1);
-const knownContentPartTypes = new Set(['text', 'image_url', 'input_audio', 'file', 'refusal']);
-const knownMessageRoles = new Set(['system', 'developer', 'user', 'assistant', 'tool']);
-
 export const OpenAIChatTextContentPartSchema = z.looseObject({
 	type: z.literal('text'),
 	text: z.string(),
@@ -12,9 +8,9 @@ export const OpenAIChatTextContentPartSchema = z.looseObject({
 export const OpenAIChatImageContentPartSchema = z.looseObject({
 	type: z.literal('image_url'),
 	image_url: z.union([
-		z.string().min(1),
+		z.string(),
 		z.looseObject({
-			url: z.string().min(1),
+			url: z.string(),
 			detail: z.string().optional(),
 		}),
 	]),
@@ -22,19 +18,20 @@ export const OpenAIChatImageContentPartSchema = z.looseObject({
 
 export const OpenAIChatAudioContentPartSchema = z.looseObject({
 	type: z.literal('input_audio'),
-	input_audio: z.looseObject({ data: wireString, format: z.enum(['wav', 'mp3']) }),
+	input_audio: z.looseObject({ data: z.string(), format: z.string() }),
 });
 export const OpenAIChatFileContentPartSchema = z.looseObject({
 	type: z.literal('file'),
-	file: z
-		.looseObject({ file_data: wireString.optional(), file_id: wireString.optional(), filename: z.string().optional() })
-		.refine((file) => file.file_id !== undefined || file.file_data !== undefined, 'files require file_id or file_data'),
+	file: z.looseObject({
+		file_data: z.string().optional(),
+		file_id: z.string().optional(),
+		filename: z.string().optional(),
+	}),
 });
 export const OpenAIChatRefusalContentPartSchema = z.looseObject({ type: z.literal('refusal'), refusal: z.string() });
 
-const OpenAIChatUnknownContentPartSchema = z
-	.looseObject({ type: z.string().min(1) })
-	.refine((part) => !knownContentPartTypes.has(part.type), 'known content parts must satisfy their wire schema');
+// Exact branches run first; this fallback preserves unknown and incomplete known parts.
+const OpenAIChatUnknownContentPartSchema = z.looseObject({ type: z.string() });
 
 export const OpenAIChatContentPartSchema = z.union([
 	OpenAIChatTextContentPartSchema,
@@ -48,45 +45,68 @@ export const OpenAIChatContentPartSchema = z.union([
 export const OpenAIChatFunctionToolSchema = z.looseObject({
 	type: z.literal('function'),
 	function: z.looseObject({
-		name: wireString,
+		name: z.string(),
 		description: z.string().optional(),
 		parameters: z.unknown().optional(),
-		strict: z.boolean().optional(),
+		strict: z.boolean().nullish(),
 	}),
 });
 
 export const OpenAIChatCustomToolSchema = z.looseObject({
 	type: z.literal('custom'),
-	custom: z.looseObject({ name: wireString, description: z.string().optional(), format: z.unknown().optional() }),
+	custom: z.looseObject({ name: z.string(), description: z.string().optional(), format: z.unknown().optional() }),
 });
-export const OpenAIChatToolSchema = z.union([OpenAIChatFunctionToolSchema, OpenAIChatCustomToolSchema]);
+// Exact branches run first; this fallback preserves unknown and incomplete tool definitions.
+const OpenAIChatToolFallbackSchema = z.looseObject({ type: z.string() });
+export const OpenAIChatToolSchema = z.union([
+	OpenAIChatFunctionToolSchema,
+	OpenAIChatCustomToolSchema,
+	OpenAIChatToolFallbackSchema,
+]);
+
+export const OpenAIChatAllowedToolsSchema = z.looseObject({
+	mode: z.string().describe('Tool choice mode'),
+	tools: z.array(z.looseObject({})).describe('Allowed tools'),
+});
+
+export const OpenAIChatAllowedToolsChoiceSchema = z.looseObject({
+	type: z.literal('allowed_tools'),
+	allowed_tools: OpenAIChatAllowedToolsSchema,
+});
 
 export const OpenAIChatToolChoiceSchema = z.union([
-	z.enum(['none', 'auto', 'required']),
+	z.string(),
 	z.looseObject({
 		type: z.literal('function'),
-		function: z.looseObject({ name: wireString }),
+		function: z.looseObject({ name: z.string() }),
 	}),
-	z.looseObject({ type: z.literal('custom'), custom: z.looseObject({ name: wireString }) }),
+	z.looseObject({ type: z.literal('custom'), custom: z.looseObject({ name: z.string() }) }),
+	OpenAIChatAllowedToolsChoiceSchema,
+	z.looseObject({ type: z.string() }),
 ]);
 
 export const OpenAIChatFunctionCallSchema = z.looseObject({
-	name: wireString,
+	name: z.string(),
 	arguments: z.string(),
 });
 
 export const OpenAIChatFunctionToolCallSchema = z.looseObject({
-	id: wireString,
+	id: z.string(),
 	type: z.literal('function'),
 	function: OpenAIChatFunctionCallSchema,
 });
 
 export const OpenAIChatCustomToolCallSchema = z.looseObject({
-	id: wireString,
+	id: z.string(),
 	type: z.literal('custom'),
-	custom: z.looseObject({ name: wireString, input: z.string() }),
+	custom: z.looseObject({ name: z.string(), input: z.string() }),
 });
-export const OpenAIChatToolCallSchema = z.union([OpenAIChatFunctionToolCallSchema, OpenAIChatCustomToolCallSchema]);
+const OpenAIChatToolCallFallbackSchema = z.looseObject({ type: z.string() });
+export const OpenAIChatToolCallSchema = z.union([
+	OpenAIChatFunctionToolCallSchema,
+	OpenAIChatCustomToolCallSchema,
+	OpenAIChatToolCallFallbackSchema,
+]);
 
 export const OpenAIChatSystemMessageSchema = z.looseObject({
 	role: z.literal('system'),
@@ -106,33 +126,29 @@ export const OpenAIChatUserMessageSchema = z.looseObject({
 	name: z.string().optional(),
 });
 
-export const OpenAIChatAssistantMessageSchema = z
-	.looseObject({
-		role: z.literal('assistant'),
-		content: z.union([z.string(), z.array(OpenAIChatContentPartSchema), z.null()]).optional(),
-		name: z.string().optional(),
-		refusal: z.string().nullable().optional(),
-		tool_calls: z.array(OpenAIChatToolCallSchema).optional(),
-		function_call: OpenAIChatFunctionCallSchema.nullish(),
-	})
-	.refine(
-		(message) =>
-			message.content !== undefined ||
-			message.refusal !== undefined ||
-			message.tool_calls !== undefined ||
-			message.function_call != null,
-		'assistant messages require content, refusal, tool_calls, or function_call',
-	);
+export const OpenAIChatAssistantMessageSchema = z.looseObject({
+	role: z.literal('assistant'),
+	content: z.union([z.string(), z.array(OpenAIChatContentPartSchema), z.null()]).optional(),
+	name: z.string().optional(),
+	refusal: z.string().nullish(),
+	tool_calls: z.array(OpenAIChatToolCallSchema).nullish(),
+	function_call: OpenAIChatFunctionCallSchema.nullish(),
+});
+
+export const OpenAIChatFunctionMessageSchema = z.looseObject({
+	role: z.literal('function'),
+	content: z.string().nullable(),
+	name: z.string(),
+});
 
 export const OpenAIChatToolMessageSchema = z.looseObject({
 	role: z.literal('tool'),
-	tool_call_id: wireString,
+	tool_call_id: z.string(),
 	content: z.union([z.string(), z.array(OpenAIChatContentPartSchema)]),
 });
 
-const OpenAIChatUnknownMessageSchema = z
-	.looseObject({ role: z.string().min(1) })
-	.refine((message) => !knownMessageRoles.has(message.role), 'known message roles must satisfy their wire schema');
+// Exact role branches run first; this fallback preserves unknown and incomplete known messages.
+const OpenAIChatUnknownMessageSchema = z.looseObject({ role: z.string() });
 
 export const OpenAIChatMessageSchema = z.union([
 	OpenAIChatSystemMessageSchema,
@@ -140,6 +156,7 @@ export const OpenAIChatMessageSchema = z.union([
 	OpenAIChatUserMessageSchema,
 	OpenAIChatAssistantMessageSchema,
 	OpenAIChatToolMessageSchema,
+	OpenAIChatFunctionMessageSchema,
 	OpenAIChatUnknownMessageSchema,
 ]);
 
@@ -149,61 +166,61 @@ export const OpenAIChatStreamOptionsSchema = z.looseObject({
 });
 
 export const OpenAIChatCompletionsRequestSchema = z.looseObject({
-	model: wireString,
-	messages: z.array(OpenAIChatMessageSchema).min(1),
-	stream: z.boolean().optional(),
-	stream_options: OpenAIChatStreamOptionsSchema.optional(),
-	tools: z.array(OpenAIChatToolSchema).optional(),
-	tool_choice: OpenAIChatToolChoiceSchema.optional(),
+	model: z.string().describe('Model identifier'),
+	messages: z.array(OpenAIChatMessageSchema).min(1).describe('Conversation messages'),
+	stream: z.boolean().nullish(),
+	stream_options: OpenAIChatStreamOptionsSchema.nullish(),
+	tools: z.array(OpenAIChatToolSchema).optional().describe('Tool definitions'),
+	tool_choice: OpenAIChatToolChoiceSchema.optional().describe('Tool choice'),
 	functions: z.array(OpenAIChatFunctionToolSchema.shape.function).optional(),
-	function_call: z.union([z.enum(['none', 'auto']), z.looseObject({ name: wireString })]).optional(),
-	parallel_tool_calls: z.boolean().optional(),
-	temperature: z.number().finite().optional(),
-	top_p: z.number().finite().optional(),
-	frequency_penalty: z.number().finite().optional(),
-	presence_penalty: z.number().finite().optional(),
-	logit_bias: z.record(z.string(), z.number().finite()).optional(),
-	logprobs: z.boolean().optional(),
-	top_logprobs: z.number().int().nonnegative().optional(),
-	max_tokens: z.number().int().positive().optional(),
-	max_completion_tokens: z.number().int().positive().optional(),
-	n: z.number().int().positive().optional(),
-	stop: z.union([z.string(), z.array(z.string())]).optional(),
-	seed: z.number().int().optional(),
+	function_call: z.union([z.string(), z.looseObject({ name: z.string() })]).optional(),
+	parallel_tool_calls: z.boolean().nullish(),
+	temperature: z.number().finite().nullish().describe('Sampling temperature'),
+	top_p: z.number().finite().nullish(),
+	frequency_penalty: z.number().finite().nullish(),
+	presence_penalty: z.number().finite().nullish(),
+	logit_bias: z.record(z.string(), z.number().finite()).nullish(),
+	logprobs: z.boolean().nullish(),
+	top_logprobs: z.number().multipleOf(1).nullish(),
+	max_tokens: z.number().multipleOf(1).nullish().describe('Maximum output tokens'),
+	max_completion_tokens: z.number().multipleOf(1).nullish().describe('Maximum output tokens including reasoning'),
+	n: z.number().multipleOf(1).nullish(),
+	stop: z.union([z.string(), z.array(z.string())]).nullish(),
+	seed: z.number().multipleOf(1).nullish(),
 	response_format: z.unknown().optional(),
-	reasoning_effort: z.string().min(1).optional(),
-	verbosity: z.string().min(1).optional(),
-	user: z.string().optional(),
+	reasoning_effort: z.string().nullish(),
+	verbosity: z.string().nullish(),
+	user: z.string().nullish(),
 });
 
 export const OpenAIChatCompletionUsageSchema = z.looseObject({
-	prompt_tokens: z.number().int().nonnegative(),
-	completion_tokens: z.number().int().nonnegative(),
-	total_tokens: z.number().int().nonnegative(),
-	prompt_tokens_details: z.looseObject({}).optional(),
-	completion_tokens_details: z.looseObject({}).optional(),
+	prompt_tokens: z.number().multipleOf(1).describe('Input token count'),
+	completion_tokens: z.number().multipleOf(1).describe('Output token count'),
+	total_tokens: z.number().multipleOf(1).describe('Total token count'),
+	prompt_tokens_details: z.looseObject({}).nullish(),
+	completion_tokens_details: z.looseObject({}).nullish(),
 });
 
 export const OpenAIChatCompletionChoiceSchema = z.looseObject({
-	index: z.number().int().nonnegative(),
-	message: OpenAIChatAssistantMessageSchema,
-	finish_reason: z.string().nullable(),
+	index: z.number().multipleOf(1),
+	message: OpenAIChatMessageSchema,
+	finish_reason: z.string().nullable().describe('Finish reason'),
 	logprobs: z.unknown().optional(),
 });
 
 export const OpenAIChatCompletionsResponseSchema = z.looseObject({
-	id: wireString,
-	object: z.literal('chat.completion'),
-	created: z.number().int().nonnegative(),
-	model: wireString,
+	id: z.string(),
+	object: z.string().min(1),
+	created: z.number().multipleOf(1),
+	model: z.string(),
 	choices: z.array(OpenAIChatCompletionChoiceSchema),
 	usage: OpenAIChatCompletionUsageSchema.optional(),
 });
 
 export const OpenAIChatCompletionDeltaToolCallSchema = z.looseObject({
-	index: z.number().int().nonnegative(),
+	index: z.number().multipleOf(1),
 	id: z.string().optional(),
-	type: z.enum(['function', 'custom']).optional(),
+	type: z.string().optional(),
 	custom: z.looseObject({ name: z.string().optional(), input: z.string().optional() }).optional(),
 	function: z
 		.looseObject({
@@ -215,27 +232,42 @@ export const OpenAIChatCompletionDeltaToolCallSchema = z.looseObject({
 
 export const OpenAIChatCompletionDeltaSchema = z.looseObject({
 	function_call: OpenAIChatFunctionCallSchema.partial().optional(),
-	role: z.literal('assistant').optional(),
+	role: z.string().optional(),
 	content: z.string().nullable().optional(),
 	refusal: z.string().nullable().optional(),
 	tool_calls: z.array(OpenAIChatCompletionDeltaToolCallSchema).optional(),
 });
 
 export const OpenAIChatCompletionChunkChoiceSchema = z.looseObject({
-	index: z.number().int().nonnegative(),
+	index: z.number().multipleOf(1),
 	delta: OpenAIChatCompletionDeltaSchema,
-	finish_reason: z.string().nullable(),
+	finish_reason: z.string().nullish().describe('Finish reason'),
 	logprobs: z.unknown().optional(),
 });
 
 export const OpenAIChatCompletionsChunkSchema = z.looseObject({
-	id: wireString,
-	object: z.literal('chat.completion.chunk'),
-	created: z.number().int().nonnegative(),
-	model: wireString,
+	id: z.string(),
+	object: z.string().min(1),
+	created: z.number().multipleOf(1),
+	model: z.string(),
 	choices: z.array(OpenAIChatCompletionChunkChoiceSchema),
 	usage: OpenAIChatCompletionUsageSchema.nullable().optional(),
 });
+
+/** Streaming failures use an error envelope without a completion choices array. */
+export const OpenAIChatCompletionsStreamErrorSchema = z.looseObject({
+	error: z.looseObject({
+		message: z.string(),
+		type: z.string().nullish(),
+		code: z.string().nullish(),
+		param: z.string().nullish(),
+	}),
+});
+
+export const OpenAIChatCompletionsStreamEventSchema = z.union([
+	OpenAIChatCompletionsChunkSchema,
+	OpenAIChatCompletionsStreamErrorSchema,
+]);
 
 export type OpenAIChatTextContentPart = z.infer<typeof OpenAIChatTextContentPartSchema>;
 export type OpenAIChatImageContentPart = z.infer<typeof OpenAIChatImageContentPartSchema>;
@@ -250,6 +282,9 @@ export type OpenAIChatCustomToolCall = z.infer<typeof OpenAIChatCustomToolCallSc
 export type OpenAIChatContentPart = z.infer<typeof OpenAIChatContentPartSchema>;
 export type OpenAIChatFunctionTool = z.infer<typeof OpenAIChatFunctionToolSchema>;
 export type OpenAIChatToolChoice = z.infer<typeof OpenAIChatToolChoiceSchema>;
+export type OpenAIChatAllowedTools = z.infer<typeof OpenAIChatAllowedToolsSchema>;
+export type OpenAIChatAllowedToolsChoice = z.infer<typeof OpenAIChatAllowedToolsChoiceSchema>;
+export type OpenAIChatFunctionMessage = z.infer<typeof OpenAIChatFunctionMessageSchema>;
 export type OpenAIChatToolCall = z.infer<typeof OpenAIChatToolCallSchema>;
 export type OpenAIChatMessage = z.infer<typeof OpenAIChatMessageSchema>;
 export type OpenAIChatStreamOptions = z.infer<typeof OpenAIChatStreamOptionsSchema>;
@@ -261,3 +296,4 @@ export type OpenAIChatCompletionDeltaToolCall = z.infer<typeof OpenAIChatComplet
 export type OpenAIChatCompletionDelta = z.infer<typeof OpenAIChatCompletionDeltaSchema>;
 export type OpenAIChatCompletionChunkChoice = z.infer<typeof OpenAIChatCompletionChunkChoiceSchema>;
 export type OpenAIChatCompletionsChunk = z.infer<typeof OpenAIChatCompletionsChunkSchema>;
+export type OpenAIChatCompletionsStreamEvent = z.infer<typeof OpenAIChatCompletionsStreamEventSchema>;

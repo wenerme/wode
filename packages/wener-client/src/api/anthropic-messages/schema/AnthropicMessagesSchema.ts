@@ -1,18 +1,5 @@
 import { z } from 'zod';
 
-const wireString = z.string().min(1);
-const knownContentTypes = new Set(['text', 'image', 'tool_use', 'tool_result', 'thinking', 'redacted_thinking']);
-const knownStreamEventTypes = new Set([
-	'message_start',
-	'content_block_start',
-	'content_block_delta',
-	'content_block_stop',
-	'message_delta',
-	'message_stop',
-	'ping',
-	'error',
-]);
-
 export const AnthropicTextContentBlockSchema = z.looseObject({
 	type: z.literal('text'),
 	text: z.string(),
@@ -21,21 +8,21 @@ export const AnthropicTextContentBlockSchema = z.looseObject({
 export const AnthropicImageContentBlockSchema = z.looseObject({
 	type: z.literal('image'),
 	source: z.union([
-		z.looseObject({ type: z.literal('base64'), media_type: wireString, data: wireString }),
-		z.looseObject({ type: z.literal('url'), url: wireString }),
+		z.looseObject({ type: z.literal('base64'), media_type: z.string(), data: z.string() }),
+		z.looseObject({ type: z.literal('url'), url: z.string() }),
 	]),
 });
 
 export const AnthropicToolUseContentBlockSchema = z.looseObject({
 	type: z.literal('tool_use'),
-	id: wireString,
-	name: wireString,
+	id: z.string(),
+	name: z.string(),
 	input: z.unknown(),
 });
 
 export const AnthropicToolResultContentBlockSchema = z.looseObject({
 	type: z.literal('tool_result'),
-	tool_use_id: wireString,
+	tool_use_id: z.string(),
 	content: z.union([z.string(), z.array(z.unknown())]).optional(),
 	is_error: z.boolean().optional(),
 });
@@ -51,9 +38,8 @@ export const AnthropicRedactedThinkingContentBlockSchema = z.looseObject({
 	data: z.string(),
 });
 
-const AnthropicUnknownContentBlockSchema = z
-	.looseObject({ type: wireString })
-	.refine((block) => !knownContentTypes.has(block.type), 'known content blocks must satisfy their wire schema');
+// Exact branches run first; this fallback preserves unknown and incomplete known content blocks.
+const AnthropicUnknownContentBlockSchema = z.looseObject({ type: z.string() });
 
 export const AnthropicInputContentBlockSchema = z.union([
 	AnthropicTextContentBlockSchema,
@@ -76,13 +62,13 @@ export const AnthropicOutputContentBlockSchema = z.union([
 export const AnthropicContentBlockSchema = AnthropicInputContentBlockSchema;
 
 export const AnthropicMessageParamSchema = z.looseObject({
-	role: z.enum(['user', 'assistant', 'system']),
+	role: z.string(),
 	content: z.union([z.string(), z.array(AnthropicInputContentBlockSchema)]),
 });
 
 export const AnthropicCustomToolSchema = z.looseObject({
 	type: z.literal('custom').optional(),
-	name: wireString,
+	name: z.string(),
 	description: z.string().optional(),
 	input_schema: z.looseObject({
 		type: z.literal('object'),
@@ -92,44 +78,57 @@ export const AnthropicCustomToolSchema = z.looseObject({
 });
 
 export const AnthropicServerToolSchema = z
-	.looseObject({ type: wireString, name: wireString })
-	.refine((tool) => tool.type !== 'custom', 'custom tools must provide input_schema');
-export const AnthropicToolSchema = z.union([AnthropicCustomToolSchema, AnthropicServerToolSchema]);
+	.looseObject({ type: z.string(), name: z.string() })
+	.refine((tool) => tool.type !== 'custom', 'exact custom tools require input_schema');
+// Exact branches run first; this fallback preserves unknown and incomplete tool definitions.
+const AnthropicToolFallbackSchema = z.looseObject({ type: z.string() });
+export const AnthropicToolSchema = z.union([
+	AnthropicCustomToolSchema,
+	AnthropicServerToolSchema,
+	AnthropicToolFallbackSchema,
+]);
 
 export const AnthropicToolChoiceSchema = z.union([
 	z.looseObject({
-		type: z.enum(['auto', 'any', 'none']),
+		type: z.string(),
 		disable_parallel_tool_use: z.boolean().optional(),
 	}),
 	z.looseObject({
 		type: z.literal('tool'),
-		name: wireString,
+		name: z.string(),
 		disable_parallel_tool_use: z.boolean().optional(),
 	}),
+	z.looseObject({ type: z.string() }),
 ]);
 
 export const AnthropicMessagesRequestSchema = z.looseObject({
-	model: wireString,
-	max_tokens: z.number().int().positive(),
-	messages: z.array(AnthropicMessageParamSchema).min(1),
-	system: z.union([z.string(), z.array(z.unknown())]).optional(),
-	stream: z.boolean().optional(),
-	tools: z.array(AnthropicToolSchema).optional(),
-	tool_choice: AnthropicToolChoiceSchema.optional(),
-	temperature: z.number().finite().optional(),
-	top_p: z.number().finite().optional(),
-	top_k: z.number().int().nonnegative().optional(),
-	stop_sequences: z.array(z.string()).optional(),
-	metadata: z.looseObject({ user_id: z.string().optional() }).optional(),
-	service_tier: z.string().optional(),
-	thinking: z.unknown().optional(),
-	output_config: z.unknown().optional(),
+	model: z.string().describe('Model identifier'),
+	max_tokens: z.number().multipleOf(1).describe('Maximum output tokens'),
+	messages: z.array(AnthropicMessageParamSchema).describe('Conversation messages'),
+	system: z
+		.union([z.string(), z.array(z.unknown())])
+		.optional()
+		.describe('System instructions'),
+	stream: z.boolean().optional().describe('Stream response'),
+	tools: z.array(AnthropicToolSchema).optional().describe('Available tools'),
+	tool_choice: AnthropicToolChoiceSchema.optional().describe('Tool choice strategy'),
+	temperature: z.number().finite().optional().describe('Sampling temperature'),
+	top_p: z.number().finite().optional().describe('Nucleus sampling threshold'),
+	top_k: z.number().multipleOf(1).optional().describe('Top-k sampling count'),
+	stop_sequences: z.array(z.string()).optional().describe('Stop sequences'),
+	metadata: z
+		.looseObject({ user_id: z.string().nullish().describe('End-user identifier') })
+		.optional()
+		.describe('Additional request metadata'),
+	service_tier: z.string().optional().describe('Service tier'),
+	thinking: z.unknown().optional().describe('Reasoning settings'),
+	output_config: z.unknown().optional().describe('Output settings'),
 });
 
 // Count Tokens 请求是 Messages 请求的子集：不要求 max_tokens，不支持 stream
 export const AnthropicMessagesCountTokensRequestSchema = z.looseObject({
-	model: wireString,
-	messages: z.array(AnthropicMessageParamSchema).min(1),
+	model: z.string().describe('Model identifier'),
+	messages: z.array(AnthropicMessageParamSchema).describe('Messages to count'),
 	system: z.union([z.string(), z.array(z.unknown())]).optional(),
 	tools: z.array(AnthropicToolSchema).optional(),
 	tool_choice: AnthropicToolChoiceSchema.optional(),
@@ -139,40 +138,46 @@ export const AnthropicMessagesCountTokensRequestSchema = z.looseObject({
 export type AnthropicMessagesCountTokensRequest = z.infer<typeof AnthropicMessagesCountTokensRequestSchema>;
 
 export const AnthropicMessagesCountTokensResponseSchema = z.looseObject({
-	input_tokens: z.number().int().nonnegative(),
+	input_tokens: z.number().multipleOf(1).describe('Input token count'),
 });
 export type AnthropicMessagesCountTokensResponse = z.infer<typeof AnthropicMessagesCountTokensResponseSchema>;
 
 export const AnthropicMessageUsageSchema = z.looseObject({
-	input_tokens: z.number().int().nonnegative(),
-	output_tokens: z.number().int().nonnegative(),
-	cache_creation_input_tokens: z.number().int().nonnegative().nullish(),
-	cache_read_input_tokens: z.number().int().nonnegative().nullish(),
+	input_tokens: z.number().multipleOf(1).describe('Input token count'),
+	output_tokens: z.number().multipleOf(1).describe('Output token count'),
+	cache_creation_input_tokens: z.number().multipleOf(1).nullish().describe('Cache creation input token count'),
+	cache_read_input_tokens: z.number().multipleOf(1).nullish().describe('Cache read input token count'),
 	cache_creation: z
 		.looseObject({
-			ephemeral_1h_input_tokens: z.number().int().nonnegative().optional(),
-			ephemeral_5m_input_tokens: z.number().int().nonnegative().optional(),
+			ephemeral_1h_input_tokens: z.number().multipleOf(1).optional(),
+			ephemeral_5m_input_tokens: z.number().multipleOf(1).optional(),
 		})
 		.nullish(),
-	inference_geo: z.string().nullish(),
-	output_tokens_details: z.looseObject({ thinking_tokens: z.number().int().nonnegative() }).nullish(),
-	server_tool_use: z.looseObject({}).nullish(),
-	service_tier: z.enum(['standard', 'priority', 'batch']).nullish(),
+	inference_geo: z.string().nullish().describe('Inference region'),
+	output_tokens_details: z
+		.looseObject({ thinking_tokens: z.number().multipleOf(1).describe('Reasoning token count') })
+		.nullish()
+		.describe('Output token details'),
+	server_tool_use: z.looseObject({}).nullish().describe('Server tool usage'),
+	service_tier: z.string().nullish().describe('Service tier'),
 });
 
-export const AnthropicMessageStreamUsageSchema = AnthropicMessageUsageSchema.partial();
+export const AnthropicMessageStreamUsageSchema = AnthropicMessageUsageSchema.partial().extend({
+	input_tokens: z.number().multipleOf(1).nullish().describe('Input token count'),
+	output_tokens: z.number().multipleOf(1).optional().describe('Output token count'),
+});
 
 export const AnthropicMessagesResponseSchema = z.looseObject({
-	id: wireString,
+	id: z.string().describe('Message identifier'),
 	container: z.looseObject({}).nullish(),
-	type: z.literal('message'),
-	role: z.literal('assistant'),
-	content: z.array(AnthropicOutputContentBlockSchema),
-	model: wireString,
-	stop_reason: z.string().nullable(),
+	type: z.string().min(1),
+	role: z.string().min(1),
+	content: z.array(AnthropicOutputContentBlockSchema).describe('Output content parts'),
+	model: z.string().describe('Model identifier'),
+	stop_reason: z.string().nullable().describe('Stop reason'),
 	stop_details: z.looseObject({ type: z.string() }).nullish(),
-	stop_sequence: z.string().nullable(),
-	usage: AnthropicMessageUsageSchema,
+	stop_sequence: z.string().nullable().describe('Stop sequence'),
+	usage: AnthropicMessageUsageSchema.describe('Token usage'),
 });
 
 export const AnthropicMessageStartEventSchema = z.looseObject({
@@ -182,19 +187,19 @@ export const AnthropicMessageStartEventSchema = z.looseObject({
 
 export const AnthropicContentBlockStartEventSchema = z.looseObject({
 	type: z.literal('content_block_start'),
-	index: z.number().int().nonnegative(),
+	index: z.number().multipleOf(1),
 	content_block: AnthropicContentBlockSchema,
 });
 
 export const AnthropicContentBlockDeltaEventSchema = z.looseObject({
 	type: z.literal('content_block_delta'),
-	index: z.number().int().nonnegative(),
-	delta: z.looseObject({ type: wireString }),
+	index: z.number().multipleOf(1),
+	delta: z.looseObject({ type: z.string() }),
 });
 
 export const AnthropicContentBlockStopEventSchema = z.looseObject({
 	type: z.literal('content_block_stop'),
-	index: z.number().int().nonnegative(),
+	index: z.number().multipleOf(1),
 });
 
 export const AnthropicMessageDeltaEventSchema = z.looseObject({
@@ -216,12 +221,11 @@ export const AnthropicPingEventSchema = z.looseObject({ type: z.literal('ping') 
 
 export const AnthropicErrorEventSchema = z.looseObject({
 	type: z.literal('error'),
-	error: z.looseObject({ type: wireString, message: z.string() }),
+	error: z.looseObject({ type: z.string(), message: z.string() }),
 });
 
-const AnthropicUnknownStreamEventSchema = z
-	.looseObject({ type: wireString })
-	.refine((event) => !knownStreamEventTypes.has(event.type), 'known stream events must satisfy their wire schema');
+// Exact event branches run first; this fallback preserves unknown and incomplete known events.
+const AnthropicUnknownStreamEventSchema = z.looseObject({ type: z.string() });
 
 export const AnthropicMessagesStreamEventSchema = z.union([
 	AnthropicMessageStartEventSchema,

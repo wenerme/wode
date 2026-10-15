@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { ApiHttpMethod, getApiEndpointDefs, parseApiEndpoint, parseApiTypeFromEndpoint } from './ApiEndpointDef';
 import { ApiType, getLegacyApiTypeAliases, normalizeApiType } from './ApiType';
 import { ApiFamily, ApiTypeDefs, getApiTypeDef, ModelCapability } from './ApiTypeDef';
 
@@ -122,5 +123,91 @@ describe('ApiTypeDef', () => {
 		expect(Reflect.set(ApiTypeDefs, ApiType.Rerank, null)).toBe(false);
 		expect(Reflect.set(ApiTypeDefs[ApiType.Rerank], 'title', 'Changed')).toBe(false);
 		expect(ApiTypeDefs[ApiType.Rerank].title).toBe('Rerank');
+	});
+
+	it('为协议类型登记规范 endpoint path', () => {
+		expect(getApiEndpointDefs(ApiType.OpenAIResponses)).toEqual([
+			expect.objectContaining({
+				type: ApiType.OpenAIResponses,
+				path: '/{version}/responses',
+				operation: 'responses',
+				methods: [ApiHttpMethod.POST],
+			}),
+		]);
+		expect(ApiTypeDefs[ApiType.OpenAIResponses].endpoints).toEqual(getApiEndpointDefs(ApiType.OpenAIResponses));
+	});
+
+	it.each([
+		[
+			'https://api.example.test/proxy/v1/responses?stream=true',
+			{ type: ApiType.OpenAIResponses, version: 'v1', prefix: 'proxy', operation: 'responses', model: '' },
+		],
+		[
+			'example.com/openai/chat/completions',
+			{ type: ApiType.OpenAIChatCompletions, version: '', prefix: 'openai', operation: 'chat/completions', model: '' },
+		],
+		[
+			'/api/openai/v1/models/gpt%2F4o-mini',
+			{
+				type: ApiType.OpenAIModels,
+				version: 'v1',
+				prefix: 'api/openai',
+				operation: 'models/retrieve',
+				model: 'gpt/4o-mini',
+			},
+		],
+		[
+			'/v1/models/gemini-2.5-pro:generateContent',
+			{
+				type: ApiType.GoogleGenerativeAI,
+				version: 'v1',
+				prefix: '',
+				operation: 'generateContent',
+				model: 'gemini-2.5-pro',
+			},
+		],
+		[
+			'/v1/projects/p/locations/us-central1/publishers/google/models/gemini-2.5-pro:streamGenerateContent',
+			{
+				type: ApiType.GoogleVertex,
+				version: 'v1',
+				prefix: '',
+				operation: 'streamGenerateContent',
+				model: 'gemini-2.5-pro',
+			},
+		],
+		[
+			'/model/anthropic.claude-3-5-sonnet/converse-stream',
+			{
+				type: ApiType.BedrockConverse,
+				version: '',
+				prefix: '',
+				operation: 'converse-stream',
+				model: 'anthropic.claude-3-5-sonnet',
+			},
+		],
+		[
+			'https://sd.example.test/sdapi/v1/txt2img?model=local/flux',
+			{ type: ApiType.SDAPITxt2Img, version: 'v1', prefix: 'sdapi', operation: 'txt2img', model: '' },
+		],
+	] as const)('解析 endpoint %s', (input, expected) => {
+		expect(parseApiEndpoint(input)).toMatchObject(expected);
+		expect(parseApiTypeFromEndpoint(input)).toBe(expected.type);
+	});
+
+	it('根据 HTTP method 区分 batch operation', () => {
+		expect(parseApiEndpoint('/v1/batches', ApiHttpMethod.POST)).toMatchObject({
+			type: ApiType.OpenAIBatches,
+			operation: 'batches/create',
+		});
+		expect(parseApiEndpoint('/v1/batches', ApiHttpMethod.GET)).toMatchObject({
+			type: ApiType.OpenAIBatches,
+			operation: 'batches/list',
+		});
+	});
+
+	it('拒绝未登记或 method 不匹配的 endpoint', () => {
+		expect(parseApiEndpoint('/v1/unknown', ApiHttpMethod.POST)).toBeUndefined();
+		expect(parseApiEndpoint('/v1/responses', ApiHttpMethod.GET)).toBeUndefined();
 	});
 });

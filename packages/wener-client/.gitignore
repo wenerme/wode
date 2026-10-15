@@ -1,2 +1,4 @@
-/tests
+/tests/*
+!/tests/api-schema-inclusion/
+!/tests/ai-router/
 /*.json

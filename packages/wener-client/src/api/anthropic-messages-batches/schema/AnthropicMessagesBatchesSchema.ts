@@ -3,7 +3,7 @@ import { AnthropicMessagesRequestSchema, AnthropicMessagesResponseSchema } from 
 
 const wireString = z.string().min(1);
 const batchId = { message_batch_id: wireString };
-const count = z.number().int().nonnegative();
+const count = z.number().multipleOf(1);
 
 export const AnthropicMessageBatchSchema = z.looseObject({
 	id: wireString,
@@ -31,7 +31,7 @@ export const AnthropicMessagesBatchesCreateResponseSchema = AnthropicMessageBatc
 export const AnthropicMessagesBatchesListRequestSchema = z.looseObject({
 	before_id: wireString.optional(),
 	after_id: wireString.optional(),
-	limit: z.coerce.number().int().positive().optional(),
+	limit: z.coerce.number().multipleOf(1).positive().optional(),
 });
 export const AnthropicMessagesBatchesListResponseSchema = z.looseObject({
 	data: z.array(AnthropicMessageBatchSchema),
@@ -65,7 +65,9 @@ export const AnthropicMessageBatchResultSchema = z.looseObject({
 	]),
 });
 export const AnthropicMessagesBatchesResultsRequestSchema = z.looseObject(batchId);
-export const AnthropicMessagesBatchesResultsResponseSchema = z.string().describe('逐行 JSON 的原始响应文本');
+export const AnthropicMessagesBatchesResultsResponseSchema = z
+	.string()
+	.describe('Raw line-delimited JSON response text');
 
 export type AnthropicMessageBatch = z.infer<typeof AnthropicMessageBatchSchema>;
 export type AnthropicMessagesBatchesCreateRequest = z.infer<typeof AnthropicMessagesBatchesCreateRequestSchema>;

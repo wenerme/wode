@@ -1,4 +1,6 @@
+import Ajv2020 from 'ajv/dist/2020.js';
 import { describe, expect, test } from 'vitest';
+import official from '../../../../tests/api-schema-inclusion/oracles/openai.json';
 import {
 	OpenAIImageEditStreamEventSchema,
 	OpenAIImageEditsMultipartRequestSchema,
@@ -17,10 +19,48 @@ describe('OpenAI Image Edits schemas', () => {
 		).toMatchObject({ model: 'gpt-image-2', images: [{ image_url: 'https://example.test/image.png' }] });
 		expect(
 			OpenAIImageEditsRequestSchema.safeParse({
-				prompt: 'Model is required',
+				prompt: 'Model is optional',
 				images: [{ file_id: 'file-image' }],
 			}).success,
-		).toBe(false);
+		).toBe(true);
+	});
+
+	test('JSON编辑请求保留可空参数，不转换数值或布尔字段', () => {
+		const validate = new Ajv2020({ strict: false, validateFormats: false }).compile({
+			$defs: official.$defs,
+			$ref: '#/$defs/EditImageBodyJsonParam',
+		});
+		const value = {
+			prompt: 'Edit',
+			images: [{ file_id: 'file-1' }],
+			model: null,
+			background: null,
+			input_fidelity: null,
+			moderation: null,
+			n: null,
+			output_compression: null,
+			output_format: null,
+			partial_images: null,
+			quality: null,
+			size: null,
+			stream: null,
+			extra: { keep: true },
+		};
+		expect(validate(value)).toBe(true);
+		expect(OpenAIImageEditsRequestSchema.parse(value)).toEqual(value);
+		for (const quality of ['xhigh', 'max']) {
+			expect(validate({ ...value, quality })).toBe(true);
+			expect(OpenAIImageEditsRequestSchema.parse({ ...value, quality })).toEqual({ ...value, quality });
+		}
+		const emptyId = { ...value, images: [{ file_id: '' }] };
+		expect(validate(emptyId)).toBe(true);
+		expect(OpenAIImageEditsRequestSchema.parse(emptyId)).toEqual(emptyId);
+		for (const images of [[{}], [{ file_id: 'file-1', image_url: 'https://example.test/image.png' }]]) {
+			expect(validate({ ...value, images })).toBe(false);
+			expect(OpenAIImageEditsRequestSchema.safeParse({ ...value, images }).success).toBe(false);
+		}
+		expect(OpenAIImageEditsRequestSchema.safeParse({ ...value, n: '2' }).success).toBe(false);
+		expect(OpenAIImageEditsRequestSchema.safeParse({ ...value, stream: 'false' }).success).toBe(false);
 	});
 
 	test('解析multipart文件和字符串参数', () => {

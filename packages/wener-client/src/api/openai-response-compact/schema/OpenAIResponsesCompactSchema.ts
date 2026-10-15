@@ -6,19 +6,22 @@ import {
 } from '../../openai-responses/schema';
 
 export const OpenAIResponsesCompactRequestSchema = z.looseObject({
-	model: z.string().min(1),
-	input: z.union([z.string(), z.array(OpenAIResponseInputItemSchema)]).nullish(),
-	instructions: z.string().nullish(),
-	prompt_cache_key: z.string().nullish(),
-	service_tier: z.string().nullish(),
+	model: z.string().nullish().describe('Model identifier'),
+	input: z
+		.union([z.string(), z.array(OpenAIResponseInputItemSchema)])
+		.nullish()
+		.describe('Input items to compact'),
+	instructions: z.string().nullish().describe('Compaction instructions'),
+	prompt_cache_key: z.string().nullish().describe('Prompt cache key'),
+	service_tier: z.string().nullish().describe('Service tier'),
 });
 
 export const OpenAIResponsesCompactResponseSchema = z.looseObject({
-	id: z.string().min(1),
+	id: z.string().describe('Compaction response identifier'),
 	object: z.literal('response.compaction'),
-	created_at: z.number().int().nonnegative(),
-	output: z.array(OpenAIResponseItemSchema),
-	usage: OpenAIResponseUsageSchema,
+	created_at: z.number().multipleOf(1).describe('Creation time, Unix seconds'),
+	output: z.array(OpenAIResponseItemSchema).describe('Compacted output items'),
+	usage: OpenAIResponseUsageSchema.describe('Token usage'),
 });
 
 export type OpenAIResponsesCompactRequest = z.infer<typeof OpenAIResponsesCompactRequestSchema>;

@@ -1,13 +1,11 @@
 import { z } from 'zod';
 
-const wireString = z.string().min(1);
-
 export const OpenAICreatePurposeSchema = z.enum(['assistants', 'batch', 'evals', 'fine-tune', 'vision', 'user_data']);
 
 export const OpenAIFileStatusSchema = z.enum(['uploaded', 'processed', 'error']);
 
 export const OpenAIFileListLimitSchema = z.union([
-	z.number().int().min(1).max(10_000),
+	z.number().multipleOf(1).min(1).max(10_000),
 	z
 		.string()
 		.regex(/^\s*(?:[1-9]|[1-9][0-9]{1,3}|10000)\s*$/)
@@ -15,7 +13,7 @@ export const OpenAIFileListLimitSchema = z.union([
 ]);
 
 export const OpenAIFileExpirationSecondsSchema = z.union([
-	z.number().int().min(3600).max(2_592_000),
+	z.number().multipleOf(1).min(3600).max(2_592_000),
 	z
 		.string()
 		.regex(
@@ -25,15 +23,15 @@ export const OpenAIFileExpirationSecondsSchema = z.union([
 ]);
 
 export const OpenAIFileSchema = z.looseObject({
-	id: wireString,
+	id: z.string().describe('File identifier'),
 	object: z.literal('file'),
-	bytes: z.number().int().nonnegative(),
-	created_at: z.number().int().nonnegative(),
-	filename: wireString,
-	purpose: wireString,
-	status: OpenAIFileStatusSchema,
+	bytes: z.number().multipleOf(1).nullable().describe('File size in bytes, nullable'),
+	created_at: z.number().multipleOf(1).describe('Creation time, Unix seconds'),
+	filename: z.string().describe('File name'),
+	purpose: z.string().describe('File purpose'),
+	status: OpenAIFileStatusSchema.describe('File processing status'),
 	status_details: z.string().nullable().optional(),
-	expires_at: z.number().int().nonnegative().optional(),
+	expires_at: z.number().multipleOf(1).optional().describe('Expiration time, Unix seconds'),
 });
 
 export const OpenAIMultipartFileSchema = z.file().meta({ type: 'string', format: 'binary' });

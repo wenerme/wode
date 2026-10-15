@@ -2,15 +2,14 @@ import { z } from 'zod';
 import { OpenAIMultipartFileSchema } from '../../openai-files/schema/OpenAIFileSchema';
 import { OpenAISkillSchema, OpenAISkillVersionSchema } from './OpenAISkillSchema';
 
-export const OpenAISkillMultipartFilesSchema = z.union([
-	OpenAIMultipartFileSchema,
-	z.array(OpenAIMultipartFileSchema).min(1),
-]);
+const skillFile = z.union([OpenAIMultipartFileSchema, z.string().meta({ type: 'string', format: 'binary' })]);
+
+export const OpenAISkillMultipartFilesSchema = z.union([skillFile, z.array(skillFile)]);
 
 const openAISkillFilesFields = {
 	// SDK参数名是files；multipart编码后通常使用files[]，两种入口都保留。
-	files: OpenAISkillMultipartFilesSchema.optional(),
-	'files[]': OpenAISkillMultipartFilesSchema.optional(),
+	files: OpenAISkillMultipartFilesSchema.optional().describe('Skill file or file list'),
+	'files[]': OpenAISkillMultipartFilesSchema.optional().describe('Skill file form field'),
 };
 
 export const OpenAISkillsCreateRequestSchema = z.looseObject(openAISkillFilesFields);

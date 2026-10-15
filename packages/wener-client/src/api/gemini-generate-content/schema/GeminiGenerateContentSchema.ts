@@ -1,41 +1,39 @@
 import { z } from 'zod';
 
-const wireString = z.string().min(1);
-
 export const GeminiBlobSchema = z.looseObject({
-	mimeType: wireString,
-	data: z.string(),
+	mimeType: z.string().optional().describe('Media MIME type'),
+	data: z.string().optional().describe('Base64-encoded media data'),
 });
 
 export const GeminiFileDataSchema = z.looseObject({
-	mimeType: z.string().optional(),
-	fileUri: wireString,
+	mimeType: z.string().optional().describe('File MIME type'),
+	fileUri: z.string().describe('File URI'),
 });
 
 export const GeminiFunctionCallSchema = z.looseObject({
 	id: z.string().optional(),
-	name: wireString,
-	args: z.record(z.string(), z.unknown()).optional(),
+	name: z.string().describe('Function name'),
+	args: z.record(z.string(), z.unknown()).optional().describe('Function arguments'),
 });
 
 export const GeminiFunctionResponseSchema = z.looseObject({
 	id: z.string().optional(),
-	name: wireString,
-	response: z.record(z.string(), z.unknown()),
+	name: z.string().describe('Function name'),
+	response: z.record(z.string(), z.unknown()).describe('Function result'),
 	parts: z.array(z.unknown()).optional(),
 });
 
 export const GeminiPartSchema = z.looseObject({
 	mediaResolution: z.looseObject({ level: z.string().optional() }).optional(),
-	text: z.string().optional(),
-	inlineData: GeminiBlobSchema.optional(),
-	fileData: GeminiFileDataSchema.optional(),
-	functionCall: GeminiFunctionCallSchema.optional(),
-	functionResponse: GeminiFunctionResponseSchema.optional(),
-	executableCode: z.looseObject({ language: wireString, code: z.string() }).optional(),
-	codeExecutionResult: z.looseObject({ outcome: wireString, output: z.string().optional() }).optional(),
-	thought: z.boolean().optional(),
-	thoughtSignature: z.string().optional(),
+	text: z.string().optional().describe('Text content'),
+	inlineData: GeminiBlobSchema.optional().describe('Inline media data'),
+	fileData: GeminiFileDataSchema.optional().describe('File reference'),
+	functionCall: GeminiFunctionCallSchema.optional().describe('Function call'),
+	functionResponse: GeminiFunctionResponseSchema.optional().describe('Function result'),
+	executableCode: z.looseObject({ language: z.string(), code: z.string() }).optional(),
+	codeExecutionResult: z.looseObject({ outcome: z.string(), output: z.string().optional() }).optional(),
+	thought: z.boolean().optional().describe('Reasoning content'),
+	thoughtSignature: z.string().optional().describe('Reasoning signature'),
 	videoMetadata: z
 		.looseObject({
 			startOffset: z.string().optional(),
@@ -53,21 +51,21 @@ export const GeminiPartSchema = z.looseObject({
 });
 
 export const GeminiContentSchema = z.looseObject({
-	role: z.string().optional(),
-	parts: z.array(GeminiPartSchema),
+	role: z.string().optional().describe('Message role'),
+	parts: z.array(GeminiPartSchema).optional().describe('Message content parts'),
 });
 
 export const GeminiFunctionDeclarationSchema = z.looseObject({
-	name: wireString,
-	description: z.string().optional(),
-	parameters: z.unknown().optional(),
-	parametersJsonSchema: z.unknown().optional(),
-	response: z.unknown().optional(),
-	responseJsonSchema: z.unknown().optional(),
+	name: z.string().describe('Function name'),
+	description: z.string().optional().describe('Function description'),
+	parameters: z.unknown().optional().describe('Parameter schema'),
+	parametersJsonSchema: z.unknown().optional().describe('Parameter JSON Schema'),
+	response: z.unknown().optional().describe('Result schema'),
+	responseJsonSchema: z.unknown().optional().describe('Result JSON Schema'),
 });
 
 export const GeminiToolSchema = z.looseObject({
-	functionDeclarations: z.array(GeminiFunctionDeclarationSchema).optional(),
+	functionDeclarations: z.array(GeminiFunctionDeclarationSchema).optional().describe('Available functions'),
 	googleSearch: z.looseObject({}).optional(),
 	googleSearchRetrieval: z.looseObject({}).optional(),
 	codeExecution: z.looseObject({}).optional(),
@@ -77,31 +75,31 @@ export const GeminiToolSchema = z.looseObject({
 });
 
 export const GeminiSafetySettingSchema = z.looseObject({
-	category: wireString,
-	threshold: wireString,
+	category: z.string(),
+	threshold: z.string(),
 	method: z.string().optional(),
 });
 
 export const GeminiGenerationConfigSchema = z.looseObject({
-	candidateCount: z.number().int().positive().optional(),
-	stopSequences: z.array(z.string()).optional(),
-	maxOutputTokens: z.number().int().positive().optional(),
-	temperature: z.number().optional(),
-	topP: z.number().optional(),
-	topK: z.number().int().optional(),
-	seed: z.number().int().optional(),
-	responseMimeType: z.string().optional(),
-	responseSchema: z.unknown().optional(),
-	responseJsonSchema: z.unknown().optional(),
-	presencePenalty: z.number().optional(),
-	frequencyPenalty: z.number().optional(),
+	candidateCount: z.number().multipleOf(1).optional().describe('Candidate count'),
+	stopSequences: z.array(z.string()).optional().describe('Stop sequences'),
+	maxOutputTokens: z.number().multipleOf(1).optional().describe('Maximum output tokens'),
+	temperature: z.number().optional().describe('Sampling temperature'),
+	topP: z.number().optional().describe('Nucleus sampling threshold'),
+	topK: z.number().multipleOf(1).optional().describe('Top-k sampling count'),
+	seed: z.number().multipleOf(1).optional().describe('Sampling random seed'),
+	responseMimeType: z.string().optional().describe('Output MIME type'),
+	responseSchema: z.unknown().optional().describe('Output schema'),
+	responseJsonSchema: z.unknown().optional().describe('Output JSON Schema'),
+	presencePenalty: z.number().optional().describe('Presence penalty'),
+	frequencyPenalty: z.number().optional().describe('Frequency penalty'),
 	responseLogprobs: z.boolean().optional(),
-	logprobs: z.number().int().nonnegative().optional(),
+	logprobs: z.number().multipleOf(1).optional(),
 	responseModalities: z.array(z.string()).optional(),
 	routingConfig: z.looseObject({}).optional(),
 	modelSelectionConfig: z.looseObject({}).optional(),
 	thinkingConfig: z
-		.looseObject({ includeThoughts: z.boolean().optional(), thinkingBudget: z.number().int().optional() })
+		.looseObject({ includeThoughts: z.boolean().optional(), thinkingBudget: z.number().multipleOf(1).optional() })
 		.optional(),
 	imageConfig: z.looseObject({ aspectRatio: z.string().optional() }).optional(),
 	mediaResolution: z.string().optional(),
@@ -129,13 +127,13 @@ export const GeminiToolConfigSchema = z.looseObject({
 });
 
 export const GeminiGenerateContentRequestSchema = z.looseObject({
-	contents: z.array(GeminiContentSchema).min(1),
-	systemInstruction: GeminiContentSchema.optional(),
-	tools: z.array(GeminiToolSchema).optional(),
-	toolConfig: GeminiToolConfigSchema.optional(),
-	safetySettings: z.array(GeminiSafetySettingSchema).optional(),
-	generationConfig: GeminiGenerationConfigSchema.optional(),
-	cachedContent: z.string().optional(),
+	contents: z.array(GeminiContentSchema).describe('Conversation contents'),
+	systemInstruction: GeminiContentSchema.optional().describe('System instructions'),
+	tools: z.array(GeminiToolSchema).optional().describe('Available tools'),
+	toolConfig: GeminiToolConfigSchema.optional().describe('Tool calling settings'),
+	safetySettings: z.array(GeminiSafetySettingSchema).optional().describe('Safety settings'),
+	generationConfig: GeminiGenerationConfigSchema.optional().describe('Generation parameters'),
+	cachedContent: z.string().optional().describe('Cached content name'),
 });
 
 export const GeminiSafetyRatingSchema = z.looseObject({
@@ -151,7 +149,7 @@ export const GeminiCandidateSchema = z.looseObject({
 	content: GeminiContentSchema.optional(),
 	finishReason: z.string().optional(),
 	finishMessage: z.string().optional(),
-	index: z.number().int().nonnegative().optional(),
+	index: z.number().multipleOf(1).optional(),
 	safetyRatings: z.array(GeminiSafetyRatingSchema).optional(),
 	citationMetadata: z.looseObject({}).optional(),
 	groundingMetadata: z.looseObject({}).optional(),
@@ -162,16 +160,16 @@ export const GeminiCandidateSchema = z.looseObject({
 
 export const GeminiModalityTokenCountSchema = z.looseObject({
 	modality: z.string().optional(),
-	tokenCount: z.number().int().nonnegative().optional(),
+	tokenCount: z.number().multipleOf(1).optional(),
 });
 
 export const GeminiUsageMetadataSchema = z.looseObject({
-	promptTokenCount: z.number().int().nonnegative().optional(),
-	candidatesTokenCount: z.number().int().nonnegative().optional(),
-	totalTokenCount: z.number().int().nonnegative().optional(),
-	cachedContentTokenCount: z.number().int().nonnegative().optional(),
-	thoughtsTokenCount: z.number().int().nonnegative().optional(),
-	toolUsePromptTokenCount: z.number().int().nonnegative().optional(),
+	promptTokenCount: z.number().multipleOf(1).optional().describe('Input token count'),
+	candidatesTokenCount: z.number().multipleOf(1).optional().describe('Candidate output token count'),
+	totalTokenCount: z.number().multipleOf(1).optional().describe('Total token count'),
+	cachedContentTokenCount: z.number().multipleOf(1).optional().describe('Cached content token count'),
+	thoughtsTokenCount: z.number().multipleOf(1).optional().describe('Reasoning token count'),
+	toolUsePromptTokenCount: z.number().multipleOf(1).optional().describe('Tool use input token count'),
 	promptTokensDetails: z.array(GeminiModalityTokenCountSchema).optional(),
 	candidatesTokensDetails: z.array(GeminiModalityTokenCountSchema).optional(),
 	cacheTokensDetails: z.array(GeminiModalityTokenCountSchema).optional(),
@@ -180,7 +178,7 @@ export const GeminiUsageMetadataSchema = z.looseObject({
 });
 
 export const GeminiGenerateContentResponseSchema = z.looseObject({
-	candidates: z.array(GeminiCandidateSchema).optional(),
+	candidates: z.array(GeminiCandidateSchema).optional().describe('Generated candidates'),
 	promptFeedback: z
 		.looseObject({
 			blockReason: z.string().optional(),
@@ -188,16 +186,16 @@ export const GeminiGenerateContentResponseSchema = z.looseObject({
 			safetyRatings: z.array(GeminiSafetyRatingSchema).optional(),
 		})
 		.optional(),
-	usageMetadata: GeminiUsageMetadataSchema.optional(),
-	modelVersion: z.string().optional(),
-	responseId: z.string().optional(),
-	createTime: z.string().optional(),
+	usageMetadata: GeminiUsageMetadataSchema.optional().describe('Token usage'),
+	modelVersion: z.string().optional().describe('Model version'),
+	responseId: z.string().optional().describe('Response identifier'),
+	createTime: z.string().optional().describe('Response creation time'),
 	modelStatus: z.looseObject({ modelStage: z.string().optional(), message: z.string().optional() }).optional(),
 });
 
 export const GeminiErrorResponseSchema = z.looseObject({
 	error: z.looseObject({
-		code: z.number().int(),
+		code: z.number().multipleOf(1),
 		message: z.string(),
 		status: z.string(),
 		details: z.array(z.unknown()).optional(),
