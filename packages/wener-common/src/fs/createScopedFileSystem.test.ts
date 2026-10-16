@@ -16,13 +16,26 @@ describe('createScopedFileSystem', () => {
 		expect(await base.readFile('/workspace/nested/value.txt', { encoding: 'text' })).toBe('value');
 	});
 
-	test('rejects traversal before delegating to the backing filesystem', async () => {
+	test('normalizes traversal while remaining inside the configured scope', async () => {
 		const base = createMemoryFileSystem();
 		const scoped = createScopedFileSystem(base, '/workspace');
 
-		await expect(scoped.stat('../outside')).rejects.toMatchObject({ code: 'EINVAL' });
-		expect(() => scoped.writeFile('/a/../../outside', 'value')).toThrow(expect.objectContaining({ code: 'EINVAL' }));
+		await scoped.writeFile('/a/../../outside', 'value');
+		expect(await base.readFile('/workspace/outside', { encoding: 'text' })).toBe('value');
 		expect(await base.exists('/outside')).toBe(false);
+	});
+
+	test('normalizes double slash and backslash forms without escaping the scope', async () => {
+		const base = createMemoryFileSystem();
+		await base.mkdir('/workspace', { recursive: true });
+		const scoped = createScopedFileSystem(base, '/workspace');
+
+		expect(await scoped.exists('//..')).toBe(true);
+		await scoped.writeFile('//../second/escaped.txt', 'value');
+		expect(await base.readFile('/workspace/second/escaped.txt', { encoding: 'text' })).toBe('value');
+		expect(await base.exists('/second/escaped.txt')).toBe(false);
+		await scoped.writeFile('\\nested\\value.txt', 'nested');
+		expect(await base.readFile('/workspace/nested/value.txt', { encoding: 'text' })).toBe('nested');
 	});
 
 	test('preserves stream capabilities while remapping paths', async () => {

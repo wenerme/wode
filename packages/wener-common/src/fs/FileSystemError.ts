@@ -14,6 +14,10 @@ export const FileSystemErrorCode = {
 	EINVAL: 'EINVAL',
 	ENOTSUP: 'ENOTSUP',
 	EOVERFLOW: 'EOVERFLOW',
+	/** Read-only filesystem or an unmounted write target. */
+	EROFS: 'EROFS',
+	/** Cross-device or cross-layer rename. */
+	EXDEV: 'EXDEV',
 } as const;
 
 export type FileSystemErrorCode = (typeof FileSystemErrorCode)[keyof typeof FileSystemErrorCode];
