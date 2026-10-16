@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { assertTextContrast } from '../story-contrast';
 import { Alert, AlertDescription, AlertTitle } from './index';
 
 const meta = { title: 'Primitive/Alert', component: Alert, tags: ['autodocs'] } satisfies Meta<typeof Alert>;
@@ -50,5 +51,8 @@ function ToneMatrix() {
 	);
 }
 
-export const AllTones: Story = { render: () => <ToneMatrix /> };
-export const DarkTones: Story = { render: () => <ToneMatrix />, globals: { theme: 'dark' } };
+export const AllTones: Story = {
+	render: () => <ToneMatrix />,
+	play: ({ canvasElement }) => assertTextContrast(canvasElement.querySelectorAll<HTMLElement>('[data-slot="alert"]')),
+};
+export const DarkTones: Story = { ...AllTones, globals: { theme: 'dark' } };

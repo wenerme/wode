@@ -115,6 +115,8 @@ pnpm -C packages/ui build-storybook:static
 
 预览只提供 light/dark 两个通用 DaisyUI 主题。产品品牌、供应商名称、部署代理和业务页面不属于本 package。
 
+预览 CSS 校准这两个主题的 `primary-content`、`secondary-content` 前景色，维持填充状态的文字对比度。Alert、Badge 的配色矩阵除自动无障碍检查外，还按实际计算颜色及透明背景合成结果断言普通文字至少达到 4.5:1；消费方定义主题时也应核对相应的 tone/content 配对。
+
 目录按 `Primitive`、`Base`、`Window`、`Console` 和 `Components` 分组；每个视觉 primitive、Base UI family 和通用组件 family 都应有独立展示与文档。`daisy`、`utils` 是辅助类型/函数，不生成假组件页面。布局 family 可以共用实际使用它们的组合展示。
 
 两个静态构建命令都会用 `scripts/check-storybook-coverage.ts` 校验生成的索引，缺少展示或文档时构建失败，避免只验证站点可打开而遗漏组件。窗口总览保留已有 story ID，目录归入 `Window/Manager`。
