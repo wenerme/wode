@@ -24,3 +24,27 @@ export const Variants: Story = {
 		</div>
 	),
 };
+
+function ToneMatrix() {
+	return (
+		<div className='grid max-w-3xl gap-5'>
+			{(['default', 'outline', 'dash', 'soft', 'ghost'] as const).map((variant) => (
+				<section key={variant} aria-label={`${variant} badges`} className='grid gap-2'>
+					<h2 className='font-semibold'>{variant}</h2>
+					<div className='flex flex-wrap gap-3'>
+						{(
+							['default', 'neutral', 'primary', 'secondary', 'accent', 'info', 'success', 'warning', 'error'] as const
+						).map((tone) => (
+							<Badge key={tone} variant={variant} tone={tone}>
+								{tone}
+							</Badge>
+						))}
+					</div>
+				</section>
+			))}
+		</div>
+	);
+}
+
+export const AllTones: Story = { render: () => <ToneMatrix /> };
+export const DarkTones: Story = { render: () => <ToneMatrix />, globals: { theme: 'dark' } };

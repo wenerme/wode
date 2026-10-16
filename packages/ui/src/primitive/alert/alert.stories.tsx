@@ -32,3 +32,23 @@ export const Variants: Story = {
 		</div>
 	),
 };
+
+function ToneMatrix() {
+	return (
+		<div className='grid w-full max-w-4xl gap-5'>
+			{(['default', 'outline', 'dash', 'soft'] as const).map((variant) => (
+				<section key={variant} aria-label={`${variant} alerts`} className='grid gap-2'>
+					<h2 className='font-semibold'>{variant}</h2>
+					{(['default', 'info', 'success', 'warning', 'error'] as const).map((tone) => (
+						<Alert key={tone} variant={variant} tone={tone}>
+							<span>{tone}：提示内容与操作状态。</span>
+						</Alert>
+					))}
+				</section>
+			))}
+		</div>
+	);
+}
+
+export const AllTones: Story = { render: () => <ToneMatrix /> };
+export const DarkTones: Story = { render: () => <ToneMatrix />, globals: { theme: 'dark' } };

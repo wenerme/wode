@@ -31,8 +31,15 @@ export const badgeVariants = cva('badge', {
 		},
 	},
 	compoundVariants: [
-		{ variant: 'soft', tone: 'info', className: 'text-base-content' },
-		{ variant: 'dash', tone: 'warning', className: 'border-warning text-base-content' },
+		{ variant: ['outline', 'dash', 'soft', 'ghost'], className: 'text-base-content' },
+		{ variant: ['outline', 'dash'], tone: 'neutral', className: 'border-neutral' },
+		{ variant: ['outline', 'dash'], tone: 'primary', className: 'border-primary' },
+		{ variant: ['outline', 'dash'], tone: 'secondary', className: 'border-secondary' },
+		{ variant: ['outline', 'dash'], tone: 'accent', className: 'border-accent' },
+		{ variant: ['outline', 'dash'], tone: 'info', className: 'border-info' },
+		{ variant: ['outline', 'dash'], tone: 'success', className: 'border-success' },
+		{ variant: ['outline', 'dash'], tone: 'warning', className: 'border-warning' },
+		{ variant: ['outline', 'dash'], tone: 'error', className: 'border-error' },
 	],
 	defaultVariants: {
 		variant: 'default',
