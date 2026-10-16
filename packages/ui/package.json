@@ -21,6 +21,8 @@
 		"./components/*": "./src/components/*/index.ts",
 		"./window-manager": "./src/components/window-manager/index.ts",
 		"./components/window-manager": "./src/components/window-manager/index.ts",
+		"./console-shell": "./src/components/console-shell/index.ts",
+		"./console-data-view": "./src/components/console-data-view/index.ts",
 		"./addressable-frame": "./src/components/addressable-frame/index.ts",
 		"./formats": "./src/components/formats/index.ts",
 		"./header-content-footer-layout": "./src/components/header-content-footer-layout/index.ts",
@@ -88,8 +90,8 @@
 	"scripts": {
 		"build": "just -f ../../just/packages/ui.just build",
 		"storybook": "storybook dev --no-open --port 6054",
-		"build-storybook": "storybook build",
-		"build-storybook:static": "storybook build --output-dir storybook-static",
+		"build-storybook": "storybook build && node scripts/check-storybook-coverage.ts",
+		"build-storybook:static": "storybook build --output-dir storybook-static && node scripts/check-storybook-coverage.ts",
 		"check:source-lines": "node scripts/check-source-lines.mjs",
 		"prepack": "pnpm build",
 		"prepublishOnly": "pnpm build",
@@ -167,6 +169,14 @@
 			"./components/window-manager": {
 				"types": "./src/components/window-manager/index.ts",
 				"default": "./lib/components/window-manager/index.js"
+			},
+			"./console-shell": {
+				"types": "./src/components/console-shell/index.ts",
+				"default": "./lib/components/console-shell/index.js"
+			},
+			"./console-data-view": {
+				"types": "./src/components/console-data-view/index.ts",
+				"default": "./lib/components/console-data-view/index.js"
 			},
 			"./components/*": {
 				"types": "./src/components/*/index.ts",

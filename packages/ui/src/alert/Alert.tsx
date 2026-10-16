@@ -23,6 +23,7 @@ export const alertVariants = cva('alert', {
 			horizontal: 'alert-horizontal',
 		},
 	},
+	compoundVariants: [{ variant: ['outline', 'dash', 'soft'], className: 'text-base-content' }],
 	defaultVariants: {
 		variant: 'default',
 		tone: 'default',

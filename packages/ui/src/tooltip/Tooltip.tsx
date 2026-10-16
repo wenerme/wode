@@ -16,6 +16,7 @@ export function TooltipContent({ className, positionerProps, ...props }: Tooltip
 		<BaseTooltip.Portal>
 			<BaseTooltip.Positioner sideOffset={6} {...positionerProps}>
 				<BaseTooltip.Popup
+					role='tooltip'
 					data-slot='tooltip-content'
 					className={cn(
 						'bg-neutral text-neutral-content rounded-field z-50 max-w-72 px-2.5 py-1.5 text-xs shadow-md',
