@@ -14,7 +14,7 @@
 - Native `<input>` wrapper 使用 `controlSize` 选择 DaisyUI 尺寸，保留原生 `size?: number` 属性。
 - DaisyUI 负责 theme-aware visual classes；禁止动态拼接 `component-${value}`，确保 Tailwind 可以扫描完整 class。
 - 共享 `@wener/ui/daisy` 只提供受限 vocabulary type，不提供接受任意 modifier 的万能 builder。
-- Console、Resource、File、Agent 和 Auth runtime 属于应用域，不进入本 package；应用侧 `registry.json` 只负责 Shadcn 发布元数据。
+- Console、Resource、File、Agent 和 Auth 业务 runtime 属于应用域，不进入本 package；应用侧 `registry.json` 只负责 Shadcn 发布元数据。Console Shell、导航和 DataView 的通用展示布局可以由本 package 提供，路由、权限和数据由消费方注入。
 - 本 package 的基础/展示 family 不要求逐项生成 `/r/*.json`。
 
 ## Public families
@@ -77,6 +77,8 @@
 ### 通用组合组件
 
 - `addressable-frame`：地址栏、导航操作与内容框架，不包含导航或资源运行时。
+- `console-shell`：应用无关的控制台框架、导航栏、可折叠模块侧栏与移动导航抽屉，允许注入路由链接组件。
+- `console-data-view`：列表、详情与辅助面板的布局，支持可调整区域，不包含业务查询或服务器依赖。
 - `formats`：数字、日期、金额、字节、时长和相对时间的格式化函数与展示组件。
 - `header-content-footer-layout`、`left-center-right-layout`：基础布局。
 - `hook-form`：基于 React Hook Form 的表单、字段、错误汇总和提交操作。
@@ -112,6 +114,10 @@ pnpm -C packages/ui build-storybook:static
 仓库的 GitHub Pages workflow 直接构建并发布本 package 的 Storybook 到 `https://wenerme.github.io/wode/`。Workflow 使用 `STORYBOOK_BASE_PATH=/wode/`，本地构建默认使用 `/`。
 
 预览只提供 light/dark 两个通用 DaisyUI 主题。产品品牌、供应商名称、部署代理和业务页面不属于本 package。
+
+目录按 `Primitive`、`Base`、`Window`、`Console` 和 `Components` 分组；每个视觉 primitive、Base UI family 和通用组件 family 都应有独立展示与文档。`daisy`、`utils` 是辅助类型/函数，不生成假组件页面。布局 family 可以共用实际使用它们的组合展示。
+
+两个静态构建命令都会用 `scripts/check-storybook-coverage.ts` 校验生成的索引，缺少展示或文档时构建失败，避免只验证站点可打开而遗漏组件。窗口总览保留已有 story ID，目录归入 `Window/Manager`。
 
 ## Consumer CSS
 

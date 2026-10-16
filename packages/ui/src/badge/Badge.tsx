@@ -30,6 +30,10 @@ export const badgeVariants = cva('badge', {
 			xl: 'badge-xl',
 		},
 	},
+	compoundVariants: [
+		{ variant: 'soft', tone: 'info', className: 'text-base-content' },
+		{ variant: 'dash', tone: 'warning', className: 'border-warning text-base-content' },
+	],
 	defaultVariants: {
 		variant: 'default',
 		tone: 'default',
