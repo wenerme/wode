@@ -29,7 +29,13 @@ export function FieldDescription({ className, ...props }: FieldDescriptionProps)
 export type FieldErrorProps = ComponentPropsWithRef<typeof BaseField.Error>;
 
 export function FieldError({ className, ...props }: FieldErrorProps) {
-	return <BaseField.Error data-slot='field-error' className={cn('text-error text-sm', className)} {...props} />;
+	return (
+		<BaseField.Error
+			data-slot='field-error'
+			className={cn('bg-error text-error-content rounded-field px-2 py-1 text-sm', className)}
+			{...props}
+		/>
+	);
 }
 
 export type FieldItemProps = ComponentPropsWithRef<typeof BaseField.Item>;

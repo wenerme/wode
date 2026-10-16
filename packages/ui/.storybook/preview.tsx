@@ -15,6 +15,7 @@ function ThemeSync({ theme }: { theme: string }) {
 }
 
 const preview: Preview = {
+	tags: ['autodocs'],
 	globalTypes: {
 		theme: {
 			description: 'DaisyUI theme',
@@ -39,6 +40,9 @@ const preview: Preview = {
 	],
 	parameters: {
 		layout: 'centered',
+		options: {
+			storySort: { order: ['Primitive', 'Base', 'Window', 'Console', 'Components'] },
+		},
 		a11y: {
 			test: 'error',
 		},

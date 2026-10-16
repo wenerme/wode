@@ -46,7 +46,7 @@ export function MenuItem({ className, active = false, disabled = false, ...props
 export type MenuTitleProps = ComponentPropsWithRef<'li'>;
 
 export function MenuTitle({ className, ...props }: MenuTitleProps) {
-	return <li data-slot='menu-title' className={cn('menu-title', className)} {...props} />;
+	return <li data-slot='menu-title' className={cn('menu-title text-base-content', className)} {...props} />;
 }
 
 export const MenuCompound = {
