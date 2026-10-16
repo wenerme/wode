@@ -42,7 +42,10 @@ export function TabsTrigger({ className, ...props }: TabsTriggerProps) {
 	return (
 		<BaseTabs.Tab
 			data-slot='tabs-trigger'
-			className={cn('tab data-active:tab-active data-disabled:tab-disabled', className)}
+			className={cn(
+				'tab aria-[selected=false]:text-base-content data-active:tab-active data-disabled:tab-disabled',
+				className,
+			)}
 			{...props}
 		/>
 	);

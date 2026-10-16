@@ -39,7 +39,7 @@ export type TableProps = ComponentPropsWithRef<'table'> &
 
 export function Table({ className, containerClassName, size, zebra, pinRows, pinColumns, ...props }: TableProps) {
 	return (
-		<div data-slot='table-container' className={cn('w-full overflow-x-auto', containerClassName)}>
+		<div data-slot='table-container' tabIndex={0} className={cn('w-full overflow-x-auto', containerClassName)}>
 			<table
 				data-slot='table'
 				className={cn(tableVariants({ size, zebra, pinRows, pinColumns }), className)}

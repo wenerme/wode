@@ -1,4 +1,6 @@
 export * from './addressable-frame';
+export * from './console-data-view';
+export * from './console-shell';
 export * from './formats';
 export * from './header-content-footer-layout';
 export * from './hook-form';
@@ -7,5 +9,5 @@ export * from './loaders';
 export * from './resizable';
 export * from './update-notification';
 export * from './web-vitals';
-export * from './zoom';
 export * from './window-manager';
+export * from './zoom';

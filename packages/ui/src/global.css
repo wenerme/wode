@@ -29,3 +29,10 @@
 		-webkit-tap-highlight-color: transparent;
 	}
 }
+
+:root:not([data-theme]),
+:root[data-theme="light"],
+:root[data-theme="dark"] {
+	--color-primary-content: white;
+	--color-secondary-content: var(--color-neutral);
+}
