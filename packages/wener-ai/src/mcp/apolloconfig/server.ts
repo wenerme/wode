@@ -1,4 +1,4 @@
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { McpServer } from '@modelcontextprotocol/server';
 import { ApolloConfigClient, type ApolloConfigClientInit } from '@wener/client/apolloconfig';
 import consola from 'consola';
 import { registerTools } from './tools';

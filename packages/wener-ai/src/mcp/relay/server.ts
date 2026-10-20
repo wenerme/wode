@@ -1,14 +1,7 @@
-import { Client } from '@modelcontextprotocol/sdk/client/index.js';
-import { SSEClientTransport } from '@modelcontextprotocol/sdk/client/sse.js';
-import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
-import { Server } from '@modelcontextprotocol/sdk/server/index.js';
-import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import {
-	CallToolRequestSchema,
-	ListResourcesRequestSchema,
-	ListToolsRequestSchema,
-	ReadResourceRequestSchema,
-} from '@modelcontextprotocol/sdk/types.js';
+import { type Client, SSEClientTransport, StreamableHTTPClientTransport } from '@modelcontextprotocol/client';
+import { type McpServer, Server } from '@modelcontextprotocol/server';
+import { connectMcpClient } from '../client';
+
 export interface CreateRelayMcpServerOptions {
 	/** Target MCP server URL */
 	url: string;
@@ -48,36 +41,27 @@ export function createRelayMcpServer(options: CreateRelayMcpServerOptions) {
 	const getClient = async (): Promise<Client> => {
 		if (_client) return _client;
 
-		const clientTransport =
-			transport === 'sse'
-				? new SSEClientTransport(new URL(url), {
-						requestInit: { headers },
-					})
-				: new StreamableHTTPClientTransport(new URL(url), {
-						requestInit: { headers },
-					});
-
-		_transport = clientTransport;
-		_client = new Client(
-			{
-				name: `${name}-client`,
-				version,
-			},
-			{
-				capabilities: {},
-			},
-		);
-
-		await _client.connect(clientTransport);
+		// Streamable HTTP 先按 2026-07-28 探测，不是新协议再回退 2025；SSE 只讲 2025。
+		const connected = await connectMcpClient({
+			createTransport: () =>
+				transport === 'sse'
+					? new SSEClientTransport(new URL(url), { requestInit: { headers } })
+					: new StreamableHTTPClientTransport(new URL(url), { requestInit: { headers } }),
+			clientInfo: { name: `${name}-client`, version },
+			clientOptions: { capabilities: {} },
+		});
+		_transport = connected.transport as SSEClientTransport | StreamableHTTPClientTransport;
+		_client = connected.client;
 		return _client;
 	};
 
-	server.setRequestHandler(ListToolsRequestSchema, async () => {
+	// 逐页透传（与 v1 一致）：SDK v2 的 listTools()/listResources() 不带 cursor 时会自动聚合所有页。
+	server.setRequestHandler('tools/list', async (request) => {
 		const client = await getClient();
-		return client.listTools();
+		return client.request({ method: 'tools/list', params: request.params ?? {} });
 	});
 
-	server.setRequestHandler(CallToolRequestSchema, async (request) => {
+	server.setRequestHandler('tools/call', async (request) => {
 		const client = await getClient();
 		return client.callTool({
 			name: request.params.name,
@@ -85,16 +69,16 @@ export function createRelayMcpServer(options: CreateRelayMcpServerOptions) {
 		});
 	});
 
-	server.setRequestHandler(ListResourcesRequestSchema, async () => {
+	server.setRequestHandler('resources/list', async (request) => {
 		try {
 			const client = await getClient();
-			return client.listResources();
+			return client.request({ method: 'resources/list', params: request.params ?? {} });
 		} catch {
 			return { resources: [] };
 		}
 	});
 
-	server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
+	server.setRequestHandler('resources/read', async (request) => {
 		const client = await getClient();
 		return client.readResource({ uri: request.params.uri });
 	});

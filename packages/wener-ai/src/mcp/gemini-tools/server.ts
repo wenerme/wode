@@ -1,5 +1,5 @@
 import type { GoogleGenerativeAIProviderMetadata } from '@ai-sdk/google';
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { McpServer } from '@modelcontextprotocol/server';
 import consola from 'consola';
 import { z } from 'zod';
 import type { McpServerInstance } from '../McpServerDef';
@@ -24,12 +24,15 @@ export function createGeminiToolsMcpServer(options: CreateGeminiToolsMcpServerOp
 	const model = options.model || process.env.GEMINI_MODEL || 'gemini-3-flash-preview';
 	const server = new McpServer({ name, version });
 
-	server.tool(
+	server.registerTool(
 		'web_search',
-		'Search the internet for latest information using Google Search grounding. If query contains URLs, URL context analysis is also enabled.',
 		{
-			query: z.string().describe('Search query, may include URLs for context analysis'),
-			lang: z.string().optional().describe('Response language (e.g. zh, en). Auto-detected from query by default'),
+			description:
+				'Search the internet for latest information using Google Search grounding. If query contains URLs, URL context analysis is also enabled.',
+			inputSchema: z.object({
+				query: z.string().describe('Search query, may include URLs for context analysis'),
+				lang: z.string().optional().describe('Response language (e.g. zh, en). Auto-detected from query by default'),
+			}),
 		},
 		async ({ query, lang }) => {
 			if (!apiKey) {
@@ -90,12 +93,15 @@ export function createGeminiToolsMcpServer(options: CreateGeminiToolsMcpServerOp
 		},
 	);
 
-	server.tool(
+	server.registerTool(
 		'code_execution',
-		'Generate and execute Python code using Gemini code execution. Useful for calculations, data analysis, and algorithmic tasks.',
 		{
-			prompt: z.string().describe('Task description for the model to solve by writing and running Python code'),
-			lang: z.string().optional().describe('Response language (e.g. zh, en)'),
+			description:
+				'Generate and execute Python code using Gemini code execution. Useful for calculations, data analysis, and algorithmic tasks.',
+			inputSchema: z.object({
+				prompt: z.string().describe('Task description for the model to solve by writing and running Python code'),
+				lang: z.string().optional().describe('Response language (e.g. zh, en)'),
+			}),
 		},
 		async ({ prompt, lang }) => {
 			if (!apiKey) {

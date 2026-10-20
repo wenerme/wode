@@ -1,5 +1,4 @@
-import type { Server } from '@modelcontextprotocol/sdk/server/index.js';
-import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import type { McpServer, Server } from '@modelcontextprotocol/server';
 
 export interface McpServerInstance {
 	server: McpServer | Server;

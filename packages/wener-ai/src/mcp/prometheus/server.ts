@@ -1,4 +1,4 @@
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { McpServer } from '@modelcontextprotocol/server';
 import consola from 'consola';
 import { PROMQL_GUIDE } from './guides';
 import { registerMetadataTools, registerQueryTools } from './tools';
@@ -97,7 +97,7 @@ export function createPrometheusMcpServer({
 	// Guide Resources
 	// =========================================================================
 
-	server.resource(
+	server.registerResource(
 		'promql-guide',
 		'prometheus://promql-guide',
 		{
