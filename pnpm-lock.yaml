@@ -1103,6 +1103,40 @@ importers:
         specifier: ^4.4.5
         version: 4.4.5
 
+  apps/wocli:
+    dependencies:
+      '@wener/common':
+        specifier: workspace:^
+        version: link:../../packages/wener-common
+      common:
+        specifier: workspace:^
+        version: link:../../packages/common
+      just-bash:
+        specifier: ^3.6.0
+        version: 3.6.0(supports-color@10.2.2)
+      yaml:
+        specifier: ^2.9.1
+        version: 2.9.1
+    devDependencies:
+      '@types/node':
+        specifier: ^24.13.5
+        version: 24.13.5
+      esbuild:
+        specifier: ^0.28.2
+        version: 0.28.2
+      tsx:
+        specifier: ^4.23.15
+        version: 4.23.15
+      typescript:
+        specifier: 7.0.2
+        version: 7.0.2
+      vite:
+        specifier: ^8.3.0
+        version: 8.3.0(@types/node@24.13.5)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1)
+      vitest:
+        specifier: ^5.0.1
+        version: 5.0.1(@types/node@24.13.5)(@vitest/browser-playwright@5.0.1)(@vitest/ui@5.0.1)(jsdom@30.1.0(@noble/hashes@2.4.0)(canvas@3.2.3))(vite@8.3.0(@types/node@24.13.5)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))
+
   packages/common:
     dependencies:
       '@hono/zod-openapi':
@@ -1120,6 +1154,9 @@ importers:
       '@types/json-schema':
         specifier: ^7.0.15
         version: 7.0.15
+      '@wener/client':
+        specifier: workspace:^
+        version: link:../wener-client
       '@wener/common':
         specifier: workspace:^3.0.0
         version: link:../wener-common
@@ -1168,6 +1205,9 @@ importers:
       lru-cache:
         specifier: ^11.5.3
         version: 11.5.3
+      marked:
+        specifier: ^18.1.0
+        version: 18.1.0
       mime:
         specifier: ^4.1.0
         version: 4.1.0
@@ -1195,6 +1235,9 @@ importers:
       std-env:
         specifier: ^4.2.0
         version: 4.2.0
+      string-width:
+        specifier: ^8.2.2
+        version: 8.2.2
       tar:
         specifier: ^7.5.22
         version: 7.5.22
@@ -1246,7 +1289,7 @@ importers:
         version: 0.11.1
       '@storybook/react-vite':
         specifier: ^10.6.0
-        version: 10.6.0(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(storybook@10.6.0(@types/react@19.3.0)(react@19.3.0))(supports-color@10.2.2)(typescript@7.0.2)(vite@8.3.0(@types/node@24.13.5)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))
+        version: 10.6.1(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(storybook@10.6.1(@types/react@19.3.0)(prettier@2.8.8)(react@19.3.0))(supports-color@10.2.2)(typescript@7.0.2)(vite@8.3.0(@types/node@24.13.5)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))
       '@types/micromatch':
         specifier: ^4.0.10
         version: 4.0.10
@@ -1279,7 +1322,7 @@ importers:
         version: 0.5.4(hono@4.13.8)
       knex:
         specifier: ^3.3.0
-        version: 3.3.0(mysql2@3.24.4(@types/node@24.13.5))(pg-query-stream@4.17.0(pg@8.23.0))(pg@8.23.0)(supports-color@10.2.2)(tedious@20.0.0(supports-color@10.2.2))
+        version: 3.3.0(better-sqlite3@13.0.3)(mysql2@3.24.4(@types/node@24.13.5))(pg-query-stream@4.17.0(pg@8.23.0))(pg@8.23.0)(supports-color@10.2.2)(tedious@20.0.0(supports-color@10.2.2))
       kysely:
         specifier: ^0.29.6
         version: 0.29.6
@@ -1329,6 +1372,12 @@ importers:
       '@base-ui/react':
         specifier: ^1.8.0
         version: 1.8.0(@types/react@19.3.0)(date-fns@4.4.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      '@xterm/addon-fit':
+        specifier: ^0.11.0
+        version: 0.11.0
+      '@xterm/xterm':
+        specifier: ^6.0.0
+        version: 6.0.0
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -1377,7 +1426,7 @@ importers:
         version: 10.6.1(@vitest/browser-playwright@5.0.1)(@vitest/browser@5.0.1(vite@8.3.0(@types/node@24.13.5)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))(vitest@5.0.1))(react@19.3.0)(storybook@10.6.0(@types/react@19.3.0)(prettier@2.8.8)(react@19.3.0))(vitest@5.0.1)
       '@storybook/react-vite':
         specifier: ^10.6.0
-        version: 10.6.0(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(storybook@10.6.0(@types/react@19.3.0)(react@19.3.0))(supports-color@10.2.2)(typescript@7.0.2)(vite@8.3.0(@types/node@24.13.5)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))
+        version: 10.6.1(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(storybook@10.6.0(@types/react@19.3.0)(prettier@2.8.8)(react@19.3.0))(supports-color@10.2.2)(typescript@7.0.2)(vite@8.3.0(@types/node@24.13.5)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))
       '@tailwindcss/vite':
         specifier: ^4.3.3
         version: 4.3.3(vite@8.3.0(@types/node@24.13.5)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))
@@ -1396,6 +1445,9 @@ importers:
       jsdom:
         specifier: ^30.0.1
         version: 30.1.0(@noble/hashes@2.4.0)(canvas@3.2.3)
+      just-bash:
+        specifier: ^3.6.0
+        version: 3.6.0(supports-color@10.2.2)
       playwright:
         specifier: ^1.63.0
         version: 1.63.0
@@ -1417,6 +1469,9 @@ importers:
       vitest:
         specifier: ^5.0.1
         version: 5.0.1(@types/node@24.13.5)(@vitest/browser-playwright@5.0.1)(@vitest/ui@5.0.1)(jsdom@30.1.0(@noble/hashes@2.4.0)(canvas@3.2.3))(vite@8.3.0(@types/node@24.13.5)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))
+      wocli:
+        specifier: workspace:^
+        version: link:../../apps/wocli
 
   packages/wener-ai:
     dependencies:
@@ -1630,9 +1685,15 @@ importers:
       std-env:
         specifier: ^4.3.0
         version: 4.3.0
+      string-width:
+        specifier: ^8.2.2
+        version: 8.2.2
       ts-pattern:
         specifier: ^5.9.0
         version: 5.9.0
+      yaml:
+        specifier: ^2.9.1
+        version: 2.9.1
     devDependencies:
       '@mikro-orm/core':
         specifier: ^7.2.4
