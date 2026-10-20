@@ -9,7 +9,7 @@ test('parse', async () => {
 	const out = p.parse(`
 <xml>
    <ToUserName><![CDATA[toUser]]></ToUserName>
-   <FromUserName><![CDATA[fromUser]]></FromUserName> 
+   <FromUserName><![CDATA[fromUser]]></FromUserName>
    <CreateTime>1348831860</CreateTime>
    <MsgType><![CDATA[text]]></MsgType>
    <Content><![CDATA[this is a test]]></Content>

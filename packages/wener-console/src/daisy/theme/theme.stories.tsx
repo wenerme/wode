@@ -20,7 +20,7 @@ export const Demo = () => {
 			<h3>Theme Introduction</h3>
 			<pre>
 				{`
-- 修改主题会记录在 localStorage.theme 
+- 修改主题会记录在 localStorage.theme
 - 主题基于 daisyui
       `}
 			</pre>
