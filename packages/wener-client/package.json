@@ -15,6 +15,7 @@
 		".": "./src/index.ts",
 		"./api": "./src/api/index.ts",
 		"./api/*": "./src/api/*/index.ts",
+		"./ai/router": "./src/ai/router/index.ts",
 		"./17dz": "./src/17dz/index.ts",
 		"./17dz/crypto": "./src/17dz/crypto/index.ts",
 		"./17dz/flow": "./src/17dz/flow/index.ts",
@@ -50,8 +51,7 @@
 		"./yzf": "./src/yzf/index.ts",
 		"./feishu/docs": "./src/feishu/docs/index.ts",
 		"./feishu/docs/markdown": "./src/feishu/docs/markdown/index.ts",
-		"./package.json": "./package.json",
-		"./ai/router": "./src/ai/router/index.ts"
+		"./package.json": "./package.json"
 	},
 	"files": [
 		"lib.d.ts",
@@ -63,18 +63,27 @@
 	"scripts": {
 		"typecheck": "tsc --noEmit",
 		"build": "just -f ../../just/packages/wener-client.just build",
-		"test": "just -f ../../just/package.just package-test",
 		"test:api-inclusion": "API_FUZZ=1 vitest run tests/api-schema-inclusion",
 		"test:api-live": "vitest run tests/api-schema-inclusion/live-conversion.test.ts",
 		"test:ai-router": "vitest run src/ai/router tests/ai-router",
 		"test:ai-router:offline": "vitest run src/ai/router tests/ai-router/sdk-conversion.test.ts tests/ai-router/native-offline.test.ts tests/ai-router/pi-models.test.ts",
-		"update:api-oracles": "pnpm exec tsx tests/api-schema-inclusion/update-oracles.ts"
+		"update:api-oracles": "pnpm exec tsx tests/api-schema-inclusion/update-oracles.ts",
+		"test": "just -f ../../just/package.just package-test"
 	},
 	"dependencies": {
 		"@noble/ciphers": "^2.4.0",
-		"@wener/utils": "^1.1.59",
+		"@noble/hashes": "^2.4.0",
+		"@wener/utils": "workspace:^",
 		"eventsource-parser": "^4.1.1",
 		"zod": "^4.6.5"
+	},
+	"peerDependencies": {
+		"hono": "^4.13.0"
+	},
+	"peerDependenciesMeta": {
+		"hono": {
+			"optional": true
+		}
 	},
 	"devDependencies": {
 		"@ai-sdk/anthropic": "^4.0.80",
@@ -87,21 +96,21 @@
 		"@types/bun": "^1.4.2",
 		"@types/node-rsa": "^1.1.4",
 		"@wecom/jssdk": "^2.4.4",
-		"ai": "^7.0.137",
 		"ajv": "^8.20.0",
+		"ai": "^7.0.137",
 		"cookie": "^2.0.1",
 		"dayjs": "^1.11.23",
-		"fast-xml-parser": "^5.11.1",
-		"hono": "^4.13.13",
+		"fast-xml-parser": "^5.11.2",
 		"json-schema-faker": "^0.6.3",
+		"hono": "^4.13.13",
 		"node-rsa": "^2.0.0",
-		"puppeteer": "^25.11.0",
-		"puppeteer-core": "^25.11.0",
+		"puppeteer": "^25.13.0",
+		"puppeteer-core": "^25.13.0",
 		"ts-pattern": "^5.9.0",
-		"undici": "^8.10.2",
+		"undici": "^8.11.2",
 		"vite": "catalog:",
 		"vitest": "^5.0.3",
-		"ws": "^8.21.3",
+		"ws": "^8.22.0",
 		"yaml": "^2.9.1"
 	},
 	"publishConfig": {
@@ -117,6 +126,10 @@
 			"./api/*": {
 				"types": "./src/api/*/index.ts",
 				"default": "./lib/api/*/index.js"
+			},
+			"./ai/router": {
+				"types": "./src/ai/router/index.ts",
+				"default": "./lib/ai/router/index.js"
 			},
 			"./17dz": {
 				"types": "./src/17dz/index.ts",
@@ -258,19 +271,7 @@
 				"types": "./src/feishu/docs/markdown/index.ts",
 				"default": "./lib/feishu/docs/markdown/index.js"
 			},
-			"./package.json": "./package.json",
-			"./ai/router": {
-				"types": "./src/ai/router/index.ts",
-				"default": "./lib/ai/router/index.js"
-			}
-		}
-	},
-	"peerDependencies": {
-		"hono": "^4.13.0"
-	},
-	"peerDependenciesMeta": {
-		"hono": {
-			"optional": true
+			"./package.json": "./package.json"
 		}
 	}
 }

@@ -44,10 +44,10 @@
 		"mcp"
 	],
 	"peerDependencies": {
-		"@ai-sdk/google": "^4.0.18",
+		"@ai-sdk/google": "*",
 		"@clickhouse/client": "*",
 		"@larksuiteoapi/node-sdk": "*",
-		"ai": "^7.0.31",
+		"ai": "*",
 		"kysely": "*",
 		"mysql2": "*",
 		"tarn": "*",
@@ -80,20 +80,22 @@
 		}
 	},
 	"dependencies": {
-		"@modelcontextprotocol/sdk": "^1.30.0",
+		"@modelcontextprotocol/sdk": "^1.32.1",
 		"@wener/client": "workspace:^1.0.29",
 		"@wener/common": "workspace:^3.0.0",
+		"better-sqlite3": "^13.0.3",
 		"consola": "^3.4.2",
 		"zod": "^4.6.5"
 	},
 	"devDependencies": {
-		"@ai-sdk/google": "^4.0.76",
-		"@clickhouse/client": "^1.23.1",
-		"ai": "^7.0.107",
+		"@types/better-sqlite3": "^9.6.0",
+		"@ai-sdk/google": "^4.0.93",
+		"@clickhouse/client": "^1.24.0",
+		"ai": "^7.0.136",
 		"kysely": "^0.29.6",
-		"mysql2": "^3.24.4",
+		"mysql2": "^3.24.5",
 		"tarn": "^3.1.2",
-		"tedious": "^20.0.0"
+		"tedious": "^20.3.3"
 	},
 	"publishConfig": {
 		"exports": {
