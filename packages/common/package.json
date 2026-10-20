@@ -11,9 +11,14 @@
 	"exports": {
 		".": "./src/index.ts",
 		"./ai/cv": "./src/ai/cv/index.ts",
+		"./ai/prompt": "./src/ai/prompt/index.ts",
+		"./tui": "./src/tui/index.ts",
 		"./alpine": "./src/alpine/index.ts",
 		"./aports": "./src/aports/index.ts",
 		"./components": "./src/components/index.ts",
+		"./cli": "./src/cli/index.ts",
+		"./cli/*": "./src/cli/*.ts",
+		"./context": "./src/context/index.ts",
 		"./fs": "./src/fs/index.ts",
 		"./fs/orpc": "./src/fs/orpc/index.ts",
 		"./fs/orpc/server": "./src/fs/orpc/server/index.ts",
@@ -29,6 +34,11 @@
 		"./storage": "./src/storage/index.ts",
 		"./torrent": "./src/torrent/index.ts",
 		"./server": "./src/server/index.ts",
+		"./service": "./src/service/index.ts",
+		"./service/cli": "./src/service/cli/index.ts",
+		"./service/cli/client": "./src/service/cli/client.ts",
+		"./service/runtime": "./src/service/runtime/index.ts",
+		"./service/runtime/client": "./src/service/runtime/client.ts",
 		"./utils": "./src/utils/index.ts",
 		"./wener": "./src/wener/index.ts",
 		"./protos/*": "./src/protos/*.ts",
@@ -55,6 +65,7 @@
 		"@sinclair/typebox": "^0.34.52",
 		"@types/json-schema": "^7.0.15",
 		"@wener/common": "workspace:^3.0.0",
+		"@wener/client": "workspace:^",
 		"@wener/utils": "workspace:^1.1.59",
 		"ajv": "^8.20.0",
 		"ajv-formats": "^3.0.1",
@@ -71,6 +82,7 @@
 		"fs-extra": "^11.4.0",
 		"lru-cache": "^11.5.3",
 		"mime": "^4.1.0",
+		"marked": "^18.1.0",
 		"minio": "^8.0.7",
 		"pako": "^3.0.2",
 		"pathe": "^2.0.3",
@@ -79,6 +91,7 @@
 		"s3mini": "^1.0.2",
 		"semver": "^7.8.5",
 		"std-env": "^4.2.0",
+		"string-width": "^8.2.2",
 		"tar": "^7.5.22",
 		"tar-stream": "^3.2.1",
 		"ts-pattern": "^5.9.0",
@@ -116,6 +129,14 @@
 	},
 	"publishConfig": {
 		"exports": {
+			"./ai/prompt": {
+				"types": "./src/ai/prompt/index.ts",
+				"default": "./lib/ai/prompt/index.js"
+			},
+			"./tui": {
+				"types": "./src/tui/index.ts",
+				"default": "./lib/tui/index.js"
+			},
 			".": {
 				"types": "./src/index.ts",
 				"default": "./lib/index.js"
@@ -135,6 +156,38 @@
 			"./components": {
 				"types": "./src/components/index.ts",
 				"default": "./lib/components/index.js"
+			},
+			"./cli": {
+				"types": "./src/cli/index.ts",
+				"default": "./lib/cli/index.js"
+			},
+			"./cli/*": {
+				"types": "./src/cli/*.ts",
+				"default": "./lib/cli/*.js"
+			},
+			"./context": {
+				"types": "./src/context/index.ts",
+				"default": "./lib/context/index.js"
+			},
+			"./service": {
+				"types": "./src/service/index.ts",
+				"default": "./lib/service/index.js"
+			},
+			"./service/cli": {
+				"types": "./src/service/cli/index.ts",
+				"default": "./lib/service/cli/index.js"
+			},
+			"./service/cli/client": {
+				"types": "./src/service/cli/client.ts",
+				"default": "./lib/service/cli/client.js"
+			},
+			"./service/runtime": {
+				"types": "./src/service/runtime/index.ts",
+				"default": "./lib/service/runtime/index.js"
+			},
+			"./service/runtime/client": {
+				"types": "./src/service/runtime/client.ts",
+				"default": "./lib/service/runtime/client.js"
 			},
 			"./fs": {
 				"types": "./src/fs/index.ts",

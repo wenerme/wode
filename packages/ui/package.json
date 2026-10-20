@@ -14,6 +14,7 @@
 	"exports": {
 		".": "./src/index.ts",
 		"./primitive": "./src/primitive/index.ts",
+		"./terminal": "./src/terminal/index.ts",
 		"./primitive/*": "./src/primitive/*/index.ts",
 		"./base": "./src/base/index.ts",
 		"./base/*": "./src/base/*/index.ts",
@@ -104,6 +105,8 @@
 	},
 	"dependencies": {
 		"@base-ui/react": "^1.8.0",
+		"@xterm/addon-fit": "^0.11.0",
+		"@xterm/xterm": "^6.0.0",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
 		"lucide-react": "^1.47.0",
@@ -128,13 +131,15 @@
 		"@types/react-dom": "^19.3.0",
 		"@vitest/browser-playwright": "catalog:",
 		"jsdom": "^30.0.1",
+		"just-bash": "^3.6.0",
 		"playwright": "^1.63.0",
 		"react": "^19.3.0",
 		"react-dom": "^19.3.0",
 		"storybook": "^10.6.0",
 		"typescript": "7.0.2",
 		"vite": "catalog:",
-		"vitest": "catalog:"
+		"vitest": "catalog:",
+		"wocli": "workspace:^"
 	},
 	"publishConfig": {
 		"exports": {
@@ -145,6 +150,10 @@
 			"./primitive": {
 				"types": "./src/primitive/index.ts",
 				"default": "./lib/primitive/index.js"
+			},
+			"./terminal": {
+				"types": "./src/terminal/index.ts",
+				"default": "./lib/terminal/index.js"
 			},
 			"./primitive/*": {
 				"types": "./src/primitive/*/index.ts",

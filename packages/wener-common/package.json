@@ -16,6 +16,9 @@
 	},
 	"exports": {
 		".": "./src/index.ts",
+		"./cli": "./src/cli/index.ts",
+		"./cli/*": "./src/cli/*.ts",
+		"./cli/render": "./src/cli/render/index.ts",
 		"./cn": "./src/cn/index.ts",
 		"./consola": "./src/consola/index.ts",
 		"./data": "./src/data/index.ts",
@@ -81,7 +84,9 @@
 		"es-toolkit": "^1.52.0",
 		"pathe": "^2.0.3",
 		"std-env": "^4.3.0",
-		"ts-pattern": "^5.9.0"
+		"string-width": "^8.2.2",
+		"ts-pattern": "^5.9.0",
+		"yaml": "^2.9.1"
 	},
 	"devDependencies": {
 		"@mikro-orm/core": "^7.2.4",
@@ -118,6 +123,18 @@
 			".": {
 				"types": "./src/index.ts",
 				"default": "./lib/index.js"
+			},
+			"./cli": {
+				"types": "./src/cli/index.ts",
+				"default": "./lib/cli/index.js"
+			},
+			"./cli/*": {
+				"types": "./src/cli/*.ts",
+				"default": "./lib/cli/*.js"
+			},
+			"./cli/render": {
+				"types": "./src/cli/render/index.ts",
+				"default": "./lib/cli/render/index.js"
 			},
 			"./cn": {
 				"types": "./src/cn/index.ts",
