@@ -1,65 +1,82 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.5.14/schema.json",
-  "files": {
-    "includes": [
-      "**",
-      "!packages/common/src/poc",
-      "!packages/common/src/protos",
-      "!packages/wener-client/libs/WeWorkFinanceSdk",
-      "!packages/wener-client/src/**/schema/*.gen.ts",
-      "!packages/wener-miniquery/src/**/parser.js",
-      "!**/*.gen.ts",
-      "!**/*_connect.ts",
-      "!**/*_pb.ts",
-      "!node_modules",
-      "!local",
-      "!.grit",
-      "!.claude",
-      "!.agents",
-      "!**/.next",
-      "!**/.wrangler",
-      "!**/storybook-static",
-      "!apps/server/builds",
-      "!apps/components/public/r",
-      "!bin",
-      "!lib",
-      "!dist",
-      "!out",
-      "!**/lib",
-      "!**/dist",
-      "!**/out"
-    ]
-  },
-  "formatter": {
-    "enabled": true,
-    "indentStyle": "tab",
-    "lineWidth": 120,
-    "attributePosition": "auto",
-    "useEditorconfig": true
-  },
-  "javascript": {
-    "parser": {
-      "unsafeParameterDecoratorsEnabled": true
-    },
-    "formatter": {
-      "quoteStyle": "single",
-      "jsxQuoteStyle": "single",
-      "trailingCommas": "all"
-    }
-  },
-  "css": {
-    "parser": {
-      "tailwindDirectives": true
-    }
-  },
-  "linter": {
-    "enabled": true,
-    "rules": {
-      "preset": "none",
-      "correctness": {
-        "recommended": true,
-        "noConstantCondition": "off"
-      }
-    }
-  }
+	"$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+	"formatter": {
+		"enabled": true,
+		"formatWithErrors": false,
+		"indentStyle": "tab",
+		"indentWidth": 2,
+		"lineEnding": "lf",
+		"lineWidth": 120,
+		"attributePosition": "auto",
+		"bracketSameLine": false,
+		"bracketSpacing": true,
+		"useEditorconfig": true
+	},
+	"files": {
+		"includes": [
+			"**",
+			"!packages/common/src/poc",
+			"!packages/common/src/protos",
+			"!packages/wener-client/libs/WeWorkFinanceSdk",
+			"!packages/wener-client/src/**/schema/*.gen.ts",
+			"!packages/wener-miniquery/src/**/parser.js",
+			"!**/*.gen.ts",
+			"!**/*_pb.d.ts",
+			"!**/*_pb.js",
+			"!**/*_connect.ts",
+			"!**/parser.js",
+			"!**/pp/go/wire",
+			"!**/*_pb.ts",
+			"!node_modules",
+			"!local",
+			"!.idea",
+			"!.pi",
+			"!.turbo",
+			"!.grit",
+			"!.claude",
+			"!.agents",
+			"!**/.next",
+			"!**/.wrangler",
+			"!**/storybook-static",
+			"!apps/server/builds",
+			"!bin",
+			"!lib",
+			"!dist",
+			"!out",
+			"!**/lib",
+			"!**/dist",
+			"!**/out"
+		]
+	},
+	"javascript": {
+		"parser": {
+			"unsafeParameterDecoratorsEnabled": true
+		},
+		"formatter": {
+			"quoteStyle": "single",
+			"jsxQuoteStyle": "single",
+			"trailingCommas": "all"
+		}
+	},
+	"css": {
+		"parser": {
+			"tailwindDirectives": true
+		}
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"preset": "none",
+			"correctness": {
+				"recommended": true,
+				"noConstantCondition": "off"
+			}
+		}
+	},
+	"html": {
+		"formatter": {
+			"indentScriptAndStyle": false,
+			"selfCloseVoidElements": "always"
+		}
+	}
 }

@@ -13,9 +13,6 @@ export const PKCS7 = {
 	pad(buf: Uint8Array, blockSize = 32) {
 		const textLength = buf.length;
 		const amountToPad = blockSize - (textLength % blockSize);
-		return ArrayBuffers.concat([
-			buf as unknown as ArrayBufferView<ArrayBuffer>,
-			new Uint8Array(amountToPad).fill(amountToPad) as unknown as ArrayBufferView<ArrayBuffer>,
-		]);
+		return ArrayBuffers.concat([new Uint8Array(buf), new Uint8Array(amountToPad).fill(amountToPad)]);
 	},
 };
