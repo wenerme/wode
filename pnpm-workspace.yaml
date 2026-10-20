@@ -9,7 +9,7 @@ allowBuilds:
   '@swc/core': true
   argon2: true
   bcrypt: true
-  better-sqlite3: set this to true or false
+  better-sqlite3: true
   bufferutil: false
   canvas: true
   esbuild: true
