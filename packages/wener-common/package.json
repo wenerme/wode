@@ -31,6 +31,7 @@
 		"./fs/s3mini": "./src/fs/s3/index.ts",
 		"./fs/minio": "./src/fs/minio/index.ts",
 		"./fs/server": "./src/fs/server/index.ts",
+		"./fs/server/webdav": "./src/fs/server/webdav/index.ts",
 		"./fs/orpc": "./src/fs/orpc/index.ts",
 		"./fs/orpc/server": "./src/fs/orpc/server/index.ts",
 		"./jsonschema": "./src/jsonschema/index.ts",
@@ -183,6 +184,10 @@
 			"./fs/server": {
 				"types": "./src/fs/server/index.ts",
 				"default": "./lib/fs/server/index.js"
+			},
+			"./fs/server/webdav": {
+				"types": "./src/fs/server/webdav/index.ts",
+				"default": "./lib/fs/server/webdav/index.js"
 			},
 			"./fs/orpc": {
 				"types": "./src/fs/orpc/index.ts",

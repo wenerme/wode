@@ -21,6 +21,8 @@ import { rejectUnsupportedFileSystemLimit, validateReadFileMaxBytes } from '../r
 
 export type CreateS3MiniFileSystemOptions = ParseS3UrlOptions & {
 	client?: S3mini;
+	/** 注入已有client时，宿主通过公开构造参数提供可取消读取客户端。 */
+	createReadClient?: (signal: AbortSignal) => S3mini;
 	/**
 	 * Optional prefix to scope all operations within a specific folder in the bucket.
 	 * All file operations will be relative to this prefix.
@@ -67,7 +69,23 @@ export function createS3MiniFileSystem(options: CreateS3MiniFileSystemOptions = 
 	// Normalize prefix: remove leading/trailing slashes, ensure it ends with / when not empty
 	const normalizedPrefix = prefix ? prefix.replace(/^\/+/, '').replace(/\/+$/, '') : '';
 
-	return new S3FS(s3mini, bucket, normalizedPrefix);
+	const fetch = globalThis.fetch;
+	const createReadClient =
+		options.createReadClient ??
+		(client
+			? undefined
+			: (signal: AbortSignal) =>
+					new S3mini({
+						accessKeyId: parsed.accessKeyId || '',
+						secretAccessKey: parsed.secretAccessKey || '',
+						endpoint: formatS3Url(parsed, { credentials: false, useParams: false }),
+						region: parsed.region,
+						fetch: (input, init) => {
+							signal.throwIfAborted();
+							return fetch(input, { ...init, signal: init?.signal ? AbortSignal.any([signal, init.signal]) : signal });
+						},
+					}));
+	return new S3FS(s3mini, bucket, normalizedPrefix, createReadClient);
 }
 
 class S3FS implements IFileSystem {
@@ -75,6 +93,7 @@ class S3FS implements IFileSystem {
 		readonly client: S3mini,
 		readonly _bucket: string,
 		private readonly prefix: string = '',
+		private readonly createReadClient?: (signal: AbortSignal) => S3mini,
 	) {}
 
 	/**
@@ -161,10 +180,23 @@ class S3FS implements IFileSystem {
 		}
 	}
 
+	/** 使用公开构造参数注入transport，不能依赖被发布包压缩的SDK私有属性。 */
+	private readClient(signal?: AbortSignal): S3mini {
+		return signal && this.createReadClient ? this.createReadClient(signal) : this.client;
+	}
+
 	async readdir(dir: string, options: ReaddirOptions = {}): Promise<IFileStat[]> {
 		const { glob, recursive, depth = 1, kind, hidden = true, signal } = options;
 		this.checkAborted(signal);
-		rejectUnsupportedFileSystemLimit('readdir', 'maxEntries', validateReaddirMaxEntries(options.maxEntries));
+		const maxEntries = validateReaddirMaxEntries(options.maxEntries);
+		if (maxEntries !== undefined) {
+			if (!Number.isSafeInteger(maxEntries + 1)) {
+				throw new RangeError('maxEntries must leave room for one extra entry');
+			}
+			if (recursive || depth > 1) {
+				throw Object.assign(new Error('Bounded listing only supports direct directory entries'), { code: 'ENOTSUP' });
+			}
+		}
 
 		const dirPrefix = this.normalizeKey(dir);
 		const prefixWithSlash = dirPrefix ? (dirPrefix.endsWith('/') ? dirPrefix : `${dirPrefix}/`) : '';
@@ -174,7 +206,15 @@ class S3FS implements IFileSystem {
 			let objects: Array<{ Key: string; Size: number | string; LastModified?: Date | string; ETag?: string }> = [];
 			const prefixSet = new Set<string>();
 
-			const directObjects = await this.client.listObjects(delimiter, prefixWithSlash, undefined, { delimiter, signal });
+			const directObjects = await this.readClient(signal).listObjects(
+				delimiter,
+				prefixWithSlash,
+				maxEntries === undefined ? undefined : maxEntries + 1,
+				{ delimiter },
+			);
+			if (maxEntries !== undefined && directObjects && directObjects.length > maxEntries) {
+				throw Object.assign(new Error('Directory entry limit exceeded'), { code: 'EFBIG' });
+			}
 			if (directObjects) objects = directObjects;
 
 			for (const obj of objects) {
@@ -284,6 +324,7 @@ class S3FS implements IFileSystem {
 	async stat(entry: string, options: StatOptions = {}): Promise<IFileStat> {
 		const { signal } = options;
 		this.checkAborted(signal);
+		const client = this.readClient(signal);
 
 		const key = this.normalizeKey(entry);
 		if (!key) {
@@ -301,14 +342,14 @@ class S3FS implements IFileSystem {
 
 		try {
 			// Try to check if object exists and get metadata
-			const exists = await this.client.objectExists(key, { signal });
+			const exists = await client.objectExists(key);
 			if (exists === true) {
 				// Get ETag and size
-				const etag = await this.client.getEtag(key, { signal });
-				const size = await this.client.getContentLength(key);
+				const etag = await client.getEtag(key);
+				const size = await client.getContentLength(key);
 
 				// Get LastModified from listing (since objectExists doesn't return it)
-				const objects = await this.client.listObjects('/', key, 1, { delimiter: '/', signal });
+				const objects = await client.listObjects('/', key, 1, { delimiter: '/' });
 				const obj = objects?.[0];
 
 				return this.toFileStat(key, {
@@ -321,7 +362,7 @@ class S3FS implements IFileSystem {
 
 			// If object not found, try checking if it's a directory (prefix listing)
 			const dirKey = key.endsWith('/') ? key : `${key}/`;
-			const objects = await this.client.listObjects('/', dirKey, 1, { delimiter: '/', signal });
+			const objects = await client.listObjects('/', dirKey, 1, { delimiter: '/' });
 
 			if (objects && objects.length > 0) {
 				// It's a directory
@@ -336,10 +377,10 @@ class S3FS implements IFileSystem {
 				};
 			}
 
-			throw new Error(`File not found: ${entry}`);
+			throw Object.assign(new Error(`File not found: ${entry}`), { code: 'ENOENT' });
 		} catch (error: any) {
-			if (error.message?.includes('not found') || error.code === 'NoSuchKey') {
-				throw new Error(`File not found: ${entry}`);
+			if (error.message?.includes('not found') || error.code === 'NoSuchKey' || error.code === 'ENOENT') {
+				throw Object.assign(new Error(`File not found: ${entry}`), { code: 'ENOENT' });
 			}
 			throw error;
 		}
@@ -466,7 +507,7 @@ class S3FS implements IFileSystem {
 			if (recursive) {
 				// List all objects with this prefix (no delimiter = recursive)
 				const prefix = key.endsWith('/') ? key : `${key}/`;
-				const objects = await this.client.listObjects('', prefix, undefined, { signal });
+				const objects = await this.client.listObjects('/', prefix, undefined, { delimiter: '', signal });
 
 				if (objects) {
 					// Delete all objects
@@ -519,7 +560,7 @@ class S3FS implements IFileSystem {
 			const isDir = oldKey.endsWith('/');
 			const prefix = isDir ? oldKey : `${oldKey}/`;
 
-			const objects = await this.client.listObjects('', prefix, undefined, { signal });
+			const objects = await this.client.listObjects('/', prefix, undefined, { delimiter: '', signal });
 
 			if (objects && objects.length > 0) {
 				// It's a directory or has multiple objects, move all
@@ -606,8 +647,8 @@ class S3FS implements IFileSystem {
 				const srcPrefix = srcKey.endsWith('/') ? srcKey : `${srcKey}/`;
 				const destPrefix = destKey.endsWith('/') ? destKey : `${destKey}/`;
 
-				const objects = await this.client.listObjects(shallow ? '/' : '', srcPrefix, undefined, {
-					...(shallow ? { delimiter: '/' } : {}),
+				const objects = await this.client.listObjects('/', srcPrefix, undefined, {
+					delimiter: shallow ? '/' : '',
 					signal,
 				});
 
@@ -651,39 +692,98 @@ class S3FS implements IFileSystem {
 		}
 
 		const { range, signal } = options;
+		const abortController = new AbortController();
+		let controller: ReadableStreamDefaultController<Uint8Array>;
+		let reader: ReadableStreamDefaultReader<Uint8Array> | undefined;
+		let initializing: Promise<void> | undefined;
+		let cancelling: Promise<void> | undefined;
+		let terminated = false;
+		let reason: unknown;
 
-		// Use getObjectRaw which returns a Response with ReadableStream
-		const responsePromise = this.client.getObjectRaw(key, !range, range?.start, range?.end, { signal }, undefined);
+		const client = this.readClient(abortController.signal);
 
-		return new ReadableStream({
-			async start(controller) {
+		const detach = () => signal?.removeEventListener('abort', onAbort);
+		const cancelReader = (): Promise<void> => {
+			if (!reader) return Promise.resolve();
+			const current = reader;
+			return (cancelling ??= (async () => {
 				try {
-					const response = await responsePromise;
-					if (!response.body) {
-						controller.error(new Error('No response body'));
-						return;
-					}
-
-					const reader = response.body.getReader();
-
-					signal?.addEventListener('abort', () => {
-						reader.cancel(new Error('The operation was aborted'));
-						controller.error(new Error('The operation was aborted'));
-					});
-
-					while (true) {
-						const { done, value } = await reader.read();
-						if (done) {
-							controller.close();
-							break;
-						}
-						controller.enqueue(value);
-					}
-				} catch (err) {
-					controller.error(err);
+					await current.cancel(reason);
+				} catch {
+					// Cancellation must not mask the original error or reject unobserved.
+				} finally {
+					current.releaseLock();
+					reader = undefined;
 				}
+			})());
+		};
+		const stop = (cause: unknown) => {
+			terminated = true;
+			reason = cause;
+			detach();
+			abortController.abort(cause);
+		};
+		const fail = (cause: unknown) => {
+			if (terminated) return;
+			stop(cause);
+			controller.error(cause);
+			void cancelReader();
+		};
+		const onAbort = () => fail(signal?.reason ?? new Error('The operation was aborted'));
+		const initialize = async () => {
+			// IFileSystem ranges are inclusive; s3mini's rangeTo is exclusive.
+			const response = await client.getObjectRaw(
+				key,
+				!range,
+				range?.start,
+				range?.end === undefined ? undefined : range.end + 1,
+			);
+			reader = response.body?.getReader();
+			if (terminated) {
+				await cancelReader();
+				return;
+			}
+			if (!response.ok) throw new Error(`Failed to read S3 object: HTTP ${response.status}`);
+			if (!reader) throw new Error('No response body');
+		};
+
+		return new ReadableStream<Uint8Array>(
+			{
+				start(ctrl) {
+					controller = ctrl;
+					if (signal?.aborted) onAbort();
+					else signal?.addEventListener('abort', onAbort, { once: true });
+				},
+				async pull() {
+					try {
+						await (initializing ??= initialize());
+						if (terminated || !reader) return;
+						const { done, value } = await reader.read();
+						if (terminated) return;
+						if (done) {
+							terminated = true;
+							detach();
+							reader.releaseLock();
+							reader = undefined;
+							controller.close();
+						} else {
+							controller.enqueue(value);
+						}
+					} catch (error) {
+						fail(error);
+					}
+				},
+				async cancel(cause) {
+					if (terminated) return;
+					stop(cause);
+					await cancelReader();
+					// A fetch that ignores abort may still deliver a body; initialize
+					// cancels that late body before cancellation finishes.
+					await initializing?.catch(() => {});
+				},
 			},
-		});
+			{ highWaterMark: 0 },
+		);
 	}
 
 	createWritableStream(path: string, options: CreateWriteStreamOptions = {}): WritableStream {
