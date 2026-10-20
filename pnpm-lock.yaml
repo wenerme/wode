@@ -1841,7 +1841,7 @@ importers:
         version: 3.7.0
       use-immer:
         specifier: '*'
-        version: 0.11.0(immer@11.1.21)(react@19.3.0)
+        version: 0.11.0(immer@11.1.18)(react@19.3.0)
       use-mutative:
         specifier: ^1.3.1
         version: 1.3.1(@types/react@19.3.0)(mutative@1.3.0)(react@19.3.0)
@@ -1856,10 +1856,10 @@ importers:
         version: 4.6.5
       zustand:
         specifier: '*'
-        version: 5.0.15(@types/react@19.3.0)(immer@11.1.21)(react@19.3.0)(use-sync-external-store@1.7.0(react@19.3.0))
+        version: 5.0.15(@types/react@19.3.0)(immer@11.1.18)(react@19.3.0)(use-sync-external-store@1.7.0(react@19.3.0))
       zustand-mutative:
         specifier: ^1.3.1
-        version: 1.3.1(@types/react@19.3.0)(mutative@1.3.0)(react@19.3.0)(zustand@5.0.15(@types/react@19.3.0)(immer@11.1.21)(react@19.3.0)(use-sync-external-store@1.7.0(react@19.3.0)))
+        version: 1.3.1(@types/react@19.3.0)(mutative@1.3.0)(react@19.3.0)(zustand@5.0.15(@types/react@19.3.0)(immer@11.1.18)(react@19.3.0)(use-sync-external-store@1.7.0(react@19.3.0)))
     devDependencies:
       '@bufbuild/protobuf':
         specifier: ^2.16.0
@@ -1940,8 +1940,8 @@ importers:
         specifier: ^7.4.0
         version: 7.4.0(graphql@16.14.2)
       immer:
-        specifier: ^11.1.21
-        version: 11.1.21
+        specifier: ^11.1.18
+        version: 11.1.18
       lru-cache:
         specifier: ^11.5.3
         version: 11.5.3
@@ -9566,9 +9566,6 @@ packages:
 
   immer@11.1.18:
     resolution: {integrity: sha512-EQyQtLiYW029lyoczMl/Hh4Xu7cDecSc58JRYpHyL4tIAu3eqd1yJzQX04d2BZHDkzFFvm6qJEJWOtfDSWAXbQ==}
-
-  immer@11.1.21:
-    resolution: {integrity: sha512-bZSadeCPGdaY5/qRLgr6mDSH1ra21rD3rqpiWk7+QTr4ayYPTE9qZYdLh/NdPhMe0wSrTvHD/Lk8q5EwhUs0aw==}
 
   immutable@5.1.9:
     resolution: {integrity: sha512-m8nVez3rwrgmWxtLMt1ZYXB2Lv7OKYn/disyxAlSDYAlKSlFoPPfIAmAM/M5xqL4m4C/wAPw7S2/CNaUii1Hxg==}
@@ -21335,8 +21332,6 @@ snapshots:
 
   immer@11.1.18: {}
 
-  immer@11.1.21: {}
-
   immutable@5.1.9: {}
 
   import-fresh@3.3.1:
@@ -25403,11 +25398,6 @@ snapshots:
       immer: 11.1.18
       react: 19.3.0
 
-  use-immer@0.11.0(immer@11.1.21)(react@19.3.0):
-    dependencies:
-      immer: 11.1.21
-      react: 19.3.0
-
   use-mutative@1.3.1(@types/react@19.3.0)(mutative@1.3.0)(react@19.3.0):
     dependencies:
       '@types/react': 19.3.0
@@ -25778,24 +25768,10 @@ snapshots:
       react: 19.3.0
       zustand: 5.0.15(@types/react@19.3.0)(immer@11.1.18)(react@19.3.0)(use-sync-external-store@1.7.0(react@19.3.0))
 
-  zustand-mutative@1.3.1(@types/react@19.3.0)(mutative@1.3.0)(react@19.3.0)(zustand@5.0.15(@types/react@19.3.0)(immer@11.1.21)(react@19.3.0)(use-sync-external-store@1.7.0(react@19.3.0))):
-    dependencies:
-      '@types/react': 19.3.0
-      mutative: 1.3.0
-      react: 19.3.0
-      zustand: 5.0.15(@types/react@19.3.0)(immer@11.1.21)(react@19.3.0)(use-sync-external-store@1.7.0(react@19.3.0))
-
   zustand@5.0.15(@types/react@19.3.0)(immer@11.1.18)(react@19.3.0)(use-sync-external-store@1.7.0(react@19.3.0)):
     optionalDependencies:
       '@types/react': 19.3.0
       immer: 11.1.18
-      react: 19.3.0
-      use-sync-external-store: 1.7.0(react@19.3.0)
-
-  zustand@5.0.15(@types/react@19.3.0)(immer@11.1.21)(react@19.3.0)(use-sync-external-store@1.7.0(react@19.3.0)):
-    optionalDependencies:
-      '@types/react': 19.3.0
-      immer: 11.1.21
       react: 19.3.0
       use-sync-external-store: 1.7.0(react@19.3.0)
 
