@@ -7,9 +7,10 @@ test('sign', async () => {
 		(globalThis as any).crypto = await import('node:crypto').then((v) => v.webcrypto);
 	}
 
+	// Synthetic credentials for this offline signing fixture.
 	const params = {
-		appKey: 'NURDNkVCMDY3MzJBNDM3RjlGNDFFRjM2NjNCMUE0RTY=',
-		appSecret: '9sbAv4xfdcN7lzVr3PugRg==',
+		appKey: 'test-app-key',
+		appSecret: 'test-app-secret',
 		timestamp: 1_544_252_223_384,
 		version: '1.0.0',
 		xReqNonce: '97972162d1b14076b19ff75a9ba431d9',
@@ -20,10 +21,7 @@ test('sign', async () => {
 			.map((a) => a[1])
 			.join(''),
 	);
-	assert.equal(
-		encoded,
-		'NURDNkVCMDY3MzJBNDM3RjlGNDFFRjM2NjNCMUE0RTY%3D9sbAv4xfdcN7lzVr3PugRg%3D%3D15442522233841.0.097972162d1b14076b19ff75a9ba431d9',
-	);
+	assert.equal(encoded, 'test-app-keytest-app-secret15442522233841.0.097972162d1b14076b19ff75a9ba431d9');
 
 	const key = await crypto.subtle.importKey(
 		'raw',
@@ -33,9 +31,9 @@ test('sign', async () => {
 		['sign'],
 	);
 	const encrypted = ArrayBuffers.toString(
-		await crypto.subtle.sign('hmac', key, ArrayBuffers.from(encoded) as BufferSource),
+		await crypto.subtle.sign('hmac', key, new TextEncoder().encode(encoded)),
 		'base64',
 	);
-	assert.equal(encrypted, 'e65KGcYgpAwC+h4ckWsk/mPATUi1fz1QbRjYylvhRFY=');
-	assert.equal((await sign(params)).signature, 'e65KGcYgpAwC+h4ckWsk/mPATUi1fz1QbRjYylvhRFY=');
+	assert.equal(encrypted, 'Y9tGQN5T/rv/zQfaDrbl8bx4D54GY+RdXuKlKTKxXDM=');
+	assert.equal((await sign(params)).signature, 'Y9tGQN5T/rv/zQfaDrbl8bx4D54GY+RdXuKlKTKxXDM=');
 });

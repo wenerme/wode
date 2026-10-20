@@ -1,0 +1,50 @@
+{
+	"name": "wocli",
+	"version": "0.1.0",
+	"private": true,
+	"type": "module",
+	"description": "Wode CLI 与浏览器命令宿主",
+	"bin": {
+		"wocli": "./dist/cli.js"
+	},
+	"exports": {
+		"./shell": {
+			"types": "./src/shell.ts",
+			"browser": "./src/shell.ts",
+			"development": "./src/shell.ts",
+			"default": "./dist/shell.js"
+		},
+		"./web": {
+			"types": "./src/web.ts",
+			"browser": "./src/web.ts",
+			"development": "./src/web.ts",
+			"default": "./dist/web.js"
+		}
+	},
+	"scripts": {
+		"dev": "tsx src/cli.ts",
+		"dev:web": "vite --host 127.0.0.1",
+		"build": "pnpm run build:cli && pnpm run build:web && pnpm run build:site",
+		"build:cli": "tsx scripts/build.ts cli",
+		"build:web": "tsx scripts/build.ts web && tsx scripts/build.ts shell",
+		"build:site": "vite build",
+		"preview": "vite preview --host 127.0.0.1",
+		"start": "node dist/cli.js",
+		"typecheck": "tsc --noEmit",
+		"test": "vitest run"
+	},
+	"dependencies": {
+		"@wener/common": "workspace:^",
+		"common": "workspace:^",
+		"just-bash": "^3.6.0",
+		"yaml": "^2.9.1"
+	},
+	"devDependencies": {
+		"@types/node": "^24.13.5",
+		"esbuild": "^0.28.2",
+		"tsx": "^4.23.15",
+		"typescript": "7.0.2",
+		"vite": "catalog:",
+		"vitest": "catalog:"
+	}
+}

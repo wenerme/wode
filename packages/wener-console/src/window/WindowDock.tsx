@@ -116,7 +116,7 @@ Header | Children | Footer
 		}, 1000 * 60);
 		const title = useMemo(
 			() => new Intl.DateTimeFormat('zh-CN', { calendar: 'chinese', dateStyle: 'full' }).format(date.toDate()),
-			[date.dayOfYear()],
+			[date.format('YYYY-MM-DD')],
 		);
 
 		return (
