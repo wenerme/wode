@@ -1,6 +1,6 @@
 {
 	"name": "woctl",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"type": "module",
 	"description": "Wode CLI 与浏览器命令宿主",
 	"license": "MIT",

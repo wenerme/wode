@@ -1,6 +1,6 @@
 export const APP_NAME = 'woctl';
 export const LEGACY_APP_NAME = 'wocli';
-export const APP_VERSION = '0.1.0';
+export const APP_VERSION = '0.1.1';
 
 export const DEFAULT_CONFIG_DIRECTORY = '.wode';
 export const DEFAULT_CONFIG_FILENAME = `${APP_NAME}.yaml`;

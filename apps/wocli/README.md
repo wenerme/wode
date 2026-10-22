@@ -29,7 +29,7 @@ pnpm --filter woctl preview
 
 Web SDK 和静态页面均无需 Node polyfill。页面直接在浏览器执行命令，默认将配置保存在当前 origin 的 localStorage。SDK 默认只使用内存 store；远端服务仍需 HTTP 可达，并允许页面 origin 的 CORS 请求。
 
-`dist/cli.js` 是 Node 24+ 的 native CLI bundle；它需要 Node 运行时，不是无需运行时的独立机器码。产品命令是 `woctl`，可直接使用 `npx woctl`。npm 包当前审核标记为 `0.0.0-stage`，尚未正式发布 `0.1.0`。首发包只包含一个 `dist/cli.js` bundle、README 和包 metadata；`apps/wocli/src/web.ts` 与 `apps/wocli/src/shell.ts` 是 workspace 内的源码入口，未来如需 console 会以内联资源方式处理，本轮不提供 console server。`info`、`context check` 和 `service verify/check` 只读取当前配置快照，不请求远端 schema、不创建 service client、不解析实际密钥。`--log-level trace|verbose|debug|info|warning|error` 和 `--verbose` 只将安全诊断写入 stderr，默认保持静默。
+`dist/cli.js` 是 Node 24+ 的 native CLI bundle；它需要 Node 运行时，不是无需运行时的独立机器码。产品命令是 `woctl`，可直接使用 `npx woctl`。npm `0.1.1` 首发修正版只包含一个 `dist/cli.js` bundle、README 和包 metadata；`apps/wocli/src/web.ts` 与 `apps/wocli/src/shell.ts` 是 workspace 内的源码入口，未来如需 console 会以内联资源方式处理，本轮不提供 console server。`info`、`context check` 和 `service verify/check` 只读取当前配置快照，不请求远端 schema、不创建 service client、不解析实际密钥。`--log-level trace|verbose|debug|info|warning|error` 和 `--verbose` 只将安全诊断写入 stderr，默认保持静默。
 
 ## Context 与服务
 

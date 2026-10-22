@@ -20,7 +20,7 @@ it('executes the actual Node build, preserves arguments and persists contexts', 
 		const call = (...argv: string[]) =>
 			exec(process.execPath, [...base, ...argv], { cwd, env: { ...process.env, WOCTL_CONTEXT: '' } });
 		expect((await call('--help')).stdout).toContain('Usage: woctl');
-		expect((await call('--version')).stdout.trim()).toBe('0.1.0');
+		expect((await call('--version')).stdout.trim()).toBe('0.1.1');
 		await writeFile(join(directory, 'config.yaml'), 'services:\n  - name: system\n    type: system\n');
 		expect(JSON.parse((await call('system', 'echo', '00012', '--json')).stdout)).toEqual({ text: '00012' });
 		await call('context', 'create', 'built');
