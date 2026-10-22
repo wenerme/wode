@@ -4,12 +4,17 @@ import { homedir } from 'node:os';
 import { dirname, resolve } from 'node:path';
 import { CliUsageError } from '@wener/common/cli';
 import { CliConfigError } from 'common/context';
+import { APP_NAME, DEFAULT_CONFIG_DIRECTORY, DEFAULT_CONFIG_FILENAME, ENV, LEGACY_ENV } from '../const';
 import { createWocliCli } from '../createWocliCli';
 import { createFileConfigStore } from './config';
+import { connectMcpServer } from './mcp';
 
 function nodeOptions(argv: readonly string[]): { argv: string[]; config: string } {
 	const args: string[] = [];
-	let config = process.env.WOCLI_CONFIG || resolve(homedir(), '.wode/wocli.yaml');
+	let config =
+		process.env[ENV.config] ||
+		process.env[LEGACY_ENV.config] ||
+		resolve(homedir(), DEFAULT_CONFIG_DIRECTORY, DEFAULT_CONFIG_FILENAME);
 	for (let i = 0; i < argv.length; i++) {
 		const token = argv[i];
 		if (token === '--') {
@@ -35,10 +40,11 @@ export async function runWocli(argv: readonly string[]): Promise<number> {
 		const input = nodeOptions(argv);
 		const cli = createWocliCli({
 			config: createFileConfigStore(input.config),
-			info: { runtime: 'node', node: process.version, platform: process.platform },
+			info: { runtime: 'node', node: process.version, platform: process.platform, configPath: input.config },
 			getEnv: (name) => process.env[name],
 			env: {
-				WOCLI_CONTEXT: process.env.WOCLI_CONTEXT,
+				[ENV.context]: process.env[ENV.context] ?? process.env[LEGACY_ENV.context],
+				[ENV.logLevel]: process.env[ENV.logLevel] ?? process.env[LEGACY_ENV.logLevel],
 				TERM: process.env.TERM,
 				NO_COLOR: process.env.NO_COLOR,
 				FORCE_COLOR: process.env.FORCE_COLOR,
@@ -76,6 +82,7 @@ export async function runWocli(argv: readonly string[]): Promise<number> {
 					signal.removeEventListener('abort', onAbort);
 				}
 			},
+			mcp: { connect: connectMcpServer },
 		});
 		const result = await cli.execute(input.argv, {
 			signal: controller.signal,
@@ -92,7 +99,7 @@ export async function runWocli(argv: readonly string[]): Promise<number> {
 		});
 		return result.exitCode;
 	} catch (error) {
-		process.stderr.write(`wocli: ${error instanceof Error ? error.message : 'Command failed'}\n`);
+		process.stderr.write(`${APP_NAME}: ${error instanceof Error ? error.message : 'Command failed'}\n`);
 		return controller.signal.aborted ? 130 : error instanceof CliUsageError || error instanceof CliConfigError ? 2 : 1;
 	} finally {
 		process.removeListener('SIGINT', abort);

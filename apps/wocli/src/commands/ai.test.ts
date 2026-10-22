@@ -41,7 +41,7 @@ describe('wocli AI commands', () => {
 		await f.cli.executeLine('provider list --json', f.io);
 		expect(JSON.parse(f.lines.pop() ?? '')).toEqual([expect.objectContaining({ name: 'example', api: 'openai' })]);
 		await f.cli.executeLine('service providers --json', f.io);
-		expect(JSON.parse(f.lines.pop() ?? '')).toEqual([{ name: 'system' }, { name: 'http' }]);
+		expect(JSON.parse(f.lines.pop() ?? '')).toEqual([{ name: 'duckduckgo' }, { name: 'system' }, { name: 'http' }]);
 		expect(f.fetch).not.toHaveBeenCalled();
 	});
 	it('generates through the configured provider and previews requests without network', async () => {

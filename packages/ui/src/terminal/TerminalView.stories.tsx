@@ -11,10 +11,10 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Wocli: Story = {
+export const Woctl: Story = {
 	args: { withWocli: true },
 	play: async ({ canvas, userEvent }) => {
-		const run = canvas.getByRole('button', { name: '运行 wocli' });
+		const run = canvas.getByRole('button', { name: '运行 woctl' });
 		await waitFor(() => expect(run).toBeEnabled(), { timeout: 20000 });
 		await userEvent.click(run);
 		await waitFor(() => expect(canvas.getByTestId('shell-last-output')).toHaveTextContent('"runtime": "web"'));

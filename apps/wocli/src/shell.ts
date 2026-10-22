@@ -1,6 +1,7 @@
 import { CliUsageError } from '@wener/common/cli';
 import { createMemoryCliConfigStore } from 'common/context';
 import type { Command } from 'just-bash/browser';
+import { APP_NAME } from './const';
 import { createDefaultConfig } from './core';
 import { type WocliHost } from './createWocliCli';
 import { createWocliWebCli } from './web';
@@ -11,7 +12,7 @@ export function createWocliShellCommand(
 ): Command {
 	const config = host.config ?? createMemoryCliConfigStore(createDefaultConfig());
 	return {
-		name: 'wocli',
+		name: APP_NAME,
 		async execute(args, context) {
 			const stdout: string[] = [];
 			const stderr: string[] = [];
@@ -54,10 +55,10 @@ export function createWocliShellCommand(
 				});
 				return { stdout: stdout.join(''), stderr: stderr.join(''), exitCode: result.exitCode };
 			} catch (error) {
-				const message = error instanceof CliUsageError ? error.message : 'Unable to execute browser wocli command';
+				const message = error instanceof CliUsageError ? error.message : 'Unable to execute browser woctl command';
 				return {
 					stdout: '',
-					stderr: `wocli: ${message}\n`,
+					stderr: `${APP_NAME}: ${message}\n`,
 					exitCode: signal.aborted ? 130 : error instanceof CliUsageError ? 2 : 1,
 				};
 			}

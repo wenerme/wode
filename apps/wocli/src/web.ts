@@ -5,6 +5,7 @@ import {
 	parseCliConfig,
 	serializeCliConfig,
 } from 'common/context';
+import { BROWSER_CONFIG_STORAGE_KEY } from './const';
 import { createDefaultConfig } from './core';
 import { createWocliCli, type WocliHost } from './createWocliCli';
 
@@ -25,7 +26,7 @@ export function createWocliWebCli(host: Omit<WocliHost, 'config'> & { config?: C
 
 export function createBrowserConfigStore(
 	storage: Pick<Storage, 'getItem' | 'setItem'>,
-	key = 'wocli.config',
+	key = BROWSER_CONFIG_STORAGE_KEY,
 ): CliConfigStore {
 	return {
 		async load() {

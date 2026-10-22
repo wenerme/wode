@@ -1,4 +1,5 @@
-import { describe, expect, it } from 'vitest';
+import type { FetchLike } from '@wener/utils';
+import { describe, expect, it, vi } from 'vitest';
 import { DuckDuckGoClient, type DuckDuckGoClientError } from './index';
 
 describe('DuckDuckGoClient', () => {
@@ -157,5 +158,77 @@ describe('DuckDuckGoClient', () => {
 			status: 403,
 			message: expect.stringContaining('403'),
 		} satisfies Partial<DuckDuckGoClientError>);
+	});
+
+	it('rejects an already aborted search before fetch even with a timeout', async () => {
+		const fetch = vi.fn<FetchLike>();
+		const reason = new Error('cancelled');
+		const client = new DuckDuckGoClient({ fetch, timeout: 1000 });
+		await expect(client.search('example', { signal: AbortSignal.abort(reason) })).rejects.toBe(reason);
+		expect(fetch).not.toHaveBeenCalled();
+	});
+
+	it.each([0, 20])('propagates cancellation during fetch for offset %i and clears timeout', async (offset) => {
+		vi.useFakeTimers();
+		try {
+			const controller = new AbortController();
+			const reason = new Error('cancelled');
+			const fetch = vi.fn<FetchLike>(async (_input, init) => {
+				controller.abort(reason);
+				expect(init?.signal?.reason).toBe(reason);
+				throw new Error('transport failure after cancellation');
+			});
+			const client = new DuckDuckGoClient({ fetch, timeout: 1000 });
+			await expect(client.search({ query: 'example', offset, signal: controller.signal })).rejects.toBe(reason);
+			expect(fetch).toHaveBeenCalledTimes(1);
+			expect(vi.getTimerCount()).toBe(0);
+		} finally {
+			vi.useRealTimers();
+		}
+	});
+
+	it('preserves the same signal on HTML fallback', async () => {
+		const controller = new AbortController();
+		const fetch = vi
+			.fn<FetchLike>()
+			.mockResolvedValueOnce(Response.json({}))
+			.mockResolvedValueOnce(new Response('<a class="result__a" href="https://example.com">Example</a>'));
+		const client = new DuckDuckGoClient({ fetch });
+		await expect(client.search('example', { signal: controller.signal })).resolves.toMatchObject({ source: 'html' });
+		expect(fetch.mock.calls.map(([, init]) => init?.signal)).toEqual([controller.signal, controller.signal]);
+	});
+
+	it('keeps abort reason during response parsing and does not fall back', async () => {
+		const controller = new AbortController();
+		const reason = new Error('cancelled while parsing');
+		const response = Response.json({});
+		vi.spyOn(response, 'text').mockImplementation(async () => {
+			controller.abort(reason);
+			throw new Error('body read failed');
+		});
+		const fetch = vi.fn<FetchLike>(async () => response);
+		const client = new DuckDuckGoClient({ fetch, timeout: 1000 });
+		await expect(client.search('example', { signal: controller.signal })).rejects.toBe(reason);
+		expect(fetch).toHaveBeenCalledTimes(1);
+	});
+
+	it('aborts an in-flight search on timeout and cleans the timer', async () => {
+		vi.useFakeTimers();
+		try {
+			const fetch = vi.fn<FetchLike>(
+				async (_input, init) =>
+					new Promise((_resolve, reject) => {
+						init?.signal?.addEventListener('abort', () => reject(init.signal?.reason), { once: true });
+					}),
+			);
+			const client = new DuckDuckGoClient({ fetch, timeout: 25 });
+			const result = expect(client.search('example')).rejects.toMatchObject({ name: 'AbortError' });
+			await vi.advanceTimersByTimeAsync(25);
+			await result;
+			expect(fetch).toHaveBeenCalledTimes(1);
+			expect(vi.getTimerCount()).toBe(0);
+		} finally {
+			vi.useRealTimers();
+		}
 	});
 });

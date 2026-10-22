@@ -118,7 +118,7 @@ async function withFixture(
 ) {
 	const root = await mkdtemp(join(suiteRoot, 'consumer-'));
 	const home = join(root, 'home');
-	const filename = options.filename ?? 'wocli.yaml';
+	const filename = options.filename ?? 'woctl.yaml';
 	const base = join(options.filename ? join(root, 'custom') : join(home, '.wode'), filename);
 	const overlay = (name: string) => base.replace(/\.(ya?ml)$/, `.${name}.$1`);
 	const docs = documents(options.currentContext);
@@ -205,6 +205,23 @@ function configurationRejected(result: Result) {
 }
 
 describe('native configuration files and built Node CLI', () => {
+	it('selects WOCTL_CONFIG and WOCTL_CONTEXT ahead of legacy variables without rewriting files', async () => {
+		await withFixture({}, async (f) => {
+			const before = await snapshot(f.root);
+			const result = await json(f, ['info'], {
+				defaultPath: true,
+				env: {
+					WOCTL_CONFIG: f.base,
+					WOCLI_CONFIG: join(f.root, 'missing.yaml'),
+					WOCTL_CONTEXT: 'dev',
+					WOCLI_CONTEXT: 'missing',
+				},
+			});
+			expect(result).toMatchObject({ context: 'dev', configPath: f.base, error: null });
+			expect(await snapshot(f.root)).toEqual(before);
+		});
+	});
+
 	it('runs default-HOME local/dev show and echo without changing any document bytes', async () => {
 		await withFixture({}, async (f) => {
 			const before = await snapshot(f.root);
@@ -226,13 +243,13 @@ describe('native configuration files and built Node CLI', () => {
 
 	it.each(['yaml', 'yml'])('uses custom .%s companions and CLI > env > base > local selection', async (extension) => {
 		await withFixture({ filename: `settings.${extension}` }, async (f) => {
-			await writeFile(join(f.home, '.wode', 'wocli.yaml'), 'invalid: [home fallback must not be read');
+			await writeFile(join(f.home, '.wode', 'woctl.yaml'), 'invalid: [home fallback must not be read');
 			const before = await snapshot(f.root);
-			expect(await json(f, ['context', 'show'], { env: { WOCLI_CONTEXT: 'dev' } })).toMatchObject({ name: 'dev' });
-			expect(await json(f, ['context', 'show', '-c', 'local'], { env: { WOCLI_CONTEXT: 'dev' } })).toMatchObject({
+			expect(await json(f, ['context', 'show'], { env: { WOCTL_CONTEXT: 'dev' } })).toMatchObject({ name: 'dev' });
+			expect(await json(f, ['context', 'show', '-c', 'local'], { env: { WOCTL_CONTEXT: 'dev' } })).toMatchObject({
 				name: 'local',
 			});
-			expect(await json(f, ['context', 'show', '--context=dev'], { env: { WOCLI_CONTEXT: 'local' } })).toMatchObject({
+			expect(await json(f, ['context', 'show', '--context=dev'], { env: { WOCTL_CONTEXT: 'local' } })).toMatchObject({
 				name: 'dev',
 			});
 			expect(await json(f, ['context', 'show'])).toMatchObject({ name: 'local' });

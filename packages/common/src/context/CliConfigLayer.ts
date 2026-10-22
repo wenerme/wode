@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { AiConfigShape } from './AiConfig';
 import { type CliConfig } from './CliConfig';
 import { CliConfigError, configErrorMessage, configObject, isConfigRecord } from './configObject';
+import { CliMcpServersSchema } from './McpConfig';
 import { CliConfigNameSchema, normalizeCliServices } from './ServiceConfig';
 
 export type CliConfigLayerKind = 'base' | 'context';
@@ -19,6 +20,7 @@ const nativeLayer = configObject(
 		version: z.literal(1).optional(),
 		currentContext: CliConfigNameSchema.optional(),
 		services: z.array(z.unknown()).default([]),
+		mcpServers: CliMcpServersSchema.optional(),
 		defaults: z
 			.strictObject({ services: z.record(CliConfigNameSchema, CliConfigNameSchema).default({}) })
 			.default({ services: {} }),

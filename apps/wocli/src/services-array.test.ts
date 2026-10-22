@@ -211,7 +211,7 @@ describe('service array storage and CLI integration', () => {
 		const raw = arrayFixture();
 		const original = JSON.stringify(raw);
 		const entries = new Map([
-			['wocli.config', original],
+			['woctl.config', original],
 			['unrelated', 'keep'],
 		]);
 		const storage = {
@@ -226,10 +226,10 @@ describe('service array storage and CLI integration', () => {
 		await cli.executeLine('service list --context other --json', io);
 		await cli.executeLine('--help', io);
 		expect(storage.setItem).not.toHaveBeenCalled();
-		expect(entries.get('wocli.config')).toBe(original);
+		expect(entries.get('woctl.config')).toBe(original);
 		await mutateOther(cli, io);
 		expect(storage.setItem).toHaveBeenCalledTimes(3);
-		const saved = JSON.parse(entries.get('wocli.config') ?? '');
+		const saved = JSON.parse(entries.get('woctl.config') ?? '');
 		expectRetained(saved);
 		expect(saved.services).toEqual(expect.arrayContaining([expect.objectContaining(raw.services[1])]));
 		expect(saved.contexts.local).toMatchObject(raw.contexts.local);

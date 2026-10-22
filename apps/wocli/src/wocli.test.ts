@@ -92,7 +92,7 @@ describe('wocli Node/Web shared commands', () => {
 		expect(call).not.toHaveBeenCalled();
 	});
 	it('uses host-owned file input and storage without Node dependencies', async () => {
-		const entries = new Map<string, string>([['wocli.config', JSON.stringify(await serviceConfig().load())]]);
+		const entries = new Map<string, string>([['woctl.config', JSON.stringify(await serviceConfig().load())]]);
 		const config = createBrowserConfigStore({
 			getItem: (key) => entries.get(key) ?? null,
 			setItem: (key, value) => {

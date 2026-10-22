@@ -1,3 +1,4 @@
+import { APP_NAME, APP_VERSION, BROWSER_CONFIG_STORAGE_KEY } from '../const';
 import { createBrowserConfigStore, createWocliWebCli } from '../web';
 import './style.css';
 
@@ -14,7 +15,7 @@ const transcript = element<HTMLDivElement>('#transcript');
 let storage: Storage | undefined;
 try {
 	storage = window.localStorage;
-	storage.getItem('wocli.config');
+	storage.getItem(BROWSER_CONFIG_STORAGE_KEY);
 } catch {
 	/* 隐私模式下用内存，命令仍可执行。 */
 }
@@ -79,7 +80,7 @@ input.addEventListener('keydown', (event) => {
 	input.value = history[historyIndex] ?? '';
 });
 append(
-	'wocli 0.1.0\n输入 --help 查看命令。可运行 service add system --provider system 添加离线服务。使用 ↑ / ↓ 浏览历史。',
+	`${APP_NAME} ${APP_VERSION}\n输入 --help 查看命令。可运行 service add system --provider system 添加离线服务。使用 ↑ / ↓ 浏览历史。`,
 	'welcome',
 );
 void execute('--help');

@@ -3,14 +3,17 @@ import { parseCliConfig } from 'common/context';
 import type { ServiceProvider } from 'common/service';
 import type { ServiceCliDefinition } from 'common/service/cli';
 import { createHttpServiceRuntimeClient } from 'common/service/runtime/client';
+import { APP_NAME, APP_VERSION } from './const';
+import { createDuckDuckGoProvider } from './services/duckduckgo';
 
-export const VERSION = '0.1.0';
+export const VERSION = APP_VERSION;
 export function createDefaultConfig(): CliConfig {
 	return parseCliConfig({});
 }
 
 export function createBuiltinProviders(info: Record<string, unknown> = {}): ServiceProvider[] {
 	return [
+		createDuckDuckGoProvider(),
 		{
 			name: 'system',
 			create() {
@@ -32,7 +35,7 @@ export function createBuiltinProviders(info: Record<string, unknown> = {}): Serv
 						};
 					},
 					async call(tool, input) {
-						if (tool === 'info') return { application: 'wocli', version: VERSION, ...info };
+						if (tool === 'info') return { application: APP_NAME, version: VERSION, ...info };
 						if (
 							tool === 'echo' &&
 							typeof input === 'object' &&

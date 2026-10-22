@@ -107,7 +107,7 @@ describe('configured command snapshots', () => {
 	});
 
 	it('uses the same explicit context in help, describe, aliases and dispatch', async () => {
-		const cli = createWocliWebCli({ config: contexts(), env: { WOCLI_CONTEXT: 'off' } });
+		const cli = createWocliWebCli({ config: contexts(), env: { WOCTL_CONTEXT: 'off' } });
 		expect((await cli.describe()).some((entry) => entry.name === 'system')).toBe(false);
 		expect((await cli.describe({ context: 'active' })).some((entry) => entry.name === 'system')).toBe(true);
 		for (const argv of [
@@ -330,7 +330,7 @@ describe('configured command snapshots', () => {
 	});
 
 	it('respects option values and the positional terminator during context selection', async () => {
-		const cli = createWocliWebCli({ config: contexts(), env: { WOCLI_CONTEXT: 'active' } });
+		const cli = createWocliWebCli({ config: contexts(), env: { WOCTL_CONTEXT: 'active' } });
 		const { io, lines } = output();
 		await cli.execute(['system', 'echo', '--json', '--', '--context=empty'], io);
 		expect(JSON.parse(lines.pop() ?? '')).toEqual({ text: '--context=empty' });

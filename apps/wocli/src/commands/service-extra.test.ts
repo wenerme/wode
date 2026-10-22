@@ -1,6 +1,7 @@
 import { createMemoryCliConfigStore, parseCliConfig } from 'common/context';
 import type { ServiceRuntimeClient } from 'common/service';
 import { describe, expect, it, vi } from 'vitest';
+import { APP_NAME } from '../const';
 import { createWocliWebCli } from '../web';
 
 function output() {
@@ -29,7 +30,7 @@ describe('service discovery and defaults', () => {
 		expect(JSON.parse(lines.pop() ?? '')).toEqual([{ name: 'info' }, { name: 'echo' }]);
 		await cli.executeLine('service inspect system --format example', io);
 		expect(lines).toHaveLength(1);
-		expect(lines[0]).toContain('wocli service call');
+		expect(lines[0]).toContain(`${APP_NAME} service call`);
 		expect(lines[0]).not.toContain('调用示例：');
 	});
 	it('prints complete examples at 80 columns and preserves their selected context', async () => {
@@ -41,11 +42,11 @@ describe('service discovery and defaults', () => {
 		const example = lines
 			.join('\n')
 			.split('\n')
-			.find((line) => line.startsWith('wocli service call') && line.includes("'echo'"));
+			.find((line) => line.startsWith(`${APP_NAME} service call`) && line.includes("'echo'"));
 		expect(example).toContain("--context 'other'");
 		expect(example).toContain('--input');
 		expect(example).not.toContain('--...');
-		await cli.executeLine((example ?? '').replace(/^wocli /, ''), io);
+		await cli.executeLine((example ?? '').replace(new RegExp(`^${APP_NAME} `), ''), io);
 		expect(JSON.parse(lines.pop() ?? '')).toEqual({ text: '<text>' });
 	});
 	it('keeps default changes within the selected context and validates provider/service pairs', async () => {

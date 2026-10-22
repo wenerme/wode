@@ -4,14 +4,14 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta name="color-scheme" content="light dark" />
-		<title>wocli · Wode 命令工作台</title>
+		<title>woctl · Wode 命令工作台</title>
 	</head>
 	<body>
 		<main>
-			<header><a class="wordmark" href="./">wo<span>cli</span></a><span class="badge">浏览器运行时</span></header>
+			<header><a class="wordmark" href="./">wo<span>ctl</span></a><span class="badge">浏览器运行时</span></header>
 			<section class="intro"><p class="eyebrow">WODE / COMMAND WORKSPACE</p><h1>同一条命令，<br />在终端，也在 Web。</h1><p>管理 context，发现 service，运行命令。当前配置保存在此浏览器中。</p></section>
 			<section class="workspace" aria-label="命令工作台">
-				<div class="toolbar"><span class="status-dot"></span><span>wocli console</span><span class="spacer"></span><button type="button" id="clear">清空输出</button></div>
+				<div class="toolbar"><span class="status-dot"></span><span>woctl console</span><span class="spacer"></span><button type="button" id="clear">清空输出</button></div>
 				<div id="transcript" role="log" aria-label="命令输出" aria-live="polite"></div>
 				<form id="command-form"><label for="command">❯</label><input id="command" name="command" placeholder="输入命令，例如 --help" autocomplete="off" spellcheck="false" aria-label="命令" /><button id="run" type="submit">运行 <span>↵</span></button><button id="cancel" type="button" hidden>取消</button></form>
 			</section>

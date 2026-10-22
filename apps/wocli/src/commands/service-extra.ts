@@ -1,5 +1,6 @@
 import { type CliCommand, CliUsageError, resolveCliOutputSelection } from '@wener/common/cli';
 import { changeCommandConfig, loadCommandContext, setConfigEntry, writeCommandOutput } from '../command-utils';
+import { APP_NAME } from '../const';
 import type { WocliExecution } from '../createWocliCli';
 
 function quoteArgument(value: string): string {
@@ -94,7 +95,7 @@ export function createServiceExtraCommands(): CliCommand<WocliExecution>[] {
 							description: tool.description,
 							readOnly: tool.annotations?.readOnlyHint === true,
 							required: Array.isArray(tool.inputSchema.required) ? tool.inputSchema.required.join(', ') : '',
-							example: `wocli service call ${quoteArgument(args[0])} ${quoteArgument(name)} --context ${quoteArgument(selected.name)} --input ${quoteArgument(JSON.stringify(requiredInput(tool.inputSchema)))} --json`,
+							example: `${APP_NAME} service call ${quoteArgument(args[0])} ${quoteArgument(name)} --context ${quoteArgument(selected.name)} --input ${quoteArgument(JSON.stringify(requiredInput(tool.inputSchema)))} --json`,
 						}));
 					if (!selection.fields && ['table', 'wide'].includes(selection.format)) {
 						writeCommandOutput(

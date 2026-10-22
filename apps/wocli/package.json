@@ -1,25 +1,36 @@
 {
-	"name": "wocli",
+	"name": "woctl",
 	"version": "0.1.0",
-	"private": true,
 	"type": "module",
 	"description": "Wode CLI 与浏览器命令宿主",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/wenerme/wode.git",
+		"directory": "apps/wocli"
+	},
+	"homepage": "https://github.com/wenerme/wode#readme",
+	"engines": {
+		"node": ">=24.11.0"
+	},
 	"bin": {
+		"woctl": "./dist/cli.js",
 		"wocli": "./dist/cli.js"
 	},
+	"files": [
+		"dist/cli.js",
+		"README.md"
+	],
 	"exports": {
-		"./shell": {
-			"types": "./src/shell.ts",
-			"browser": "./src/shell.ts",
-			"development": "./src/shell.ts",
-			"default": "./dist/shell.js"
-		},
 		"./web": {
-			"types": "./src/web.ts",
-			"browser": "./src/web.ts",
 			"development": "./src/web.ts",
-			"default": "./dist/web.js"
-		}
+			"default": "./src/web.ts"
+		},
+		"./shell": {
+			"development": "./src/shell.ts",
+			"default": "./src/shell.ts"
+		},
+		"./package.json": "./package.json"
 	},
 	"scripts": {
 		"dev": "tsx src/cli.ts",
@@ -28,18 +39,19 @@
 		"build:cli": "tsx scripts/build.ts cli",
 		"build:web": "tsx scripts/build.ts web && tsx scripts/build.ts shell",
 		"build:site": "vite build",
+		"prepack": "node --import tsx scripts/build.ts cli",
 		"preview": "vite preview --host 127.0.0.1",
 		"start": "node dist/cli.js",
 		"typecheck": "tsc --noEmit",
 		"test": "vitest run"
 	},
-	"dependencies": {
+	"dependencies": {},
+	"devDependencies": {
 		"@wener/common": "workspace:^",
+		"@wener/client": "workspace:^",
 		"common": "workspace:^",
 		"just-bash": "^3.6.0",
-		"yaml": "^2.9.1"
-	},
-	"devDependencies": {
+		"yaml": "^2.9.1",
 		"@types/node": "^24.13.5",
 		"esbuild": "^0.28.2",
 		"tsx": "^4.23.15",

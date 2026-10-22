@@ -13,6 +13,7 @@ import {
 	type CliConfig,
 	CliConfigError,
 	type CliConfigStore,
+	type CliMcpServerConfig,
 	describeCliContext,
 	type ResolvedCliContext,
 	resolveCliContext,
@@ -32,10 +33,14 @@ import {
 	optionString as text,
 } from './command-utils';
 import { createAiCatalogCommands } from './commands/ai-catalog';
+import { createDiagnosticsCommands, type LogLevel, parseLogLevel, shouldLog } from './commands/diagnostics';
+import { createMcpCommand } from './commands/mcp';
 import { createPromptCommand } from './commands/prompt';
 import { createRenderCommands } from './commands/render';
 import { createServiceExtraCommands } from './commands/service-extra';
+import { APP_NAME, ENV, LEGACY_ENV } from './const';
 import { createBuiltinProviders, SystemCliDefinition, VERSION } from './core';
+import { DuckDuckGoCliDefinition } from './services/duckduckgo';
 
 /** Application metadata; provider names need not match command names or aliases. */
 export interface WocliCommand extends Omit<CliCommand<WocliExecution>, 'commands'> {
@@ -46,6 +51,19 @@ export interface WocliCommand extends Omit<CliCommand<WocliExecution>, 'commands
 export interface WocliDescribeOptions {
 	context?: string;
 	argv?: readonly string[];
+}
+
+export interface WocliMcpConnection {
+	readonly serverInfo?: Record<string, unknown>;
+	listTools(signal: AbortSignal): Promise<readonly Record<string, unknown>[]>;
+	listResources(signal: AbortSignal): Promise<readonly Record<string, unknown>[]>;
+	readResource(uri: string, signal: AbortSignal): Promise<unknown>;
+	callTool(name: string, args: Record<string, unknown>, signal: AbortSignal): Promise<unknown>;
+	close(): Promise<void>;
+}
+
+export interface WocliMcpHost {
+	connect(config: CliMcpServerConfig, signal: AbortSignal): Promise<WocliMcpConnection>;
 }
 
 export interface WocliHost {
@@ -60,10 +78,14 @@ export interface WocliHost {
 	term?: CliTerminalInfo;
 	generate?(request: PromptRequest, options: PromptExecutionOptions): Promise<PromptResult>;
 	readText?(value: string, options: { signal: AbortSignal; maxBytes: number }): Promise<string>;
+	mcp?: WocliMcpHost;
 	writeText?(path: string, content: string, options: { signal: AbortSignal }): Promise<void>;
 }
 export interface WocliExecution extends CliContext {
 	host: WocliHost;
+	selectedContext: string;
+	configError?: CliConfigError;
+	log(level: LogLevel, message: string): void;
 	getConfigContext(options?: CliOptions): ResolvedCliContext;
 	withServices<T>(
 		options: CliOptions,
@@ -109,8 +131,10 @@ export function createWocliCli(host: WocliHost) {
 		{ name: 'json', type: 'boolean', description: '完整 JSON 输出' },
 		{ name: 'output', aliases: ['o'], description: '输出格式：table、json、yaml、csv、md 等' },
 		{ name: 'format', aliases: ['f'], description: '输出字段，例如 name,provider' },
+		{ name: 'log-level', description: '日志级别：trace、verbose、debug、info、warning、error' },
+		{ name: 'verbose', type: 'boolean', description: '启用 verbose 日志' },
 	];
-	const cli = new Cli<WocliExecution>('wocli', { options: globalOptions });
+	const cli = new Cli<WocliExecution>(APP_NAME, { options: globalOptions });
 	const registrations: Array<{ method: 'add' | 'merge'; command: WocliCommand }> = [];
 	function add(command: WocliCommand) {
 		const snapshot = snapshotCommand(command);
@@ -129,6 +153,10 @@ export function createWocliCli(host: WocliHost) {
 			context.stdout(VERSION);
 		},
 	});
+	const diagnostics = createDiagnosticsCommands({
+		supportsProvider: (provider) => Boolean(host.runtime) || providers.list().includes(provider),
+	});
+	add(diagnostics.info);
 	const aiCatalog = createAiCatalogCommands(() => providers.list());
 	for (const command of aiCatalog) add(command);
 	async function change(
@@ -339,17 +367,26 @@ export function createWocliCli(host: WocliHost) {
 		],
 	});
 	add(createWocliServiceCommand(SystemCliDefinition));
+	add(createWocliServiceCommand(DuckDuckGoCliDefinition));
 	merge({ name: 'service', description: '服务配置与调用', commands: createServiceExtraCommands() });
 	merge({ name: 'context', aliases: ['ctx'], description: '管理执行环境与 AI 目录', commands: aiCatalog });
+	merge({ name: 'context', description: '管理执行环境', commands: [diagnostics.contextCheck] });
+	merge({ name: 'service', description: '配置、发现和调用 service', commands: [diagnostics.serviceVerify] });
+	add(createMcpCommand());
 	add(createPromptCommand());
 	for (const command of createRenderCommands()) add(command);
 	for (const command of host.commands ?? []) add(command);
 	cli.seal();
 
-	async function prepare(input: WocliDescribeOptions, signal?: AbortSignal) {
+	async function prepare(input: WocliDescribeOptions, signal?: AbortSignal, stderr?: (text: string) => void) {
 		signal?.throwIfAborted();
 		const argv = normalizeArgv(input.argv ?? []);
 		const parsed = cli.parse(argv);
+		const explicitLogLevel = text(parsed.options, 'log-level');
+		const configuredLogLevel = parseLogLevel(
+			explicitLogLevel ??
+				(parsed.options.verbose === true ? 'verbose' : (host.env?.[ENV.logLevel] ?? host.env?.[LEGACY_ENV.logLevel])),
+		);
 		const argumentContext = text(parsed.options, 'context');
 		const targetContext =
 			parsed.path[0] === 'context' && ['show', 'use', 'remove'].includes(parsed.path[1]) ? parsed.args[0] : undefined;
@@ -358,7 +395,11 @@ export function createWocliCli(host: WocliHost) {
 			[argumentContext, targetContext].some((value) => value !== undefined && value !== input.context)
 		)
 			throw new CliUsageError('Explicit context conflicts with argv context');
-		const selected = targetContext ?? input.context ?? argumentContext ?? (host.env?.WOCLI_CONTEXT || undefined);
+		const selected =
+			targetContext ??
+			input.context ??
+			argumentContext ??
+			(host.env?.[ENV.context] || host.env?.[LEGACY_ENV.context] || undefined);
 		let config: CliConfig | undefined;
 		let resolved: ResolvedCliContext | undefined;
 		let error: CliConfigError | undefined;
@@ -378,8 +419,9 @@ export function createWocliCli(host: WocliHost) {
 				.filter((service) => host.runtime || supported.has(service.provider))
 				.map((service) => service.provider),
 		);
+		if (host.mcp && Object.keys(resolved?.mcpServers ?? {}).length) available.add('mcp');
 		const hasAi = Object.keys(resolved?.providers ?? {}).length > 0;
-		const tree = new Cli<WocliExecution>('wocli', {
+		const tree = new Cli<WocliExecution>(APP_NAME, {
 			options: globalOptions.map((option) => (option.name === 'context' ? { ...option, default: selected } : option)),
 		});
 		for (const { method, command } of registrations) {
@@ -387,6 +429,11 @@ export function createWocliCli(host: WocliHost) {
 			if (filtered) tree[method](filtered);
 		}
 		tree.seal();
+		const selectedContext = resolved?.name ?? '<unavailable>';
+		const log = (level: LogLevel, message: string) => {
+			if (stderr && shouldLog(configuredLogLevel, level)) stderr(`[${level}] ${sanitizeLogMessage(message)}`);
+		};
+		log('debug', `context=${selectedContext} services=${Object.keys(resolved?.configuredServices ?? {}).length}`);
 		function getConfigContext(options: CliOptions = {}): ResolvedCliContext {
 			signal?.throwIfAborted();
 			if (error) throw error;
@@ -418,7 +465,16 @@ export function createWocliCli(host: WocliHost) {
 					}
 				: {}),
 		};
-		return { argv, parsed, tree, error, getConfigContext, host: { ...host, config: snapshotStore } };
+		return {
+			argv,
+			parsed,
+			tree,
+			error,
+			selectedContext,
+			log,
+			getConfigContext,
+			host: { ...host, config: snapshotStore },
+		};
 	}
 
 	return {
@@ -426,9 +482,13 @@ export function createWocliCli(host: WocliHost) {
 			return (await prepare(options)).tree.describe();
 		},
 		async execute(argv: readonly string[], io: CliContext) {
-			const snapshot = await prepare({ argv }, io.signal);
+			const snapshot = await prepare({ argv }, io.signal, io.stderr);
 			const recoveryHelp = snapshot.error && (snapshot.parsed.options.help || !snapshot.parsed.path.length);
-			if (snapshot.error && !recoveryHelp && !['version', 'render', 'markdown'].includes(snapshot.parsed.path[0]))
+			if (
+				snapshot.error &&
+				!recoveryHelp &&
+				!['info', 'version', 'render', 'markdown'].includes(snapshot.parsed.path[0])
+			)
 				throw snapshot.error;
 			if (recoveryHelp) {
 				const diagnostic = 'Configuration unavailable; showing core commands only. Check the selected configuration.';
@@ -437,6 +497,9 @@ export function createWocliCli(host: WocliHost) {
 			const context: WocliExecution = {
 				...io,
 				host: snapshot.host,
+				selectedContext: snapshot.selectedContext,
+				configError: snapshot.error,
+				log: snapshot.log,
 				getConfigContext: snapshot.getConfigContext,
 				async withServices(options, run) {
 					io.signal.throwIfAborted();
@@ -480,12 +543,17 @@ export function createWocliCli(host: WocliHost) {
 					}
 				},
 			};
+			context.log('info', `execute ${snapshot.parsed.path.join(' ') || 'help'}`);
 			return (await snapshot.tree.execute(recoveryHelp ? ['--help'] : snapshot.argv, context)) ?? { exitCode: 0 };
 		},
 		async executeLine(line: string, io: CliContext) {
 			return this.execute(splitCliCommandLine(line), io);
 		},
 	};
+}
+
+function sanitizeLogMessage(message: string): string {
+	return message.replace(/[\u0000-\u001f\u007f]/gu, ' ').slice(0, 240);
 }
 export type WocliCli = ReturnType<typeof createWocliCli>;
 

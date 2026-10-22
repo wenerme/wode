@@ -222,13 +222,13 @@ export function BrowserShellStory({ withWocli = true }: { withWocli?: boolean })
 	const initializeShell = useCallback(
 		async (terminal: Terminal) => {
 			const generation = ++shellGenerationRef.current;
-			terminal.writeln(`\x1b[1;36m${withWocli ? 'wocli' : 'just-bash'} shell\x1b[0m`);
+			terminal.writeln(`\x1b[1;36m${withWocli ? 'woctl' : 'just-bash'} shell\x1b[0m`);
 			try {
 				const { Bash } = await import('just-bash/browser');
 				const customCommands = withWocli
 					? [
-							(await import('wocli/shell')).createWocliShellCommand({
-								config: (await import('wocli/web')).createMemoryCliConfigStore({
+							(await import('woctl/shell')).createWocliShellCommand({
+								config: (await import('woctl/web')).createMemoryCliConfigStore({
 									services: [{ name: 'system', type: 'system' }],
 									defaults: { system: 'system' },
 								}),
@@ -264,7 +264,7 @@ export function BrowserShellStory({ withWocli = true }: { withWocli?: boolean })
 				terminal.writeln('\x1b[32m✓ ready\x1b[0m');
 				terminal.writeln(
 					withWocli
-						? '试试：wocli --help、wocli system info --json、ls -la'
+						? '试试：woctl --help、woctl system info --json、ls -la'
 						: '试试：ls -la、cat README.md、echo hello | tr a-z A-Z',
 				);
 				terminal.writeln('');
@@ -292,12 +292,12 @@ export function BrowserShellStory({ withWocli = true }: { withWocli?: boolean })
 	return (
 		<div className='min-h-screen bg-[#07101f] p-4 sm:p-8'>
 			<section
-				aria-label={withWocli ? 'wocli shell' : 'Bash shell'}
+				aria-label={withWocli ? 'woctl shell' : 'Bash shell'}
 				className='mx-auto max-w-5xl overflow-hidden rounded-xl border border-slate-700 bg-[#0b1020] text-slate-100'
 			>
 				<header className='flex flex-wrap items-center justify-between gap-3 border-b border-slate-700 px-4 py-3'>
 					<div>
-						<h1 className='font-mono text-sm font-semibold'>{withWocli ? 'wocli' : 'just-bash'} · shell</h1>
+						<h1 className='font-mono text-sm font-semibold'>{withWocli ? 'woctl' : 'just-bash'} · shell</h1>
 						<p className='text-xs text-slate-300'>浏览器交互终端 · ↑↓ 历史 · Ctrl+C 取消 · Ctrl+L 清屏</p>
 					</div>
 					<div className='flex gap-3 font-mono text-xs'>
@@ -356,15 +356,15 @@ export function BrowserShellStory({ withWocli = true }: { withWocli?: boolean })
 								className='btn btn-sm btn-info'
 								type='button'
 								disabled={status !== 'ready'}
-								onClick={() => runPreset('wocli system info --json')}
+								onClick={() => runPreset('woctl system info --json')}
 							>
-								运行 wocli
+								运行 woctl
 							</button>
 							<button
 								className='btn btn-sm btn-info'
 								type='button'
 								disabled={status !== 'ready'}
-								onClick={() => runPreset('wocli system echo pipeline --json | cat')}
+								onClick={() => runPreset('woctl system echo pipeline --json | cat')}
 							>
 								管道
 							</button>
@@ -372,7 +372,7 @@ export function BrowserShellStory({ withWocli = true }: { withWocli?: boolean })
 								className='btn btn-sm btn-info'
 								type='button'
 								disabled={status !== 'ready'}
-								onClick={() => runPreset('wocli service call system echo --input @input.json --json')}
+								onClick={() => runPreset('woctl service call system echo --input @input.json --json')}
 							>
 								读取 JSON 文件
 							</button>
