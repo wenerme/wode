@@ -1,5 +1,5 @@
+import type { ServiceProvider, ServiceRuntimeClient } from '@wener/common/service';
 import { createMemoryCliConfigStore } from 'common/context';
-import type { ServiceProvider, ServiceRuntimeClient } from 'common/service';
 import { describe, expect, it, vi } from 'vitest';
 import { createWocliCli } from './createWocliCli';
 import { createBrowserConfigStore, createWocliWebCli } from './web';

@@ -1,10 +1,10 @@
+import type { ServiceProvider } from '@wener/common/service';
+import { createBuiltinServiceProviders } from '@wener/common/service/builtin';
+import type { ServiceCliDefinition } from '@wener/common/service/cli';
+import { createHttpServiceRuntimeClient } from '@wener/common/service/runtime/client';
 import type { CliConfig } from 'common/context';
 import { parseCliConfig } from 'common/context';
-import type { ServiceProvider } from 'common/service';
-import type { ServiceCliDefinition } from 'common/service/cli';
-import { createHttpServiceRuntimeClient } from 'common/service/runtime/client';
 import { APP_NAME, APP_VERSION } from './const';
-import { createDuckDuckGoProvider } from './services/duckduckgo';
 
 export const VERSION = APP_VERSION;
 export function createDefaultConfig(): CliConfig {
@@ -13,7 +13,7 @@ export function createDefaultConfig(): CliConfig {
 
 export function createBuiltinProviders(info: Record<string, unknown> = {}): ServiceProvider[] {
 	return [
-		createDuckDuckGoProvider(),
+		...createBuiltinServiceProviders(),
 		{
 			name: 'system',
 			create() {

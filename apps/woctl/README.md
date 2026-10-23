@@ -4,6 +4,8 @@ A command-line toolkit for searching the web, calling MCP tools, working with AI
 
 [简体中文](README.zh-Hans.md)
 
+[Service guides, command conventions and coverage](../../docs/woctl/README.md)
+
 ## Install
 
 Requires **Node.js 24.11 or later**.
@@ -152,7 +154,7 @@ woctl prompt render summarize --var text='An article to summarize'
 woctl prompt @summarize --var text='An article to summarize'
 ```
 
-`prompt render` works offline. `--dump` displays a redacted request without sending it. Use `--json` for the complete response or `--jsonschema` for structured output. `p` is an alias for `prompt`.
+`prompt render` works offline. `--dump` displays a redacted request without sending it. `--json` asks the model for a JSON object; `--output json` prints the complete response. Use `--jsonschema` for structured output. `p` is an alias for `prompt`.
 
 ## Services and output
 

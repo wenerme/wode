@@ -1105,6 +1105,9 @@ importers:
 
   apps/woctl:
     devDependencies:
+      '@types/pg':
+        specifier: ^8.23.1
+        version: 8.23.1
       '@wener/client':
         specifier: workspace:^
         version: link:../../packages/wener-client
@@ -1114,6 +1117,9 @@ importers:
       common:
         specifier: workspace:^
         version: link:../../packages/common
+      pg:
+        specifier: ^8.23.0
+        version: 8.23.0
       just-bash:
         specifier: ^3.6.0
         version: 3.6.0(supports-color@10.2.2)
@@ -1666,6 +1672,9 @@ importers:
       '@types/wicg-file-system-access':
         specifier: ^2023.10.7
         version: 2023.10.7
+      '@wener/client':
+        specifier: workspace:^
+        version: link:../wener-client
       '@wener/utils':
         specifier: workspace:^
         version: link:../wener-utils

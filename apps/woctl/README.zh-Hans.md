@@ -1,5 +1,7 @@
 # woctl
 
+[完整使用文档、服务指南与覆盖情况](../../docs/woctl/README.md)
+
 在终端搜索网页、调用 MCP 工具、使用 AI 模型，以及渲染 Markdown 和结构化数据。通过 context 管理不同环境的服务连接。
 
 [English](README.md)
@@ -152,7 +154,7 @@ woctl prompt render summarize --var text='An article to summarize'
 woctl prompt @summarize --var text='An article to summarize'
 ```
 
-`prompt render` 可离线使用。`--dump` 只展示脱敏后的请求，不发送网络请求。`--json` 输出完整响应，`--jsonschema` 用于结构化输出。`p` 是 `prompt` 的别名。
+`prompt render` 可离线使用。`--dump` 只展示脱敏后的请求，不发送网络请求。`--json` 要求模型返回 JSON object；`--output json` 输出完整响应，`--jsonschema` 用于结构化输出。`p` 是 `prompt` 的别名。
 
 ## 服务与输出
 

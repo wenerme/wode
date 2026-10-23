@@ -1,12 +1,12 @@
 import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import type { ServiceProvider, ServiceRuntimeClient } from '@wener/common/service';
 import { createMemoryCliConfigStore } from 'common/context';
-import type { ServiceProvider, ServiceRuntimeClient } from 'common/service';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { parse, stringify } from 'yaml';
 import { createWocliServiceCommand } from './createWocliCli';
-import { createFileConfigStore } from './node/config';
+import { createFileConfigStore } from './native/config';
 import { createBrowserConfigStore, createWocliWebCli } from './web';
 
 const unexpectedFetch = vi.fn<typeof globalThis.fetch>(async () => {

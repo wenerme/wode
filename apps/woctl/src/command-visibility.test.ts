@@ -1,5 +1,5 @@
+import type { ServiceProvider } from '@wener/common/service';
 import { CliConfigError, type CliConfigStore, createMemoryCliConfigStore } from 'common/context';
-import type { ServiceProvider } from 'common/service';
 import { describe, expect, it, vi } from 'vitest';
 import { createWocliServiceCommand, type WocliHost } from './createWocliCli';
 import { createBrowserConfigStore, createWocliWebCli } from './web';

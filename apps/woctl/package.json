@@ -23,8 +23,8 @@
 	],
 	"exports": {
 		"./web": {
-			"development": "./src/web.ts",
-			"default": "./src/web.ts"
+			"development": "./src/web/index.ts",
+			"default": "./src/web/index.ts"
 		},
 		"./shell": {
 			"development": "./src/shell.ts",
@@ -33,7 +33,7 @@
 		"./package.json": "./package.json"
 	},
 	"scripts": {
-		"dev": "tsx src/cli.ts",
+		"dev": "tsx src/cli/main.ts",
 		"dev:web": "vite --host 127.0.0.1",
 		"build": "pnpm run build:cli && pnpm run build:web && pnpm run build:site",
 		"build:cli": "tsx scripts/build.ts cli",
@@ -53,7 +53,9 @@
 		"just-bash": "^3.6.0",
 		"yaml": "^2.9.1",
 		"@types/node": "^24.13.5",
+		"@types/pg": "^8.23.1",
 		"esbuild": "^0.28.2",
+		"pg": "^8.23.0",
 		"tsx": "^4.23.15",
 		"typescript": "^7.0.2",
 		"vite": "catalog:",

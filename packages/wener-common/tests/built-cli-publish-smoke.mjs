@@ -9,10 +9,36 @@ import { promisify } from 'node:util';
 // 只消费父级已构建的 unbundled lib；不转译、不安装，也不回退到源码条件。
 const packageRoot = dirname(dirname(fileURLToPath(import.meta.url)));
 const packageJson = JSON.parse(await readFile(join(packageRoot, 'package.json'), 'utf8'));
-const requiredSubpaths = ['./cli', './cli/render', './cli/getCliOutputOptions', './cli/render/renderCliOutput'];
+const requiredSubpaths = [
+	'./cli',
+	'./cli/render',
+	'./cli/getCliOutputOptions',
+	'./cli/render/renderCliOutput',
+	'./service',
+	'./service/config',
+	'./service/registry',
+	'./service/search',
+	'./service/fetch',
+	'./service/sql',
+	'./service/sql/client',
+	'./service/sql/cli',
+	'./service/providers/sql',
+	'./service/openobserve',
+	'./service/openobserve/client',
+	'./service/openobserve/cli',
+	'./service/builtin',
+	'./service/providers/jina',
+	'./service/providers/base',
+	'./ai/model/registry',
+];
 const cliExports = Object.fromEntries(
 	Object.entries(packageJson.publishConfig?.exports ?? {}).filter(
-		([key]) => key === './cli' || key.startsWith('./cli/'),
+		([key]) =>
+			key === './cli' ||
+			key.startsWith('./cli/') ||
+			key === './service' ||
+			key.startsWith('./service/') ||
+			key === './ai/model/registry',
 	),
 );
 
@@ -40,6 +66,9 @@ try {
 	const utilityPackageRoot = await realpath(join(packageRoot, 'node_modules', '@wener', 'utils'));
 	const utilityPackageJson = JSON.parse(await readFile(join(utilityPackageRoot, 'package.json'), 'utf8'));
 	const stagedUtils = join(temporaryRoot, 'node_modules', '@wener', 'utils');
+	const clientPackageRoot = await realpath(join(packageRoot, 'node_modules', '@wener', 'client'));
+	const clientPackageJson = JSON.parse(await readFile(join(clientPackageRoot, 'package.json'), 'utf8'));
+	const stagedClient = join(temporaryRoot, 'node_modules', '@wener', 'client');
 	assert(utilityPackageJson.publishConfig?.exports, 'Missing @wener/utils publish exports');
 	await access(join(packageRoot, 'lib', 'cli', 'index.js'));
 	await access(join(utilityPackageRoot, 'lib'));
@@ -51,6 +80,12 @@ try {
 			staged: stagedUtils,
 			manifest: utilityPackageJson,
 			exports: utilityPackageJson.publishConfig.exports,
+		},
+		{
+			source: clientPackageRoot,
+			staged: stagedClient,
+			manifest: clientPackageJson,
+			exports: clientPackageJson.publishConfig.exports,
 		},
 	];
 	for (const entry of packages) {
@@ -75,7 +110,7 @@ try {
 		await cp(join(source, 'lib'), join(staged, 'lib'), { recursive: true });
 		// 每个 publisher 保留自己的依赖解析位置，避免 common 的依赖掩盖 utils 漏声明。
 		for (const dependency of Object.keys(dependencies)) {
-			if (dependency === '@wener/utils') continue;
+			if (dependency === '@wener/utils' || dependency === '@wener/client') continue;
 			const dependencySource = join(source, 'node_modules', ...dependency.split('/'));
 			try {
 				await access(dependencySource);
@@ -173,6 +208,62 @@ async function consumePublishedCli(packages) {
 		const render = await import('@wener/common/cli/render');
 		const deepOptions = await import('@wener/common/cli/getCliOutputOptions');
 		const deepRender = await import('@wener/common/cli/render/renderCliOutput');
+		const { ModelRegistry, ModelService } = await import('@wener/common/ai/model/registry');
+		const { ServiceProviderRegistry } = await import('@wener/common/service');
+		const { ServiceRegistry } = await import('@wener/common/service/registry');
+		const { registerBuiltinServices } = await import('@wener/common/service/builtin');
+		const { normalizeCliServices } = await import('@wener/common/service/config');
+		const domains = registerBuiltinServices(
+			new ServiceRegistry({
+				context: { services: normalizeCliServices([{ name: 'page', type: 'base' }]) },
+				fetch: async () => new Response('published service fixture'),
+			}),
+		);
+		try {
+			const reader = await domains.load('fetch', 'page');
+			assert.equal((await reader.fetch({ url: 'https://example.test' })).content, 'published service fixture');
+		} finally {
+			await domains.close();
+		}
+		const { CliConfigError } = await import('@wener/common/service/config');
+		const { generateMessage } = await import('@wener/client/ai/message-generation');
+		const { OpenObserveClient } = await import('@wener/client/openobserve');
+		const openobserve = await import('@wener/common/service/openobserve');
+		const openobserveCli = await import('@wener/common/service/openobserve/cli');
+		const openobserveClient = await import('@wener/common/service/openobserve/client');
+		assert.equal(typeof openobserve.OpenObserveServiceProvider, 'object');
+		assert.equal(typeof openobserveCli.OpenObserveCliDefinition, 'object');
+		assert.equal(typeof openobserveClient.createOpenObserveServiceToolClient, 'function');
+		const protocolClient = new OpenObserveClient({
+			baseUrl: 'https://observe.example.test', accessToken: 'EXAMPLE_TOKEN',
+			fetch: async () => Response.json({ status: 'ok' }),
+		});
+		try { assert.deepEqual(await protocolClient.health(), { status: 'ok' }); }
+		finally { await protocolClient.close(); }
+		const sql = await import('@wener/common/service/sql');
+		const sqlCli = await import('@wener/common/service/sql/cli');
+		const sqlClient = await import('@wener/common/service/sql/client');
+		const sqlProvider = await import('@wener/common/service/providers/sql');
+		assert.equal(typeof sql.createSqlService, 'function');
+		assert.equal(typeof sqlCli.SQLCliDefinition, 'object');
+		assert.equal(typeof sqlClient.createSqlServiceToolClient, 'function');
+		assert.equal(typeof sqlProvider.SqlServiceProvider, 'object');
+		assert.equal(typeof generateMessage, 'function');
+		assert.equal(typeof CliConfigError, 'function');
+		const providers = new ServiceProviderRegistry([]);
+		assert.deepEqual(providers.list(), []);
+		const models = new ModelRegistry();
+		models.register({
+			provider: 'fixture',
+			id: 'embed',
+			capabilities: ['embedding'],
+			service: new ModelService({ embedding: async () => ({ embeddings: [[1, 2]] }) }),
+		});
+		assert.deepEqual(
+			await models.require({ model: 'fixture/embed', capability: 'embedding' }).service.embedding({ input: 'fixture' }),
+			{ embeddings: [[1, 2]] },
+		);
+		assert.equal(models.resolve({ model: 'fixture/embed', capability: 'message-generation' }), undefined);
 		assert.equal(render.renderCliOutput, api.renderCliOutput);
 		assert.equal(deepRender.renderCliOutput, api.renderCliOutput);
 		assert.equal(deepOptions.getCliOutputOptions, api.getCliOutputOptions);
@@ -219,7 +310,8 @@ async function consumePublishedCli(packages) {
 		assert.equal(render.renderCliOutput({ count: 2 }, { format: 'yaml' }), 'count: 2\n');
 		assert.deepEqual(JSON.parse(deepRender.renderCliOutput(value, { format: 'json' })), value);
 		assert(dependencyImports.has('@wener/common -> @wener/utils'), 'Expected built @wener/utils dependency to execute');
-		console.log('CLI-PUBLIC-01: unbundled published CLI root/deep APIs, help, parse/split and JSON/YAML render passed');
+		assert(dependencyImports.has('@wener/common -> @wener/client'), 'Expected declared client dependency to execute');
+		console.log('PUBLIC-01: published CLI, model registry, search/fetch/SQL/OpenObserve exports passed');
 	} finally {
 		globalThis.fetch = originalFetch;
 		hooks.deregister();

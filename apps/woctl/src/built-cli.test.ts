@@ -13,6 +13,33 @@ beforeAll(async () => {
 	await exec(process.execPath, ['--import', 'tsx', 'scripts/build.ts', 'cli'], { cwd });
 });
 
+it('runs SQL through the actual single-file CLI build and persists a temporary SQLite database', async () => {
+	const directory = await mkdtemp(join(tmpdir(), 'woctl-sql-built-'));
+	try {
+		const file = join(directory, 'config.yaml');
+		await writeFile(
+			file,
+			JSON.stringify({
+				services: [
+					{ name: 'db', type: 'sqlite', readOnly: false, options: { filename: join(directory, 'db.sqlite') } },
+				],
+			}),
+		);
+		const call = (...argv: string[]) =>
+			exec(process.execPath, ['dist/cli.js', '--config', file, ...argv], {
+				cwd,
+				env: { ...process.env, WOCTL_CONTEXT: '' },
+			});
+		await call('sql', 'exec', 'CREATE TABLE sample (value TEXT)', '--yes', '--json');
+		await call('sql', 'exec', 'INSERT INTO sample VALUES (?)', '--params', '["persisted"]', '--yes', '--json');
+		const result = await call('sql', 'query', 'SELECT value FROM sample', '--json');
+		expect(JSON.parse(result.stdout).rows).toEqual([{ value: 'persisted' }]);
+		await expect(call('sql', 'exec', 'DELETE FROM sample')).rejects.toMatchObject({ code: 2 });
+	} finally {
+		await rm(directory, { recursive: true, force: true });
+	}
+});
+
 it('executes the actual Node build, preserves arguments and persists contexts', async () => {
 	const directory = await mkdtemp(join(tmpdir(), 'wocli-built-test-'));
 	try {

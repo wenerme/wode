@@ -1,3 +1,8 @@
+import type {
+	MessageGenerationOptions,
+	MessageGenerationRequest,
+	MessageGenerationResult,
+} from '@wener/client/ai/message-generation';
 import {
 	Cli,
 	type CliCommand,
@@ -6,9 +11,23 @@ import {
 	type CliOptions,
 	type CliTerminalInfo,
 	CliUsageError,
+	resolveCliOutputSelection,
 	splitCliCommandLine,
 } from '@wener/common/cli';
-import type { PromptExecutionOptions, PromptRequest, PromptResult } from 'common/ai/prompt';
+import {
+	createOpenObserveServiceToolClient,
+	createServiceRuntime,
+	OpenObserveCliDefinition,
+	type ServiceProvider,
+	ServiceProviderRegistry,
+	type ServiceRuntimeClient,
+	type SqlAdapterFactory,
+} from '@wener/common/service';
+import { createServiceCliCommand, type ServiceCliDefinition } from '@wener/common/service/cli';
+import { sanitizeOpenObserveOutput } from '@wener/common/service/openobserve';
+import { createRemoteServiceToolClient } from '@wener/common/service/runtime/client';
+import { SQLCliDefinition } from '@wener/common/service/sql/cli';
+import { createSqlServiceToolClient } from '@wener/common/service/sql/client';
 import {
 	type CliConfig,
 	CliConfigError,
@@ -18,14 +37,6 @@ import {
 	type ResolvedCliContext,
 	resolveCliContext,
 } from 'common/context';
-import {
-	createServiceRuntime,
-	type ServiceProvider,
-	ServiceProviderRegistry,
-	type ServiceRuntimeClient,
-} from 'common/service';
-import { createServiceCliCommand, type ServiceCliDefinition } from 'common/service/cli';
-import { createRemoteServiceToolClient } from 'common/service/runtime/client';
 import {
 	writeCommandOutput as output,
 	readCommandText as readText,
@@ -73,10 +84,11 @@ export interface WocliHost {
 	commands?: readonly WocliCommand[];
 	info?: Record<string, unknown>;
 	fetch?: typeof globalThis.fetch;
+	sqlDriver?: SqlAdapterFactory;
 	env?: Readonly<Record<string, string | undefined>>;
 	getEnv?(name: string): string | undefined;
 	term?: CliTerminalInfo;
-	generate?(request: PromptRequest, options: PromptExecutionOptions): Promise<PromptResult>;
+	generate?(request: MessageGenerationRequest, options: MessageGenerationOptions): Promise<MessageGenerationResult>;
 	readText?(value: string, options: { signal: AbortSignal; maxBytes: number }): Promise<string>;
 	mcp?: WocliMcpHost;
 	writeText?(path: string, content: string, options: { signal: AbortSignal }): Promise<void>;
@@ -87,6 +99,7 @@ export interface WocliExecution extends CliContext {
 	configError?: CliConfigError;
 	log(level: LogLevel, message: string): void;
 	getConfigContext(options?: CliOptions): ResolvedCliContext;
+	resolveServiceProvider?(name: string): string | undefined;
 	withServices<T>(
 		options: CliOptions,
 		run: (runtime: ServiceRuntimeClient, context: ResolvedCliContext) => Promise<T>,
@@ -96,24 +109,70 @@ export interface WocliExecution extends CliContext {
 export function createWocliServiceCommand<S>(
 	definition: ServiceCliDefinition<S>,
 	provider = definition.name,
+	createClient?: (runtime: ServiceRuntimeClient, service: string, readOnly: boolean, signal: AbortSignal) => Promise<S>,
 ): WocliCommand {
 	return {
 		serviceProvider: provider,
 		...createServiceCliCommand(definition, {
-			options: [{ name: 'service', description: '选择服务名称' }],
+			options: [
+				{ name: 'service', description: '选择服务名称' },
+				{ name: 'list-services', type: 'boolean', description: '列出当前 context 可用的同类服务' },
+			],
 			readText,
+			async root(options, context: WocliExecution, help) {
+				if (!options['list-services']) {
+					context.stdout(help);
+					return;
+				}
+				const resolved = context.getConfigContext(options);
+				const canonical = (name: string) => context.resolveServiceProvider?.(name) ?? name;
+				const defaults = new Set(
+					Object.entries(resolved.defaults)
+						.filter(([name]) => canonical(name) === canonical(provider))
+						.map(([, name]) => name),
+				);
+				output(
+					Object.entries(resolved.services)
+						.filter(([, config]) => canonical(config.provider) === canonical(provider))
+						.map(([name, config]) => ({
+							name,
+							provider: canonical(config.provider),
+							readOnly: config.readOnly,
+							default: defaults.has(name),
+						})),
+					options,
+					context,
+				);
+			},
 			async run(operation, options, context, prepare) {
 				// 参数准备先于获取 client；帮助和无效输入不会创建服务连接。
-				const invoke = await prepare();
 				await context.withServices(options, async (runtime, resolved) => {
-					const candidates = Object.entries(resolved.services).filter(([, service]) => service.provider === provider);
-					const selector = text(options, 'service') ?? resolved.defaults[provider];
+					const resolveProvider = (name: string) => context.resolveServiceProvider?.(name) ?? name;
+					const canonicalProvider = resolveProvider(provider);
+					const candidates = Object.entries(resolved.services).filter(
+						([, service]) => resolveProvider(service.provider) === canonicalProvider,
+					);
+					const explicit = text(options, 'service');
+					const defaults = [
+						...new Set(
+							Object.entries(resolved.defaults)
+								.filter(([key]) => resolveProvider(key) === canonicalProvider)
+								.map(([, value]) => value),
+						),
+					];
+					if (!explicit && defaults.length > 1) throw new CliUsageError('Conflicting default services');
+					const selector = explicit ?? defaults[0];
 					const matches = selector ? candidates.filter(([key]) => key === selector) : candidates;
 					if (matches.length !== 1) throw new CliUsageError('Select one matching service with --service');
 					const [service, config] = matches[0];
 					if (operation.mutating && config.readOnly !== false) throw new CliUsageError('Selected service is read-only');
-					const client = await createRemoteServiceToolClient<S>(runtime, service, { signal: context.signal });
-					output(await invoke(client, { signal: context.signal }), options, context);
+					const invoke = await prepare();
+					const client = createClient
+						? await createClient(runtime, service, config.readOnly !== false, context.signal)
+						: await createRemoteServiceToolClient<S>(runtime, service, { signal: context.signal });
+					const result = await invoke(client, { signal: context.signal });
+					const tabular = ['table', 'wide'].includes(resolveCliOutputSelection(options).format);
+					output(tabular && operation.table ? operation.table(result) : result, options, context);
 				});
 			},
 		}),
@@ -122,6 +181,7 @@ export function createWocliServiceCommand<S>(
 
 export function createWocliCli(host: WocliHost) {
 	const providers = new ServiceProviderRegistry([...createBuiltinProviders(host.info), ...(host.providers ?? [])]);
+	const resolveServiceProvider = (name: string) => providers.resolveName(name) ?? (host.runtime ? name : undefined);
 	const globalOptions: readonly CliOption[] = [
 		{
 			name: 'context',
@@ -154,7 +214,7 @@ export function createWocliCli(host: WocliHost) {
 		},
 	});
 	const diagnostics = createDiagnosticsCommands({
-		supportsProvider: (provider) => Boolean(host.runtime) || providers.list().includes(provider),
+		supportsProvider: (provider) => resolveServiceProvider(provider) !== undefined,
 	});
 	add(diagnostics.info);
 	const aiCatalog = createAiCatalogCommands(() => providers.list());
@@ -343,24 +403,31 @@ export function createWocliCli(host: WocliHost) {
 				name: 'call',
 				arguments: '<service> <tool>',
 				description: '调用 service 工具',
-				options: [{ name: 'input', aliases: ['i'], description: 'JSON、@文件，或 - 读取 stdin；默认 {}' }],
+				options: [{ name: 'input', aliases: ['i'], description: 'JSON、@文件，或 - 读取 stdin；默认 {}' }, { name: 'yes', type: 'boolean', description: '确认调用写操作' }],
 				async run({ args, options }, context) {
-					let input: unknown;
-					try {
-						input = JSON.parse(await readText(text(options, 'input') ?? '{}', context));
-					} catch (error) {
-						if (error instanceof SyntaxError) throw new CliUsageError('--input must be valid JSON');
-						throw error;
-					}
-					await context.withServices(options, async (runtime) => {
-						output(
-							await runtime.call(
-								{ params: { service: args[0] }, body: { toolName: args[1], input } },
-								{ signal: context.signal },
-							),
-							options,
-							context,
-						);
+					const source = text(options, 'input') ?? '{}';
+					const deferred = source.startsWith('@') || source === '-';
+					const parse = async () => {
+						try { return JSON.parse(await readText(source, context)); }
+						catch (error) {
+							if (error instanceof SyntaxError) throw new CliUsageError('--input must be valid JSON');
+							throw error;
+						}
+					};
+					let input: unknown = deferred ? undefined : await parse();
+					await context.withServices(options, async (runtime, selected) => {
+						const schema = await runtime.getSchema({ params: { service: args[0] } }, { signal: context.signal });
+						const tool = Object.hasOwn(schema.tools, args[1]) ? schema.tools[args[1]] : undefined;
+						if (!tool) throw new CliUsageError('Unknown service operation');
+						if (tool.annotations?.readOnlyHint !== true) {
+							if (selected.services[args[0]]?.readOnly !== false) throw new CliUsageError('Selected service is read-only');
+							if (options.yes !== true) throw new CliUsageError('Service write operations require --yes');
+						}
+						if (deferred) input = await parse();
+						const provider = selected.services[args[0]]?.provider;
+						const openobserve = provider && (context.resolveServiceProvider?.(provider) ?? provider) === 'openobserve';
+						const result = await runtime.call({ params: { service: args[0] }, body: { toolName: args[1], input } }, { signal: context.signal });
+						output(openobserve ? sanitizeOpenObserveOutput(result) : result, options, context);
 					});
 				},
 			},
@@ -368,6 +435,16 @@ export function createWocliCli(host: WocliHost) {
 	});
 	add(createWocliServiceCommand(SystemCliDefinition));
 	add(createWocliServiceCommand(DuckDuckGoCliDefinition));
+	add(
+		createWocliServiceCommand(SQLCliDefinition, 'sql', (runtime, service, readOnly, signal) =>
+			createSqlServiceToolClient(runtime, service, { readOnly, signal }),
+		),
+	);
+	add(
+		createWocliServiceCommand(OpenObserveCliDefinition, 'openobserve', (runtime, service, readOnly, signal) =>
+			createOpenObserveServiceToolClient(runtime, service, { signal, readOnly }),
+		),
+	);
 	merge({ name: 'service', description: '服务配置与调用', commands: createServiceExtraCommands() });
 	merge({ name: 'context', aliases: ['ctx'], description: '管理执行环境与 AI 目录', commands: aiCatalog });
 	merge({ name: 'context', description: '管理执行环境', commands: [diagnostics.contextCheck] });
@@ -413,11 +490,11 @@ export function createWocliCli(host: WocliHost) {
 			error = cause;
 		}
 		signal?.throwIfAborted();
-		const supported = new Set(providers.list());
 		const available = new Set(
-			Object.values(resolved?.services ?? {})
-				.filter((service) => host.runtime || supported.has(service.provider))
-				.map((service) => service.provider),
+			Object.values(resolved?.services ?? {}).flatMap((service) => {
+				const provider = resolveServiceProvider(service.provider);
+				return provider === undefined ? [] : [provider];
+			}),
 		);
 		if (host.mcp && Object.keys(resolved?.mcpServers ?? {}).length) available.add('mcp');
 		const hasAi = Object.keys(resolved?.providers ?? {}).length > 0;
@@ -501,12 +578,19 @@ export function createWocliCli(host: WocliHost) {
 				configError: snapshot.error,
 				log: snapshot.log,
 				getConfigContext: snapshot.getConfigContext,
+				resolveServiceProvider,
 				async withServices(options, run) {
 					io.signal.throwIfAborted();
 					const resolved = snapshot.getConfigContext(options);
 					const local = host.runtime
 						? undefined
-						: createServiceRuntime({ context: resolved, providers, fetch: host.fetch });
+						: createServiceRuntime({
+								context: resolved,
+								providers,
+								fetch: host.fetch,
+								sqlDriver: host.sqlDriver,
+								getEnv: host.getEnv ?? ((name) => host.env?.[name]),
+							});
 					const runtime = host.runtime ?? local;
 					if (!runtime) throw new Error('Service runtime unavailable');
 					// 对注入的远程 runtime 同样执行目录和只读检查；服务端仍负责最终授权。

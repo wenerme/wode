@@ -5,7 +5,7 @@ import { expect, it } from 'vitest';
 
 it('builds and executes the Web SDK without process, Buffer, require or Node providers', async () => {
 	const bundle = await build({
-		entryPoints: [fileURLToPath(new URL('./web.ts', import.meta.url))],
+		entryPoints: [fileURLToPath(new URL('./web/index.ts', import.meta.url))],
 		bundle: true,
 		platform: 'browser',
 		format: 'iife',

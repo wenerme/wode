@@ -1,5 +1,5 @@
+import type { MessageGenerationRequest } from '@wener/client/ai/message-generation';
 import { type CliOptions, CliUsageError } from '@wener/common/cli';
-import type { PromptRequest } from 'common/ai/prompt';
 import { type PromptPreset, parsePromptTemplate, renderPromptTemplate } from 'common/context';
 import { optionStrings, readCommandText } from '../command-utils';
 import type { WocliExecution } from '../createWocliCli';
@@ -31,8 +31,11 @@ export async function getPromptPreset(
 }
 
 /** 先解析模板角色，再插入变量，变量中的角色标记只作为内容保留。 */
-export function presetMessages(preset: PromptPreset, variables: Record<string, unknown>): PromptRequest['messages'] {
-	const messages: PromptRequest['messages'] = [];
+export function presetMessages(
+	preset: PromptPreset,
+	variables: Record<string, unknown>,
+): MessageGenerationRequest['messages'] {
+	const messages: MessageGenerationRequest['messages'] = [];
 	const roles = /\{\{\s*role\s+["'](system|user|assistant)["']\s*\}\}/gu;
 	let role = 'user';
 	let cursor = 0;

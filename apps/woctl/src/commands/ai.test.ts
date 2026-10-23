@@ -31,6 +31,89 @@ async function catalog(f: ReturnType<typeof fixture>) {
 	await f.cli.executeLine('model use example/fast', f.io);
 }
 describe('wocli AI commands', () => {
+	it.each(['embedding', 'image-generation'] as const)(
+		'rejects non-message %s config without fetch or env access',
+		async (capability) => {
+			const getEnv = vi.fn();
+			const generate = vi.fn();
+			const f = fixture({
+				getEnv,
+				generate,
+				config: createMemoryCliConfigStore({
+					providers: {
+						example: {
+							baseUrl: 'https://example.test/v1',
+							apiKeyEnv: 'TEST_API_KEY',
+							capabilities: [capability],
+							models: { fast: {} },
+						},
+					},
+					defaultModel: 'example/fast',
+				}),
+			});
+			await expect(f.cli.executeLine('prompt hello', f.io)).rejects.toThrow('does not support message-generation');
+			await expect(f.cli.executeLine('prompt hello --dump', f.io)).rejects.toThrow(
+				'does not support message-generation',
+			);
+			expect(f.fetch).not.toHaveBeenCalled();
+			expect(getEnv).not.toHaveBeenCalled();
+			expect(generate).not.toHaveBeenCalled();
+		},
+	);
+	it('preserves host generation through the public model adapter and keeps dump offline', async () => {
+		const generate = vi
+			.fn<NonNullable<WocliHost['generate']>>()
+			.mockResolvedValue({ text: 'host result', response: { choices: [] }, diagnostics: [] });
+		const f = fixture({ generate });
+		await catalog(f);
+		await f.cli.executeLine('prompt hello --dump', f.io);
+		expect(generate).not.toHaveBeenCalled();
+		await f.cli.executeLine('prompt hello', f.io);
+		expect(generate).toHaveBeenCalledExactlyOnceWith(
+			expect.objectContaining({ model: 'upstream', target: expect.objectContaining({ api: 'openai' }) }),
+			expect.objectContaining({ fetch: f.fetch, signal: f.io.signal }),
+		);
+		expect(f.lines.pop()).toBe('host result');
+		expect(f.fetch).not.toHaveBeenCalled();
+	});
+	it('streams host generation through the public content iterator', async () => {
+		const generate = vi.fn<NonNullable<WocliHost['generate']>>().mockImplementation(async (request, options) => {
+			expect(request.stream).toBe(true);
+			expect(options.signal?.aborted).toBe(false);
+			options.onText?.('first');
+			options.onText?.(' second');
+			return { text: 'first second', response: { choices: [] }, diagnostics: [] };
+		});
+		const f = fixture({ generate });
+		await catalog(f);
+		const write = vi.fn();
+		await f.cli.executeLine('prompt hello --stream', { ...f.io, write });
+		expect(write.mock.calls.map(([text]) => text)).toEqual(['first', ' second', '\n']);
+		expect(generate).toHaveBeenCalledOnce();
+		expect(f.fetch).not.toHaveBeenCalled();
+	});
+	it('selects the streaming capability for explicitly streaming-only models', async () => {
+		const generate = vi.fn<NonNullable<WocliHost['generate']>>().mockImplementation(async (_request, options) => {
+			options.onText?.('streamed');
+			return { text: 'streamed', response: { choices: [] }, diagnostics: [] };
+		});
+		const f = fixture({
+			generate,
+			config: createMemoryCliConfigStore({
+				providers: {
+					example: {
+						baseUrl: 'https://example.test/v1',
+						capabilities: ['message-streaming'],
+						models: { fast: {} },
+					},
+				},
+				defaultModel: 'example/fast',
+			}),
+		});
+		await f.cli.executeLine('prompt hello --stream', { ...f.io, write: vi.fn() });
+		expect(generate).toHaveBeenCalledOnce();
+		await expect(f.cli.executeLine('prompt hello', f.io)).rejects.toThrow('does not support message-generation');
+	});
 	it('manages provider/model catalogs in root and ctx aliases while retaining service providers', async () => {
 		const f = fixture();
 		await catalog(f);
@@ -41,7 +124,15 @@ describe('wocli AI commands', () => {
 		await f.cli.executeLine('provider list --json', f.io);
 		expect(JSON.parse(f.lines.pop() ?? '')).toEqual([expect.objectContaining({ name: 'example', api: 'openai' })]);
 		await f.cli.executeLine('service providers --json', f.io);
-		expect(JSON.parse(f.lines.pop() ?? '')).toEqual([{ name: 'duckduckgo' }, { name: 'system' }, { name: 'http' }]);
+		expect(JSON.parse(f.lines.pop() ?? '')).toEqual([
+			{ name: 'duckduckgo' },
+			{ name: 'jina' },
+			{ name: 'base' },
+			{ name: 'sql' },
+			{ name: 'openobserve' },
+			{ name: 'system' },
+			{ name: 'http' },
+		]);
 		expect(f.fetch).not.toHaveBeenCalled();
 	});
 	it('generates through the configured provider and previews requests without network', async () => {

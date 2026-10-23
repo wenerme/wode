@@ -6,8 +6,8 @@ import {
 	describeAiProvider,
 	listAiModels,
 	resolveAiModel,
-	resolveCliContext,
-} from 'common/context';
+} from 'common/ai';
+import { resolveCliContext } from 'common/context';
 import {
 	changeCommandConfig,
 	loadCommandContext,

@@ -53,7 +53,8 @@ export function createServiceExtraCommands(): CliCommand<WocliExecution>[] {
 					async run({ args, options }, context) {
 						const selected = await loadCommandContext(context, options);
 						if (!Object.hasOwn(selected.services, args[1])) throw new CliUsageError('Unknown service');
-						if (selected.services[args[1]].provider !== args[0])
+						const canonical = (name: string) => context.resolveServiceProvider?.(name) ?? name;
+						if (canonical(selected.services[args[1]].provider) !== canonical(args[0]))
 							throw new CliUsageError('Service provider does not match');
 						await changeCommandConfig(context, options, (config, name) =>
 							setConfigEntry(config.contexts[name].defaults, args[0], args[1]),

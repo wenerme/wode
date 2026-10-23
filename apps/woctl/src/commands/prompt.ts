@@ -1,6 +1,14 @@
+import {
+	type MessageGenerationOptions,
+	type MessageGenerationRequest,
+	type MessageGenerationResult,
+	prepareMessageGenerationRequest,
+	redactMessageGenerationRequest,
+} from '@wener/client/ai/message-generation';
+import { MessageGenerationModelService, ModelRegistry } from '@wener/common/ai/model/registry';
 import { type CliCommand, CliUsageError } from '@wener/common/cli';
-import { executePrompt, type PromptRequest, preparePromptRequest, redactPromptRequest } from 'common/ai/prompt';
-import { type AiProtocol, parsePromptTemplate, renderPromptTemplate, resolveAiModel } from 'common/context';
+import { type AiProtocol, resolveAiModel } from 'common/ai';
+import { parsePromptTemplate, renderPromptTemplate } from 'common/context';
 import { renderTerminalMarkdown } from 'common/tui';
 import {
 	changeCommandConfig,
@@ -146,7 +154,7 @@ export function createPromptCommand(): CliCommand<WocliExecution> {
 			});
 			const selected = await loadCommandContext(context, options);
 			const variables = await promptVariables(options, context);
-			const messages: PromptRequest['messages'] = [];
+			const messages: MessageGenerationRequest['messages'] = [];
 			let preset: Awaited<ReturnType<typeof getPromptPreset>> | undefined;
 			let remaining = args;
 			if (args[0]?.startsWith('@')) {
@@ -201,7 +209,7 @@ export function createPromptCommand(): CliCommand<WocliExecution> {
 			if (target.target.api === 'anthropic' && !maxOutputTokens)
 				throw new CliUsageError('Anthropic requires --max-output-tokens or an explicit model default');
 			const system = optionString(options, 'system');
-			const request: PromptRequest = {
+			const request: MessageGenerationRequest = {
 				target: target.target,
 				model: target.model,
 				messages,
@@ -229,12 +237,34 @@ export function createPromptCommand(): CliCommand<WocliExecution> {
 				request.responseFormat = { type: 'json_schema', name: 'response', schema: value, strict: true };
 			} else if (options.json) request.responseFormat = { type: 'json_object' };
 			if (options.dump) {
-				context.stdout(JSON.stringify(redactPromptRequest(preparePromptRequest(request)), null, 2));
+				context.stdout(
+					JSON.stringify(redactMessageGenerationRequest(prepareMessageGenerationRequest(request)), null, 2),
+				);
 				return;
 			}
 			let wrote = false;
-			const run = context.host.generate ?? executePrompt;
-			const result = await run(request, {
+			const generate = context.host.generate;
+			const streamCapability = request.stream ? 'message-streaming' : 'message-generation';
+			const legacyMessageModel = target.config.capabilities === undefined && target.provider.capabilities === undefined;
+			const supportsCapability =
+				target.capabilities.includes(streamCapability) ||
+				(request.stream && legacyMessageModel && target.capabilities.includes('message-generation'));
+			if (!supportsCapability) throw new CliUsageError(`Selected AI model does not support ${streamCapability}`);
+			const registry = new ModelRegistry();
+			registry.register({
+				provider: target.providerName,
+				id: target.model,
+				alias: target.name.slice(target.providerName.length + 1),
+				capabilities: [streamCapability],
+				service: new MessageGenerationModelService({
+					model: target.model,
+					target: target.target,
+					generate: generate ? (request, options = {}) => generate(request, options) : undefined,
+				}),
+			});
+			const model = registry.require({ model: target.name, capability: streamCapability });
+			const { target: _target, model: _model, stream: _stream, ...input } = request;
+			const executionOptions: MessageGenerationOptions = {
 				fetch: context.host.fetch,
 				signal: context.signal,
 				onText:
@@ -245,7 +275,16 @@ export function createPromptCommand(): CliCommand<WocliExecution> {
 								context.write?.(text);
 							}
 						: undefined,
-			});
+			};
+			let result: MessageGenerationResult;
+			if (request.stream) {
+				let completed: MessageGenerationResult | undefined;
+				for await (const part of model.service.streamContent(input, executionOptions)) {
+					if (part.type === 'finish') completed = part.result;
+				}
+				if (!completed) throw new Error('Prompt stream ended before completion');
+				result = completed;
+			} else result = await model.service.generateContent(input, executionOptions);
 			context.signal.throwIfAborted();
 			if (format === 'json') context.stdout(JSON.stringify(result, null, 2));
 			else if (format === 'jsonl')

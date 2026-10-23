@@ -13,7 +13,8 @@ export {
 	resolveCliOutput,
 	resolveCliOutputSelection,
 } from './CliCommand';
-export type { CliIO } from './CliIO';
+export type { CliIO, CliStreamIO, CliStreamIOOptions } from './CliIO';
+export { createCliIOFromStreams, readCliStdin } from './CliIO';
 export {
 	type CliRuntime,
 	type CliRuntimeInput,

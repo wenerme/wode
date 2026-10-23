@@ -7,7 +7,7 @@ import { promisify } from 'node:util';
 import { resolveCliContext } from 'common/context';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { parse, stringify } from 'yaml';
-import { createFileConfigStore } from './node/config';
+import { createFileConfigStore } from './native/config';
 
 const exec = promisify(execFile);
 const appRoot = fileURLToPath(new URL('..', import.meta.url));

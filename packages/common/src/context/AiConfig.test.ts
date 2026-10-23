@@ -1,8 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { listAiModels, resolveAiModel } from './AiCatalog';
-import { describeAiProvider } from './AiConfig';
+import { AiModelSchema, AiProviderSchema, describeAiProvider } from './AiConfig';
 import { describeCliContext, parseCliConfig, resolveCliContext } from './CliConfig';
+import { parseCliConfigLayer, serializeCliConfigLayer } from './CliConfigLayer';
 import { parsePromptTemplate, renderPromptTemplate } from './PromptTemplate';
+import { serializeCliConfig } from './serializeCliConfig';
 
 function config() {
 	return parseCliConfig({
@@ -82,5 +84,31 @@ describe('AI catalogs and prompt presets', () => {
 		expect(preset).toMatchObject({ model: 'example/fast', temperature: 0, maxOutputTokens: 32 });
 		expect(renderPromptTemplate(preset, { text: 'hello' }).template).toBe('concise: hello');
 		expect(() => renderPromptTemplate(preset)).toThrow('Missing prompt variable');
+	});
+});
+
+describe('AI capability configuration', () => {
+	const providers = {
+		example: {
+			api: 'openai',
+			capabilities: ['embedding'],
+			models: {
+				vector: {},
+				picture: { capabilities: ['image-generation'] },
+				chat: { capabilities: ['message-generation', 'embedding'] },
+			},
+		},
+	};
+	it('retains provider and model capabilities through aggregate and native serialization', () => {
+		const aggregate = parseCliConfig({ providers });
+		expect(serializeCliConfig(aggregate).providers).toEqual(providers);
+		const layer = parseCliConfigLayer({ providers }, { kind: 'base' });
+		expect(serializeCliConfigLayer(layer, 'base').providers).toEqual(providers);
+	});
+	it('accepts optional capabilities and rejects unknown capabilities', () => {
+		expect(AiModelSchema.parse({})).toEqual({});
+		expect(AiProviderSchema.parse({}).capabilities).toBeUndefined();
+		expect(AiModelSchema.safeParse({ capabilities: ['chat'] }).success).toBe(false);
+		expect(AiProviderSchema.safeParse({ capabilities: ['unknown'] }).success).toBe(false);
 	});
 });

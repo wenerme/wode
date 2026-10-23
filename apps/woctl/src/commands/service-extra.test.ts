@@ -1,5 +1,5 @@
+import type { ServiceRuntimeClient } from '@wener/common/service';
 import { createMemoryCliConfigStore, parseCliConfig } from 'common/context';
-import type { ServiceRuntimeClient } from 'common/service';
 import { describe, expect, it, vi } from 'vitest';
 import { APP_NAME } from '../const';
 import { createWocliWebCli } from '../web';
