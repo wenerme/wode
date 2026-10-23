@@ -19,7 +19,8 @@
 	},
 	"files": [
 		"dist/cli.js",
-		"README.md"
+		"README.md",
+		"README.zh-Hans.md"
 	],
 	"exports": {
 		"./web": {
