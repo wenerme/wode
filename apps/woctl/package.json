@@ -7,7 +7,7 @@
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/wenerme/wode.git",
-		"directory": "apps/wocli"
+		"directory": "apps/woctl"
 	},
 	"homepage": "https://github.com/wenerme/wode#readme",
 	"engines": {

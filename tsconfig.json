@@ -34,7 +34,7 @@
 	},
 	"references": [
 		{
-			"path": "./apps/wocli"
+			"path": "./apps/woctl"
 		},
 		{
 			"path": "./apps/console"

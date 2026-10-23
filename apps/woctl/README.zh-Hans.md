@@ -200,4 +200,4 @@ woctl ddg search --help
 woctl prompt --help
 ```
 
-[源码](https://github.com/wenerme/wode/tree/develop/apps/wocli) · [反馈问题](https://github.com/wenerme/wode/issues)
+[源码](https://github.com/wenerme/wode/tree/develop/apps/woctl) · [反馈问题](https://github.com/wenerme/wode/issues)
