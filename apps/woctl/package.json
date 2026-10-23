@@ -14,8 +14,7 @@
 		"node": ">=24.11.0"
 	},
 	"bin": {
-		"woctl": "./dist/cli.js",
-		"wocli": "./dist/cli.js"
+		"woctl": "./dist/cli.js"
 	},
 	"files": [
 		"dist/cli.js",

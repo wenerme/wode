@@ -19,7 +19,7 @@ Or run without a global installation:
 npx woctl --help
 ```
 
-The npm package contains a single CLI bundle. The executable is `woctl`; `wocli` is also available as a compatibility alias after installation.
+The npm package contains a single CLI bundle. The executable is `woctl`.
 
 ## Try it
 

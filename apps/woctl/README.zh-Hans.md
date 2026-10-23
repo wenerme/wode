@@ -19,7 +19,7 @@ woctl --help
 npx woctl --help
 ```
 
-npm 包包含一个 CLI bundle。安装后的命令是 `woctl`，同时保留 `wocli` 兼容别名。
+npm 包包含一个 CLI bundle，安装后的命令是 `woctl`。
 
 ## 快速上手
 
