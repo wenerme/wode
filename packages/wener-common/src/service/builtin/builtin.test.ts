@@ -21,6 +21,7 @@ describe('registered domain services', () => {
 			'base',
 			'sql',
 			'openobserve',
+			'prometheus',
 		]);
 		expect(fetch).not.toHaveBeenCalled();
 		const service = await registry.load('search', 'web');

@@ -1,4 +1,5 @@
 import { OpenObserveServiceProvider } from '../openobserve';
+import { PrometheusServiceProvider } from '../prometheus';
 import { BaseFetchServiceProvider } from '../providers/base';
 import { DuckDuckGoSearchServiceProvider } from '../providers/duckduckgo';
 import { JinaFetchServiceProvider } from '../providers/jina';
@@ -12,6 +13,7 @@ export const BuiltinServiceProviders = Object.freeze([
 	BaseFetchServiceProvider,
 	SqlServiceProvider,
 	OpenObserveServiceProvider,
+	PrometheusServiceProvider,
 ]);
 
 /** 显式安装内置 provider；配置、创建实例和网络请求留到 registry.load。 */

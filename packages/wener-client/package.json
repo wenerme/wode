@@ -34,6 +34,7 @@
 		"./honcho": "./src/honcho/index.ts",
 		"./jina": "./src/jina/index.ts",
 		"./openobserve": "./src/openobserve/index.ts",
+		"./prometheus": "./src/prometheus/index.ts",
 		"./openai": "./src/openai/index.ts",
 		"./qq": "./src/qq/index.ts",
 		"./server": "./src/server/index.ts",
@@ -206,6 +207,10 @@
 			"./openobserve": {
 				"types": "./src/openobserve/index.ts",
 				"default": "./lib/openobserve/index.js"
+			},
+			"./prometheus": {
+				"types": "./src/prometheus/index.ts",
+				"default": "./lib/prometheus/index.js"
 			},
 			"./openai": {
 				"types": "./src/openai/index.ts",

@@ -24,7 +24,8 @@
 | 输出和 IO | 普通 renderer/字段投影、基础 WebStream adapter | `packages/wener-common/src/service/cli/createServiceCliCommand.test.ts`、`packages/wener-common/src/cli/CliIO.test.ts` | 通过；未证明完整背压/abort |
 | Native 发布入口 | CLI bundle、unbundled 公共导出和启动 | `apps/woctl/src/built-cli.test.ts`、`scripts/build.ts`、`packages/wener-common/tests/built-cli-publish-smoke.mjs` | CLI/web/shell 构建及 public exports consumer 通过；未验证 npm 安装包 |
 | Web/shell | 显式宿主端口、browser store、虚拟 shell | `apps/woctl/src/web-bundle.test.ts`、`shell.test.ts` | 通过；真实浏览器未验证 |
-| OpenObserve | 13 个协议操作、typed API、CLI、transport、写入限制 | 详见 [OpenObserve](service/openobserve.md) | client 252、service/CLI 27、应用集成 12 项通过；真实服务未测 |
+| OpenObserve | 13 个协议操作、typed API、CLI、按 logs/metrics/traces 分类入口、transport、写入限制 | 详见 [OpenObserve](service/openobserve.md) | client 252、service/CLI 27、应用集成通过；已用 wcli 对部署服务做只读验证，woctl 真实端点仍待回归 |
+| Prometheus/VictoriaMetrics | query、query_range、series、labels、label values、metadata、typed API、provider、prometheus/prom CLI | 详见 [Prometheus](service/prometheus.md)、`packages/wener-client/src/prometheus/index.test.ts`、`packages/wener-common/src/service/prometheus/provider.test.ts`、`apps/woctl/src/prometheus.integration.test.ts` | client/provider/应用聚焦测试通过；当前 wcli context 没有 native Prometheus datasource，真实端点未到达 |
 
 ## 真实服务验证
 

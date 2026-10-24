@@ -81,6 +81,12 @@ describe('OpenObserve end-to-end command adapters', () => {
 		expect(JSON.parse(String(request[1]?.body)).query.sql).toBe(
 			`SELECT * FROM "app" WHERE match_all('error') ORDER BY _timestamp DESC`,
 		);
+		await cli.executeLine('oo log q --stream app --text error --size 1 --json', io);
+		expect(JSON.parse(lines.at(-1)!)).toMatchObject({ streamType: 'logs', hits: [{ message: 'ok' }] });
+		await cli.executeLine('oo metric q --stream app --text cpu --size 1 --json', io);
+		expect(JSON.parse(lines.at(-1)!)).toMatchObject({ streamType: 'metrics', hits: [{ message: 'ok' }] });
+		await cli.executeLine('oo trace q --stream app --text trace --size 1 --json', io);
+		expect(JSON.parse(lines.at(-1)!)).toMatchObject({ streamType: 'traces', hits: [{ message: 'ok' }] });
 		await cli.executeLine('oo trace ls --stream app --size 1 --json', io);
 		expect(JSON.parse(lines.at(-1)!)).toMatchObject({ traces: [{ trace_id: 'fixture-trace' }] });
 	});

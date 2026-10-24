@@ -2,6 +2,7 @@ import type { CliServiceConfig } from '../config';
 import { isCliServiceEnabled, normalizeCliServices } from '../config';
 import type { IFetchService } from '../fetch';
 import type { IOpenObserveService } from '../openobserve';
+import type { IPrometheusService } from '../prometheus';
 import type { ResolvedServiceContext, ServiceProviderContext } from '../runtime/types';
 import type { ISearchService } from '../search';
 import type { ISqlService, SqlAdapterFactory } from '../sql/types';
@@ -12,6 +13,7 @@ export interface ServiceTypeMap {
 	fetch: IFetchService;
 	sql: ISqlService;
 	openobserve: IOpenObserveService;
+	prometheus: IPrometheusService;
 }
 
 export type ServiceCapability = keyof ServiceTypeMap;

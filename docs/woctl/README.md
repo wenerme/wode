@@ -54,6 +54,7 @@ woctl --config ./woctl.yaml ddg search 'TypeScript documentation' --limit 5 --js
 | [DuckDuckGo](service/duckduckgo.md) | `duckduckgo` / `ddg` 搜索 |
 | [fetch](service/fetch.md) | 通用 service 调用及 typed SDK，当前没有顶级 fetch 命令 |
 | [OpenObserve](service/openobserve.md) | 日志、stream、trace、字段查询、JSON/NDJSON 写入和设置管理 |
+| [Prometheus](service/prometheus.md) | Prometheus/VictoriaMetrics 兼容的 PromQL、range、series、labels 和 metadata 查询 |
 | [MCP](service/mcp.md) | stdio/HTTP 服务器、tools、resources、调用 |
 | [AI](service/ai.md) | provider、model、prompt、模板、结构化和流式输出 |
 | [system](service/system.md) | 离线服务调用链验证 |

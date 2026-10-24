@@ -31,6 +31,9 @@
 		"./service/openobserve": "./src/service/openobserve/index.ts",
 		"./service/openobserve/cli": "./src/service/openobserve/cli.ts",
 		"./service/openobserve/client": "./src/service/openobserve/client.ts",
+		"./service/prometheus": "./src/service/prometheus/index.ts",
+		"./service/prometheus/cli": "./src/service/prometheus/cli.ts",
+		"./service/prometheus/client": "./src/service/prometheus/client.ts",
 		"./service/builtin": "./src/service/builtin/index.ts",
 		"./service/providers/jina": "./src/service/providers/jina.ts",
 		"./service/providers/base": "./src/service/providers/base.ts",
@@ -206,6 +209,18 @@
 			"./service/openobserve/client": {
 				"types": "./src/service/openobserve/client.ts",
 				"default": "./lib/service/openobserve/client.js"
+			},
+			"./service/prometheus": {
+				"types": "./src/service/prometheus/index.ts",
+				"default": "./lib/service/prometheus/index.js"
+			},
+			"./service/prometheus/cli": {
+				"types": "./src/service/prometheus/cli.ts",
+				"default": "./lib/service/prometheus/cli.js"
+			},
+			"./service/prometheus/client": {
+				"types": "./src/service/prometheus/client.ts",
+				"default": "./lib/service/prometheus/client.js"
 			},
 			"./service/builtin": {
 				"types": "./src/service/builtin/index.ts",

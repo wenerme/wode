@@ -3,6 +3,7 @@ import type { FetchRequest } from '../fetch';
 import { type ServiceProviderDefinition, ServiceRegistry } from '../registry';
 import type { SearchRequest } from '../search';
 import { OpenObserveToolInputs, OpenObserveTools, OpenObserveWriteOperations } from './openobserve-tools';
+import { PrometheusToolInputs, PrometheusTools } from './prometheus-tools';
 import { SqlToolInputs, SqlTools } from './sql-tools';
 import type { ServiceProvider, ServiceSchema } from './types';
 
@@ -63,6 +64,7 @@ export function createServiceProviderAdapter(definition: ServiceProviderDefiniti
 							),
 							...(provides.includes('sql') ? SqlTools : {}),
 							...(provides.includes('openobserve') ? OpenObserveTools : {}),
+							...(provides.includes('prometheus') ? PrometheusTools : {}),
 						},
 					});
 				},
@@ -85,6 +87,20 @@ export function createServiceProviderAdapter(definition: ServiceProviderDefiniti
 								return sql.listObject(SqlToolInputs.listObject.parse(parsed.data), options);
 							case 'describeObject':
 								return sql.describeObject(SqlToolInputs.describeObject.parse(parsed.data), options);
+						}
+					}
+					if (provides.includes('prometheus') && Object.hasOwn(PrometheusToolInputs, tool)) {
+						const operation = tool as keyof typeof PrometheusToolInputs;
+						const parsed = PrometheusToolInputs[operation].safeParse(input);
+						if (!parsed.success) throw new TypeError('Invalid Prometheus input');
+						const service = await registry.load('prometheus', name);
+						switch (operation) {
+							case 'query': return service.query(PrometheusToolInputs.query.parse(parsed.data), options);
+							case 'queryRange': return service.queryRange(PrometheusToolInputs.queryRange.parse(parsed.data), options);
+							case 'series': return service.series(PrometheusToolInputs.series.parse(parsed.data), options);
+							case 'labels': return service.labels(PrometheusToolInputs.labels.parse(parsed.data), options);
+							case 'labelValues': return service.labelValues(PrometheusToolInputs.labelValues.parse(parsed.data), options);
+							case 'metadata': return service.metadata(PrometheusToolInputs.metadata.parse(parsed.data), options);
 						}
 					}
 					if (provides.includes('openobserve') && Object.hasOwn(OpenObserveToolInputs, tool)) {

@@ -18,6 +18,7 @@ import {
 	createOpenObserveServiceToolClient,
 	createServiceRuntime,
 	OpenObserveCliDefinition,
+	PrometheusCliDefinition,
 	type ServiceProvider,
 	ServiceProviderRegistry,
 	type ServiceRuntimeClient,
@@ -28,6 +29,7 @@ import { sanitizeOpenObserveOutput } from '@wener/common/service/openobserve';
 import { createRemoteServiceToolClient } from '@wener/common/service/runtime/client';
 import { SQLCliDefinition } from '@wener/common/service/sql/cli';
 import { createSqlServiceToolClient } from '@wener/common/service/sql/client';
+import { createPrometheusServiceToolClient } from '@wener/common/service/prometheus/client';
 import {
 	type CliConfig,
 	CliConfigError,
@@ -443,6 +445,11 @@ export function createWocliCli(host: WocliHost) {
 	add(
 		createWocliServiceCommand(OpenObserveCliDefinition, 'openobserve', (runtime, service, readOnly, signal) =>
 			createOpenObserveServiceToolClient(runtime, service, { signal, readOnly }),
+		),
+	);
+	add(
+		createWocliServiceCommand(PrometheusCliDefinition, 'prometheus', (runtime, service, _readOnly, signal) =>
+			createPrometheusServiceToolClient(runtime, service, { signal }),
 		),
 	);
 	merge({ name: 'service', description: '服务配置与调用', commands: createServiceExtraCommands() });

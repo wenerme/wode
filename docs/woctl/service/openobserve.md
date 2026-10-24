@@ -47,7 +47,10 @@ woctl oo stream settings [stream]
 woctl oo stream update [stream] --input <JSON|@file|-> --yes
 woctl oo stream delete|rm [stream] --yes [--delete-all]
 woctl oo query|q|search [sql...]
+woctl oo log query|q|search [sql...]
+woctl oo metric query|q|sql [sql...]
 woctl oo trace list|ls
+woctl oo trace query|q|sql [sql...]
 woctl oo values <field...>
 woctl oo around <microseconds>
 woctl oo ingest json [JSON|@file|-] --yes
@@ -89,6 +92,16 @@ woctl oo around 1700000000000000 --stream app --size 20 --json
 ```
 
 `values` 返回各字段的 distinct values，可用 `--keyword` 过滤值，`--no-count` 跳过计数。它采用相同时间窗口，但不使用 SQL offset 或 query timeout 选项。`around` 的位置参数是非负、安全整数的微秒时间戳，读取该时间附近的记录。
+
+按数据类型的入口会强制查询对应的 stream type，避免把日志、指标和 trace 查询到错误的数据流：
+
+```sh
+woctl oo log query --stream app --text error --limit 20 --json
+woctl oo metric sql --stream system_cpu_load_average_1m --limit 20 --json
+woctl oo trace query --stream default --text request --limit 20 --json
+```
+
+这三个入口仍使用 OpenObserve 的只读 SQL 搜索协议；`metric` 不会把 SQL 结果伪装成 Prometheus matrix。PromQL 查询使用独立的 [Prometheus service](prometheus.md)，这样 VictoriaMetrics 和 OpenObserve SQL 的结果类型、时间单位和错误边界保持清晰。
 
 ## 写入、设置更新与删除
 
@@ -149,13 +162,13 @@ client 只处理协议、DTO、认证、HTTP、增量响应大小检查、超时
 | schema | `getStreamSchema` | ✓ | `stream schema` |
 | 设置读取/更新 | `getStreamSettings` / `updateStreamSettings` | ✓，更新检查 readOnly | `stream settings/update` |
 | 删除 | `deleteStream` | ✓，检查 readOnly | `stream delete --yes` |
-| 只读 SQL | `search` | ✓ | `query` |
+| 只读 SQL | `search` | ✓ | `query`、`log query`、`metric query`、`trace query` |
 | trace 摘要 | `listTraces` | ✓ | `trace list` |
 | distinct values | `getValues` | ✓ | `values` |
 | 时间戳附近记录 | `searchAround` | ✓ | `around` |
 | JSON / NDJSON 写入 | `ingestJson` / `ingestMulti` | ✓，检查 readOnly | `ingest json/multi --yes` |
 | 认证、响应限制、取消、超时、关闭 | client lifecycle | 共享 signal / close | 宿主 signal |
 
-当前离线证据：client 四个测试文件 252 项通过；service/provider/CLI 三个测试文件 27 项通过；woctl 两个 OpenObserve integration 文件 12 项通过。测试使用本地 fixture fetch，覆盖 URL/认证/DTO、错误脱敏、响应边界、取消、只读策略、JSON/NDJSON 序列化和确认先于文件/凭据/HTTP。三个相关包的 TypeScript 检查、CLI/web/shell bundle，以及消费 publish exports 的 unbundled client/service/CLI 导出检查通过；完整结果见 [覆盖页](../coverage.md)。
+当前离线证据：client 四个测试文件 252 项通过；service/provider/CLI 三个测试文件 27 项通过；woctl OpenObserve integration 覆盖类型入口。测试使用本地 fixture fetch，覆盖 URL/认证/DTO、错误脱敏、响应边界、取消、只读策略、JSON/NDJSON 序列化和确认先于文件/凭据/HTTP。三个相关包的 TypeScript 检查、CLI/web/shell bundle，以及消费 publish exports 的 unbundled client/service/CLI 导出检查通过；完整结果见 [覆盖页](../coverage.md)。
 
-未实测真实 OpenObserve、真实浏览器 CORS 或远程 runtime。组织管理、用户/权限、告警、dashboard、pipeline、PromQL、OTLP ingestion 和 trace span 详情等 API 尚未实现；这里的覆盖指已列明的 13 个操作，不表示覆盖 OpenObserve 全部服务端 API。
+真实 OpenObserve 已通过 wcli context 做过只读验证：logs、metrics、traces stream、日志 SQL、指标 SQL 和 trace list 均可用；woctl 的真实端点回归仍需使用对应 native 配置执行。组织管理、用户/权限、告警、dashboard、pipeline、OpenObserve PromQL、OTLP ingestion 和 trace span 详情等 API 尚未实现；这里的覆盖指已列明的操作，不表示覆盖 OpenObserve 全部服务端 API。

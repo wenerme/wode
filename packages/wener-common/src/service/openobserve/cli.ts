@@ -31,6 +31,52 @@ export const OpenObserveCliDefinition: ServiceCliDefinition<IOpenObserveService>
 	commands: [
 		...OpenObserveExtraCommands,
 		{
+			group: 'log',
+			name: 'query',
+			aliases: ['q', 'search'],
+			description: '查询日志 stream',
+			arguments: '[sql...]',
+			options: [
+				{ name: 'from', description: '开始时间，默认 now-1h' },
+				{ name: 'to', description: '结束时间，默认 now' },
+				{ name: 'offset', description: '结果偏移' },
+				{ name: 'size', description: '返回数量，1–1000' },
+				{ name: 'limit', description: '--size 同义选项' },
+				{ name: 'timeout', description: '服务端超时，1–60 秒' },
+				{ name: 'where', description: '根据 --stream 生成 WHERE 查询' },
+				{ name: 'text', description: '根据 --stream 生成 match_all 查询' },
+			],
+			table: (value) => records((value as OpenObserveSearchResult).hits),
+			async prepare(context) {
+				const input = { ...queryInput(context.options), streamType: 'logs' as const };
+				const sql = await prepareQuery(context);
+				return async (service, callOptions) => sanitizeOpenObserveOutput(await service.search({ ...input, sql }, callOptions));
+			},
+		},
+		{
+			group: 'metric',
+			name: 'query',
+			aliases: ['q', 'sql'],
+			description: '查询 metrics stream',
+			arguments: '[sql...]',
+			options: [
+				{ name: 'from', description: '开始时间，默认 now-1h' },
+				{ name: 'to', description: '结束时间，默认 now' },
+				{ name: 'offset', description: '结果偏移' },
+				{ name: 'size', description: '返回数量，1–1000' },
+				{ name: 'limit', description: '--size 同义选项' },
+				{ name: 'timeout', description: '服务端超时，1–60 秒' },
+				{ name: 'where', description: '根据 --stream 生成 WHERE 查询' },
+				{ name: 'text', description: '根据 --stream 生成 match_all 查询' },
+			],
+			table: (value) => records((value as OpenObserveSearchResult).hits),
+			async prepare(context) {
+				const input = { ...queryInput(context.options), streamType: 'metrics' as const };
+				const sql = await prepareQuery(context);
+				return async (service, callOptions) => sanitizeOpenObserveOutput(await service.search({ ...input, sql }, callOptions));
+			},
+		},
+		{
 			name: 'status',
 			description: '检查健康状态和组织认证',
 			prepare({ options }) {
@@ -105,6 +151,29 @@ export const OpenObserveCliDefinition: ServiceCliDefinition<IOpenObserveService>
 				const sql = await prepareQuery(context);
 				return async (service, callOptions) =>
 					sanitizeOpenObserveOutput(await service.search({ ...input, sql }, callOptions));
+			},
+		},
+		{
+			group: 'trace',
+			name: 'query',
+			aliases: ['q', 'sql'],
+			description: '查询 traces stream',
+			arguments: '[sql...]',
+			options: [
+				{ name: 'from', description: '开始时间，默认 now-1h' },
+				{ name: 'to', description: '结束时间，默认 now' },
+				{ name: 'offset', description: '结果偏移' },
+				{ name: 'size', description: '返回数量，1–1000' },
+				{ name: 'limit', description: '--size 同义选项' },
+				{ name: 'timeout', description: '服务端超时，1–60 秒' },
+				{ name: 'where', description: '根据 --stream 生成 WHERE 查询' },
+				{ name: 'text', description: '根据 --stream 生成 match_all 查询' },
+			],
+			table: (value) => records((value as OpenObserveSearchResult).hits),
+			async prepare(context) {
+				const input = { ...queryInput(context.options), streamType: 'traces' as const };
+				const sql = await prepareQuery(context);
+				return async (service, callOptions) => sanitizeOpenObserveOutput(await service.search({ ...input, sql }, callOptions));
 			},
 		},
 		{

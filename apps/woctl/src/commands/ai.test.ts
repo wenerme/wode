@@ -130,6 +130,7 @@ describe('wocli AI commands', () => {
 			{ name: 'base' },
 			{ name: 'sql' },
 			{ name: 'openobserve' },
+			{ name: 'prometheus' },
 			{ name: 'system' },
 			{ name: 'http' },
 		]);
