@@ -49,9 +49,9 @@
 	"keywords": [],
 	"scripts": {
 		"typecheck": "tsc --noEmit",
-		"build": "just -f ../../just/packages/wener-server.just build",
+		"build": "just build",
 		"lint": "tsc --noEmit",
-		"test": "just -f ../../just/package.just package-test"
+		"test": "just test"
 	},
 	"peerDependencies": {
 		"@mikro-orm/core": "*",

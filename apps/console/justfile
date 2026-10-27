@@ -1,4 +1,4 @@
-set positional-arguments := true
+import '../../just/pkg.just'
 
 [no-cd]
 dev port=env_var_or_default("PORT", "3000"):
@@ -25,7 +25,3 @@ web-image: web-image-static
 web-image-static:
     mkdir -p builds/web-static/app
     rsync -av dist/ builds/web-static/app/ --delete
-
-[no-cd]
-test *args:
-    pnpm exec vitest run --config vitest.config.ts "$@"

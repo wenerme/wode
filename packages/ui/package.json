@@ -89,7 +89,7 @@
 		"shadcn"
 	],
 	"scripts": {
-		"build": "just -f ../../just/packages/ui.just build",
+		"build": "just build",
 		"storybook": "storybook dev --no-open --port 6054",
 		"build-storybook": "storybook build && node scripts/check-storybook-coverage.ts",
 		"build-storybook:static": "storybook build --output-dir storybook-static && node scripts/check-storybook-coverage.ts",

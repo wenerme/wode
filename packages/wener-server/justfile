@@ -1,0 +1,15 @@
+import '../../just/pkg.just'
+
+[no-cd]
+build:
+    just swc-build
+
+[no-cd]
+publish: build
+    pnpm version patch --no-workspaces-update
+    just pkg-publish
+
+[no-cd]
+next: build
+    pnpm version prerelease --preid=beta --no-workspaces-update
+    just pkg-publish --tag next

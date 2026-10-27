@@ -1,37 +1,5 @@
 {
-	"compilerOptions": {
-		"target": "ESNext",
-		"module": "ESNext",
-		"lib": ["dom", "dom.iterable", "ESNext"],
-		"composite": true,
-		"moduleResolution": "bundler",
-		"allowImportingTsExtensions": false,
-		"verbatimModuleSyntax": true,
-		"noEmit": true,
-		"strict": true,
-		"skipLibCheck": true,
-		"noFallthroughCasesInSwitch": true,
-		"moduleDetection": "force",
-		"sourceMap": true,
-		"esModuleInterop": true,
-		"emitDecoratorMetadata": true,
-		"experimentalDecorators": true,
-		"allowSyntheticDefaultImports": true,
-		"noImplicitAny": true,
-		"noImplicitReturns": true,
-		"noUnusedLocals": true,
-		"noUnusedParameters": true,
-		"pretty": true,
-		"removeComments": false,
-		"stripInternal": true
-	},
-	"exclude": ["node_modules"],
-	"ts-node": {
-		"transpileOnly": true,
-		"swc": true,
-		"esm": true,
-		"experimentalSpecifierResolution": "node"
-	},
+	"files": [],
 	"references": [
 		{
 			"path": "./apps/wocli"
@@ -52,6 +20,12 @@
 			"path": "./packages/ui"
 		},
 		{
+			"path": "./packages/wener-ai"
+		},
+		{
+			"path": "./packages/wener-api-cli"
+		},
+		{
 			"path": "./packages/wener-client"
 		},
 		{
@@ -59,6 +33,18 @@
 		},
 		{
 			"path": "./packages/wener-console"
+		},
+		{
+			"path": "./packages/wener-feishu-devdocs-mcp"
+		},
+		{
+			"path": "./packages/wener-mcp-cli"
+		},
+		{
+			"path": "./packages/wener-mcps"
+		},
+		{
+			"path": "./packages/wener-mssql-mcp"
 		},
 		{
 			"path": "./packages/wener-miniquery"

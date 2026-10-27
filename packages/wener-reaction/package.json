@@ -39,9 +39,9 @@
 	],
 	"scripts": {
 		"typecheck": "tsc --noEmit",
-		"build": "just -f ../../just/packages/wener-reaction.just build",
-		"clean": "just -f ../../just/package.just package-clean",
-		"dev": "just -f ../../just/packages/wener-reaction.just dev"
+		"build": "just build",
+		"clean": "just clean",
+		"dev": "just dev"
 	},
 	"dependencies": {
 		"react": "^19.3.0",

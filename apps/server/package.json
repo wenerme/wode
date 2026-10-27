@@ -12,8 +12,8 @@
 	"keywords": [],
 	"scripts": {
 		"typecheck": "tsc --noEmit",
-		"build": "just -f ../../just/servers.just build-all",
-		"fmt": "just -f ../../just/package.just package-fmt"
+		"build": "just build-all",
+		"fmt": "just fmt"
 	},
 	"dependencies": {
 		"@apidevtools/json-schema-ref-parser": "^16.0.2",

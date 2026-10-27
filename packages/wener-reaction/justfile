@@ -1,4 +1,4 @@
-import '../package.just'
+import '../../just/pkg.just'
 
 [no-cd]
 bundle-system:
@@ -15,9 +15,9 @@ dev:
 
 [no-cd]
 build:
-    just -f "{{ justfile_directory() }}/../package.just" package-swc-build lib false css false
+    just swc-build lib false css false
 
 [no-cd]
 publish: build
     pnpm version patch --no-workspaces-update
-    just -f "{{ justfile_directory() }}/../package.just" package-publish
+    just pkg-publish

@@ -1,0 +1,6 @@
+import '../../just/pkg.just'
+
+[no-cd]
+build:
+    pnpm build
+    just swc-build lib false none false

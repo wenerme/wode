@@ -24,15 +24,18 @@ export async function generateSchema({ file, dir = path.dirname(file) }: { file:
 	await fs.writeFile(zodFile, Codegen.ModelToZod.Generate(model));
 
 	await new Promise((resolve, reject) => {
-		exec(`pnpm exec biome format --write "${dir}/{typebox,zod}/*.ts"`, (error, stdout, stderr) => {
-			if (error) {
-				console.error(`exec error: ${error}`);
-				reject(error);
-				return;
-			}
-			resolve({ stderr, stdout });
-			if (stdout) console.log(`fmt:stdout: ${stdout}`);
-			if (stderr) console.error(`fmt:stderr: ${stderr}`);
-		});
+		exec(
+			`bun fmt --no-script --config "$(git rev-parse --show-toplevel)/.prettierrc.json" --write "${dir}/{typebox,zod}/*.ts"`,
+			(error, stdout, stderr) => {
+				if (error) {
+					console.error(`exec error: ${error}`);
+					reject(error);
+					return;
+				}
+				resolve({ stderr, stdout });
+				if (stdout) console.log(`fmt:stdout: ${stdout}`);
+				if (stderr) console.error(`fmt:stderr: ${stderr}`);
+			},
+		);
 	});
 }

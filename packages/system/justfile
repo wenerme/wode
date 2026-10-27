@@ -1,0 +1,11 @@
+import '../../just/pkg.just'
+
+[no-cd]
+build:
+    just swc-build lib true none true
+    just swc-build dist/cjs true none true cjs
+    printf '{"type":"commonjs"}\n' > dist/cjs/package.json
+
+[no-cd]
+dev:
+    pnpm exec swc ./src -d ./lib --strip-leading-paths --copy-files --ignore '**/*.test.ts' --watch

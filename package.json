@@ -16,19 +16,22 @@
 	"private": true,
 	"packageManager": "pnpm@12.4.2",
 	"engines": {
+		"bun": ">=1.4.4",
 		"node": ">=24.11.0",
 		"npm": ">=11.0.0",
 		"pnpm": ">=12.4.2"
 	},
 	"keywords": [],
 	"scripts": {
-		"typecheck": "pnpm -r --no-bail run typecheck",
+		"typecheck": "bun check --no-script -b",
+		"typecheck:tsc": "pnpm -r --if-present run typecheck",
 		"lint": "biome lint .",
-		"check": "biome lint .",
+		"check": "bun check --no-script -b",
 		"build": "just build",
 		"dev": "just dev",
 		"duplicates:report": "jscpd --config .jscpd.json --workers 4 apps/server/src apps/console/src packages/wener-server/src packages/wener-client/src packages/wener-common/src packages/wener-utils/src packages/wener-ai/src packages/common/src",
 		"format": "just fmt",
+		"format:check": "just fmt-check",
 		"preinstall": "npx only-allow pnpm"
 	},
 	"devDependencies": {
@@ -79,8 +82,5 @@
 	"publishConfig": {
 		"registry": "https://registry.npmjs.org",
 		"access": "public"
-	},
-	"lint-staged": {
-		"**/*": "biome check --write"
 	}
 }

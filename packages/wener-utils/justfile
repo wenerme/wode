@@ -1,0 +1,22 @@
+import '../../just/pkg.just'
+
+[no-cd]
+build: build-lib
+
+[no-cd]
+build-lib:
+    pnpm exec node scripts/generate-slugify-data.mjs --check
+    just swc-build lib false json-css false
+
+[no-cd]
+dev:
+    pnpm exec swc ./src -d ./lib --strip-leading-paths --watch
+
+[no-cd]
+check-syntax:
+    ! grep '[?][?]' lib/**/*.js
+    ! grep '[?][.]' lib/**/*.js
+
+[no-cd]
+publish: build-lib
+    just pkg-publish

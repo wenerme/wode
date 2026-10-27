@@ -54,7 +54,7 @@
 	],
 	"keywords": [],
 	"scripts": {
-		"build": "just -f ../../just/packages/wener-common.just build",
+		"build": "just build",
 		"check:fs-mime-types": "node scripts/generateMimeTypes.mjs --check",
 		"generate:fs-mime-types": "node scripts/generateMimeTypes.mjs",
 		"prepublishOnly": "pnpm verify:publish",

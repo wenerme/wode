@@ -31,8 +31,8 @@
 	],
 	"scripts": {
 		"typecheck": "tsc --noEmit",
-		"build": "just -f ../../just/packages/wener-miniquery.just build",
-		"test": "just -f ../../just/package.just package-test"
+		"build": "just build",
+		"test": "just test"
 	},
 	"dependencies": {
 		"@wener/utils": "workspace:^1.1.59",

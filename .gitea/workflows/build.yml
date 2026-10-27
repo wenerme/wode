@@ -6,10 +6,20 @@ jobs:
   Build:
     name: Build
     runs-on: alpine-exec
+    env:
+      WODE_FORMAT_BASE: ${{ github.event.before || 'HEAD^' }}
     steps:
       - uses: actions/checkout@v3
         with:
-          fetch-depth: ${{ github.event_name == 'pull_request' && 2 || 0 }}
+          fetch-depth: 0
+      - name: Install Bun
+        run: |
+          set -e
+          bun_version=$(tr -d '[:space:]' < .bun-version)
+          export BUN_INSTALL="$HOME/.bun"
+          curl -fsSL https://bun.sh/install | bash -s -- "bun-v${bun_version}"
+          echo "$BUN_INSTALL/bin" >> "$GITHUB_PATH"
+          "$BUN_INSTALL/bin/bun" --version
       # https://stackoverflow.com/a/74268200/1870054
       - name: Changes
         id: changes
@@ -31,7 +41,10 @@ jobs:
           # may need Proxy
           # npm_config_proxy=http://127.0.0.1:1080 http_proxy=http://127.0.0.1:1080 https_proxy=http://127.0.0.1:1080
           CI=true \
-          pnpm i
+          pnpm install --frozen-lockfile
+
+      - name: Verify toolchain
+        run: just check
 
       - name: Docker Login
         run: |

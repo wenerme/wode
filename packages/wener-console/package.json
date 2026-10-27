@@ -56,11 +56,11 @@
 	],
 	"scripts": {
 		"typecheck": "tsc --noEmit",
-		"build": "just -f ../../just/packages/wener-console.just build",
+		"build": "just build",
 		"build-storybook": "storybook build",
 		"preview": "pnpm exec vite --host 0.0.0.0",
 		"storybook": "storybook dev -p 6052",
-		"test": "just -f ../../just/package.just package-test"
+		"test": "just test"
 	},
 	"peerDependencies": {
 		"@floating-ui/dom": "*",

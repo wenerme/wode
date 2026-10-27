@@ -8,12 +8,12 @@
 	"keywords": [],
 	"scripts": {
 		"typecheck": "tsc --noEmit",
-		"build": "just -f ../../just/apps/console.just build",
+		"build": "just build",
 		"build-storybook": "storybook build",
-		"dev": "just -f ../../just/apps/console.just dev",
+		"dev": "just dev",
 		"preview": "pnpm exec vite --host 0.0.0.0",
 		"storybook": "storybook dev -p 6006",
-		"test": "just -f ../../just/apps/console.just test"
+		"test": "just test"
 	},
 	"dependencies": {
 		"@casl/ability": "^7.0.1",
