@@ -1,0 +1,9 @@
+import '../../just/pkg.just'
+
+[no-cd]
+build:
+    just swc-build
+
+[no-cd]
+publish: build
+    just pkg-publish

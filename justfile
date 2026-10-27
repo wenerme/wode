@@ -8,8 +8,8 @@ default:
 
 import? 'local.just'
 
-# Repository orchestration runs at this justfile's directory. Standalone
-# package.just, packages/*.just, servers.just and bake.just preserve the caller.
+# Repository orchestration runs at the justfile's directory. Package-local
+# justfiles import `just/pkg.just` and preserve the caller's directory.
 
 import 'just/workspace.just'
 import 'just/tools.just'

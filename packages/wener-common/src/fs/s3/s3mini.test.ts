@@ -141,21 +141,21 @@ describe('s3mini listObjects behavior', () => {
 		// Mock response similar to user's example
 		const mockResponse = [
 			{
-				Key: 'fusion/README.md',
+				Key: 'example/README.md',
 				LastModified: '2025-12-18T01:51:09.000Z',
 				ETag: '"adc69293e8fd256b2609664f1e11cb53"',
 				Size: 6,
 				StorageClass: 'STANDARD',
 			},
 			{
-				Key: 'fusion/home/',
+				Key: 'example/home/',
 				Size: 0,
 				LastModified: new Date('1970-01-01T00:00:00.000Z'),
 				ETag: '',
 				StorageClass: '',
 			},
 			{
-				Key: 'fusion/mcp/',
+				Key: 'example/mcp/',
 				Size: 0,
 				LastModified: new Date('1970-01-01T00:00:00.000Z'),
 				ETag: '',
@@ -186,9 +186,9 @@ describe('s3mini listObjects behavior', () => {
 
 	test('readdir should properly identify directories from S3 response', () => {
 		const s3Response = [
-			{ Key: 'fusion/README.md', Size: 6, LastModified: new Date(), ETag: '"abc"' },
-			{ Key: 'fusion/home/', Size: 0, LastModified: new Date(0), ETag: '' },
-			{ Key: 'fusion/mcp/', Size: 0, LastModified: new Date(0), ETag: '' },
+			{ Key: 'example/README.md', Size: 6, LastModified: new Date(), ETag: '"abc"' },
+			{ Key: 'example/home/', Size: 0, LastModified: new Date(0), ETag: '' },
+			{ Key: 'example/mcp/', Size: 0, LastModified: new Date(0), ETag: '' },
 		];
 
 		const results = s3Response.map((obj) => {

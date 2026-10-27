@@ -1,0 +1,10 @@
+import '../../just/pkg.just'
+
+[no-cd]
+build:
+    pnpm tsx src/scripts/bundle.ts
+
+[no-cd]
+publish:
+    pnpm version patch --no-workspaces-update
+    just pkg-publish

@@ -17,6 +17,7 @@ jobs:
       # Pushes and manual runs retain full suites. PRs compare against the
       # immutable target SHA, including when checkout uses a merge commit.
       WODE_TEST_BASE: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || '' }}
+      WODE_FORMAT_BASE: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before || 'HEAD^' }}
     permissions:
       contents: read
     steps:
@@ -33,6 +34,11 @@ jobs:
         with:
           node-version: 24.11.1
           cache: pnpm
+
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .bun-version
 
       - name: Install Buf CLI
         uses: bufbuild/buf-setup-action@v1

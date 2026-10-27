@@ -29,7 +29,7 @@ const config: CodegenConfig = {
 	schema,
 	documents: 'src/**/!(*.d).{ts,tsx}',
 	ignoreNoDocuments: true,
-	hooks: { afterOneFileWrite: ['pnpm exec biome format --write'] },
+	hooks: { afterOneFileWrite: ['bun fmt --no-script --config ../../.prettierrc.json'] },
 	generates: {
 		...(downloadSchema
 			? {

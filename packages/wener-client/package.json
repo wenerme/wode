@@ -62,13 +62,13 @@
 	"keywords": [],
 	"scripts": {
 		"typecheck": "tsc --noEmit",
-		"build": "just -f ../../just/packages/wener-client.just build",
+		"build": "just build",
 		"test:api-inclusion": "API_FUZZ=1 vitest run tests/api-schema-inclusion",
 		"test:api-live": "vitest run tests/api-schema-inclusion/live-conversion.test.ts",
 		"test:ai-router": "vitest run src/ai/router tests/ai-router",
 		"test:ai-router:offline": "vitest run src/ai/router tests/ai-router/sdk-conversion.test.ts tests/ai-router/native-offline.test.ts tests/ai-router/pi-models.test.ts",
 		"update:api-oracles": "pnpm exec tsx tests/api-schema-inclusion/update-oracles.ts",
-		"test": "just -f ../../just/package.just package-test"
+		"test": "just test"
 	},
 	"dependencies": {
 		"@noble/ciphers": "^2.4.0",

@@ -1,6 +1,6 @@
 # Server applications
 
-`apps/server` contains the server entrypoints that share the Wode application and package layers. Each entrypoint is discovered from `src/apps/<name>/main.ts` and is bundled through the shared recipes in [`../../just/servers.just`](../../just/servers.just).
+`apps/server` contains the server entrypoints that share the Wode application and package layers. Each entrypoint is discovered from `src/apps/<name>/main.ts` and is bundled through the local [`justfile`](justfile).
 
 Current entrypoints:
 
@@ -32,9 +32,9 @@ For direct package-local use, run the shared recipe file explicitly:
 
 ```bash
 cd apps/server
-just -f ../../just/servers.just list
-just -f ../../just/servers.just dev wode-api-server
-just -f ../../just/servers.just build-all
+just list
+just dev wode-api-server
+just build-all
 ```
 
 Configuration is loaded by the selected application at runtime. Keep credentials in ignored `.env` files and do not commit environment-specific values.

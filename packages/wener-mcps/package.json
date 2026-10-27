@@ -42,7 +42,7 @@
 		"build": "bun run ./src/scripts/bundle.ts",
 		"dev": "pnpm tsx --watch src/mcps-cli.ts",
 		"dev:web": "pnpm exec vite",
-		"prepublishOnly": "just -f ../../just/packages/wener-mcps.just build",
+		"prepublishOnly": "just build",
 		"test": "vitest run",
 		"typecheck": "tsc --noEmit"
 	},

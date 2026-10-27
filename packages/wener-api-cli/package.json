@@ -35,7 +35,7 @@
 	"scripts": {
 		"build": "tsx src/scripts/bundle.ts",
 		"dev": "tsx src/index.ts",
-		"fmt": "pnpm exec biome format --write src package.json tsconfig.json vitest.config.ts",
+		"fmt": "just fmt",
 		"prepublishOnly": "pnpm build",
 		"test": "vitest run",
 		"typecheck": "tsc --noEmit"

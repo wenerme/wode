@@ -49,12 +49,12 @@
 	],
 	"scripts": {
 		"typecheck": "tsc --noEmit",
-		"build": "just -f ../../just/packages/wener-utils.just build",
-		"clean": "just -f ../../just/package.just package-clean",
+		"build": "just build",
+		"clean": "just clean",
 		"check:slugify-data": "node scripts/generate-slugify-data.mjs --check",
-		"dev": "just -f ../../just/packages/wener-utils.just dev",
+		"dev": "just dev",
 		"generate:slugify-data": "node scripts/generate-slugify-data.mjs",
-		"test": "just -f ../../just/package.just package-test"
+		"test": "just test"
 	},
 	"devDependencies": {
 		"@sinclair/typebox": "^0.34.52",

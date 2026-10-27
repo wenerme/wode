@@ -119,7 +119,7 @@ const KnownServerConfigSchema = z.discriminatedUnion('type', [
 	ApolloConfigConfigSchema,
 ]);
 
-// Catch-all for custom/extension server types (e.g. platform-admin, fusionops-admin)
+// Catch-all for custom/extension server types (e.g. example-server)
 const GenericServerConfigSchema = BaseServerConfigSchema.extend({
 	type: z.string(),
 }).passthrough();

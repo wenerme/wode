@@ -11,7 +11,7 @@
 	},
 	"scripts": {
 		"typecheck": "tsc --noEmit",
-		"build": "just -f ../../just/packages/wener-ai.just build",
+		"build": "just build",
 		"prepublishOnly": "pnpm verify:publish",
 		"test:built": "node ./tests/built-publish-subpath-smoke.mjs",
 		"test:schema": "pnpm --dir ../.. exec vitest run packages/wener-ai/tests",

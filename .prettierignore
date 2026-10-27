@@ -1,0 +1,33 @@
+# Package managers and generators own these files.
+pnpm-lock.yaml
+proto/
+packages/common/src/poc/
+packages/common/src/protos/
+packages/wener-client/libs/WeWorkFinanceSdk/
+packages/wener-miniquery/src/**/parser.js
+**/*.gen.ts
+**/*_pb.d.ts
+**/*_pb.js
+**/*_pb.ts
+**/*_connect.ts
+**/parser.js
+**/pp/go/wire/
+
+# Build output, dependencies and local agent state.
+**/node_modules/
+**/.git/
+**/.agents/
+**/.pi/
+**/.claude/
+**/.grit/
+**/.idea/
+**/.turbo/
+**/.next/
+**/.wrangler/
+**/storybook-static/
+**/lib/
+**/dist/
+**/out/
+apps/server/builds/
+bin/
+local/

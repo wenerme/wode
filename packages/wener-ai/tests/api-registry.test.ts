@@ -133,7 +133,7 @@ describe('API definitions and registry', () => {
 	});
 });
 
-describe('FusionKit-compatible endpoint matrix', () => {
+describe('API endpoint compatibility matrix', () => {
 	test.each([
 		['/v1/chat/completions', ApiTypeNames.openaiChatCompletions, 'v1', '', 'chat/completions', '', undefined],
 		[

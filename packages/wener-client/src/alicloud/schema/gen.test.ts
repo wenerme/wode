@@ -29,7 +29,9 @@ test.skip('gen', { timeout: 60 * 5 * 1000 }, async () => {
 	await gen({ product: 'Dytnsapi', version: '2020-02-17' });
 	await gen({ product: 'ocr-api', version: '2021-07-07' });
 
-	await new Promise((resolve) => exec('pnpm exec biome format --write ./src/alicloud/*.ts', {}, resolve));
+	await new Promise((resolve) =>
+		exec('bun fmt --no-script --config ../../.prettierrc.json --write ./src/alicloud/*.ts', {}, resolve),
+	);
 });
 
 function writeField({ name, schema, out = [] }: { name: string; schema: TypeSchema; out?: any[] }) {
