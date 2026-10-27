@@ -8,6 +8,7 @@ import type { WocliHost } from '../createWocliCli';
 import { createFileConfigStore } from './config';
 import { connectMcpServer } from './mcp';
 import { createNativeSqlDriver } from './sql';
+import { loadNativeEnv } from './env';
 
 export { createFileConfigStore } from './config';
 
@@ -36,11 +37,13 @@ export function getNativeCommandOptions(argv: readonly string[]): { argv: string
 
 /** Node ports; importing this module does not install process signal handlers or execute a command. */
 export function createNativeHost(options: { config: string }): WocliHost {
+	const cwd = process.cwd();
+	let environment: Readonly<Record<string, string>> | undefined;
 	return {
-		config: createFileConfigStore(options.config),
+		config: createFileConfigStore(options.config, { cwd, projectLookup: true }),
 		sqlDriver: createNativeSqlDriver,
 		info: { runtime: 'node', node: process.version, platform: process.platform, configPath: options.config },
-		getEnv: (name) => process.env[name],
+		getEnv: (name) => (environment ??= loadNativeEnv(cwd))[name] ?? process.env[name],
 		env: {
 			[ENV.context]: process.env[ENV.context] ?? process.env[LEGACY_ENV.context],
 			[ENV.logLevel]: process.env[ENV.logLevel] ?? process.env[LEGACY_ENV.logLevel],

@@ -4,6 +4,8 @@
 
 默认入口是 `~/.wode/woctl.yaml`。`--config ./woctl.yaml` 优先于 `WOCTL_CONFIG`，后者优先于默认路径。只接受 `.yaml` / `.yml`；同目录、同扩展名的 `woctl.<context>.yaml` 是 context 文件。自定义 `team.yml` 对应 `team.dev.yml`。
 
+Native 命令还会从当前工作目录向上查找到最近的 Git 根目录，读取项目级的 `service.yaml`、`.wode/service.yaml` 和 `woctl.yaml`（主配置文件本身只读取一次）。目录层按 Git 根到当前目录合并；同名 service 整条覆盖，`defaults.services` 按键覆盖。项目 lookup 文件是只读输入，配置命令只保存到主配置或选中的 context 文件。没有 Git 根时不启用项目 lookup。
+
 基础文件 `woctl.yaml`：
 
 ```yaml
@@ -103,6 +105,19 @@ woctl service remove search
 | `OPENOBSERVE_TOKEN` | 示例 OpenObserve `accessTokenEnv` 引用，需由使用者自行提供 |
 
 旧 `WOCLI_CONFIG/CONTEXT/LOG_LEVEL` 仍作为读取回退，`WOCTL_*` 优先。普通 `headers`、MCP `headers/env`、SQL URL 不执行 `${VAR}` 字符串插值；不要把假的环境变量占位符当成自动认证。AI 有明确的 `apiKeyEnv`，其用法见 [AI](service/ai.md)；OpenObserve 使用 `accessTokenEnv`、`usernameEnv`、`passwordEnv`，见 [OpenObserve](service/openobserve.md)。
+
+Native service 配置中的字符串字段支持精确的 `env://NAME` 引用，解析发生在实际创建 service 时，不发生在 help、schema、list 或命令树构建阶段。例如：
+
+```yaml
+services:
+  - name: observe
+    type: openobserve
+    baseUrl: env://OPENOBSERVE_URL
+    options:
+      accessToken: env://OPENOBSERVE_TOKEN
+```
+
+项目根目录的 dotenv 文件按以下优先级提供引用值：`process.env` > `.env.local` > `.env` > `.wode/.env.local` > `.wode/.env`。dotenv 只由 Node native host 读取，不写回 `process.env`，Web 和 shell host 需要显式注入 `getEnv`。
 
 ## 宿主边界与核验
 

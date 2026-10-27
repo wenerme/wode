@@ -44,6 +44,31 @@ export const CliServiceConfigSchema = serviceConfig.transform(
 
 export type CliServiceConfig = z.infer<typeof CliServiceConfigSchema>;
 
+const ENV_REFERENCE = /^env:\/\/([A-Za-z_][A-Za-z0-9_]*)$/u;
+
+/** Resolve exact env:// references without importing a host runtime or mutating the input. */
+export function resolveCliServiceConfigEnv(
+	config: CliServiceConfig,
+	getEnv?: (name: string) => string | undefined,
+): CliServiceConfig {
+	function resolve(value: unknown): unknown {
+		if (typeof value === 'string') {
+			const match = ENV_REFERENCE.exec(value);
+			if (!match) return value;
+			const resolved = getEnv?.(match[1]);
+			if (resolved === undefined) throw new CliConfigError(`Environment variable ${match[1]} is unavailable`);
+			return resolved;
+		}
+		if (Array.isArray(value)) return value.map(resolve);
+		if (value && typeof value === 'object')
+			return Object.fromEntries(Object.entries(value).map(([key, entry]) => [key, resolve(entry)]));
+		return value;
+	}
+	const result = CliServiceConfigSchema.safeParse(resolve(config));
+	if (!result.success) throw new CliConfigError(configErrorMessage(result.error));
+	return result.data;
+}
+
 /** 只处理显式数据；不查询 registry、文件、环境变量或认证信息。 */
 export function normalizeCliServices(value: unknown): Record<string, CliServiceConfig> {
 	if (value === undefined) return {};

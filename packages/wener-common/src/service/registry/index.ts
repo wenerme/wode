@@ -1,5 +1,5 @@
 import type { CliServiceConfig } from '../config';
-import { isCliServiceEnabled, normalizeCliServices } from '../config';
+import { CliConfigError, isCliServiceEnabled, normalizeCliServices, resolveCliServiceConfigEnv } from '../config';
 import type { IFetchService } from '../fetch';
 import type { IOpenObserveService } from '../openobserve';
 import type { IPrometheusService } from '../prometheus';
@@ -253,7 +253,7 @@ export class ServiceRegistry {
 			.then(() =>
 				provider.create({
 					name: service.name,
-					config: service.config,
+					config: resolveCliServiceConfigEnv(service.config, this.#getEnv),
 					context: this.#context,
 					fetch: this.#fetch,
 					sqlDriver: this.#sqlDriver,
@@ -269,8 +269,9 @@ export class ServiceRegistry {
 				for (const capability of provider.provides) this.#validateCapability(capability, created[capability]);
 				return created;
 			})
-			.catch(() => {
+			.catch((error) => {
 				if (this.#entries.get(service.name) === entry) this.#entries.delete(service.name);
+				if (error instanceof CliConfigError) throw error;
 				throw new Error('Failed to create service');
 			});
 		const entry: ServiceEntry = { promise };

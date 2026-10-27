@@ -1,4 +1,5 @@
 import type { SqlAdapterFactory } from '../sql/types';
+import { resolveCliServiceConfigEnv } from '../config';
 import { getEnabledService } from './getEnabledService';
 import type { ServiceProviderRegistry } from './ServiceProviderRegistry';
 import type { ResolvedServiceContext, ServiceClient, ServiceRuntimeClient } from './types';
@@ -26,7 +27,7 @@ export function createServiceRuntime(options: {
 			pending = Promise.resolve().then(() =>
 				provider.create({
 					name,
-					config,
+					config: resolveCliServiceConfigEnv(config, options.getEnv),
 					context,
 					fetch: options.fetch ?? globalThis.fetch.bind(globalThis),
 					sqlDriver: options.sqlDriver,

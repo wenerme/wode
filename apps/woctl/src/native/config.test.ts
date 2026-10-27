@@ -1,4 +1,4 @@
-import { mkdtemp, readdir, readFile, rename, rm, stat, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, readdir, readFile, rename, rm, stat, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { describe, expect, it, vi } from 'vitest';
@@ -58,6 +58,32 @@ describe('native file config store', () => {
 			expect((await store.load()).currentContext).toBe('test');
 			expect((await stat(base)).mode & 0o777).toBe(0o600);
 			expect(parse(await readFile(base, 'utf8'))).not.toHaveProperty('contexts');
+		});
+	});
+	it('merges read-only project service layers and keeps them outside save targets', async () => {
+		await fixture(async (directory, base) => {
+			await mkdir(join(directory, '.git'), { recursive: true });
+			await writeFile(join(directory, 'service.yaml'), 'services:\n  - name: observe\n    type: openobserve\n');
+			const store = createFileConfigStore(base, { cwd: directory, projectLookup: true });
+			const config = await store.load();
+			expect(config.services.observe).toMatchObject({ provider: 'openobserve', type: 'openobserve' });
+			config.contexts.local.title = 'local override';
+			await store.save(config);
+			expect(parse(await readFile(join(directory, 'service.yaml'), 'utf8')).services).toEqual([{ name: 'observe', type: 'openobserve' }]);
+			expect(parse(await readFile(join(directory, 'config.local.yaml'), 'utf8')).title).toBe('local override');
+		});
+	});
+	it('rejects saving from a stale project lookup snapshot', async () => {
+		await fixture(async (directory, base) => {
+			await mkdir(join(directory, '.git'), { recursive: true });
+			const project = join(directory, 'service.yaml');
+			await writeFile(project, 'services:\n  - name: observe\n    type: openobserve\n');
+			const store = createFileConfigStore(base, { cwd: directory, projectLookup: true });
+			const config = await store.load();
+			config.contexts.local.title = 'stale';
+			await writeFile(project, 'services:\n  - name: observe\n    type: openobserve\n    title: changed\n');
+			await expect(store.save(config)).rejects.toThrow('Project configuration changed since load');
+			await expect(stat(join(directory, 'config.local.yaml'))).rejects.toMatchObject({ code: 'ENOENT' });
 		});
 	});
 	it('enumerates unselected files without reading them and rejects placeholder edits', async () => {

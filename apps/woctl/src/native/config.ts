@@ -14,6 +14,7 @@ import {
 	serializeCliConfigLayer,
 } from 'common/context';
 import { parseDocument, stringify } from 'yaml';
+import { discoverProjectConfigLayers, mergeProjectConfigLayers, type ProjectConfigSnapshot } from './project-config';
 
 interface LayerSnapshot {
 	path: string;
@@ -28,9 +29,14 @@ interface EditSnapshot {
 	overlay: LayerSnapshot;
 	files: Set<string>;
 	createContext?: string;
+	project: { enabled: boolean; cwd: string; layers: ProjectConfigSnapshot[] };
 }
 export interface FileCliConfigStore extends CliConfigStore {
 	createContext(name: string, options?: { context?: string }): Promise<void>;
+}
+export interface FileCliConfigStoreOptions {
+	cwd?: string;
+	projectLookup?: boolean;
 }
 interface Change {
 	path: string;
@@ -98,7 +104,7 @@ function globals(config: CliConfig) {
  * Native base + selected overlay. Each load result carries its own private edit baseline.
  * Lock files coordinate participating writers; revision checks cannot make arbitrary external editors transactional.
  */
-export function createFileConfigStore(path: string): FileCliConfigStore {
+export function createFileConfigStore(path: string, options: FileCliConfigStoreOptions = {}): FileCliConfigStore {
 	const basePath = resolve(path);
 	const extension = extname(basePath);
 	if (extension !== '.yaml' && extension !== '.yml')
@@ -111,6 +117,7 @@ export function createFileConfigStore(path: string): FileCliConfigStore {
 		if (!CliConfigNameSchema.safeParse(name).success) throw new CliConfigError('Invalid context name');
 		return join(directory, `${prefix}${name}${extension}`);
 	};
+	const project = { enabled: options.projectLookup === true, cwd: resolve(options.cwd ?? process.cwd()) };
 	async function contextFiles(): Promise<Set<string>> {
 		try {
 			const entries = await readdir(directory, { withFileTypes: true });
@@ -138,6 +145,8 @@ export function createFileConfigStore(path: string): FileCliConfigStore {
 			const overlayPath = contextPath(selected);
 			const files = await contextFiles();
 			const overlay = await readLayer(overlayPath, 'context', selected === 'local');
+			const layers = project.enabled ? await discoverProjectConfigLayers({ cwd: project.cwd, basePath }) : [];
+			const merged = mergeProjectConfigLayers(base.layer, layers);
 			// The selected layer's read is authoritative over the earlier directory snapshot.
 			if (overlay.revision !== null) files.add(selected);
 			else files.delete(selected);
@@ -147,8 +156,8 @@ export function createFileConfigStore(path: string): FileCliConfigStore {
 					name === selected ? overlay.layer : { services: {}, defaults: {} },
 				]),
 			);
-			const config = parseCliConfig({ ...base.layer, contexts });
-			snapshots.set(config, { config: structuredClone(config), selected, base, overlay, files });
+			const config = parseCliConfig({ ...base.layer, ...merged, contexts });
+			snapshots.set(config, { config: structuredClone(config), selected, base, overlay, files, project: { ...project, layers } });
 			return config;
 		},
 		async save(input) {
@@ -193,6 +202,14 @@ export function createFileConfigStore(path: string): FileCliConfigStore {
 					await assertRevision(snapshot.base);
 					await assertRevision(snapshot.overlay);
 					if (change.path !== snapshot.base.path && change.path !== snapshot.overlay.path) await assertRevision(change);
+					if (snapshot.project.enabled) {
+						const current = await discoverProjectConfigLayers({ cwd: snapshot.project.cwd, basePath });
+						if (
+							current.length !== snapshot.project.layers.length ||
+							current.some((layer, index) => layer.path !== snapshot.project.layers[index]?.path || layer.revision !== snapshot.project.layers[index]?.revision)
+						)
+							throw new CliConfigError('Project configuration changed since load; reload before saving');
+					}
 				};
 				const lockPath = `${change.path}.lock`;
 				const temporary = `${change.path}.${randomUUID()}.tmp`;
