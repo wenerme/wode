@@ -32,6 +32,7 @@ import { createSqlServiceToolClient } from '@wener/common/service/sql/client';
 import { createPrometheusServiceToolClient } from '@wener/common/service/prometheus/client';
 import {
 	type CliConfig,
+	type CliServiceConfig,
 	CliConfigError,
 	type CliConfigStore,
 	type CliMcpServerConfig,
@@ -44,6 +45,7 @@ import {
 	readCommandText as readText,
 	setConfigEntry,
 	optionString as text,
+	optionStrings,
 } from './command-utils';
 import { createAiCatalogCommands } from './commands/ai-catalog';
 import { createDiagnosticsCommands, type LogLevel, parseLogLevel, shouldLog } from './commands/diagnostics';
@@ -179,6 +181,28 @@ export function createWocliServiceCommand<S>(
 			},
 		}),
 	};
+}
+
+function parseKeyValueOptions(values: readonly string[], label: string, parseJson: boolean): Record<string, unknown> {
+	const result: Record<string, unknown> = {};
+	for (const value of values) {
+		const separator = value.indexOf('=');
+		if (separator <= 0) throw new CliUsageError(`--${label} requires key=value`);
+		const key = value.slice(0, separator).trim();
+		const raw = value.slice(separator + 1);
+		if (!key) throw new CliUsageError(`--${label} requires a non-empty key`);
+		if (Object.hasOwn(result, key)) throw new CliUsageError(`Duplicate --${label} key: ${key}`);
+		if (!parseJson) {
+			result[key] = raw;
+			continue;
+		}
+		try {
+			result[key] = raw.startsWith('json:') ? JSON.parse(raw.slice('json:'.length)) : JSON.parse(raw);
+		} catch {
+			result[key] = raw;
+		}
+	}
+	return result;
 }
 
 export function createWocliCli(host: WocliHost) {
@@ -353,25 +377,42 @@ export function createWocliCli(host: WocliHost) {
 				arguments: '<name>',
 				description: 'Add a service to the current context',
 				options: [
-					{ name: 'provider', description: 'Provider name: system, http, etc.' },
-					{ name: 'url', description: 'Base URL of the HTTP runtime' },
+					{ name: 'type', aliases: ['provider'], description: 'Service type, such as system, http or openobserve' },
+					{ name: 'base-url', aliases: ['url'], description: 'Service base URL' },
 					{ name: 'id', description: 'Remote service ID; defaults to the service name' },
+					{ name: 'title', description: 'Human-readable service title' },
+					{ name: 'description', description: 'Human-readable service description' },
+					{ name: 'header', repeatable: true, description: 'HTTP header as key=value; repeatable' },
+					{ name: 'option', repeatable: true, description: 'Provider option as key=value; JSON values may use json:' },
 					{ name: 'writable', type: 'boolean', description: 'Allow write operations for this service' },
+					{ name: 'disabled', type: 'boolean', description: 'Disable the service after adding it' },
 				],
 				run: ({ args, options }, context) =>
 					change(context, options, (config) => {
-						const provider = text(options, 'provider');
-						if (!provider) throw new CliUsageError('--provider is required');
-						if (!host.runtime) providers.get(provider);
+						const type = text(options, 'type');
+						if (!type) throw new CliUsageError('--type is required');
+						const provider = providers.get(type);
 						const selected = resolveCliContext(config, text(options, 'context'));
 						if (Object.hasOwn(selected.configuredServices ?? selected.services, args[0]))
 							throw new CliUsageError('Service already exists');
-						if (provider === 'http' && !text(options, 'url')) throw new CliUsageError('HTTP service requires --url');
+						const baseUrl = text(options, 'base-url');
+						if (type === 'http' && !baseUrl) throw new CliUsageError('HTTP service requires --base-url');
+						const serviceOptions = parseKeyValueOptions(optionStrings(options, 'option'), 'option', true) as NonNullable<CliServiceConfig['options']>;
+						const optionResult = provider.optionsSchema?.safeParse(serviceOptions);
+						if (optionResult && !optionResult.success) throw new CliUsageError(`Invalid options for service type: ${type}`);
 						setConfigEntry(config.contexts[selected.name].services, args[0], {
-							provider,
-							baseUrl: text(options, 'url'),
-							id: text(options, 'id'),
-							readOnly: !options.writable,
+							type,
+							provider: type,
+							...(baseUrl === undefined ? {} : { baseUrl }),
+							...(text(options, 'id') === undefined ? {} : { id: text(options, 'id') }),
+							...(text(options, 'title') === undefined ? {} : { title: text(options, 'title') }),
+							...(text(options, 'description') === undefined ? {} : { description: text(options, 'description') }),
+							...(Object.keys(parseKeyValueOptions(optionStrings(options, 'header'), 'header', false)).length
+								? { headers: parseKeyValueOptions(optionStrings(options, 'header'), 'header', false) as Record<string, string> }
+								: {}),
+							...(Object.keys(serviceOptions).length ? { options: serviceOptions } : {}),
+							readOnly: options.writable !== true,
+							...(options.disabled === true ? { disabled: true } : {}),
 						});
 					}),
 			},

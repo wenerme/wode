@@ -13,6 +13,9 @@ export interface ServiceTool {
 	outputSchema?: Record<string, unknown>;
 	annotations?: { readOnlyHint?: boolean; destructiveHint?: boolean };
 }
+export interface ServiceOptionsSchema {
+	safeParse(value: unknown): { success: true; data: unknown } | { success: false; error?: unknown };
+}
 export interface ServiceSchema {
 	service?: { id?: string; name?: string; provider?: string; readOnly?: boolean };
 	tools: Record<string, ServiceTool>;
@@ -45,5 +48,6 @@ export interface ServiceProviderContext {
 export interface ServiceProvider {
 	name: string;
 	aliases?: readonly string[];
+	optionsSchema?: ServiceOptionsSchema;
 	create(context: ServiceProviderContext): ServiceClient | Promise<ServiceClient>;
 }

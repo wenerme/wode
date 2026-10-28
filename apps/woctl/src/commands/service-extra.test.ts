@@ -65,6 +65,26 @@ describe('service discovery and defaults', () => {
 		expect(JSON.parse(lines.pop() ?? '')).toEqual({ system: 'system' });
 		expect((await config.load()).contexts.other.defaults.system).toBe('system');
 	});
+	it('adds generic service fields and validates provider options before saving', async () => {
+		const config = createMemoryCliConfigStore(serviceConfig());
+		const cli = createWocliWebCli({ config });
+		const { io } = output();
+		await cli.executeLine(
+			'service add observe --type openobserve --base-url https://observe.example.test --title Observability --header x-tenant=default --option organization=default --option timeoutMs=1000',
+			io,
+		);
+		const saved = await config.load();
+		expect(saved.contexts.local.services.observe).toMatchObject({
+			type: 'openobserve',
+			baseUrl: 'https://observe.example.test',
+			title: 'Observability',
+			headers: { 'x-tenant': 'default' },
+			options: { organization: 'default', timeoutMs: 1000 },
+		});
+		await expect(cli.executeLine('service add invalid --type openobserve --option unsupported=true', io)).rejects.toThrow(
+			'Invalid options for service type',
+		);
+	});
 	it('discovers read-only tools, emits required-input examples and retains the original JSON schema', async () => {
 		const schema = {
 			tools: {

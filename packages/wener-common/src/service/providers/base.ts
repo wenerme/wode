@@ -1,6 +1,9 @@
 import type { CliServiceConfig } from '../config';
 import type { IFetchService } from '../fetch';
 import type { ServiceProviderDefinition } from '../registry';
+import { z } from 'zod';
+
+export const BaseFetchServiceOptionsSchema = z.strictObject({});
 import {
 	assertSupportedKeys,
 	type FetchImplementation,
@@ -73,6 +76,7 @@ export const BaseFetchServiceProvider: ServiceProviderDefinition<'fetch'> = {
 	name: 'base',
 	aliases: ['direct'],
 	provides: ['fetch'],
+	optionsSchema: BaseFetchServiceOptionsSchema,
 	create({ config, fetch }) {
 		return { fetch: createBaseFetchService({ ...createBaseFetchOptions(config), fetch }) };
 	},

@@ -4,6 +4,14 @@ import type { CliServiceConfig } from '../config';
 import type { ServiceProviderDefinition } from '../registry';
 import type { ServiceCallOptions, ServiceProvider, ServiceSchema } from '../runtime/types';
 import type { ISearchService } from '../search';
+import { z } from 'zod';
+
+export const DuckDuckGoServiceOptionsSchema = z.strictObject({
+	instantAnswerBaseUrl: z.string().url().optional(),
+	htmlBaseUrl: z.string().url().optional(),
+	userAgent: z.string().min(1).optional(),
+	timeout: z.number().int().min(1).optional(),
+});
 
 export interface DuckDuckGoSearchInput {
 	query: string;
@@ -182,6 +190,7 @@ export const DuckDuckGoSearchServiceProvider: ServiceProviderDefinition<'search'
 	name: 'duckduckgo',
 	aliases: ['ddg'],
 	provides: ['search'],
+	optionsSchema: DuckDuckGoServiceOptionsSchema,
 	create({ config, fetch }) {
 		return { search: createDuckDuckGoSearchService({ ...parseDuckDuckGoClientOptions(config), fetch }) };
 	},

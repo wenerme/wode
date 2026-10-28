@@ -7,6 +7,13 @@ import { parseCliConfig } from 'common/context';
 import { APP_NAME, APP_VERSION } from './const';
 
 export const VERSION = APP_VERSION;
+const noServiceOptions = {
+	safeParse(value: unknown) {
+		return value && typeof value === 'object' && !Array.isArray(value) && Object.keys(value).length === 0
+			? { success: true as const, data: value }
+			: { success: false as const };
+	},
+};
 export function createDefaultConfig(): CliConfig {
 	return parseCliConfig({});
 }
@@ -16,6 +23,7 @@ export function createBuiltinProviders(info: Record<string, unknown> = {}): Serv
 		...createBuiltinServiceProviders(),
 		{
 			name: 'system',
+			optionsSchema: noServiceOptions,
 			create() {
 				return {
 					async getSchema() {
@@ -51,6 +59,7 @@ export function createBuiltinProviders(info: Record<string, unknown> = {}): Serv
 		},
 		{
 			name: 'http',
+			optionsSchema: noServiceOptions,
 			create({ config, name, fetch }) {
 				if (!config.baseUrl) throw new Error('HTTP service requires baseUrl');
 				const runtime = createHttpServiceRuntimeClient({ baseUrl: config.baseUrl, headers: config.headers, fetch });

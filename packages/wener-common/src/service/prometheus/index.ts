@@ -45,7 +45,7 @@ export interface IPrometheusService {
 export type PrometheusService = IPrometheusService;
 
 const envName = z.string().regex(/^[A-Za-z_][A-Za-z0-9_]*$/u);
-const configOptions = z.strictObject({
+export const PrometheusServiceOptionsSchema = z.strictObject({
 	apiPrefix: z.string().min(1).max(256).optional(),
 	accessToken: z.string().min(1).optional(),
 	accessTokenEnv: envName.optional(),
@@ -56,6 +56,7 @@ const configOptions = z.strictObject({
 	timeoutMs: z.number().int().min(1).max(3_600_000).optional(),
 	maxResponseBytes: z.number().int().min(1).max(64 * 1024 * 1024).optional(),
 });
+const configOptions = PrometheusServiceOptionsSchema;
 
 function clientOptions({ config, getEnv }: ServiceProviderContext): PrometheusClientOptions {
 	if (!config.baseUrl) throw new Error('Prometheus service requires baseUrl');
@@ -86,6 +87,7 @@ export const PrometheusServiceProvider: ServiceProviderDefinition<'prometheus'> 
 	name: 'prometheus',
 	aliases: ['prom'],
 	provides: ['prometheus'],
+	optionsSchema: PrometheusServiceOptionsSchema,
 	create(context) {
 		if (context.config.readOnly === false) throw new Error('Prometheus service must be read-only');
 		const client = new PrometheusClient({ ...clientOptions(context), fetch: context.fetch });

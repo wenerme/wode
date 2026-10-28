@@ -2,6 +2,7 @@ import { JinaReaderClient } from '@wener/client/jina';
 import type { CliServiceConfig } from '../config';
 import type { IFetchService } from '../fetch';
 import type { ServiceProviderDefinition } from '../registry';
+import { z } from 'zod';
 import {
 	assertSupportedKeys,
 	type FetchImplementation,
@@ -23,6 +24,11 @@ export interface JinaFetchServiceOptions {
 	apiKey?: string;
 	timeout?: number;
 }
+
+export const JinaFetchServiceOptionsSchema = z.strictObject({
+	apiKey: z.string().min(1).optional(),
+	timeout: z.number().int().min(1).optional(),
+});
 
 function parseJinaConfig(config: CliServiceConfig): JinaFetchServiceOptions {
 	try {
@@ -115,6 +121,7 @@ export function createJinaFetchService(options: JinaFetchServiceOptions = {}): I
 export const JinaFetchServiceProvider: ServiceProviderDefinition<'fetch'> = {
 	name: 'jina',
 	provides: ['fetch'],
+	optionsSchema: JinaFetchServiceOptionsSchema,
 	create({ config, fetch }) {
 		return { fetch: createJinaFetchService({ ...parseJinaConfig(config), fetch }) };
 	},

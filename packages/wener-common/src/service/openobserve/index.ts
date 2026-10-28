@@ -35,7 +35,7 @@ export type {
 };
 
 const envName = z.string().regex(/^[A-Za-z_][A-Za-z0-9_]*$/u);
-const configOptions = z.strictObject({
+export const OpenObserveServiceOptionsSchema = z.strictObject({
 	organization: z.string().min(1).max(255).optional(),
 	accessToken: z.string().min(1).optional(),
 	accessTokenEnv: envName.optional(),
@@ -51,6 +51,7 @@ const configOptions = z.strictObject({
 		.max(64 * 1024 * 1024)
 		.optional(),
 });
+const configOptions = OpenObserveServiceOptionsSchema;
 function options({ config, getEnv }: ServiceProviderContext): OpenObserveClientOptions {
 	if (!config.baseUrl) throw new Error('OpenObserve service requires baseUrl');
 	const parsed = configOptions.safeParse(config.options ?? {});
@@ -82,6 +83,7 @@ export const OpenObserveServiceProvider: ServiceProviderDefinition<'openobserve'
 	name: 'openobserve',
 	aliases: ['oo'],
 	provides: ['openobserve'],
+	optionsSchema: OpenObserveServiceOptionsSchema,
 	create(context) {
 		const client = new OpenObserveClient({ ...options(context), fetch: context.fetch });
 		const writable = () => {

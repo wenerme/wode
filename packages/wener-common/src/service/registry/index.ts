@@ -3,7 +3,7 @@ import { CliConfigError, isCliServiceEnabled, normalizeCliServices, resolveCliSe
 import type { IFetchService } from '../fetch';
 import type { IOpenObserveService } from '../openobserve';
 import type { IPrometheusService } from '../prometheus';
-import type { ResolvedServiceContext, ServiceProviderContext } from '../runtime/types';
+import type { ResolvedServiceContext, ServiceOptionsSchema, ServiceProviderContext } from '../runtime/types';
 import type { ISearchService } from '../search';
 import type { ISqlService, SqlAdapterFactory } from '../sql/types';
 
@@ -22,6 +22,7 @@ type ServiceProviderDefinitionFor<C extends ServiceCapability> = {
 	name: string;
 	aliases?: readonly string[];
 	provides: readonly C[];
+	optionsSchema?: ServiceOptionsSchema;
 	create(context: ServiceProviderContext): Pick<ServiceTypeMap, C> | Promise<Pick<ServiceTypeMap, C>>;
 };
 
@@ -30,6 +31,7 @@ export type AnyServiceProviderDefinition = {
 	name: string;
 	aliases?: readonly string[];
 	provides: readonly ServiceCapability[];
+	optionsSchema?: ServiceOptionsSchema;
 	create(context: ServiceProviderContext): Partial<ServiceTypeMap> | Promise<Partial<ServiceTypeMap>>;
 };
 
@@ -63,6 +65,7 @@ interface RegisteredProvider {
 	readonly name: string;
 	readonly aliases: readonly string[];
 	readonly provides: readonly ServiceCapability[];
+	readonly optionsSchema?: ServiceOptionsSchema;
 	readonly create: AnyServiceProviderDefinition['create'];
 }
 
@@ -203,6 +206,7 @@ export class ServiceRegistry {
 			name: provider.name,
 			aliases: Object.freeze([...aliases]),
 			provides: Object.freeze([...provider.provides]) as readonly ServiceCapability[],
+			optionsSchema: provider.optionsSchema,
 			create: provider.create,
 		};
 	}
