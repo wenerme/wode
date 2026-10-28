@@ -85,4 +85,27 @@ describe('MCP commands', () => {
 		expect(listed.stdout.join('')).not.toContain('query-secret');
 		expect(listed.stdout.join('')).not.toContain('fragment-secret');
 	});
+
+	it('connects to an ad hoc HTTP server without writing configuration', async () => {
+		const connect = vi.fn(async (config) => {
+			expect(config).toEqual({ transport: 'http', url: 'https://wener.me/api/mcp', enabled: true });
+			return fixtureConnection();
+		});
+		const cli = createWocliCli({ config: createMemoryCliConfigStore({}), mcp: { connect } });
+		const listed = output();
+		await cli.executeLine('mcp --url https://wener.me/api/mcp --name wener-site servers --json', listed.io);
+		expect(JSON.parse(listed.stdout[0])).toEqual([
+			{ name: 'wener-site', transport: 'http', enabled: true, url: 'https://wener.me/api/mcp' },
+		]);
+		expect(connect).not.toHaveBeenCalled();
+		const tools = output();
+		await cli.executeLine('mcp --url https://wener.me/api/mcp --name wener-site tools wener-site --json', tools.io);
+		expect(JSON.parse(tools.stdout[0])).toMatchObject([{ server: 'wener-site', name: 'echo' }]);
+		expect(connect).toHaveBeenCalledOnce();
+	});
+
+	it('requires both URL and name for an ad hoc server', async () => {
+		const cli = createWocliCli({ config: createMemoryCliConfigStore({}), mcp: { connect: vi.fn() } });
+		await expect(cli.executeLine('mcp --url https://wener.me/api/mcp tools', output().io)).rejects.toThrow('both --url and --name');
+	});
 });

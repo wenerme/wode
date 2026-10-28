@@ -503,7 +503,7 @@ export function createWocliCli(host: WocliHost) {
 				return provider === undefined ? [] : [provider];
 			}),
 		);
-		if (host.mcp && Object.keys(resolved?.mcpServers ?? {}).length) available.add('mcp');
+		if (host.mcp) available.add('mcp');
 		const hasAi = Object.keys(resolved?.providers ?? {}).length > 0;
 		const tree = new Cli<WocliExecution>(APP_NAME, {
 			options: globalOptions.map((option) => (option.name === 'context' ? { ...option, default: selected } : option)),

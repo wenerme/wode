@@ -16,9 +16,33 @@ function selectServer(context: WocliExecution, name: string): ServerEntry {
 	return server;
 }
 
-async function connect(context: WocliExecution, name: string): Promise<WocliMcpConnection> {
+function adHocServer(options: CliOptions): ServerEntry | undefined {
+	const url = optionString(options, 'url');
+	const name = optionString(options, 'name');
+	if (url === undefined && name === undefined) return undefined;
+	if (!url || !name) throw new CliUsageError('Ad hoc MCP requires both --url and --name');
+	try {
+		const parsed = new URL(url);
+		if (!['http:', 'https:'].includes(parsed.protocol)) throw new Error();
+	} catch {
+		throw new CliUsageError('Ad hoc MCP --url must be an HTTP(S) URL');
+	}
+	return { name, config: { transport: 'http', url, enabled: true } };
+}
+
+function selectCommandServer(context: WocliExecution, name: string | undefined, options: CliOptions): ServerEntry {
+	const adhoc = adHocServer(options);
+	if (adhoc) {
+		if (name !== undefined && name !== adhoc.name) throw new CliUsageError(`Unknown ad hoc MCP server: ${name}`);
+		return adhoc;
+	}
+	if (!name) throw new CliUsageError('MCP server name is required');
+	return selectServer(context, name);
+}
+
+async function connectEntry(context: WocliExecution, entry: ServerEntry): Promise<WocliMcpConnection> {
 	if (!context.host.mcp) throw new CliUsageError('MCP is only available in the Node CLI');
-	return context.host.mcp.connect(selectServer(context, name).config, context.signal);
+	return context.host.mcp.connect(entry.config, context.signal);
 }
 
 function safeServer(entry: ServerEntry) {
@@ -59,7 +83,10 @@ function listCommand(): CliCommand<WocliExecution> {
 		name: 'servers',
 		aliases: ['list'],
 		description: '列出配置的 MCP server（不连接 server）',
-		run: ({ options }, context) => writeCommandOutput(servers(context).map(safeServer), options, context),
+		run: ({ options }, context) => {
+			const adhoc = adHocServer(options);
+			return writeCommandOutput((adhoc ? [adhoc] : servers(context)).map(safeServer), options, context);
+		},
 	};
 }
 
@@ -69,12 +96,13 @@ function toolsCommand(): CliCommand<WocliExecution> {
 		arguments: '[server]',
 		description: '列出 MCP tools',
 		async run({ args, options }, context) {
-			const selected = args[0]
-				? [selectServer(context, args[0])]
+			const adhoc = adHocServer(options);
+			const selected = args[0] || adhoc
+				? [selectCommandServer(context, args[0], options)]
 				: servers(context).filter((s) => s.config.enabled !== false);
 			const rows: Record<string, unknown>[] = [];
 			for (const server of selected) {
-				const client = await connect(context, server.name);
+				const client = await connectEntry(context, server);
 				try {
 					for (const tool of await client.listTools(context.signal)) rows.push({ server: server.name, ...tool });
 				} finally {
@@ -92,12 +120,13 @@ function resourcesCommand(): CliCommand<WocliExecution> {
 		arguments: '[server]',
 		description: '列出 MCP resources',
 		async run({ args, options }, context) {
-			const selected = args[0]
-				? [selectServer(context, args[0])]
+			const adhoc = adHocServer(options);
+			const selected = args[0] || adhoc
+				? [selectCommandServer(context, args[0], options)]
 				: servers(context).filter((s) => s.config.enabled !== false);
 			const rows: Record<string, unknown>[] = [];
 			for (const server of selected) {
-				const client = await connect(context, server.name);
+				const client = await connectEntry(context, server);
 				try {
 					for (const resource of await client.listResources(context.signal))
 						rows.push({ server: server.name, ...resource });
@@ -116,7 +145,8 @@ function readCommand(): CliCommand<WocliExecution> {
 		arguments: '<server> <uri>',
 		description: '读取 MCP resource',
 		async run({ args, options }, context) {
-			const client = await connect(context, args[0]);
+			const entry = selectCommandServer(context, args[0], options);
+			const client = await connectEntry(context, entry);
 			try {
 				const result = await client.readResource(args[1], context.signal);
 				if (jsonOption(options)) writeCommandOutput(result, options, context);
@@ -134,9 +164,9 @@ function infoCommand(): CliCommand<WocliExecution> {
 		arguments: '<server> [tool]',
 		description: '显示 MCP server 或 tool 信息',
 		async run({ args, options }, context) {
-			const entry = selectServer(context, args[0]);
+			const entry = selectCommandServer(context, args[0], options);
 			if (!args[1]) {
-				const client = await connect(context, entry.name);
+				const client = await connectEntry(context, entry);
 				try {
 					writeCommandOutput({ server: safeServer(entry), info: client.serverInfo ?? null }, options, context);
 				} finally {
@@ -144,7 +174,7 @@ function infoCommand(): CliCommand<WocliExecution> {
 				}
 				return;
 			}
-			const client = await connect(context, entry.name);
+			const client = await connectEntry(context, entry);
 			try {
 				const tool = (await client.listTools(context.signal)).find((item) => item.name === args[1]);
 				if (!tool) throw new CliUsageError(`Unknown MCP tool: ${args[1]}`);
@@ -173,7 +203,8 @@ function callCommand(): CliCommand<WocliExecution> {
 			}
 			if (!input || typeof input !== 'object' || Array.isArray(input))
 				throw new CliUsageError('MCP tool input must be a JSON object');
-			const client = await connect(context, args[0]);
+			const entry = selectCommandServer(context, args[0], options);
+			const client = await connectEntry(context, entry);
 			try {
 				const result = await client.callTool(args[1], input as Record<string, unknown>, context.signal);
 				if (jsonOption(options)) writeCommandOutput(result, options, context);
@@ -197,8 +228,9 @@ function grepCommand(): CliCommand<WocliExecution> {
 				.replace(/\?/g, '.');
 			const regex = new RegExp(pattern, 'i');
 			const rows: Record<string, unknown>[] = [];
-			for (const server of servers(context).filter((s) => s.config.enabled !== false)) {
-				const client = await connect(context, server.name);
+			const adhoc = adHocServer(options);
+			for (const server of (adhoc ? [adhoc] : servers(context).filter((s) => s.config.enabled !== false))) {
+				const client = await connectEntry(context, server);
 				try {
 					for (const tool of await client.listTools(context.signal))
 						if (regex.test(`${server.name}/${tool.name} ${tool.description ?? ''}`))
@@ -217,6 +249,10 @@ export function createMcpCommand(): WocliCommand {
 		name: 'mcp',
 		serviceProvider: 'mcp',
 		description: 'MCP servers、tools、resources 与调用',
+		options: [
+			{ name: 'url', description: '临时 HTTP MCP URL，不写入配置' },
+			{ name: 'name', description: '临时 MCP server 名称' },
+		],
 		commands: [
 			listCommand(),
 			toolsCommand(),
