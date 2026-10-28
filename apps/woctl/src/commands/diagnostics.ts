@@ -27,7 +27,7 @@ interface CheckResult {
 	issues: CheckIssue[];
 }
 
-const strictOption = { name: 'strict', type: 'boolean' as const, description: '将 warning 也视为失败' };
+const strictOption = { name: 'strict', type: 'boolean' as const, description: 'Treat warnings as failures' };
 
 function checkContext(context: ResolvedCliContext, options: DiagnosticsOptions, strict: boolean): CheckResult {
 	const configured = context.configuredServices ?? context.services;
@@ -103,7 +103,7 @@ function checkCommand(name: string, description: string, options: DiagnosticsOpt
 export function createDiagnosticsCommands(options: DiagnosticsOptions) {
 	const info: CliCommand<WocliExecution> = {
 		name: 'info',
-		description: '显示运行环境和配置摘要',
+		description: 'Show runtime and configuration summaries',
 		async run({ options: inputOptions }, context) {
 			const resolved = context.configError ? undefined : context.getConfigContext(inputOptions);
 			const configured = resolved?.configuredServices ?? resolved?.services ?? {};
@@ -144,8 +144,8 @@ export function createDiagnosticsCommands(options: DiagnosticsOptions) {
 	};
 	return {
 		info,
-		contextCheck: checkCommand('check', '离线校验当前 context 配置', options),
-		serviceVerify: { ...checkCommand('verify', '离线校验当前 service 配置', options), aliases: ['check'] },
+		contextCheck: checkCommand('check', 'Validate the current context configuration offline', options),
+		serviceVerify: { ...checkCommand('verify', 'Validate the current service configuration offline', options), aliases: ['check'] },
 	};
 }
 

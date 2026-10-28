@@ -55,7 +55,7 @@ async function execute(line: string): Promise<void> {
 			},
 		});
 	} catch (error) {
-		append(error instanceof Error ? error.message : '命令执行失败', 'error');
+		append(error instanceof Error ? error.message : 'Command execution failed', 'error');
 	} finally {
 		active = undefined;
 		run.disabled = false;
@@ -67,7 +67,7 @@ form.addEventListener('submit', (event) => {
 	event.preventDefault();
 	void execute(input.value);
 });
-cancel.addEventListener('click', () => active?.abort(new Error('命令已取消')));
+cancel.addEventListener('click', () => active?.abort(new Error('Command cancelled')));
 element('#clear').addEventListener('click', () => transcript.replaceChildren());
 for (const button of document.querySelectorAll<HTMLButtonElement>('[data-command]'))
 	button.addEventListener('click', () => {
@@ -80,7 +80,7 @@ input.addEventListener('keydown', (event) => {
 	input.value = history[historyIndex] ?? '';
 });
 append(
-	`${APP_NAME} ${APP_VERSION}\n输入 --help 查看命令。可运行 service add system --provider system 添加离线服务。使用 ↑ / ↓ 浏览历史。`,
+	`${APP_NAME} ${APP_VERSION}\nEnter --help to view commands. Run service add system --provider system to add an offline service. Use ↑ / ↓ to browse history.`,
 	'welcome',
 );
 void execute('--help');

@@ -31,7 +31,7 @@ describe('service discovery and defaults', () => {
 		await cli.executeLine('service inspect system --format example', io);
 		expect(lines).toHaveLength(1);
 		expect(lines[0]).toContain(`${APP_NAME} service call`);
-		expect(lines[0]).not.toContain('调用示例：');
+		expect(lines[0]).not.toContain('Call examples:');
 	});
 	it('prints complete examples at 80 columns and preserves their selected context', async () => {
 		const initial = serviceConfig();
@@ -69,7 +69,7 @@ describe('service discovery and defaults', () => {
 		const schema = {
 			tools: {
 				read: {
-					description: '读取数据',
+					description: 'Read data',
 					inputSchema: { type: 'object', properties: { path: { type: 'string' } }, required: ['path'] },
 					annotations: { readOnlyHint: true },
 				},

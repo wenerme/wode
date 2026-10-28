@@ -25,13 +25,13 @@ function records(text: string, ndjson: boolean): OpenObserveJsonObject[] {
 	} catch { throw new ServiceCliInputError('Invalid OpenObserve ingestion records'); }
 }
 export const OpenObserveExtraCommands: readonly ServiceCliOperation<IOpenObserveService>[] = [
-	{ name: 'health', description: '检查 healthz 协议端点', prepare() { return async (service, options) => sanitizeOpenObserveOutput(await service.health(options)); } },
-	{ group: 'stream', name: 'settings', description: '查看 stream 设置', arguments: '[stream]', prepare({ args, options }) {
+	{ name: 'health', description: 'Check the healthz protocol endpoint', prepare() { return async (service, options) => sanitizeOpenObserveOutput(await service.health(options)); } },
+	{ group: 'stream', name: 'settings', description: 'Show stream settings', arguments: '[stream]', prepare({ args, options }) {
 		const input = { ...commonInput(options), stream: requiredStream(options, args[0]) };
 		return async (service, callOptions) => sanitizeOpenObserveOutput(await service.getStreamSettings(input, callOptions));
 	} },
-	{ group: 'stream', name: 'update', description: '更新 stream 设置，需要 writable service 与 --yes', arguments: '[stream]', mutating: true,
-		options: [{ name: 'input', description: 'JSON 设置对象、@file 或 -' }, { name: 'yes', type: 'boolean', description: '确认写入' }],
+	{ group: 'stream', name: 'update', description: 'Update stream settings; requires a writable service and --yes', arguments: '[stream]', mutating: true,
+		options: [{ name: 'input', description: 'JSON settings object, @file or -' }, { name: 'yes', type: 'boolean', description: 'Confirm writes' }],
 		async prepare(context) {
 			confirm(context);
 			const base = { ...commonInput(context.options), stream: requiredStream(context.options, context.args[0]) };
@@ -45,8 +45,8 @@ export const OpenObserveExtraCommands: readonly ServiceCliOperation<IOpenObserve
 			return async (service, callOptions) => sanitizeOpenObserveOutput(await service.updateStreamSettings({ ...base, settings }, callOptions));
 		},
 	},
-	{ group: 'stream', name: 'delete', aliases: ['rm'], description: '删除 stream，需要 writable service 与 --yes', arguments: '[stream]', mutating: true,
-		options: [{ name: 'yes', type: 'boolean', description: '确认删除' }, { name: 'delete-all', type: 'boolean', description: '同时删除关联资源' }],
+	{ group: 'stream', name: 'delete', aliases: ['rm'], description: 'Delete a stream; requires a writable service and --yes', arguments: '[stream]', mutating: true,
+		options: [{ name: 'yes', type: 'boolean', description: 'Confirm deletion' }, { name: 'delete-all', type: 'boolean', description: 'Also delete associated resources' }],
 		prepare(context) {
 			confirm(context);
 			const input = { ...commonInput(context.options), stream: requiredStream(context.options, context.args[0]), deleteAll: context.options['delete-all'] === true };
@@ -54,25 +54,25 @@ export const OpenObserveExtraCommands: readonly ServiceCliOperation<IOpenObserve
 		},
 	},
 	...(['json', 'multi'] as const).map((format): ServiceCliOperation<IOpenObserveService> => ({
-		group: 'ingest', name: format, description: format === 'json' ? '写入 JSON 对象数组' : '写入 NDJSON 对象流', arguments: '[input]', mutating: true,
-		options: [{ name: 'yes', type: 'boolean', description: '确认写入' }],
+		group: 'ingest', name: format, description: format === 'json' ? 'Ingest a JSON array of objects' : 'Ingest an NDJSON stream of objects', arguments: '[input]', mutating: true,
+		options: [{ name: 'yes', type: 'boolean', description: 'Confirm writes' }],
 		async prepare(context) {
 			confirm(context);
 			const { organization, streamType } = commonInput(context.options);
-			if (streamType !== undefined && streamType !== 'logs') throw new ServiceCliInputError('JSON/NDJSON 写入只支持 --type logs');
+			if (streamType !== undefined && streamType !== 'logs') throw new ServiceCliInputError('JSON/NDJSON ingestion only supports --type logs');
 			const stream = requiredStream(context.options);
 			const data = records(await payload(context), format === 'multi');
 			return async (service, callOptions) => sanitizeOpenObserveOutput(await (format === 'json' ? service.ingestJson({ organization, stream, records: data }, callOptions) : service.ingestMulti({ organization, stream, records: data }, callOptions)));
 		},
 	})),
-	{ name: 'values', description: '读取字段 distinct values', arguments: '<field...>',
-		options: [{ name: 'from', description: '开始时间，默认 now-1h' }, { name: 'to', description: '结束时间，默认 now' }, { name: 'size', description: '每字段值数量，1–1000' }, { name: 'keyword', description: '过滤值' }, { name: 'count', type: 'boolean', negatable: true, description: '--no-count 跳过计数' }],
+	{ name: 'values', description: 'Read distinct field values', arguments: '<field...>',
+		options: [{ name: 'from', description: 'Start time; defaults to now-1h' }, { name: 'to', description: 'End time; defaults to now' }, { name: 'size', description: 'Number of values per field, 1–1000' }, { name: 'keyword', description: 'Filter values' }, { name: 'count', type: 'boolean', negatable: true, description: 'Use --no-count to skip counting' }],
 		prepare({ args, options }) {
 			const input = { ...commonInput(options), stream: requiredStream(options), fields: [...args], ...timeRange(options), size: integerOption(options, 'size', 1, 1000), keyword: serviceCliString(options, 'keyword'), noCount: options.count === false };
 			return async (service, callOptions) => sanitizeOpenObserveOutput(await service.getValues(input, callOptions));
 		},
 	},
-	{ name: 'around', description: '读取微秒时间戳附近日志', arguments: '<microseconds>', options: [{ name: 'size', description: '结果数量，1–1000' }],
+	{ name: 'around', description: 'Read logs around a microsecond timestamp', arguments: '<microseconds>', options: [{ name: 'size', description: 'Number of results, 1–1000' }],
 		prepare({ args, options }) {
 			const key = /^\d+$/u.test(args[0] ?? '') ? Number(args[0]) : NaN;
 			if (!Number.isSafeInteger(key) || key < 0) throw new ServiceCliInputError('Invalid OpenObserve timestamp');

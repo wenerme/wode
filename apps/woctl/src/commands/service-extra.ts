@@ -37,11 +37,11 @@ export function createServiceExtraCommands(): CliCommand<WocliExecution>[] {
 	return [
 		{
 			name: 'default',
-			description: '管理当前 context 的默认 service',
+			description: 'Manage default services for the current context',
 			commands: [
 				{
 					name: 'show',
-					description: '显示合并后的 provider 默认服务',
+					description: 'Show merged default services by provider',
 					async run({ options }, context) {
 						writeCommandOutput((await loadCommandContext(context, options)).defaults, options, context);
 					},
@@ -49,7 +49,7 @@ export function createServiceExtraCommands(): CliCommand<WocliExecution>[] {
 				{
 					name: 'set',
 					arguments: '<provider> <service>',
-					description: '为 provider 选择默认服务',
+					description: 'Select the default service for a provider',
 					async run({ args, options }, context) {
 						const selected = await loadCommandContext(context, options);
 						if (!Object.hasOwn(selected.services, args[1])) throw new CliUsageError('Unknown service');
@@ -64,7 +64,7 @@ export function createServiceExtraCommands(): CliCommand<WocliExecution>[] {
 				{
 					name: 'unset',
 					arguments: '<provider>',
-					description: '移除当前 context 自有的默认服务设置',
+					description: 'Remove a default service setting defined in the current context',
 					run: ({ args, options }, context) =>
 						changeCommandConfig(context, options, (config, name) => {
 							if (!Object.hasOwn(config.contexts[name].defaults, args[0]))
@@ -79,8 +79,8 @@ export function createServiceExtraCommands(): CliCommand<WocliExecution>[] {
 		{
 			name: 'inspect',
 			arguments: '<service>',
-			description: '发现工具、必填输入和可复制的调用示例',
-			options: [{ name: 'writable', type: 'boolean', description: '同时展示非只读工具；执行仍受服务权限控制' }],
+			description: 'Discover tools, required inputs and copyable call examples',
+			options: [{ name: 'writable', type: 'boolean', description: 'Also show tools that can write; execution requires service permissions' }],
 			async run({ args, options }, context) {
 				const selection = resolveCliOutputSelection(options);
 				await context.withServices(options, async (runtime, selected) => {
@@ -104,7 +104,7 @@ export function createServiceExtraCommands(): CliCommand<WocliExecution>[] {
 							options,
 							context,
 						);
-						if (tools.length) context.stdout(`\n调用示例：\n${tools.map((tool) => tool.example).join('\n')}\n`);
+						if (tools.length) context.stdout(`\nCall examples:\n${tools.map((tool) => tool.example).join('\n')}\n`);
 					} else writeCommandOutput(tools, options, context);
 				});
 			},

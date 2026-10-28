@@ -21,7 +21,7 @@ const inputs = {
 
 const tools: ServiceSchema['tools'] = {
 	search: {
-		description: '搜索网页',
+		description: 'Search the web',
 		inputSchema: {
 			type: 'object',
 			properties: {
@@ -35,7 +35,7 @@ const tools: ServiceSchema['tools'] = {
 		annotations: { readOnlyHint: true, destructiveHint: false },
 	},
 	fetch: {
-		description: '获取网页内容',
+		description: 'Fetch web page content',
 		inputSchema: {
 			type: 'object',
 			properties: { url: { type: 'string', format: 'uri' }, maxCharacters: { type: 'integer', minimum: 1 } },

@@ -22,12 +22,12 @@ export function createBuiltinProviders(info: Record<string, unknown> = {}): Serv
 						return {
 							tools: {
 								info: {
-									description: '运行环境信息',
+								description: 'Runtime environment information',
 									inputSchema: { type: 'object' },
 									annotations: { readOnlyHint: true },
 								},
 								echo: {
-									description: '返回输入文本',
+									description: 'Return the input text',
 									inputSchema: { type: 'object', properties: { text: { type: 'string' } }, required: ['text'] },
 									annotations: { readOnlyHint: true },
 								},
@@ -70,16 +70,16 @@ interface SystemClient {
 }
 export const SystemCliDefinition: ServiceCliDefinition<SystemClient> = {
 	name: 'system',
-	description: '离线系统服务',
+	description: 'Offline system service',
 	commands: [
 		{
 			name: 'info',
-			description: '显示运行环境',
+			description: 'Show runtime information',
 			prepare: () => (client, options) => client.info({}, options),
 		},
 		{
 			name: 'echo',
-			description: '返回文本，验证 service 调用链',
+			description: 'Echo text to verify service calls',
 			arguments: '<text>',
 			prepare:
 				({ args }) =>

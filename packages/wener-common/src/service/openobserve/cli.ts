@@ -22,10 +22,10 @@ function records(value: unknown[]): CliTable {
 export const OpenObserveCliDefinition: ServiceCliDefinition<IOpenObserveService> = {
 	name: 'openobserve',
 	aliases: ['oo'],
-	description: '查询 OpenObserve 日志、指标和 trace',
+	description: 'Query OpenObserve logs, metrics and traces',
 	options: [
-		{ name: 'organization', aliases: ['org'], description: '覆盖组织名称' },
-		{ name: 'stream', description: 'stream 名称' },
+		{ name: 'organization', aliases: ['org'], description: 'Override the organization name' },
+		{ name: 'stream', description: 'Stream name' },
 		{ name: 'stream-type', aliases: ['type'], description: 'logs | metrics | traces' },
 	],
 	commands: [
@@ -34,17 +34,17 @@ export const OpenObserveCliDefinition: ServiceCliDefinition<IOpenObserveService>
 			group: 'log',
 			name: 'query',
 			aliases: ['q', 'search'],
-			description: '查询日志 stream',
+			description: 'Query a log stream',
 			arguments: '[sql...]',
 			options: [
-				{ name: 'from', description: '开始时间，默认 now-1h' },
-				{ name: 'to', description: '结束时间，默认 now' },
-				{ name: 'offset', description: '结果偏移' },
-				{ name: 'size', description: '返回数量，1–1000' },
-				{ name: 'limit', description: '--size 同义选项' },
-				{ name: 'timeout', description: '服务端超时，1–60 秒' },
-				{ name: 'where', description: '根据 --stream 生成 WHERE 查询' },
-				{ name: 'text', description: '根据 --stream 生成 match_all 查询' },
+				{ name: 'from', description: 'Start time; defaults to now-1h' },
+				{ name: 'to', description: 'End time; defaults to now' },
+				{ name: 'offset', description: 'Result offset' },
+				{ name: 'size', description: 'Number of results, 1–1000' },
+				{ name: 'limit', description: 'Alias for --size' },
+				{ name: 'timeout', description: 'Server timeout, 1–60 seconds' },
+				{ name: 'where', description: 'Generate a WHERE query using --stream' },
+				{ name: 'text', description: 'Generate a match_all query using --stream' },
 			],
 			table: (value) => records((value as OpenObserveSearchResult).hits),
 			async prepare(context) {
@@ -57,17 +57,17 @@ export const OpenObserveCliDefinition: ServiceCliDefinition<IOpenObserveService>
 			group: 'metric',
 			name: 'query',
 			aliases: ['q', 'sql'],
-			description: '查询 metrics stream',
+			description: 'Query a metrics stream',
 			arguments: '[sql...]',
 			options: [
-				{ name: 'from', description: '开始时间，默认 now-1h' },
-				{ name: 'to', description: '结束时间，默认 now' },
-				{ name: 'offset', description: '结果偏移' },
-				{ name: 'size', description: '返回数量，1–1000' },
-				{ name: 'limit', description: '--size 同义选项' },
-				{ name: 'timeout', description: '服务端超时，1–60 秒' },
-				{ name: 'where', description: '根据 --stream 生成 WHERE 查询' },
-				{ name: 'text', description: '根据 --stream 生成 match_all 查询' },
+				{ name: 'from', description: 'Start time; defaults to now-1h' },
+				{ name: 'to', description: 'End time; defaults to now' },
+				{ name: 'offset', description: 'Result offset' },
+				{ name: 'size', description: 'Number of results, 1–1000' },
+				{ name: 'limit', description: 'Alias for --size' },
+				{ name: 'timeout', description: 'Server timeout, 1–60 seconds' },
+				{ name: 'where', description: 'Generate a WHERE query using --stream' },
+				{ name: 'text', description: 'Generate a match_all query using --stream' },
 			],
 			table: (value) => records((value as OpenObserveSearchResult).hits),
 			async prepare(context) {
@@ -78,7 +78,7 @@ export const OpenObserveCliDefinition: ServiceCliDefinition<IOpenObserveService>
 		},
 		{
 			name: 'status',
-			description: '检查健康状态和组织认证',
+			description: 'Check service health and organization authentication',
 			prepare({ options }) {
 				const input = commonInput(options);
 				return async (service, callOptions) => sanitizeOpenObserveOutput(await service.status(input, callOptions));
@@ -88,12 +88,12 @@ export const OpenObserveCliDefinition: ServiceCliDefinition<IOpenObserveService>
 			group: 'stream',
 			name: 'list',
 			aliases: ['ls'],
-			description: '列出 streams',
+			description: 'List streams',
 			options: [
-				{ name: 'offset', description: '结果偏移' },
-				{ name: 'limit', description: '返回数量，1–1000' },
-				{ name: 'search', description: '名称关键词' },
-				{ name: 'fetch-schema', type: 'boolean', description: '同时读取 schema' },
+				{ name: 'offset', description: 'Result offset' },
+				{ name: 'limit', description: 'Number of results, 1–1000' },
+				{ name: 'search', description: 'Name keyword' },
+				{ name: 'fetch-schema', type: 'boolean', description: 'Also fetch schemas' },
 			],
 			table: (value) => records((value as OpenObserveListStreamResult).streams),
 			prepare({ options }) {
@@ -110,12 +110,12 @@ export const OpenObserveCliDefinition: ServiceCliDefinition<IOpenObserveService>
 		{
 			group: 'stream',
 			name: 'schema',
-			description: '查看 stream schema',
+			description: 'Show a stream schema',
 			arguments: '[stream]',
 			options: [
-				{ name: 'offset', description: '字段偏移' },
-				{ name: 'limit', description: '字段数量，1–1000' },
-				{ name: 'keyword', description: '字段关键词' },
+				{ name: 'offset', description: 'Field offset' },
+				{ name: 'limit', description: 'Number of fields, 1–1000' },
+				{ name: 'keyword', description: 'Field keyword' },
 			],
 			table: (value) => records((value as OpenObserveStreamSchemaResult).fields),
 			prepare({ args, options }) {
@@ -133,17 +133,17 @@ export const OpenObserveCliDefinition: ServiceCliDefinition<IOpenObserveService>
 		{
 			name: 'query',
 			aliases: ['q', 'search'],
-			description: '执行只读 SQL 或生成全文/过滤查询',
+			description: 'Run read-only SQL or generate a full-text or filter query',
 			arguments: '[sql...]',
 			options: [
-				{ name: 'from', description: '开始时间，默认 now-1h' },
-				{ name: 'to', description: '结束时间，默认 now' },
-				{ name: 'offset', description: '结果偏移' },
-				{ name: 'size', description: '返回数量，1–1000' },
-				{ name: 'limit', description: '--size 同义选项' },
-				{ name: 'timeout', description: '服务端超时，1–60 秒' },
-				{ name: 'where', description: '根据 --stream 生成 WHERE 查询' },
-				{ name: 'text', description: '根据 --stream 生成 match_all 查询' },
+				{ name: 'from', description: 'Start time; defaults to now-1h' },
+				{ name: 'to', description: 'End time; defaults to now' },
+				{ name: 'offset', description: 'Result offset' },
+				{ name: 'size', description: 'Number of results, 1–1000' },
+				{ name: 'limit', description: 'Alias for --size' },
+				{ name: 'timeout', description: 'Server timeout, 1–60 seconds' },
+				{ name: 'where', description: 'Generate a WHERE query using --stream' },
+				{ name: 'text', description: 'Generate a match_all query using --stream' },
 			],
 			table: (value) => records((value as OpenObserveSearchResult).hits),
 			async prepare(context) {
@@ -157,17 +157,17 @@ export const OpenObserveCliDefinition: ServiceCliDefinition<IOpenObserveService>
 			group: 'trace',
 			name: 'query',
 			aliases: ['q', 'sql'],
-			description: '查询 traces stream',
+			description: 'Query a traces stream',
 			arguments: '[sql...]',
 			options: [
-				{ name: 'from', description: '开始时间，默认 now-1h' },
-				{ name: 'to', description: '结束时间，默认 now' },
-				{ name: 'offset', description: '结果偏移' },
-				{ name: 'size', description: '返回数量，1–1000' },
-				{ name: 'limit', description: '--size 同义选项' },
-				{ name: 'timeout', description: '服务端超时，1–60 秒' },
-				{ name: 'where', description: '根据 --stream 生成 WHERE 查询' },
-				{ name: 'text', description: '根据 --stream 生成 match_all 查询' },
+				{ name: 'from', description: 'Start time; defaults to now-1h' },
+				{ name: 'to', description: 'End time; defaults to now' },
+				{ name: 'offset', description: 'Result offset' },
+				{ name: 'size', description: 'Number of results, 1–1000' },
+				{ name: 'limit', description: 'Alias for --size' },
+				{ name: 'timeout', description: 'Server timeout, 1–60 seconds' },
+				{ name: 'where', description: 'Generate a WHERE query using --stream' },
+				{ name: 'text', description: 'Generate a match_all query using --stream' },
 			],
 			table: (value) => records((value as OpenObserveSearchResult).hits),
 			async prepare(context) {
@@ -180,15 +180,15 @@ export const OpenObserveCliDefinition: ServiceCliDefinition<IOpenObserveService>
 			group: 'trace',
 			name: 'list',
 			aliases: ['ls'],
-			description: '查看最近 trace 摘要',
+			description: 'Show recent trace summaries',
 			options: [
-				{ name: 'from', description: '开始时间，默认 now-1h' },
-				{ name: 'to', description: '结束时间，默认 now' },
-				{ name: 'offset', description: '结果偏移' },
-				{ name: 'size', description: '返回数量，1–1000' },
-				{ name: 'limit', description: '--size 同义选项' },
-				{ name: 'timeout', description: '服务端超时，1–60 秒' },
-				{ name: 'filter', description: 'trace 过滤表达式' },
+				{ name: 'from', description: 'Start time; defaults to now-1h' },
+				{ name: 'to', description: 'End time; defaults to now' },
+				{ name: 'offset', description: 'Result offset' },
+				{ name: 'size', description: 'Number of results, 1–1000' },
+				{ name: 'limit', description: 'Alias for --size' },
+				{ name: 'timeout', description: 'Server timeout, 1–60 seconds' },
+				{ name: 'filter', description: 'Trace filter expression' },
 				{ name: 'sort-by', description: 'start_time | duration' },
 				{ name: 'sort-order', description: 'asc | desc' },
 			],
@@ -196,7 +196,7 @@ export const OpenObserveCliDefinition: ServiceCliDefinition<IOpenObserveService>
 			prepare({ options }) {
 				const { streamType, ...common } = queryInput(options);
 				if (streamType !== undefined && streamType !== 'traces')
-					throw new ServiceCliInputError('Trace 查询要求 --type traces');
+					throw new ServiceCliInputError('Trace queries require --type traces');
 				const sortBy = serviceCliString(options, 'sort-by');
 				const sortOrder = serviceCliString(options, 'sort-order');
 				if (sortBy !== undefined && !['start_time', 'duration'].includes(sortBy))

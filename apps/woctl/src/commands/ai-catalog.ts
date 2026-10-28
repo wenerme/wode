@@ -36,13 +36,13 @@ function providerCopy(
 export function createAiCatalogCommands(serviceProviders: () => string[]): CliCommand<WocliExecution>[] {
 	const provider: CliCommand<WocliExecution> = {
 		name: 'provider',
-		description: '管理 AI provider 连接配置',
+		description: 'Manage AI provider connections',
 		commands: [
 			{
 				name: 'list',
 				aliases: ['ls'],
-				description: '列出当前 context 的 AI provider（隐藏凭据）',
-				options: [{ name: 'search', description: '按名称过滤' }],
+				description: 'List AI providers in the current context with credentials hidden',
+				options: [{ name: 'search', description: 'Filter by name' }],
 				async run({ options }, context) {
 					const resolved = await loadCommandContext(context, options);
 					const search = optionString(options, 'search')?.toLowerCase();
@@ -58,7 +58,7 @@ export function createAiCatalogCommands(serviceProviders: () => string[]): CliCo
 			{
 				name: 'show',
 				arguments: '<name>',
-				description: '显示 AI provider 的公开配置',
+				description: 'Show public AI provider configuration',
 				async run({ args, options }, context) {
 					const resolved = await loadCommandContext(context, options);
 					if (!Object.hasOwn(resolved.providers ?? {}, args[0])) throw new CliUsageError('Unknown AI provider');
@@ -72,13 +72,13 @@ export function createAiCatalogCommands(serviceProviders: () => string[]): CliCo
 			{
 				name: 'add',
 				arguments: '<name>',
-				description: '添加 AI provider；凭据优先使用环境变量引用',
+				description: 'Add an AI provider; prefer environment variable references for credentials',
 				options: [
 					{ name: 'api', description: 'openai | openai-response | anthropic | gemini' },
 					{ name: 'url', description: 'Provider base URL' },
-					{ name: 'title', description: '显示标题' },
-					{ name: 'api-key-env', description: 'Node 宿主读取的环境变量名' },
-					{ name: 'input', description: '完整 provider JSON 或 @文件' },
+					{ name: 'title', description: 'Display title' },
+					{ name: 'api-key-env', description: 'Environment variable name read by the Node host' },
+					{ name: 'input', description: 'Complete provider JSON or @file' },
 				],
 				async run({ args, options }, context) {
 					const raw = optionString(options, 'input');
@@ -110,7 +110,7 @@ export function createAiCatalogCommands(serviceProviders: () => string[]): CliCo
 			{
 				name: 'remove',
 				arguments: '<name>',
-				description: '删除当前 context 自有的 AI provider',
+				description: 'Remove an AI provider defined in the current context',
 				run: ({ args, options }, context) =>
 					changeCommandConfig(context, options, (config, name) => {
 						const selected = config.contexts[name];
@@ -127,7 +127,7 @@ export function createAiCatalogCommands(serviceProviders: () => string[]): CliCo
 			},
 			{
 				name: 'types',
-				description: '列出 service provider 插件（system/http 等）',
+				description: 'List service provider plugins (system/http, etc.)',
 				run: ({ options }, context) => {
 					writeCommandOutput(
 						serviceProviders().map((name) => ({ name })),
@@ -140,15 +140,15 @@ export function createAiCatalogCommands(serviceProviders: () => string[]): CliCo
 	};
 	const model: CliCommand<WocliExecution> = {
 		name: 'model',
-		description: '管理 AI 模型目录与默认模型',
+		description: 'Manage the AI model catalog and default model',
 		commands: [
 			{
 				name: 'list',
 				aliases: ['ls'],
-				description: '列出配置的模型',
+				description: 'List configured models',
 				options: [
-					{ name: 'provider', description: '按 provider 过滤' },
-					{ name: 'search', description: '按模型名过滤' },
+					{ name: 'provider', description: 'Filter by provider' },
+					{ name: 'search', description: 'Filter by model name' },
 				],
 				async run({ options }, context) {
 					const rows = listAiModels(await loadCommandContext(context, options));
@@ -166,14 +166,14 @@ export function createAiCatalogCommands(serviceProviders: () => string[]): CliCo
 			{
 				name: 'add',
 				arguments: '<name>',
-				description: '向 provider 添加模型别名',
+				description: 'Add a model alias to a provider',
 				options: [
-					{ name: 'provider', description: 'Provider 名称（必填）' },
-					{ name: 'id', description: '上游模型 ID，默认使用别名' },
-					{ name: 'title', description: '显示标题' },
-					{ name: 'max-output-tokens', description: '模型默认输出 token 上限' },
-					{ name: 'context-size', description: '上下文大小' },
-					{ name: 'temperature', description: '默认温度' },
+					{ name: 'provider', description: 'Provider name (required)' },
+					{ name: 'id', description: 'Upstream model ID; defaults to the alias' },
+					{ name: 'title', description: 'Display title' },
+					{ name: 'max-output-tokens', description: 'Default model output token limit' },
+					{ name: 'context-size', description: 'Context size' },
+					{ name: 'temperature', description: 'Default temperature' },
 				],
 				async run({ args, options }, context) {
 					const providerName = optionString(options, 'provider');
@@ -196,7 +196,7 @@ export function createAiCatalogCommands(serviceProviders: () => string[]): CliCo
 			{
 				name: 'show',
 				arguments: '<model>',
-				description: '显示模型与解析后的 provider（隐藏凭据）',
+				description: 'Show the model and resolved provider with credentials hidden',
 				async run({ args, options }, context) {
 					const selected = await loadCommandContext(context, options);
 					const resolved = resolveAiModel(selected, { model: args[0], requireKey: false });
@@ -217,7 +217,7 @@ export function createAiCatalogCommands(serviceProviders: () => string[]): CliCo
 			{
 				name: 'use',
 				arguments: '<model>',
-				description: '为当前 context 选择默认模型',
+				description: 'Select the default model for the current context',
 				async run({ args, options }, context) {
 					const resolved = resolveAiModel(await loadCommandContext(context, options), {
 						model: args[0],
@@ -231,7 +231,7 @@ export function createAiCatalogCommands(serviceProviders: () => string[]): CliCo
 			{
 				name: 'remove',
 				arguments: '<model>',
-				description: '删除模型别名',
+				description: 'Remove a model alias',
 				async run({ args, options }, context) {
 					await changeCommandConfig(context, options, (config, name) => {
 						const selected = resolveCliContext(config, name);

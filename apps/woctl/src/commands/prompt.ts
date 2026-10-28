@@ -24,8 +24,8 @@ import type { WocliExecution } from '../createWocliCli';
 import { getPromptPreset, presetMessages, promptVariables } from './prompt-input';
 
 const variableOptions = [
-	{ name: 'var', description: '模板变量 name=value 或 name=@file，可重复', repeatable: true },
-	{ name: 'input', description: '模板变量 name=value，可重复', repeatable: true },
+	{ name: 'var', description: 'Template variable name=value or name=@file; repeatable', repeatable: true },
+	{ name: 'input', description: 'Template variable name=value; repeatable', repeatable: true },
 ];
 
 function mode(options: Readonly<Record<string, unknown>>, fallback = 'text'): string {
@@ -38,31 +38,31 @@ export function createPromptCommand(): CliCommand<WocliExecution> {
 	return {
 		name: 'prompt',
 		aliases: ['p'],
-		description: '使用当前 context 的模型生成文本，支持模板与请求预览',
+		description: 'Generate text with a model in the current context, with templates and request previews',
 		output: 'custom',
 		arguments: '[text...]',
 		options: [
-			{ name: 'model', aliases: ['m'], description: '模型别名或 provider/model' },
-			{ name: 'provider', description: '指定 AI provider' },
-			{ name: 'protocol', description: '覆盖协议：openai/openai-response/anthropic/gemini' },
-			{ name: 'prompt', aliases: ['p'], description: '额外提示词、@文件或 -；可重复', repeatable: true },
-			{ name: 'system', aliases: ['s'], description: '系统提示词或 @文件' },
-			{ name: 'message', description: '附加 role:content 消息，可重复', repeatable: true },
-			{ name: 'temperature', description: '采样温度 0..2' },
-			{ name: 'top-p', description: 'Top-p 采样 0..1' },
-			{ name: 'max-output-tokens', description: '输出 token 上限（Anthropic 必须显式配置）' },
-			{ name: 'output', aliases: ['o'], description: 'text | json 完整结果 | jsonl | markdown' },
-			{ name: 'json', type: 'boolean', description: '要求模型返回 JSON object' },
-			{ name: 'jsonschema', description: '要求 JSON Schema：JSON 或 @文件' },
-			{ name: 'dump', type: 'boolean', description: '仅输出隐藏凭据后的请求，不访问网络' },
-			{ name: 'stream', type: 'boolean', negatable: true, description: '通过 SSE 流式生成；Node 支持逐块输出' },
+			{ name: 'model', aliases: ['m'], description: 'Model alias or provider/model' },
+			{ name: 'provider', description: 'Select an AI provider' },
+			{ name: 'protocol', description: 'Override protocol: openai/openai-response/anthropic/gemini' },
+			{ name: 'prompt', aliases: ['p'], description: 'Additional prompt, @file or -; repeatable', repeatable: true },
+			{ name: 'system', aliases: ['s'], description: 'System prompt or @file' },
+			{ name: 'message', description: 'Additional role:content message; repeatable', repeatable: true },
+			{ name: 'temperature', description: 'Sampling temperature, 0..2' },
+			{ name: 'top-p', description: 'Top-p sampling, 0..1' },
+			{ name: 'max-output-tokens', description: 'Output token limit (must be explicitly configured for Anthropic)' },
+			{ name: 'output', aliases: ['o'], description: 'text | json (complete result) | jsonl | markdown' },
+			{ name: 'json', type: 'boolean', description: 'Request a JSON object from the model' },
+			{ name: 'jsonschema', description: 'Required JSON Schema: JSON or @file' },
+			{ name: 'dump', type: 'boolean', description: 'Show the request with credentials hidden without network access' },
+			{ name: 'stream', type: 'boolean', negatable: true, description: 'Stream generation over SSE; Node supports incremental output' },
 			...variableOptions,
 		],
 		commands: [
 			{
 				name: 'list',
 				aliases: ['ls'],
-				description: '列出当前 context 的 prompt presets',
+				description: 'List prompt presets in the current context',
 				async run({ options }, context) {
 					const resolved = await loadCommandContext(context, options);
 					writeCommandOutput(
@@ -80,7 +80,7 @@ export function createPromptCommand(): CliCommand<WocliExecution> {
 			{
 				name: 'show',
 				arguments: '<name>',
-				description: '显示 prompt preset；--json 输出完整配置',
+				description: 'Show a prompt preset; --json outputs the complete configuration',
 				async run({ args, options }, context) {
 					const resolved = await loadCommandContext(context, options);
 					const preset = await getPromptPreset(args[0], resolved.prompts ?? {}, context);
@@ -91,8 +91,8 @@ export function createPromptCommand(): CliCommand<WocliExecution> {
 			{
 				name: 'import',
 				arguments: '<name> [source]',
-				description: '导入 .prompt.md 的 YAML frontmatter 和模板正文',
-				options: [{ name: 'text', description: '直接导入模板文本' }],
+				description: 'Import YAML frontmatter and template content from .prompt.md',
+				options: [{ name: 'text', description: 'Import template text directly' }],
 				async run({ args, options }, context) {
 					const text = optionString(options, 'text');
 					const source =
@@ -111,7 +111,7 @@ export function createPromptCommand(): CliCommand<WocliExecution> {
 			{
 				name: 'remove',
 				arguments: '<name>',
-				description: '删除当前 context 自有的 prompt preset',
+				description: 'Remove a prompt preset defined in the current context',
 				run: ({ args, options }, context) =>
 					changeCommandConfig(context, options, (config, name) => {
 						if (!Object.hasOwn(config.contexts[name].prompts ?? {}, args[0]))
@@ -122,7 +122,7 @@ export function createPromptCommand(): CliCommand<WocliExecution> {
 			{
 				name: 'render',
 				arguments: '<name>',
-				description: '只渲染模板与变量，不调用模型',
+				description: 'Render a template with variables without calling a model',
 				output: 'custom',
 				options: variableOptions,
 				async run({ args, options }, context) {

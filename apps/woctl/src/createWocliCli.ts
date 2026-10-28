@@ -117,8 +117,8 @@ export function createWocliServiceCommand<S>(
 		serviceProvider: provider,
 		...createServiceCliCommand(definition, {
 			options: [
-				{ name: 'service', description: '选择服务名称' },
-				{ name: 'list-services', type: 'boolean', description: '列出当前 context 可用的同类服务' },
+				{ name: 'service', description: 'Select a service by name' },
+				{ name: 'list-services', type: 'boolean', description: 'List available services of the same type in the current context' },
 			],
 			readText,
 			async root(options, context: WocliExecution, help) {
@@ -188,13 +188,13 @@ export function createWocliCli(host: WocliHost) {
 		{
 			name: 'context',
 			aliases: ['c'],
-			description: '为本次命令选择 context',
+			description: 'Select a context for this command',
 		},
-		{ name: 'json', type: 'boolean', description: '完整 JSON 输出' },
-		{ name: 'output', aliases: ['o'], description: '输出格式：table、json、yaml、csv、md 等' },
-		{ name: 'format', aliases: ['f'], description: '输出字段，例如 name,provider' },
-		{ name: 'log-level', description: '日志级别：trace、verbose、debug、info、warning、error' },
-		{ name: 'verbose', type: 'boolean', description: '启用 verbose 日志' },
+		{ name: 'json', type: 'boolean', description: 'Complete JSON output' },
+		{ name: 'output', aliases: ['o'], description: 'Output format: table, json, yaml, csv, md, etc.' },
+		{ name: 'format', aliases: ['f'], description: 'Output fields, e.g. name,provider' },
+		{ name: 'log-level', description: 'Log level: trace, verbose, debug, info, warning, error' },
+		{ name: 'verbose', type: 'boolean', description: 'Enable verbose logging' },
 	];
 	const cli = new Cli<WocliExecution>(APP_NAME, { options: globalOptions });
 	const registrations: Array<{ method: 'add' | 'merge'; command: WocliCommand }> = [];
@@ -210,7 +210,7 @@ export function createWocliCli(host: WocliHost) {
 	}
 	add({
 		name: 'version',
-		description: '显示版本',
+		description: 'Show version',
 		run: (_input, context) => {
 			context.stdout(VERSION);
 		},
@@ -236,11 +236,11 @@ export function createWocliCli(host: WocliHost) {
 	}
 	add({
 		name: 'context',
-		description: '管理执行环境',
+		description: 'Manage execution contexts',
 		commands: [
 			{
 				name: 'list',
-				description: '列出 context',
+				description: 'List contexts',
 				async run({ options }, context) {
 					const config = await context.host.config.load({ context: text(options, 'context') });
 					output(
@@ -257,7 +257,7 @@ export function createWocliCli(host: WocliHost) {
 			{
 				name: 'show',
 				arguments: '[name]',
-				description: '显示合并后的 context（隐藏凭据）',
+				description: 'Show the merged context with credentials hidden',
 				async run({ args, options }, context) {
 					const selected = args[0] ?? text(options, 'context');
 					output(describeCliContext(context.getConfigContext({ context: selected })), options, context);
@@ -266,7 +266,7 @@ export function createWocliCli(host: WocliHost) {
 			{
 				name: 'create',
 				arguments: '<name>',
-				description: '创建 context',
+				description: 'Create a context',
 				async run({ args, options }, context) {
 					context.signal.throwIfAborted();
 					if (context.host.config.createContext) {
@@ -283,7 +283,7 @@ export function createWocliCli(host: WocliHost) {
 			{
 				name: 'use',
 				arguments: '<name>',
-				description: '切换默认 context',
+				description: 'Switch the default context',
 				run: ({ args, options }, context) =>
 					change(
 						context,
@@ -298,7 +298,7 @@ export function createWocliCli(host: WocliHost) {
 			{
 				name: 'remove',
 				arguments: '<name>',
-				description: '删除非当前 context',
+				description: 'Remove a context other than the current one',
 				run: ({ args, options }, context) =>
 					change(
 						context,
@@ -315,11 +315,11 @@ export function createWocliCli(host: WocliHost) {
 	});
 	add({
 		name: 'service',
-		description: '配置、发现和调用 service',
+		description: 'Configure, discover and call services',
 		commands: [
 			{
 				name: 'providers',
-				description: '列出 service provider 插件',
+				description: 'List service provider plugins',
 				run: ({ options }, context) => {
 					output(
 						providers.list().map((name) => ({ name })),
@@ -330,7 +330,7 @@ export function createWocliCli(host: WocliHost) {
 			},
 			{
 				name: 'list',
-				description: '列出当前 context 的服务',
+				description: 'List services in the current context',
 				async run({ options }, context) {
 					await context.withServices(options, async (_runtime, resolved) => {
 						output(
@@ -351,12 +351,12 @@ export function createWocliCli(host: WocliHost) {
 			{
 				name: 'add',
 				arguments: '<name>',
-				description: '在当前 context 中添加服务',
+				description: 'Add a service to the current context',
 				options: [
-					{ name: 'provider', description: 'provider 名称：system、http 等' },
-					{ name: 'url', description: 'HTTP runtime 的 base URL' },
-					{ name: 'id', description: '远端 service ID，默认使用服务名称' },
-					{ name: 'writable', type: 'boolean', description: '允许此服务调用写操作' },
+					{ name: 'provider', description: 'Provider name: system, http, etc.' },
+					{ name: 'url', description: 'Base URL of the HTTP runtime' },
+					{ name: 'id', description: 'Remote service ID; defaults to the service name' },
+					{ name: 'writable', type: 'boolean', description: 'Allow write operations for this service' },
 				],
 				run: ({ args, options }, context) =>
 					change(context, options, (config) => {
@@ -378,7 +378,7 @@ export function createWocliCli(host: WocliHost) {
 			{
 				name: 'remove',
 				arguments: '<name>',
-				description: '删除当前 context 自身配置的服务',
+				description: 'Remove a service defined in the current context',
 				run: ({ args, options }, context) =>
 					change(context, options, (config) => {
 						const selected = resolveCliContext(config, text(options, 'context'));
@@ -390,7 +390,7 @@ export function createWocliCli(host: WocliHost) {
 			{
 				name: 'schema',
 				arguments: '<service>',
-				description: '显示 service 工具定义',
+				description: 'Show service tool definitions',
 				async run({ args, options }, context) {
 					await context.withServices(options, async (runtime) => {
 						output(
@@ -404,8 +404,8 @@ export function createWocliCli(host: WocliHost) {
 			{
 				name: 'call',
 				arguments: '<service> <tool>',
-				description: '调用 service 工具',
-				options: [{ name: 'input', aliases: ['i'], description: 'JSON、@文件，或 - 读取 stdin；默认 {}' }, { name: 'yes', type: 'boolean', description: '确认调用写操作' }],
+				description: 'Call a service tool',
+				options: [{ name: 'input', aliases: ['i'], description: 'JSON, @file, or - to read stdin; defaults to {}' }, { name: 'yes', type: 'boolean', description: 'Confirm a write operation' }],
 				async run({ args, options }, context) {
 					const source = text(options, 'input') ?? '{}';
 					const deferred = source.startsWith('@') || source === '-';
@@ -452,10 +452,10 @@ export function createWocliCli(host: WocliHost) {
 			createPrometheusServiceToolClient(runtime, service, { signal }),
 		),
 	);
-	merge({ name: 'service', description: '服务配置与调用', commands: createServiceExtraCommands() });
-	merge({ name: 'context', aliases: ['ctx'], description: '管理执行环境与 AI 目录', commands: aiCatalog });
-	merge({ name: 'context', description: '管理执行环境', commands: [diagnostics.contextCheck] });
-	merge({ name: 'service', description: '配置、发现和调用 service', commands: [diagnostics.serviceVerify] });
+	merge({ name: 'service', description: 'Service configuration and calls', commands: createServiceExtraCommands() });
+	merge({ name: 'context', aliases: ['ctx'], description: 'Manage execution contexts and the AI catalog', commands: aiCatalog });
+	merge({ name: 'context', description: 'Manage execution contexts', commands: [diagnostics.contextCheck] });
+	merge({ name: 'service', description: 'Configure, discover and call services', commands: [diagnostics.serviceVerify] });
 	add(createMcpCommand());
 	add(createPromptCommand());
 	for (const command of createRenderCommands()) add(command);
@@ -689,7 +689,7 @@ function filterCommand(
 			runRaw: undefined,
 			arguments: undefined,
 			usage: undefined,
-			description: '管理和渲染本地 prompt presets',
+			description: 'Manage and render local prompt presets',
 			options: command.options?.filter((option) => ['output', 'json', 'var', 'input'].includes(option.name)),
 		};
 	return { ...command, commands };

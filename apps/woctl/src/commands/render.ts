@@ -7,17 +7,17 @@ function command(markdown: boolean): CliCommand<WocliExecution> {
 	return {
 		name: markdown ? 'markdown' : 'render',
 		aliases: markdown ? ['md'] : undefined,
-		description: markdown ? '渲染 Markdown 为终端文本' : '渲染 Markdown、JSON、YAML、JSONL 或文本',
+		description: markdown ? 'Render Markdown as terminal text' : 'Render Markdown, JSON, YAML, JSONL or text',
 		arguments: '[source]',
 		output: 'custom',
 		options: [
-			{ name: 'text', description: '内联文本；不读取文件或 stdin' },
+			{ name: 'text', description: 'Inline text; skips file and stdin input' },
 			{ name: 'input', description: 'auto | markdown | md | json | jsonl | yaml | code | text' },
 			{ name: 'format', aliases: ['f'], description: 'terminal | text | md | json | jsonl | yaml | csv | table' },
-			{ name: 'output', aliases: ['o'], description: '输出文件；- 或省略为 stdout' },
-			{ name: 'width', description: '终端显示宽度，20..4096' },
-			{ name: 'color', type: 'boolean', negatable: true, description: 'ANSI 样式；默认由宿主终端决定' },
-			{ name: 'link', description: 'auto | always | never；always 允许 OSC 8 链接' },
+			{ name: 'output', aliases: ['o'], description: 'Output file; - or omitted for stdout' },
+			{ name: 'width', description: 'Terminal display width, 20..4096' },
+			{ name: 'color', type: 'boolean', negatable: true, description: 'ANSI styling; defaults to the host terminal setting' },
+			{ name: 'link', description: 'auto | always | never; always enables OSC 8 links' },
 		],
 		async run({ args, options }, context) {
 			const inline = optionString(options, 'text');

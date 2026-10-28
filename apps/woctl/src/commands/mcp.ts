@@ -82,7 +82,7 @@ function listCommand(): CliCommand<WocliExecution> {
 	return {
 		name: 'servers',
 		aliases: ['list'],
-		description: '列出配置的 MCP server（不连接 server）',
+		description: 'List configured MCP servers without connecting',
 		run: ({ options }, context) => {
 			const adhoc = adHocServer(options);
 			return writeCommandOutput((adhoc ? [adhoc] : servers(context)).map(safeServer), options, context);
@@ -94,7 +94,7 @@ function toolsCommand(): CliCommand<WocliExecution> {
 	return {
 		name: 'tools',
 		arguments: '[server]',
-		description: '列出 MCP tools',
+		description: 'List MCP tools',
 		async run({ args, options }, context) {
 			const adhoc = adHocServer(options);
 			const selected = args[0] || adhoc
@@ -118,7 +118,7 @@ function resourcesCommand(): CliCommand<WocliExecution> {
 	return {
 		name: 'resources',
 		arguments: '[server]',
-		description: '列出 MCP resources',
+		description: 'List MCP resources',
 		async run({ args, options }, context) {
 			const adhoc = adHocServer(options);
 			const selected = args[0] || adhoc
@@ -143,7 +143,7 @@ function readCommand(): CliCommand<WocliExecution> {
 	return {
 		name: 'read',
 		arguments: '<server> <uri>',
-		description: '读取 MCP resource',
+		description: 'Read an MCP resource',
 		async run({ args, options }, context) {
 			const entry = selectCommandServer(context, args[0], options);
 			const client = await connectEntry(context, entry);
@@ -162,7 +162,7 @@ function infoCommand(): CliCommand<WocliExecution> {
 	return {
 		name: 'info',
 		arguments: '<server> [tool]',
-		description: '显示 MCP server 或 tool 信息',
+		description: 'Show MCP server or tool information',
 		async run({ args, options }, context) {
 			const entry = selectCommandServer(context, args[0], options);
 			if (!args[1]) {
@@ -190,8 +190,8 @@ function callCommand(): CliCommand<WocliExecution> {
 	return {
 		name: 'call',
 		arguments: '<server> <tool> [input]',
-		options: [{ name: 'input', aliases: ['i'], description: 'JSON、@文件，或 - 读取 stdin' }],
-		description: '调用 MCP tool',
+		options: [{ name: 'input', aliases: ['i'], description: 'JSON, @file, or - to read stdin' }],
+		description: 'Call an MCP tool',
 		async run({ args, options }, context) {
 			const raw = args[2] ?? optionString(options, 'input') ?? '{}';
 			const text = await readCommandText(raw, context);
@@ -220,7 +220,7 @@ function grepCommand(): CliCommand<WocliExecution> {
 	return {
 		name: 'grep',
 		arguments: '<pattern>',
-		description: '搜索 MCP tools',
+		description: 'Search MCP tools',
 		async run({ args, options }, context) {
 			const pattern = args[0]
 				.replace(/[.+^${}()|[\]\\]/g, '\\$&')
@@ -248,10 +248,10 @@ export function createMcpCommand(): WocliCommand {
 	return {
 		name: 'mcp',
 		serviceProvider: 'mcp',
-		description: 'MCP servers、tools、resources 与调用',
+		description: 'MCP servers, tools, resources and calls',
 		options: [
-			{ name: 'url', description: '临时 HTTP MCP URL，不写入配置' },
-			{ name: 'name', description: '临时 MCP server 名称' },
+			{ name: 'url', description: 'Temporary HTTP MCP URL; not saved to configuration' },
+			{ name: 'name', description: 'Temporary MCP server name' },
 		],
 		commands: [
 			listCommand(),

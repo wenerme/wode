@@ -19,7 +19,7 @@ export interface DuckDuckGoServiceClient {
 const schema: ServiceSchema = {
 	tools: {
 		search: {
-			description: '搜索 DuckDuckGo，即时答案为空时使用 HTML 搜索',
+			description: 'Search DuckDuckGo, falling back to HTML search when instant answers are empty',
 			inputSchema: {
 				type: 'object',
 				properties: {

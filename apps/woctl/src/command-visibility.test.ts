@@ -354,7 +354,7 @@ describe('configured command snapshots', () => {
 		const { io, lines, errors } = output();
 		await cli.executeLine('--help', io);
 		expect(lines.join('\n')).toContain('context');
-		expect([...lines, ...errors].join('\n')).toMatch(/configuration|配置/u);
+		expect([...lines, ...errors].join('\n')).toMatch(/configuration/u);
 		await cli.executeLine('markdown --text offline --no-color', io);
 		expect(lines.pop()).toContain('offline');
 		await expect(cli.executeLine('system info', io)).rejects.toThrow();
