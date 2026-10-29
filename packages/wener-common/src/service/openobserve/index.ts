@@ -35,7 +35,7 @@ export type {
 };
 
 const envName = z.string().regex(/^[A-Za-z_][A-Za-z0-9_]*$/u);
-export const OpenObserveServiceOptionsSchema = z.strictObject({
+export const OpenObserveServiceOptionsSchema = Object.assign(z.strictObject({
 	organization: z.string().min(1).max(255).optional(),
 	accessToken: z.string().min(1).optional(),
 	accessTokenEnv: envName.optional(),
@@ -50,6 +50,16 @@ export const OpenObserveServiceOptionsSchema = z.strictObject({
 		.min(1)
 		.max(64 * 1024 * 1024)
 		.optional(),
+}), {
+	jsonSchema: {
+		type: 'object',
+		properties: {
+			organization: { type: 'string' }, accessToken: { type: 'string' }, accessTokenEnv: { type: 'string' },
+			username: { type: 'string' }, usernameEnv: { type: 'string' }, password: { type: 'string' }, passwordEnv: { type: 'string' },
+			timeoutMs: { type: 'integer', minimum: 1 }, maxResponseBytes: { type: 'integer', minimum: 1 },
+		},
+		additionalProperties: false,
+	},
 });
 const configOptions = OpenObserveServiceOptionsSchema;
 function options({ config, getEnv }: ServiceProviderContext): OpenObserveClientOptions {

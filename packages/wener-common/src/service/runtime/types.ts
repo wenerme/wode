@@ -15,6 +15,7 @@ export interface ServiceTool {
 }
 export interface ServiceOptionsSchema {
 	safeParse(value: unknown): { success: true; data: unknown } | { success: false; error?: unknown };
+	jsonSchema?: Record<string, unknown>;
 }
 export interface ServiceSchema {
 	service?: { id?: string; name?: string; provider?: string; readOnly?: boolean };

@@ -80,11 +80,29 @@ export function createServiceExtraCommands(): CliCommand<WocliExecution>[] {
 			name: 'inspect',
 			arguments: '<service>',
 			description: 'Discover tools, required inputs and copyable call examples',
-			options: [{ name: 'writable', type: 'boolean', description: 'Also show tools that can write; execution requires service permissions' }],
+			options: [
+				{ name: 'writable', type: 'boolean', description: 'Also show tools that can write; execution requires service permissions' },
+				{ name: 'options', type: 'boolean', description: 'Show the configured service options schema' },
+			],
 			async run({ args, options }, context) {
 				const selection = resolveCliOutputSelection(options);
 				await context.withServices(options, async (runtime, selected) => {
 					const schema = await runtime.getSchema({ params: { service: args[0] } }, { signal: context.signal });
+					const service = selected.configuredServices?.[args[0]] ?? selected.services[args[0]];
+					const optionsSchema = context.getServiceOptionsSchema?.(service?.provider ?? args[0]);
+					if (options.options === true) {
+						writeCommandOutput({
+							service: {
+								name: args[0],
+								type: service?.type ?? service?.provider,
+								readOnly: service?.readOnly,
+								configuredOptionKeys: Object.keys(service?.options ?? {}),
+								...(optionsSchema ? { optionsSchema } : {}),
+							},
+							tools: schema.tools,
+						}, options, context);
+						return;
+					}
 					if (!selection.fields && ['json', 'jsonl', 'yaml', 'yml'].includes(selection.format)) {
 						writeCommandOutput(schema, options, context);
 						return;

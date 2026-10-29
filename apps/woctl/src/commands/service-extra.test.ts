@@ -1,4 +1,4 @@
-import type { ServiceRuntimeClient } from '@wener/common/service';
+import type { ServiceProvider, ServiceRuntimeClient } from '@wener/common/service';
 import { createMemoryCliConfigStore, parseCliConfig } from 'common/context';
 import { describe, expect, it, vi } from 'vitest';
 import { APP_NAME } from '../const';
@@ -84,6 +84,31 @@ describe('service discovery and defaults', () => {
 		await expect(cli.executeLine('service add invalid --type openobserve --option unsupported=true', io)).rejects.toThrow(
 			'Invalid options for service type',
 		);
+	});
+	it('inspects configured provider options without opening a service connection', async () => {
+		const config = createMemoryCliConfigStore(parseCliConfig({
+			services: [{ name: 'observe', type: 'openobserve', baseUrl: 'https://observe.example.test', options: { organization: 'default' } }],
+		}));
+		const cli = createWocliWebCli({ config });
+		const { io, lines } = output();
+		await cli.executeLine('service inspect observe --options --json', io);
+		const value = JSON.parse(lines.pop() ?? '');
+		expect(value.service).toMatchObject({ name: 'observe', type: 'openobserve', configuredOptionKeys: ['organization'] });
+		expect(value.service.optionsSchema.properties.organization).toEqual({ type: 'string' });
+	});
+	it('builds nested provider options from dotted keys', async () => {
+		const custom: ServiceProvider = {
+			name: 'custom',
+			optionsSchema: { safeParse: (value) => ({ success: true, data: value }) },
+			create: () => ({ getSchema: async () => ({ tools: {} }), call: async () => ({}) }),
+		};
+		const config = createMemoryCliConfigStore(parseCliConfig({}));
+		const cli = createWocliWebCli({ config, providers: [custom] });
+		const { io } = output();
+		await cli.executeLine('service add custom --type custom --option auth.username=alice --option timeout=1000', io);
+		expect((await config.load()).contexts.local.services.custom).toMatchObject({
+			options: { auth: { username: 'alice' }, timeout: 1000 },
+		});
 	});
 	it('discovers read-only tools, emits required-input examples and retains the original JSON schema', async () => {
 		const schema = {

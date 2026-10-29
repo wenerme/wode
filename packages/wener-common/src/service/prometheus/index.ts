@@ -45,7 +45,7 @@ export interface IPrometheusService {
 export type PrometheusService = IPrometheusService;
 
 const envName = z.string().regex(/^[A-Za-z_][A-Za-z0-9_]*$/u);
-export const PrometheusServiceOptionsSchema = z.strictObject({
+export const PrometheusServiceOptionsSchema = Object.assign(z.strictObject({
 	apiPrefix: z.string().min(1).max(256).optional(),
 	accessToken: z.string().min(1).optional(),
 	accessTokenEnv: envName.optional(),
@@ -55,6 +55,16 @@ export const PrometheusServiceOptionsSchema = z.strictObject({
 	passwordEnv: envName.optional(),
 	timeoutMs: z.number().int().min(1).max(3_600_000).optional(),
 	maxResponseBytes: z.number().int().min(1).max(64 * 1024 * 1024).optional(),
+}), {
+	jsonSchema: {
+		type: 'object',
+		properties: {
+			apiPrefix: { type: 'string' }, accessToken: { type: 'string' }, accessTokenEnv: { type: 'string' },
+			username: { type: 'string' }, usernameEnv: { type: 'string' }, password: { type: 'string' }, passwordEnv: { type: 'string' },
+			timeoutMs: { type: 'integer', minimum: 1 }, maxResponseBytes: { type: 'integer', minimum: 1 },
+		},
+		additionalProperties: false,
+	},
 });
 const configOptions = PrometheusServiceOptionsSchema;
 

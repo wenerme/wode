@@ -104,6 +104,7 @@ export interface WocliExecution extends CliContext {
 	log(level: LogLevel, message: string): void;
 	getConfigContext(options?: CliOptions): ResolvedCliContext;
 	resolveServiceProvider?(name: string): string | undefined;
+	getServiceOptionsSchema?(name: string): Record<string, unknown> | undefined;
 	withServices<T>(
 		options: CliOptions,
 		run: (runtime: ServiceRuntimeClient, context: ResolvedCliContext) => Promise<T>,
@@ -183,26 +184,42 @@ export function createWocliServiceCommand<S>(
 	};
 }
 
-function parseKeyValueOptions(values: readonly string[], label: string, parseJson: boolean): Record<string, unknown> {
+function parseKeyValueOptions(values: readonly string[], label: string, parseJson: boolean, dotNotation = false): Record<string, unknown> {
 	const result: Record<string, unknown> = {};
 	for (const value of values) {
 		const separator = value.indexOf('=');
 		if (separator <= 0) throw new CliUsageError(`--${label} requires key=value`);
 		const key = value.slice(0, separator).trim();
 		const raw = value.slice(separator + 1);
-		if (!key) throw new CliUsageError(`--${label} requires a non-empty key`);
-		if (Object.hasOwn(result, key)) throw new CliUsageError(`Duplicate --${label} key: ${key}`);
+		const parts = dotNotation ? key.split('.') : [key];
+		if (!key || parts.some((part) => !/^[A-Za-z_][A-Za-z0-9_-]*$/u.test(part) || ['__proto__', 'constructor', 'prototype'].includes(part)))
+			throw new CliUsageError(`--${label} requires a valid key`);
 		if (!parseJson) {
-			result[key] = raw;
+			setNestedOption(result, parts, raw);
 			continue;
 		}
+		let parsed: unknown;
 		try {
-			result[key] = raw.startsWith('json:') ? JSON.parse(raw.slice('json:'.length)) : JSON.parse(raw);
+			parsed = raw.startsWith('json:') ? JSON.parse(raw.slice('json:'.length)) : JSON.parse(raw);
 		} catch {
-			result[key] = raw;
+			parsed = raw;
 		}
+		setNestedOption(result, parts, parsed);
 	}
 	return result;
+}
+
+function setNestedOption(target: Record<string, unknown>, parts: readonly string[], value: unknown): void {
+	let current = target;
+	for (const part of parts.slice(0, -1)) {
+			const existing = current[part];
+			if (existing === undefined) current[part] = {};
+			else if (!existing || typeof existing !== 'object' || Array.isArray(existing)) throw new CliUsageError('Conflicting service option paths');
+			current = current[part] as Record<string, unknown>;
+	}
+	const leaf = parts.at(-1)!;
+	if (Object.hasOwn(current, leaf)) throw new CliUsageError(`Duplicate service option key: ${parts.join('.')}`);
+	current[leaf] = value;
 }
 
 export function createWocliCli(host: WocliHost) {
@@ -383,7 +400,7 @@ export function createWocliCli(host: WocliHost) {
 					{ name: 'title', description: 'Human-readable service title' },
 					{ name: 'description', description: 'Human-readable service description' },
 					{ name: 'header', repeatable: true, description: 'HTTP header as key=value; repeatable' },
-					{ name: 'option', repeatable: true, description: 'Provider option as key=value; JSON values may use json:' },
+					{ name: 'option', repeatable: true, description: 'Provider option as key=value; dot paths create nested objects; JSON values may use json:' },
 					{ name: 'writable', type: 'boolean', description: 'Allow write operations for this service' },
 					{ name: 'disabled', type: 'boolean', description: 'Disable the service after adding it' },
 				],
@@ -397,7 +414,7 @@ export function createWocliCli(host: WocliHost) {
 							throw new CliUsageError('Service already exists');
 						const baseUrl = text(options, 'base-url');
 						if (type === 'http' && !baseUrl) throw new CliUsageError('HTTP service requires --base-url');
-						const serviceOptions = parseKeyValueOptions(optionStrings(options, 'option'), 'option', true) as NonNullable<CliServiceConfig['options']>;
+						const serviceOptions = parseKeyValueOptions(optionStrings(options, 'option'), 'option', true, true) as NonNullable<CliServiceConfig['options']>;
 						const optionResult = provider.optionsSchema?.safeParse(serviceOptions);
 						if (optionResult && !optionResult.success) throw new CliUsageError(`Invalid options for service type: ${type}`);
 						setConfigEntry(config.contexts[selected.name].services, args[0], {
@@ -598,6 +615,10 @@ export function createWocliCli(host: WocliHost) {
 			selectedContext,
 			log,
 			getConfigContext,
+			getServiceOptionsSchema(name: string) {
+				const provider = providers.get(resolveServiceProvider(name) ?? name);
+				return provider.optionsSchema?.jsonSchema;
+			},
 			host: { ...host, config: snapshotStore },
 		};
 	}
@@ -626,6 +647,7 @@ export function createWocliCli(host: WocliHost) {
 				configError: snapshot.error,
 				log: snapshot.log,
 				getConfigContext: snapshot.getConfigContext,
+				getServiceOptionsSchema: snapshot.getServiceOptionsSchema,
 				resolveServiceProvider,
 				async withServices(options, run) {
 					io.signal.throwIfAborted();
