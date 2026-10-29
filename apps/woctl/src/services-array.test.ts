@@ -116,7 +116,7 @@ function offlineHost() {
 }
 
 async function mutateOther(cli: ReturnType<typeof createWocliWebCli>, io: ReturnType<typeof output>['io']) {
-	await cli.executeLine('service add extra --provider system --context other', io);
+	await cli.executeLine('service add extra --type system --context other', io);
 	await cli.executeLine('service default set system extra --context other', io);
 	await cli.executeLine('prompt import greet --text "Hello {{name}}" --context other', io);
 }
@@ -369,7 +369,7 @@ describe('service array storage and CLI integration', () => {
 			const baseBytes = await readFile(file);
 			const cli = createWocliWebCli({ config: createFileConfigStore(file) });
 			await cli.executeLine('context create added', output().io);
-			await cli.executeLine('service add new-system --provider system --context added', output().io);
+		await cli.executeLine('service add new-system --type system --context added', output().io);
 			const saved = parse(await readFile(file.replace('.yaml', '.added.yaml'), 'utf8'));
 			expect(saved.services).toEqual([expect.objectContaining({ name: 'new-system', type: 'system' })]);
 			expect(saved).not.toHaveProperty('currentContext');

@@ -217,7 +217,7 @@ describe('configured command snapshots', () => {
 		await cli.executeLine('local', io);
 		expect(lines.pop()).toBe('local');
 		await expect(cli.executeLine('ws rec get', io)).rejects.toThrow('Unknown command');
-		await cli.executeLine('service add one --provider fixture', io);
+		await cli.executeLine('service add one --type fixture', io);
 		const tree = await cli.describe();
 		expect(tree.find((entry) => entry.name === 'workspace')?.commands?.map((entry) => entry.name)).toEqual(['records']);
 		await cli.executeLine('ws rec get --json', io);
@@ -281,7 +281,7 @@ describe('configured command snapshots', () => {
 		expect((await cli.describe()).some((entry) => entry.name === 'system')).toBe(true);
 		await cli.executeLine('service remove primary', io);
 		expect((await cli.describe()).some((entry) => entry.name === 'system')).toBe(false);
-		await cli.executeLine('service add replacement --provider system', io);
+		await cli.executeLine('service add replacement --type system', io);
 		expect((await cli.describe()).some((entry) => entry.name === 'system')).toBe(true);
 		const edited = await config.load();
 		edited.contexts.active.services.replacement.disabled = true;

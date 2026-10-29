@@ -301,7 +301,7 @@ describe('native configuration files and built Node CLI', () => {
 			const baseBefore = await readFile(f.base, 'utf8');
 			const localBefore = await readFile(f.overlay('local'), 'utf8');
 			const otherBefore = await readFile(f.overlay('other'), 'utf8');
-			await ok(f, ['service', 'add', 'extra', '--provider', 'system', '-c', 'dev']);
+			await ok(f, ['service', 'add', 'extra', '--type', 'system', '-c', 'dev']);
 			await ok(f, ['service', 'default', 'set', 'system', 'extra', '-c', 'dev']);
 			await ok(f, ['prompt', 'import', 'added', '--text', 'Hello {{name}}', '-c', 'dev']);
 			await ok(f, [

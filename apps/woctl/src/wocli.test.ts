@@ -62,7 +62,7 @@ describe('wocli Node/Web shared commands', () => {
 		const { io, lines } = output();
 		await cli.executeLine('context create test', io);
 		await cli.executeLine('context use test', io);
-		await cli.executeLine('service add extra --provider system', io);
+		await cli.executeLine('service add extra --type system', io);
 		await cli.executeLine('service list --context local --json', io);
 		expect(JSON.parse(lines.pop() ?? '').map((entry: { name: string }) => entry.name)).toEqual(['system']);
 		await cli.executeLine('service list --json', io);

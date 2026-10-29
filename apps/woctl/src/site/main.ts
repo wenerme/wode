@@ -80,7 +80,7 @@ input.addEventListener('keydown', (event) => {
 	input.value = history[historyIndex] ?? '';
 });
 append(
-	`${APP_NAME} ${APP_VERSION}\nEnter --help to view commands. Run service add system --provider system to add an offline service. Use ↑ / ↓ to browse history.`,
+	`${APP_NAME} ${APP_VERSION}\nEnter --help to view commands. Run service add system --type system to add an offline service. Use ↑ / ↓ to browse history.`,
 	'welcome',
 );
 void execute('--help');

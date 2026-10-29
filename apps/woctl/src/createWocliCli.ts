@@ -394,8 +394,8 @@ export function createWocliCli(host: WocliHost) {
 				arguments: '<name>',
 				description: 'Add a service to the current context',
 				options: [
-					{ name: 'type', aliases: ['provider'], description: 'Service type, such as system, http or openobserve' },
-					{ name: 'base-url', aliases: ['url'], description: 'Service base URL' },
+					{ name: 'type', description: 'Service type, such as system, http or openobserve' },
+					{ name: 'base-url', description: 'Service base URL' },
 					{ name: 'id', description: 'Remote service ID; defaults to the service name' },
 					{ name: 'title', description: 'Human-readable service title' },
 					{ name: 'description', description: 'Human-readable service description' },

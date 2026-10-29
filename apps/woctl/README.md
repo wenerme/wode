@@ -35,7 +35,7 @@ printf '{"name":"Ada","active":true}' | woctl render - --input json --format yam
 Add a free DuckDuckGo search connection:
 
 ```sh
-woctl service add search --provider duckduckgo
+woctl service add search --type duckduckgo
 woctl ddg search 'MCP protocol' --limit 5 --json
 ```
 

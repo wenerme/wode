@@ -87,12 +87,12 @@ woctl service default unset sql
 ## 编辑与认证
 
 ```sh
-woctl service add search --provider duckduckgo
-woctl service add local-system --provider system
+woctl service add search --type duckduckgo
+woctl service add local-system --type system
 woctl service remove search
 ```
 
-`service add` 的 `--provider` 是 CLI 选项名，保存时会转为规范数组条目。它只提供 `--url`、`--id`、`--writable` 等基本字段，SQL driver options 等复杂配置应直接编辑 YAML。默认 `readOnly: true`，`--writable` 保存为 `readOnly: false`。
+`service add` 直接维护当前 context 配置，使用 `--type`、`--base-url`、`--id`、`--title`、`--description`、重复的 `--header` 和 `--option` 等参数。`--option auth.username=value` 这样的点号路径会生成嵌套 options；provider 注册的 options schema 会在保存前校验。默认 `readOnly: true`，`--writable` 保存为 `readOnly: false`。
 
 配置编辑命令保存到所选 context 文件；基础服务条目由基础文件维护。`service remove` / `default unset` 只删除 context 自有项，不直接删除继承项。保存会重排 YAML、丢失注释，但保留允许的扩展字段。Native store 检查读取版本并使用锁及临时文件；出现 busy 或 changed 错误时重新加载，不要把它当作跨任意外部编辑器的事务保证。
 

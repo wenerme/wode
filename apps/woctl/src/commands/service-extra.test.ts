@@ -53,7 +53,7 @@ describe('service discovery and defaults', () => {
 		const config = createMemoryCliConfigStore(serviceConfig());
 		const cli = createWocliWebCli({ config });
 		const { io, lines } = output();
-		await cli.executeLine('service add second --provider system', io);
+		await cli.executeLine('service add second --type system', io);
 		await cli.executeLine('service default set system second', io);
 		await cli.executeLine('context create other', io);
 		await cli.executeLine('service default set system system --context other', io);
