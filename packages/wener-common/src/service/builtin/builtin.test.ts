@@ -21,6 +21,7 @@ describe('registered domain services', () => {
 			'base',
 			'sql',
 			'openobserve',
+			'apollo',
 			'prometheus',
 		]);
 		expect(fetch).not.toHaveBeenCalled();

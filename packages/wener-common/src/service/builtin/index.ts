@@ -1,4 +1,5 @@
 import { OpenObserveServiceProvider } from '../openobserve';
+import { ApolloServiceProvider } from '../apollo';
 import { PrometheusServiceProvider } from '../prometheus';
 import { BaseFetchServiceProvider } from '../providers/base';
 import { DuckDuckGoSearchServiceProvider } from '../providers/duckduckgo';
@@ -13,6 +14,7 @@ export const BuiltinServiceProviders = Object.freeze([
 	BaseFetchServiceProvider,
 	SqlServiceProvider,
 	OpenObserveServiceProvider,
+	ApolloServiceProvider,
 	PrometheusServiceProvider,
 ]);
 

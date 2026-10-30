@@ -1,4 +1,6 @@
 export type * from './fetch';
+export * from './apollo';
+export { ApolloCliDefinition } from './apollo/cli';
 export type * from './openobserve';
 export { OpenObserveCliDefinition } from './openobserve/cli';
 export { createOpenObserveServiceToolClient } from './openobserve/client';

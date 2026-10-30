@@ -1,14 +1,16 @@
 import type { CliServiceConfig } from '../config';
 import { CliConfigError, isCliServiceEnabled, normalizeCliServices, resolveCliServiceConfigEnv } from '../config';
 import type { IFetchService } from '../fetch';
+import type { IApolloService } from '../apollo';
 import type { IOpenObserveService } from '../openobserve';
 import type { IPrometheusService } from '../prometheus';
-import type { ResolvedServiceContext, ServiceOptionsSchema, ServiceProviderContext } from '../runtime/types';
+import type { ResolvedServiceContext, ServiceContract, ServiceOptionsSchema, ServiceProviderContext } from '../runtime/types';
 import type { ISearchService } from '../search';
 import type { ISqlService, SqlAdapterFactory } from '../sql/types';
 
 /** 可通过 declaration merging 扩展的浏览器安全 service 能力目录。 */
 export interface ServiceTypeMap {
+	apollo: IApolloService;
 	search: ISearchService;
 	fetch: IFetchService;
 	sql: ISqlService;
@@ -23,6 +25,7 @@ type ServiceProviderDefinitionFor<C extends ServiceCapability> = {
 	aliases?: readonly string[];
 	provides: readonly C[];
 	optionsSchema?: ServiceOptionsSchema;
+	contract?: ServiceContract;
 	create(context: ServiceProviderContext): Pick<ServiceTypeMap, C> | Promise<Pick<ServiceTypeMap, C>>;
 };
 
@@ -32,6 +35,7 @@ export type AnyServiceProviderDefinition = {
 	aliases?: readonly string[];
 	provides: readonly ServiceCapability[];
 	optionsSchema?: ServiceOptionsSchema;
+	contract?: ServiceContract;
 	create(context: ServiceProviderContext): Partial<ServiceTypeMap> | Promise<Partial<ServiceTypeMap>>;
 };
 
@@ -66,6 +70,7 @@ interface RegisteredProvider {
 	readonly aliases: readonly string[];
 	readonly provides: readonly ServiceCapability[];
 	readonly optionsSchema?: ServiceOptionsSchema;
+	readonly contract?: ServiceContract;
 	readonly create: AnyServiceProviderDefinition['create'];
 }
 
@@ -207,6 +212,7 @@ export class ServiceRegistry {
 			aliases: Object.freeze([...aliases]),
 			provides: Object.freeze([...provider.provides]) as readonly ServiceCapability[],
 			optionsSchema: provider.optionsSchema,
+			contract: provider.contract,
 			create: provider.create,
 		};
 	}

@@ -29,6 +29,8 @@
 		"./service/sql/cli": "./src/service/sql/cli/index.ts",
 		"./service/providers/sql": "./src/service/providers/sql.ts",
 		"./service/openobserve": "./src/service/openobserve/index.ts",
+		"./service/apollo": "./src/service/apollo/index.ts",
+		"./service/apollo/cli": "./src/service/apollo/cli.ts",
 		"./service/openobserve/cli": "./src/service/openobserve/cli.ts",
 		"./service/openobserve/client": "./src/service/openobserve/client.ts",
 		"./service/prometheus": "./src/service/prometheus/index.ts",
@@ -201,6 +203,14 @@
 			"./service/openobserve": {
 				"types": "./src/service/openobserve/index.ts",
 				"default": "./lib/service/openobserve/index.js"
+			},
+			"./service/apollo": {
+				"types": "./src/service/apollo/index.ts",
+				"default": "./lib/service/apollo/index.js"
+			},
+			"./service/apollo/cli": {
+				"types": "./src/service/apollo/cli.ts",
+				"default": "./lib/service/apollo/cli.js"
 			},
 			"./service/openobserve/cli": {
 				"types": "./src/service/openobserve/cli.ts",

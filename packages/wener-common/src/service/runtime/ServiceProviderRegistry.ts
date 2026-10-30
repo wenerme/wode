@@ -28,4 +28,7 @@ export class ServiceProviderRegistry {
 	list(): string[] {
 		return [...this.#providers.keys()];
 	}
+	listProviders(): ServiceProvider[] {
+		return [...this.#providers.values()];
+	}
 }

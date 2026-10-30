@@ -17,6 +17,16 @@ export interface ServiceOptionsSchema {
 	safeParse(value: unknown): { success: true; data: unknown } | { success: false; error?: unknown };
 	jsonSchema?: Record<string, unknown>;
 }
+export interface ServiceMethodContract {
+	description?: string;
+	inputSchema?: Record<string, unknown>;
+	outputSchema?: Record<string, unknown>;
+	inputType?: string;
+	outputType?: string;
+}
+export interface ServiceContract {
+	methods: Record<string, ServiceMethodContract>;
+}
 export interface ServiceSchema {
 	service?: { id?: string; name?: string; provider?: string; readOnly?: boolean };
 	tools: Record<string, ServiceTool>;
@@ -51,5 +61,6 @@ export interface ServiceProvider {
 	aliases?: readonly string[];
 	capabilities?: readonly string[];
 	optionsSchema?: ServiceOptionsSchema;
+	contract?: ServiceContract;
 	create(context: ServiceProviderContext): ServiceClient | Promise<ServiceClient>;
 }

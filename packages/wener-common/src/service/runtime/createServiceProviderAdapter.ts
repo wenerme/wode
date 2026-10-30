@@ -54,6 +54,7 @@ export function createServiceProviderAdapter(definition: ServiceProviderDefiniti
 		aliases: definition.aliases,
 		capabilities: definition.provides,
 		optionsSchema: definition.optionsSchema,
+		contract: definition.contract,
 		create({ name, config, fetch, sqlDriver, getEnv }) {
 			const registry = new ServiceRegistry({ context: { services: { [name]: config } }, fetch, sqlDriver, getEnv });
 			registry.register(definition);

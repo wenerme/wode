@@ -18,6 +18,7 @@ import {
 	createOpenObserveServiceToolClient,
 	createServiceRuntime,
 	OpenObserveCliDefinition,
+	ApolloCliDefinition,
 	PrometheusCliDefinition,
 	type ServiceProvider,
 	ServiceProviderRegistry,
@@ -239,6 +240,37 @@ export function createWocliCli(host: WocliHost) {
 		{ name: 'verbose', type: 'boolean', description: 'Enable verbose logging' },
 	];
 	const cli = new Cli<WocliExecution>(APP_NAME, { options: globalOptions });
+	function serviceTypeName(name: string): string {
+		if (name === 'openobserve') return 'OpenObserve';
+		return name.replace(/(^|[-_.])([A-Za-z0-9])/gu, (_match, _prefix, character) => String(character).toUpperCase());
+	}
+	function serviceTypeInfo(type: string, options: CliOptions, context: WocliExecution): void {
+		const provider = providers.get(type);
+		if (options.typescript === true) {
+			const name = serviceTypeName(provider.name);
+			const sections: string[] = [];
+			if (provider.optionsSchema?.jsonSchema)
+				sections.push(formatJsonSchemaTypeScript(provider.optionsSchema.jsonSchema, { name: `${name}ServiceOptions` }));
+			if (provider.contract) {
+				const methods = Object.entries(provider.contract.methods).map(([method, contract]) => {
+					const input = contract.inputType ?? (contract.inputSchema ? formatJsonSchemaTypeScript(contract.inputSchema, { name: `${name}${method}Input`, export: false }).replace(/^interface [^{]+/u, '').trim() : 'void');
+					const output = contract.outputType ?? 'unknown';
+					const comment = contract.description ? `  /** ${contract.description} */\n` : '';
+					return `${comment}  ${method}(input: ${input}): Promise<${output}>;`;
+				}).join('\n');
+				sections.push(`export interface ${name}Service {\n  /** Construct with ${name}ServiceOptions. */\n${methods}\n}`);
+			}
+			context.stdout(sections.join('\n\n') || `export interface ${name}Service {}`);
+			return;
+		}
+		output({
+			name: provider.name,
+			aliases: provider.aliases ?? [],
+			capabilities: provider.capabilities ?? [],
+			...(provider.optionsSchema?.jsonSchema ? { optionsSchema: provider.optionsSchema.jsonSchema } : {}),
+			...(provider.contract ? { contract: provider.contract } : {}),
+		}, options, context);
+	}
 	const registrations: Array<{ method: 'add' | 'merge'; command: WocliCommand }> = [];
 	function add(command: WocliCommand) {
 		const snapshot = snapshotCommand(command);
@@ -357,6 +389,7 @@ export function createWocliCli(host: WocliHost) {
 	});
 	add({
 		name: 'service',
+		aliases: ['svc'],
 		description: 'Configure, discover and call services',
 		commands: [
 			{
@@ -372,27 +405,27 @@ export function createWocliCli(host: WocliHost) {
 			},
 			{
 				name: 'type',
-				arguments: '<type>',
+				arguments: '[type]',
 				description: 'Show service type metadata and options schema',
 				options: [{ name: 'typescript', type: 'boolean', description: 'Render the options schema as a TypeScript interface' }],
+				commands: [
+					{
+						name: 'list',
+						description: 'List registered service types',
+						run({ options }, context) {
+							output(providers.listProviders().map((provider) => ({ name: provider.name, aliases: provider.aliases ?? [], capabilities: provider.capabilities ?? [] })), options, context);
+						},
+					},
+					{
+						name: 'info',
+						arguments: '<type>',
+						description: 'Show registered service type information',
+						run({ args, options }, context) { serviceTypeInfo(args[0], options, context); },
+					},
+				],
 				async run({ args, options }, context) {
-					const provider = providers.get(args[0]);
-					if (options.typescript === true) {
-						const schema = provider.optionsSchema?.jsonSchema;
-						if (!schema) throw new CliUsageError('Service type does not expose an options schema');
-						const typeName = provider.name === 'openobserve'
-							? 'OpenObserve'
-							: provider.name.replace(/(^|[-_.])([A-Za-z0-9])/gu, (_match, _prefix, character) => String(character).toUpperCase());
-						const name = `${typeName}ServiceOptions`;
-						context.stdout(formatJsonSchemaTypeScript(schema, { name }));
-						return;
-					}
-					output({
-						name: provider.name,
-						aliases: provider.aliases ?? [],
-						capabilities: provider.capabilities ?? [],
-						...(provider.optionsSchema?.jsonSchema ? { optionsSchema: provider.optionsSchema.jsonSchema } : {}),
-					}, options, context);
+					if (!args[0]) throw new CliUsageError('Service type name is required');
+					serviceTypeInfo(args[0], options, context);
 				},
 			},
 			{
@@ -531,6 +564,7 @@ export function createWocliCli(host: WocliHost) {
 			createOpenObserveServiceToolClient(runtime, service, { signal, readOnly }),
 		),
 	);
+	add(createWocliServiceCommand(ApolloCliDefinition, 'apollo'));
 	add(
 		createWocliServiceCommand(PrometheusCliDefinition, 'prometheus', (runtime, service, _readOnly, signal) =>
 			createPrometheusServiceToolClient(runtime, service, { signal }),

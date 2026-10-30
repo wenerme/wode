@@ -111,6 +111,20 @@ describe('service discovery and defaults', () => {
 		expect(lines.join('')).toContain('export interface OpenObserveServiceOptions');
 		expect(lines.join('')).toContain('organization?:string');
 	});
+	it('renders service method contracts for Apollo', async () => {
+		const cli = createWocliWebCli({ config: createMemoryCliConfigStore(parseCliConfig({})) });
+		const { io, lines } = output();
+		await cli.executeLine('service type apollo --typescript', io);
+		expect(lines.join('')).toContain('export interface ApolloServiceOptions');
+		expect(lines.join('')).toContain('export interface ApolloService');
+		expect(lines.join('')).toContain('getConfig(input:');
+	});
+	it('supports svc as the service command alias', async () => {
+		const cli = createWocliWebCli({ config: createMemoryCliConfigStore(parseCliConfig({})) });
+		const { io, lines } = output();
+		await cli.executeLine('svc type list --json', io);
+		expect(JSON.parse(lines.pop() ?? '')).toEqual(expect.arrayContaining([expect.objectContaining({ name: 'apollo' })]));
+	});
 	it('builds nested provider options from dotted keys', async () => {
 		const custom: ServiceProvider = {
 			name: 'custom',
