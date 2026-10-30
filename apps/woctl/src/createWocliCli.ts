@@ -413,7 +413,24 @@ export function createWocliCli(host: WocliHost) {
 						name: 'list',
 						description: 'List registered service types',
 						run({ options }, context) {
-							output(providers.listProviders().map((provider) => ({ name: provider.name, aliases: provider.aliases ?? [], capabilities: provider.capabilities ?? [] })), options, context);
+							const providersList = providers.listProviders();
+							const value = providersList.map((provider) => ({
+								name: provider.name,
+								aliases: provider.aliases ?? [],
+								capabilities: provider.capabilities ?? [],
+								options: provider.optionsSchema?.jsonSchema ? 'yes' : 'no',
+								methods: provider.contract ? Object.keys(provider.contract.methods).length : 0,
+							}));
+							const format = options.json === true ? 'json' : typeof options.output === 'string' ? options.output : 'table';
+							const table = ['table', 'wide', 'describe'].includes(format)
+								? {
+										kind: 'list' as const,
+										headers: ['TYPE', 'ALIASES', 'CAPABILITIES', 'OPTIONS', 'METHODS'],
+										columnOptions: [{ key: 'name' }, { key: 'aliases' }, { key: 'capabilities' }, { key: 'options' }, { key: 'methods' }],
+										rows: value.map((item) => [item.name, item.aliases.join(', '), item.capabilities.join(', '), item.options, item.methods]),
+								  }
+								: undefined;
+							output(value, options, context, table);
 						},
 					},
 					{

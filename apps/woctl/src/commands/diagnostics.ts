@@ -1,4 +1,4 @@
-import { type CliCommand, type CliCommandResult, type CliOptions, CliUsageError } from '@wener/common/cli';
+import { type CliCommand, type CliCommandResult, type CliOptions, type CliTable, CliUsageError } from '@wener/common/cli';
 import { isCliServiceEnabled, type ResolvedCliContext } from 'common/context';
 import { writeCommandOutput } from '../command-utils';
 import { VERSION } from '../core';
@@ -139,7 +139,22 @@ export function createDiagnosticsCommands(options: DiagnosticsOptions) {
 				},
 				error: context.configError ? 'Configuration unavailable' : null,
 			};
-			writeCommandOutput(value, inputOptions, context);
+			const format = inputOptions.json === true ? 'json' : typeof inputOptions.output === 'string' ? inputOptions.output : 'table';
+			const table: CliTable | undefined = ['table', 'wide', 'describe'].includes(format)
+				? {
+						kind: 'list',
+						headers: ['SECTION', 'FIELD', 'VALUE'],
+						columnOptions: [{ key: 'section' }, { key: 'field' }, { key: 'value' }],
+						rows: [
+							...Object.entries({ runtime: value.runtime, version: value.version, node: value.node, platform: value.platform, context: value.context, configPath: value.configPath }).map(([field, item]) => ['System', field, item]),
+							...Object.entries(value.services).map(([field, item]) => ['Services', field, item]),
+							...Object.entries(value.ai).map(([field, item]) => ['AI', field, item]),
+							...Object.entries(value.terminal).map(([field, item]) => ['Terminal', field, item]),
+							...(value.error ? [['Status', 'error', value.error] as unknown as readonly unknown[]] : []),
+						],
+				  }
+				: undefined;
+			writeCommandOutput(value, inputOptions, context, table);
 		},
 	};
 	return {

@@ -2,6 +2,7 @@ import { type CliContext, type CliOptions, CliUsageError, renderCliOutput } from
 import { getCliOutputOptions } from '@wener/common/cli/getCliOutputOptions';
 import type { CliConfig } from 'common/context';
 import type { WocliExecution } from './createWocliCli';
+import type { CliTable } from '@wener/common/cli';
 
 export function setConfigEntry<T>(record: Record<string, T>, key: string, value: T): void {
 	Object.defineProperty(record, key, { value, enumerable: true, configurable: true, writable: true });
@@ -37,9 +38,9 @@ export function optionNumber(
 		throw new CliUsageError(`Invalid --${key}`);
 	return number;
 }
-export function writeCommandOutput(value: unknown, options: CliOptions, context: CliContext): void {
+export function writeCommandOutput(value: unknown, options: CliOptions, context: CliContext, table?: CliTable): void {
 	context.signal.throwIfAborted();
-	context.stdout(renderCliOutput(value, getCliOutputOptions(context, options)));
+	context.stdout(renderCliOutput(value, { ...getCliOutputOptions(context, options), ...(table ? { table } : {}) }));
 }
 export async function readCommandText(
 	value: string,
