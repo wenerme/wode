@@ -12,6 +12,11 @@ export interface FormatJsonSchemaOptions {
 	compact?: boolean;
 }
 
+export interface FormatJsonSchemaTypeScriptOptions extends FormatJsonSchemaOptions {
+	name?: string;
+	export?: boolean;
+}
+
 interface JsonSchema {
 	type?: string | string[];
 	properties?: Record<string, JsonSchema>;
@@ -51,6 +56,19 @@ export function formatJsonSchema(schema: JsonSchema | undefined | null, options:
 	}
 
 	return formatType(schema, 0, maxDepth, compact);
+}
+
+/** Render an object JSON Schema as a copyable TypeScript interface or type alias. */
+export function formatJsonSchemaTypeScript(
+	schema: JsonSchema | undefined | null,
+	options: FormatJsonSchemaTypeScriptOptions = {},
+): string {
+	const name = options.name ?? 'Options';
+	if (!/^[A-Za-z_$][A-Za-z0-9_$]*$/u.test(name)) throw new Error('Invalid TypeScript type name');
+	const body = formatJsonSchema(schema, { ...options, compact: false });
+	const prefix = options.export === false ? '' : 'export ';
+	if (body.startsWith('{')) return `${prefix}interface ${name} ${body}`;
+	return `${prefix}type ${name} = ${body};`;
 }
 
 function formatType(schema: JsonSchema, depth: number, maxDepth: number, compact: boolean): string {

@@ -1,1 +1,7 @@
-export { type FormatJsonSchemaOptions, formatJsonSchema, formatToolSignature } from './formatJsonSchema';
+export {
+	type FormatJsonSchemaOptions,
+	type FormatJsonSchemaTypeScriptOptions,
+	formatJsonSchema,
+	formatJsonSchemaTypeScript,
+	formatToolSignature,
+} from './formatJsonSchema';

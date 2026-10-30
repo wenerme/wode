@@ -104,6 +104,13 @@ describe('service discovery and defaults', () => {
 		expect(value).toMatchObject({ name: 'openobserve', aliases: ['oo'], capabilities: ['openobserve'] });
 		expect(value.optionsSchema.properties.organization).toEqual({ type: 'string' });
 	});
+	it('renders a service options schema as a TypeScript interface', async () => {
+		const cli = createWocliWebCli({ config: createMemoryCliConfigStore(parseCliConfig({})) });
+		const { io, lines } = output();
+		await cli.executeLine('service type openobserve --typescript', io);
+		expect(lines.join('')).toContain('export interface OpenObserveServiceOptions');
+		expect(lines.join('')).toContain('organization?:string');
+	});
 	it('builds nested provider options from dotted keys', async () => {
 		const custom: ServiceProvider = {
 			name: 'custom',

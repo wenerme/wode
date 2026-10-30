@@ -40,6 +40,7 @@ import {
 	type ResolvedCliContext,
 	resolveCliContext,
 } from 'common/context';
+import { formatJsonSchemaTypeScript } from 'common/utils';
 import {
 	writeCommandOutput as output,
 	readCommandText as readText,
@@ -373,8 +374,19 @@ export function createWocliCli(host: WocliHost) {
 				name: 'type',
 				arguments: '<type>',
 				description: 'Show service type metadata and options schema',
+				options: [{ name: 'typescript', type: 'boolean', description: 'Render the options schema as a TypeScript interface' }],
 				async run({ args, options }, context) {
 					const provider = providers.get(args[0]);
+					if (options.typescript === true) {
+						const schema = provider.optionsSchema?.jsonSchema;
+						if (!schema) throw new CliUsageError('Service type does not expose an options schema');
+						const typeName = provider.name === 'openobserve'
+							? 'OpenObserve'
+							: provider.name.replace(/(^|[-_.])([A-Za-z0-9])/gu, (_match, _prefix, character) => String(character).toUpperCase());
+						const name = `${typeName}ServiceOptions`;
+						context.stdout(formatJsonSchemaTypeScript(schema, { name }));
+						return;
+					}
 					output({
 						name: provider.name,
 						aliases: provider.aliases ?? [],
