@@ -370,6 +370,20 @@ export function createWocliCli(host: WocliHost) {
 				},
 			},
 			{
+				name: 'type',
+				arguments: '<type>',
+				description: 'Show service type metadata and options schema',
+				async run({ args, options }, context) {
+					const provider = providers.get(args[0]);
+					output({
+						name: provider.name,
+						aliases: provider.aliases ?? [],
+						capabilities: provider.capabilities ?? [],
+						...(provider.optionsSchema?.jsonSchema ? { optionsSchema: provider.optionsSchema.jsonSchema } : {}),
+					}, options, context);
+				},
+			},
+			{
 				name: 'list',
 				description: 'List services in the current context',
 				async run({ options }, context) {

@@ -23,6 +23,7 @@ export function createBuiltinProviders(info: Record<string, unknown> = {}): Serv
 		...createBuiltinServiceProviders(),
 		{
 			name: 'system',
+			capabilities: ['system'],
 			optionsSchema: noServiceOptions,
 			create() {
 				return {
@@ -59,6 +60,7 @@ export function createBuiltinProviders(info: Record<string, unknown> = {}): Serv
 		},
 		{
 			name: 'http',
+			capabilities: ['http'],
 			optionsSchema: noServiceOptions,
 			create({ config, name, fetch }) {
 				if (!config.baseUrl) throw new Error('HTTP service requires baseUrl');

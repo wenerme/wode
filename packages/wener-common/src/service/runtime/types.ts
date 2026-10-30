@@ -49,6 +49,7 @@ export interface ServiceProviderContext {
 export interface ServiceProvider {
 	name: string;
 	aliases?: readonly string[];
+	capabilities?: readonly string[];
 	optionsSchema?: ServiceOptionsSchema;
 	create(context: ServiceProviderContext): ServiceClient | Promise<ServiceClient>;
 }
