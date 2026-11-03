@@ -3,7 +3,7 @@ import { ApolloConnectionConfigSchema } from './config';
 import { createApolloService } from './createApolloService';
 import { ApolloServiceError, ApolloServiceErrorCodes } from './errors';
 import type { ApolloAdapter, ApolloHttpRequest, IApolloService } from './interface';
-import { createApolloTestAdapter } from './test-adapter';
+import { createApolloTestAdapter } from './adapter.fixture';
 
 const config = ApolloConnectionConfigSchema.parse({
 	type: 'apollo',

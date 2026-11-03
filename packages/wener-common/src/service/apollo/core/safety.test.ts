@@ -5,7 +5,7 @@ import { createApolloService } from './createApolloService';
 import { ApolloServiceErrorCodes } from './errors';
 import { createApolloHttpAdapter } from './http-adapter';
 import type { IApolloService } from './interface';
-import { createApolloTestAdapter } from './test-adapter';
+import { createApolloTestAdapter } from './adapter.fixture';
 
 const endpoints = {
 	config: { baseUrl: 'https://config.example.test/' },
