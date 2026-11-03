@@ -57,7 +57,7 @@
 		"esbuild": "^0.28.2",
 		"pg": "^8.23.0",
 		"tsx": "^4.23.15",
-		"typescript": "^7.0.2",
+		"typescript": "7.0.2",
 		"vite": "catalog:",
 		"vitest": "catalog:"
 	}
