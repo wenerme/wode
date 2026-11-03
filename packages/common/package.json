@@ -19,6 +19,7 @@
 		"./cli": "./src/cli/index.ts",
 		"./cli/*": "./src/cli/*.ts",
 		"./context": "./src/context/index.ts",
+		"./ai": "./src/ai/index.ts",
 		"./fs": "./src/fs/index.ts",
 		"./fs/orpc": "./src/fs/orpc/index.ts",
 		"./fs/orpc/server": "./src/fs/orpc/server/index.ts",
@@ -168,6 +169,10 @@
 			"./context": {
 				"types": "./src/context/index.ts",
 				"default": "./lib/context/index.js"
+			},
+			"./ai": {
+				"types": "./src/ai/index.ts",
+				"default": "./lib/ai/index.js"
 			},
 			"./service": {
 				"types": "./src/service/index.ts",

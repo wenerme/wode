@@ -1,2 +1,1 @@
-export * from './client';
-export * from './createServiceRuntime';
+export * from '@wener/common/service/runtime';

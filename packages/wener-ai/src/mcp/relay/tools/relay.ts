@@ -20,7 +20,8 @@ export function registerRelayTools(ctx: RelayContext) {
 		async () => {
 			try {
 				const client = await getClient();
-				const result = await client.listTools();
+				// 与 v1 一致只取第一页（v2 的 listTools() 无 cursor 会聚合所有页）。
+				const result = await client.request({ method: 'tools/list', params: {} });
 				return jsonResult(result.tools);
 			} catch (e) {
 				return textResult(`Error: ${e instanceof Error ? e.message : String(e)}`);
@@ -60,7 +61,7 @@ export function registerRelayTools(ctx: RelayContext) {
 		async () => {
 			try {
 				const client = await getClient();
-				const result = await client.listResources();
+				const result = await client.request({ method: 'resources/list', params: {} });
 				return jsonResult(result.resources);
 			} catch (e) {
 				return textResult(`Error: ${e instanceof Error ? e.message : String(e)}`);

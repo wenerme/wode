@@ -1,4 +1,4 @@
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { McpServer } from '@modelcontextprotocol/server';
 import consola from 'consola';
 import { registerDocumentTools, registerImTools, registerWikiTools } from './tools';
 

@@ -23,6 +23,7 @@
 		"./agent/persona": "./src/agent/persona/index.ts",
 		"./agent/skill": "./src/agent/skill/index.ts",
 		"./mcp": "./src/mcp/index.ts",
+		"./mcp/client": "./src/mcp/client/index.ts",
 		"./mcp/prometheus": "./src/mcp/prometheus/index.ts",
 		"./mcp/relay": "./src/mcp/relay/index.ts",
 		"./mcp/sql": "./src/mcp/sql/index.ts",
@@ -80,7 +81,9 @@
 		}
 	},
 	"dependencies": {
-		"@modelcontextprotocol/sdk": "^1.32.1",
+		"@modelcontextprotocol/client": "2.3.1",
+		"@modelcontextprotocol/core": "2.3.1",
+		"@modelcontextprotocol/server": "2.3.1",
 		"@wener/client": "workspace:^1.0.29",
 		"@wener/common": "workspace:^3.0.0",
 		"better-sqlite3": "^13.0.3",

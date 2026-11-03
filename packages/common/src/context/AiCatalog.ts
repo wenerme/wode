@@ -1,13 +1,18 @@
-import type { PromptProtocol, PromptTarget } from '../ai/prompt';
+import type { MessageGenerationProtocol, MessageGenerationTarget } from '@wener/client/ai/message-generation';
+import type { ModelCapability } from '@wener/common/ai/model/registry';
 import type { AiModel, AiProtocol, AiProvider } from './AiConfig';
 import type { ResolvedCliContext } from './CliConfig';
 
 /** 与 wcli provider registry 使用同一组规范协议名和别名。 */
-export function normalizeAiProtocol(api: AiProtocol): PromptProtocol {
+export function normalizeAiProtocol(api: AiProtocol): MessageGenerationProtocol {
 	if (api === 'anthropic' || api === 'anthropic-messages') return 'anthropic';
 	if (api === 'gemini' || api === 'google-generative-ai') return 'gemini';
 	if (api === 'openai-response' || api === 'openai-responses') return 'openai-response';
 	return 'openai';
+}
+/** Explicit model capabilities override provider defaults; legacy protocol configs generate messages. */
+export function resolveAiCapabilities(model: AiModel, provider: AiProvider): readonly ModelCapability[] {
+	return model.capabilities ?? provider.capabilities ?? ['message-generation'];
 }
 export function listAiModels(context: ResolvedCliContext) {
 	return Object.entries(context.providers ?? {}).flatMap(([providerName, provider]) =>
@@ -18,6 +23,7 @@ export function listAiModels(context: ResolvedCliContext) {
 			model: model.name ?? alias,
 			title: model.title,
 			api: model.api ?? provider.api,
+			capabilities: resolveAiCapabilities(model, provider),
 			contextSize: model.contextSize,
 			maxOutputTokens: model.maxOutputTokens,
 			enabled: !provider.disabled && !model.disabled,
@@ -31,7 +37,8 @@ export interface ResolvedAiModel {
 	model: string;
 	config: AiModel;
 	provider: AiProvider;
-	target: PromptTarget;
+	capabilities: readonly ModelCapability[];
+	target: MessageGenerationTarget;
 }
 
 export function resolveAiModel(
@@ -89,6 +96,9 @@ export function resolveAiModel(
 	}
 	const config = modelConfig ?? {};
 	if (config.disabled) throw new Error('Selected AI model is disabled');
+	const capabilities = resolveAiCapabilities(config, provider);
+	if (!capabilities.includes('message-generation') && !capabilities.includes('message-streaming'))
+		throw new Error('Selected AI model does not support message-generation');
 	const candidateApi = normalizeAiProtocol(options.protocol ?? config.api ?? provider.api);
 	const endpoint = config.endpointKey
 		? provider.endpoints?.[config.endpointKey]
@@ -123,6 +133,7 @@ export function resolveAiModel(
 		model: config.name ?? alias,
 		config,
 		provider,
+		capabilities,
 		target: { api, baseUrl, apiKey, headers: { ...provider.headers, ...endpoint?.headers } },
 	};
 }

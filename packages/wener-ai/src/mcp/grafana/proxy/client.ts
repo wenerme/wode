@@ -1,6 +1,6 @@
-import { Client } from '@modelcontextprotocol/sdk/client/index.js';
-import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
-import type { Tool } from '@modelcontextprotocol/sdk/types.js';
+import type { Tool, Transport } from '@modelcontextprotocol/client';
+import { type Client, StreamableHTTPClientTransport } from '@modelcontextprotocol/client';
+import { connectMcpClient } from '../../client';
 import type { ResolvedGrafanaAuthOptions } from '../auth';
 import { buildGrafanaHeaders } from '../auth';
 
@@ -16,7 +16,7 @@ export class GrafanaProxiedClient {
 	readonly datasourceUid: string;
 	readonly datasourceType: string;
 	readonly endpoint: string;
-	#transport?: StreamableHTTPClientTransport;
+	#transport?: Transport;
 	#client?: Client;
 	#tools: Tool[] = [];
 
@@ -30,20 +30,11 @@ export class GrafanaProxiedClient {
 		if (this.#client) return this.#client;
 
 		const headers = Object.fromEntries(buildGrafanaHeaders(this.options.auth).entries());
-		const transport = new StreamableHTTPClientTransport(new URL(this.endpoint), {
-			requestInit: { headers },
+		const { client, transport } = await connectMcpClient({
+			createTransport: () => new StreamableHTTPClientTransport(new URL(this.endpoint), { requestInit: { headers } }),
+			clientInfo: { name: `grafana-proxy-${this.options.datasourceType}`, version: '1.0.0' },
+			clientOptions: { capabilities: {} },
 		});
-		const client = new Client(
-			{
-				name: `grafana-proxy-${this.options.datasourceType}`,
-				version: '1.0.0',
-			},
-			{
-				capabilities: {},
-			},
-		);
-
-		await client.connect(transport);
 		const listed = await client.listTools();
 		this.#transport = transport;
 		this.#client = client;

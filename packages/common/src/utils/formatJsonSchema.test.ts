@@ -1,5 +1,21 @@
 import { describe, expect, it } from 'vitest';
-import { formatJsonSchema, formatToolSignature } from './formatJsonSchema';
+import { formatJsonSchema, formatJsonSchemaTypeScript, formatToolSignature } from './formatJsonSchema';
+
+it('emits standalone TypeScript with local refs, quoted properties, comments and union arrays', () => {
+	const output = formatJsonSchemaTypeScript({
+		type: 'object', additionalProperties: false,
+		$defs: { Identifier: { type: 'string', format: 'uri' } },
+		properties: {
+			'endpoint-url': { $ref: '#/$defs/Identifier', description: 'Service endpoint. */ safe' },
+			values: { type: 'array', items: { anyOf: [{ type: 'string' }, { type: 'number' }] } },
+		},
+	}, { name: 'Options' });
+	expect(output).toContain('"endpoint-url"?: string;');
+	expect(output).toContain('/** Service endpoint. * / safe */');
+	expect(output).toContain('values?: Array<(string | number)>;');
+	expect(output).not.toContain('string<uri>');
+	expect(output).not.toContain('Identifier;');
+});
 
 describe('formatJsonSchema', () => {
 	it('formats empty schema', () => {

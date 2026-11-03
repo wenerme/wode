@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { AiConfigShape, type AiProvider, describeAiProvider, type PromptPreset, publicConfigUrl } from './AiConfig';
 import { CliConfigError, configErrorMessage, configObject } from './configObject';
+import { type CliMcpServers, CliMcpServersSchema, describeMcpServers } from './McpConfig';
 import {
 	type CliServiceConfig,
 	CliServicesSchema,
@@ -15,6 +16,7 @@ const context = configObject(
 		...AiConfigShape,
 		title: z.string().optional(),
 		services: CliServicesSchema,
+		mcpServers: CliMcpServersSchema.optional(),
 		defaults: z.record(name, name).default({}),
 	}),
 );
@@ -24,11 +26,13 @@ export const CliConfigSchema = configObject(
 		version: z.literal(1).default(1),
 		currentContext: name.default('local'),
 		services: CliServicesSchema,
+		mcpServers: CliMcpServersSchema.optional(),
 		defaults: z.record(name, name).default({}),
 		contexts: z.record(name, context).default({ local: { services: {}, defaults: {} } }),
 	}),
 );
 export type CliConfig = z.infer<typeof CliConfigSchema>;
+export type { CliMcpServers };
 
 /** 配置持久化属于宿主，命令和 service 不依赖 Node 或浏览器存储。 */
 export interface CliConfigStore {
@@ -77,6 +81,7 @@ export interface ResolvedCliContext {
 	providers?: Readonly<Record<string, AiProvider>>;
 	defaultModel?: string;
 	prompts?: Readonly<Record<string, PromptPreset>>;
+	mcpServers?: Readonly<CliMcpServers>;
 }
 
 export function resolveCliContext(
@@ -106,6 +111,7 @@ export function resolveCliContext(
 		providers: structuredClone({ ...config.providers, ...selectedContext.providers }),
 		defaultModel: selectedContext.defaultModel ?? config.defaultModel,
 		prompts: structuredClone({ ...config.prompts, ...selectedContext.prompts }),
+		mcpServers: structuredClone({ ...(config.mcpServers ?? {}), ...(selectedContext.mcpServers ?? {}) }),
 	};
 }
 
@@ -146,6 +152,9 @@ export function describeCliContext(context: ResolvedCliContext) {
 						]),
 					),
 				}
+			: {}),
+		...(Object.keys(context.mcpServers ?? {}).length
+			? { mcpServers: describeMcpServers(context.mcpServers ?? {}) }
 			: {}),
 		services: Object.fromEntries(
 			Object.entries(context.configuredServices ?? context.services).map(([key, service]) => [

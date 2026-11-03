@@ -16,6 +16,9 @@
 		"./api": "./src/api/index.ts",
 		"./api/*": "./src/api/*/index.ts",
 		"./ai/router": "./src/ai/router/index.ts",
+		"./ai/message-generation": "./src/ai/message-generation/index.ts",
+		"./ai/message-generation/*": "./src/ai/message-generation/*.ts",
+		"./mcp": "./src/mcp/index.ts",
 		"./17dz": "./src/17dz/index.ts",
 		"./17dz/crypto": "./src/17dz/crypto/index.ts",
 		"./17dz/flow": "./src/17dz/flow/index.ts",
@@ -30,6 +33,8 @@
 		"./exa": "./src/exa/index.ts",
 		"./honcho": "./src/honcho/index.ts",
 		"./jina": "./src/jina/index.ts",
+		"./openobserve": "./src/openobserve/index.ts",
+		"./prometheus": "./src/prometheus/index.ts",
 		"./openai": "./src/openai/index.ts",
 		"./qq": "./src/qq/index.ts",
 		"./server": "./src/server/index.ts",
@@ -115,6 +120,18 @@
 	},
 	"publishConfig": {
 		"exports": {
+			"./ai/message-generation": {
+				"types": "./src/ai/message-generation/index.ts",
+				"default": "./lib/ai/message-generation/index.js"
+			},
+			"./ai/message-generation/*": {
+				"types": "./src/ai/message-generation/*.ts",
+				"default": "./lib/ai/message-generation/*.js"
+			},
+			"./mcp": {
+				"types": "./src/mcp/index.ts",
+				"default": "./lib/mcp/index.js"
+			},
 			".": {
 				"types": "./src/index.ts",
 				"default": "./lib/index.js"
@@ -186,6 +203,14 @@
 			"./jina": {
 				"types": "./src/jina/index.ts",
 				"default": "./lib/jina/index.js"
+			},
+			"./openobserve": {
+				"types": "./src/openobserve/index.ts",
+				"default": "./lib/openobserve/index.js"
+			},
+			"./prometheus": {
+				"types": "./src/prometheus/index.ts",
+				"default": "./lib/prometheus/index.js"
 			},
 			"./openai": {
 				"types": "./src/openai/index.ts",

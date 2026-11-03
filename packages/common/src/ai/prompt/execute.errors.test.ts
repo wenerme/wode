@@ -27,7 +27,7 @@ describe('prompt error and stream boundaries', () => {
 		const fetch: typeof globalThis.fetch = async () => {
 			throw new Error('fixture-key https://example.com?token=private');
 		};
-		await expect(executePrompt(request, { fetch })).rejects.toThrow(/^Prompt request failed$/);
+		await expect(executePrompt(request, { fetch })).rejects.toThrow(/^Message generation request failed$/);
 	});
 	it('rejects cancellation that happens during JSON consumption even if the host fetch ignores signals', async () => {
 		const controller = new AbortController();
@@ -103,7 +103,7 @@ describe('prompt error and stream boundaries', () => {
 		});
 		await expect(
 			executePrompt({ ...request, stream: true }, { fetch: fetchResponse(new Response(body)) }),
-		).rejects.toThrow(/^Prompt provider returned invalid stream data$/);
+		).rejects.toThrow(/^Message generation provider returned invalid stream data$/);
 		expect(cancelled).toBe(true);
 	});
 });

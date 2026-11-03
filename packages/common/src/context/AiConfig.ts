@@ -1,4 +1,7 @@
+import { ModelCapabilities } from '@wener/common/ai/model/registry';
 import { z } from 'zod';
+
+export const AiModelCapabilitySchema = z.enum(ModelCapabilities);
 
 /** 沿用 wcli 的协议名和 provider.models 目录结构，独立于 service 插件。 */
 export const AiProtocolSchema = z.enum([
@@ -25,6 +28,7 @@ export const AiModelSchema = z.object({
 	maxOutputTokens: z.number().int().positive().optional(),
 	temperature: z.number().min(0).max(2).optional(),
 	disabled: z.boolean().optional(),
+	capabilities: z.array(AiModelCapabilitySchema).optional(),
 });
 export type AiModel = z.infer<typeof AiModelSchema>;
 export const AiEndpointSchema = z.object({
@@ -36,6 +40,7 @@ export const AiEndpointSchema = z.object({
 });
 export const AiProviderSchema = z.object({
 	api: AiProtocolSchema.default('openai'),
+	capabilities: z.array(AiModelCapabilitySchema).optional(),
 	title: z.string().optional(),
 	baseUrl: z.url().optional(),
 	apiKey: z.string().optional(),
@@ -68,6 +73,7 @@ export const AiConfigShape = {
 export function describeAiProvider(provider: AiProvider) {
 	return {
 		api: provider.api,
+		capabilities: provider.capabilities,
 		title: provider.title,
 		baseUrl: provider.baseUrl ? publicConfigUrl(provider.baseUrl) : undefined,
 		disabled: provider.disabled,

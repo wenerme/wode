@@ -16,9 +16,35 @@
 	},
 	"exports": {
 		".": "./src/index.ts",
+		"./ai/model/registry": "./src/ai/model/registry/index.ts",
 		"./cli": "./src/cli/index.ts",
 		"./cli/*": "./src/cli/*.ts",
 		"./cli/render": "./src/cli/render/index.ts",
+		"./service": "./src/service/index.ts",
+		"./service/registry": "./src/service/registry/index.ts",
+		"./service/search": "./src/service/search/index.ts",
+		"./service/fetch": "./src/service/fetch/index.ts",
+		"./service/sql": "./src/service/sql/index.ts",
+		"./service/sql/client": "./src/service/sql/client.ts",
+		"./service/sql/cli": "./src/service/sql/cli/index.ts",
+		"./service/providers/sql": "./src/service/providers/sql.ts",
+		"./service/openobserve": "./src/service/openobserve/index.ts",
+		"./service/apollo": "./src/service/apollo/index.ts",
+		"./service/apollo/cli": "./src/service/apollo/cli.ts",
+		"./service/openobserve/cli": "./src/service/openobserve/cli.ts",
+		"./service/openobserve/client": "./src/service/openobserve/client.ts",
+		"./service/prometheus": "./src/service/prometheus/index.ts",
+		"./service/prometheus/cli": "./src/service/prometheus/cli.ts",
+		"./service/prometheus/client": "./src/service/prometheus/client.ts",
+		"./service/builtin": "./src/service/builtin/index.ts",
+		"./service/providers/jina": "./src/service/providers/jina.ts",
+		"./service/providers/base": "./src/service/providers/base.ts",
+		"./service/cli": "./src/service/cli/index.ts",
+		"./service/cli/client": "./src/service/cli/client.ts",
+		"./service/runtime": "./src/service/runtime/index.ts",
+		"./service/runtime/client": "./src/service/runtime/client.ts",
+		"./service/config": "./src/service/config/index.ts",
+		"./service/providers/duckduckgo": "./src/service/providers/duckduckgo.ts",
 		"./cn": "./src/cn/index.ts",
 		"./consola": "./src/consola/index.ts",
 		"./data": "./src/data/index.ts",
@@ -77,6 +103,7 @@
 		"@sinclair/typebox": "^0.34.52",
 		"@standard-schema/spec": "^1.1.0",
 		"@types/wicg-file-system-access": "^2023.10.7",
+		"@wener/client": "workspace:^",
 		"@wener/utils": "workspace:^",
 		"ajv-formats": "^3.0.1",
 		"ajv-keywords": "^5.1.0",
@@ -125,6 +152,10 @@
 				"types": "./src/index.ts",
 				"default": "./lib/index.js"
 			},
+			"./ai/model/registry": {
+				"types": "./src/ai/model/registry/index.ts",
+				"default": "./lib/ai/model/registry/index.js"
+			},
 			"./cli": {
 				"types": "./src/cli/index.ts",
 				"default": "./lib/cli/index.js"
@@ -136,6 +167,106 @@
 			"./cli/render": {
 				"types": "./src/cli/render/index.ts",
 				"default": "./lib/cli/render/index.js"
+			},
+			"./service": {
+				"types": "./src/service/index.ts",
+				"default": "./lib/service/index.js"
+			},
+			"./service/registry": {
+				"types": "./src/service/registry/index.ts",
+				"default": "./lib/service/registry/index.js"
+			},
+			"./service/search": {
+				"types": "./src/service/search/index.ts",
+				"default": "./lib/service/search/index.js"
+			},
+			"./service/fetch": {
+				"types": "./src/service/fetch/index.ts",
+				"default": "./lib/service/fetch/index.js"
+			},
+			"./service/sql": {
+				"types": "./src/service/sql/index.ts",
+				"default": "./lib/service/sql/index.js"
+			},
+			"./service/sql/client": {
+				"types": "./src/service/sql/client.ts",
+				"default": "./lib/service/sql/client.js"
+			},
+			"./service/sql/cli": {
+				"types": "./src/service/sql/cli/index.ts",
+				"default": "./lib/service/sql/cli/index.js"
+			},
+			"./service/providers/sql": {
+				"types": "./src/service/providers/sql.ts",
+				"default": "./lib/service/providers/sql.js"
+			},
+			"./service/openobserve": {
+				"types": "./src/service/openobserve/index.ts",
+				"default": "./lib/service/openobserve/index.js"
+			},
+			"./service/apollo": {
+				"types": "./src/service/apollo/index.ts",
+				"default": "./lib/service/apollo/index.js"
+			},
+			"./service/apollo/cli": {
+				"types": "./src/service/apollo/cli.ts",
+				"default": "./lib/service/apollo/cli.js"
+			},
+			"./service/openobserve/cli": {
+				"types": "./src/service/openobserve/cli.ts",
+				"default": "./lib/service/openobserve/cli.js"
+			},
+			"./service/openobserve/client": {
+				"types": "./src/service/openobserve/client.ts",
+				"default": "./lib/service/openobserve/client.js"
+			},
+			"./service/prometheus": {
+				"types": "./src/service/prometheus/index.ts",
+				"default": "./lib/service/prometheus/index.js"
+			},
+			"./service/prometheus/cli": {
+				"types": "./src/service/prometheus/cli.ts",
+				"default": "./lib/service/prometheus/cli.js"
+			},
+			"./service/prometheus/client": {
+				"types": "./src/service/prometheus/client.ts",
+				"default": "./lib/service/prometheus/client.js"
+			},
+			"./service/builtin": {
+				"types": "./src/service/builtin/index.ts",
+				"default": "./lib/service/builtin/index.js"
+			},
+			"./service/providers/jina": {
+				"types": "./src/service/providers/jina.ts",
+				"default": "./lib/service/providers/jina.js"
+			},
+			"./service/providers/base": {
+				"types": "./src/service/providers/base.ts",
+				"default": "./lib/service/providers/base.js"
+			},
+			"./service/cli": {
+				"types": "./src/service/cli/index.ts",
+				"default": "./lib/service/cli/index.js"
+			},
+			"./service/cli/client": {
+				"types": "./src/service/cli/client.ts",
+				"default": "./lib/service/cli/client.js"
+			},
+			"./service/runtime": {
+				"types": "./src/service/runtime/index.ts",
+				"default": "./lib/service/runtime/index.js"
+			},
+			"./service/runtime/client": {
+				"types": "./src/service/runtime/client.ts",
+				"default": "./lib/service/runtime/client.js"
+			},
+			"./service/config": {
+				"types": "./src/service/config/index.ts",
+				"default": "./lib/service/config/index.js"
+			},
+			"./service/providers/duckduckgo": {
+				"types": "./src/service/providers/duckduckgo.ts",
+				"default": "./lib/service/providers/duckduckgo.js"
 			},
 			"./cn": {
 				"types": "./src/cn/index.ts",

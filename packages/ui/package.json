@@ -139,7 +139,7 @@
 		"typescript": "7.0.2",
 		"vite": "catalog:",
 		"vitest": "catalog:",
-		"wocli": "workspace:^"
+		"woctl": "workspace:^"
 	},
 	"publishConfig": {
 		"exports": {

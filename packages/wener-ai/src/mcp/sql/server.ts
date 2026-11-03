@@ -1,4 +1,4 @@
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { McpServer } from '@modelcontextprotocol/server';
 import type { Kysely } from 'kysely';
 import { registerMetadataTools, registerQueryTools } from './tools';
 import { createKyselyInstance, type Dialect, detectDialect } from './utils';

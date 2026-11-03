@@ -9,6 +9,7 @@ export interface DuckDuckGoSearchRequest {
 	count?: number;
 	offset?: number;
 	range?: '' | 'd' | 'w' | 'm' | 'y' | (string & {});
+	signal?: AbortSignal;
 }
 
 export interface DuckDuckGoSearchResult {
@@ -281,16 +282,6 @@ async function parseBody(response: Response): Promise<unknown> {
 	return text;
 }
 
-function combineSignals(left: AbortSignal | undefined, right: AbortSignal | undefined): AbortSignal | undefined {
-	if (!left) return right;
-	if (!right) return left;
-	const controller = new AbortController();
-	const abort = () => controller.abort();
-	left.addEventListener('abort', abort, { once: true });
-	right.addEventListener('abort', abort, { once: true });
-	return controller.signal;
-}
-
 export class DuckDuckGoClient {
 	readonly options: DuckDuckGoClientOptions;
 
@@ -312,21 +303,27 @@ export class DuckDuckGoClient {
 		options: Omit<DuckDuckGoSearchRequest, 'query'> = {},
 	): Promise<DuckDuckGoSearchResponse> {
 		const request = typeof input === 'string' ? { ...options, query: input } : input;
+		request.signal?.throwIfAborted();
 		const count = request.count && request.count > 0 ? request.count : 10;
 		const offset = request.offset && request.offset > 0 ? request.offset : 0;
-		if (offset > 0) return this.htmlSearch(request.query, count, request.range, offset);
-		const instant = await this.instantAnswer(request.query, count);
+		const callOptions = { signal: request.signal };
+		if (offset > 0) return this.htmlSearch(request.query, count, request.range, offset, callOptions);
+		const instant = await this.instantAnswer(request.query, count, callOptions);
 		if (instant.results.length > 0) return instant;
-		return this.htmlSearch(request.query, count, request.range);
+		return this.htmlSearch(request.query, count, request.range, 0, callOptions);
 	}
 
-	async instantAnswer(query: string, count = 10): Promise<DuckDuckGoSearchResponse> {
+	async instantAnswer(
+		query: string,
+		count = 10,
+		options: { signal?: AbortSignal } = {},
+	): Promise<DuckDuckGoSearchResponse> {
 		const url = resolveUrl(this.options.instantAnswerBaseUrl);
 		url.searchParams.set('q', query);
 		url.searchParams.set('format', 'json');
 		url.searchParams.set('no_html', '1');
 		url.searchParams.set('skip_disambig', '1');
-		const data = await this.request<unknown>(url.toString());
+		const data = await this.request<unknown>(url.toString(), options);
 		if (!isRecord(data)) return { query, results: [], source: 'instant-answer', raw: data };
 		return {
 			query,
@@ -336,34 +333,44 @@ export class DuckDuckGoClient {
 		};
 	}
 
-	async htmlSearch(query: string, count = 10, range?: string, offset = 0): Promise<DuckDuckGoSearchResponse> {
+	async htmlSearch(
+		query: string,
+		count = 10,
+		range?: string,
+		offset = 0,
+		options: { signal?: AbortSignal } = {},
+	): Promise<DuckDuckGoSearchResponse> {
 		const url = resolveUrl(this.options.htmlBaseUrl);
 		url.searchParams.set('q', query);
 		const dateFilter = mapDuckDuckGoDateFilter(range);
 		if (dateFilter) url.searchParams.set('df', dateFilter);
 		if (offset > 0) url.searchParams.set('s', String(offset));
-		const data = await this.request<unknown>(url.toString());
+		const data = await this.request<unknown>(url.toString(), options);
 		const html = typeof data === 'string' ? data : '';
 		return { query, results: extractHtmlResults(html, query, count), source: 'html', raw: html };
 	}
 
 	async request<T>(url: string, init: RequestInit = {}): Promise<T> {
-		const timeoutMs = this.options.timeout;
-		const timeoutController = timeoutMs ? new AbortController() : undefined;
-		const timer = timeoutMs ? setTimeout(() => timeoutController?.abort(), timeoutMs) : undefined;
+		init.signal?.throwIfAborted();
 		const headers = new Headers({
 			...this.options.headers,
 			...(init.headers ? Object.fromEntries(new Headers(init.headers).entries()) : {}),
 		});
 		if (!headers.has('user-agent')) headers.set('user-agent', this.options.userAgent);
+		const timeoutMs = this.options.timeout;
+		const timeoutController = timeoutMs ? new AbortController() : undefined;
+		const timer = timeoutMs ? setTimeout(() => timeoutController?.abort(), timeoutMs) : undefined;
+		const signals = [init.signal, timeoutController?.signal].filter((value): value is AbortSignal => Boolean(value));
+		const signal = signals.length > 1 ? AbortSignal.any(signals) : signals[0];
 		try {
-			const initSignal = init.signal ?? undefined;
 			const response = await this.options.fetch(url, {
 				...init,
 				headers,
-				signal: combineSignals(initSignal, timeoutController?.signal),
+				signal,
 			});
+			signal?.throwIfAborted();
 			const data = await parseBody(response);
+			signal?.throwIfAborted();
 			if (!response.ok) {
 				throw new DuckDuckGoClientError(`DuckDuckGo request failed: ${response.status} ${response.statusText}`, {
 					status: response.status,
@@ -373,6 +380,9 @@ export class DuckDuckGoClient {
 				});
 			}
 			return data as T;
+		} catch (error) {
+			signal?.throwIfAborted();
+			throw error;
 		} finally {
 			if (timer) clearTimeout(timer);
 		}

@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'vitest';
-import { resolveAiModel } from './AiCatalog';
+import { describe, expect, it, vi } from 'vitest';
+import { listAiModels, resolveAiModel } from './AiCatalog';
 import type { AiModel, AiProtocol } from './AiConfig';
 import { parseCliConfig, resolveCliContext } from './CliConfig';
 
@@ -27,6 +27,26 @@ function context(model: AiModel = { endpointKey: 'claude' }) {
 }
 
 describe('AI endpoint protocol resolution', () => {
+	it.each(['embedding', 'image-generation'] as const)('rejects %s before resolving secrets', (capability) => {
+		const getEnv = vi.fn();
+		const selected = context({ endpointKey: 'claude', capabilities: [capability] });
+		expect(() => resolveAiModel(selected, { getEnv })).toThrow('does not support message-generation');
+		expect(() => resolveAiModel(selected, { getEnv, requireKey: false })).toThrow(
+			'does not support message-generation',
+		);
+		expect(getEnv).not.toHaveBeenCalled();
+		expect(listAiModels(selected)[0].capabilities).toEqual([capability]);
+	});
+	it('inherits provider capabilities, honors model overrides and keeps legacy message inference', () => {
+		const selected = context({});
+		expect(listAiModels(selected)[0].capabilities).toEqual(['message-generation']);
+		selected.providers!.example.capabilities = ['embedding'];
+		expect(() => resolveAiModel(selected)).toThrow('does not support message-generation');
+		selected.providers!.example.models!.fast.capabilities = ['message-generation', 'image-generation'];
+		expect(resolveAiModel(selected).capabilities).toEqual(['message-generation', 'image-generation']);
+		selected.providers!.example.models!.fast.capabilities = [];
+		expect(() => resolveAiModel(selected)).toThrow('does not support message-generation');
+	});
 	it('lets an explicit endpoint protocol override the provider protocol and still requires its key', () => {
 		const selected = context();
 		expect(() => resolveAiModel(selected)).toThrow('environment variable');
