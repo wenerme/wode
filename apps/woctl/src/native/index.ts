@@ -42,12 +42,13 @@ export function createNativeHost(options: { config: string }): WocliHost {
 	return {
 		config: createFileConfigStore(options.config, { cwd, projectLookup: true }),
 		sqlDriver: createNativeSqlDriver,
-		info: { runtime: 'node', node: process.version, platform: process.platform, configPath: options.config },
+		info: { runtime: 'node', node: process.version, platform: process.platform, arch: process.arch, cwd, configPath: options.config },
 		getEnv: (name) => (environment ??= loadNativeEnv(cwd))[name] ?? process.env[name],
 		env: {
 			[ENV.context]: process.env[ENV.context] ?? process.env[LEGACY_ENV.context],
 			[ENV.logLevel]: process.env[ENV.logLevel] ?? process.env[LEGACY_ENV.logLevel],
 			TERM: process.env.TERM,
+			TERM_PROGRAM: process.env.TERM_PROGRAM,
 			NO_COLOR: process.env.NO_COLOR,
 			FORCE_COLOR: process.env.FORCE_COLOR,
 			COLORTERM: process.env.COLORTERM,

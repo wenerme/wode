@@ -1,4 +1,6 @@
 import { z } from 'zod';
+import { ApolloToolInputs, ApolloTools, ApolloWriteOperations } from './apollo-tools';
+import { redactApolloValue } from '../apollo/core/redactor';
 import type { FetchRequest } from '../fetch';
 import { type ServiceProviderDefinition, ServiceRegistry } from '../registry';
 import type { SearchRequest } from '../search';
@@ -51,6 +53,7 @@ export function createServiceProviderAdapter(definition: ServiceProviderDefiniti
 	const provides: readonly string[] = [...definition.provides];
 	return {
 		name: definition.name,
+		deferConfigResolution: true,
 		aliases: definition.aliases,
 		capabilities: definition.provides,
 		optionsSchema: definition.optionsSchema,
@@ -66,6 +69,7 @@ export function createServiceProviderAdapter(definition: ServiceProviderDefiniti
 								definition.provides.filter((key) => Object.hasOwn(tools, key)).map((key) => [key, tools[key]]),
 							),
 							...(provides.includes('sql') ? SqlTools : {}),
+							...(provides.includes('apollo') ? ApolloTools : {}),
 							...(provides.includes('openobserve') ? OpenObserveTools : {}),
 							...(provides.includes('prometheus') ? PrometheusTools : {}),
 						},
@@ -73,6 +77,15 @@ export function createServiceProviderAdapter(definition: ServiceProviderDefiniti
 				},
 				async call(tool, input, options) {
 					options?.signal?.throwIfAborted();
+					if (provides.includes('apollo') && Object.hasOwn(ApolloToolInputs, tool)) {
+						const operation = tool as keyof typeof ApolloToolInputs;
+						const parsed = ApolloToolInputs[operation].safeParse(input);
+						if (!parsed.success) throw new TypeError('Invalid Apollo input');
+						if (ApolloWriteOperations.has(operation) && config.readOnly !== false) throw new Error('Selected service is read-only');
+						const service = await registry.load('apollo', name);
+						const invoke = service[operation] as (input: unknown) => Promise<unknown>;
+						return redactApolloValue(await invoke.call(service, parsed.data));
+					}
 					if (provides.includes('sql') && Object.hasOwn(SqlToolInputs, tool)) {
 						const operation = tool as keyof typeof SqlToolInputs;
 						const parsed = SqlToolInputs[operation].safeParse(input);

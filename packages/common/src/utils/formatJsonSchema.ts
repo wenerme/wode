@@ -18,6 +18,8 @@ export interface FormatJsonSchemaTypeScriptOptions extends FormatJsonSchemaOptio
 }
 
 interface JsonSchema {
+	$defs?: Record<string, JsonSchema>;
+	definitions?: Record<string, JsonSchema>;
 	type?: string | string[];
 	properties?: Record<string, JsonSchema>;
 	required?: string[];
@@ -65,10 +67,56 @@ export function formatJsonSchemaTypeScript(
 ): string {
 	const name = options.name ?? 'Options';
 	if (!/^[A-Za-z_$][A-Za-z0-9_$]*$/u.test(name)) throw new Error('Invalid TypeScript type name');
-	const body = formatJsonSchema(schema, { ...options, compact: false });
+	const body = formatJsonSchemaTypeScriptExpression(schema);
 	const prefix = options.export === false ? '' : 'export ';
 	if (body.startsWith('{')) return `${prefix}interface ${name} ${body}`;
 	return `${prefix}type ${name} = ${body};`;
+}
+
+/** TypeScript syntax, unlike the compact human-readable schema notation. */
+export function formatJsonSchemaTypeScriptExpression(schema: JsonSchema | null | undefined): string {
+	const root = schema;
+	function type(input: JsonSchema | boolean | undefined, depth = 0, refs = new Set<string>()): string {
+		if (input === false) return 'never';
+		if (!input || input === true || depth > 32) return 'unknown';
+		if (input.$ref) {
+			if (refs.has(input.$ref) || !input.$ref.startsWith('#/')) return 'unknown';
+			let target: unknown = root;
+			for (const part of input.$ref.slice(2).split('/')) {
+				const key = part.replace(/~1/gu, '/').replace(/~0/gu, '~');
+				if (!target || typeof target !== 'object' || !Object.hasOwn(target, key)) return 'unknown';
+				target = (target as Record<string, unknown>)[key];
+			}
+			return type(target as JsonSchema, depth + 1, new Set([...refs, input.$ref]));
+		}
+		if (Object.hasOwn(input, 'const')) return JSON.stringify(input.const) ?? 'unknown';
+		if (input.enum) return input.enum.map((value) => JSON.stringify(value)).join(' | ') || 'never';
+		for (const [key, separator] of [['anyOf', ' | '], ['oneOf', ' | '], ['allOf', ' & ']] as const) {
+			if (input[key]) return `(${input[key]!.map((item) => type(item, depth + 1, refs)).join(separator)})`;
+		}
+		if (Array.isArray(input.type)) return input.type.map((value) => type({ ...input, type: value }, depth + 1, refs)).join(' | ');
+		if (input.type === 'array') {
+			if (Array.isArray(input.items)) return `[${input.items.map((item) => type(item, depth + 1, refs)).join(', ')}]`;
+			return `Array<${type(input.items, depth + 1, refs)}>`;
+		}
+		if (input.type === 'object' || input.properties) {
+			const required = new Set(input.required ?? []);
+			const lines = Object.entries(input.properties ?? {}).map(([key, property]) => {
+				const name = /^[A-Za-z_$][\w$]*$/u.test(key) ? key : JSON.stringify(key);
+				const comment = property.description ? `/** ${property.description.replace(/\*\//gu, '* /').replace(/[\r\n]/gu, ' ')} */\n` : '';
+				return `${comment}${name}${required.has(key) ? '' : '?'}: ${type(property, depth + 1, refs)};`;
+			});
+			if (input.additionalProperties !== false) {
+				// Unknown permits optional named properties to coexist with an open index signature.
+				lines.push(`[key: string]: ${lines.length ? 'unknown' : type(input.additionalProperties, depth + 1, refs)};`);
+			}
+			return `{\n${lines.map((line) => line.split('\n').map((part) => `  ${part}`).join('\n')).join('\n')}\n}`;
+		}
+		if (input.type === 'integer' || input.type === 'number') return 'number';
+		if (input.type === 'string' || input.type === 'boolean' || input.type === 'null') return input.type;
+		return 'unknown';
+	}
+	return type(schema ?? undefined);
 }
 
 function formatType(schema: JsonSchema, depth: number, maxDepth: number, compact: boolean): string {

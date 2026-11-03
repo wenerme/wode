@@ -1,4 +1,5 @@
-import { type CliCommand, type CliCommandResult, type CliOptions, type CliTable, CliUsageError } from '@wener/common/cli';
+import { type CliCommand, type CliCommandResult, type CliOptions, CliUsageError, renderCliOutput, resolveCliOutputSelection } from '@wener/common/cli';
+import { getCliOutputOptions } from '@wener/common/cli/getCliOutputOptions';
 import { isCliServiceEnabled, type ResolvedCliContext } from 'common/context';
 import { writeCommandOutput } from '../command-utils';
 import { VERSION } from '../core';
@@ -117,6 +118,8 @@ export function createDiagnosticsCommands(options: DiagnosticsOptions) {
 				version: VERSION,
 				node: context.host.info?.node ?? null,
 				platform: context.host.info?.platform ?? null,
+				arch: context.host.info?.arch ?? null,
+				cwd: context.host.info?.cwd ?? null,
 				context: resolved?.name ?? context.selectedContext ?? null,
 				configPath: context.host.info?.configPath ?? null,
 				services: {
@@ -136,25 +139,45 @@ export function createDiagnosticsCommands(options: DiagnosticsOptions) {
 					stdoutIsTTY: context.host.term?.stdoutIsTTY ?? false,
 					columns: context.host.term?.columns ?? null,
 					rows: context.host.term?.rows ?? null,
+					term: context.host.env?.TERM ?? null,
+					program: context.host.env?.TERM_PROGRAM ?? null,
 				},
 				error: context.configError ? 'Configuration unavailable' : null,
 			};
-			const format = inputOptions.json === true ? 'json' : typeof inputOptions.output === 'string' ? inputOptions.output : 'table';
-			const table: CliTable | undefined = ['table', 'wide', 'describe'].includes(format)
-				? {
-						kind: 'list',
-						headers: ['SECTION', 'FIELD', 'VALUE'],
-						columnOptions: [{ key: 'section' }, { key: 'field' }, { key: 'value' }],
-						rows: [
-							...Object.entries({ runtime: value.runtime, version: value.version, node: value.node, platform: value.platform, context: value.context, configPath: value.configPath }).map(([field, item]) => ['System', field, item]),
-							...Object.entries(value.services).map(([field, item]) => ['Services', field, item]),
-							...Object.entries(value.ai).map(([field, item]) => ['AI', field, item]),
-							...Object.entries(value.terminal).map(([field, item]) => ['Terminal', field, item]),
-							...(value.error ? [['Status', 'error', value.error] as unknown as readonly unknown[]] : []),
-						],
-				  }
-				: undefined;
-			writeCommandOutput(value, inputOptions, context, table);
+			const selection = resolveCliOutputSelection(inputOptions);
+			if (selection.fields?.length || !['table', 'wide', 'describe', 'desc'].includes(selection.format)) {
+				writeCommandOutput(value, inputOptions, context);
+				return;
+			}
+			const yesNo = (item: boolean) => item ? 'yes' : 'no';
+			const sections: Array<[string, Record<string, unknown>]> = [
+				['System', {
+					CLI: `woctl ${value.version}`,
+					Runtime: [value.runtime, value.node].filter(Boolean).join(' ') || '(not provided)',
+					Platform: [value.platform, value.arch].filter(Boolean).join('/') || '(not provided)',
+					...(value.cwd ? { CWD: value.cwd } : {}),
+				}],
+				['Config', {
+					Context: value.context,
+					File: value.configPath ?? '(in memory)',
+					Status: value.error ?? 'loaded',
+					Defaults: Object.entries(resolved?.defaults ?? {}).map(([type, name]) => `${type}=${name}`).join(', ') || '(none)',
+				}],
+				['Services', {
+					Catalog: `${services.length} configured, ${enabled.length} enabled, ${services.length - enabled.length} disabled, ${unsupported.length} unsupported`,
+					AI: `${providers.length} providers, ${modelCount} models, ${value.ai.prompts} prompts`,
+					MCP: `${Object.keys(resolved?.mcpServers ?? {}).length} servers`,
+				}],
+				['Terminal', {
+					Kind: value.terminal.kind ?? '(not provided)',
+					'TTY (in/out)': `${yesNo(value.terminal.stdinIsTTY)}/${yesNo(value.terminal.stdoutIsTTY)}`,
+					...(value.terminal.columns && value.terminal.rows ? { Size: `${value.terminal.columns} x ${value.terminal.rows}` } : {}),
+					...(value.terminal.term ? { TERM: value.terminal.term } : {}),
+					...(value.terminal.program ? { Program: value.terminal.program } : {}),
+				}],
+			];
+			const layout = { ...getCliOutputOptions(context, inputOptions), fields: undefined, footer: false };
+			context.stdout(sections.map(([title, fields]) => `${title}:\n${renderCliOutput(fields, layout).trimEnd()}`).join('\n\n'));
 		},
 	};
 	return {

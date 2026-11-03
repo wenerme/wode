@@ -27,7 +27,7 @@ export function createServiceRuntime(options: {
 			pending = Promise.resolve().then(() =>
 				provider.create({
 					name,
-					config: resolveCliServiceConfigEnv(config, options.getEnv),
+					config: provider.deferConfigResolution ? config : resolveCliServiceConfigEnv(config, options.getEnv),
 					context,
 					fetch: options.fetch ?? globalThis.fetch.bind(globalThis),
 					sqlDriver: options.sqlDriver,

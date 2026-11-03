@@ -67,7 +67,7 @@ it('executes the actual Node build, preserves arguments and persists contexts', 
 		expect(JSON.parse((await arrayCall('system', 'echo', '00012', '--json')).stdout)).toEqual({ text: '00012' });
 		await arrayCall('--help');
 		expect(await readFile(arrayFile, 'utf8')).toBe(fixture);
-		await arrayCall('service', 'add', 'extra', '--provider', 'system');
+		await arrayCall('service', 'add', 'extra', '--type', 'system');
 		expect(await readFile(arrayFile, 'utf8')).toBe(fixture);
 		const saved = parseYaml(await readFile(join(directory, 'array-config.local.yaml'), 'utf8'));
 		expect(saved.services).toEqual([expect.objectContaining({ name: 'extra', type: 'system' })]);

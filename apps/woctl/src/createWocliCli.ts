@@ -41,7 +41,7 @@ import {
 	type ResolvedCliContext,
 	resolveCliContext,
 } from 'common/context';
-import { formatJsonSchemaTypeScript } from 'common/utils';
+import { formatJsonSchemaTypeScript, formatJsonSchemaTypeScriptExpression } from 'common/utils';
 import {
 	writeCommandOutput as output,
 	readCommandText as readText,
@@ -253,7 +253,7 @@ export function createWocliCli(host: WocliHost) {
 				sections.push(formatJsonSchemaTypeScript(provider.optionsSchema.jsonSchema, { name: `${name}ServiceOptions` }));
 			if (provider.contract) {
 				const methods = Object.entries(provider.contract.methods).map(([method, contract]) => {
-					const input = contract.inputType ?? (contract.inputSchema ? formatJsonSchemaTypeScript(contract.inputSchema, { name: `${name}${method}Input`, export: false }).replace(/^interface [^{]+/u, '').trim() : 'void');
+					const input = contract.inputType ?? (contract.inputSchema ? formatJsonSchemaTypeScriptExpression(contract.inputSchema) : 'void');
 					const output = contract.outputType ?? 'unknown';
 					const comment = contract.description ? `  /** ${contract.description} */\n` : '';
 					return `${comment}  ${method}(input: ${input}): Promise<${output}>;`;

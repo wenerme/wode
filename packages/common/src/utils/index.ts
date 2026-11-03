@@ -3,5 +3,6 @@ export {
 	type FormatJsonSchemaTypeScriptOptions,
 	formatJsonSchema,
 	formatJsonSchemaTypeScript,
+	formatJsonSchemaTypeScriptExpression,
 	formatToolSignature,
 } from './formatJsonSchema';

@@ -58,6 +58,8 @@ export interface ServiceProviderContext {
 }
 export interface ServiceProvider {
 	name: string;
+	/** Typed adapters resolve references when loading a capability, after schema discovery. */
+	deferConfigResolution?: boolean;
 	aliases?: readonly string[];
 	capabilities?: readonly string[];
 	optionsSchema?: ServiceOptionsSchema;

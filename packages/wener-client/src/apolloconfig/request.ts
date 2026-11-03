@@ -1,4 +1,3 @@
-import { createHmac } from 'node:crypto';
 import type { FetchLike } from '@wener/utils';
 import { parseJsonResponse } from '../utils/parseJsonResponse';
 import { resolveRequest } from '../utils/resolveRequest';
@@ -17,9 +16,12 @@ export type RequestOptions = {
 	appSecret?: string;
 };
 
-export function sign(urlPath: string, timestamp: string, appSecret: string): string {
+export async function sign(urlPath: string, timestamp: string, appSecret: string): Promise<string> {
 	const stringToSign = `${timestamp}\n${urlPath}`;
-	return createHmac('sha1', appSecret).update(stringToSign, 'utf8').digest('base64');
+	const encoder = new TextEncoder();
+	const key = await crypto.subtle.importKey('raw', encoder.encode(appSecret), { name: 'HMAC', hash: 'SHA-1' }, false, ['sign']);
+	const signature = await crypto.subtle.sign('HMAC', key, encoder.encode(stringToSign));
+	return btoa(String.fromCharCode(...new Uint8Array(signature)));
 }
 
 export async function request<O = any>(options: RequestOptions): Promise<O> {
@@ -32,7 +34,7 @@ export async function request<O = any>(options: RequestOptions): Promise<O> {
 	if (appSecret && appId) {
 		const timestamp = Date.now().toString();
 		const pathAndQuery = resolved.url.pathname + (resolved.url.search || '');
-		const signature = sign(pathAndQuery, timestamp, appSecret);
+		const signature = await sign(pathAndQuery, timestamp, appSecret);
 
 		resolved.headers.set('Authorization', `Apollo ${appId}:${signature}`);
 		resolved.headers.set('Timestamp', timestamp);

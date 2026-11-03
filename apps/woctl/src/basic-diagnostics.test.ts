@@ -144,6 +144,20 @@ describe('basic diagnostics', () => {
 		await expect(cli.executeLine('service verify --json', io)).rejects.toBeInstanceOf(CliConfigError);
 	});
 
+	it('renders info in readable sections while keeping structured field projections', async () => {
+		const cli = createWocliWebCli({ config: emptyStore() });
+		const plain = output();
+		await cli.executeLine('info', plain.io);
+		const text = plain.stdout.join('\n');
+		for (const section of ['System:', 'Config:', 'Services:', 'Terminal:']) expect(text).toContain(section);
+		expect(text).not.toContain('SECTION');
+		expect(text).not.toContain('rows');
+		expect(text).not.toContain('null');
+		const projected = output();
+		await cli.executeLine('info --json --format context,services.configured', projected.io);
+		expect(JSON.parse(projected.stdout.join(''))).toMatchObject({ context: 'local', 'services.configured': 0 });
+	});
+
 	it('reports prototype-named missing defaults without treating inherited properties as services', async () => {
 		const cli = createWocliWebCli({
 			config: createMemoryCliConfigStore({ defaults: { constructor: 'constructor', toString: 'toString' } }),
