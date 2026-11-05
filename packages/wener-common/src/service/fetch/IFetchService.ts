@@ -1,4 +1,5 @@
 import type { ServiceCallOptions } from '../runtime/types';
+import { defineServiceCapability } from '../registry/ServiceCapability';
 
 export interface FetchRequest {
 	url: string;
@@ -36,3 +37,6 @@ export interface IFetchService {
 	fetch(input: FetchRequest, options?: ServiceCallOptions): Promise<FetchResponse>;
 	close?(): void | Promise<void>;
 }
+
+/** Capability key for `IFetchService`; `registry.load(FetchServiceCapability)` resolves to `IFetchService`. */
+export const FetchServiceCapability = defineServiceCapability<IFetchService>('fetch');

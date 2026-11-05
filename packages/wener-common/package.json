@@ -26,6 +26,9 @@
 		"./service/fetch": "./src/service/fetch/index.ts",
 		"./service/sql": "./src/service/sql/index.ts",
 		"./service/redis": "./src/service/redis/index.ts",
+		"./service/redis/cli": "./src/service/redis/cli/index.ts",
+		"./service/redis/client": "./src/service/redis/client.ts",
+		"./service/providers/redis": "./src/service/providers/redis.ts",
 		"./service/linear": "./src/service/linear/index.ts",
 		"./service/tts": "./src/service/tts/index.ts",
 		"./service/tts/client": "./src/service/tts/client.ts",
@@ -45,8 +48,21 @@
 		"./service/prometheus": "./src/service/prometheus/index.ts",
 		"./service/prometheus/cli": "./src/service/prometheus/cli.ts",
 		"./service/prometheus/client": "./src/service/prometheus/client.ts",
-		"./service/builtin": "./src/service/builtin/index.ts",
-		"./service/builtin/cli": "./src/service/builtin/cli.ts",
+		"./service/grafana": "./src/service/grafana/index.ts",
+		"./service/grafana/cli": "./src/service/grafana/cli.ts",
+		"./service/grafana/client": "./src/service/grafana/client.ts",
+		"./service/cls": "./src/service/cls/index.ts",
+		"./service/cls/cli": "./src/service/cls/cli.ts",
+		"./service/cls/client": "./src/service/cls/client.ts",
+		"./service/s3": "./src/service/s3/index.ts",
+		"./service/s3/cli": "./src/service/s3/cli.ts",
+		"./service/s3/client": "./src/service/s3/client.ts",
+		"./service/lark": "./src/service/lark/index.ts",
+		"./service/lark/cli": "./src/service/lark/cli/index.ts",
+		"./service/lark/cli/client": "./src/service/lark/cli/client.ts",
+		"./service/telegram": "./src/service/telegram/index.ts",
+		"./service/telegram/cli": "./src/service/telegram/cli.ts",
+		"./service/telegram/client": "./src/service/telegram/client.ts",
 		"./service/providers/jina": "./src/service/providers/jina.ts",
 		"./service/providers/exa": "./src/service/providers/exa.ts",
 		"./service/providers/base": "./src/service/providers/base.ts",
@@ -120,49 +136,61 @@
 		"ajv-keywords": "^5.1.0",
 		"consola": "^3.4.2",
 		"date-fns": "^4.4.0",
-		"es-toolkit": "^1.52.0",
+		"es-toolkit": "^1.53.1",
 		"pathe": "^2.0.3",
 		"std-env": "^4.3.0",
-		"string-width": "^8.2.2",
-		"ts-pattern": "^5.9.0",
+		"string-width": "^8.3.0",
+		"ts-pattern": "^5.9.2",
 		"yaml": "^2.9.1"
 	},
 	"devDependencies": {
-		"@mikro-orm/core": "^7.2.4",
-		"@mikro-orm/sql": "^7.2.4",
-		"@orpc/client": "^1.15.5",
-		"@orpc/contract": "^1.15.5",
-		"@orpc/openapi-client": "^1.15.5",
-		"@orpc/server": "^1.15.5",
+		"@mikro-orm/core": "^7.2.7",
+		"@mikro-orm/sql": "^7.2.7",
+		"@orpc/client": "^1.16.1",
+		"@orpc/contract": "^1.16.1",
+		"@orpc/openapi-client": "^1.16.1",
+		"@orpc/server": "^1.16.1",
 		"@sinclair/typebox-codegen": "^0.11.1",
 		"@types/argon2-browser": "^1.18.4",
 		"@types/bcrypt": "^6.0.0",
 		"@types/micromatch": "^4.0.10",
 		"@types/mime-types": "^3.0.1",
 		"ajv-i18n": "^4.2.0",
-		"argon2": "^0.45.1",
+		"argon2": "^0.45.2",
 		"argon2-browser": "^1.18.0",
 		"bcrypt": "^6.0.0",
 		"bcryptjs": "^3.0.3",
 		"chalk": "^6.0.1",
 		"dayjs": "^1.11.23",
 		"decimal.js": "^10.6.0",
-		"emittery": "^2.1.0",
+		"emittery": "^2.2.0",
 		"just-bash": "^3.6.0",
-		"kysely": "^0.29.6",
+		"kysely": "^0.29.8",
 		"micromatch": "^4.0.8",
 		"mime-types": "^3.0.2",
 		"minio": "^8.0.7",
-		"s3mini": "^1.0.2",
+		"s3mini": "^1.0.3",
 		"webdav": "^5.11.0",
-		"zod": "^4.6.5"
+		"zod": "^4.6.7"
 	},
 	"publishConfig": {
 		"exports": {
-			"./service/tts": { "types": "./src/service/tts/index.ts", "default": "./lib/service/tts/index.js" },
-			"./service/tts/client": { "types": "./src/service/tts/client.ts", "default": "./lib/service/tts/client.js" },
-			"./service/providers/edge-tts": { "types": "./src/service/providers/edge-tts.ts", "default": "./lib/service/providers/edge-tts.js" },
-			"./service/providers/openai-tts": { "types": "./src/service/providers/openai-tts.ts", "default": "./lib/service/providers/openai-tts.js" },
+			"./service/tts": {
+				"types": "./src/service/tts/index.ts",
+				"default": "./lib/service/tts/index.js"
+			},
+			"./service/tts/client": {
+				"types": "./src/service/tts/client.ts",
+				"default": "./lib/service/tts/client.js"
+			},
+			"./service/providers/edge-tts": {
+				"types": "./src/service/providers/edge-tts.ts",
+				"default": "./lib/service/providers/edge-tts.js"
+			},
+			"./service/providers/openai-tts": {
+				"types": "./src/service/providers/openai-tts.ts",
+				"default": "./lib/service/providers/openai-tts.js"
+			},
 			"./service/linear": {
 				"types": "./src/service/linear/index.ts",
 				"default": "./lib/service/linear/index.js"
@@ -223,6 +251,18 @@
 				"types": "./src/service/redis/index.ts",
 				"default": "./lib/service/redis/index.js"
 			},
+			"./service/redis/cli": {
+				"types": "./src/service/redis/cli/index.ts",
+				"default": "./lib/service/redis/cli/index.js"
+			},
+			"./service/redis/client": {
+				"types": "./src/service/redis/client.ts",
+				"default": "./lib/service/redis/client.js"
+			},
+			"./service/providers/redis": {
+				"types": "./src/service/providers/redis.ts",
+				"default": "./lib/service/providers/redis.js"
+			},
 			"./service/sql/client": {
 				"types": "./src/service/sql/client.ts",
 				"default": "./lib/service/sql/client.js"
@@ -267,13 +307,65 @@
 				"types": "./src/service/prometheus/client.ts",
 				"default": "./lib/service/prometheus/client.js"
 			},
-			"./service/builtin": {
-				"types": "./src/service/builtin/index.ts",
-				"default": "./lib/service/builtin/index.js"
+			"./service/grafana": {
+				"types": "./src/service/grafana/index.ts",
+				"default": "./lib/service/grafana/index.js"
 			},
-			"./service/builtin/cli": {
-				"types": "./src/service/builtin/cli.ts",
-				"default": "./lib/service/builtin/cli.js"
+			"./service/grafana/cli": {
+				"types": "./src/service/grafana/cli.ts",
+				"default": "./lib/service/grafana/cli.js"
+			},
+			"./service/grafana/client": {
+				"types": "./src/service/grafana/client.ts",
+				"default": "./lib/service/grafana/client.js"
+			},
+			"./service/cls": {
+				"types": "./src/service/cls/index.ts",
+				"default": "./lib/service/cls/index.js"
+			},
+			"./service/cls/cli": {
+				"types": "./src/service/cls/cli.ts",
+				"default": "./lib/service/cls/cli.js"
+			},
+			"./service/cls/client": {
+				"types": "./src/service/cls/client.ts",
+				"default": "./lib/service/cls/client.js"
+			},
+			"./service/s3": {
+				"types": "./src/service/s3/index.ts",
+				"default": "./lib/service/s3/index.js"
+			},
+			"./service/s3/cli": {
+				"types": "./src/service/s3/cli.ts",
+				"default": "./lib/service/s3/cli.js"
+			},
+			"./service/s3/client": {
+				"types": "./src/service/s3/client.ts",
+				"default": "./lib/service/s3/client.js"
+			},
+			"./service/lark": {
+				"types": "./src/service/lark/index.ts",
+				"default": "./lib/service/lark/index.js"
+			},
+			"./service/lark/cli": {
+				"types": "./src/service/lark/cli/index.ts",
+				"default": "./lib/service/lark/cli/index.js"
+			},
+			"./service/lark/cli/client": {
+				"types": "./src/service/lark/cli/client.ts",
+				"default": "./lib/service/lark/cli/client.js"
+			},
+			"./service/telegram": {
+				"types": "./src/service/telegram/index.ts",
+				"default": "./lib/service/telegram/index.js"
+			},
+			"./service/telegram/cli": {
+				"types": "./src/service/telegram/cli.ts",
+				"default": "./lib/service/telegram/cli.js"
+			},
+			"./service/telegram/client": {
+				"types": "./src/service/telegram/client.ts",
+				"default": "./lib/service/telegram/client.js"
 			},
 			"./service/providers/jina": {
 				"types": "./src/service/providers/jina.ts",

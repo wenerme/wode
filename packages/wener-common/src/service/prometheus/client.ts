@@ -51,7 +51,7 @@ export async function createPrometheusServiceToolClient(
 			finish();
 		}
 	}
-	return {
+	const client: IPrometheusService = {
 		type: 'prometheus', readOnly: true,
 		query: (input, callOptions) => call('query', input, callOptions),
 		queryRange: (input, callOptions) => call('queryRange', input, callOptions),
@@ -66,5 +66,9 @@ export async function createPrometheusServiceToolClient(
 			closePromise = Promise.allSettled([...active].map((entry) => { entry.abort(); return entry.done; })).then(() => undefined);
 			return closePromise;
 		},
+		async [Symbol.asyncDispose]() {
+			await client.close();
+		},
 	};
+	return client;
 }

@@ -1,7 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { ServiceRegistry, type ServiceProviderDefinition } from '../registry';
 import { createServiceProviderAdapter } from '../runtime/createServiceProviderAdapter';
-import { GrafanaTools } from '../runtime/grafana-tools';
 import { type IGrafanaService, GrafanaServiceProvider } from './index';
 import { GrafanaOperations } from './operations';
 
@@ -13,8 +12,9 @@ describe('Grafana registered operations', () => {
 			whoAmI: vi.fn(async () => ({ login: 'admin' })),
 			request: vi.fn(async () => ({ status: 'success' })),
 			close: vi.fn(async () => {}),
+			[Symbol.asyncDispose]: vi.fn(async () => {}),
 		};
-		const definition: ServiceProviderDefinition<'grafana'> = { ...GrafanaServiceProvider, create: () => ({ grafana: service }) };
+		const definition: ServiceProviderDefinition<IGrafanaService> = { ...GrafanaServiceProvider, create: () => ({ grafana: service }) };
 		const registry = new ServiceRegistry({ context: { services: { metrics: { provider: 'grafana', readOnly: true } } } });
 		registry.register(definition);
 		const options = { signal: new AbortController().signal };
@@ -26,8 +26,9 @@ describe('Grafana registered operations', () => {
 			await test.operation.execute(registry, 'metrics', test.input, options);
 			expect(test.invoke).toHaveBeenCalledExactlyOnceWith(...test.args);
 		}
-		expect(createServiceProviderAdapter(definition).tools).toEqual(GrafanaTools);
-		expect(Object.keys(GrafanaOperations)).toEqual(Object.keys(GrafanaTools));
+		const tools = createServiceProviderAdapter(definition).tools!;
+		expect(Object.keys(tools)).toEqual(['health', 'whoAmI', 'request']);
+		expect(Object.keys(GrafanaOperations)).toEqual(Object.keys(tools));
 		await registry.close();
 		expect(service.close).toHaveBeenCalledTimes(1);
 	});

@@ -38,6 +38,7 @@ function service() {
 		listObject: vi.fn<ISqlService['listObject']>(async () => []),
 		describeObject: vi.fn<ISqlService['describeObject']>(async () => ({ object: { name: 'users', type: 'TABLE' } })),
 		close: vi.fn(),
+		[Symbol.asyncDispose]: vi.fn(async () => {}),
 	} satisfies ISqlService;
 }
 

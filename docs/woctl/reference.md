@@ -70,8 +70,6 @@ Version: 0.2.0. Catalog schema: 1.
 - ` system ` — Offline system service
   - ` info ` — Show runtime information
   - ` echo ` — Echo text to verify service calls
-- ` duckduckgo ` — DuckDuckGo search
-  - ` search ` — Search keywords; uses HTML search directly when offset is greater than zero
 - ` sql ` — SQL service operations
   - ` query ` — Run a read-only SQL query
   - ` exec ` — Execute SQL with explicit confirmation
@@ -100,6 +98,11 @@ Version: 0.2.0. Catalog schema: 1.
   - ` status ` — Check Grafana health
   - ` whoami ` — Read the current authenticated Grafana user
   - ` api ` — Call a Grafana API path; non-read methods require --yes and a writable service
+- ` s3 ` — List, read, write and delete objects in an S3-compatible bucket
+  - ` list ` — List objects in the bucket
+  - ` get ` — Read an object as text
+  - ` put ` — Write an object; requires --yes and a writable service
+  - ` delete ` — Delete an object; requires --yes and a writable service
 - ` linear ` — Linear issues, teams, projects, users, states, and comments
   - ` status ` — Show the authenticated Linear viewer
   - ` team ` — team operations
@@ -118,6 +121,17 @@ Version: 0.2.0. Catalog schema: 1.
   - ` comment ` — comment operations
     - ` list ` — List issue comments
     - ` create ` — Create an issue comment
+- ` lark ` — Send Lark/Feishu messages and call the Feishu OpenAPI
+  - ` send ` — Send a Lark/Feishu message via app credential; requires --yes and a writable service
+  - ` webhook ` — Send a message to a Lark/Feishu group custom bot webhook configured on the service; requires --yes and a writable service
+  - ` api ` — Call the Feishu OpenAPI; requires --yes and a writable service
+- ` cls ` — Query Tencent Cloud Log Service (CLS) logs and list log topics
+  - ` query ` — Search one or more CLS log topics
+  - ` topics ` — List CLS log topics
+- ` telegram ` — Check the configured Telegram bot and call the Telegram Bot API
+  - ` status ` — Read the configured Telegram bot identity (getMe)
+  - ` send ` — Send a Telegram message; requires --yes and a writable service
+  - ` api ` — Call a Telegram Bot API method; non-read methods require --yes and a writable service
 - ` search ` — Search the web through a configured service
 - ` fetch ` — Fetch URL content through a configured service
 - ` tts ` — Generate speech using a configured TTS service or built-in Edge TTS
@@ -892,47 +906,6 @@ woctl system echo <text>
 
 Availability: configured service with provider ` system `.
 
-### ` duckduckgo `
-
-DuckDuckGo search
-
-Usage:
-
-```text
-woctl duckduckgo
-```
-
-Aliases: ` ddg `
-
-Availability: configured service with provider ` duckduckgo `.
-
-Options:
-
-| Option | Type | Description | Default |
-| --- | --- | --- | --- |
-| ` --service ` | string | Select a service by name |  |
-| ` --list-services ` | boolean | List available services of the same type in the current context |  |
-| ` --output-file ` | string | Write the formatted result to a file; - writes to stdout |  |
-
-### ` duckduckgo search `
-
-Search keywords; uses HTML search directly when offset is greater than zero
-
-Usage:
-
-```text
-woctl duckduckgo search <query>
-```
-
-Availability: configured service with provider ` duckduckgo `.
-
-Options:
-
-| Option | Type | Description | Default |
-| --- | --- | --- | --- |
-| ` --limit ` | string | Maximum number of results; defaults to 10 |  |
-| ` --offset ` | string | HTML search result offset; defaults to 0 |  |
-
 ### ` sql `
 
 SQL service operations
@@ -1532,6 +1505,118 @@ Examples:
 woctl grafana api /api/search --query type=dash-db
 ```
 
+### ` s3 `
+
+List, read, write and delete objects in an S3-compatible bucket
+
+Usage:
+
+```text
+woctl s3
+```
+
+Aliases: ` s3mini `
+
+Availability: configured service with provider ` s3 `.
+
+Options:
+
+| Option | Type | Description | Default |
+| --- | --- | --- | --- |
+| ` --service ` | string | Select a service by name |  |
+| ` --list-services ` | boolean | List available services of the same type in the current context |  |
+| ` --output-file ` | string | Write the formatted result to a file; - writes to stdout |  |
+
+Examples:
+
+List objects under a prefix
+
+```sh
+woctl s3 list --prefix uploads/
+```
+
+Read an object as text
+
+```sh
+woctl s3 get path/to/object.txt
+```
+
+### ` s3 list `
+
+List objects in the bucket
+
+Usage:
+
+```text
+woctl s3 list
+```
+
+Availability: configured service with provider ` s3 `.
+
+Options:
+
+| Option | Type | Description | Default |
+| --- | --- | --- | --- |
+| ` --delimiter ` | string | Delimiter used to group keys (default: /) |  |
+| ` --prefix ` | string | Key prefix filter |  |
+| ` --max-keys ` | string | Maximum number of keys to return |  |
+
+Examples:
+
+```sh
+woctl s3 list --prefix uploads/
+```
+
+### ` s3 get `
+
+Read an object as text
+
+Usage:
+
+```text
+woctl s3 get <key>
+```
+
+Availability: configured service with provider ` s3 `.
+
+### ` s3 put `
+
+Write an object; requires --yes and a writable service
+
+Usage:
+
+```text
+woctl s3 put <key>
+```
+
+Availability: configured service with provider ` s3 `.
+
+Options:
+
+| Option | Type | Description | Default |
+| --- | --- | --- | --- |
+| ` --content ` | string | Object content, @file or - for stdin |  |
+| ` --content-type ` | string | Object content type |  |
+| ` --yes ` | boolean | Confirm writing the object |  |
+
+### ` s3 delete `
+
+Delete an object; requires --yes and a writable service
+
+Usage:
+
+```text
+woctl s3 delete <key>
+```
+
+Availability: configured service with provider ` s3 `.
+
+Options:
+
+| Option | Type | Description | Default |
+| --- | --- | --- | --- |
+| ` --yes ` | boolean | Confirm deleting the object |  |
+
 ### ` linear `
 
 Linear issues, teams, projects, users, states, and comments
@@ -1897,6 +1982,300 @@ Options:
 | Option | Type | Description | Default |
 | --- | --- | --- | --- |
 | ` --yes ` | boolean | Confirm mutation |  |
+
+### ` lark `
+
+Send Lark/Feishu messages and call the Feishu OpenAPI
+
+Usage:
+
+```text
+woctl lark
+```
+
+Aliases: ` feishu `
+
+Availability: configured service with provider ` lark `.
+
+Options:
+
+| Option | Type | Description | Default |
+| --- | --- | --- | --- |
+| ` --service ` | string | Select a service by name |  |
+| ` --list-services ` | boolean | List available services of the same type in the current context |  |
+| ` --output-file ` | string | Write the formatted result to a file; - writes to stdout |  |
+
+Examples:
+
+Send a message via app credential.
+
+```sh
+woctl lark send --to ou_xxx --text "hello" --yes
+```
+
+Send a message to the configured group webhook.
+
+```sh
+woctl lark webhook --text "hello" --yes
+```
+
+### ` lark send `
+
+Send a Lark/Feishu message via app credential; requires --yes and a writable service
+
+Usage:
+
+```text
+woctl lark send
+```
+
+Availability: configured service with provider ` lark `.
+
+Options:
+
+| Option | Type | Description | Default |
+| --- | --- | --- | --- |
+| ` --to ` | string | Target open_id / user_id / chat_id / email |  |
+| ` --text ` | string | Message text, @file or - for stdin |  |
+| ` --yes ` | boolean | Confirm sending the message |  |
+
+Examples:
+
+```sh
+woctl lark send --to ou_xxx --text "hello" --yes
+```
+
+### ` lark webhook `
+
+Send a message to a Lark/Feishu group custom bot webhook configured on the service; requires --yes and a writable service
+
+Usage:
+
+```text
+woctl lark webhook
+```
+
+Availability: configured service with provider ` lark `.
+
+Options:
+
+| Option | Type | Description | Default |
+| --- | --- | --- | --- |
+| ` --text ` | string | Plain text message, @file or - for stdin |  |
+| ` --markdown ` | string | Markdown card message, @file or - for stdin |  |
+| ` --yes ` | boolean | Confirm sending the message |  |
+
+Examples:
+
+```sh
+woctl lark webhook --text "hello" --yes
+```
+
+### ` lark api `
+
+Call the Feishu OpenAPI; requires --yes and a writable service
+
+Usage:
+
+```text
+woctl lark api <path>
+```
+
+Availability: configured service with provider ` lark `.
+
+Options:
+
+| Option | Type | Description | Default |
+| --- | --- | --- | --- |
+| ` --method `, ` -X ` | string | HTTP method; GET by default, POST with --body |  |
+| ` --body ` | string | JSON body, @file or - for stdin |  |
+| ` --yes ` | boolean | Confirm a write request |  |
+
+### ` cls `
+
+Query Tencent Cloud Log Service (CLS) logs and list log topics
+
+Usage:
+
+```text
+woctl cls
+```
+
+Aliases: ` tencent-cls `, ` tencent-log `
+
+Availability: configured service with provider ` cls `.
+
+Options:
+
+| Option | Type | Description | Default |
+| --- | --- | --- | --- |
+| ` --service ` | string | Select a service by name |  |
+| ` --list-services ` | boolean | List available services of the same type in the current context |  |
+| ` --output-file ` | string | Write the formatted result to a file; - writes to stdout |  |
+
+Examples:
+
+Search a log topic
+
+```sh
+woctl cls query --topic my-topic "*"
+```
+
+List log topics
+
+```sh
+woctl cls topics
+```
+
+### ` cls query `
+
+Search one or more CLS log topics
+
+Usage:
+
+```text
+woctl cls query <expression>
+```
+
+Aliases: ` q `, ` search `
+
+Availability: configured service with provider ` cls `.
+
+Options:
+
+| Option | Type | Description | Default |
+| --- | --- | --- | --- |
+| ` --topic ` | string, repeatable | Topic ID or name; repeatable |  |
+| ` --from ` | string | Start time; ISO8601 or Unix ms timestamp; defaults to 1 hour ago |  |
+| ` --to ` | string | End time; ISO8601 or Unix ms timestamp; defaults to now |  |
+| ` --limit ` | string | Maximum number of results, 1-1000; defaults to 100 |  |
+| ` --order ` | string | asc \| desc; defaults to desc |  |
+| ` --context ` | string | Context token to fetch subsequent results |  |
+| ` --sql ` | boolean | Treat the expression as including a SQL analysis clause |  |
+
+Examples:
+
+```sh
+woctl cls query --topic my-topic "*"
+```
+
+### ` cls topics `
+
+List CLS log topics
+
+Usage:
+
+```text
+woctl cls topics
+```
+
+Aliases: ` ls `
+
+Availability: configured service with provider ` cls `.
+
+Options:
+
+| Option | Type | Description | Default |
+| --- | --- | --- | --- |
+| ` --search ` | string | Topic name keyword |  |
+| ` --limit ` | string | Maximum number of results, 1-1000 |  |
+| ` --offset ` | string | Result offset |  |
+
+### ` telegram `
+
+Check the configured Telegram bot and call the Telegram Bot API
+
+Usage:
+
+```text
+woctl telegram
+```
+
+Aliases: ` tg `
+
+Availability: configured service with provider ` telegram `.
+
+Options:
+
+| Option | Type | Description | Default |
+| --- | --- | --- | --- |
+| ` --service ` | string | Select a service by name |  |
+| ` --list-services ` | boolean | List available services of the same type in the current context |  |
+| ` --output-file ` | string | Write the formatted result to a file; - writes to stdout |  |
+
+Examples:
+
+Check the configured bot identity
+
+```sh
+woctl telegram status
+```
+
+Send a message
+
+```sh
+woctl telegram send --chat 123456789 --text "hello" --yes
+```
+
+### ` telegram status `
+
+Read the configured Telegram bot identity (getMe)
+
+Usage:
+
+```text
+woctl telegram status
+```
+
+Availability: configured service with provider ` telegram `.
+
+### ` telegram send `
+
+Send a Telegram message; requires --yes and a writable service
+
+Usage:
+
+```text
+woctl telegram send
+```
+
+Availability: configured service with provider ` telegram `.
+
+Options:
+
+| Option | Type | Description | Default |
+| --- | --- | --- | --- |
+| ` --chat `, ` --chat-id ` | string | Target chat id |  |
+| ` --text ` | string | Message text, @file or - for stdin |  |
+| ` --parse-mode ` | string | Telegram parse mode (e.g. MarkdownV2, HTML) |  |
+| ` --silent ` | boolean | Send without a notification sound |  |
+| ` --reply-to ` | string | Message id to reply to |  |
+| ` --yes ` | boolean | Confirm sending the message |  |
+
+Examples:
+
+```sh
+woctl telegram send --chat 123456789 --text "hello" --yes
+```
+
+### ` telegram api `
+
+Call a Telegram Bot API method; non-read methods require --yes and a writable service
+
+Usage:
+
+```text
+woctl telegram api <method>
+```
+
+Availability: configured service with provider ` telegram `.
+
+Options:
+
+| Option | Type | Description | Default |
+| --- | --- | --- | --- |
+| ` --params ` | string, repeatable | Request parameter key=value; repeatable |  |
+| ` --yes ` | boolean | Confirm a write request |  |
 
 ### ` search `
 
@@ -4111,104 +4490,135 @@ Provider options schema:
 
 ##### ` search `
 
-Search the web
-
 inputSchema:
 
 ```json
 {
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
   "properties": {
     "query": {
       "type": "string",
-      "minLength": 1,
       "pattern": "\\S"
-    },
-    "limit": {
-      "type": "integer",
-      "minimum": 1,
-      "maximum": 9007199254740991,
-      "default": 10
-    },
-    "offset": {
-      "type": "integer",
-      "minimum": 0,
-      "maximum": 9007199254740991,
-      "default": 0
     },
     "urls": {
       "type": "array",
       "items": {
         "type": "string",
         "format": "uri"
-      }
+      },
+      "nullable": true
+    },
+    "limit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9007199254740991,
+      "nullable": true
+    },
+    "offset": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991,
+      "nullable": true
     },
     "includeDomains": {
       "type": "array",
       "items": {
         "type": "string",
         "minLength": 1
-      }
+      },
+      "nullable": true
     },
     "excludeDomains": {
       "type": "array",
       "items": {
         "type": "string",
         "minLength": 1
-      }
+      },
+      "nullable": true
     },
     "range": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     },
     "from": {
-      "type": "string"
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {}
+      ],
+      "nullable": true
     },
     "to": {
-      "type": "string"
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {}
+      ],
+      "nullable": true
     },
     "searchType": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "category": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "cursor": {
-      "type": "string"
-    },
-    "raw": {
-      "type": "boolean",
-      "default": false
+      "type": "string",
+      "nullable": true
     },
     "content": {
       "type": "object",
-      "additionalProperties": false,
       "properties": {
         "text": {
-          "type": "boolean"
+          "type": "boolean",
+          "nullable": true
         },
         "summary": {
-          "type": "boolean"
+          "type": "boolean",
+          "nullable": true
         },
         "highlights": {
-          "type": "boolean"
+          "type": "boolean",
+          "nullable": true
         },
         "live": {
-          "type": "boolean"
+          "type": "boolean",
+          "nullable": true
         },
         "maxCharacters": {
           "type": "integer",
           "minimum": 1,
-          "maximum": 9007199254740991
+          "maximum": 9007199254740991,
+          "nullable": true
         }
-      }
+      },
+      "additionalProperties": false,
+      "nullable": true
+    },
+    "raw": {
+      "type": "boolean",
+      "nullable": true
     }
   },
   "required": [
     "query"
   ],
   "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -4252,104 +4662,135 @@ Provider options schema:
 
 ##### ` search `
 
-Search the web
-
 inputSchema:
 
 ```json
 {
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
   "properties": {
     "query": {
       "type": "string",
-      "minLength": 1,
       "pattern": "\\S"
-    },
-    "limit": {
-      "type": "integer",
-      "minimum": 1,
-      "maximum": 9007199254740991,
-      "default": 10
-    },
-    "offset": {
-      "type": "integer",
-      "minimum": 0,
-      "maximum": 9007199254740991,
-      "default": 0
     },
     "urls": {
       "type": "array",
       "items": {
         "type": "string",
         "format": "uri"
-      }
+      },
+      "nullable": true
+    },
+    "limit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9007199254740991,
+      "nullable": true
+    },
+    "offset": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991,
+      "nullable": true
     },
     "includeDomains": {
       "type": "array",
       "items": {
         "type": "string",
         "minLength": 1
-      }
+      },
+      "nullable": true
     },
     "excludeDomains": {
       "type": "array",
       "items": {
         "type": "string",
         "minLength": 1
-      }
+      },
+      "nullable": true
     },
     "range": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     },
     "from": {
-      "type": "string"
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {}
+      ],
+      "nullable": true
     },
     "to": {
-      "type": "string"
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {}
+      ],
+      "nullable": true
     },
     "searchType": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "category": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "cursor": {
-      "type": "string"
-    },
-    "raw": {
-      "type": "boolean",
-      "default": false
+      "type": "string",
+      "nullable": true
     },
     "content": {
       "type": "object",
-      "additionalProperties": false,
       "properties": {
         "text": {
-          "type": "boolean"
+          "type": "boolean",
+          "nullable": true
         },
         "summary": {
-          "type": "boolean"
+          "type": "boolean",
+          "nullable": true
         },
         "highlights": {
-          "type": "boolean"
+          "type": "boolean",
+          "nullable": true
         },
         "live": {
-          "type": "boolean"
+          "type": "boolean",
+          "nullable": true
         },
         "maxCharacters": {
           "type": "integer",
           "minimum": 1,
-          "maximum": 9007199254740991
+          "maximum": 9007199254740991,
+          "nullable": true
         }
-      }
+      },
+      "additionalProperties": false,
+      "nullable": true
+    },
+    "raw": {
+      "type": "boolean",
+      "nullable": true
     }
   },
   "required": [
     "query"
   ],
   "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -4364,52 +4805,64 @@ annotations:
 
 ##### ` fetch `
 
-Fetch web page content
-
 inputSchema:
 
 ```json
 {
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
   "properties": {
     "url": {
       "type": "string",
       "format": "uri"
     },
+    "text": {
+      "type": "boolean",
+      "nullable": true
+    },
+    "summary": {
+      "type": "boolean",
+      "nullable": true
+    },
+    "highlights": {
+      "type": "boolean",
+      "nullable": true
+    },
+    "live": {
+      "type": "boolean",
+      "nullable": true
+    },
     "maxCharacters": {
       "type": "integer",
       "minimum": 1,
-      "maximum": 9007199254740991
-    },
-    "text": {
-      "type": "boolean",
-      "default": true
-    },
-    "summary": {
-      "type": "boolean"
-    },
-    "highlights": {
-      "type": "boolean"
-    },
-    "live": {
-      "type": "boolean"
+      "maximum": 9007199254740991,
+      "nullable": true
     },
     "main": {
       "type": "boolean",
-      "default": true
+      "nullable": true
     },
     "metadata": {
-      "type": "boolean"
+      "type": "boolean",
+      "nullable": true
     },
     "raw": {
       "type": "boolean",
-      "default": false
+      "nullable": true
     }
   },
   "required": [
     "url"
   ],
   "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -4451,52 +4904,64 @@ Provider options schema:
 
 ##### ` fetch `
 
-Fetch web page content
-
 inputSchema:
 
 ```json
 {
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
   "properties": {
     "url": {
       "type": "string",
       "format": "uri"
     },
+    "text": {
+      "type": "boolean",
+      "nullable": true
+    },
+    "summary": {
+      "type": "boolean",
+      "nullable": true
+    },
+    "highlights": {
+      "type": "boolean",
+      "nullable": true
+    },
+    "live": {
+      "type": "boolean",
+      "nullable": true
+    },
     "maxCharacters": {
       "type": "integer",
       "minimum": 1,
-      "maximum": 9007199254740991
-    },
-    "text": {
-      "type": "boolean",
-      "default": true
-    },
-    "summary": {
-      "type": "boolean"
-    },
-    "highlights": {
-      "type": "boolean"
-    },
-    "live": {
-      "type": "boolean"
+      "maximum": 9007199254740991,
+      "nullable": true
     },
     "main": {
       "type": "boolean",
-      "default": true
+      "nullable": true
     },
     "metadata": {
-      "type": "boolean"
+      "type": "boolean",
+      "nullable": true
     },
     "raw": {
       "type": "boolean",
-      "default": false
+      "nullable": true
     }
   },
   "required": [
     "url"
   ],
   "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -4530,52 +4995,64 @@ Provider options schema:
 
 ##### ` fetch `
 
-Fetch web page content
-
 inputSchema:
 
 ```json
 {
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
   "properties": {
     "url": {
       "type": "string",
       "format": "uri"
     },
+    "text": {
+      "type": "boolean",
+      "nullable": true
+    },
+    "summary": {
+      "type": "boolean",
+      "nullable": true
+    },
+    "highlights": {
+      "type": "boolean",
+      "nullable": true
+    },
+    "live": {
+      "type": "boolean",
+      "nullable": true
+    },
     "maxCharacters": {
       "type": "integer",
       "minimum": 1,
-      "maximum": 9007199254740991
-    },
-    "text": {
-      "type": "boolean",
-      "default": true
-    },
-    "summary": {
-      "type": "boolean"
-    },
-    "highlights": {
-      "type": "boolean"
-    },
-    "live": {
-      "type": "boolean"
+      "maximum": 9007199254740991,
+      "nullable": true
     },
     "main": {
       "type": "boolean",
-      "default": true
+      "nullable": true
     },
     "metadata": {
-      "type": "boolean"
+      "type": "boolean",
+      "nullable": true
     },
     "raw": {
       "type": "boolean",
-      "default": false
+      "nullable": true
     }
   },
   "required": [
     "url"
   ],
   "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -5883,419 +6360,10 @@ Provider options schema:
 }
 ```
 
-#### Contract
-
-##### ` ping `
-
-Redis ping
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {},
-  "additionalProperties": false
-}
-```
-
-outputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "durationMs": {
-      "type": "number",
-      "minimum": 0
-    },
-    "success": {
-      "type": "boolean"
-    },
-    "version": {
-      "type": "string"
-    },
-    "errorCode": {
-      "type": "string"
-    }
-  },
-  "required": [
-    "durationMs",
-    "success"
-  ],
-  "additionalProperties": false
-}
-```
-
-##### ` get `
-
-Redis get
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "key": {
-      "type": "string",
-      "minLength": 1
-    }
-  },
-  "required": [
-    "key"
-  ],
-  "additionalProperties": false
-}
-```
-
-outputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "durationMs": {
-      "type": "number",
-      "minimum": 0
-    },
-    "value": {
-      "type": "string"
-    }
-  },
-  "required": [
-    "durationMs"
-  ],
-  "additionalProperties": false
-}
-```
-
-##### ` getType `
-
-Redis getType
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "key": {
-      "type": "string",
-      "minLength": 1
-    }
-  },
-  "required": [
-    "key"
-  ],
-  "additionalProperties": false
-}
-```
-
-outputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "durationMs": {
-      "type": "number",
-      "minimum": 0
-    },
-    "type": {
-      "type": "string"
-    }
-  },
-  "required": [
-    "durationMs",
-    "type"
-  ],
-  "additionalProperties": false
-}
-```
-
-##### ` getTtl `
-
-Redis getTtl
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "key": {
-      "type": "string",
-      "minLength": 1
-    }
-  },
-  "required": [
-    "key"
-  ],
-  "additionalProperties": false
-}
-```
-
-outputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "durationMs": {
-      "type": "number",
-      "minimum": 0
-    },
-    "ttlSeconds": {
-      "type": "integer",
-      "minimum": -9007199254740991,
-      "maximum": 9007199254740991
-    }
-  },
-  "required": [
-    "durationMs",
-    "ttlSeconds"
-  ],
-  "additionalProperties": false
-}
-```
-
-##### ` scan `
-
-Redis scan
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "cursor": {
-      "type": "string",
-      "pattern": "^\\d+$"
-    },
-    "match": {
-      "type": "string"
-    },
-    "count": {
-      "type": "integer",
-      "minimum": 1,
-      "maximum": 10000
-    },
-    "type": {
-      "type": "string",
-      "enum": [
-        "string",
-        "list",
-        "set",
-        "zset",
-        "hash",
-        "stream"
-      ]
-    }
-  },
-  "additionalProperties": false
-}
-```
-
-outputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "durationMs": {
-      "type": "number",
-      "minimum": 0
-    },
-    "cursor": {
-      "type": "string"
-    },
-    "keys": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
-    }
-  },
-  "required": [
-    "durationMs",
-    "cursor",
-    "keys"
-  ],
-  "additionalProperties": false
-}
-```
-
-##### ` getHash `
-
-Redis getHash
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "key": {
-      "type": "string",
-      "minLength": 1
-    }
-  },
-  "required": [
-    "key"
-  ],
-  "additionalProperties": false
-}
-```
-
-outputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "durationMs": {
-      "type": "number",
-      "minimum": 0
-    },
-    "data": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "field": {
-            "type": "string"
-          },
-          "value": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "field",
-          "value"
-        ],
-        "additionalProperties": false
-      }
-    }
-  },
-  "required": [
-    "durationMs",
-    "data"
-  ],
-  "additionalProperties": false
-}
-```
-
-##### ` rangeStream `
-
-Redis rangeStream
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "key": {
-      "type": "string",
-      "minLength": 1
-    },
-    "start": {
-      "type": "string",
-      "minLength": 1
-    },
-    "end": {
-      "type": "string",
-      "minLength": 1
-    },
-    "count": {
-      "type": "integer",
-      "minimum": 1,
-      "maximum": 10000
-    }
-  },
-  "required": [
-    "key"
-  ],
-  "additionalProperties": false
-}
-```
-
-outputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "durationMs": {
-      "type": "number",
-      "minimum": 0
-    },
-    "data": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "fields": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "field": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "field",
-                "value"
-              ],
-              "additionalProperties": false
-            }
-          }
-        },
-        "required": [
-          "id",
-          "fields"
-        ],
-        "additionalProperties": false
-      }
-    }
-  },
-  "required": [
-    "durationMs",
-    "data"
-  ],
-  "additionalProperties": false
-}
-```
-
 #### Static tools
 
 ##### ` ping `
 
-Redis ping
-
 inputSchema:
 
 ```json
@@ -6322,10 +6390,12 @@ outputSchema:
       "type": "boolean"
     },
     "version": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     },
     "errorCode": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     }
   },
   "required": [
@@ -6346,8 +6416,6 @@ annotations:
 ```
 
 ##### ` get `
-
-Redis get
 
 inputSchema:
 
@@ -6380,7 +6448,8 @@ outputSchema:
       "minimum": 0
     },
     "value": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     }
   },
   "required": [
@@ -6400,8 +6469,6 @@ annotations:
 ```
 
 ##### ` getType `
-
-Redis getType
 
 inputSchema:
 
@@ -6455,8 +6522,6 @@ annotations:
 ```
 
 ##### ` getTtl `
-
-Redis getTtl
 
 inputSchema:
 
@@ -6513,8 +6578,6 @@ annotations:
 
 ##### ` scan `
 
-Redis scan
-
 inputSchema:
 
 ```json
@@ -6524,15 +6587,18 @@ inputSchema:
   "properties": {
     "cursor": {
       "type": "string",
-      "pattern": "^\\d+$"
+      "pattern": "^\\d+$",
+      "nullable": true
     },
     "match": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     },
     "count": {
       "type": "integer",
       "minimum": 1,
-      "maximum": 10000
+      "maximum": 10000,
+      "nullable": true
     },
     "type": {
       "type": "string",
@@ -6543,7 +6609,8 @@ inputSchema:
         "zset",
         "hash",
         "stream"
-      ]
+      ],
+      "nullable": true
     }
   },
   "additionalProperties": false
@@ -6572,8 +6639,8 @@ outputSchema:
     }
   },
   "required": [
-    "durationMs",
     "cursor",
+    "durationMs",
     "keys"
   ],
   "additionalProperties": false
@@ -6590,8 +6657,6 @@ annotations:
 ```
 
 ##### ` getHash `
-
-Redis getHash
 
 inputSchema:
 
@@ -6644,8 +6709,8 @@ outputSchema:
     }
   },
   "required": [
-    "durationMs",
-    "data"
+    "data",
+    "durationMs"
   ],
   "additionalProperties": false
 }
@@ -6662,8 +6727,6 @@ annotations:
 
 ##### ` rangeStream `
 
-Redis rangeStream
-
 inputSchema:
 
 ```json
@@ -6677,16 +6740,19 @@ inputSchema:
     },
     "start": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "end": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "count": {
       "type": "integer",
       "minimum": 1,
-      "maximum": 10000
+      "maximum": 10000,
+      "nullable": true
     }
   },
   "required": [
@@ -6736,16 +6802,16 @@ outputSchema:
           }
         },
         "required": [
-          "id",
-          "fields"
+          "fields",
+          "id"
         ],
         "additionalProperties": false
       }
     }
   },
   "required": [
-    "durationMs",
-    "data"
+    "data",
+    "durationMs"
   ],
   "additionalProperties": false
 }
@@ -6810,8 +6876,6 @@ Provider options schema:
 
 ##### ` health `
 
-OpenObserve health
-
 inputSchema:
 
 ```json
@@ -6820,6 +6884,14 @@ inputSchema:
   "type": "object",
   "properties": {},
   "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -6834,8 +6906,6 @@ annotations:
 
 ##### ` status `
 
-OpenObserve status
-
 inputSchema:
 
 ```json
@@ -6844,7 +6914,8 @@ inputSchema:
   "type": "object",
   "properties": {
     "organization": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     },
     "streamType": {
       "type": "string",
@@ -6852,10 +6923,19 @@ inputSchema:
         "logs",
         "metrics",
         "traces"
-      ]
+      ],
+      "nullable": true
     }
   },
   "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -6870,8 +6950,6 @@ annotations:
 
 ##### ` listStreams `
 
-OpenObserve listStreams
-
 inputSchema:
 
 ```json
@@ -6880,7 +6958,8 @@ inputSchema:
   "type": "object",
   "properties": {
     "organization": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     },
     "streamType": {
       "type": "string",
@@ -6888,26 +6967,39 @@ inputSchema:
         "logs",
         "metrics",
         "traces"
-      ]
+      ],
+      "nullable": true
     },
     "offset": {
       "type": "integer",
       "minimum": 0,
-      "maximum": 2147483647
+      "maximum": 2147483647,
+      "nullable": true
     },
     "limit": {
       "type": "integer",
       "minimum": 1,
-      "maximum": 1000
+      "maximum": 1000,
+      "nullable": true
     },
     "fetchSchema": {
-      "type": "boolean"
+      "type": "boolean",
+      "nullable": true
     },
     "keyword": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     }
   },
   "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -6922,8 +7014,6 @@ annotations:
 
 ##### ` getStreamSchema `
 
-OpenObserve getStreamSchema
-
 inputSchema:
 
 ```json
@@ -6932,7 +7022,8 @@ inputSchema:
   "type": "object",
   "properties": {
     "organization": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     },
     "stream": {
       "type": "string",
@@ -6944,26 +7035,38 @@ inputSchema:
         "logs",
         "metrics",
         "traces"
-      ]
+      ],
+      "nullable": true
     },
     "offset": {
       "type": "integer",
       "minimum": 0,
-      "maximum": 2147483647
+      "maximum": 2147483647,
+      "nullable": true
     },
     "limit": {
       "type": "integer",
       "minimum": 1,
-      "maximum": 1000
+      "maximum": 1000,
+      "nullable": true
     },
     "keyword": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     }
   },
   "required": [
     "stream"
   ],
   "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -6978,8 +7081,6 @@ annotations:
 
 ##### ` search `
 
-OpenObserve search
-
 inputSchema:
 
 ```json
@@ -6988,7 +7089,8 @@ inputSchema:
   "type": "object",
   "properties": {
     "organization": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     },
     "streamType": {
       "type": "string",
@@ -6996,7 +7098,8 @@ inputSchema:
         "logs",
         "metrics",
         "traces"
-      ]
+      ],
+      "nullable": true
     },
     "sql": {
       "type": "string",
@@ -7016,25 +7119,36 @@ inputSchema:
     "from": {
       "type": "integer",
       "minimum": 0,
-      "maximum": 9007199254740991
+      "maximum": 9007199254740991,
+      "nullable": true
     },
     "size": {
       "type": "integer",
       "minimum": 1,
-      "maximum": 1000
+      "maximum": 1000,
+      "nullable": true
     },
     "timeoutSeconds": {
       "type": "integer",
       "minimum": 1,
-      "maximum": 60
+      "maximum": 60,
+      "nullable": true
     }
   },
   "required": [
+    "endTimeMicros",
     "sql",
-    "startTimeMicros",
-    "endTimeMicros"
+    "startTimeMicros"
   ],
   "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -7049,8 +7163,6 @@ annotations:
 
 ##### ` listTraces `
 
-OpenObserve listTraces
-
 inputSchema:
 
 ```json
@@ -7059,7 +7171,8 @@ inputSchema:
   "type": "object",
   "properties": {
     "organization": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     },
     "stream": {
       "type": "string",
@@ -7078,42 +7191,56 @@ inputSchema:
     "from": {
       "type": "integer",
       "minimum": 0,
-      "maximum": 9007199254740991
+      "maximum": 9007199254740991,
+      "nullable": true
     },
     "size": {
       "type": "integer",
       "minimum": 1,
-      "maximum": 1000
+      "maximum": 1000,
+      "nullable": true
     },
     "filter": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     },
     "timeoutSeconds": {
       "type": "integer",
       "minimum": 1,
-      "maximum": 60
+      "maximum": 60,
+      "nullable": true
     },
     "sortBy": {
       "type": "string",
       "enum": [
         "start_time",
         "duration"
-      ]
+      ],
+      "nullable": true
     },
     "sortOrder": {
       "type": "string",
       "enum": [
         "asc",
         "desc"
-      ]
+      ],
+      "nullable": true
     }
   },
   "required": [
-    "stream",
+    "endTimeMicros",
     "startTimeMicros",
-    "endTimeMicros"
+    "stream"
   ],
   "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -7128,8 +7255,6 @@ annotations:
 
 ##### ` getStreamSettings `
 
-OpenObserve getStreamSettings
-
 inputSchema:
 
 ```json
@@ -7138,7 +7263,8 @@ inputSchema:
   "type": "object",
   "properties": {
     "organization": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     },
     "stream": {
       "type": "string",
@@ -7150,13 +7276,22 @@ inputSchema:
         "logs",
         "metrics",
         "traces"
-      ]
+      ],
+      "nullable": true
     }
   },
   "required": [
     "stream"
   ],
   "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -7171,8 +7306,6 @@ annotations:
 
 ##### ` updateStreamSettings `
 
-OpenObserve updateStreamSettings
-
 inputSchema:
 
 ```json
@@ -7181,7 +7314,8 @@ inputSchema:
   "type": "object",
   "properties": {
     "organization": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     },
     "stream": {
       "type": "string",
@@ -7193,7 +7327,8 @@ inputSchema:
         "logs",
         "metrics",
         "traces"
-      ]
+      ],
+      "nullable": true
     },
     "settings": {
       "type": "object",
@@ -7206,8 +7341,8 @@ inputSchema:
     }
   },
   "required": [
-    "stream",
-    "settings"
+    "settings",
+    "stream"
   ],
   "additionalProperties": false,
   "$defs": {
@@ -7246,6 +7381,14 @@ inputSchema:
 }
 ```
 
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}
+```
+
 annotations:
 
 ```json
@@ -7257,8 +7400,6 @@ annotations:
 
 ##### ` deleteStream `
 
-OpenObserve deleteStream
-
 inputSchema:
 
 ```json
@@ -7267,7 +7408,8 @@ inputSchema:
   "type": "object",
   "properties": {
     "organization": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     },
     "stream": {
       "type": "string",
@@ -7279,16 +7421,26 @@ inputSchema:
         "logs",
         "metrics",
         "traces"
-      ]
+      ],
+      "nullable": true
     },
     "deleteAll": {
-      "type": "boolean"
+      "type": "boolean",
+      "nullable": true
     }
   },
   "required": [
     "stream"
   ],
   "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -7303,8 +7455,6 @@ annotations:
 
 ##### ` ingestJson `
 
-OpenObserve ingestJson
-
 inputSchema:
 
 ```json
@@ -7313,7 +7463,8 @@ inputSchema:
   "type": "object",
   "properties": {
     "organization": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     },
     "stream": {
       "type": "string",
@@ -7335,8 +7486,8 @@ inputSchema:
     }
   },
   "required": [
-    "stream",
-    "records"
+    "records",
+    "stream"
   ],
   "additionalProperties": false,
   "$defs": {
@@ -7375,6 +7526,14 @@ inputSchema:
 }
 ```
 
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}
+```
+
 annotations:
 
 ```json
@@ -7386,8 +7545,6 @@ annotations:
 
 ##### ` ingestMulti `
 
-OpenObserve ingestMulti
-
 inputSchema:
 
 ```json
@@ -7396,7 +7553,8 @@ inputSchema:
   "type": "object",
   "properties": {
     "organization": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     },
     "stream": {
       "type": "string",
@@ -7426,8 +7584,8 @@ inputSchema:
     }
   },
   "required": [
-    "stream",
-    "records"
+    "records",
+    "stream"
   ],
   "additionalProperties": false,
   "$defs": {
@@ -7466,6 +7624,14 @@ inputSchema:
 }
 ```
 
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}
+```
+
 annotations:
 
 ```json
@@ -7477,8 +7643,6 @@ annotations:
 
 ##### ` getValues `
 
-OpenObserve getValues
-
 inputSchema:
 
 ```json
@@ -7487,7 +7651,8 @@ inputSchema:
   "type": "object",
   "properties": {
     "organization": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     },
     "stream": {
       "type": "string",
@@ -7499,7 +7664,8 @@ inputSchema:
         "logs",
         "metrics",
         "traces"
-      ]
+      ],
+      "nullable": true
     },
     "fields": {
       "minItems": 1,
@@ -7523,22 +7689,33 @@ inputSchema:
     "size": {
       "type": "integer",
       "minimum": 1,
-      "maximum": 1000
+      "maximum": 1000,
+      "nullable": true
     },
     "keyword": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     },
     "noCount": {
-      "type": "boolean"
+      "type": "boolean",
+      "nullable": true
     }
   },
   "required": [
-    "stream",
+    "endTimeMicros",
     "fields",
     "startTimeMicros",
-    "endTimeMicros"
+    "stream"
   ],
   "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -7553,8 +7730,6 @@ annotations:
 
 ##### ` searchAround `
 
-OpenObserve searchAround
-
 inputSchema:
 
 ```json
@@ -7563,7 +7738,8 @@ inputSchema:
   "type": "object",
   "properties": {
     "organization": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     },
     "stream": {
       "type": "string",
@@ -7575,7 +7751,8 @@ inputSchema:
         "logs",
         "metrics",
         "traces"
-      ]
+      ],
+      "nullable": true
     },
     "key": {
       "type": "integer",
@@ -7585,14 +7762,23 @@ inputSchema:
     "size": {
       "type": "integer",
       "minimum": 1,
-      "maximum": 1000
+      "maximum": 1000,
+      "nullable": true
     }
   },
   "required": [
-    "stream",
-    "key"
+    "key",
+    "stream"
   ],
   "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -7861,2193 +8047,10 @@ Provider options schema:
 }
 ```
 
-#### Contract
-
-##### ` readConfig `
-
-Apollo read config
-
-outputType:
-
-```typescript
-unknown
-```
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "namespace": {
-      "type": "string",
-      "minLength": 1
-    },
-    "format": {
-      "type": "string",
-      "enum": [
-        "auto",
-        "config",
-        "json",
-        "properties",
-        "raw",
-        "content",
-        "data"
-      ]
-    }
-  }
-}
-```
-
-##### ` request `
-
-Apollo request
-
-outputType:
-
-```typescript
-unknown
-```
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "role": {
-      "default": "admin",
-      "type": "string",
-      "const": "admin"
-    },
-    "path": {
-      "type": "string",
-      "format": "starts_with",
-      "pattern": "^\\/.*"
-    },
-    "method": {
-      "type": "string",
-      "enum": [
-        "GET",
-        "HEAD",
-        "OPTIONS",
-        "POST",
-        "PUT",
-        "PATCH",
-        "DELETE"
-      ]
-    },
-    "query": {
-      "type": "object",
-      "propertyNames": {
-        "type": "string"
-      },
-      "additionalProperties": {
-        "$ref": "#/$defs/__schema0"
-      }
-    },
-    "body": {
-      "$ref": "#/$defs/__schema1"
-    },
-    "headers": {
-      "x-sensitive": true,
-      "type": "object",
-      "propertyNames": {
-        "type": "string"
-      },
-      "additionalProperties": {
-        "type": "string"
-      }
-    }
-  },
-  "required": [
-    "path"
-  ],
-  "$defs": {
-    "__schema0": {
-      "anyOf": [
-        {
-          "type": "string"
-        },
-        {
-          "type": "number"
-        },
-        {
-          "type": "boolean"
-        },
-        {
-          "type": "null"
-        },
-        {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/__schema0"
-          }
-        },
-        {
-          "type": "object",
-          "propertyNames": {
-            "type": "string"
-          },
-          "additionalProperties": {
-            "$ref": "#/$defs/__schema0"
-          }
-        }
-      ]
-    },
-    "__schema1": {
-      "anyOf": [
-        {
-          "type": "string"
-        },
-        {
-          "type": "number"
-        },
-        {
-          "type": "boolean"
-        },
-        {
-          "type": "null"
-        },
-        {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/__schema1"
-          }
-        },
-        {
-          "type": "object",
-          "propertyNames": {
-            "type": "string"
-          },
-          "additionalProperties": {
-            "$ref": "#/$defs/__schema1"
-          }
-        }
-      ]
-    }
-  }
-}
-```
-
-##### ` getStatus `
-
-Apollo get status
-
-outputType:
-
-```typescript
-unknown
-```
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {}
-}
-```
-
-##### ` listPortalApp `
-
-Apollo list portal app
-
-outputType:
-
-```typescript
-unknown
-```
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {}
-}
-```
-
-##### ` listPortalOrganization `
-
-Apollo list portal organization
-
-outputType:
-
-```typescript
-unknown
-```
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {}
-}
-```
-
-##### ` listPortalEnv `
-
-Apollo list portal env
-
-outputType:
-
-```typescript
-unknown
-```
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {}
-}
-```
-
-##### ` getPortalNavTree `
-
-Apollo get portal nav tree
-
-outputType:
-
-```typescript
-unknown
-```
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "appId": {
-      "type": "string",
-      "minLength": 1
-    }
-  }
-}
-```
-
-##### ` listPortalNamespace `
-
-Apollo list portal namespace
-
-outputType:
-
-```typescript
-unknown
-```
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "appId": {
-      "type": "string",
-      "minLength": 1
-    },
-    "env": {
-      "type": "string",
-      "minLength": 1
-    },
-    "cluster": {
-      "type": "string",
-      "minLength": 1
-    }
-  }
-}
-```
-
-##### ` getPortalNamespace `
-
-Apollo get portal namespace
-
-outputType:
-
-```typescript
-unknown
-```
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "appId": {
-      "type": "string",
-      "minLength": 1
-    },
-    "env": {
-      "type": "string",
-      "minLength": 1
-    },
-    "cluster": {
-      "type": "string",
-      "minLength": 1
-    },
-    "namespace": {
-      "type": "string",
-      "minLength": 1
-    }
-  }
-}
-```
-
-##### ` listPortalItem `
-
-Apollo list portal item
-
-outputType:
-
-```typescript
-unknown
-```
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "appId": {
-      "type": "string",
-      "minLength": 1
-    },
-    "env": {
-      "type": "string",
-      "minLength": 1
-    },
-    "cluster": {
-      "type": "string",
-      "minLength": 1
-    },
-    "namespace": {
-      "type": "string",
-      "minLength": 1
-    },
-    "orderBy": {
-      "type": "string",
-      "minLength": 1
-    }
-  }
-}
-```
-
-##### ` listPortalRelease `
-
-Apollo list portal release
-
-outputType:
-
-```typescript
-unknown
-```
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "appId": {
-      "type": "string",
-      "minLength": 1
-    },
-    "env": {
-      "type": "string",
-      "minLength": 1
-    },
-    "cluster": {
-      "type": "string",
-      "minLength": 1
-    },
-    "namespace": {
-      "type": "string",
-      "minLength": 1
-    },
-    "page": {
-      "default": 0,
-      "type": "integer",
-      "minimum": 0,
-      "maximum": 9007199254740991
-    },
-    "size": {
-      "default": 5,
-      "type": "integer",
-      "minimum": 1,
-      "maximum": 1000
-    }
-  }
-}
-```
-
-##### ` getPortalConfig `
-
-Apollo get portal config
-
-outputType:
-
-```typescript
-unknown
-```
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "appId": {
-      "type": "string",
-      "minLength": 1
-    },
-    "env": {
-      "type": "string",
-      "minLength": 1
-    },
-    "cluster": {
-      "type": "string",
-      "minLength": 1
-    },
-    "namespace": {
-      "type": "string",
-      "minLength": 1
-    }
-  }
-}
-```
-
-##### ` listRelease `
-
-Apollo list release
-
-outputType:
-
-```typescript
-unknown
-```
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "appId": {
-      "type": "string",
-      "minLength": 1
-    },
-    "env": {
-      "type": "string",
-      "minLength": 1
-    },
-    "cluster": {
-      "type": "string",
-      "minLength": 1
-    },
-    "namespace": {
-      "type": "string",
-      "minLength": 1
-    },
-    "page": {
-      "default": 0,
-      "type": "integer",
-      "minimum": 0,
-      "maximum": 9007199254740991
-    },
-    "size": {
-      "default": 20,
-      "type": "integer",
-      "minimum": 1,
-      "maximum": 1000
-    },
-    "active": {
-      "default": false,
-      "type": "boolean"
-    }
-  }
-}
-```
-
-##### ` getRelease `
-
-Apollo get release
-
-outputType:
-
-```typescript
-unknown
-```
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "env": {
-      "type": "string",
-      "minLength": 1
-    },
-    "releaseId": {
-      "type": "string",
-      "minLength": 1
-    }
-  },
-  "required": [
-    "releaseId"
-  ]
-}
-```
-
-##### ` diffRelease `
-
-Apollo diff release
-
-outputType:
-
-```typescript
-unknown
-```
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "env": {
-      "type": "string",
-      "minLength": 1
-    },
-    "baseReleaseId": {
-      "type": "string",
-      "minLength": 1
-    },
-    "toCompareReleaseId": {
-      "type": "string",
-      "minLength": 1
-    }
-  },
-  "required": [
-    "baseReleaseId",
-    "toCompareReleaseId"
-  ]
-}
-```
-
-##### ` listApp `
-
-Apollo list app
-
-outputType:
-
-```typescript
-unknown
-```
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "appIds": {
-      "type": "array",
-      "items": {
-        "type": "string",
-        "minLength": 1
-      }
-    }
-  }
-}
-```
-
-##### ` getApp `
-
-Apollo get app
-
-outputType:
-
-```typescript
-unknown
-```
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "appId": {
-      "type": "string",
-      "minLength": 1
-    }
-  }
-}
-```
-
-##### ` listSelfApp `
-
-Apollo list self app
-
-outputType:
-
-```typescript
-unknown
-```
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "page": {
-      "default": 0,
-      "type": "integer",
-      "minimum": 0,
-      "maximum": 9007199254740991
-    },
-    "size": {
-      "default": 50,
-      "type": "integer",
-      "minimum": 1,
-      "maximum": 1000
-    }
-  }
-}
-```
-
-##### ` createApp `
-
-Apollo create app
-
-outputType:
-
-```typescript
-unknown
-```
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "appId": {
-      "type": "string",
-      "minLength": 1
-    },
-    "operator": {
-      "type": "string",
-      "minLength": 1
-    },
-    "name": {
-      "type": "string"
-    },
-    "orgId": {
-      "type": "string"
-    },
-    "orgName": {
-      "type": "string"
-    },
-    "ownerName": {
-      "type": "string"
-    },
-    "ownerEmail": {
-      "type": "string"
-    },
-    "body": {
-      "type": "object",
-      "propertyNames": {
-        "type": "string"
-      },
-      "additionalProperties": {
-        "$ref": "#/$defs/__schema0"
-      }
-    },
-    "assignRoleToSelf": {
-      "default": false,
-      "type": "boolean"
-    }
-  },
-  "required": [
-    "appId"
-  ],
-  "$defs": {
-    "__schema0": {
-      "anyOf": [
-        {
-          "type": "string"
-        },
-        {
-          "type": "number"
-        },
-        {
-          "type": "boolean"
-        },
-        {
-          "type": "null"
-        },
-        {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/__schema0"
-          }
-        },
-        {
-          "type": "object",
-          "propertyNames": {
-            "type": "string"
-          },
-          "additionalProperties": {
-            "$ref": "#/$defs/__schema0"
-          }
-        }
-      ]
-    }
-  }
-}
-```
-
-##### ` createAppEnv `
-
-Apollo create app env
-
-outputType:
-
-```typescript
-unknown
-```
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "appId": {
-      "type": "string",
-      "minLength": 1
-    },
-    "env": {
-      "type": "string",
-      "minLength": 1
-    },
-    "operator": {
-      "type": "string",
-      "minLength": 1
-    },
-    "name": {
-      "type": "string"
-    },
-    "orgId": {
-      "type": "string"
-    },
-    "orgName": {
-      "type": "string"
-    },
-    "ownerName": {
-      "type": "string"
-    },
-    "ownerEmail": {
-      "type": "string"
-    },
-    "body": {
-      "type": "object",
-      "propertyNames": {
-        "type": "string"
-      },
-      "additionalProperties": {
-        "$ref": "#/$defs/__schema0"
-      }
-    }
-  },
-  "required": [
-    "appId"
-  ],
-  "$defs": {
-    "__schema0": {
-      "anyOf": [
-        {
-          "type": "string"
-        },
-        {
-          "type": "number"
-        },
-        {
-          "type": "boolean"
-        },
-        {
-          "type": "null"
-        },
-        {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/__schema0"
-          }
-        },
-        {
-          "type": "object",
-          "propertyNames": {
-            "type": "string"
-          },
-          "additionalProperties": {
-            "$ref": "#/$defs/__schema0"
-          }
-        }
-      ]
-    }
-  }
-}
-```
-
-##### ` updateApp `
-
-Apollo update app
-
-outputType:
-
-```typescript
-unknown
-```
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "appId": {
-      "type": "string",
-      "minLength": 1
-    },
-    "operator": {
-      "type": "string",
-      "minLength": 1
-    },
-    "name": {
-      "type": "string"
-    },
-    "orgId": {
-      "type": "string"
-    },
-    "orgName": {
-      "type": "string"
-    },
-    "ownerName": {
-      "type": "string"
-    },
-    "ownerEmail": {
-      "type": "string"
-    },
-    "body": {
-      "type": "object",
-      "propertyNames": {
-        "type": "string"
-      },
-      "additionalProperties": {
-        "$ref": "#/$defs/__schema0"
-      }
-    }
-  },
-  "required": [
-    "appId"
-  ],
-  "$defs": {
-    "__schema0": {
-      "anyOf": [
-        {
-          "type": "string"
-        },
-        {
-          "type": "number"
-        },
-        {
-          "type": "boolean"
-        },
-        {
-          "type": "null"
-        },
-        {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/__schema0"
-          }
-        },
-        {
-          "type": "object",
-          "propertyNames": {
-            "type": "string"
-          },
-          "additionalProperties": {
-            "$ref": "#/$defs/__schema0"
-          }
-        }
-      ]
-    }
-  }
-}
-```
-
-##### ` deleteApp `
-
-Apollo delete app
-
-outputType:
-
-```typescript
-unknown
-```
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "appId": {
-      "type": "string",
-      "minLength": 1
-    },
-    "operator": {
-      "type": "string",
-      "minLength": 1
-    }
-  },
-  "required": [
-    "appId"
-  ]
-}
-```
-
-##### ` listMissingAppEnv `
-
-Apollo list missing app env
-
-outputType:
-
-```typescript
-unknown
-```
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "appId": {
-      "type": "string",
-      "minLength": 1
-    }
-  }
-}
-```
-
-##### ` getEnvCluster `
-
-Apollo get env cluster
-
-outputType:
-
-```typescript
-unknown
-```
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "appId": {
-      "type": "string",
-      "minLength": 1
-    }
-  }
-}
-```
-
-##### ` getCluster `
-
-Apollo get cluster
-
-outputType:
-
-```typescript
-unknown
-```
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "appId": {
-      "type": "string",
-      "minLength": 1
-    },
-    "env": {
-      "type": "string",
-      "minLength": 1
-    },
-    "cluster": {
-      "type": "string",
-      "minLength": 1
-    }
-  }
-}
-```
-
-##### ` createCluster `
-
-Apollo create cluster
-
-outputType:
-
-```typescript
-unknown
-```
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "appId": {
-      "type": "string",
-      "minLength": 1
-    },
-    "env": {
-      "type": "string",
-      "minLength": 1
-    },
-    "cluster": {
-      "type": "string",
-      "minLength": 1
-    },
-    "operator": {
-      "type": "string",
-      "minLength": 1
-    }
-  },
-  "required": [
-    "cluster"
-  ]
-}
-```
-
-##### ` deleteCluster `
-
-Apollo delete cluster
-
-outputType:
-
-```typescript
-unknown
-```
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "appId": {
-      "type": "string",
-      "minLength": 1
-    },
-    "env": {
-      "type": "string",
-      "minLength": 1
-    },
-    "cluster": {
-      "type": "string",
-      "minLength": 1
-    },
-    "operator": {
-      "type": "string",
-      "minLength": 1
-    }
-  },
-  "required": [
-    "cluster"
-  ]
-}
-```
-
-##### ` listNamespace `
-
-Apollo list namespace
-
-outputType:
-
-```typescript
-unknown
-```
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "appId": {
-      "type": "string",
-      "minLength": 1
-    },
-    "env": {
-      "type": "string",
-      "minLength": 1
-    },
-    "cluster": {
-      "type": "string",
-      "minLength": 1
-    },
-    "fillItemDetail": {
-      "default": true,
-      "type": "boolean"
-    },
-    "extendInfo": {
-      "type": "boolean"
-    }
-  }
-}
-```
-
-##### ` getNamespace `
-
-Apollo get namespace
-
-outputType:
-
-```typescript
-unknown
-```
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "appId": {
-      "type": "string",
-      "minLength": 1
-    },
-    "env": {
-      "type": "string",
-      "minLength": 1
-    },
-    "cluster": {
-      "type": "string",
-      "minLength": 1
-    },
-    "namespace": {
-      "type": "string",
-      "minLength": 1
-    },
-    "fillItemDetail": {
-      "default": true,
-      "type": "boolean"
-    },
-    "extendInfo": {
-      "type": "boolean"
-    }
-  }
-}
-```
-
-##### ` getNamespaceLock `
-
-Apollo get namespace lock
-
-outputType:
-
-```typescript
-unknown
-```
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "appId": {
-      "type": "string",
-      "minLength": 1
-    },
-    "env": {
-      "type": "string",
-      "minLength": 1
-    },
-    "cluster": {
-      "type": "string",
-      "minLength": 1
-    },
-    "namespace": {
-      "type": "string",
-      "minLength": 1
-    }
-  }
-}
-```
-
-##### ` createNamespace `
-
-Apollo create namespace
-
-outputType:
-
-```typescript
-unknown
-```
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "appId": {
-      "type": "string",
-      "minLength": 1
-    },
-    "operator": {
-      "type": "string",
-      "minLength": 1
-    },
-    "namespace": {
-      "type": "string",
-      "minLength": 1
-    },
-    "format": {
-      "default": "properties",
-      "type": "string",
-      "minLength": 1
-    },
-    "isPublic": {
-      "default": false,
-      "type": "boolean"
-    },
-    "comment": {
-      "type": "string"
-    }
-  },
-  "required": [
-    "namespace"
-  ]
-}
-```
-
-##### ` deleteNamespace `
-
-Apollo delete namespace
-
-outputType:
-
-```typescript
-unknown
-```
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "appId": {
-      "type": "string",
-      "minLength": 1
-    },
-    "env": {
-      "type": "string",
-      "minLength": 1
-    },
-    "cluster": {
-      "type": "string",
-      "minLength": 1
-    },
-    "namespace": {
-      "type": "string",
-      "minLength": 1
-    },
-    "operator": {
-      "type": "string",
-      "minLength": 1
-    }
-  }
-}
-```
-
-##### ` listNamespaceUsage `
-
-Apollo list namespace usage
-
-outputType:
-
-```typescript
-unknown
-```
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "appId": {
-      "type": "string",
-      "minLength": 1
-    },
-    "env": {
-      "type": "string",
-      "minLength": 1
-    },
-    "cluster": {
-      "type": "string",
-      "minLength": 1
-    },
-    "namespace": {
-      "type": "string",
-      "minLength": 1
-    }
-  }
-}
-```
-
-##### ` listMissingNamespace `
-
-Apollo list missing namespace
-
-outputType:
-
-```typescript
-unknown
-```
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "appId": {
-      "type": "string",
-      "minLength": 1
-    },
-    "env": {
-      "type": "string",
-      "minLength": 1
-    },
-    "cluster": {
-      "type": "string",
-      "minLength": 1
-    }
-  }
-}
-```
-
-##### ` createMissingNamespace `
-
-Apollo create missing namespace
-
-outputType:
-
-```typescript
-unknown
-```
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "appId": {
-      "type": "string",
-      "minLength": 1
-    },
-    "env": {
-      "type": "string",
-      "minLength": 1
-    },
-    "cluster": {
-      "type": "string",
-      "minLength": 1
-    },
-    "operator": {
-      "type": "string",
-      "minLength": 1
-    }
-  }
-}
-```
-
-##### ` listItem `
-
-Apollo list item
-
-outputType:
-
-```typescript
-unknown
-```
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "appId": {
-      "type": "string",
-      "minLength": 1
-    },
-    "env": {
-      "type": "string",
-      "minLength": 1
-    },
-    "cluster": {
-      "type": "string",
-      "minLength": 1
-    },
-    "namespace": {
-      "type": "string",
-      "minLength": 1
-    },
-    "page": {
-      "default": 0,
-      "type": "integer",
-      "minimum": 0,
-      "maximum": 9007199254740991
-    },
-    "size": {
-      "default": 50,
-      "type": "integer",
-      "minimum": 1,
-      "maximum": 1000
-    }
-  }
-}
-```
-
-##### ` getItem `
-
-Apollo get item
-
-outputType:
-
-```typescript
-unknown
-```
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "appId": {
-      "type": "string",
-      "minLength": 1
-    },
-    "env": {
-      "type": "string",
-      "minLength": 1
-    },
-    "cluster": {
-      "type": "string",
-      "minLength": 1
-    },
-    "namespace": {
-      "type": "string",
-      "minLength": 1
-    },
-    "key": {
-      "type": "string",
-      "minLength": 1
-    }
-  },
-  "required": [
-    "key"
-  ]
-}
-```
-
-##### ` upsertItem `
-
-Apollo upsert item
-
-outputType:
-
-```typescript
-unknown
-```
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "appId": {
-      "type": "string",
-      "minLength": 1
-    },
-    "env": {
-      "type": "string",
-      "minLength": 1
-    },
-    "cluster": {
-      "type": "string",
-      "minLength": 1
-    },
-    "namespace": {
-      "type": "string",
-      "minLength": 1
-    },
-    "operator": {
-      "type": "string",
-      "minLength": 1
-    },
-    "key": {
-      "type": "string",
-      "minLength": 1
-    },
-    "value": {
-      "type": "string"
-    },
-    "comment": {
-      "type": "string"
-    },
-    "createIfNotExists": {
-      "default": true,
-      "type": "boolean"
-    },
-    "release": {
-      "default": false,
-      "type": "boolean"
-    },
-    "releaseTitle": {
-      "type": "string"
-    },
-    "releaseComment": {
-      "type": "string"
-    }
-  },
-  "required": [
-    "key",
-    "value"
-  ]
-}
-```
-
-##### ` deleteItem `
-
-Apollo delete item
-
-outputType:
-
-```typescript
-unknown
-```
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "appId": {
-      "type": "string",
-      "minLength": 1
-    },
-    "env": {
-      "type": "string",
-      "minLength": 1
-    },
-    "cluster": {
-      "type": "string",
-      "minLength": 1
-    },
-    "namespace": {
-      "type": "string",
-      "minLength": 1
-    },
-    "operator": {
-      "type": "string",
-      "minLength": 1
-    },
-    "key": {
-      "type": "string",
-      "minLength": 1
-    }
-  },
-  "required": [
-    "key"
-  ]
-}
-```
-
-##### ` getLatestRelease `
-
-Apollo get latest release
-
-outputType:
-
-```typescript
-unknown
-```
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "appId": {
-      "type": "string",
-      "minLength": 1
-    },
-    "env": {
-      "type": "string",
-      "minLength": 1
-    },
-    "cluster": {
-      "type": "string",
-      "minLength": 1
-    },
-    "namespace": {
-      "type": "string",
-      "minLength": 1
-    }
-  }
-}
-```
-
-##### ` publishRelease `
-
-Apollo publish release
-
-outputType:
-
-```typescript
-unknown
-```
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "appId": {
-      "type": "string",
-      "minLength": 1
-    },
-    "env": {
-      "type": "string",
-      "minLength": 1
-    },
-    "cluster": {
-      "type": "string",
-      "minLength": 1
-    },
-    "namespace": {
-      "type": "string",
-      "minLength": 1
-    },
-    "operator": {
-      "type": "string",
-      "minLength": 1
-    },
-    "title": {
-      "type": "string"
-    },
-    "comment": {
-      "type": "string"
-    }
-  }
-}
-```
-
-##### ` rollbackRelease `
-
-Apollo rollback release
-
-outputType:
-
-```typescript
-unknown
-```
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "env": {
-      "type": "string",
-      "minLength": 1
-    },
-    "operator": {
-      "type": "string",
-      "minLength": 1
-    },
-    "releaseId": {
-      "type": "string",
-      "minLength": 1
-    }
-  },
-  "required": [
-    "releaseId"
-  ]
-}
-```
-
-##### ` patchNamespaceItem `
-
-Apollo patch namespace item
-
-outputType:
-
-```typescript
-unknown
-```
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "appId": {
-      "type": "string",
-      "minLength": 1
-    },
-    "env": {
-      "type": "string",
-      "minLength": 1
-    },
-    "cluster": {
-      "type": "string",
-      "minLength": 1
-    },
-    "namespace": {
-      "type": "string",
-      "minLength": 1
-    },
-    "operator": {
-      "type": "string",
-      "minLength": 1
-    },
-    "set": {
-      "default": [],
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "key": {
-            "type": "string",
-            "minLength": 1
-          },
-          "value": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "key",
-          "value"
-        ]
-      }
-    },
-    "delete": {
-      "default": [],
-      "type": "array",
-      "items": {
-        "type": "string",
-        "minLength": 1
-      }
-    },
-    "comment": {
-      "type": "string"
-    },
-    "publish": {
-      "default": false,
-      "type": "boolean"
-    },
-    "releaseTitle": {
-      "type": "string"
-    },
-    "releaseComment": {
-      "type": "string"
-    },
-    "dryRun": {
-      "default": false,
-      "type": "boolean"
-    },
-    "createIfNotExists": {
-      "default": true,
-      "type": "boolean"
-    },
-    "allowUnpublishedDraft": {
-      "default": false,
-      "type": "boolean"
-    }
-  }
-}
-```
-
-##### ` writeNamespaceText `
-
-Apollo write namespace text
-
-outputType:
-
-```typescript
-unknown
-```
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "appId": {
-      "type": "string",
-      "minLength": 1
-    },
-    "env": {
-      "type": "string",
-      "minLength": 1
-    },
-    "cluster": {
-      "type": "string",
-      "minLength": 1
-    },
-    "namespace": {
-      "type": "string",
-      "minLength": 1
-    },
-    "configText": {
-      "type": "string"
-    },
-    "format": {
-      "type": "string",
-      "enum": [
-        "json",
-        "xml",
-        "yaml",
-        "yml",
-        "properties",
-        "txt"
-      ]
-    },
-    "publish": {
-      "default": false,
-      "type": "boolean"
-    },
-    "releaseTitle": {
-      "type": "string"
-    },
-    "releaseComment": {
-      "type": "string"
-    },
-    "dryRun": {
-      "default": false,
-      "type": "boolean"
-    },
-    "validate": {
-      "default": true,
-      "type": "boolean"
-    }
-  },
-  "required": [
-    "configText"
-  ]
-}
-```
-
-##### ` patchNamespaceDocument `
-
-Apollo patch namespace document
-
-outputType:
-
-```typescript
-unknown
-```
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "appId": {
-      "type": "string",
-      "minLength": 1
-    },
-    "env": {
-      "type": "string",
-      "minLength": 1
-    },
-    "cluster": {
-      "type": "string",
-      "minLength": 1
-    },
-    "namespace": {
-      "type": "string",
-      "minLength": 1
-    },
-    "set": {
-      "default": [],
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "path": {
-            "type": "string",
-            "minLength": 1
-          },
-          "value": {
-            "$ref": "#/$defs/__schema0"
-          }
-        },
-        "required": [
-          "path",
-          "value"
-        ]
-      }
-    },
-    "merge": {
-      "default": [],
-      "type": "array",
-      "items": {
-        "type": "object",
-        "propertyNames": {
-          "type": "string"
-        },
-        "additionalProperties": {
-          "$ref": "#/$defs/__schema0"
-        }
-      }
-    },
-    "delete": {
-      "default": [],
-      "type": "array",
-      "items": {
-        "type": "string",
-        "minLength": 1
-      }
-    },
-    "publish": {
-      "default": false,
-      "type": "boolean"
-    },
-    "releaseTitle": {
-      "type": "string"
-    },
-    "releaseComment": {
-      "type": "string"
-    },
-    "dryRun": {
-      "default": false,
-      "type": "boolean"
-    },
-    "allowUnpublishedDraft": {
-      "default": false,
-      "type": "boolean"
-    }
-  },
-  "$defs": {
-    "__schema0": {
-      "anyOf": [
-        {
-          "type": "string"
-        },
-        {
-          "type": "number"
-        },
-        {
-          "type": "boolean"
-        },
-        {
-          "type": "null"
-        },
-        {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/__schema0"
-          }
-        },
-        {
-          "type": "object",
-          "propertyNames": {
-            "type": "string"
-          },
-          "additionalProperties": {
-            "$ref": "#/$defs/__schema0"
-          }
-        }
-      ]
-    }
-  }
-}
-```
-
-##### ` diffNamespaceRelease `
-
-Apollo diff namespace release
-
-outputType:
-
-```typescript
-unknown
-```
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "appId": {
-      "type": "string",
-      "minLength": 1
-    },
-    "env": {
-      "type": "string",
-      "minLength": 1
-    },
-    "cluster": {
-      "type": "string",
-      "minLength": 1
-    },
-    "namespace": {
-      "type": "string",
-      "minLength": 1
-    }
-  }
-}
-```
-
-##### ` publishNamespaceRelease `
-
-Apollo publish namespace release
-
-outputType:
-
-```typescript
-unknown
-```
-
-inputSchema:
-
-```json
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "appId": {
-      "type": "string",
-      "minLength": 1
-    },
-    "env": {
-      "type": "string",
-      "minLength": 1
-    },
-    "cluster": {
-      "type": "string",
-      "minLength": 1
-    },
-    "namespace": {
-      "type": "string",
-      "minLength": 1
-    },
-    "title": {
-      "type": "string"
-    },
-    "comment": {
-      "type": "string"
-    },
-    "dryRun": {
-      "default": false,
-      "type": "boolean"
-    },
-    "ifMatch": {
-      "type": "string",
-      "minLength": 1
-    }
-  }
-}
-```
-
 #### Static tools
 
 ##### ` readConfig `
 
-Apollo read config
-
 inputSchema:
 
 ```json
@@ -10057,7 +8060,8 @@ inputSchema:
   "properties": {
     "namespace": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "format": {
       "type": "string",
@@ -10069,9 +8073,19 @@ inputSchema:
         "raw",
         "content",
         "data"
-      ]
+      ],
+      "nullable": true
     }
-  }
+  },
+  "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -10085,8 +8099,6 @@ annotations:
 ```
 
 ##### ` request `
-
-Apollo request
 
 inputSchema:
 
@@ -10115,7 +8127,8 @@ inputSchema:
         "PUT",
         "PATCH",
         "DELETE"
-      ]
+      ],
+      "nullable": true
     },
     "query": {
       "type": "object",
@@ -10124,10 +8137,12 @@ inputSchema:
       },
       "additionalProperties": {
         "$ref": "#/$defs/__schema0"
-      }
+      },
+      "nullable": true
     },
     "body": {
-      "$ref": "#/$defs/__schema1"
+      "$ref": "#/$defs/__schema1",
+      "nullable": true
     },
     "headers": {
       "x-sensitive": true,
@@ -10137,12 +8152,15 @@ inputSchema:
       },
       "additionalProperties": {
         "type": "string"
-      }
+      },
+      "nullable": true
     }
   },
   "required": [
-    "path"
+    "path",
+    "role"
   ],
+  "additionalProperties": false,
   "$defs": {
     "__schema0": {
       "anyOf": [
@@ -10210,6 +8228,14 @@ inputSchema:
 }
 ```
 
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}
+```
+
 annotations:
 
 ```json
@@ -10221,15 +8247,22 @@ annotations:
 
 ##### ` getStatus `
 
-Apollo get status
-
 inputSchema:
 
 ```json
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
-  "properties": {}
+  "properties": {},
+  "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -10244,15 +8277,22 @@ annotations:
 
 ##### ` listPortalApp `
 
-Apollo list portal app
-
 inputSchema:
 
 ```json
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
-  "properties": {}
+  "properties": {},
+  "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -10267,15 +8307,22 @@ annotations:
 
 ##### ` listPortalOrganization `
 
-Apollo list portal organization
-
 inputSchema:
 
 ```json
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
-  "properties": {}
+  "properties": {},
+  "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -10290,15 +8337,22 @@ annotations:
 
 ##### ` listPortalEnv `
 
-Apollo list portal env
-
 inputSchema:
 
 ```json
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
-  "properties": {}
+  "properties": {},
+  "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -10313,8 +8367,6 @@ annotations:
 
 ##### ` getPortalNavTree `
 
-Apollo get portal nav tree
-
 inputSchema:
 
 ```json
@@ -10324,9 +8376,19 @@ inputSchema:
   "properties": {
     "appId": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     }
-  }
+  },
+  "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -10341,8 +8403,6 @@ annotations:
 
 ##### ` listPortalNamespace `
 
-Apollo list portal namespace
-
 inputSchema:
 
 ```json
@@ -10352,17 +8412,29 @@ inputSchema:
   "properties": {
     "appId": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "env": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "cluster": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     }
-  }
+  },
+  "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -10377,8 +8449,6 @@ annotations:
 
 ##### ` getPortalNamespace `
 
-Apollo get portal namespace
-
 inputSchema:
 
 ```json
@@ -10388,21 +8458,34 @@ inputSchema:
   "properties": {
     "appId": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "env": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "cluster": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "namespace": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     }
-  }
+  },
+  "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -10417,8 +8500,6 @@ annotations:
 
 ##### ` listPortalItem `
 
-Apollo list portal item
-
 inputSchema:
 
 ```json
@@ -10428,25 +8509,39 @@ inputSchema:
   "properties": {
     "appId": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "env": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "cluster": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "namespace": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "orderBy": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     }
-  }
+  },
+  "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -10461,8 +8556,6 @@ annotations:
 
 ##### ` listPortalRelease `
 
-Apollo list portal release
-
 inputSchema:
 
 ```json
@@ -10472,19 +8565,23 @@ inputSchema:
   "properties": {
     "appId": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "env": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "cluster": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "namespace": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "page": {
       "default": 0,
@@ -10498,7 +8595,20 @@ inputSchema:
       "minimum": 1,
       "maximum": 1000
     }
-  }
+  },
+  "required": [
+    "page",
+    "size"
+  ],
+  "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -10513,8 +8623,6 @@ annotations:
 
 ##### ` getPortalConfig `
 
-Apollo get portal config
-
 inputSchema:
 
 ```json
@@ -10524,21 +8632,34 @@ inputSchema:
   "properties": {
     "appId": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "env": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "cluster": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "namespace": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     }
-  }
+  },
+  "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -10553,8 +8674,6 @@ annotations:
 
 ##### ` listRelease `
 
-Apollo list release
-
 inputSchema:
 
 ```json
@@ -10564,19 +8683,23 @@ inputSchema:
   "properties": {
     "appId": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "env": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "cluster": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "namespace": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "page": {
       "default": 0,
@@ -10594,7 +8717,21 @@ inputSchema:
       "default": false,
       "type": "boolean"
     }
-  }
+  },
+  "required": [
+    "active",
+    "page",
+    "size"
+  ],
+  "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -10609,8 +8746,6 @@ annotations:
 
 ##### ` getRelease `
 
-Apollo get release
-
 inputSchema:
 
 ```json
@@ -10620,7 +8755,8 @@ inputSchema:
   "properties": {
     "env": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "releaseId": {
       "type": "string",
@@ -10629,7 +8765,16 @@ inputSchema:
   },
   "required": [
     "releaseId"
-  ]
+  ],
+  "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -10644,8 +8789,6 @@ annotations:
 
 ##### ` diffRelease `
 
-Apollo diff release
-
 inputSchema:
 
 ```json
@@ -10655,7 +8798,8 @@ inputSchema:
   "properties": {
     "env": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "baseReleaseId": {
       "type": "string",
@@ -10669,7 +8813,16 @@ inputSchema:
   "required": [
     "baseReleaseId",
     "toCompareReleaseId"
-  ]
+  ],
+  "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -10684,8 +8837,6 @@ annotations:
 
 ##### ` listApp `
 
-Apollo list app
-
 inputSchema:
 
 ```json
@@ -10698,9 +8849,19 @@ inputSchema:
       "items": {
         "type": "string",
         "minLength": 1
-      }
+      },
+      "nullable": true
     }
-  }
+  },
+  "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -10715,8 +8876,6 @@ annotations:
 
 ##### ` getApp `
 
-Apollo get app
-
 inputSchema:
 
 ```json
@@ -10726,9 +8885,19 @@ inputSchema:
   "properties": {
     "appId": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     }
-  }
+  },
+  "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -10742,8 +8911,6 @@ annotations:
 ```
 
 ##### ` listSelfApp `
-
-Apollo list self app
 
 inputSchema:
 
@@ -10764,7 +8931,20 @@ inputSchema:
       "minimum": 1,
       "maximum": 1000
     }
-  }
+  },
+  "required": [
+    "page",
+    "size"
+  ],
+  "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -10779,8 +8959,6 @@ annotations:
 
 ##### ` createApp `
 
-Apollo create app
-
 inputSchema:
 
 ```json
@@ -10794,22 +8972,28 @@ inputSchema:
     },
     "operator": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "name": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     },
     "orgId": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     },
     "orgName": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     },
     "ownerName": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     },
     "ownerEmail": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     },
     "body": {
       "type": "object",
@@ -10818,7 +9002,8 @@ inputSchema:
       },
       "additionalProperties": {
         "$ref": "#/$defs/__schema0"
-      }
+      },
+      "nullable": true
     },
     "assignRoleToSelf": {
       "default": false,
@@ -10826,8 +9011,10 @@ inputSchema:
     }
   },
   "required": [
-    "appId"
+    "appId",
+    "assignRoleToSelf"
   ],
+  "additionalProperties": false,
   "$defs": {
     "__schema0": {
       "anyOf": [
@@ -10861,6 +9048,14 @@ inputSchema:
       ]
     }
   }
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -10875,8 +9070,6 @@ annotations:
 
 ##### ` createAppEnv `
 
-Apollo create app env
-
 inputSchema:
 
 ```json
@@ -10890,26 +9083,33 @@ inputSchema:
     },
     "env": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "operator": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "name": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     },
     "orgId": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     },
     "orgName": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     },
     "ownerName": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     },
     "ownerEmail": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     },
     "body": {
       "type": "object",
@@ -10918,12 +9118,14 @@ inputSchema:
       },
       "additionalProperties": {
         "$ref": "#/$defs/__schema0"
-      }
+      },
+      "nullable": true
     }
   },
   "required": [
     "appId"
   ],
+  "additionalProperties": false,
   "$defs": {
     "__schema0": {
       "anyOf": [
@@ -10957,6 +9159,14 @@ inputSchema:
       ]
     }
   }
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -10971,8 +9181,6 @@ annotations:
 
 ##### ` updateApp `
 
-Apollo update app
-
 inputSchema:
 
 ```json
@@ -10986,22 +9194,28 @@ inputSchema:
     },
     "operator": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "name": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     },
     "orgId": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     },
     "orgName": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     },
     "ownerName": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     },
     "ownerEmail": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     },
     "body": {
       "type": "object",
@@ -11010,12 +9224,14 @@ inputSchema:
       },
       "additionalProperties": {
         "$ref": "#/$defs/__schema0"
-      }
+      },
+      "nullable": true
     }
   },
   "required": [
     "appId"
   ],
+  "additionalProperties": false,
   "$defs": {
     "__schema0": {
       "anyOf": [
@@ -11052,6 +9268,14 @@ inputSchema:
 }
 ```
 
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}
+```
+
 annotations:
 
 ```json
@@ -11062,8 +9286,6 @@ annotations:
 ```
 
 ##### ` deleteApp `
-
-Apollo delete app
 
 inputSchema:
 
@@ -11078,12 +9300,22 @@ inputSchema:
     },
     "operator": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     }
   },
   "required": [
     "appId"
-  ]
+  ],
+  "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -11098,8 +9330,6 @@ annotations:
 
 ##### ` listMissingAppEnv `
 
-Apollo list missing app env
-
 inputSchema:
 
 ```json
@@ -11109,9 +9339,19 @@ inputSchema:
   "properties": {
     "appId": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     }
-  }
+  },
+  "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -11126,8 +9366,6 @@ annotations:
 
 ##### ` getEnvCluster `
 
-Apollo get env cluster
-
 inputSchema:
 
 ```json
@@ -11137,9 +9375,19 @@ inputSchema:
   "properties": {
     "appId": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     }
-  }
+  },
+  "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -11154,8 +9402,6 @@ annotations:
 
 ##### ` getCluster `
 
-Apollo get cluster
-
 inputSchema:
 
 ```json
@@ -11165,17 +9411,29 @@ inputSchema:
   "properties": {
     "appId": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "env": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "cluster": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     }
-  }
+  },
+  "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -11190,8 +9448,6 @@ annotations:
 
 ##### ` createCluster `
 
-Apollo create cluster
-
 inputSchema:
 
 ```json
@@ -11201,11 +9457,13 @@ inputSchema:
   "properties": {
     "appId": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "env": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "cluster": {
       "type": "string",
@@ -11213,12 +9471,22 @@ inputSchema:
     },
     "operator": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     }
   },
   "required": [
     "cluster"
-  ]
+  ],
+  "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -11233,8 +9501,6 @@ annotations:
 
 ##### ` deleteCluster `
 
-Apollo delete cluster
-
 inputSchema:
 
 ```json
@@ -11244,11 +9510,13 @@ inputSchema:
   "properties": {
     "appId": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "env": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "cluster": {
       "type": "string",
@@ -11256,12 +9524,22 @@ inputSchema:
     },
     "operator": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     }
   },
   "required": [
     "cluster"
-  ]
+  ],
+  "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -11276,8 +9554,6 @@ annotations:
 
 ##### ` listNamespace `
 
-Apollo list namespace
-
 inputSchema:
 
 ```json
@@ -11287,24 +9563,40 @@ inputSchema:
   "properties": {
     "appId": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "env": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "cluster": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "fillItemDetail": {
       "default": true,
       "type": "boolean"
     },
     "extendInfo": {
-      "type": "boolean"
+      "type": "boolean",
+      "nullable": true
     }
-  }
+  },
+  "required": [
+    "fillItemDetail"
+  ],
+  "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -11319,8 +9611,6 @@ annotations:
 
 ##### ` getNamespace `
 
-Apollo get namespace
-
 inputSchema:
 
 ```json
@@ -11330,28 +9620,45 @@ inputSchema:
   "properties": {
     "appId": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "env": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "cluster": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "namespace": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "fillItemDetail": {
       "default": true,
       "type": "boolean"
     },
     "extendInfo": {
-      "type": "boolean"
+      "type": "boolean",
+      "nullable": true
     }
-  }
+  },
+  "required": [
+    "fillItemDetail"
+  ],
+  "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -11366,8 +9673,6 @@ annotations:
 
 ##### ` getNamespaceLock `
 
-Apollo get namespace lock
-
 inputSchema:
 
 ```json
@@ -11377,21 +9682,34 @@ inputSchema:
   "properties": {
     "appId": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "env": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "cluster": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "namespace": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     }
-  }
+  },
+  "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -11406,8 +9724,6 @@ annotations:
 
 ##### ` createNamespace `
 
-Apollo create namespace
-
 inputSchema:
 
 ```json
@@ -11417,11 +9733,13 @@ inputSchema:
   "properties": {
     "appId": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "operator": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "namespace": {
       "type": "string",
@@ -11437,12 +9755,24 @@ inputSchema:
       "type": "boolean"
     },
     "comment": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     }
   },
   "required": [
+    "format",
+    "isPublic",
     "namespace"
-  ]
+  ],
+  "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -11457,8 +9787,6 @@ annotations:
 
 ##### ` deleteNamespace `
 
-Apollo delete namespace
-
 inputSchema:
 
 ```json
@@ -11468,25 +9796,39 @@ inputSchema:
   "properties": {
     "appId": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "env": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "cluster": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "namespace": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "operator": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     }
-  }
+  },
+  "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -11501,8 +9843,6 @@ annotations:
 
 ##### ` listNamespaceUsage `
 
-Apollo list namespace usage
-
 inputSchema:
 
 ```json
@@ -11512,21 +9852,34 @@ inputSchema:
   "properties": {
     "appId": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "env": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "cluster": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "namespace": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     }
-  }
+  },
+  "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -11541,8 +9894,6 @@ annotations:
 
 ##### ` listMissingNamespace `
 
-Apollo list missing namespace
-
 inputSchema:
 
 ```json
@@ -11552,17 +9903,29 @@ inputSchema:
   "properties": {
     "appId": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "env": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "cluster": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     }
-  }
+  },
+  "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -11577,8 +9940,6 @@ annotations:
 
 ##### ` createMissingNamespace `
 
-Apollo create missing namespace
-
 inputSchema:
 
 ```json
@@ -11588,21 +9949,34 @@ inputSchema:
   "properties": {
     "appId": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "env": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "cluster": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "operator": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     }
-  }
+  },
+  "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -11617,8 +9991,6 @@ annotations:
 
 ##### ` listItem `
 
-Apollo list item
-
 inputSchema:
 
 ```json
@@ -11628,19 +10000,23 @@ inputSchema:
   "properties": {
     "appId": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "env": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "cluster": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "namespace": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "page": {
       "default": 0,
@@ -11654,7 +10030,20 @@ inputSchema:
       "minimum": 1,
       "maximum": 1000
     }
-  }
+  },
+  "required": [
+    "page",
+    "size"
+  ],
+  "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -11669,8 +10058,6 @@ annotations:
 
 ##### ` getItem `
 
-Apollo get item
-
 inputSchema:
 
 ```json
@@ -11680,19 +10067,23 @@ inputSchema:
   "properties": {
     "appId": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "env": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "cluster": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "namespace": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "key": {
       "type": "string",
@@ -11701,7 +10092,16 @@ inputSchema:
   },
   "required": [
     "key"
-  ]
+  ],
+  "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -11716,8 +10116,6 @@ annotations:
 
 ##### ` upsertItem `
 
-Apollo upsert item
-
 inputSchema:
 
 ```json
@@ -11727,23 +10125,28 @@ inputSchema:
   "properties": {
     "appId": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "env": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "cluster": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "namespace": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "operator": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "key": {
       "type": "string",
@@ -11753,7 +10156,8 @@ inputSchema:
       "type": "string"
     },
     "comment": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     },
     "createIfNotExists": {
       "default": true,
@@ -11764,16 +10168,29 @@ inputSchema:
       "type": "boolean"
     },
     "releaseTitle": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     },
     "releaseComment": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     }
   },
   "required": [
+    "createIfNotExists",
     "key",
+    "release",
     "value"
-  ]
+  ],
+  "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -11788,8 +10205,6 @@ annotations:
 
 ##### ` deleteItem `
 
-Apollo delete item
-
 inputSchema:
 
 ```json
@@ -11799,23 +10214,28 @@ inputSchema:
   "properties": {
     "appId": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "env": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "cluster": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "namespace": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "operator": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "key": {
       "type": "string",
@@ -11824,7 +10244,16 @@ inputSchema:
   },
   "required": [
     "key"
-  ]
+  ],
+  "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -11839,8 +10268,6 @@ annotations:
 
 ##### ` getLatestRelease `
 
-Apollo get latest release
-
 inputSchema:
 
 ```json
@@ -11850,21 +10277,34 @@ inputSchema:
   "properties": {
     "appId": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "env": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "cluster": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "namespace": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     }
-  }
+  },
+  "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -11879,8 +10319,6 @@ annotations:
 
 ##### ` publishRelease `
 
-Apollo publish release
-
 inputSchema:
 
 ```json
@@ -11890,31 +10328,47 @@ inputSchema:
   "properties": {
     "appId": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "env": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "cluster": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "namespace": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "operator": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "title": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     },
     "comment": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     }
-  }
+  },
+  "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -11929,8 +10383,6 @@ annotations:
 
 ##### ` rollbackRelease `
 
-Apollo rollback release
-
 inputSchema:
 
 ```json
@@ -11940,11 +10392,13 @@ inputSchema:
   "properties": {
     "env": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "operator": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "releaseId": {
       "type": "string",
@@ -11953,7 +10407,16 @@ inputSchema:
   },
   "required": [
     "releaseId"
-  ]
+  ],
+  "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -11968,8 +10431,6 @@ annotations:
 
 ##### ` patchNamespaceItem `
 
-Apollo patch namespace item
-
 inputSchema:
 
 ```json
@@ -11979,23 +10440,28 @@ inputSchema:
   "properties": {
     "appId": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "env": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "cluster": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "namespace": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "operator": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "set": {
       "default": [],
@@ -12014,7 +10480,8 @@ inputSchema:
         "required": [
           "key",
           "value"
-        ]
+        ],
+        "additionalProperties": false
       }
     },
     "delete": {
@@ -12026,17 +10493,20 @@ inputSchema:
       }
     },
     "comment": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     },
     "publish": {
       "default": false,
       "type": "boolean"
     },
     "releaseTitle": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     },
     "releaseComment": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     },
     "dryRun": {
       "default": false,
@@ -12050,7 +10520,24 @@ inputSchema:
       "default": false,
       "type": "boolean"
     }
-  }
+  },
+  "required": [
+    "allowUnpublishedDraft",
+    "createIfNotExists",
+    "delete",
+    "dryRun",
+    "publish",
+    "set"
+  ],
+  "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -12065,8 +10552,6 @@ annotations:
 
 ##### ` writeNamespaceText `
 
-Apollo write namespace text
-
 inputSchema:
 
 ```json
@@ -12076,19 +10561,23 @@ inputSchema:
   "properties": {
     "appId": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "env": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "cluster": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "namespace": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "configText": {
       "type": "string"
@@ -12102,17 +10591,20 @@ inputSchema:
         "yml",
         "properties",
         "txt"
-      ]
+      ],
+      "nullable": true
     },
     "publish": {
       "default": false,
       "type": "boolean"
     },
     "releaseTitle": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     },
     "releaseComment": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     },
     "dryRun": {
       "default": false,
@@ -12124,8 +10616,20 @@ inputSchema:
     }
   },
   "required": [
-    "configText"
-  ]
+    "configText",
+    "dryRun",
+    "publish",
+    "validate"
+  ],
+  "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -12140,8 +10644,6 @@ annotations:
 
 ##### ` patchNamespaceDocument `
 
-Apollo patch namespace document
-
 inputSchema:
 
 ```json
@@ -12151,19 +10653,23 @@ inputSchema:
   "properties": {
     "appId": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "env": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "cluster": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "namespace": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "set": {
       "default": [],
@@ -12182,7 +10688,8 @@ inputSchema:
         "required": [
           "path",
           "value"
-        ]
+        ],
+        "additionalProperties": false
       }
     },
     "merge": {
@@ -12211,10 +10718,12 @@ inputSchema:
       "type": "boolean"
     },
     "releaseTitle": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     },
     "releaseComment": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     },
     "dryRun": {
       "default": false,
@@ -12225,6 +10734,15 @@ inputSchema:
       "type": "boolean"
     }
   },
+  "required": [
+    "allowUnpublishedDraft",
+    "delete",
+    "dryRun",
+    "merge",
+    "publish",
+    "set"
+  ],
+  "additionalProperties": false,
   "$defs": {
     "__schema0": {
       "anyOf": [
@@ -12261,6 +10779,14 @@ inputSchema:
 }
 ```
 
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}
+```
+
 annotations:
 
 ```json
@@ -12272,8 +10798,6 @@ annotations:
 
 ##### ` diffNamespaceRelease `
 
-Apollo diff namespace release
-
 inputSchema:
 
 ```json
@@ -12283,21 +10807,34 @@ inputSchema:
   "properties": {
     "appId": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "env": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "cluster": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "namespace": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     }
-  }
+  },
+  "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -12312,8 +10849,6 @@ annotations:
 
 ##### ` publishNamespaceRelease `
 
-Apollo publish namespace release
-
 inputSchema:
 
 ```json
@@ -12323,25 +10858,31 @@ inputSchema:
   "properties": {
     "appId": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "env": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "cluster": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "namespace": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     },
     "title": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     },
     "comment": {
-      "type": "string"
+      "type": "string",
+      "nullable": true
     },
     "dryRun": {
       "default": false,
@@ -12349,9 +10890,22 @@ inputSchema:
     },
     "ifMatch": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     }
-  }
+  },
+  "required": [
+    "dryRun"
+  ],
+  "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -12430,8 +10984,6 @@ Provider options schema:
 
 ##### ` query `
 
-Prometheus query
-
 inputSchema:
 
 ```json
@@ -12453,18 +11005,28 @@ inputSchema:
           "minLength": 1,
           "maxLength": 256
         }
-      ]
+      ],
+      "nullable": true
     },
     "timeout": {
       "type": "string",
       "minLength": 1,
-      "maxLength": 256
+      "maxLength": 256,
+      "nullable": true
     }
   },
   "required": [
     "query"
   ],
   "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -12478,8 +11040,6 @@ annotations:
 ```
 
 ##### ` queryRange `
-
-Prometheus queryRange
 
 inputSchema:
 
@@ -12531,16 +11091,25 @@ inputSchema:
     "timeout": {
       "type": "string",
       "minLength": 1,
-      "maxLength": 256
+      "maxLength": 256,
+      "nullable": true
     }
   },
   "required": [
+    "end",
     "query",
     "start",
-    "end",
     "step"
   ],
   "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -12555,8 +11124,6 @@ annotations:
 
 ##### ` series `
 
-Prometheus series
-
 inputSchema:
 
 ```json
@@ -12583,7 +11150,8 @@ inputSchema:
           "minLength": 1,
           "maxLength": 256
         }
-      ]
+      ],
+      "nullable": true
     },
     "end": {
       "anyOf": [
@@ -12595,13 +11163,22 @@ inputSchema:
           "minLength": 1,
           "maxLength": 256
         }
-      ]
+      ],
+      "nullable": true
     }
   },
   "required": [
     "match"
   ],
   "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -12616,8 +11193,6 @@ annotations:
 
 ##### ` labels `
 
-Prometheus labels
-
 inputSchema:
 
 ```json
@@ -12632,7 +11207,8 @@ inputSchema:
       "items": {
         "type": "string",
         "minLength": 1
-      }
+      },
+      "nullable": true
     },
     "start": {
       "anyOf": [
@@ -12644,7 +11220,8 @@ inputSchema:
           "minLength": 1,
           "maxLength": 256
         }
-      ]
+      ],
+      "nullable": true
     },
     "end": {
       "anyOf": [
@@ -12656,10 +11233,19 @@ inputSchema:
           "minLength": 1,
           "maxLength": 256
         }
-      ]
+      ],
+      "nullable": true
     }
   },
   "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -12673,8 +11259,6 @@ annotations:
 ```
 
 ##### ` labelValues `
-
-Prometheus labelValues
 
 inputSchema:
 
@@ -12694,7 +11278,8 @@ inputSchema:
       "items": {
         "type": "string",
         "minLength": 1
-      }
+      },
+      "nullable": true
     },
     "start": {
       "anyOf": [
@@ -12706,7 +11291,8 @@ inputSchema:
           "minLength": 1,
           "maxLength": 256
         }
-      ]
+      ],
+      "nullable": true
     },
     "end": {
       "anyOf": [
@@ -12718,13 +11304,22 @@ inputSchema:
           "minLength": 1,
           "maxLength": 256
         }
-      ]
+      ],
+      "nullable": true
     }
   },
   "required": [
     "label"
   ],
   "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 
@@ -12739,8 +11334,6 @@ annotations:
 
 ##### ` metadata `
 
-Prometheus metadata
-
 inputSchema:
 
 ```json
@@ -12751,14 +11344,24 @@ inputSchema:
     "limit": {
       "type": "integer",
       "minimum": 1,
-      "maximum": 1000000
+      "maximum": 1000000,
+      "nullable": true
     },
     "metric": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "nullable": true
     }
   },
   "additionalProperties": false
+}
+```
+
+outputSchema:
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
 }
 ```
 

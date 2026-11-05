@@ -3,7 +3,7 @@ import { createServiceCliCommand } from '../../cli/createServiceCliCommand';
 import type { ServiceCliOptions } from '../../cli/ServiceCliDefinition';
 import { LinearServiceProvider } from '../../providers/linear';
 import type { LinearServiceClient } from '../client';
-import { LinearMethodInputs, LinearMethodOutputs, LinearServiceContract, LinearTools } from '../contract';
+import { LinearMethodInputs, LinearMethodOutputs, LinearServiceContract, LinearTools } from '../LinearServiceContract';
 import { LinearOperations } from '../operations';
 import { LinearCliDefinition } from './commands';
 import {

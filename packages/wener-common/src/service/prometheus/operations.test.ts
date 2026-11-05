@@ -1,7 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { ServiceRegistry, type ServiceProviderDefinition } from '../registry';
 import { createServiceProviderAdapter } from '../runtime/createServiceProviderAdapter';
-import { PrometheusTools } from '../runtime/prometheus-tools';
 import { type IPrometheusService, PrometheusServiceProvider } from './index';
 import { PrometheusOperations } from './operations';
 
@@ -15,8 +14,9 @@ describe('Prometheus registered operations', () => {
 			labels: vi.fn(async () => ({ status: 'success' as const, data: [], warnings: [] })),
 			labelValues: vi.fn(async () => ({ status: 'success' as const, data: [], warnings: [] })),
 			metadata: vi.fn(async () => ({ status: 'success' as const, data: {}, warnings: [] })), close: vi.fn(async () => {}),
+			[Symbol.asyncDispose]: vi.fn(async () => {}),
 		};
-		const definition: ServiceProviderDefinition<'prometheus'> = { ...PrometheusServiceProvider, create: () => ({ prometheus: service }) };
+		const definition: ServiceProviderDefinition<IPrometheusService> = { ...PrometheusServiceProvider, create: () => ({ prometheus: service }) };
 		const registry = new ServiceRegistry({ context: { services: { metrics: { provider: 'prometheus', readOnly: true } } } });
 		registry.register(definition);
 		const options = { signal: new AbortController().signal };
@@ -31,8 +31,10 @@ describe('Prometheus registered operations', () => {
 			await test.operation.execute(registry, 'metrics', test.input, options);
 			expect(test.invoke).toHaveBeenCalledExactlyOnceWith(test.input, options);
 		}
-		expect(createServiceProviderAdapter(definition).tools).toEqual(PrometheusTools);
-		expect(Object.keys(PrometheusOperations)).toEqual(Object.keys(PrometheusTools));
+		const tools = createServiceProviderAdapter(definition).tools ?? {};
+		expect(Object.keys(tools)).toEqual(['query', 'queryRange', 'series', 'labels', 'labelValues', 'metadata']);
+		for (const name of Object.keys(tools)) expect(tools[name].annotations?.readOnlyHint).toBe(true);
+		expect(Object.keys(PrometheusOperations)).toEqual(Object.keys(tools));
 		await registry.close();
 		expect(service.close).toHaveBeenCalledTimes(1);
 	});

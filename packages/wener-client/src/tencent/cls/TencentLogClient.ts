@@ -286,7 +286,7 @@ export class TencentLogClient {
 		const uri = '/';
 		const method = 'POST';
 
-		const { authorization } = sign({
+		const { authorization } = await sign({
 			clientId: this.options.clientId,
 			clientKey: this.options.clientSecret,
 			service: 'cls',

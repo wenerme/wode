@@ -1,4 +1,3 @@
-import { createHash, createHmac } from 'node:crypto';
 import type { FetchLike } from '@wener/utils';
 
 export type RequestOptions = {
@@ -119,7 +118,21 @@ type GeneralResponse<T> = {
 		  };
 };
 
-export function sign(options: SignOptions): { authorization: string; timestamp: string } {
+async function hmacSha256(key: ArrayBuffer | Uint8Array<ArrayBuffer>, data: string): Promise<ArrayBuffer> {
+	const cryptoKey = await crypto.subtle.importKey('raw', key, { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
+	return crypto.subtle.sign('HMAC', cryptoKey, new TextEncoder().encode(data));
+}
+
+function toHex(data: ArrayBuffer): string {
+	return [...new Uint8Array(data)].map((b) => b.toString(16).padStart(2, '0')).join('');
+}
+
+async function sha256Hex(data: string): Promise<string> {
+	const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(data));
+	return toHex(digest);
+}
+
+export async function sign(options: SignOptions): Promise<{ authorization: string; timestamp: string }> {
 	const {
 		clientId,
 		clientKey,
@@ -137,7 +150,7 @@ export function sign(options: SignOptions): { authorization: string; timestamp: 
 	// 步骤 1：拼接规范请求串
 	const canonicalHeaders = `content-type:application/json\nhost:${host}\n`;
 	const signedHeaders = 'content-type;host';
-	const hashedRequestPayload = createHash('sha256').update(payload).digest('hex');
+	const hashedRequestPayload = await sha256Hex(payload);
 
 	const canonicalRequest = [method, uri, '', canonicalHeaders, signedHeaders, hashedRequestPayload].join('\n');
 
@@ -145,15 +158,15 @@ export function sign(options: SignOptions): { authorization: string; timestamp: 
 	const algorithm = 'TC3-HMAC-SHA256';
 	const date = new Date(timestamp * 1000).toISOString().split('T')[0];
 	const credentialScope = `${date}/${service}/tc3_request`;
-	const hashedCanonicalRequest = createHash('sha256').update(canonicalRequest).digest('hex');
+	const hashedCanonicalRequest = await sha256Hex(canonicalRequest);
 
 	const stringToSign = [algorithm, timestamp.toString(), credentialScope, hashedCanonicalRequest].join('\n');
 
 	// 步骤 3：计算签名
-	const kDate = createHmac('sha256', `TC3${clientKey}`).update(date).digest();
-	const kService = createHmac('sha256', kDate).update(service).digest();
-	const kSigning = createHmac('sha256', kService).update('tc3_request').digest();
-	const signature = createHmac('sha256', kSigning).update(stringToSign).digest('hex');
+	const kDate = await hmacSha256(new TextEncoder().encode(`TC3${clientKey}`), date);
+	const kService = await hmacSha256(kDate, service);
+	const kSigning = await hmacSha256(kService, 'tc3_request');
+	const signature = toHex(await hmacSha256(kSigning, stringToSign));
 
 	// 步骤 4：拼接 Authorization
 	const authorization = `${algorithm} Credential=${clientId}/${credentialScope}, SignedHeaders=${signedHeaders}, Signature=${signature}`;

@@ -1,4 +1,5 @@
 import type { ServiceCallOptions } from '../runtime/types';
+import { defineServiceCapability } from '../registry/ServiceCapability';
 
 export interface SearchContentOptions {
 	text?: boolean;
@@ -51,3 +52,6 @@ export interface ISearchService {
 	search(input: SearchRequest, options?: ServiceCallOptions): Promise<SearchResponse>;
 	close?(): void | Promise<void>;
 }
+
+/** Capability key for `ISearchService`; `registry.load(SearchServiceCapability)` resolves to `ISearchService`. */
+export const SearchServiceCapability = defineServiceCapability<ISearchService>('search');

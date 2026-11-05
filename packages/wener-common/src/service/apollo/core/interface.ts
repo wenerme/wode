@@ -35,6 +35,7 @@ import type {
 	ApolloUpsertItemInput,
 	ApolloWriteNamespaceTextInput,
 } from './schema';
+import { defineServiceCapability } from '../../registry/ServiceCapability';
 
 export type ApolloReadFormat = 'auto' | 'config' | 'json' | 'properties' | 'raw' | 'content' | 'data';
 
@@ -112,3 +113,6 @@ export interface ApolloAdapter {
 }
 
 export type ApolloAdapterFactory = (config: ApolloConnectionConfig) => ApolloAdapter;
+
+/** Capability key for `IApolloService`; `registry.load(ApolloServiceCapability)` resolves to `IApolloService`. */
+export const ApolloServiceCapability = defineServiceCapability<IApolloService>('apollo');

@@ -30,5 +30,6 @@ export function adapter(): LinearAdapter {
 		getIssue: vi.fn(async () => issue()), createIssue: vi.fn(async () => issue()), updateIssue: vi.fn(async () => issue()),
 		listComment: vi.fn(async () => ({ nodes: [], pageInfo })), createComment: vi.fn(async () => comment),
 		close: vi.fn(async () => undefined),
+		[Symbol.asyncDispose]: vi.fn(async () => undefined),
 	};
 }

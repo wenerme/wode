@@ -14,6 +14,10 @@ import { normalizeFetchContent, responseSecrets, sanitizeServiceResponse } from 
 import type { ServiceProviderDefinition } from '../registry';
 import { type ISearchService, type SearchContentOptions, SearchRequestSchema } from '../search';
 import { getCallSignal, normalizeHeaders, sanitizeFetchError, throwIfAborted, validateHttpUrl } from './fetch-utils';
+import { FetchOperations } from '../fetch';
+import { SearchOperations } from '../search';
+import { FetchServiceCapability } from '../fetch/IFetchService';
+import { SearchServiceCapability } from '../search/ISearchService';
 
 export const ExaServiceOptionsSchema = z.strictObject({
 	apiKey: z
@@ -198,10 +202,11 @@ function configOptions(config: CliServiceConfig): ExaServiceOptions {
 	return { ...parsed.data, baseUrl: config.baseUrl, headers: config.headers };
 }
 
-export const ExaServiceProvider: ServiceProviderDefinition<'search' | 'fetch'> = {
+export const ExaServiceProvider: ServiceProviderDefinition<ISearchService | IFetchService> = {
 	name: 'exa',
-	provides: ['search', 'fetch'],
+	provides: [SearchServiceCapability, FetchServiceCapability],
 	optionsSchema: ExaServiceOptionsSchema,
+	operations: { ...SearchOperations, ...FetchOperations },
 	create({ config, fetch }) {
 		return createExaService({ ...configOptions(config), fetch });
 	},

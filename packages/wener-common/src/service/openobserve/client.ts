@@ -1,6 +1,6 @@
 import type { ServiceCallOptions, ServiceRuntimeClient } from '../runtime/types';
 import type { OpenObserveRequestOptions } from '@wener/client/openobserve';
-import { OpenObserveWriteOperations } from '../runtime/openobserve-tools';
+import { OpenObserveWriteOperations } from './OpenObserveContract';
 import type { IOpenObserveService } from './index';
 
 export async function createOpenObserveServiceToolClient(
@@ -38,7 +38,7 @@ export async function createOpenObserveServiceToolClient(
 			merged.removeEventListener('abort', onAbort);
 		}
 	}
-	return {
+	const client: IOpenObserveService = {
 		type: 'openobserve',
 		readOnly: options.readOnly ?? true,
 		health: (callOptions) => call('health', {}, callOptions),
@@ -55,5 +55,9 @@ export async function createOpenObserveServiceToolClient(
 		getValues: (input, callOptions) => call('getValues', input, callOptions),
 		searchAround: (input, callOptions) => call('searchAround', input, callOptions),
 		async close() { controller.abort(new Error('OpenObserve client is closed')); },
+		async [Symbol.asyncDispose]() {
+			await client.close();
+		},
 	};
+	return client;
 }

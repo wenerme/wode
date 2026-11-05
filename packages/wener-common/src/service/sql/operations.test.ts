@@ -15,8 +15,9 @@ describe('SQL registered operations', () => {
 			query: vi.fn(async () => result), exec: vi.fn(async () => result),
 			listObject: vi.fn(async () => []),
 			describeObject: vi.fn(async () => ({ object: { name: 'example', type: 'table' } })), close: vi.fn(),
+			[Symbol.asyncDispose]: vi.fn(async () => {}),
 		};
-		const definition: ServiceProviderDefinition<'sql'> = { ...SqlServiceProvider, create: () => ({ sql: service }) };
+		const definition: ServiceProviderDefinition<ISqlService> = { ...SqlServiceProvider, create: () => ({ sql: service }) };
 		const registry = new ServiceRegistry({ context: { services: { db: { provider: 'sql', readOnly: false } } } });
 		registry.register(definition);
 		const options = { signal: new AbortController().signal };

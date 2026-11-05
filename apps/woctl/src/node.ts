@@ -21,4 +21,5 @@ export {
 } from '@wener/common/service/cli';
 export type { ServiceProvider, ServiceRuntimeClient } from '@wener/common/service';
 export { createServiceProviderAdapter, defineServiceOperation } from '@wener/common/service/runtime';
+export { defineServiceCapability, type ServiceCapability, type ServiceProviderDefinition } from '@wener/common/service/registry';
 export { createCliCatalog, renderCliCatalog } from './catalog';

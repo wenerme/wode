@@ -1,13 +1,14 @@
 import type { ServiceProviderDefinition } from '../registry';
 import { LinearServiceOptionsSchema, resolveLinearConnectionOptions } from '../linear/config';
-import { LinearServiceContract } from '../linear/contract';
-import { createLinearService } from '../linear/createLinearService';
+import { LinearServiceContract } from '../linear/LinearServiceContract';
+import { createLinearService } from '../linear/server';
 import { LinearServiceError, LinearServiceErrorCodes } from '../linear/errors';
 import { LinearOperations } from '../linear/operations';
+import { LinearServiceCapability, type ILinearService } from '../linear/ILinearService';
 
-export const LinearServiceProvider: ServiceProviderDefinition<'linear'> = {
+export const LinearServiceProvider: ServiceProviderDefinition<ILinearService> = {
 	name: 'linear',
-	provides: ['linear'],
+	provides: [LinearServiceCapability],
 	title: 'Linear',
 	description: 'Read and manage Linear teams, issues, projects, users and comments through GraphQL.',
 	documentationUrl: 'https://developers.linear.app/docs/graphql/working-with-the-graphql-api',

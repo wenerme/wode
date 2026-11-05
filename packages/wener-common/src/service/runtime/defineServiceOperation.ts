@@ -1,13 +1,13 @@
-import type { ServiceCapability, ServiceTypeMap } from '../registry';
+import type { ServiceCapability } from '../registry';
 import type { ServiceCallOptions, ServiceInputValidator, ServiceOperation, ServiceTool } from './types';
 
 /** Capture the typed invocation once; dispatch never indexes a service dynamically. */
-export function defineServiceOperation<C extends ServiceCapability, I, O>(definition: {
-	capability: C;
+export function defineServiceOperation<S, I, O>(definition: {
+	capability: ServiceCapability<S>;
 	tool: ServiceTool;
 	input: ServiceInputValidator<I>;
-	invoke(service: ServiceTypeMap[C], input: I, options: ServiceCallOptions): O | Promise<O>;
-}): ServiceOperation<C, O> {
+	invoke(service: S, input: I, options: ServiceCallOptions): O | Promise<O>;
+}): ServiceOperation<S, O> {
 	const { capability, input: validator, invoke } = definition;
 	return {
 		capability,

@@ -1,5 +1,5 @@
 import type { ServiceProvider, ServiceSchema } from '@wener/common/service';
-import { createBuiltinServiceProviders } from '@wener/common/service/builtin';
+import { createBuiltinServiceProviders } from './builtin';
 import type { ServiceCliDefinition } from '@wener/common/service/cli';
 import { createHttpServiceRuntimeClient } from '@wener/common/service/runtime/client';
 import type { CliConfig } from 'common/context';

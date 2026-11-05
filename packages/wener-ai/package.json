@@ -88,17 +88,17 @@
 		"@wener/common": "workspace:^3.0.0",
 		"better-sqlite3": "^13.0.3",
 		"consola": "^3.4.2",
-		"zod": "^4.6.5"
+		"zod": "^4.6.7"
 	},
 	"devDependencies": {
+		"@ai-sdk/google": "^4.0.112",
+		"@clickhouse/client": "^1.24.1",
 		"@types/better-sqlite3": "^9.6.0",
-		"@ai-sdk/google": "^4.0.93",
-		"@clickhouse/client": "^1.24.0",
-		"ai": "^7.0.136",
-		"kysely": "^0.29.6",
-		"mysql2": "^3.24.5",
+		"ai": "^7.0.163",
+		"kysely": "^0.29.8",
+		"mysql2": "^3.24.6",
 		"tarn": "^3.1.2",
-		"tedious": "^20.3.3"
+		"tedious": "^20.3.8"
 	},
 	"publishConfig": {
 		"exports": {

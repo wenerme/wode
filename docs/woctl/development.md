@@ -4,14 +4,25 @@ Service definitions, CLI bindings and the application catalog have separate resp
 
 ## Register typed operations
 
-Declare the service interface and its capability in `ServiceTypeMap`. Define each exposed operation with `defineServiceOperation` from `@wener/common/service/runtime`:
+Declare the service interface and a capability token next to it. The token is a plain string at runtime and carries the interface at the type level, so there is no central capability table to edit:
+
+```ts
+// sql/ISqlService.ts
+import { defineServiceCapability } from '@wener/common/service/registry';
+
+export interface ISqlService extends AsyncDisposable { /* ... */ }
+export const SqlServiceCapability = defineServiceCapability<ISqlService>('sql');
+```
+
+Define each exposed operation with `defineServiceOperation` from `@wener/common/service/runtime`. The token types the `invoke` service argument:
 
 ```ts
 import { defineServiceOperation } from '@wener/common/service/runtime';
 import { z } from 'zod';
+import { SqlServiceCapability } from './ISqlService';
 
 const ping = defineServiceOperation({
-  capability: 'sql',
+  capability: SqlServiceCapability,
   input: z.strictObject({}),
   tool: {
     description: 'Check SQL connectivity',
@@ -21,6 +32,8 @@ const ping = defineServiceOperation({
   invoke: (sql, _input, options) => sql.ping(options),
 });
 ```
+
+Type the provider with the service interface itself, `ServiceProviderDefinition<ISqlService>`, and list the token in `provides`. A provider exposing several capabilities uses a union, e.g. `ServiceProviderDefinition<ISearchService | IFetchService>`. `registry.load(SqlServiceCapability, name)` resolves to `ISqlService`; a bare string key loads the same service typed as `unknown`.
 
 The helper checks capability, parsed input and return types. Add the operation map to the provider's `operations` field. Explicit operations form the provider's complete transport tool set; the runtime does not fall back to legacy dispatch for missing names. An empty map exposes no tools. Unknown input, cancellation and read-only policy are checked before loading a service.
 

@@ -1,3 +1,5 @@
+import { defineServiceCapability } from '../registry/ServiceCapability';
+
 export const RedisServiceType = 'redis' as const;
 export type RedisServiceType = typeof RedisServiceType;
 export const RedisProducts = Object.freeze(['unspecified', 'redis', 'valkey'] as const);
@@ -55,7 +57,7 @@ export interface RedisConnectionOptions {
 	maxResponseBytes: number;
 }
 export type RedisAdapterFactory = (options: RedisConnectionOptions) => RedisAdapter | Promise<RedisAdapter>;
-export interface IRedisService {
+export interface IRedisService extends AsyncDisposable {
 	readonly type: RedisServiceType;
 	readonly product: RedisProductName;
 	readonly readOnly: true;
@@ -71,3 +73,6 @@ export interface IRedisService {
 }
 export type RedisService = IRedisService;
 export type RedisServiceClient = Pick<IRedisService, 'ping' | 'get' | 'getType' | 'getTtl' | 'scan' | 'getHash' | 'rangeStream'>;
+
+/** Capability key for `IRedisService`; `registry.load(RedisServiceCapability)` resolves to `IRedisService`. */
+export const RedisServiceCapability = defineServiceCapability<IRedisService>('redis');

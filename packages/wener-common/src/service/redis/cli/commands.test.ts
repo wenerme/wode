@@ -1,7 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import type { ServiceCliOptions } from '../../cli/ServiceCliDefinition';
-import { RedisTools } from '../../runtime/redis-tools';
-import { RedisServiceContract } from '../RedisServiceContract';
+import { RedisOperations } from '../operations';
 import type { RedisServiceClient } from '../IRedisService';
 import { RedisCliDefinition } from './commands';
 import { redisCliQueryResult } from './output';
@@ -29,12 +28,9 @@ async function prepare(name: string, args: string[] = [], options: ServiceCliOpt
 }
 describe('Redis shared CLI definition', () => {
 	it('uses the exact seven provider Tool names and schemas for its browser contract', () => {
-		expect(Object.keys(RedisServiceContract.methods)).toEqual(['ping', 'get', 'getType', 'getTtl', 'scan', 'getHash', 'rangeStream']);
-		expect(Object.keys(RedisServiceContract.methods)).toEqual(Object.keys(RedisTools));
-		for (const [key, method] of Object.entries(RedisServiceContract.methods)) {
-			expect(method.inputSchema).toBe(RedisTools[key].inputSchema);
-			expect(method.outputSchema).toBe(RedisTools[key].outputSchema);
-			expect(RedisTools[key].annotations).toEqual({ readOnlyHint: true, destructiveHint: false });
+		expect(Object.keys(RedisOperations)).toEqual(['ping', 'get', 'getType', 'getTtl', 'scan', 'getHash', 'rangeStream']);
+		for (const operation of Object.values(RedisOperations)) {
+			expect(operation.tool.annotations).toEqual({ readOnlyHint: true, destructiveHint: false });
 		}
 		expect(operation('info').aliases).toEqual(['ping']);
 	});

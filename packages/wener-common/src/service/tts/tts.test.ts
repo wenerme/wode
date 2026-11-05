@@ -12,8 +12,9 @@ import { createServiceRuntime } from '../runtime/createServiceRuntime';
 import { ServiceProviderRegistry } from '../runtime/ServiceProviderRegistry';
 import { createTtsServiceToolClient } from './client';
 import { EdgeTtsServiceOptionsSchema, OpenAiTtsServiceOptionsSchema, resolveOpenAiTtsConnectionOptions } from './config';
-import { TtsServiceContract } from './contract';
-import { createTtsService } from './createTtsService';
+import { TtsServiceCapability, type ITtsService } from './ITtsService';
+import { TtsServiceContract } from './TtsServiceContract';
+import { createTtsService } from './server';
 import { TTS_MAX_AUDIO_BYTES, TtsAudioWireSchema, TtsRequestSchema } from './input';
 import { TtsOperations } from './operations';
 import { TtsTools } from './tools';
@@ -27,10 +28,10 @@ const source = (): TtsClient => ({ synthesize: vi.fn(async () => audio), listVoi
 describe('TTS service contract and transport', () => {
 	it('keeps the SDK binary and owns the source close through the registry', async () => {
 		const client = source();
-		const definition: ServiceProviderDefinition<'tts'> = { ...OpenAiTtsServiceProvider, create: () => ({ tts: createTtsService(client, 'mock') }) };
+		const definition: ServiceProviderDefinition<ITtsService> = { ...OpenAiTtsServiceProvider, create: () => ({ tts: createTtsService(client, 'mock') }) };
 		const registry = new ServiceRegistry({ context: { services: { speech: { provider: 'openai-tts', readOnly: true } } } });
 		registry.register(definition);
-		const service = await registry.load('tts', 'speech');
+		const service = await registry.load(TtsServiceCapability, 'speech');
 		expect(service.readOnly).toBe(true);
 		const options = { signal: new AbortController().signal };
 		expect(await service.synthesize({ text: 'test' }, options)).toBe(audio);

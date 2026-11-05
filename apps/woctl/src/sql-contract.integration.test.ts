@@ -1,7 +1,7 @@
 import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { createBuiltinServiceProviders } from '@wener/common/service/builtin';
+import { createBuiltinServiceProviders } from './builtin';
 import { normalizeCliServices } from '@wener/common/service/config';
 import { createServiceRuntime, ServiceProviderRegistry } from '@wener/common/service/runtime';
 import type { SQLObjectDescription } from '@wener/common/service/sql';

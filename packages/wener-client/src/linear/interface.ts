@@ -10,7 +10,7 @@ import type {
 export interface LinearCallOptions { signal?: AbortSignal }
 
 /** Transport-neutral operations; no service registry, configuration host or CLI dependency. */
-export interface LinearAdapter {
+export interface LinearAdapter extends AsyncDisposable {
 	getViewer(options?: LinearCallOptions): Promise<LinearViewer>;
 	listTeam(input?: LinearListTeamInput, options?: LinearCallOptions): Promise<LinearTeamConnection>;
 	listIssueState(input: LinearListIssueStateInput, options?: LinearCallOptions): Promise<LinearIssueStateConnection>;

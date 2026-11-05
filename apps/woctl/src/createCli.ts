@@ -27,7 +27,7 @@ import {
 	type SqlAdapterFactory,
 } from '@wener/common/service';
 import { createServiceCliCommand, type ServiceCliBinding, type ServiceCliClientFactory, type ServiceCliDefinition } from '@wener/common/service/cli';
-import { BuiltinServiceCliBindings } from '@wener/common/service/builtin/cli';
+import { BuiltinServiceCliBindings } from './builtin/cli';
 import { getServiceOptionsJsonSchema, selectProviderService } from '@wener/common/service/runtime';
 import { sanitizeOpenObserveOutput } from '@wener/common/service/openobserve';
 import { createRemoteServiceToolClient } from '@wener/common/service/runtime/client';

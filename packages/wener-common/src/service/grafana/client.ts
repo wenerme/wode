@@ -1,6 +1,6 @@
 import type { GrafanaRequestOptions } from '@wener/client/grafana';
 import type { ServiceCallOptions, ServiceRuntimeClient } from '../runtime/types';
-import { GrafanaWriteOperations } from '../runtime/grafana-tools';
+import { GrafanaWriteOperations } from './GrafanaContract';
 import type { IGrafanaService } from './index';
 
 export async function createGrafanaServiceToolClient(
@@ -53,7 +53,7 @@ export async function createGrafanaServiceToolClient(
 			finish();
 		}
 	}
-	return {
+	const client: IGrafanaService = {
 		type: 'grafana', readOnly: options.readOnly ?? true,
 		health: (callOptions) => call('health', {}, callOptions),
 		whoAmI: (callOptions) => call('whoAmI', {}, callOptions),
@@ -65,5 +65,9 @@ export async function createGrafanaServiceToolClient(
 			closePromise = Promise.allSettled([...active].map((entry) => { entry.abort(); return entry.done; })).then(() => undefined);
 			return closePromise;
 		},
+		async [Symbol.asyncDispose]() {
+			await client.close();
+		},
 	};
+	return client;
 }

@@ -3,7 +3,7 @@ import { LinearServiceProvider } from '../providers/linear';
 import { ServiceRegistry, type ServiceProviderDefinition } from '../registry';
 import { createServiceProviderAdapter } from '../runtime/createServiceProviderAdapter';
 import { getServiceOptionsJsonSchema } from '../runtime/getServiceOptionsJsonSchema';
-import { LinearMethodInputs, LinearMethodOutputs, LinearServiceContract, LinearTools } from './contract';
+import { LinearMethodInputs, LinearMethodOutputs, LinearServiceContract, LinearTools } from './LinearServiceContract';
 import { LinearServiceOptionsSchema } from './config';
 import type { ILinearService } from './ILinearService';
 import { adapter, comment, issue, pageInfo, viewer } from './linear.fixture';
@@ -52,7 +52,7 @@ describe('Linear provider contract and operations', () => {
 	test('all registered operations invoke the typed capability and forward signal', async () => {
 		const transport = adapter();
 		const service: ILinearService = { ...transport, type: 'linear', readOnly: false };
-		const definition: ServiceProviderDefinition<'linear'> = { ...LinearServiceProvider, create: () => ({ linear: service }) };
+		const definition: ServiceProviderDefinition<ILinearService> = { ...LinearServiceProvider, create: () => ({ linear: service }) };
 		const registry = new ServiceRegistry({ context: { services: { issues: { provider: 'linear', readOnly: false } } } });
 		registry.register(definition);
 		const options = { signal: new AbortController().signal };

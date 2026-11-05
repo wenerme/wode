@@ -1,5 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { normalizeCliServices } from '../config';
+import type { ISearchService } from '../search';
+import { SearchServiceCapability } from '../search/ISearchService';
 import type { ServiceProviderDefinition } from './index';
 import { ServiceRegistry } from './index';
 
@@ -16,13 +18,13 @@ function context(services: unknown) {
 	return { services: normalizeCliServices(services) };
 }
 
-function searchProvider(create: ServiceProviderDefinition<'search'>['create']): ServiceProviderDefinition<'search'> {
-	return { name: 'search-provider', aliases: ['sp'], provides: ['search'], create };
+function searchProvider(create: ServiceProviderDefinition<ISearchService>['create']): ServiceProviderDefinition<ISearchService> {
+	return { name: 'search-provider', aliases: ['sp'], provides: [SearchServiceCapability], create };
 }
 
 describe('ServiceRegistry', () => {
 	it('routes configured aliases and exposes safe directory projections', async () => {
-		const created = vi.fn(({ config }: Parameters<NonNullable<ServiceProviderDefinition<'search'>['create']>>[0]) => {
+		const created = vi.fn(({ config }: Parameters<NonNullable<ServiceProviderDefinition<ISearchService>['create']>>[0]) => {
 			expect(config.provider).toBe('sp');
 			return { search: service() };
 		});

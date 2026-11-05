@@ -17,8 +17,9 @@ export interface ServiceInputValidator<I> {
 }
 
 /** The helper captures the capability/input pair before operations are collected. */
-export interface ServiceOperation<C extends ServiceCapability = ServiceCapability, O = unknown> {
-	readonly capability: C;
+/** `S` is the service interface the operation invokes; `capability` is its runtime key. */
+export interface ServiceOperation<S = unknown, O = unknown> {
+	readonly capability: ServiceCapability<S>;
 	readonly tool: ServiceTool;
 	readonly input: ServiceInputValidator<unknown>;
 	execute(registry: ServiceRegistry, name: string, input: unknown, options?: ServiceCallOptions): Promise<O>;

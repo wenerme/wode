@@ -37,6 +37,7 @@
 		"./linear": "./src/linear/index.ts",
 		"./tts": "./src/tts/index.ts",
 		"./tts/node": "./src/tts/node.ts",
+		"./telegram": "./src/telegram/index.ts",
 		"./openobserve": "./src/openobserve/index.ts",
 		"./prometheus": "./src/prometheus/index.ts",
 		"./openai": "./src/openai/index.ts",
@@ -60,6 +61,7 @@
 		"./yzf": "./src/yzf/index.ts",
 		"./feishu/docs": "./src/feishu/docs/index.ts",
 		"./feishu/docs/markdown": "./src/feishu/docs/markdown/index.ts",
+		"./feishu/server": "./src/feishu/server/index.ts",
 		"./package.json": "./package.json"
 	},
 	"files": [
@@ -83,8 +85,8 @@
 		"@noble/ciphers": "^2.4.0",
 		"@noble/hashes": "^2.4.0",
 		"@wener/utils": "workspace:^",
-		"eventsource-parser": "^4.1.1",
-		"zod": "^4.6.5"
+		"eventsource-parser": "^4.1.3",
+		"zod": "^4.6.7"
 	},
 	"peerDependencies": {
 		"hono": "^4.13.0",
@@ -99,38 +101,44 @@
 		}
 	},
 	"devDependencies": {
-		"@ai-sdk/anthropic": "^4.0.80",
-		"@ai-sdk/google": "^4.0.93",
-		"@ai-sdk/openai": "^4.0.94",
+		"@ai-sdk/anthropic": "^4.0.97",
+		"@ai-sdk/google": "^4.0.112",
+		"@ai-sdk/openai": "^4.0.109",
 		"@alicloud/openapi-client": "^0.4.15",
-		"@hono/node-server": "^2.1.4",
-		"@hono/zod-openapi": "^1.3.1",
+		"@hono/node-server": "^2.1.6",
+		"@hono/zod-openapi": "^1.6.3",
 		"@sinclair/typebox": "^0.34.52",
-		"@types/bun": "^1.4.2",
+		"@types/bun": "^1.4.4",
 		"@types/node-rsa": "^1.1.4",
 		"@types/ws": "^8.18.2",
 		"@wecom/jssdk": "^2.4.4",
+		"ai": "^7.0.163",
 		"ajv": "^8.20.0",
-		"ai": "^7.0.137",
 		"cookie": "^2.0.1",
 		"dayjs": "^1.11.23",
-		"fast-xml-parser": "^5.11.2",
+		"fast-xml-parser": "^5.12.0",
+		"hono": "^4.13.16",
 		"json-schema-faker": "^0.6.3",
-		"hono": "^4.13.13",
 		"node-rsa": "^2.0.0",
-		"puppeteer": "^25.13.0",
-		"puppeteer-core": "^25.13.0",
-		"ts-pattern": "^5.9.0",
-		"undici": "^8.11.2",
+		"puppeteer": "^25.16.0",
+		"puppeteer-core": "^25.16.0",
+		"ts-pattern": "^5.9.2",
+		"undici": "^8.12.3",
 		"vite": "catalog:",
 		"vitest": "^5.0.3",
-		"ws": "^8.22.0",
+		"ws": "^8.22.1",
 		"yaml": "^2.9.1"
 	},
 	"publishConfig": {
 		"exports": {
-			"./tts": { "types": "./src/tts/index.ts", "default": "./lib/tts/index.js" },
-			"./tts/node": { "types": "./src/tts/node.ts", "default": "./lib/tts/node.js" },
+			"./tts": {
+				"types": "./src/tts/index.ts",
+				"default": "./lib/tts/index.js"
+			},
+			"./tts/node": {
+				"types": "./src/tts/node.ts",
+				"default": "./lib/tts/node.js"
+			},
 			"./linear": {
 				"types": "./src/linear/index.ts",
 				"default": "./lib/linear/index.js"
@@ -206,6 +214,10 @@
 			"./grafana": {
 				"types": "./src/grafana/index.ts",
 				"default": "./lib/grafana/index.js"
+			},
+			"./telegram": {
+				"types": "./src/telegram/index.ts",
+				"default": "./lib/telegram/index.js"
 			},
 			"./duckduckgo": {
 				"types": "./src/duckduckgo/index.ts",
@@ -314,6 +326,10 @@
 			"./feishu/docs/markdown": {
 				"types": "./src/feishu/docs/markdown/index.ts",
 				"default": "./lib/feishu/docs/markdown/index.js"
+			},
+			"./feishu/server": {
+				"types": "./src/feishu/server/index.ts",
+				"default": "./lib/feishu/server/index.js"
 			},
 			"./package.json": "./package.json"
 		}

@@ -25,7 +25,7 @@ describe('OpenObserve service provider', () => {
 	it('validates settings before constructing the credential-bearing client', async () => {
 		const test = runtime(undefined, false);
 		try {
-			await expect(test.runtime.call({ params: { service: 'observe' }, body: { toolName: 'updateStreamSettings', input: { stream: 'app', settings: { data_retention: 1 } } } })).rejects.toThrow('Invalid OpenObserve input');
+			await expect(test.runtime.call({ params: { service: 'observe' }, body: { toolName: 'updateStreamSettings', input: { stream: 'app', settings: { data_retention: 1 } } } })).rejects.toThrow('Invalid service input');
 			expect(test.getEnv).not.toHaveBeenCalled();
 			expect(test.fetch).not.toHaveBeenCalled();
 		} finally { await test.runtime.close(); }
@@ -79,7 +79,7 @@ describe('OpenObserve service provider', () => {
 					params: { service: 'observe' },
 					body: { toolName: 'search', input: { sql: 'SELECT 1', size: -1 } },
 				}),
-			).rejects.toThrow('Invalid OpenObserve input');
+			).rejects.toThrow('Invalid service input');
 			expect(test.getEnv).not.toHaveBeenCalled();
 			expect(test.fetch).not.toHaveBeenCalled();
 		} finally {

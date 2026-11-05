@@ -1,7 +1,9 @@
 import { describe, expect, it, vi } from 'vitest';
-import { RedisTools } from '../runtime/redis-tools';
 import type { ServiceRuntimeClient } from '../runtime/types';
 import { createRedisServiceToolClient } from './client';
+import { RedisOperations } from './operations';
+
+const RedisTools = Object.fromEntries(Object.entries(RedisOperations).map(([name, operation]) => [name, operation.tool]));
 
 function runtime() {
 	return {

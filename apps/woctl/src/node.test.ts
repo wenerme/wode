@@ -216,7 +216,7 @@ const sdk = await import('woctl/node');
 signals.forEach((name, i) => assert.deepEqual(process.listeners(name), listeners[i]));
 assert.equal(configReads, 0);
 const { createCli, createNativeHost, createMemoryCliConfigStore, getNativeCommandOptions,
-  defineServiceCliBinding, defineServiceOperation, createServiceProviderAdapter,
+  defineServiceCliBinding, defineServiceOperation, createServiceProviderAdapter, defineServiceCapability,
   CliUsageError, ServiceCliInputError, CliConfigError, parseCliConfig,
   createBuiltinProviders, createDefaultConfig, createCliCatalog, renderCliCatalog } = sdk;
 assert.throws(() => getNativeCommandOptions(['--config']), CliUsageError);
@@ -231,8 +231,14 @@ const native: CliHost = createNativeHost({ config: missing });
 assert.equal(configReads, 0);
 
 let privateCalls = 0;
+// A consumer-owned service interface; its token is the only registration needed for typing.
+interface PrivateFetchService {
+  readonly type: string; readonly readOnly: boolean;
+  fetch(input: { url: string }, options?: { signal?: AbortSignal }): Promise<{ url: string; content: string }>;
+}
+const PrivateFetchCapability = defineServiceCapability<PrivateFetchService>('fetch');
 const operation = defineServiceOperation({
-  capability: 'fetch',
+  capability: PrivateFetchCapability,
   tool: { description: 'Private read', inputSchema: { type: 'object', properties: { url: { type: 'string' } }, required: ['url'] }, annotations: { readOnlyHint: true } },
   input: { safeParse(value: unknown): { success: true; data: { url: string } } | { success: false } {
     if (value && typeof value === 'object' && 'url' in value && typeof value.url === 'string')
@@ -242,9 +248,9 @@ const operation = defineServiceOperation({
   invoke: (service, input, options) => service.fetch(input, options),
 });
 const provider: ServiceProvider = createServiceProviderAdapter({
-  name: 'private-provider', title: 'Private fixture provider', provides: ['fetch'],
+  name: 'private-provider', title: 'Private fixture provider', provides: [PrivateFetchCapability],
   operations: { read: operation },
-  create: () => ({ fetch: { type: 'private-fixture', readOnly: true, async fetch(input) {
+  create: () => ({ fetch: { type: 'private-fixture', readOnly: true, async fetch(input: { url: string }) {
     privateCalls++;
     return { url: input.url, content: 'private-provider-result' };
   } } }),

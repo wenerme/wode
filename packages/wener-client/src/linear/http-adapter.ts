@@ -173,6 +173,9 @@ export function createLinearHttpAdapter(config: LinearConnectionConfig, options:
 			closePromise = Promise.allSettled([...active]).then(() => undefined);
 			return closePromise;
 		},
+		[Symbol.asyncDispose]() {
+			return this.close();
+		},
 	};
 }
 

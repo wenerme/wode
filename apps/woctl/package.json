@@ -60,20 +60,20 @@
 		"pdfjs-dist": "6.4.299"
 	},
 	"devDependencies": {
-		"@wener/common": "workspace:^",
-		"@wener/client": "workspace:^",
-		"common": "workspace:^",
-		"just-bash": "^3.6.0",
-		"ioredis": "^6.0.0",
-		"ajv": "^8.20.0",
-		"yaml": "^2.9.1",
 		"@types/node": "^24.13.5",
 		"@types/pg": "^8.23.1",
+		"@wener/client": "workspace:^",
+		"@wener/common": "workspace:^",
+		"ajv": "^8.20.0",
+		"common": "workspace:^",
 		"esbuild": "^0.28.2",
-		"pg": "^8.23.0",
+		"ioredis": "^6.0.0",
+		"just-bash": "^3.6.0",
+		"pg": "^8.23.1",
 		"tsx": "^4.23.15",
 		"typescript": "7.0.2",
 		"vite": "catalog:",
-		"vitest": "catalog:"
+		"vitest": "catalog:",
+		"yaml": "^2.9.1"
 	}
 }

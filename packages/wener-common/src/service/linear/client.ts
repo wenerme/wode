@@ -3,7 +3,7 @@ import type { ServiceCallOptions, ServiceRuntimeClient } from '../runtime/types'
 import type { ILinearService } from './ILinearService';
 
 /** CLI/tool calls carry an empty input for the service's input-free viewer operation. */
-export type LinearServiceClient = Omit<ILinearService, 'type' | 'readOnly' | 'close' | 'getViewer'> & {
+export type LinearServiceClient = Omit<ILinearService, 'type' | 'readOnly' | 'close' | typeof Symbol.asyncDispose | 'getViewer'> & {
 	getViewer(input: {}, options?: ServiceCallOptions): ReturnType<ILinearService['getViewer']>;
 };
 

@@ -2,16 +2,17 @@ import { defineServiceOperation } from '../runtime/defineServiceOperation';
 import { TtsToolInputs, TtsVoiceListSchema } from './input';
 import { TtsTools } from './tools';
 import { encodeTtsAudio } from './transport';
+import { TtsServiceCapability } from './ITtsService';
 
 export const TtsOperations = {
 	synthesize: defineServiceOperation({
-		capability: 'tts',
+		capability: TtsServiceCapability,
 		tool: TtsTools.synthesize,
 		input: TtsToolInputs.synthesize,
 		invoke: async (service, input, options) => encodeTtsAudio(await service.synthesize(input, options)),
 	}),
 	listVoices: defineServiceOperation({
-		capability: 'tts',
+		capability: TtsServiceCapability,
 		tool: TtsTools.listVoices,
 		input: TtsToolInputs.listVoices,
 		invoke: async (service, input, options) => {

@@ -4,11 +4,13 @@ import type { ServiceProviderDefinition } from '../registry';
 import type { ServiceProviderContext } from '../runtime/types';
 import type { IGrafanaService } from './IGrafanaService';
 import { GrafanaOperations } from './operations';
+import { GrafanaServiceCapability } from './IGrafanaService';
 
 export { sanitizeGrafanaOutput } from './sanitize';
 export { GrafanaClientError, isGrafanaWriteMethod } from '@wener/client/grafana';
 export type { GrafanaClientOptions, GrafanaRequestInput, GrafanaRequestOptions };
 export type { IGrafanaService, GrafanaService } from './IGrafanaService';
+export { GrafanaServiceCapability } from './IGrafanaService';
 
 const envName = z.string().regex(/^[A-Za-z_][A-Za-z0-9_]*$/u);
 export const GrafanaServiceOptionsSchema = Object.assign(z.strictObject({
@@ -57,7 +59,7 @@ function clientOptions({ config, getEnv }: ServiceProviderContext): GrafanaClien
 	};
 }
 
-export const GrafanaServiceProvider: ServiceProviderDefinition<'grafana'> = {
+export const GrafanaServiceProvider: ServiceProviderDefinition<IGrafanaService> = {
 	name: 'grafana',
 	title: 'Grafana',
 	description: 'Check Grafana health, read the authenticated user and call the Grafana HTTP API.',
@@ -66,7 +68,7 @@ export const GrafanaServiceProvider: ServiceProviderDefinition<'grafana'> = {
 		{ command: 'woctl grafana api /api/search --query type=dash-db', description: 'List dashboards.' },
 	],
 	aliases: ['gf'],
-	provides: ['grafana'],
+	provides: [GrafanaServiceCapability],
 	optionsSchema: GrafanaServiceOptionsSchema,
 	operations: GrafanaOperations,
 	create(context) {
@@ -85,6 +87,9 @@ export const GrafanaServiceProvider: ServiceProviderDefinition<'grafana'> = {
 				return client.request(input, options);
 			},
 			close: () => client.close(),
+			[Symbol.asyncDispose]() {
+				return this.close();
+			},
 		};
 		return { grafana: service };
 	},

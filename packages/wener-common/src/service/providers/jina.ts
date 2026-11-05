@@ -4,6 +4,7 @@ import type { CliServiceConfig } from '../config';
 import { type IFetchService, parseFetchRequest } from '../fetch';
 import { normalizeFetchContent, responseSecrets, sanitizeServiceResponse } from '../fetch/content';
 import type { ServiceProviderDefinition } from '../registry';
+import { FetchOperations } from '../fetch';
 import {
 	assertSupportedKeys,
 	type FetchImplementation,
@@ -15,6 +16,7 @@ import {
 	validateHttpUrl,
 	validatePositiveSafeInteger,
 } from './fetch-utils';
+import { FetchServiceCapability } from '../fetch/IFetchService';
 
 export interface JinaFetchServiceOptions {
 	fetch?: FetchImplementation;
@@ -125,10 +127,11 @@ export function createJinaFetchService(options: JinaFetchServiceOptions = {}): I
 	};
 }
 
-export const JinaFetchServiceProvider: ServiceProviderDefinition<'fetch'> = {
+export const JinaFetchServiceProvider: ServiceProviderDefinition<IFetchService> = {
 	name: 'jina',
-	provides: ['fetch'],
+	provides: [FetchServiceCapability],
 	optionsSchema: JinaFetchServiceOptionsSchema,
+	operations: FetchOperations,
 	create({ config, fetch }) {
 		return { fetch: createJinaFetchService({ ...parseJinaConfig(config), fetch }) };
 	},

@@ -9,6 +9,7 @@ import {
 	sanitizeServiceResponse,
 } from '../fetch/content';
 import type { ServiceProviderDefinition } from '../registry';
+import { FetchOperations } from '../fetch';
 import {
 	assertSupportedKeys,
 	type FetchImplementation,
@@ -17,6 +18,7 @@ import {
 	sanitizeFetchError,
 	throwIfAborted,
 } from './fetch-utils';
+import { FetchServiceCapability } from '../fetch/IFetchService';
 
 export const BaseFetchServiceOptionsSchema = z.strictObject({});
 
@@ -94,11 +96,12 @@ export function createBaseFetchService(options: BaseFetchServiceOptions = {}): I
 	}
 }
 
-export const BaseFetchServiceProvider: ServiceProviderDefinition<'fetch'> = {
+export const BaseFetchServiceProvider: ServiceProviderDefinition<IFetchService> = {
 	name: 'base',
 	aliases: ['direct'],
-	provides: ['fetch'],
+	provides: [FetchServiceCapability],
 	optionsSchema: BaseFetchServiceOptionsSchema,
+	operations: FetchOperations,
 	create({ config, fetch }) {
 		return { fetch: createBaseFetchService({ ...createBaseFetchOptions(config), fetch }) };
 	},

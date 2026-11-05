@@ -1,19 +1,41 @@
-import { defineServiceOperation } from '../runtime/defineServiceOperation';
-import { RedisToolInputs, RedisTools } from '../runtime/redis-tools';
+import { defineContractOperation } from '../runtime/contract';
+import { RedisContract } from './RedisContract';
+import { RedisServiceCapability } from './IRedisService';
 
 export const RedisOperations = {
-	ping: defineServiceOperation({ capability: 'redis', tool: RedisTools.ping, input: RedisToolInputs.ping,
-		invoke: (service, _input, options) => service.ping(options) }),
-	get: defineServiceOperation({ capability: 'redis', tool: RedisTools.get, input: RedisToolInputs.get,
-		invoke: (service, input, options) => service.get(input, options) }),
-	getType: defineServiceOperation({ capability: 'redis', tool: RedisTools.getType, input: RedisToolInputs.getType,
-		invoke: (service, input, options) => service.getType(input, options) }),
-	getTtl: defineServiceOperation({ capability: 'redis', tool: RedisTools.getTtl, input: RedisToolInputs.getTtl,
-		invoke: (service, input, options) => service.getTtl(input, options) }),
-	scan: defineServiceOperation({ capability: 'redis', tool: RedisTools.scan, input: RedisToolInputs.scan,
-		invoke: (service, input, options) => service.scan(input, options) }),
-	getHash: defineServiceOperation({ capability: 'redis', tool: RedisTools.getHash, input: RedisToolInputs.getHash,
-		invoke: (service, input, options) => service.getHash(input, options) }),
-	rangeStream: defineServiceOperation({ capability: 'redis', tool: RedisTools.rangeStream, input: RedisToolInputs.rangeStream,
-		invoke: (service, input, options) => service.rangeStream(input, options) }),
+	ping: defineContractOperation({
+		capability: RedisServiceCapability,
+		contract: RedisContract.ping,
+		invoke: (service, _input, options) => service.ping(options),
+	}),
+	get: defineContractOperation({
+		capability: RedisServiceCapability,
+		contract: RedisContract.get,
+		invoke: (service, input, options) => service.get(input, options),
+	}),
+	getType: defineContractOperation({
+		capability: RedisServiceCapability,
+		contract: RedisContract.getType,
+		invoke: (service, input, options) => service.getType(input, options),
+	}),
+	getTtl: defineContractOperation({
+		capability: RedisServiceCapability,
+		contract: RedisContract.getTtl,
+		invoke: (service, input, options) => service.getTtl(input, options),
+	}),
+	scan: defineContractOperation({
+		capability: RedisServiceCapability,
+		contract: RedisContract.scan,
+		invoke: (service, input, options) => service.scan(input, options),
+	}),
+	getHash: defineContractOperation({
+		capability: RedisServiceCapability,
+		contract: RedisContract.getHash,
+		invoke: (service, input, options) => service.getHash(input, options),
+	}),
+	rangeStream: defineContractOperation({
+		capability: RedisServiceCapability,
+		contract: RedisContract.rangeStream,
+		invoke: (service, input, options) => service.rangeStream(input, options),
+	}),
 };

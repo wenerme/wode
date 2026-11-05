@@ -1,8 +1,9 @@
 import type { ServiceProviderDefinition } from '../registry';
-import { createSqlService } from '../sql/createSqlService';
-import { SqlServiceContract } from '../sql/contract';
+import { createSqlService } from '../sql/server';
+import { SqlServiceContract } from '../sql/SqlServiceContract';
 import { SqlOperations } from '../sql/operations';
 import { z } from 'zod';
+import { SqlServiceCapability, type ISqlService } from '../sql/ISqlService';
 
 export const SqlServiceOptionsSchema = z.strictObject({
 	dialect: z.string().min(1).optional(),
@@ -13,7 +14,7 @@ export const SqlServiceOptionsSchema = z.strictObject({
 	ssl: z.boolean().optional(),
 });
 
-export const SqlServiceProvider: ServiceProviderDefinition<'sql'> = {
+export const SqlServiceProvider: ServiceProviderDefinition<ISqlService> = {
 	name: 'sql',
 	title: 'SQL database',
 	description: 'Query and inspect SQLite and PostgreSQL databases using the host SQL driver.',
@@ -22,7 +23,7 @@ export const SqlServiceProvider: ServiceProviderDefinition<'sql'> = {
 		{ command: 'woctl sql ping', description: 'Check the database connection.' },
 	],
 	aliases: ['sqlite', 'postgres', 'postgresql', 'pg'],
-	provides: ['sql'],
+	provides: [SqlServiceCapability],
 	optionsSchema: SqlServiceOptionsSchema,
 	contract: SqlServiceContract,
 	operations: SqlOperations,

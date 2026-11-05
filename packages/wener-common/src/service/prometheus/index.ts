@@ -17,6 +17,7 @@ import type { ServiceProviderDefinition } from '../registry';
 import type { ServiceProviderContext } from '../runtime/types';
 import type { IPrometheusService } from './IPrometheusService';
 import { PrometheusOperations } from './operations';
+import { PrometheusServiceCapability } from './IPrometheusService';
 
 export { sanitizePrometheusOutput } from './sanitize';
 export type { IPrometheusService, PrometheusService } from './IPrometheusService';
@@ -33,6 +34,7 @@ export type {
 	PrometheusSeriesInput,
 	PrometheusSeriesResponse,
 } from '@wener/client/prometheus';
+export { PrometheusServiceCapability } from './IPrometheusService';
 
 const envName = z.string().regex(/^[A-Za-z_][A-Za-z0-9_]*$/u);
 export const PrometheusServiceOptionsSchema = Object.assign(z.strictObject({
@@ -83,7 +85,7 @@ function clientOptions({ config, getEnv }: ServiceProviderContext): PrometheusCl
 	};
 }
 
-export const PrometheusServiceProvider: ServiceProviderDefinition<'prometheus'> = {
+export const PrometheusServiceProvider: ServiceProviderDefinition<IPrometheusService> = {
 	name: 'prometheus',
 	title: 'Prometheus',
 	description: 'Query Prometheus metrics and discover series, labels and metric metadata.',
@@ -92,7 +94,7 @@ export const PrometheusServiceProvider: ServiceProviderDefinition<'prometheus'> 
 		{ command: 'woctl prometheus labels', description: 'List available label names.' },
 	],
 	aliases: ['prom'],
-	provides: ['prometheus'],
+	provides: [PrometheusServiceCapability],
 	optionsSchema: PrometheusServiceOptionsSchema,
 	operations: PrometheusOperations,
 	create(context) {
@@ -108,6 +110,9 @@ export const PrometheusServiceProvider: ServiceProviderDefinition<'prometheus'> 
 				labelValues: (input, options) => client.labelValues(input, options),
 				metadata: (input, options) => client.metadata(input, options),
 				close: () => client.close(),
+				[Symbol.asyncDispose]() {
+					return this.close();
+				},
 			},
 		};
 	},

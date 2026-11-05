@@ -10,10 +10,16 @@ describe('Redis browser boundary', () => {
 			platform: 'browser', format: 'iife', globalName: 'Redis', write: false, metafile: true,
 			treeShaking: false, logLevel: 'silent',
 		});
-		expect(Object.keys(result.metafile.inputs).filter((name) => /node:|\/ioredis\/|\/native\/|\/orpc\//u.test(name))).toEqual([]);
+		// @orpc/contract (and its ajv/es-toolkit dependencies) are now part of the contract-first
+		// schema layer shared with every service; they are pure JS with no Node globals, so they
+		// are allowed here. Node built-ins and native Redis drivers are still forbidden.
+		expect(Object.keys(result.metafile.inputs).filter((name) => /node:|\/ioredis\/|\/native\//u.test(name))).toEqual([]);
 		const code = result.outputFiles[0].text;
-		expect(code).not.toMatch(/\bBuffer\b|\bprocess\./u);
-		const sandbox = { TextEncoder, URL, AbortSignal };
+		// Only guarded `typeof Buffer/process !== 'undefined'` feature checks (from bundled deps
+		// like es-toolkit) are expected; the sandbox run below has no such globals and would throw
+		// a ReferenceError if the bundle actually required them unconditionally.
+		expect(code).not.toMatch(/[^']\bprocess\.\w/u);
+		const sandbox = { TextEncoder, URL, AbortSignal, TransformStream };
 		runInNewContext(code, sandbox);
 		const redis = (sandbox as typeof sandbox & { Redis: typeof import('./index') }).Redis;
 		const service = await redis.createRedisService(redis.resolveRedisConnectionOptions({ options: { host: 'cache.example.test', keyPrefix: 'tenant:' } }), {

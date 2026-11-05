@@ -15,9 +15,12 @@ import { z } from 'zod';
 import type { ServiceProviderDefinition } from '../registry';
 import type { ServiceProviderContext } from '../runtime/types';
 import type { IOpenObserveService } from './IOpenObserveService';
+import { OpenObserveOperations } from './operations';
+import { OpenObserveServiceCapability } from './IOpenObserveService';
 export { sanitizeOpenObserveOutput } from './sanitize';
 
 export type { IOpenObserveService, OpenObserveService } from './IOpenObserveService';
+export { OpenObserveServiceCapability } from './IOpenObserveService';
 export type {
 	OpenObserveClientOptions,
 	OpenObserveGetStreamSchemaInput,
@@ -86,11 +89,12 @@ function options({ config, getEnv }: ServiceProviderContext): OpenObserveClientO
 	};
 }
 
-export const OpenObserveServiceProvider: ServiceProviderDefinition<'openobserve'> = {
+export const OpenObserveServiceProvider: ServiceProviderDefinition<IOpenObserveService> = {
 	name: 'openobserve',
 	aliases: ['oo'],
-	provides: ['openobserve'],
+	provides: [OpenObserveServiceCapability],
 	optionsSchema: OpenObserveServiceOptionsSchema,
+	operations: OpenObserveOperations,
 	create(context) {
 		const client = new OpenObserveClient({ ...options(context), fetch: context.fetch });
 		const writable = () => {
@@ -112,6 +116,9 @@ export const OpenObserveServiceProvider: ServiceProviderDefinition<'openobserve'
 			async ingestJson(input, callOptions) { writable(); return client.ingestJson(input, callOptions); },
 			async ingestMulti(input, callOptions) { writable(); return client.ingestMulti(input, callOptions); },
 			close: () => client.close(),
+			[Symbol.asyncDispose]() {
+				return this.close();
+			},
 		};
 		return { openobserve: service };
 	},

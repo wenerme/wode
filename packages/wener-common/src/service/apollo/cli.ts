@@ -1,6 +1,6 @@
 import type { IApolloService } from './core/interface';
 import { redactApolloValue } from './core/redactor';
-import { ApolloToolInputs, ApolloWriteOperations } from '../runtime/apollo-tools';
+import { ApolloToolInputs, ApolloWriteOperations } from './ApolloContract';
 import { type ServiceCliDefinition, type ServiceCliOperation, serviceCliString } from '../cli/ServiceCliDefinition';
 import { ServiceCliInputError } from '../cli/ServiceCliInputError';
 

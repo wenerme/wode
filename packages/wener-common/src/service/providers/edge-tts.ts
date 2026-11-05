@@ -1,14 +1,15 @@
 import { createEdgeTtsClient } from '@wener/client/tts';
 import type { ServiceProviderDefinition } from '../registry';
 import { EdgeTtsServiceConfigSchema, EdgeTtsServiceOptionsSchema } from '../tts/config';
-import { TtsServiceContract } from '../tts/contract';
-import { createTtsService } from '../tts/createTtsService';
+import { TtsServiceContract } from '../tts/TtsServiceContract';
+import { createTtsService } from '../tts/server';
 import { TtsOperations } from '../tts/operations';
+import { TtsServiceCapability, type ITtsService } from '../tts/ITtsService';
 
-export const EdgeTtsServiceProvider: ServiceProviderDefinition<'tts'> = {
+export const EdgeTtsServiceProvider: ServiceProviderDefinition<ITtsService> = {
 	name: 'edge-tts',
 	aliases: ['edge'],
-	provides: ['tts'],
+	provides: [TtsServiceCapability],
 	title: 'Edge speech',
 	description: 'Synthesize MP3 speech without an API key, using a Chinese voice by default.',
 	optionsSchema: EdgeTtsServiceOptionsSchema,

@@ -1,4 +1,4 @@
-import { SqlMethodInputs, SqlServiceContract } from '../sql/contract';
+import { SqlMethodInputs, SqlServiceContract } from '../sql/SqlServiceContract';
 import type { ServiceSchema } from './types';
 
 export const SqlToolInputs = SqlMethodInputs;

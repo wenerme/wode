@@ -30,7 +30,7 @@ export async function createSqlServiceToolClient(
 		signal?.throwIfAborted();
 		return result as T;
 	}
-	return {
+	const client: ISqlService = {
 		type: 'sql',
 		dialect: 'remote',
 		readOnly: options.readOnly ?? true,
@@ -40,5 +40,9 @@ export async function createSqlServiceToolClient(
 		listObject: (input = {}, callOptions) => call('listObject', input, callOptions),
 		describeObject: (input, callOptions) => call('describeObject', input, callOptions),
 		close() {},
+		async [Symbol.asyncDispose]() {
+			await client.close();
+		},
 	};
+	return client;
 }

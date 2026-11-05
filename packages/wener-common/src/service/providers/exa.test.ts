@@ -1,9 +1,8 @@
 import { describe, expect, it, vi } from 'vitest';
-import { createBuiltinServiceProviders, registerBuiltinServices } from '../builtin';
 import { normalizeCliServices } from '../config';
 import { ServiceRegistry } from '../registry';
-import { createServiceRuntime, ServiceProviderRegistry } from '../runtime';
-import { createExaService } from './exa';
+import { createServiceProviderAdapter, createServiceRuntime, ServiceProviderRegistry } from '../runtime';
+import { createExaService, ExaServiceProvider } from './exa';
 
 describe('Exa search and fetch capabilities', () => {
 	it('maps search options through the existing client and normalizes paged results', async () => {
@@ -204,15 +203,13 @@ describe('Exa search and fetch capabilities', () => {
 	it('registers both capabilities without resolving environment references until load', async () => {
 		const getEnv = vi.fn(() => 'fixture-key');
 		const fetch = vi.fn<typeof globalThis.fetch>(async () => Response.json({ results: [] }));
-		const registry = registerBuiltinServices(
-			new ServiceRegistry({
-				context: {
-					services: normalizeCliServices([{ name: 'web', type: 'exa', options: { apiKey: 'env://EXAMPLE_API_KEY' } }]),
-				},
-				getEnv,
-				fetch,
-			}),
-		);
+		const registry = new ServiceRegistry({
+			context: {
+				services: normalizeCliServices([{ name: 'web', type: 'exa', options: { apiKey: 'env://EXAMPLE_API_KEY' } }]),
+			},
+			getEnv,
+			fetch,
+		}).register(ExaServiceProvider);
 		expect(registry.list('search')[0]?.provides).toEqual(['search', 'fetch']);
 		expect(getEnv).not.toHaveBeenCalled();
 		expect(fetch).not.toHaveBeenCalled();
@@ -232,7 +229,7 @@ describe('Exa search and fetch capabilities', () => {
 			context: {
 				services: normalizeCliServices([{ name: 'web', type: 'exa', options: { apiKey: 'env://EXAMPLE_API_KEY' } }]),
 			},
-			providers: new ServiceProviderRegistry(createBuiltinServiceProviders()),
+			providers: new ServiceProviderRegistry([createServiceProviderAdapter(ExaServiceProvider)]),
 			fetch,
 			getEnv,
 		});

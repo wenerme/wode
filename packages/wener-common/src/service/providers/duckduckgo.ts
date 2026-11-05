@@ -6,6 +6,8 @@ import { responseSecrets, sanitizeServiceResponse } from '../fetch/content';
 import type { ServiceProviderDefinition } from '../registry';
 import type { ServiceCallOptions, ServiceProvider, ServiceSchema } from '../runtime/types';
 import type { ISearchService } from '../search';
+import { SearchOperations } from '../search';
+import { SearchServiceCapability } from '../search/ISearchService';
 
 export const DuckDuckGoServiceOptionsSchema = z.strictObject({
 	instantAnswerBaseUrl: z.string().url().optional(),
@@ -194,11 +196,12 @@ export function createDuckDuckGoSearchService(options: DuckDuckGoClientInit = {}
 	};
 }
 
-export const DuckDuckGoSearchServiceProvider: ServiceProviderDefinition<'search'> = {
+export const DuckDuckGoSearchServiceProvider: ServiceProviderDefinition<ISearchService> = {
 	name: 'duckduckgo',
 	aliases: ['ddg'],
-	provides: ['search'],
+	provides: [SearchServiceCapability],
 	optionsSchema: DuckDuckGoServiceOptionsSchema,
+	operations: SearchOperations,
 	create({ config, fetch }) {
 		return { search: createDuckDuckGoSearchService({ ...parseDuckDuckGoClientOptions(config), fetch }) };
 	},

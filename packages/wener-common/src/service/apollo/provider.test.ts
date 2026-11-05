@@ -1,8 +1,10 @@
 import { describe, expect, it, vi } from 'vitest';
 import { z } from 'zod';
 import { CliServiceConfigSchema } from '../config';
-import { ApolloToolInputs } from '../runtime/apollo-tools';
+import { toJsonSchema } from '../../schema';
+import { ApolloToolInputs } from './ApolloContract';
 import { ApolloServiceOptionsSchema, ApolloServiceProvider } from './index';
+import { ApolloOperations } from './operations';
 
 const options = {
 	appId: 'SampleApp',
@@ -16,9 +18,9 @@ describe('Apollo service binding', () => {
 	it('exposes generated endpoint options and all operation schemas without creating a client', () => {
 		expect(ApolloServiceProvider.optionsSchema).toBe(ApolloServiceOptionsSchema);
 		expect(ApolloServiceOptionsSchema.jsonSchema).toEqual(z.toJSONSchema(ApolloServiceOptionsSchema, { io: 'input' }));
-		expect(Object.keys(ApolloServiceProvider.contract?.methods ?? {})).toEqual(Object.keys(ApolloToolInputs));
-		expect(ApolloServiceProvider.contract?.methods.patchNamespaceDocument?.inputSchema).toEqual(
-			z.toJSONSchema(ApolloToolInputs.patchNamespaceDocument, { io: 'input' }),
+		expect(Object.keys(ApolloServiceProvider.operations ?? {})).toEqual(Object.keys(ApolloToolInputs));
+		expect(ApolloOperations.patchNamespaceDocument.tool.inputSchema).toEqual(
+			toJsonSchema(ApolloToolInputs.patchNamespaceDocument),
 		);
 	});
 

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import type { CliTable } from '../../../cli/render/CliTable';
-import { RedisFieldInputSchema, RedisGetOutputSchema, RedisHashOutputSchema, RedisPingOutputSchema, RedisRangeStreamOutputSchema, RedisScanOutputSchema, RedisTtlOutputSchema, RedisTypeOutputSchema } from '../schema';
+import { RedisFieldInputSchema, RedisGetOutputSchema, RedisHashOutputSchema, RedisPingOutputSchema, RedisRangeStreamOutputSchema, RedisScanOutputSchema, RedisTtlOutputSchema, RedisTypeOutputSchema } from '../RedisContract';
 
 const ScanResultSchema = RedisScanOutputSchema.extend({ pages: z.array(RedisScanOutputSchema).optional() });
 export interface RedisCliQueryResult { columns: string[]; rows: Record<string, unknown>[]; durationMs: number }

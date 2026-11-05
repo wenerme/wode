@@ -2,7 +2,6 @@ import { describe, expect, it, vi } from 'vitest';
 import { RedisServiceProvider } from '../providers/redis';
 import { ServiceRegistry, type ServiceProviderDefinition } from '../registry';
 import { createServiceProviderAdapter } from '../runtime/createServiceProviderAdapter';
-import { RedisTools } from '../runtime/redis-tools';
 import type { IRedisService } from './IRedisService';
 import { RedisOperations } from './operations';
 
@@ -17,8 +16,9 @@ describe('Redis registered operations', () => {
 			scan: vi.fn(async () => ({ cursor: '0', keys: [], durationMs: 0 })),
 			getHash: vi.fn(async () => ({ data: [], durationMs: 0 })),
 			rangeStream: vi.fn(async () => ({ data: [], durationMs: 0 })), close: vi.fn(async () => {}),
+			[Symbol.asyncDispose]: vi.fn(async () => {}),
 		};
-		const definition: ServiceProviderDefinition<'redis'> = { ...RedisServiceProvider, create: () => ({ redis: service }) };
+		const definition: ServiceProviderDefinition<IRedisService> = { ...RedisServiceProvider, create: () => ({ redis: service }) };
 		const registry = new ServiceRegistry({ context: { services: { cache: { provider: 'redis', readOnly: true } } } });
 		registry.register(definition);
 		const options = { signal: new AbortController().signal };
@@ -35,8 +35,9 @@ describe('Redis registered operations', () => {
 			await test.operation.execute(registry, 'cache', test.input, options);
 			expect(test.invoke).toHaveBeenCalledExactlyOnceWith(test.input, options);
 		}
-		expect(createServiceProviderAdapter(definition).tools).toEqual(RedisTools);
-		expect(Object.keys(RedisOperations)).toEqual(Object.keys(RedisTools));
+		const expectedTools = Object.fromEntries(Object.entries(RedisOperations).map(([name, operation]) => [name, operation.tool]));
+		expect(createServiceProviderAdapter(definition).tools).toEqual(expectedTools);
+		expect(Object.keys(RedisOperations)).toEqual(['ping', 'get', 'getType', 'getTtl', 'scan', 'getHash', 'rangeStream']);
 		await registry.close();
 		expect(service.close).toHaveBeenCalledTimes(1);
 	});

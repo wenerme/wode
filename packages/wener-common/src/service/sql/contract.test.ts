@@ -12,7 +12,7 @@ import { createServiceProviderAdapter } from '../runtime/createServiceProviderAd
 import { createServiceRuntime } from '../runtime/createServiceRuntime';
 import { ServiceProviderRegistry } from '../runtime/ServiceProviderRegistry';
 import { SqlToolInputs, SqlTools } from '../runtime/sql-tools';
-import { SqlMethodInputs, SqlMethodOutputs, SqlServiceContract } from './contract';
+import { SqlMethodInputs, SqlMethodOutputs, SqlServiceContract } from './SqlServiceContract';
 import type { SQLExecutionResult, SQLObject, SQLObjectDescription, SQLPingResult } from './types';
 
 describe('SQL service contract', () => {

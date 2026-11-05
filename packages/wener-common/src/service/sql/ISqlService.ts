@@ -1,4 +1,5 @@
 import type { ServiceCallOptions } from '../runtime/types';
+import { defineServiceCapability } from '../registry/ServiceCapability';
 
 export interface SQLQueryInput {
 	statement: string;
@@ -53,7 +54,7 @@ export interface SQLPingResult {
 export interface SqlCallOptions extends ServiceCallOptions {
 	timeoutMs?: number;
 }
-export interface ISqlService {
+export interface ISqlService extends AsyncDisposable {
 	readonly type: string;
 	readonly dialect: string;
 	readonly readOnly: boolean;
@@ -65,3 +66,6 @@ export interface ISqlService {
 	close(): void | Promise<void>;
 }
 export type ISQLService = ISqlService;
+
+/** Capability key for `ISqlService`; `registry.load(SqlServiceCapability)` resolves to `ISqlService`. */
+export const SqlServiceCapability = defineServiceCapability<ISqlService>('sql');

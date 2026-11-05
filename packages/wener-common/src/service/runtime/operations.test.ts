@@ -1,6 +1,8 @@
 import { describe, expect, it, vi } from 'vitest';
 import { z } from 'zod';
-import { ServiceRegistry, type ServiceProviderDefinition, type ServiceTypeMap } from '../registry';
+import { defineServiceCapability, ServiceRegistry, type ServiceProviderDefinition } from '../registry';
+import type { IRedisService } from '../redis';
+import { SqlServiceCapability, type ISqlService } from '../sql/ISqlService';
 import { createServiceProviderAdapter } from './createServiceProviderAdapter';
 import { defineServiceOperation } from './defineServiceOperation';
 import type { ServiceCallOptions, ServiceTool } from './types';
@@ -11,11 +13,8 @@ interface TestOperationService {
 	echo(input: { value: string }, options: ServiceCallOptions): Promise<{ value: string }>;
 	close(): void;
 }
-declare module '../registry' {
-	interface ServiceTypeMap {
-		operationTest: TestOperationService;
-	}
-}
+// A custom capability needs only its own token; no central capability table is extended.
+const OperationTestCapability = defineServiceCapability<TestOperationService>('operationTest');
 
 const input = z.strictObject({ value: z.string().min(1) });
 const tool: ServiceTool = {
@@ -23,7 +22,7 @@ const tool: ServiceTool = {
 	annotations: { readOnlyHint: true },
 };
 const echo = defineServiceOperation({
-	capability: 'operationTest', tool, input,
+	capability: OperationTestCapability, tool, input,
 	invoke: (service, input, options) => service.echo(input, options),
 });
 
@@ -33,14 +32,14 @@ async function fixture(readOnly = true) {
 		echo: vi.fn(async (value) => value), close: vi.fn(),
 	};
 	const create = vi.fn(async () => ({ operationTest: service }));
-	const definition: ServiceProviderDefinition<'operationTest'> = {
-		name: 'operation-test', provides: ['operationTest'],
+	const definition: ServiceProviderDefinition<TestOperationService> = {
+		name: 'operation-test', provides: [OperationTestCapability],
 		title: 'Operation test', description: 'A custom service', documentationUrl: 'https://example.test/operations',
 		examples: [{ command: 'example echo hello', description: 'Echo a value.' }],
 		operations: {
 			echo: { ...echo, tool: structuredClone(echo.tool) },
 			write: defineServiceOperation({
-				capability: 'operationTest', tool: { ...tool, annotations: { readOnlyHint: false } }, input,
+				capability: OperationTestCapability, tool: { ...tool, annotations: { readOnlyHint: false } }, input,
 				invoke: (service, input, options) => service.echo(input, options),
 			}),
 		},
@@ -123,14 +122,14 @@ describe('registered service operations', () => {
 		await test.client.close?.();
 	});
 
-	it('treats explicit operations as the complete set and retains legacy static tables otherwise', async () => {
+	it('treats explicit operations as the complete set and no longer falls back to any hardcoded tool table', async () => {
 		const create = vi.fn((): never => { throw new Error('must stay static'); });
+		// search/fetch/openobserve/apollo have all migrated to defineServiceOperation/operations; without an
+		// explicit `operations` field they no longer fall back to any hardcoded tool table.
+		expect(createServiceProviderAdapter({ name: 'legacy', provides: ['search', 'fetch'] as const, create }).tools).toEqual({});
+		expect(createServiceProviderAdapter({ name: 'oo', provides: ['openobserve'], create }).tools).toEqual({});
+		expect(createServiceProviderAdapter({ name: 'apollo', provides: ['apollo'], create }).tools).toEqual({});
 		const base = { name: 'legacy', provides: ['search', 'fetch'] as const, create };
-		const legacy = createServiceProviderAdapter(base);
-		expect(legacy.tools).toHaveProperty('search');
-		expect(legacy.tools).toHaveProperty('fetch');
-		expect(createServiceProviderAdapter({ name: 'apollo', provides: ['apollo'], create }).tools).toHaveProperty('listApp');
-		expect(createServiceProviderAdapter({ name: 'oo', provides: ['openobserve'], create }).tools).toHaveProperty('health');
 		const explicit = createServiceProviderAdapter({ ...base, operations: {} });
 		expect(explicit.tools).toEqual({});
 		const config = { provider: 'legacy', readOnly: true };
@@ -141,11 +140,9 @@ describe('registered service operations', () => {
 		await client.close?.();
 	});
 
-	it('rejects capability mismatches, conflicting legacy tools and malformed declarations statically', () => {
+	it('rejects capability mismatches and malformed declarations statically', () => {
 		const create = vi.fn((): never => { throw new Error('must stay static'); });
 		expect(() => createServiceProviderAdapter({ name: 'wrong', provides: ['search'], operations: { echo }, create })).toThrow('Invalid service operation');
-		expect(() => createServiceProviderAdapter({ name: 'duplicate', provides: ['search', 'search'], create })).toThrow('Conflicting service operation');
-		expect(() => createServiceProviderAdapter({ name: 'conflict', provides: ['search', 'openobserve'], create })).toThrow('Conflicting service operation');
 		expect(() => createServiceProviderAdapter({ name: 'bad', provides: ['operationTest'], operations: { '': echo }, create })).toThrow('Conflicting service operation');
 		expect(() => createServiceProviderAdapter({ name: 'bad', provides: ['operationTest'], operations: { echo: { ...echo, tool: { inputSchema: null! } } }, create })).toThrow('Invalid service operation metadata');
 		expect(create).not.toHaveBeenCalled();
@@ -162,26 +159,26 @@ describe('registered service operations', () => {
 
 // Compile-time regression checks: neither input nor service binding can drift.
 function checkOperationTypes() {
-	defineServiceOperation<'operationTest', { value: string }, { value: string }>({
-		capability: 'operationTest', tool,
+	defineServiceOperation<TestOperationService, { value: string }, { value: string }>({
+		capability: OperationTestCapability, tool,
 		// @ts-expect-error The validator output must match the invocation input.
 		input: z.strictObject({ value: z.number() }),
 		invoke: (service, value, options) => service.echo(value, options),
 	});
-	defineServiceOperation<'operationTest', { value: string }, { value: string }>({
-		capability: 'operationTest', tool, input,
+	defineServiceOperation<TestOperationService, { value: string }, { value: string }>({
+		capability: OperationTestCapability, tool, input,
 		// @ts-expect-error A Redis service cannot implement an operationTest invocation.
-		invoke: (service: ServiceTypeMap['redis'], value, options) => Promise.resolve(value),
+		invoke: (service: IRedisService, value, options) => Promise.resolve(value),
 	});
-	defineServiceOperation({ capability: 'operationTest', tool, input, invoke(service, value, options) {
+	defineServiceOperation({ capability: OperationTestCapability, tool, input, invoke(service, value, options) {
 		// @ts-expect-error Inferred validator input is a string, not a number.
 		const wrong: number = value.value;
 		// @ts-expect-error The capability binding exposes only the operationTest service.
 		service.get({ key: 'wrong' }, options);
 		return service.echo(value, options);
 	} });
-	const wrongProvider: ServiceProviderDefinition<'sql'> = {
-		name: 'wrong', provides: ['sql'], create: () => { throw new Error('type check only'); },
+	const wrongProvider: ServiceProviderDefinition<ISqlService> = {
+		name: 'wrong', provides: [SqlServiceCapability], create: () => { throw new Error('type check only'); },
 		// @ts-expect-error Operations must belong to the provider's declared capability.
 		operations: { echo },
 	};
