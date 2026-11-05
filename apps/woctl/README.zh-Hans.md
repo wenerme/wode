@@ -1,10 +1,10 @@
 # woctl
 
-[完整使用文档、服务指南与覆盖情况](../../docs/woctl/README.md)
+在终端搜索和抓取网页、处理 PDF 和 Excel 文件、调用 MCP 工具、使用 AI 模型，以及渲染 Markdown 和结构化数据。通过 context 管理不同环境的服务连接。
 
-在终端搜索网页、调用 MCP 工具、使用 AI 模型，以及渲染 Markdown 和结构化数据。通过 context 管理不同环境的服务连接。
+[English](https://github.com/wenerme/wode/blob/develop/apps/woctl/README.md) | [简体中文](https://github.com/wenerme/wode/blob/develop/apps/woctl/README.zh-Hans.md)
 
-[English](README.md)
+[完整使用文档、服务指南与覆盖情况](https://github.com/wenerme/wode/blob/develop/docs/woctl/README.md)
 
 ## 安装
 
@@ -21,7 +21,7 @@ woctl --help
 npx woctl --help
 ```
 
-npm 包包含一个 CLI bundle，安装后的命令是 `woctl`。
+npm 包包含一个 CLI bundle，安装时会自动安装 PDF、Excel 所需的运行依赖和 WASM 资源，安装后的命令是 `woctl`。
 
 ## 快速上手
 
@@ -36,12 +36,23 @@ printf '{"name":"Ada","active":true}' | woctl render - --input json --format yam
 
 ```sh
 woctl service add search --type duckduckgo
+woctl search 'MCP protocol' --limit 5 --json
 woctl ddg search 'MCP protocol' --limit 5 --json
 ```
 
 领域命令会在当前 context 配置并启用相应服务后出现。如果找不到命令，先用 `woctl service list` 和 `woctl context show` 检查配置。
 
 ## 配置
+
+无需加载配置即可查看全部已注册命令和服务类型：
+
+```sh
+woctl catalog --output md
+woctl catalog --service-type sql --output typescript
+woctl catalog --output jsonschema
+```
+
+也支持 JSON 与 `--output-file`。JSON Schema 描述 catalog 文档本身。参见[生成的完整命令参考](https://github.com/wenerme/wode/blob/develop/docs/woctl/reference.md)和[注册与文档维护指南](https://github.com/wenerme/wode/blob/develop/docs/woctl/development.md)。
 
 默认配置文件是 `~/.wode/woctl.yaml`：
 
@@ -87,9 +98,12 @@ context 会继承共享服务。同名服务会整条替换共享配置。删除
 ## 网页搜索
 
 ```sh
+woctl search 'TypeScript documentation' --limit 5
 woctl ddg search 'TypeScript documentation' --limit 5
 woctl duckduckgo search 'MCP examples' --offset 10 --json
 ```
+
+`search` 按搜索能力选择已配置的 DuckDuckGo 或 Exa 服务，可以用 `woctl service default set search <name>` 设置默认。`ddg search` 保留为 DuckDuckGo 专用入口。
 
 DuckDuckGo 搜索无需 API key。优先使用 Instant Answer 结果，无结果时回退到 HTML 搜索；非零 offset 直接使用 HTML 搜索。
 
@@ -99,6 +113,113 @@ DuckDuckGo 搜索无需 API key。优先使用 Instant Answer 结果，无结果
 woctl ddg search 'TypeScript' --service search --json
 woctl service default set duckduckgo search
 ```
+
+## 页面抓取
+
+```sh
+woctl service add reader --type direct
+woctl fetch https://example.com/ --service reader
+woctl fetch https://example.com/ --service reader --no-main --json
+```
+
+抓取支持 direct HTTP、Jina 和 Exa。HTML 会转换为 Markdown，默认提取正文，`--no-main` 保留完整页面。多个连接时可用 `woctl service default set fetch <name>` 设置默认。`search`、`fetch` 均支持 `--list-services` 和显式 `--service` 选择。
+
+`woctl search 'query' --fetch` 可以抓取首条搜索结果，`--fetch-limit 3` 抓取多条；通过 `--fetch-service <name>` 独立选择抓取连接。`--raw --json` 可以查看已移除或遮盖认证数据的供应商响应。
+
+## PDF 与 Excel
+
+这些本地命令无需服务配置：
+
+```sh
+woctl pdf info document.pdf --json
+woctl pdf inspect document.pdf --detail full --text --json
+woctl pdf read document.pdf --pages 1-3
+woctl pdf parse --list-templates
+woctl pdf render document.pdf --page 1 --output page.png
+woctl xlsx list workbook.xlsx
+woctl xlsx read workbook.xlsx --sheet Data --header --output csv
+woctl xlsx edit --create --out workbook.xlsx --csv-file rows.csv
+woctl xlsx tidy workbook.xlsx --out compact.xlsx
+woctl xlsx export workbook.xlsx --out-dir exported --bom
+woctl render document.pdf --format text
+woctl render workbook.xlsx --sheet Data --format csv
+```
+
+PDF 工具提供元数据、内部结构检查、文本提取、模板解析和 PNG 渲染；XLSX 工具提供工作表、属性、区域读取、单元格与样式编辑、清理和 CSV 导出。覆盖输入工作簿须明确 `--in-place`；`tidy` 会重建工作簿并丢弃绘图等复杂结构。具体选项见 [文档工具指南](https://github.com/wenerme/wode/blob/develop/docs/woctl/documents.md)。
+
+## SQL
+
+SQL 使用统一 service 注册，原生支持 SQLite 和 PostgreSQL：
+
+```sh
+woctl service add scratch --type sqlite --option filename=:memory:
+woctl sql query 'SELECT 42 AS answer' --service scratch --json
+woctl sql query @query.sql --service scratch --json
+woctl sql --list-services --json
+woctl service type sql --typescript
+```
+
+还提供 `ping`、`explain`、`table list`、`table info` 和 `exec`。查询使用参数绑定并强制只读；写入须同时启用 writable 和提供 `--yes`，缺少条件时在读取输入文件和建立连接前拒绝。`service inspect` 和 TypeScript 发现展示服务方法及结果类型。详见 [SQL 指南](https://github.com/wenerme/wode/blob/develop/docs/woctl/service/sql.md)。
+
+## Redis 与 Valkey
+
+Redis 使用相同的服务注册与选择流程：
+
+```sh
+woctl service add cache --type redis --base-url redis://localhost:6379/0
+woctl redis ping --service cache --json
+woctl redis get example --service cache --json
+woctl redis scan --all --match 'app:*' --service cache --json
+woctl redis hgetall user:example --service cache --json
+woctl redis xrange events --count 20 --service cache --json
+woctl service type redis --typescript
+```
+
+`valkey` 是别名。服务保留源实现的只读操作、key 前缀隔离、TLS、超时、重试、响应限制和连接释放。凭据可在 options 中通过 `env://NAME` 延迟引用。Node 注入原生 driver，浏览器 bundle 不包含该驱动。详见 [Redis 指南](https://github.com/wenerme/wode/blob/develop/docs/woctl/service/redis.md)。
+
+## 文字转语音
+
+默认使用无需配置 API key 的 Edge provider 生成 MP3：
+
+```sh
+woctl tts 'Hello' --output-file hello.mp3
+woctl tts voices --locale zh-CN
+woctl tts --input @speech.txt --output-file speech.mp3
+```
+
+默认音色为 `zh-CN-XiaoxiaoNeural`。Edge 使用内部在线协议，可用性可能变化。模型服务可配置为 `openai-tts`，通过 `--service` 选择并用 `--model`、`--voice` 覆盖。详见 [TTS 指南](https://github.com/wenerme/wode/blob/develop/docs/woctl/service/tts.md)。
+
+## Linear
+
+配置 `linear` 服务，使用 `options.apiKeyEnv` 或 `options.accessTokenEnv` 提供认证，再调用完整 issue 与评论命令：
+
+```sh
+woctl linear status
+woctl linear team ls
+woctl linear issue ls --team TEAM_ID --limit 25 --json
+woctl linear issue get EX-123 --json --output-file issue.json
+woctl linear issue create 'Fix regression' --team TEAM_ID --description @body.md --yes
+woctl linear comment create EX-123 @comment.md --yes
+```
+
+写操作须同时满足 `readOnly: false` 与 `--yes`，再读取文件和解析认证。也包括团队、状态、用户、项目、issue 更新、筛选和游标分页。参见 [Linear 指南](https://github.com/wenerme/wode/blob/develop/docs/woctl/service/linear.md)及[链接私有 Node 宿主](https://github.com/wenerme/wode/blob/develop/docs/woctl/development.md#link-a-private-node-host)。
+
+## Prometheus 与 VictoriaMetrics
+
+Prometheus 提供独立的 service 和 CLI，短别名为 `prom`：
+
+```sh
+woctl service add metrics --type prometheus --base-url https://metrics.example.test
+woctl service default set prometheus metrics
+woctl prometheus --list-services --json
+woctl prometheus query 'up' --json
+woctl prometheus range 'rate(http_requests_total[5m])' --start now-1h --end now --step 60 --json
+woctl prometheus query --query @query.promql --json
+woctl prometheus labels --json
+woctl prometheus label-values job --json
+```
+
+将示例 URL 替换为自己的端点。服务还支持 series 发现、指标 metadata、重复 `--match` 过滤、Bearer/Basic/headers 认证和自定义 API 前缀。通过 `--option accessTokenEnv=PROMETHEUS_TOKEN` 配置后，只在实际调用时读取环境变量中的 Bearer token。所选 context 配置并启用 Prometheus 服务后，对应命令才会出现；多个连接时使用 `--service metrics` 显式选择。详见 [Prometheus 指南](https://github.com/wenerme/wode/blob/develop/docs/woctl/service/prometheus.md)。
 
 ## MCP
 
@@ -122,8 +243,11 @@ mcpServers:
 
 ```sh
 woctl mcp servers --json
+woctl mcp tools local-tools
 woctl mcp tools local-tools --json
+woctl mcp tools local-tools tool-name
 woctl mcp info local-tools tool-name --json
+woctl mcp info local-tools tool-name --typescript
 woctl mcp call local-tools tool-name '{"query":"example"}' --json
 woctl mcp resources local-tools --json
 woctl mcp read local-tools 'resource://example' --json
@@ -131,6 +255,17 @@ woctl mcp grep '*search*' --json
 ```
 
 `mcp list` 是 `mcp servers` 的别名。列出已配置的服务器不会建立连接；发现和调用命令会建立连接，并在结束后关闭。HTTP 连接支持 Streamable HTTP 响应，包括 SSE。CLI 提供 MCP 客户端功能，不提供 MCP gateway。
+
+`mcp tools` 默认每行只输出一个工具名。指定工具名可以查看说明与 schema，`--json` 保留完整元数据。`mcp info <server> [tool] --typescript` 将工具合同显示为按 server name 命名的 TypeScript 接口。省略工具名时显示该服务器的所有工具。
+
+也可以直接连接 HTTP MCP server，无需保存配置：
+
+```sh
+woctl mcp --url https://wener.me/api/mcp --name wener-site tools wener-site
+woctl mcp --url https://wener.me/api/mcp --name wener-site info wener-site search --typescript
+```
+
+第二条命令输出 `WenerSiteTools` 接口。
 
 ## AI 模型与提示词
 

@@ -1,7 +1,7 @@
 import { type CliCommand, CliUsageError, resolveCliOutputSelection } from '@wener/common/cli';
 import { changeCommandConfig, loadCommandContext, setConfigEntry, writeCommandOutput } from '../command-utils';
 import { APP_NAME } from '../const';
-import type { WocliExecution } from '../createWocliCli';
+import type { CliExecution } from '../createCli';
 
 function quoteArgument(value: string): string {
 	return `'${value.replace(/'/g, "'\\''")}'`;
@@ -33,7 +33,7 @@ function requiredInput(schema: Record<string, unknown>): Record<string, unknown>
 	);
 }
 
-export function createServiceExtraCommands(): CliCommand<WocliExecution>[] {
+export function createServiceExtraCommands(): CliCommand<CliExecution>[] {
 	return [
 		{
 			name: 'default',
@@ -41,20 +41,21 @@ export function createServiceExtraCommands(): CliCommand<WocliExecution>[] {
 			commands: [
 				{
 					name: 'show',
-					description: 'Show merged default services by provider',
+					description: 'Show merged default services by provider or capability',
 					async run({ options }, context) {
 						writeCommandOutput((await loadCommandContext(context, options)).defaults, options, context);
 					},
 				},
 				{
 					name: 'set',
-					arguments: '<provider> <service>',
-					description: 'Select the default service for a provider',
+					arguments: '<provider-or-capability> <service>',
+					description: 'Select the default service for a provider or capability',
 					async run({ args, options }, context) {
 						const selected = await loadCommandContext(context, options);
 						if (!Object.hasOwn(selected.services, args[1])) throw new CliUsageError('Unknown service');
 						const canonical = (name: string) => context.resolveServiceProvider?.(name) ?? name;
-						if (canonical(selected.services[args[1]].provider) !== canonical(args[0]))
+						const capabilities = context.getServiceCapabilities?.(selected.services[args[1]].provider) ?? [];
+						if (canonical(selected.services[args[1]].provider) !== canonical(args[0]) && !capabilities.includes(args[0]))
 							throw new CliUsageError('Service provider does not match');
 						await changeCommandConfig(context, options, (config, name) =>
 							setConfigEntry(config.contexts[name].defaults, args[0], args[1]),
@@ -63,7 +64,7 @@ export function createServiceExtraCommands(): CliCommand<WocliExecution>[] {
 				},
 				{
 					name: 'unset',
-					arguments: '<provider>',
+					arguments: '<provider-or-capability>',
 					description: 'Remove a default service setting defined in the current context',
 					run: ({ args, options }, context) =>
 						changeCommandConfig(context, options, (config, name) => {

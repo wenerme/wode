@@ -1,11 +1,11 @@
 import { createMemoryCliConfigStore } from 'common/context';
 import { describe, expect, it, vi } from 'vitest';
 import { createDefaultConfig } from '../core';
-import type { WocliHost } from '../createWocliCli';
-import { createWocliWebCli } from '../web';
+import type { CliHost } from '../createCli';
+import { createWebCli } from '../web';
 import { presetMessages } from './prompt-input';
 
-function fixture(host: Partial<WocliHost> = {}) {
+function fixture(host: Partial<CliHost> = {}) {
 	const config = host.config ?? createMemoryCliConfigStore(createDefaultConfig());
 	const lines: string[] = [];
 	const fetch = vi.fn<typeof globalThis.fetch>().mockResolvedValue(
@@ -16,7 +16,7 @@ function fixture(host: Partial<WocliHost> = {}) {
 			usage: { prompt_tokens: 2, completion_tokens: 3, total_tokens: 5 },
 		}),
 	);
-	const cli = createWocliWebCli({ fetch, ...host, config });
+	const cli = createWebCli({ fetch, ...host, config });
 	const io = {
 		signal: new AbortController().signal,
 		stdout: (text: string) => {
@@ -62,7 +62,7 @@ describe('wocli AI commands', () => {
 	);
 	it('preserves host generation through the public model adapter and keeps dump offline', async () => {
 		const generate = vi
-			.fn<NonNullable<WocliHost['generate']>>()
+			.fn<NonNullable<CliHost['generate']>>()
 			.mockResolvedValue({ text: 'host result', response: { choices: [] }, diagnostics: [] });
 		const f = fixture({ generate });
 		await catalog(f);
@@ -77,7 +77,7 @@ describe('wocli AI commands', () => {
 		expect(f.fetch).not.toHaveBeenCalled();
 	});
 	it('streams host generation through the public content iterator', async () => {
-		const generate = vi.fn<NonNullable<WocliHost['generate']>>().mockImplementation(async (request, options) => {
+		const generate = vi.fn<NonNullable<CliHost['generate']>>().mockImplementation(async (request, options) => {
 			expect(request.stream).toBe(true);
 			expect(options.signal?.aborted).toBe(false);
 			options.onText?.('first');
@@ -93,7 +93,7 @@ describe('wocli AI commands', () => {
 		expect(f.fetch).not.toHaveBeenCalled();
 	});
 	it('selects the streaming capability for explicitly streaming-only models', async () => {
-		const generate = vi.fn<NonNullable<WocliHost['generate']>>().mockImplementation(async (_request, options) => {
+		const generate = vi.fn<NonNullable<CliHost['generate']>>().mockImplementation(async (_request, options) => {
 			options.onText?.('streamed');
 			return { text: 'streamed', response: { choices: [] }, diagnostics: [] };
 		});
@@ -126,12 +126,17 @@ describe('wocli AI commands', () => {
 		await f.cli.executeLine('service providers --json', f.io);
 		expect(JSON.parse(f.lines.pop() ?? '')).toEqual([
 			{ name: 'duckduckgo' },
+			{ name: 'exa' },
 			{ name: 'jina' },
 			{ name: 'base' },
 			{ name: 'sql' },
+			{ name: 'redis' },
 			{ name: 'openobserve' },
 			{ name: 'apollo' },
 			{ name: 'prometheus' },
+			{ name: 'linear' },
+			{ name: 'edge-tts' },
+			{ name: 'openai-tts' },
 			{ name: 'system' },
 			{ name: 'http' },
 		]);
@@ -148,7 +153,7 @@ describe('wocli AI commands', () => {
 		expect(f.fetch).toHaveBeenCalledOnce();
 	});
 	it.each([false, true])('accepts message-only input without reading stdin (TTY=%s)', async (stdinIsTTY) => {
-		const readText = vi.fn<NonNullable<WocliHost['readText']>>();
+		const readText = vi.fn<NonNullable<CliHost['readText']>>();
 		const f = fixture(stdinIsTTY ? { term: { stdinIsTTY }, readText } : {});
 		await catalog(f);
 		await f.cli.executeLine('prompt --message user:hello --dump', f.io);
@@ -159,7 +164,7 @@ describe('wocli AI commands', () => {
 		expect(f.fetch).not.toHaveBeenCalled();
 	});
 	it('keeps prompt parts before extra messages and validates all roles before reading input', async () => {
-		const readText = vi.fn<NonNullable<WocliHost['readText']>>();
+		const readText = vi.fn<NonNullable<CliHost['readText']>>();
 		const f = fixture({ readText });
 		await catalog(f);
 		await f.cli.executeLine(
@@ -181,7 +186,7 @@ describe('wocli AI commands', () => {
 		expect(f.fetch).not.toHaveBeenCalled();
 	});
 	it('still reads stdin when no explicit prompt input is supplied', async () => {
-		const readText = vi.fn<NonNullable<WocliHost['readText']>>().mockResolvedValue('piped text');
+		const readText = vi.fn<NonNullable<CliHost['readText']>>().mockResolvedValue('piped text');
 		const f = fixture({ readText, term: { stdinIsTTY: false } });
 		await catalog(f);
 		await f.cli.executeLine('prompt --dump', f.io);

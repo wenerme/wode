@@ -1,5 +1,5 @@
 import { APP_NAME, APP_VERSION, BROWSER_CONFIG_STORAGE_KEY } from '../const';
-import { createBrowserConfigStore, createWocliWebCli } from '../web';
+import { createBrowserConfigStore, createWebCli } from '../web';
 import './style.css';
 
 function element<T extends HTMLElement>(selector: string): T {
@@ -19,7 +19,7 @@ try {
 } catch {
 	/* 隐私模式下用内存，命令仍可执行。 */
 }
-const cli = createWocliWebCli({ config: storage ? createBrowserConfigStore(storage) : undefined });
+const cli = createWebCli({ config: storage ? createBrowserConfigStore(storage) : undefined });
 let active: AbortController | undefined;
 const history: string[] = [];
 let historyIndex = 0;

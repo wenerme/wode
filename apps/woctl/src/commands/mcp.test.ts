@@ -1,6 +1,6 @@
 import { createMemoryCliConfigStore } from 'common/context';
 import { describe, expect, it, vi } from 'vitest';
-import { createWocliCli, type WocliMcpConnection } from '../createWocliCli';
+import { createCli, type WocliMcpConnection } from '../createCli';
 
 function output() {
 	const stdout: string[] = [];
@@ -36,9 +36,63 @@ function fixtureConnection(): WocliMcpConnection {
 }
 
 describe('MCP commands', () => {
+	it('lists one tool name per line while keeping structured output complete', async () => {
+		const description = `Search documents.\n${'Detailed documentation. '.repeat(15)}`;
+		const tool = { name: 'search', description, inputSchema: { type: 'object', properties: { query: { type: 'string' } } } };
+		const connection = { ...fixtureConnection(), listTools: async () => [tool] };
+		const cli = createCli({
+			config: createMemoryCliConfigStore({ mcpServers: { demo: { transport: 'stdio', command: 'fixture' } } }),
+			mcp: { connect: async () => connection },
+		});
+		const listed = output();
+		await cli.executeLine('mcp tools demo', listed.io);
+		const text = listed.stdout.join('');
+		expect(text).toBe('search\n');
+		const json = output();
+		await cli.executeLine('mcp tools demo --json', json.io);
+		expect(JSON.parse(json.stdout[0])).toEqual([{ server: 'demo', ...tool }]);
+		const projected = output();
+		await cli.executeLine('mcp tools demo --json --format name,inputSchema', projected.io);
+		expect(JSON.parse(projected.stdout[0])).toEqual([{ name: 'search', inputSchema: tool.inputSchema }]);
+		for (const format of ['describe', 'wide']) {
+			const explicit = output();
+			await cli.executeLine(`mcp tools demo --output ${format}`, explicit.io);
+			expect(explicit.stdout.join('')).toContain('Search documents.');
+			expect(explicit.stdout.join('')).toContain('inputSchema');
+		}
+	});
+
+	it('inspects one tool and closes the connection even when the tool is missing', async () => {
+		const connection = fixtureConnection();
+		const cli = createCli({
+			config: createMemoryCliConfigStore({ mcpServers: { demo: { transport: 'stdio', command: 'fixture' } } }),
+			mcp: { connect: async () => connection },
+		});
+		const inspected = output();
+		await cli.executeLine('mcp tools demo echo --json', inspected.io);
+		expect(JSON.parse(inspected.stdout[0])).toEqual({
+			server: 'demo', name: 'echo', description: 'Echo', inputSchema: { type: 'object' },
+		});
+		await expect(cli.executeLine('mcp tools demo absent', output().io)).rejects.toThrow('Unknown MCP tool: absent');
+		expect(connection.close).toHaveBeenCalledTimes(2);
+	});
+
+	it('qualifies tool names when listing multiple servers', async () => {
+		const cli = createCli({
+			config: createMemoryCliConfigStore({ mcpServers: {
+				first: { transport: 'stdio', command: 'fixture' }, second: { transport: 'stdio', command: 'fixture' },
+			} }),
+			mcp: { connect: async () => fixtureConnection() },
+		});
+		const listed = output();
+		await cli.executeLine('mcp tools', listed.io);
+		expect(listed.stdout.join('')).toContain('first/echo');
+		expect(listed.stdout.join('')).toContain('second/echo');
+	});
+
 	it('lists and calls an injected server without connecting for catalog/help', async () => {
 		const connect = vi.fn(async () => fixtureConnection());
-		const cli = createWocliCli({
+		const cli = createCli({
 			config: createMemoryCliConfigStore({
 				mcpServers: {
 					demo: {
@@ -72,7 +126,7 @@ describe('MCP commands', () => {
 	});
 
 	it('redacts HTTP credentials in URL fragments as well as query parameters', async () => {
-		const cli = createWocliCli({
+		const cli = createCli({
 			config: createMemoryCliConfigStore({
 				mcpServers: {
 					remote: { transport: 'http', url: 'https://example.com/mcp?token=query-secret#access_token=fragment-secret' },
@@ -91,7 +145,7 @@ describe('MCP commands', () => {
 			expect(config).toEqual({ transport: 'http', url: 'https://wener.me/api/mcp', enabled: true });
 			return fixtureConnection();
 		});
-		const cli = createWocliCli({ config: createMemoryCliConfigStore({}), mcp: { connect } });
+		const cli = createCli({ config: createMemoryCliConfigStore({}), mcp: { connect } });
 		const listed = output();
 		await cli.executeLine('mcp --url https://wener.me/api/mcp --name wener-site servers --json', listed.io);
 		expect(JSON.parse(listed.stdout[0])).toEqual([
@@ -105,7 +159,7 @@ describe('MCP commands', () => {
 	});
 
 	it('requires both URL and name for an ad hoc server', async () => {
-		const cli = createWocliCli({ config: createMemoryCliConfigStore({}), mcp: { connect: vi.fn() } });
+		const cli = createCli({ config: createMemoryCliConfigStore({}), mcp: { connect: vi.fn() } });
 		await expect(cli.executeLine('mcp --url https://wener.me/api/mcp tools', output().io)).rejects.toThrow('both --url and --name');
 	});
 });

@@ -4,11 +4,16 @@ import { homedir } from 'node:os';
 import { dirname, resolve } from 'node:path';
 import { CliUsageError } from '@wener/common/cli';
 import { DEFAULT_CONFIG_DIRECTORY, DEFAULT_CONFIG_FILENAME, ENV, LEGACY_ENV } from '../const';
-import type { WocliHost } from '../createWocliCli';
+import type { CliHost } from '../createCli';
 import { createFileConfigStore } from './config';
 import { connectMcpServer } from './mcp';
 import { createNativeSqlDriver } from './sql';
 import { loadNativeEnv } from './env';
+import { createPdfCommand } from './pdf';
+import { createXlsxCommand } from './xlsx';
+import { renderNativeDocument } from './render-document';
+import { createNativeRedisDriver } from './redis';
+import { createNodeEdgeTtsSocketFactory } from '@wener/client/tts/node';
 
 export { createFileConfigStore } from './config';
 
@@ -36,12 +41,16 @@ export function getNativeCommandOptions(argv: readonly string[]): { argv: string
 }
 
 /** Node ports; importing this module does not install process signal handlers or execute a command. */
-export function createNativeHost(options: { config: string }): WocliHost {
+export function createNativeHost(options: { config: string }): CliHost {
 	const cwd = process.cwd();
 	let environment: Readonly<Record<string, string>> | undefined;
 	return {
 		config: createFileConfigStore(options.config, { cwd, projectLookup: true }),
+		commands: [createPdfCommand(), createXlsxCommand()],
+		renderDocument: renderNativeDocument,
 		sqlDriver: createNativeSqlDriver,
+		redisDriver: createNativeRedisDriver,
+		edgeTtsSocketFactory: createNodeEdgeTtsSocketFactory(),
 		info: { runtime: 'node', node: process.version, platform: process.platform, arch: process.arch, cwd, configPath: options.config },
 		getEnv: (name) => (environment ??= loadNativeEnv(cwd))[name] ?? process.env[name],
 		env: {
@@ -65,6 +74,12 @@ export function createNativeHost(options: { config: string }): WocliHost {
 			const destination = resolve(path);
 			await mkdir(dirname(destination), { recursive: true });
 			await writeFile(destination, content, { encoding: 'utf8', mode: 0o600, signal });
+		},
+		async writeBytes(path, content, { signal }) {
+			signal.throwIfAborted();
+			const destination = resolve(path);
+			await mkdir(dirname(destination), { recursive: true });
+			await writeFile(destination, content, { mode: 0o600, signal });
 		},
 		async readText(value, { signal, maxBytes }) {
 			const stream = value === '-' ? process.stdin : createReadStream(resolve(value.slice(1)), { signal });

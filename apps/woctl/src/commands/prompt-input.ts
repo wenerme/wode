@@ -2,9 +2,9 @@ import type { MessageGenerationRequest } from '@wener/client/ai/message-generati
 import { type CliOptions, CliUsageError } from '@wener/common/cli';
 import { type PromptPreset, parsePromptTemplate, renderPromptTemplate } from 'common/context';
 import { optionStrings, readCommandText } from '../command-utils';
-import type { WocliExecution } from '../createWocliCli';
+import type { CliExecution } from '../createCli';
 
-export async function promptVariables(options: CliOptions, context: WocliExecution): Promise<Record<string, unknown>> {
+export async function promptVariables(options: CliOptions, context: CliExecution): Promise<Record<string, unknown>> {
 	const input: Record<string, unknown> = Object.create(null);
 	for (const item of [...optionStrings(options, 'var'), ...optionStrings(options, 'input')]) {
 		const equals = item.indexOf('=');
@@ -23,7 +23,7 @@ export async function promptVariables(options: CliOptions, context: WocliExecuti
 export async function getPromptPreset(
 	name: string,
 	presets: Readonly<Record<string, PromptPreset>>,
-	context: WocliExecution,
+	context: CliExecution,
 ): Promise<PromptPreset> {
 	const key = name.replace(/^@/, '');
 	if (Object.hasOwn(presets, key)) return presets[key];

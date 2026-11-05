@@ -1,6 +1,6 @@
 import { createMemoryCliConfigStore } from 'common/context';
 import { describe, expect, it, vi } from 'vitest';
-import { createWocliWebCli } from './web';
+import { createWebCli } from './web';
 
 function fixture(readOnly = false) {
 	const fetch = vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
@@ -16,7 +16,7 @@ function fixture(readOnly = false) {
 	const getEnv = vi.fn(() => 'FIXTURE_TOKEN');
 	const readText = vi.fn(async () => '{"message":"fixture"}\n');
 	const config = createMemoryCliConfigStore({ services: [{ name: 'observe', type: 'oo', readOnly, baseUrl: 'https://observe.example.test', options: { accessTokenEnv: 'OO_FIXTURE_TOKEN' } }] });
-	const cli = createWocliWebCli({ config, getEnv, readText, fetch: fetch as unknown as typeof globalThis.fetch });
+	const cli = createWebCli({ config, getEnv, readText, fetch: fetch as unknown as typeof globalThis.fetch });
 	const lines: string[] = [];
 	const io = { signal: new AbortController().signal, stdout: (line: string) => { lines.push(line); } };
 	return { cli, fetch, getEnv, readText, lines, io };

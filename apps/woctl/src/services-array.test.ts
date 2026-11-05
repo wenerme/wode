@@ -5,9 +5,9 @@ import type { ServiceProvider, ServiceRuntimeClient } from '@wener/common/servic
 import { createMemoryCliConfigStore } from 'common/context';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { parse, stringify } from 'yaml';
-import { createWocliServiceCommand } from './createWocliCli';
+import { createWoctlServiceCommand } from './createCli';
 import { createFileConfigStore } from './native/config';
-import { createBrowserConfigStore, createWocliWebCli } from './web';
+import { createBrowserConfigStore, createWebCli } from './web';
 
 const unexpectedFetch = vi.fn<typeof globalThis.fetch>(async () => {
 	throw new Error('Integration fixtures must not access the network');
@@ -115,7 +115,7 @@ function offlineHost() {
 	};
 }
 
-async function mutateOther(cli: ReturnType<typeof createWocliWebCli>, io: ReturnType<typeof output>['io']) {
+async function mutateOther(cli: ReturnType<typeof createWebCli>, io: ReturnType<typeof output>['io']) {
 	await cli.executeLine('service add extra --type system --context other', io);
 	await cli.executeLine('service default set system extra --context other', io);
 	await cli.executeLine('prompt import greet --text "Hello {{name}}" --context other', io);
@@ -161,7 +161,7 @@ describe('service array storage and CLI integration', () => {
 				expect(JSON.parse(String(init?.body))).toEqual({ toolName: 'read', input: {} });
 				return Response.json({ path: url.pathname, authorization: new Headers(init?.headers).has('authorization') });
 			});
-			const cli = createWocliWebCli({ ...host, config: store, fetch });
+			const cli = createWebCli({ ...host, config: store, fetch });
 			const { io, lines } = output();
 			await cli.executeLine('system echo 00012 --json', io);
 			expect(JSON.parse(lines.pop() ?? '')).toEqual({ text: '00012' });
@@ -184,7 +184,7 @@ describe('service array storage and CLI integration', () => {
 		await withNativeFixture(async (file) => {
 			const baseBytes = await readFile(file);
 			const host = offlineHost();
-			const cli = createWocliWebCli({ ...host, config: createFileConfigStore(file) });
+			const cli = createWebCli({ ...host, config: createFileConfigStore(file) });
 			await mutateOther(cli, output().io);
 			const saved = parse(await readFile(file.replace('.yaml', '.other.yaml'), 'utf8'));
 			expect(await readFile(file)).toEqual(baseBytes);
@@ -220,7 +220,7 @@ describe('service array storage and CLI integration', () => {
 		};
 		const store = createBrowserConfigStore(storage);
 		const host = offlineHost();
-		const cli = createWocliWebCli({ ...host, config: store });
+		const cli = createWebCli({ ...host, config: store });
 		const { io } = output();
 		await store.load();
 		await cli.executeLine('service list --context other --json', io);
@@ -251,7 +251,7 @@ describe('service array storage and CLI integration', () => {
 		await withFile(undefined, async (file) => {
 			const store = createFileConfigStore(file);
 			await store.load();
-			const cli = createWocliWebCli({ config: store });
+			const cli = createWebCli({ config: store });
 			await cli.executeLine('--help', output().io);
 			await expect(readFile(file)).rejects.toMatchObject({ code: 'ENOENT' });
 			await cli.executeLine('prompt import greet --text hello', output().io);
@@ -284,12 +284,12 @@ describe('service array storage and CLI integration', () => {
 			},
 		});
 		const host = offlineHost();
-		const cli = createWocliWebCli({
+		const cli = createWebCli({
 			...host,
 			config,
 			providers: [{ name: 'fixture', create }],
 			commands: [
-				createWocliServiceCommand<{ read(input: object): Promise<unknown> }>({
+				createWoctlServiceCommand<{ read(input: object): Promise<unknown> }>({
 					name: 'fixture',
 					description: 'fixture service',
 					commands: [{ name: 'read', description: 'fixture read', prepare: () => (client) => client.read({}) }],
@@ -329,7 +329,7 @@ describe('service array storage and CLI integration', () => {
 	it('rejects disabled schema/call before touching an injected remote runtime', async () => {
 		const getSchema = vi.fn<ServiceRuntimeClient['getSchema']>();
 		const call = vi.fn<ServiceRuntimeClient['call']>();
-		const cli = createWocliWebCli({
+		const cli = createWebCli({
 			config: createMemoryCliConfigStore({ services: [{ name: 'off', api: 'http', enabled: false }] }),
 			runtime: { getSchema, call },
 		});
@@ -346,7 +346,7 @@ describe('service array storage and CLI integration', () => {
 		};
 		await withFile(raw, async (file) => {
 			const host = offlineHost();
-			const cli = createWocliWebCli({ ...host, config: createFileConfigStore(file) });
+			const cli = createWebCli({ ...host, config: createFileConfigStore(file) });
 			const { io, lines } = output();
 			await cli.executeLine('service list --json', io);
 			expect(JSON.parse(lines.pop() ?? '')).toEqual([
@@ -367,7 +367,7 @@ describe('service array storage and CLI integration', () => {
 	it('creates and edits a separate context file without changing the base', async () => {
 		await withNativeFixture(async (file) => {
 			const baseBytes = await readFile(file);
-			const cli = createWocliWebCli({ config: createFileConfigStore(file) });
+			const cli = createWebCli({ config: createFileConfigStore(file) });
 			await cli.executeLine('context create added', output().io);
 		await cli.executeLine('service add new-system --type system --context added', output().io);
 			const saved = parse(await readFile(file.replace('.yaml', '.added.yaml'), 'utf8'));

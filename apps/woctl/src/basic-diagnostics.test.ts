@@ -1,8 +1,8 @@
 import { CliConfigError, createMemoryCliConfigStore } from 'common/context';
 import { describe, expect, it, vi } from 'vitest';
 import { VERSION } from './core';
-import { createWocliCli } from './createWocliCli';
-import { createWocliWebCli } from './web';
+import { createCli } from './createCli';
+import { createWebCli } from './web';
 
 function output() {
 	const stdout: string[] = [];
@@ -24,7 +24,7 @@ function emptyStore() {
 
 describe('basic diagnostics', () => {
 	it('prints stable offline info for an empty configuration', async () => {
-		const cli = createWocliWebCli({ config: emptyStore(), info: { runtime: 'test' } });
+		const cli = createWebCli({ config: emptyStore(), info: { runtime: 'test' } });
 		const { io, stdout, stderr } = output();
 		const result = await cli.execute(['info', '--json'], io);
 		const value = JSON.parse(stdout.pop() ?? '');
@@ -57,7 +57,7 @@ describe('basic diagnostics', () => {
 			],
 			defaults: { system: 'future', missing: 'absent' },
 		});
-		const cli = createWocliWebCli({ config, fetch, getEnv, readText });
+		const cli = createWebCli({ config, fetch, getEnv, readText });
 		const { io, stdout } = output();
 		const result = await cli.executeLine('context check --json', io);
 		const value = JSON.parse(stdout.pop() ?? '');
@@ -88,7 +88,7 @@ describe('basic diagnostics', () => {
 	});
 
 	it('returns success for non-strict unsupported warnings and failure in strict mode', async () => {
-		const cli = createWocliWebCli({
+		const cli = createWebCli({
 			config: createMemoryCliConfigStore({ services: [{ name: 'future', type: 'future' }] }),
 		});
 		const { io, stdout } = output();
@@ -101,7 +101,7 @@ describe('basic diagnostics', () => {
 	});
 
 	it('uses flag over verbose and env log levels, writing diagnostics only to stderr', async () => {
-		const cli = createWocliWebCli({ config: emptyStore(), env: { WOCLI_LOG_LEVEL: 'error' } });
+		const cli = createWebCli({ config: emptyStore(), env: { WOCLI_LOG_LEVEL: 'error' } });
 		const first = output();
 		await cli.executeLine('--help', first.io);
 		expect(first.stdout.join('\n')).toContain('info');
@@ -125,7 +125,7 @@ describe('basic diagnostics', () => {
 			}),
 			save: vi.fn(),
 		};
-		const cli = createWocliCli({
+		const cli = createCli({
 			config,
 			info: { runtime: 'node', node: 'fixture-node', platform: 'fixture-platform', configPath: '/tmp/woctl.yaml' },
 		});
@@ -145,7 +145,7 @@ describe('basic diagnostics', () => {
 	});
 
 	it('renders info in readable sections while keeping structured field projections', async () => {
-		const cli = createWocliWebCli({ config: emptyStore() });
+		const cli = createWebCli({ config: emptyStore() });
 		const plain = output();
 		await cli.executeLine('info', plain.io);
 		const text = plain.stdout.join('\n');
@@ -159,7 +159,7 @@ describe('basic diagnostics', () => {
 	});
 
 	it('reports prototype-named missing defaults without treating inherited properties as services', async () => {
-		const cli = createWocliWebCli({
+		const cli = createWebCli({
 			config: createMemoryCliConfigStore({ defaults: { constructor: 'constructor', toString: 'toString' } }),
 		});
 		const { io, stdout } = output();

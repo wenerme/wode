@@ -1,14 +1,14 @@
 import { createMemoryCliConfigStore } from 'common/context';
 import { Bash } from 'just-bash/browser';
 import { describe, expect, it } from 'vitest';
-import { createWocliShellCommand } from './shell';
+import { createShellCommand } from './shell';
 
 function shell() {
 	return new Bash({
 		cwd: '/workspace',
 		files: { '/workspace/input.json': '{"text":"文件输入"}' },
 		customCommands: [
-			createWocliShellCommand({
+			createShellCommand({
 				config: createMemoryCliConfigStore({ services: [{ name: 'system', type: 'system' }] }),
 			}),
 		],
@@ -58,7 +58,7 @@ describe('woctl Bash command', () => {
 	it('updates visible commands after context changes in the same shell', async () => {
 		const bash = new Bash({
 			customCommands: [
-				createWocliShellCommand({
+				createShellCommand({
 					config: createMemoryCliConfigStore({
 						currentContext: 'empty',
 						contexts: {

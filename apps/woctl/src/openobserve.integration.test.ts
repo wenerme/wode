@@ -1,6 +1,6 @@
 import { createMemoryCliConfigStore } from 'common/context';
 import { describe, expect, it, vi } from 'vitest';
-import { createWocliWebCli } from './web';
+import { createWebCli } from './web';
 
 function fixture() {
 	const getEnv = vi.fn((name: string) => (name === 'OO_TEST_TOKEN' ? 'PRIVATE_TOKEN' : undefined));
@@ -45,7 +45,7 @@ function fixture() {
 		],
 		defaults: { openobserve: 'observe' },
 	});
-	const cli = createWocliWebCli({ config, getEnv, fetch: fetch as unknown as typeof globalThis.fetch });
+	const cli = createWebCli({ config, getEnv, fetch: fetch as unknown as typeof globalThis.fetch });
 	const lines: string[] = [];
 	const io = {
 		signal: new AbortController().signal,

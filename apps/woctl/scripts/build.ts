@@ -11,7 +11,7 @@ await build({
 	format: 'esm',
 	target: web ? 'es2022' : 'node24',
 	legalComments: 'none',
-	external: web ? [] : ['pg-native'],
+	external: web ? [] : ['pg-native', '@hyzyla/pdfium', 'canvaskit-wasm', 'excelize-wasm', 'pdfjs-dist'],
 	...(web
 		? {}
 		: {

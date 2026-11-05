@@ -17,11 +17,11 @@ import {
 	setConfigEntry,
 	writeCommandOutput,
 } from '../command-utils';
-import type { WocliExecution } from '../createWocliCli';
+import type { CliExecution } from '../createCli';
 
 /** 写操作将选中 context 的 provider 副本落盘，根目录配置仍由根文件维护。 */
 function providerCopy(
-	config: Awaited<ReturnType<WocliExecution['host']['config']['load']>>,
+	config: Awaited<ReturnType<CliExecution['host']['config']['load']>>,
 	name: string,
 	contextName: string,
 ): AiProvider {
@@ -33,8 +33,8 @@ function providerCopy(
 	selected.providers[name] = copy;
 	return copy;
 }
-export function createAiCatalogCommands(serviceProviders: () => string[]): CliCommand<WocliExecution>[] {
-	const provider: CliCommand<WocliExecution> = {
+export function createAiCatalogCommands(serviceProviders: () => string[]): CliCommand<CliExecution>[] {
+	const provider: CliCommand<CliExecution> = {
 		name: 'provider',
 		description: 'Manage AI provider connections',
 		commands: [
@@ -138,7 +138,7 @@ export function createAiCatalogCommands(serviceProviders: () => string[]): CliCo
 			},
 		],
 	};
-	const model: CliCommand<WocliExecution> = {
+	const model: CliCommand<CliExecution> = {
 		name: 'model',
 		description: 'Manage the AI model catalog and default model',
 		commands: [

@@ -1,15 +1,55 @@
 import { type CliCommand, type CliOptions, CliUsageError } from '@wener/common/cli';
+import { getCliOutputOptions } from '@wener/common/cli/getCliOutputOptions';
 import { type CliMcpServerConfig, redactMcpArgs, sanitizeMcpUrl } from 'common/context';
+import { formatJsonSchemaTypeScriptExpression } from 'common/utils';
 import { optionString, readCommandText, writeCommandOutput } from '../command-utils';
-import type { WocliCommand, WocliExecution, WocliMcpConnection } from '../createWocliCli';
+import type { WoctlCommand, CliExecution, WocliMcpConnection } from '../createCli';
 
 type ServerEntry = { name: string; config: CliMcpServerConfig };
 
-function servers(context: WocliExecution): ServerEntry[] {
+const typescriptOption = { name: 'typescript', type: 'boolean' as const, description: 'Show tool contracts as TypeScript' };
+
+function writeToolInfo(
+	server: string,
+	tool: Awaited<ReturnType<WocliMcpConnection['listTools']>>[number],
+	options: CliOptions,
+	context: CliExecution,
+) {
+	if (options.typescript !== true) return writeCommandOutput({ server, ...tool }, options, context);
+	writeToolContracts([tool], context, server);
+}
+
+function writeToolContracts(
+	tools: Awaited<ReturnType<WocliMcpConnection['listTools']>>,
+	context: CliExecution,
+	server?: string,
+) {
+	const title = server?.split(/[^\p{L}\p{N}$]+/u).filter(Boolean)
+		.map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join('') || 'Mcp';
+	const interfaceName = `${/^[\p{ID_Start}_$]/u.test(title) ? title : `Mcp${title}`}Tools`;
+	const schemaType = (value: unknown) => formatJsonSchemaTypeScriptExpression(
+		value && typeof value === 'object' && !Array.isArray(value)
+			? value as Parameters<typeof formatJsonSchemaTypeScriptExpression>[0]
+			: undefined,
+	);
+	const methods = tools.map((tool) => {
+		const toolName = String(tool.name);
+		const name = /^[A-Za-z_$][\w$]*$/u.test(toolName) ? toolName : JSON.stringify(toolName);
+		const description = typeof tool.description === 'string' && tool.description
+			? `  /** ${tool.description.replace(/\*\//gu, '* /').replace(/[\r\n]/gu, ' ')} */\n`
+			: '';
+		const input = schemaType(tool.inputSchema);
+		const output = schemaType(tool.outputSchema);
+		return `${description}  ${`${name}(input: ${input}): Promise<${output}>;`.replace(/\n/gu, '\n  ')}`;
+	});
+	context.stdout(`export interface ${interfaceName} {\n${methods.join('\n')}\n}\n`);
+}
+
+function servers(context: CliExecution): ServerEntry[] {
 	return Object.entries(context.getConfigContext().mcpServers ?? {}).map(([name, config]) => ({ name, config }));
 }
 
-function selectServer(context: WocliExecution, name: string): ServerEntry {
+function selectServer(context: CliExecution, name: string): ServerEntry {
 	const server = servers(context).find((entry) => entry.name === name);
 	if (!server) throw new CliUsageError(`Unknown MCP server: ${name}`);
 	if (server.config.enabled === false) throw new CliUsageError(`MCP server is disabled: ${name}`);
@@ -30,7 +70,7 @@ function adHocServer(options: CliOptions): ServerEntry | undefined {
 	return { name, config: { transport: 'http', url, enabled: true } };
 }
 
-function selectCommandServer(context: WocliExecution, name: string | undefined, options: CliOptions): ServerEntry {
+function selectCommandServer(context: CliExecution, name: string | undefined, options: CliOptions): ServerEntry {
 	const adhoc = adHocServer(options);
 	if (adhoc) {
 		if (name !== undefined && name !== adhoc.name) throw new CliUsageError(`Unknown ad hoc MCP server: ${name}`);
@@ -40,7 +80,7 @@ function selectCommandServer(context: WocliExecution, name: string | undefined, 
 	return selectServer(context, name);
 }
 
-async function connectEntry(context: WocliExecution, entry: ServerEntry): Promise<WocliMcpConnection> {
+async function connectEntry(context: CliExecution, entry: ServerEntry): Promise<WocliMcpConnection> {
 	if (!context.host.mcp) throw new CliUsageError('MCP is only available in the Node CLI');
 	return context.host.mcp.connect(entry.config, context.signal);
 }
@@ -78,7 +118,7 @@ function jsonOption(options: CliOptions): boolean {
 	return options.json === true;
 }
 
-function listCommand(): CliCommand<WocliExecution> {
+function listCommand(): CliCommand<CliExecution> {
 	return {
 		name: 'servers',
 		aliases: ['list'],
@@ -90,11 +130,12 @@ function listCommand(): CliCommand<WocliExecution> {
 	};
 }
 
-function toolsCommand(): CliCommand<WocliExecution> {
+function toolsCommand(): CliCommand<CliExecution> {
 	return {
 		name: 'tools',
-		arguments: '[server]',
-		description: 'List MCP tools',
+		arguments: '[server] [tool]',
+		description: 'List MCP tool names, or inspect one tool',
+		options: [typescriptOption],
 		async run({ args, options }, context) {
 			const adhoc = adHocServer(options);
 			const selected = args[0] || adhoc
@@ -104,17 +145,35 @@ function toolsCommand(): CliCommand<WocliExecution> {
 			for (const server of selected) {
 				const client = await connectEntry(context, server);
 				try {
-					for (const tool of await client.listTools(context.signal)) rows.push({ server: server.name, ...tool });
+					const tools = await client.listTools(context.signal);
+					if (args[1]) {
+						const tool = tools.find((item) => item.name === args[1]);
+						if (!tool) throw new CliUsageError(`Unknown MCP tool: ${args[1]}`);
+						writeToolInfo(server.name, tool, options, context);
+						return;
+					}
+					for (const tool of tools) rows.push({ server: server.name, ...tool });
 				} finally {
 					await client.close();
 				}
 			}
-			writeCommandOutput(rows, options, context);
+			if (options.typescript === true) {
+				return writeToolContracts(rows.map((tool) => ({
+					...tool, name: selected.length > 1 ? `${tool.server}/${tool.name}` : tool.name,
+				})), context, selected.length === 1 ? selected[0].name : undefined);
+			}
+			const output = getCliOutputOptions(context, options);
+			if (output.fields?.length || options.output !== undefined || options.json === true) {
+				writeCommandOutput(rows, options, context);
+				return;
+			}
+			const names = rows.map((tool) => selected.length > 1 ? `${tool.server}/${tool.name}` : String(tool.name));
+			if (names.length) context.stdout(`${names.join('\n')}\n`);
 		},
 	};
 }
 
-function resourcesCommand(): CliCommand<WocliExecution> {
+function resourcesCommand(): CliCommand<CliExecution> {
 	return {
 		name: 'resources',
 		arguments: '[server]',
@@ -139,7 +198,7 @@ function resourcesCommand(): CliCommand<WocliExecution> {
 	};
 }
 
-function readCommand(): CliCommand<WocliExecution> {
+function readCommand(): CliCommand<CliExecution> {
 	return {
 		name: 'read',
 		arguments: '<server> <uri>',
@@ -158,14 +217,15 @@ function readCommand(): CliCommand<WocliExecution> {
 	};
 }
 
-function infoCommand(): CliCommand<WocliExecution> {
+function infoCommand(): CliCommand<CliExecution> {
 	return {
 		name: 'info',
 		arguments: '<server> [tool]',
 		description: 'Show MCP server or tool information',
+		options: [typescriptOption],
 		async run({ args, options }, context) {
 			const entry = selectCommandServer(context, args[0], options);
-			if (!args[1]) {
+			if (!args[1] && options.typescript !== true) {
 				const client = await connectEntry(context, entry);
 				try {
 					writeCommandOutput({ server: safeServer(entry), info: client.serverInfo ?? null }, options, context);
@@ -176,9 +236,11 @@ function infoCommand(): CliCommand<WocliExecution> {
 			}
 			const client = await connectEntry(context, entry);
 			try {
-				const tool = (await client.listTools(context.signal)).find((item) => item.name === args[1]);
+				const tools = await client.listTools(context.signal);
+				if (!args[1]) return writeToolContracts(tools, context, entry.name);
+				const tool = tools.find((item) => item.name === args[1]);
 				if (!tool) throw new CliUsageError(`Unknown MCP tool: ${args[1]}`);
-				writeCommandOutput({ server: entry.name, ...tool }, options, context);
+				writeToolInfo(entry.name, tool, options, context);
 			} finally {
 				await client.close();
 			}
@@ -186,7 +248,7 @@ function infoCommand(): CliCommand<WocliExecution> {
 	};
 }
 
-function callCommand(): CliCommand<WocliExecution> {
+function callCommand(): CliCommand<CliExecution> {
 	return {
 		name: 'call',
 		arguments: '<server> <tool> [input]',
@@ -216,7 +278,7 @@ function callCommand(): CliCommand<WocliExecution> {
 	};
 }
 
-function grepCommand(): CliCommand<WocliExecution> {
+function grepCommand(): CliCommand<CliExecution> {
 	return {
 		name: 'grep',
 		arguments: '<pattern>',
@@ -244,10 +306,10 @@ function grepCommand(): CliCommand<WocliExecution> {
 	};
 }
 
-export function createMcpCommand(): WocliCommand {
+export function createMcpCommand(): WoctlCommand {
 	return {
 		name: 'mcp',
-		serviceProvider: 'mcp',
+		hostCapability: 'mcp',
 		description: 'MCP servers, tools, resources and calls',
 		options: [
 			{ name: 'url', description: 'Temporary HTTP MCP URL; not saved to configuration' },

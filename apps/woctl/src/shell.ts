@@ -3,12 +3,12 @@ import { createMemoryCliConfigStore } from 'common/context';
 import type { Command } from 'just-bash/browser';
 import { APP_NAME } from './const';
 import { createDefaultConfig } from './core';
-import { type WocliHost } from './createWocliCli';
-import { createWocliWebCli } from './web';
+import { type CliHost } from './createCli';
+import { createWebCli } from './web';
 
 /** 沿用参考 wcli 的 custom command 设计；Bash 负责 argv、管道和重定向。 */
-export function createWocliShellCommand(
-	host: Omit<WocliHost, 'config'> & Pick<Partial<WocliHost>, 'config'> = {},
+export function createShellCommand(
+	host: Omit<CliHost, 'config'> & Pick<Partial<CliHost>, 'config'> = {},
 ): Command {
 	const config = host.config ?? createMemoryCliConfigStore(createDefaultConfig());
 	return {
@@ -19,7 +19,7 @@ export function createWocliShellCommand(
 			const signal = context.signal ?? new AbortController().signal;
 			const line = (text: string) => (text.endsWith('\n') ? text : `${text}\n`);
 			try {
-				const cli = createWocliWebCli({
+				const cli = createWebCli({
 					...host,
 					config,
 					env: host.env ?? Object.fromEntries(context.env),

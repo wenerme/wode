@@ -1,12 +1,12 @@
 import { createMemoryCliConfigStore } from 'common/context';
 import { describe, expect, it, vi } from 'vitest';
-import { createWocliCli } from './createWocliCli';
+import { createCli } from './createCli';
 
 function fixture(readOnly = true) {
 	const fetch = vi.fn<typeof globalThis.fetch>(async () => Response.json([{ appId: 'sample' }]));
 	const readText = vi.fn(async () => '{"title":"release"}');
 	const getEnv = vi.fn(() => 'fixture-token');
-	const cli = createWocliCli({
+	const cli = createCli({
 		config: createMemoryCliConfigStore({ services: [{
 			name: 'settings', type: 'apollo', readOnly,
 			options: {
