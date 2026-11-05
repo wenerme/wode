@@ -215,7 +215,7 @@ console.log(`AccessToken`, await client.options.accessToken.get());
   - 未测试过 Windows
 
 ```bash
-just -f ../../just/packages/wener-client.just run-bun
+just run-bun
 # 执行测试，会输出 10 条消息
 WWF_CORP_ID=ID WWF_CORP_SECRET=SECRET bun test ./src/wecom/archive/bun/WeWorkFinanceClient.bun.test.ts
 ```

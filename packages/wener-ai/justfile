@@ -1,0 +1,8 @@
+import '../../just/package.just'
+
+[no-cd]
+build: package-swc-build
+
+[no-cd]
+publish:
+    just -f "{{ justfile_directory() }}/../../just/package.just" package-publish

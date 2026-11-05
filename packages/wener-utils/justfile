@@ -1,4 +1,4 @@
-import '../package.just'
+import '../../just/package.just'
 
 [no-cd]
 fmt-pkg:
@@ -14,7 +14,7 @@ dev:
 [no-cd]
 build-lib:
     pnpm exec node scripts/generate-slugify-data.mjs --check
-    just -f "{{ justfile_directory() }}/../package.just" package-swc-build lib false json-css false
+    just -f "{{ justfile_directory() }}/../../just/package.just" package-swc-build lib false json-css false
 
 [no-cd]
 check-syntax:
@@ -23,4 +23,4 @@ check-syntax:
 
 [no-cd]
 publish: build-lib
-    just -f "{{ justfile_directory() }}/../package.just" package-publish
+    just -f "{{ justfile_directory() }}/../../just/package.just" package-publish

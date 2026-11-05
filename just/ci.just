@@ -2,7 +2,7 @@ ci:
     #!/usr/bin/env bash
     set -euo pipefail
     pnpm install --frozen-lockfile
-    for file in justfile just/*.just just/apps/*.just just/packages/*.just; do
+    for file in justfile just/*.just packages/*/justfile apps/*/justfile; do
         just --unstable --fmt --check --justfile "$file"
     done
     just buf-fmt

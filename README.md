@@ -67,16 +67,16 @@ Run commands from the repository root unless a command includes `-C`.
 
 Vite and Vitest own the repository's test workflow. New test files should import test APIs from `vitest` and run through `pnpm exec vitest run` or the package script that wraps it.
 
-The root [`justfile`](justfile) imports reusable domain recipes from `just/*.just`. Recipes that operate in the caller's package use `[no-cd]`, so the same file can be reused without duplicating a Makefile in every package:
+The root [`justfile`](justfile) imports reusable domain recipes from `just/*.just`. Only base recipes meant for reuse across packages/apps live under `just/`; each package or app owns its own `justfile` that imports that base with `[no-cd]`, so the same base file can be reused without duplicating a Makefile in every package:
 
 ```bash
 cd packages/wener-common
-just -f ../../just/package.just package-fmt
-just -f ../../just/package.just package-typecheck
-just -f ../../just/packages/wener-common.just build
+just package-fmt
+just package-typecheck
+just build
 ```
 
-Package-specific build and publish behavior belongs in `just/packages/*.just`; workspace-wide orchestration belongs in `just/workspace.just`, `just/ci.just`, and the domain files for Proto, components, and server entrypoints.
+Package-specific build and publish behavior belongs in `packages/<name>/justfile` or `apps/<name>/justfile`; workspace-wide orchestration belongs in `just/workspace.just`, `just/ci.just`, and the domain files for Proto, components, and server entrypoints.
 
 ## UI package
 
