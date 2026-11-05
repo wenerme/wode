@@ -1,7 +1,7 @@
 import { describe, expect, test, vi } from 'vitest';
 import { createServiceCliCommand } from '../../cli/createServiceCliCommand';
 import type { ServiceCliOptions } from '../../cli/ServiceCliDefinition';
-import { LinearServiceProvider } from '../../providers/linear';
+import { LinearServiceProvider } from '../LinearServiceProvider';
 import type { LinearServiceClient } from '../client';
 import { LinearMethodInputs, LinearMethodOutputs, LinearServiceContract, LinearTools } from '../LinearServiceContract';
 import { LinearOperations } from '../operations';

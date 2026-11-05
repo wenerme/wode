@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { SqlServiceProvider } from '../providers/sql';
+import { SqlServiceProvider } from './SqlServiceProvider';
 import { ServiceRegistry, type ServiceProviderDefinition } from '../registry';
 import { createServiceProviderAdapter } from '../runtime/createServiceProviderAdapter';
 import { SqlTools } from '../runtime/sql-tools';

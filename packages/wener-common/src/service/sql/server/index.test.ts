@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { SqlServiceProvider } from '../../providers/sql';
+import { SqlServiceProvider } from '../SqlServiceProvider';
 import { createSqlService } from './index';
 import { isReadOnlySQL } from '../readonly';
 import type { SQLExecutionResult, SqlAdapter } from '../types';

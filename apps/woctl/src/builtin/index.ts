@@ -1,15 +1,15 @@
 import { ApolloServiceProvider } from '@wener/common/service/apollo';
 import { OpenObserveServiceProvider } from '@wener/common/service/openobserve';
 import { PrometheusServiceProvider } from '@wener/common/service/prometheus';
-import { BaseFetchServiceProvider } from '@wener/common/service/providers/base';
-import { DuckDuckGoSearchServiceProvider } from '@wener/common/service/providers/duckduckgo';
-import { ExaServiceProvider } from '@wener/common/service/providers/exa';
-import { JinaFetchServiceProvider } from '@wener/common/service/providers/jina';
-import { SqlServiceProvider } from '@wener/common/service/providers/sql';
-import { RedisServiceProvider } from '@wener/common/service/providers/redis';
-import { LinearServiceProvider } from '@wener/common/service/providers/linear';
-import { EdgeTtsServiceProvider } from '@wener/common/service/providers/edge-tts';
-import { OpenAiTtsServiceProvider } from '@wener/common/service/providers/openai-tts';
+import { BaseFetchServiceProvider } from '@wener/common/service/provider/base';
+import { DuckDuckGoSearchServiceProvider } from '@wener/common/service/provider/duckduckgo';
+import { ExaServiceProvider } from '@wener/common/service/provider/exa';
+import { JinaFetchServiceProvider } from '@wener/common/service/provider/jina';
+import { SqlServiceProvider } from '@wener/common/service/sql';
+import { RedisServiceProvider } from '@wener/common/service/redis';
+import { LinearServiceProvider } from '@wener/common/service/linear';
+import { EdgeTtsServiceProvider } from '@wener/common/service/provider/edge-tts';
+import { OpenAiTtsServiceProvider } from '@wener/common/service/provider/openai-tts';
 import type { ServiceRegistry } from '@wener/common/service/registry';
 import { createServiceProviderAdapter } from '@wener/common/service/runtime';
 

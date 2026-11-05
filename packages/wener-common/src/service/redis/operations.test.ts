@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { RedisServiceProvider } from '../providers/redis';
+import { RedisServiceProvider } from './RedisServiceProvider';
 import { ServiceRegistry, type ServiceProviderDefinition } from '../registry';
 import { createServiceProviderAdapter } from '../runtime/createServiceProviderAdapter';
 import type { IRedisService } from './IRedisService';

@@ -7,7 +7,7 @@ import { promisify } from 'node:util';
 import { describe, expect, expectTypeOf, it, vi } from 'vitest';
 import type { z } from 'zod';
 import { normalizeCliServices } from '../config';
-import { SqlServiceProvider } from '../providers/sql';
+import { SqlServiceProvider } from './SqlServiceProvider';
 import { createServiceProviderAdapter } from '../runtime/createServiceProviderAdapter';
 import { createServiceRuntime } from '../runtime/createServiceRuntime';
 import { ServiceProviderRegistry } from '../runtime/ServiceProviderRegistry';

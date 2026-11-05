@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { z } from 'zod';
-import { ExaServiceProvider } from '../providers/exa';
-import { SqlServiceProvider } from '../providers/sql';
+import { ExaServiceProvider } from '../provider/exa/ExaServiceProvider';
+import { SqlServiceProvider } from '../sql/SqlServiceProvider';
 import { createServiceProviderAdapter } from './createServiceProviderAdapter';
 import { getServiceOptionsJsonSchema } from './getServiceOptionsJsonSchema';
 import type { ServiceOptionsSchema } from './types';

@@ -1,5 +1,5 @@
 import { defineServiceCliBinding } from '../../cli/ServiceCliBinding';
-import { LinearServiceProvider } from '../../providers/linear';
+import { LinearServiceProvider } from '../LinearServiceProvider';
 import { createLinearServiceToolClient } from '../client';
 import { LinearCliDefinition } from './commands';
 

@@ -47,7 +47,7 @@ Use `ServiceCliDefinition<S>` for argument preparation and output projection, th
 
 ```ts
 import { defineServiceCliBinding } from '@wener/common/service/cli';
-import { SqlServiceProvider } from '@wener/common/service/providers/sql';
+import { SqlServiceProvider } from '@wener/common/service/sql';
 import { SQLCliDefinition } from '@wener/common/service/sql/cli';
 import { createSqlServiceToolClient } from '@wener/common/service/sql/client';
 

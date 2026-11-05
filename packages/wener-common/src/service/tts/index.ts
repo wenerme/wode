@@ -8,8 +8,6 @@ export type {
 	TtsVoiceList,
 	TtsVoiceQuery,
 } from '@wener/client/tts';
-export { EdgeTtsServiceProvider } from '../providers/edge-tts';
-export { OpenAiTtsServiceProvider } from '../providers/openai-tts';
 export { createTtsServiceToolClient } from './client';
 export * from './config';
 export { TtsServiceContract } from './TtsServiceContract';

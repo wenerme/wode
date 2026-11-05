@@ -72,7 +72,7 @@ The public package entries are:
 - `@wener/common/service/linear`: service interface and implementation, configuration, schemas, contract and typed operations.
 - `@wener/common/service/linear/client`: tool-transport client.
 - `@wener/common/service/linear/cli`: command definition and CLI binding.
-- `@wener/common/service/providers/linear`: provider definition.
+- `@wener/common/service/linear`: provider definition.
 
 The service accepts an injected adapter; the HTTP adapter accepts injected fetch and retry sleep. Calls support cancellation, request timeout and response-size limits. Retryable read requests have a bounded retry budget; mutations are never automatically replayed. Closing the adapter cancels and waits for active operations. Provider registration and contract discovery are static.
 

@@ -2,7 +2,7 @@ import type { TtsAudio, TtsRequest, TtsVoiceList } from '@wener/client/tts';
 import { TTS_MAX_TEXT_BYTES } from '@wener/client/tts';
 import { type CliOptions, CliUsageError } from '@wener/common/cli';
 import { createServiceProviderAdapter, createServiceRuntime, ServiceProviderRegistry, type ServiceRuntimeClient } from '@wener/common/service/runtime';
-import { EdgeTtsServiceProvider } from '@wener/common/service/providers/edge-tts';
+import { EdgeTtsServiceProvider } from '@wener/common/service/provider/edge-tts';
 import { preflightTtsRequest, TtsRequestSchema } from '@wener/common/service/tts';
 import { createTtsServiceToolClient } from '@wener/common/service/tts/client';
 import { optionNumber, optionString, readCommandText, writeCommandOutput } from '../command-utils';

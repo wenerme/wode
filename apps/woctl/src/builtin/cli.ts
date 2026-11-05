@@ -8,8 +8,8 @@ import { createGrafanaServiceToolClient } from '@wener/common/service/grafana/cl
 import { PrometheusServiceProvider } from '@wener/common/service/prometheus';
 import { PrometheusCliDefinition } from '@wener/common/service/prometheus/cli';
 import { createPrometheusServiceToolClient } from '@wener/common/service/prometheus/client';
-import { RedisServiceProvider } from '@wener/common/service/providers/redis';
-import { SqlServiceProvider } from '@wener/common/service/providers/sql';
+import { RedisServiceProvider } from '@wener/common/service/redis';
+import { SqlServiceProvider } from '@wener/common/service/sql';
 import { RedisCliDefinition } from '@wener/common/service/redis/cli';
 import { createRedisServiceToolClient } from '@wener/common/service/redis/client';
 import { S3ServiceProvider } from '@wener/common/service/s3';

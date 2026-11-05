@@ -1,5 +1,5 @@
 import { describe, expect, test, vi } from 'vitest';
-import { LinearServiceProvider } from '../providers/linear';
+import { LinearServiceProvider } from './LinearServiceProvider';
 import { ServiceRegistry, type ServiceProviderDefinition } from '../registry';
 import { createServiceProviderAdapter } from '../runtime/createServiceProviderAdapter';
 import { getServiceOptionsJsonSchema } from '../runtime/getServiceOptionsJsonSchema';

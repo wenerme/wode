@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
-import { createBaseFetchService } from '../providers/base';
-import { createJinaFetchService } from '../providers/jina';
+import { createBaseFetchService } from '../provider/base/BaseFetchServiceProvider';
+import { createJinaFetchService } from '../provider/jina/JinaFetchServiceProvider';
 import { decodeHtmlEntities, extractMainMarkdown, htmlToReadableMarkdown } from './content';
 
 describe('normalized page content', () => {
