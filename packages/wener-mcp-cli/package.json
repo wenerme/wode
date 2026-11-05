@@ -50,7 +50,6 @@
 		"common": "workspace:^1.0.0",
 		"esbuild": "^0.28.2",
 		"smol-toml": "^1.8.0",
-		"ts-node": "^10.9.2",
 		"tsx": "^4.23.15",
 		"typescript": "7.0.2",
 		"vite": "catalog:",
