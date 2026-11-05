@@ -1,5 +1,7 @@
 import type { ServiceProviderDefinition } from '../registry';
 import { createSqlService } from '../sql/createSqlService';
+import { SqlServiceContract } from '../sql/contract';
+import { SqlOperations } from '../sql/operations';
 import { z } from 'zod';
 
 export const SqlServiceOptionsSchema = z.strictObject({
@@ -13,9 +15,17 @@ export const SqlServiceOptionsSchema = z.strictObject({
 
 export const SqlServiceProvider: ServiceProviderDefinition<'sql'> = {
 	name: 'sql',
+	title: 'SQL database',
+	description: 'Query and inspect SQLite and PostgreSQL databases using the host SQL driver.',
+	examples: [
+		{ command: 'woctl sql query "SELECT 1 AS value"', description: 'Run a read-only query.' },
+		{ command: 'woctl sql ping', description: 'Check the database connection.' },
+	],
 	aliases: ['sqlite', 'postgres', 'postgresql', 'pg'],
 	provides: ['sql'],
 	optionsSchema: SqlServiceOptionsSchema,
+	contract: SqlServiceContract,
+	operations: SqlOperations,
 	async create(context) {
 		if (typeof context.sqlDriver !== 'function') throw new Error('SQL driver is unavailable');
 		const maxRowLimit = context.config.options?.maxRowLimit;

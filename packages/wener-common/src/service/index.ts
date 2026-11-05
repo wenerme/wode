@@ -11,3 +11,6 @@ export * from './registry';
 export * from './runtime';
 export type * from './search';
 export type * from './sql/types';
+export * from './redis';
+export * from './linear';
+export * from './tts';

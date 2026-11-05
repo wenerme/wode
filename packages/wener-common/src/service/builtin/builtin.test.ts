@@ -17,12 +17,17 @@ describe('registered domain services', () => {
 		);
 		expect(registry.listProviders().map((item) => item.name)).toEqual([
 			'duckduckgo',
+			'exa',
 			'jina',
 			'base',
 			'sql',
+			'redis',
 			'openobserve',
 			'apollo',
 			'prometheus',
+			'linear',
+			'edge-tts',
+			'openai-tts',
 		]);
 		expect(fetch).not.toHaveBeenCalled();
 		const service = await registry.load('search', 'web');

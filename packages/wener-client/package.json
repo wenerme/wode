@@ -29,10 +29,14 @@
 		"./browserless": "./src/browserless/index.ts",
 		"./cubejs": "./src/cubejs/index.ts",
 		"./funasr": "./src/funasr/index.ts",
+		"./grafana": "./src/grafana/index.ts",
 		"./duckduckgo": "./src/duckduckgo/index.ts",
 		"./exa": "./src/exa/index.ts",
 		"./honcho": "./src/honcho/index.ts",
 		"./jina": "./src/jina/index.ts",
+		"./linear": "./src/linear/index.ts",
+		"./tts": "./src/tts/index.ts",
+		"./tts/node": "./src/tts/node.ts",
 		"./openobserve": "./src/openobserve/index.ts",
 		"./prometheus": "./src/prometheus/index.ts",
 		"./openai": "./src/openai/index.ts",
@@ -83,10 +87,14 @@
 		"zod": "^4.6.5"
 	},
 	"peerDependencies": {
-		"hono": "^4.13.0"
+		"hono": "^4.13.0",
+		"ws": "^8.22.0"
 	},
 	"peerDependenciesMeta": {
 		"hono": {
+			"optional": true
+		},
+		"ws": {
 			"optional": true
 		}
 	},
@@ -100,6 +108,7 @@
 		"@sinclair/typebox": "^0.34.52",
 		"@types/bun": "^1.4.2",
 		"@types/node-rsa": "^1.1.4",
+		"@types/ws": "^8.18.2",
 		"@wecom/jssdk": "^2.4.4",
 		"ajv": "^8.20.0",
 		"ai": "^7.0.137",
@@ -120,6 +129,12 @@
 	},
 	"publishConfig": {
 		"exports": {
+			"./tts": { "types": "./src/tts/index.ts", "default": "./lib/tts/index.js" },
+			"./tts/node": { "types": "./src/tts/node.ts", "default": "./lib/tts/node.js" },
+			"./linear": {
+				"types": "./src/linear/index.ts",
+				"default": "./lib/linear/index.js"
+			},
 			"./ai/message-generation": {
 				"types": "./src/ai/message-generation/index.ts",
 				"default": "./lib/ai/message-generation/index.js"
@@ -187,6 +202,10 @@
 			"./funasr": {
 				"types": "./src/funasr/index.ts",
 				"default": "./lib/funasr/index.js"
+			},
+			"./grafana": {
+				"types": "./src/grafana/index.ts",
+				"default": "./lib/grafana/index.js"
 			},
 			"./duckduckgo": {
 				"types": "./src/duckduckgo/index.ts",

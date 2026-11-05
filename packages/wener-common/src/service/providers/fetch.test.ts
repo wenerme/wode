@@ -23,7 +23,7 @@ describe('base fetch service', () => {
 
 		await expect(service.fetch({ url: 'https://example.test/page' })).resolves.toEqual({
 			url: 'https://example.test/page',
-			content: '<h1>Example</h1>',
+			content: '# Example',
 			contentType: 'text/html; charset=utf-8',
 		});
 	});

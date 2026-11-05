@@ -1,19 +1,24 @@
-import type { CliServiceConfig } from '../config';
-import type { IFetchService } from '../fetch';
-import type { ServiceProviderDefinition } from '../registry';
 import { z } from 'zod';
-
-export const BaseFetchServiceOptionsSchema = z.strictObject({});
+import type { CliServiceConfig } from '../config';
+import { type IFetchService, parseFetchRequest } from '../fetch';
+import {
+	extractHtmlTitle,
+	htmlToReadableMarkdown,
+	normalizeFetchContent,
+	responseSecrets,
+	sanitizeServiceResponse,
+} from '../fetch/content';
+import type { ServiceProviderDefinition } from '../registry';
 import {
 	assertSupportedKeys,
 	type FetchImplementation,
 	getCallSignal,
-	limitContent,
 	normalizeHeaders,
-	parseFetchRequest,
 	sanitizeFetchError,
 	throwIfAborted,
 } from './fetch-utils';
+
+export const BaseFetchServiceOptionsSchema = z.strictObject({});
 
 export interface BaseFetchServiceOptions {
 	fetch?: FetchImplementation;
@@ -46,19 +51,36 @@ export function createBaseFetchService(options: BaseFetchServiceOptions = {}): I
 			async fetch(input, callOptions) {
 				const signal = getCallSignal(callOptions);
 				throwIfAborted(signal);
-				const { url, maxCharacters } = parseFetchRequest(input);
+				const request = parseFetchRequest(input);
+				const { url } = request;
 				try {
-					const response = await fetcher(url, { ...(headers ? { headers } : {}), ...(signal ? { signal } : {}) });
+					const response = await fetcher(url, {
+						...(headers ? { headers } : {}),
+						...(signal ? { signal } : {}),
+						...(request.live ? { cache: 'no-store' } : {}),
+					});
 					throwIfAborted(signal);
 					if (!response.ok) throw new Error('HTTP response was not successful');
-					const content = await response.text();
+					const body = await response.text();
 					throwIfAborted(signal);
 					const contentType = response.headers.get('content-type') ?? undefined;
-					return {
+					const isHtml = Boolean(contentType?.toLowerCase().includes('html')) || /<html[\s>]/iu.test(body);
+					const title = isHtml ? extractHtmlTitle(body) : undefined;
+					const result = {
 						url: response.url || url,
-						content: limitContent(content, maxCharacters),
+						content: normalizeFetchContent(
+							isHtml ? htmlToReadableMarkdown(body, request.main !== false) : body,
+							request,
+							title,
+						),
 						...(contentType ? { contentType } : {}),
+						...(title ? { title } : {}),
+						...(request.metadata ? { metadata: { status: response.status, statusText: response.statusText } } : {}),
+						...(request.raw
+							? { raw: { url: response.url || url, status: response.status, contentType, content: body } }
+							: {}),
 					};
+					return sanitizeServiceResponse(result, responseSecrets(headers)) as typeof result;
 				} catch (error) {
 					throwIfAborted(signal);
 					if (error instanceof Error && error.message === 'HTTP response was not successful')

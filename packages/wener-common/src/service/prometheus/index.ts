@@ -15,6 +15,7 @@ import {
 import { z } from 'zod';
 import type { ServiceProviderDefinition } from '../registry';
 import type { ServiceProviderContext } from '../runtime/types';
+import { PrometheusOperations } from './operations';
 
 export { sanitizePrometheusOutput } from './sanitize';
 export type {
@@ -95,9 +96,16 @@ function clientOptions({ config, getEnv }: ServiceProviderContext): PrometheusCl
 
 export const PrometheusServiceProvider: ServiceProviderDefinition<'prometheus'> = {
 	name: 'prometheus',
+	title: 'Prometheus',
+	description: 'Query Prometheus metrics and discover series, labels and metric metadata.',
+	examples: [
+		{ command: 'woctl prometheus query up', description: 'Query the current target health.' },
+		{ command: 'woctl prometheus labels', description: 'List available label names.' },
+	],
 	aliases: ['prom'],
 	provides: ['prometheus'],
 	optionsSchema: PrometheusServiceOptionsSchema,
+	operations: PrometheusOperations,
 	create(context) {
 		if (context.config.readOnly === false) throw new Error('Prometheus service must be read-only');
 		const client = new PrometheusClient({ ...clientOptions(context), fetch: context.fetch });

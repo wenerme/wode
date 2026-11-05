@@ -1,4 +1,6 @@
 import type { SqlAdapterFactory } from '../sql/types';
+import type { RedisAdapterFactory } from '../redis';
+import type { EdgeTtsSocketFactory } from '@wener/client/tts';
 import { resolveCliServiceConfigEnv } from '../config';
 import { getEnabledService } from './getEnabledService';
 import type { ServiceProviderRegistry } from './ServiceProviderRegistry';
@@ -10,6 +12,8 @@ export function createServiceRuntime(options: {
 	providers: ServiceProviderRegistry;
 	fetch?: typeof globalThis.fetch;
 	sqlDriver?: SqlAdapterFactory;
+	redisDriver?: RedisAdapterFactory;
+	edgeTtsSocketFactory?: EdgeTtsSocketFactory;
 	getEnv?(name: string): string | undefined;
 }): ServiceRuntimeClient & { close(): Promise<void> } {
 	const context: ResolvedServiceContext = structuredClone({
@@ -31,6 +35,8 @@ export function createServiceRuntime(options: {
 					context,
 					fetch: options.fetch ?? globalThis.fetch.bind(globalThis),
 					sqlDriver: options.sqlDriver,
+					redisDriver: options.redisDriver,
+					edgeTtsSocketFactory: options.edgeTtsSocketFactory,
 					getEnv: options.getEnv,
 				}),
 			);

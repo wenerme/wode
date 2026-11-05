@@ -25,6 +25,15 @@
 		"./service/search": "./src/service/search/index.ts",
 		"./service/fetch": "./src/service/fetch/index.ts",
 		"./service/sql": "./src/service/sql/index.ts",
+		"./service/redis": "./src/service/redis/index.ts",
+		"./service/linear": "./src/service/linear/index.ts",
+		"./service/tts": "./src/service/tts/index.ts",
+		"./service/tts/client": "./src/service/tts/client.ts",
+		"./service/providers/edge-tts": "./src/service/providers/edge-tts.ts",
+		"./service/providers/openai-tts": "./src/service/providers/openai-tts.ts",
+		"./service/linear/client": "./src/service/linear/client.ts",
+		"./service/linear/cli": "./src/service/linear/cli/index.ts",
+		"./service/providers/linear": "./src/service/providers/linear.ts",
 		"./service/sql/client": "./src/service/sql/client.ts",
 		"./service/sql/cli": "./src/service/sql/cli/index.ts",
 		"./service/providers/sql": "./src/service/providers/sql.ts",
@@ -37,7 +46,9 @@
 		"./service/prometheus/cli": "./src/service/prometheus/cli.ts",
 		"./service/prometheus/client": "./src/service/prometheus/client.ts",
 		"./service/builtin": "./src/service/builtin/index.ts",
+		"./service/builtin/cli": "./src/service/builtin/cli.ts",
 		"./service/providers/jina": "./src/service/providers/jina.ts",
+		"./service/providers/exa": "./src/service/providers/exa.ts",
 		"./service/providers/base": "./src/service/providers/base.ts",
 		"./service/cli": "./src/service/cli/index.ts",
 		"./service/cli/client": "./src/service/cli/client.ts",
@@ -148,6 +159,26 @@
 	},
 	"publishConfig": {
 		"exports": {
+			"./service/tts": { "types": "./src/service/tts/index.ts", "default": "./lib/service/tts/index.js" },
+			"./service/tts/client": { "types": "./src/service/tts/client.ts", "default": "./lib/service/tts/client.js" },
+			"./service/providers/edge-tts": { "types": "./src/service/providers/edge-tts.ts", "default": "./lib/service/providers/edge-tts.js" },
+			"./service/providers/openai-tts": { "types": "./src/service/providers/openai-tts.ts", "default": "./lib/service/providers/openai-tts.js" },
+			"./service/linear": {
+				"types": "./src/service/linear/index.ts",
+				"default": "./lib/service/linear/index.js"
+			},
+			"./service/linear/client": {
+				"types": "./src/service/linear/client.ts",
+				"default": "./lib/service/linear/client.js"
+			},
+			"./service/linear/cli": {
+				"types": "./src/service/linear/cli/index.ts",
+				"default": "./lib/service/linear/cli/index.js"
+			},
+			"./service/providers/linear": {
+				"types": "./src/service/providers/linear.ts",
+				"default": "./lib/service/providers/linear.js"
+			},
 			".": {
 				"types": "./src/index.ts",
 				"default": "./lib/index.js"
@@ -187,6 +218,10 @@
 			"./service/sql": {
 				"types": "./src/service/sql/index.ts",
 				"default": "./lib/service/sql/index.js"
+			},
+			"./service/redis": {
+				"types": "./src/service/redis/index.ts",
+				"default": "./lib/service/redis/index.js"
 			},
 			"./service/sql/client": {
 				"types": "./src/service/sql/client.ts",
@@ -236,9 +271,17 @@
 				"types": "./src/service/builtin/index.ts",
 				"default": "./lib/service/builtin/index.js"
 			},
+			"./service/builtin/cli": {
+				"types": "./src/service/builtin/cli.ts",
+				"default": "./lib/service/builtin/cli.js"
+			},
 			"./service/providers/jina": {
 				"types": "./src/service/providers/jina.ts",
 				"default": "./lib/service/providers/jina.js"
+			},
+			"./service/providers/exa": {
+				"types": "./src/service/providers/exa.ts",
+				"default": "./lib/service/providers/exa.js"
 			},
 			"./service/providers/base": {
 				"types": "./src/service/providers/base.ts",

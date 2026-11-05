@@ -12,12 +12,14 @@ it('prepares arguments before creating the client and shares grouped operations'
 			{
 				name: 'example',
 				description: 'example service',
+				examples: [{ command: 'test example text echo hello', description: 'Echo text' }],
 				commands: [
 					{
 						name: 'echo',
 						group: 'text',
 						arguments: '<value>',
 						description: 'echo input',
+						examples: [{ command: 'test example text echo 00012' }],
 						async prepare({ args, readText }) {
 							if (args[0] === 'invalid') throw new Error('Invalid value');
 							const value = await readText(args[0]);
@@ -35,6 +37,10 @@ it('prepares arguments before creating the client and shares grouped operations'
 			},
 		),
 	);
+	expect(cli.describe()[0]?.examples).toEqual([{ command: 'test example text echo hello', description: 'Echo text' }]);
+	expect(cli.describe()[0]?.commands?.[0]?.commands?.[0]?.examples).toEqual([
+		{ command: 'test example text echo 00012' },
+	]);
 	const stdout = vi.fn();
 	const context = { signal: new AbortController().signal, stdout };
 	await cli.execute(['example', 'text', 'echo', '--help'], context);

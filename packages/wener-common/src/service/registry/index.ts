@@ -2,9 +2,14 @@ import type { CliServiceConfig } from '../config';
 import { CliConfigError, isCliServiceEnabled, normalizeCliServices, resolveCliServiceConfigEnv } from '../config';
 import type { IFetchService } from '../fetch';
 import type { IApolloService } from '../apollo';
+import type { IGrafanaService } from '../grafana';
 import type { IOpenObserveService } from '../openobserve';
 import type { IPrometheusService } from '../prometheus';
-import type { ResolvedServiceContext, ServiceContract, ServiceOptionsSchema, ServiceProviderContext } from '../runtime/types';
+import type { IRedisService, RedisAdapterFactory } from '../redis';
+import type { ILinearService } from '../linear';
+import type { ITtsService } from '../tts';
+import type { EdgeTtsSocketFactory } from '@wener/client/tts';
+import type { ResolvedServiceContext, ServiceContract, ServiceOperation, ServiceOptionsSchema, ServiceProviderContext, ServiceProviderMetadata } from '../runtime/types';
 import type { ISearchService } from '../search';
 import type { ISqlService, SqlAdapterFactory } from '../sql/types';
 
@@ -16,26 +21,33 @@ export interface ServiceTypeMap {
 	sql: ISqlService;
 	openobserve: IOpenObserveService;
 	prometheus: IPrometheusService;
+	grafana: IGrafanaService;
+	redis: IRedisService;
+	linear: ILinearService;
+	tts: ITtsService;
 }
 
 export type ServiceCapability = keyof ServiceTypeMap;
 
-type ServiceProviderDefinitionFor<C extends ServiceCapability> = {
+type ServiceProviderDefinitionFor<C extends ServiceCapability> = ServiceProviderMetadata & {
 	name: string;
 	aliases?: readonly string[];
 	provides: readonly C[];
 	optionsSchema?: ServiceOptionsSchema;
 	contract?: ServiceContract;
+	/** When present, this is the complete tool set, including an explicitly empty set. */
+	operations?: Readonly<Record<string, ServiceOperation<C>>>;
 	create(context: ServiceProviderContext): Pick<ServiceTypeMap, C> | Promise<Pick<ServiceTypeMap, C>>;
 };
 
 /** 接受任意单能力 provider，也接受同时提供多个能力的 provider。 */
-export type AnyServiceProviderDefinition = {
+export type AnyServiceProviderDefinition = ServiceProviderMetadata & {
 	name: string;
 	aliases?: readonly string[];
 	provides: readonly ServiceCapability[];
 	optionsSchema?: ServiceOptionsSchema;
 	contract?: ServiceContract;
+	operations?: Readonly<Record<string, ServiceOperation>>;
 	create(context: ServiceProviderContext): Partial<ServiceTypeMap> | Promise<Partial<ServiceTypeMap>>;
 };
 
@@ -49,6 +61,8 @@ export interface ServiceRegistryOptions {
 	fetch?: typeof globalThis.fetch;
 	defaults?: Partial<Record<ServiceCapability, string>>;
 	sqlDriver?: SqlAdapterFactory;
+	redisDriver?: RedisAdapterFactory;
+	edgeTtsSocketFactory?: EdgeTtsSocketFactory;
 	getEnv?(name: string): string | undefined;
 }
 
@@ -98,6 +112,8 @@ export class ServiceRegistry {
 	readonly #fetch: typeof globalThis.fetch;
 	readonly #defaults: Readonly<Partial<Record<ServiceCapability, string>>>;
 	readonly #sqlDriver: SqlAdapterFactory | undefined;
+	readonly #redisDriver: RedisAdapterFactory | undefined;
+	readonly #edgeTtsSocketFactory: EdgeTtsSocketFactory | undefined;
 	readonly #getEnv: ((name: string) => string | undefined) | undefined;
 	readonly #entries = new Map<string, ServiceEntry>();
 	readonly #instances = new Set<Record<PropertyKey, unknown>>();
@@ -118,6 +134,8 @@ export class ServiceRegistry {
 		this.#fetch = options.fetch ?? this.#defaultFetch();
 		this.#defaults = Object.freeze({ ...(options.defaults ?? {}) });
 		this.#sqlDriver = options.sqlDriver;
+		this.#redisDriver = options.redisDriver;
+		this.#edgeTtsSocketFactory = options.edgeTtsSocketFactory;
 		this.#getEnv = options.getEnv;
 		this.#services = new Map(Object.entries(services).map(([name, config]) => [name, { name, config }]));
 	}
@@ -267,6 +285,8 @@ export class ServiceRegistry {
 					context: this.#context,
 					fetch: this.#fetch,
 					sqlDriver: this.#sqlDriver,
+					redisDriver: this.#redisDriver,
+					edgeTtsSocketFactory: this.#edgeTtsSocketFactory,
 					getEnv: this.#getEnv,
 				}),
 			)
@@ -292,7 +312,7 @@ export class ServiceRegistry {
 	#validateCapability(capability: ServiceCapability, value: unknown): asserts value is Record<PropertyKey, unknown> {
 		if (!isObject(value) || typeof value.type !== 'string' || typeof value.readOnly !== 'boolean')
 			invalid('Invalid service capability');
-		if ((capability === 'search' || capability === 'fetch') && value.readOnly !== true)
+		if ((capability === 'search' || capability === 'fetch' || capability === 'redis') && value.readOnly !== true)
 			invalid('Invalid service capability');
 		if (
 			capability === 'sql' &&
@@ -301,6 +321,13 @@ export class ServiceRegistry {
 			)
 		)
 			invalid('Invalid SQL service capability');
+		if (
+			capability === 'redis' &&
+			['ping', 'get', 'getType', 'getTtl', 'scan', 'getHash', 'rangeStream', 'close'].some(
+				(method) => typeof value[method] !== 'function',
+			)
+		)
+			invalid('Invalid Redis service capability');
 		const method = capability === 'search' ? 'search' : capability === 'fetch' ? 'fetch' : undefined;
 		if (method && typeof value[method] !== 'function') invalid('Invalid service capability');
 	}

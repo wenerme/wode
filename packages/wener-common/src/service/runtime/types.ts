@@ -1,5 +1,28 @@
 import type { CliServiceConfig } from '../config';
 import type { SqlAdapterFactory } from '../sql/types';
+import type { RedisAdapterFactory } from '../redis';
+import type { EdgeTtsSocketFactory } from '@wener/client/tts';
+import type { ServiceCapability, ServiceRegistry } from '../registry';
+
+/** Static provider information shared by service discovery consumers. */
+export interface ServiceProviderMetadata {
+	title?: string;
+	description?: string;
+	documentationUrl?: string;
+	examples?: readonly { command: string; description?: string }[];
+}
+
+export interface ServiceInputValidator<I> {
+	safeParse(value: unknown): { success: true; data: I } | { success: false; error?: unknown };
+}
+
+/** The helper captures the capability/input pair before operations are collected. */
+export interface ServiceOperation<C extends ServiceCapability = ServiceCapability, O = unknown> {
+	readonly capability: C;
+	readonly tool: ServiceTool;
+	readonly input: ServiceInputValidator<unknown>;
+	execute(registry: ServiceRegistry, name: string, input: unknown, options?: ServiceCallOptions): Promise<O>;
+}
 
 export interface ResolvedServiceContext {
 	services: Readonly<Record<string, CliServiceConfig>>;
@@ -16,6 +39,7 @@ export interface ServiceTool {
 export interface ServiceOptionsSchema {
 	safeParse(value: unknown): { success: true; data: unknown } | { success: false; error?: unknown };
 	jsonSchema?: Record<string, unknown>;
+	toJSONSchema?(options: { io: 'input' }): Record<string, unknown>;
 }
 export interface ServiceMethodContract {
 	description?: string;
@@ -54,9 +78,11 @@ export interface ServiceProviderContext {
 	context: ResolvedServiceContext;
 	fetch: typeof globalThis.fetch;
 	sqlDriver?: SqlAdapterFactory;
+	redisDriver?: RedisAdapterFactory;
+	edgeTtsSocketFactory?: EdgeTtsSocketFactory;
 	getEnv?(name: string): string | undefined;
 }
-export interface ServiceProvider {
+export interface ServiceProvider extends ServiceProviderMetadata {
 	name: string;
 	/** Typed adapters resolve references when loading a capability, after schema discovery. */
 	deferConfigResolution?: boolean;
@@ -64,5 +90,7 @@ export interface ServiceProvider {
 	capabilities?: readonly string[];
 	optionsSchema?: ServiceOptionsSchema;
 	contract?: ServiceContract;
+	/** Static discovery metadata; adapters return independent clones from getSchema. */
+	tools?: Record<string, ServiceTool>;
 	create(context: ServiceProviderContext): ServiceClient | Promise<ServiceClient>;
 }

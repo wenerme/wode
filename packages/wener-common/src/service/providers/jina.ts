@@ -1,16 +1,15 @@
 import { JinaReaderClient } from '@wener/client/jina';
-import type { CliServiceConfig } from '../config';
-import type { IFetchService } from '../fetch';
-import type { ServiceProviderDefinition } from '../registry';
 import { z } from 'zod';
+import type { CliServiceConfig } from '../config';
+import { type IFetchService, parseFetchRequest } from '../fetch';
+import { normalizeFetchContent, responseSecrets, sanitizeServiceResponse } from '../fetch/content';
+import type { ServiceProviderDefinition } from '../registry';
 import {
 	assertSupportedKeys,
 	type FetchImplementation,
 	getCallSignal,
 	isPlainRecord,
-	limitContent,
 	normalizeHeaders,
-	parseFetchRequest,
 	sanitizeFetchError,
 	throwIfAborted,
 	validateHttpUrl,
@@ -94,22 +93,30 @@ export function createJinaFetchService(options: JinaFetchServiceOptions = {}): I
 		async fetch(input, callOptions) {
 			const signal = getCallSignal(callOptions);
 			throwIfAborted(signal);
-			const { url, maxCharacters } = parseFetchRequest(input);
+			const request = parseFetchRequest(input);
+			const { url } = request;
 			client ??= new JinaReaderClient(clientOptions);
 			try {
-				const response = await client.read(url, signal ? { signal } : undefined);
+				const reader = request.live
+					? new JinaReaderClient({ ...clientOptions, headers: { ...clientOptions.headers, 'x-no-cache': 'true' } })
+					: client;
+				const response = await reader.read(url, signal ? { signal } : undefined);
 				throwIfAborted(signal);
 				const data = isPlainRecord(response.data) ? response.data : {};
 				const content = typeof data.content === 'string' ? data.content : '';
 				const title = typeof data.title === 'string' ? data.title : undefined;
 				const responseUrl = typeof data.url === 'string' && data.url ? data.url : url;
 				const metadata = isPlainRecord(data.metadata) ? data.metadata : undefined;
-				return {
+				const result = {
 					url: responseUrl,
-					content: limitContent(content, maxCharacters),
+					content: normalizeFetchContent(content, request, title),
 					...(title === undefined ? {} : { title }),
-					...(metadata === undefined ? {} : { metadata }),
+					...(typeof data.description === 'string' ? { description: data.description } : {}),
+					...(typeof data.publishedTime === 'string' ? { publishedDate: data.publishedTime } : {}),
+					...(request.metadata === false || metadata === undefined ? {} : { metadata }),
+					...(request.raw ? { raw: response } : {}),
 				};
+				return sanitizeServiceResponse(result, responseSecrets(clientOptions.headers, options.apiKey)) as typeof result;
 			} catch (error) {
 				throwIfAborted(signal);
 				sanitizeFetchError(error, 'Jina fetch aborted', 'Jina fetch failed');

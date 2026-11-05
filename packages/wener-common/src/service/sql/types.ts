@@ -43,6 +43,7 @@ export interface SQLObjectDescription {
 	object: SQLObject;
 	children?: SQLObject[];
 	attributes?: Record<string, unknown>;
+	durationMs?: number;
 }
 export interface SQLPingResult {
 	ok: boolean;

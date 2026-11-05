@@ -1,10 +1,11 @@
 import { DuckDuckGoClient, type DuckDuckGoClientInit, type DuckDuckGoSearchResponse } from '@wener/client/duckduckgo';
+import { z } from 'zod';
 import { ServiceCliInputError } from '../cli/ServiceCliInputError';
 import type { CliServiceConfig } from '../config';
+import { responseSecrets, sanitizeServiceResponse } from '../fetch/content';
 import type { ServiceProviderDefinition } from '../registry';
 import type { ServiceCallOptions, ServiceProvider, ServiceSchema } from '../runtime/types';
 import type { ISearchService } from '../search';
-import { z } from 'zod';
 
 export const DuckDuckGoServiceOptionsSchema = z.strictObject({
 	instantAnswerBaseUrl: z.string().url().optional(),
@@ -152,6 +153,7 @@ export function createDuckDuckGoProvider(): ServiceProvider {
 
 export function createDuckDuckGoSearchService(options: DuckDuckGoClientInit = {}): ISearchService {
 	let client: DuckDuckGoClient | undefined;
+	const secrets = responseSecrets(options.headers);
 	return {
 		type: 'duckduckgo',
 		readOnly: true,
@@ -159,8 +161,9 @@ export function createDuckDuckGoSearchService(options: DuckDuckGoClientInit = {}
 			signal?.throwIfAborted();
 			if (!isRecord(input)) throw new TypeError('Invalid DuckDuckGo search input');
 			if (
-				Object.keys(input).some((key) => !['query', 'limit', 'offset', 'range'].includes(key)) ||
-				(input.range !== undefined && typeof input.range !== 'string')
+				Object.keys(input).some((key) => !['query', 'limit', 'offset', 'range', 'raw'].includes(key)) ||
+				(input.range !== undefined && typeof input.range !== 'string') ||
+				(input.raw !== undefined && typeof input.raw !== 'boolean')
 			)
 				throw new TypeError('Unsupported DuckDuckGo search option');
 			const { query, limit, offset } = parseSearchInput({
@@ -172,10 +175,15 @@ export function createDuckDuckGoSearchService(options: DuckDuckGoClientInit = {}
 			try {
 				const response = await client.search({ query, count: limit, offset, range: input.range, signal });
 				signal?.throwIfAborted();
-				return {
+				const result = {
 					items: response.results.map(({ url, title, snippet }) => ({ url, title, summary: snippet })),
 					metadata: { query: response.query, source: response.source },
+					// Raw is the client's supplier JSON/HTML, or its search response when no supplier body exists.
+					...(input.raw
+						? { raw: response.raw ?? { query: response.query, results: response.results, source: response.source } }
+						: {}),
 				};
+				return sanitizeServiceResponse(result, secrets) as typeof result;
 			} catch (error) {
 				signal?.throwIfAborted();
 				if (error instanceof Error && (error.name === 'AbortError' || error.name === 'TimeoutError'))

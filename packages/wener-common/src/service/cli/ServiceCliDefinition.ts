@@ -1,5 +1,5 @@
 import type { MaybePromise } from '@wener/utils';
-import type { CliOption, CliOptions } from '../../cli/CliCommand';
+import type { CliExample, CliOption, CliOptions } from '../../cli/CliCommand';
 import type { CliTable } from '../../cli/render/CliTable';
 import { ServiceCliInputError } from './ServiceCliInputError';
 
@@ -22,6 +22,7 @@ export interface ServiceCliOperation<S> {
 	variadic?: boolean;
 	aliases?: readonly string[];
 	description: string;
+	examples?: readonly CliExample[];
 	argument?: string;
 	/** 多个或可选位置参数；不包含宿主提供的 Service 选择参数。 */
 	arguments?: string;
@@ -37,6 +38,7 @@ export interface ServiceCliDefinition<S> {
 	name: string;
 	aliases?: readonly string[];
 	description: string;
+	examples?: readonly CliExample[];
 	/** 领域级选项由两种宿主共同挂载，配置/认证/transport 选项仍属于宿主。 */
 	options?: readonly ServiceCliOption[];
 	helpText?: string;

@@ -26,6 +26,7 @@ export function createServiceCliCommand<S, C>(
 			name: operation.name,
 			aliases: operation.aliases,
 			description: operation.description,
+			examples: operation.examples,
 			arguments:
 				operation.arguments ??
 				(operation.argument ? `<${operation.argument}${operation.variadic ? '...' : ''}>` : undefined),
@@ -57,6 +58,7 @@ export function createServiceCliCommand<S, C>(
 		name: definition.name,
 		aliases: definition.aliases,
 		description: definition.description,
+		examples: definition.examples,
 		options: [...(host.options ?? []), ...(definition.options ?? [])],
 		commands,
 		run: root ? ({ options, help }, context) => root(options, context, help) : undefined,
