@@ -2,6 +2,8 @@
 
 领域名为 `duckduckgo`，短别名 `ddg`，无需 API key。搜索先尝试 Instant Answer，无可用结果时回退 HTML；offset 大于零时直接使用 HTML。
 
+也可以使用统一入口 `woctl search <query> --service web-search`，它按 search 能力选择 DuckDuckGo 或 Exa 服务，见 [统一搜索](search.md)。`ddg search` 仍限定为 DuckDuckGo。
+
 ## 配置与发现
 
 `woctl.yaml`：
@@ -43,7 +45,7 @@ woctl service call web-search search --input @search.json --json
 printf '{"query":"MCP protocol","limit":5}' | woctl service call web-search search --input - --json
 ```
 
-`search.json` 与内联 JSON 相同。领域 search 只接收一个非空 query 位置参数，含空格时需引号；没有 `--query-file`。limit 默认 10，要求正安全整数；offset 默认 0，要求非负安全整数。generic tool 只接受 query/limit/offset，不接受其他字段；typed search 能力的扩展字段不自动成为 CLI 参数。
+`search.json` 与内联 JSON 相同。`ddg search` 只接收一个非空 query 位置参数，含空格时需引号；没有 `--query-file`。limit 默认 10，要求正安全整数；offset 默认 0，要求非负安全整数。通用 search schema 支持更多字段，但 DuckDuckGo 实现仅处理 query/limit/offset/range，Exa 专用筛选和内容选项应选择支持它们的服务。
 
 当前 builtin typed adapter 的结果是 `items` 列表（url/title/summary）与 `metadata`（query/source），不要依赖旧客户端的 `results/snippet` 结构。脚本用 `--json` 保存原始结构：
 

@@ -1104,7 +1104,23 @@ importers:
         version: 4.4.5
 
   apps/woctl:
+    dependencies:
+      '@hyzyla/pdfium':
+        specifier: 2.1.13
+        version: 2.1.13
+      canvaskit-wasm:
+        specifier: 0.42.0
+        version: 0.42.0
+      excelize-wasm:
+        specifier: 0.1.3
+        version: 0.1.3
+      pdfjs-dist:
+        specifier: 6.4.299
+        version: 6.4.299
     devDependencies:
+      '@types/node':
+        specifier: ^24.13.5
+        version: 24.13.5
       '@types/pg':
         specifier: ^8.23.1
         version: 8.23.1
@@ -1114,24 +1130,24 @@ importers:
       '@wener/common':
         specifier: workspace:^
         version: link:../../packages/wener-common
+      ajv:
+        specifier: ^8.20.0
+        version: 8.20.0
       common:
         specifier: workspace:^
         version: link:../../packages/common
-      pg:
-        specifier: ^8.23.0
-        version: 8.23.0
-      just-bash:
-        specifier: ^3.6.0
-        version: 3.6.0(supports-color@10.2.2)
-      yaml:
-        specifier: ^2.9.1
-        version: 2.9.1
-      '@types/node':
-        specifier: ^24.13.5
-        version: 24.13.5
       esbuild:
         specifier: ^0.28.2
         version: 0.28.2
+      ioredis:
+        specifier: ^6.0.0
+        version: 6.0.0(supports-color@10.2.2)
+      just-bash:
+        specifier: ^3.6.0
+        version: 3.6.0(supports-color@10.2.2)
+      pg:
+        specifier: ^8.23.0
+        version: 8.23.0
       tsx:
         specifier: ^4.23.15
         version: 4.23.15
@@ -1144,12 +1160,18 @@ importers:
       vitest:
         specifier: ^5.0.1
         version: 5.0.1(@types/node@24.13.5)(@vitest/browser-playwright@5.0.1)(@vitest/ui@5.0.1)(jsdom@30.1.0(@noble/hashes@2.4.0)(canvas@3.2.3))(vite@8.3.0(@types/node@24.13.5)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.15)(yaml@2.9.1))
+      yaml:
+        specifier: ^2.9.1
+        version: 2.9.1
 
   packages/common:
     dependencies:
       '@hono/zod-openapi':
         specifier: ^1.6.3
         version: 1.6.3(hono@4.13.8)(zod@4.6.5)
+      '@hyzyla/pdfium':
+        specifier: 2.1.13
+        version: 2.1.13
       '@mikro-orm/core':
         specifier: ^7.2.1
         version: 7.2.1(dataloader@2.2.3)
@@ -1186,6 +1208,9 @@ importers:
       canvas:
         specifier: ^3.2.3
         version: 3.2.3
+      canvaskit-wasm:
+        specifier: 0.42.0
+        version: 0.42.0
       chalk:
         specifier: ^6.0.0
         version: 6.0.0
@@ -1204,6 +1229,9 @@ importers:
       es-toolkit:
         specifier: ^1.52.0
         version: 1.52.0
+      excelize-wasm:
+        specifier: 0.1.3
+        version: 0.1.3
       execa:
         specifier: ^10.0.1
         version: 10.0.1
@@ -1228,6 +1256,9 @@ importers:
       pathe:
         specifier: ^2.0.3
         version: 2.0.3
+      pdfjs-dist:
+        specifier: 6.4.299
+        version: 6.4.299
       pino:
         specifier: ^10.3.1
         version: 10.3.1
@@ -1609,6 +1640,9 @@ importers:
       '@types/node-rsa':
         specifier: ^1.1.4
         version: 1.1.4
+      '@types/ws':
+        specifier: ^8.18.2
+        version: 8.18.2
       '@wecom/jssdk':
         specifier: ^2.4.4
         version: 2.4.4
@@ -4065,6 +4099,9 @@ packages:
       zod:
         optional: true
 
+  '@hyzyla/pdfium@2.1.13':
+    resolution: {integrity: sha512-4J+xMFJW6V+jktxor6Lsk/2YdPCpeY+Ga69J98uyNQwYESkAsUDxz8BeFU0ZbZJIJ+fK3J6bm61gmwWnUzVU1g==}
+
   '@iconify/types@2.0.0':
     resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
 
@@ -4693,6 +4730,81 @@ packages:
   '@mongodb-js/zstd@7.0.0':
     resolution: {integrity: sha512-mQ2s0pYYiav+tzCDR05Zptem8Ey2v8s11lri5RKGhTtL4COVCvVCk5vtyRYNT+9L8qSfyOqqefF9UtnW8mC5jA==}
     engines: {node: '>= 20.19.0'}
+
+  '@napi-rs/canvas-android-arm64@1.1.0':
+    resolution: {integrity: sha512-mKrSmRyhWK4q699Q1xthbZIZi7JBvLtsRNnOZAeFaLPOFT1yo8y82aRC2nNZbXTGJXU7fVDONgGQPr0vo3kerw==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [android]
+
+  '@napi-rs/canvas-darwin-arm64@1.1.0':
+    resolution: {integrity: sha512-iqwST4g0oH+x8VCpBIYh+MYokv/mVvkM+v9oJGB0d9A3P2qBh42ogJlVyWq9SpPCrAjS7tplMb1D3OIfxl+utw==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@napi-rs/canvas-darwin-x64@1.1.0':
+    resolution: {integrity: sha512-jkeA8eVTxDum03LTvc32YJ28F6KB1U0gYwnWMfOAUQZvWWEh/kvONby4iWGJx3+Tw45UqMGMXjtw2GKNVZDhVg==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [darwin]
+
+  '@napi-rs/canvas-linux-arm-gnueabihf@1.1.0':
+    resolution: {integrity: sha512-Y4YkKG1ijoqkgUdTEEBNG4k+2BK5bR5jGL6S56YxCXYPwGfUd5nED8/74xyc7z+bpixPasCjSYoP3xYPOIGNxw==}
+    engines: {node: '>= 10'}
+    cpu: [arm]
+    os: [linux]
+
+  '@napi-rs/canvas-linux-arm64-gnu@1.1.0':
+    resolution: {integrity: sha512-dE/XthqYkiWcBVtKFlZbUXwAYfDuQGqDWixznipJNmevLGpprNnTVQZyftm1RZJudkIOn2EkzYZDMMETM08Row==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [linux]
+    libc: [glibc]
+
+  '@napi-rs/canvas-linux-arm64-musl@1.1.0':
+    resolution: {integrity: sha512-DqZ/CMcHlhU56pPjv9AP0h3U7MFQ5LzC1HzMyRMotL+PFsJmZJA/ziApPYVyyz78DaVLhI8t3So3ztqtijbYpg==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [linux]
+    libc: [musl]
+
+  '@napi-rs/canvas-linux-riscv64-gnu@1.1.0':
+    resolution: {integrity: sha512-kJ7m5n2VffxWXM5QGa5lfq8ZN4LdOJEoz3aAJAmIqYvKiZw1gRdXqpucnRXsF6D9nLYiiIlevaAtAclR7c5ilg==}
+    engines: {node: '>= 10'}
+    cpu: [riscv64]
+    os: [linux]
+    libc: [glibc]
+
+  '@napi-rs/canvas-linux-x64-gnu@1.1.0':
+    resolution: {integrity: sha512-uQ9JuJlRhQdHyttcMWOiwLkfIqkqaB0YFUVe835LUe12THt2b51HXkTItq0fxWT1jdhUPX2ylWZ1walkJyD6GQ==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [linux]
+    libc: [glibc]
+
+  '@napi-rs/canvas-linux-x64-musl@1.1.0':
+    resolution: {integrity: sha512-has4CPPAkkCac/LZ13VAw5p+MJLdaKVoyrhumN/A7uJd6960xYkJNDZgUebyxiha82AFzXx6RV+QJg5qGG079g==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [linux]
+    libc: [musl]
+
+  '@napi-rs/canvas-win32-arm64-msvc@1.1.0':
+    resolution: {integrity: sha512-MJnktLKNijmXqdjTughHDZ9TDLZ9uUm2hvFXqaOqn0+w7lphXFnft6bpSgQAc9U1exc20UGIBlzGu9+kiCj9Ag==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [win32]
+
+  '@napi-rs/canvas-win32-x64-msvc@1.1.0':
+    resolution: {integrity: sha512-08575bFk7iiadxap4h+JxgGut9xDCHAGum6wh0eInN53zEMImkmEHi5MushX2FOmNO7qRNX7BPiDC5ZYBwHeEg==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [win32]
+
+  '@napi-rs/canvas@1.1.0':
+    resolution: {integrity: sha512-k+ph/D8H9GS8ZZ48okvHrKeJynkqAA1kMUZRuzRWNlQUDHXngq7oRaWMZBdmSfd9ZhVy9bwNKei/7wMboI/uMg==}
+    engines: {node: '>= 10'}
 
   '@napi-rs/nice-android-arm-eabi@1.1.1':
     resolution: {integrity: sha512-kjirL3N6TnRPv5iuHw36wnucNqXAO46dzK9oPb0wj076R5Xm8PfUVA9nAFB5ZNMmfJQJVKACAPd/Z2KYMppthw==}
@@ -7561,6 +7673,9 @@ packages:
   '@webcontainer/env@1.1.1':
     resolution: {integrity: sha512-6aN99yL695Hi9SuIk1oC88l9o0gmxL1nGWWQ/kNy81HigJ0FoaoTXpytCj6ItzgyCEwA9kF1wixsTuv5cjsgng==}
 
+  '@webgpu/types@0.1.21':
+    resolution: {integrity: sha512-pUrWq3V5PiSGFLeLxoGqReTZmiiXwY3jRkIG5sLLKjyqNxrwm/04b4nw7LSmGWJcKk59XOM/YRTUwOzo4MMlow==}
+
   '@wecom/jssdk@2.4.4':
     resolution: {integrity: sha512-CoMxyTvlpR2sz+KC+0kfnbdJj19EjJg7HAU/52LUW6dPUDEvW3NV40LNhWUnvqFg49y3zJswyGVFeraDcKc0Kw==}
 
@@ -8050,6 +8165,9 @@ packages:
   canvas@3.2.3:
     resolution: {integrity: sha512-PzE5nJZPz72YUAfo8oTp0u3fqqY7IzlTubneAihqDYAUcBk7ryeCmBbdJBEdaH0bptSOe2VT2Zwcb3UaFyaSWw==}
     engines: {node: ^18.12.0 || >= 20.9.0}
+
+  canvaskit-wasm@0.42.0:
+    resolution: {integrity: sha512-N3ikotmzYwDVAcpQKDMptBT2P5pIEWS9ywdmrQA2awwaMF9cxKEFuxZZHv9ay1Em9kDjxDsPtwUzDm1uNj136g==}
 
   capital-case@1.0.4:
     resolution: {integrity: sha512-ds37W8CytHgwnhGGTi88pcPyR15qoNkOpYwmMMfnWqqWgESapLqvDx6huFjQ5vqWSn2Z06173XNA7LtMOeUh1A==}
@@ -8993,6 +9111,9 @@ packages:
   eventsource@3.0.7:
     resolution: {integrity: sha512-CRT1WTyuQoD771GW56XEZFQ/ZoSfWid1alKGDYMmkt2yl8UXrVR4pspqWNEcqKvVIzg6PAltWjxcSSPrboA4iA==}
     engines: {node: '>=18.0.0'}
+
+  excelize-wasm@0.1.3:
+    resolution: {integrity: sha512-tvJbQFS25mFVnMpK4++djaUW28m1Zvd/+RG2itea+Hx64d8Cq697gRO8uiJtCCdsz4HdtknOgiEJmIZ1p6/oMQ==}
 
   execa@10.0.1:
     resolution: {integrity: sha512-ge98qjkRK4IB7tL7Ju/6qmm5LHoH1eEMt5FNZrz3f4UIYhF28lggX20z3FaX1sgc67msLEn0N0BscOs29iuwyw==}
@@ -11195,6 +11316,10 @@ packages:
   pathval@2.0.1:
     resolution: {integrity: sha512-//nshmD55c46FuFw26xV/xFAaB5HF9Xdap7HJBBnrKdAd6/GxDBaNA1870O79+9ueg61cZLSVc+OaFlfmObYVQ==}
     engines: {node: '>= 14.16'}
+
+  pdfjs-dist@6.4.299:
+    resolution: {integrity: sha512-AVl138zALtfaAPvADulE0PZThbYzCBS79nL4pOSL/6Sm/4AH5A21BD9VHt97OlCuzJuCpmeZtAtkinisF4Vb1g==}
+    engines: {node: '>=22.13.0 || >=24'}
 
   pdfkit@0.20.1:
     resolution: {integrity: sha512-1rRXK6x5o8I/3dBrBzXfxibpHpkfCnIA7EBAES7pEpGFc/65inMLlA8SalGWpJfal7BGekxeLf6A30IOpQpc5Q==}
@@ -15422,6 +15547,8 @@ snapshots:
       valibot: 1.5.0(typescript@7.0.2)
       zod: 4.6.5
 
+  '@hyzyla/pdfium@2.1.13': {}
+
   '@iconify/types@2.0.0': {}
 
   '@iconify/utils@3.1.7':
@@ -16139,6 +16266,54 @@ snapshots:
     dependencies:
       node-addon-api: 8.9.2
       prebuild-install: 7.1.3
+    optional: true
+
+  '@napi-rs/canvas-android-arm64@1.1.0':
+    optional: true
+
+  '@napi-rs/canvas-darwin-arm64@1.1.0':
+    optional: true
+
+  '@napi-rs/canvas-darwin-x64@1.1.0':
+    optional: true
+
+  '@napi-rs/canvas-linux-arm-gnueabihf@1.1.0':
+    optional: true
+
+  '@napi-rs/canvas-linux-arm64-gnu@1.1.0':
+    optional: true
+
+  '@napi-rs/canvas-linux-arm64-musl@1.1.0':
+    optional: true
+
+  '@napi-rs/canvas-linux-riscv64-gnu@1.1.0':
+    optional: true
+
+  '@napi-rs/canvas-linux-x64-gnu@1.1.0':
+    optional: true
+
+  '@napi-rs/canvas-linux-x64-musl@1.1.0':
+    optional: true
+
+  '@napi-rs/canvas-win32-arm64-msvc@1.1.0':
+    optional: true
+
+  '@napi-rs/canvas-win32-x64-msvc@1.1.0':
+    optional: true
+
+  '@napi-rs/canvas@1.1.0':
+    optionalDependencies:
+      '@napi-rs/canvas-android-arm64': 1.1.0
+      '@napi-rs/canvas-darwin-arm64': 1.1.0
+      '@napi-rs/canvas-darwin-x64': 1.1.0
+      '@napi-rs/canvas-linux-arm-gnueabihf': 1.1.0
+      '@napi-rs/canvas-linux-arm64-gnu': 1.1.0
+      '@napi-rs/canvas-linux-arm64-musl': 1.1.0
+      '@napi-rs/canvas-linux-riscv64-gnu': 1.1.0
+      '@napi-rs/canvas-linux-x64-gnu': 1.1.0
+      '@napi-rs/canvas-linux-x64-musl': 1.1.0
+      '@napi-rs/canvas-win32-arm64-msvc': 1.1.0
+      '@napi-rs/canvas-win32-x64-msvc': 1.1.0
     optional: true
 
   '@napi-rs/nice-android-arm-eabi@1.1.1':
@@ -19063,6 +19238,8 @@ snapshots:
 
   '@webcontainer/env@1.1.1': {}
 
+  '@webgpu/types@0.1.21': {}
+
   '@wecom/jssdk@2.4.4': {}
 
   '@whatwg-node/disposablestack@0.0.6':
@@ -19585,6 +19762,10 @@ snapshots:
     dependencies:
       node-addon-api: 7.1.1
       prebuild-install: 7.1.3
+
+  canvaskit-wasm@0.42.0:
+    dependencies:
+      '@webgpu/types': 0.1.21
 
   capital-case@1.0.4:
     dependencies:
@@ -20519,6 +20700,8 @@ snapshots:
   eventsource@3.0.7:
     dependencies:
       eventsource-parser: 3.1.1
+
+  excelize-wasm@0.1.3: {}
 
   execa@10.0.1:
     dependencies:
@@ -23122,6 +23305,10 @@ snapshots:
   pathe@2.0.3: {}
 
   pathval@2.0.1: {}
+
+  pdfjs-dist@6.4.299:
+    optionalDependencies:
+      '@napi-rs/canvas': 1.1.0
 
   pdfkit@0.20.1:
     dependencies:

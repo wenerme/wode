@@ -2,6 +2,8 @@
 
 SQL 服务提供只读查询、显式确认执行和表结构发现。Native 当前有 SQLite 与 PostgreSQL 两种 driver；`sqlite`、`postgres`、`postgresql`、`pg` 都归一到 `sql` provider。没有 MySQL native driver。
 
+Service 是公共能力入口，CLI 是其命令视图。`woctl service type sql --typescript` 显示五个服务方法的输入与结果类型；`service schema <name> --json` 提供对应工具的 inputSchema/outputSchema。类型与 schema 发现不创建 driver、不读取凭据。
+
 ## 配置与选择
 
 离线查询示例 `woctl.yaml`：

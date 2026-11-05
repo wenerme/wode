@@ -52,4 +52,4 @@ printf '{"text":"Hello"}' | woctl service call local-system echo --input - --jso
 
 本地 system 在 Native、Web 都可使用，配置 store 及输出端口由宿主注入。它只返回显式 info，不提供任意进程执行或文件系统访问。若注入全局远程 runtime，调用可能由该 runtime 承接，此时不能把返回值视为本机环境。
 
-实现：`apps/woctl/src/core.ts` 的 `SystemCliDefinition` 与 provider；选择链路在 `createWocliCli.ts`。离线行为用例在 `apps/woctl/src/wocli.test.ts`，应用测试通过。无外部服务验证要求；最终运行状态统一见 [覆盖表](../coverage.md)。
+实现：`apps/woctl/src/core.ts` 的 `SystemCliDefinition` 与 provider；选择链路在 `createCli.ts`。离线行为用例在 `apps/woctl/src/wocli.test.ts`，应用测试通过。无外部服务验证要求；最终运行状态统一见 [覆盖表](../coverage.md)。

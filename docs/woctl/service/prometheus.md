@@ -4,6 +4,19 @@
 
 ## 配置与发现
 
+可以先添加服务并设置默认：
+
+```sh
+woctl service add metrics --type prometheus --base-url https://metrics.example.test
+woctl service default set prometheus metrics
+woctl service type info prometheus --json
+woctl prometheus --help
+```
+
+命令随所选 context 的服务配置显示；没有启用的 Prometheus 服务时不显示 `prometheus` / `prom`。它是内置 provider，不需要额外安装 CLI 插件。多实例可用 `--service metrics` 显式选择。
+
+等价的 YAML 配置示例：
+
 ```yaml
 services:
   - name: metrics
@@ -35,16 +48,22 @@ Prometheus service 固定为只读。配置 `readOnly: false` 会在创建 provi
 
 ```sh
 woctl prom query 'up' --json
+woctl prometheus query --query 'up' --json
+woctl prometheus query --query @query.promql --json
+printf 'up' | woctl prometheus query --query - --json
 woctl prom query 'rate(http_requests_total[5m])' --time now-5m --json
 woctl prom range 'rate(http_requests_total[5m])' \
   --start now-1h --end now --step 60 --json
 woctl prom series --match '{job="api"}' --json
+woctl prometheus series --match '{job="api"}' --match '{job="worker"}' --json
 woctl prom labels --json
 woctl prom label-values job --match '{__name__="up"}' --json
 woctl prom metadata --metric http_requests_total --json
 ```
 
 `query` 是 instant query；`range` 是 `query_range`，省略 `--start`、`--end` 和 `--step` 时使用最近一小时和 60 秒步长。`series` 至少需要一个 `--match`。CLI 会把数字时间戳、ISO 时间和 `now`/`now-15m` 等相对表达式转换成 Prometheus 使用的 Unix 秒；client 保留 Prometheus 的秒时间语义，不转换为 OpenObserve 的微秒。
+
+query/range 同时支持位置表达式与 `--query`，每次只能选择一种输入方式。`--query @file` 读取 PromQL 文件，`--query -` 从 stdin 读取，上限 16 MiB；输入准备完成后才解析凭据并创建客户端。`--match` 可重复传入，HTTP 使用重复的 `match[]` 参数。
 
 `--output json` 保留协议 envelope。query 结果的 `data.resultType` 会标识 `vector`、`matrix`、`scalar` 或 `string`；`warnings` 也会保留。table 输出适合 labels、series 和 metadata，matrix 结果建议使用 JSON 保存，以免丢失 labels 和 samples。
 
