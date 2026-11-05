@@ -2,6 +2,7 @@ export { Cli, type CliContext } from './Cli';
 export {
 	type CliCommand,
 	type CliCommandDefinition,
+	type CliExample,
 	type CliCommandHandler,
 	type CliCommandResult,
 	type CliInput,

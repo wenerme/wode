@@ -1,8 +1,8 @@
 import type { ServiceProvider, ServiceRuntimeClient } from '@wener/common/service';
 import { createMemoryCliConfigStore } from 'common/context';
 import { describe, expect, it, vi } from 'vitest';
-import { createWocliCli } from './createWocliCli';
-import { createBrowserConfigStore, createWocliWebCli } from './web';
+import { createCli } from './createCli';
+import { createBrowserConfigStore, createWebCli } from './web';
 
 function output() {
 	const lines: string[] = [];
@@ -21,7 +21,7 @@ function serviceConfig() {
 }
 describe('wocli Node/Web shared commands', () => {
 	it('starts with an empty service directory and keeps help and render available', async () => {
-		const cli = createWocliWebCli();
+		const cli = createWebCli();
 		const { io, lines } = output();
 		await cli.executeLine('--help', io);
 		await cli.executeLine('service list --json', io);
@@ -33,7 +33,7 @@ describe('wocli Node/Web shared commands', () => {
 	});
 	it('isolates injected command aliases from built-in service input options', async () => {
 		const run = vi.fn();
-		const cli = createWocliWebCli({
+		const cli = createWebCli({
 			commands: [
 				{
 					name: 'inspect',
@@ -47,7 +47,7 @@ describe('wocli Node/Web shared commands', () => {
 		expect(run.mock.calls[0]?.[0].options).toEqual({ interactive: true });
 	});
 	it('runs service definitions and schema/call using the same offline service', async () => {
-		const cli = createWocliWebCli({ config: serviceConfig() });
+		const cli = createWebCli({ config: serviceConfig() });
 		const { io, lines } = output();
 		await cli.executeLine('system echo "Hello, Wener" --json', io);
 		expect(JSON.parse(lines.pop() ?? '')).toEqual({ text: 'Hello, Wener' });
@@ -58,7 +58,7 @@ describe('wocli Node/Web shared commands', () => {
 	});
 	it('persists context changes and applies command-local context overrides', async () => {
 		const config = serviceConfig();
-		const cli = createWocliWebCli({ config });
+		const cli = createWebCli({ config });
 		const { io, lines } = output();
 		await cli.executeLine('context create test', io);
 		await cli.executeLine('context use test', io);
@@ -72,7 +72,7 @@ describe('wocli Node/Web shared commands', () => {
 	});
 	it('help and invalid input do not instantiate providers', async () => {
 		const create = vi.fn<ServiceProvider['create']>();
-		const cli = createWocliCli({
+		const cli = createCli({
 			config: createMemoryCliConfigStore({ services: { test: { provider: 'test' } } }),
 			providers: [{ name: 'test', create }],
 		});
@@ -85,7 +85,7 @@ describe('wocli Node/Web shared commands', () => {
 	it('checks the injected service catalog and read-only policy before remote calls', async () => {
 		const call = vi.fn(async () => ({ ok: true }));
 		const runtime: ServiceRuntimeClient = { getSchema: async () => ({ tools: { write: { inputSchema: {} } } }), call };
-		const cli = createWocliWebCli({ runtime, config: serviceConfig() });
+		const cli = createWebCli({ runtime, config: serviceConfig() });
 		const { io } = output();
 		await expect(cli.executeLine('service call system write', io)).rejects.toThrow('read-only');
 		await expect(cli.executeLine('service call missing write', io)).rejects.toThrow('Unknown service');
@@ -99,7 +99,7 @@ describe('wocli Node/Web shared commands', () => {
 				entries.set(key, value);
 			},
 		});
-		const cli = createWocliWebCli({ config, readText: async () => '{"text":"from-file"}' });
+		const cli = createWebCli({ config, readText: async () => '{"text":"from-file"}' });
 		const { io, lines } = output();
 		await cli.executeLine('service call system echo --input @virtual.json --json', io);
 		expect(JSON.parse(lines.pop() ?? '')).toEqual({ text: 'from-file' });
@@ -114,7 +114,7 @@ describe('wocli Node/Web shared commands', () => {
 		const controller = new AbortController();
 		controller.abort();
 		await expect(
-			createWocliWebCli().executeLine('system info', { ...io, signal: controller.signal }),
+			createWebCli().executeLine('system info', { ...io, signal: controller.signal }),
 		).rejects.toThrow();
 	});
 });

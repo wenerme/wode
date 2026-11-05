@@ -3,6 +3,7 @@ import type {
 	MessageGenerationRequest,
 	MessageGenerationResult,
 } from '@wener/client/ai/message-generation';
+import type { EdgeTtsSocketFactory } from '@wener/client/tts';
 import {
 	Cli,
 	type CliCommand,
@@ -19,18 +20,18 @@ import {
 	createServiceRuntime,
 	OpenObserveCliDefinition,
 	ApolloCliDefinition,
-	PrometheusCliDefinition,
+	buildServiceCatalogView,
 	type ServiceProvider,
 	ServiceProviderRegistry,
 	type ServiceRuntimeClient,
 	type SqlAdapterFactory,
 } from '@wener/common/service';
-import { createServiceCliCommand, type ServiceCliDefinition } from '@wener/common/service/cli';
+import { createServiceCliCommand, type ServiceCliBinding, type ServiceCliClientFactory, type ServiceCliDefinition } from '@wener/common/service/cli';
+import { BuiltinServiceCliBindings } from '@wener/common/service/builtin/cli';
+import { getServiceOptionsJsonSchema } from '@wener/common/service/runtime';
 import { sanitizeOpenObserveOutput } from '@wener/common/service/openobserve';
 import { createRemoteServiceToolClient } from '@wener/common/service/runtime/client';
-import { SQLCliDefinition } from '@wener/common/service/sql/cli';
-import { createSqlServiceToolClient } from '@wener/common/service/sql/client';
-import { createPrometheusServiceToolClient } from '@wener/common/service/prometheus/client';
+import type { RedisAdapterFactory } from '@wener/common/service/redis';
 import {
 	type CliConfig,
 	type CliServiceConfig,
@@ -41,13 +42,15 @@ import {
 	type ResolvedCliContext,
 	resolveCliContext,
 } from 'common/context';
-import { formatJsonSchemaTypeScript, formatJsonSchemaTypeScriptExpression } from 'common/utils';
+import { createCliCatalog, describeServiceProvider, formatServiceProviderTypeScript } from './catalog';
 import {
 	writeCommandOutput as output,
 	readCommandText as readText,
 	setConfigEntry,
 	optionString as text,
 	optionStrings,
+	validateCommandOutputTarget,
+	writeCommandOutputToFile,
 } from './command-utils';
 import { createAiCatalogCommands } from './commands/ai-catalog';
 import { createDiagnosticsCommands, type LogLevel, parseLogLevel, shouldLog } from './commands/diagnostics';
@@ -55,14 +58,20 @@ import { createMcpCommand } from './commands/mcp';
 import { createPromptCommand } from './commands/prompt';
 import { createRenderCommands } from './commands/render';
 import { createServiceExtraCommands } from './commands/service-extra';
+import { createCatalogCommand } from './commands/catalog';
 import { APP_NAME, ENV, LEGACY_ENV } from './const';
 import { createBuiltinProviders, SystemCliDefinition, VERSION } from './core';
 import { DuckDuckGoCliDefinition } from './services/duckduckgo';
+import { createFetchCommand } from './services/fetch';
+import { createSearchCommand } from './services/search';
+import { createTtsCommand } from './services/tts';
 
 /** Application metadata; provider names need not match command names or aliases. */
-export interface WocliCommand extends Omit<CliCommand<WocliExecution>, 'commands'> {
+export interface WoctlCommand extends Omit<CliCommand<CliExecution>, 'commands'> {
 	serviceProvider?: string;
-	commands?: readonly WocliCommand[];
+	serviceCapability?: string;
+	hostCapability?: string;
+	commands?: readonly WoctlCommand[];
 }
 
 export interface WocliDescribeOptions {
@@ -79,54 +88,62 @@ export interface WocliMcpConnection {
 	close(): Promise<void>;
 }
 
-export interface WocliMcpHost {
+export interface CliMcpHost {
 	connect(config: CliMcpServerConfig, signal: AbortSignal): Promise<WocliMcpConnection>;
 }
 
-export interface WocliHost {
+export interface CliHost {
 	config: CliConfigStore;
 	runtime?: ServiceRuntimeClient;
 	providers?: readonly ServiceProvider[];
-	commands?: readonly WocliCommand[];
+	serviceCliBindings?: readonly ServiceCliBinding[];
+	capabilities?: readonly string[];
+	commands?: readonly WoctlCommand[];
 	info?: Record<string, unknown>;
 	fetch?: typeof globalThis.fetch;
 	sqlDriver?: SqlAdapterFactory;
+	redisDriver?: RedisAdapterFactory;
+	edgeTtsSocketFactory?: EdgeTtsSocketFactory;
 	env?: Readonly<Record<string, string | undefined>>;
 	getEnv?(name: string): string | undefined;
 	term?: CliTerminalInfo;
 	generate?(request: MessageGenerationRequest, options: MessageGenerationOptions): Promise<MessageGenerationResult>;
 	readText?(value: string, options: { signal: AbortSignal; maxBytes: number }): Promise<string>;
-	mcp?: WocliMcpHost;
+	renderDocument?(source: string, options: import('./commands/render').DocumentRenderOptions): Promise<string>;
+	mcp?: CliMcpHost;
 	writeText?(path: string, content: string, options: { signal: AbortSignal }): Promise<void>;
+	writeBytes?(path: string, content: Uint8Array, options: { signal: AbortSignal }): Promise<void>;
 }
-export interface WocliExecution extends CliContext {
-	host: WocliHost;
+export interface CliExecution extends CliContext {
+	host: CliHost;
 	selectedContext: string;
 	configError?: CliConfigError;
 	log(level: LogLevel, message: string): void;
 	getConfigContext(options?: CliOptions): ResolvedCliContext;
 	resolveServiceProvider?(name: string): string | undefined;
 	getServiceOptionsSchema?(name: string): Record<string, unknown> | undefined;
+	getServiceCapabilities?(provider: string): readonly string[];
 	withServices<T>(
 		options: CliOptions,
 		run: (runtime: ServiceRuntimeClient, context: ResolvedCliContext) => Promise<T>,
 	): Promise<T>;
 }
 
-export function createWocliServiceCommand<S>(
+export function createWoctlServiceCommand<S>(
 	definition: ServiceCliDefinition<S>,
 	provider = definition.name,
-	createClient?: (runtime: ServiceRuntimeClient, service: string, readOnly: boolean, signal: AbortSignal) => Promise<S>,
-): WocliCommand {
+	createClient?: ServiceCliClientFactory<S>,
+): WoctlCommand {
 	return {
 		serviceProvider: provider,
 		...createServiceCliCommand(definition, {
 			options: [
 				{ name: 'service', description: 'Select a service by name' },
 				{ name: 'list-services', type: 'boolean', description: 'List available services of the same type in the current context' },
+				{ name: 'output-file', description: 'Write the formatted result to a file; - writes to stdout' },
 			],
 			readText,
-			async root(options, context: WocliExecution, help) {
+			async root(options, context: CliExecution, help) {
 				if (!options['list-services']) {
 					context.stdout(help);
 					return;
@@ -138,7 +155,7 @@ export function createWocliServiceCommand<S>(
 						.filter(([name]) => canonical(name) === canonical(provider))
 						.map(([, name]) => name),
 				);
-				output(
+				await writeCommandOutputToFile(
 					Object.entries(resolved.services)
 						.filter(([, config]) => canonical(config.provider) === canonical(provider))
 						.map(([name, config]) => ({
@@ -152,6 +169,7 @@ export function createWocliServiceCommand<S>(
 				);
 			},
 			async run(operation, options, context, prepare) {
+				validateCommandOutputTarget(options, context);
 				// 参数准备先于获取 client；帮助和无效输入不会创建服务连接。
 				await context.withServices(options, async (runtime, resolved) => {
 					const resolveProvider = (name: string) => context.resolveServiceProvider?.(name) ?? name;
@@ -175,11 +193,11 @@ export function createWocliServiceCommand<S>(
 					if (operation.mutating && config.readOnly !== false) throw new CliUsageError('Selected service is read-only');
 					const invoke = await prepare();
 					const client = createClient
-						? await createClient(runtime, service, config.readOnly !== false, context.signal)
+						? await createClient(runtime, service, { readOnly: config.readOnly !== false, signal: context.signal })
 						: await createRemoteServiceToolClient<S>(runtime, service, { signal: context.signal });
 					const result = await invoke(client, { signal: context.signal });
 					const tabular = ['table', 'wide'].includes(resolveCliOutputSelection(options).format);
-					output(tabular && operation.table ? operation.table(result) : result, options, context);
+					await writeCommandOutputToFile(result, options, context, tabular && operation.table ? operation.table(result) : undefined);
 				});
 			},
 		}),
@@ -224,9 +242,13 @@ function setNestedOption(target: Record<string, unknown>, parts: readonly string
 	current[leaf] = value;
 }
 
-export function createWocliCli(host: WocliHost) {
+export function createCli(host: CliHost) {
 	const providers = new ServiceProviderRegistry([...createBuiltinProviders(host.info), ...(host.providers ?? [])]);
 	const resolveServiceProvider = (name: string) => providers.resolveName(name) ?? (host.runtime ? name : undefined);
+	const getServiceCapabilities = (name: string): readonly string[] => {
+		const canonical = providers.resolveName(name);
+		return canonical ? providers.get(canonical).capabilities ?? [] : [];
+	};
 	const globalOptions: readonly CliOption[] = [
 		{
 			name: 'context',
@@ -239,45 +261,23 @@ export function createWocliCli(host: WocliHost) {
 		{ name: 'log-level', description: 'Log level: trace, verbose, debug, info, warning, error' },
 		{ name: 'verbose', type: 'boolean', description: 'Enable verbose logging' },
 	];
-	const cli = new Cli<WocliExecution>(APP_NAME, { options: globalOptions });
-	function serviceTypeName(name: string): string {
-		if (name === 'openobserve') return 'OpenObserve';
-		return name.replace(/(^|[-_.])([A-Za-z0-9])/gu, (_match, _prefix, character) => String(character).toUpperCase());
-	}
-	function serviceTypeInfo(type: string, options: CliOptions, context: WocliExecution): void {
+	const cli = new Cli<CliExecution>(APP_NAME, { options: globalOptions });
+	function serviceTypeInfo(type: string, options: CliOptions, context: CliExecution): void {
 		const provider = providers.get(type);
+		const metadata = describeServiceProvider(provider);
 		if (options.typescript === true) {
-			const name = serviceTypeName(provider.name);
-			const sections: string[] = [];
-			if (provider.optionsSchema?.jsonSchema)
-				sections.push(formatJsonSchemaTypeScript(provider.optionsSchema.jsonSchema, { name: `${name}ServiceOptions` }));
-			if (provider.contract) {
-				const methods = Object.entries(provider.contract.methods).map(([method, contract]) => {
-					const input = contract.inputType ?? (contract.inputSchema ? formatJsonSchemaTypeScriptExpression(contract.inputSchema) : 'void');
-					const output = contract.outputType ?? 'unknown';
-					const comment = contract.description ? `  /** ${contract.description} */\n` : '';
-					return `${comment}  ${method}(input: ${input}): Promise<${output}>;`;
-				}).join('\n');
-				sections.push(`export interface ${name}Service {\n  /** Construct with ${name}ServiceOptions. */\n${methods}\n}`);
-			}
-			context.stdout(sections.join('\n\n') || `export interface ${name}Service {}`);
+			context.stdout(formatServiceProviderTypeScript(metadata));
 			return;
 		}
-		output({
-			name: provider.name,
-			aliases: provider.aliases ?? [],
-			capabilities: provider.capabilities ?? [],
-			...(provider.optionsSchema?.jsonSchema ? { optionsSchema: provider.optionsSchema.jsonSchema } : {}),
-			...(provider.contract ? { contract: provider.contract } : {}),
-		}, options, context);
+		output({ aliases: [], capabilities: [], ...metadata }, options, context);
 	}
-	const registrations: Array<{ method: 'add' | 'merge'; command: WocliCommand }> = [];
-	function add(command: WocliCommand) {
+	const registrations: Array<{ method: 'add' | 'merge'; command: WoctlCommand }> = [];
+	function add(command: WoctlCommand) {
 		const snapshot = snapshotCommand(command);
 		cli.add(snapshot);
 		registrations.push({ method: 'add', command: snapshot });
 	}
-	function merge(command: WocliCommand) {
+	function merge(command: WoctlCommand) {
 		const snapshot = snapshotCommand(command);
 		cli.merge(snapshot);
 		registrations.push({ method: 'merge', command: snapshot });
@@ -296,7 +296,7 @@ export function createWocliCli(host: WocliHost) {
 	const aiCatalog = createAiCatalogCommands(() => providers.list());
 	for (const command of aiCatalog) add(command);
 	async function change(
-		context: WocliExecution,
+		context: CliExecution,
 		options: CliOptions,
 		edit: (config: CliConfig) => void,
 		selected = text(options, 'context'),
@@ -447,17 +447,28 @@ export function createWocliCli(host: WocliHost) {
 			},
 			{
 				name: 'list',
-				description: 'List services in the current context',
+				description: 'List configured services with their resolved provider, capabilities, default and ambiguity status',
 				async run({ options }, context) {
 					await context.withServices(options, async (_runtime, resolved) => {
+						const view = buildServiceCatalogView(resolved, {
+							defaults: resolved.defaults,
+							resolveProviderName: (name) => resolveServiceProvider(name),
+							getProviderCapabilities: (name) => getServiceCapabilities(name),
+						});
 						output(
-							Object.entries(resolved.configuredServices ?? resolved.services).map(([name, service]) => ({
-								name,
-								provider: service.provider,
-								...(service.type ? { type: service.type } : {}),
-								disabled: service.disabled === true || service.enabled === false,
-								readOnly: service.readOnly,
-								title: service.title,
+							view.map((entry) => ({
+								name: entry.name,
+								provider: entry.configuredProvider,
+								...(entry.canonicalProvider && entry.canonicalProvider !== entry.configuredProvider
+									? { type: entry.canonicalProvider }
+									: {}),
+								status: entry.status,
+								capabilities: entry.capabilities,
+								disabled: !entry.enabled,
+								readOnly: entry.readOnly,
+								default: entry.isDefault,
+								ambiguous: entry.ambiguous,
+								title: resolved.configuredServices?.[entry.name]?.title ?? resolved.services[entry.name]?.title,
 							})),
 							options,
 							context,
@@ -569,24 +580,19 @@ export function createWocliCli(host: WocliHost) {
 			},
 		],
 	});
-	add(createWocliServiceCommand(SystemCliDefinition));
-	add(createWocliServiceCommand(DuckDuckGoCliDefinition));
+	add(createWoctlServiceCommand(SystemCliDefinition));
+	add(createWoctlServiceCommand(DuckDuckGoCliDefinition));
+	for (const binding of [...BuiltinServiceCliBindings, ...(host.serviceCliBindings ?? [])])
+		add(binding.register(createWoctlServiceCommand));
+	add(createSearchCommand());
+	add(createFetchCommand());
+	add(createTtsCommand());
 	add(
-		createWocliServiceCommand(SQLCliDefinition, 'sql', (runtime, service, readOnly, signal) =>
-			createSqlServiceToolClient(runtime, service, { readOnly, signal }),
-		),
-	);
-	add(
-		createWocliServiceCommand(OpenObserveCliDefinition, 'openobserve', (runtime, service, readOnly, signal) =>
+		createWoctlServiceCommand(OpenObserveCliDefinition, 'openobserve', (runtime, service, { readOnly, signal }) =>
 			createOpenObserveServiceToolClient(runtime, service, { signal, readOnly }),
 		),
 	);
-	add(createWocliServiceCommand(ApolloCliDefinition, 'apollo'));
-	add(
-		createWocliServiceCommand(PrometheusCliDefinition, 'prometheus', (runtime, service, _readOnly, signal) =>
-			createPrometheusServiceToolClient(runtime, service, { signal }),
-		),
-	);
+	add(createWoctlServiceCommand(ApolloCliDefinition, 'apollo'));
 	merge({ name: 'service', description: 'Service configuration and calls', commands: createServiceExtraCommands() });
 	merge({ name: 'context', aliases: ['ctx'], description: 'Manage execution contexts and the AI catalog', commands: aiCatalog });
 	merge({ name: 'context', description: 'Manage execution contexts', commands: [diagnostics.contextCheck] });
@@ -595,16 +601,25 @@ export function createWocliCli(host: WocliHost) {
 	add(createPromptCommand());
 	for (const command of createRenderCommands()) add(command);
 	for (const command of host.commands ?? []) add(command);
+	add(createCatalogCommand({ catalog }));
 	cli.seal();
+
+	function catalog() {
+		return createCliCatalog({
+			name: APP_NAME, version: VERSION, globalOptions: cli.describeOptions(),
+			commands: cli.describe(), providers: providers.listProviders(), registrations,
+		});
+	}
 
 	async function prepare(input: WocliDescribeOptions, signal?: AbortSignal, stderr?: (text: string) => void) {
 		signal?.throwIfAborted();
 		const argv = normalizeArgv(input.argv ?? []);
 		const parsed = cli.parse(argv);
+		const staticCatalog = parsed.path[0] === 'catalog';
 		const explicitLogLevel = text(parsed.options, 'log-level');
 		const configuredLogLevel = parseLogLevel(
 			explicitLogLevel ??
-				(parsed.options.verbose === true ? 'verbose' : (host.env?.[ENV.logLevel] ?? host.env?.[LEGACY_ENV.logLevel])),
+				(parsed.options.verbose === true ? 'verbose' : (staticCatalog ? undefined : (host.env?.[ENV.logLevel] ?? host.env?.[LEGACY_ENV.logLevel]))),
 		);
 		const argumentContext = text(parsed.options, 'context');
 		const targetContext =
@@ -618,18 +633,20 @@ export function createWocliCli(host: WocliHost) {
 			targetContext ??
 			input.context ??
 			argumentContext ??
-			(host.env?.[ENV.context] || host.env?.[LEGACY_ENV.context] || undefined);
+			(staticCatalog ? undefined : (host.env?.[ENV.context] || host.env?.[LEGACY_ENV.context] || undefined));
 		let config: CliConfig | undefined;
 		let resolved: ResolvedCliContext | undefined;
 		let error: CliConfigError | undefined;
-		try {
-			config = await host.config.load({ context: selected });
-			signal?.throwIfAborted();
-			resolved = resolveCliContext(config, selected);
-		} catch (cause) {
-			signal?.throwIfAborted();
-			if (!(cause instanceof CliConfigError)) throw cause;
-			error = cause;
+		if (!staticCatalog) {
+			try {
+				config = await host.config.load({ context: selected });
+				signal?.throwIfAborted();
+				resolved = resolveCliContext(config, selected);
+			} catch (cause) {
+				signal?.throwIfAborted();
+				if (!(cause instanceof CliConfigError)) throw cause;
+				error = cause;
+			}
 		}
 		signal?.throwIfAborted();
 		const available = new Set(
@@ -638,13 +655,17 @@ export function createWocliCli(host: WocliHost) {
 				return provider === undefined ? [] : [provider];
 			}),
 		);
-		if (host.mcp) available.add('mcp');
+		const hostCapabilities = new Set(host.capabilities ?? []);
+		if (host.mcp) hostCapabilities.add('mcp');
+		const capabilities = new Set(
+			Object.values(resolved?.services ?? {}).flatMap((service) => getServiceCapabilities(service.provider)),
+		);
 		const hasAi = Object.keys(resolved?.providers ?? {}).length > 0;
-		const tree = new Cli<WocliExecution>(APP_NAME, {
+		const tree = new Cli<CliExecution>(APP_NAME, {
 			options: globalOptions.map((option) => (option.name === 'context' ? { ...option, default: selected } : option)),
 		});
 		for (const { method, command } of registrations) {
-			const filtered = filterCommand(command, available, hasAi, true);
+			const filtered = filterCommand(command, available, hasAi, true, capabilities, hostCapabilities);
 			if (filtered) tree[method](filtered);
 		}
 		tree.seal();
@@ -694,13 +715,14 @@ export function createWocliCli(host: WocliHost) {
 			getConfigContext,
 			getServiceOptionsSchema(name: string) {
 				const provider = providers.get(resolveServiceProvider(name) ?? name);
-				return provider.optionsSchema?.jsonSchema;
+				return getServiceOptionsJsonSchema(provider.optionsSchema);
 			},
 			host: { ...host, config: snapshotStore },
 		};
 	}
 
 	return {
+		catalog,
 		async describe(options: WocliDescribeOptions = {}) {
 			return (await prepare(options)).tree.describe();
 		},
@@ -717,7 +739,7 @@ export function createWocliCli(host: WocliHost) {
 				const diagnostic = 'Configuration unavailable; showing core commands only. Check the selected configuration.';
 				(io.stderr ?? io.stdout)(diagnostic);
 			}
-			const context: WocliExecution = {
+			const context: CliExecution = {
 				...io,
 				host: snapshot.host,
 				selectedContext: snapshot.selectedContext,
@@ -726,6 +748,7 @@ export function createWocliCli(host: WocliHost) {
 				getConfigContext: snapshot.getConfigContext,
 				getServiceOptionsSchema: snapshot.getServiceOptionsSchema,
 				resolveServiceProvider,
+				getServiceCapabilities,
 				async withServices(options, run) {
 					io.signal.throwIfAborted();
 					const resolved = snapshot.getConfigContext(options);
@@ -736,6 +759,8 @@ export function createWocliCli(host: WocliHost) {
 								providers,
 								fetch: host.fetch,
 								sqlDriver: host.sqlDriver,
+								redisDriver: host.redisDriver,
+								edgeTtsSocketFactory: host.edgeTtsSocketFactory,
 								getEnv: host.getEnv ?? ((name) => host.env?.[name]),
 							});
 					const runtime = host.runtime ?? local;
@@ -786,17 +811,18 @@ export function createWocliCli(host: WocliHost) {
 function sanitizeLogMessage(message: string): string {
 	return message.replace(/[\u0000-\u001f\u007f]/gu, ' ').slice(0, 240);
 }
-export type WocliCli = ReturnType<typeof createWocliCli>;
+export type WocliCli = ReturnType<typeof createCli>;
 
 function normalizeArgv(argv: readonly string[]): readonly string[] {
 	return argv.length === 1 && ['--version', '-v'].includes(argv[0]) ? ['version'] : argv;
 }
 
-function snapshotCommand(command: WocliCommand): WocliCommand {
+function snapshotCommand(command: WoctlCommand): WoctlCommand {
 	return Object.freeze({
 		...command,
 		aliases: Object.freeze([...(command.aliases ?? [])]),
 		summary: command.summary ? Object.freeze([...command.summary]) : undefined,
+		examples: command.examples ? Object.freeze(command.examples.map((example) => Object.freeze({ ...example }))) : undefined,
 		options: Object.freeze(
 			(command.options ?? []).map((option) =>
 				Object.freeze({
@@ -810,14 +836,18 @@ function snapshotCommand(command: WocliCommand): WocliCommand {
 }
 
 function filterCommand(
-	command: WocliCommand,
+	command: WoctlCommand,
 	available: ReadonlySet<string>,
 	hasAi: boolean,
 	root = false,
-): WocliCommand | undefined {
+	capabilities: ReadonlySet<string> = new Set(),
+	hostCapabilities: ReadonlySet<string> = new Set(),
+): WoctlCommand | undefined {
 	if (command.serviceProvider && !available.has(command.serviceProvider)) return undefined;
+	if (command.serviceCapability && !capabilities.has(command.serviceCapability)) return undefined;
+	if (command.hostCapability && !hostCapabilities.has(command.hostCapability)) return undefined;
 	const commands = (command.commands ?? []).flatMap((child) => {
-		const filtered = filterCommand(child, available, hasAi);
+		const filtered = filterCommand(child, available, hasAi, false, capabilities, hostCapabilities);
 		return filtered ? [filtered] : [];
 	});
 	if (command.commands?.length && !commands.length && !command.run && !command.runRaw) return undefined;

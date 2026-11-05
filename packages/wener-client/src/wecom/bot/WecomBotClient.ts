@@ -325,8 +325,7 @@ export class WecomBotClient {
 		}
 
 		try {
-			// ws@8 exposes a runtime wrapper without declarations in this package layout.
-			// @ts-expect-error The import is intentionally kept dynamic for browser/Bun support.
+			// Keep the import dynamic for browser/Bun support.
 			const mod = (await import('ws')) as { WebSocket?: new (url: string) => WecomSocketLike; default?: any };
 			const WsCtor = mod.WebSocket ?? mod.default;
 			if (typeof WsCtor === 'function') {
