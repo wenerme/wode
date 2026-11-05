@@ -37,7 +37,6 @@ Add a free DuckDuckGo search connection:
 ```sh
 woctl service add search --type duckduckgo
 woctl search 'MCP protocol' --limit 5 --json
-woctl ddg search 'MCP protocol' --limit 5 --json
 ```
 
 Service commands appear when the selected context has a matching enabled service. If a command is missing, check `woctl service list` and `woctl context show`.
@@ -99,18 +98,17 @@ The older `WOCLI_*` variables remain readable as fallbacks. `WOCTL_*` takes prec
 
 ```sh
 woctl search 'TypeScript documentation' --limit 5
-woctl ddg search 'TypeScript documentation' --limit 5
-woctl duckduckgo search 'MCP examples' --offset 10 --json
+woctl search 'MCP examples' --offset 10 --service search --json
 ```
 
-`search` selects any configured service with the search capability, including DuckDuckGo and Exa. Set a default with `woctl service default set search <name>`. `ddg search` remains specific to DuckDuckGo.
+`search` selects any configured service with the search capability, including DuckDuckGo and Exa. Set a default with `woctl service default set search <name>`.
 
 DuckDuckGo search requires no API key. It uses Instant Answer results when available, then falls back to HTML search. A nonzero offset uses HTML search directly.
 
 When you have several search connections, select one explicitly or set a default:
 
 ```sh
-woctl ddg search 'TypeScript' --service search --json
+woctl search 'TypeScript' --service search --json
 woctl service default set duckduckgo search
 ```
 
@@ -333,7 +331,7 @@ For command-specific options:
 
 ```sh
 woctl mcp call --help
-woctl ddg search --help
+woctl search --help
 woctl prompt --help
 ```
 

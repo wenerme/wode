@@ -1,6 +1,6 @@
 # 统一网页搜索
 
-`woctl search <query>` 按 `search` 能力选择服务，支持 DuckDuckGo 和 Exa。`woctl ddg search` 保留为 DuckDuckGo 专用入口。
+`woctl search <query>` 按 `search` 能力选择服务，支持 DuckDuckGo 和 Exa。DuckDuckGo 是其中一个 builtin provider，没有独立领域命令，通过 `woctl search --service <name>` 指定。
 
 ```sh
 woctl service add web-search --type duckduckgo

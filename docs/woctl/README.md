@@ -36,9 +36,9 @@ defaults:
 
 ```sh
 woctl --config ./woctl.yaml service list --json
-woctl --config ./woctl.yaml ddg --list-services --json
+woctl --config ./woctl.yaml search --list-services --json
 woctl --config ./woctl.yaml system echo 'Hello' --service local-system --json
-woctl --config ./woctl.yaml ddg search 'TypeScript documentation' --limit 5 --json
+woctl --config ./woctl.yaml search 'TypeScript documentation' --limit 5 --json
 ```
 
 最后一条需要联网。领域命令只在所选 context 有相应已启用服务时显示；MCP 还需要宿主提供 MCP 连接能力。帮助、命令描述和执行使用同一次配置快照。缺少配置时先检查 `service list`、`context show`，不要据此推断安装包缺失功能。
@@ -56,7 +56,6 @@ woctl --config ./woctl.yaml ddg search 'TypeScript documentation' --limit 5 --js
 | [Redis / Valkey](service/redis.md) | 只读 key/hash/stream/scan、前缀隔离、TLS 和 native driver |
 | [Linear](service/linear.md) | 团队、状态、用户、项目、issue、评论，分页筛选与确认写入 |
 | [TTS](service/tts.md) | 默认 Edge 语音、音色查询、二进制输出及模型服务 |
-| [DuckDuckGo](service/duckduckgo.md) | `duckduckgo` / `ddg` 搜索 |
 | [search](service/search.md) | 根 search、DuckDuckGo/Exa、能力注册和默认选择 |
 | [fetch](service/fetch.md) | 根 fetch、正文提取、Jina/Exa/direct 与 typed SDK |
 | [PDF / Excel](documents.md) | PDF 检查、读取、解析、PNG 渲染与 XLSX 读写、整理、导出 |

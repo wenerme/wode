@@ -37,7 +37,6 @@ printf '{"name":"Ada","active":true}' | woctl render - --input json --format yam
 ```sh
 woctl service add search --type duckduckgo
 woctl search 'MCP protocol' --limit 5 --json
-woctl ddg search 'MCP protocol' --limit 5 --json
 ```
 
 领域命令会在当前 context 配置并启用相应服务后出现。如果找不到命令，先用 `woctl service list` 和 `woctl context show` 检查配置。
@@ -99,18 +98,17 @@ context 会继承共享服务。同名服务会整条替换共享配置。删除
 
 ```sh
 woctl search 'TypeScript documentation' --limit 5
-woctl ddg search 'TypeScript documentation' --limit 5
-woctl duckduckgo search 'MCP examples' --offset 10 --json
+woctl search 'MCP examples' --offset 10 --service search --json
 ```
 
-`search` 按搜索能力选择已配置的 DuckDuckGo 或 Exa 服务，可以用 `woctl service default set search <name>` 设置默认。`ddg search` 保留为 DuckDuckGo 专用入口。
+`search` 按搜索能力选择已配置的 DuckDuckGo 或 Exa 服务，可以用 `woctl service default set search <name>` 设置默认。
 
 DuckDuckGo 搜索无需 API key。优先使用 Instant Answer 结果，无结果时回退到 HTML 搜索；非零 offset 直接使用 HTML 搜索。
 
 配置了多个搜索连接时，可以显式选择，或设置默认连接：
 
 ```sh
-woctl ddg search 'TypeScript' --service search --json
+woctl search 'TypeScript' --service search --json
 woctl service default set duckduckgo search
 ```
 
@@ -333,7 +331,7 @@ woctl --verbose service list
 
 ```sh
 woctl mcp call --help
-woctl ddg search --help
+woctl search --help
 woctl prompt --help
 ```
 
