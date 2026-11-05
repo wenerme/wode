@@ -3,7 +3,7 @@ import { fakeRedisAdapter } from './adapter.fixture';
 import { RedisConnectionConfigSchema } from './config';
 import { createRedisService } from './createRedisService';
 import { RedisServiceError, RedisServiceErrorCodes } from './errors';
-import type { RedisConnectionOptions } from './interface';
+import type { RedisConnectionOptions } from './IRedisService';
 
 function baseConfig() {
 	return RedisConnectionConfigSchema.parse({

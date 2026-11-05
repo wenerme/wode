@@ -3,7 +3,7 @@ import { RedisServiceProvider } from '../providers/redis';
 import { ServiceRegistry, type ServiceProviderDefinition } from '../registry';
 import { createServiceProviderAdapter } from '../runtime/createServiceProviderAdapter';
 import { RedisTools } from '../runtime/redis-tools';
-import type { IRedisService } from './interface';
+import type { IRedisService } from './IRedisService';
 import { RedisOperations } from './operations';
 
 describe('Redis registered operations', () => {

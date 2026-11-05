@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import type { ServiceCliOptions } from '../../cli/ServiceCliDefinition';
 import { RedisTools } from '../../runtime/redis-tools';
 import { RedisServiceContract } from '../RedisServiceContract';
-import type { RedisServiceClient } from '../interface';
+import type { RedisServiceClient } from '../IRedisService';
 import { RedisCliDefinition } from './commands';
 import { redisCliQueryResult } from './output';
 import { RedisCliPingError } from './RedisCliPingError';

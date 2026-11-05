@@ -1,4 +1,4 @@
-import type { RedisPingResult } from '../interface';
+import type { RedisPingResult } from '../IRedisService';
 
 export class RedisCliPingError extends Error {
 	override name = 'RedisCliPingError';

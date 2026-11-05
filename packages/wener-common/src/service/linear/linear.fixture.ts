@@ -1,6 +1,6 @@
 import { vi } from 'vitest';
 import { LinearConnectionConfigSchema, type LinearConnectionConfigInput } from '@wener/client/linear';
-import type { LinearAdapter } from './interface';
+import type { LinearAdapter } from './ILinearService';
 import type { LinearIssue } from './schema';
 
 export function connection(input: LinearConnectionConfigInput = { apiKey: 'example-key' }) {

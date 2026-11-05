@@ -1,4 +1,4 @@
-export * from './interface';
+export * from './IRedisService';
 export * from './errors';
 export * from './config';
 export * from './schema';

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { RedisServiceError, RedisServiceErrorCodes } from './errors';
-import type { RedisConnectionOptions } from './interface';
+import type { RedisConnectionOptions } from './IRedisService';
 
 export const DefaultRedisMaxResponseBytes = 16 * 1024 * 1024;
 export const MaximumRedisMaxResponseBytes = 64 * 1024 * 1024;

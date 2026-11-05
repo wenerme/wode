@@ -2,7 +2,7 @@ import type { TtsRequest, TtsVoiceList, TtsVoiceQuery } from '@wener/client/tts'
 import { createRemoteServiceToolClient } from '../runtime/createServiceToolClient';
 import type { ServiceCallOptions, ServiceRuntimeClient } from '../runtime/types';
 import { TtsVoiceListSchema } from './input';
-import type { TtsServiceClient } from './interface';
+import type { TtsServiceClient } from './ITtsService';
 import { decodeTtsAudio } from './transport';
 
 /** Restore binary audio for the CLI; runtime lifecycle belongs to its caller. */

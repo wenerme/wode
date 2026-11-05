@@ -14,13 +14,10 @@ import {
 import { z } from 'zod';
 import type { ServiceProviderDefinition } from '../registry';
 import type { ServiceProviderContext } from '../runtime/types';
+import type { IOpenObserveService } from './IOpenObserveService';
 export { sanitizeOpenObserveOutput } from './sanitize';
 
-export type IOpenObserveService = Pick<
-	OpenObserveClient,
-	'type' | 'health' | 'status' | 'listStreams' | 'getStreamSchema' | 'search' | 'listTraces' | 'getStreamSettings' | 'updateStreamSettings' | 'deleteStream' | 'ingestJson' | 'ingestMulti' | 'getValues' | 'searchAround' | 'close'
-> & { readonly readOnly: boolean };
-export type OpenObserveService = IOpenObserveService;
+export type { IOpenObserveService, OpenObserveService } from './IOpenObserveService';
 export type {
 	OpenObserveClientOptions,
 	OpenObserveGetStreamSchemaInput,

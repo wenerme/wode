@@ -5,7 +5,7 @@ import { createServiceProviderAdapter } from '../runtime/createServiceProviderAd
 import { getServiceOptionsJsonSchema } from '../runtime/getServiceOptionsJsonSchema';
 import { LinearMethodInputs, LinearMethodOutputs, LinearServiceContract, LinearTools } from './contract';
 import { LinearServiceOptionsSchema } from './config';
-import type { ILinearService } from './interface';
+import type { ILinearService } from './ILinearService';
 import { adapter, comment, issue, pageInfo, viewer } from './linear.fixture';
 import { LinearOperations } from './operations';
 

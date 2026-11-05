@@ -1,6 +1,6 @@
 import { createRemoteServiceToolClient } from '../runtime/createServiceToolClient';
 import type { ServiceCallOptions, ServiceRuntimeClient } from '../runtime/types';
-import type { ILinearService } from './interface';
+import type { ILinearService } from './ILinearService';
 
 /** CLI/tool calls carry an empty input for the service's input-free viewer operation. */
 export type LinearServiceClient = Omit<ILinearService, 'type' | 'readOnly' | 'close' | 'getViewer'> & {

@@ -1,7 +1,7 @@
 import type { z } from 'zod';
 import { type ServiceCliDefinition, type ServiceCliInputContext, type ServiceCliOptions, serviceCliString } from '../../cli/ServiceCliDefinition';
 import { ServiceCliInputError } from '../../cli/ServiceCliInputError';
-import type { RedisServiceClient } from '../interface';
+import type { RedisServiceClient } from '../IRedisService';
 import { RedisFieldInputSchema, RedisRangeStreamInputSchema, RedisScanInputSchema } from '../schema';
 import { redisCliTable, redisPingTable } from './output';
 import { RedisCliPingError } from './RedisCliPingError';

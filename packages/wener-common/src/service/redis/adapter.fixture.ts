@@ -1,5 +1,5 @@
 import { vi } from 'vitest';
-import type { RedisAdapter } from './interface';
+import type { RedisAdapter } from './IRedisService';
 
 export function fakeRedisAdapter(): RedisAdapter {
 	return {

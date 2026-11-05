@@ -3,8 +3,8 @@ import { RedisServiceError, RedisServiceErrorCodes, redisOperationError } from '
 import type {
 	IRedisService, RedisAdapter, RedisAdapterFactory, RedisCallOptions, RedisConnectionOptions,
 	RedisFieldValue, RedisGetInput, RedisRangeStreamInput, RedisScanInput, RedisScanType, RedisStreamEntry,
-} from './interface';
-import { RedisScanTypes } from './interface';
+} from './IRedisService';
+import { RedisScanTypes } from './IRedisService';
 
 const DefaultCount = 100;
 const encoder = new TextEncoder();

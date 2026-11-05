@@ -2,7 +2,7 @@ import {
 	createLinearHttpAdapter, LinearConnectionConfigSchema, LinearServiceError, LinearServiceErrorCodes,
 	type LinearConnectionConfig, type LinearHttpAdapterOptions,
 } from '@wener/client/linear';
-import type { ILinearService, LinearAdapter, LinearAdapterFactory, LinearCallOptions } from './interface';
+import type { ILinearService, LinearAdapter, LinearAdapterFactory, LinearCallOptions } from './ILinearService';
 import * as s from './schema';
 
 export interface CreateLinearServiceOptions extends LinearHttpAdapterOptions {

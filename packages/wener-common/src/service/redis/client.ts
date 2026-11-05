@@ -1,6 +1,6 @@
 import { createRemoteServiceToolClient } from '../runtime/createServiceToolClient';
 import type { ServiceCallOptions, ServiceRuntimeClient } from '../runtime/types';
-import type { RedisServiceClient } from './interface';
+import type { RedisServiceClient } from './IRedisService';
 
 /** The service ping has no input, while schema/call always carries an object. */
 export async function createRedisServiceToolClient(

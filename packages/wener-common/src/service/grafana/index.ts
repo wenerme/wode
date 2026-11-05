@@ -2,21 +2,13 @@ import { GrafanaClient, GrafanaClientError, isGrafanaWriteMethod, type GrafanaCl
 import { z } from 'zod';
 import type { ServiceProviderDefinition } from '../registry';
 import type { ServiceProviderContext } from '../runtime/types';
+import type { IGrafanaService } from './IGrafanaService';
 import { GrafanaOperations } from './operations';
 
 export { sanitizeGrafanaOutput } from './sanitize';
 export { GrafanaClientError, isGrafanaWriteMethod } from '@wener/client/grafana';
 export type { GrafanaClientOptions, GrafanaRequestInput, GrafanaRequestOptions };
-
-export interface IGrafanaService {
-	readonly type: 'grafana';
-	readonly readOnly: boolean;
-	health(options?: GrafanaRequestOptions): Promise<unknown>;
-	whoAmI(options?: GrafanaRequestOptions): Promise<unknown>;
-	request(input: GrafanaRequestInput, options?: GrafanaRequestOptions): Promise<unknown>;
-	close(): Promise<void>;
-}
-export type GrafanaService = IGrafanaService;
+export type { IGrafanaService, GrafanaService } from './IGrafanaService';
 
 const envName = z.string().regex(/^[A-Za-z_][A-Za-z0-9_]*$/u);
 export const GrafanaServiceOptionsSchema = Object.assign(z.strictObject({

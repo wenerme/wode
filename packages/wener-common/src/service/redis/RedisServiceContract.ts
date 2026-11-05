@@ -6,4 +6,4 @@ export const RedisServiceContract: ServiceContract = {
 		description: tool.description, inputSchema: tool.inputSchema, outputSchema: tool.outputSchema,
 	}])),
 };
-export type { RedisServiceClient } from './interface';
+export type { RedisServiceClient } from './IRedisService';

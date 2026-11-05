@@ -15,7 +15,7 @@ export * from './config';
 export { TtsServiceContract } from './contract';
 export { createTtsService } from './createTtsService';
 export * from './input';
-export type { ITtsService, TtsServiceClient } from './interface';
+export type { ITtsService, TtsServiceClient } from './ITtsService';
 export { TtsOperations } from './operations';
 export { preflightTtsRequest } from './preflight';
 export { TtsTools } from './tools';
