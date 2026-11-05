@@ -28,7 +28,7 @@ import {
 } from '@wener/common/service';
 import { createServiceCliCommand, type ServiceCliBinding, type ServiceCliClientFactory, type ServiceCliDefinition } from '@wener/common/service/cli';
 import { BuiltinServiceCliBindings } from '@wener/common/service/builtin/cli';
-import { getServiceOptionsJsonSchema } from '@wener/common/service/runtime';
+import { getServiceOptionsJsonSchema, selectProviderService } from '@wener/common/service/runtime';
 import { sanitizeOpenObserveOutput } from '@wener/common/service/openobserve';
 import { createRemoteServiceToolClient } from '@wener/common/service/runtime/client';
 import type { RedisAdapterFactory } from '@wener/common/service/redis';
@@ -61,7 +61,6 @@ import { createServiceExtraCommands } from './commands/service-extra';
 import { createCatalogCommand } from './commands/catalog';
 import { APP_NAME, ENV, LEGACY_ENV } from './const';
 import { createBuiltinProviders, SystemCliDefinition, VERSION } from './core';
-import { DuckDuckGoCliDefinition } from './services/duckduckgo';
 import { createFetchCommand } from './services/fetch';
 import { createSearchCommand } from './services/search';
 import { createTtsCommand } from './services/tts';
@@ -172,24 +171,15 @@ export function createWoctlServiceCommand<S>(
 				validateCommandOutputTarget(options, context);
 				// 参数准备先于获取 client；帮助和无效输入不会创建服务连接。
 				await context.withServices(options, async (runtime, resolved) => {
-					const resolveProvider = (name: string) => context.resolveServiceProvider?.(name) ?? name;
-					const canonicalProvider = resolveProvider(provider);
-					const candidates = Object.entries(resolved.services).filter(
-						([, service]) => resolveProvider(service.provider) === canonicalProvider,
-					);
-					const explicit = text(options, 'service');
-					const defaults = [
-						...new Set(
-							Object.entries(resolved.defaults)
-								.filter(([key]) => resolveProvider(key) === canonicalProvider)
-								.map(([, value]) => value),
-						),
-					];
-					if (!explicit && defaults.length > 1) throw new CliUsageError('Conflicting default services');
-					const selector = explicit ?? defaults[0];
-					const matches = selector ? candidates.filter(([key]) => key === selector) : candidates;
-					if (matches.length !== 1) throw new CliUsageError('Select one matching service with --service');
-					const [service, config] = matches[0];
+					const resolveProviderName = (name: string) => context.resolveServiceProvider?.(name) ?? name;
+					const canonicalProvider = resolveProviderName(provider);
+					const service = selectProviderService(resolved, {
+						provider: canonicalProvider,
+						explicit: text(options, 'service'),
+						resolveProviderName,
+						defaults: resolved.defaults,
+					});
+					const config = resolved.services[service];
 					if (operation.mutating && config.readOnly !== false) throw new CliUsageError('Selected service is read-only');
 					const invoke = await prepare();
 					const client = createClient
@@ -581,7 +571,6 @@ export function createCli(host: CliHost) {
 		],
 	});
 	add(createWoctlServiceCommand(SystemCliDefinition));
-	add(createWoctlServiceCommand(DuckDuckGoCliDefinition));
 	for (const binding of [...BuiltinServiceCliBindings, ...(host.serviceCliBindings ?? [])])
 		add(binding.register(createWoctlServiceCommand));
 	add(createSearchCommand());

@@ -82,7 +82,8 @@ describe('configured command snapshots', () => {
 			for (const command of ['search query', 'fetch https://example.com', 'search --help', 'fetch --help'])
 				await expect(cli.executeLine(`${command} -c ${context}`, output().io)).rejects.toThrow('Unknown command');
 		}
-		expect((await cli.describe({ context: 'active' })).map((command) => command.name)).toEqual(expect.arrayContaining(['search', 'fetch', 'duckduckgo']));
+		expect((await cli.describe({ context: 'active' })).map((command) => command.name)).toEqual(expect.arrayContaining(['search', 'fetch']));
+		expect((await cli.describe({ context: 'active' })).some((command) => command.name === 'duckduckgo')).toBe(false);
 		for (const command of ['search', 'fetch']) await cli.executeLine(`${command} --help -c active`, output().io);
 		expect(host.fetch).not.toHaveBeenCalled();
 		expect(host.getEnv).not.toHaveBeenCalled();
@@ -251,10 +252,24 @@ describe('configured command snapshots', () => {
 		});
 		const cli = createWebCli({ config, providers: [recordProvider()], commands: [recordsCommand()] });
 		const { io, lines } = output();
-		await expect(cli.executeLine('records read', io)).rejects.toThrow('Select one matching service');
+		// Without an explicit or configured default, the first declared candidate is selected deterministically.
+		await cli.executeLine('records read --json', io);
+		expect(JSON.parse(lines.pop() ?? '')).toEqual({ id: 'first' });
 		await cli.executeLine('service default set fixture second', io);
 		await cli.executeLine('records read --json', io);
 		expect(JSON.parse(lines.pop() ?? '')).toEqual({ id: 'second' });
+
+		const byName = createMemoryCliConfigStore({
+			services: [
+				{ name: 'other', type: 'fixture', id: 'other' },
+				{ name: 'fixture', type: 'fixture', id: 'same-name' },
+			],
+		});
+		const nameCli = createWebCli({ config: byName, providers: [recordProvider()], commands: [recordsCommand()] });
+		const byNameIo = output();
+		// A service instance named the same as the provider is preferred over the first declared candidate.
+		await nameCli.executeLine('records read --json', byNameIo.io);
+		expect(JSON.parse(byNameIo.lines.pop() ?? '')).toEqual({ id: 'same-name' });
 		await cli.executeLine('rec get --service first --json', io);
 		expect(JSON.parse(lines.pop() ?? '')).toEqual({ id: 'first' });
 		expect((await cli.describe()).filter((entry) => entry.name === 'records')).toHaveLength(1);

@@ -6,4 +6,5 @@ export * from './createServiceRuntime';
 export * from './getEnabledService';
 export * from './prometheus-tools';
 export * from './serviceCatalogView';
+export * from './selectProviderService';
 export * from './ServiceProviderRegistry';
