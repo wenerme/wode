@@ -367,7 +367,7 @@ export namespace ArrayBuffers {
 			return Buffer.from(asView(Uint8Array, source)).toString('base64');
 		}
 
-		return encodeArrayBufferToBase64(toArrayBuffer(source));
+		return encodeArrayBufferToBase64(toUint8Array(source));
 	}
 
 	export function toHex(v: BufferSource | string): string {

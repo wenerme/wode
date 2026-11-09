@@ -85,6 +85,12 @@ test('toBase64', () => {
 	expect(ArrayBuffers.toBase64(buf)).toEqual('YW9ldQ==');
 });
 
+test('toBase64: respects a view length when the offset is zero', () => {
+	const backing = Uint8Array.from([0x61, 0x62, 0x63, 0x64]);
+	const view = new Uint8Array(backing.buffer, 0, 2);
+	expect(ArrayBuffers.toBase64(view)).toBe('YWI=');
+});
+
 test('base64: utf8 string', () => {
 	const text = '你好';
 	// latin1 only
