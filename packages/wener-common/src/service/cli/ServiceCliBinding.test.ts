@@ -74,7 +74,7 @@ it('exports only static metadata and snapshots nested options and examples', () 
 		...definition,
 		examples: [example],
 		options: [option],
-		commands: [{ ...definition.commands[0]!, examples: [example], options: [option], mutating: false }],
+		commands: [{ ...definition.commands[0]!, examples: [example], options: [option], mutating: false, supportsDryRun: true }],
 		extra: () => undefined,
 	};
 	const binding = defineServiceCliBinding({
@@ -89,6 +89,7 @@ it('exports only static metadata and snapshots nested options and examples', () 
 	expect(metadata.definition).not.toHaveProperty('extra');
 	expect(metadata.definition.commands[0]).not.toHaveProperty('prepare');
 	expect(metadata.definition.commands[0]).not.toHaveProperty('table');
+	expect(metadata.definition.commands[0]?.supportsDryRun).toBe(true);
 	expect(metadata.definition.examples?.[0]).not.toHaveProperty('extra');
 	expect(metadata.definition.options?.[0]).not.toHaveProperty('extra');
 	example.command = 'changed';

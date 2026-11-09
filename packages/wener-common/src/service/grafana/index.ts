@@ -1,4 +1,4 @@
-import { GrafanaClient, GrafanaClientError, isGrafanaWriteMethod, type GrafanaClientOptions, type GrafanaRequestInput, type GrafanaRequestOptions } from '@wener/client/grafana';
+import { GrafanaClient, isGrafanaWriteMethod, type GrafanaClientOptions, type GrafanaRequestInput, type GrafanaRequestOptions } from '@wener/client/grafana';
 import { z } from 'zod';
 import type { ServiceProviderDefinition } from '../registry';
 import type { ServiceProviderContext } from '../runtime/types';
@@ -85,6 +85,17 @@ export const GrafanaServiceProvider: ServiceProviderDefinition<IGrafanaService> 
 			async request(input, options) {
 				if (isGrafanaWriteMethod(input.method ?? (input.body === undefined ? 'GET' : 'POST'))) writable();
 				return client.request(input, options);
+			},
+			listDashboard: (input, options) => client.listDashboard(input, options),
+			getDashboard: (input, options) => client.getDashboard(input, options),
+			async updateDashboard(input, options) {
+				if (input.dryRun !== true) writable();
+				return client.updateDashboard(input, options);
+			},
+			getPanel: (input, options) => client.getPanel(input, options),
+			async patchPanel(input, options) {
+				if (input.dryRun !== true) writable();
+				return client.patchPanel(input, options);
 			},
 			close: () => client.close(),
 			[Symbol.asyncDispose]() {

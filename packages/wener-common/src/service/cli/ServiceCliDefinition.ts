@@ -15,6 +15,8 @@ export interface ServiceCliInputContext {
 export interface ServiceCliOperation<S> {
 	/** 供宿主在读取输入文件前完成选中服务的只读准入。 */
 	mutating?: boolean;
+	/** 标记该操作支持 dry-run；宿主可在 `--dry-run` 时放行只读配置的服务继续执行。 */
+	supportsDryRun?: boolean;
 	/** 仅用于对人展示；JSON 输出保留完整原始合同结果。 */
 	table?(value: unknown): CliTable;
 	name: string;

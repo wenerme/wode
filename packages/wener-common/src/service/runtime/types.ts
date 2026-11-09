@@ -35,7 +35,7 @@ export interface ServiceTool {
 	description?: string;
 	inputSchema: Record<string, unknown>;
 	outputSchema?: Record<string, unknown>;
-	annotations?: { readOnlyHint?: boolean; destructiveHint?: boolean };
+	annotations?: { readOnlyHint?: boolean; destructiveHint?: boolean; supportsDryRun?: boolean };
 }
 export interface ServiceOptionsSchema {
 	safeParse(value: unknown): { success: true; data: unknown } | { success: false; error?: unknown };

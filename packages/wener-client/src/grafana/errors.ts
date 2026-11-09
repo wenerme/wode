@@ -7,7 +7,10 @@ export type GrafanaClientErrorCode =
 	| 'TIMEOUT'
 	| 'ABORTED'
 	| 'CLOSED'
-	| 'RESPONSE_TOO_LARGE';
+	| 'RESPONSE_TOO_LARGE'
+	| 'NOT_FOUND'
+	| 'AMBIGUOUS'
+	| 'CONFLICT';
 
 /** Errors deliberately contain no text copied from a Grafana response. */
 export class GrafanaClientError extends Error {

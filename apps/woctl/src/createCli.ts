@@ -180,7 +180,8 @@ export function createWoctlServiceCommand<S>(
 						defaults: resolved.defaults,
 					});
 					const config = resolved.services[service];
-					if (operation.mutating && config.readOnly !== false) throw new CliUsageError('Selected service is read-only');
+					const dryRun = operation.supportsDryRun === true && options['dry-run'] === true;
+					if (operation.mutating && !dryRun && config.readOnly !== false) throw new CliUsageError('Selected service is read-only');
 					const invoke = await prepare();
 					const client = createClient
 						? await createClient(runtime, service, { readOnly: config.readOnly !== false, signal: context.signal })

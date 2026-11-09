@@ -11,6 +11,11 @@ describe('Grafana registered operations', () => {
 			health: vi.fn(async () => ({ database: 'ok' })),
 			whoAmI: vi.fn(async () => ({ login: 'admin' })),
 			request: vi.fn(async () => ({ status: 'success' })),
+			listDashboard: vi.fn(async () => [{ uid: 'dash-1' }]),
+			getDashboard: vi.fn(async () => ({ dashboard: { uid: 'dash-1' } })),
+			updateDashboard: vi.fn(async () => ({ uid: 'dash-1', status: 'success' })),
+			getPanel: vi.fn(async () => ({ id: 1, title: 'Panel' })),
+			patchPanel: vi.fn(async () => ({ uid: 'dash-1', status: 'success' })),
 			close: vi.fn(async () => {}),
 			[Symbol.asyncDispose]: vi.fn(async () => {}),
 		};
@@ -22,12 +27,17 @@ describe('Grafana registered operations', () => {
 			{ operation: GrafanaOperations.health, input: {}, invoke: service.health, args: [options] },
 			{ operation: GrafanaOperations.whoAmI, input: {}, invoke: service.whoAmI, args: [options] },
 			{ operation: GrafanaOperations.request, input: { path: '/api/search' }, invoke: service.request, args: [{ path: '/api/search' }, options] },
+			{ operation: GrafanaOperations.listDashboard, input: { query: 'cpu' }, invoke: service.listDashboard, args: [{ query: 'cpu' }, options] },
+			{ operation: GrafanaOperations.getDashboard, input: { uid: 'dash-1' }, invoke: service.getDashboard, args: [{ uid: 'dash-1' }, options] },
+			{ operation: GrafanaOperations.updateDashboard, input: { dashboard: { uid: 'dash-1' } }, invoke: service.updateDashboard, args: [{ dashboard: { uid: 'dash-1' } }, options] },
+			{ operation: GrafanaOperations.getPanel, input: { dashboardUid: 'dash-1', panelId: 1 }, invoke: service.getPanel, args: [{ dashboardUid: 'dash-1', panelId: 1 }, options] },
+			{ operation: GrafanaOperations.patchPanel, input: { dashboardUid: 'dash-1', panelId: 1, set: { title: 'x' } }, invoke: service.patchPanel, args: [{ dashboardUid: 'dash-1', panelId: 1, set: { title: 'x' } }, options] },
 		]) {
 			await test.operation.execute(registry, 'metrics', test.input, options);
 			expect(test.invoke).toHaveBeenCalledExactlyOnceWith(...test.args);
 		}
 		const tools = createServiceProviderAdapter(definition).tools!;
-		expect(Object.keys(tools)).toEqual(['health', 'whoAmI', 'request']);
+		expect(Object.keys(tools)).toEqual(['health', 'whoAmI', 'request', 'listDashboard', 'getDashboard', 'updateDashboard', 'getPanel', 'patchPanel']);
 		expect(Object.keys(GrafanaOperations)).toEqual(Object.keys(tools));
 		await registry.close();
 		expect(service.close).toHaveBeenCalledTimes(1);

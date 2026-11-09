@@ -98,6 +98,13 @@ Version: 0.2.0. Catalog schema: 1.
   - ` status ` — Check Grafana health
   - ` whoami ` — Read the current authenticated Grafana user
   - ` api ` — Call a Grafana API path; non-read methods require --yes and a writable service
+  - ` dashboard ` — dashboard operations
+    - ` list ` — List/search dashboards
+    - ` get ` — Get a dashboard by uid
+    - ` update ` — Create or update a dashboard from a JSON file; requires --yes unless --dry-run is set
+  - ` panel ` — panel operations
+    - ` get ` — Get a single panel by DASHBOARD_UID/PANEL_ID
+    - ` patch ` — Patch a single panel by DASHBOARD_UID/PANEL_ID; exactly one of --set, --set-string, --set-json, --merge or --from is required, as is --yes unless --dry-run is set
 - ` s3 ` — List, read, write and delete objects in an S3-compatible bucket
   - ` list ` — List objects in the bucket
   - ` get ` — Read an object as text
@@ -1504,6 +1511,122 @@ Examples:
 ```sh
 woctl grafana api /api/search --query type=dash-db
 ```
+
+### ` grafana dashboard `
+
+dashboard operations
+
+Usage:
+
+```text
+woctl grafana dashboard
+```
+
+Availability: configured service with provider ` grafana `.
+
+### ` grafana dashboard list `
+
+List/search dashboards
+
+Usage:
+
+```text
+woctl grafana dashboard list
+```
+
+Availability: configured service with provider ` grafana `.
+
+Options:
+
+| Option | Type | Description | Default |
+| --- | --- | --- | --- |
+| ` --query ` | string | Search text |  |
+| ` --tag ` | string, repeatable | Filter by tag; repeatable |  |
+| ` --folder-uid ` | string | Filter by folder uid |  |
+| ` --limit ` | string | Maximum number of results (1-500) |  |
+
+### ` grafana dashboard get `
+
+Get a dashboard by uid
+
+Usage:
+
+```text
+woctl grafana dashboard get <uid>
+```
+
+Availability: configured service with provider ` grafana `.
+
+### ` grafana dashboard update `
+
+Create or update a dashboard from a JSON file; requires --yes unless --dry-run is set
+
+Usage:
+
+```text
+woctl grafana dashboard update <file>
+```
+
+Availability: configured service with provider ` grafana `.
+
+Options:
+
+| Option | Type | Description | Default |
+| --- | --- | --- | --- |
+| ` --folder-uid ` | string | Destination folder uid |  |
+| ` --message ` | string | Save message |  |
+| ` --overwrite ` | boolean | Overwrite an existing dashboard version conflict |  |
+| ` --yes ` | boolean | Confirm a write request |  |
+| ` --dry-run ` | boolean | Validate without writing; does not require --yes |  |
+
+### ` grafana panel `
+
+panel operations
+
+Usage:
+
+```text
+woctl grafana panel
+```
+
+Availability: configured service with provider ` grafana `.
+
+### ` grafana panel get `
+
+Get a single panel by DASHBOARD_UID/PANEL_ID
+
+Usage:
+
+```text
+woctl grafana panel get <ref>
+```
+
+Availability: configured service with provider ` grafana `.
+
+### ` grafana panel patch `
+
+Patch a single panel by DASHBOARD_UID/PANEL_ID; exactly one of --set, --set-string, --set-json, --merge or --from is required, as is --yes unless --dry-run is set
+
+Usage:
+
+```text
+woctl grafana panel patch <ref>
+```
+
+Availability: configured service with provider ` grafana `.
+
+Options:
+
+| Option | Type | Description | Default |
+| --- | --- | --- | --- |
+| ` --set ` | string, repeatable | path=value assignment on the panel JSON; JSON when parseable, otherwise a raw string; repeatable |  |
+| ` --set-string ` | string, repeatable | path=value assignment on the panel JSON; the value is always a raw string, including an empty one; repeatable |  |
+| ` --set-json ` | string, repeatable | path=value assignment on the panel JSON; the value must parse as JSON; repeatable |  |
+| ` --merge ` | string | JSON object, @file or - deep-merged into the panel |  |
+| ` --from ` | string | JSON file or - that replaces the whole panel |  |
+| ` --message ` | string | Save message |  |
+| ` --yes ` | boolean | Confirm a write request |  |
+| ` --dry-run ` | boolean | Validate without writing; does not require --yes |  |
 
 ### ` s3 `
 

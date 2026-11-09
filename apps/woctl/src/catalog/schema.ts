@@ -58,7 +58,7 @@ export const CliCatalogJsonSchema = {
 				inputSchema: { $ref: '#/$defs/jsonSchema' }, outputSchema: { $ref: '#/$defs/jsonSchema' },
 				annotations: {
 					type: 'object', additionalProperties: false,
-					properties: { readOnlyHint: { type: 'boolean' }, destructiveHint: { type: 'boolean' } },
+					properties: { readOnlyHint: { type: 'boolean' }, destructiveHint: { type: 'boolean' }, supportsDryRun: { type: 'boolean' } },
 				},
 			},
 		},

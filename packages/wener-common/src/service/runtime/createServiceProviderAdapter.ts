@@ -1,6 +1,7 @@
 import { type ServiceProviderDefinition, ServiceRegistry } from '../registry';
 import { getServiceOptionsJsonSchema } from './getServiceOptionsJsonSchema';
-import type { ServiceOperation, ServiceProvider, ServiceSchema, ServiceTool } from './types';
+import { isDryRunBypass } from './dryRun';
+import type { ServiceOperation, ServiceProvider, ServiceTool } from './types';
 
 /** 将领域能力暴露给 schema/call transport，实例与关闭仍由 typed registry 管理。 */
 export function createServiceProviderAdapter(definition: ServiceProviderDefinition): ServiceProvider {
@@ -54,7 +55,11 @@ export function createServiceProviderAdapter(definition: ServiceProviderDefiniti
 					if (hasOperations) {
 						const operation = operations.get(tool);
 						if (!operation) throw new Error('Unknown service operation');
-						if (config.readOnly !== false && operation.tool.annotations?.readOnlyHint !== true)
+						if (
+							config.readOnly !== false &&
+							operation.tool.annotations?.readOnlyHint !== true &&
+							!isDryRunBypass(operation.tool.annotations?.supportsDryRun, input)
+						)
 							throw new Error('Selected service is read-only');
 						return operation.execute(registry, name, input, options);
 					}

@@ -1,4 +1,5 @@
 import type { GrafanaRequestOptions } from '@wener/client/grafana';
+import { isDryRunBypass } from '../../runtime/dryRun';
 import type { ServiceCallOptions, ServiceRuntimeClient } from '../../runtime/types';
 import { GrafanaWriteOperations } from '../GrafanaContract';
 import type { IGrafanaService } from '../index';
@@ -18,7 +19,12 @@ export async function createGrafanaServiceToolClient(
 		if (closed) throw new Error('Grafana client is closed');
 		controller.signal.throwIfAborted();
 		if (!Object.hasOwn(schema.tools, toolName)) throw new Error('Grafana operation unavailable');
-		if (GrafanaWriteOperations.has(toolName) && options.readOnly !== false) throw new Error('Selected service is read-only');
+		if (
+			GrafanaWriteOperations.has(toolName) &&
+			options.readOnly !== false &&
+			!isDryRunBypass(schema.tools[toolName]?.annotations?.supportsDryRun, input)
+		)
+			throw new Error('Selected service is read-only');
 		const timeoutMs = callOptions?.timeoutMs;
 		if (timeoutMs !== undefined && (!Number.isSafeInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 3_600_000))
 			throw new Error('Invalid Grafana timeout');
@@ -58,6 +64,11 @@ export async function createGrafanaServiceToolClient(
 		health: (callOptions) => call('health', {}, callOptions),
 		whoAmI: (callOptions) => call('whoAmI', {}, callOptions),
 		request: (input, callOptions) => call('request', input, callOptions),
+		listDashboard: (input, callOptions) => call('listDashboard', input ?? {}, callOptions),
+		getDashboard: (input, callOptions) => call('getDashboard', input, callOptions),
+		updateDashboard: (input, callOptions) => call('updateDashboard', input, callOptions),
+		getPanel: (input, callOptions) => call('getPanel', input, callOptions),
+		patchPanel: (input, callOptions) => call('patchPanel', input, callOptions),
 		close: async () => {
 			if (closePromise) return closePromise;
 			closed = true;

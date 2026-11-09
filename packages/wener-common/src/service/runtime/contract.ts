@@ -10,6 +10,8 @@ export interface ServiceToolMeta {
 	description?: string;
 	readOnlyHint?: boolean;
 	destructiveHint?: boolean;
+	/** Tool accepts an opt-in `dryRun: true` input flag that previews a write without performing it. */
+	supportsDryRun?: boolean;
 }
 
 /**
@@ -57,6 +59,7 @@ export function defineContractOperation<
 			annotations: {
 				readOnlyHint: meta.readOnlyHint,
 				destructiveHint: meta.destructiveHint,
+				supportsDryRun: meta.supportsDryRun,
 			},
 		},
 		input: { safeParse: (value) => inputSchema.safeParse(value) },

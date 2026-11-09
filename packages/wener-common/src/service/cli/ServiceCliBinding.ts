@@ -88,6 +88,7 @@ function describeDefinition<S>(definition: ServiceCliDefinition<S>): ServiceCliD
 					...(operation.group !== undefined ? { group: operation.group } : {}),
 					...(operation.variadic !== undefined ? { variadic: operation.variadic } : {}),
 					...(operation.mutating !== undefined ? { mutating: operation.mutating } : {}),
+					...(operation.supportsDryRun !== undefined ? { supportsDryRun: operation.supportsDryRun } : {}),
 					...(operation.aliases ? { aliases: Object.freeze([...operation.aliases]) } : {}),
 					...(operation.examples ? { examples: snapshotExamples(operation.examples) } : {}),
 					...(operation.argument !== undefined ? { argument: operation.argument } : {}),
