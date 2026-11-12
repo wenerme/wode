@@ -94,9 +94,11 @@
 		"@types/better-sqlite3": "^9.6.0",
 		"@ai-sdk/google": "^4.0.93",
 		"@clickhouse/client": "^1.24.0",
+		"@types/pg": "^8.23.1",
 		"ai": "^7.0.136",
 		"kysely": "^0.29.6",
 		"mysql2": "^3.24.5",
+		"pg": "^8.23.0",
 		"tarn": "^3.1.2",
 		"tedious": "^20.3.3"
 	},
