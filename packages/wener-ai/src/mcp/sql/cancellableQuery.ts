@@ -22,6 +22,14 @@ export type SqlQueryCanceller = (input: {
 	sql: string;
 }) => Promise<SqlQueryCancelResult>;
 
+/** Invoke an injected canceller through a promise so synchronous throws are handled as cancellation failures. */
+export function callSqlQueryCanceller(
+	cancel: SqlQueryCanceller,
+	input: Parameters<SqlQueryCanceller>[0],
+): Promise<SqlQueryCancelResult> {
+	return Promise.resolve().then(() => cancel(input));
+}
+
 /** 取消最多等多久；超时记为 error，调用方照样拿到中止错误。 */
 export const SqlQueryCancelTimeoutMs = 5_000;
 
@@ -37,8 +45,8 @@ export class SqlQueryAbortedError extends Error {
 }
 
 /**
- * 执行一条原始 SQL；`signal` 中止时取消数据库上的查询，等取消结果（最多 {@link SqlQueryCancelTimeoutMs}）后
- * 以 {@link SqlQueryAbortedError} 结束，不等查询本身跑完。
+ * 执行一条原始 SQL；`signal` 中止时取消数据库上的查询，等取消结果（最多 {@link SqlQueryCancelTimeoutMs}）后立即向调用方
+ * 抛出 {@link SqlQueryAbortedError}。Kysely 的连接回收回调会继续等待原查询结束；若取消未生效则关闭 Kysely 实例，避免忙连接回池复用。
  *
  * 只断开客户端连接取消不了查询：Doris 实测断开后查询照常跑到 `query_timeout`（120s），PG 也要等语句结束才发现客户端已断开。
  * 所以先在同一条连接上取得会话 ID，中止时用另一条连接发取消：
@@ -63,18 +71,25 @@ export async function executeCancellableQuery<Row = Record<string, unknown>>(
 		return (await sql.raw<Row>(sqlText).execute(db)) as { rows: Row[]; numAffectedRows?: bigint };
 	}
 	signal.throwIfAborted();
-	return db.connection().execute(async (connection) => {
+	let resolveAborted!: (error: SqlQueryAbortedError) => void;
+	const callerAborted = new Promise<SqlQueryAbortedError>((resolve) => {
+		resolveAborted = resolve;
+	});
+	const operation = db.connection().execute(async (connection) => {
 		const sessionSql = dialect === 'mysql' ? 'SELECT CONNECTION_ID() AS id' : 'SELECT pg_backend_pid() AS id';
 		const session = Number((await sql.raw<{ id: unknown }>(sessionSql).execute(connection)).rows[0]?.id);
 		signal.throwIfAborted();
 		const query = sql.raw<Row>(sqlText).execute(connection) as Promise<{ rows: Row[]; numAffectedRows?: bigint }>;
 		if (!Number.isSafeInteger(session) || session <= 0) return query;
 		let onAbort: (() => void) | undefined;
-		const aborted = new Promise<never>((_, reject) => {
+		const aborted = new Promise<SqlQueryAbortedError>((resolve) => {
 			onAbort = () => {
 				const startedAt = Date.now();
-				void settleSqlQueryCancel(cancel({ dialect, session, sql: sqlText }), cancelTimeoutMs).then((result) =>
-					reject(
+				void settleSqlQueryCancel(
+					callSqlQueryCanceller(cancel, { dialect, session, sql: sqlText }),
+					cancelTimeoutMs,
+				).then((result) =>
+					resolve(
 						new SqlQueryAbortedError(
 							{ ...result, session, durationMs: Date.now() - startedAt },
 							{ cause: signal.reason },
@@ -85,26 +100,55 @@ export async function executeCancellableQuery<Row = Record<string, unknown>>(
 			signal.addEventListener('abort', onAbort, { once: true });
 		});
 		try {
-			return await Promise.race([query, aborted]);
+			const result = await Promise.race([query, aborted]);
+			if (result instanceof SqlQueryAbortedError) throw result;
+			return result;
 		} catch (error) {
 			// 取消生效后原查询可能先以数据库错误结束（`user kill query`）：统一改为报告取消结果。
-			const reported =
-				signal.aborted && !(error instanceof SqlQueryAbortedError) ? await aborted.catch((e) => e) : error;
+			const reported = signal.aborted && !(error instanceof SqlQueryAbortedError) ? await aborted : error;
 			if (reported instanceof SqlQueryAbortedError) {
 				try {
 					onCancel?.(reported.cancel);
 				} catch {
 					// 记录失败不影响结果。
 				}
+				resolveAborted(reported);
+				// Return the structured error to the caller now, while this callback remains pending and
+				// keeps the Kysely connection out of the pool until the original query settles. A failed
+				// or ambiguous cancellation closes the instance immediately; a successful cancellation
+				// gets a grace timer. If destruction itself fails, waiting for `query` still prevents reuse.
+				let destroyTimer: ReturnType<typeof setTimeout> | undefined;
+				const destroy = () =>
+					void Promise.resolve()
+						.then(() => db.destroy())
+						.catch(() => undefined);
+				if (reported.cancel.outcome === 'killed') {
+					destroyTimer = setTimeout(destroy, cancelTimeoutMs);
+					destroyTimer.unref?.();
+				} else {
+					destroy();
+				}
+				await query.catch(() => undefined);
+				if (destroyTimer) clearTimeout(destroyTimer);
+				// The caller already received `reported` through `callerAborted`. Resolve the background
+				// connection operation after cleanup so Kysely does not produce a second unhandled rejection.
+				return { rows: [] };
 			}
 			throw reported;
 		} finally {
 			if (onAbort) signal.removeEventListener('abort', onAbort);
-			// 不等原查询（调用方已经走了），只吞掉它的结果；中止前已正常结束时 aborted 不会再被读取。
+			// The query is awaited on the abort path; this also handles the normal path where it settles first.
 			query.catch(() => undefined);
 			aborted.catch(() => undefined);
 		}
 	});
+	operation.catch(() => undefined);
+	const result = await Promise.race([
+		operation.then((value) => ({ kind: 'result' as const, value })),
+		callerAborted.then((error) => ({ kind: 'aborted' as const, error })),
+	]);
+	if (result.kind === 'aborted') throw result.error;
+	return result.value;
 }
 
 /** 等取消结果，最多 `timeoutMs`；超时或抛错记为 error（不抛出）。executeBoundedQuery 共用。 */

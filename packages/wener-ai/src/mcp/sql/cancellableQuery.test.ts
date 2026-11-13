@@ -21,6 +21,8 @@ import {
 function createFakeDb() {
 	const executed: string[] = [];
 	const pending: Array<(error: Error) => void> = [];
+	let released = 0;
+	let destroyed = 0;
 	const connection: DatabaseConnection = {
 		async executeQuery<R>(compiled: CompiledQuery): Promise<QueryResult<R>> {
 			executed.push(compiled.sql);
@@ -38,8 +40,12 @@ function createFakeDb() {
 		async beginTransaction() {},
 		async commitTransaction() {},
 		async rollbackTransaction() {},
-		async releaseConnection() {},
-		async destroy() {},
+		async releaseConnection() {
+			released++;
+		},
+		async destroy() {
+			destroyed++;
+		},
 	};
 	const db = new Kysely<any>({
 		dialect: {
@@ -52,11 +58,18 @@ function createFakeDb() {
 	const killAll = () => {
 		for (const reject of pending.splice(0)) reject(new Error('[CANCELLED] user kill query'));
 	};
-	return { db, executed, killAll, pendingCount: () => pending.length };
+	return {
+		db,
+		executed,
+		killAll,
+		pendingCount: () => pending.length,
+		released: () => released,
+		destroyed: () => destroyed,
+	};
 }
 
 describe('executeCancellableQuery：调用方中止时取消数据库上的查询', () => {
-	test('中止：用会话 ID 发取消，等到取消结果就以 SqlQueryAbortedError 结束，不等查询跑完', async () => {
+	test('中止：用会话 ID 发取消，立即以 SqlQueryAbortedError 结束，连接在原查询结束后释放', async () => {
 		const fake = createFakeDb();
 		const cancel = vi.fn<SqlQueryCanceller>(async () => {
 			fake.killAll();
@@ -73,8 +86,27 @@ describe('executeCancellableQuery：调用方中止时取消数据库上的查�
 		expect(error).toBeInstanceOf(SqlQueryAbortedError);
 		expect(error).toMatchObject({ name: 'AbortError', cancel: { outcome: 'killed', matches: 1, session: 42 } });
 		expect(cancel).toHaveBeenCalledWith({ dialect: 'mysql', session: 42, sql: 'SELECT slow FROM t' });
+		await vi.waitFor(() => expect(fake.released()).toBe(1));
 		// 会话 ID 与业务查询在同一条连接上执行。
 		expect(fake.executed).toEqual(['SELECT CONNECTION_ID() AS id', 'SELECT slow FROM t']);
+	});
+
+	test('取消确认返回前原查询未结束时，不提前释放连接', async () => {
+		const fake = createFakeDb();
+		const controller = new AbortController();
+		const cancel = vi.fn<SqlQueryCanceller>(async () => ({ outcome: 'killed' }));
+		const running = executeCancellableQuery(fake.db, 'mysql', 'SELECT slow FROM t', {
+			signal: controller.signal,
+			cancel,
+		});
+		const settled = running.catch((error: unknown) => error);
+		await vi.waitFor(() => expect(fake.pendingCount()).toBe(1));
+		controller.abort();
+		await new Promise((resolve) => setTimeout(resolve, 10));
+		expect(fake.released()).toBe(0);
+		fake.killAll();
+		expect(await settled).toBeInstanceOf(SqlQueryAbortedError);
+		await vi.waitFor(() => expect(fake.released()).toBe(1));
 	});
 
 	test('正常结束不取消；没有 signal、或方言不支持时不多查会话 ID', async () => {
@@ -200,20 +232,54 @@ describe('取消结果的记录（onCancel，宿主据此写日志与 span）', 
 		await expect(running).rejects.toBeInstanceOf(SqlQueryAbortedError);
 		expect(results).toEqual([expect.objectContaining({ outcome: 'killed', matches: 1, session: 42 })]);
 
-		const timedOut = await executeCancellableQuery(fake.db, 'mysql', 'SELECT slow', {
+		const timedOutQuery = executeCancellableQuery(fake.db, 'mysql', 'SELECT slow', {
 			signal: AbortSignal.timeout(20),
 			cancel: async () => new Promise(() => undefined),
 			cancelTimeoutMs: 30,
 			onCancel: (result) => results.push(result),
-		}).catch((reason: unknown) => reason);
+		});
+		setTimeout(() => fake.killAll(), 60);
+		const timedOut = await timedOutQuery.catch((reason: unknown) => reason);
 		expect(timedOut).toMatchObject({ cancel: { outcome: 'error', error: 'cancel timed out' } });
 		expect(results).toHaveLength(2);
 
-		await executeCancellableQuery(fake.db, 'mysql', 'SELECT fast', {
+		const fastFake = createFakeDb();
+		await executeCancellableQuery(fastFake.db, 'mysql', 'SELECT fast', {
 			signal: new AbortController().signal,
 			cancel: async () => ({ outcome: 'killed' }),
 			onCancel: (result) => results.push(result),
 		});
 		expect(results).toHaveLength(2);
+	});
+
+	test('取消器同步抛错也会转成 error，并等待原查询结束后释放连接', async () => {
+		const fake = createFakeDb();
+		const controller = new AbortController();
+		const cancel = (() => {
+			throw new Error('synchronous cancel failure');
+		}) as SqlQueryCanceller;
+		const running = executeCancellableQuery(fake.db, 'mysql', 'SELECT slow', {
+			signal: controller.signal,
+			cancel,
+		});
+		await vi.waitFor(() => expect(fake.pendingCount()).toBe(1));
+		setTimeout(() => fake.killAll(), 20);
+		controller.abort();
+		await expect(running).rejects.toMatchObject({ cancel: { outcome: 'error', error: 'synchronous cancel failure' } });
+	});
+
+	test('取消失败且原查询永久 pending：到期限销毁数据库并返回结构化取消错误', async () => {
+		const fake = createFakeDb();
+		const controller = new AbortController();
+		const running = executeCancellableQuery(fake.db, 'mysql', 'SELECT slow', {
+			signal: controller.signal,
+			cancel: async () => ({ outcome: 'not_found' }),
+			cancelTimeoutMs: 10,
+		});
+		await vi.waitFor(() => expect(fake.pendingCount()).toBe(1));
+		controller.abort();
+		await expect(running).rejects.toMatchObject({ cancel: { outcome: 'not_found' } });
+		expect(fake.released()).toBe(0);
+		expect(fake.destroyed()).toBe(1);
 	});
 });

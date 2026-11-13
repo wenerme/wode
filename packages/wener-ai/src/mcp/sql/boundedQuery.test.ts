@@ -95,6 +95,42 @@ describe('createSqlRowCollector：按最终输出编码计字节', () => {
 		}
 	});
 
+	test('json：嵌套对象中的大字段也在序列化前判定为 row_too_large', () => {
+		const stringify = vi.spyOn(JSON, 'stringify');
+		try {
+			const collector = createSqlRowCollector<unknown>({ maxRows: 100, maxResultBytes: 1000 }, 'json');
+			expect(collector.push({ payload: { nested: { value: 'x'.repeat(10_000) } } })).toBe(false);
+			expect(collector.truncated).toMatchObject({ reason: 'row_too_large' });
+			expect(stringify).not.toHaveBeenCalled();
+		} finally {
+			stringify.mockRestore();
+		}
+	});
+
+	test('json：嵌套数字数组的结构成本也在序列化前判定为 row_too_large', () => {
+		const stringify = vi.spyOn(JSON, 'stringify');
+		try {
+			const collector = createSqlRowCollector<unknown>({ maxRows: 100, maxResultBytes: 1000 }, 'json');
+			expect(collector.push({ payload: Array(2_000).fill(0) })).toBe(false);
+			expect(collector.truncated).toMatchObject({ reason: 'row_too_large' });
+			expect(stringify).not.toHaveBeenCalled();
+		} finally {
+			stringify.mockRestore();
+		}
+	});
+
+	test('json：嵌套 null 数组的标量成本也在序列化前判定为 row_too_large', () => {
+		const stringify = vi.spyOn(JSON, 'stringify');
+		try {
+			const collector = createSqlRowCollector<unknown>({ maxRows: 100, maxResultBytes: 1000 }, 'json');
+			expect(collector.push({ payload: Array(400).fill(null) })).toBe(false);
+			expect(collector.truncated).toMatchObject({ reason: 'row_too_large' });
+			expect(stringify).not.toHaveBeenCalled();
+		} finally {
+			stringify.mockRestore();
+		}
+	});
+
 	test('table 单元格截断：超过 256 个 code point 截断为前 255 个 + …；emoji 不切开；Buffer/TypedArray 只取前缀；幂等', () => {
 		expect(capSqlTableCell(null)).toEqual({ text: '', cut: false });
 		expect(capSqlTableCell(12n)).toEqual({ text: '12', cut: false });

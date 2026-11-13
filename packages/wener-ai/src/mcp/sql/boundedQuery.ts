@@ -1,4 +1,9 @@
-import { SqlQueryAbortedError, type SqlQueryCanceller, settleSqlQueryCancel } from './cancellableQuery';
+import {
+	callSqlQueryCanceller,
+	SqlQueryAbortedError,
+	type SqlQueryCanceller,
+	settleSqlQueryCancel,
+} from './cancellableQuery';
 
 /**
  * 查询结果上限：行数与序列化后的字节数（按 JSON 的 UTF-8 长度计，与返回给调用方的文本同量级）。
@@ -206,14 +211,44 @@ function createTableSizer(keys: readonly string[]) {
  * 不序列化就能算的下界：字符串至少它的长度（JSON 转义只会更长）、Buffer/TypedArray 至少字节数
  * （JSON 是数字数组，table 是十进制列表，都更长）。超过上限就判 `row_too_large`，不为了算精确值把巨大的字段再复制一份。
  */
-function cheapLowerBound(row: unknown): number {
-	if (!row || typeof row !== 'object') return 0;
+function cheapLowerBound(value: unknown, budget: number, active = new Set<object>()): number {
+	if (value === null) return 4;
+	if (value === undefined) return 0;
+	if (typeof value === 'string') return Math.min(budget + 1, Buffer.byteLength(value, 'utf8') + 2);
+	if (typeof value === 'bigint') return Math.min(budget + 1, String(value).length + 2);
+	if (typeof value === 'number') return Math.min(budget + 1, String(value).length);
+	if (typeof value === 'boolean') return value ? 4 : 5;
+	if (typeof value !== 'object') return 0;
+	if (Buffer.isBuffer(value)) return Math.min(budget + 1, value.byteLength);
+	if (ArrayBuffer.isView(value)) return value instanceof DataView ? 0 : Math.min(budget + 1, value.byteLength);
+	if (active.has(value)) return 0;
+	active.add(value);
 	let bytes = 0;
-	for (const value of Object.values(row as Record<string, unknown>)) {
-		if (typeof value === 'string') bytes += value.length;
-		else if (ArrayBuffer.isView(value)) bytes += value.byteLength;
+	const add = (amount: number): boolean => {
+		bytes += amount;
+		return bytes > budget;
+	};
+	try {
+		if (Array.isArray(value)) {
+			if (add(2)) return budget + 1;
+			for (const [index, item] of value.entries()) {
+				if (index > 0 && add(1)) return budget + 1;
+				if (add(cheapLowerBound(item, budget - bytes, active))) return budget + 1;
+			}
+			return bytes;
+		}
+		// Database JSON/JSONB values are plain objects. Count key bytes and structural punctuation so
+		// arrays of empty objects and other compact nested values cannot bypass the early cutoff.
+		if (add(2)) return budget + 1;
+		for (const [index, key] of Object.keys(value).entries()) {
+			if (index > 0 && add(1)) return budget + 1;
+			if (add(Buffer.byteLength(key, 'utf8') + 3)) return budget + 1;
+			if (add(cheapLowerBound((value as Record<string, unknown>)[key], budget - bytes, active))) return budget + 1;
+		}
+		return bytes;
+	} finally {
+		active.delete(value);
 	}
-	return bytes;
 }
 
 /**
@@ -230,7 +265,7 @@ export function createSqlRowCollector<Row>(limits: SqlResultLimits, encoding: Sq
 	let cellsTruncated = 0;
 	let table: { keys: string[]; sizer: ReturnType<typeof createTableSizer> } | undefined;
 	const pushJson = (row: Row): boolean => {
-		if (cheapLowerBound(row) > limits.maxResultBytes) {
+		if (cheapLowerBound(row, limits.maxResultBytes) > limits.maxResultBytes) {
 			truncated = { reason: 'row_too_large', limits };
 			return false;
 		}
@@ -523,7 +558,7 @@ export async function executeBoundedQuery<Row = Record<string, unknown>>(
 			if (cancelling || !cancel || !session) return;
 			const startedAt = Date.now();
 			cancelling = settleSqlQueryCancel(
-				cancel({ dialect: raw.dialect, session, sql: sqlText }),
+				callSqlQueryCanceller(cancel, { dialect: raw.dialect, session, sql: sqlText }),
 				options.cancelTimeoutMs,
 			).then((result) => ({
 				outcome: result.outcome,
