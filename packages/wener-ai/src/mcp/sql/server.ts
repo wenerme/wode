@@ -148,6 +148,19 @@ export function createSqlMcpServer(options: CreateSqlMcpServerOptions) {
 	// =========================================================================
 
 	const resultLimits = resolveSqlResultLimits(SqlResultLimitsDefault, options.resultLimits);
+	/**
+	 * executeCancellableQuery 销毁了 `db`（取消失败、结果不明，或取消后原查询迟迟不结束）：丢弃缓存，下次 getDb 重新建连。
+	 * rawConnection 与 db 共用同一个连接池，一并丢弃。只在被销毁的就是当前缓存的实例时才清：
+	 * 并发的另一个查询晚到的销毁通知不能把已经重建的新实例清掉（新实例会因此泄漏，close 也关不到）。
+	 */
+	const discardDb = (db: Kysely<any>) => {
+		if (_db !== db) return;
+		_db = undefined;
+		_dialect = undefined;
+		_loadPromise = undefined;
+		_rawConnection = undefined;
+		_ownsConnection = false;
+	};
 	let canceller: SqlQueryCanceller | undefined;
 	const runQuery: SqlContext['runQuery'] = async (sqlText, signal, tool, requested) => {
 		const { db, dialect } = await getDb();
@@ -172,8 +185,13 @@ export function createSqlMcpServer(options: CreateSqlMcpServerOptions) {
 			});
 			return { ...result, limits };
 		}
-		// 其它方言（sqlite、mssql）没有逐行接口：读完后截断，至少不把超限的结果交给调用方。
-		const { rows } = await executeCancellableQuery(db, dialect, sqlText, { signal, cancel: canceller, onCancel });
+		// 其它方言（sqlite、mssql）没有逐行接口，pg/mysql 拿不到原生连接时也走这里：读完后截断，至少不把超限的结果交给调用方。
+		const { rows } = await executeCancellableQuery(db, dialect, sqlText, {
+			signal,
+			cancel: canceller,
+			onCancel,
+			onDestroy: () => discardDb(db),
+		});
 		return { ...truncateRows(rows, limits, encoding), limits };
 	};
 

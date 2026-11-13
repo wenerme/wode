@@ -283,3 +283,90 @@ describe('取消结果的记录（onCancel，宿主据此写日志与 span）', 
 		expect(fake.destroyed()).toBe(1);
 	});
 });
+
+describe('onDestroy：销毁传入的 Kysely 实例前通知调用方丢弃缓存', () => {
+	/** 发起一个挂起的查询并中止；记下 onDestroy 被调用时 db 是否已经销毁。 */
+	async function abortSlow(
+		cancel: SqlQueryCanceller,
+		options: { cancelTimeoutMs?: number; onDestroy?: () => void } = {},
+	) {
+		const fake = createFakeDb();
+		const destroyedAtCallback: number[] = [];
+		const onDestroy = vi.fn(() => {
+			destroyedAtCallback.push(fake.destroyed());
+			options.onDestroy?.();
+		});
+		const controller = new AbortController();
+		const running = executeCancellableQuery(fake.db, 'mysql', 'SELECT slow', {
+			signal: controller.signal,
+			cancel,
+			cancelTimeoutMs: options.cancelTimeoutMs ?? 50,
+			onDestroy,
+		});
+		await vi.waitFor(() => expect(fake.pendingCount()).toBe(1));
+		controller.abort();
+		const error = await running.catch((reason: unknown) => reason);
+		expect(error).toBeInstanceOf(SqlQueryAbortedError);
+		return { fake, onDestroy, destroyedAtCallback, error: error as SqlQueryAbortedError };
+	}
+
+	test.each([
+		['返回 error', (async () => ({ outcome: 'error', error: 'boom' })) as SqlQueryCanceller],
+		['返回 not_found', (async () => ({ outcome: 'not_found' })) as SqlQueryCanceller],
+		[
+			'异步抛错',
+			(async () => {
+				throw new Error('cancel failed');
+			}) as SqlQueryCanceller,
+		],
+		[
+			'同步抛错',
+			(() => {
+				throw new Error('cancel failed');
+			}) as SqlQueryCanceller,
+		],
+	])('取消器%s：立即销毁，onDestroy 在 destroy 之前调用一次', async (_label, cancel) => {
+		const { fake, onDestroy, destroyedAtCallback } = await abortSlow(cancel);
+		await vi.waitFor(() => expect(fake.destroyed()).toBe(1));
+		expect(onDestroy).toHaveBeenCalledTimes(1);
+		expect(destroyedAtCallback).toEqual([0]);
+		fake.killAll();
+		await new Promise((resolve) => setTimeout(resolve, 10));
+		expect(onDestroy).toHaveBeenCalledTimes(1);
+	});
+
+	test('onDestroy 抛错被吞掉：仍然销毁，调用方仍拿到结构化取消错误', async () => {
+		const { fake, onDestroy, error } = await abortSlow(async () => ({ outcome: 'error' }), {
+			onDestroy: () => {
+				throw new Error('callback failed');
+			},
+		});
+		expect(error.cancel).toMatchObject({ outcome: 'error' });
+		await vi.waitFor(() => expect(fake.destroyed()).toBe(1));
+		expect(onDestroy).toHaveBeenCalledTimes(1);
+		fake.killAll();
+	});
+
+	test('取消成功且原查询在 cancelTimeoutMs 内结束：不销毁、不调用 onDestroy，连接归还', async () => {
+		const { fake, onDestroy } = await abortSlow(async () => ({ outcome: 'killed', matches: 1 }), {
+			cancelTimeoutMs: 200,
+		});
+		// 取消生效：原查询在宽限内以取消错误结束。
+		fake.killAll();
+		await vi.waitFor(() => expect(fake.released()).toBe(1));
+		await new Promise((resolve) => setTimeout(resolve, 250));
+		expect(fake.destroyed()).toBe(0);
+		expect(onDestroy).not.toHaveBeenCalled();
+	});
+
+	test('取消成功但原查询在 cancelTimeoutMs 内未结束：到点销毁，onDestroy 调用一次', async () => {
+		const { fake, onDestroy, destroyedAtCallback } = await abortSlow(async () => ({ outcome: 'killed' }), {
+			cancelTimeoutMs: 30,
+		});
+		expect(onDestroy).not.toHaveBeenCalled();
+		await vi.waitFor(() => expect(fake.destroyed()).toBe(1));
+		expect(onDestroy).toHaveBeenCalledTimes(1);
+		expect(destroyedAtCallback).toEqual([0]);
+		fake.killAll();
+	});
+});
