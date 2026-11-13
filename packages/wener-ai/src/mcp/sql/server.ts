@@ -123,7 +123,7 @@ export function createSqlMcpServer(options: CreateSqlMcpServerOptions) {
 			return { db: _db, dialect: _dialect };
 		}
 		if (!_loadPromise) {
-			_loadPromise = (async () => {
+			const loading = (async () => {
 				const url = options.url;
 				if (!url) {
 					throw new Error('Database URL must be provided');
@@ -136,6 +136,12 @@ export function createSqlMcpServer(options: CreateSqlMcpServerOptions) {
 				_rawConnection = result.rawConnection;
 				return { db: result.db, dialect };
 			})();
+			_loadPromise = loading;
+			// 建连失败不缓存：这次（以及并发等待它的）调用方拿到这个错误，之后的调用重新建连。
+			// 只在 `_loadPromise` 仍是这一次时才清：期间 close 或重建可能已经换成了新的，不能误清。
+			loading.catch(() => {
+				if (_loadPromise === loading) _loadPromise = undefined;
+			});
 		}
 		return _loadPromise;
 	};
