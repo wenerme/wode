@@ -1,7 +1,10 @@
 import { EventEmitter } from 'node:events';
+import { inspect } from 'node:util';
 import { describe, expect, test, vi } from 'vitest';
 import {
+	bigintReplacer,
 	capSqlTableCell,
+	cheapLowerBound,
 	createSqlRowCollector,
 	encodeSqlRowsJson,
 	executeBoundedQuery,
@@ -129,6 +132,34 @@ describe('createSqlRowCollector：按最终输出编码计字节', () => {
 		} finally {
 			stringify.mockRestore();
 		}
+	});
+
+	test('json：JSON.stringify 会省略的属性、由 toJSON 决定输出的对象不计入下界，小行不会被误判为 row_too_large', () => {
+		const limits = { maxRows: 100, maxResultBytes: 1024 };
+		const bigKey = 'k'.repeat(2000);
+		const rows: unknown[] = [
+			// 值为 undefined / 函数 / symbol 的属性被省略：输出是 `{}`。
+			{ a: undefined, [bigKey]: undefined },
+			{ fn: () => 1, sym: Symbol('s'), [bigKey]: () => 2 },
+			// 自身属性很大，但 toJSON 很小。
+			{ big: 'x'.repeat(5000), [bigKey]: 1, toJSON: () => ({ ok: 1 }) },
+			// Date 的输出由 Date.prototype.toJSON 决定，与自身属性无关。
+			new Date(0),
+			Object.assign(new Date(0), { [bigKey]: 'x' }),
+			{ at: Object.assign(new Date(0), { [bigKey]: 'x' }) },
+			// toJSON 返回 undefined 的属性值也会被省略（连同键）。
+			{ [bigKey]: { toJSON: () => undefined } },
+		];
+		for (const row of rows) {
+			const collector = createSqlRowCollector<unknown>(limits, 'json');
+			expect(collector.push(row)).toBe(true);
+			expect(collector.truncated).toBeUndefined();
+			expect(bytes(encodeSqlRowsJson(collector.rows))).toBeLessThanOrEqual(limits.maxResultBytes);
+		}
+		// 对照：同样的大键真的输出时仍然判为 row_too_large。
+		const real = createSqlRowCollector<unknown>(limits, 'json');
+		expect(real.push({ [bigKey]: null })).toBe(false);
+		expect(real.truncated).toMatchObject({ reason: 'row_too_large' });
 	});
 
 	test('table 单元格截断：超过 256 个 code point 截断为前 255 个 + …；emoji 不切开；Buffer/TypedArray 只取前缀；幂等', () => {
@@ -268,6 +299,134 @@ describe('createSqlRowCollector：按最终输出编码计字节', () => {
 		expect(oversize).toMatch(/single row exceeds 100 bytes/u);
 		expect(oversize).toMatch(/fewer or shorter columns/u);
 		expect(sqlTruncationNotice({ rows: [] })).toBeUndefined();
+	});
+});
+
+describe('cheapLowerBound：不超过 JSON 序列化的实际字节数', () => {
+	const jsonBytes = (value: unknown) => Buffer.byteLength(JSON.stringify(value, bigintReplacer) ?? '', 'utf8');
+	const huge = Number.MAX_SAFE_INTEGER;
+
+	/** 固定种子的伪随机数（mulberry32）：失败可以复现。 */
+	function createRandom(seed: number) {
+		let state = seed >>> 0;
+		const next = () => {
+			state = (state + 0x6d2b79f5) >>> 0;
+			let t = state;
+			t = Math.imul(t ^ (t >>> 15), t | 1);
+			t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+			return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+		};
+		const int = (max: number) => Math.floor(next() * max);
+		const pick = <T>(items: readonly T[]): T => items[int(items.length)] as T;
+		return { int, pick };
+	}
+
+	const chars = ['a', 'Z', '0', ' ', '中', '😀', '"', '\\', '\n', '\u0001', '\ud800', 'é'];
+	const numbers = [0, -0, 1, -1, 1.5, 123456789, 1e21, 1e-7, Number.NaN, Number.POSITIVE_INFINITY, -Infinity];
+
+	function randomValue(random: ReturnType<typeof createRandom>, depth: number): unknown {
+		const text = (max: number) => Array.from({ length: random.int(max) }, () => random.pick(chars)).join('');
+		const kind = random.int(depth > 0 ? 20 : 15);
+		switch (kind) {
+			case 0:
+				return null;
+			case 1:
+				return undefined;
+			case 2:
+				return random.int(2) === 0;
+			case 3:
+				return random.pick(numbers);
+			case 4:
+				return BigInt(random.int(1_000_000)) * (random.int(2) ? 1n : -1n);
+			case 5:
+				return text(12);
+			case 6:
+				return () => 1;
+			case 7:
+				return Symbol('s');
+			case 8:
+				return random.int(4) === 0 ? new Date(Number.NaN) : new Date(random.int(2_000_000_000_000));
+			case 9:
+				return Buffer.from(text(6));
+			case 10:
+				return new Float64Array(random.int(5));
+			case 11:
+				return new Uint16Array(random.int(5)).fill(random.int(65536));
+			case 12:
+				return new DataView(new ArrayBuffer(random.int(16)));
+			case 13: {
+				// toJSON 返回：undefined、很短的值；自身属性很大。
+				const result = random.pick([undefined, 1, 'x', null, {}]);
+				return { [text(40) || 'k']: 'v'.repeat(random.int(200)), toJSON: () => result };
+			}
+			case 14:
+				return Object.assign(new Date(0), { [`p${text(30)}`]: text(30) });
+			case 15:
+			case 16: {
+				const items = Array.from({ length: random.int(6) }, () => randomValue(random, depth - 1));
+				// 空位序列化成 null。
+				if (random.int(4) === 0) items.length += 2;
+				return items;
+			}
+			default: {
+				const record: Record<string, unknown> = {};
+				for (let index = random.int(6); index > 0; index--) record[text(10)] = randomValue(random, depth - 1);
+				return record;
+			}
+		}
+	}
+
+	const violations = (values: readonly unknown[]) =>
+		values
+			.map((value) => ({ value, bound: cheapLowerBound(value, huge), actual: jsonBytes(value) }))
+			.filter(({ bound, actual }) => bound > actual)
+			.map(({ value, bound, actual }) => ({ value: inspect(value, { depth: 4 }).slice(0, 300), bound, actual }));
+
+	test('构造的边界值', () => {
+		const bigKey = 'k'.repeat(2000);
+		const constructed: unknown[] = [
+			null,
+			undefined,
+			true,
+			false,
+			...numbers,
+			...numbers.map((value) => [value]),
+			12345678901234567890n,
+			'',
+			'中文与 emoji 😀',
+			'\ud800',
+			() => 1,
+			Symbol('s'),
+			[undefined, () => 1, Symbol('s')],
+			new Array(5),
+			{ a: undefined, [bigKey]: undefined },
+			{ fn: () => 1, sym: Symbol('s'), [bigKey]: () => 2 },
+			{ big: 'x'.repeat(5000), toJSON: () => ({ ok: 1 }) },
+			{ [bigKey]: { toJSON: () => undefined } },
+			[{ toJSON: () => undefined }],
+			new Date(0),
+			new Date(Number.NaN),
+			Object.assign(new Date(0), { [bigKey]: 'x' }),
+			{ at: Object.assign(new Date(0), { [bigKey]: 'x' }) },
+			Buffer.alloc(0),
+			Buffer.from('中文'),
+			{ blob: Buffer.alloc(100) },
+			new Float64Array(10),
+			new Float32Array(10),
+			new BigInt64Array(3),
+			new DataView(new ArrayBuffer(8)),
+			new Map([[1, 2]]),
+			new Set([1, 2]),
+			[{}, [], { a: [] }],
+			{ nested: { a: { b: [1, 2, { c: null, d: undefined }] } } },
+		];
+		expect(violations(constructed)).toEqual([]);
+	});
+
+	test('随机值（固定种子）', () => {
+		const random = createRandom(20_240_601);
+		const values = Array.from({ length: 2000 }, () => randomValue(random, 3));
+		expect(violations(values)).toEqual([]);
 	});
 });
 

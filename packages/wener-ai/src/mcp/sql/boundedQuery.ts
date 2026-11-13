@@ -208,20 +208,32 @@ function createTableSizer(keys: readonly string[]) {
 }
 
 /**
- * 不序列化就能算的下界：字符串至少它的长度（JSON 转义只会更长）、Buffer/TypedArray 至少字节数
- * （JSON 是数字数组，table 是十进制列表，都更长）。超过上限就判 `row_too_large`，不为了算精确值把巨大的字段再复制一份。
+ * 不序列化就能算的 JSON 字节下界：字符串至少它的 UTF-8 长度（JSON 转义只会更长）、Buffer 至少字节数（序列化成数字数组）、
+ * 其它 TypedArray 至少元素个数（序列化成 `{"0":…}`，每个元素至少 1 字节；不用字节数：`Float64Array` 里的 0
+ * 只占 `"0":0` 等几个字节，少于 8）。超过上限就判 `row_too_large`，不为了算精确值把巨大的字段再复制一份。
+ *
+ * 必须是**严格的**下界（≤ `JSON.stringify(value, bigintReplacer)` 的 UTF-8 字节数）：低估只是不提前判定（之后按精确值再判），
+ * 高估会把很小的行误判成 `row_too_large`。所以：
+ * - 对象里 `JSON.stringify` 会省略的属性（见 {@link mayBeOmittedJsonProperty}）连同键、标点都不计；
+ * - 带 `toJSON` 的对象（`Date`、自定义对象）输出由 `toJSON` 决定，按 0 计，不调用 `toJSON`；
+ * - `NaN`、`Infinity` 序列化成 `null`（4 字节），不按 `String(value)` 的长度。
  */
-function cheapLowerBound(value: unknown, budget: number, active = new Set<object>()): number {
+export function cheapLowerBound(value: unknown, budget: number, active = new Set<object>()): number {
 	if (value === null) return 4;
 	if (value === undefined) return 0;
 	if (typeof value === 'string') return Math.min(budget + 1, Buffer.byteLength(value, 'utf8') + 2);
 	if (typeof value === 'bigint') return Math.min(budget + 1, String(value).length + 2);
-	if (typeof value === 'number') return Math.min(budget + 1, String(value).length);
+	if (typeof value === 'number') return Number.isFinite(value) ? Math.min(budget + 1, String(value).length) : 4;
 	if (typeof value === 'boolean') return value ? 4 : 5;
 	if (typeof value !== 'object') return 0;
 	if (Buffer.isBuffer(value)) return Math.min(budget + 1, value.byteLength);
-	if (ArrayBuffer.isView(value)) return value instanceof DataView ? 0 : Math.min(budget + 1, value.byteLength);
+	if (ArrayBuffer.isView(value)) {
+		return value instanceof DataView ? 0 : Math.min(budget + 1, (value as unknown as ArrayLike<unknown>).length);
+	}
 	if (active.has(value)) return 0;
+	// 序列化结果由 `toJSON` 决定（`Date`、`{ toJSON: () => ({ id: 1 }) }` 之类的自定义对象）：自身属性可能很多、很大，
+	// 实际输出却很小。下界取 0 最安全，也不调用 `toJSON`（可能有副作用，且会提前复制一份值）。
+	if (typeof (value as { toJSON?: unknown }).toJSON === 'function') return 0;
 	active.add(value);
 	let bytes = 0;
 	const add = (amount: number): boolean => {
@@ -233,6 +245,7 @@ function cheapLowerBound(value: unknown, budget: number, active = new Set<object
 			if (add(2)) return budget + 1;
 			for (const [index, item] of value.entries()) {
 				if (index > 0 && add(1)) return budget + 1;
+				// 数组里的 `undefined`、函数、symbol（含空位）序列化成 `null`（4 字节），这里按递归的结果 0 计，仍是下界。
 				if (add(cheapLowerBound(item, budget - bytes, active))) return budget + 1;
 			}
 			return bytes;
@@ -240,15 +253,33 @@ function cheapLowerBound(value: unknown, budget: number, active = new Set<object
 		// Database JSON/JSONB values are plain objects. Count key bytes and structural punctuation so
 		// arrays of empty objects and other compact nested values cannot bypass the early cutoff.
 		if (add(2)) return budget + 1;
-		for (const [index, key] of Object.keys(value).entries()) {
-			if (index > 0 && add(1)) return budget + 1;
+		let written = 0;
+		for (const key of Object.keys(value)) {
+			const item = (value as Record<string, unknown>)[key];
+			if (mayBeOmittedJsonProperty(item)) continue;
+			if (written++ > 0 && add(1)) return budget + 1;
 			if (add(Buffer.byteLength(key, 'utf8') + 3)) return budget + 1;
-			if (add(cheapLowerBound((value as Record<string, unknown>)[key], budget - bytes, active))) return budget + 1;
+			if (add(cheapLowerBound(item, budget - bytes, active))) return budget + 1;
 		}
 		return bytes;
 	} finally {
 		active.delete(value);
 	}
+}
+
+/**
+ * 作为对象属性值时可能被 `JSON.stringify` 省略（键和标点都不出现）：`undefined`、函数、symbol；
+ * 以及带 `toJSON` 的对象——`toJSON` 返回 `undefined` 时也会省略，不调用就无法确定，按省略算。
+ * Buffer（以及其它 TypedArray）不在此列：与 {@link cheapLowerBound} 一致，按元素计。
+ */
+function mayBeOmittedJsonProperty(value: unknown): boolean {
+	if (value === undefined || typeof value === 'function' || typeof value === 'symbol') return true;
+	return (
+		typeof value === 'object' &&
+		value !== null &&
+		!ArrayBuffer.isView(value) &&
+		typeof (value as { toJSON?: unknown }).toJSON === 'function'
+	);
 }
 
 /**
