@@ -1,6 +1,6 @@
 {
 	"name": "@wener/ai",
-	"version": "0.1.21",
+	"version": "0.1.22",
 	"type": "module",
 	"description": "AI utilities and MCP server definitions",
 	"author": "wener",
@@ -51,6 +51,7 @@
 		"ai": "*",
 		"kysely": "*",
 		"mysql2": "*",
+		"pg": "*",
 		"tarn": "*",
 		"tedious": "*"
 	},
@@ -71,6 +72,9 @@
 			"optional": true
 		},
 		"mysql2": {
+			"optional": true
+		},
+		"pg": {
 			"optional": true
 		},
 		"tarn": {
@@ -119,6 +123,10 @@
 			"./mcp": {
 				"types": "./src/mcp/index.ts",
 				"default": "./lib/mcp/index.js"
+			},
+			"./mcp/client": {
+				"types": "./src/mcp/client/index.ts",
+				"default": "./lib/mcp/client/index.js"
 			},
 			"./mcp/prometheus": {
 				"types": "./src/mcp/prometheus/index.ts",
