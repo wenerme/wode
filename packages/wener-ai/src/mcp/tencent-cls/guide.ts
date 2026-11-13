@@ -58,6 +58,15 @@ response_time:*
 - ISO8601: \`2024-01-15T10:30:00Z\`
 - Unix timestamp (seconds or milliseconds)
 
+## Large Results: limit, fields, maxFieldChars
+Gateway logs often store the whole request/response in one field (e.g. \`request_body\`, 50KB+ each).
+To keep results usable:
+- Start small: \`analyze\` / \`histogram\` for counts, or \`search\` with \`limit\` <= 20 to see the shape.
+- Long string fields are truncated to \`maxFieldChars\` (default 2000); the response's \`truncated\` block lists which fields were cut.
+- Use \`fields\` to return only what you need, e.g. \`["msg","trace_id","status"]\` (metadata _time/_pkgId/_pkgLogId are always kept).
+- Need a full body? Narrow the query to one trace_id, set \`fields\` to that field, and \`maxFieldChars: 0\`.
+- More rows: page with \`context\` (the previous response's \`cursor\`) instead of raising \`limit\`.
+
 ## Log Parse Failure
 When a log fails to parse, it will only have a \`LogParseFailure\` field containing the raw log content.
 Use \`LogParseFailure:*\` to find these logs. To understand them, you need to look at context logs.

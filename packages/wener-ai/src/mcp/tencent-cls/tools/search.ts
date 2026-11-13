@@ -1,8 +1,19 @@
 import type { DescribeLogContextRequest, SearchLogRequest } from '@wener/client/tencent/cls';
 import { Drain } from '@wener/common/drain3';
+import {
+	createProjectionStats,
+	DEFAULT_MAX_FIELD_CHARS,
+	describeTruncation,
+	projectLog,
+	truncateText,
+} from '../projection';
 import { ClusterLogsInputSchema, LogContextInputSchema, SearchInputSchema } from '../schemas';
 import type { TencentClsContext } from '../server';
 import { formatBTime, parseTimeRange, toToon } from '../utils';
+
+function truncateSample(sample: string | undefined) {
+	return sample === undefined ? undefined : truncateText(sample, DEFAULT_MAX_FIELD_CHARS);
+}
 
 export function registerSearchTools(ctx: TencentClsContext) {
 	const { server, getClient, textResult, jsonResult } = ctx;
@@ -11,11 +22,11 @@ export function registerSearchTools(ctx: TencentClsContext) {
 		'search',
 		{
 			description:
-				'Search logs in CLS topic(s). Supports CQL syntax. **MUST** read resource "search-guide" for syntax help.',
+				'Search logs in CLS topic(s). Supports CQL syntax. **MUST** read resource "search-guide" for syntax help. Long string fields are truncated to maxFieldChars (default 2000); use `fields` to return only needed fields.',
 			inputSchema: SearchInputSchema,
 			annotations: { readOnlyHint: true },
 		},
-		async ({ topic, topics, query, from, to, limit, sort, format, context }) => {
+		async ({ topic, topics, query, from, to, limit, sort, format, context, fields, maxFieldChars }) => {
 			try {
 				const client = getClient();
 				const { fromMs, toMs } = parseTimeRange(from, to);
@@ -90,6 +101,8 @@ export function registerSearchTools(ctx: TencentClsContext) {
 				// Extract common fields for deduplication
 				const commonFields: Record<string, any> = {};
 				const logs: any[] = [];
+				// 先投影/截断再提取公共字段，公共字段里的大字段同样受限
+				const stats = createProjectionStats();
 
 				for (const r of res.Results || []) {
 					let logData: Record<string, any> = {};
@@ -113,7 +126,7 @@ export function registerSearchTools(ctx: TencentClsContext) {
 					if (r.PkgId) logData._pkgId = r.PkgId;
 					if (r.PkgLogId) logData._pkgLogId = r.PkgLogId;
 
-					logs.push(logData);
+					logs.push(projectLog(logData, { fields, maxFieldChars }, stats));
 				}
 
 				// Find common fields (appear in all logs with same value)
@@ -151,6 +164,7 @@ export function registerSearchTools(ctx: TencentClsContext) {
 					listOver: res.ListOver,
 					cursor: nextCursor,
 					common: Object.keys(commonFields).length > 0 ? commonFields : undefined,
+					truncated: describeTruncation(stats, maxFieldChars),
 					logs,
 				};
 
@@ -255,9 +269,9 @@ export function registerSearchTools(ctx: TencentClsContext) {
 					clusters: clusters.slice(0, 50).map((c) => ({
 						id: c.clusterId,
 						count: c.size,
-						template: c.getTemplate(),
-						// Get a sample log for this cluster
-						sample: processedLogs.find((log) => drain.match(log) === c),
+						template: truncateText(c.getTemplate(), DEFAULT_MAX_FIELD_CHARS),
+						// Get a sample log for this cluster（单条可能是整段请求体，截断）
+						sample: truncateSample(processedLogs.find((log) => drain.match(log) === c)),
 					})),
 				};
 
@@ -276,7 +290,7 @@ export function registerSearchTools(ctx: TencentClsContext) {
 			inputSchema: LogContextInputSchema,
 			annotations: { readOnlyHint: true },
 		},
-		async ({ topic, time, pkgId, pkgLogId, prevLogs, nextLogs, query }) => {
+		async ({ topic, time, pkgId, pkgLogId, prevLogs, nextLogs, query, fields, maxFieldChars }) => {
 			try {
 				const client = getClient();
 
@@ -302,6 +316,7 @@ export function registerSearchTools(ctx: TencentClsContext) {
 				const res = await client.describeLogContext(req);
 
 				// Parse and format the context logs
+				const stats = createProjectionStats();
 				const logs = res.LogContextInfos.map((info) => {
 					let content: any;
 					try {
@@ -315,18 +330,23 @@ export function registerSearchTools(ctx: TencentClsContext) {
 					} catch {
 						content = { _raw: info.Content };
 					}
-					return {
-						_time: new Date(info.BTime).toISOString(),
-						_pkgId: info.PkgId,
-						_pkgLogId: info.PkgLogId,
-						...content,
-					};
+					return projectLog(
+						{
+							_time: new Date(info.BTime).toISOString(),
+							_pkgId: info.PkgId,
+							_pkgLogId: info.PkgLogId,
+							...content,
+						},
+						{ fields, maxFieldChars },
+						stats,
+					);
 				});
 
 				return jsonResult({
 					count: logs.length,
 					prevOver: res.PrevOver,
 					nextOver: res.NextOver,
+					truncated: describeTruncation(stats, maxFieldChars),
 					logs,
 				});
 			} catch (e) {
