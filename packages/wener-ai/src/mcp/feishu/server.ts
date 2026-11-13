@@ -2,6 +2,25 @@ import { McpServer } from '@modelcontextprotocol/server';
 import consola from 'consola';
 import { registerDocumentTools, registerImTools, registerWikiTools } from './tools';
 
+type LarkHttpInstance = import('@larksuiteoapi/node-sdk').HttpInstance;
+
+/**
+ * 飞书 SDK 的 axios 不跟随重定向：每次请求加 `maxRedirects: 0`，3xx 按错误抛出。
+ */
+export function createNoRedirectLarkHttpInstance(base: LarkHttpInstance): LarkHttpInstance {
+	const noRedirect = <T>(options?: T): T => ({ ...options, maxRedirects: 0 }) as T;
+	return {
+		request: (options) => base.request(noRedirect(options)),
+		get: (url, options) => base.get(url, noRedirect(options)),
+		delete: (url, options) => base.delete(url, noRedirect(options)),
+		head: (url, options) => base.head(url, noRedirect(options)),
+		options: (url, options) => base.options(url, noRedirect(options)),
+		post: (url, data, options) => base.post(url, data, noRedirect(options)),
+		put: (url, data, options) => base.put(url, data, noRedirect(options)),
+		patch: (url, data, options) => base.patch(url, data, noRedirect(options)),
+	};
+}
+
 const log = consola.withTag('feishu-mcp');
 
 export interface CreateFeishuMcpServerOptions {
@@ -37,6 +56,8 @@ export function createFeishuMcpServer(options: CreateFeishuMcpServerOptions) {
 				domain: larkDomain,
 				appType: lark.AppType.SelfBuild,
 				loggerLevel: lark.LoggerLevel.error,
+				// 换 token 的请求体带 appSecret：不跟随重定向（axios 默认 307/308 会原样重发请求体）。
+				httpInstance: createNoRedirectLarkHttpInstance(lark.defaultHttpInstance as unknown as LarkHttpInstance),
 			});
 		}
 		return _client;

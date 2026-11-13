@@ -4,6 +4,12 @@ import consola from 'consola';
 import { z } from 'zod';
 import type { McpServerInstance } from '../McpServerDef';
 
+/**
+ * 不跟随重定向（3xx 直接报错）：请求带 `x-goog-api-key`，默认 fetch 跨源跟随时会把它带走。
+ * Gemini API 没有合法的重定向。
+ */
+const noRedirectFetch: typeof fetch = (input, init) => fetch(input, { ...init, redirect: 'error' });
+
 const log = consola.withTag('gemini-tools-mcp');
 
 export interface CreateGeminiToolsMcpServerOptions {
@@ -48,6 +54,7 @@ export function createGeminiToolsMcpServer(options: CreateGeminiToolsMcpServerOp
 				const google = createGoogleGenerativeAI({
 					apiKey,
 					...(baseUrl ? { baseURL: baseUrl } : {}),
+					fetch: noRedirectFetch,
 				});
 
 				const hasUrl = URL_PATTERN.test(query);
@@ -117,6 +124,7 @@ export function createGeminiToolsMcpServer(options: CreateGeminiToolsMcpServerOp
 				const google = createGoogleGenerativeAI({
 					apiKey,
 					...(baseUrl ? { baseURL: baseUrl } : {}),
+					fetch: noRedirectFetch,
 				});
 
 				const langHint = lang ? `\nRespond in ${lang}.` : '';

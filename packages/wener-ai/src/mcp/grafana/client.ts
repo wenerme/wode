@@ -100,6 +100,8 @@ export class GrafanaApiClient {
 				headers: requestHeaders,
 				body: hasBody ? JSON.stringify(body) : undefined,
 				signal: controller.signal,
+				// 不跟随重定向（3xx 直接报错）：默认 fetch 会把凭据头带到重定向目标。
+				redirect: 'error',
 			});
 
 			const data =
