@@ -14,7 +14,7 @@
 	"author": "wener",
 	"license": "MIT",
 	"private": true,
-	"packageManager": "pnpm@12.4.2",
+	"packageManager": "pnpm@12.18.0",
 	"engines": {
 		"node": ">=24.11.0",
 		"npm": ">=11.0.0",
@@ -29,10 +29,15 @@
 		"dev": "just dev",
 		"duplicates:report": "jscpd --config .jscpd.json --workers 4 apps/server/src apps/console/src packages/wener-server/src packages/wener-client/src packages/wener-common/src packages/wener-utils/src packages/wener-ai/src packages/common/src",
 		"format": "just fmt",
+		"changeset": "changeset",
+		"version:packages": "changeset version",
+		"release": "changeset publish",
 		"preinstall": "npx only-allow pnpm"
 	},
 	"devDependencies": {
+		"@biomejs/biome": "^2.5.14",
 		"@bufbuild/protoc-gen-es": "^2.15.0",
+		"@changesets/cli": "3.0.3",
 		"@connectrpc/protoc-gen-connect-query": "^2.3.1",
 		"@swc/cli": "^0.8.1",
 		"@swc/core": "^1.16.2",
@@ -72,7 +77,6 @@
 		"turbo": "^2.11.2",
 		"typescript": "7.0.2",
 		"vite": "^8.3.0",
-		"@biomejs/biome": "^2.5.14",
 		"vitest": "catalog:",
 		"wrangler": "^4.135.0"
 	},

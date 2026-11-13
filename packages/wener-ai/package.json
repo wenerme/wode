@@ -3,9 +3,13 @@
 	"version": "0.1.22",
 	"type": "module",
 	"description": "AI utilities and MCP server definitions",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/wenerme/wode.git"
+	},
 	"author": "wener",
 	"license": "ISC",
-	"packageManager": "pnpm@12.4.2",
+	"packageManager": "pnpm@12.18.0",
 	"engines": {
 		"node": ">=24.11.0"
 	},
