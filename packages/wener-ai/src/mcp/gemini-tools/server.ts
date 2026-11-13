@@ -8,7 +8,8 @@ import type { McpServerInstance } from '../McpServerDef';
  * 不跟随重定向（3xx 直接报错）：请求带 `x-goog-api-key`，默认 fetch 跨源跟随时会把它带走。
  * Gemini API 没有合法的重定向。
  */
-const noRedirectFetch: typeof fetch = (input, init) => fetch(input, { ...init, redirect: 'error' });
+const noRedirectFetch = ((input: Parameters<typeof fetch>[0], init?: Parameters<typeof fetch>[1]) =>
+	fetch(input, { ...init, redirect: 'error' })) as typeof fetch;
 
 const log = consola.withTag('gemini-tools-mcp');
 
