@@ -156,8 +156,18 @@ export async function createKyselyInstance(
 			throw new Error(`Unsupported dialect: ${dialect}`);
 	}
 
-	// Test connection
-	await sql`SELECT 1`.execute(db);
+	// Test connection. If initialization fails after creating a pool, do not leave it alive while
+	// createSqlMcpServer clears the failed load promise and retries.
+	try {
+		await sql`SELECT 1`.execute(db);
+	} catch (error) {
+		try {
+			await db.destroy();
+		} catch {
+			// Preserve the initialization error; the failed instance is already unusable.
+		}
+		throw error;
+	}
 
 	return { db, ownsConnection: true, ...(rawConnection ? { rawConnection } : {}) };
 }

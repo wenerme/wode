@@ -48,6 +48,10 @@ export class SqlQueryAbortedError extends Error {
  * 执行一条原始 SQL；`signal` 中止时取消数据库上的查询，等取消结果（最多 {@link SqlQueryCancelTimeoutMs}）后立即向调用方
  * 抛出 {@link SqlQueryAbortedError}。Kysely 的连接回收回调会继续等待原查询结束；若取消未生效则关闭 Kysely 实例，避免忙连接回池复用。
  *
+ * **会销毁传入的 `db`**：取消失败、结果不明（`not_found`/`error`），或取消成功后原查询在 `cancelTimeoutMs` 内仍未结束时，
+ * 调用 `db.destroy()`，之后这个 Kysely 实例不能再用。销毁之前会先调用 `options.onDestroy`：缓存了实例的调用方应当在里面
+ * 丢弃缓存（连同从同一个连接池借连接的对象），并在下次使用前重建。其它情况不销毁。
+ *
  * 只断开客户端连接取消不了查询：Doris 实测断开后查询照常跑到 `query_timeout`（120s），PG 也要等语句结束才发现客户端已断开。
  * 所以先在同一条连接上取得会话 ID，中止时用另一条连接发取消：
  * - MySQL/Doris：`KILL QUERY`（Doris 的连接 ID 只在所属 FE 有效，按 processlist 里的 QueryId 取消才能跨 FE）；
@@ -64,9 +68,14 @@ export async function executeCancellableQuery<Row = Record<string, unknown>>(
 		cancelTimeoutMs?: number;
 		/** 取消结束后回调一次（在调用方的异步上下文里），用于日志与 span；回调异常不影响结果。 */
 		onCancel?: (result: SqlQueryAbortedError['cancel']) => void;
+		/**
+		 * 即将销毁传入的 `db`（取消失败、结果不明，或取消成功后原查询在 `cancelTimeoutMs` 内未结束）时回调一次，
+		 * 在 `db.destroy()` 之前同步调用。调用方应在这里丢弃缓存的实例，下次使用前重建；回调异常被吞掉，不影响销毁。
+		 */
+		onDestroy?: () => void;
 	} = {},
 ): Promise<{ rows: Row[]; numAffectedRows?: bigint }> {
-	const { signal, cancel, cancelTimeoutMs = SqlQueryCancelTimeoutMs, onCancel } = options;
+	const { signal, cancel, cancelTimeoutMs = SqlQueryCancelTimeoutMs, onCancel, onDestroy } = options;
 	if (!signal || !cancel || (dialect !== 'mysql' && dialect !== 'postgres')) {
 		return (await sql.raw<Row>(sqlText).execute(db)) as { rows: Row[]; numAffectedRows?: bigint };
 	}
@@ -118,10 +127,17 @@ export async function executeCancellableQuery<Row = Record<string, unknown>>(
 				// or ambiguous cancellation closes the instance immediately; a successful cancellation
 				// gets a grace timer. If destruction itself fails, waiting for `query` still prevents reuse.
 				let destroyTimer: ReturnType<typeof setTimeout> | undefined;
-				const destroy = () =>
+				const destroy = () => {
+					// 先通知调用方丢弃缓存，再销毁：之后的请求不会拿到已经开始销毁的实例。
+					try {
+						onDestroy?.();
+					} catch {
+						// 回调失败不影响销毁。
+					}
 					void Promise.resolve()
 						.then(() => db.destroy())
 						.catch(() => undefined);
+				};
 				if (reported.cancel.outcome === 'killed') {
 					destroyTimer = setTimeout(destroy, cancelTimeoutMs);
 					destroyTimer.unref?.();
