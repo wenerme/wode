@@ -1,13 +1,7 @@
 import { type Client, SSEClientTransport, StreamableHTTPClientTransport } from '@modelcontextprotocol/client';
 import { type McpServer, Server } from '@modelcontextprotocol/server';
 import { connectMcpClient } from '../client';
-
-/**
- * 带着调用方的 `headers`（通常是凭据）连上游 MCP：只跟随同源且不改变方法的重定向（如 `/mcp` → `/mcp/`），
- * 跨源重定向不跟随、连接报错，凭据与请求体不会发到别的源。这是 SDK 的默认值，这里显式写出来，
- * 避免 SDK 升级改变默认值后悄悄变成跨源跟随。
- */
-const UpstreamRedirectPolicy = 'same-origin' as const;
+import { fetchWithStrictOrigin } from '../client/fetchWithStrictOrigin';
 
 export interface CreateRelayMcpServerOptions {
 	/** Target MCP server URL */
@@ -52,10 +46,15 @@ export function createRelayMcpServer(options: CreateRelayMcpServerOptions) {
 		const connected = await connectMcpClient({
 			createTransport: () =>
 				transport === 'sse'
-					? new SSEClientTransport(new URL(url), { requestInit: { headers }, redirectPolicy: UpstreamRedirectPolicy })
+					? new SSEClientTransport(new URL(url), {
+							requestInit: { headers },
+							fetch: fetchWithStrictOrigin,
+							redirectPolicy: 'same-origin',
+						})
 					: new StreamableHTTPClientTransport(new URL(url), {
 							requestInit: { headers },
-							redirectPolicy: UpstreamRedirectPolicy,
+							fetch: fetchWithStrictOrigin,
+							redirectPolicy: 'same-origin',
 						}),
 			clientInfo: { name: `${name}-client`, version },
 			clientOptions: { capabilities: {} },

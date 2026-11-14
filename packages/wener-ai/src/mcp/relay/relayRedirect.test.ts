@@ -26,6 +26,7 @@ let upstreamUrl: string;
 let attackerUrl: string;
 const atUpstream: Seen[] = [];
 const atAttacker: Seen[] = [];
+let sseResponse: ServerResponse | undefined;
 
 function listen(server: Server): Promise<string> {
 	return new Promise((resolve) =>
@@ -79,6 +80,31 @@ beforeAll(async () => {
 		atUpstream.push({ method: req.method ?? '', path, headers: req.headers });
 		if (path.startsWith('/cross-307')) return res.writeHead(307, { location: `${attackerUrl}/stolen` }).end();
 		if (path.startsWith('/cross-302')) return res.writeHead(302, { location: `${attackerUrl}/stolen` }).end();
+		if (path === '/sse') return res.writeHead(307, { location: '/sse/' }).end();
+		if (path === '/sse/' || path.startsWith('/sse-cross-')) {
+			sseResponse = res;
+			res.writeHead(200, { 'content-type': 'text/event-stream' });
+			res.write(`event: endpoint\ndata: ${path === '/sse/' ? '/messages' : path.replace('/sse-', '/')}\n\n`);
+			return;
+		}
+		if (path === '/messages') return res.writeHead(307, { location: '/messages/' }).end();
+		if (path === '/messages/') {
+			const message = JSON.parse(body.toString());
+			if (message.id !== undefined) {
+				const result =
+					message.method === 'initialize'
+						? {
+								protocolVersion: '2025-03-26',
+								capabilities: { tools: {} },
+								serverInfo: { name: 'upstream', version: '1.0.0' },
+							}
+						: message.method === 'tools/list'
+							? { tools: [{ name: 'ping', inputSchema: { type: 'object' } }] }
+							: { content: [{ type: 'text', text: 'pong' }] };
+				sseResponse?.write(`event: message\ndata: ${JSON.stringify({ jsonrpc: '2.0', id: message.id, result })}\n\n`);
+			}
+			return res.writeHead(202).end();
+		}
 		// 同源的尾斜杠重定向（常见于把 MCP 挂在子路径上的框架）。
 		if (path === '/mcp') return res.writeHead(307, { location: '/mcp/' }).end();
 		if (path === '/mcp/') return serveMcp(req, res, body);
@@ -99,6 +125,41 @@ beforeEach(() => {
 const RelayHeaders = { authorization: 'Bearer relay-secret', 'x-api-key': 'relay-api-key' };
 
 describe('relay：上游跨源重定向不跟随', () => {
+	test.each([307, 302])('SSE POST 上游回 %i 跨源跳转：凭据只到上游', async (status) => {
+		const relay = createRelayMcpServer({
+			url: `${upstreamUrl}/sse-cross-${status}`,
+			transport: 'sse',
+			headers: RelayHeaders,
+		});
+		try {
+			await expect(relay.getClient()).rejects.toThrow(/not followed: strict same-origin policy/u);
+			expect(atUpstream.find((seen) => seen.method === 'POST')?.headers.authorization).toBe('Bearer relay-secret');
+			expect(atAttacker).toHaveLength(0);
+		} finally {
+			await relay.close();
+		}
+	});
+
+	test('SSE GET 和 POST 同源路径重定向保留凭据，仍能列出和调用工具', async () => {
+		const relay = createRelayMcpServer({ url: `${upstreamUrl}/sse`, transport: 'sse', headers: RelayHeaders });
+		try {
+			const client = await relay.getClient();
+			expect((await client.listTools()).tools.map((tool) => tool.name)).toEqual(['ping']);
+			expect(await client.callTool({ name: 'ping', arguments: {} })).toMatchObject({
+				content: [{ type: 'text', text: 'pong' }],
+			});
+			expect(atUpstream.find((seen) => seen.path === '/sse/' && seen.method === 'GET')?.headers.authorization).toBe(
+				'Bearer relay-secret',
+			);
+			expect(
+				atUpstream.find((seen) => seen.path === '/messages/' && seen.method === 'POST')?.headers.authorization,
+			).toBe('Bearer relay-secret');
+			expect(atAttacker).toHaveLength(0);
+		} finally {
+			await relay.close();
+		}
+	});
+
 	test.each([
 		['http', 307],
 		['http', 302],
