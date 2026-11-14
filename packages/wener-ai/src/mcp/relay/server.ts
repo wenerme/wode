@@ -1,6 +1,7 @@
 import { type Client, SSEClientTransport, StreamableHTTPClientTransport } from '@modelcontextprotocol/client';
 import { type McpServer, Server } from '@modelcontextprotocol/server';
 import { connectMcpClient } from '../client';
+import { fetchWithStrictOrigin } from '../client/fetchWithStrictOrigin';
 
 export interface CreateRelayMcpServerOptions {
 	/** Target MCP server URL */
@@ -45,8 +46,16 @@ export function createRelayMcpServer(options: CreateRelayMcpServerOptions) {
 		const connected = await connectMcpClient({
 			createTransport: () =>
 				transport === 'sse'
-					? new SSEClientTransport(new URL(url), { requestInit: { headers } })
-					: new StreamableHTTPClientTransport(new URL(url), { requestInit: { headers } }),
+					? new SSEClientTransport(new URL(url), {
+							requestInit: { headers },
+							fetch: fetchWithStrictOrigin,
+							redirectPolicy: 'same-origin',
+						})
+					: new StreamableHTTPClientTransport(new URL(url), {
+							requestInit: { headers },
+							fetch: fetchWithStrictOrigin,
+							redirectPolicy: 'same-origin',
+						}),
 			clientInfo: { name: `${name}-client`, version },
 			clientOptions: { capabilities: {} },
 		});

@@ -1,6 +1,7 @@
 import type { Tool, Transport } from '@modelcontextprotocol/client';
 import { type Client, StreamableHTTPClientTransport } from '@modelcontextprotocol/client';
 import { connectMcpClient } from '../../client';
+import { fetchWithStrictOrigin } from '../../client/fetchWithStrictOrigin';
 import type { ResolvedGrafanaAuthOptions } from '../auth';
 import { buildGrafanaHeaders } from '../auth';
 
@@ -34,6 +35,8 @@ export class GrafanaProxiedClient {
 			createTransport: () =>
 				new StreamableHTTPClientTransport(new URL(this.endpoint), {
 					requestInit: { headers, redirect: 'error' },
+					fetch: fetchWithStrictOrigin,
+					redirectPolicy: 'same-origin',
 				}),
 			clientInfo: { name: `grafana-proxy-${this.options.datasourceType}`, version: '1.0.0' },
 			clientOptions: { capabilities: {} },
