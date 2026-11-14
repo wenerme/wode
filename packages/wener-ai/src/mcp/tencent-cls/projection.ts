@@ -28,7 +28,7 @@ export interface ProjectionStats {
 }
 
 export function createProjectionStats(): ProjectionStats {
-	return { truncatedFields: {}, maxOriginalChars: 0 };
+	return { truncatedFields: Object.create(null), maxOriginalChars: 0 };
 }
 
 /** 截断单个字符串，保留开头并注明被省略的字符数 */
@@ -49,7 +49,7 @@ export function projectLog(
 ): Record<string, unknown> {
 	const { fields, maxFieldChars = DEFAULT_MAX_FIELD_CHARS } = options;
 	const keep = fields?.length ? new Set(fields) : undefined;
-	const out: Record<string, unknown> = {};
+	const out: Record<string, unknown> = Object.create(null);
 	for (const [key, value] of Object.entries(log)) {
 		if (keep && !keep.has(key) && !META_FIELDS.has(key)) continue;
 		if (maxFieldChars <= 0 || META_FIELDS.has(key)) {

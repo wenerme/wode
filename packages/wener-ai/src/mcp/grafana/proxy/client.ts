@@ -31,7 +31,10 @@ export class GrafanaProxiedClient {
 
 		const headers = Object.fromEntries(buildGrafanaHeaders(this.options.auth).entries());
 		const { client, transport } = await connectMcpClient({
-			createTransport: () => new StreamableHTTPClientTransport(new URL(this.endpoint), { requestInit: { headers } }),
+			createTransport: () =>
+				new StreamableHTTPClientTransport(new URL(this.endpoint), {
+					requestInit: { headers, redirect: 'error' },
+				}),
 			clientInfo: { name: `grafana-proxy-${this.options.datasourceType}`, version: '1.0.0' },
 			clientOptions: { capabilities: {} },
 		});

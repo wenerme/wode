@@ -106,6 +106,31 @@ describe('tencent-cls search 字段截断与投影', () => {
 		expect(json.truncated).toBeUndefined();
 	});
 
+	it.each([0, 4])('特殊字段名在 search JSON 中完整保留，maxFieldChars=%s', async (maxFieldChars) => {
+		const names = ['constructor', 'toString', '__proto__'];
+		const { call } = setup({
+			searchLog: async () => ({
+				Results: [0, 1].map((i) => ({
+					Time: i + 1,
+					LogJson: JSON.stringify(Object.fromEntries(names.map((name) => [name, `${i}:${BIG}`]))),
+				})),
+				ListOver: true,
+			}),
+		});
+		const { json } = await call('search', { topic: 't', fields: names, maxFieldChars });
+		for (const [i, log] of json.logs.entries()) {
+			for (const name of names) {
+				expect(Object.hasOwn(log, name)).toBe(true);
+				expect(log[name]).toBe(truncateText(`${i}:${BIG}`, maxFieldChars));
+			}
+		}
+		if (maxFieldChars === 0) {
+			expect(json.truncated).toBeUndefined();
+		} else {
+			expect(json.truncated.fields).toEqual(Object.fromEntries(names.map((name) => [name, 2])));
+		}
+	});
+
 	it('没有超长字段时输出与原来一致（无 truncated 键）', async () => {
 		const { call } = setup({
 			searchLog: async () => ({
@@ -169,6 +194,37 @@ describe('tencent-cls search 字段截断与投影', () => {
 });
 
 describe('projection 单元', () => {
+	it.each([0, 100])('特殊字段名与对象值原样保留，maxFieldChars=%s', (maxFieldChars) => {
+		const log = JSON.parse('{"constructor":"ctor","toString":"str","__proto__":{"safe":true}}');
+		const stats = createProjectionStats();
+		const out = projectLog(log, { maxFieldChars }, stats);
+		expect(Object.keys(out)).toEqual(Object.keys(log));
+		for (const key of Object.keys(log)) {
+			expect(Object.hasOwn(out, key)).toBe(true);
+			expect(out[key]).toBe(log[key]);
+		}
+		expect(JSON.stringify(out)).toBe(JSON.stringify(log));
+		expect(Object.keys(stats.truncatedFields)).toEqual([]);
+		expect(stats.maxOriginalChars).toBe(0);
+	});
+
+	it('特殊字段名的截断计数从 0 开始，按条累加，且不修改原日志', () => {
+		const names = ['constructor', 'toString', '__proto__'];
+		const log = Object.fromEntries(names.map((name) => [name, BIG]));
+		const stats = createProjectionStats();
+		for (const count of [1, 2]) {
+			const out = projectLog(log, { fields: names, maxFieldChars: 4 }, stats);
+			for (const name of names) {
+				expect(Object.hasOwn(out, name)).toBe(true);
+				expect(out[name]).toBe(truncateText(BIG, 4));
+				expect(Object.hasOwn(stats.truncatedFields, name)).toBe(true);
+				expect(stats.truncatedFields[name]).toBe(count);
+				expect(log[name]).toBe(BIG);
+			}
+		}
+		expect(stats.maxOriginalChars).toBe(BIG.length);
+	});
+
 	it('truncateText 不改短字符串，长字符串注明省略字数', () => {
 		expect(truncateText('abc', 5)).toBe('abc');
 		expect(truncateText('abcdef', 0)).toBe('abcdef');

@@ -6,10 +6,11 @@ import { createFeishuMcpServer } from './feishu/server';
 import { createGeminiToolsMcpServer } from './gemini-tools/server';
 import { resolveGrafanaAuthOptions } from './grafana/auth';
 import { GrafanaApiClient } from './grafana/client';
+import { GrafanaProxiedClient } from './grafana/proxy/client';
 import { createPrometheusMcpServer } from './prometheus/server';
 
 /**
- * @wener/ai 带凭据的出站调用遇到跨源 3xx 不跟随。
+ * @wener/ai 带凭据的出站调用遇到 3xx 不跟随（包含 Grafana MCP proxy 的同源跳转）。
  * upstream 对所有路径回 307 指向 attacker（跨源，要求重放请求体），attacker 应当收到 0 次请求。
  */
 type Seen = { path: string; headers: IncomingHttpHeaders; body: string };
@@ -115,4 +116,54 @@ test('grafana client：带 service account token 的请求遇到 3xx 不跟随�
 	expect(atUpstream).toHaveLength(2);
 	expect(atUpstream[0]!.headers.authorization).toBe('Bearer glsa_secret');
 	expect(atAttacker).toHaveLength(0);
+});
+
+function grafanaProxy(endpoint: string) {
+	return new GrafanaProxiedClient({
+		name: 'test',
+		datasourceUid: 'test',
+		datasourceType: 'test',
+		endpoint,
+		auth: resolveGrafanaAuthOptions({ url: endpoint, serviceAccountToken: 'glsa_secret' }),
+	});
+}
+
+test.each([301, 302, 303, 307, 308])('grafana MCP proxy：同源 %s 不重放凭据或请求体', async (status) => {
+	const seen: Seen[] = [];
+	const server = recorder(seen, (res) => {
+		if (JSON.parse(seen.at(-1)!.body || '{}').method === 'server/discover') {
+			// 走真实 legacy 初始化，确保覆盖 transport 的 POST，而不仅是版本探测。
+			res.writeHead(404).end();
+		} else if (res.req.url === '/mcp') {
+			res.writeHead(status, { location: '/stolen' }).end();
+		} else {
+			res.writeHead(200, { 'content-type': 'application/json' }).end('{}');
+		}
+	});
+	const url = await listen(server);
+	const client = grafanaProxy(`${url}/mcp`);
+	try {
+		await expect(client.connect()).rejects.toThrow();
+		expect(seen.map(({ path }) => path)).toEqual(['/mcp', '/mcp']);
+		for (const request of seen) {
+			expect(request.headers.authorization).toBe('Bearer glsa_secret');
+		}
+		expect(JSON.parse(seen[0]!.body).method).toBe('server/discover');
+		expect(JSON.parse(seen[1]!.body).method).toBe('initialize');
+	} finally {
+		await client.close();
+		await new Promise<void>((resolve) => server.close(() => resolve()));
+	}
+});
+
+test('grafana MCP proxy：跨源 307 不重放凭据或请求体', async () => {
+	const client = grafanaProxy(`${upstreamUrl}/mcp`);
+	try {
+		await expect(client.connect()).rejects.toThrow();
+		expect(atUpstream).toHaveLength(1);
+		expect(atUpstream[0]!.headers.authorization).toBe('Bearer glsa_secret');
+		expect(atAttacker).toHaveLength(0);
+	} finally {
+		await client.close();
+	}
 });
