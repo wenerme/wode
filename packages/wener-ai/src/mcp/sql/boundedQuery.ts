@@ -226,6 +226,8 @@ export function cheapLowerBound(value: unknown, budget: number, active = new Set
 	if (typeof value === 'number') return Number.isFinite(value) ? Math.min(budget + 1, String(value).length) : 4;
 	if (typeof value === 'boolean') return value ? 4 : 5;
 	if (typeof value !== 'object') return 0;
+	const ownToJSON = Object.hasOwn(value, 'toJSON') && typeof (value as { toJSON?: unknown }).toJSON === 'function';
+	if (ownToJSON) return 0;
 	if (Buffer.isBuffer(value)) return Math.min(budget + 1, value.byteLength);
 	if (ArrayBuffer.isView(value)) {
 		return value instanceof DataView ? 0 : Math.min(budget + 1, (value as unknown as ArrayLike<unknown>).length);
@@ -277,7 +279,7 @@ function mayBeOmittedJsonProperty(value: unknown): boolean {
 	return (
 		typeof value === 'object' &&
 		value !== null &&
-		!ArrayBuffer.isView(value) &&
+		(!ArrayBuffer.isView(value) || Object.hasOwn(value, 'toJSON')) &&
 		typeof (value as { toJSON?: unknown }).toJSON === 'function'
 	);
 }

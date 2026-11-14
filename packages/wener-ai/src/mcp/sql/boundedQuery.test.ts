@@ -162,6 +162,22 @@ describe('createSqlRowCollector：按最终输出编码计字节', () => {
 		expect(real.truncated).toMatchObject({ reason: 'row_too_large' });
 	});
 
+	test.each([
+		['undefined', undefined],
+		['null', null],
+		['small value', { ok: 1 }],
+	])('json：Buffer 和 Uint8Array 的自有 toJSON 返回 %s 时按 JSON 结果计下界', (_name, serialized) => {
+		const values = [Buffer.alloc(10_000), new Uint8Array(10_000)];
+		for (const value of values) {
+			Object.defineProperty(value, 'toJSON', { value: () => serialized, configurable: true });
+			const collector = createSqlRowCollector<unknown>({ maxRows: 100, maxResultBytes: 1024 }, 'json');
+			expect(cheapLowerBound(value, 1024)).toBe(0);
+			expect(collector.push({ value })).toBe(true);
+			expect(collector.truncated).toBeUndefined();
+			expect(bytes(encodeSqlRowsJson(collector.rows))).toBeLessThanOrEqual(1024);
+		}
+	});
+
 	test('table 单元格截断：超过 256 个 code point 截断为前 255 个 + …；emoji 不切开；Buffer/TypedArray 只取前缀；幂等', () => {
 		expect(capSqlTableCell(null)).toEqual({ text: '', cut: false });
 		expect(capSqlTableCell(12n)).toEqual({ text: '12', cut: false });
