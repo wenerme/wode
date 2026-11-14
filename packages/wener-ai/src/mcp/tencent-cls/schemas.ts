@@ -1,4 +1,22 @@
 import { z } from 'zod';
+import { DEFAULT_MAX_FIELD_CHARS } from './projection';
+
+const FieldsSchema = z
+	.array(z.string())
+	.optional()
+	.describe(
+		'Only return these log fields (metadata _time/_topic/_pkgId/_pkgLogId are always kept). Use to skip large fields such as request_body.',
+	);
+
+const MaxFieldCharsSchema = z
+	.number()
+	.int()
+	.min(0)
+	.max(1_000_000)
+	.default(DEFAULT_MAX_FIELD_CHARS)
+	.describe(
+		`Truncate each string field to this many chars (default ${DEFAULT_MAX_FIELD_CHARS}). 0 = no truncation; only use 0 with a narrow query (e.g. one trace_id) and fields.`,
+	);
 
 export const SearchInputSchema = z.object({
 	topic: z
@@ -12,6 +30,8 @@ export const SearchInputSchema = z.object({
 	sort: z.enum(['asc', 'desc']).default('desc').describe('Time sort order'),
 	format: z.enum(['json', 'toon']).default('json').describe('Output format: json (full) or toon (compact)'),
 	context: z.string().optional().describe('Pagination cursor from previous search'),
+	fields: FieldsSchema,
+	maxFieldChars: MaxFieldCharsSchema,
 });
 
 export const DescribeTopicInputSchema = z.object({
@@ -71,4 +91,6 @@ export const LogContextInputSchema = z.object({
 	prevLogs: z.number().min(0).max(100).default(10).describe('Number of preceding logs (max 100)'),
 	nextLogs: z.number().min(0).max(100).default(10).describe('Number of following logs (max 100)'),
 	query: z.string().optional().describe('Optional CQL filter for context logs'),
+	fields: FieldsSchema,
+	maxFieldChars: MaxFieldCharsSchema,
 });

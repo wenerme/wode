@@ -6,6 +6,8 @@ export default defineConfig({
 	test: {
 		include: [
 			'scripts/run-ci-tests.test.ts',
+			'packages/wener-ai/src/mcp/credentialRedirect.test.ts',
+			'packages/wener-ai/src/mcp/tencent-cls/tools/search.test.ts',
 			'packages/wener-utils/src/langs/getObjectId.test.ts',
 			'packages/wener-server/src/entity/defineEntity.test.ts',
 			'packages/wener-server/src/entity/defineEntitySchemaClass.test.ts',
