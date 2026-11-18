@@ -17,6 +17,10 @@ null
 -- @expect {"type":"literal","value":false}
 false
 
+-- @case reference-starting-like-literal
+-- @expect {"type":"logic","context":{"trueValue":1,"nullish":null},"value":true}
+trueValue = 1 AND nullish IS NULL
+
 -- @case nested-reference
 -- @expect {"type":"ref","context":{"profile":{"age":21}},"value":21}
 profile.age

@@ -14,9 +14,9 @@ a database.
 | `test.miniquery.sql` | The original MiniQuery expression language, formatting and evaluation |
 | `sql.test.ts` | Loads fixtures and checks parse/format/parse, expected results and node coverage |
 
-The current corpus has 717 cases: MySQL 334 positive cases in `test.mysql.sql`
+The current corpus has 718 cases: MySQL 334 positive cases in `test.mysql.sql`
 and 324 rejection cases in `error.test.mysql.sql`, Doris 21 positive / 9
-rejection cases, and MiniQuery 25 positive / 4 rejection cases. Nineteen Doris
+rejection cases, and MiniQuery 26 positive / 4 rejection cases. Nineteen Doris
 cases also assert rejection under the MySQL dialect. The runner covers all 51
 current SQL AST node kinds (including `QueryGroup`, `JsonTable`, `Script` and
 `Comment`) and all nine MiniQuery expression node kinds; focused `src/` tests
