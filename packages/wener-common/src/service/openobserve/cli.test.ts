@@ -1,7 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { OpenObserveCliDefinition } from './cli';
 import type { IOpenObserveService } from './index';
-import { sanitizeOpenObserveOutput } from './sanitize';
 
 const operation = (name: string, group?: string) =>
 	OpenObserveCliDefinition.commands.find((entry) => entry.name === name && entry.group === group)!;
@@ -43,7 +42,7 @@ describe('OpenObserve command contract', () => {
 				}),
 				{},
 			);
-			expect(result).toMatchObject({ hits: [{ password: '<redacted>', message: 'Bearer <redacted>' }] });
+			expect(result).toMatchObject({ hits: [{ password: 'PRIVATE', message: 'Bearer PRIVATE' }] });
 		} finally {
 			vi.restoreAllMocks();
 		}
@@ -94,14 +93,50 @@ describe('OpenObserve command contract', () => {
 			'sort-order',
 		);
 	});
-	it('renders hit fields as table columns and leaves SDK response objects unchanged', () => {
+	it('renders original hit fields as table columns', () => {
 		const data = { hits: [{ token: 'PRIVATE', message: 'password=PRIVATE' }] };
-		const sanitized = sanitizeOpenObserveOutput(data);
-		expect(data.hits[0].token).toBe('PRIVATE');
-		expect(sanitized.hits[0].token).toBe('<redacted>');
-		expect(operation('query').table?.(sanitized)).toEqual({
+		expect(operation('query').table?.(data)).toEqual({
 			headers: ['token', 'message'],
-			rows: [['<redacted>', 'password=<redacted>']],
+			rows: [['PRIVATE', 'password=PRIVATE']],
 		});
+	});
+	it.each([
+		{ name: 'query', method: 'search', args: ['SELECT 1'] },
+		{ name: 'query', group: 'log', method: 'search', args: ['SELECT 1'] },
+		{ name: 'query', group: 'metric', method: 'search', args: ['SELECT 1'] },
+		{ name: 'query', group: 'trace', method: 'search', args: ['SELECT 1'] },
+		{ name: 'status', method: 'status' },
+		{ name: 'list', group: 'stream', method: 'listStreams' },
+		{ name: 'schema', group: 'stream', method: 'getStreamSchema' },
+		{ name: 'list', group: 'trace', method: 'listTraces' },
+		{ name: 'health', method: 'health' },
+		{ name: 'settings', group: 'stream', method: 'getStreamSettings' },
+		{ name: 'update', group: 'stream', method: 'updateStreamSettings' },
+		{ name: 'delete', group: 'stream', method: 'deleteStream' },
+		{ name: 'json', group: 'ingest', method: 'ingestJson', args: ['[{"message":"fixture"}]'] },
+		{ name: 'multi', group: 'ingest', method: 'ingestMulti', args: ['{"message":"fixture"}\n'] },
+		{ name: 'values', method: 'getValues', args: ['message'] },
+		{ name: 'around', method: 'searchAround', args: ['1000'] },
+	])('preserves the raw $method result for $group $name even with --redact in prepare options', async ({ name, group, method, args }) => {
+		const shared = { token: 'FIXTURE_TOKEN' };
+		const message = '{ "api_key" : "FIXTURE_KEY", "safe" : 1 }\r\n';
+		const data = {
+			hits: [{ password: 'FIXTURE_PASSWORD', message }],
+			shared: [shared, shared],
+			large: Array.from({ length: 20_001 }, (_, index) => index),
+			cycle: {} as { self?: unknown },
+		};
+		data.cycle.self = data.cycle;
+		const invoke = vi.fn(async () => data);
+		const client = { [method]: invoke } as unknown as IOpenObserveService;
+		const run = await operation(name, group).prepare(prepare(args, {
+			stream: 'app', yes: true, redact: true, input: '{"data_retention":7}',
+		}));
+		const result = await run(client, {});
+		expect(result).toBe(data);
+		expect(data.hits[0]).toEqual({ password: 'FIXTURE_PASSWORD', message });
+		expect(data.shared[0]).toBe(data.shared[1]);
+		expect(data.large.at(-1)).toBe(20_000);
+		expect(data.cycle.self).toBe(data.cycle);
 	});
 });

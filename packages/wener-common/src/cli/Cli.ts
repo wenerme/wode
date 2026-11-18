@@ -77,6 +77,14 @@ export class Cli<C extends CliContext = CliContext> {
 		return Object.freeze(this.#commands.map(describeCommand));
 	}
 
+	/** Static effective global options, including the built-in help flag. */
+	describeOptions(): readonly CliOption[] {
+		return Object.freeze(this.#globals.map((option) => Object.freeze({
+			...option,
+			...(option.aliases ? { aliases: Object.freeze([...option.aliases]) } : {}),
+		})));
+	}
+
 	/** Parse the selected branch without running handlers or requiring complete positional arguments. */
 	parse(argv: readonly string[]): CliParsedInput {
 		const raw = this.#resolveRaw(argv);
@@ -201,6 +209,9 @@ function snapshotCommand<C>(command: CliCommand<C>): CliCommand<C> {
 		...command,
 		aliases: Object.freeze([...(command.aliases ?? [])]),
 		summary: command.summary ? Object.freeze([...command.summary]) : undefined,
+		examples: command.examples
+			? Object.freeze(command.examples.map((example) => Object.freeze({ ...example })))
+			: undefined,
 		options: Object.freeze(
 			(command.options ?? []).map((option) =>
 				Object.freeze({ ...option, aliases: Object.freeze([...(option.aliases ?? [])]) }),
@@ -239,6 +250,7 @@ function mergeCommand<C>(base: CliCommand<C>, incoming: CliCommand<C>): CliComma
 		description: base.description || incoming.description,
 		hidden: base.hidden ?? incoming.hidden,
 		summary: base.summary || incoming.summary,
+		examples: base.examples ?? incoming.examples,
 		arguments: base.arguments ?? incoming.arguments,
 		usage: base.usage ?? incoming.usage,
 		options: Object.freeze(options),
@@ -250,7 +262,19 @@ function mergeCommand<C>(base: CliCommand<C>, incoming: CliCommand<C>): CliComma
 }
 
 function describeCommand<C>(command: CliCommand<C>): CliCommandDefinition {
-	const { name, hidden, output, aliases, description, summary, arguments: args, usage, options, commands } = command;
+	const {
+		name,
+		hidden,
+		output,
+		aliases,
+		description,
+		summary,
+		examples,
+		arguments: args,
+		usage,
+		options,
+		commands,
+	} = command;
 	return Object.freeze({
 		name,
 		...(output ? { output } : {}),
@@ -259,6 +283,7 @@ function describeCommand<C>(command: CliCommand<C>): CliCommandDefinition {
 		aliases,
 		description,
 		summary,
+		...(examples ? { examples } : {}),
 		arguments: args,
 		usage,
 		options,

@@ -10,6 +10,7 @@ import {
 	ApolloAppScopeInputSchema,
 	ApolloClusterScopeInputSchema,
 	ApolloDiffReleaseInputSchema,
+	ApolloEmptyInputSchema,
 	ApolloGetReleaseInputSchema,
 	ApolloListPortalItemInputSchema,
 	ApolloListPortalReleaseInputSchema,
@@ -37,10 +38,22 @@ export type ApolloPortalOperations = Pick<
 
 export function createApolloPortalOperations(context: ApolloServiceOperationContext): ApolloPortalOperations {
 	return {
-		getStatus: () => context.portal('/health'),
-		listPortalApp: () => context.portal('/apps'),
-		listPortalOrganization: () => context.portal('/organizations'),
-		listPortalEnv: () => context.portal('/envs'),
+		getStatus: async (input) => {
+			context.parse(ApolloEmptyInputSchema, input);
+			return context.portal('/health');
+		},
+		listPortalApp: async (input) => {
+			context.parse(ApolloEmptyInputSchema, input);
+			return context.portal('/apps');
+		},
+		listPortalOrganization: async (input) => {
+			context.parse(ApolloEmptyInputSchema, input);
+			return context.portal('/organizations');
+		},
+		listPortalEnv: async (input) => {
+			context.parse(ApolloEmptyInputSchema, input);
+			return context.portal('/envs');
+		},
 		getPortalNavTree: (input = {}) => {
 			const scope = resolveApolloScope(context.config, context.parse(ApolloAppScopeInputSchema, input));
 			return context.portal(`/apps/${encodeApolloPathPart(scope.appId)}/navtree`);

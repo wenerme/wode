@@ -98,14 +98,12 @@ async function getOrm() {
 				entities: [UserEntity, UserProfileEntity],
 
 				dbName: 'postgres',
-				// Use driverOptions to configure pg connection for Unix socket
+				// MikroORM v7 forwards driverOptions directly to pg.Pool.
 				driverOptions: {
-					connection: {
-						host: SOCKET_DIR, // Directory containing the socket file
-						database: 'postgres',
-						user: 'postgres',
-						password: 'postgres',
-					},
+					host: SOCKET_DIR, // Directory containing the socket file
+					database: 'postgres',
+					user: 'postgres',
+					password: 'postgres',
 				},
 
 				// debug: true,

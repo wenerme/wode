@@ -253,7 +253,7 @@ function queryResult(value: Record<string, unknown>, from: number, size: number,
 	};
 }
 
-export class OpenObserveClient {
+export class OpenObserveClient implements AsyncDisposable {
 	readonly type = 'openobserve' as const;
 	/** Compatibility metadata. Hosts must separately authorize access to the write methods. */
 	readonly readOnly = true as const;
@@ -726,5 +726,8 @@ export class OpenObserveClient {
 			this.#closePromise = Promise.all(requests.map((request) => request.done)).then(() => undefined);
 		}
 		return this.#closePromise;
+	}
+	[Symbol.asyncDispose](): Promise<void> {
+		return this.close();
 	}
 }

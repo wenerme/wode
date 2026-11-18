@@ -1,0 +1,7 @@
+mod package '../../just/package.just'
+
+build: (package::swc-build "lib" "true" "none" "true") (package::swc-build "dist/cjs" "true" "none" "true" "cjs")
+    printf '{"type":"commonjs"}\n' > dist/cjs/package.json
+
+dev:
+    pnpm exec swc ./src -d ./lib --strip-leading-paths --copy-files --ignore '**/*.test.ts' --watch

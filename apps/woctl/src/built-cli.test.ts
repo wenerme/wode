@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { promisify } from 'node:util';
 import { beforeAll, expect, it } from 'vitest';
 import { parse as parseYaml } from 'yaml';
+import { APP_VERSION } from './const';
 
 const exec = promisify(execFile);
 const cwd = fileURLToPath(new URL('..', import.meta.url));
@@ -47,7 +48,7 @@ it('executes the actual Node build, preserves arguments and persists contexts', 
 		const call = (...argv: string[]) =>
 			exec(process.execPath, [...base, ...argv], { cwd, env: { ...process.env, WOCTL_CONTEXT: '' } });
 		expect((await call('--help')).stdout).toContain('Usage: woctl');
-		expect((await call('--version')).stdout.trim()).toBe('0.1.1');
+		expect((await call('--version')).stdout.trim()).toBe(APP_VERSION);
 		await writeFile(join(directory, 'config.yaml'), 'services:\n  - name: system\n    type: system\n');
 		expect(JSON.parse((await call('system', 'echo', '00012', '--json')).stdout)).toEqual({ text: '00012' });
 		await call('context', 'create', 'built');

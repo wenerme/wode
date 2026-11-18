@@ -1,13 +1,14 @@
-import { OpenObserveServiceProvider } from '../openobserve';
 import { ApolloServiceProvider } from '../apollo';
+import { OpenObserveServiceProvider } from '../openobserve';
 import { PrometheusServiceProvider } from '../prometheus';
-import { BaseFetchServiceProvider } from '../providers/base';
-import { DuckDuckGoSearchServiceProvider } from '../providers/duckduckgo';
-import { JinaFetchServiceProvider } from '../providers/jina';
-import { SqlServiceProvider } from '../providers/sql';
+import { BaseFetchServiceProvider } from '../provider/base';
+import { DuckDuckGoSearchServiceProvider } from '../provider/duckduckgo';
+import { JinaFetchServiceProvider } from '../provider/jina';
+import { SqlServiceProvider } from '../sql';
 import type { ServiceRegistry } from '../registry';
 import { createServiceProviderAdapter } from '../runtime/createServiceProviderAdapter';
 
+/** @deprecated Import individual providers from `@wener/common/service/*` instead. */
 export const BuiltinServiceProviders = Object.freeze([
 	DuckDuckGoSearchServiceProvider,
 	JinaFetchServiceProvider,
@@ -18,13 +19,13 @@ export const BuiltinServiceProviders = Object.freeze([
 	PrometheusServiceProvider,
 ]);
 
-/** 显式安装内置 provider；配置、创建实例和网络请求留到 registry.load。 */
+/** @deprecated Register the providers needed by the application explicitly instead. */
 export function registerBuiltinServices(registry: ServiceRegistry): ServiceRegistry {
 	for (const provider of BuiltinServiceProviders) registry.register(provider);
 	return registry;
 }
 
-/** CLI/RPC transport 与 typed registry 使用同一组 provider。 */
+/** @deprecated Prefer `createServiceProviderAdapter` for an individual provider. */
 export function createBuiltinServiceProviders() {
 	return BuiltinServiceProviders.map((provider) => createServiceProviderAdapter(provider));
 }

@@ -188,7 +188,7 @@ export function createApolloAdminOperations(context: ApolloServiceOperationConte
 				},
 				ClusterWriteOutcome,
 			);
-			return { ok: true, appId: scope.appId, env: scope.env, cluster: scope.cluster };
+			return { ok: true as const, appId: scope.appId, env: scope.env, cluster: scope.cluster };
 		},
 		listNamespace: (input = {}) => {
 			const parsed = context.parse(ApolloListNamespaceInputSchema, input);
@@ -238,7 +238,7 @@ export function createApolloAdminOperations(context: ApolloServiceOperationConte
 				},
 				NamespaceWriteOutcome,
 			);
-			return { ok: true, appId: scope.appId, env: scope.env, cluster: scope.cluster, namespace: scope.namespace };
+			return { ok: true as const, appId: scope.appId, env: scope.env, cluster: scope.cluster, namespace: scope.namespace };
 		},
 		listNamespaceUsage: (input = {}) => {
 			const scope = resolveApolloScope(context.config, context.parse(ApolloNamespaceScopeInputSchema, input));
@@ -291,7 +291,7 @@ export function createApolloAdminOperations(context: ApolloServiceOperationConte
 				},
 				RollbackOutcome,
 			);
-			return { ok: true, env, releaseId: parsed.releaseId };
+			return { ok: true as const, env, releaseId: parsed.releaseId };
 		},
 	};
 }

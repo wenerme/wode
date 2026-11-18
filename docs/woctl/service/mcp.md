@@ -29,7 +29,7 @@ mcpServers:
 ```text
 mcp
   servers / list
-  tools [server]
+  tools [server] [tool]
   resources [server]
   info <server> [tool]
   call <server> <tool> [input]   --input / -i
@@ -42,10 +42,17 @@ woctl -c dev mcp --help
 woctl -c dev mcp call --help
 woctl -c dev mcp servers --json
 woctl -c dev mcp tools local-tools --json
+woctl -c dev mcp tools local-tools search --json
 woctl -c dev mcp info local-tools search --json
+woctl -c dev mcp info local-tools search --typescript
+woctl -c dev mcp info local-tools --typescript
 ```
 
 servers/list 只列配置，不连接；tools/resources 不指定 server 时顺序访问全部启用项。call/read/info 明确使用 server 位置参数，不支持 `--service` 或 `--list-services`；也不使用 `defaults.services` 消除歧义。只有宿主提供 MCP 且 context 配置了 server 时，mcp 命令才可见。
+
+`mcp tools [server]` 默认每行只显示一个工具名，没有表头和行数页脚。跨多个 server 列出时，名称显示为 `server/tool`。`--json` 保留完整 schema 与描述；显式 `--output describe`、`--output wide` 或字段选择也继续使用普通 renderer。`mcp tools <server> <tool>` 查看单个工具的完整元数据，也可继续使用 `mcp info <server> <tool>`。
+
+`mcp info <server> [tool] --typescript` 将工具 schema 显示为按 server name 命名的接口，例如 `wener-site` → `WenerSiteTools`，包含说明注释、输入字段和可用的输出类型；未提供 `outputSchema` 时返回类型为 `Promise<unknown>`。不指定 tool 时显示该 server 的所有工具。`mcp tools [server] [tool] --typescript` 也支持相同格式，跨多个 server 时使用 `McpTools`，便于先浏览再检查类型。
 
 ## 输入、资源与输出流程
 

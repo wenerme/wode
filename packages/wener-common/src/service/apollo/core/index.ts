@@ -33,3 +33,4 @@ export type {
 } from './interface';
 export * from './redactor';
 export * from './schema';
+export { ApolloServiceCapability } from './interface';

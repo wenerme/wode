@@ -6,8 +6,8 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 const packageRoot = dirname(dirname(fileURLToPath(import.meta.url)));
 const packageJson = JSON.parse(await readFile(join(packageRoot, 'package.json'), 'utf8'));
 const subpath = './server/utils';
-const target = packageJson.publishConfig?.exports?.[subpath];
-if (!target?.default) throw new Error(`Missing publish export for ${subpath}`);
+const publishExports = packageJson.publishConfig?.exports;
+if (!publishExports || typeof publishExports !== 'object' || !publishExports['./*']) throw new Error(`Missing publish export for ${subpath}`);
 
 const temporaryRoot = await mkdtemp(join(tmpdir(), 'wener-common-publish-smoke-'));
 try {
@@ -16,7 +16,7 @@ try {
 	await writeFile(
 		join(stagedPackage, 'package.json'),
 		JSON.stringify({
-			exports: { [subpath]: target },
+			exports: publishExports,
 			name: packageJson.name,
 			type: packageJson.type,
 			version: packageJson.version,

@@ -1,0 +1,11 @@
+mod package '../../just/package.just'
+
+build: (package::swc-build "lib" "false" "json" "false")
+
+publish: build
+    pnpm version patch --no-workspaces-update
+    just package::publish
+
+[no-cd]
+run-bun:
+    docker run --platform linux/amd64 -it --rm -v "$(git rev-parse --show-toplevel):/host" -w "/host/$(realpath --relative-to "$(git rev-parse --show-toplevel)" "$PWD")" -p 3000:3000 --name bun --entrypoint bash oven/bun:debian

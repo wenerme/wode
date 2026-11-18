@@ -1,34 +1,45 @@
-import { Buffer } from 'node:buffer';
 import { Readable, Writable } from 'node:stream';
-import { pipeline } from 'node:stream/promises';
-import { type MaybeFunction, maybeFunction } from '@wener/utils';
-import type { WebDAVClient } from 'webdav';
-import { createWebDavFileSystem } from '../../createWebDavFileSystem';
-import type { FileSystemWritableData, WriteFileOptions } from '../../IFileSystem';
+import { type CreateWebDavFileSystemOptions, createWebDavFileSystem } from '../../createWebDavFileSystem';
+import type {
+	CreateReadStreamOptions,
+	CreateWriteStreamOptions,
+	FileSystemWritableData,
+	IStreamableFileSystem,
+	WriteFileOptions,
+} from '../../IFileSystem';
 import type { IServerFileSystem } from '../IFileSystem';
-import { createWebDavReadStream, createWebDavWriteStream } from './createNodeStreams';
 
-export function createWebDavNodeFileSystem({ client }: { client: MaybeFunction<WebDAVClient> }): IServerFileSystem {
-	const fs = createWebDavFileSystem({ client });
+/** Node stream adapters over the fetch-based WebDAV filesystem. */
+export function createWebDavNodeFileSystem(options: CreateWebDavFileSystemOptions): IServerFileSystem {
+	const fs = createWebDavFileSystem(options) as IStreamableFileSystem;
+	const writeFile = fs.writeFile.bind(fs);
 	return Object.assign(fs, {
-		createReadStream: (path: string, options = {}) => createWebDavReadStream(maybeFunction(client), path, options),
-		createWriteStream: (path: string, options = {}) => createWebDavWriteStream(maybeFunction(client), path, options),
-		createReadableStream: (path: string, options = {}) =>
-			Readable.toWeb(createWebDavReadStream(maybeFunction(client), path, options)),
-		createWritableStream: (path: string, options = {}) =>
-			Writable.toWeb(createWebDavWriteStream(maybeFunction(client), path, options)),
-		async writeFile(path: string, data: FileSystemWritableData | Readable, options: WriteFileOptions = {}) {
-			const source =
-				data instanceof Readable || data instanceof ReadableStream
-					? data
-					: Readable.from([
-							ArrayBuffer.isView(data)
-								? Buffer.from(data.buffer, data.byteOffset, data.byteLength)
-								: typeof data === 'string'
-									? Buffer.from(data)
-									: Buffer.from(data),
-						]);
-			await pipeline(source, createWebDavWriteStream(maybeFunction(client), path, options), { signal: options.signal });
+		createReadStream: (path: string, opts: CreateReadStreamOptions = {}) =>
+			Readable.fromWeb(fs.createReadableStream(path, opts) as never, { signal: opts.signal }),
+		createWriteStream(path: string, opts: CreateWriteStreamOptions = {}) {
+			// Writable.fromWeb closes (commits) the upload on a plain destroy(); abort it instead.
+			const writer = fs.createWritableStream(path, opts).getWriter();
+			let finished = false;
+			return new Writable({
+				signal: opts.signal,
+				write(chunk: Uint8Array, _encoding, callback) {
+					writer.write(chunk).then(() => callback(), callback);
+				},
+				final(callback) {
+					writer.close().then(() => {
+						finished = true;
+						callback();
+					}, callback);
+				},
+				destroy(error, callback) {
+					if (!finished) writer.abort(error ?? new Error('Write stream destroyed')).catch(() => undefined);
+					callback(error);
+				},
+			});
+		},
+		async writeFile(path: string, data: FileSystemWritableData | Readable, opts: WriteFileOptions = {}) {
+			const body = data instanceof Readable ? (Readable.toWeb(data) as unknown as ReadableStream) : data;
+			await writeFile(path, body, opts);
 		},
 	});
 }

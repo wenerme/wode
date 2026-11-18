@@ -1,8 +1,11 @@
 import type { SqlAdapterFactory } from '../sql/types';
+import type { RedisAdapterFactory } from '../redis';
+import type { EdgeTtsSocketFactory } from '@wener/client/tts';
 import { resolveCliServiceConfigEnv } from '../config';
 import { getEnabledService } from './getEnabledService';
+import { isDryRunBypass } from './dryRun';
 import type { ServiceProviderRegistry } from './ServiceProviderRegistry';
-import type { ResolvedServiceContext, ServiceClient, ServiceRuntimeClient } from './types';
+import type { LocalFileSystemFactory, ResolvedServiceContext, ServiceClient, ServiceRuntimeClient } from './types';
 
 /** 一个执行 context 一个 runtime；懒创建 client，关闭权由宿主持有。 */
 export function createServiceRuntime(options: {
@@ -10,6 +13,9 @@ export function createServiceRuntime(options: {
 	providers: ServiceProviderRegistry;
 	fetch?: typeof globalThis.fetch;
 	sqlDriver?: SqlAdapterFactory;
+	redisDriver?: RedisAdapterFactory;
+	edgeTtsSocketFactory?: EdgeTtsSocketFactory;
+	createLocalFileSystem?: LocalFileSystemFactory;
 	getEnv?(name: string): string | undefined;
 }): ServiceRuntimeClient & { close(): Promise<void> } {
 	const context: ResolvedServiceContext = structuredClone({
@@ -31,6 +37,9 @@ export function createServiceRuntime(options: {
 					context,
 					fetch: options.fetch ?? globalThis.fetch.bind(globalThis),
 					sqlDriver: options.sqlDriver,
+					redisDriver: options.redisDriver,
+					edgeTtsSocketFactory: options.edgeTtsSocketFactory,
+					createLocalFileSystem: options.createLocalFileSystem,
 					getEnv: options.getEnv,
 				}),
 			);
@@ -52,7 +61,11 @@ export function createServiceRuntime(options: {
 			callOptions?.signal?.throwIfAborted();
 			if (!Object.hasOwn(schema.tools, body.toolName)) throw new Error('Unknown service operation; inspect its schema');
 			const tool = schema.tools[body.toolName];
-			if (context.services[params.service].readOnly !== false && tool.annotations?.readOnlyHint !== true)
+			if (
+				context.services[params.service].readOnly !== false &&
+				tool.annotations?.readOnlyHint !== true &&
+				!isDryRunBypass(tool.annotations?.supportsDryRun, body.input)
+			)
 				throw new Error('Selected service is read-only');
 			const result = await service.call(body.toolName, body.input, callOptions);
 			callOptions?.signal?.throwIfAborted();

@@ -10,8 +10,10 @@ export interface CreateApolloHttpAdapterOptions {
 	fetch?: ApolloFetch;
 }
 
-function timeoutSignal(timeout: number | undefined): AbortSignal | undefined {
-	return timeout ? AbortSignal.timeout(timeout) : undefined;
+function timeoutSignal(timeout: number | undefined, signal?: AbortSignal | null): AbortSignal | undefined {
+	signal?.throwIfAborted();
+	const deadline = timeout ? AbortSignal.timeout(timeout) : undefined;
+	return signal && deadline ? AbortSignal.any([signal, deadline]) : signal ?? deadline;
 }
 
 function joinUrl(baseUrl: string, apiPath: string): URL {
@@ -65,6 +67,7 @@ function cookieHeaderFromSetCookies(values: string[]): string {
 async function portalLoginCookieHeader(
 	endpoint: ApolloPortalEndpoint,
 	request: ApolloFetch,
+	signal?: AbortSignal,
 ): Promise<string | undefined> {
 	if (endpoint.auth?.type !== 'basic') return undefined;
 	const url = joinUrl(endpoint.baseUrl, '/signin');
@@ -78,7 +81,7 @@ async function portalLoginCookieHeader(
 		}),
 		body,
 		redirect: 'manual',
-		signal: timeoutSignal(endpoint.requestTimeoutMs),
+		signal: timeoutSignal(endpoint.requestTimeoutMs, signal),
 	});
 	return cookieHeaderFromSetCookies(getSetCookies(response.headers)) || undefined;
 }
@@ -111,7 +114,7 @@ async function requestAdmin<T>(
 	}
 	const method = (input.method ?? (body ? 'POST' : 'GET')).toUpperCase();
 	return parseResponse<T>(
-		await request(url, { method, headers, body, redirect: 'manual', signal: timeoutSignal(endpoint.requestTimeoutMs) }),
+		await request(url, { method, headers, body, redirect: 'manual', signal: timeoutSignal(endpoint.requestTimeoutMs, input.signal) }),
 		method,
 		url,
 	);
@@ -140,12 +143,12 @@ async function requestPortal<T>(
 		headers,
 		body,
 		redirect: 'manual',
-		signal: timeoutSignal(endpoint.requestTimeoutMs),
+		signal: timeoutSignal(endpoint.requestTimeoutMs, input.signal),
 	});
 	const location = response.headers.get('location') ?? '';
 	// Sign-in establishes the session for reads and writes; read-only admission applies to business requests.
 	if (response.status >= 300 && response.status < 400 && /signin|login/u.test(location)) {
-		const cookie = await portalLoginCookieHeader(endpoint, request);
+		const cookie = await portalLoginCookieHeader(endpoint, request, input.signal);
 		if (cookie) {
 			response = await request(url, {
 				method,
@@ -158,7 +161,7 @@ async function requestPortal<T>(
 				}),
 				body,
 				redirect: 'manual',
-				signal: timeoutSignal(endpoint.requestTimeoutMs),
+				signal: timeoutSignal(endpoint.requestTimeoutMs, input.signal),
 			});
 		}
 	}
@@ -175,6 +178,7 @@ async function readConfig<T>(
 	config: ApolloConnectionConfig,
 	input: ApolloConfigReadRequest,
 	request: ApolloFetch,
+	signal?: AbortSignal,
 ): Promise<T> {
 	const namespace = input.namespace ?? config.namespace;
 	const format: ApolloReadFormat = input.format ?? 'auto';
@@ -183,11 +187,12 @@ async function readConfig<T>(
 	const wrappedFetch: ApolloFetch = async (fetchInput, init) => {
 		const headers = new Headers(init?.headers);
 		for (const [key, value] of Object.entries(endpoint.headers)) if (!headers.has(key)) headers.set(key, value);
+		const signals = [signal, init?.signal].filter((item): item is AbortSignal => item != null);
 		const response = await request(fetchInput, {
 			...init,
 			headers,
 			redirect: 'manual',
-			signal: init?.signal ?? timeoutSignal(endpoint.requestTimeoutMs),
+			signal: timeoutSignal(endpoint.requestTimeoutMs, signals.length > 1 ? AbortSignal.any(signals) : signals[0]),
 		});
 		if ((response.headers.get('content-type') ?? '').toLowerCase().includes('text/html')) {
 			throw new Error('Apollo ConfigService returned HTML');
@@ -235,8 +240,8 @@ export function createApolloHttpAdapter(
 				? requestAdmin<T>(config.admin, { ...input, method }, request)
 				: requestPortal<T>(config.portal, { ...input, method }, request);
 		},
-		readConfig<T>(input: ApolloConfigReadRequest = {}): Promise<T> {
-			return readConfig<T>(config, input, request);
+		readConfig<T>(input: ApolloConfigReadRequest = {}, callOptions?: { signal?: AbortSignal }): Promise<T> {
+			return readConfig<T>(config, input, request, callOptions?.signal);
 		},
 		async close() {},
 	};

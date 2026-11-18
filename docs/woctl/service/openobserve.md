@@ -150,7 +150,7 @@ client 只处理协议、DTO、认证、HTTP、增量响应大小检查、超时
 
 `@wener/common/service/openobserve` 提供 `IOpenObserveService` 与 provider；CLI definition 的入口是 `@wener/common/service/openobserve/cli`，也从 `@wener/common/service` 聚合导出。`registerBuiltinServices()` 注册工厂，按选择结果懒创建实例。服务策略由这一层实施。CLI 的 schema/call client 关闭自身调用作用域；共享 runtime 的生命周期由宿主负责。
 
-输出遵循公共 renderer：`--json` 保留 typed result，table 对基础目录、schema、查询和 trace 使用字段投影；新增操作默认用公共对象 renderer。除脱敏外，字段投影会改变输出形状，见 [输出选项](../patterns.md#数据输出)。
+输出遵循公共 renderer：默认保留业务结果，`--json` 保留 typed result，日志里的 JSON 字符串也保持原样。仅显式 `--redact` 在 CLI 展示边界生成副本，领域命令和通用 `service call` 使用相同策略。table 对基础目录、schema、查询和 trace 使用字段投影；新增操作默认用公共对象 renderer。展示投影可能改变输出形状，见 [输出选项](../patterns.md#数据输出)。
 
 ## 覆盖矩阵与证据
 

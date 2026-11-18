@@ -16,61 +16,18 @@
 	},
 	"exports": {
 		".": "./src/index.ts",
-		"./ai/model/registry": "./src/ai/model/registry/index.ts",
-		"./cli": "./src/cli/index.ts",
+		"./package.json": "./package.json",
 		"./cli/*": "./src/cli/*.ts",
 		"./cli/render": "./src/cli/render/index.ts",
-		"./service": "./src/service/index.ts",
-		"./service/registry": "./src/service/registry/index.ts",
-		"./service/search": "./src/service/search/index.ts",
-		"./service/fetch": "./src/service/fetch/index.ts",
-		"./service/sql": "./src/service/sql/index.ts",
-		"./service/sql/client": "./src/service/sql/client.ts",
-		"./service/sql/cli": "./src/service/sql/cli/index.ts",
-		"./service/providers/sql": "./src/service/providers/sql.ts",
-		"./service/openobserve": "./src/service/openobserve/index.ts",
-		"./service/apollo": "./src/service/apollo/index.ts",
-		"./service/apollo/cli": "./src/service/apollo/cli.ts",
-		"./service/openobserve/cli": "./src/service/openobserve/cli.ts",
-		"./service/openobserve/client": "./src/service/openobserve/client.ts",
-		"./service/prometheus": "./src/service/prometheus/index.ts",
-		"./service/prometheus/cli": "./src/service/prometheus/cli.ts",
-		"./service/prometheus/client": "./src/service/prometheus/client.ts",
 		"./service/builtin": "./src/service/builtin/index.ts",
-		"./service/providers/jina": "./src/service/providers/jina.ts",
 		"./service/providers/base": "./src/service/providers/base.ts",
-		"./service/cli": "./src/service/cli/index.ts",
-		"./service/cli/client": "./src/service/cli/client.ts",
-		"./service/runtime": "./src/service/runtime/index.ts",
-		"./service/runtime/client": "./src/service/runtime/client.ts",
-		"./service/config": "./src/service/config/index.ts",
 		"./service/providers/duckduckgo": "./src/service/providers/duckduckgo.ts",
-		"./cn": "./src/cn/index.ts",
-		"./consola": "./src/consola/index.ts",
-		"./data": "./src/data/index.ts",
-		"./dayjs": "./src/dayjs/index.ts",
-		"./decimal": "./src/decimal/index.ts",
-		"./drain3": "./src/drain3/index.ts",
-		"./fs": "./src/fs/index.ts",
-		"./fs/just-bash": "./src/fs/just-bash/index.ts",
-		"./fs/webdav": "./src/fs/webdav/index.ts",
-		"./fs/s3mini": "./src/fs/s3/index.ts",
-		"./fs/minio": "./src/fs/minio/index.ts",
-		"./fs/server": "./src/fs/server/index.ts",
-		"./fs/server/webdav": "./src/fs/server/webdav/index.ts",
-		"./fs/orpc": "./src/fs/orpc/index.ts",
-		"./fs/orpc/server": "./src/fs/orpc/server/index.ts",
-		"./jsonschema": "./src/jsonschema/index.ts",
-		"./meta": "./src/meta/index.ts",
-		"./orpc": "./src/orpc/index.ts",
-		"./password": "./src/password/index.ts",
-		"./resource": "./src/resource/index.ts",
-		"./resource/schema": "./src/resource/schema/index.ts",
-		"./s3": "./src/s3/index.ts",
-		"./schema": "./src/schema/index.ts",
-		"./server/utils": "./src/server/utils/index.ts",
-		"./utils": "./src/utils/index.ts",
-		"./package.json": "./package.json"
+		"./service/providers/jina": "./src/service/providers/jina.ts",
+		"./service/providers/sql": "./src/service/providers/sql.ts",
+		"./service/*ServiceProvider": "./src/service/*ServiceProvider.ts",
+		"./service/*ProviderSupport": "./src/service/*ProviderSupport.ts",
+		"./*": "./src/*/index.ts",
+		"./fs/s3mini": "./src/fs/s3/index.ts"
 	},
 	"files": [
 		"lib",
@@ -80,7 +37,7 @@
 	],
 	"keywords": [],
 	"scripts": {
-		"build": "just -f ../../just/packages/wener-common.just build",
+		"build": "just build",
 		"check:fs-mime-types": "node scripts/generateMimeTypes.mjs --check",
 		"generate:fs-mime-types": "node scripts/generateMimeTypes.mjs",
 		"prepublishOnly": "pnpm verify:publish",
@@ -102,6 +59,7 @@
 	"dependencies": {
 		"@sinclair/typebox": "^0.34.52",
 		"@standard-schema/spec": "^1.1.0",
+		"@orpc/contract": "^1.16.1",
 		"@types/wicg-file-system-access": "^2023.10.7",
 		"@wener/client": "workspace:^",
 		"@wener/utils": "workspace:^",
@@ -109,42 +67,40 @@
 		"ajv-keywords": "^5.1.0",
 		"consola": "^3.4.2",
 		"date-fns": "^4.4.0",
-		"es-toolkit": "^1.52.0",
+		"es-toolkit": "^1.53.1",
 		"pathe": "^2.0.3",
+		"s3mini": "^1.0.3",
 		"std-env": "^4.3.0",
-		"string-width": "^8.2.2",
-		"ts-pattern": "^5.9.0",
+		"string-width": "^8.3.0",
+		"ts-pattern": "^5.9.2",
 		"yaml": "^2.9.1"
 	},
 	"devDependencies": {
-		"@mikro-orm/core": "^7.2.4",
-		"@mikro-orm/sql": "^7.2.4",
-		"@orpc/client": "^1.15.5",
-		"@orpc/contract": "^1.15.5",
-		"@orpc/openapi-client": "^1.15.5",
-		"@orpc/server": "^1.15.5",
+		"@mikro-orm/core": "^7.2.7",
+		"@mikro-orm/sql": "^7.2.7",
+		"@orpc/client": "^1.16.1",
+		"@orpc/openapi-client": "^1.16.1",
+		"@orpc/server": "^1.16.1",
 		"@sinclair/typebox-codegen": "^0.11.1",
 		"@types/argon2-browser": "^1.18.4",
 		"@types/bcrypt": "^6.0.0",
 		"@types/micromatch": "^4.0.10",
 		"@types/mime-types": "^3.0.1",
 		"ajv-i18n": "^4.2.0",
-		"argon2": "^0.45.1",
+		"argon2": "^0.45.2",
 		"argon2-browser": "^1.18.0",
 		"bcrypt": "^6.0.0",
 		"bcryptjs": "^3.0.3",
 		"chalk": "^6.0.1",
 		"dayjs": "^1.11.23",
 		"decimal.js": "^10.6.0",
-		"emittery": "^2.1.0",
+		"emittery": "^2.2.0",
 		"just-bash": "^3.6.0",
-		"kysely": "^0.29.6",
+		"kysely": "^0.29.8",
 		"micromatch": "^4.0.8",
 		"mime-types": "^3.0.2",
 		"minio": "^8.0.7",
-		"s3mini": "^1.0.2",
-		"webdav": "^5.11.0",
-		"zod": "^4.6.5"
+		"zod": "^4.6.7"
 	},
 	"publishConfig": {
 		"exports": {
@@ -152,223 +108,51 @@
 				"types": "./src/index.ts",
 				"default": "./lib/index.js"
 			},
-			"./ai/model/registry": {
-				"types": "./src/ai/model/registry/index.ts",
-				"default": "./lib/ai/model/registry/index.js"
-			},
-			"./cli": {
-				"types": "./src/cli/index.ts",
-				"default": "./lib/cli/index.js"
-			},
+			"./package.json": "./package.json",
 			"./cli/*": {
 				"types": "./src/cli/*.ts",
 				"default": "./lib/cli/*.js"
 			},
-			"./cli/render": {
-				"types": "./src/cli/render/index.ts",
-				"default": "./lib/cli/render/index.js"
+		"./cli/render": {
+			"types": "./src/cli/render/index.ts",
+			"default": "./lib/cli/render/index.js"
+		},
+		"./service/builtin": {
+			"types": "./src/service/builtin/index.ts",
+			"default": "./lib/service/builtin/index.js"
+		},
+		"./service/providers/base": {
+			"types": "./src/service/providers/base.ts",
+			"default": "./lib/service/providers/base.js"
+		},
+		"./service/providers/duckduckgo": {
+			"types": "./src/service/providers/duckduckgo.ts",
+			"default": "./lib/service/providers/duckduckgo.js"
+		},
+		"./service/providers/jina": {
+			"types": "./src/service/providers/jina.ts",
+			"default": "./lib/service/providers/jina.js"
+		},
+		"./service/providers/sql": {
+			"types": "./src/service/providers/sql.ts",
+			"default": "./lib/service/providers/sql.js"
+		},
+		"./service/*ServiceProvider": {
+				"types": "./src/service/*ServiceProvider.ts",
+				"default": "./lib/service/*ServiceProvider.js"
 			},
-			"./service": {
-				"types": "./src/service/index.ts",
-				"default": "./lib/service/index.js"
+			"./service/*ProviderSupport": {
+				"types": "./src/service/*ProviderSupport.ts",
+				"default": "./lib/service/*ProviderSupport.js"
 			},
-			"./service/registry": {
-				"types": "./src/service/registry/index.ts",
-				"default": "./lib/service/registry/index.js"
-			},
-			"./service/search": {
-				"types": "./src/service/search/index.ts",
-				"default": "./lib/service/search/index.js"
-			},
-			"./service/fetch": {
-				"types": "./src/service/fetch/index.ts",
-				"default": "./lib/service/fetch/index.js"
-			},
-			"./service/sql": {
-				"types": "./src/service/sql/index.ts",
-				"default": "./lib/service/sql/index.js"
-			},
-			"./service/sql/client": {
-				"types": "./src/service/sql/client.ts",
-				"default": "./lib/service/sql/client.js"
-			},
-			"./service/sql/cli": {
-				"types": "./src/service/sql/cli/index.ts",
-				"default": "./lib/service/sql/cli/index.js"
-			},
-			"./service/providers/sql": {
-				"types": "./src/service/providers/sql.ts",
-				"default": "./lib/service/providers/sql.js"
-			},
-			"./service/openobserve": {
-				"types": "./src/service/openobserve/index.ts",
-				"default": "./lib/service/openobserve/index.js"
-			},
-			"./service/apollo": {
-				"types": "./src/service/apollo/index.ts",
-				"default": "./lib/service/apollo/index.js"
-			},
-			"./service/apollo/cli": {
-				"types": "./src/service/apollo/cli.ts",
-				"default": "./lib/service/apollo/cli.js"
-			},
-			"./service/openobserve/cli": {
-				"types": "./src/service/openobserve/cli.ts",
-				"default": "./lib/service/openobserve/cli.js"
-			},
-			"./service/openobserve/client": {
-				"types": "./src/service/openobserve/client.ts",
-				"default": "./lib/service/openobserve/client.js"
-			},
-			"./service/prometheus": {
-				"types": "./src/service/prometheus/index.ts",
-				"default": "./lib/service/prometheus/index.js"
-			},
-			"./service/prometheus/cli": {
-				"types": "./src/service/prometheus/cli.ts",
-				"default": "./lib/service/prometheus/cli.js"
-			},
-			"./service/prometheus/client": {
-				"types": "./src/service/prometheus/client.ts",
-				"default": "./lib/service/prometheus/client.js"
-			},
-			"./service/builtin": {
-				"types": "./src/service/builtin/index.ts",
-				"default": "./lib/service/builtin/index.js"
-			},
-			"./service/providers/jina": {
-				"types": "./src/service/providers/jina.ts",
-				"default": "./lib/service/providers/jina.js"
-			},
-			"./service/providers/base": {
-				"types": "./src/service/providers/base.ts",
-				"default": "./lib/service/providers/base.js"
-			},
-			"./service/cli": {
-				"types": "./src/service/cli/index.ts",
-				"default": "./lib/service/cli/index.js"
-			},
-			"./service/cli/client": {
-				"types": "./src/service/cli/client.ts",
-				"default": "./lib/service/cli/client.js"
-			},
-			"./service/runtime": {
-				"types": "./src/service/runtime/index.ts",
-				"default": "./lib/service/runtime/index.js"
-			},
-			"./service/runtime/client": {
-				"types": "./src/service/runtime/client.ts",
-				"default": "./lib/service/runtime/client.js"
-			},
-			"./service/config": {
-				"types": "./src/service/config/index.ts",
-				"default": "./lib/service/config/index.js"
-			},
-			"./service/providers/duckduckgo": {
-				"types": "./src/service/providers/duckduckgo.ts",
-				"default": "./lib/service/providers/duckduckgo.js"
-			},
-			"./cn": {
-				"types": "./src/cn/index.ts",
-				"default": "./lib/cn/index.js"
-			},
-			"./consola": {
-				"types": "./src/consola/index.ts",
-				"default": "./lib/consola/index.js"
-			},
-			"./data": {
-				"types": "./src/data/index.ts",
-				"default": "./lib/data/index.js"
-			},
-			"./dayjs": {
-				"types": "./src/dayjs/index.ts",
-				"default": "./lib/dayjs/index.js"
-			},
-			"./decimal": {
-				"types": "./src/decimal/index.ts",
-				"default": "./lib/decimal/index.js"
-			},
-			"./drain3": {
-				"types": "./src/drain3/index.ts",
-				"default": "./lib/drain3/index.js"
-			},
-			"./fs": {
-				"types": "./src/fs/index.ts",
-				"default": "./lib/fs/index.js"
-			},
-			"./fs/just-bash": {
-				"types": "./src/fs/just-bash/index.ts",
-				"default": "./lib/fs/just-bash/index.js"
-			},
-			"./fs/webdav": {
-				"types": "./src/fs/webdav/index.ts",
-				"default": "./lib/fs/webdav/index.js"
+			"./*": {
+				"types": "./src/*/index.ts",
+				"default": "./lib/*/index.js"
 			},
 			"./fs/s3mini": {
 				"types": "./src/fs/s3/index.ts",
 				"default": "./lib/fs/s3/index.js"
-			},
-			"./fs/minio": {
-				"types": "./src/fs/minio/index.ts",
-				"default": "./lib/fs/minio/index.js"
-			},
-			"./fs/server": {
-				"types": "./src/fs/server/index.ts",
-				"default": "./lib/fs/server/index.js"
-			},
-			"./fs/server/webdav": {
-				"types": "./src/fs/server/webdav/index.ts",
-				"default": "./lib/fs/server/webdav/index.js"
-			},
-			"./fs/orpc": {
-				"types": "./src/fs/orpc/index.ts",
-				"default": "./lib/fs/orpc/index.js"
-			},
-			"./fs/orpc/server": {
-				"types": "./src/fs/orpc/server/index.ts",
-				"default": "./lib/fs/orpc/server/index.js"
-			},
-			"./jsonschema": {
-				"types": "./src/jsonschema/index.ts",
-				"default": "./lib/jsonschema/index.js"
-			},
-			"./meta": {
-				"types": "./src/meta/index.ts",
-				"default": "./lib/meta/index.js"
-			},
-			"./orpc": {
-				"types": "./src/orpc/index.ts",
-				"default": "./lib/orpc/index.js"
-			},
-			"./password": {
-				"types": "./src/password/index.ts",
-				"default": "./lib/password/index.js"
-			},
-			"./resource": {
-				"types": "./src/resource/index.ts",
-				"default": "./lib/resource/index.js"
-			},
-			"./resource/schema": {
-				"types": "./src/resource/schema/index.ts",
-				"default": "./lib/resource/schema/index.js"
-			},
-			"./s3": {
-				"types": "./src/s3/index.ts",
-				"default": "./lib/s3/index.js"
-			},
-			"./schema": {
-				"types": "./src/schema/index.ts",
-				"default": "./lib/schema/index.js"
-			},
-			"./server/utils": {
-				"types": "./src/server/utils/index.ts",
-				"default": "./lib/server/utils/index.js"
-			},
-			"./utils": {
-				"types": "./src/utils/index.ts",
-				"default": "./lib/utils/index.js"
-			},
-			"./package.json": "./package.json"
+			}
 		}
 	}
 }

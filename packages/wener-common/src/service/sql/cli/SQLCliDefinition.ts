@@ -105,7 +105,7 @@ export const SQLCliDefinition: ServiceCliDefinition<ISqlService> = {
 			name: 'ping',
 			description: 'Check SQL service connectivity',
 			prepare() {
-				return (service, options) => service.ping(options);
+				return (service, options) => service.ping({}, options);
 			},
 		},
 		...([undefined, 'table'] as const).map((group) => ({

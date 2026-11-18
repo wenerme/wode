@@ -1,7 +1,7 @@
 import { z } from 'zod/v4';
 
 export const ApolloJsonValueSchema = z.json();
-export const ApolloEmptyInputSchema = z.object({});
+export const ApolloEmptyInputSchema = z.object({}).default({});
 
 export const ApolloReadConfigInputSchema = z.object({
 	namespace: z.string().trim().min(1).optional(),
@@ -13,7 +13,7 @@ const ApolloHttpMethodSchema = z.enum(['GET', 'HEAD', 'OPTIONS', 'POST', 'PUT', 
 export const ApolloRequestInputSchema = z
 	.object({
 		role: z.literal('admin').default('admin'),
-		path: z.string().trim().startsWith('/'),
+		path: z.string().trim().regex(/^\//u),
 		method: ApolloHttpMethodSchema.optional(),
 		query: z.record(z.string(), z.json()).optional(),
 		body: z.json().optional(),

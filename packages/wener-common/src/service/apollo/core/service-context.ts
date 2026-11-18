@@ -11,6 +11,7 @@ export type ApolloServiceParse = <TSchema extends z.ZodType>(schema: TSchema, in
 
 export interface ApolloServiceOperationContext {
 	readonly config: ApolloConnectionConfig;
+	readonly signal?: AbortSignal;
 	readonly parse: ApolloServiceParse;
 	readonly admin: (path: string, input?: Omit<ApolloHttpRequest, 'role' | 'path'>) => Promise<unknown>;
 	readonly adminMutation: (

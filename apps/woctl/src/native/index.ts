@@ -4,11 +4,17 @@ import { homedir } from 'node:os';
 import { dirname, resolve } from 'node:path';
 import { CliUsageError } from '@wener/common/cli';
 import { DEFAULT_CONFIG_DIRECTORY, DEFAULT_CONFIG_FILENAME, ENV, LEGACY_ENV } from '../const';
-import type { WocliHost } from '../createWocliCli';
+import type { CliHost } from '../createCli';
 import { createFileConfigStore } from './config';
 import { connectMcpServer } from './mcp';
 import { createNativeSqlDriver } from './sql';
 import { loadNativeEnv } from './env';
+import { createPdfCommand } from './pdf';
+import { createXlsxCommand } from './xlsx';
+import { renderNativeDocument } from './render-document';
+import { createNativeRedisDriver } from './redis';
+import { createNodeEdgeTtsSocketFactory } from '@wener/client/tts/node';
+import { createNodeFileSystem } from '@wener/common/fs/server';
 
 export { createFileConfigStore } from './config';
 
@@ -35,13 +41,40 @@ export function getNativeCommandOptions(argv: readonly string[]): { argv: string
 	return { argv: args, config: resolve(config) };
 }
 
+/** Bounded `@file` or `-` (stdin) read shared by text and binary input. */
+async function readNativeInput(value: string, { signal, maxBytes }: { signal: AbortSignal; maxBytes: number }): Promise<Buffer> {
+	const stream = value === '-' ? process.stdin : createReadStream(resolve(value.slice(1)), { signal });
+	const chunks: Buffer[] = [];
+	let size = 0;
+	const onAbort = () => stream.destroy(new Error('Input cancelled'));
+	signal.addEventListener('abort', onAbort, { once: true });
+	try {
+		signal.throwIfAborted();
+		for await (const chunk of stream) {
+			const bytes = Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk);
+			size += bytes.length;
+			if (size > maxBytes) throw new CliUsageError('Input exceeds size limit');
+			chunks.push(bytes);
+		}
+		return Buffer.concat(chunks);
+	} finally {
+		signal.removeEventListener('abort', onAbort);
+	}
+}
+
 /** Node ports; importing this module does not install process signal handlers or execute a command. */
-export function createNativeHost(options: { config: string }): WocliHost {
+export function createNativeHost(options: { config: string }): CliHost {
 	const cwd = process.cwd();
 	let environment: Readonly<Record<string, string>> | undefined;
 	return {
 		config: createFileConfigStore(options.config, { cwd, projectLookup: true }),
+		commands: [createPdfCommand(), createXlsxCommand()],
+		renderDocument: renderNativeDocument,
 		sqlDriver: createNativeSqlDriver,
+		redisDriver: createNativeRedisDriver,
+		edgeTtsSocketFactory: createNodeEdgeTtsSocketFactory(),
+		// Relative fs roots resolve against the working directory; the node fs confines access to that root.
+		createLocalFileSystem: ({ root }) => createNodeFileSystem({ root: resolve(cwd, root) }),
 		info: { runtime: 'node', node: process.version, platform: process.platform, arch: process.arch, cwd, configPath: options.config },
 		getEnv: (name) => (environment ??= loadNativeEnv(cwd))[name] ?? process.env[name],
 		env: {
@@ -66,24 +99,18 @@ export function createNativeHost(options: { config: string }): WocliHost {
 			await mkdir(dirname(destination), { recursive: true });
 			await writeFile(destination, content, { encoding: 'utf8', mode: 0o600, signal });
 		},
-		async readText(value, { signal, maxBytes }) {
-			const stream = value === '-' ? process.stdin : createReadStream(resolve(value.slice(1)), { signal });
-			const chunks: Buffer[] = [];
-			let size = 0;
-			const onAbort = () => stream.destroy(new Error('Input cancelled'));
-			signal.addEventListener('abort', onAbort, { once: true });
-			try {
-				signal.throwIfAborted();
-				for await (const chunk of stream) {
-					const bytes = Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk);
-					size += bytes.length;
-					if (size > maxBytes) throw new CliUsageError('Input exceeds size limit');
-					chunks.push(bytes);
-				}
-				return Buffer.concat(chunks).toString('utf8');
-			} finally {
-				signal.removeEventListener('abort', onAbort);
-			}
+		async writeBytes(path, content, { signal }) {
+			signal.throwIfAborted();
+			const destination = resolve(path);
+			await mkdir(dirname(destination), { recursive: true });
+			await writeFile(destination, content, { mode: 0o600, signal });
+		},
+		async readText(value, options) {
+			return (await readNativeInput(value, options)).toString('utf8');
+		},
+		async readBytes(value, options) {
+			const buffer = await readNativeInput(value, options);
+			return new Uint8Array(buffer.buffer, buffer.byteOffset, buffer.byteLength);
 		},
 		mcp: { connect: connectMcpServer },
 	};

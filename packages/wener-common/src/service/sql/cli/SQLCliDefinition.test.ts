@@ -38,6 +38,7 @@ function service() {
 		listObject: vi.fn<ISqlService['listObject']>(async () => []),
 		describeObject: vi.fn<ISqlService['describeObject']>(async () => ({ object: { name: 'users', type: 'TABLE' } })),
 		close: vi.fn(),
+		[Symbol.asyncDispose]: vi.fn(async () => {}),
 	} satisfies ISqlService;
 }
 
@@ -229,6 +230,6 @@ describe('SQL CLI service operations', () => {
 		const client = service();
 		const signal = new AbortController().signal;
 		expect(await (await command('ping').prepare(context([])))(client, { signal })).toEqual({ ok: true, durationMs: 1 });
-		expect(client.ping).toHaveBeenCalledWith({ signal });
+		expect(client.ping).toHaveBeenCalledWith({}, { signal });
 	});
 });

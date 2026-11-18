@@ -1,2 +1,2 @@
 gen:
-	pnpm dlx peggy  $(PWD)/parser.peggy --format es
+	pnpm dlx peggy@5.1.1 "$(CURDIR)/parser.peggy" --format es

@@ -1,5 +1,7 @@
 import type { ServiceProvider } from '@wener/common/service';
-import { createBuiltinServiceProviders } from '@wener/common/service/builtin';
+import { createServiceProviderAdapter } from '@wener/common/service/runtime';
+import { createSystemServiceProvider, type ISystemServiceContract } from '@wener/common/service/system';
+import { createBuiltinServiceProviders } from './builtin';
 import type { ServiceCliDefinition } from '@wener/common/service/cli';
 import { createHttpServiceRuntimeClient } from '@wener/common/service/runtime/client';
 import type { CliConfig } from 'common/context';
@@ -8,6 +10,7 @@ import { APP_NAME, APP_VERSION } from './const';
 
 export const VERSION = APP_VERSION;
 const noServiceOptions = {
+	jsonSchema: { type: 'object', properties: {}, additionalProperties: false },
 	safeParse(value: unknown) {
 		return value && typeof value === 'object' && !Array.isArray(value) && Object.keys(value).length === 0
 			? { success: true as const, data: value }
@@ -21,45 +24,13 @@ export function createDefaultConfig(): CliConfig {
 export function createBuiltinProviders(info: Record<string, unknown> = {}): ServiceProvider[] {
 	return [
 		...createBuiltinServiceProviders(),
-		{
-			name: 'system',
-			capabilities: ['system'],
-			optionsSchema: noServiceOptions,
-			create() {
-				return {
-					async getSchema() {
-						return {
-							tools: {
-								info: {
-								description: 'Runtime environment information',
-									inputSchema: { type: 'object' },
-									annotations: { readOnlyHint: true },
-								},
-								echo: {
-									description: 'Return the input text',
-									inputSchema: { type: 'object', properties: { text: { type: 'string' } }, required: ['text'] },
-									annotations: { readOnlyHint: true },
-								},
-							},
-						};
-					},
-					async call(tool, input) {
-						if (tool === 'info') return { application: APP_NAME, version: VERSION, ...info };
-						if (
-							tool === 'echo' &&
-							typeof input === 'object' &&
-							input !== null &&
-							'text' in input &&
-							typeof input.text === 'string'
-						)
-							return { text: input.text };
-						throw new Error('system echo requires a text string');
-					},
-				};
-			},
-		},
+		createServiceProviderAdapter(
+			createSystemServiceProvider({ application: APP_NAME, version: VERSION, ...info }),
+		),
 		{
 			name: 'http',
+			title: 'HTTP service runtime',
+			description: 'Connect to a remote schema/call service; tools are discovered at runtime',
 			capabilities: ['http'],
 			optionsSchema: noServiceOptions,
 			create({ config, name, fetch }) {
@@ -75,11 +46,7 @@ export function createBuiltinProviders(info: Record<string, unknown> = {}): Serv
 	];
 }
 
-interface SystemClient {
-	info(input: object, options?: { signal?: AbortSignal }): Promise<unknown>;
-	echo(input: { text: string }, options?: { signal?: AbortSignal }): Promise<unknown>;
-}
-export const SystemCliDefinition: ServiceCliDefinition<SystemClient> = {
+export const SystemCliDefinition: ServiceCliDefinition<ISystemServiceContract> = {
 	name: 'system',
 	description: 'Offline system service',
 	commands: [

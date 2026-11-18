@@ -53,8 +53,8 @@ export function createMcpServerHandler<C extends Record<string, any>>(
 			name = `${prefix}_${name}`;
 		}
 		let description = tm.description || (v['~orpc'].route as any).description || '';
-		let inputSchema = v['~orpc'].inputSchema as z.ZodTypeAny;
-		let outputSchema = v['~orpc'].outputSchema as z.ZodTypeAny;
+		let inputSchema = v['~orpc'].inputSchema as z.ZodType;
+		let outputSchema = v['~orpc'].outputSchema as z.ZodType;
 		const tool: Tool = {
 			...tm,
 			name,

@@ -1,6 +1,6 @@
 import { createMemoryCliConfigStore } from 'common/context';
 import { describe, expect, it, vi } from 'vitest';
-import { createWocliWebCli } from './web';
+import { createWebCli } from './web';
 
 function fixture() {
 	const getEnv = vi.fn((name: string) => (name === 'OO_TEST_TOKEN' ? 'PRIVATE_TOKEN' : undefined));
@@ -45,7 +45,7 @@ function fixture() {
 		],
 		defaults: { openobserve: 'observe' },
 	});
-	const cli = createWocliWebCli({ config, getEnv, fetch: fetch as unknown as typeof globalThis.fetch });
+	const cli = createWebCli({ config, getEnv, fetch: fetch as unknown as typeof globalThis.fetch });
 	const lines: string[] = [];
 	const io = {
 		signal: new AbortController().signal,
@@ -76,7 +76,7 @@ describe('OpenObserve end-to-end command adapters', () => {
 		await cli.executeLine('oo stream schema --stream app --json', io);
 		expect(JSON.parse(lines.at(-1)!)).toMatchObject({ fields: [{ name: 'message' }] });
 		await cli.executeLine('oo q --stream app --text error --size 1 --json', io);
-		expect(JSON.parse(lines.at(-1)!)).toMatchObject({ hits: [{ message: 'ok', access_token: '<redacted>' }] });
+		expect(JSON.parse(lines.at(-1)!)).toMatchObject({ hits: [{ message: 'ok', access_token: 'PRIVATE_DATA' }] });
 		const request = fetch.mock.calls.find(([url]) => String(url).includes('/_search'))!;
 		expect(JSON.parse(String(request[1]?.body)).query.sql).toBe(
 			`SELECT * FROM "app" WHERE match_all('error') ORDER BY _timestamp DESC`,
@@ -89,6 +89,15 @@ describe('OpenObserve end-to-end command adapters', () => {
 		expect(JSON.parse(lines.at(-1)!)).toMatchObject({ streamType: 'traces', hits: [{ message: 'ok' }] });
 		await cli.executeLine('oo trace ls --stream app --size 1 --json', io);
 		expect(JSON.parse(lines.at(-1)!)).toMatchObject({ traces: [{ trace_id: 'fixture-trace' }] });
+	});
+	it('projects --redact only for the selected display invocation', async () => {
+		const { cli, lines, io } = fixture();
+		for (const redact of [false, true, false]) {
+			await cli.execute(['oo', 'q', '--stream', 'app', '--text', 'error', '--json', ...(redact ? ['--redact'] : [])], io);
+			expect(JSON.parse(lines.at(-1)!)).toMatchObject({
+				hits: [{ message: 'ok', access_token: redact ? '<redacted>' : 'PRIVATE_DATA' }],
+			});
+		}
 	});
 	it('rejects invalid prepare inputs before credentials and HTTP', async () => {
 		const { cli, fetch, getEnv, io } = fixture();

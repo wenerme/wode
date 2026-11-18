@@ -1,7 +1,7 @@
 import { type CliContext, type CliOptions, CliUsageError, renderCliOutput } from '@wener/common/cli';
 import { getCliOutputOptions } from '@wener/common/cli/getCliOutputOptions';
 import type { CliConfig } from 'common/context';
-import type { WocliExecution } from './createWocliCli';
+import type { CliExecution } from './createCli';
 import type { CliTable } from '@wener/common/cli';
 
 export function setConfigEntry<T>(record: Record<string, T>, key: string, value: T): void {
@@ -42,9 +42,25 @@ export function writeCommandOutput(value: unknown, options: CliOptions, context:
 	context.signal.throwIfAborted();
 	context.stdout(renderCliOutput(value, { ...getCliOutputOptions(context, options), ...(table ? { table } : {}) }));
 }
+
+export function validateCommandOutputTarget(options: CliOptions, context: CliExecution): void {
+	const filename = optionString(options, 'output-file');
+	if (filename !== undefined && !filename.trim()) throw new CliUsageError('--output-file requires a path');
+	if (filename && filename !== '-' && !context.host.writeText) throw new CliUsageError('Host does not support file output');
+}
+
+export async function writeCommandOutputToFile(value: unknown, options: CliOptions, context: CliExecution, table?: CliTable): Promise<void> {
+	validateCommandOutputTarget(options, context);
+	const filename = optionString(options, 'output-file');
+	if (!filename || filename === '-') return writeCommandOutput(value, options, context, table);
+	context.signal.throwIfAborted();
+	const rendered = renderCliOutput(value, { ...getCliOutputOptions(context, options), ...(table ? { table } : {}) });
+	await context.host.writeText!(filename, rendered.endsWith('\n') ? rendered : `${rendered}\n`, { signal: context.signal });
+	context.signal.throwIfAborted();
+}
 export async function readCommandText(
 	value: string,
-	context: WocliExecution,
+	context: CliExecution,
 	limits?: { maxBytes?: number },
 ): Promise<string> {
 	context.signal.throwIfAborted();
@@ -58,12 +74,27 @@ export async function readCommandText(
 	if (new TextEncoder().encode(result).byteLength > maxBytes) throw new CliUsageError('Input exceeds size limit');
 	return result;
 }
-export async function loadCommandContext(context: WocliExecution, options: CliOptions) {
+/** Binary input only from `@file` or `-`; plain argument text is not treated as bytes. */
+export async function readCommandBytes(
+	value: string,
+	context: CliExecution,
+	limits?: { maxBytes?: number },
+): Promise<Uint8Array> {
+	context.signal.throwIfAborted();
+	const maxBytes = Math.min(limits?.maxBytes ?? 16 * 1024 * 1024, 64 * 1024 * 1024);
+	if (!value.startsWith('@') && value !== '-') throw new CliUsageError('Binary input must be @file or - (stdin)');
+	if (!context.host.readBytes) throw new CliUsageError('Host does not support binary file or stdin input');
+	const result = await context.host.readBytes(value, { signal: context.signal, maxBytes });
+	context.signal.throwIfAborted();
+	if (result.byteLength > maxBytes) throw new CliUsageError('Input exceeds size limit');
+	return result;
+}
+export async function loadCommandContext(context: CliExecution, options: CliOptions) {
 	context.signal.throwIfAborted();
 	return context.getConfigContext(options);
 }
 export async function changeCommandConfig(
-	context: WocliExecution,
+	context: CliExecution,
 	options: CliOptions,
 	edit: (config: CliConfig, contextName: string) => void,
 ): Promise<void> {
