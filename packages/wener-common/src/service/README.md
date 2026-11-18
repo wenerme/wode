@@ -4,10 +4,12 @@
 
 ```ts
 import { ServiceRegistry } from '@wener/common/service';
-import { registerBuiltinServices } from '@wener/common/service/builtin';
 import { normalizeCliServices } from '@wener/common/service/config';
+import { BaseFetchServiceProvider } from '@wener/common/service/provider/base';
+import { DuckDuckGoSearchServiceProvider } from '@wener/common/service/provider/duckduckgo';
+import { JinaFetchServiceProvider } from '@wener/common/service/provider/jina';
 
-const registry = registerBuiltinServices(new ServiceRegistry({
+const registry = new ServiceRegistry({
   context: {
     services: normalizeCliServices([
       { name: 'web-search', type: 'duckduckgo' },
@@ -16,7 +18,10 @@ const registry = registerBuiltinServices(new ServiceRegistry({
     ]),
   },
   defaults: { search: 'web-search', fetch: 'reader' },
-}));
+});
+registry.register(DuckDuckGoSearchServiceProvider);
+registry.register(JinaFetchServiceProvider);
+registry.register(BaseFetchServiceProvider);
 
 try {
   const search = await registry.load('search');
@@ -30,9 +35,9 @@ try {
 
 统一注册安装 provider factory，不会自动创建服务实例或发起网络请求。配置指定实例名称和 provider；`ddg` 是 DuckDuckGo 别名，`direct` 是 `base` 别名。多个同能力实例需要指定名称或配置默认值，歧义会报错。实例按配置懒创建、并发复用，由 registry 统一关闭。
 
-新增 provider 使用 `registry.register({ name, provides, create })`。`provides: ['search']` 的 factory 返回 `{ search: ISearchService }`，同时提供两种能力时返回 `{ search, fetch }`。注册契约不依赖 CLI；`createBuiltinServiceProviders()` 将同一组 provider 适配成旧 schema/call transport。
+新增 provider 使用 `registry.register({ name, provides, create })`。`provides: ['search']` 的 factory 返回 `{ search: ISearchService }`，同时提供两种能力时返回 `{ search, fetch }`。注册契约不依赖 CLI；应用层可以将同一组 provider 适配成 schema/call transport。
 
-基础 fetch 保留响应文本及 content-type，不承诺正文提取或 HTML 转 Markdown；Jina 通过 Reader API 返回处理后的页面内容。具体 provider 对不支持的输入选项报错，避免静默忽略查询条件。旧 `createDuckDuckGoProvider()` 保留原始返回格式供兼容调用，新的 registry 和 woctl 默认路径使用统一搜索响应。
+基础 fetch 保留响应文本及 content-type，不承诺正文提取或 HTML 转 Markdown；Jina 通过 Reader API 返回处理后的页面内容。具体 provider 对不支持的输入选项报错，避免静默忽略查询条件。DuckDuckGo 仅通过 `DuckDuckGoSearchServiceProvider`（`SearchOperations`）提供统一搜索响应，原始供应商数据经 `raw: true` 获取。
 
 SQL 使用同一套 typed registry：`type: sqlite`、`type: postgres` 等配置实例由 `sql` capability 选择，`ISqlService` 提供 `query`、`exec`、`ping`、`listObject` 和 `describeObject`。`woctl sql query` 始终只读，`woctl sql exec` 必须带 `--yes`；参数通过 `params` 或 `--var` 独立绑定，SQL 文本不会插值。表发现走对象 API，CLI 不拼接 `information_schema`。Native host 注入 SQLite/PostgreSQL driver，浏览器 host 可以使用远程 schema/call runtime。
 

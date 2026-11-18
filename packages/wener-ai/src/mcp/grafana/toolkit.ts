@@ -7,7 +7,7 @@ export type JsonResult = {
 	isError?: boolean;
 };
 
-export function registerJsonTool<TSchema extends z.ZodTypeAny>(
+export function registerJsonTool<TSchema extends z.ZodType>(
 	ctx: GrafanaContext,
 	name: string,
 	config: {

@@ -1,5 +1,7 @@
-# Shared Vite recipes are imported by the root justfile. Package-local reuse goes
-# through just/package.just, whose recipes are explicitly marked [no-cd].
+set positional-arguments
+set working-directory := '..'
+
+# Workspace tooling. Package lifecycle tasks live in the package module.
 
 fmt *args:
     #!/usr/bin/env bash

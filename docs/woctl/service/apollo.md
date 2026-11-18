@@ -54,8 +54,20 @@ woctl apollo --service settings item patch --input @items.json --dry-run --yes
 woctl apollo --service settings release publish --input @release.json --dry-run --yes
 ```
 
-发布保留源端的 Portal 权限检查、待发布草稿检查和 `ifMatch` 指纹检查。HTTP 响应丢失后不会将不确定的 mutation 伪装为成功。默认输出对配置敏感字段和凭据形态做脱敏。
+发布保留源端的 Portal 权限检查、待发布草稿检查和 `ifMatch` 指纹检查。HTTP 响应丢失后不会将不确定的 mutation 伪装为成功。
 
-`svc schema` 暴露全部 47 个操作及输入 schema；CLI 覆盖 read/status、portal、release、namespace、item 和 admin 分组，操作参数以 schema 为准。SDK 保留源数据供宿主使用；通用 service call 与 Apollo CLI 在输出边界脱敏。
+Apollo 的配置值是业务数据。SDK、通用 `service call` 和 Apollo CLI 默认返回原始值，包括 password、token、DSN 等配置项，便于导出、使用和读取后回写。原始文本内容与换行也会保留，不再被自动替换成占位符。
+
+只需要脱敏展示时，显式使用 `--redact`：
+
+```sh
+woctl apollo --service settings read --read-format json --json
+woctl apollo --service settings --redact read --read-format json --json
+woctl apollo --service settings release pending --redact --json
+```
+
+`--redact` 只处理本次显示的结果，不修改输入、服务数据或后续调用。HTTP 异常诊断及连接配置中的认证信息展示仍使用脱敏规则。
+
+`svc schema` 暴露全部 47 个操作及输入 schema；CLI 覆盖 read/status、portal、release、namespace、item 和 admin 分组，操作参数以 schema 为准。
 
 离线验证覆盖核心操作、diff、JSON/YAML 文档 patch、HTTP 错误/脱敏、发布保护、只读策略和 CLI/runtime 接线。此次没有向真实 Apollo 服务发送写请求。

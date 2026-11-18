@@ -42,20 +42,20 @@
 		"prepublishOnly": "pnpm build"
 	},
 	"devDependencies": {
-		"@hono/mcp": "^0.3.2",
-		"@hono/node-server": "^2.1.1",
-		"@modelcontextprotocol/sdk": "^1.30.0",
-		"@orpc/contract": "^1.15.2",
-		"@orpc/server": "^1.15.2",
+		"@hono/mcp": "^0.3.5",
+		"@hono/node-server": "^2.1.6",
+		"@modelcontextprotocol/sdk": "^1.32.2",
+		"@orpc/contract": "^1.16.1",
+		"@orpc/server": "^1.16.1",
 		"@types/node": "^24.13.5",
 		"@wener/utils": "^1.1.59",
 		"commander": "^15.0.0",
 		"common": "workspace:^1.0.0",
 		"consola": "^3.4.2",
 		"dotenv": "^16.6.1",
-		"hono": "^4.13.8",
+		"hono": "^4.13.16",
 		"hono-rate-limiter": "^0.5.4",
-		"zod": "^4.6.5"
+		"zod": "^4.6.7"
 	},
 	"publishConfig": {
 		"access": "public"

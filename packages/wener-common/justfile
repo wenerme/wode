@@ -1,0 +1,6 @@
+mod package '../../just/package.just'
+
+build: (package::swc-build "lib" "false" "json-css" "false")
+
+publish: build
+    just package::publish

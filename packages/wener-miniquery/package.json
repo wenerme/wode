@@ -16,6 +16,7 @@
 		"./ast": "./src/ast/index.ts",
 		"./doc": "./src/doc/index.ts",
 		"./mikro-orm": "./src/mikro-orm/index.ts",
+		"./mysql": "./src/mysql/index.ts",
 		"./search": "./src/search/index.ts",
 		"./package.json": "./package.json"
 	},
@@ -30,21 +31,23 @@
 		"dsl"
 	],
 	"scripts": {
+		"generate": "just generate",
 		"typecheck": "tsc --noEmit",
-		"build": "just -f ../../just/packages/wener-miniquery.just build",
-		"test": "just -f ../../just/package.just package-test"
+		"build": "just build",
+		"test": "just package::test",
+		"test:sql": "vitest run tests/sql.test.ts"
 	},
 	"dependencies": {
 		"@wener/utils": "workspace:^1.1.59",
-		"ts-pattern": "^5.9.0"
+		"ts-pattern": "^5.9.2"
 	},
 	"devDependencies": {
-		"@electric-sql/pglite": "^0.5.8",
-		"@electric-sql/pglite-socket": "^0.2.11",
-		"@mikro-orm/core": "^7.2.1",
-		"@mikro-orm/decorators": "^7.2.1",
-		"@mikro-orm/postgresql": "^7.2.1",
-		"@mikro-orm/sql": "^7.2.1",
+		"@electric-sql/pglite": "^0.5.15",
+		"@electric-sql/pglite-socket": "^0.2.18",
+		"@mikro-orm/core": "^7.2.7",
+		"@mikro-orm/decorators": "^7.2.7",
+		"@mikro-orm/postgresql": "^7.2.7",
+		"@mikro-orm/sql": "^7.2.7",
 		"@sequelize/core": "7.0.0-alpha.48",
 		"ohm-js": "^17.5.0"
 	},
@@ -65,6 +68,10 @@
 			"./mikro-orm": {
 				"types": "./src/mikro-orm/index.ts",
 				"default": "./lib/mikro-orm/index.js"
+			},
+			"./mysql": {
+				"types": "./src/mysql/index.ts",
+				"default": "./lib/mysql/index.js"
 			},
 			"./search": {
 				"types": "./src/search/index.ts",

@@ -1,0 +1,11 @@
+mod package '../../just/package.just'
+
+build: package::swc-build
+
+publish: build
+    pnpm version patch --no-workspaces-update
+    just package::publish
+
+next: build
+    pnpm version prerelease --preid=beta --no-workspaces-update
+    just package::publish --tag next

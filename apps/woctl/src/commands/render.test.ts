@@ -1,11 +1,11 @@
 import { describe, expect, it, vi } from 'vitest';
-import { createWocliWebCli } from '../web';
+import { createWebCli } from '../web';
 
 describe('render commands', () => {
 	it('uses host stdin/file ports and supports output file semantics', async () => {
 		const stdout = vi.fn();
 		const writeText = vi.fn(async () => {});
-		const cli = createWocliWebCli({ readText: async () => '{"n":1}', writeText });
+		const cli = createWebCli({ readText: async () => '{"n":1}', writeText });
 		const io = { signal: new AbortController().signal, stdout };
 		await cli.executeLine('render package.json', io);
 		expect(stdout).toHaveBeenLastCalledWith('{\n  "n": 1\n}\n');
@@ -14,7 +14,7 @@ describe('render commands', () => {
 	});
 	it('runs inline Markdown offline and rejects invalid render arguments before writing', async () => {
 		const stdout = vi.fn();
-		const cli = createWocliWebCli();
+		const cli = createWebCli();
 		const io = { signal: new AbortController().signal, stdout };
 		await cli.executeLine('md --text "# Title" --no-color', io);
 		expect(stdout).toHaveBeenLastCalledWith('Title\n');

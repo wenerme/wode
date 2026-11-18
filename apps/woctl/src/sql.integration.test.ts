@@ -3,7 +3,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { createMemoryCliConfigStore } from 'common/context';
 import { describe, expect, it, vi } from 'vitest';
-import { createWocliCli } from './createWocliCli';
+import { createCli } from './createCli';
 import { createNativeSqlDriver } from './native/sql';
 
 describe('woctl SQL service integration', () => {
@@ -11,7 +11,7 @@ describe('woctl SQL service integration', () => {
 		const directory = await mkdtemp(join(tmpdir(), 'woctl-sql-'));
 		try {
 			const lines: string[] = [];
-			const cli = createWocliCli({
+			const cli = createCli({
 				config: createMemoryCliConfigStore({
 					services: [
 						{ name: 'db', type: 'sqlite', readOnly: false, options: { filename: join(directory, 'db.sqlite') } },
@@ -53,7 +53,7 @@ describe('woctl SQL service integration', () => {
 		const sqlDriver = vi.fn();
 		const io = { signal: new AbortController().signal, stdout: vi.fn() };
 		const make = (readOnly: boolean) =>
-			createWocliCli({
+			createCli({
 				config: createMemoryCliConfigStore({ services: [{ name: 'db', type: 'sql', readOnly }] }),
 				readText,
 				sqlDriver,

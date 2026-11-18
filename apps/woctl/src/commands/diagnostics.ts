@@ -3,7 +3,7 @@ import { getCliOutputOptions } from '@wener/common/cli/getCliOutputOptions';
 import { isCliServiceEnabled, type ResolvedCliContext } from 'common/context';
 import { writeCommandOutput } from '../command-utils';
 import { VERSION } from '../core';
-import type { WocliExecution } from '../createWocliCli';
+import type { CliExecution } from '../createCli';
 
 export interface DiagnosticsOptions {
 	supportsProvider(provider: string): boolean;
@@ -30,7 +30,7 @@ interface CheckResult {
 
 const strictOption = { name: 'strict', type: 'boolean' as const, description: 'Treat warnings as failures' };
 
-function checkContext(context: ResolvedCliContext, options: DiagnosticsOptions, strict: boolean): CheckResult {
+function checkContext(context: ResolvedCliContext, options: DiagnosticsOptions, strict: boolean, execution: CliExecution): CheckResult {
 	const configured = context.configuredServices ?? context.services;
 	const services: ServiceCheck[] = Object.entries(configured).map(([name, service]) => ({
 		name,
@@ -71,7 +71,8 @@ function checkContext(context: ResolvedCliContext, options: DiagnosticsOptions, 
 				service: name,
 			});
 		}
-		if (service.provider !== provider) {
+		const canonical = (name: string) => execution.resolveServiceProvider?.(name) ?? name;
+		if (canonical(service.provider) !== canonical(provider) && !execution.getServiceCapabilities?.(service.provider).includes(provider)) {
 			issues.push({
 				severity: 'error',
 				code: 'default-provider-mismatch',
@@ -88,13 +89,13 @@ function strict(options: CliOptions): boolean {
 	return options.strict === true;
 }
 
-function checkCommand(name: string, description: string, options: DiagnosticsOptions): CliCommand<WocliExecution> {
+function checkCommand(name: string, description: string, options: DiagnosticsOptions): CliCommand<CliExecution> {
 	return {
 		name,
 		description,
 		options: [strictOption],
 		async run({ options: inputOptions }, context) {
-			const result = checkContext(context.getConfigContext(inputOptions), options, strict(inputOptions));
+			const result = checkContext(context.getConfigContext(inputOptions), options, strict(inputOptions), context);
 			writeCommandOutput(result, inputOptions, context);
 			return { exitCode: result.ok ? 0 : 1 } satisfies CliCommandResult;
 		},
@@ -102,7 +103,7 @@ function checkCommand(name: string, description: string, options: DiagnosticsOpt
 }
 
 export function createDiagnosticsCommands(options: DiagnosticsOptions) {
-	const info: CliCommand<WocliExecution> = {
+	const info: CliCommand<CliExecution> = {
 		name: 'info',
 		description: 'Show runtime and configuration summaries',
 		async run({ options: inputOptions }, context) {

@@ -1,10 +1,11 @@
 import type { FetchLike } from '@wener/utils';
 import { describe, expect, it, vi } from 'vitest';
 import { normalizeCliServices } from '../config';
+import { ServiceRegistry } from '../registry';
 import { createServiceProviderAdapter } from '../runtime/createServiceProviderAdapter';
 import { createServiceRuntime } from '../runtime/createServiceRuntime';
 import { ServiceProviderRegistry } from '../runtime/ServiceProviderRegistry';
-import { PrometheusServiceProvider } from './index';
+import { PrometheusServiceCapability, PrometheusServiceProvider } from './index';
 
 function runtime(options: Record<string, unknown> = { accessTokenEnv: 'PROM_FIXTURE_TOKEN' }, readOnly = true) {
 	const getEnv = vi.fn((name: string) => name === 'PROM_FIXTURE_TOKEN' ? 'fixture-token' : undefined);
@@ -20,6 +21,17 @@ function runtime(options: Record<string, unknown> = { accessTokenEnv: 'PROM_FIXT
 }
 
 describe('Prometheus service provider', () => {
+	it('maps the oRPC client timeout context to the local HTTP client', async () => {
+		const fetch = vi.fn<typeof globalThis.fetch>(() => new Promise(() => undefined));
+		const services = normalizeCliServices([{ name: 'metrics', type: 'prom', baseUrl: 'https://metrics.example.test' }]);
+		const registry = new ServiceRegistry({ context: { services }, fetch });
+		registry.register(PrometheusServiceProvider);
+		const service = await registry.load(PrometheusServiceCapability, 'metrics');
+		await expect(service.query({ query: 'up' }, { context: { timeoutMs: 5 } })).rejects.toMatchObject({ code: 'TIMEOUT' });
+		expect(fetch).toHaveBeenCalledTimes(1);
+		await registry.close();
+	});
+
 	it('discovers a complete read-only schema without env or network access', async () => {
 		const test = runtime();
 		const schema = await test.runtime.getSchema({ params: { service: 'metrics' } });

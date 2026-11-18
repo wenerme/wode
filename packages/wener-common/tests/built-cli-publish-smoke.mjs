@@ -22,13 +22,11 @@ const requiredSubpaths = [
 	'./service/sql',
 	'./service/sql/client',
 	'./service/sql/cli',
-	'./service/providers/sql',
 	'./service/openobserve',
 	'./service/openobserve/client',
 	'./service/openobserve/cli',
-	'./service/builtin',
-	'./service/providers/jina',
-	'./service/providers/base',
+	'./service/provider/jina',
+	'./service/provider/base',
 	'./ai/model/registry',
 ];
 const cliExports = Object.fromEntries(
@@ -211,14 +209,12 @@ async function consumePublishedCli(packages) {
 		const { ModelRegistry, ModelService } = await import('@wener/common/ai/model/registry');
 		const { ServiceProviderRegistry } = await import('@wener/common/service');
 		const { ServiceRegistry } = await import('@wener/common/service/registry');
-		const { registerBuiltinServices } = await import('@wener/common/service/builtin');
+		const { BaseFetchServiceProvider } = await import('@wener/common/service/provider/base');
 		const { normalizeCliServices } = await import('@wener/common/service/config');
-		const domains = registerBuiltinServices(
-			new ServiceRegistry({
-				context: { services: normalizeCliServices([{ name: 'page', type: 'base' }]) },
-				fetch: async () => new Response('published service fixture'),
-			}),
-		);
+		const domains = new ServiceRegistry({
+			context: { services: normalizeCliServices([{ name: 'page', type: 'base' }]) },
+			fetch: async () => new Response('published service fixture'),
+		}).register(BaseFetchServiceProvider);
 		try {
 			const reader = await domains.load('fetch', 'page');
 			assert.equal((await reader.fetch({ url: 'https://example.test' })).content, 'published service fixture');
@@ -243,7 +239,7 @@ async function consumePublishedCli(packages) {
 		const sql = await import('@wener/common/service/sql');
 		const sqlCli = await import('@wener/common/service/sql/cli');
 		const sqlClient = await import('@wener/common/service/sql/client');
-		const sqlProvider = await import('@wener/common/service/providers/sql');
+		const sqlProvider = sql;
 		assert.equal(typeof sql.createSqlService, 'function');
 		assert.equal(typeof sqlCli.SQLCliDefinition, 'object');
 		assert.equal(typeof sqlClient.createSqlServiceToolClient, 'function');

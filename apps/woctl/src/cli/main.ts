@@ -1,7 +1,7 @@
 import { CliUsageError } from '@wener/common/cli';
 import { CliConfigError } from 'common/context';
 import { APP_NAME } from '../const';
-import { createWocliCli } from '../createWocliCli';
+import { createCli } from '../createCli';
 import { createNativeHost, getNativeCommandOptions } from '../native';
 
 const controller = new AbortController();
@@ -10,9 +10,16 @@ process.once('SIGINT', abort);
 process.once('SIGTERM', abort);
 try {
 	const input = getNativeCommandOptions(process.argv.slice(2));
-	const cli = createWocliCli(createNativeHost({ config: input.config }));
+	const cli = createCli(createNativeHost({ config: input.config }));
 	const result = await cli.execute(input.argv, {
 		signal: controller.signal,
+		stdoutStream: new WritableStream<Uint8Array>({
+			write(chunk) {
+				return new Promise<void>((resolve, reject) => {
+					process.stdout.write(chunk, (error) => error ? reject(error) : resolve());
+				});
+			},
+		}),
 		columns: process.stdout.columns,
 		write: (value) => {
 			process.stdout.write(value);

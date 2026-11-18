@@ -40,10 +40,10 @@ jobs:
       - name: Install just
         uses: taiki-e/install-action@v2
         with:
-          tool: just@1.38.0
+          tool: just@1.58.0
 
       - name: Verify workspace
-        run: just ci
+        run: just ci::check
 
       - name: Install Storybook browser
         run: pnpm -C packages/ui exec playwright install --with-deps chromium

@@ -1,0 +1,18 @@
+version: 1
+currentContext: local
+services:
+  - name: feishu
+    type: feishu
+    readOnly: true
+    options:
+      appIdEnv: FEISHU_APP_ID
+      appSecretEnv: FEISHU_APP_SECRET
+  - name: telegram
+    type: telegram
+    readOnly: true
+    options:
+      botTokenEnv: TELEGRAM_BOT_TOKEN
+defaults:
+  services:
+    feishu: feishu
+    telegram: telegram

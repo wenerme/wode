@@ -29,10 +29,19 @@
 		"./browserless": "./src/browserless/index.ts",
 		"./cubejs": "./src/cubejs/index.ts",
 		"./funasr": "./src/funasr/index.ts",
+		"./google-analytics": "./src/google-analytics/index.ts",
+		"./grafana": "./src/grafana/index.ts",
+		"./powerdns": "./src/powerdns/index.ts",
+		"./cloudflare": "./src/cloudflare/index.ts",
+		"./webdav": "./src/webdav/index.ts",
 		"./duckduckgo": "./src/duckduckgo/index.ts",
 		"./exa": "./src/exa/index.ts",
 		"./honcho": "./src/honcho/index.ts",
 		"./jina": "./src/jina/index.ts",
+		"./linear": "./src/linear/index.ts",
+		"./tts": "./src/tts/index.ts",
+		"./tts/node": "./src/tts/node.ts",
+		"./telegram": "./src/telegram/index.ts",
 		"./openobserve": "./src/openobserve/index.ts",
 		"./prometheus": "./src/prometheus/index.ts",
 		"./openai": "./src/openai/index.ts",
@@ -56,6 +65,8 @@
 		"./yzf": "./src/yzf/index.ts",
 		"./feishu/docs": "./src/feishu/docs/index.ts",
 		"./feishu/docs/markdown": "./src/feishu/docs/markdown/index.ts",
+		"./feishu/server": "./src/feishu/server/index.ts",
+		"./feishu/openapi": "./src/feishu/openapi/index.ts",
 		"./package.json": "./package.json"
 	},
 	"files": [
@@ -67,59 +78,76 @@
 	"keywords": [],
 	"scripts": {
 		"typecheck": "tsc --noEmit",
-		"build": "just -f ../../just/packages/wener-client.just build",
+		"build": "just build",
 		"test:api-inclusion": "API_FUZZ=1 vitest run tests/api-schema-inclusion",
 		"test:api-live": "vitest run tests/api-schema-inclusion/live-conversion.test.ts",
 		"test:ai-router": "vitest run src/ai/router tests/ai-router",
 		"test:ai-router:offline": "vitest run src/ai/router tests/ai-router/sdk-conversion.test.ts tests/ai-router/native-offline.test.ts tests/ai-router/pi-models.test.ts",
 		"update:api-oracles": "pnpm exec tsx tests/api-schema-inclusion/update-oracles.ts",
-		"test": "just -f ../../just/package.just package-test"
+		"test": "just package::test"
 	},
 	"dependencies": {
 		"@noble/ciphers": "^2.4.0",
 		"@noble/hashes": "^2.4.0",
 		"@wener/utils": "workspace:^",
-		"eventsource-parser": "^4.1.1",
-		"zod": "^4.6.5"
+		"eventsource-parser": "^4.1.3",
+		"zod": "^4.6.7"
 	},
 	"peerDependencies": {
-		"hono": "^4.13.0"
+		"hono": "^4.13.0",
+		"ws": "^8.22.0"
 	},
 	"peerDependenciesMeta": {
 		"hono": {
 			"optional": true
+		},
+		"ws": {
+			"optional": true
 		}
 	},
 	"devDependencies": {
-		"@ai-sdk/anthropic": "^4.0.80",
-		"@ai-sdk/google": "^4.0.93",
-		"@ai-sdk/openai": "^4.0.94",
+		"@ai-sdk/anthropic": "^4.0.97",
+		"@ai-sdk/google": "^4.0.112",
+		"@ai-sdk/openai": "^4.0.109",
 		"@alicloud/openapi-client": "^0.4.15",
-		"@hono/node-server": "^2.1.4",
-		"@hono/zod-openapi": "^1.3.1",
+		"@hono/node-server": "^2.1.6",
+		"@hono/zod-openapi": "^1.6.3",
 		"@sinclair/typebox": "^0.34.52",
-		"@types/bun": "^1.4.2",
+		"@types/bun": "^1.4.4",
 		"@types/node-rsa": "^1.1.4",
+		"@types/ws": "^8.18.2",
 		"@wecom/jssdk": "^2.4.4",
+		"ai": "^7.0.163",
 		"ajv": "^8.20.0",
-		"ai": "^7.0.137",
 		"cookie": "^2.0.1",
 		"dayjs": "^1.11.23",
-		"fast-xml-parser": "^5.11.2",
+		"fast-xml-parser": "^5.12.0",
+		"hono": "^4.13.16",
 		"json-schema-faker": "^0.6.3",
-		"hono": "^4.13.13",
 		"node-rsa": "^2.0.0",
-		"puppeteer": "^25.13.0",
-		"puppeteer-core": "^25.13.0",
-		"ts-pattern": "^5.9.0",
-		"undici": "^8.11.2",
+		"puppeteer": "^25.16.0",
+		"puppeteer-core": "^25.16.0",
+		"ts-pattern": "^5.9.2",
+		"undici": "^8.12.3",
 		"vite": "catalog:",
 		"vitest": "^5.0.3",
-		"ws": "^8.22.0",
+		"ws": "^8.22.1",
 		"yaml": "^2.9.1"
 	},
 	"publishConfig": {
 		"exports": {
+			"./tts": {
+				"types": "./src/tts/index.ts",
+				"default": "./lib/tts/index.js"
+			},
+			"./tts/node": {
+				"types": "./src/tts/node.ts",
+				"default": "./lib/tts/node.js"
+			},
+			"./linear": {
+				"types": "./src/linear/index.ts",
+				"default": "./lib/linear/index.js"
+			},
 			"./ai/message-generation": {
 				"types": "./src/ai/message-generation/index.ts",
 				"default": "./lib/ai/message-generation/index.js"
@@ -187,6 +215,30 @@
 			"./funasr": {
 				"types": "./src/funasr/index.ts",
 				"default": "./lib/funasr/index.js"
+			},
+			"./google-analytics": {
+				"types": "./src/google-analytics/index.ts",
+				"default": "./lib/google-analytics/index.js"
+			},
+			"./grafana": {
+				"types": "./src/grafana/index.ts",
+				"default": "./lib/grafana/index.js"
+			},
+			"./powerdns": {
+				"types": "./src/powerdns/index.ts",
+				"default": "./lib/powerdns/index.js"
+			},
+			"./cloudflare": {
+				"types": "./src/cloudflare/index.ts",
+				"default": "./lib/cloudflare/index.js"
+			},
+			"./webdav": {
+				"types": "./src/webdav/index.ts",
+				"default": "./lib/webdav/index.js"
+			},
+			"./telegram": {
+				"types": "./src/telegram/index.ts",
+				"default": "./lib/telegram/index.js"
 			},
 			"./duckduckgo": {
 				"types": "./src/duckduckgo/index.ts",
@@ -295,6 +347,14 @@
 			"./feishu/docs/markdown": {
 				"types": "./src/feishu/docs/markdown/index.ts",
 				"default": "./lib/feishu/docs/markdown/index.js"
+			},
+			"./feishu/server": {
+				"types": "./src/feishu/server/index.ts",
+				"default": "./lib/feishu/server/index.js"
+			},
+			"./feishu/openapi": {
+				"types": "./src/feishu/openapi/index.ts",
+				"default": "./lib/feishu/openapi/index.js"
 			},
 			"./package.json": "./package.json"
 		}

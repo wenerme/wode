@@ -1,0 +1,5 @@
+mod package '../../just/package.just'
+mod server 'server.just'
+
+default:
+    @just --list

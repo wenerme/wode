@@ -1,0 +1,87 @@
+import type { QualifiedName } from './types';
+
+// Union of the MySQL 8.4 and Doris reserved words in parser.peggy; identifiers in this set are always
+// quoted. Quoting a word that is not reserved in the target dialect is harmless.
+const RESERVED = new Set(
+	`ACCESSIBLE ADD ALL ALTER ANALYZE AND ANTI AS ASC ASENSITIVE BEFORE BETWEEN BIGINT BINARY BLOB BOTH BY CALL
+CASCADE CASE CHANGE CHAR CHARACTER CHECK COLLATE COLUMN CONDITION CONSTRAINT CONTINUE CONVERT CREATE CROSS
+CUBE CUME_DIST CURRENT_DATE CURRENT_TIME CURRENT_TIMESTAMP CURRENT_USER CURSOR DATABASE DATABASES DAY_HOUR
+DAY_MICROSECOND DAY_MINUTE DAY_SECOND DEC DECIMAL DECLARE DEFAULT DELAYED DELETE DENSE_RANK DESC DESCRIBE
+DETERMINISTIC DISTINCT DISTINCTROW DIV DOUBLE DROP DUAL DUPLICATE EACH ELSE ELSEIF EMPTY ENCLOSED END ESCAPE
+ESCAPED EXCEPT EXISTS EXIT EXPLAIN FALSE FETCH FIRST_VALUE FLOAT FLOAT4 FLOAT8 FOR FORCE FOREIGN FROM FULL
+FULLTEXT FUNCTION GENERATED GET GRANT GROUP GROUPING GROUPS HAVING HIGH_PRIORITY HOUR_MICROSECOND HOUR_MINUTE
+HOUR_SECOND IF IGNORE IN INDEX INFILE INNER INOUT INSENSITIVE INSERT INT INT1 INT2 INT3 INT4 INT8 INTEGER
+INTERSECT INTERVAL INTO IO_AFTER_GTIDS IO_BEFORE_GTIDS IS ITERATE JOIN JSON_TABLE KEY KEYS KILL LAG LAST_VALUE
+LATERAL LEAD LEADING LEAVE LEFT LIKE LIMIT LINEAR LINES LOAD LOCALTIME LOCALTIMESTAMP LOCK LONG LONGBLOB
+LONGTEXT LOOP LOW_PRIORITY MATCH MAXVALUE MEDIUMBLOB MEDIUMINT MEDIUMTEXT MIDDLEINT MINUS MINUTE_MICROSECOND
+MINUTE_SECOND MOD MODIFIES NATURAL NOT NO_WRITE_TO_BINLOG NTH_VALUE NTILE NULL NUMERIC OF OFFSET ON OPTIMIZE
+OPTIMIZER_COSTS OPTION OPTIONALLY OR ORDER OUT OUTER OUTFILE OVER PARTITION PERCENT_RANK PRECISION PRIMARY
+PROCEDURE PURGE QUALIFY RANGE RANK READ READS READ_WRITE REAL RECURSIVE REFERENCES REGEXP RELEASE RENAME
+REPEAT REPLACE REQUIRE RESIGNAL RESTRICT RETURN REVOKE RIGHT RLIKE ROLLUP ROW ROWS ROW_NUMBER SCHEMA SCHEMAS
+SECOND_MICROSECOND SELECT SEMI SENSITIVE SEPARATOR SET SHOW SIGNAL SMALLINT SPATIAL SPECIFIC SQL SQLEXCEPTION
+SQLSTATE SQLWARNING SQL_BIG_RESULT SQL_CALC_FOUND_ROWS SQL_SMALL_RESULT SSL STARTING STORED STRAIGHT_JOIN
+SYSTEM TABLE TABLESAMPLE TABLET TERMINATED THEN TINYBLOB TINYINT TINYTEXT TO TRAILING TRIGGER TRUE UNDO UNION
+UNIQUE UNLOCK UNSIGNED UPDATE USAGE USE USING UTC_DATE UTC_TIME UTC_TIMESTAMP VALUES VARBINARY VARCHAR
+VARCHARACTER VARYING VIRTUAL WHEN WHERE WHILE WINDOW WITH WRITE XOR YEAR_MONTH ZEROFILL`.split(/\s+/),
+);
+
+// Words that start a window frame, so a window named like this must be quoted inside `OVER (...)`.
+const WINDOW_FRAME_WORDS = new Set(['ROWS', 'RANGE']);
+
+/**
+ * Quote identifier with backtick when needed.
+ */
+export function quoteIdent(name: string): string {
+	if (/^[A-Za-z_][A-Za-z0-9_$]*$/.test(name) && !RESERVED.has(name.toUpperCase())) {
+		return name;
+	}
+	return `\`${name.replaceAll('`', '``')}\``;
+}
+
+/** Quote a window name, also quoting the context keywords `ROWS` / `RANGE`. */
+export function quoteWindowIdent(name: string): string {
+	return WINDOW_FRAME_WORDS.has(name.toUpperCase()) ? `\`${name}\`` : quoteIdent(name);
+}
+
+/**
+ * Quote string literal with single quote, escaping like MySQL.
+ */
+export function quoteString(s: string): string {
+	const v = s.replace(/[\\'\0\n\r\t\b\x1a]/g, (c) => {
+		switch (c) {
+			case '\\':
+				return '\\\\';
+			case "'":
+				return "''";
+			case '\0':
+				return '\\0';
+			case '\n':
+				return '\\n';
+			case '\r':
+				return '\\r';
+			case '\t':
+				return '\\t';
+			case '\b':
+				return '\\b';
+			case '\x1a':
+				return '\\Z';
+		}
+		return c;
+	});
+	return `'${v}'`;
+}
+
+export function names(v: string[]): string {
+	return v.map(quoteIdent).join(', ');
+}
+
+export function path(v: Array<string | undefined>): string {
+	return v
+		.filter((s) => s !== undefined)
+		.map(quoteIdent)
+		.join('.');
+}
+
+export function qualified(v: QualifiedName): string {
+	return path([v.catalog, v.db, v.name]);
+}

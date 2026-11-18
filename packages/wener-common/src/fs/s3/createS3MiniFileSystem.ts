@@ -1,6 +1,7 @@
 import { formatS3Url, type ParseS3UrlOptions, parseS3Url } from '@wener/common/s3';
 import { basename, dirname, normalize } from 'pathe';
 import { S3mini, sanitizeETag } from 's3mini';
+import { FileSystemError } from '../FileSystemError';
 import type {
 	CopyOptions,
 	CreateReadStreamOptions,
@@ -104,13 +105,19 @@ class S3FS implements IFileSystem {
 		if (!path || path === '/') {
 			return this.prefix;
 		}
-		const normalized = normalize(path).replace(/^\/+/, '').replace(/\\/g, '/');
-
-		// Prepend prefix if set
-		if (this.prefix) {
-			return `${this.prefix}/${normalized}`;
+		if (typeof path !== 'string' || /[\u0000-\u001f\u007f]/u.test(path)) {
+			throw new FileSystemError('Invalid path', 'EINVAL');
 		}
-		return normalized;
+		const normalized = normalize(path.replace(/\\/g, '/')).replace(/^\/+/, '');
+		// Defense in depth: a key must never climb out of the configured prefix.
+		if (normalized.split('/').includes('..')) {
+			throw new FileSystemError('Path escapes the filesystem root', 'EACCES');
+		}
+		const key = this.prefix ? `${this.prefix}/${normalized}` : normalized;
+		if (this.prefix && key !== this.prefix && !key.startsWith(`${this.prefix}/`)) {
+			throw new FileSystemError('Path escapes the filesystem root', 'EACCES');
+		}
+		return key;
 	}
 
 	/**

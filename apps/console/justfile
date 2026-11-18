@@ -1,0 +1,23 @@
+set positional-arguments
+
+dev port=env_var_or_default("PORT", "3000"):
+    NODE_ENV=development pnpm exec pnpm exec vite --port "$1" --host
+
+build: build-web web-image
+
+build-web: write-version build-web-vite
+
+build-web-vite:
+    NODE_ENV=production pnpm exec pnpm exec vite build
+
+write-version:
+    pnpm exec tsx ./src/scripts/write-version.ts
+
+web-image: web-image-static
+
+web-image-static:
+    mkdir -p builds/web-static/app
+    rsync -av dist/ builds/web-static/app/ --delete
+
+test *args:
+    pnpm exec vitest run --config vitest.config.ts "$@"

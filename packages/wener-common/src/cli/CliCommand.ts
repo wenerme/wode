@@ -23,6 +23,11 @@ export interface CliInput {
 	help: string;
 }
 
+export interface CliExample {
+	command: string;
+	description?: string;
+}
+
 export interface CliCommandDefinition {
 	name: string;
 	/** custom 允许 render/prompt 自行解释并校验 --output/--format。 */
@@ -33,6 +38,7 @@ export interface CliCommandDefinition {
 	aliases?: readonly string[];
 	description: string;
 	summary?: readonly string[];
+	examples?: readonly CliExample[];
 	arguments?: string;
 	usage?: string;
 	options?: readonly CliOption[];

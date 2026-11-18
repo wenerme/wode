@@ -1,0 +1,20 @@
+mod package '../../just/package.just'
+
+fmt-pkg:
+    pnpm exec biome format --write package.json
+
+build: build-lib
+
+dev:
+    pnpm exec swc ./src -d ./lib --strip-leading-paths --watch
+
+build-lib:
+    pnpm exec node scripts/generate-slugify-data.mjs --check
+    just package::swc-build lib false json-css false
+
+check-syntax:
+    ! grep '[?][?]' lib/**/*.js
+    ! grep '[?][.]' lib/**/*.js
+
+publish: build-lib
+    just package::publish

@@ -20,7 +20,7 @@ import {
 	setConfigEntry,
 	writeCommandOutput,
 } from '../command-utils';
-import type { WocliExecution } from '../createWocliCli';
+import type { CliExecution } from '../createCli';
 import { getPromptPreset, presetMessages, promptVariables } from './prompt-input';
 
 const variableOptions = [
@@ -34,7 +34,7 @@ function mode(options: Readonly<Record<string, unknown>>, fallback = 'text'): st
 		throw new CliUsageError('Prompt output must be text, json, jsonl or markdown');
 	return value;
 }
-export function createPromptCommand(): CliCommand<WocliExecution> {
+export function createPromptCommand(): CliCommand<CliExecution> {
 	return {
 		name: 'prompt',
 		aliases: ['p'],

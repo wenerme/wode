@@ -1,0 +1,17 @@
+mod package '../../just/package.just'
+
+bundle-system:
+    pnpm exec rollup -i src/index.ts -f system -p typescript -o dist/wener-reaction.system.js
+
+check-syntax:
+    ! grep '[?][?]' lib/**/*.js
+    ! grep '[?][.]' lib/**/*.js
+
+dev:
+    pnpm exec swc ./src -d ./lib --strip-leading-paths --watch
+
+build: (package::swc-build "lib" "false" "css" "false")
+
+publish: build
+    pnpm version patch --no-workspaces-update
+    just package::publish

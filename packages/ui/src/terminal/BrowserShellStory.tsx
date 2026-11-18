@@ -227,7 +227,7 @@ export function BrowserShellStory({ withWocli = true }: { withWocli?: boolean })
 				const { Bash } = await import('just-bash/browser');
 				const customCommands = withWocli
 					? [
-							(await import('woctl/shell')).createWocliShellCommand({
+							(await import('woctl/shell')).createShellCommand({
 								config: (await import('woctl/web')).createMemoryCliConfigStore({
 									services: [{ name: 'system', type: 'system' }],
 									defaults: { system: 'system' },

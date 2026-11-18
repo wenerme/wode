@@ -5,7 +5,7 @@ import { sanitizeOpenObserveOutput } from './sanitize';
 function runtime() {
 	return {
 		getSchema: vi.fn(async () => ({ tools: Object.fromEntries(['health', 'updateStreamSettings', 'deleteStream', 'ingestJson', 'ingestMulti'].map((name) => [name, { inputSchema: {} }])) })),
-		call: vi.fn(async () => ({ status: 'ok' })),
+		call: vi.fn(async (input: { body: { toolName: string } }) => input.body.toolName === 'deleteStream' ? { code: 200 } : { status: 'ok' }),
 	};
 }
 describe('OpenObserve tool client boundaries', () => {
@@ -32,16 +32,54 @@ describe('OpenObserve tool client boundaries', () => {
 		const port = runtime();
 		port.call.mockImplementation(() => new Promise(() => {}));
 		const client = await createOpenObserveServiceToolClient(port, 'observe');
-		try { await expect(client.health({ timeoutMs: 5 })).rejects.toThrow('timed out'); }
+		try { await expect(client.health({}, { context: { timeoutMs: 5 } })).rejects.toThrow('timed out'); }
 		finally { await client.close(); }
 	});
 	it('validates timeout before dispatch', async () => {
 		const port = runtime();
 		const client = await createOpenObserveServiceToolClient(port, 'observe');
 		try {
-			await expect(client.health({ timeoutMs: 0 })).rejects.toThrow('timeout');
+			await expect(client.health({}, { context: { timeoutMs: 0 } })).rejects.toThrow('timeout');
 			expect(port.call).not.toHaveBeenCalled();
 		} finally { await client.close(); }
+	});
+	it('validates the remote output envelope before returning it', async () => {
+		const port = runtime();
+		port.call.mockImplementation(async () => ({ status: 'unexpected' }));
+		const client = await createOpenObserveServiceToolClient(port, 'observe');
+		try { await expect(client.health({})).rejects.toThrow('Invalid OpenObserve response'); }
+		finally { await client.close(); }
+	});
+	it('propagates per-call abort and closes an in-flight request', async () => {
+		const port = runtime();
+		port.call.mockImplementation(() => new Promise(() => {}));
+		const client = await createOpenObserveServiceToolClient(port, 'observe');
+		const controller = new AbortController();
+		const request = client.health({}, { signal: controller.signal });
+		controller.abort(new Error('fixture aborted'));
+		await expect(request).rejects.toThrow('fixture aborted');
+		const second = client.health({});
+		await client.close();
+		await expect(second).rejects.toThrow('closed');
+	});
+	it('cleans up after a synchronous transport throw before close or async dispose', async () => {
+		const port = runtime();
+		port.call.mockImplementation(() => { throw new Error('fixture transport throw'); });
+		const client = await createOpenObserveServiceToolClient(port, 'observe');
+		const completes = async (promise: PromiseLike<void>) => {
+			let timer: ReturnType<typeof setTimeout> | undefined;
+			try {
+				return await Promise.race([
+					promise,
+					new Promise<never>((_, reject) => { timer = setTimeout(() => reject(new Error('cleanup timed out')), 100); }),
+				]);
+			} finally {
+				if (timer !== undefined) clearTimeout(timer);
+			}
+		};
+		await expect(client.health({})).rejects.toThrow('fixture transport throw');
+		await expect(completes(client.close())).resolves.toBeUndefined();
+		await expect(completes(client[Symbol.asyncDispose]())).resolves.toBeUndefined();
 	});
 	it('redacts structured JSON strings and quoted keys inside text', () => {
 		const source = { message: '{"password":"FIXTURE_VALUE","nested":{"api_key":"FIXTURE_KEY"}}', text: 'payload={"token":"FIXTURE_TOKEN"}' };

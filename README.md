@@ -31,7 +31,7 @@ Legacy experiments and the former standalone web/playground applications are not
 
 - Node.js `>=24.11.0`
 - pnpm `12.4.2`
-- Just `1.38.0` or newer
+- Just `1.58.0` or newer
 - Buf CLI for protobuf formatting, linting, and generation
 - Chromium for the package Storybook interaction tests
 
@@ -52,31 +52,33 @@ pnpm -C packages/ui exec playwright install --with-deps chromium
 
 Run commands from the repository root unless a command includes `-C`.
 
-| Command                           | Purpose                                                                                                 |
-| --------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| `just dev`                        | Start workspace development tasks in parallel through Turbo.                                            |
-| `just build`                      | Build workspace packages and applications through Turbo.                                                |
-| `just test`                       | Run workspace tests through Turbo.                                                                      |
-| `just fmt`                        | Format TypeScript, TSX, and Markdown with Vite+.                                                        |
-| `just lint`                       | Run the Vite+ lint entry point.                                                                         |
-| `just typecheck`                  | Run every package typecheck that defines one.                                                           |
-| `just buf-fmt` / `just buf-lint`  | Format or lint the canonical protobuf tree.                                                             |
-| `just buf-gen`                    | Generate protobuf clients and normalize generated output.                                               |
-| `just ci`                         | Run the CI baseline: frozen install, protobuf checks, Biome, typechecks, and selected tests.            |
-| `just test-ci --base origin/main` | Run the offline CI tests related to changes since a Git base; use `just test-ci` for the full baseline. |
+| Command                                | Purpose                                                                                                 |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `just workspace::dev`                   | Start workspace development tasks in parallel through Turbo.                                            |
+| `just workspace::build`                 | Build workspace packages and applications through Turbo.                                                |
+| `just workspace::test`                  | Run workspace tests through Turbo.                                                                      |
+| `just tools::fmt`                       | Format TypeScript, TSX, and Markdown with Biome.                                                         |
+| `just tools::lint`                      | Lint with Biome.                                                                                        |
+| `just tools::typecheck`                 | Run every package typecheck that defines one.                                                           |
+| `just buf::fmt` / `just buf::lint`       | Format or lint the canonical protobuf tree.                                                             |
+| `just buf::gen`                         | Generate protobuf clients and normalize generated output.                                               |
+| `just ci::check`                        | Run the CI baseline: frozen install, protobuf checks, Biome, typechecks, and selected tests.             |
+| `just ci::test --base origin/main`      | Run the offline CI tests related to changes since a Git base; use `just ci::test` for the full baseline. |
 
 Vite and Vitest own the repository's test workflow. New test files should import test APIs from `vitest` and run through `pnpm exec vitest run` or the package script that wraps it.
 
-The root [`justfile`](justfile) imports reusable domain recipes from `just/*.just`. Recipes that operate in the caller's package use `[no-cd]`, so the same file can be reused without duplicating a Makefile in every package:
+The root [`justfile`](justfile) declares domain modules with `mod`. Package justfiles declare `mod package '../../just/package.just'` to expose the shared lifecycle under `package::`. Shared tasks run in the owning package directory, including when invoked from a package subdirectory:
 
 ```bash
 cd packages/wener-common
-just -f ../../just/package.just package-fmt
-just -f ../../just/package.just package-typecheck
-just -f ../../just/packages/wener-common.just build
+just package::fmt
+just package::typecheck
+just build
 ```
 
-Package-specific build and publish behavior belongs in `just/packages/*.just`; workspace-wide orchestration belongs in `just/workspace.just`, `just/ci.just`, and the domain files for Proto, components, and server entrypoints.
+Package-specific build and publish behavior belongs in `packages/<name>/justfile` or `apps/<name>/justfile`. Build recipes can depend directly on `(package::swc-build "lib" "true" "none" "true")`. Use module names instead of importing recipes into a shared namespace or forwarding through `just -f`. Run `just --list --list-submodules` to inspect the available tasks.
+
+Workspace orchestration lives in `just/workspace.just`, `just/ci.just`, and the other domain modules. Server tasks live in `apps/server/server.just`, exposed as `server::` from both the root and server app justfiles. Optional machine-local tasks live under `local::`.
 
 ## UI package
 
@@ -90,31 +92,31 @@ pnpm -C packages/ui build
 
 Applications consuming `@wener/ui` must include the package source in their Tailwind scan and own their theme and font configuration. Application-specific routes, authentication, persistence, network calls, and server state stay outside the primitive package.
 
-Server image operations require an explicit entrypoint and are never part of `just ci`:
+Server image operations require an explicit entrypoint and are never part of `just ci::check`:
 
 ```bash
-just server-list
-just server-image wener-apis-server
-just server-deploy wener-apis-server
+just server::list
+just server::image wener-apis-server
+just server::deploy wener-apis-server
 ```
 
 The last command requires Docker credentials and a matching `apps/server/builds/<entrypoint>/Dockerfile`; it is intentionally separate from validation and package builds.
 
 ## Protobuf workflow
 
-`proto/` is the canonical protobuf source directory. Buf configuration is kept at the repository root in `buf.yaml` and `buf.gen.yaml`. The shared recipes live under [`just/`](just/); package-specific entrypoints can use `just -f just/servers.just ...` when they need to preserve their working directory.
+`proto/` is the canonical protobuf source directory. Buf configuration is kept at the repository root in `buf.yaml` and `buf.gen.yaml`. The [`buf` module](just/buf.just) always runs at the repository root.
 
 ```bash
-just buf-fmt
-just buf-lint
-just buf-gen
+just buf::fmt
+just buf::lint
+just buf::gen
 ```
 
 Generation updates the checked-in clients under `packages/common/src/protos`. CI runs generation and verifies that the generated tree is clean, so generated changes must be committed together with their source or configuration change.
 
 ## CI and branches
 
-The GitHub Actions Build workflow runs on `main`, `develop`, and pull requests targeting those branches. It installs the declared pnpm, Node.js, and Just versions, runs `just ci`, runs the package UI tests, and builds the package Storybook. The default public branch is `main`; `develop` is the protected integration branch.
+The GitHub Actions Build workflow runs on `main`, `develop`, and pull requests targeting those branches. It installs the declared pnpm, Node.js, and Just versions, runs `just ci::check`, runs the package UI tests, and builds the package Storybook. The default public branch is `main`; `develop` is the protected integration branch.
 
 Pull requests provide their target commit as `WODE_TEST_BASE`. The CI test wrapper uses Vite+ related testing for ordinary source and Storybook changes, skips documentation-only changes, and falls back to full coverage for dependency, configuration, generated, deleted, or ambiguous inputs. Pushes and manual runs keep the full test baseline.
 
@@ -122,7 +124,7 @@ Before opening a pull request, run at least:
 
 ```bash
 git diff --check
-just ci
+just ci::check
 pnpm -C packages/ui test
 pnpm -C packages/ui build-storybook:static
 ```

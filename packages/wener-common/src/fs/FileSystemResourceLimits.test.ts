@@ -2,11 +2,11 @@ import fsp from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import type { WebDAVClient } from 'webdav';
 import { createBrowserFileSystem } from './createBrowserFileSystem';
 import { createWebDavFileSystem } from './createWebDavFileSystem';
 import { createJustBashFileSystemAdapter } from './just-bash';
 import { createNodeFileSystem } from './server/createNodeFileSystem';
+import { createWebDavMockServer } from './tests/createWebDavMockServer';
 
 const temporaryDirectories: string[] = [];
 
@@ -67,16 +67,14 @@ describe('filesystem resource limits', () => {
 		});
 	});
 
-	it('fails closed before unbounded WebDAV operations', async () => {
-		const getDirectoryContents = vi.fn();
-		const getFileContents = vi.fn();
-		const fileSystem = createWebDavFileSystem({
-			client: { getDirectoryContents, getFileContents } as unknown as WebDAVClient,
-		});
-		await expect(fileSystem.readdir('/', { maxEntries: 10 })).rejects.toMatchObject({ code: 'ENOTSUP' });
-		await expect(fileSystem.readFile('/large.bin', { maxBytes: 10 })).rejects.toMatchObject({ code: 'ENOTSUP' });
-		expect(getDirectoryContents).not.toHaveBeenCalled();
-		expect(getFileContents).not.toHaveBeenCalled();
+	it('bounds WebDAV directory enumeration and file reads', async () => {
+		const server = createWebDavMockServer();
+		server.files.set('/a.txt', new TextEncoder().encode('abcdef'));
+		server.files.set('/b.txt', new TextEncoder().encode('second'));
+		const fileSystem = createWebDavFileSystem({ url: 'https://dav.example.test/dav/', fetch: server.fetch });
+		await expect(fileSystem.readdir('/', { maxEntries: 1 })).rejects.toMatchObject({ code: 'EOVERFLOW' });
+		expect(await fileSystem.readdir('/', { maxEntries: 2 })).toHaveLength(2);
+		expect(await fileSystem.readFile('/a.txt', { encoding: 'text', maxBytes: 3 })).toBe('abc');
 	});
 
 	it('rejects lexical escapes and existing symlinks in a rooted Node filesystem', async () => {

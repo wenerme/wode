@@ -1,4 +1,5 @@
 import type { z } from 'zod/v4';
+import { ApolloServiceContract, type ApolloServiceCallOptions } from '../ApolloServiceContract';
 import { type ApolloAdminOperations, createApolloAdminOperations } from './admin-operations';
 import { type ApolloConnectionConfig, type ApolloConnectionConfigInput, ApolloConnectionConfigSchema } from './config';
 import { ApolloServiceError, ApolloServiceErrorCodes } from './errors';
@@ -30,9 +31,6 @@ class ApolloServiceImpl implements IApolloService {
 	readonly readOnly: boolean;
 	readonly #adapter: ApolloAdapter;
 	readonly #config: ApolloConnectionConfig;
-	readonly #portalOperations: ApolloPortalOperations;
-	readonly #adminOperations: ApolloAdminOperations;
-	readonly #mutationOperations: ApolloMutationOperations;
 	#closed = false;
 	#closePromise?: Promise<void>;
 
@@ -40,173 +38,188 @@ class ApolloServiceImpl implements IApolloService {
 		this.readOnly = config.readOnly;
 		this.#config = config;
 		this.#adapter = adapter;
-		const context: ApolloServiceOperationContext = {
-			config,
-			parse: this.#parse.bind(this),
-			admin: this.#admin.bind(this),
-			adminMutation: this.#adminMutation.bind(this),
-			portal: this.#portal.bind(this),
-			portalMutation: this.#portalMutation.bind(this),
-			assertWritable: this.#assertWritable.bind(this),
-		};
-		this.#portalOperations = createApolloPortalOperations(context);
-		this.#adminOperations = createApolloAdminOperations(context);
-		this.#mutationOperations = createApolloMutationOperations(context);
 	}
 
-	request<T = unknown>(input: z.input<typeof ApolloRequestInputSchema>): Promise<T> {
+	request<T = unknown>(input: z.input<typeof ApolloRequestInputSchema>, options?: ApolloServiceCallOptions): Promise<T> {
 		const parsed = this.#parse(ApolloRequestInputSchema, input);
-		return this.#call<T>({ ...parsed, role: 'admin' }, 'Apollo request failed');
+		return this.#call<T>({ ...parsed, role: 'admin', signal: options?.signal }, 'Apollo request failed');
 	}
 
-	async readConfig<T = unknown>(input: ApolloConfigReadRequest = {}): Promise<T> {
+	async readConfig(input: ApolloConfigReadRequest = {}, options?: ApolloServiceCallOptions) {
 		this.#assertOpen();
+		options?.signal?.throwIfAborted();
 		const parsed = this.#parse(ApolloReadConfigInputSchema, input);
 		if (!this.#config.appId) {
 			throw new ApolloServiceError(ApolloServiceErrorCodes.InvalidRequest, 'Apollo appId is required');
 		}
 		try {
-			return await this.#adapter.readConfig<T>(parsed);
+			const value = await this.#adapter.readConfig(parsed, options);
+			options?.signal?.throwIfAborted();
+			return ApolloServiceContract.readConfig['~orpc'].outputSchema!.parse(value);
 		} catch (error) {
+			options?.signal?.throwIfAborted();
 			if (error instanceof ApolloServiceError) throw error;
 			throw new ApolloServiceError(ApolloServiceErrorCodes.OperationFailed, 'Apollo config read failed');
 		}
 	}
 
-	getStatus() {
-		return this.#portalOperations.getStatus();
+	getStatus(input?: Parameters<IApolloService['getStatus']>[0], options?: ApolloServiceCallOptions) {
+		return this.#portalOperations(options).getStatus(input, options);
 	}
-	listPortalApp() {
-		return this.#portalOperations.listPortalApp();
+	listPortalApp(input?: Parameters<IApolloService['listPortalApp']>[0], options?: ApolloServiceCallOptions) {
+		return this.#portalOperations(options).listPortalApp(input, options);
 	}
-	listPortalOrganization() {
-		return this.#portalOperations.listPortalOrganization();
+	listPortalOrganization(input?: Parameters<IApolloService['listPortalOrganization']>[0], options?: ApolloServiceCallOptions) {
+		return this.#portalOperations(options).listPortalOrganization(input, options);
 	}
-	listPortalEnv() {
-		return this.#portalOperations.listPortalEnv();
+	listPortalEnv(input?: Parameters<IApolloService['listPortalEnv']>[0], options?: ApolloServiceCallOptions) {
+		return this.#portalOperations(options).listPortalEnv(input, options);
 	}
-	getPortalNavTree(input?: Parameters<IApolloService['getPortalNavTree']>[0]) {
-		return this.#portalOperations.getPortalNavTree(input);
+	getPortalNavTree(input?: Parameters<IApolloService['getPortalNavTree']>[0], options?: ApolloServiceCallOptions) {
+		return this.#portalOperations(options).getPortalNavTree(input, options);
 	}
-	listPortalNamespace(input?: Parameters<IApolloService['listPortalNamespace']>[0]) {
-		return this.#portalOperations.listPortalNamespace(input);
+	listPortalNamespace(input?: Parameters<IApolloService['listPortalNamespace']>[0], options?: ApolloServiceCallOptions) {
+		return this.#portalOperations(options).listPortalNamespace(input, options);
 	}
-	getPortalNamespace(input?: Parameters<IApolloService['getPortalNamespace']>[0]) {
-		return this.#portalOperations.getPortalNamespace(input);
+	getPortalNamespace(input?: Parameters<IApolloService['getPortalNamespace']>[0], options?: ApolloServiceCallOptions) {
+		return this.#portalOperations(options).getPortalNamespace(input, options);
 	}
-	listPortalItem(input?: Parameters<IApolloService['listPortalItem']>[0]) {
-		return this.#portalOperations.listPortalItem(input);
+	listPortalItem(input?: Parameters<IApolloService['listPortalItem']>[0], options?: ApolloServiceCallOptions) {
+		return this.#portalOperations(options).listPortalItem(input, options);
 	}
-	listPortalRelease(input?: Parameters<IApolloService['listPortalRelease']>[0]) {
-		return this.#portalOperations.listPortalRelease(input);
+	listPortalRelease(input?: Parameters<IApolloService['listPortalRelease']>[0], options?: ApolloServiceCallOptions) {
+		return this.#portalOperations(options).listPortalRelease(input, options);
 	}
-	getPortalConfig(input?: Parameters<IApolloService['getPortalConfig']>[0]) {
-		return this.#portalOperations.getPortalConfig(input);
+	getPortalConfig(input?: Parameters<IApolloService['getPortalConfig']>[0], options?: ApolloServiceCallOptions) {
+		return this.#portalOperations(options).getPortalConfig(input, options);
 	}
-	listRelease(input?: Parameters<IApolloService['listRelease']>[0]) {
-		return this.#portalOperations.listRelease(input);
+	listRelease(input?: Parameters<IApolloService['listRelease']>[0], options?: ApolloServiceCallOptions) {
+		return this.#portalOperations(options).listRelease(input, options);
 	}
-	getRelease(input: Parameters<IApolloService['getRelease']>[0]) {
-		return this.#portalOperations.getRelease(input);
+	getRelease(input: Parameters<IApolloService['getRelease']>[0], options?: ApolloServiceCallOptions) {
+		return this.#portalOperations(options).getRelease(input, options);
 	}
-	diffRelease(input: Parameters<IApolloService['diffRelease']>[0]) {
-		return this.#portalOperations.diffRelease(input);
+	diffRelease(input: Parameters<IApolloService['diffRelease']>[0], options?: ApolloServiceCallOptions) {
+		return this.#portalOperations(options).diffRelease(input, options);
 	}
-	listApp(input?: Parameters<IApolloService['listApp']>[0]) {
-		return this.#adminOperations.listApp(input);
+	listApp(input?: Parameters<IApolloService['listApp']>[0], options?: ApolloServiceCallOptions) {
+		return this.#adminOperations(options).listApp(input, options);
 	}
-	getApp(input?: Parameters<IApolloService['getApp']>[0]) {
-		return this.#adminOperations.getApp(input);
+	getApp(input?: Parameters<IApolloService['getApp']>[0], options?: ApolloServiceCallOptions) {
+		return this.#adminOperations(options).getApp(input, options);
 	}
-	listSelfApp(input?: Parameters<IApolloService['listSelfApp']>[0]) {
-		return this.#adminOperations.listSelfApp(input);
+	listSelfApp(input?: Parameters<IApolloService['listSelfApp']>[0], options?: ApolloServiceCallOptions) {
+		return this.#adminOperations(options).listSelfApp(input, options);
 	}
-	createApp(input: Parameters<IApolloService['createApp']>[0]) {
-		return this.#adminOperations.createApp(input);
+	createApp(input: Parameters<IApolloService['createApp']>[0], options?: ApolloServiceCallOptions) {
+		return this.#adminOperations(options).createApp(input, options);
 	}
-	createAppEnv(input: Parameters<IApolloService['createAppEnv']>[0]) {
-		return this.#adminOperations.createAppEnv(input);
+	createAppEnv(input: Parameters<IApolloService['createAppEnv']>[0], options?: ApolloServiceCallOptions) {
+		return this.#adminOperations(options).createAppEnv(input, options);
 	}
-	updateApp(input: Parameters<IApolloService['updateApp']>[0]) {
-		return this.#adminOperations.updateApp(input);
+	updateApp(input: Parameters<IApolloService['updateApp']>[0], options?: ApolloServiceCallOptions) {
+		return this.#adminOperations(options).updateApp(input, options);
 	}
-	deleteApp(input: Parameters<IApolloService['deleteApp']>[0]) {
-		return this.#adminOperations.deleteApp(input);
+	deleteApp(input: Parameters<IApolloService['deleteApp']>[0], options?: ApolloServiceCallOptions) {
+		return this.#adminOperations(options).deleteApp(input, options);
 	}
-	listMissingAppEnv(input?: Parameters<IApolloService['listMissingAppEnv']>[0]) {
-		return this.#adminOperations.listMissingAppEnv(input);
+	listMissingAppEnv(input?: Parameters<IApolloService['listMissingAppEnv']>[0], options?: ApolloServiceCallOptions) {
+		return this.#adminOperations(options).listMissingAppEnv(input, options);
 	}
-	getEnvCluster(input?: Parameters<IApolloService['getEnvCluster']>[0]) {
-		return this.#adminOperations.getEnvCluster(input);
+	getEnvCluster(input?: Parameters<IApolloService['getEnvCluster']>[0], options?: ApolloServiceCallOptions) {
+		return this.#adminOperations(options).getEnvCluster(input, options);
 	}
-	getCluster(input?: Parameters<IApolloService['getCluster']>[0]) {
-		return this.#adminOperations.getCluster(input);
+	getCluster(input?: Parameters<IApolloService['getCluster']>[0], options?: ApolloServiceCallOptions) {
+		return this.#adminOperations(options).getCluster(input, options);
 	}
-	createCluster(input: Parameters<IApolloService['createCluster']>[0]) {
-		return this.#adminOperations.createCluster(input);
+	createCluster(input: Parameters<IApolloService['createCluster']>[0], options?: ApolloServiceCallOptions) {
+		return this.#adminOperations(options).createCluster(input, options);
 	}
-	deleteCluster(input: Parameters<IApolloService['deleteCluster']>[0]) {
-		return this.#adminOperations.deleteCluster(input);
+	deleteCluster(input: Parameters<IApolloService['deleteCluster']>[0], options?: ApolloServiceCallOptions) {
+		return this.#adminOperations(options).deleteCluster(input, options);
 	}
-	listNamespace(input?: Parameters<IApolloService['listNamespace']>[0]) {
-		return this.#adminOperations.listNamespace(input);
+	listNamespace(input?: Parameters<IApolloService['listNamespace']>[0], options?: ApolloServiceCallOptions) {
+		return this.#adminOperations(options).listNamespace(input, options);
 	}
-	getNamespace(input?: Parameters<IApolloService['getNamespace']>[0]) {
-		return this.#adminOperations.getNamespace(input);
+	getNamespace(input?: Parameters<IApolloService['getNamespace']>[0], options?: ApolloServiceCallOptions) {
+		return this.#adminOperations(options).getNamespace(input, options);
 	}
-	getNamespaceLock(input?: Parameters<IApolloService['getNamespaceLock']>[0]) {
-		return this.#adminOperations.getNamespaceLock(input);
+	getNamespaceLock(input?: Parameters<IApolloService['getNamespaceLock']>[0], options?: ApolloServiceCallOptions) {
+		return this.#adminOperations(options).getNamespaceLock(input, options);
 	}
-	createNamespace(input: Parameters<IApolloService['createNamespace']>[0]) {
-		return this.#adminOperations.createNamespace(input);
+	createNamespace(input: Parameters<IApolloService['createNamespace']>[0], options?: ApolloServiceCallOptions) {
+		return this.#adminOperations(options).createNamespace(input, options);
 	}
-	deleteNamespace(input?: Parameters<IApolloService['deleteNamespace']>[0]) {
-		return this.#adminOperations.deleteNamespace(input);
+	deleteNamespace(input?: Parameters<IApolloService['deleteNamespace']>[0], options?: ApolloServiceCallOptions) {
+		return this.#adminOperations(options).deleteNamespace(input, options);
 	}
-	listNamespaceUsage(input?: Parameters<IApolloService['listNamespaceUsage']>[0]) {
-		return this.#adminOperations.listNamespaceUsage(input);
+	listNamespaceUsage(input?: Parameters<IApolloService['listNamespaceUsage']>[0], options?: ApolloServiceCallOptions) {
+		return this.#adminOperations(options).listNamespaceUsage(input, options);
 	}
-	listMissingNamespace(input?: Parameters<IApolloService['listMissingNamespace']>[0]) {
-		return this.#adminOperations.listMissingNamespace(input);
+	listMissingNamespace(input?: Parameters<IApolloService['listMissingNamespace']>[0], options?: ApolloServiceCallOptions) {
+		return this.#adminOperations(options).listMissingNamespace(input, options);
 	}
-	createMissingNamespace(input?: Parameters<IApolloService['createMissingNamespace']>[0]) {
-		return this.#adminOperations.createMissingNamespace(input);
+	createMissingNamespace(input?: Parameters<IApolloService['createMissingNamespace']>[0], options?: ApolloServiceCallOptions) {
+		return this.#adminOperations(options).createMissingNamespace(input, options);
 	}
-	listItem(input?: Parameters<IApolloService['listItem']>[0]) {
-		return this.#adminOperations.listItem(input);
+	listItem(input?: Parameters<IApolloService['listItem']>[0], options?: ApolloServiceCallOptions) {
+		return this.#adminOperations(options).listItem(input, options);
 	}
-	getItem(input: Parameters<IApolloService['getItem']>[0]) {
-		return this.#adminOperations.getItem(input);
+	getItem(input: Parameters<IApolloService['getItem']>[0], options?: ApolloServiceCallOptions) {
+		return this.#adminOperations(options).getItem(input, options);
 	}
-	upsertItem(input: Parameters<IApolloService['upsertItem']>[0]) {
-		return this.#adminOperations.upsertItem(input);
+	upsertItem(input: Parameters<IApolloService['upsertItem']>[0], options?: ApolloServiceCallOptions) {
+		return this.#adminOperations(options).upsertItem(input, options);
 	}
-	deleteItem(input: Parameters<IApolloService['deleteItem']>[0]) {
-		return this.#adminOperations.deleteItem(input);
+	deleteItem(input: Parameters<IApolloService['deleteItem']>[0], options?: ApolloServiceCallOptions) {
+		return this.#adminOperations(options).deleteItem(input, options);
 	}
-	getLatestRelease(input?: Parameters<IApolloService['getLatestRelease']>[0]) {
-		return this.#adminOperations.getLatestRelease(input);
+	getLatestRelease(input?: Parameters<IApolloService['getLatestRelease']>[0], options?: ApolloServiceCallOptions) {
+		return this.#adminOperations(options).getLatestRelease(input, options);
 	}
-	publishRelease(input?: Parameters<IApolloService['publishRelease']>[0]) {
-		return this.#adminOperations.publishRelease(input);
+	publishRelease(input?: Parameters<IApolloService['publishRelease']>[0], options?: ApolloServiceCallOptions) {
+		return this.#adminOperations(options).publishRelease(input, options);
 	}
-	rollbackRelease(input: Parameters<IApolloService['rollbackRelease']>[0]) {
-		return this.#adminOperations.rollbackRelease(input);
+	rollbackRelease(input: Parameters<IApolloService['rollbackRelease']>[0], options?: ApolloServiceCallOptions) {
+		return this.#adminOperations(options).rollbackRelease(input, options);
 	}
-	patchNamespaceItem(input: Parameters<IApolloService['patchNamespaceItem']>[0]) {
-		return this.#mutationOperations.patchNamespaceItem(input);
+	async patchNamespaceItem(input: Parameters<IApolloService['patchNamespaceItem']>[0], options?: ApolloServiceCallOptions) {
+		return ApolloServiceContract.patchNamespaceItem['~orpc'].outputSchema!.parse(await this.#mutationOperations(options).patchNamespaceItem(input));
 	}
-	writeNamespaceText(input: Parameters<IApolloService['writeNamespaceText']>[0]) {
-		return this.#mutationOperations.writeNamespaceText(input);
+	async writeNamespaceText(input: Parameters<IApolloService['writeNamespaceText']>[0], options?: ApolloServiceCallOptions) {
+		return ApolloServiceContract.writeNamespaceText['~orpc'].outputSchema!.parse(await this.#mutationOperations(options).writeNamespaceText(input));
 	}
-	patchNamespaceDocument(input: Parameters<IApolloService['patchNamespaceDocument']>[0]) {
-		return this.#mutationOperations.patchNamespaceDocument(input);
+	async patchNamespaceDocument(input: Parameters<IApolloService['patchNamespaceDocument']>[0], options?: ApolloServiceCallOptions) {
+		return ApolloServiceContract.patchNamespaceDocument['~orpc'].outputSchema!.parse(await this.#mutationOperations(options).patchNamespaceDocument(input));
 	}
-	diffNamespaceRelease(input: Parameters<IApolloService['diffNamespaceRelease']>[0] = {}) {
-		return this.#mutationOperations.diffNamespaceRelease(input);
+	async diffNamespaceRelease(input: Parameters<IApolloService['diffNamespaceRelease']>[0] = {}, options?: ApolloServiceCallOptions) {
+		return ApolloServiceContract.diffNamespaceRelease['~orpc'].outputSchema!.parse(await this.#mutationOperations(options).diffNamespaceRelease(input));
 	}
-	publishNamespaceRelease(input: Parameters<IApolloService['publishNamespaceRelease']>[0] = {}) {
-		return this.#mutationOperations.publishNamespaceRelease(input);
+	async publishNamespaceRelease(input: Parameters<IApolloService['publishNamespaceRelease']>[0] = {}, options?: ApolloServiceCallOptions) {
+		return ApolloServiceContract.publishNamespaceRelease['~orpc'].outputSchema!.parse(await this.#mutationOperations(options).publishNamespaceRelease(input));
+	}
+
+	#portalOperations(options?: ApolloServiceCallOptions): ApolloPortalOperations {
+		return createApolloPortalOperations(this.#context(options));
+	}
+	#adminOperations(options?: ApolloServiceCallOptions): ApolloAdminOperations {
+		return createApolloAdminOperations(this.#context(options));
+	}
+	#mutationOperations(options?: ApolloServiceCallOptions): ApolloMutationOperations {
+		return createApolloMutationOperations(this.#context(options));
+	}
+	/** Each invocation captures its own signal; concurrent calls never share mutable options. */
+	#context(options?: ApolloServiceCallOptions): ApolloServiceOperationContext {
+		return {
+			config: this.#config,
+			signal: options?.signal,
+			parse: this.#parse.bind(this),
+			admin: (path, input) => this.#admin(path, { ...input, signal: options?.signal }),
+			adminMutation: (path, input, outcome) => this.#adminMutation(path, { ...input, signal: options?.signal }, outcome),
+			portal: (path, query) => this.#call({ role: 'portal', path, method: 'GET', query, signal: options?.signal }, 'Apollo operation failed'),
+			portalMutation: (path, input, outcome) => this.#portalMutation(path, { ...input, signal: options?.signal }, outcome),
+			assertWritable: this.#assertWritable.bind(this),
+		};
 	}
 
 	close(): Promise<void> {
@@ -231,10 +244,6 @@ class ApolloServiceImpl implements IApolloService {
 		return this.#call({ role: 'admin', path, ...input }, 'Apollo operation failed', outcome);
 	}
 
-	#portal(path: string, query?: Record<string, unknown>): Promise<unknown> {
-		return this.#call({ role: 'portal', path, method: 'GET', query }, 'Apollo operation failed');
-	}
-
 	#portalMutation(
 		path: string,
 		input: Omit<import('./interface').ApolloHttpRequest, 'role' | 'path'>,
@@ -250,6 +259,7 @@ class ApolloServiceImpl implements IApolloService {
 		outcome?: ApolloMutationOutcome,
 	): Promise<T> {
 		this.#assertOpen();
+		input.signal?.throwIfAborted();
 		const method = (input.method ?? (input.body === undefined ? 'GET' : 'POST')).toUpperCase();
 		const mutationOutcome = ['GET', 'HEAD', 'OPTIONS'].includes(method)
 			? undefined
@@ -260,8 +270,11 @@ class ApolloServiceImpl implements IApolloService {
 		if (mutationOutcome) this.#assertWritable();
 		try {
 			// All local admission checks precede this boundary. A mutation error after entry cannot prove server state.
-			return await this.#adapter.request<T>({ ...input, method });
+			const value = await this.#adapter.request<T>({ ...input, method });
+			if (!mutationOutcome) input.signal?.throwIfAborted();
+			return value;
 		} catch (error) {
+			if (!mutationOutcome) input.signal?.throwIfAborted();
 			throw toApolloCallError(error, message, mutationOutcome);
 		}
 	}

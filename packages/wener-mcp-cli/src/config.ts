@@ -528,7 +528,7 @@ function parseConfigFile(
 		}
 	}
 
-	let schema: z.ZodTypeAny;
+	let schema: z.ZodType;
 	switch (location.type) {
 		case 'claude':
 			schema = ClaudeConfigSchema;

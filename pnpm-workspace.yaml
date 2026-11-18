@@ -22,7 +22,7 @@ allowBuilds:
   workerd: false
 catalog:
   '@vitest/browser': ^5.0.1
-  '@vitest/browser-playwright': ^5.0.1
+  '@vitest/browser-playwright': ^5.1.0
   vite: ^8.3.0
   vitest: ^5.0.1
 dedupeDirectDeps: true
@@ -69,8 +69,6 @@ packageExtensions:
     peerDependencies:
       '@types/node': '*'
 
-patchedDependencies:
-  ts-node@11.0.0-beta.1: patches/ts-node.patch
 peerDependencyRules:
   allowAny:
     - vitest

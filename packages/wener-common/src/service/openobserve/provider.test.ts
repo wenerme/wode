@@ -25,7 +25,7 @@ describe('OpenObserve service provider', () => {
 	it('validates settings before constructing the credential-bearing client', async () => {
 		const test = runtime(undefined, false);
 		try {
-			await expect(test.runtime.call({ params: { service: 'observe' }, body: { toolName: 'updateStreamSettings', input: { stream: 'app', settings: { data_retention: 1 } } } })).rejects.toThrow('Invalid OpenObserve input');
+			await expect(test.runtime.call({ params: { service: 'observe' }, body: { toolName: 'updateStreamSettings', input: { stream: 'app', settings: { data_retention: 1 } } } })).rejects.toThrow('Invalid service input');
 			expect(test.getEnv).not.toHaveBeenCalled();
 			expect(test.fetch).not.toHaveBeenCalled();
 		} finally { await test.runtime.close(); }
@@ -79,7 +79,7 @@ describe('OpenObserve service provider', () => {
 					params: { service: 'observe' },
 					body: { toolName: 'search', input: { sql: 'SELECT 1', size: -1 } },
 				}),
-			).rejects.toThrow('Invalid OpenObserve input');
+			).rejects.toThrow('Invalid service input');
 			expect(test.getEnv).not.toHaveBeenCalled();
 			expect(test.fetch).not.toHaveBeenCalled();
 		} finally {
@@ -97,5 +97,20 @@ describe('OpenObserve service provider', () => {
 		try { await expect(client.openobserve.deleteStream({ stream: 'app' })).rejects.toThrow('read-only'); }
 		finally { await client.openobserve.close(); }
 		expect(test.fetch).not.toHaveBeenCalled();
+	});
+	it('maps contract context timeout and signal to the provider client', async () => {
+		const fetch = vi.fn(async (_input: RequestInfo | URL, _init?: RequestInit) => new Promise<Response>(() => {}));
+		const client = await OpenObserveServiceProvider.create({
+			name: 'observe',
+			config: { provider: 'openobserve', readOnly: true, baseUrl: 'https://observe.example.test', options: { accessToken: 'FIXTURE_TOKEN' } },
+			context: { services: {} }, fetch: fetch as unknown as typeof globalThis.fetch,
+		});
+		try {
+			await expect(client.openobserve.health({}, { context: { timeoutMs: 5 } })).rejects.toThrow('timed out');
+			const controller = new AbortController();
+			const request = client.openobserve.health({}, { signal: controller.signal });
+			controller.abort(new Error('fixture aborted'));
+			await expect(request).rejects.toThrow('aborted');
+		} finally { await client.openobserve.close(); }
 	});
 });

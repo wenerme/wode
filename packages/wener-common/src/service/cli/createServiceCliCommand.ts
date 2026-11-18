@@ -1,11 +1,21 @@
 import type { CliCommand, CliOptions } from '../../cli/CliCommand';
 import { CliUsageError } from '../../cli/CliCommand';
+import { redact } from '../../redact';
 import type { ServiceCliDefinition, ServiceCliOperation } from './ServiceCliDefinition';
+
+export const ServiceCliRedactOption = Object.freeze({
+	name: 'redact',
+	type: 'boolean' as const,
+	description: 'Redact sensitive values in displayed output; defaults to original data',
+});
 
 /** 共享命令宿主的显式能力；不读进程环境、不创建本地服务。 */
 export interface ServiceCliExecutionHost<S, C> {
 	options?: CliCommand<C>['options'];
 	readText(value: string, context: C, options?: { label?: string; maxBytes?: number }): Promise<string>;
+	/** Optional binary ports, forwarded to operation preparation only when provided. */
+	readBytes?(value: string, context: C, options?: { label?: string; maxBytes?: number }): Promise<Uint8Array>;
+	writeBytes?(path: string, content: Uint8Array, context: C, options?: { signal?: AbortSignal }): Promise<void>;
 	run(
 		operation: ServiceCliOperation<S>,
 		options: CliOptions,
@@ -26,6 +36,7 @@ export function createServiceCliCommand<S, C>(
 			name: operation.name,
 			aliases: operation.aliases,
 			description: operation.description,
+			examples: operation.examples,
 			arguments:
 				operation.arguments ??
 				(operation.argument ? `<${operation.argument}${operation.variadic ? '...' : ''}>` : undefined),
@@ -33,13 +44,29 @@ export function createServiceCliCommand<S, C>(
 			run: async ({ args, options }, context) => {
 				if (options['list-services'])
 					throw new CliUsageError('--list-services cannot be combined with a resource command');
-				await host.run(operation, options, context, async () =>
-					operation.prepare({
+				await host.run(operation, options, context, async () => {
+					const invoke = await operation.prepare({
 						args: operation.variadic && !operation.arguments ? [args.join(' ')] : args,
 						options,
 						readText: (value, limits) => host.readText(value, context, limits),
-					}),
-				);
+						...(host.readBytes
+							? {
+									readBytes: (value: string, limits?: { label?: string; maxBytes?: number }) =>
+										host.readBytes!(value, context, limits),
+								}
+							: {}),
+						...(host.writeBytes
+							? {
+									writeBytes: (path: string, content: Uint8Array, writeOptions?: { signal?: AbortSignal }) =>
+										host.writeBytes!(path, content, context, writeOptions),
+								}
+							: {}),
+					});
+					return async (client, callOptions) => {
+						const result = await invoke(client, callOptions);
+						return options.redact === true ? redact(result) : result;
+					};
+				});
 			},
 		};
 		if (!operation.group) commands.push(command);
@@ -53,11 +80,15 @@ export function createServiceCliCommand<S, C>(
 		}
 	}
 	const root = host.root?.bind(host);
+	const rootOptions = [...(host.options ?? []), ...(definition.options ?? [])];
+	if (!rootOptions.some((option) => option.name === ServiceCliRedactOption.name))
+		rootOptions.push(ServiceCliRedactOption);
 	return {
 		name: definition.name,
 		aliases: definition.aliases,
 		description: definition.description,
-		options: [...(host.options ?? []), ...(definition.options ?? [])],
+		examples: definition.examples,
+		options: rootOptions,
 		commands,
 		run: root ? ({ options, help }, context) => root(options, context, help) : undefined,
 	};

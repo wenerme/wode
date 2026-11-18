@@ -1,8 +1,8 @@
 import type { ServiceProvider } from '@wener/common/service';
 import { CliConfigError, type CliConfigStore, createMemoryCliConfigStore } from 'common/context';
 import { describe, expect, it, vi } from 'vitest';
-import { createWocliServiceCommand, type WocliHost } from './createWocliCli';
-import { createBrowserConfigStore, createWocliWebCli } from './web';
+import { createWoctlServiceCommand, type CliHost } from './createCli';
+import { createBrowserConfigStore, createWebCli } from './web';
 
 function output() {
 	const lines: string[] = [];
@@ -20,13 +20,13 @@ function output() {
 
 function offline() {
 	return {
-		fetch: vi.fn<NonNullable<WocliHost['fetch']>>(() => {
+		fetch: vi.fn<NonNullable<CliHost['fetch']>>(() => {
 			throw new Error('Discovery must not fetch');
 		}),
-		getEnv: vi.fn<NonNullable<WocliHost['getEnv']>>(() => {
+		getEnv: vi.fn<NonNullable<CliHost['getEnv']>>(() => {
 			throw new Error('Discovery must not resolve a secret');
 		}),
-		readText: vi.fn<NonNullable<WocliHost['readText']>>(() => {
+		readText: vi.fn<NonNullable<CliHost['readText']>>(() => {
 			throw new Error('Discovery must not read input files');
 		}),
 	};
@@ -44,7 +44,7 @@ function contexts() {
 }
 
 function recordsCommand() {
-	return createWocliServiceCommand<{ read(input: object): Promise<unknown> }>(
+	return createWoctlServiceCommand<{ read(input: object): Promise<unknown> }>(
 		{
 			name: 'records',
 			aliases: ['rec'],
@@ -70,11 +70,31 @@ function recordProvider(): ServiceProvider {
 }
 
 describe('configured command snapshots', () => {
+	it('exposes capability commands only for enabled matching providers without I/O', async () => {
+		const host = offline();
+		const cli = createWebCli({ ...host, config: createMemoryCliConfigStore({ currentContext: 'empty', contexts: {
+			empty: { services: [] },
+			active: { services: [{ name: 'searcher', type: 'ddg' }, { name: 'reader', type: 'direct' }] },
+			off: { services: [{ name: 'searcher', type: 'ddg', disabled: true }, { name: 'reader', type: 'base', enabled: false }] },
+		} }) });
+		for (const context of ['empty', 'off']) {
+			expect((await cli.describe({ context })).some((command) => ['search', 'fetch'].includes(command.name))).toBe(false);
+			for (const command of ['search query', 'fetch https://example.com'])
+				await expect(cli.executeLine(`${command} -c ${context}`, output().io)).rejects.toThrow('available: (none)');
+			for (const command of ['search --help', 'fetch --help']) await cli.executeLine(`${command} -c ${context}`, output().io);
+		}
+		expect((await cli.describe({ context: 'active' })).map((command) => command.name)).toEqual(expect.arrayContaining(['search', 'fetch']));
+		expect((await cli.describe({ context: 'active' })).some((command) => command.name === 'duckduckgo')).toBe(false);
+		for (const command of ['search', 'fetch']) await cli.executeLine(`${command} --help -c active`, output().io);
+		expect(host.fetch).not.toHaveBeenCalled();
+		expect(host.getEnv).not.toHaveBeenCalled();
+		expect(host.readText).not.toHaveBeenCalled();
+	});
 	it('retains recovery commands for malformed browser storage without exposing its contents', async () => {
 		const setItem = vi.fn();
 		const config = createBrowserConfigStore({ getItem: () => 'SECRET42', setItem });
 		await expect(config.load()).rejects.toThrow(/^Invalid browser configuration$/);
-		const cli = createWocliWebCli({ config });
+		const cli = createWebCli({ config });
 		const { io, lines } = output();
 		for (const line of ['--help', 'version', 'markdown --text offline --no-color']) {
 			await cli.executeLine(line, io);
@@ -86,7 +106,7 @@ describe('configured command snapshots', () => {
 	});
 	it('retains recovery and local commands in an empty context, with no domain dispatch', async () => {
 		const host = offline();
-		const cli = createWocliWebCli(host);
+		const cli = createWebCli(host);
 		const tree = await cli.describe();
 		expect(tree.map((command) => command.name)).toEqual(
 			expect.arrayContaining(['version', 'context', 'service', 'provider', 'model', 'render', 'markdown', 'prompt']),
@@ -98,7 +118,10 @@ describe('configured command snapshots', () => {
 		expect(lines.pop()).not.toMatch(/^\s+system\s/mu);
 		await cli.executeLine('markdown --text "# Offline" --no-color', io);
 		expect(lines.pop()).toContain('Offline');
-		for (const line of ['system info', 'system --help', 'prompt hello', 'p hello']) {
+		await cli.executeLine('system --help', io);
+		expect(lines.pop()).toContain('No enabled system service is configured');
+		await expect(cli.executeLine('system info', io)).rejects.toThrow('No enabled system service is configured');
+		for (const line of ['prompt hello', 'p hello']) {
 			await expect(cli.executeLine(line, io)).rejects.toThrow(/Unknown command|Invalid command arguments/u);
 		}
 		expect(host.fetch).not.toHaveBeenCalled();
@@ -107,7 +130,7 @@ describe('configured command snapshots', () => {
 	});
 
 	it('uses the same explicit context in help, describe, aliases and dispatch', async () => {
-		const cli = createWocliWebCli({ config: contexts(), env: { WOCTL_CONTEXT: 'off' } });
+		const cli = createWebCli({ config: contexts(), env: { WOCTL_CONTEXT: 'off' } });
 		expect((await cli.describe()).some((entry) => entry.name === 'system')).toBe(false);
 		expect((await cli.describe({ context: 'active' })).some((entry) => entry.name === 'system')).toBe(true);
 		for (const argv of [
@@ -122,7 +145,7 @@ describe('configured command snapshots', () => {
 		const { io, lines } = output();
 		await cli.executeLine('system echo --help -c active', io);
 		expect(lines.pop()).toContain('echo');
-		await expect(cli.executeLine('system echo hidden', io)).rejects.toThrow('Unknown command');
+		await expect(cli.executeLine('system echo hidden', io)).rejects.toThrow('No enabled system service is configured');
 		await expect(cli.describe({ context: 'empty', argv: ['--context', 'active', '--help'] })).rejects.toThrow();
 	});
 
@@ -133,7 +156,7 @@ describe('configured command snapshots', () => {
 		['p', 'render', 'greet', '--input', 'name=World'],
 	])('keeps local prompt variables before and after the subcommand without an AI provider: %j', async (...argv) => {
 		const host = offline();
-		const cli = createWocliWebCli({
+		const cli = createWebCli({
 			...host,
 			config: createMemoryCliConfigStore({ prompts: { greet: { template: 'Hello {{name}}' } } }),
 		});
@@ -154,12 +177,12 @@ describe('configured command snapshots', () => {
 		{ name: 'off', type: 'system', enabled: false },
 		{ name: 'future', type: 'future-example' },
 	])('keeps unavailable services manageable without exposing their domain: %j', async (service) => {
-		const cli = createWocliWebCli({ config: createMemoryCliConfigStore({ services: [service] }) });
+		const cli = createWebCli({ config: createMemoryCliConfigStore({ services: [service] }) });
 		expect((await cli.describe()).some((entry) => entry.name === 'system')).toBe(false);
 		const { io, lines } = output();
 		await cli.executeLine('service list --json', io);
 		expect(JSON.parse(lines.pop() ?? '')).toEqual([expect.objectContaining({ name: service.name })]);
-		await expect(cli.executeLine('system info', io)).rejects.toThrow('Unknown command');
+		await expect(cli.executeLine('system info', io)).rejects.toThrow('No enabled system service is configured');
 	});
 
 	it('discovers static commands for multiple matching instances without creating clients or reading secrets', async () => {
@@ -174,7 +197,7 @@ describe('configured command snapshots', () => {
 				ai: { api: 'openai', baseUrl: 'https://example.com/v1', apiKeyEnv: 'FIXTURE_ONLY_KEY' },
 			},
 		});
-		const cli = createWocliWebCli({ ...host, config, providers: [provider], commands: [recordsCommand()] });
+		const cli = createWebCli({ ...host, config, providers: [provider], commands: [recordsCommand()] });
 		const tree = await cli.describe({ argv: ['rec', 'get', '--help'] });
 		expect(tree.filter((entry) => entry.name === 'records')).toHaveLength(1);
 		expect(tree.find((entry) => entry.name === 'prompt')?.arguments).toBe('[text...]');
@@ -188,13 +211,13 @@ describe('configured command snapshots', () => {
 
 	it('requires a supported local provider unless the host supplies its runtime', async () => {
 		const config = createMemoryCliConfigStore({ services: [{ name: 'fixture', type: 'fixture' }] });
-		const local = createWocliWebCli({ config, commands: [recordsCommand()] });
+		const local = createWebCli({ config, commands: [recordsCommand()] });
 		expect((await local.describe()).some((entry) => entry.name === 'records')).toBe(false);
 		const runtime = {
 			getSchema: vi.fn(async () => ({ tools: { read: { inputSchema: {}, annotations: { readOnlyHint: true } } } })),
 			call: vi.fn(async () => ({ injected: true })),
 		};
-		const remote = createWocliWebCli({ config, runtime, commands: [recordsCommand()] });
+		const remote = createWebCli({ config, runtime, commands: [recordsCommand()] });
 		expect((await remote.describe()).some((entry) => entry.name === 'records')).toBe(true);
 		expect(runtime.getSchema).not.toHaveBeenCalled();
 		const { io, lines } = output();
@@ -204,7 +227,7 @@ describe('configured command snapshots', () => {
 
 	it('filters nested domain groups and their aliases while retaining unrelated local extensions', async () => {
 		const config = createMemoryCliConfigStore({});
-		const cli = createWocliWebCli({
+		const cli = createWebCli({
 			config,
 			providers: [recordProvider()],
 			commands: [
@@ -231,12 +254,26 @@ describe('configured command snapshots', () => {
 				{ name: 'second', type: 'fixture', id: 'second' },
 			],
 		});
-		const cli = createWocliWebCli({ config, providers: [recordProvider()], commands: [recordsCommand()] });
+		const cli = createWebCli({ config, providers: [recordProvider()], commands: [recordsCommand()] });
 		const { io, lines } = output();
-		await expect(cli.executeLine('records read', io)).rejects.toThrow('Select one matching service');
+		// Without an explicit or configured default, the first declared candidate is selected deterministically.
+		await cli.executeLine('records read --json', io);
+		expect(JSON.parse(lines.pop() ?? '')).toEqual({ id: 'first' });
 		await cli.executeLine('service default set fixture second', io);
 		await cli.executeLine('records read --json', io);
 		expect(JSON.parse(lines.pop() ?? '')).toEqual({ id: 'second' });
+
+		const byName = createMemoryCliConfigStore({
+			services: [
+				{ name: 'other', type: 'fixture', id: 'other' },
+				{ name: 'fixture', type: 'fixture', id: 'same-name' },
+			],
+		});
+		const nameCli = createWebCli({ config: byName, providers: [recordProvider()], commands: [recordsCommand()] });
+		const byNameIo = output();
+		// A service instance named the same as the provider is preferred over the first declared candidate.
+		await nameCli.executeLine('records read --json', byNameIo.io);
+		expect(JSON.parse(byNameIo.lines.pop() ?? '')).toEqual({ id: 'same-name' });
 		await cli.executeLine('rec get --service first --json', io);
 		expect(JSON.parse(lines.pop() ?? '')).toEqual({ id: 'first' });
 		expect((await cli.describe()).filter((entry) => entry.name === 'records')).toHaveLength(1);
@@ -252,7 +289,7 @@ describe('configured command snapshots', () => {
 				.mockImplementation(() => second.load()),
 			save: vi.fn(),
 		};
-		const cli = createWocliWebCli({ config, providers: [recordProvider()], commands: [recordsCommand()] });
+		const cli = createWebCli({ config, providers: [recordProvider()], commands: [recordsCommand()] });
 		const { io, lines } = output();
 		await cli.executeLine('rec get --json', io);
 		expect(JSON.parse(lines.pop() ?? '')).toEqual({ id: 'first' });
@@ -265,7 +302,7 @@ describe('configured command snapshots', () => {
 		const memory = createMemoryCliConfigStore({ services: [{ name: 'one', type: 'system' }] });
 		const loaded = await memory.load();
 		const config = { load: vi.fn(async () => loaded), save: vi.fn(async () => {}) };
-		const cli = createWocliWebCli({ config });
+		const cli = createWebCli({ config });
 		await cli.executeLine('service default set system one', output().io);
 		expect(config.load).toHaveBeenCalledTimes(1);
 		expect(config.save).toHaveBeenCalledExactlyOnceWith(loaded);
@@ -274,7 +311,7 @@ describe('configured command snapshots', () => {
 
 	it('refreshes a long-lived CLI after context changes, disablement and type changes', async () => {
 		const config = contexts();
-		const cli = createWocliWebCli({ config });
+		const cli = createWebCli({ config });
 		const { io } = output();
 		expect((await cli.describe()).some((entry) => entry.name === 'system')).toBe(false);
 		await cli.executeLine('context use active', io);
@@ -291,7 +328,7 @@ describe('configured command snapshots', () => {
 		edited.contexts.active.services.replacement.type = 'future-example';
 		edited.contexts.active.services.replacement.provider = 'future-example';
 		await config.save(edited);
-		await expect(cli.executeLine('system info', io)).rejects.toThrow('Unknown command');
+		await expect(cli.executeLine('system info', io)).rejects.toThrow('No enabled system service is configured');
 	});
 
 	it('keeps an in-flight invocation on its original snapshot while the next uses new configuration', async () => {
@@ -311,7 +348,7 @@ describe('configured command snapshots', () => {
 			await gate;
 			return create(input);
 		};
-		const cli = createWocliWebCli({ config, providers: [provider], commands: [recordsCommand()] });
+		const cli = createWebCli({ config, providers: [provider], commands: [recordsCommand()] });
 		const first = output();
 		const pending = cli.executeLine('records read --json', first.io);
 		await ready;
@@ -330,7 +367,7 @@ describe('configured command snapshots', () => {
 	});
 
 	it('respects option values and the positional terminator during context selection', async () => {
-		const cli = createWocliWebCli({ config: contexts(), env: { WOCTL_CONTEXT: 'active' } });
+		const cli = createWebCli({ config: contexts(), env: { WOCTL_CONTEXT: 'active' } });
 		const { io, lines } = output();
 		await cli.execute(['system', 'echo', '--json', '--', '--context=empty'], io);
 		expect(JSON.parse(lines.pop() ?? '')).toEqual({ text: '--context=empty' });
@@ -349,7 +386,7 @@ describe('configured command snapshots', () => {
 			}),
 			save: vi.fn(),
 		};
-		const cli = createWocliWebCli({ ...host, config });
+		const cli = createWebCli({ ...host, config });
 		expect((await cli.describe()).some((entry) => entry.name === 'system')).toBe(false);
 		const { io, lines, errors } = output();
 		await cli.executeLine('--help', io);

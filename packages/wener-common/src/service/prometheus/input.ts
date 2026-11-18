@@ -1,11 +1,11 @@
-import type {
-	PrometheusLabelsInput,
-	PrometheusLabelValuesInput,
-	PrometheusMetadataInput,
-	PrometheusQueryInput,
-	PrometheusQueryRangeInput,
-	PrometheusSeriesInput,
-} from '@wener/client/prometheus';
+import type { PrometheusServiceInputs } from './PrometheusServiceContract';
+
+type PrometheusLabelsInput = PrometheusServiceInputs['labels'];
+type PrometheusLabelValuesInput = PrometheusServiceInputs['labelValues'];
+type PrometheusMetadataInput = PrometheusServiceInputs['metadata'];
+type PrometheusQueryInput = PrometheusServiceInputs['query'];
+type PrometheusQueryRangeInput = PrometheusServiceInputs['queryRange'];
+type PrometheusSeriesInput = PrometheusServiceInputs['series'];
 import { type ServiceCliOptions, serviceCliString, serviceCliStrings } from '../cli/ServiceCliDefinition';
 import { ServiceCliInputError } from '../cli/ServiceCliInputError';
 

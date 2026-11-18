@@ -25,6 +25,7 @@ it('builds and executes the Web SDK without process, Buffer, require or Node pro
 		URL,
 		Headers,
 		Response,
+		Blob,
 		Request,
 		structuredClone,
 		fetch: async () => {
@@ -33,7 +34,7 @@ it('builds and executes the Web SDK without process, Buffer, require or Node pro
 	};
 	const result = runInNewContext(
 		`${bundle.outputFiles[0].text}\n(async () => {
-			const cli = Wocli.createWocliWebCli({ config: Wocli.createMemoryCliConfigStore({ services: [{ name: 'system', type: 'system' }] }) });
+			const cli = Wocli.createCli({ config: Wocli.createMemoryCliConfigStore({ services: [{ name: 'system', type: 'system' }] }) });
 			const io = {signal: new AbortController().signal, stdout: text => lines.push(text)};
 			await cli.executeLine('system echo "web-bundle" --json', io);
 			await cli.executeLine('markdown --text "# Web render"', io);
@@ -44,7 +45,7 @@ it('builds and executes the Web SDK without process, Buffer, require or Node pro
 				currentContext: 'empty',
 				contexts: {empty: {services: []}, active: {services: [{name: 'system', type: 'system'}]}}
 			});
-			const selected = Wocli.createWocliWebCli({config});
+			const selected = Wocli.createCli({config});
 			const localIO = {signal: new AbortController().signal, stdout: () => {}};
 			const before = (await selected.describe()).map(command => command.name);
 			await selected.executeLine('context use active', localIO);

@@ -26,6 +26,7 @@ async function probe(
 		const value = await context.portal(path);
 		return isRecord(value) && typeof value.hasPermission === 'boolean' ? value.hasPermission : undefined;
 	} catch (error) {
+		context.signal?.throwIfAborted();
 		// Older portals have no cluster-level permission endpoint, so that grant cannot exist there.
 		if (missingMeansDenied && error instanceof ApolloServiceError && error.http?.status === 404) return false;
 		return undefined;
@@ -56,6 +57,7 @@ async function currentUser(context: ApolloServiceOperationContext): Promise<stri
 		const value = await context.portal('/user');
 		return isRecord(value) && typeof value.userId === 'string' ? value.userId : undefined;
 	} catch {
+		context.signal?.throwIfAborted();
 		return undefined;
 	}
 }

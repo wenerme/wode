@@ -1,0 +1,5 @@
+mod package '../../just/package.just'
+
+publish:
+    pnpm version patch --no-workspaces-update
+    just package::publish

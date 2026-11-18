@@ -1,6 +1,6 @@
 import { createMemoryCliConfigStore } from 'common/context';
 import { describe, expect, it, vi } from 'vitest';
-import { createWocliWebCli } from './web';
+import { createWebCli } from './web';
 
 function fixture(readOnly = false) {
 	const fetch = vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
@@ -10,13 +10,13 @@ function fixture(readOnly = false) {
 		if (url.pathname.endsWith('/settings') || init?.method === 'DELETE') return Response.json({ code: 200, message: 'accepted' });
 		if (url.pathname.endsWith('/_values')) return Response.json({ hits: [{ field: 'service', values: [{ zo_sql_key: 'api', zo_sql_num: 1 }] }], total: 1 });
 		if (url.pathname.endsWith('/_around')) return Response.json({ hits: [{ message: 'neighbor' }], total: 1, from: 0, size: 0 });
-		if (url.pathname.endsWith('/_search')) return Response.json({ hits: [{ password: 'FIXTURE_PASSWORD', message: '{"api_key":"FIXTURE_KEY"}' }], total: 1, from: 0, size: 1 });
+		if (url.pathname.endsWith('/_search')) return Response.json({ hits: [{ password: 'FIXTURE_PASSWORD', message: '{ "api_key" : "FIXTURE_KEY", "safe" : 1 }\r\n' }], total: 1, from: 0, size: 1 });
 		throw new Error('Unexpected fixture endpoint');
 	});
 	const getEnv = vi.fn(() => 'FIXTURE_TOKEN');
 	const readText = vi.fn(async () => '{"message":"fixture"}\n');
 	const config = createMemoryCliConfigStore({ services: [{ name: 'observe', type: 'oo', readOnly, baseUrl: 'https://observe.example.test', options: { accessTokenEnv: 'OO_FIXTURE_TOKEN' } }] });
-	const cli = createWocliWebCli({ config, getEnv, readText, fetch: fetch as unknown as typeof globalThis.fetch });
+	const cli = createWebCli({ config, getEnv, readText, fetch: fetch as unknown as typeof globalThis.fetch });
 	const lines: string[] = [];
 	const io = { signal: new AbortController().signal, stdout: (line: string) => { lines.push(line); } };
 	return { cli, fetch, getEnv, readText, lines, io };
@@ -43,12 +43,21 @@ describe('OpenObserve extended operations', () => {
 		expect(readonly.getEnv).not.toHaveBeenCalled();
 		expect(readonly.fetch).not.toHaveBeenCalled();
 	});
-	it('applies redaction to generic CLI results too', async () => {
-		const { cli, lines, io } = fixture(true);
-		await cli.execute(['service', 'call', 'observe', 'search', '--input', '{"sql":"SELECT 1","startTimeMicros":1,"endTimeMicros":2,"size":1}', '--json'], io);
-		const result = JSON.parse(lines.at(-1)!);
-		expect(result.hits[0].password).toBe('<redacted>');
-		expect(JSON.parse(result.hits[0].message)).toEqual({ api_key: '<redacted>' });
+	it.each(['domain', 'generic'])('keeps %s results raw by default and applies --redact only to that display', async (command) => {
+		const { cli, fetch, lines, io } = fixture(true);
+		const sql = "SELECT 'Bearer FIXTURE_QUERY_TOKEN'";
+		const argv = command === 'generic'
+			? ['service', 'call', 'observe', 'search', '--input', JSON.stringify({ sql, startTimeMicros: 1, endTimeMicros: 2, size: 1 }), '--json']
+			: ['oo', 'query', sql, '--json'];
+		for (const redact of [false, true, false]) {
+			await cli.execute([...argv, ...(redact ? ['--redact'] : [])], io);
+			const result = JSON.parse(lines.at(-1)!);
+			expect(result.hits[0].password).toBe(redact ? '<redacted>' : 'FIXTURE_PASSWORD');
+			expect(result.hits[0].message).toBe(redact
+				? '{"api_key":"<redacted>","safe":1}'
+				: '{ "api_key" : "FIXTURE_KEY", "safe" : 1 }\r\n');
+			expect(JSON.parse(String(fetch.mock.calls.at(-1)![1]?.body)).query.sql).toBe(sql);
+		}
 	});
 	it('validates settings semantics before resolving credentials', async () => {
 		const { cli, fetch, getEnv, io } = fixture();

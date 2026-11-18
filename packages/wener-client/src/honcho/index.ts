@@ -206,6 +206,18 @@ export interface HonchoCreateKeyRequest {
 	[key: string]: unknown;
 }
 
+/** Per-call transport options accepted by structured client methods. */
+export interface HonchoCallOptions {
+	signal?: AbortSignal;
+	timeout?: number;
+}
+
+export interface HonchoListOptions extends HonchoCallOptions {
+	size?: number;
+	page?: number;
+	filters?: HonchoJsonObject;
+}
+
 export interface HonchoRequestOptions<TBody = unknown> {
 	method?: string;
 	path: string;
@@ -318,11 +330,28 @@ async function parseResponseBody(response: Response): Promise<unknown> {
 function combineSignals(left: AbortSignal | undefined, right: AbortSignal | undefined): AbortSignal | undefined {
 	if (!left) return right;
 	if (!right) return left;
-	const controller = new AbortController();
-	const abort = () => controller.abort();
-	left.addEventListener('abort', abort, { once: true });
-	right.addEventListener('abort', abort, { once: true });
-	return controller.signal;
+	return AbortSignal.any([left, right]);
+}
+
+/**
+ * Accepts a relative Honcho API path such as `/workspaces/list`; rejects absolute URLs,
+ * query/fragment markers, backslashes, control characters and dot segments so a raw
+ * request cannot escape the configured API prefix.
+ */
+export function isSafeHonchoPath(path: string): boolean {
+	if (!path || path.length > 2048) return false;
+	if (/[?#\\\u0000-\u001f\u007f]/u.test(path) || path.includes('://')) return false;
+	const segments = path.replace(/^\/+/u, '').split('/');
+	for (const segment of segments) {
+		let decoded: string;
+		try {
+			decoded = decodeURIComponent(segment);
+		} catch {
+			return false;
+		}
+		if (decoded === '.' || decoded === '..' || decoded.includes('/') || decoded.includes('\\')) return false;
+	}
+	return true;
 }
 
 export function normalizeHonchoPage<T>(value: HonchoPageResponse<T> | T[] | undefined): T[] {
@@ -395,58 +424,66 @@ export class HonchoClient {
 	}
 
 	listWorkspaces(
-		options: { size?: number; filters?: HonchoJsonObject } = {},
+		options: HonchoListOptions = {},
 	): Promise<HonchoPageResponse<HonchoWorkspace>> {
 		return this.request({
 			path: 'workspaces/list',
-			query: { size: options.size ?? 50 },
+			query: { size: options.size ?? 50, page: options.page },
 			body: { filters: options.filters ?? {} },
+			signal: options.signal,
+			timeout: options.timeout,
 		});
 	}
 
-	createWorkspace(body: HonchoCreateWorkspaceRequest): Promise<HonchoWorkspace> {
-		return this.request({ path: 'workspaces', body });
+	createWorkspace(body: HonchoCreateWorkspaceRequest, options: HonchoCallOptions = {}): Promise<HonchoWorkspace> {
+		return this.request({ path: 'workspaces', body, ...options });
 	}
 
 	listPeers(
 		workspaceId: string,
-		options: { size?: number; filters?: HonchoJsonObject } = {},
+		options: HonchoListOptions = {},
 	): Promise<HonchoPageResponse<HonchoPeer>> {
 		return this.request({
 			path: `workspaces/${encodeURIComponent(workspaceId)}/peers/list`,
-			query: { size: options.size ?? 80 },
+			query: { size: options.size ?? 80, page: options.page },
 			body: { filters: options.filters ?? {} },
+			signal: options.signal,
+			timeout: options.timeout,
 		});
 	}
 
-	createPeer(workspaceId: string, body: HonchoCreatePeerRequest): Promise<HonchoPeer> {
-		return this.request({ path: `workspaces/${encodeURIComponent(workspaceId)}/peers`, body });
+	createPeer(workspaceId: string, body: HonchoCreatePeerRequest, options: HonchoCallOptions = {}): Promise<HonchoPeer> {
+		return this.request({ path: `workspaces/${encodeURIComponent(workspaceId)}/peers`, body, ...options });
 	}
 
 	listSessions(
 		workspaceId: string,
-		options: { size?: number; filters?: HonchoJsonObject } = {},
+		options: HonchoListOptions = {},
 	): Promise<HonchoPageResponse<HonchoSession>> {
 		return this.request({
 			path: `workspaces/${encodeURIComponent(workspaceId)}/sessions/list`,
-			query: { size: options.size ?? 80 },
+			query: { size: options.size ?? 80, page: options.page },
 			body: { filters: options.filters ?? {} },
+			signal: options.signal,
+			timeout: options.timeout,
 		});
 	}
 
-	createSession(workspaceId: string, body: HonchoCreateSessionRequest): Promise<HonchoSession> {
-		return this.request({ path: `workspaces/${encodeURIComponent(workspaceId)}/sessions`, body });
+	createSession(workspaceId: string, body: HonchoCreateSessionRequest, options: HonchoCallOptions = {}): Promise<HonchoSession> {
+		return this.request({ path: `workspaces/${encodeURIComponent(workspaceId)}/sessions`, body, ...options });
 	}
 
 	listSessionMessages(
 		workspaceId: string,
 		sessionId: string,
-		options: { size?: number; filters?: HonchoJsonObject } = {},
+		options: HonchoListOptions = {},
 	): Promise<HonchoPageResponse<HonchoMessage>> {
 		return this.request({
 			path: `workspaces/${encodeURIComponent(workspaceId)}/sessions/${encodeURIComponent(sessionId)}/messages/list`,
-			query: { size: options.size ?? 100 },
+			query: { size: options.size ?? 100, page: options.page },
 			body: { filters: options.filters ?? {} },
+			signal: options.signal,
+			timeout: options.timeout,
 		});
 	}
 
@@ -454,10 +491,12 @@ export class HonchoClient {
 		workspaceId: string,
 		sessionId: string,
 		body: HonchoCreateMessagesRequest,
+		options: HonchoCallOptions = {},
 	): Promise<HonchoMessage[]> {
 		return this.request({
 			path: `workspaces/${encodeURIComponent(workspaceId)}/sessions/${encodeURIComponent(sessionId)}/messages`,
 			body,
+			...options,
 		});
 	}
 
@@ -467,31 +506,40 @@ export class HonchoClient {
 		});
 	}
 
-	getSessionSummaries(workspaceId: string, sessionId: string): Promise<HonchoSessionSummaries> {
+	getSessionSummaries(
+		workspaceId: string,
+		sessionId: string,
+		options: HonchoCallOptions = {},
+	): Promise<HonchoSessionSummaries> {
 		return this.request({
 			path: `workspaces/${encodeURIComponent(workspaceId)}/sessions/${encodeURIComponent(sessionId)}/summaries`,
+			...options,
 		});
 	}
 
 	getSessionContext(
 		workspaceId: string,
 		sessionId: string,
-		options: { tokens?: number; summary?: boolean } = {},
+		options: { tokens?: number; summary?: boolean } & HonchoCallOptions = {},
 	): Promise<HonchoSessionContext> {
 		return this.request({
 			path: `workspaces/${encodeURIComponent(workspaceId)}/sessions/${encodeURIComponent(sessionId)}/context`,
 			query: { tokens: options.tokens, summary: options.summary },
+			signal: options.signal,
+			timeout: options.timeout,
 		});
 	}
 
 	listConclusions(
 		workspaceId: string,
-		options: { size?: number; filters?: HonchoJsonObject } = {},
+		options: HonchoListOptions = {},
 	): Promise<HonchoPageResponse<HonchoConclusion>> {
 		return this.request({
 			path: `workspaces/${encodeURIComponent(workspaceId)}/conclusions/list`,
-			query: { size: options.size ?? 80 },
+			query: { size: options.size ?? 80, page: options.page },
 			body: { filters: options.filters ?? {} },
+			signal: options.signal,
+			timeout: options.timeout,
 		});
 	}
 
@@ -499,8 +547,12 @@ export class HonchoClient {
 		return this.request({ path: `workspaces/${encodeURIComponent(workspaceId)}/conclusions`, body });
 	}
 
-	queryConclusions(workspaceId: string, body: HonchoConclusionQueryRequest): Promise<HonchoConclusion[]> {
-		return this.request({ path: `workspaces/${encodeURIComponent(workspaceId)}/conclusions/query`, body });
+	queryConclusions(
+		workspaceId: string,
+		body: HonchoConclusionQueryRequest,
+		options: HonchoCallOptions = {},
+	): Promise<HonchoConclusion[]> {
+		return this.request({ path: `workspaces/${encodeURIComponent(workspaceId)}/conclusions/query`, body, ...options });
 	}
 
 	getPeerCard(workspaceId: string, peerId: string, target?: string): Promise<{ peer_card?: string[] }> {
@@ -549,12 +601,14 @@ export class HonchoClient {
 	listPeerSessions(
 		workspaceId: string,
 		peerId: string,
-		options: { size?: number; filters?: HonchoJsonObject } = {},
+		options: HonchoListOptions = {},
 	): Promise<HonchoPageResponse<HonchoSession>> {
 		return this.request({
 			path: `workspaces/${encodeURIComponent(workspaceId)}/peers/${encodeURIComponent(peerId)}/sessions`,
-			query: { size: options.size ?? 50 },
+			query: { size: options.size ?? 50, page: options.page },
 			body: { filters: options.filters ?? {} },
+			signal: options.signal,
+			timeout: options.timeout,
 		});
 	}
 
@@ -565,15 +619,21 @@ export class HonchoClient {
 		});
 	}
 
-	chat(workspaceId: string, observerPeerId: string, body: HonchoPeerChatRequest): Promise<HonchoPeerChatResponse> {
+	chat(
+		workspaceId: string,
+		observerPeerId: string,
+		body: HonchoPeerChatRequest,
+		options: HonchoCallOptions = {},
+	): Promise<HonchoPeerChatResponse> {
 		return this.request({
 			path: `workspaces/${encodeURIComponent(workspaceId)}/peers/${encodeURIComponent(observerPeerId)}/chat`,
 			body: { stream: false, ...body },
+			...options,
 		});
 	}
 
-	getQueueStatus(workspaceId: string): Promise<HonchoQueueStatus> {
-		return this.request({ path: `workspaces/${encodeURIComponent(workspaceId)}/queue/status` });
+	getQueueStatus(workspaceId: string, options: HonchoCallOptions = {}): Promise<HonchoQueueStatus> {
+		return this.request({ path: `workspaces/${encodeURIComponent(workspaceId)}/queue/status`, ...options });
 	}
 
 	scheduleDream(workspaceId: string, body: HonchoScheduleDreamRequest): Promise<void> {

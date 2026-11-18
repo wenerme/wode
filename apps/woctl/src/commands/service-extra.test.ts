@@ -2,7 +2,7 @@ import type { ServiceProvider, ServiceRuntimeClient } from '@wener/common/servic
 import { createMemoryCliConfigStore, parseCliConfig } from 'common/context';
 import { describe, expect, it, vi } from 'vitest';
 import { APP_NAME } from '../const';
-import { createWocliWebCli } from '../web';
+import { createWebCli } from '../web';
 
 function output() {
 	const lines: string[] = [];
@@ -23,7 +23,7 @@ function serviceConfig() {
 
 describe('service discovery and defaults', () => {
 	it('uses the shared output selection for renderer DSL and explicit example projections', async () => {
-		const cli = createWocliWebCli({ config: createMemoryCliConfigStore(serviceConfig()) });
+		const cli = createWebCli({ config: createMemoryCliConfigStore(serviceConfig()) });
 		const { io, lines } = output();
 		await cli.executeLine("service inspect system --format 'json(name)'", io);
 		expect(lines).toHaveLength(1);
@@ -36,7 +36,7 @@ describe('service discovery and defaults', () => {
 	it('prints complete examples at 80 columns and preserves their selected context', async () => {
 		const initial = serviceConfig();
 		initial.contexts.other = { services: { gateway: { provider: 'system', readOnly: true } }, defaults: {} };
-		const cli = createWocliWebCli({ config: createMemoryCliConfigStore(initial) });
+		const cli = createWebCli({ config: createMemoryCliConfigStore(initial) });
 		const { io, lines } = output();
 		await cli.executeLine('service inspect gateway --context other', { ...io, columns: 80 });
 		const example = lines
@@ -51,7 +51,7 @@ describe('service discovery and defaults', () => {
 	});
 	it('keeps default changes within the selected context and validates provider/service pairs', async () => {
 		const config = createMemoryCliConfigStore(serviceConfig());
-		const cli = createWocliWebCli({ config });
+		const cli = createWebCli({ config });
 		const { io, lines } = output();
 		await cli.executeLine('service add second --type system', io);
 		await cli.executeLine('service default set system second', io);
@@ -67,7 +67,7 @@ describe('service discovery and defaults', () => {
 	});
 	it('adds generic service fields and validates provider options before saving', async () => {
 		const config = createMemoryCliConfigStore(serviceConfig());
-		const cli = createWocliWebCli({ config });
+		const cli = createWebCli({ config });
 		const { io } = output();
 		await cli.executeLine(
 			'service add observe --type openobserve --base-url https://observe.example.test --title Observability --header x-tenant=default --option organization=default --option timeoutMs=1000',
@@ -89,7 +89,7 @@ describe('service discovery and defaults', () => {
 		const config = createMemoryCliConfigStore(parseCliConfig({
 			services: [{ name: 'observe', type: 'openobserve', baseUrl: 'https://observe.example.test', options: { organization: 'default' } }],
 		}));
-		const cli = createWocliWebCli({ config });
+		const cli = createWebCli({ config });
 		const { io, lines } = output();
 		await cli.executeLine('service inspect observe --options --json', io);
 		const value = JSON.parse(lines.pop() ?? '');
@@ -97,30 +97,30 @@ describe('service discovery and defaults', () => {
 		expect(value.service.optionsSchema.properties.organization).toEqual({ type: 'string' });
 	});
 	it('shows service type metadata without loading configuration or credentials', async () => {
-		const cli = createWocliWebCli({ config: createMemoryCliConfigStore(parseCliConfig({})) });
+		const cli = createWebCli({ config: createMemoryCliConfigStore(parseCliConfig({})) });
 		const { io, lines } = output();
 		await cli.executeLine('service type openobserve --json', io);
 		const value = JSON.parse(lines.pop() ?? '');
 		expect(value).toMatchObject({ name: 'openobserve', aliases: ['oo'], capabilities: ['openobserve'] });
 		expect(value.optionsSchema.properties.organization).toEqual({ type: 'string' });
 	});
-	it('renders a service options schema as a TypeScript interface', async () => {
-		const cli = createWocliWebCli({ config: createMemoryCliConfigStore(parseCliConfig({})) });
+	it('renders a service options schema as a TypeScript type alias', async () => {
+		const cli = createWebCli({ config: createMemoryCliConfigStore(parseCliConfig({})) });
 		const { io, lines } = output();
 		await cli.executeLine('service type openobserve --typescript', io);
-		expect(lines.join('')).toContain('export interface OpenObserveServiceOptions');
+		expect(lines.join('')).toContain('export type OpenObserveServiceOptions =');
 		expect(lines.join('')).toContain('organization?: string');
 	});
 	it('renders service method contracts for Apollo', async () => {
-		const cli = createWocliWebCli({ config: createMemoryCliConfigStore(parseCliConfig({})) });
+		const cli = createWebCli({ config: createMemoryCliConfigStore(parseCliConfig({})) });
 		const { io, lines } = output();
 		await cli.executeLine('service type apollo --typescript', io);
-		expect(lines.join('')).toContain('export interface ApolloServiceOptions');
+		expect(lines.join('')).toContain('export type ApolloServiceOptions =');
 		expect(lines.join('')).toContain('export interface ApolloService');
 		expect(lines.join('')).toContain('readConfig(input:');
 	});
 	it('supports svc as the service command alias', async () => {
-		const cli = createWocliWebCli({ config: createMemoryCliConfigStore(parseCliConfig({})) });
+		const cli = createWebCli({ config: createMemoryCliConfigStore(parseCliConfig({})) });
 		const { io, lines } = output();
 		await cli.executeLine('svc type list --json', io);
 		expect(JSON.parse(lines.pop() ?? '')).toEqual(expect.arrayContaining([expect.objectContaining({ name: 'apollo' })]));
@@ -132,7 +132,7 @@ describe('service discovery and defaults', () => {
 			create: () => ({ getSchema: async () => ({ tools: {} }), call: async () => ({}) }),
 		};
 		const config = createMemoryCliConfigStore(parseCliConfig({}));
-		const cli = createWocliWebCli({ config, providers: [custom] });
+		const cli = createWebCli({ config, providers: [custom] });
 		const { io } = output();
 		await cli.executeLine('service add custom --type custom --option auth.username=alice --option timeout=1000', io);
 		expect((await config.load()).contexts.local.services.custom).toMatchObject({
@@ -152,7 +152,7 @@ describe('service discovery and defaults', () => {
 		};
 		const call = vi.fn(async () => ({ ok: true }));
 		const runtime: ServiceRuntimeClient = { getSchema: async () => schema, call };
-		const cli = createWocliWebCli({ runtime, config: createMemoryCliConfigStore(serviceConfig()) });
+		const cli = createWebCli({ runtime, config: createMemoryCliConfigStore(serviceConfig()) });
 		const { io, lines } = output();
 		await cli.executeLine('service inspect system --output describe', io);
 		const discovery = lines.pop() ?? '';
