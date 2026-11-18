@@ -67,8 +67,8 @@ describe('WebDAV client', () => {
 		const [url, init] = fetch.mock.calls[0]!;
 		expect(url).toBe('https://dav.example.test/dav/docs');
 		expect(init?.method).toBe('PROPFIND');
-		expect((init?.headers as Record<string, string>).Depth).toBe('1');
-		expect((init?.headers as Record<string, string>).Authorization).toBe(`Basic ${btoa('user:fixture-secret')}`);
+		expect(new Headers(init?.headers).get('Depth')).toBe('1');
+		expect(new Headers(init?.headers).get('Authorization')).toBe(`Basic ${btoa('user:fixture-secret')}`);
 		expect(entries).toEqual([
 			{
 				path: '/docs/a b.txt',
@@ -86,7 +86,7 @@ describe('WebDAV client', () => {
 	it('stat returns null on 404 and uses depth 0', async () => {
 		const { client, fetch } = setup(() => new Response('missing', { status: 404 }));
 		await expect(client.stat('nope')).resolves.toBeNull();
-		expect((fetch.mock.calls[0]![1]?.headers as Record<string, string>).Depth).toBe('0');
+		expect(new Headers(fetch.mock.calls[0]![1]?.headers).get('Depth')).toBe('0');
 	});
 
 	it('reads bytes with a size bound', async () => {
@@ -126,7 +126,7 @@ describe('WebDAV client', () => {
 
 	it('uses bearer auth and honors abort', async () => {
 		const fetch = vi.fn(async (_: RequestInfo | URL, init?: RequestInit) => {
-			expect((init?.headers as Record<string, string>).Authorization).toBe('Bearer tok');
+			expect(new Headers(init?.headers).get('Authorization')).toBe('Bearer tok');
 			return new Response(multistatus, { status: 207 });
 		});
 		const client = createWebDavClient({ url: 'https://dav.example.test/dav/', auth: { type: 'bearer', token: 'tok' }, fetch });
@@ -164,7 +164,7 @@ describe('WebDAV client', () => {
 		expect(error.status).toBe(412);
 		const ok = setup(() => new Response(null, { status: 204 }));
 		await ok.client.write('a.txt', 'x', { overwrite: true });
-		expect((ok.fetch.mock.calls[0]![1]?.headers as Record<string, string>)['If-None-Match']).toBeUndefined();
+		expect(new Headers(ok.fetch.mock.calls[0]![1]?.headers).has('If-None-Match')).toBe(false);
 		expect(fetch).toHaveBeenCalledTimes(1);
 	});
 });
