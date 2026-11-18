@@ -1,4 +1,4 @@
-set positional-arguments := true
+set positional-arguments
 
 # Reuse from a directory containing docker-bake.hcl. Targets stay explicit.
 [no-cd]

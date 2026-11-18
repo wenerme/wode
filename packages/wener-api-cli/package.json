@@ -50,7 +50,7 @@
 		"tsx": "^4.23.15",
 		"typescript": "7.0.2",
 		"vite": "catalog:",
-		"zod": "^4.6.5"
+		"zod": "^4.6.7"
 	},
 	"publishConfig": {
 		"access": "public"

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { HonchoClient, type HonchoClientError, normalizeHonchoEndpoint, normalizeHonchoPage } from './index';
+import { HonchoClient, type HonchoClientError, isSafeHonchoPath, normalizeHonchoEndpoint, normalizeHonchoPage } from './index';
 
 describe('HonchoClient', () => {
 	it('sends authenticated v3 requests with query and JSON body', async () => {
@@ -103,5 +103,27 @@ describe('HonchoClient', () => {
 			status: 401,
 			message: expect.stringContaining('bad token'),
 		} satisfies Partial<HonchoClientError>);
+	});
+
+	it('passes page and per-call signal through structured methods', async () => {
+		const seen: Array<{ url: string; signal?: AbortSignal | null }> = [];
+		const client = new HonchoClient({
+			baseUrl: 'https://honcho.test',
+			fetch: async (input, init = {}) => {
+				seen.push({ url: String(input), signal: init.signal });
+				return Response.json({ items: [] });
+			},
+		});
+		const controller = new AbortController();
+		await client.listSessions('w 1', { size: 5, page: 2, signal: controller.signal });
+		expect(seen[0]?.url).toBe('https://honcho.test/v3/workspaces/w%201/sessions/list?size=5&page=2');
+		controller.abort();
+		expect(seen[0]?.signal?.aborted).toBe(true);
+	});
+
+	it('validates raw request paths', () => {
+		for (const path of ['/workspaces/list', 'workspaces/w1/peers']) expect(isSafeHonchoPath(path)).toBe(true);
+		for (const path of ['', 'https://other.test/x', '/a/../b', '/a/%2e%2e/b', '/a?x=1', '/a#b', '/a\\b', '/a/%2Fb'])
+			expect(isSafeHonchoPath(path)).toBe(false);
 	});
 });

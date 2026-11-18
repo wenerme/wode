@@ -313,10 +313,11 @@ string
   = "'" v:[^']* "'" { return { type: "literal", value: v.join("") }; }
   / "\"" v:[^"]* "\"" { return { type: "literal", value: v.join("") }; }
 
-null = ("null" / "NULL") { return { type: "literal", value: null }; }
+// literals end at a word boundary: `nullable` and `trueValue` are names
+null = ("null" / "NULL") !identifier_start { return { type: "literal", value: null }; }
 
 bool
-  = ("true" / "false" / "TRUE" / "FALSE") {
+  = ("true" / "false" / "TRUE" / "FALSE") !identifier_start {
       return { type: "literal", value: text().toLowerCase() === "true" };
     }
 

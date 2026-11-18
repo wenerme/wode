@@ -1,26 +1,27 @@
-set positional-arguments := true
+set positional-arguments
 
-# Reusable package-local lifecycle recipes. Invoke from a package directory:
-# `just -f ../../just/package.just package-test`.
+# Reusable package lifecycle module, declared in the package's justfile:
+# mod package '../../just/package.just'
+# Run with `just package::test`, including from package subdirectories.
 
-[no-cd]
-package-fmt *args:
+[working-directory(justfile_directory())]
+fmt *args:
     pnpm exec biome format --write src package.json "$@"
 
-[no-cd]
-package-lint *args:
+[working-directory(justfile_directory())]
+lint *args:
     pnpm exec biome lint src "$@"
 
-[no-cd]
-package-lint-fix *args:
+[working-directory(justfile_directory())]
+lint-fix *args:
     pnpm exec biome lint --write src "$@"
 
-[no-cd]
-package-typecheck *args:
+[working-directory(justfile_directory())]
+typecheck *args:
     pnpm exec tsc --noEmit "$@"
 
-[no-cd]
-package-test *args:
+[working-directory(justfile_directory())]
+test *args:
     #!/usr/bin/env bash
     set -euo pipefail
 
@@ -53,12 +54,12 @@ package-test *args:
     printf 'No Vitest/Vite test configuration found in %s.\n' "$PWD" >&2
     exit 2
 
-[no-cd]
-package-clean:
+[working-directory(justfile_directory())]
+clean:
     rm -rf .next .turbo node_modules/.cache dist lib out storybook-static
 
-[no-cd]
-package-swc-build output="lib" copy_files="false" assets="none" ignore_tests="false" module="esm":
+[working-directory(justfile_directory())]
+swc-build output="lib" copy_files="false" assets="none" ignore_tests="false" module="esm":
     #!/usr/bin/env bash
     set -euo pipefail
 
@@ -136,6 +137,6 @@ package-swc-build output="lib" copy_files="false" assets="none" ignore_tests="fa
         exit 1
     fi
 
-[no-cd]
-package-publish *args:
+[working-directory(justfile_directory())]
+publish *args:
     pnpm publish --registry https://registry.npmjs.org --access public --no-git-checks "$@"

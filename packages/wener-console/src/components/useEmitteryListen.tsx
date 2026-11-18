@@ -11,8 +11,8 @@ export function useEmitteryListen<E>(
 	ref.current = handle;
 	useEffect(() => {
 		let unsub = Object.keys(ref.current).map((event) => {
-			return e.on(event as any, (e) => {
-				return ref.current[event]?.(e);
+			return e.on(event as any, ({ data }) => {
+				return ref.current[event]?.(data);
 			});
 		});
 		return () => {

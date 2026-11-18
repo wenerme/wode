@@ -1,8 +1,15 @@
 import type { GoogleGenerativeAIProviderMetadata } from '@ai-sdk/google';
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { McpServer } from '@modelcontextprotocol/server';
 import consola from 'consola';
 import { z } from 'zod';
 import type { McpServerInstance } from '../McpServerDef';
+
+/**
+ * 不跟随重定向（3xx 直接报错）：请求带 `x-goog-api-key`，默认 fetch 跨源跟随时会把它带走。
+ * Gemini API 没有合法的重定向。
+ */
+const noRedirectFetch = ((input: Parameters<typeof fetch>[0], init?: Parameters<typeof fetch>[1]) =>
+	fetch(input, { ...init, redirect: 'error' })) as typeof fetch;
 
 const log = consola.withTag('gemini-tools-mcp');
 
@@ -24,12 +31,15 @@ export function createGeminiToolsMcpServer(options: CreateGeminiToolsMcpServerOp
 	const model = options.model || process.env.GEMINI_MODEL || 'gemini-3-flash-preview';
 	const server = new McpServer({ name, version });
 
-	server.tool(
+	server.registerTool(
 		'web_search',
-		'Search the internet for latest information using Google Search grounding. If query contains URLs, URL context analysis is also enabled.',
 		{
-			query: z.string().describe('Search query, may include URLs for context analysis'),
-			lang: z.string().optional().describe('Response language (e.g. zh, en). Auto-detected from query by default'),
+			description:
+				'Search the internet for latest information using Google Search grounding. If query contains URLs, URL context analysis is also enabled.',
+			inputSchema: z.object({
+				query: z.string().describe('Search query, may include URLs for context analysis'),
+				lang: z.string().optional().describe('Response language (e.g. zh, en). Auto-detected from query by default'),
+			}),
 		},
 		async ({ query, lang }) => {
 			if (!apiKey) {
@@ -45,6 +55,7 @@ export function createGeminiToolsMcpServer(options: CreateGeminiToolsMcpServerOp
 				const google = createGoogleGenerativeAI({
 					apiKey,
 					...(baseUrl ? { baseURL: baseUrl } : {}),
+					fetch: noRedirectFetch,
 				});
 
 				const hasUrl = URL_PATTERN.test(query);
@@ -90,12 +101,15 @@ export function createGeminiToolsMcpServer(options: CreateGeminiToolsMcpServerOp
 		},
 	);
 
-	server.tool(
+	server.registerTool(
 		'code_execution',
-		'Generate and execute Python code using Gemini code execution. Useful for calculations, data analysis, and algorithmic tasks.',
 		{
-			prompt: z.string().describe('Task description for the model to solve by writing and running Python code'),
-			lang: z.string().optional().describe('Response language (e.g. zh, en)'),
+			description:
+				'Generate and execute Python code using Gemini code execution. Useful for calculations, data analysis, and algorithmic tasks.',
+			inputSchema: z.object({
+				prompt: z.string().describe('Task description for the model to solve by writing and running Python code'),
+				lang: z.string().optional().describe('Response language (e.g. zh, en)'),
+			}),
 		},
 		async ({ prompt, lang }) => {
 			if (!apiKey) {
@@ -111,6 +125,7 @@ export function createGeminiToolsMcpServer(options: CreateGeminiToolsMcpServerOp
 				const google = createGoogleGenerativeAI({
 					apiKey,
 					...(baseUrl ? { baseURL: baseUrl } : {}),
+					fetch: noRedirectFetch,
 				});
 
 				const langHint = lang ? `\nRespond in ${lang}.` : '';

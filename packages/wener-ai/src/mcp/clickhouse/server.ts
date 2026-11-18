@@ -1,5 +1,5 @@
 import type { ClickHouseClientConfigOptions, ClickHouseSettings } from '@clickhouse/client';
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { McpServer } from '@modelcontextprotocol/server';
 import { registerMetadataTools, registerQueryTools } from './tools';
 import { type ClickHouseConnectionConfig, parseClickHouseUrl } from './utils';
 

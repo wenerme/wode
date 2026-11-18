@@ -1,4 +1,4 @@
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { McpServer } from '@modelcontextprotocol/server';
 import { TencentLogClient, type TencentLogClientInit } from '@wener/client/tencent/cls';
 import { SEARCH_GUIDE } from './guide';
 import { registerAnalysisTools, registerSearchTools, registerTopicTools } from './tools';
@@ -39,7 +39,7 @@ export function createTencentClsMcpServer(options: CreateTencentClsMcpServerOpti
 	});
 
 	// Register the search guide as a resource
-	server.resource(
+	server.registerResource(
 		'search-guide',
 		'cls://search-guide',
 		{

@@ -51,7 +51,7 @@ export function renderJsonSchemaToMarkdownDoc(rootSchema: any) {
 		out.push(`
 | $id | 名字 |
 | --- | --- |
-| ${T.$id || ''} | ${T.title || ''} | 
+| ${T.$id || ''} | ${T.title || ''} |
     `);
 		if (T.description) {
 			out.push('');
@@ -77,7 +77,7 @@ export function renderJsonSchemaToMarkdownDoc(rootSchema: any) {
 			out.push(`
 | $id | 名字 |
 | --- | --- |
-| ${schema.$id || ''} | ${schema.title || ''} | 
+| ${schema.$id || ''} | ${schema.title || ''} |
     `);
 
 			out.push(`| 值 |  说明 |`);

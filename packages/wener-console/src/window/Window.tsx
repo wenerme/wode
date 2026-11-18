@@ -28,19 +28,20 @@ export namespace Window {
 		return host;
 	}
 
-	export const Host = ({ body = document.body }: { body?: HTMLElement }) => {
+	export const Host = ({ body }: { body?: HTMLElement }) => {
 		const window = getRootWindow();
 		const [container, setContainer] = useState<HTMLElement | null>(null);
 		let store = window.store;
 
 		useEffect(() => {
-			let ele = createWindowContainer(window, body);
+			const targetBody = body ?? document.body;
+			let ele = createWindowContainer(window, targetBody);
 			setContainer(ele);
 			store.setState({ childrenElement: ele });
 			return () => {
 				ele.remove();
 			};
-		}, [window.id]);
+		}, [body, store, window, window.id]);
 
 		const windows = useStore(
 			store,

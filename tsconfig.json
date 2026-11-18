@@ -34,6 +34,9 @@
 	},
 	"references": [
 		{
+			"path": "./apps/woctl"
+		},
+		{
 			"path": "./apps/console"
 		},
 		{

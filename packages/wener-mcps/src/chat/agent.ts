@@ -3,7 +3,7 @@
  * Uses AI SDK with MCP tools for agentic chat
  */
 import { createOpenAICompatible } from '@ai-sdk/openai-compatible';
-import { generateText, stepCountIs, streamText, type Tool } from 'ai';
+import { generateText, isStepCount, streamText, type Tool } from 'ai';
 import consola from 'consola';
 import type { Hono } from 'hono';
 import { streamSSE } from 'hono/streaming';
@@ -103,10 +103,16 @@ export function registerAgentRoutes(app: Hono, options: AgentHandlerOptions) {
 			}
 
 			// Convert messages
-			const aiMessages = messages.map((m) => ({
-				role: m.role as 'user' | 'assistant' | 'system',
-				content: m.content,
-			}));
+			const systemPrompt = messages
+				.filter((m) => m.role === 'system')
+				.map((m) => m.content)
+				.join('\n\n');
+			const aiMessages = messages
+				.filter((m) => m.role !== 'system')
+				.map((m) => ({
+					role: m.role as 'user' | 'assistant',
+					content: m.content,
+				}));
 
 			log.info(
 				`→ POST /v1/agent/chat model=${modelName} messages=${messages.length} tools=${Object.keys(tools).length} maxSteps=${maxSteps}`,
@@ -118,10 +124,11 @@ export function registerAgentRoutes(app: Hono, options: AgentHandlerOptions) {
 					try {
 						const result = streamText({
 							model: aiModel,
+							instructions: systemPrompt || undefined,
 							messages: aiMessages,
 							tools: Object.keys(tools).length > 0 ? tools : undefined,
-							stopWhen: stepCountIs(maxSteps),
-							onStepFinish: async (step) => {
+							stopWhen: isStepCount(maxSteps),
+							onStepEnd: async (step) => {
 								// Send step info
 								await sseStream.writeSSE({
 									data: JSON.stringify({
@@ -188,9 +195,10 @@ export function registerAgentRoutes(app: Hono, options: AgentHandlerOptions) {
 			// Non-streaming response
 			const result = await generateText({
 				model: aiModel,
+				instructions: systemPrompt || undefined,
 				messages: aiMessages,
 				tools: Object.keys(tools).length > 0 ? tools : undefined,
-				stopWhen: stepCountIs(maxSteps),
+				stopWhen: isStepCount(maxSteps),
 			});
 
 			log.info(

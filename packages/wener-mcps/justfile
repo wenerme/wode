@@ -1,0 +1,5 @@
+mod package '../../just/package.just'
+
+build:
+    pnpm build
+    just package::swc-build lib false none false

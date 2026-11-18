@@ -160,4 +160,165 @@ describe('ast', () => {
 			expect(result, `${expr} -> ${JSON.stringify(expected)}`).toEqual(expected);
 		}
 	});
+
+	test('formats numbers without exponent notation', () => {
+		for (const [input, expected] of [
+			['0.0000001', '0.0000001'],
+			['-0.00000012', '-0.00000012'],
+			['1000000000000000000000', '1000000000000000000000'],
+		] as const) {
+			expect(formatQuery(parseQuery(input))).toBe(expected);
+		}
+		expect(formatQuery(parseQuery('-0'))).toBe('-0');
+	});
+
+	test('parenthesizes comparisons used as operands', () => {
+		const nested = {
+			type: 'compare',
+			op: '=',
+			left: { type: 'compare', op: '=', left: { type: 'ref', value: ['a'] }, right: { type: 'literal', value: 1 } },
+			right: { type: 'literal', value: true },
+		} as any;
+		const text = formatQuery(nested);
+		expect(text).toBe('(a = 1) = TRUE');
+		expect(formatQuery(parseQuery(text))).toBe(text);
+		const arithmetic = {
+			type: 'binary',
+			op: '+',
+			left: nested.left,
+			right: { type: 'literal', value: 2 },
+		} as any;
+		const arithmeticText = formatQuery(arithmetic);
+		expect(arithmeticText).toBe('((a = 1) + 2)');
+		expect(formatQuery(parseQuery(arithmeticText))).toBe(arithmeticText);
+	});
+
+	test('rejects expressions where MiniQuery only accepts values', () => {
+		const item = {
+			type: 'compare',
+			op: '=',
+			left: { type: 'ref', value: ['a'] },
+			right: { type: 'literal', value: 1 },
+		} as any;
+		const inExpr = {
+			type: 'compare',
+			op: 'IN',
+			left: { type: 'ref', value: ['x'] },
+			right: { type: 'list', items: [item] },
+		} as any;
+		const betweenExpr = {
+			type: 'compare',
+			op: 'BETWEEN',
+			left: { type: 'ref', value: ['x'] },
+			right: { type: 'list', items: [item, { type: 'literal', value: 2 }] },
+		} as any;
+		expect(() => formatQuery(inExpr)).toThrow('IN/NOT IN items must be values');
+		expect(() => formatQuery(betweenExpr)).toThrow('BETWEEN/NOT BETWEEN items must be values');
+		expect(() => formatQuery({ type: 'func', name: 'f', args: [item] } as any)).toThrow(
+			'Function arguments must be values',
+		);
+		expect(() => formatQuery({ type: 'list', items: [item] } as any)).toThrow('List items must be values');
+		expect(() =>
+			formatQuery({
+				type: 'compare',
+				op: 'LIKE',
+				left: { type: 'ref', value: ['x'] },
+				right: { type: 'ref', value: ['y'] },
+			} as any),
+		).toThrow('LIKE requires a string value');
+		expect(() =>
+			formatQuery({
+				type: 'compare',
+				op: 'IS',
+				left: { type: 'ref', value: ['x'] },
+				right: { type: 'ref', value: ['y'] },
+			} as any),
+		).toThrow('IS requires NULL or a boolean value');
+		expect(() =>
+			formatQuery({
+				type: 'compare',
+				op: 'ILIKE',
+				left: { type: 'ref', value: ['x'] },
+				right: { type: 'literal', value: 'y' },
+			} as any),
+		).toThrow('ILIKE is not supported');
+		expect(() => formatQuery({ type: 'unary', op: '-', expr: { type: 'ref', value: ['x'] } } as any)).toThrow(
+			'Unary operator - is not supported',
+		);
+		expect(formatQuery({ type: 'unary', op: '!', expr: { type: 'ref', value: ['x'] } } as any)).toBe('(NOT x)');
+		expect(
+			formatQuery({
+				type: 'compare',
+				op: '==',
+				left: { type: 'ref', value: ['x'] },
+				right: { type: 'literal', value: 1 },
+			} as any),
+		).toBe('x = 1');
+		expect(() =>
+			formatQuery({
+				type: 'binary',
+				op: 'XOR',
+				left: { type: 'literal', value: true },
+				right: { type: 'literal', value: false },
+			} as any),
+		).toThrow('Binary operator XOR is not supported');
+		expect(() =>
+			formatQuery({
+				type: 'compare',
+				op: 'OR',
+				left: { type: 'literal', value: true },
+				right: { type: 'literal', value: false },
+			} as any),
+		).toThrow('Comparison operator OR is not supported');
+		expect(() => formatQuery({ type: 'logic', op: 'OR', exprs: [] } as any)).toThrow('at least two expressions');
+		expect(() => formatQuery({ type: 'logic', op: 'OR', exprs: [{ type: 'literal', value: 3 }] } as any)).toThrow(
+			'at least two expressions',
+		);
+		expect(() =>
+			formatQuery({
+				type: 'logic',
+				op: 'AND',
+				exprs: [
+					{
+						type: 'logic',
+						op: 'AND',
+						exprs: [
+							{ type: 'literal', value: 1 },
+							{ type: 'literal', value: 2 },
+						],
+					},
+					{ type: 'literal', value: 3 },
+				],
+			} as any),
+		).toThrow('Nested AND expressions');
+		for (const text of ['a AND (b AND c)', 'a OR (b OR c)']) {
+			expect(formatQuery(parseQuery(text))).toBe(`(${text})`);
+		}
+		expect(() =>
+			formatQuery({
+				type: 'logic',
+				op: 'XOR',
+				exprs: [
+					{ type: 'literal', value: 1 },
+					{ type: 'literal', value: 2 },
+				],
+			} as any),
+		).toThrow('Logic operator XOR is not supported');
+		expect(() => formatQuery({ type: 'case', cases: [], else: { type: 'literal', value: 1 } } as any)).toThrow(
+			'at least one WHEN clause',
+		);
+		expect(() =>
+			formatQuery({
+				type: 'case',
+				condition: false,
+				cases: [{ when: { type: 'literal', value: true }, then: { type: 'literal', value: 1 } }],
+				else: 0,
+			} as any),
+		).toThrow('Unknown type');
+		expect(() => formatQuery({ type: 'ref', value: [] } as any)).toThrow('at least one name');
+		const sparse = new Array(2);
+		expect(() => formatQuery({ type: 'func', name: 'f', args: sparse } as any)).toThrow('must be dense');
+		expect(() => formatQuery({ type: 'list', items: sparse } as any)).toThrow('must be dense');
+		expect(() => formatQuery({ type: 'literal', value: [] } as any)).toThrow('Literal value is not supported');
+	});
 });

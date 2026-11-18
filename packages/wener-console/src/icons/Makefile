@@ -14,4 +14,3 @@ svgo:
 	pnpm dlx svgo svg/**/*.svg --pretty
 
 pretty:
-

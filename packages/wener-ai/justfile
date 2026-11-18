@@ -1,0 +1,5 @@
+mod package '../../just/package.just'
+
+build: package::swc-build
+
+alias publish := package::publish

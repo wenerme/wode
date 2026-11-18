@@ -3,28 +3,32 @@ import { describe, expect, it } from 'vitest';
 
 describe('createRelayMcpServer', () => {
 	describe('deepwiki relay', () => {
-		it('should connect to deepwiki and list tools', async () => {
-			const { getClient, close } = createRelayMcpServer({
-				url: 'https://mcp.deepwiki.com/mcp',
-				transport: 'http',
-				name: 'deepwiki-relay',
-			});
+		it.runIf(process.env.RUN_LIVE_MCP_TESTS === '1')(
+			'should connect to deepwiki and list tools',
+			async () => {
+				const { getClient, close } = createRelayMcpServer({
+					url: 'https://mcp.deepwiki.com/mcp',
+					transport: 'http',
+					name: 'deepwiki-relay',
+				});
 
-			try {
-				const client = await getClient();
-				expect(client).toBeDefined();
+				try {
+					const client = await getClient();
+					expect(client).toBeDefined();
 
-				const tools = await client.listTools();
-				expect(tools.tools).toBeDefined();
-				expect(Array.isArray(tools.tools)).toBe(true);
-				console.log(
-					'DeepWiki tools:',
-					tools.tools.map((t: { name: string }) => t.name),
-				);
-			} finally {
-				await close();
-			}
-		}, 30000);
+					const tools = await client.listTools();
+					expect(tools.tools).toBeDefined();
+					expect(Array.isArray(tools.tools)).toBe(true);
+					console.log(
+						'DeepWiki tools:',
+						tools.tools.map((t: { name: string }) => t.name),
+					);
+				} finally {
+					await close();
+				}
+			},
+			30000,
+		);
 	});
 
 	describe('huggingface relay', () => {

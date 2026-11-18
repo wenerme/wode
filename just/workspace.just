@@ -1,3 +1,6 @@
+set positional-arguments
+set working-directory := '..'
+
 info:
     #!/usr/bin/env bash
     set -euo pipefail

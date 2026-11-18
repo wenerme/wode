@@ -1,5 +1,6 @@
 import type { Kysely } from 'kysely';
 import { sql } from 'kysely';
+import { createPgRawConnection, type SqlRawConnectionProvider } from './boundedQuery';
 
 export type Dialect = 'mysql' | 'postgres' | 'sqlite' | 'mssql';
 
@@ -26,16 +27,25 @@ export function detectDialect(url: string): Dialect {
 	throw new Error(`Unsupported database URL: ${url}`);
 }
 
+/** 只输出消息（不带 error 对象：pg-pool 会挂 `error.client`，其连接参数含密码），并去掉消息里的连接串凭据。 */
+function redactPgErrorMessage(err: Error): string {
+	return String(err.message)
+		.replace(/([a-z][a-z0-9+.-]*:\/\/)\S*@/giu, '$1[redacted]@')
+		.slice(0, 500);
+}
+
 export async function createKyselyInstance(
 	url: string,
 	dialect: Dialect,
-): Promise<{ db: Kysely<any>; ownsConnection: boolean }> {
+): Promise<{ db: Kysely<any>; ownsConnection: boolean; rawConnection?: SqlRawConnectionProvider }> {
 	const { Kysely } = await import('kysely');
 	let db: Kysely<any>;
+	/** 与 Kysely 同一个连接池借原生连接（有上限的逐行读取用，见 executeBoundedQuery）；只有 pg、mysql。 */
+	let rawConnection: SqlRawConnectionProvider | undefined;
 
 	switch (dialect) {
 		case 'postgres': {
-			const { Pool } = await import('pg');
+			const { Pool, Query } = await import('pg');
 			const { PostgresDialect } = await import('kysely');
 			const pool = new Pool({
 				connectionString: url,
@@ -46,31 +56,48 @@ export async function createKyselyInstance(
 				query_timeout: 120_000,
 			});
 			pool.on('error', (err) => {
-				console.error('[pg] Pool client error:', err.message);
+				console.error('[pg] Pool client error:', redactPgErrorMessage(err));
 			});
+			// 借出期间（Kysely 查询、事务）Pool 不替连接监听 error：查询中连接被终止（57P01、故障切换）时 Client 会 emit error，
+			// 未监听就成为未捕获异常让进程退出。借出时挂监听、归还时摘掉；错误已通过查询结果
+			// 交给调用方，连接归还后被 Pool 丢弃。
+			const onCheckedOutError = (err: Error) => {
+				console.error('[pg] Checked-out client error:', redactPgErrorMessage(err));
+			};
+			pool.on('acquire', (client) => client.on('error', onCheckedOutError));
+			pool.on('release', (_err, client) => client.removeListener('error', onCheckedOutError));
 			db = new Kysely({
 				dialect: new PostgresDialect({ pool }),
 			});
+			// 有上限的逐行读取：执行时关掉 query_timeout（否则 pg 会给 Query 补 callback、在内部累积结果），
+			// 改由 executeBoundedQuery 按同样的 120s 自己计时取消。
+			rawConnection = async () =>
+				createPgRawConnection((await pool.connect()) as never, (text: string) => new Query(text) as never);
 			break;
 		}
 		case 'mysql': {
 			const mysql = await import('mysql2');
 			const { MysqlDialect } = await import('kysely');
-			db = new Kysely({
-				dialect: new MysqlDialect({
-					pool: mysql.createPool({
-						uri: url,
-						connectTimeout: 30000, // 30 seconds (default is 10s)
-						waitForConnections: true,
-						connectionLimit: 10,
-						queueLimit: 0,
-					}),
-				}),
+			const pool = mysql.createPool({
+				uri: url,
+				connectTimeout: 30000, // 30 seconds (default is 10s)
+				waitForConnections: true,
+				connectionLimit: 10,
+				queueLimit: 0,
 			});
+			db = new Kysely({
+				dialect: new MysqlDialect({ pool }),
+			});
+			rawConnection = () =>
+				new Promise((resolve, reject) =>
+					pool.getConnection((error, connection) =>
+						error ? reject(error) : resolve({ dialect: 'mysql', connection: connection as never }),
+					),
+				);
 			break;
 		}
 		case 'sqlite': {
-			const { DatabaseSync } = await import('node:sqlite');
+			const BetterSqlite3 = (await import('better-sqlite3')).default;
 			const { SqliteDialect } = await import('kysely');
 			let filename = url;
 			if (filename.startsWith('sqlite://')) {
@@ -80,7 +107,7 @@ export async function createKyselyInstance(
 			}
 			db = new Kysely({
 				dialect: new SqliteDialect({
-					database: createKyselySqliteDatabase(filename, DatabaseSync),
+					database: new BetterSqlite3(filename),
 				}),
 			});
 			break;
@@ -129,29 +156,20 @@ export async function createKyselyInstance(
 			throw new Error(`Unsupported dialect: ${dialect}`);
 	}
 
-	// Test connection
-	await sql`SELECT 1`.execute(db);
+	// Test connection. If initialization fails after creating a pool, do not leave it alive while
+	// createSqlMcpServer clears the failed load promise and retries.
+	try {
+		await sql`SELECT 1`.execute(db);
+	} catch (error) {
+		try {
+			await db.destroy();
+		} catch {
+			// Preserve the initialization error; the failed instance is already unusable.
+		}
+		throw error;
+	}
 
-	return { db, ownsConnection: true };
-}
-
-function createKyselySqliteDatabase(filename: string, DatabaseSync: typeof import('node:sqlite').DatabaseSync) {
-	const database = new DatabaseSync(filename, { allowBareNamedParameters: true });
-
-	return {
-		close: () => database.close(),
-		prepare(source: string) {
-			const statement = database.prepare(source);
-			const reader = statement.columns().length > 0;
-
-			return {
-				reader,
-				all: (parameters: readonly unknown[]) => statement.all(...(parameters as any[])),
-				run: (parameters: readonly unknown[]) => statement.run(...(parameters as any[])),
-				iterate: (parameters: readonly unknown[]) => statement.iterate(...(parameters as any[])),
-			};
-		},
-	};
+	return { db, ownsConnection: true, ...(rawConnection ? { rawConnection } : {}) };
 }
 
 export async function getVersion(db: Kysely<any>, dialect: Dialect): Promise<string> {

@@ -1,24 +1,24 @@
-import { useWindowEventListener } from '@wener/reaction';
-import type { FC } from 'react';
+import { type FC, useEffect } from 'react';
 import { useImmer } from 'use-immer';
 import { useUserAgentPreferences } from '../../utils/UserAgentPreference';
 import { SystemAboutPageSection } from './SystemAboutPageSection';
 
+const getState = () => ({
+	ua: globalThis.navigator?.userAgent,
+	width: globalThis.outerWidth,
+	height: globalThis.outerHeight,
+	screenWidth: globalThis.screen?.width,
+	screenHeight: globalThis.screen?.height,
+	timezone: Intl.DateTimeFormat?.().resolvedOptions?.()?.timeZone,
+});
+
 export const SystemAboutPageBrowserInfo: FC = () => {
-	const getState = () => ({
-		ua: globalThis.navigator?.userAgent,
-		width: globalThis.outerWidth,
-		height: globalThis.outerHeight,
-		screenWidth: globalThis.screen?.width,
-		screenHeight: globalThis.screen?.height,
-		timezone: Intl.DateTimeFormat?.().resolvedOptions?.()?.timeZone,
-	});
 	const [state, update] = useImmer(getState);
-	useWindowEventListener({
-		resize: () => {
-			update(getState());
-		},
-	});
+	useEffect(() => {
+		const resize = () => update(getState());
+		globalThis.window?.addEventListener('resize', resize);
+		return () => globalThis.window?.removeEventListener('resize', resize);
+	}, [update]);
 	const { colorTheme, devicePixelRatio, reducedTransparency, reducedData, reducedMotion, contrast } =
 		useUserAgentPreferences();
 	return (

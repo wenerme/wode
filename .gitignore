@@ -147,3 +147,6 @@ local/
 AGENTS.md
 CLAUDE.md
 GEMINI.md
+*.db
+*.db-shm
+*.db-wal

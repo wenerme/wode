@@ -84,16 +84,14 @@ export async function request<T>(options: AliCloudRequestOptions<T>) {
 		body: undefined,
 	};
 	if (typeof body === 'string') {
-		// skip
+		init.body = body;
 	} else if (ArrayBuffer.isView(body)) {
-		// body = ArrayBuffers.toString(body, 'base64');
+		init.body = new Uint8Array(new Uint8Array(body.buffer, body.byteOffset, body.byteLength));
 		headers['content-type'] ||= 'application/octet-stream';
 	} else if (body) {
 		headers['content-type'] ||= 'application/json; charset=utf-8';
-		body = JSON.stringify(body);
+		init.body = JSON.stringify(body);
 	}
-
-	init.body = body as string | BufferSource | undefined;
 
 	{
 		const { headers } = await sign({ ...init, url: u.toString() }, options as any);
@@ -149,7 +147,7 @@ async function requirePayload(res: Response) {
 		throw last;
 	}
 
-	if (typeof body === 'object' && body && 'RequestId' in body) {
+	if (typeof body === 'object' && body !== null && 'RequestId' in body) {
 		return body as AliCloudResponse;
 	}
 
@@ -196,7 +194,7 @@ export function stringOfMultipartFormData(data: FormData): { body: string; heade
 		if (ArrayBuffer.isView(v)) {
 			body += 'Content-Type: application/octet-stream';
 			body += 'Content-Transfer-Encoding: base64';
-			content = ArrayBuffers.toString(v as unknown as ArrayBufferView<ArrayBuffer>, 'base64');
+			content = ArrayBuffers.toString(new Uint8Array(new Uint8Array(v.buffer, v.byteOffset, v.byteLength)), 'base64');
 		}
 
 		body += `Content-Disposition: form-data; name="${k}"\r\n\r\n`;

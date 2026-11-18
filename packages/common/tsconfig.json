@@ -1,6 +1,7 @@
 {
 	"extends": ["../../tsconfig.base.json"],
 	"compilerOptions": {
+		"lib": ["dom", "dom.iterable", "dom.asynciterable", "WebWorker", "esnext"],
 		"sourceMap": true,
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true,

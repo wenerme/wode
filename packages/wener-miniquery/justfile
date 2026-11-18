@@ -1,0 +1,82 @@
+set positional-arguments
+
+mod package '../../just/package.just'
+
+generate:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    for module in ast search mikro-orm mysql/ast; do
+        make -C "{{ justfile_directory() }}/src/$module" gen
+    done
+
+generate-check:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    root="{{ justfile_directory() }}"
+    tmp="$(mktemp -d)"
+    trap 'rm -rf "$tmp"' EXIT
+    generate_one() {
+        local module="$1"
+        shift
+        local output="$tmp/${module//\//-}.js"
+        pnpm dlx --yes peggy@5.1.1 "$root/src/$module/parser.peggy" --format es "$@" --output "$output"
+        cmp "$output" "$root/src/$module/parser.js"
+    }
+    generate_one ast
+    generate_one search
+    generate_one mikro-orm
+    generate_one mysql/ast --allowed-start-rules Main,Expression,Comments
+
+build: (package::swc-build "lib" "true" "none" "true")
+
+publish: build
+    pnpm version patch --no-workspaces-update
+    just package::publish
+
+# Start a MySQL 8.4 container used as the syntax oracle for the MySQL fixtures (needs Docker).
+mysql-oracle-up name="miniquery-mysql-oracle" image="mysql:8.4":
+    #!/usr/bin/env bash
+    set -euo pipefail
+    label='com.wener.wode.miniquery.mysql-oracle'
+    if ! docker inspect "{{ name }}" >/dev/null 2>&1; then
+        docker run -d --name "{{ name }}" --label "$label=true" -e MYSQL_ROOT_PASSWORD=oracle -e MYSQL_DATABASE=shop "{{ image }}" >/dev/null
+    elif [ "$(docker inspect --format "{{ '{{' }} index .Config.Labels \"com.wener.wode.miniquery.mysql-oracle\" {{ '}}' }}" "{{ name }}" 2>/dev/null || true)" != true ]; then
+        echo "Refusing to use unowned MySQL container: {{ name }}" >&2
+        exit 2
+    fi
+    # the image initializes with a temporary server first; wait until the schema can be loaded
+    for _ in $(seq 1 90); do
+        if docker exec -i "{{ name }}" mysql -uroot -poracle shop < "{{ justfile_directory() }}/tests/mysql-oracle.schema.sql" 2>/dev/null; then
+            echo "{{ name }} ready"; exit 0
+        fi
+        docker exec "{{ name }}" mysql -uroot -poracle -N -e 'SELECT 1' shop >/dev/null 2>&1 \
+            && docker exec "{{ name }}" mysql -uroot -poracle -N -e 'SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = "shop"' 2>/dev/null | grep -qv '^0$' \
+            && { echo "{{ name }} ready"; exit 0; }
+        sleep 1
+    done
+    echo "{{ name }} did not become ready" >&2; exit 1
+
+# Compare the parser with MySQL on tests/test.mysql.sql and tests/error.test.mysql.sql, or on FILE.
+mysql-oracle *file:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    container="${MYSQL_ORACLE_CONTAINER:-miniquery-mysql-oracle}"
+    if [ "$(docker inspect --format "{{ '{{' }} index .Config.Labels \"com.wener.wode.miniquery.mysql-oracle\" {{ '}}' }}" "$container" 2>/dev/null || true)" != true ]; then
+        echo "Refusing to use unowned MySQL container: $container" >&2
+        exit 2
+    fi
+    MYSQL_ORACLE_CONTAINER="$container" node --import tsx tests/mysqlOracle.ts "$@"
+
+mysql-oracle-down name="miniquery-mysql-oracle":
+    #!/usr/bin/env bash
+    set -euo pipefail
+    label='com.wener.wode.miniquery.mysql-oracle'
+    if ! docker inspect "{{ name }}" >/dev/null 2>&1; then
+        echo "MySQL oracle container does not exist: {{ name }}" >&2
+        exit 1
+    fi
+    if [ "$(docker inspect --format "{{ '{{' }} index .Config.Labels \"com.wener.wode.miniquery.mysql-oracle\" {{ '}}' }}" "{{ name }}" 2>/dev/null || true)" != true ]; then
+        echo "Refusing to remove unowned MySQL container: {{ name }}" >&2
+        exit 2
+    fi
+    docker rm -f "{{ name }}" >/dev/null

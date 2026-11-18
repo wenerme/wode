@@ -1,15 +1,17 @@
-# Protobuf recipes intentionally operate on the canonical root `proto/` tree.
-# This file is imported by the repository justfile; use `just buf-*`.
+set positional-arguments
+set working-directory := '..'
 
-buf-fmt *args:
+# Protobuf recipes operate on the canonical root `proto/` tree: `just buf::gen`.
+
+fmt *args:
     buf format ./proto --write "$@"
 
-buf-lint *args:
+lint *args:
     buf lint "$@"
 
-buf-gen *args:
+gen *args:
     buf generate "$@"
     pnpm node scripts/normalize-generated-protos.mjs
 
-buf-stats *args:
+stats *args:
     buf stats "$@"

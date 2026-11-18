@@ -1,4 +1,4 @@
-import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
+import type { CallToolResult } from '@modelcontextprotocol/server';
 import { z } from 'zod';
 import type { GrafanaContext } from './server';
 
@@ -7,7 +7,7 @@ export type JsonResult = {
 	isError?: boolean;
 };
 
-export function registerJsonTool<TSchema extends z.ZodTypeAny>(
+export function registerJsonTool<TSchema extends z.ZodType>(
 	ctx: GrafanaContext,
 	name: string,
 	config: {

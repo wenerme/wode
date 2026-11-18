@@ -1737,7 +1737,7 @@ export interface QueryTagListPageResponse {
 		/** 标签介绍。 */
 		Introduction?: string;
 		/** - 0：隐藏
- 
+
 - 1：公开 */
 		SaleStatusStr?: string;
 		/** 前端调用的API名称。 */

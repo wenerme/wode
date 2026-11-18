@@ -1,6 +1,6 @@
 {
 	"name": "@wener/ai",
-	"version": "0.1.21",
+	"version": "0.1.22",
 	"type": "module",
 	"description": "AI utilities and MCP server definitions",
 	"author": "wener",
@@ -11,7 +11,7 @@
 	},
 	"scripts": {
 		"typecheck": "tsc --noEmit",
-		"build": "just -f ../../just/packages/wener-ai.just build",
+		"build": "just build",
 		"prepublishOnly": "pnpm verify:publish",
 		"test:built": "node ./tests/built-publish-subpath-smoke.mjs",
 		"test:schema": "pnpm --dir ../.. exec vitest run packages/wener-ai/tests",
@@ -23,6 +23,7 @@
 		"./agent/persona": "./src/agent/persona/index.ts",
 		"./agent/skill": "./src/agent/skill/index.ts",
 		"./mcp": "./src/mcp/index.ts",
+		"./mcp/client": "./src/mcp/client/index.ts",
 		"./mcp/prometheus": "./src/mcp/prometheus/index.ts",
 		"./mcp/relay": "./src/mcp/relay/index.ts",
 		"./mcp/sql": "./src/mcp/sql/index.ts",
@@ -44,12 +45,13 @@
 		"mcp"
 	],
 	"peerDependencies": {
-		"@ai-sdk/google": "^4.0.18",
+		"@ai-sdk/google": "*",
 		"@clickhouse/client": "*",
 		"@larksuiteoapi/node-sdk": "*",
-		"ai": "^7.0.31",
+		"ai": "*",
 		"kysely": "*",
 		"mysql2": "*",
+		"pg": "*",
 		"tarn": "*",
 		"tedious": "*"
 	},
@@ -72,6 +74,9 @@
 		"mysql2": {
 			"optional": true
 		},
+		"pg": {
+			"optional": true
+		},
 		"tarn": {
 			"optional": true
 		},
@@ -80,20 +85,26 @@
 		}
 	},
 	"dependencies": {
-		"@modelcontextprotocol/sdk": "^1.30.0",
+		"@modelcontextprotocol/client": "2.3.1",
+		"@modelcontextprotocol/core": "2.3.1",
+		"@modelcontextprotocol/server": "2.3.1",
 		"@wener/client": "workspace:^1.0.29",
 		"@wener/common": "workspace:^3.0.0",
+		"better-sqlite3": "^13.0.3",
 		"consola": "^3.4.2",
-		"zod": "^4.6.5"
+		"zod": "^4.6.7"
 	},
 	"devDependencies": {
-		"@ai-sdk/google": "^4.0.76",
-		"@clickhouse/client": "^1.23.1",
-		"ai": "^7.0.107",
-		"kysely": "^0.29.6",
-		"mysql2": "^3.24.4",
+		"@types/better-sqlite3": "^9.6.0",
+		"@ai-sdk/google": "^4.0.112",
+		"@clickhouse/client": "^1.24.1",
+		"@types/pg": "^8.23.1",
+		"ai": "^7.0.163",
+		"kysely": "^0.29.8",
+		"mysql2": "^3.24.6",
+		"pg": "^8.23.0",
 		"tarn": "^3.1.2",
-		"tedious": "^20.0.0"
+		"tedious": "^20.3.8"
 	},
 	"publishConfig": {
 		"exports": {
@@ -112,6 +123,10 @@
 			"./mcp": {
 				"types": "./src/mcp/index.ts",
 				"default": "./lib/mcp/index.js"
+			},
+			"./mcp/client": {
+				"types": "./src/mcp/client/index.ts",
+				"default": "./lib/mcp/client/index.js"
 			},
 			"./mcp/prometheus": {
 				"types": "./src/mcp/prometheus/index.ts",

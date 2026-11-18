@@ -40,6 +40,8 @@ const commonOptions: esbuild.BuildOptions = {
 	legalComments: 'none',
 	// External native modules
 	external: [
+		'better-sqlite3',
+		'bun:sqlite',
 		'kysely-bun-sqlite',
 		'oracledb',
 		'mariadb/callback',

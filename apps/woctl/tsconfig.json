@@ -1,0 +1,6 @@
+{
+	"extends": "../../tsconfig.base.json",
+	"compilerOptions": { "rootDir": "../..", "types": ["node", "vite/client"] },
+	"include": ["src", "scripts", "*.ts"],
+	"exclude": ["node_modules", "dist"]
+}

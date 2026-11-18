@@ -10,5 +10,5 @@ export function encrypt(s: string | undefined) {
 		return s;
 	}
 
-	return ArrayBuffers.toString(ecb(getCryptoKey()).encrypt(ArrayBuffers.from(s, 'utf8', Uint8Array)), 'base64');
+	return ArrayBuffers.toBase64(ecb(getCryptoKey()).encrypt(new TextEncoder().encode(s)));
 }

@@ -1,5 +1,5 @@
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
+import type { CallToolResult } from '@modelcontextprotocol/server';
+import { McpServer } from '@modelcontextprotocol/server';
 import consola from 'consola';
 import { type GrafanaAuthOptions, resolveGrafanaAuthOptions } from './auth';
 import { grafanaClientCache } from './cache';

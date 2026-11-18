@@ -1,4 +1,4 @@
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { McpServer } from '@modelcontextprotocol/server';
 import consola from 'consola';
 import { PROMQL_GUIDE } from './guides';
 import { registerMetadataTools, registerQueryTools } from './tools';
@@ -76,10 +76,12 @@ export function createPrometheusMcpServer({
 		log.debug(`${method} ${u.toString()}`);
 		const startTime = Date.now();
 
+		// 不跟随重定向（3xx 直接报错）：默认 fetch 会把凭据头带到重定向目标。
 		const res = await fetch(u, {
 			method,
 			headers,
 			body: bodyContent,
+			redirect: 'error',
 		});
 
 		const duration = Date.now() - startTime;
@@ -97,7 +99,7 @@ export function createPrometheusMcpServer({
 	// Guide Resources
 	// =========================================================================
 
-	server.resource(
+	server.registerResource(
 		'promql-guide',
 		'prometheus://promql-guide',
 		{

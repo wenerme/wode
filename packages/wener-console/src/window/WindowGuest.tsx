@@ -145,13 +145,15 @@ const WinContent: FC<{ win: ReactWindow }> = memo(({ win }) => {
 	const root = getRootWindow();
 	useEffect(() => {
 		let closer = new Closer();
+		let windowElement: HTMLElement | null | undefined;
+		const activate = () => root.setActive(win);
 		const handleWindowElement = (ele?: HTMLElement | null) => {
-			if (!ele) {
+			if (ele === windowElement) {
 				return;
 			}
-			ele.addEventListener('mousedown', () => {
-				root.setActive(win);
-			});
+			windowElement?.removeEventListener('mousedown', activate);
+			windowElement = ele;
+			windowElement?.addEventListener('mousedown', activate);
 		};
 
 		handleWindowElement(store.getState().windowElement);
@@ -164,8 +166,9 @@ const WinContent: FC<{ win: ReactWindow }> = memo(({ win }) => {
 
 		return () => {
 			closer.close();
+			windowElement?.removeEventListener('mousedown', activate);
 		};
-	}, []);
+	}, [root, store, win]);
 
 	return (
 		<WindowContext.Provider value={win}>

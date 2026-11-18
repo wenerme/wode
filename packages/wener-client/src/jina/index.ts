@@ -47,18 +47,13 @@ export class JinaReaderClientError extends Error {
 }
 
 function readerUrl(baseUrl: string, targetUrl: string): string {
-	const target = targetUrl.startsWith('http://') ? targetUrl.slice('http://'.length) : targetUrl;
-	return `${baseUrl.replace(/\/+$/, '')}/http://${target}`;
+	return `${baseUrl.replace(/\/+$/, '')}/${targetUrl}`;
 }
 
 function combineSignals(left: AbortSignal | undefined, right: AbortSignal | undefined): AbortSignal | undefined {
 	if (!left) return right;
 	if (!right) return left;
-	const controller = new AbortController();
-	const abort = () => controller.abort();
-	left.addEventListener('abort', abort, { once: true });
-	right.addEventListener('abort', abort, { once: true });
-	return controller.signal;
+	return AbortSignal.any([left, right]);
 }
 
 export class JinaReaderClient {
@@ -80,21 +75,26 @@ export class JinaReaderClient {
 	}
 
 	async read(url: string, options: { signal?: AbortSignal; timeout?: number } = {}): Promise<JinaReaderResponse> {
+		options.signal?.throwIfAborted();
 		const timeoutMs = options.timeout ?? this.timeout;
 		const timeoutController = timeoutMs ? new AbortController() : undefined;
 		const timer = timeoutMs ? setTimeout(() => timeoutController?.abort(), timeoutMs) : undefined;
+		const signal = combineSignals(options.signal, timeoutController?.signal);
 		try {
 			const response = await this.fetch(readerUrl(this.baseUrl, url), {
 				headers: { accept: 'application/json', ...this.headers },
-				signal: combineSignals(options.signal, timeoutController?.signal),
+				signal,
 			});
+			signal?.throwIfAborted();
 			const text = await response.text();
+			signal?.throwIfAborted();
 			let data: unknown = { data: { content: text } };
 			try {
 				data = JSON.parse(text) as unknown;
 			} catch {
 				// plain markdown/text fallback
 			}
+			signal?.throwIfAborted();
 			if (!response.ok)
 				throw new JinaReaderClientError(`Jina reader request failed: ${response.status} ${response.statusText}`, {
 					status: response.status,

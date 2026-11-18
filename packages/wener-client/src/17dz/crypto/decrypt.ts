@@ -2,8 +2,6 @@ import { ecb } from '@noble/ciphers/aes.js';
 import { ArrayBuffers } from '@wener/utils';
 import { getCryptoKey } from './getCryptoKey';
 
-const decoder = new TextDecoder('utf-8', { fatal: true });
-
 export function decrypt(s: string): string;
 export function decrypt(s: undefined): undefined;
 export function decrypt(s?: string): undefined | string;
@@ -22,7 +20,9 @@ export function decrypt(s: string | undefined) {
 		return s;
 	}
 
-	return decoder.decode(ecb(getCryptoKey()).decrypt(ArrayBuffers.from(s, 'base64', Uint8Array)));
+	return new TextDecoder('utf-8', { fatal: true, ignoreBOM: true }).decode(
+		ecb(getCryptoKey()).decrypt(ArrayBuffers.fromBase64(s)),
+	);
 }
 
 function isBase64(s: string) {
