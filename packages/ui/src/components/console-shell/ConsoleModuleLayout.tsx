@@ -87,7 +87,7 @@ export function ConsoleModuleLayout({
 						onClick={toggleCollapsed}
 					>
 						{collapsed ? <ChevronsRight className='size-4' /> : <ChevronsLeft className='size-4' />}
-						{collapsed ? null : '收起导航'}
+						{collapsed ? null : '收起模块导航'}
 					</button>
 				</footer>
 			</aside>
